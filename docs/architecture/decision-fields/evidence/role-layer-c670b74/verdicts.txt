@@ -1,0 +1,49 @@
+PINK §3.71 · c670b74 on recovery/role-discovery: GRÜN role layer fccaafa (RD-PLAN, RD-PANEL, RD-DETAIL, RD-HANDOVER, RD-LAYOUT), GELB
+engine hardening c3a6a22, investigation store + call ledger d90b22d. Classes: PERSISTED_REAL_RESULT (:41878 production build of c670b74,
+fresh 41862 copy, 4 pools / 78 roles; browser GET only, 0 blocked) · STAND_IN (PINK production labs, stand-in model call log counted) ·
+DETERMINISTIC / MEASUREMENT (scratch probes on disposable DBs) · CODE_INSPECTION. No Gemini.
+
+STATIC                 PASS   app / lib / test only (no API, DB-route or config file); tsc 0; focused group (GRÜN's list) 78 files 659 passed
+                              4 skipped (GELB's 87 / 723 is a larger list); T-07 among them green
+1 Role layer           PASS   real 1920 + 1280 and stand-in 1920 + 1280: the entry rd-open in the panel slot, no release in the URL, no read;
+                              opening changes neither URL nor history; 4 pools listed, none preselected, no "all", DISCOVER disabled until a
+                              choice; releasing 2 pools = exactly one push (discoveryPoolUploadId ×2) and one GET naming exactly those pools;
+                              groups equal the API; reload, Back (panel closed, entry back, no read) and Forward equal (NAV ≡ RELOAD);
+                              semantic line always "not executed … not started" (ENGINE_NOT_SPECIFIED live; CACHE_UNAVAILABLE / CACHE_CORRUPT
+                              rendered from a real response with the plan swapped: "calls unknown", no number; numbers, an executable failed
+                              state or a non-executable PLANNED are rejected by the decoder); header "not semantic · not scored · no
+                              ranking" — no fits / passt / geeignet / semantic-positive wording; trace: every related requirement shows its
+                              lexical basis, proposal, quote and source document exactly as the API delivers them, the silent-quote note where
+                              quoteNamesRequirement is false, the open requirements (8 = API 8 real, 7 = 7 stand-in)
+2 Six orbits / T-07    PASS   orbit probe 08ae201-style scenes identical to b77c851 at 1920 and 1280, including PERSON with the panel opened from
+                              the URL; with the panel open: shells 01–06, VIEW MATCHES on hover over 03, a click on 04 opens its cosmos (real) or
+                              its empty projection (stand-in, 0 items — the same with the panel closed); PERSON DOM inventory 16 / 16 scenes
+                              identical to b77c851; T-07 green; g1 2 × 20 steps unchanged; nav 88/90 (same probe errors); s10 as §3.64
+3 PxJ / handover       PASS   PxJ with an analysis and even a discoveryPoolUploadId in the URL: no entry, no panel, 0 discovery reads, B2
+                              AVAILABLE, shells 01–02; "Gezielt untersuchen": one push to investigationMode PERSON_X_JOB, jobScope = the role
+                              (upload + role id), no analysisId, no release, focus CAPABILITY, first screen NO_ANALYSIS, no POST, no ANALYZE
+4 §3.70 findings       PASS   D-ENG-1: every bypass of §3.70 now refused; D-ENG-2: the stand-in declares {stand-in, stand-in} and a run under a
+                              gemini identity ends FAILED ERR_ENGINE_IDENTITY_MISMATCH before any reservation, nothing stored; O-ENG-1: an
+                              uncited DIFFERENT / UNCLEAR pair stores no evidence; O-ENG-2: > 1000 characters TEXT_TOO_LONG; O-ENG-3: consume
+                              and writer failures end FAILED (ERR_LEDGER_CONSUME_FAILED / ERR_RELATION_*), never an exception.
+                              C-1 (86 roles / 586 requirements) and the one-attempt semantics unchanged
+  D-ENG-3 (new)        FAIL   over-blocking: the new guard refuses any digit and stems in the squashed text, so 29 of 586 real requirement
+                              names (26 roles) are refused on their own — e.g. "Security Certification", "Actuarial Qualification", "Data
+                              Provenance", "HL7 FHIR", "Neo4j", "ISO 26262", "ROS 2", "B2B Industrial Products", and "Architecture
+                              Communication" (cross-word "re|comm") — and neutral text with "one", "approved", "improve", "provenance",
+                              "Frankfurt", "Yorkshire", "underscore", "competition", "K8s", "S3", "OAuth 2.0", "Level L3", "Voreinstellung".
+                              One refused pair fails the whole role, so a role whose requirement the model names can never be evaluated.
+                              Suggest: remove the pair's own operand names and aliases from the text before the check, apply stems per word
+                              (no cross-word squashing), and limit the digit rule to score / percent / rating patterns
+5 Store / ledger       PASS   identity order-independent, per client; repeated and 8 concurrent opens create exactly one investigation; task
+  (core)                      transitions forward only incl. a race of two RUNNING moves (one wins); the ledger reserves against day AND
+                              investigation atomically (an investigation refusal leaves the day row untouched), 20 parallel reserves vs limit
+                              3 → 3, release frees and consume keeps a slot counted, a real provider with day limit 0 runs nothing
+  D-LED-1              FAIL   the investigation status has no forward-only guard: COMPLETED → PLANNED accepted (the module states "Statuses move
+                              forward only")
+  D-LED-2              FAIL   release() of an investigation that holds no reservation frees a day unit of another investigation (DAY row
+                              released 1 while INV of the reserving investigation stays 1/0) — the day accounting can be corrupted
+  O-LED-1              OBS    a day limit lowered later the same day does not apply (the day row keeps its first limit, 5; a new reserve with
+                              limit 0 still succeeds) — the owner cannot stop a provider for the rest of a day by lowering the limit
+  O-LED-2              OBS    tasks and ledger rows can be updated backwards and deleted on the database (forward-only and "nothing is
+                              deleted" are code-only, unlike the relation cache's triggers)

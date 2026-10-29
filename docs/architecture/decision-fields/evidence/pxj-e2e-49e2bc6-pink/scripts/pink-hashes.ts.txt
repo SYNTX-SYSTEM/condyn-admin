@@ -1,0 +1,21 @@
+// PINK: pool canonical hash and investigation scope hash recomputed with the pure functions of 49e2bc6 (no I/O but file reads).
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { parseJobPoolUpload } from "./lib/career/job-pool/upload";
+import { resolveJobScopeFromStoredPool } from "./lib/career/job-scope/scope";
+import { renderInvestigationScope } from "./lib/career/job-scope/investigation-scope";
+const [poolFile, poolGet] = process.argv.slice(2);
+const raw = readFileSync(poolFile, "utf8");
+const up: any = (parseJobPoolUpload as any)(raw);
+console.log("file rawSha256", createHash("sha256").update(raw, "utf8").digest("hex"));
+console.log("file canonicalSha256", up.canonicalSha256, "uploadId", up.jobPoolUploadId);
+const view = JSON.parse(readFileSync(poolGet, "utf8"));
+const v = view.jobPool ?? view;
+console.log("lab canonicalSha256", v.canonicalSha256, "same pool object", JSON.stringify(v.pool) === JSON.stringify(up.pool) ? "yes" : "no(compare stable)");
+const scope = resolveJobScopeFromStoredPool({ jobPoolUploadId: up.jobPoolUploadId, poolStatus: "ACTIVE", canonicalSha256: up.canonicalSha256, pool: up.pool, mapping: v.canonicalMapping } as any,
+  { jobPoolUploadId: up.jobPoolUploadId, poolRoleId: "role_kestrel_fullstack" });
+console.log("scopeSha256 from file + lab mapping", scope.scopeSha256, "lines", scope.scopeLines.length, "requirements", scope.requirements.length);
+console.log("targetRoleProfileRevisionId", (scope.roleMapping as any).targetRoleProfileRevisionId);
+
+const text = renderInvestigationScope(scope).text;
+console.log("investigationScopeHash = sha256(renderInvestigationScope(scope).text)", createHash("sha256").update(text, "utf8").digest("hex"), "chars", text.length);

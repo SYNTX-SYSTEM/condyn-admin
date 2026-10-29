@@ -1,0 +1,34 @@
+#!/bin/bash
+# PINK §10: fresh STAND-IN production labs (next build --webpack, NO LAB_ONLY_BUILD_FLAG, next.config.ts untouched) from <commit> in
+# PINK's worktree (own PIDs, port 41873, disposable DBs), one probe per lab. argv: <commit> <label> <probe...>
+S=<scratch>; F=$S/fc; X=$S/s10; P=<repo>
+C=$1; L=$2; shift 2
+cd $P && git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD) ($L, prod, no flag)"
+set -a; . <test-db-role env>; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=<playwright> VIDEO_LAB_PROD=1
+OUT=$X/out-$L; mkdir -p $OUT
+{ echo "next.config.ts sha256 $(sha256sum next.config.ts | cut -c1-16)… committed = served (no LAB_ONLY_BUILD_FLAG)"; git diff --stat -- next.config.ts; } >> $OUT/build-config.txt
+for PR in "$@"; do
+  LAB=$X/lab-$L-$PR; rm -rf "${LAB:?}"; mkdir -p $LAB
+  VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+  for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+  if grep -qE "VIDEO LAB READY" $LAB/lab.log; then
+    B=$(python3 -c "import json;print(json.load(open(\"$LAB/state.json\"))[\"base\"])")
+    echo "$PR lab $(grep -oE "gemini=[A-Z]+" $LAB/lab.log | head -1) $(curl -sI $B/career/demo | grep -i '^cache-control' | tr -d '\r') build-errors-ignored:$(grep -c 'Skipping validation of types' $LAB/lab.log)"
+    case $PR in
+      s10) for VP in 1920x1080 1280x720; do timeout 5400 node $X/pink-s10.mjs $LAB/state.json $P $OUT $S/rf/PINK_RF_POOL.json $L ${VP%x*} ${VP#*x} > $OUT/s10-$VP.log 2>&1; echo "s10 $VP exit $? :: $(tail -1 $OUT/s10-$VP.log | cut -c1-600)"; [ $VP = 1920x1080 ] && break; done;;
+      persondom) timeout 1800 node $X/pink-persondom.mjs $LAB/state.json $P $OUT $L > $OUT/persondom.log 2>&1; echo "persondom exit $? :: $(tail -1 $OUT/persondom.log | cut -c1-400)";;
+      nav) timeout 3600 node $F/pink-nav.mjs $LAB/state.json $P $OUT $S/rf/PINK_RF_POOL.json $S/rf/PINK_RF_POOL_ARCHIVED.json $L 1920 1080 > $OUT/nav.log 2>&1; echo "nav exit $? :: $(tail -1 $OUT/nav.log | cut -c1-700)";;
+      rf) timeout 5400 node $S/rf/pink-rf-sweep.mjs $LAB/state.json $P $OUT $S/rf/PINK_RF_POOL.json $S/rf/PINK_RF_POOL_ARCHIVED.json 1920 1080 > $OUT/sweep.log 2>&1; echo "rf exit $? :: $(tail -1 $OUT/sweep.log | cut -c1-600)";;
+      g1) for VP in 1920x1080 1280x720; do timeout 3600 node $S/pxj/g1/pink/pink-g1-walk.mjs $LAB/state.json $P $OUT tip-$L ${VP%x*} ${VP#*x} > $OUT/walk-$VP.log 2>&1; echo "g1 $VP exit $? :: $(tail -1 $OUT/walk-$VP.log | cut -c1-600)"; done;;
+      ux) timeout 3600 node $S/ux/pink-ux.mjs standin $B $OUT $P $S/ux/PINK_UX_LONG_POOL.json > $OUT/ux.log 2>&1; echo "ux exit $? :: $(tail -1 $OUT/ux.log | cut -c1-500)";;
+      x22) timeout 1800 node $S/rf/pink-x22.mjs $LAB/state.json $P $OUT $L > $OUT/x22.log 2>&1; echo "x22 exit $? :: $(cut -c1-400 $OUT/x22.log)";;
+    esac
+    cp $LAB/net.jsonl $OUT/net-$PR.jsonl 2>/dev/null
+  else echo "$PR lab failed"; grep -E "Error|failed" $LAB/lab.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -5; fi
+  bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+done
+wait
+git status --short | head -5; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo "S10-END $L"

@@ -1,0 +1,27 @@
+PINK §3.73 · 6823e93 on recovery/role-discovery (one commit on 6c65d0c; GELB fix of §3.72: D-ENG-4, O-LED-4).
+Classes: DETERMINISTIC / MEASUREMENT (scratch probes on disposable condyn_test_* DBs via test:isolated) · CODE_INSPECTION. No Gemini, no lab:
+the commit changes relation-cache-repository.ts, semantic-relation-engine.ts and their two tests, nothing under app / components / UI.
+
+STATIC                 PASS   tsc 0; job-pool group 26 files 282 passed 4 skipped (= GELB); focused group of §3.71 78 files 699 passed 4 skipped;
+                              counter-proof: 6823e93's two changed test files on 6c65d0c code → 17 failed (= GELB)
+D-ENG-4                PASS   (a) whole-word operands: "A good fit." with operand Go refused, "Gopher and Go are named." admitted; operand attack
+                              over 209 short real operands 1 → 0; (b) U+034F, U+2061, U+2064, U+180E, U+FE0F, tag U+E0020, U+061C, bidi
+                              override / isolate with reversed text, a combining stroke: all refused; (c) ٪ ‰ ‱ ﹪ ⁄ ∕ ÷ refused; (d) Markdown,
+                              entities refused. Usable: umlauts (NFC and NFD), é ñ, „…“, ’ – → …, tab, C++ / C#, Node.js, R&D, Q&A, ✓, ≥ ≤.
+                              Over-blocking: 0 of 586 requirement names (also in a German sentence), 0 of 10 proposal names as their own operand;
+                              the §3.72 engine probe is otherwise identical (31 / 31 claims refused, 23 / 23 neutral admitted)
+O-LED-4                PASS   a DISABLED ledger trigger, a REPLICA-only investigation trigger, an ALWAYS task trigger and both disabled cache
+                              triggers are all back to enabled (O) after the registration; afterwards a counter decrease, a ledger DELETE and a
+                              cache TRUNCATE are refused; a dropped trigger is still re-created
+Boundary (CODE_INSP.)  —      the registration runs once per process (memo); a trigger disabled after it is re-enabled only by the next
+                              registration (restart or failed use). Disabling needs the table owner — an operator action, not an application path
+O-ENG-5 (new obs.)     OBS    ordinary letters that read as the claim still pass: small capitals (ɢᴏᴏᴅ ꜰɪᴛ), script ɡ, Armenian օ, dotless ı,
+                              regional indicators, one word "GoodFit", spaced or dotted letters (g o o d f i t, g.o.o.d f.i.t). Same class as
+                              O-ENG-4: covered by GELB's structural condition (plain text, "Modellaussage, ungeprüft, keine Bewertung", never in
+                              ranking or sorting). Optional: UTS #39 confusable skeleton or mixed-script refusal, and phrase matching on joined runs
+O-ENG-6 (new obs.)     OBS    fail-closed costs: neutral ASCII "->", "<=" and a footnote "*" are refused, and 1 of 10 real CV quotes (a percent)
+                              could not be repeated in an explanation; each such output fails the whole role after its call
+                              (ERR_SEMANTIC_OUTPUT_REFUSED). Suggest the prompt names these characters as not allowed
+Recorded conditions    —      (GELB, for owner and GRÜN) O-LED-3: one configuration source per provider for the day limit — a condition on the
+                              start route; O-ENG-4 / O-ENG-5: a UI shows the texts only as plain text marked "Modellaussage, ungeprüft, keine
+                              Bewertung" and never uses them for ranking or sorting. PINK checks both when the start route / a UI arrives

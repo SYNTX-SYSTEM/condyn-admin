@@ -1,0 +1,33 @@
+PINK §3.64 · targeted re-check of GRÜN round 2 b77c851 (code 9a8a28e) on frontend/pxj-ux-closure against PINK §3.62 (41dfa25).
+Classes: PERSISTED_REAL_RESULT (:41872, GET only, 0 blocked in every probe) · STAND_IN (PINK production labs, real worker, loopback
+stand-in — STAND-IN · keine Modellausführung) · MEASUREMENT. No Gemini call. Quotes masked in shots, never in text.
+
+ID              | Verdict          | Class              | Measurement
+----------------+------------------+--------------------+------------------------------------------------------------------------------------
+STATIC          | PASS             | MEASUREMENT        | frontend only; tsc 0; 9 production builds without the flag; focused 63 / 514 / 4 skipped; counter-proof
+                |                  |                    | 6 files on 41dfa25: 10 fail (all REPRODUCE) / 6 pass. Note: job-levels.test.tsx drops 5 expectations
+                |                  |                    | (SELECT AS JOB before every requirement sign) and adds 1 — consistent with 70d1cb4's order, not 1:1
+V-08            | PASS             | STAND_IN (worker)  | broken .pdf: EXECUTION_FAILED, no RETRY, the format way shown, 1 POST; .docx refused
+V-11            | PASS             | STAND_IN + REAL    | same probe: Enter on the role → SELECT AS JOB 14, role view 4 — equal to 70d1cb4 (41dfa25: 21 / 11),
+                |                  |                    | real 14 / 4. Real journey (pink-ux) SELECT AS JOB 21 → 14, CAPABILITY FIELD 18 → 8
+V-18            | PASS             | REAL               | every role card in orbit form with domain line at all 6 viewports, org and role level, PXJ and PERSON
+V-19            | PASS             | REAL + STAND_IN    | 1280×720 org level: owner card (Full-Stack) 5/5 in 6 samples, PXJ and PERSON (41dfa25: 0/5) — as 70d1cb4;
+                |                  |                    | Frontend Architect 2/5 (lower half below the fold) exactly as on 70d1cb4 (pre-existing, not V-19)
+200 % (GRÜN)    | PASS (confirmed) | STAND_IN + REAL    | mouse-wheel scroll, best of 5 points: 70d1cb4 640×360 PXJ Full-Stack 3/5; b77c851 every card 5/5 at both
+                |                  |                    | 200 % viewports, PXJ and PERSON (stand-in and real)
+V-20            | PASS             | REAL               | job NOT_FOUND state: HUD and B2 overlap 0 px² at 1920 / 1600 / 1440 / 1280; all 9 rows hit themselves
+R-05            | PASS             | REAL               | tooltip during CHECKING / INVALID = the visible cause + way
+V-15            | PASS             | STAND_IN (+REAL)   | long-name pool: every visibly cut name carries its full text (title); real data: nothing cut. RETRACTION:
+                |                  |                    | the §3.61 / §3.62 item "syntx-summary cut without title" was a PINK probe false positive — it is the
+                |                  |                    | visually hidden aria-live summary (1 px by design)
+K-UX-2          | PASS             | STAND_IN + MEAS.   | PERSON first screen (Capability Field under PERSON, D6) identical to 70d1cb4 apart from data-sx-layout;
+                |                  |                    | T-07 green. The Job Field under PERSON keeps the declared UX-01/02/06/07 changes (text, level line,
+                |                  |                    | opened-role line, key hint after the state); the panel/shell order change is gone. GRÜN's README §3 now
+                |                  |                    | lists both honestly
+O-NAV-SUBMIT    | PASS in page     | STAND_IN           | S1/S2/S5 1 POST, named on view; S3/S4 observation as §3.62
+  S6            | OWNER CLASS      | STAND_IN           | across the document boundary still unnamed — open owner decision (not counted as FAIL, per GELB)
+D-PICK          | PASS             | STAND_IN + REAL    | P0–P12 as §3.62; real: only ANL_…_10, open quiet, one push; PERSON / JOB no picker
+REGRESSION      | PASS             | STAND_IN + REAL    | nav 88/90 (same two probe errors); 600 Tab presses without violation; hover look only; Esc chain;
+                |                  |                    | no target < 24 px; no horizontal scroll; reach: source actions / JOB / SELECT / picker in view and hit
+                |                  |                    | after a user's scroll at all 6 viewports; B2 rows 9/9 by 60 px wheel (640×360 at 240 px 8/9, step artefact)
+OPEN (known)    | —                | REAL               | 640×360: binding section and status line below the fold at load (head and counts in view) — GELB's 113/114

@@ -1,0 +1,21 @@
+PINK §3.66 · targeted re-check of 2dba126 (D-RC-1, C-2; C-1 decided as specification in doc §10, e2c7191). MEASUREMENT. No Gemini.
+
+D-RC-1 on a fresh DB   PASS      UPDATE / DELETE / TRUNCATE refused (ERR_RELATION_CACHE_IMMUTABLE); JSON ≠ columns (state, authority),
+                                 bad key format and bad hash format refused by CHECK; rows the database admits but that do not hold
+                                 (empty explanation, key in valid format but not derived from its parts) refused by the reader
+                                 (ERR_RELATION_CACHE_RECORD_CORRUPT), the good record alone still readable
+C-2 first wins         PASS      same result with another createdAt and raw output hash → duplicate; other state or explanation →
+                                 divergent, not stored, no exception; the first record stays
+C-1                    NOTED     decided as specification (engine sees no role / organisation text; key = requirement content) —
+                                 to be checked on the stage-3 engine contract
+Tests / counter-proof  PASS      subset 60 files 479 passed 4 skipped; relation-cache.postgres 7/7 on 2dba126, 6 fail / 1 pass on
+                                 ccc0cc1; tsc 0
+O-RC-3 (finding)       OPEN      a table created by ccc0cc1 keeps no new CHECK after 2dba126's registration (only the triggers are
+                                 added; CREATE TABLE IF NOT EXISTS skips the constraints); the registration still reports REGISTERED;
+                                 a row whose JSON claims authority VERIFIED and a key "not-a-key" are accepted. The reader still
+                                 refuses such rows, but the database guarantee holds only on databases created at 2dba126 or later
+                                 (e.g. not on :41878). Suggest: registration verifies the constraints (pg_constraint) and adds or refuses
+O-RC-4 (observation)   OPEN      one corrupt row fails the whole getByKeys call (its chunk), so a semantic plan / read over many keys
+                                 fails for all of them — fail-closed by design, but a single bad row blocks the route; worth a decision
+O-RC-5 (observation)   —         the table owner can still ALTER TABLE … DISABLE TRIGGER or DROP the table (the app role owns it);
+                                 inherent to in-database enforcement, recorded only

@@ -1,0 +1,35 @@
+// PINK scratch probe (never a live test): 6c65d0c O-LED-2 — does the registration notice a dropped / disabled guard trigger?
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureRelationCacheRegistration } from "../../lib/career/job-pool/relation-cache-registration";
+import { registerRelationCacheSchema } from "../../lib/career/job-pool/relation-cache-repository";
+import { PostgresCallLedger } from "../../lib/career/job-pool/semantic-investigation-store";
+const o: Record<string, unknown> = {}; const sql = db.$client;
+const att = (p: Promise<unknown>) => p.then(r => `ok ${JSON.stringify(r)?.slice(0, 90)}`, e => `refused: ${String(e).replace(/\s+/g, " ").slice(0, 120)}`);
+const trig = async () => (await sql`SELECT c.relname, t.tgname, t.tgenabled FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid WHERE t.tgname LIKE 'rel%guard' AND NOT t.tgisinternal ORDER BY 2`).map(r => `${r.relname}.${r.tgname}:${r.tgenabled}`);
+it("guard registration", async () => {
+  o.registration = await ensureRelationCacheRegistration();
+  o.isTableOwner = (await sql`SELECT pg_get_userbyid(relowner) = current_user AS own FROM pg_class WHERE relname = 'career_relation_call_ledger'`)[0].own;
+  o.isSuperuser = (await sql`SELECT rolsuper FROM pg_roles WHERE rolname = current_user`)[0].rolsuper;
+  const L = new PostgresCallLedger(sql, { investigationId: "RINV_G", provider: "stand-in", day: "2026-11-05", dayLimit: 5, investigationLimit: 5 } as never);
+  o.reserve = await att((L as any).reserve());
+  o.triggersBefore = await trig();
+  // 1 dropped trigger → registration re-creates it?
+  o.drop = await att(sql.unsafe(`DROP TRIGGER rel_inv_guard ON career_relation_investigations`).then(() => "dropped"));
+  o.reRegisterAfterDrop = await att(registerRelationCacheSchema(sql));
+  o.triggersAfterDropReRegister = await trig();
+  // 2 disabled trigger (table owner, no superuser needed) → registration notices?
+  o.disable = await att(sql.unsafe(`ALTER TABLE career_relation_call_ledger DISABLE TRIGGER rel_ledger_guard`).then(() => "disabled"));
+  o.reRegisterAfterDisable = await att(registerRelationCacheSchema(sql));
+  o.triggersAfterDisable = await trig();
+  o.counterDecreaseWhileDisabled = await att(sql.unsafe(`UPDATE career_relation_call_ledger SET reserved = 0 WHERE scope_key = 'INV:RINV_G'`).then(r => r.count));
+  o.deleteWhileDisabled = await att(sql.unsafe(`DELETE FROM career_relation_call_ledger WHERE scope_key LIKE 'DAY:stand-in:2026-11-05'`).then(r => r.count));
+  await sql.unsafe(`ALTER TABLE career_relation_call_ledger ENABLE TRIGGER rel_ledger_guard`);
+  // 3 replication role (bypasses ordinary triggers) — allowed for this role?
+  o.replicaRole = await att(sql.begin(async tx => { await tx.unsafe(`SET LOCAL session_replication_role = replica`); return "set"; }));
+  // 4 relation-cache triggers: same check?
+  o.cacheDisable = await att(sql.unsafe(`ALTER TABLE career_proposal_requirement_relations DISABLE TRIGGER ALL`).then(() => "disabled").catch(async () => { const t = (await sql`SELECT tgname FROM pg_trigger WHERE tgrelid = 'career_proposal_requirement_relations'::regclass AND NOT tgisinternal`).map(r => r.tgname); for (const n of t) await sql.unsafe(`ALTER TABLE career_proposal_requirement_relations DISABLE TRIGGER ${n}`); return `disabled ${t.join(",")}`; }));
+  o.reRegisterAfterCacheDisable = await att(registerRelationCacheSchema(sql));
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+}, 120000);

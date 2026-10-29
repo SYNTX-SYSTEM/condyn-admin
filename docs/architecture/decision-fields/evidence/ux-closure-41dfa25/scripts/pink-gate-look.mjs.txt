@@ -1,0 +1,17 @@
+// PINK §10 V-04: the closed gate's cause / way — pointer-events, centre hit, paint order, crops. GET only. argv: <base> <out dir>
+import { pathToFileURL } from "node:url";
+const [BASE, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const out = [];
+for (const [n, w, h, d] of [["1920x1080", 1920, 1080, 1], ["1280x720", 1280, 720, 1], ["zoom200-1280x720", 640, 360, 2]]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: d }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 6000));
+  const info = await p.evaluate(() => ["capability-gate-reason", "capability-gate-cause", "capability-gate-way", "field-focus-capability-btn"].map(id => { const e = document.querySelector(`[data-testid="${id}"]`); if (!e) return { id, present: false }; const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); const c = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    // paint order: elements at the centre, top first, with pointer-events ignored via elementsFromPoint
+    const stack = document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).slice(0, 6).map(x => x.closest("[data-testid]")?.dataset.testid ?? x.tagName.toLowerCase());
+    return { id, text: e.innerText.replace(/\s+/g, " ").slice(0, 120), fontPx: parseFloat(cs.fontSize), pointerEvents: cs.pointerEvents, opacity: cs.opacity, centreHit: c ? (c === e || e.contains(c) ? "self" : c.closest("[data-testid]")?.dataset.testid ?? c.tagName) : null, stack, describedBy: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("aria-describedby"), disabled: document.querySelector('[data-testid="field-focus-capability-btn"]')?.disabled, title: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("title"), box: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)] }; }));
+  const g = p.getByTestId("capability-gate-reason"); if (await g.count()) await g.screenshot({ path: `${OUT}/V04-gate-reason-${n}.jpg`, type: "jpeg", quality: 80 }).catch(() => {});
+  out.push({ vp: n, info }); await ctx.close();
+}
+console.log(JSON.stringify({ blocked, out }, null, 1)); await b.close();

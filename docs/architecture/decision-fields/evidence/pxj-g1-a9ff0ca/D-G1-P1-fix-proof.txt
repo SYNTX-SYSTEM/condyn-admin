@@ -1,0 +1,21 @@
+# PINK proof on a9ff0ca: the same scratch SSR test as for 50776fc (scripts/pink-noproj.proof.test.tsx.txt in evidence/pxj-g1-50776fc), run once, removed.
+PINK-NOPROJ {"state":"NO_PROJECTION","legacyNamesAnywhere":[false,false],"legacyNamesInShell02":[false,false],"orbit02Items":"0","confidenceLike":0,"noProposalsStatement":true}
+PINK-NOPROJ-PERSON {"legacyNamesAnywhere":[false,false]}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":1,"legacyNames":[false,false],"confidence":[],"legacyQuote":false}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":2,"legacyNames":[false,false],"confidence":[],"legacyQuote":false}
+      Tests  1 passed (1)
+
+# For comparison, 50776fc:
+PINK-NOPROJ {"state":"NO_PROJECTION","legacyNamesAnywhere":[false,false],"legacyNamesInShell02":[false,false],"orbit02Items":"2","confidenceLike":0,"noProposalsStatement":true}
+PINK-NOPROJ-PERSON {"legacyNamesAnywhere":[false,false]}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":1,"legacyNames":[true,true],"confidence":[],"legacyQuote":false}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":2,"legacyNames":[true,true],"confidence":["93%","93%"],"legacyQuote":false}
+
+# GRÜN's pure functions of a9ff0ca on the persisted :41862 body with the projection set to null:
+state NO_PROJECTION showsAnalysis true
+orbit 02 capabilities 0 ids 
+any PCAP_ id false | projectionState set 0
+fields  | evidenceConfidence values 
+legacy orbits 0 0 0 0
+
+# Stage 1b (:41862 bodies, AVAILABLE path) on a9ff0ca: identical output to 50776fc (diff empty), orbit 02 keeps its 8 PCAP proposals.

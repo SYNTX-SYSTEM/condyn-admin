@@ -1,0 +1,27 @@
+# PINK: every exact quote of both analyses against the text of docs/examples/cv.synthetic.pdf (pdftotext, whitespace-normalised).
+import json,re,sys
+norm=lambda s:re.sub(r'\s+',' ',s).strip()
+raw=open('cv-raw.txt').read(); T=norm(raw); TL=norm(open('cv.txt').read())
+print('pdf words (pdftotext, whitespace split):',len(raw.split()))
+for f in ['get/a-person.json','get/a-pxj.json']:
+  d=json.load(open(f)); c=d['capabilityProposalProjection']; a=d['analysis']['structured_data']['analysis']
+  ok=bad=0; badl=[]
+  for cap in c['capabilities']:
+    for e in cap['evidence']:
+      q=norm(e['exactQuote']); hit=q in T or q in TL
+      ok+=hit; bad+=not hit
+      if not hit: badl.append((cap['name'],q))
+  vs=sorted({e['verificationState'] for cap in c['capabilities'] for e in cap['evidence']})
+  ne=sum(len(cap['evidence']) for cap in c['capabilities'])
+  print(f'== {f}: projection caps {len(c["capabilities"])} evidence {ne} in-pdf {ok} missing {bad} states {vs} docs {sorted({x for cap in c["capabilities"] for x in cap["sourceDocumentIds"]})}')
+  for b in badl: print('   MISSING',b)
+  # legacy structured evidence
+  lok=lbad=0; lb=[]
+  for kind in ['roles','capabilities','organizations','skills','projects','education','experiences']:
+    for ent in a.get(kind,[]) or []:
+      for e in ent.get('evidence',[]) or []:
+        q=norm(e.get('quote') or e.get('exact_quote') or e.get('text') or '')
+        if not q: continue
+        h=q in T or q in TL; lok+=h; lbad+=not h
+        if not h: lb.append((kind,q[:90]))
+  print(f'   legacy structured evidence in-pdf {lok} missing {lbad}', lb[:8])

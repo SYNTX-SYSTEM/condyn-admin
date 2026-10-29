@@ -1,0 +1,101 @@
+import React from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
+import { matches, summary, UPLOAD_ID, view } from "../job-pool/fixtures/match-bodies";
+import { ANALYSIS, LEGACY_NAMES, OTHER_ROLE, ROLE, UPLOAD, boundary, coverage, resultBody, scripted, selection } from "./fixtures";
+
+/** PERSON × JOB · the first screen, server-rendered (owner G1): states (T-03), legacy (T-07), no number (T-08), placeholders (T-10), role level (T-11). */
+const control = vi.hoisted(() => ({
+  job: { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null } as Record<string, unknown>,
+  scope: { state: "NONE" } as Record<string, unknown>,
+  boundary: { state: "IDLE" } as Record<string, unknown>,
+  result: { state: "IDLE" } as Record<string, unknown>,
+  coverage: { state: "IDLE" } as Record<string, unknown>,
+  resultReads: [] as Array<string | null>,
+  coverageReads: [] as Array<[string | null, unknown]>,
+  bubbles: [] as Array<{ stageId: string; hideViewMatches: unknown }>
+}));
+vi.mock("../../../app/components/career/demo/OrbitalResonanceBubble", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../../app/components/career/demo/OrbitalResonanceBubble")>();
+  return { ...original, OrbitalResonanceBubble: (props: Parameters<typeof original.OrbitalResonanceBubble>[0]) => { control.bubbles.push({ stageId: props.stageId, hideViewMatches: props.hideViewMatches }); return original.OrbitalResonanceBubble(props); } };
+});
+vi.mock("../../../lib/career/ui/useCareerAnalysisJob", () => ({ useCareerAnalysisJob: () => ({ state: control.job, submitAnalysis: async () => undefined }) }));
+vi.mock("../../../lib/career/ui/useJobScope", () => ({ useJobScopeValidation: () => control.scope }));
+const idle = (selected: string | null) => ({ pools: { state: "IDLE" }, upload: { state: "IDLE" }, selectedJobPoolUploadId: selected, view: { state: "IDLE" }, matches: { state: "IDLE" }, submitUpload: async () => undefined, select: () => undefined, reloadPools: async () => undefined, reloadMatches: async () => undefined });
+vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
+  const original = await importOriginal<typeof import("../../../lib/career/ui/useJobPool")>();
+  return { ...original, useJobPoolWorkflow: (options: { analysisId: string | null; initialJobPoolUploadId?: string | null }) => options.initialJobPoolUploadId === "JPOOL_WITH_MATCHES" ? { ...idle(UPLOAD_ID), pools: { state: "AVAILABLE", jobPools: [summary] }, view: { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, upload: view }, matches: options.analysisId === null ? { state: "IDLE" } : { state: "AVAILABLE", jobPoolUploadId: UPLOAD_ID, analysisId: "ANL_TEST", matches } } : idle(options.initialJobPoolUploadId ?? null) };
+});
+vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources: () => ({ state: "IDLE" }) }));
+vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../../lib/career/ui/useRoleInvestigation")>()),
+  useAnalysisBoundary: (analysisId: string | null) => analysisId === null ? { state: "IDLE" } : control.boundary,
+  useSelectedRoleCoverage: (analysisId: string | null, scope: unknown) => { control.coverageReads.push([analysisId, scope]); return analysisId === null ? { state: "IDLE" } : control.coverage; }
+}));
+vi.mock("../../../lib/career/ui/useAnalysisResult", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../../lib/career/ui/useAnalysisResult")>()),
+  useAnalysisResult: (analysisId: string | null) => { control.resultReads.push(analysisId); return analysisId === null ? { state: "IDLE" } : control.result; }
+}));
+
+import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
+import { PxjFirstScreen } from "../../../app/components/career/demo/PxjFirstScreen";
+import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
+import { SIL_COPY, type SilLocale } from "../../../lib/career/view-model/sil-language";
+import { decodeAnalysisResult, projectPxjFirstScreen, type FirstScreenInput, type PxjFirstScreen as Screen } from "../../../lib/career/view-model/pxj-first-screen";
+import { readAnalysisResult } from "../../../lib/career/ui/useAnalysisResult";
+import { readSelectedRoleCoverage } from "../../../lib/career/ui/useRoleInvestigation";
+import { readAnalysisInvestigation } from "../../../lib/career/investigation/client";
+
+const tag = (html: string, testId: string): string => { const at = html.indexOf(`data-testid="${testId}"`); return at < 0 ? "" : html.slice(html.lastIndexOf("<", at), html.indexOf(">", at) + 1); };
+const VALID = { state: "VALID", scope: selection, roleTitle: "Distributed Systems Architect", organizationId: "org_pink_alpha", organizationName: "Alpha Industrial Systems", poolName: "PINK pool" };
+const accepted = () => { const decoded = decodeAnalysisResult(resultBody(), ANALYSIS); if (!decoded.ok) throw new Error(decoded.code); return decoded.result; };
+const field = (props: Record<string, unknown> = {}) => renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus="CAPABILITY" analysisId={ANALYSIS} {...props} />);
+const LEGACY_STAGES = ["03", "04", "05", "06"];
+
+beforeEach(() => {
+  control.job = { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null };
+  control.scope = VALID;
+  control.boundary = { state: "RESOLVED", value: boundary() };
+  control.result = { state: "AVAILABLE", result: accepted() };
+  control.coverage = { state: "AVAILABLE", coverage: coverage() };
+  control.resultReads = []; control.coverageReads = []; control.bubbles = [];
+  vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("no fetch during render"); }));
+});
+afterEach(() => { vi.unstubAllGlobals(); });
+/* ---------------------------------------------------------------- PINK proof (never committed as a live test) */
+// NO_PROJECTION under PERSON × JOB: the persisted result has no capability proposal projection, but its legacy analysis has
+// capabilities. Which capabilities does orbit 02 of the first screen show, and does any legacy value reach the markup?
+const LEGACY_CAPS = ["Legacy Capability Alpha", "Legacy Capability Beta"];
+const withLegacyCaps = () => {
+  const body = resultBody({ capabilityProposalProjection: null }) as any;
+  body.analysis.structured_data.analysis.capabilities = LEGACY_CAPS.map((name, i) => ({ entity_id: `CAP_00${i + 1}`, identity: { name }, properties: { domain: "Legacy Domain" }, confidence: 0.93, evidence: [{ doc_id: "DOC_001", location: "x", context_quote: `legacy quote ${i}`, evidence_score: 0.91 }] }));
+  return body;
+};
+describe("PINK · NO_PROJECTION under PERSON × JOB", () => {
+  it("records which capabilities orbit 02 renders", () => {
+    const decoded = decodeAnalysisResult(withLegacyCaps(), ANALYSIS); if (!decoded.ok) throw new Error(decoded.code);
+    control.result = { state: "AVAILABLE", result: decoded.result };
+    control.coverage = { state: "IDLE" };
+    const html = field({ investigationMode: "PERSON_X_JOB" });
+    const state = (html.match(/data-testid="pxj-first-state" data-state="([A-Z_]+)"/) ?? [])[1];
+    const shell02 = html.slice(html.indexOf('data-testid="focus-transition-stage-shell-02"'), html.indexOf('data-testid="focus-transition-stage-shell-02"') + 20000);
+    const out = {
+      state,
+      legacyNamesAnywhere: LEGACY_CAPS.map(n => html.includes(n)),
+      legacyNamesInShell02: LEGACY_CAPS.map(n => shell02.includes(n)),
+      orbit02Items: (shell02.match(/(\d+)\s*(?:<!-- -->)?\s*items/) ?? [])[1] ?? null,
+      confidenceLike: (html.match(/0\.9[13]|9[13]\s?%/g) ?? []).length,
+      noProposalsStatement: html.includes(SIL_COPY.en.pxjFirst.states.NO_PROJECTION)
+    };
+    console.log("PINK-NOPROJ " + JSON.stringify(out));
+    // Same body under PERSON for comparison (today's screen).
+    const person = field({ investigationMode: "PERSON" });
+    console.log("PINK-NOPROJ-PERSON " + JSON.stringify({ legacyNamesAnywhere: LEGACY_CAPS.map(n => person.includes(n)) }));
+    for (const zoomLevel of [1, 2]) {
+      const focused = field({ investigationMode: "PERSON_X_JOB", initialFocus: { stageId: "02", zoomLevel } });
+      const text = focused.replace(/<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ");
+      console.log("PINK-NOPROJ-FOCUS02 " + JSON.stringify({ zoomLevel, legacyNames: LEGACY_CAPS.map(n => focused.includes(n)), confidence: (text.match(/\b0?\.9[13]\b|\b9[13]\s?%/g) ?? []), legacyQuote: focused.includes("legacy quote 0") }));
+    }
+    expect(state).toBe("NO_PROJECTION");
+  });
+});

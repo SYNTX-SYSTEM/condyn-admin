@@ -1,0 +1,52 @@
+// PINK follow-up probe (typography validation): (a) START ANALYSIS label vs the Decision Graph Inspector over viewport heights;
+// (b) the orientation surface at low viewports: what of it lies below the viewport and whether its last control can be reached.
+// argv: <lab state.json> <out.json>. Stand-in lab only.
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
+const [STATE, OUT] = process.argv.slice(2);
+const BASE = JSON.parse(readFileSync(STATE, "utf8")).base; const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_TYPO_LAB" }, body: readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json", "utf8") });
+const browser = await chromium.launch(); const res = { start: [], surface: [], errors: [] };
+const ctxFor = async (w, h) => { const ctx = await browser.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} }); const page = await ctx.newPage(); return [ctx, page]; };
+for (const w of [1280, 1366, 1440]) for (const st of ["person", "pxj"]) {
+  try {
+    const [ctx, page] = await ctxFor(w, 900); const t = id => page.getByTestId(id);
+    if (st === "pxj") { await page.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=role_kestrel_fullstack`, { waitUntil: "networkidle" }); await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30000 }); await t("field-focus-capability-btn").click(); }
+    else { await page.goto(`${BASE}/career/demo`, { waitUntil: "networkidle" }); await t("investigation-mode-PERSON").click(); await t("field-focus-capability-btn").click(); }
+    await t("source-dock-file-input").setInputFiles("docs/examples/cv.synthetic.pdf"); await t("analyze-investigation").waitFor({ timeout: 20000 });
+    for (let h = 660; h <= 920; h += 4) {
+      await page.setViewportSize({ width: w, height: h }); await page.waitForTimeout(150);
+      res.start.push({ w, h, st, ...(await page.evaluate(() => {
+        const b = document.querySelector('[data-testid="start-intake-analysis-btn"]'); const i = document.querySelector('[data-testid="decision-graph-inspector-idle"]') ?? document.querySelector('[data-testid="decision-graph-inspector"]');
+        const r = document.createRange(); r.selectNodeContents(b); const l = r.getBoundingClientRect(); const q = b.getBoundingClientRect(); const ib = i ? i.getBoundingClientRect() : null;
+        const cover = (a, c) => { if (!c) return 0; const hh = Math.max(0, Math.min(a.bottom, c.bottom) - Math.max(a.top, c.top)), ww = Math.max(0, Math.min(a.right, c.right) - Math.max(a.left, c.left)); return hh * ww / ((a.bottom - a.top) * (a.right - a.left)); };
+        const vis = a => Math.max(0, Math.min(a.bottom, innerHeight) - Math.max(a.top, 0)) / (a.bottom - a.top);
+        // Label rows painted: sample 9 x-points on 7 rows of the label; a point counts when the topmost element is the button.
+        let hit = 0, n = 0; for (let yi = 0; yi < 7; yi += 1) for (let xi = 0; xi < 9; xi += 1) { const x = l.left + (xi + 0.5) * (l.right - l.left) / 9, y = l.top + (yi + 0.5) * (l.bottom - l.top) / 7; n += 1; if (y < innerHeight) { const e = document.elementFromPoint(x, y); if (e && (e === b || b.contains(e))) hit += 1; } }
+        let click = 0; for (let y = q.top; y < Math.min(q.bottom, innerHeight); y += 1) { const e = document.elementFromPoint((q.left + q.right) / 2, y); if (e && (e === b || b.contains(e))) click += 1; }
+        return { label: [l.top, l.bottom], btn: [q.top, q.bottom], inspector: ib && [ib.top, ib.bottom], labelUnderInspector: Math.round(cover(l, ib) * 100) / 100, labelPainted: Math.round(hit / n * 100) / 100, clickableRows: click, labelInViewport: Math.round(vis(l) * 100) / 100 };
+      })) });
+    }
+    await ctx.close();
+  } catch (e) { res.errors.push(`start ${w} ${st}: ${String(e).split("\n")[0].slice(0, 200)}`); }
+}
+for (const [w, h] of [[960, 540], [1280, 560], [1280, 600], [1920, 560], [1366, 600]]) {
+  try {
+    const [ctx, page] = await ctxFor(w, h);
+    await page.goto(`${BASE}/career/demo?focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack`, { waitUntil: "networkidle" });
+    await page.getByTestId("syntx-job-scope-select").waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(800);
+    const read = () => page.evaluate(() => { const o = document.querySelector("[data-sx-orient]"); const ob = o.getBoundingClientRect(); const ctl = [...o.querySelectorAll("button,[data-testid]")].filter(e => e.getBoundingClientRect().height > 0);
+      const below = ctl.filter(e => e.getBoundingClientRect().bottom > innerHeight + 0.5).map(e => (e.getAttribute("data-testid") ?? e.textContent.trim().slice(0, 24)));
+      const last = ctl.sort((a, b) => b.getBoundingClientRect().bottom - a.getBoundingClientRect().bottom)[0];
+      const lb = last.getBoundingClientRect(); const top = lb.bottom <= innerHeight ? document.elementFromPoint((lb.left + lb.right) / 2, (lb.top + lb.bottom) / 2) : null;
+      return { surface: [ob.top, ob.bottom], vh: innerHeight, overflowY: getComputedStyle(o).overflowY, scrollH: o.scrollHeight, clientH: o.clientHeight, docScroll: document.scrollingElement.scrollHeight - innerHeight, below, last: last.getAttribute("data-testid") ?? last.textContent.trim().slice(0, 24), lastBottom: lb.bottom, lastReachable: Boolean(top && (top === last || last.contains(top))) }; });
+    const r0 = await read();
+    await page.evaluate(() => { const o = document.querySelector("[data-sx-orient]"); o.scrollTop = o.scrollHeight; window.scrollTo(0, document.scrollingElement.scrollHeight); }); await page.waitForTimeout(400);
+    const r1 = await read();
+    res.surface.push({ w, h, before: r0, afterScrollBoth: r1 });
+    await ctx.close();
+  } catch (e) { res.errors.push(`surface ${w}x${h}: ${String(e).split("\n")[0].slice(0, 200)}`); }
+}
+writeFileSync(OUT, JSON.stringify(res)); console.log(`PROBE2 start ${res.start.length} surface ${res.surface.length} errors ${res.errors.length}`); await browser.close();

@@ -1,0 +1,949 @@
+# PINK length-step probe (pink-focus-edges.mjs) on 38ebc31 vs 9fb1df6, one fresh stand-in lab per commit (port 41871, disposable DBs, own PID), prefers-reduced-motion
+# synthetic pools = clones of DLL_JOBPOOL_ENGINEERING with own pool ids; FIELD (pool core), ORGANIZATION (cosmos centre), REQUIREMENT via the URL's jobRequirementId (receded siblings)
+# viewports 1920x1080 + 1280x720 (en, de) and 960x540 (en); python3 -I edges-compare.py <38ebc31 edges.json> <9fb1df6 edges.json>
+# net:  2 https://registry.npmjs.org
+
+errors base [] 
+errors tip []
+variants:
+    0 pool p36-nat       36 'Nordlicht Data & Platform Team Pools'                       | org c34-nat      label 34: 'Kestrel Logistics Platform GmbH'
+    1 pool p37-nat       37 'Nordlicht Data & Platform Talent Pool'                      | org c35-nat      label 35: 'Kestrel Logistics Platforms GmbH'
+    2 pool p54-nat       54 'Decision Loop Labs Engineering, Platforms & Data Pools'     | org c38-nat      label 38: 'Kestrel Logistics Software Group AG'
+    3 pool p55-nat       55 'Decision Loop Labs Engineering, Platform & Data Pool EU'    | org c39-nat      label 39: 'Kestrel Logistics Software Groups AG'
+    4 pool p36-adv10     36 'ENGINEERIN GPLATFORMA RCHITECTUR ENG'                       | org c34-adv8     label 34: 'ENGINEER INGPLATF ORMARCHI ENGI'
+    5 pool p36-adv12     36 'ENGINEERINGP LATFORMARCHI ENGINEERIN'                       | org c34-adv10    label 34: 'ENGINEERIN GPLATFORMA ENGINEERI'
+    6 pool p37-adv11     37 'ENGINEERING PLATFORMARC HITECTURERE E'                      | org c35-adv9     label 35: 'ENGINEERI NGPLATFOR MARCHITEC EN'
+    7 pool p54-adv11     54 'ENGINEERING PLATFORMARC HITECTURERE LIABILITYOB ENGINE'     | org c38-adv9     label 38: 'ENGINEERI NGPLATFOR MARCHITEC ENGIN'
+    8 pool p54-adv13     54 'ENGINEERINGPL ATFORMARCHITE CTURERELIABIL ENGINEERINGP'     | org c38-adv11    label 38: 'ENGINEERING PLATFORMARC ENGINEERING'
+    9 pool p55-adv12     55 'ENGINEERINGP LATFORMARCHI TECTURERELIA BILITYOBSERV ENG'    | org c39-adv10    label 39: 'ENGINEERIN GPLATFORMA RCHITECTUR ENG'
+   10 pool p29-word20    29 'DLL Internationalization Pool'                              | org c32-word18   label 32: 'Kestrel Telecommunications AG'
+   11 pool p31-word22    31 'DLL Gesundheitsplattformen Pool'                            | org c30-word19   label 30: 'Versicherungsgruppe Nord AG'
+   12 pool p33-word29    33 'DLL Plattformbetriebsorganisation'                          | org c39-word25   label 39: 'Kestrel Versicherungsgesellschaft AG'
+   13 pool p33-sz        33 'Großhandel & Straßenlogistik Pool'                          | org c31-sz       label 31: 'Kestrel Straßenlogistik GmbH'
+   14 pool p36u-sz       34 'Großhandel & Straßenlogistik Pools'                         | org c34u-sz      label 33: 'Kestrel Straßenlogistik Ost AG'
+   15 pool p37u-sz       36 'Großhandel & Lagerlogistik Pool Nord'                       | org c35u-sz      label 34: 'Kestrel Straßenlogistik Nord AG'
+   16 pool p54u-sz       53 'Decision Loop Labs Großhandel, Platforms & Data Pools'      | org c38u-sz      label 37: 'Kestrel Straßenlogistik Nordost AG'
+   17 pool p55u-sz       54 'Decision Loop Labs Großhandel, Platform & Data Pool EU'     | org c39u-sz      label 38: 'Kestrel Straßenlogistik Nordwest AG'
+   18 pool p25-short      8 'DLL Pool'                                                   | org c10-short    label 13: 'Kestrel AG'
+   19 pool p35-fixture   35 'DLL Engineering & Architecture Pool'                        | org c34-fixture  label 34: 'Kestrel Logistics Software GmbH'
+rows base 215 tip 215 missing in tip [] missing in base []
+core: per-line air of the name against the organism body ring (220 px, nameOuter) and its inner membrane (184 px, nameInner), in screen px; negative = a line corner outside; overMax = widest line beyond the 176 px content width
+
+== core: base → tip
+   p25-short     960 en font=10.5px→14px lines=1 nameW=51.9→67.7 overMax=0 nameOuter=45.6→40.2 nameInner=28.7→23.3 chipOuter=-0.6→-2.1 chipInner=-17.5→-19.1 contentH=152.4→156.5 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p25-short    1280 de font=10.5px→14px lines=1 nameW=51.9→67.7 overMax=0 nameOuter=45.6→40.2 nameInner=28.7→23.3 chipOuter=-2.8→-4.3 chipInner=-19.7→-21.3 contentH=152.4→156.5 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p25-short    1280 en font=10.5px→14px lines=1 nameW=51.9→67.7 overMax=0 nameOuter=45.6→40.2 nameInner=28.7→23.3 chipOuter=-0.6→-2.1 chipInner=-17.5→-19.1 contentH=152.4→156.5 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p25-short    1920 de font=10.5px→14px lines=1 nameW=57.4→74.9 overMax=0 nameOuter=50.5→44.5 nameInner=31.7→25.8 chipOuter=-3.1→-4.8 chipInner=-21.8→-23.5 contentH=168.6→173.2 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p25-short    1920 en font=10.5px→14px lines=1 nameW=57.4→74.9 overMax=0 nameOuter=50.5→44.5 nameInner=31.7→25.8 chipOuter=-0.7→-2.4 chipInner=-19.4→-21.1 contentH=168.6→173.2 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p29-word20    960 en font=10.5px→14px lines=2→3 nameW=155.7→169.2 overMax=0 nameOuter=13.2→3.4 nameInner=-3.7→-13.5 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p29-word20   1280 de font=10.5px→14px lines=2→3 nameW=155.7→169.2 overMax=0 nameOuter=13.2→3.4 nameInner=-3.7→-13.5 chipOuter=-7.4→-17.1 chipInner=-24.4→-34 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p29-word20   1280 en font=10.5px→14px lines=2→3 nameW=155.7→169.2 overMax=0 nameOuter=13.2→3.4 nameInner=-3.7→-13.5 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p29-word20   1920 de font=10.5px→14px lines=2→3 nameW=172.2→187.2 overMax=0→11.2 nameOuter=14.7→3.7 nameInner=-4.1→-15 chipOuter=-8.2→-18.9 chipInner=-27→-37.6 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p29-word20   1920 en font=10.5px→14px lines=2→3 nameW=172.2→187.2 overMax=0→11.2 nameOuter=14.7→3.7 nameInner=-4.1→-15 chipOuter=-5.9→-16.7 chipInner=-24.6→-35.5 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p31-word22    960 en font=10.5px→14px lines=3 nameW=142.7→186.1 overMax=0→10.1 nameOuter=15.3→-3.9 nameInner=-1.6→-20.8 chipOuter=-10.2→-15.1 chipInner=-27.1→-32 contentH=177.1→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p31-word22   1280 de font=10.5px→14px lines=3 nameW=142.7→186.1 overMax=0→10.1 nameOuter=15.3→-3.9 nameInner=-1.6→-20.8 chipOuter=-12.2→-17.1 chipInner=-29.1→-34 contentH=177.1→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p31-word22   1280 en font=10.5px→14px lines=3 nameW=142.7→186.1 overMax=0→10.1 nameOuter=15.3→-3.9 nameInner=-1.6→-20.8 chipOuter=-10.2→-15.1 chipInner=-27.1→-32 contentH=177.1→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p31-word22   1920 de font=10.5px→14px lines=3 nameW=157.9→205.9 overMax=0→29.9 nameOuter=17→-4.3 nameInner=-1.8→-23 chipOuter=-13.5→-18.9 chipInner=-32.2→-37.6 contentH=195.9→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p31-word22   1920 en font=10.5px→14px lines=3 nameW=157.9→205.9 overMax=0→29.9 nameOuter=17→-4.3 nameInner=-1.8→-23 chipOuter=-11.2→-16.7 chipInner=-30→-35.5 contentH=195.9→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p33-sz        960 en font=10.5px→14px lines=2→3 nameW=136.2→135.4 overMax=0 nameOuter=14.1→17.2 nameInner=-2.9→0.3 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-sz       1280 de font=10.5px→14px lines=2→3 nameW=136.2→135.4 overMax=0 nameOuter=14.1→17.2 nameInner=-2.9→0.3 chipOuter=-7.4→-17.1 chipInner=-24.4→-34 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-sz       1280 en font=10.5px→14px lines=2→3 nameW=136.2→135.4 overMax=0 nameOuter=14.1→17.2 nameInner=-2.9→0.3 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-sz       1920 de font=10.5px→14px lines=2→3 nameW=150.7→149.8 overMax=0 nameOuter=15.6→19.1 nameInner=-3.2→0.3 chipOuter=-8.2→-18.9 chipInner=-27→-37.6 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p33-sz       1920 en font=10.5px→14px lines=2→3 nameW=150.7→149.8 overMax=0 nameOuter=15.6→19.1 nameInner=-3.2→0.3 chipOuter=-5.9→-16.7 chipInner=-24.6→-35.5 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p33-word29    960 en font=10.5px→14px lines=2 nameW=188.1→245.3 overMax=12.1→69.3 nameOuter=-7→-33.9 nameInner=-23.9→-50.8 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-word29   1280 de font=10.5px→14px lines=2 nameW=188.1→245.3 overMax=12.1→69.3 nameOuter=-7→-33.9 nameInner=-23.9→-50.8 chipOuter=-7.4→-10.6 chipInner=-24.4→-27.5 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-word29   1280 en font=10.5px→14px lines=2 nameW=188.1→245.3 overMax=12.1→69.3 nameOuter=-7→-33.9 nameInner=-23.9→-50.8 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p33-word29   1920 de font=10.5px→14px lines=2 nameW=208.1→271.4 overMax=32.1→95.4 nameOuter=-7.7→-37.5 nameInner=-26.5→-56.2 chipOuter=-8.2→-11.7 chipInner=-27→-30.4 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p33-word29   1920 en font=10.5px→14px lines=2 nameW=208.1→271.4 overMax=32.1→95.4 nameOuter=-7.7→-37.5 nameInner=-26.5→-56.2 chipOuter=-5.9→-9.4 chipInner=-24.6→-28.1 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p35-fixture   960 en font=10.5px→14px lines=2 nameW=110.3→143.8 overMax=0 nameOuter=23.5→8.7 nameInner=6.6→-8.2 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p35-fixture  1280 de font=10.5px→14px lines=2 nameW=110.3→143.8 overMax=0 nameOuter=23.5→8.7 nameInner=6.6→-8.2 chipOuter=-7.4→-10.6 chipInner=-24.4→-27.5 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p35-fixture  1280 en font=10.5px→14px lines=2 nameW=110.3→143.8 overMax=0 nameOuter=23.5→8.7 nameInner=6.6→-8.2 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p35-fixture  1920 de font=10.5px→14px lines=2 nameW=122→159.1 overMax=0 nameOuter=26→9.7 nameInner=7.3→-9.1 chipOuter=-8.2→-11.7 chipInner=-27→-30.4 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p35-fixture  1920 en font=10.5px→14px lines=2 nameW=122→159.1 overMax=0 nameOuter=26→9.7 nameInner=7.3→-9.1 chipOuter=-5.9→-9.4 chipInner=-24.6→-28.1 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-adv10     960 en font=10.5px→14px lines=2→3 nameW=136.2→118.4 overMax=0 nameOuter=21.5→11.9 nameInner=4.6→-5.1 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv10    1280 de font=10.5px→14px lines=2→3 nameW=136.2→118.4 overMax=0 nameOuter=21.5→11.9 nameInner=4.6→-5.1 chipOuter=-7.4→-17.1 chipInner=-24.4→-34 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv10    1280 en font=10.5px→14px lines=2→3 nameW=136.2→118.4 overMax=0 nameOuter=21.5→11.9 nameInner=4.6→-5.1 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv10    1920 de font=10.5px→14px lines=2→3 nameW=150.7→131 overMax=0 nameOuter=23.8→13.1 nameInner=5.1→-5.6 chipOuter=-8.2→-18.9 chipInner=-27→-37.6 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-adv10    1920 en font=10.5px→14px lines=2→3 nameW=150.7→131 overMax=0 nameOuter=23.8→13.1 nameInner=5.1→-5.6 chipOuter=-5.9→-16.7 chipInner=-24.6→-35.5 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-adv12     960 en font=10.5px→14px lines=2→3 nameW=162.2→101.5 overMax=0 nameOuter=10.4→21.8 nameInner=-6.5→4.9 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv12    1280 de font=10.5px→14px lines=2→3 nameW=162.2→101.5 overMax=0 nameOuter=10.4→21.8 nameInner=-6.5→4.9 chipOuter=-7.4→-17.1 chipInner=-24.4→-34 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv12    1280 en font=10.5px→14px lines=2→3 nameW=162.2→101.5 overMax=0 nameOuter=10.4→21.8 nameInner=-6.5→4.9 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-adv12    1920 de font=10.5px→14px lines=2→3 nameW=179.4→112.3 overMax=3.4→0 nameOuter=11.6→24.1 nameInner=-7.2→5.4 chipOuter=-8.2→-18.9 chipInner=-27→-37.6 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-adv12    1920 en font=10.5px→14px lines=2→3 nameW=179.4→112.3 overMax=3.4→0 nameOuter=11.6→24.1 nameInner=-7.2→5.4 chipOuter=-5.9→-16.7 chipInner=-24.6→-35.5 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-nat       960 en font=10.5px→14px lines=2 nameW=162.2→160.7 overMax=0 nameOuter=10.4→2.2 nameInner=-6.5→-14.8 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-nat      1280 de font=10.5px→14px lines=2 nameW=162.2→160.7 overMax=0 nameOuter=10.4→2.2 nameInner=-6.5→-14.8 chipOuter=-7.4→-10.6 chipInner=-24.4→-27.5 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-nat      1280 en font=10.5px→14px lines=2 nameW=162.2→160.7 overMax=0 nameOuter=10.4→2.2 nameInner=-6.5→-14.8 chipOuter=-5.3→-8.5 chipInner=-22.2→-25.4 contentH=164.7→173 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36-nat      1920 de font=10.5px→14px lines=2 nameW=179.4→177.8 overMax=3.4→1.8 nameOuter=11.6→2.4 nameInner=-7.2→-16.3 chipOuter=-8.2→-11.7 chipInner=-27→-30.4 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36-nat      1920 en font=10.5px→14px lines=2 nameW=179.4→177.8 overMax=3.4→1.8 nameOuter=11.6→2.4 nameInner=-7.2→-16.3 chipOuter=-5.9→-9.4 chipInner=-24.6→-28.1 contentH=182.3→191.4 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36u-sz       960 en font=10.5px→14px lines=2→3 nameW=142.7→135.4 overMax=0 nameOuter=11.6→17.2 nameInner=-5.4→0.3 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36u-sz      1280 de font=10.5px→14px lines=2→3 nameW=142.7→135.4 overMax=0 nameOuter=11.6→17.2 nameInner=-5.4→0.3 chipOuter=-7.4→-17.1 chipInner=-24.4→-34 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36u-sz      1280 en font=10.5px→14px lines=2→3 nameW=142.7→135.4 overMax=0 nameOuter=11.6→17.2 nameInner=-5.4→0.3 chipOuter=-5.3→-15.1 chipInner=-22.2→-32 contentH=164.7→189.4 nameToChip=9.5→9.9 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p36u-sz      1920 de font=10.5px→14px lines=2→3 nameW=157.9→149.8 overMax=0 nameOuter=12.8→19.1 nameInner=-5.9→0.3 chipOuter=-8.2→-18.9 chipInner=-27→-37.6 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p36u-sz      1920 en font=10.5px→14px lines=2→3 nameW=157.9→149.8 overMax=0 nameOuter=12.8→19.1 nameInner=-5.9→0.3 chipOuter=-5.9→-16.7 chipInner=-24.6→-35.5 contentH=182.3→209.6 nameToChip=10.5→10.9 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37-adv11     960 en font=10.5px→12px lines=2→3 nameW=149.2→95.3 overMax=0 nameOuter=16→21.4 nameInner=-0.9→4.5 chipOuter=-5.3→-12.3 chipInner=-22.2→-29.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-adv11    1280 de font=10.5px→12px lines=2→3 nameW=149.2→95.3 overMax=0 nameOuter=16→21.4 nameInner=-0.9→4.5 chipOuter=-7.4→-14.3 chipInner=-24.4→-31.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-adv11    1280 en font=10.5px→12px lines=2→3 nameW=149.2→95.3 overMax=0 nameOuter=16→21.4 nameInner=-0.9→4.5 chipOuter=-5.3→-12.3 chipInner=-22.2→-29.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-adv11    1920 de font=10.5px→12px lines=2→3 nameW=165.1→105.5 overMax=0 nameOuter=17.7→23.7 nameInner=-1→4.9 chipOuter=-8.2→-15.8 chipInner=-27→-34.5 contentH=182.3→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37-adv11    1920 en font=10.5px→12px lines=2→3 nameW=165.1→105.5 overMax=0 nameOuter=17.7→23.7 nameInner=-1→4.9 chipOuter=-5.9→-13.6 chipInner=-24.6→-32.3 contentH=182.3→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37-nat       960 en font=10.5px→12px lines=2 nameW=162.2→146.7 overMax=0 nameOuter=10.4→8.8 nameInner=-6.5→-8.1 chipOuter=-5.3→-6.7 chipInner=-22.2→-23.6 contentH=164.7→168.3 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-nat      1280 de font=10.5px→12px lines=2 nameW=162.2→146.7 overMax=0 nameOuter=10.4→8.8 nameInner=-6.5→-8.1 chipOuter=-7.4→-8.8 chipInner=-24.4→-25.7 contentH=164.7→168.3 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-nat      1280 en font=10.5px→12px lines=2 nameW=162.2→146.7 overMax=0 nameOuter=10.4→8.8 nameInner=-6.5→-8.1 chipOuter=-5.3→-6.7 chipInner=-22.2→-23.6 contentH=164.7→168.3 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37-nat      1920 de font=10.5px→12px lines=2 nameW=179.4→162.3 overMax=3.4→0 nameOuter=11.6→9.8 nameInner=-7.2→-8.9 chipOuter=-8.2→-9.7 chipInner=-27→-28.4 contentH=182.3→186.2 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37-nat      1920 en font=10.5px→12px lines=2 nameW=179.4→162.3 overMax=3.4→0 nameOuter=11.6→9.8 nameInner=-7.2→-8.9 chipOuter=-5.9→-7.4 chipInner=-24.6→-26.1 contentH=182.3→186.2 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37u-sz       960 en font=10.5px→12px lines=2→3 nameW=149.2→132 overMax=0 nameOuter=9→19 nameInner=-7.9→2.1 chipOuter=-5.3→-12.3 chipInner=-22.2→-29.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37u-sz      1280 de font=10.5px→12px lines=2→3 nameW=149.2→132 overMax=0 nameOuter=9→19 nameInner=-7.9→2.1 chipOuter=-7.4→-14.3 chipInner=-24.4→-31.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37u-sz      1280 en font=10.5px→12px lines=2→3 nameW=149.2→132 overMax=0 nameOuter=9→19 nameInner=-7.9→2.1 chipOuter=-5.3→-12.3 chipInner=-22.2→-29.2 contentH=164.7→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p37u-sz      1920 de font=10.5px→12px lines=2→3 nameW=165.1→146 overMax=0 nameOuter=10→21 nameInner=-8.7→2.3 chipOuter=-8.2→-15.8 chipInner=-27→-34.5 contentH=182.3→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p37u-sz      1920 en font=10.5px→12px lines=2→3 nameW=165.1→146 overMax=0 nameOuter=10→21 nameInner=-8.7→2.3 chipOuter=-5.9→-13.6 chipInner=-24.6→-32.3 contentH=182.3→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-adv11     960 en font=10.5px→12px lines=3→4 nameW=149.2→132 overMax=0 nameOuter=12.7→4.4 nameInner=-4.2→-12.5 chipOuter=-10.2→-18 chipInner=-27.1→-34.9 contentH=177.1→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv11    1280 de font=10.5px→12px lines=3→4 nameW=149.2→132 overMax=0 nameOuter=12.7→4.4 nameInner=-4.2→-12.5 chipOuter=-12.2→-19.9 chipInner=-29.1→-36.8 contentH=177.1→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv11    1280 en font=10.5px→12px lines=3→4 nameW=149.2→132 overMax=0 nameOuter=12.7→4.4 nameInner=-4.2→-12.5 chipOuter=-10.2→-18 chipInner=-27.1→-34.9 contentH=177.1→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv11    1920 de font=10.5px→12px lines=3→4 nameW=165.1→146 overMax=0 nameOuter=14→4.9 nameInner=-4.7→-13.8 chipOuter=-13.5→-22 chipInner=-32.2→-40.8 contentH=195.9→217.4 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-adv11    1920 en font=10.5px→12px lines=3→4 nameW=165.1→146 overMax=0 nameOuter=14→4.9 nameInner=-4.7→-13.8 chipOuter=-11.2→-19.9 chipInner=-30→-38.6 contentH=195.9→217.4 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-adv13     960 en font=10.5px→12px lines=4 nameW=84.3→95.3 overMax=0 nameOuter=23.2→17.5 nameInner=6.3→0.6 chipOuter=-15.1→-18 chipInner=-32→-34.9 contentH=189.4→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv13    1280 de font=10.5px→12px lines=4 nameW=84.3→95.3 overMax=0 nameOuter=23.2→17.5 nameInner=6.3→0.6 chipOuter=-17.1→-19.9 chipInner=-34→-36.8 contentH=189.4→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv13    1280 en font=10.5px→12px lines=4 nameW=84.3→95.3 overMax=0 nameOuter=23.2→17.5 nameInner=6.3→0.6 chipOuter=-15.1→-18 chipInner=-32→-34.9 contentH=189.4→196.5 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-adv13    1920 de font=10.5px→12px lines=4 nameW=93.3→105.5 overMax=0 nameOuter=25.6→19.3 nameInner=6.9→0.6 chipOuter=-18.9→-22 chipInner=-37.6→-40.8 contentH=209.6→217.4 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-adv13    1920 en font=10.5px→12px lines=4 nameW=93.3→105.5 overMax=0 nameOuter=25.6→19.3 nameInner=6.9→0.6 chipOuter=-16.7→-19.9 chipInner=-35.5→-38.6 contentH=209.6→217.4 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-nat       960 en font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-10.2→-12.3 chipInner=-27.1→-29.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-nat      1280 de font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-12.2→-14.3 chipInner=-29.1→-31.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-nat      1280 en font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-10.2→-12.3 chipInner=-27.1→-29.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54-nat      1920 de font=10.5px→12px lines=3 nameW=172.2→178.5 overMax=0→2.5 nameOuter=11→7.8 nameInner=-7.7→-10.9 chipOuter=-13.5→-15.8 chipInner=-32.2→-34.5 contentH=195.9→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54-nat      1920 en font=10.5px→12px lines=3 nameW=172.2→178.5 overMax=0→2.5 nameOuter=11→7.8 nameInner=-7.7→-10.9 chipOuter=-11.2→-13.6 chipInner=-30→-32.3 contentH=195.9→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54u-sz       960 en font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-10.2→-12.3 chipInner=-27.1→-29.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54u-sz      1280 de font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-12.2→-14.3 chipInner=-29.1→-31.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54u-sz      1280 en font=10.5px→12px lines=3 nameW=155.7→161.3 overMax=0 nameOuter=10→7.1 nameInner=-6.9→-9.8 chipOuter=-10.2→-12.3 chipInner=-27.1→-29.2 contentH=177.1→182.4 nameToChip=9.5→9.4 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p54u-sz      1920 de font=10.5px→12px lines=3 nameW=172.2→178.5 overMax=0→2.5 nameOuter=11→7.8 nameInner=-7.7→-10.9 chipOuter=-13.5→-15.8 chipInner=-32.2→-34.5 contentH=195.9→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p54u-sz      1920 en font=10.5px→12px lines=3 nameW=172.2→178.5 overMax=0→2.5 nameOuter=11→7.8 nameInner=-7.7→-10.9 chipOuter=-11.2→-13.6 chipInner=-30→-32.3 contentH=195.9→201.8 nameToChip=10.5→10.4 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55-adv12     960 en font=10.5px lines=3 nameW=162.2 overMax=0 nameOuter=7.3 nameInner=-9.6 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-adv12    1280 de font=10.5px lines=3 nameW=162.2 overMax=0 nameOuter=7.3 nameInner=-9.6 chipOuter=-12.2 chipInner=-29.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-adv12    1280 en font=10.5px lines=3 nameW=162.2 overMax=0 nameOuter=7.3 nameInner=-9.6 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-adv12    1920 de font=10.5px lines=3 nameW=179.4 overMax=3.4 nameOuter=8 nameInner=-10.7 chipOuter=-13.5 chipInner=-32.2 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55-adv12    1920 en font=10.5px lines=3 nameW=179.4 overMax=3.4 nameOuter=8 nameInner=-10.7 chipOuter=-11.2 chipInner=-30 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55-nat       960 en font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-nat      1280 de font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-12.2 chipInner=-29.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-nat      1280 en font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55-nat      1920 de font=10.5px lines=3 nameW=165.1 overMax=0 nameOuter=14 nameInner=-4.7 chipOuter=-13.5 chipInner=-32.2 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55-nat      1920 en font=10.5px lines=3 nameW=165.1 overMax=0 nameOuter=14 nameInner=-4.7 chipOuter=-11.2 chipInner=-30 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55u-sz       960 en font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55u-sz      1280 de font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-12.2 chipInner=-29.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55u-sz      1280 en font=10.5px lines=3 nameW=149.2 overMax=0 nameOuter=12.7 nameInner=-4.2 chipOuter=-10.2 chipInner=-27.1 contentH=177.1 nameToChip=9.5 core=[206.8, 206.8] COLL 0→0 CLIP 0→0
+   p55u-sz      1920 de font=10.5px lines=3 nameW=165.1 overMax=0 nameOuter=14 nameInner=-4.7 chipOuter=-13.5 chipInner=-32.2 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+   p55u-sz      1920 en font=10.5px lines=3 nameW=165.1 overMax=0 nameOuter=14 nameInner=-4.7 chipOuter=-11.2 chipInner=-30 contentH=195.9 nameToChip=10.5 core=[228.8, 228.8] COLL 0→0 CLIP 0→0
+centre: per-line air against the 174 px disc (inside the 1.5 px border); overDisc = beyond the disc box
+
+== centre: base → tip
+   c10-short     960 en font=11px→13px lines=1 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=25.4→17.9 kickerLineAir=23→22.7 nameBlock=[56.9, 70.9]→[55.5, 72.5] kickerBlock=[89.3, 115.2]→[90.7, 116.6] disc=[174, 174] nearestCard=17.4 COLL 1→1 CLIP 0→0
+   c10-short    1280 de font=11px→13px lines=1 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=25.4→17.9 kickerLineAir=19.9→19.6 nameBlock=[56.9, 70.9]→[55.5, 72.5] kickerBlock=[89.3, 115.2]→[90.7, 116.6] disc=[174, 174] nearestCard=16.7 COLL 3→3 CLIP 0→0
+   c10-short    1280 en font=11px→13px lines=1 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=25.4→17.9 kickerLineAir=23→22.7 nameBlock=[56.9, 70.9]→[55.5, 72.5] kickerBlock=[89.3, 115.2]→[90.7, 116.6] disc=[174, 174] nearestCard=16.7 COLL 3→3 CLIP 0→0
+   c10-short    1920 de font=11px→13px lines=1 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=25.4→17.9 kickerLineAir=19.9→19.6 nameBlock=[56.9, 70.9]→[55.5, 72.5] kickerBlock=[89.3, 115.2]→[90.7, 116.6] disc=[174, 174] nearestCard=24.3 COLL 3→3 CLIP 0→0
+   c10-short    1920 en font=11px→13px lines=1 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=25.4→17.9 kickerLineAir=23→22.7 nameBlock=[56.9, 70.9]→[55.5, 72.5] kickerBlock=[89.3, 115.2]→[90.7, 116.6] disc=[174, 174] nearestCard=24.3 COLL 3→3 CLIP 0→0
+   c30-word19    960 en font=11px→13px lines=3 maxLineW=152→174.8 inner=142 overDisc=0→0.4 nameLineAir=3.7→-7.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c30-word19   1280 de font=11px→13px lines=3 maxLineW=152→174.8 inner=142 overDisc=0→0.4 nameLineAir=3.7→-7.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c30-word19   1280 en font=11px→13px lines=3 maxLineW=152→174.8 inner=142 overDisc=0→0.4 nameLineAir=3.7→-7.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c30-word19   1920 de font=11px→13px lines=3 maxLineW=152→174.8 inner=142 overDisc=0→0.4 nameLineAir=3.7→-7.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c30-word19   1920 en font=11px→13px lines=3 maxLineW=152→174.8 inner=142 overDisc=0→0.4 nameLineAir=3.7→-7.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c31-sz        960 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c31-sz       1280 de font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c31-sz       1280 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c31-sz       1920 de font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c31-sz       1920 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c32-word18    960 en font=11px→13px lines=3 maxLineW=144→165.6 inner=142 overDisc=0 nameLineAir=7.4→-3.1 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c32-word18   1280 de font=11px→13px lines=3 maxLineW=144→165.6 inner=142 overDisc=0 nameLineAir=7.4→-3.1 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c32-word18   1280 en font=11px→13px lines=3 maxLineW=144→165.6 inner=142 overDisc=0 nameLineAir=7.4→-3.1 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c32-word18   1920 de font=11px→13px lines=3 maxLineW=144→165.6 inner=142 overDisc=0 nameLineAir=7.4→-3.1 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c32-word18   1920 en font=11px→13px lines=3 maxLineW=144→165.6 inner=142 overDisc=0 nameLineAir=7.4→-3.1 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-adv10     960 en font=11px→13px lines=3 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=16.4→7.7 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c34-adv10    1280 de font=11px→13px lines=3 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=16.4→7.7 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-adv10    1280 en font=11px→13px lines=3 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=16.4→7.7 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-adv10    1920 de font=11px→13px lines=3 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=16.4→7.7 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-adv10    1920 en font=11px→13px lines=3 maxLineW=80→92 inner=142 overDisc=0 nameLineAir=16.4→7.7 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-adv8      960 en font=11px→13px lines=3 maxLineW=136→119.6 inner=142 overDisc=0 nameLineAir=11.1→14.6 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c34-adv8     1280 de font=11px→13px lines=3 maxLineW=136→119.6 inner=142 overDisc=0 nameLineAir=11.1→14.6 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-adv8     1280 en font=11px→13px lines=3 maxLineW=136→119.6 inner=142 overDisc=0 nameLineAir=11.1→14.6 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-adv8     1920 de font=11px→13px lines=3 maxLineW=136→119.6 inner=142 overDisc=0 nameLineAir=11.1→14.6 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-adv8     1920 en font=11px→13px lines=3 maxLineW=136→119.6 inner=142 overDisc=0 nameLineAir=11.1→14.6 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-fixture   960 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c34-fixture  1280 de font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-fixture  1280 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-fixture  1920 de font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-fixture  1920 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-nat       960 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c34-nat      1280 de font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-nat      1280 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34-nat      1920 de font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34-nat      1920 en font=11px→13px lines=3 maxLineW=104→119.6 inner=142 overDisc=0 nameLineAir=24.9→17.8 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34u-sz       960 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=17.4 COLL 2→3 CLIP 0→0
+   c34u-sz      1280 de font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34u-sz      1280 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=16.7 COLL 5→6 CLIP 0→0
+   c34u-sz      1920 de font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=15→13.1 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c34u-sz      1920 en font=11px→13px lines=3 maxLineW=128→147.2 inner=142 overDisc=0 nameLineAir=14.8→5.4 kickerLineAir=17.8→15.9 nameBlock=[41.5, 86.3]→[37.3, 90.7] kickerBlock=[104.6, 130.6]→[108.8, 134.8] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35-adv9      960 en font=11px→12px lines=3 maxLineW=96→103.2 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c35-adv9     1280 de font=11px→12px lines=3 maxLineW=96→103.2 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35-adv9     1280 en font=11px→12px lines=3 maxLineW=96→103.2 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35-adv9     1920 de font=11px→12px lines=3 maxLineW=96→103.2 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35-adv9     1920 en font=11px→12px lines=3 maxLineW=96→103.2 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35-nat       960 en font=11px→12px lines=3 maxLineW=112→120.4 inner=142 overDisc=0 nameLineAir=24.9→21.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c35-nat      1280 de font=11px→12px lines=3 maxLineW=112→120.4 inner=142 overDisc=0 nameLineAir=24.9→21.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35-nat      1280 en font=11px→12px lines=3 maxLineW=112→120.4 inner=142 overDisc=0 nameLineAir=24.9→21.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35-nat      1920 de font=11px→12px lines=3 maxLineW=112→120.4 inner=142 overDisc=0 nameLineAir=24.9→21.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35-nat      1920 en font=11px→12px lines=3 maxLineW=112→120.4 inner=142 overDisc=0 nameLineAir=24.9→21.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35u-sz       960 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c35u-sz      1280 de font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35u-sz      1280 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c35u-sz      1920 de font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c35u-sz      1920 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38-adv11     960 en font=11px→12px lines=3 maxLineW=88→94.6 inner=142 overDisc=0 nameLineAir=13.3→8.7 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c38-adv11    1280 de font=11px→12px lines=3 maxLineW=88→94.6 inner=142 overDisc=0 nameLineAir=13.3→8.7 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38-adv11    1280 en font=11px→12px lines=3 maxLineW=88→94.6 inner=142 overDisc=0 nameLineAir=13.3→8.7 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38-adv11    1920 de font=11px→12px lines=3 maxLineW=88→94.6 inner=142 overDisc=0 nameLineAir=13.3→8.7 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38-adv11    1920 en font=11px→12px lines=3 maxLineW=88→94.6 inner=142 overDisc=0 nameLineAir=13.3→8.7 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38-adv9      960 en font=11px→12px lines=3 maxLineW=120→129 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c38-adv9     1280 de font=11px→12px lines=3 maxLineW=120→129 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38-adv9     1280 en font=11px→12px lines=3 maxLineW=120→129 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38-adv9     1920 de font=11px→12px lines=3 maxLineW=120→129 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38-adv9     1920 en font=11px→12px lines=3 maxLineW=120→129 inner=142 overDisc=0 nameLineAir=19.3→15.3 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38-nat       960 en font=11px→12px lines=3→4 maxLineW=136→120.4 inner=142 overDisc=0 nameLineAir=15.9→14.9 kickerLineAir=17.8→12.6 nameBlock=[41.5, 86.3]→[31, 97.4] kickerBlock=[104.6, 130.6]→[115.2, 141.1] disc=[174, 174] nearestCard=17.4 COLL 5→3 CLIP 0→0
+   c38-nat      1280 de font=11px→12px lines=3→4 maxLineW=136→120.4 inner=142 overDisc=0 nameLineAir=15.9→14.9 kickerLineAir=15→9.9 nameBlock=[41.5, 86.3]→[31, 97.4] kickerBlock=[104.6, 130.6]→[115.2, 141.1] disc=[174, 174] nearestCard=16.7 COLL 7→6 CLIP 0→0
+   c38-nat      1280 en font=11px→12px lines=3→4 maxLineW=136→120.4 inner=142 overDisc=0 nameLineAir=15.9→14.9 kickerLineAir=17.8→12.6 nameBlock=[41.5, 86.3]→[31, 97.4] kickerBlock=[104.6, 130.6]→[115.2, 141.1] disc=[174, 174] nearestCard=16.7 COLL 7→6 CLIP 0→0
+   c38-nat      1920 de font=11px→12px lines=3→4 maxLineW=136→120.4 inner=142 overDisc=0 nameLineAir=15.9→14.9 kickerLineAir=15→9.9 nameBlock=[41.5, 86.3]→[31, 97.4] kickerBlock=[104.6, 130.6]→[115.2, 141.1] disc=[174, 174] nearestCard=24.3 COLL 8→8 CLIP 0→0
+   c38-nat      1920 en font=11px→12px lines=3→4 maxLineW=136→120.4 inner=142 overDisc=0 nameLineAir=15.9→14.9 kickerLineAir=17.8→12.6 nameBlock=[41.5, 86.3]→[31, 97.4] kickerBlock=[104.6, 130.6]→[115.2, 141.1] disc=[174, 174] nearestCard=24.3 COLL 8→8 CLIP 0→0
+   c38u-sz       960 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c38u-sz      1280 de font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38u-sz      1280 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c38u-sz      1920 de font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=15→14 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c38u-sz      1920 en font=11px→12px lines=3 maxLineW=128→137.6 inner=142 overDisc=0 nameLineAir=14.8→10.1 kickerLineAir=17.8→16.9 nameBlock=[41.5, 86.3]→[39.4, 89] kickerBlock=[104.6, 130.6]→[106.8, 132.7] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c39-adv10     960 en font=11px lines=3 maxLineW=112 inner=142 overDisc=0 nameLineAir=16.4 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c39-adv10    1280 de font=11px lines=3 maxLineW=112 inner=142 overDisc=0 nameLineAir=16.4 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c39-adv10    1280 en font=11px lines=3 maxLineW=112 inner=142 overDisc=0 nameLineAir=16.4 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c39-adv10    1920 de font=11px lines=3 maxLineW=112 inner=142 overDisc=0 nameLineAir=16.4 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c39-adv10    1920 en font=11px lines=3 maxLineW=112 inner=142 overDisc=0 nameLineAir=16.4 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c39-nat       960 en font=11px lines=4 maxLineW=120 inner=142 overDisc=0 nameLineAir=18.9 kickerLineAir=14.1 nameBlock=[33.8, 94] kickerBlock=[112.3, 138.3] disc=[174, 174] nearestCard=17.4 COLL 5→5 CLIP 0→0
+   c39-nat      1280 de font=11px lines=4 maxLineW=120 inner=142 overDisc=0 nameLineAir=18.9 kickerLineAir=11.4 nameBlock=[33.8, 94] kickerBlock=[112.3, 138.3] disc=[174, 174] nearestCard=16.7 COLL 8→8 CLIP 0→0
+   c39-nat      1280 en font=11px lines=4 maxLineW=120 inner=142 overDisc=0 nameLineAir=18.9 kickerLineAir=14.1 nameBlock=[33.8, 94] kickerBlock=[112.3, 138.3] disc=[174, 174] nearestCard=16.7 COLL 8→8 CLIP 0→0
+   c39-nat      1920 de font=11px lines=4 maxLineW=120 inner=142 overDisc=0 nameLineAir=18.9 kickerLineAir=11.4 nameBlock=[33.8, 94] kickerBlock=[112.3, 138.3] disc=[174, 174] nearestCard=24.3 COLL 8→8 CLIP 0→0
+   c39-nat      1920 en font=11px lines=4 maxLineW=120 inner=142 overDisc=0 nameLineAir=18.9 kickerLineAir=14.1 nameBlock=[33.8, 94] kickerBlock=[112.3, 138.3] disc=[174, 174] nearestCard=24.3 COLL 8→8 CLIP 0→0
+   c39-word25    960 en font=11px lines=3 maxLineW=200 inner=142 overDisc=13 nameLineAir=-18.9 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 1→1
+   c39-word25   1280 de font=11px lines=3 maxLineW=200 inner=142 overDisc=13 nameLineAir=-18.9 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 1→1
+   c39-word25   1280 en font=11px lines=3 maxLineW=200 inner=142 overDisc=13 nameLineAir=-18.9 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 1→1
+   c39-word25   1920 de font=11px lines=3 maxLineW=200 inner=142 overDisc=13 nameLineAir=-18.9 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 1→1
+   c39-word25   1920 en font=11px lines=3 maxLineW=200 inner=142 overDisc=13 nameLineAir=-18.9 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 1→1
+   c39u-sz       960 en font=11px lines=3 maxLineW=128 inner=142 overDisc=0 nameLineAir=14.8 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=17.4 COLL 2→2 CLIP 0→0
+   c39u-sz      1280 de font=11px lines=3 maxLineW=128 inner=142 overDisc=0 nameLineAir=14.8 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c39u-sz      1280 en font=11px lines=3 maxLineW=128 inner=142 overDisc=0 nameLineAir=14.8 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=16.7 COLL 5→5 CLIP 0→0
+   c39u-sz      1920 de font=11px lines=3 maxLineW=128 inner=142 overDisc=0 nameLineAir=14.8 kickerLineAir=15 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+   c39u-sz      1920 en font=11px lines=3 maxLineW=128 inner=142 overDisc=0 nameLineAir=14.8 kickerLineAir=17.8 nameBlock=[41.5, 86.3] kickerBlock=[104.6, 130.6] disc=[174, 174] nearestCard=24.3 COLL 6→6 CLIP 0→0
+
+== sibs
+   sib-fixture     960 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 5→5 CLIP 0→0
+      React                                  font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Automated Testing                      font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+   sib-fixture    1280 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      React                                  font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture    1280 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      React                                  font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture    1920 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      React                                  font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture    1920 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      React                                  font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture-02  960 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 5→5 CLIP 0→0
+      TypeScript                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Automated Testing                      font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+   sib-fixture-02 1280 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      TypeScript                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture-02 1280 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      TypeScript                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture-02 1920 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      TypeScript                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-fixture-02 1920 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      TypeScript                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Node.js                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      PostgreSQL                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Architecture              font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Automated Testing                      font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-long        960 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 5→5 CLIP 0→0
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 4→4 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 6→6 h 98→104 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation and Real-Time font 9.5px→11px lines 6→7 h 98→118 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      Datenschutzkonforme Softwarearchitektu font 9.5px→11px lines 4→5 h 78→90 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Kubernetes                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off True→True op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 139→139 textOut 0→0 off False→False op 0.42
+   sib-long       1280 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 4→4 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation and Real-Time font 9.5px→11px lines 4→5 h 78→90 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Datenschutzkonforme Softwarearchitektu font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Kubernetes                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-long       1280 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 3→3 CLIP 0→0
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 4→4 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation and Real-Time font 9.5px→11px lines 4→5 h 78→90 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Datenschutzkonforme Softwarearchitektu font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Kubernetes                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off True→True op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-long       1920 de obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 4→4 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation and Real-Time font 9.5px→11px lines 4→5 h 78→90 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Datenschutzkonforme Softwarearchitektu font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Kubernetes                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+   sib-long       1920 en obs REQUIREMENT→REQUIREMENT n 8→8 overlaps 0→0 onNucleus 0→0 COLL 4→4 CLIP 0→0
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Event-Driven Distributed Systems Archi font 9.5px→11px lines 4→4 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation and Real-Time font 9.5px→11px lines 4→5 h 78→90 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Datenschutzkonforme Softwarearchitektu font 9.5px→11px lines 3→3 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Kubernetes                             font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Geospatial Visualisation               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      Web Platform Engineering               font 9.5px→11px lines 2→2 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+      English                                font 9.5px→11px lines 1→1 h 78→78 (min 78) w 184→184 textOut 0→0 off False→False op 0.42
+
+== visible collisions / clipped on tip, listed
+   COLL ('centre', 'c10-short', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL AG#1 116.2 8.2 (also base)
+   COLL ('centre', 'c10-short', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL AG#1 116.2 8.2 (also base)
+   COLL ('centre', 'c10-short', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 3.4 (also base)
+   COLL ('centre', 'c10-short', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 10.9 (also base)
+   COLL ('centre', 'c10-short', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL AG#1 116.2 8.2 (also base)
+   COLL ('centre', 'c10-short', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 3.4 (also base)
+   COLL ('centre', 'c10-short', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 10.9 (also base)
+   COLL ('centre', 'c10-short', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL AG#1 119.6 10.2 (also base)
+   COLL ('centre', 'c10-short', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 4.6 (also base)
+   COLL ('centre', 'c10-short', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c10-short', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL AG#1 119.6 10.2 (also base)
+   COLL ('centre', 'c10-short', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 4.6 (also base)
+   COLL ('centre', 'c10-short', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c30-word19', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 12.4 1.5 (also base)
+   COLL ('centre', 'c30-word19', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 16.4 (also base)
+   COLL ('centre', 'c30-word19', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 63.4 17 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 12.4 1.5 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 16.4 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 63.4 17 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 64.4 9.4 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 12.4 1.5 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 16.4 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 63.4 17 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 64.4 9.4 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c30-word19', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 15.6 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 2.4 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 70.2 16.2 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 64.4 9.6 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 15.6 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 18.4 2.4 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Versicherungsg × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 70.2 16.2 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 VERSICHERUNGSGRUPPE N 64.4 9.6 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c30-word19', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c31-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c31-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c31-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.2 17 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.2 17 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.8 9.4 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.2 17 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.8 9.4 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c31-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 15.6 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 40 2.4 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 40 16.2 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.8 9.6 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 15.6 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 40 2.4 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 40 16.2 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 36.8 9.6 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c31-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c32-word18', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 84.8 1.5 (also base)
+   COLL ('centre', 'c32-word18', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 92 16.4 (also base)
+   COLL ('centre', 'c32-word18', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.1 17 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 84.8 1.5 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 92 16.4 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.1 17 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.4 9.4 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 84.8 1.5 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 92 16.4 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.1 17 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.4 9.4 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c32-word18', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 92 15.6 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 20 2.4 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 20 16.2 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.4 9.6 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 92 15.6 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 20 2.4 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Teleco × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 20 16.2 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL TELECOMMUNICA 18.4 9.6 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c32-word18', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c34-adv10', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 1.5 (also base)
+   COLL ('centre', 'c34-adv10', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 16.4 (also base)
+   COLL ('centre', 'c34-adv10', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 81.4 17 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 1.5 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 16.4 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 81.4 17 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 82.8 9.4 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 1.5 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 16.4 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 81.4 17 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 82.8 9.4 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 100.2 15.6 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.2 2.4 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.2 16.2 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 82.8 9.6 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 100.2 15.6 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.2 2.4 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.2 16.2 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 82.8 9.6 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c34-adv8', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 94 1.5 (also base)
+   COLL ('centre', 'c34-adv8', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 72.4 16.4 (also base)
+   COLL ('centre', 'c34-adv8', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 73.6 17 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 94 1.5 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 72.4 16.4 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 73.6 17 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 116.2 9.4 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 94 1.5 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 72.4 16.4 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 73.6 17 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 116.2 9.4 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-adv8', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 80.2 15.6 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 101.2 2.4 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 73.6 16.2 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 119.6 9.6 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 80.2 15.6 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 101.2 2.4 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEER INGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 73.6 16.2 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEER INGPLATF ORM 119.6 9.6 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-adv8', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c34-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 84.8 1.5 (also base)
+   COLL ('centre', 'c34-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16.4 (also base)
+   COLL ('centre', 'c34-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 82.8 17 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 84.8 1.5 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16.4 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 82.8 17 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 116.2 9.4 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 84.8 1.5 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16.4 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 82.8 17 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 116.2 9.4 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 90.2 15.6 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 92 2.4 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 82.8 16.2 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 119.6 9.6 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 90.2 15.6 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 92 2.4 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 82.8 16.2 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 119.6 9.6 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c34-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 84.8 1.5 (also base)
+   COLL ('centre', 'c34-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16.4 (also base)
+   COLL ('centre', 'c34-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 82.8 17 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 84.8 1.5 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16.4 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 82.8 17 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 116.2 9.4 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 84.8 1.5 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16.4 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 82.8 17 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 116.2 9.4 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 90.2 15.6 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 92 2.4 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 82.8 16.2 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 119.6 9.6 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 90.2 15.6 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 92 2.4 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 82.8 16.2 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 119.6 9.6 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c34u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c34u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c34u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 54.4 17 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 54.4 17 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 55.2 9.4 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9.6 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 84.8 1.5 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 16.4 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 54.4 17 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 55.2 9.4 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 2.3 (also base)
+   COLL ('centre', 'c34u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9.6 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 15.6 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.1 2.4 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.1 16.2 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 55.2 9.6 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.1 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 92 15.6 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.1 2.4 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.1 16.2 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 55.2 9.6 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 5.3 (also base)
+   COLL ('centre', 'c34u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.1 (also base)
+   COLL ('centre', 'c35-adv9', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 7.7 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 7.7 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 90.2 13.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 3.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 15.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 7.9 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 90.2 13.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 3.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 15.5 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 7.9 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c35-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16 (also base)
+   COLL ('centre', 'c35-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 77.4 16 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 77.4 16 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 116.2 7.7 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 81.4 16 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 77.4 16 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 116.2 7.7 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 86 13.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 86 3.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 77.4 15.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 120.4 7.9 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 86 13.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 86 3.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 77.4 15.5 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS PLA 120.4 7.9 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c35u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c35u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 63.4 16 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 63.4 16 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.2 7.7 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 63.4 16 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.2 7.7 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c35u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 13.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 70.2 3.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 70.2 15.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.2 7.9 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 13.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 70.2 3.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 70.2 15.5 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 60.2 7.9 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c35u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c38-adv11', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 99.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 99.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 7.7 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 99.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 16 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 7.7 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38-adv11', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 110.2 13.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 110.2 3.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 15.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 7.9 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 110.2 13.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 110.2 3.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERING PL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 15.5 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERING PLATFORMA 94.6 7.9 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38-adv11', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c38-adv9', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 116.2 7.7 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 81.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 16 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 116.2 7.7 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38-adv9', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 90.2 13.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 3.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 15.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 128.6 7.9 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 90.2 13.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 103.2 3.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERI NGPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 77.4 15.5 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERI NGPLATFOR M 128.6 7.9 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38-adv9', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c38-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16 (also base)
+   COLL ('centre', 'c38-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 77.4 16 (also base)
+   COLL ('centre', 'c38-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 77.4 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 17.2 7.6 NEW
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.4 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.8 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 81.4 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 77.4 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 16 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 17.2 7.6 NEW
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.4 (also base)
+   COLL ('centre', 'c38-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.8 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 86 12.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 86 4.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 77.4 14.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 2.6 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 16 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 17.2 6.9 NEW
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 8.2 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 8 NEW
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 86 12.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 86 4.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 77.4 14.5 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 2.6 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 16 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 17.2 6.9 NEW
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 8.2 (also base)
+   COLL ('centre', 'c38-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 8 NEW
+   COLL ('centre', 'c38u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c38u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 90.6 16 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 90.6 16 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 7.7 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 11.7 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 16 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 90.6 16 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 7.7 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 4.3 (also base)
+   COLL ('centre', 'c38u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 11.7 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 13.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 3.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 100.2 15.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 7.9 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 9 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 13.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 3.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 100.2 15.5 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 86 7.9 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 7.3 (also base)
+   COLL ('centre', 'c38u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 9 (also base)
+   COLL ('centre', 'c39-adv10', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 14 (also base)
+   COLL ('centre', 'c39-adv10', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 80 14 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 14 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 80 14 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 5 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 10.8 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 90.6 14 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 80 14 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 5 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39-adv10', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 10.8 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 100.2 11.4 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 104 3.6 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 80 14 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 5.2 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 6.9 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 100.2 11.4 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 104 3.6 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ ENGINEERIN GPL × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 80 14 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 ENGINEERIN GPLATFORMA 112 5.2 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39-adv10', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 6.9 (also base)
+   COLL ('centre', 'c39-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 13.5 (also base)
+   COLL ('centre', 'c39-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 1.4 (also base)
+   COLL ('centre', 'c39-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 72 14 (also base)
+   COLL ('centre', 'c39-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 14 (also base)
+   COLL ('centre', 'c39-nat', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 1.2 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 13.5 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 1.4 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 72 14 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 14 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 1.2 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 4.2 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 7.3 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 10 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 13.5 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 1.4 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 72 14 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 18.1 14 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 1.2 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 4.2 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 7.3 (also base)
+   COLL ('centre', 'c39-nat', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 10 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 9.7 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 5.3 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 72 13.1 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 2 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 14 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 3.5 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 11.1 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 5.2 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 9.7 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 80 5.3 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 72 13.1 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 2 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 20 14 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL LOGISTICS SOF 16 3.5 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 11.1 (also base)
+   COLL ('centre', 'c39-nat', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 5.2 (also base)
+   COLL ('centre', 'c39-word25', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 80 14 (also base)
+   COLL ('centre', 'c39-word25', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 18.1 14 (also base)
+   CLIP ('centre', 'c39-word25', 960, 'en') {'key': 'syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGSGESELLSCHAFT AG#1', 'clipPx': 13, 'clipBy': 'syntx-cosmos-centre'} (also base)
+   COLL ('centre', 'c39-word25', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 80 14 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 18.1 14 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 16 5 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 10.8 (also base)
+   CLIP ('centre', 'c39-word25', 1280, 'de') {'key': 'syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGSGESELLSCHAFT AG#1', 'clipPx': 13, 'clipBy': 'syntx-cosmos-centre'} (also base)
+   COLL ('centre', 'c39-word25', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 80 14 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 18.1 14 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 16 5 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39-word25', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 10.8 (also base)
+   CLIP ('centre', 'c39-word25', 1280, 'en') {'key': 'syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGSGESELLSCHAFT AG#1', 'clipPx': 13, 'clipBy': 'syntx-cosmos-centre'} (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 80 11.4 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 20 3.6 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 20 14 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 16 5.2 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 6.9 (also base)
+   CLIP ('centre', 'c39-word25', 1920, 'de') {'key': 'syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGSGESELLSCHAFT AG#1', 'clipPx': 13, 'clipBy': 'syntx-cosmos-centre'} (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 80 11.4 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 20 3.6 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Versic × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 20 14 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGS 16 5.2 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39-word25', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 6.9 (also base)
+   CLIP ('centre', 'c39-word25', 1920, 'en') {'key': 'syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL VERSICHERUNGSGESELLSCHAFT AG#1', 'clipPx': 13, 'clipBy': 'syntx-cosmos-centre'} (also base)
+   COLL ('centre', 'c39u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 14 (also base)
+   COLL ('centre', 'c39u-sz', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 99.6 14 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 14 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 99.6 14 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 88 5 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 10.8 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 14 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 99.6 14 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 88 5 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 50.8 6.5 (also base)
+   COLL ('centre', 'c39u-sz', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 10.8 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 11.4 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 3.6 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 110.2 14 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 88 5.2 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANISATIONS-KOSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANISATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLLEN#1 70.4 6.9 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 11.4 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 80 3.6 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Straße × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 110.2 14 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|01 KESTREL STRASSENLOGIS 88 5.2 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · × syntx-cosmos-centre<syntx-cosmos-organization|ORGANIZATION COSMOS#1 56.2 9.5 (also base)
+   COLL ('centre', 'c39u-sz', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 × syntx-cosmos-centre<syntx-cosmos-organization|// 3 ROLES#1 64 6.9 (also base)
+   COLL ('sibs', 'sib-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|REQUIREMEN 11.1 4.6 (also base)
+   COLL ('sibs', 'sib-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 1.1 (also base)
+   COLL ('sibs', 'sib-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 12.7 (also base)
+   COLL ('sibs', 'sib-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  81.4 11.4 (also base)
+   COLL ('sibs', 'sib-fixture', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  117.8 1.5 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 7.7 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 81.4 12 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 7.7 (also base)
+   COLL ('sibs', 'sib-fixture', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  81.4 12 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 3.3 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 93.9 5.7 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 90.2 7.3 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 3.3 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  93.9 5.7 (also base)
+   COLL ('sibs', 'sib-fixture', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  90.2 7.3 (also base)
+   COLL ('sibs', 'sib-fixture-02', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|REQUIREMEN 11.1 4.6 (also base)
+   COLL ('sibs', 'sib-fixture-02', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 16.8 1.1 (also base)
+   COLL ('sibs', 'sib-fixture-02', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 42 12.7 (also base)
+   COLL ('sibs', 'sib-fixture-02', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|RETURN TO  81.4 11.4 (also base)
+   COLL ('sibs', 'sib-fixture-02', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|RETURN TO  117.8 1.5 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 42 7.7 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|ZURÜCK ZUM 81.4 12 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 42 7.7 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|RETURN TO  81.4 12 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 42 3.3 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|ZURÜCK ZUM 93.9 5.7 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|ZURÜCK ZUM 90.2 7.3 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|React#1 42 3.3 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|RETURN TO  93.9 5.7 (also base)
+   COLL ('sibs', 'sib-fixture-02', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_02<syntx-deep-focus|RETURN TO  90.2 7.3 (also base)
+   COLL ('sibs', 'sib-long', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|REQUIREMEN 11.1 4.6 (also base)
+   COLL ('sibs', 'sib-long', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 1.1 (also base)
+   COLL ('sibs', 'sib-long', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 12.7 (also base)
+   COLL ('sibs', 'sib-long', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  81.4 11.4 (also base)
+   COLL ('sibs', 'sib-long', 960, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  117.8 1.5 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 7.7 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 81.4 12 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 16.8 6.1 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 7.7 (also base)
+   COLL ('sibs', 'sib-long', 1280, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  81.4 12 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 3.3 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 93.9 5.7 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'de') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|ZURÜCK ZUM 90.2 7.3 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|01#1 × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 18.6 10.1 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|TypeScript 84 3.3 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  93.9 5.7 (also base)
+   COLL ('sibs', 'sib-long', 1920, 'en') syntx-body-org_kestrel<syntx-organization-org_kestrel|⬡ Kestrel Logist × syntx-requirement-req_kestrel_fullstack_01<syntx-deep-focus|RETURN TO  90.2 7.3 (also base)

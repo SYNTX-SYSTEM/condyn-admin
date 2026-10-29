@@ -1,0 +1,12 @@
+// PINK: mode radio group by keyboard on GELB's :41872 (GET only; non-GET aborted). Tab to the checked mode, then ArrowRight / ArrowLeft / Space / Enter.
+import { pathToFileURL } from "node:url";
+const [BASE] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); let blocked = 0;
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await p.waitForTimeout(5000);
+const st = () => p.evaluate(() => ({ h: history.length, url: location.search.length, active: document.activeElement?.dataset?.testid ?? document.activeElement?.tagName, role: document.activeElement?.getAttribute("role"), tabindex: [...document.querySelectorAll('[data-testid^="investigation-mode-"]')].map(e => `${e.dataset.testid}:${e.getAttribute("role")}:${e.getAttribute("tabindex")}:${e.getAttribute("aria-checked")}`), mode: new URL(location.href).searchParams.get("investigationMode") }));
+await p.getByTestId("investigation-mode-PERSON_X_JOB").focus(); const out = { start: await st() };
+for (const k of ["ArrowRight", "ArrowRight", "ArrowLeft", "ArrowLeft", "ArrowLeft", "Home", "End", "Home", "Enter"]) { await p.keyboard.press(k); await p.waitForTimeout(1200); out[`${k}-${Object.keys(out).length}`] = await st(); }
+console.log(JSON.stringify({ ...out, blocked }, null, 1)); await b.close();

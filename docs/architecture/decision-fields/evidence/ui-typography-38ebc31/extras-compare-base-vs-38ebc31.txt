@@ -1,0 +1,77 @@
+errors base [] after []
+
+== shell row: least air per state/lang over 1240–1960 (8 px steps + 1365/1366/1367); range 1280–1920 separately
+  capability-person    en  1280–1920 base min    6.9 @1280 (investigation-mode-selector|semantic-guide-drawer-toggle)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -5, base min -13.1)
+  capability-person    de  1280–1920 base min    6.9 @1280 (investigation-mode-selector|semantic-guide-drawer-toggle)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -5, base min -13.1)
+  job-empty            en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -9.6)
+  job-empty            de  1280–1920 base min    2.4 @1280 (how-this-works-btn|brand)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -37.6)
+  job-pool-scope-pxj   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -9.6)
+  job-pool-scope-pxj   de  1280–1920 base min    2.4 @1280 (how-this-works-btn|brand)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -37.6)
+  job-pool-scope-JOB   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -9.6)
+  job-pool-scope-JOB   de  1280–1920 base min    2.4 @1280 (how-this-works-btn|brand)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -37.6)
+  job-pool-PERSON      en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -9.6)
+  job-pool-PERSON      de  1280–1920 base min    2.4 @1280 (how-this-works-btn|brand)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -37.6)
+  job-long-scope-JOB   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -9.6)
+  job-long-scope-JOB   de  1280–1920 base min    2.4 @1280 (how-this-works-btn|brand)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -37.6)
+
+== investigation mode font size by width (after):  [(False, 9.5), (True, 10)]  base: [8.5]
+  statement vs field laws job-pool-scope-JOB en: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-scope-JOB de: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-PERSON en: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-PERSON de: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-long-scope-JOB en: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-long-scope-JOB de: vertical gap base min -2.4 (overlapping widths 94/94), after min 11.8 (overlapping 0/94)
+
+== job scope title (fs, clipped) base -> after per width; roles clipped
+  1280: title box width base [264] after [264]; clipped base 9 after 9; newly clipped []; no longer []
+  1366: title box width base [307] after [307]; clipped base 7 after 7; newly clipped []; no longer []
+  1440: title box width base [344] after [344]; clipped base 4 after 4; newly clipped []; no longer []
+  1600: title box width base [384, 390, 421, 424] after [416, 422, 424]; clipped base 4 after 4; newly clipped []; no longer []
+  1920: title box width base [384, 390, 421, 439, 460, 581, 583, 584] after [416, 422, 455, 475, 581, 583, 584]; clipped base 1 after 1; newly clipped []; no longer []
+  scope rows air <8 after: []
+
+== source dock START ANALYSIS
+  (1280, 720, 'person-empty'): base None | after None
+  (1280, 720, 'person-staged'): base bottom 723.2/720 onTop True (start-intake-analysis-btn) fs 13 | after bottom 722.2/720 onTop True (start-intake-analysis-btn) fs 14
+  (1280, 720, 'pxj-staged'): base bottom 723.2/720 onTop True (start-intake-analysis-btn) fs 13 | after bottom 730.1/720 onTop True (start-intake-analysis-btn) fs 14
+  (1366, 768, 'person-empty'): base None | after None
+  (1366, 768, 'person-staged'): base bottom 723.2/768 onTop False (P) fs 13 | after bottom 722.2/768 onTop False (P) fs 14
+  (1366, 768, 'pxj-staged'): base bottom 723.2/768 onTop False (P) fs 13 | after bottom 730.1/768 onTop False (P) fs 14
+  (1280, 800, 'person-empty'): base None | after None
+  (1280, 800, 'person-staged'): base bottom 723.2/800 onTop False (DIV) fs 13 | after bottom 722.2/800 onTop False (DIV) fs 14
+  (1280, 800, 'pxj-staged'): base bottom 723.2/800 onTop False (DIV) fs 13 | after bottom 730.1/800 onTop False (decision-graph-inspector-idle) fs 14
+  (1440, 900, 'person-empty'): base None | after None
+  (1440, 900, 'person-staged'): base bottom 723.2/900 onTop True (start-intake-analysis-btn) fs 13 | after bottom 722.2/900 onTop True (start-intake-analysis-btn) fs 14
+  (1440, 900, 'pxj-staged'): base bottom 723.2/900 onTop True (start-intake-analysis-btn) fs 13 | after bottom 730.1/900 onTop True (start-intake-analysis-btn) fs 14
+
+== low viewports, orientation surface + SELECT AS JOB
+  (960, 540) base : overflowY visible maxH none surface [28, 145, 297, 517] btn [45, 378, 175, 402] inView True → after scroll True onTop True pointer selects True
+  (960, 540) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 599) base : overflowY visible maxH none surface [28, 145, 368, 461] btn [45, 361, 175, 385] inView True → after scroll True onTop True pointer selects True
+  (1280, 599) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 600) base : overflowY visible maxH none surface [28, 145, 368, 461] btn [45, 361, 175, 385] inView True → after scroll True onTop True pointer selects True
+  (1280, 600) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 601) base : overflowY visible maxH none surface [28, 145, 368, 461] btn [45, 361, 175, 385] inView True → after scroll True onTop True pointer selects True
+  (1280, 601) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1920, 560) base : overflowY visible maxH none surface [28, 145, 368, 461] btn [45, 361, 175, 385] inView True → after scroll True onTop True pointer selects True
+  (1920, 560) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1536, 864) base : overflowY visible maxH none surface [28, 145, 368, 461] btn [45, 361, 175, 385] inView True → after scroll True onTop True pointer selects True
+  (1536, 864) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+
+== organization cosmos centre kicker: lines, outside centre
+   ('de', 'lines 2->2', 'outside False->False') 30
+   ('en', 'lines 2->2', 'outside False->False') 30
+  base fs/ls {(8, '1.6px')} after {(9, '1px')}
+  ext widths en/de default 1920 base vs after: [('org_kestrel', 'en', 121.6, 121.6), ('org_aurelion', 'en', 121.6, 121.6), ('org_pink_long', 'en', 121.6, 121.6), ('org_kestrel', 'de', 128, 128.0), ('org_aurelion', 'de', 128, 128.0), ('org_pink_long', 'de', 128, 128.0)]
+
+== inspector idle: base [[{'text': 'DECISION GRAPH INSPECTOR', 'fs': 12, 'color': 'rgb(34, 211, 238)'}, {'text': 'SIL v3.0', 'fs': 10, 'color': 'rgb(148, 163, 184)'}, {'text': 'Hover or select any node in the Planetarium to inspect its b', 'fs': 12, 'color': 'rgb(100, 116, 139)'}]] 
+   after [[{'text': 'DECISION GRAPH INSPECTOR', 'fs': 12, 'color': 'rgb(34, 211, 238)'}, {'text': 'SIL v3.0', 'fs': 11.5, 'color': 'rgb(148, 163, 184)'}, {'text': 'Hover or select any node in the Planetarium to inspect its b', 'fs': 12, 'color': 'rgb(100, 116, 139)'}]]
+
+== path ROLE: ellipsis/inside/lines/collisions
+   ('collide', False, False) 84
+   ('ellipsis', False, False) 48
+   ('ellipsis', True, False) 36
+   ('inside', True, True) 84
+   ('lines', 1, 1) 36
+   ('lines', 1, 2) 30
+   ('lines', 1, 3) 18

@@ -1,0 +1,130 @@
+PINK §3.73 · measurements (6823e93 on recovery/role-discovery; scratch probes on disposable condyn_test_* DBs via test:isolated; no Gemini).
+
+== render probe 2 (DETERMINISTIC): guard verdict per case (label names the characters; texts in scripts/pink-render2-probe.test.ts.txt)
+   REFUSED   control
+   REFUSED   operand Go
+   ADMITTED  Gopher and Go (operand Go)
+   REFUSED   U+034F
+   REFUSED   U+2061
+   REFUSED   U+2064
+   REFUSED   U+180E
+   REFUSED   U+FE0F
+   REFUSED   U+E0020 tag
+   REFUSED   U+202E RLO reversed
+   REFUSED   U+2067 RLI reversed
+   REFUSED   U+061C ALM
+   REFUSED   U+0336 combining stroke
+   REFUSED   markdown
+   REFUSED   entity
+   REFUSED   entity percent
+   REFUSED   ٪
+   REFUSED   ‰
+   REFUSED   ‱
+   REFUSED   ﹪
+   REFUSED   ⁄
+   REFUSED   ∕
+   REFUSED   ÷
+   ADMITTED  small capitals ɢᴏᴏᴅ ꜰɪᴛ
+   ADMITTED  script g ɡood fit
+   ADMITTED  Armenian o gօօd fit
+   ADMITTED  dotless i good fıt
+   REFUSED   Latin alpha / iota? goοd (Greek omicron)
+   REFUSED   Cherokee Ꮐ? (GOOD FIT upper Cyrillic О)
+   ADMITTED  one word GoodFit
+   ADMITTED  spaced letters g o o d f i t
+   ADMITTED  dotted g.o.o.d f.i.t
+   REFUSED   hyphen good-fit
+   REFUSED   underscore good_fit
+   REFUSED   NBSP good fit
+   REFUSED   em space
+   REFUSED   newline
+   ADMITTED  regional indicators 🇬🇴🇴🇩
+   REFUSED   circled ⓖⓞⓞⓓ
+   REFUSED   math bold 𝐠𝐨𝐨𝐝
+   REFUSED   fullwidth ｇｏｏｄ
+   REFUSED   superscript ᵍᵒᵒᵈ
+   ADMITTED  percent sign words 87 v.H.
+   REFUSED   Prozentpunkte
+   ADMITTED  umlauts NFC
+   ADMITTED  umlauts NFD (decomposed)
+   ADMITTED  C++ and C#
+   ADMITTED  Node.js / R&D / Q&A
+   ADMITTED  German quotes „…“
+   ADMITTED  typographic ’ – →
+   ADMITTED  tab
+   ADMITTED  parentheses / colon
+   ADMITTED  emoji ✓
+   ADMITTED  accented é ñ
+   ADMITTED  ellipsis …
+   ADMITTED  less-than ≥ ≤
+   REFUSED   arrow ->
+   REFUSED   ASCII <=
+   REFUSED   asterisk footnote
+   over-blocking real requirements  {"files": 5, "requirements": 586, "refusedNamed": 0, "refusedGermanSentence": 0, "rolesAffected": 0, "examples": [], "nameCharClasses": {}}
+   person proposals (counts only)   {"names": 10, "namesRefusedAsOwnOperand": 0, "quotes": 10, "quotesRefusedVerbatim": 1, "quotesWithCharClass": {}}  (the one quote is refused by the percent / ratio rule, no character class)
+
+== engine probe of §3.72 rerun (DETERMINISTIC): identical to 6c65d0c except the operand attack
+   claims   {'REFUSED': 31, 'ADMITTED': 1}
+   neutral  {'ADMITTED': 23}
+   extra    {'ADMITTED': 16, 'REFUSED': 5}
+   operandAttack {"shortOperands": 209, "bypasses": 0, "examples": []}   overblock {"requirements": 586, "refusedWithName": 0, "refusedNameOnly": 0, "digitInName": 13, "examples": [], "rolesAffected": 0}
+   structural, attempt, stand-in under real identity, C-1: equal to 6c65d0c
+
+== guard registration probe (MEASUREMENT; sequence as in scripts/pink-guard-probe.test.ts.txt)
+   registration                   "REGISTERED"
+   isTableOwner                   true
+   isSuperuser                    false
+   reserve                        "ok true"
+   triggersBefore                 ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   drop                           "ok \"dropped\""
+   reRegisterAfterDrop            "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterDropReRegister    ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   disable                        "ok \"disabled\""
+   reRegisterAfterDisable         "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterDisable           ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   memoAfterDisable               "REGISTERED"
+   triggersAfterMemo              ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   counterDecreaseAfterMemo       "ok 1"
+   triggersAfterReRegister        ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   counterDecreaseWhileDisabled   "refused: PostgresError: ERR_LEDGER_IMMUTABLE: counters never decrease"
+   deleteWhileDisabled            "refused: PostgresError: ERR_LEDGER_IMMUTABLE: delete refused"
+   replicaState                   ["career_relation_investigations.rel_inv_guard:R", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   reRegisterAfterReplica         "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterReplica           ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   reRegisterAfterAlways          "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterAlways            ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   replicaRole                    "refused: PostgresError: permission denied to set parameter \"session_replication_role\""
+   cacheDisable                   "ok \"disabled\""
+   cacheTriggersDisabled          ["career_proposal_requirement_relations_no_truncate:D", "career_proposal_requirement_relations_no_update_delete:D"]
+   reRegisterAfterCacheDisable    "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   cacheTriggersAfter             ["career_proposal_requirement_relations_no_update_delete:O", "career_proposal_requirement_relations_no_truncate:O"]
+   cacheDeleteAfter               "ok 0"
+   cacheTruncateAfter             "refused: PostgresError: ERR_RELATION_CACHE_IMMUTABLE: TRUNCATE on career_proposal_requirement_relations refused"
+   note: counterDecreaseAfterMemo sets reserved 1 → 1 (no decrease) and cacheDeleteAfter deletes 0 rows; neither is a bypass
+
+== static (6823e93)
+   tsc (tree without PINK scratch probes) errors 0
+   job-pool group test/career/job-pool  Test Files 26 passed (26) · Tests 282 passed | 4 skipped (286)
+   focused group (78 files of §3.71)     Test Files 78 passed (78) · Tests 699 passed | 4 skipped (703)
+   counter-proof: 6823e93's two changed test files on 6c65d0c code  Test Files 2 failed (2) · Tests 17 failed | 82 passed (99)
+      registration enables a DISABLED guard trigger again and the guard works afterwards (PINK O-LED-4)
+      a short operand (Go) is removed only as a whole word: it cannot hide a claim around it
+      refuses (not cleans) invisible or opaque characters: combining grapheme joiner
+      refuses (not cleans) invisible or opaque characters: mongolian vowel separator
+      refuses (not cleans) invisible or opaque characters: bidi override
+      refuses (not cleans) invisible or opaque characters: Zalgo
+      percent and fraction look-alikes: Eight tenths ٪ here
+      percent and fraction look-alikes: 7‰ of it
+      percent and fraction look-alikes: 3 ‱
+      percent and fraction look-alikes: 9⁄10
+      percent and fraction look-alikes: 9∕10
+      percent and fraction look-alikes: 9÷10
+      markup a renderer could interpret is refused: **g**ood fit
+      markup a renderer could interpret is refused: <b>good</b>
+      markup a renderer could interpret is refused: &#103;ood fit
+      markup a renderer could interpret is refused: &amp; more
+      markup a renderer could interpret is refused: `code`
+
+== scope (CODE_INSPECTION)
+   6c65d0c..6823e93: 1 commit, 4 files (relation-cache-repository.ts, semantic-relation-engine.ts and their two tests); nothing under app / components / lib/career/ui
+   registration memo: ensureRelationCacheRegistration() registers once per process (registration ??=); a trigger disabled after that is re-enabled only by the next registration (restart or a failed use)

@@ -1,0 +1,21 @@
+// PINK §10 V-11: the Tab order from ROLE_OPEN (Enter on the role) to SELECT AS JOB, element by element. GET only (non-GET aborted).
+// argv: <base> <W> <H> [real|standin] [repo root]  (standin: the DLL pool is uploaded first, outside the browser)
+import { pathToFileURL } from "node:url";
+const [BASE, W, H, KIND = "real", ROOT = ""] = process.argv.slice(2);
+if (KIND === "standin") { const { readFileSync } = await import("node:fs"); await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_S10" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") }); }
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: +W, height: +H } }); let blocked = 0;
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+const cur = () => p.evaluate(() => { const e = document.activeElement; const tid = e?.closest("[data-testid]")?.dataset.testid ?? null; return { tid, tag: e?.tagName.toLowerCase(), text: (e?.getAttribute("aria-label") || e?.innerText || "").replace(/\s+/g, " ").trim().slice(0, 48) }; });
+const out = {};
+for (const [name, url, enterOn] of [["from-ORG-Enter-on-ROLE", `${BASE}/career/demo?jobPoolUploadId=${DLL}&jobOrganizationId=org_kestrel`, "syntx-role-role_kestrel_fullstack"], ["role-view-document-load", `${BASE}/career/demo?jobPoolUploadId=${DLL}&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack`, null]]) {
+  await p.goto(url, { waitUntil: "domcontentloaded" }); await sleep(5000);
+  const seq = [];
+  if (enterOn) { for (let i = 1; i <= 120; i += 1) { await p.keyboard.press("Tab"); await sleep(60); const c = await cur(); if (c.tid === enterOn) break; } await p.keyboard.press("Enter"); await sleep(3000); seq.push({ i: 0, afterEnter: true, ...(await cur()) }); }
+  for (let i = 1; i <= 60; i += 1) { await p.keyboard.press("Tab"); await sleep(70); const c = await cur(); seq.push({ i, ...c }); if (c.tid === "syntx-job-scope-select") break; }
+  out[name] = { presses: seq.at(-1).tid === "syntx-job-scope-select" ? seq.at(-1).i : null, seq };
+}
+console.log(JSON.stringify({ W, H, blocked, ...out }, null, 1)); await b.close();

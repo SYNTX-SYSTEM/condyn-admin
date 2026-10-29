@@ -1,0 +1,62 @@
+PINK §3.76 · frontend/role-investigation-ui 9c40928 (worktree condyn-admin-role-investigation, base edae658; RI-CONTROL f74a6a3, RI-START 5559169,
+RI-URL 704cff6, 50dac39 dashboard hand-over fix, 9c40928 walk docs). STAND_IN only; no Gemini; nothing on :3017; no merge.
+Classes: STAND_IN (PINK production labs :41873 on 9c40928, three env variants + a stale and a budget lab; stand-in model log counted) · DETERMINISTIC
+(unit groups on disposable DBs) · CODE_INSPECTION. Response rewrites (cache failure, foreign provider, broken bodies) are marked as such.
+
+STATIC                 PASS   tsc 0; test/career/pxj-first-screen 46 files 276 passed; job-pool 27 files 288 passed 4 skipped; focused group of §3.71
+                              (T-07, F12 tests among them) 78 files 699 passed 4 skipped; diff to edae658 touches 0 files in app/api or
+                              lib/career/job-pool (GELB's inspection confirmed); the only POST to /investigations in the UI is semantic-investigation.ts,
+                              called from one onClick
+1 No POST on load etc. PASS   load, open, release: 0 POST; reload: 0 POST, 1 GET of the named investigation; Back and Forward: 0 POST; 11 URL-contract
+                              loads, close, hand-over: 0 POST; the Gemini stand-in log stays at 6 over every step; one START click = exactly 1 POST
+                              (two clicks in the same task: 1 POST, the button is disabled while it runs); the 500 mock: 1 POST, no retry
+2 confirmedCalls       PASS   the body carries the displayed number (picked 2 → "would need 2 calls for 192 open pairs" → POST confirmedCalls 2);
+                              nothing preselected, button disabled until a role is picked, no "all"; cap = startControl.maxRoles (3: the fourth
+                              and every further box disabled, "At most 3 roles per start"); picked roles with no open pair show "0 calls" and may be
+                              started (all CACHED, no call). Start missing and the reason apart: NOT_CONFIGURED "no check engine is configured",
+                              PROVIDER_NOT_AUTHORIZED "the configured provider is not authorised", cache unreadable / corrupt "while the relation
+                              cache cannot be read" (the plan line names unavailable / corrupt and the code); no pick boxes, 0 POST
+                              A real stale case (the same roles run through the API after the pick): the click is REFUSED with "the server now names
+                              0 calls instead of the 2 you confirmed", nothing started, no URL id; RE-READ PLAN = 1 GET, then 0 calls confirmed and a
+                              second explicit START stores all CACHED
+3 URL contract         PASS   roleInvestigationId: lowercase, short, duplicate (same or two ids), a value with a trailing newline → removed, no GET, no
+                              POST; exactly one valid id with PERSON analysis and released pools → read once by GET, NAV ≡ RELOAD (reload and Forward
+                              show the same stored investigation and tasks), Back returns to the state before the release (panel closed, no id);
+                              a valid-format unknown id → NOT_FOUND; PxJ analysis (mode PxJ or PERSON), no pools, no analysisId → nothing read, no
+                              panel; close and "Gezielt untersuchen" remove the id (hand-over also the analysis and pools). The chain page.tsx →
+                              CareerDemoHistory (spread) → Dashboard → Field → Panel is the reload result itself (a lost parameter would show no
+                              investigation after a reload; 50dac39 is effective)
+                              Not exercised live: a changed release (the lab has one pool; an empty release cannot be submitted) and an analysis
+                              change; covered by discovery-ri-url.test.tsx (green) — INCONCLUSIVE in the browser
+4 Honesty              FAIL   narrow, see F-RI-1. Otherwise PASS: the stand-in reads "Stand-in, no model"; no provider name in any state (the
+                              configured "gemini" is never shown); a stored investigation whose provider is "gemini", an evidenceClass that is missing
+                              or UNKNOWN, an extra field on the investigation or a task, another analysis' id, or no tasks = FAILED "No readable
+                              answer … whether anything ran is unknown"; a 500 on POST = FAILED, unknown whether it ran, no id in the URL; no
+                              relation state, explanation, percent, rank or recommendation anywhere (the word scan finds only the fixed header "not
+                              scored · no ranking"); the five D-RD-4 groups are identical before and after a run (0 / 5 / 0 / 4 / 0); tasks show
+                              status, pairs and the count of relations stored only, "The relations themselves are not shown here"
+F-RI-1                 FAIL   after a run the plan line says "Semantic check: not executed · 0 of 948 pairs in the relation cache · would need 9
+  (narrow)                    calls · stand-in check: completed" (also "partly completed"). "not executed" and "completed" contradict each other, and
+                              the numbers are those before the run (the cache then holds 192 / 204 / 120 relations). After a reload the numbers are
+                              fresh ("192 of 948 … would need 7 calls") but the sentence still says "not executed … completed". The status box
+                              below is right; the plan line is not. The O-START-5 aim — the stored state instead of "not started" — is met, but the
+                              line now says two things. Suggest: with a stored investigation drop "not executed" (e.g. "Relation cache: 192 of 948
+                              pairs · stand-in check: completed"), and re-read the plan after a completed POST
+O-RI-1 (obs.)         OBS    in-session the plan numbers stay at the pre-run value until RE-READ PLAN; reload shows them fresh. (Same cause as F-RI-1)
+O-RI-2 (obs.)         OBS    a valid roleInvestigationId without pools, without analysisId or with a PxJ analysis stays in the URL and is ignored (not
+                              removed); it is dropped only by a release, close, hand-over or analysis pick. Harmless; the URL then names an
+                              investigation the view does not show
+O-RI-3 (obs.)         OBS    a fresh release (no id in the URL) says "not started" although the cache already holds relations of earlier
+                              investigations of these pools (the UI names an investigation only by id; nothing lists them). True for the view, but
+                              it can read as if nothing was ever run
+O-RI-4 (obs.)         OBS    after a completed run the picks stay ticked and START stays enabled with the pre-run call count; a second click is
+                              refused by the server (CALLS_NOT_CONFIRMED) with the replan text — correct, but a second click is easy
+Budget (real)          PASS   day limit 1, three roles: SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED, status "partly completed", "Budget exhausted: the
+                              remaining roles were cancelled without a call", 120 relations stored, 1 call (ledger); a second start with the day
+                              spent: CACHED, BUDGET_EXHAUSTED, CANCELLED, no new relation, no call
+5 Regression           PASS   six-orbit scene probe at 1920 and 1280 identical to c670b74 (incl. the PERSON analysis with a pool in the URL); rd-ui
+                              probe at 1920: reload and Forward equal, Back closes the panel and restores the entry, hand-over to PERSON × JOB with
+                              0 non-GET, trace quotes = API; T-07 / F12 / first-screen groups green. Six viewports (1280×720, 1440×900, 1600×900,
+                              1920×1080, 200 % zoom at 1920 and at 1280): document width = viewport width, six shells, the picked / completed /
+                              reload states complete, the START button 182 × 26 px; screenshots inspected at 1920, 1280, zoom 200 % and the budget
+                              state, the others measured; no CV quote on any committed shot (trace closed)

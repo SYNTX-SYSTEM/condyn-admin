@@ -1,0 +1,36 @@
+// PINK scratch probe (never a live test): 2dba126 relation cache on a fresh verified disposable DB.
+import { beforeAll, expect, it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { canonicalJson } from "../../lib/career/job-pool/relation-cache";
+import { PostgresRelationCacheRepository, RELATION_CACHE_TABLE as T } from "../../lib/career/job-pool/relation-cache-repository";
+import { attempt, rec } from "./pink-rc-common";
+const o: Record<string, unknown> = {}; const repo = new PostgresRelationCacheRepository(db.$client); const sql = db.$client;
+beforeAll(async () => { o.tableBefore = (await sql`SELECT count(*)::int n FROM information_schema.tables WHERE table_name = ${T}`)[0].n; o.registration = await ensureJobPoolPersistenceRegistration(); });
+it("fresh", async () => {
+  const a = rec(); o.first = await repo.saveIfAbsent([a]);
+  o.sameResultOtherCreatedAtAndRaw = await repo.saveIfAbsent([{ ...a, createdAt: "2026-10-25T00:00:00.000Z", rawOutputSha256: "b".repeat(64) }]);
+  o.otherState = await repo.saveIfAbsent([{ ...a, state: "COVERS" }]);
+  o.otherExplanation = await repo.saveIfAbsent([{ ...a, relationExplanation: "other" }]);
+  o.storedAfter = (await repo.getByKeys([a.relationKey]))[0]?.state;
+  o.update = await attempt(sql.unsafe(`UPDATE ${T} SET created_at = created_at WHERE relation_key = '${a.relationKey}'`));
+  o.delete = await attempt(sql.unsafe(`DELETE FROM ${T} WHERE relation_key = '${a.relationKey}'`));
+  o.truncate = await attempt(sql.unsafe(`TRUNCATE ${T}`));
+  const ins = (key: string, cols: string[], json: unknown) => attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${key}', '${cols[0]}', '${cols[1]}', '${cols[2]}', '${cols[3]}', '${cols[4]}', '${JSON.stringify(json).replace(/'/g, "''")}', '${cols[5]}')`));
+  const b = rec("SQL"); const cols = [b.proposalContentHash, b.requirementContentHash, b.engineVersionHash, b.state, b.authorityState, b.createdAt];
+  o.insertJsonStateMismatch = await ins(b.relationKey, cols, { ...b, state: "EQUIVALENT" });
+  o.insertJsonAuthorityVerified = await ins(b.relationKey, [...cols.slice(0, 4), "NONE", cols[5]], { ...b, authorityState: "VERIFIED" });
+  o.insertBadKeyFormat = await ins("not-a-key", cols, { ...b, relationKey: "not-a-key" });
+  o.insertBadHashFormat = await ins(b.relationKey, ["XYZ", ...cols.slice(1)], { ...b, proposalContentHash: "XYZ" });
+  // DB-valid but semantically corrupt rows: (1) empty explanation, (2) key in valid format but not derived from its parts
+  const c = rec("Kubernetes"); o.insertEmptyExplanation = await ins(c.relationKey, [c.proposalContentHash, c.requirementContentHash, c.engineVersionHash, c.state, c.authorityState, c.createdAt], { ...c, relationExplanation: "" });
+  const d = rec("React"); const fake = "PRREL_" + "A".repeat(40); o.insertKeyNotDerived = await ins(fake, [d.proposalContentHash, d.requirementContentHash, d.engineVersionHash, d.state, d.authorityState, d.createdAt], { ...d, relationKey: fake });
+  o.readCorruptExplanation = await attempt(repo.getByKeys([c.relationKey]));
+  o.readKeyNotDerived = await attempt(repo.getByKeys([fake]));
+  o.readGoodTogetherWithCorrupt = await attempt(repo.getByKeys([a.relationKey, c.relationKey]));
+  o.readGoodAlone = await attempt(repo.getByKeys([a.relationKey]).then(r => r.length));
+  o.canonicalStoredEqualsInput = canonicalJson(a) === (await sql`SELECT record_json FROM ${sql(T)} WHERE relation_key = ${a.relationKey}`)[0].record_json;
+  o.disableTriggerAsOwner = await attempt(sql.unsafe(`ALTER TABLE ${T} DISABLE TRIGGER ${T}_no_update_delete`));
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1)); expect(o.registration).toBe("REGISTERED");
+});

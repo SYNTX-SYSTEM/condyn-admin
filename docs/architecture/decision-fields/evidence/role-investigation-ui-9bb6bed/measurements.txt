@@ -1,0 +1,141 @@
+PINK §3.77 · measurements (frontend/role-investigation-ui 9bb6bed on 9c40928; STAND_IN production labs :41873; every /api request, DB counts and the Gemini stand-in log recorded).
+
+== lab A 1920x1080 main flow
+   load: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": true, "mode": "PERSON"}, "entry": 1}
+   openRelease: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "startOffered": true, "startControlPlan": "PLANNED", "semantic": "Semantic check: not executed · 0 of 948 pairs in the relation cache · would need 9 calls · no investigation named in this view", "picked": "0", "calls": "0", "runDisabled": true, "nothingPreselected": true, "pickable": 5, "groups": {"ALL_REQUIREMENTS_NAME_RELATED": 0, "PARTIAL_NAME_RELATED": 5, "WEAK_LEXICAL_ONLY": 0, "NO_LEXICAL_RELATION": 4, "NO_REQUIREMENTS": 0}, "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": false}, "startControlApi": {"engineState": "READY", "maxRoles": 3}, "planCallsApi": 9}
+   pick: {"maxRoles": 3, "requested": 5, "picked": "3", "calls": "3", "selection": "Picked: 3 of at most 3 roles · would need 3 calls for 288 open pairs", "runConfirmed": "3", "displayedNumbers": ["3", "3", "3", "288"], "disabledAfterCap": 6, "checked": 3}
+   pick2: {"picked": "2", "calls": "2", "selection": "Picked: 2 of at most 3 roles · would need 2 calls for 192 open pairs", "runConfirmed": "2"}
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "postBody": {"confirmedCalls": 2, "roles": 2, "uploads": 1, "keys": ["clientRequestId", "confirmedCalls", "jobPoolUploadIds", "roles"]}, "displayedCalls": "2", "urlAfter": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "riValid": true, "inv": {"state": "STORED", "id": true, "status": "COMPLETED", "engine": "Stand-in, no model", "replayed": false, "budget": false, "tasks": ["SUCCEEDED", "SUCCEEDED"]}, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "notStartedShown": false, "db": {"before": {"geminiStandIn": 6, "relation_investigations": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0}, "after": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}, "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}, "groupsAfter": {"ALL_REQUIREMENTS_NAME_RELATED": 0, "PARTIAL_NAME_RELATED": 5, "WEAK_LEXICAL_ONLY": 0, "NO_LEXICAL_RELATION": 4, "NO_REQUIREMENTS": 0}, "groupsBefore": {"ALL_REQUIREMENTS_NAME_RELATED": 0, "PARTIAL_NAME_RELATED": 5, "WEAK_LEXICAL_ONLY": 0, "NO_LEXICAL_RELATION": 4, "NO_REQUIREMENTS": 0}, "invText": "Semantic check: completed\nStand-in, no model\nBackend Engineer – Ledger · Brightwater Payments B.V.\ncompleted · 96 pairs · 96 relations stored\nCloud Platform Engineer · Brightwater Payments B.V.\ncompleted · 96 pairs · 96 relations stored\nThe relations themselves are not shown here.\nRE-READ PLAN"}
+   startSettled: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "runDisabled": true, "pickedChecked": 0, "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "equal": true, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "replayed": false, "invState": "STORED"}
+   reloadSettled: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   backForward: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "historyLen": 3, "back": {"panel": false, "inv": null, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": true, "mode": "PERSON"}}, "forward": {"equal": true, "invState": "STORED", "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}}, "settled": {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2}, "forwardSemantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   urlContract:
+      valid id, pools, analysis → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": "STORED", "status": "COMPLETED", "panel": true, "startOffered": true}
+      lowercase id → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": true, "startOffered": true}
+      short id → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": true, "startOffered": true}
+      duplicate same id → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": true, "startOffered": true}
+      duplicate two ids → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": true, "startOffered": true}
+      valid format, unknown id → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": "NOT_FOUND", "status": null, "panel": true, "startOffered": true}
+      id, no pools → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 0, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": false, "startOffered": false}
+      id with injected suffix → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "url": {"ri": [], "riCount": 0, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "status": null, "panel": true, "startOffered": true}
+      id, pools, no analysisId → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": false, "mode": "PERSON"}, "invState": null, "panel": false}
+      PxJ analysis + id + pools → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON_X_JOB"}, "invState": null, "panel": false, "entry": 0}
+      PERSON mode, PxJ analysisId + id → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "invState": null, "panel": false}
+   cleared:
+      close → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": true, "mode": "PERSON"}, "panel": 0}
+      releaseEmpty → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}, "invShown": 1}
+      investigate → {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "clicked": false, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": false, "mode": "PERSON_X_JOB"}, "mode": "PERSON_X_JOB", "panel": 0}
+   stale: {"apiPreRun": 201, "shownBefore": "0", "POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "text": "Semantic check: completed\nStand-in, no model\nBackend Engineer – Ledger · Brightwater Payments B.V.\nfrom the relation cache, no call · 96 pairs · 0 relations stored\nCloud Platform Engineer · Brightwater Payments B.V.\nfrom the relation cache, no call · 96 pairs · 0 relations stored\nThe relations themselves are not shown here.\nRE-READ PLAN"}, "replanButton": 1, "replanLine": 0, "afterReread": {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "calls": "0", "picked": "0", "inv": "STORED"}}
+   mocks:
+      provider gemini → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      evidenceClass missing → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      evidenceClass UNKNOWN → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      extra field on investigation → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      task with an explanation → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      analysisId of another analysis → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+      no tasks → {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 1, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.", "forbidden": ["scored", "ranking"], "providerNameShown": false}
+   postMocks:
+      POST 500 (unknown whether it ran) → {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 0, "inv": "FAILED", "text": "No readable answer from the server. Whether anything ran is unknown.\nCode: ERR_INVESTIGATION_FAILED", "urlRi": 0}
+   pageErrors [] apiTotals {'POST': 3, 'nonGetOther': 0}
+
+== cache unreadable (rewritten read answer)
+   CACHE_UNAVAILABLE: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": false, "unavailable": {"engine": "READY", "text": "Start not available while the relation cache cannot be read."}, "semantic": "Semantic check: not executed · relation cache unavailable (ERR_RELATION_CACHE_REGISTRATION_FAILED) · calls unknown · no investigation named in this view", "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": false}}
+   CACHE_CORRUPT: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": false, "unavailable": {"engine": "READY", "text": "Start not available while the relation cache cannot be read."}, "semantic": "Semantic check: not executed · relation cache corrupt (ERR_RELATION_CACHE_RECORD_CORRUPT) · calls unknown · no investigation named in this view", "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": false}}
+   pageErrors [] apiTotals {'POST': 0, 'nonGetOther': 0}
+
+== viewport 1280x720@1
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 1280, "innerW": 1280, "panel": {"left": 872, "right": 1256, "top": 132, "bottom": 704}, "btn": {"w": 182, "h": 26}, "innerH": 720}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== viewport 1440x900@1
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 1440, "innerW": 1440, "panel": {"left": 1016, "right": 1416, "top": 132, "bottom": 884}, "btn": {"w": 182, "h": 26}, "innerH": 900}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== viewport 1600x900@1
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 1600, "innerW": 1600, "panel": {"left": 1176, "right": 1576, "top": 132, "bottom": 884}, "btn": {"w": 182, "h": 26}, "innerH": 900}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== viewport 1920x1080@1
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 1920, "innerW": 1920, "panel": {"left": 1496, "right": 1896, "top": 193, "bottom": 1045}, "btn": {"w": 182, "h": 26}, "innerH": 1080}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== viewport 640x360@2
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 640, "innerW": 640, "panel": {"left": 16, "right": 624, "top": -1473, "bottom": -73}, "btn": {"w": 182, "h": 26}, "innerH": 360}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== viewport 960x540@2
+   pickable: {"total": 9, "done": 2}
+   selection: "Picked: 2 of at most 3 roles · would need 0 calls for 0 open pairs"
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1}
+   completed: {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"], "engine": "Stand-in, no model"}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "state": "STORED", "status": "COMPLETED", "equal": true}
+   layout: {"docScrollW": 960, "innerW": 960, "panel": {"left": 16, "right": 944, "top": -1133, "bottom": 216}, "btn": {"w": 182, "h": 26}, "innerH": 540}
+   shells: 6
+   honesty: {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}
+   pageErrors [] apiTotals {'POST': 1, 'nonGetOther': 0}
+
+== lab none
+   config: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": false, "unavailable": {"engine": "NOT_CONFIGURED", "text": "Start not available: no check engine is configured on this server."}, "plan": "ENGINE_NOT_SPECIFIED", "semantic": "Semantic check: not executed · would need 9 calls for 948 pairs · no investigation named in this view", "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": false}, "pickBoxes": 0, "runButton": null, "startControlApi": {"engineState": "NOT_CONFIGURED", "maxRoles": null}}
+   pageErrors [] apiTotals {'POST': 0, 'nonGetOther': 0}
+
+== lab gem
+   config: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": false, "unavailable": {"engine": "PROVIDER_NOT_AUTHORIZED", "text": "Start not available: the configured provider is not authorised."}, "plan": "ENGINE_NOT_SPECIFIED", "semantic": "Semantic check: not executed · would need 9 calls for 948 pairs · no investigation named in this view", "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": false}, "pickBoxes": 0, "runButton": null, "startControlApi": {"engineState": "PROVIDER_NOT_AUTHORIZED", "maxRoles": null}}
+   pageErrors [] apiTotals {'POST': 0, 'nonGetOther': 0}
+
+== stale (real)
+   stale: {"picked": {"total": 9, "done": 2}, "shownBefore": "2", "apiPreRun": 201, "POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 0, "inv": {"state": "REFUSED", "text": "Not started: the server now names 0 calls instead of the 2 you confirmed. Re-read the plan and confirm again.\nCode: ERR_INVESTIGATION_CALLS_NOT_CONFIRMED\nPlan as read: 0 of 948 pairs in the relation cache · would need 9 calls\nRE-READ PLAN"}, "urlRi": 0, "replanButton": 1, "replanLine": 1, "dbAfter": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 204}, "afterReread": {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "semantic": "Semantic check: not executed · 204 of 948 pairs in the relation cache · would need 7 calls · no investigation named in this view", "calls": "0", "picked": "2", "runConfirmed": "0", "inv": "REFUSED"}, "secondStart": {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"]}, "urlRi": 1}}
+   pageErrors [] apiTotals {'POST': 2, 'nonGetOther': 0}
+
+== budget (day limit 1)
+   picked: {"total": 9, "done": 3, "selection": "Picked: 3 of at most 3 roles · would need 3 calls for 324 open pairs", "runConfirmed": "3"}
+   run1: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "status": "PARTIAL", "tasks": ["SUCCEEDED", "BUDGET_EXHAUSTED", "CANCELLED"], "budget": true, "engine": "Stand-in, no model"}, "text": "Semantic check: partly completed\nStand-in, no model\nBudget exhausted: the remaining roles were cancelled without a call.\nPrincipal Software Architect – Clinical Platform · Aurelion Health Systems AG\ncompleted · 120 pairs · 120 relations stored\nSecurity Engineer – Clinical Systems · Aurelion Health Systems AG\nbudget exhausted · 96 pairs · 0 relations stored · Code: ERR_BUDGET_EXHAUSTED\nEngineering Lead – Routing Platform · Kestrel Logistics Software GmbH\ncancelled, no call · 108 pairs · 0 relations stored\nThe relations themselves are not shown here.\nRE-READ PLAN", "semantic": "Relation cache: 120 of 948 pairs · stand-in check: partly completed", "urlRi": 1, "db": {"before": {"geminiStandIn": 6, "relation_investigations": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0}, "after": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 120}}, "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}}
+   run1Settled: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "semantic": "Relation cache: 120 of 948 pairs · stand-in check: partly completed", "picked": "0", "runDisabled": true, "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 120}}
+   run1Reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "semantic": "Relation cache: 120 of 948 pairs · stand-in check: partly completed", "inv": {"state": "STORED", "status": "PARTIAL", "tasks": ["SUCCEEDED", "BUDGET_EXHAUSTED", "CANCELLED"]}, "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 120}}
+   run2: {"picked": {"total": 9, "done": 2}, "selection": "Picked: 2 of at most 3 roles · would need 2 calls for 204 open pairs", "POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "status": "FAILED", "tasks": ["BUDGET_EXHAUSTED", "CANCELLED"], "budget": true}, "db": {"before": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 120}, "after": {"geminiStandIn": 6, "relation_investigations": 2, "relation_call_ledger": 2, "proposal_requirement_relations": 120}}, "honesty": {"forbiddenWords": ["scored", "ranking"], "mentionsStandIn": true}}
+   pageErrors [] apiTotals {'POST': 2, 'nonGetOther': 0}
+
+== rd-ui 1920: 'Semantic check: not executed · 192 of 948 pairs in the relation cache · would need 7 calls · no investigation named in this view'; reload/forward equal True/True; handover PERSON_X_JOB non-GET 0; blocked 0
+== orbits 1920 and 1280: scene JSON identical to c670b74
+
+== static (9bb6bed)
+   tsc errors 0
+   pxj-first-screen Test Files 47 passed (47) · Tests 279 passed (279)
+   job-pool Test Files 27 passed (27) · Tests 288 passed | 4 skipped (292)
+   focused (T-07, F12) Test Files 78 passed (78) · Tests 699 passed | 4 skipped (703)
+   diff 9c40928..9bb6bed: 8 files (3 app components, 5 tests), 0 files in app/api or lib/career/job-pool

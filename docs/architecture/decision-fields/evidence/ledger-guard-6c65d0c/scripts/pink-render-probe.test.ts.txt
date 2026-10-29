@@ -1,0 +1,31 @@
+// PINK scratch probe (never a live test): texts the 6c65d0c guard checks vs. what a browser would render from them.
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { containsClaim } from "../../lib/career/job-pool/semantic-relation-engine";
+const cases: Array<[string, string, string]> = [
+  ["control", "A good fit.", "A good fit."],
+  ["U+034F combining grapheme joiner (invisible)", "A go͏od fit.", "A good fit."],
+  ["U+2061 function application (invisible)", "A go⁡od fit.", "A good fit."],
+  ["U+2062 invisible times", "A go⁢od fit.", "A good fit."],
+  ["U+2063 invisible separator", "A go⁣od fit.", "A good fit."],
+  ["U+2064 invisible plus", "A go⁤od fit.", "A good fit."],
+  ["U+180E Mongolian vowel separator", "A go᠎od fit.", "A good fit."],
+  ["U+FE0F variation selector", "A go️od fit.", "A good fit."],
+  ["U+E0020 tag space", "A go\u{E0020}od fit.", "A good fit."],
+  ["U+202E right-to-left override (reversed)", "‮.tif doog A‬", "A good fit. (rendered right to left)"],
+  ["U+2067 RTL isolate (reversed)", "⁧.tif doog A⁩", "A good fit. (rendered right to left)"],
+  ["U+0336 combining stroke", "A g̶ood fit.", "A g̶ood fit."],
+  ["markdown bold letter", "A **g**ood fit.", "A good fit. (if rendered as Markdown)"],
+  ["HTML entity", "A &#103;ood fit.", "A good fit. (only if rendered as HTML)"],
+  ["percent via entity", "Match 87&#37; of the role.", "Match 87% (only if rendered as HTML)"],
+  ["percent U+2052 commercial minus? no: U+066A Arabic percent", "Match 87٪ of the role.", "Match 87٪"],
+  ["per mille", "Match 870‰.", "Match 870‰"],
+  ["fraction slash", "Rated 9⁄10.", "Rated 9⁄10"],
+  ["division slash", "Rated 9∕10.", "Rated 9∕10"],
+  ["operand Go (alias of a real requirement)", "A good fit.", "A good fit. (operand Go removed before the check)"],
+];
+it("render vs guard", () => {
+  const o: Record<string, { guard: string; renders: string }> = {};
+  for (const [name, text, renders] of cases) o[name] = { guard: containsClaim(text, name.startsWith("operand Go") ? ["Go"] : []) ? "REFUSED" : "ADMITTED", renders };
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+});

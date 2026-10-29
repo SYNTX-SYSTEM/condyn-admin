@@ -1,0 +1,31 @@
+# PINK stage 1b: persisted bodies of :41862 (49e2bc6, live run of 2026-10-22, read with GET only) through GRÜN's pure decodeAnalysisResult / projectPxjFirstScreen (50776fc) and the existing boundary/B2 decoders. Quote text is not printed (sha256 prefixes only); the role title is hashed.
+# GET bodies: result 200, /investigation 200, B2 200 (PERSON: 409 ERR_JOB_COMPARISON_NOT_SCOPED); between the first read and this one only recommendations.generatedAt changed.
+decode PXJ ok | decode PERSON ok
+decode PXJ body under foreign id RESULT_ANALYSIS_ID_MISMATCH | 404 body RESULT_NOT_SUCCESS
+boundary PXJ PERSON_X_JOB | boundary PERSON PERSON | B2 decoded true
+PXJ/PXJ/own role state AVAILABLE
+ binding {"analysisId":"ANL_1792628993472_10","jobPoolUploadId":"JPOOL_B94850C439974E27496FE3B1A9A076B5","poolRoleId":"role_kestrel_fullstack","discoveryRunId":"RUN_6BB62BDC23F64FB4EA01E827","convergenceRunId":"CONV_A30D955F50347CB808FBE8FF","investigationScopeHash":"8016b7c10667d4720a01b2f2b24aff709b6bf77414385e376b113faf350870e7"} role 90f19b05524a 31 relation NOT_EVALUATED VERIFIED_CAPABILITY_SNAPSHOT_ABSENT
+ counts {"requirements":9,"covered":8,"notCovered":1} proposals 8
+ pool order true 01 02 03 04 05 06 07 08 09
+   01 COVERED EXACT - PCAP_AAFB8C7F8820052B592BDE11 inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=3b13fe356afe
+   02 COVERED EXACT - PCAP_CD636CDD76F3EB4CB25D97D6 inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=0891b6093f1e
+   03 COVERED EXACT - PCAP_FFD5CA78438C60DEC0A1C6BB inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=3b13fe356afe
+   04 COVERED EXACT - PCAP_6B66C4A822CBE888BF11452D inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=051f680524c4
+   05 COVERED EXACT - PCAP_A760B8EBDBE4843296B6A18C inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=8599ac0e4b74
+   06 COVERED EXACT - PCAP_6B8E12A0AE2A4A29AA45C784 inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=bc5388f5abbc
+   07 NOT_COVERED null - no-proposal quotes 
+   08 COVERED EXACT - PCAP_91055A69A115375C99797880 inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=e156ec9e9794
+   09 COVERED EXACT - PCAP_4F218651C9962531C79269DF inProj=true quotes DOC_001:inProj=true:resolved=true:title=cv.synthetic.pdf:verified=true:sha=1a84f54a59b5
+ quotes 8 verified 8 docs ["DOC_001"]
+ field checks {"M-07 role":true,"M-08 binding":true,"M-09 requirements":true,"M-10 coverage":true,"M-11 quotes":true,"M-12 relation":true,"M-13 counts":true,"M-14 covers":true}
+ M-06 proposals = projection ids in order true
+ M-05/M-06 demo state: sources [[null,"cv.synthetic.pdf",""]] capabilities 8 ids match true legacy 0 0 0 0
+PXJ analysis, other role selected ROLE_MISMATCH
+PXJ analysis, no job selected ROLE_MISMATCH
+PXJ analysis under PERSON MODE_MISMATCH
+PERSON analysis under PXJ MODE_MISMATCH
+PERSON analysis under PERSON PERSON_RESULT
+PXJ B2 paired with PERSON result+boundary (cross-session) MODE_MISMATCH
+PXJ result with PERSON boundary BOUNDARY_FAILED
+PERSON result under PXJ id RESULT_LOADING
+404 result RESULT_NOT_FOUND

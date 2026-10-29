@@ -1,0 +1,16 @@
+PINK §10 · regression on PINK's STAND-IN production labs (41dfa25), the probes of §3.58 … §3.61 unchanged; base = their 421e382 runs.
+
+pink-nav (chain, NAV ≡ RELOAD incl. document boundary, inverse cases): DONE {"pass":88,"of":90,"failed":["C15-ROLE_SWITCH","C18-CLEAR-JOB"],"errors":0,"inspectorReads":0}
+  steps whose verdict differs from 421e382: none
+  C15-ROLE_SWITCH: FAIL on both (probe errors recorded in §3.60: C15 reads analysisOnView, C18 clicks the clear button outside the role level)
+  C18-CLEAR-JOB: FAIL on both (probe errors recorded in §3.60: C15 reads analysisOnView, C18 clicks the clear button outside the role level)
+  non-GET: ['POST /api/career/analyze'] inspector reads: 0 pageErrors: 0
+  I24 back during SUBMITTING 421e382: POSTs 1, analyses +1, back entry {'equal': True, 'mode': 'PERSON', 'jobParam': False, 'analyzing': False}, later on back entry {'analyzing': False, 'jobParam': False, 'binding': False} (binding compares with the old analysis; the new job's naming is measured in pink-s10 S1–S6)
+  I24 back during SUBMITTING 41dfa25: POSTs 1, analyses +1, back entry {'equal': True, 'mode': 'PERSON', 'jobParam': False, 'analyzing': False}, later on back entry {'analyzing': False, 'jobParam': False, 'binding': False} (binding compares with the old analysis; the new job's naming is measured in pink-s10 S1–S6)
+pink-rf-sweep (X-01 … X-24): 54/54 pass, pageErrors 0
+pink-g1-walk 1920: 20 steps, state/mode/job/counts/quotes differ from 421e382 in: none; T2 focus coupling: after 25 Tab presses the focused row differs (Tab order, V-11); pageErrors 0; non-GET ['POST /api/career/analyze']
+pink-g1-walk 1280: 20 steps, state/mode/job/counts/quotes differ from 421e382 in: none; T2 focus coupling: after 25 Tab presses the focused row differs (Tab order, V-11); pageErrors 0; non-GET ['POST /api/career/analyze']
+pink-x22 (Back / Forward around the first screen, bfcache): identical to 421e382:
+  leave-settled {"left":["PERSON_X_JOB","AVAILABLE","VALID"],"f1":["PERSON_X_JOB","AVAILABLE","VALID",false],"f20":["PERSON_X_JOB","AVAILABLE","VALID"],"req":6,"reload":["PERSON_X_JOB","AVAILABLE","VALID"]}
+  leave-1.5s-after-PERSON {"left":["PERSON","MODE_MISMATCH","VALID"],"f1":["PERSON","MODE_MISMATCH","VALID",false],"f20":["PERSON","MODE_MISMATCH","VALID"],"req":5,"reload":["PERSON","MODE_MISMATCH","VALID"]}
+  leave-8s-after-PERSON {"left":["PERSON","MODE_MISMATCH","VALID"],"f1":["PERSON","MODE_MISMATCH","VALID",false],"f20":["PERSON","MODE_MISMATCH","VALID"],"req":5,"reload":["PERSON","MODE_MISMATCH","VALID"]}

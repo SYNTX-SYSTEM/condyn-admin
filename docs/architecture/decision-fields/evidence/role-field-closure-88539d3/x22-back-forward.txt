@@ -1,0 +1,12 @@
+
+## x22fx (gemini STAND_IN, pageErrors 0)
+leave-settled              left: mode=PERSON_X_JOB first=COVERAGE_LOADING job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=None/None/None job=CHECKING/CHECKING/CHECKING persisted=[False] | API requests after Forward: 0 | reload: first=AVAILABLE job=VALID
+leave-1.5s-after-PERSON    left: mode=PERSON first=MODE_MISMATCH job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=MODE_MISMATCH/MODE_MISMATCH/MODE_MISMATCH job=VALID/VALID/VALID persisted=[False] | API requests after Forward: 5 | reload: first=MODE_MISMATCH job=VALID
+leave-8s-after-PERSON      left: mode=PERSON first=MODE_MISMATCH job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=RESULT_LOADING/RESULT_LOADING/RESULT_LOADING job=CHECKING/CHECKING/CHECKING persisted=[False] | API requests after Forward: 0 | reload: first=MODE_MISMATCH job=VALID
+
+## x22base (gemini STAND_IN, pageErrors 0)
+leave-settled              left: mode=PERSON_X_JOB first=None job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=None/None/None job=CHECKING/CHECKING/CHECKING persisted=[False] | API requests after Forward: 0 | reload: first=None job=VALID
+leave-1.5s-after-PERSON    left: mode=PERSON first=None job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=None/None/None job=VALID/VALID/VALID persisted=[False] | API requests after Forward: 4 | reload: first=None job=VALID
+leave-8s-after-PERSON      left: mode=PERSON first=None job=VALID | back: ?investigationMode=PERSON | forward 1s/5s/20s: first=None/None/None job=CHECKING/CHECKING/CHECKING persisted=[False] | API requests after Forward: 0 | reload: first=None job=VALID
+
+# Production build (VIDEO_LAB_PROD=1) on 88539d3: next build fails at type check, 'app/api/admin/proxy/[...path]/route.ts does not match the required types of a Next.js Route' (pre-existing); X-22 could not be checked on a production server.

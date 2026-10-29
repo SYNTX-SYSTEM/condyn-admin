@@ -1,0 +1,37 @@
+PINK §3.65 · independent check of GELB's stage 1 POOL_ROLE_DISCOVERY_V1 (96651af) and the relation cache (ccc0cc1) on
+backend/pool-role-discovery (base b77c851, not integrated). Owner "OWNER_DECISION_ROLE_DISCOVERY" (D-RD-1 B, 2 B, 3 A conditional, 4 A,
+5 B) as rendered in CONDYN_CAPABILITY_TO_JOBPOOL_DISCOVERY_2026-10-24.md §8/§9 (ea3c845) and GELB's request; the owner's own text is not
+in the repository. Lab :41878 GET only, PINK uploaded nothing. No Gemini. Classes: PERSISTED_REAL_RESULT · DETERMINISTIC · MEASUREMENT ·
+CODE_INSPECTION.
+
+1 Contract            PASS      only the named uploads (single / several / permuted identical; "ALL" → 404, no param → 400, duplicates,
+                                empty, whitespace, 11 → 400); PERSON operand unchanged (ids, names, scope, evidence = analysis projection);
+                                PxJ → 409; authority scored / ranking / decision false, relationBasis LEXICAL_NAME_COVERAGE; every role and
+                                requirement semantic NOT_EXECUTED; plan ENGINE_NOT_SPECIFIED; no semantic vocabulary in the response
+2 §3.63 findings      PASS      old PARTIAL 39 = PARTIAL_NAME_RELATED 10 + WEAK_LEXICAL_ONLY 29; key (upload, role, requirement) unique
+                                507/507, basis and proposal equal to §3.63 for 507/507; quoteNamesRequirement false exactly for the three
+                                rows, null exactly for NONE. Residual (rule unchanged, not requested): TypeScript NAME_COMPOSITE vs Node.js
+                                WEAK in the same proposal (§3.63 3b)
+3 Inverse via route   PASS      52/52: proposal in the response, quote among its evidence, quote verbatim in the pdftotext text
+4 Read only           PASS      no write path in the route (saveIfAbsent has no caller outside tests; the cache is read only with an
+                                engine, engine null); pools / analyses counts unchanged; no model client; refusals 400 / 404 / 409 without
+                                partial result; no-store. Note: the guarded idempotent DDL registration may run on a process's first GET
+                                (pre-existing job-pool pattern, disposable DB only)
+5 Cache: keys         PASS      independent of ids, evidence order and alias order; any content change (definition, quote, level,
+                                necessity, model) gives a new key. Exact content: case or a trailing space also give a new key (a miss,
+                                not a wrong hit)
+5 Cache: plan         PASS      5 070 pairs (507 × 10), 77 calls (roles with ≥ 1 requirement), 470 distinct requirement contents, 4 700
+                                distinct keys — recomputed with PINK's own canonical JSON + sha256
+5 Cache: DDL          PASS      only via ensureJobPoolPersistenceRegistration (verified disposable DB); gate test unchanged and green
+5 Cache: DB checks    PASS      state outside the 5 values, NULL state and authority ≠ NONE refused by the database
+5 Cache: immutability FAIL      (D-RC-1) immutability exists in code only: on the database UPDATE and DELETE of a row succeed; record_json
+                                is not tied to the checked columns (a row with columns COVERS / NONE and JSON EQUIVALENT / VERIFIED is
+                                accepted; no key format check); getByKeys returns record_json without assertCachedRelation (a tampered
+                                row came back as {"tampered":true}). The authority the reader actually returns is therefore not DB-checked
+5 Cache: conditions   OPEN      C-1 the requirement key has no role / organisation context (role title ignored) — the stage-3 engine
+                                must not see role context either, or the key must include it; C-2 re-storing an evaluated pair with
+                                another createdAt or raw output hash throws ERR_RELATION_CACHE_CONFLICT (two concurrent evaluations of one
+                                pair abort) — first-writer-wins needs a defined behaviour before stage 3
+6 Regression          PASS      app/api: only the new route; matches PxJ identical to the §3.63 capture, PERSON still refused; job-
+                                comparison PxJ 200 / PERSON 409; pool list / view 200; focused group (GRÜN's list) 67 files 547 passed
+                                4 skipped, tsc 0; discovery tests 13, cache tests 16 + 4 = 20 (GELB names 17)

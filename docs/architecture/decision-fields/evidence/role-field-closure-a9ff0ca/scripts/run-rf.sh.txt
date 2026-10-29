@@ -1,0 +1,18 @@
+#!/bin/bash
+# PINK role-field sweep: one fresh STAND-IN lab from <commit> in PINK's worktree (own PID, port 41873, disposable DB), sweep, stop.
+S=<pink-scratch>; P=<local>
+C=$1; L=$2
+cd $P && git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD) ($L)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=<local>
+OUT=$S/out-$L; mkdir -p $OUT; LAB=$S/lab-$L; rm -rf "${LAB:?}"; mkdir -p $LAB
+VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+for k in $(seq 1 400); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+if grep -qE "VIDEO LAB READY" $LAB/lab.log; then
+  grep -oE "gemini=[A-Z]+" $LAB/lab.log | head -1
+  timeout 5400 node $S/pink-rf-sweep.mjs $LAB/state.json $P $OUT $S/PINK_RF_POOL.json $S/PINK_RF_POOL_ARCHIVED.json 1920 1080 > $OUT/sweep.log 2>&1; echo "sweep exit $?"; tail -1 $OUT/sweep.log | cut -c1-600
+else echo "lab failed"; grep -E "Error|failed" $LAB/lab.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -5; fi
+bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; wait
+git status --short | head -5; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo "RF-END $L"

@@ -1,0 +1,59 @@
+PINK §3.69 · independent validation of GELB's recovery branch recovery/role-discovery 08ae201 (base 175c481) for the owner mandate
+"DLL FULL SYSTEM RECOVERY". Codex claims not taken over unseen. Classes: CODE_INSPECTION · PERSISTED_REAL_RESULT (:41878, GET only, 0
+blocked) · STAND_IN (PINK production labs 08ae201 / b77c851, loopback stand-in, call log counted) · MEASUREMENT. No Gemini call by PINK.
+
+1 Reverts               PASS   (CODE) 887da98 and d821bb6 reverted as pure inverses; eff2480, d4616c7, 993397e, a139392 reverted except
+                               field-component hunks 175c481 had already removed and the Codex docs (kept, SUPERSEDED banner). At
+                               46e4a0b application.ts, http.ts, the role-discovery route, relation-cache.ts, useJobPool.ts = ccc0cc1
+                               byte for byte; lib/career/ui/role-discovery.ts and discovery-read.test.ts = 9112682. On 08ae201: no
+                               discovery=PERSON, activeDiscoveryPoolIds, Gemini relation provider, rankSemanticRoles, semanticRanking,
+                               RoleDiscoveryCapabilityMap or automatic matches in app / lib / test / scripts; every file changed since
+                               9112682 equals 94e6028 (GELB backend) or 175c481, except the two SUPERSEDED banners and GELB's route test
+                               (lazy cache table counted as ABSENT). Field component vs 9112682: comment / indentation only.
+                               Observation O-REC-1: RD-URL state (discoveryPools, releaseDiscoveryPools) is unused in the field —
+                               the parameter is parsed and, if invalid, removed; nothing reads or renders it (dead code until stage 2)
+2 Six orbits / PxJ      PASS   (REAL + STAND_IN) PERSON: shells 01–06, 8 rays, coupling, VIEW MATCHES on hover over 03, a real click on 04
+                               opens orbital-cosmos-view-04 with role nodes (URL unchanged); PxJ: shells 01–02 only, no coupling, B2
+                               AVAILABLE 9 rows; PxJ with a PERSON analysis MODE_MISMATCH; JOB gate JOB_MODE. Stand-in 08ae201 vs
+                               b77c851: all 6 scenes identical at 1920 and 1280; PERSON DOM inventory 16 / 16 scenes identical
+                               (data-rotation is a time-dependent orbit angle); g1 walk 2 × 20 steps unchanged vs 421e382; nav 88/90
+                               (the same two probe errors); s10 17 PASS / S3, S4 observation / S6 owner class — as §3.64
+3 Four reset test files FAIL   (MEASUREMENT) f12-pulse-alignment, sil-empty-orbit-visual-attention, sil-global-language-wiring, dock-ssr:
+  (narrow)                     both versions run on 08ae201 code. The 9 tests that fail in the 175c481 version are exactly the RD-5
+                               inverses (no 03–06 under PERSON) — correctly gone. RD-5's component tests have field-level equivalents
+                               in the reset version (render, asymmetric translation, breathing incl. RUNNING negative, only-empty,
+                               German orbit names) — EXCEPT one: "each Stage 03 … 06 component labels its empty projection in English
+                               and German" (4 checks: the German empty-field label, the German empty-state title, the German orbit
+                               name and no English name under DE). They pass on 08ae201 and no test of 08ae201 covers the German
+                               empty projection of 03–06 any more (grep: empty-copy-foreground / emptyFieldLabel only in f12, without
+                               DE). Coverage drops by these 4 checks; keeping that it.each block from 175c481 restores it.
+                               career-demo-ui and first-screen-ssr in their 175c481 version hold every pre-RD-5 assertion (the PERSON
+                               six-orbit test renamed and extended by rays and inspector) — GELB's statement holds
+4 No Gemini on GET      PASS   (CODE) the SDK (@google/genai) is instantiated only in scripts/run-career-worker.ts (works POST-created
+                               jobs) and live scripts; no app/ file constructs a provider (the 18 routes reach the provider modules only
+                               through the capability-core barrel export). (STAND_IN) GET sweep over 15 read routes on 08ae201 incl.
+                               role-discovery (200, plan ENGINE_NOT_SPECIFIED, executable false), PxJ operand 409, matches PERSON 409
+                               also with ?discovery=PERSON, structure, gemini-result: stand-in model calls 6 → 6 (two labs)
+  Decoupling (GELB)     PASS   (MEASUREMENT) dirty cache table (ccc0cc1 DDL + a VERIFIED row): job pool list 200, role discovery answers
+                               normally (404 for an unknown analysis), plan with an engine CACHE_UNAVAILABLE / executable false /
+                               counts null; after DELETE the cache is AVAILABLE and the plan PLANNED without restart
+  Suites                PASS   the three files on 08ae201 in PINK's worktree with real node_modules: 3 / 3, 71 / 71, no panic, 0 outbound;
+                               focused group (GRÜN's list) 70 files 566 passed 4 skipped; tsc 0
+5 Doc §2 (a)–(d)        PASS   (CODE / process metadata, read only) with two corrections and one INCONCLUSIVE:
+  (with corrections)           (a) _sfe/condyn-admin/{gelb,gruen,pink}/repo clones on ee06ff6 (2026-08-31, no job-pool, three-modes or
+                               first-screen code); gelb / pink 0 commits; gruen 50 commits (all dated 2026-10-25, not 10-24/25), 57 files
+                               +2152, own POST /api/career/role-discovery and lib/career/matching/{role-discovery*, gemini-runtime,
+                               job-assignment, authorized-job-pool-adapter, person-profile …}; push URL DISABLED, 0 of 50 commits on
+                               origin. CORRECTION: it does not build on the demo-pool matching engine (no matchCareerAnalysisAgainstPool)
+                               but on embeddings / semantic search and ranks by similarityScore — the embedding similarity D-RD-2 D
+                               excludes as proof; the classification "parallel, stale base, not integrable" holds.
+                               (b) main checkout on capability-mapping 59076c0 = two docs commits on ee06ff6. CORRECTION: the four
+                               untracked files RUNNING / currentOperation / exact / rejected are empty and dated 2026-08-31 — they
+                               predate the Codex work and are not among "what Codex changed".
+                               (c) frontend/role-discovery-map local only (no origin branch), 13 commits 2026-10-26; d821bb6 every ACTIVE
+                               pool sorted and cut at 10, d4616c7 Gemini evaluation + cache write + ranking inside GET when
+                               GEMINI_API_KEY is set, eff2480 ?discovery=PERSON bypass — confirmed in code.
+                               (d) :3017 = next-server from condyn-admin-role-discovery on 175c481 (5 uncommitted RD-5 T-07 files),
+                               runner up --with-worker since 2026-10-26 20:26; GET: 0 analyses, 0 job pools; 175c481's route still
+                               holds the Gemini-on-GET path and the bypass. INCONCLUSIVE: GEMINI_API_KEY / model and the database name —
+                               PINK does not read process environments (rule)

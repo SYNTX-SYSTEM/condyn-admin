@@ -1,0 +1,27 @@
+// PINK recovery lab setup (STAND-IN lab only): DLL pool upload, one PERSON and one PxJ analysis through the interface (stand-in model).
+// Then a GET sweep over every read route with valid ids; the stand-in's call log must not grow during the sweep. argv: <state.json> <repo> <out json>
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const LOG = STATE.replace(/state\.json$/, "standin.jsonl"); const calls = () => { try { return readFileSync(LOG, "utf8").split("\n").filter(Boolean).length; } catch { return 0; } };
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms)); const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack";
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_REC" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1920, height: 1080 } })).newPage();
+await p.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const ids = async () => ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId);
+const make = async url => { await p.goto(url, { waitUntil: "domcontentloaded" }); await sleep(5000); const before = new Set(await ids());
+  await p.getByTestId("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await p.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await p.getByTestId("start-intake-analysis-btn").click();
+  for (let i = 0; i < 300; i += 1) { await sleep(1000); const n = (await ids()).find(id => !before.has(id)); if (n) { await sleep(5000); return n; } } return null; };
+const out = {};
+out.person = await make(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`);
+out.pxj = await make(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`);
+await b.close();
+const before = calls(); const sweep = {};
+for (const path of ["/api/career/analyses", `/api/career/analyses/${out.person}`, `/api/career/analyses/${out.person}/investigation`, `/api/career/analyses/${out.person}/gemini-result`, `/api/career/analyses/${out.person}/role-discovery?jobPoolUploadId=${DLL}`, `/api/career/analyses/${out.pxj}`, `/api/career/analyses/${out.pxj}/job-comparison`, `/api/career/analyses/${out.pxj}/gemini-result`, `/api/career/analyses/${out.pxj}/role-discovery?jobPoolUploadId=${DLL}`, "/api/career/job-pools", `/api/career/job-pools/${DLL}`, `/api/career/job-pools/${DLL}/matches?analysisId=${out.pxj}`, `/api/career/job-pools/${DLL}/matches?analysisId=${out.person}`, `/api/career/job-pools/${DLL}/matches?analysisId=${out.person}&discovery=PERSON`, `/api/career/job-pools/${DLL}/roles/${ROLE}/structure`]) {
+  const r = await fetch(`${BASE}${path}`); const j = await r.json().catch(() => ({})); sweep[path.replace(/ANL_\d+_\d+/g, a => a === out.person ? "PERSON" : "PXJ")] = `${r.status} ${j.error?.code ?? j.issues?.[0]?.code ?? (j.discovery ? `plan ${j.discovery.semanticPlan?.state} executable ${j.discovery.semanticPlan?.executable}` : "")}`;
+}
+for (let i = 0; i < 3; i += 1) for (const path of [`/api/career/analyses/${out.person}/role-discovery?jobPoolUploadId=${DLL}`]) await fetch(`${BASE}${path}`);
+out.standinCallsBeforeSweep = before; out.standinCallsAfterSweep = calls(); out.sweep = sweep;
+writeFileSync(OUT, JSON.stringify(out, null, 1)); console.log("DONE", JSON.stringify(out));

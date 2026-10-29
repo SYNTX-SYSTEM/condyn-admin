@@ -1,0 +1,314 @@
+frames base 80 after 79 matched 77; only base ['18-job-structure-1366x768.m.json', '19-job-no-gemini-1366x768.m.json', '20-person-at-role-not-scoped-1366x768.m.json'] only after ['18-ERROR-V-11-1366x768.m.json', '19-person-at-role-not-scoped-1366x768.m.json']
+texts {'texts-base': 6914, 'texts-after': 6914, 'matched': 6890, 'frames-shifted': 18}
+size steps {'smaller': 2173, 'map': 3085, 'kept': 1595, 'larger': 37}
+min font size after 7.5
+DECREASED 0 []
+new clipped (non-moving) 0
+clipped no more 23
+   11-role-person-no-comparison-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   11-role-person-no-comparison-1366x768.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   11-role-person-no-comparison-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   11-role-person-no-comparison-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   12-job-scope-selected-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   12-job-scope-selected-1366x768.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   12-job-scope-selected-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   12-job-scope-selected-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   15-pxj-role-comparison-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   15-pxj-role-comparison-1366x768.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   15-pxj-role-comparison-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   15-pxj-role-comparison-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   16-b2-coverage-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   16-b2-coverage-1366x768.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   16-b2-coverage-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   16-b2-coverage-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   17-pxj-gemini-scope-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   17-pxj-gemini-scope-1366x768.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   17-pxj-gemini-scope-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   17-pxj-gemini-scope-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   20-person-at-role-not-scoped-1280x720.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   20-person-at-role-not-scoped-1440x900.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+   20-person-at-role-not-scoped-1920x1080.m.json syntx-path-ROLE<syntx-path|Senior Full-Stack Engineer – Shipment Tracking#1
+new visible collisions 12
+   03-person-analysis-done-1280x720.m.json orbital-physics-02<focused-stage-bubble-02|⬡ CAPABILITY FIELD#1 how-this-works-btn<semantic-career-intelligence-field|? HOW THIS WORKS#1
+   04-capability-cosmos-1280x720.m.json orbital-physics-02<focused-stage-bubble-02|Semantic capability core#1 capability-cosmos-center<capability-cosmos-view|02 CAPABILITY FIELD#1
+   04-capability-cosmos-1280x720.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   04-capability-cosmos-1366x768.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   04-capability-cosmos-1440x900.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   04-capability-cosmos-1920x1080.m.json orbital-physics-02<focused-stage-bubble-02|Semantic capability core#1 capability-cosmos-center<capability-cosmos-view|02 CAPABILITY FIELD#1
+   04-capability-cosmos-1920x1080.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   05-capability-evidence-1280x720.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   05-capability-evidence-1366x768.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   05-capability-evidence-1440x900.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|PROPOSED // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1
+   19-job-no-gemini-1280x720.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   19-job-no-gemini-1440x900.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+visible collisions gone 12
+   05-capability-evidence-1280x720.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|RETURN TO CAPABILITY COSMOS#1
+   08-pool-uploaded-1366x768.m.json open-system-codex-btn<semantic-career-intelligence-field|📖 SYSTEM CODEX [DE|EN]#1 job-pool-upload<syntx-field|UPLOADER ACTOR ID (SELF-DECLARED, NOT AUTHENTICATED)#1
+   09-pool-field-1366x768.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   09-pool-field-1920x1080.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   10-organization-kestrel-1366x768.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   10-organization-kestrel-1920x1080.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   11-role-person-no-comparison-1366x768.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   11-role-person-no-comparison-1920x1080.m.json syntx-investigation-statement<syntx-stage|PERSON investigates the person without a job scope: the pools stay readable, no #1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   12-job-scope-selected-1366x768.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · Hamburg#1 syntx-role-role_kestrel_fullstack<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   12-job-scope-selected-1440x900.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · Hamburg#1 syntx-role-role_kestrel_fullstack<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   18-job-structure-1920x1080.m.json syntx-investigation-statement<syntx-stage|JOB investigates the selected job itself: open it and read its structure (no per#1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+   19-job-no-gemini-1920x1080.m.json syntx-investigation-statement<syntx-stage|JOB investigates the selected job itself: open it and read its structure (no per#1 job-pool-non-claims<syntx-field|PRESENTED != EVALUATED · UPLOADED != SELECTED · RANKED != RECOMMENDED · MISSING #1
+tracked single-line caps whose size changed: 920 runs; width change after-base per carrier (min..max px):
+   +31.5..+31.5  n=4  syntx-gemini-processing | PARSER · VERIFICATION · CONVER
+   +29.7..+29.7  n=4  syntx-coverage-authority | CAPABILITY_PROPOSAL_NAME_COVER
+   +26.1..+26.1  n=3  syntx-job-structure-responsibility | responsibility · NOT DECLARED
+   +25.2..+25.2  n=3  syntx-structure-req-req_kestrel_frontend_architect_09 | matching eligibility unknown
+   +23.4..+23.4  n=16  job-pool-list | PERSISTED JOB POOL UPLOADS
+   +22.5..+22.5  n=3  syntx-structure-req-req_kestrel_frontend_architect_06 | not eligible for matching
+   +22.5..+22.5  n=3  syntx-structure-req-req_kestrel_frontend_architect_10 | not eligible for matching
+   +22.5..+22.5  n=3  syntx-structure-req-req_kestrel_frontend_architect_08 | not eligible for matching
+   +22.5..+22.5  n=3  syntx-structure-req-req_kestrel_frontend_architect_03 | not eligible for matching
+   +22.5..+22.5  n=3  syntx-structure-req-req_kestrel_frontend_architect_02 | not eligible for matching
+   +21.6..+21.6  n=4  syntx-coverage | REQUIREMENTS OF THE ROLE
+   +19.8..+19.8  n=4  job-pool-upload-result | UPLOAD PERSISTED (NEW)
+   +19.8..+19.8  n=4  syntx-gemini-scope | role_kestrel_fullstack
+   +18.0..+18.0  n=4  syntx-coverage-proposals | CAPABILITY PROPOSALS
+   +17.5..+17.5  n=12  syntx-gemini-view-PROCESSING | PARSER · VERIFICATION · CONVER
+   +17.1..+17.1  n=4  syntx-gemini-scope | INVESTIGATION SCOPE
+   +17.1..+17.1  n=3  syntx-job-structure-findings | STRUCTURAL FINDINGS
+   +17.1..+17.1  n=3  syntx-job-structure-authority | interpretation NONE
+   +11.7..+16.2  n=24  source-dock | STAGED SOURCES ( 1 )
+   +16.2..+16.2  n=7  syntx-coverage | B2 · SELECTED ROLE COVERAGE
+   +16.2..+16.2  n=3  syntx-structure-req-req_kestrel_frontend_architect_09 | level not resolved
+   +15.3..+15.3  n=4  syntx-gemini-original | ORIGINAL RESPONSE
+   +15.3..+15.3  n=4  syntx-gemini-scope | mode PERSON_X_JOB
+   +14.4..+14.4  n=4  job-pool-upload | CHOOSE JSON FILE
+   +14.4..+14.4  n=4  syntx-coverage-req-req_kestrel_fullstack_05 | WEAK · HEURISTIC
+   +13.5..+13.5  n=4  syntx-gemini-original | parser = text ✓
+   +13.5..+13.5  n=12  syntx-gemini-output | INSPECTOR TOKEN
+   +13.5..+13.5  n=4  syntx-job-scope-select | ◎ SELECT AS JOB
+   +12.6..+12.6  n=25  syntx-job-scope-select | ✓ SELECTED JOB
+   +12.6..+12.6  n=4  syntx-coverage-authority | authority NONE
+   +12.6..+12.6  n=3  syntx-job-structure-authority | authority NONE
+   +11.7..+11.7  n=4  syntx-coverage-authority | NOT_EVALUATED
+   +11.7..+11.7  n=3  syntx-job-structure-authority | PROPOSAL_ONLY
+   +11.7..+11.7  n=3  syntx-job-structure | PROPOSAL_ONLY
+   -0.6..+10.8  n=24  identity-core-dropzone | SYNTX CORE • ORGANISM
+   +10.8..+10.8  n=25  syntx-job-scope-clear | × REMOVE JOB
+   +10.8..+10.8  n=4  syntx-coverage-authority | scored false
+   +10.8..+10.8  n=3  syntx-job-structure | REQUIREMENTS
+   +10.7..+10.8  n=3  syntx-job-structure-authority | scored false
+   +10.0..+10.0  n=12  syntx-gemini-view-EXCHANGES | EXCHANGES OF THE JOB
+   +9.9..+9.9  n=4  syntx-coverage-req-req_kestrel_fullstack_07 | NOT COVERED
+   +9.9..+9.9  n=4  syntx-coverage-req-req_kestrel_fullstack_08 | NOT COVERED
+   +9.5..+9.5  n=12  syntx-gemini-view-SCOPE | INVESTIGATION SCOPE
+   +9.0..+9.0  n=15  syntx-gemini-output-toggle | HIDE GEMINI OUTPUT
+   +9.0..+9.0  n=3  syntx-job-structure | JOB · STRUCTURE
+   +9.0..+9.0  n=3  syntx-investigation-toggle | HIDE JOB STRUCTURE
+   +8.5..+8.5  n=12  syntx-gemini-view-ORIGINAL | ORIGINAL RESPONSE
+   +8.1..+8.1  n=4  syntx-coverage-authority | AUTHORITY
+   +8.1..+8.1  n=3  syntx-job-structure-authority | AUTHORITY
+   +8.0..+8.0  n=7  syntx-investigation-toggle | HIDE B2 COVERAGE
+   +7.8..+7.8  n=15  syntx-gemini-output | GEMINI OUTPUT
+   +7.6..+7.6  n=3  syntx-investigation-toggle | ⬡ JOB STRUCTURE
+   +7.2..+7.2  n=53  syntx-exit-btn | ← CAPABILITY FIELD
+   +7.2..+7.2  n=4  syntx-gemini-original | sha256 ✓
+   +7.2..+7.2  n=4  job-pool-upload-btn | UPLOAD →
+   +7.1..+7.2  n=33  syntx-return-btn | ← RETURN
+   +6.5..+6.5  n=38  syntx-gemini-output-toggle | GEMINI OUTPUT
+   +6.5..+6.5  n=12  syntx-investigation-toggle | ◎ B2 COVERAGE
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_09 | COVERED
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_02 | COVERED
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_01 | COVERED
+   +6.3..+6.3  n=4  syntx-coverage | BINDING
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_06 | COVERED
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_04 | COVERED
+   +6.3..+6.3  n=4  syntx-coverage-req-req_kestrel_fullstack_03 | COVERED
+   +5.6..+5.6  n=37  syntx-pools-toggle | ⬡ POOLS · 1
+   +5.5..+5.5  n=4  job-pool-intake-toggle | HIDE INTAKE
+   +5.4..+5.4  n=4  job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5 | SELECT
+   +5.0..+5.0  n=16  syntx-pools-toggle | HIDE POOLS
+   +4.9..+5.0  n=12  syntx-gemini-view-PROJECTION | PROJECTION
+   +2.4..+4.8  n=37  syntx-pool-core | JOB POOL
+   +4.0..+4.0  n=49  job-pool-intake-toggle | + INTAKE
+   +4.0..+4.0  n=12  syntx-boundary-toggle | BOUNDARY
+   +3.6..+3.6  n=12  syntx-gemini-read | READ
+   +3.6..+3.6  n=4  syntx-gemini-original | STOP
+   +3.6..+3.6  n=3  syntx-job-structure | ROLE
+   +2.7..+2.7  n=53  syntx-field | JOB FIELD
+   -0.6..-0.6  n=77  job-pool-panel-toggle | ⬡ JOB FIELD
+   +0.0..+0.0  n=77  field-focus-capability-btn | ◈ CAPABILITY FIELD
+unchanged sizes < 14 px (carrier, size): count
+     7.5 (moving body) syntx-role- : 70
+     7.5 syntx-cosmos-organization : 29
+     8.5 (moving body) syntx-role- : 140
+     8.5 syntx-cosmos-organization : 58
+     9.5 (moving body) syntx-role- : 70
+     9.5 syntx-cosmos-organization : 29
+      10 syntx-no-pool : 16
+      10 syntx-body-org_kestrel : 37
+      10 syntx-body-org_brightwater : 37
+      10 syntx-body-org_aurelion : 37
+      11 orbital-physics-02 : 24
+      11 orbital-physics-01 : 24
+      11 orbital-physics-05 : 24
+      11 orbital-physics-04 : 24
+      11 semantic-guide-drawer-toggle : 24
+      11 orbital-physics-03 : 24
+      11 orbital-physics-06 : 24
+    11.5 (moving body) syntx-role- : 70
+    11.5 syntx-cosmos-organization : 29
+      12 decision-graph-inspector-idle : 48
+    12.5 job-scope-title : 33
+      13 orbital-physics-01 : 24
+      13 orbital-physics-04 : 24
+      13 orbital-physics-06 : 24
+      13 orbital-physics-03 : 24
+      13 orbital-physics-05 : 24
+      13 orbital-physics-02 : 24
+      13 syntx-body-org_aurelion : 37
+      13 syntx-body-org_brightwater : 37
+      13 syntx-body-org_kestrel : 37
+non-moving testid boxes moved/resized > 1 px (max over frames):
+    1010.0 syntx-job-structure-authority
+     982.1 syntx-job-structure-findings
+     980.4 syntx-structure-finding-REQUIREMENT_MATCHING_INELIGIBLE
+     912.8 syntx-structure-finding-REQUIREMENT_MATCHING_ELIGIBILITY_UNKNOWN
+     849.7 syntx-structure-finding-REQUIREMENT_LEVEL_UNRESOLVED
+     603.3 syntx-structure-finding-ROLE_RESPONSIBILITY_NOT_DECLARED
+     595.9 syntx-structure-req-req_kestrel_frontend_architect_10
+     525.1 syntx-structure-req-req_kestrel_frontend_architect_09
+     459.1 syntx-structure-req-req_kestrel_frontend_architect_08
+     422.4 syntx-structure-req-req_kestrel_frontend_architect_07
+     385.4 syntx-structure-req-req_kestrel_frontend_architect_06
+     316.1 syntx-structure-req-req_kestrel_frontend_architect_05
+     315.9 syntx-coverage-authority
+     312.6 syntx-coverage-counts
+     303.7 syntx-coverage-proposals
+     296.2 photon-stream-core-to-orbit
+     286.4 syntx-gemini-view-PROCESSING
+     284.5 syntx-gemini-view-EXCHANGES
+     279.1 syntx-structure-req-req_kestrel_frontend_architect_04
+     278.4 photon-stream-orbit-to-core
+     274.5 syntx-gemini-view-PROJECTION
+     271.5 syntx-coverage-req-req_kestrel_fullstack_09
+     263.1 syntx-coverage-req-req_kestrel_fullstack_08
+     244.5 syntx-structure-req-req_kestrel_frontend_architect_03
+     238.0 syntx-coverage-req-req_kestrel_fullstack_07
+     222.5 syntx-return-btn
+     194.7 syntx-coverage-req-req_kestrel_fullstack_06
+     193.1 syntx-structure-req-req_kestrel_frontend_architect_02
+     190.4 syntx-gemini-output-toggle
+     180.5 syntx-investigation-toggle
+     166.4 syntx-coverage-req-req_kestrel_fullstack_05
+     139.4 syntx-structure-req-req_kestrel_frontend_architect_01
+     128.1 syntx-coverage-req-req_kestrel_fullstack_04
+     110.0 syntx-coverage-req-req_kestrel_fullstack_03
+     105.2 rotating-background-rings
+      99.8 syntx-coverage-req-req_kestrel_fullstack_02
+      89.8 syntx-coverage-req-req_kestrel_fullstack_01
+      65.7 syntx-job-structure-responsibility
+      58.1 job-pool-upload
+      58.1 job-pool-upload-result
+      57.8 syntx-gemini-processing
+      55.0 syntx-pools-toggle
+      55.0 job-pool-intake-toggle
+      53.9 syntx-gemini-original-text
+      53.9 syntx-gemini-original
+      52.7 syntx-boundary-toggle
+      40.0 syntx-investigation-statement
+      39.3 syntx-gemini-scope-text
+      39.2 syntx-gemini-scope
+      38.0 syntx-job-scope-select
+      38.0 syntx-job-scope-clear
+      36.0 syntx-state
+      35.9 job-pool-list
+      35.9 job-pool-item-JPOOL_B94850C439974E27496FE3B1A9A076B5
+      34.5 job-scope-title
+      34.5 job-scope-indicator
+      34.5 job-scope-detail
+      34.1 plasma-flare
+      31.5 semantic-focus-panel
+      31.3 syntx-path
+      30.9 syntx-path-FIELD
+      29.4 job-pool-upload-btn
+      28.7 syntx-gemini-view-ORIGINAL
+      28.7 syntx-gemini-view-SCOPE
+      28.4 job-pool-file-name
+      28.3 syntx-path-ROLE
+      27.9 syntx-path-ORGANIZATION
+      26.0 job-pool-file-input
+      23.2 how-this-works-btn
+      22.1 empty-projection-breathing-halo
+      21.8 syntx-gemini-read
+      21.8 syntx-gemini-token
+      21.7 job-pool-actor-input
+      18.8 job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5
+      18.4 job-pool-list-empty
+      16.7 syntx-gemini-unavailable
+      16.7 syntx-gemini-output
+      16.6 syntx-coverage-state
+      16.6 syntx-coverage
+      16.6 intake-success-banner
+      16.6 intake-success-investigation
+      16.5 investigation-mode-selector
+      16.5 investigation-mode-JOB
+      16.5 capability-cosmos-node-PCAP_CB687D24FFF6FCC38864DB4F
+      16.1 capability-cosmos-node-PCAP_6B66C4A822CBE888BF11452D
+      13.8 capability-cosmos-node-PCAP_AAFB8C7F8820052B592BDE11
+      13.6 open-system-codex-btn
+      13.0 investigation-mode-PERSON_X_JOB
+      12.4 empty-projection-breathing-shell
+      12.1 analyze-investigation
+      11.8 canonical-sil-region-state-03
+      11.8 capability-cosmos-node-PCAP_AD61B44B8C10B067DBED9F63
+      11.3 capability-cosmos-node-PCAP_CD636CDD76F3EB4CB25D97D6
+      11.0 start-intake-analysis-btn
+      11.0 source-dock
+      10.7 capability-cosmos-node-PCAP_4F218651C9962531C79269DF
+      10.6 capability-cosmos-node-PCAP_566782BF45BC9F9F3296E108
+      10.3 capability-cosmos-node-PCAP_025308E990A808F14E50681F
+       9.6 capability-cosmos-node-PCAP_F5257C4756FF18D00D97F84B
+       9.3 capability-cosmos-node-PCAP_FFD5CA78438C60DEC0A1C6BB
+       8.7 capability-cosmos-node-PCAP_C30DAC245B765A9BA8193B61
+       8.7 capability-cosmos-node-PCAP_197E601417B24700E27604D7
+       7.8 add-pdf-source-btn
+       7.2 syntx-exit-btn
+       6.2 capability-focus-evidence-EVD_5A267B96BFE73A2D4724BC49
+       5.2 canonical-sil-region-state-04
+       5.1 canonical-sil-region-state-02
+       5.1 canonical-sil-region-state-05
+       5.0 investigation-mode-PERSON
+       5.0 orbital-physics-03
+       5.0 canonical-sil-region-state-06
+       4.9 canonical-sil-region-state-01
+       4.9 semiotic-signature-03
+       4.8 add-text-source-btn
+       4.8 add-github-source-btn
+       4.8 add-website-source-btn
+       4.7 orbital-physics-02
+       4.6 semiotic-signature-02
+       4.5 orbital-physics-01
+       4.4 identity-core-dropzone
+       4.4 semiotic-signature-01
+       4.0 orbital-physics-04
+       3.9 orbital-physics-05
+       3.8 semiotic-signature-04
+       3.8 plasma-core-rings
+       3.8 orbital-physics-06
+       3.8 semiotic-signature-06
+       3.7 semiotic-signature-05
+       3.3 syntx-body-org_kestrel
+       3.1 job-pool-non-claims
+       2.9 energy-ray-02
+       2.8 syntx-ray-org_kestrel
+       2.4 syntx-analysis-boundary
+       2.3 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11
+       2.0 field-focus-capability-btn
+       2.0 field-focus-strip
+       2.0 job-pool-panel-toggle
+       2.0 semantic-zoom-telemetry
+       2.0 decision-graph-inspector-idle
+       1.9 syntx-ray-org_brightwater
+       1.9 syntx-ray-org_aurelion
+       1.8 energy-ray-03
+       1.7 energy-ray-05
+       1.7 energy-ray-01
+       1.5 syntx-body-org_brightwater
+       1.3 syntx-pool-core

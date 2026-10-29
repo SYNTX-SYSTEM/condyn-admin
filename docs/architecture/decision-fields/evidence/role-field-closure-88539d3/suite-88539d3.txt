@@ -1,0 +1,9 @@
+# PINK: tsc and the whole isolated suite on 88539d3 (e2e included, disposable databases, network sentinel).
+tsc exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this ca 
+full 88539d3 exit 1 ::  Test Files  7 failed | 402 passed | 11 skipped (420)       Tests  31 failed | 2752 passed | 20 skipped (2803)  net 2
+failed 88539d3 31 | 50776fc 27 | only on 88539d3 4 | only on 50776fc 0
+  only on 88539d3 (Test timed out in 5000ms): test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+  only on 88539d3 (Test timed out in 5000ms): test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+  only on 88539d3 (Test timed out in 5000ms): test/decision-core/structural-consequences/reconstruct.test.ts
+test/career/pxj-first-screen: {'first-screen-ssr.test.tsx': 36, 'person-markup.test.tsx': 1, 'projection.test.ts': 35, 'result-hook.test.ts': 2, 'role-field-closure.test.tsx': 10, 'shell-role-identity.test.tsx': 2} = 86 all passed: True
+# The extra failures are 5000 ms timeouts in the same outcome-valence / decision-core files that timed out on a9ff0ca (§3.57); they import nothing of G1, and the replay file times out alone on 49e2bc6 and 50776fc as well.

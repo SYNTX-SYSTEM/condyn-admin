@@ -1,0 +1,197 @@
+# PINK: GRÜN's role-field fixes 575e225 (F-RF-1), 0dd55e5 (F-RF-2), 25e90bf (F-RF-3), 46a95bb (F-RF-5), 88539d3 (docs) on a9ff0ca. Code diff of app/ and lib/:
+diff --git a/app/components/career/demo/PxjFirstScreen.tsx b/app/components/career/demo/PxjFirstScreen.tsx
+index b1a3ad7..b1c208e 100644
+--- a/app/components/career/demo/PxjFirstScreen.tsx
++++ b/app/components/career/demo/PxjFirstScreen.tsx
+@@ -28,7 +28,7 @@ const chip = (rgb: string): React.CSSProperties => ({ display: "inline-flex", al
+ const action: React.CSSProperties = { alignSelf: "flex-start", marginTop: "4px", padding: "5px 12px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.55)`, background: `rgba(${CYAN_RGB}, 0.08)`, color: SIL_TOKENS.colors.cyanActive, fontFamily: MONO, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer" };
+ const layer: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px", padding: "10px 12px", borderRadius: "10px", border: "1px solid rgba(120, 214, 255, 0.14)", background: "rgba(4, 12, 21, 0.6)" };
+ 
+-const LOADING_STATES = new Set(["RESULT_LOADING", "BOUNDARY_RESOLVING", "COVERAGE_LOADING"]);
++const LOADING_STATES = new Set(["RESULT_LOADING", "BOUNDARY_RESOLVING", "COVERAGE_LOADING", "JOB_CHECKING"]);
+ 
+ export interface PxjFirstScreenProps {
+   screen: PxjFirstScreenModel;
+@@ -52,6 +52,8 @@ function stateDetail(screen: PxjFirstScreenModel, c: Copy, modes: Record<Investi
+     case "RESULT_FAILED": return `${c.analysis} ${screen.analysisId}${screen.code ? ` · ${screen.code}` : ""}`;
+     case "BOUNDARY_UNRESOLVED": return `${c.analysis} ${screen.analysisId}${screen.reason ? ` · ${screen.reason}` : ""}`;
+     case "MODE_MISMATCH": return `${c.analysis} ${screen.analysisId} · ${c.modeAnalysis} ${modes[screen.analysisMode]} · ${c.modeInterface} ${modes[screen.interfaceMode]}`;
++    case "JOB_CHECKING": return `${c.selectedJob}: ${screen.selection.poolRoleId} · ${screen.selection.jobPoolUploadId}`;
++    case "JOB_INVALID": return `${c.selectedJob}: ${screen.selection.poolRoleId} · ${c.reason} ${screen.reason} · ${c.jobOfAnalysis}: ${screen.analysisSelection.poolRoleId}`;
+     case "ROLE_MISMATCH": return `${c.jobOfAnalysis}: ${screen.analysisSelection.poolRoleId} · ${screen.analysisSelection.jobPoolUploadId}${screen.selection === null ? "" : ` · ${c.selectedJob}: ${screen.selection.poolRoleId}`}`;
+     case "COVERAGE_FAILED": return `${c.analysis} ${screen.analysisId}${screen.code ? ` · ${screen.code}` : ""}`;
+     case "LINEAGE_MISMATCH": return `${screen.check} · ${c.lineage[screen.check]}`;
+@@ -173,15 +175,19 @@ export function PxjFirstScreen({ screen, mode, locale, onSwitchMode, onSelectRol
+ 
+ /** In the Job Field (§03.4): the job of the analysis on view, offered as an explicit choice when it is not the selected one. */
+ export function PxjAnalysisJobOffer({ screen, locale, onSelectRole }: { screen: PxjFirstScreenModel; locale: SilLocale; onSelectRole: (scope: JobScope) => void }) {
+-  if (screen.state !== "ROLE_MISMATCH") return null;
++  // JOB_CHECKING offers nothing (the selected job is still being checked); JOB_INVALID names the invalid job and its reason.
++  if (screen.state !== "ROLE_MISMATCH" && screen.state !== "JOB_INVALID") return null;
+   const c = SIL_COPY[locale].pxjFirst;
++  const invalid = screen.state === "JOB_INVALID";
++  const offer = !invalid || screen.selection.jobPoolUploadId !== screen.analysisSelection.jobPoolUploadId || screen.selection.poolRoleId !== screen.analysisSelection.poolRoleId;
+   return (
+     <div data-testid="pxj-analysis-job-offer" data-sx-shell="pxj-offer" data-state={screen.state} role="status" style={{ position: "fixed", left: "50%", bottom: "28px", transform: "translateX(-50%)", zIndex: 58, display: "flex", alignItems: "center", gap: "12px", maxWidth: "min(720px, calc(100vw - 48px))", boxSizing: "border-box", padding: "8px 10px 8px 16px", borderRadius: "999px", border: `1px solid rgba(${AMBER_RGB}, 0.42)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.94), rgba(3, 8, 15, 0.96))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.55)", backdropFilter: "blur(10px)" }}>
+       <span style={{ display: "flex", flexDirection: "column", gap: "2px", minWidth: 0 }}>
+-        <span style={{ ...statement, fontSize: "12px", color: `rgb(${AMBER_RGB})` }}>{screen.selection === null ? c.states.ROLE_NONE : c.states.ROLE_MISMATCH}</span>
++        <span style={{ ...statement, fontSize: "12px", color: `rgb(${AMBER_RGB})` }}>{invalid ? c.states.JOB_INVALID : screen.selection === null ? c.states.ROLE_NONE : c.states.ROLE_MISMATCH}</span>
++        {invalid && <span data-testid="pxj-analysis-job-invalid" data-reason={screen.reason} style={meta}>{c.selectedJob}: {screen.selection.poolRoleId} · {c.reason} {screen.reason}</span>}
+         <span style={meta}>{c.jobOfAnalysis}: {screen.analysisSelection.poolRoleId} · {screen.analysisSelection.jobPoolUploadId}</span>
+       </span>
+-      <button type="button" data-testid="pxj-analysis-job-select" onClick={() => onSelectRole(screen.analysisSelection)} style={{ ...action, alignSelf: "center", marginTop: 0, whiteSpace: "nowrap" }}>{c.selectRole}</button>
++      {offer && <button type="button" data-testid="pxj-analysis-job-select" onClick={() => onSelectRole(screen.analysisSelection)} style={{ ...action, alignSelf: "center", marginTop: 0, whiteSpace: "nowrap" }}>{c.selectRole}</button>}
+     </div>
+   );
+ }
+diff --git a/app/components/career/demo/SemanticCareerIntelligenceField.tsx b/app/components/career/demo/SemanticCareerIntelligenceField.tsx
+index 9bc0aff..51749e9 100644
+--- a/app/components/career/demo/SemanticCareerIntelligenceField.tsx
++++ b/app/components/career/demo/SemanticCareerIntelligenceField.tsx
+@@ -287,7 +287,10 @@ export function SemanticCareerIntelligenceField({
+ 
+   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
+   /** The analysis on view (the job result, else the URL's), independent of the mode: the GEMINI OUTPUT inspector reads it. */
+-  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, analysisId ?? null);
++  /** The URL's analysis as it stands now: the mount's, replaced by every SUCCEEDED analysis written to the URL (GELB F-RF-2). A new
++   *  run clears the job's result, so without this the mount's id, not the URL's, would return while it runs or after it FAILED. */
++  const [urlAnalysisId, setUrlAnalysisId] = useState<string | null>(analysisId ?? null);
++  const viewedAnalysisSource = describeAnalysisSource(jobState === "SUCCEEDED" ? job.state.resultAnalysisId : null, urlAnalysisId);
+   /** SFE job-scope invariant: one selected job for both fields; independent of the observation point (return, field change and pool change keep it). */
+   const [jobScope, setJobScope] = useState<JobScope | null>(() => jobScopeFromParams(initialJobScopePoolUploadId, initialJobScopeRoleId));
+   const jobScopeValidation = useJobScopeValidation(jobScope);
+@@ -373,12 +376,13 @@ export function SemanticCareerIntelligenceField({
+     observeField({ kind: "ROLE", organizationId: jobScopeValidation.organizationId, roleId: scope.poolRoleId, requirementId: null, apertureSignId: null });
+   };
+   const jobScopeCopy = t.syntx.jobScope;
+-  const validJobPresentation: SyntxJobScopePresentation | null = jobScopeValidation.state === "VALID" ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open } : null;
++  /** The role id is part of the detail: two roles of one organization may carry the same title (GELB F-RF-5). */
++  const validJobPresentation: SyntxJobScopePresentation | null = jobScopeValidation.state === "VALID" ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName, jobScopeValidation.scope.poolRoleId].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open } : null;
+   /** PERSON uses no job scope: the shell says so (the selected job stays selected, unused, and is named as such). */
+   const jobScopePresentation: SyntxJobScopePresentation = investigationMode === "PERSON"
+-    ? { state: jobScopeValidation.state, used: false, label: jobScopeCopy.label, title: investigationCopy.personScope, detail: validJobPresentation === null ? null : `${investigationCopy.personScopeKept}${validJobPresentation.title}`, hint: jobScopeCopy.open }
++    ? { state: jobScopeValidation.state, used: false, label: jobScopeCopy.label, title: investigationCopy.personScope, detail: validJobPresentation === null || jobScopeValidation.state !== "VALID" ? null : `${investigationCopy.personScopeKept}${validJobPresentation.title} · ${jobScopeValidation.scope.poolRoleId}`, hint: jobScopeCopy.open }
+     : jobScopeValidation.state === "VALID"
+-    ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open }
++    ? { state: "VALID", label: jobScopeCopy.label, title: jobScopeValidation.roleTitle, detail: [jobScopeValidation.organizationName, jobScopeValidation.poolName, jobScopeValidation.scope.poolRoleId].filter((part): part is string => part !== null && part.length > 0).join(" · ") || null, hint: jobScopeCopy.open }
+     : jobScopeValidation.state === "CHECKING"
+       ? { state: "CHECKING", label: jobScopeCopy.label, title: jobScopeCopy.checking, detail: null, hint: jobScopeCopy.choose }
+       : jobScopeValidation.state === "INVALID"
+@@ -393,12 +397,13 @@ export function SemanticCareerIntelligenceField({
+   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
+ 
+   /* PERSON × JOB · the first screen (owner G1, 2026-10-22): analysisId → persisted result → boundary → B2 → one closed state. */
+-  /** The mode an analysis of this session was declared with; written to the URL with its id once it SUCCEEDED (§03.1). */
+-  const declaredModeRef = React.useRef<InvestigationMode | null>(null);
++  /** Once an analysis SUCCEEDED its id is written to the URL with the interface's mode (§03.1). The interface's mode, not the one the
++   *  run was declared with: a mode chosen during the run stays chosen, and the session and a reload show the same (GELB F-RF-1). */
+   useEffect(() => {
+     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
+     replaceUrlParam("analysisId", job.state.resultAnalysisId);
+-    if (declaredModeRef.current !== null) replaceUrlParam(INVESTIGATION_URL_PARAM, declaredModeRef.current);
++    setUrlAnalysisId(job.state.resultAnalysisId);
++    replaceUrlParam(INVESTIGATION_URL_PARAM, investigationMode);
+   }, [jobState, job.state.resultAnalysisId]);
+   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
+   const sessionResult = React.useMemo(
+@@ -413,7 +418,8 @@ export function SemanticCareerIntelligenceField({
+     analysisId: viewedAnalysisSource.kind === "NONE" ? null : viewedAnalysisSource.analysisId,
+     result: resultState,
+     boundary: analysisBoundary,
+-    selection: jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null
++    selection: jobScopeValidation.state === "VALID" ? jobScopeValidation.scope : null,
++    pendingSelection: jobScopeValidation.state === "CHECKING" ? { state: "CHECKING" as const, scope: jobScopeValidation.scope } : jobScopeValidation.state === "INVALID" ? { state: "INVALID" as const, scope: jobScopeValidation.scope, reason: jobScopeValidation.reason } : null
+   };
+   /** B2 is read only on the Capability Field, in PERSON × JOB, for the analysis's own selected job (P-01); with the existing hook. */
+   const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;
+@@ -538,7 +544,6 @@ export function SemanticCareerIntelligenceField({
+     // is no document analysis (the controller re-checks the payload).
+     const declared = declareAnalysis(investigationMode, jobScopeValidation);
+     if (!declared.ok) return;
+-    declaredModeRef.current = investigationMode;
+     setLastStagedDocs(stagedDocs);
+     const documentsPayload = stagedDocs.map((doc) => {
+       if (doc.type === "pdf") {
+diff --git a/lib/career/view-model/pxj-first-screen.ts b/lib/career/view-model/pxj-first-screen.ts
+index a6d3fc9..1d9c27f 100644
+--- a/lib/career/view-model/pxj-first-screen.ts
++++ b/lib/career/view-model/pxj-first-screen.ts
+@@ -142,6 +142,8 @@ export interface FirstScreenInput {
+   boundary: FirstScreenBoundary;
+   /** The selected job, only when VALID; null when none is selected (or it is not valid). */
+   selection: JobScope | null;
++  /** A selected job that is still being checked or is invalid (GELB F-RF-3); absent or null when none is selected or it is VALID. */
++  pendingSelection?: { state: "CHECKING"; scope: JobScope } | { state: "INVALID"; scope: JobScope; reason: string } | null;
+   coverage: FirstScreenCoverage;
+ }
+ 
+@@ -202,6 +204,10 @@ export type PxjFirstScreen =
+   | { state: "BOUNDARY_FAILED"; analysisId: string }
+   /** The analysis ran under another boundary than the interface's mode; nothing switches by itself. */
+   | { state: "MODE_MISMATCH"; analysisId: string; analysisMode: "PERSON" | "PERSON_X_JOB"; interfaceMode: InvestigationMode }
++  /** The selected job is still being checked: no mismatch is named yet, nothing of the analysis is shown. */
++  | { state: "JOB_CHECKING"; analysisId: string; analysisSelection: JobScope; selection: JobScope }
++  /** The selected job is invalid (with the validation's reason): named as such, never as "no job selected". */
++  | { state: "JOB_INVALID"; analysisId: string; analysisSelection: JobScope; selection: JobScope; reason: string }
+   /** The analysis belongs to another job than the selected one (or none is selected): neither proposals nor coverage. */
+   | { state: "ROLE_MISMATCH"; analysisId: string; analysisSelection: JobScope; selection: JobScope | null }
+   /** A PERSON analysis under PERSON: today's first screen (no coverage). */
+@@ -284,6 +290,9 @@ export function projectPxjFirstScreen(input: FirstScreenInput): PxjFirstScreen {
+   if (persisted.mode === "PERSON") return { state: "PERSON_RESULT", analysisId, result: decoded };
+   // PERSON_X_JOB: the proposals arose under the scope of the analysis's own job; under another (or no) selected job none is shown.
+   if (persisted.jobScopeSelection === null) return { state: "BOUNDARY_FAILED", analysisId };
++  const pending = selection === null ? input.pendingSelection ?? null : null;
++  if (pending?.state === "CHECKING") return { state: "JOB_CHECKING", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection: { ...pending.scope } };
++  if (pending?.state === "INVALID") return { state: "JOB_INVALID", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection: { ...pending.scope }, reason: pending.reason };
+   if (!sameScope(persisted.jobScopeSelection, selection)) return { state: "ROLE_MISMATCH", analysisId, analysisSelection: { ...persisted.jobScopeSelection }, selection };
+   const projection = decoded.projection;
+   if (projection === null) return { state: "NO_PROJECTION", analysisId, result: decoded };
+diff --git a/lib/career/view-model/sil-language.ts b/lib/career/view-model/sil-language.ts
+index 3a5787f..ca1c241 100644
+--- a/lib/career/view-model/sil-language.ts
++++ b/lib/career/view-model/sil-language.ts
+@@ -794,6 +794,8 @@ export const SIL_COPY = {
+         MODE_MISMATCH: "This analysis ran in another investigation mode: nothing is shown, nothing switches by itself.",
+         ROLE_MISMATCH: "This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown.",
+         ROLE_NONE: "No job is selected: this analysis belongs to the job below.",
++        JOB_CHECKING: "CHECKING THE SELECTED JOB …",
++        JOB_INVALID: "The selected job is not valid: neither proposals nor coverage of this analysis are shown.",
+         PERSON_RESULT: "PERSON · without a job scope.",
+         NO_PROJECTION: "This analysis has no capability proposals: no coverage.",
+         COVERAGE_LOADING: "READING B2 COVERAGE …",
+@@ -811,6 +813,7 @@ export const SIL_COPY = {
+       modeAnalysis: "ran in",
+       modeInterface: "interface",
+       jobOfAnalysis: "job of this analysis",
++      reason: "reason",
+       selectedJob: "selected job"
+     },
+     emptyStates: {
+@@ -1611,6 +1614,8 @@ export const SIL_COPY = {
+         MODE_MISMATCH: "Diese Analyse lief in einem anderen Untersuchungsmodus: nichts wird gezeigt, nichts schaltet von selbst um.",
+         ROLE_MISMATCH: "Diese Analyse gehört zu einem anderen Job als dem gewählten: weder ihre Vorschläge noch eine Abdeckung werden gezeigt.",
+         ROLE_NONE: "Kein Job gewählt: Diese Analyse gehört zum Job unten.",
++        JOB_CHECKING: "GEWÄHLTER JOB WIRD GEPRÜFT …",
++        JOB_INVALID: "Der gewählte Job ist ungültig: weder Vorschläge noch Abdeckung dieser Analyse werden gezeigt.",
+         PERSON_RESULT: "PERSON · ohne Job-Scope.",
+         NO_PROJECTION: "Diese Analyse hat keine Fähigkeitsvorschläge: keine Abdeckung.",
+         COVERAGE_LOADING: "B2-ABDECKUNG WIRD GELESEN …",
+@@ -1628,6 +1633,7 @@ export const SIL_COPY = {
+       modeAnalysis: "lief in",
+       modeInterface: "Oberfläche",
+       jobOfAnalysis: "Job dieser Analyse",
++      reason: "Grund",
+       selectedJob: "gewählter Job"
+     },
+     emptyStates: {
+
+ app/components/career/demo/PxjFirstScreen.tsx      |  14 +-
+ .../demo/SemanticCareerIntelligenceField.tsx       |  23 +-
+ docs/career_analysis/JOB_FIELD_FRONTEND.md         |   6 +
+ docs/career_analysis/evidence/pxj-g1/README.md     |  20 ++
+ .../evidence/pxj-g1/measures/suite.txt             |  22 ++
+ lib/career/view-model/pxj-first-screen.ts          |   9 +
+ lib/career/view-model/sil-language.ts              |   6 +
+ .../pxj-first-screen/role-field-closure.test.tsx   | 267 +++++++++++++++++++++
+ .../pxj-first-screen/shell-role-identity.test.tsx  |  53 ++++
+ 9 files changed, 407 insertions(+), 13 deletions(-)

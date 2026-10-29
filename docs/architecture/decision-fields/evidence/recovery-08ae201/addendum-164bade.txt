@@ -1,0 +1,10 @@
+PINK §3.69 addendum (2026-10-29) · point 3 re-checked on 164bade (recovery/role-discovery). MEASUREMENT / CODE_INSPECTION.
+- test/career-f12-pulse-alignment.test.tsx = the six-orbit version 9112682 plus, verbatim from 175c481, the it.each block "each Stage
+  %s component labels its empty projection in English and German" with renderFocusedEmptyStageComponents and its imports; the only
+  removed line is the old import line (extended); no RD-5 inverse returned.
+- npm run test:isolated (git archive of 164bade, disposable DB): 14 / 14 passed, the four "English and German" cases among them.
+→ point 3: PASS. The coverage gap of §3.69 is closed.
+- Not reviewed here: 123604f (stage-3 semantic relation engine core) — on the branch, not part of this request.
+- :3017 environment: PINK did not read it (rule); GELB states the key is set, model gemini-3.1-pro-preview, disposable DB. Recorded as
+  GELB's statement; in PINK's evidence classes it stays INCONCLUSIVE. Risk (owner): 175c481's Gemini-on-GET path becomes live as soon
+  as a pool and a PERSON analysis exist there.

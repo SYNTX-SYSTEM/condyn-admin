@@ -1,0 +1,29 @@
+# PINK G1: base (49e2bc6) vs tip (50776fc) on PINK's own STAND-IN labs: role level (PA-10/T-11) and the PERSON screen (PA-05/T-07).
+import json,re,sys
+b=json.load(open(sys.argv[1])); t=json.load(open(sys.argv[2]))
+ids={}
+def norm(s):
+  def rep(m):
+    k=m.group(0); 
+    if k not in ids: ids[k]=f"<{m.group(1)}#{sum(1 for x in ids if x.startswith(m.group(1)))}>"
+    return ids[k]
+  return re.sub(r'\b(ANL|JOB|RUN|CONV|PCAP|EVD|CAND)_[0-9A-Za-z_]+',lambda m:re.sub(r'\d','9',m.group(1))+'_*',s)
+def nl(level): return [[norm(k),{a:norm(v) for a,v in d.items()}] for k,d in level]
+rb,rt=nl(b['roleLevel']),nl(t['roleLevel'])
+print('role level entries base',len(rb),'tip',len(rt),'equal',rb==rt)
+if rb!=rt:
+  db=dict((k,json.dumps(v,sort_keys=True)) for k,v in rb); dt=dict((k,json.dumps(v,sort_keys=True)) for k,v in rt)
+  for k in sorted(set(db)|set(dt)):
+    if db.get(k)!=dt.get(k): print('  DIFF',k,'\n    base',db.get(k),'\n    tip ',dt.get(k))
+step=lambda r,n:[s for s in r['steps'] if s['name']==n][0]
+for n in ['S1-person-session','S4-person-deep-link','S3-role-level']:
+  sb,st=step(b,n),step(t,n)
+  tb=set(norm(x) for x in sb['testids']); tt=set(norm(x) for x in st['testids'])
+  fb,ft=norm(sb['fieldTextNoPanel']),norm(st['fieldTextNoPanel'])
+  print(f'== {n}: stages base {"".join(sb["stages"])} tip {"".join(st["stages"])} | coupling {sb["coupling"]}/{st["coupling"]} | testids only base {sorted(tb-tt)[:12]} only tip {sorted(tt-tb)[:12]}')
+  print('   field text equal',fb==ft, '| items base',re.findall(r'(\d+) items',fb),'tip',re.findall(r'(\d+) items',ft))
+  if fb!=ft:
+    import difflib
+    sm=difflib.SequenceMatcher(None,fb,ft)
+    for op,i1,i2,j1,j2 in sm.get_opcodes():
+      if op!='equal': print('   ',op,'base:',repr(fb[max(0,i1-30):i2+30][:160]),'tip:',repr(ft[max(0,j1-30):j2+30][:160]))

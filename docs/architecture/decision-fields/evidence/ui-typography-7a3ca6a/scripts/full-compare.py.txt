@@ -1,0 +1,22 @@
+# PINK: failing tests of two vitest JSON reports (base vs after). python3 -I full-compare.py <base.json> <after.json>
+import json,sys,collections,os
+def fails(p):
+  d=json.load(open(p)); out={}
+  for f in d['testResults']:
+    name=os.path.relpath(f['name']) if f['name'].startswith('/') else f['name']
+    name=name[name.find('test/'):] if 'test/' in name else name
+    for a in f['assertionResults']:
+      if a['status']=='failed': out[f"{name} :: {a['fullName']}"]=(a.get('failureMessages') or [''])[0].split('\n')[0][:140]
+    if f.get('status')=='failed' and not any(a['status']=='failed' for a in f['assertionResults']): out[f"{name} :: <file failed: {f.get('message','')[:100]}>"]=''
+  return d,out
+db,b=fails(sys.argv[1])
+print(f"base: {db['numFailedTests']} failed / {db['numPassedTests']} passed / {db['numTotalTests']} total, files failed {db['numFailedTestSuites']}")
+if len(sys.argv)>2:
+  da,a=fails(sys.argv[2])
+  print(f"after: {da['numFailedTests']} failed / {da['numPassedTests']} passed / {da['numTotalTests']} total, files failed {da['numFailedTestSuites']}")
+  print(f"failing on both: {len(set(a)&set(b))}; only after (NEW): {len(set(a)-set(b))}; only base: {len(set(b)-set(a))}")
+  for k in sorted(set(a)-set(b)): print('  NEW ',k,'|',a[k])
+  for k in sorted(set(b)-set(a)): print('  BASE-ONLY ',k,'|',b[k])
+  b=a if False else b
+print('failing on base, by file:')
+for k,n in collections.Counter(k.split(' :: ')[0] for k in b).most_common(): print(f'   {n:3} {k}')

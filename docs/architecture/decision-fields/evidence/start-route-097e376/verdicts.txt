@@ -1,0 +1,19 @@
+PINK §3.75 · 097e376 (+ 0e03f69) on recovery/role-discovery: O-START-1, O-START-2, O-START-3 and startControl. STAND_IN only; DETERMINISTIC route probe.
+
+STATIC                 PASS   tsc 0; job-pool group 27 files 288 passed 4 skipped (= GELB); counter-proof: the changed tests fail 3 cases on c1954ca
+O-START-1              PASS   content type other than application/json (text/plain, none, form, multipart) → 415 ERR_INVESTIGATION_CONTENT_TYPE; sec-fetch-site
+                              cross-site → 403 ERR_INVESTIGATION_CROSS_SITE (also with text/plain); no call, nothing written; same-site, same-origin,
+                              none and charset / case variants pass to the normal checks; the other 33 refusals unchanged. Scope: this route only
+O-START-1b (obs.)      OBS    the check is a prefix test and a header test: "application/json-seq" and a padded value pass, "CROSS-SITE" in capitals and
+                              a foreign Origin without sec-fetch-site pass (browsers send lower case; a cross-origin JSON POST needs a CORS preflight
+                              that the app does not grant). Not exploitable from a browser; the app-wide Origin check stays an owner precondition
+O-START-2              PASS   evidenceClass STAND_IN in the 201, in every replay (200), in the investigation GET and in a concurrent replay; derived
+                              from the stored provider (UNKNOWN otherwise)
+O-START-3              PASS   day limit: missing, "", abc, −1, 2.5, 1e9, +5, 0x10, "5 6", a non-ASCII digit, 1000000 → 0; "5", " 5 ", "007" → 5 / 5 / 7;
+                              "999999" → 100000. With 0 nothing runs (BUDGET_EXHAUSTED, CANCELLED, 0 calls). Consequence: stand-in users set the limit
+                              explicitly (default 1000 is gone)
+startControl           PASS   GET discovery.startControl: none → NOT_CONFIGURED, maxRoles null; gemini → PROVIDER_NOT_AUTHORIZED, null; stand-in →
+                              READY, maxRoles = configured (7); semanticPlan unchanged; reads write nothing (calls 0, rows unchanged)
+Regression             PASS   idempotency first, 8-way race (1 created, 2 calls), budget 0 / mid-run, failing role keeps earlier, cache reuse 0 calls,
+                              no model texts, stored provider stand-in: unchanged from §3.74
+Open (unchanged)       —      O-START-4, O-START-5, O-START-6 (GELB: unchanged, owner rule / GRÜN / before a real provider)

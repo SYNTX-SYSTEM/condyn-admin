@@ -1,0 +1,130 @@
+// PINK's own targeted probe of the six geometry-bound places named by GRÜN for frontend/ui-typography (7a3ca6a) and of the two
+// corrections, run identically on the baseline (35f00bc) and on 7a3ca6a. Stand-in lab only (no Gemini); POSTs go to PINK's own
+// disposable lab only. argv: <lab state.json> <out.json>. Run from the repository root after pink-walk.mjs on the same lab.
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+import { measure } from "./pink-typo-measure.mjs";
+const playwright = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = playwright.chromium ? playwright : playwright.default;
+const [STATE, OUT] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base;
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+const res = { shell: [], scopeTitle: [], dock: [], low: [], cosmos: [], path: [], inspector: [], errors: [] };
+const post = async body => { const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "PINK_TYPO_LAB" }, body: JSON.stringify(body) }); const j = await r.json(); return j.jobPoolUploadId ?? j.upload?.jobPoolUploadId; };
+// PINK's own long-title pool (synthetic): one organization, titles longer and denser than the engineering pool, one German compound.
+const PINK_TITLES = ["Principal Staff Software Engineer – Distributed Clinical Interoperability Platform", "Senior Security & Compliance Engineering Manager – EMEA Regulated Operations", "Leitende Softwarearchitektin für datenschutzkonforme Gesundheitsplattformen", "Head of Platform Reliability, Observability & Incident Response", "QA"];
+const pinkPool = () => {
+  const pid = "pool_pink_typo_long";
+  return { pool: { id: pid, name: "PINK typography long titles", description: "Synthetic pool for the typography validation.", version: 1, status: "ACTIVE", created_at: "2026-10-20T00:00:00.000Z" },
+    organizations: [{ id: "org_pink_long", pool_id: pid, org_id: "pink_long", name: "Pink Langtitel Gesundheitsplattformen GmbH", country_iso: "DE", region: "Berlin", industry: "Test", scale: "Test", description: "Synthetic organization." }],
+    roles: PINK_TITLES.map((title, i) => ({ id: `role_pink_long_${i}`, pool_id: pid, organization_id: "org_pink_long", title, seniority: "Senior / L5", domain_focus: "Platform", description: "Synthetic role." })),
+    requirements: PINK_TITLES.map((_, i) => ({ id: `req_role_pink_long_${i}`, role_id: `role_pink_long_${i}`, capability_name: "TypeScript", domain: "Software Engineering", weight: 0.5, required_level: "L3", necessity: "REQUIRED", requirement_type: "TOOL_TECHNOLOGY", evidence_hint: "Code.", aliases: [] })) };
+};
+await post(JSON.parse(readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json", "utf8")));
+const PP = await post(pinkPool()); if (!PP) { console.log("FAIL PINK pool upload"); process.exit(1); }
+const ENG = JSON.parse(readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json", "utf8")).roles.map(r => [POOL, r.organization_id, r.id, r.title]);
+const LONG = PINK_TITLES.map((title, i) => [PP, "org_pink_long", `role_pink_long_${i}`, title]);
+const browser = await chromium.launch();
+let ctx, page;
+const fresh = async (w, h, font = null) => {
+  if (ctx) await ctx.close();
+  ctx = await browser.newContext({ viewport: { width: w, height: h } });
+  await ctx.addInitScript(f => { try { localStorage.setItem("condyn_onboarding_seen", "1"); } catch {} if (f) document.addEventListener("DOMContentLoaded", () => { const s = document.createElement("style"); s.textContent = `:root { --font-mono: "${f}", monospace !important; }`; document.head.appendChild(s); }); }, font);
+  page = await ctx.newPage(); page.on("pageerror", e => res.errors.push(String(e).slice(0, 200)));
+};
+const t = id => page.getByTestId(id);
+const lang = async l => { if (l !== "de") return; await t("open-system-codex-btn").click(); await t("switch-lang-de").click(); await t("system-codex-close").click(); await page.waitForTimeout(300); };
+const go = async (q, l) => { await page.goto(`${BASE}/career/demo${q}`, { waitUntil: "networkidle" }); await t("field-focus-strip").waitFor({ timeout: 60000 }); await lang(l); await page.waitForTimeout(600); };
+const fieldUrl = (pool, org, role, scope, mode) => `?focus=FIELD&jobPoolUploadId=${pool}${org ? `&jobOrganizationId=${org}` : ""}${role ? `&jobRoleId=${role}` : ""}${scope ? `&jobScopePoolUploadId=${pool}&jobScopeRoleId=${scope}` : ""}${mode ? `&investigationMode=${mode}` : ""}`;
+const step = async (name, fn) => { try { await fn(); } catch (e) { res.errors.push(`${name}: ${String(e).split("\n")[0].slice(0, 200)}`); console.log("FAIL", name, String(e).split("\n")[0].slice(0, 200)); } };
+const r1 = v => Math.round(v * 10) / 10;
+
+// The shell row: every control's box and the brand's text extent; least air between two controls on a shared row (negative = overlap).
+const SHELL = ["job-scope-indicator", "field-focus-strip", "investigation-mode-selector", "semantic-guide-drawer-toggle", "how-this-works-btn", "open-system-codex-btn"];
+const DOCK = new Set(["semantic-guide-drawer-toggle", "how-this-works-btn", "open-system-codex-btn"]);
+const shellRead = () => page.evaluate(ids => {
+  const out = {}; const box = b => [b.left, b.top, b.right, b.bottom];
+  for (const id of ids) for (const el of document.querySelectorAll(`[data-testid="${id}"]`)) { const b = el.getBoundingClientRect(); if (b.width > 0 && getComputedStyle(el).visibility !== "hidden") out[id] = box(b); }
+  const brand = document.querySelector('[data-testid="shell-brand-dll"]'); if (brand) { const r = document.createRange(); r.selectNodeContents(brand); out.brand = box(r.getBoundingClientRect()); }
+  const title = document.querySelector('[data-testid="job-scope-title"]');
+  const st = el => el && { fs: parseFloat(getComputedStyle(el).fontSize), clip: el.scrollWidth > el.clientWidth + 0.5, sw: el.scrollWidth, cw: el.clientWidth };
+  const modeBtn = document.querySelector('[data-testid="investigation-mode-selector"] button');
+  const lines = el => { if (!el) return []; const r = document.createRange(); r.selectNodeContents(el); return [...r.getClientRects()].filter(q => q.width > 0.5).map(box); };
+  return { out, title: st(title), modeFs: modeBtn ? parseFloat(getComputedStyle(modeBtn).fontSize) : null, statement: lines(document.querySelector('[data-testid="syntx-investigation-statement"]')), nonClaims: lines(document.querySelector('[data-testid="job-pool-non-claims"]')) };
+}, SHELL);
+const air = boxes => { let a = Infinity, pair = ""; const k = Object.keys(boxes); for (let i = 0; i < k.length; i += 1) for (let j = i + 1; j < k.length; j += 1) { const p = boxes[k[i]], q = boxes[k[j]]; if (Math.min(p[3], q[3]) - Math.max(p[1], q[1]) <= 0) continue; const g = Math.max(p[0], q[0]) - Math.min(p[2], q[2]); if (DOCK.has(k[i]) && DOCK.has(k[j]) && Math.abs(g) <= 1.5) continue; if (g < a) { a = g; pair = `${k[i]}|${k[j]}`; } } return [r1(a), pair]; };
+const stmtGap = (s, n) => { let g = Infinity; for (const p of s) for (const q of n) { const xo = Math.min(p[2], q[2]) - Math.max(p[0], q[0]); if (xo <= 0) continue; g = Math.min(g, q[1] - p[3], p[1] - q[3] > 0 ? p[1] - q[3] : q[1] - p[3]); } return g === Infinity ? null : r1(g); };
+const WIDTHS = [...new Set([...Array.from({ length: 91 }, (_, i) => 1240 + 8 * i), 1365, 1366, 1367])].sort((a, b) => a - b);
+const STATES = [
+  ["capability-person", "", async () => { await t("investigation-mode-PERSON").click(); await t("field-focus-capability-btn").click(); await page.waitForTimeout(600); }],
+  ["job-empty", "?focus=FIELD", null],
+  ["job-pool-scope-pxj", fieldUrl(POOL, null, null, "role_kestrel_fullstack", null), null],
+  ["job-pool-scope-JOB", fieldUrl(POOL, null, null, "role_kestrel_fullstack", "JOB"), null],
+  ["job-pool-PERSON", fieldUrl(POOL, null, null, null, "PERSON"), null],
+  ["job-long-scope-JOB", fieldUrl(PP, null, null, "role_pink_long_0", "JOB"), null]];
+await fresh(1920, 800);
+for (const [name, q, after] of STATES) for (const l of ["en", "de"]) await step(`shell ${name} ${l}`, async () => {
+  await page.setViewportSize({ width: 1920, height: 800 }); await go(q, l); if (after) { await after(); }
+  for (const w of WIDTHS) { await page.setViewportSize({ width: w, height: 800 }); await page.waitForTimeout(220); const s = await shellRead(); const [a, pair] = air(s.out); res.shell.push({ state: name, lang: l, w, air: a, pair, title: s.title, modeFs: s.modeFs, stmtGap: stmtGap(s.statement, s.nonClaims), stmtLines: s.statement.length, ncLines: s.nonClaims.length }); }
+  console.log("shell", name, l, "done");
+});
+// Job scope title for every role (engineering + PINK long), five widths, EN/DE.
+for (const [pool, , role, title] of [...ENG, ...LONG]) for (const l of ["en", "de"]) await step(`scope ${role} ${l}`, async () => {
+  await page.setViewportSize({ width: 1920, height: 800 }); await go(fieldUrl(pool, null, null, role, null), l);
+  await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30000 });
+  for (const w of [1280, 1366, 1440, 1600, 1920]) { await page.setViewportSize({ width: w, height: 800 }); await page.waitForTimeout(220); const s = await shellRead(); const [a, pair] = air(s.out); res.scopeTitle.push({ role, len: title.length, lang: l, w, ...s.title, air: a, pair }); }
+});
+// Source dock: START ANALYSIS within the viewport and on top, three dock states, three viewports.
+for (const [w, h] of [[1280, 720], [1366, 768], [1280, 800], [1440, 900]]) for (const ds of ["person-empty", "person-staged", "pxj-staged"]) await step(`dock ${w}x${h} ${ds}`, async () => {
+  await fresh(w, h);
+  if (ds === "pxj-staged") { await go(fieldUrl(POOL, null, null, "role_kestrel_fullstack", null), "en"); await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 30000 }); await t("field-focus-capability-btn").click(); }
+  else { await go("", "en"); await t("investigation-mode-PERSON").click(); await t("field-focus-capability-btn").click(); }
+  await t("source-dock").waitFor({ timeout: 30000 });
+  if (ds !== "person-empty") { await t("source-dock-file-input").setInputFiles("docs/examples/cv.synthetic.pdf"); await t("analyze-investigation").waitFor({ timeout: 20000 }); }
+  await page.waitForTimeout(800);
+  const r = await page.evaluate(() => { const b = document.querySelector('[data-testid="start-intake-analysis-btn"]'); const d = document.querySelector('[data-testid="source-dock"]'); const i = document.querySelector('[data-testid="decision-graph-inspector"]');
+    if (!b) return { btn: null }; const q = b.getBoundingClientRect(); const cx = (q.left + q.right) / 2, cy = Math.min((q.top + q.bottom) / 2, innerHeight - 1); const top = document.elementFromPoint(cx, cy);
+    const db = d?.getBoundingClientRect(), ib = i?.getBoundingClientRect();
+    return { btn: [q.left, q.top, q.right, q.bottom], vh: innerHeight, onTop: Boolean(top && (top === b || b.contains(top))), topIs: top?.getAttribute("data-testid") ?? top?.tagName, dock: db && [db.left, db.top, db.right, db.bottom], inspector: ib && ib.width > 0 ? [ib.left, ib.top, ib.right, ib.bottom] : null, fs: parseFloat(getComputedStyle(b).fontSize) }; });
+  res.dock.push({ w, h, state: ds, ...r });
+});
+// Low viewports: the orientation surface and SELECT AS JOB (role observation, before a scope).
+for (const [w, h] of [[960, 540], [1280, 599], [1280, 600], [1280, 601], [1920, 560], [1536, 864]]) await step(`low ${w}x${h}`, async () => {
+  await fresh(w, h); await go(fieldUrl(POOL, "org_kestrel", "role_kestrel_fullstack", null, null), "en");
+  await t("syntx-job-scope-select").waitFor({ state: "attached", timeout: 30000 }); await page.waitForTimeout(800);
+  const read = () => page.evaluate(() => { const o = document.querySelector("[data-sx-orient]"); const b = document.querySelector('[data-testid="syntx-job-scope-select"]'); const q = b.getBoundingClientRect(); const ob = o.getBoundingClientRect(); const cs = getComputedStyle(o);
+    const inView = q.top >= 0 && q.bottom <= innerHeight && q.left >= 0 && q.right <= innerWidth; const vis = q.top >= ob.top - 0.5 && q.bottom <= ob.bottom + 0.5;
+    const top = inView ? document.elementFromPoint((q.left + q.right) / 2, (q.top + q.bottom) / 2) : null;
+    return { overflowY: cs.overflowY, maxHeight: cs.maxHeight, scrollH: o.scrollHeight, clientH: o.clientHeight, surface: [ob.left, ob.top, ob.right, ob.bottom], btn: [q.left, q.top, q.right, q.bottom], inView, inSurface: vis, onTop: Boolean(top && (top === b || b.contains(top))) }; });
+  const before = await read();
+  await page.evaluate(() => document.querySelector('[data-testid="syntx-job-scope-select"]').scrollIntoView({ block: "nearest" })); await page.waitForTimeout(400);
+  const after = await read(); let clicked = false;
+  try { await t("syntx-job-scope-select").click({ timeout: 5000, noWaitAfter: true }); await page.locator('[data-testid="job-scope-indicator"][data-job-scope-state="VALID"]').waitFor({ timeout: 10000 }); clicked = true; } catch {}
+  res.low.push({ w, h, before, afterScroll: after, pointerSelects: clicked });
+});
+// Organization cosmos centre line (EN/DE, four monospace fonts, 1920 and 1280) and the inspector's idle hint.
+for (const font of [null, "Fira Code", "DejaVu Sans Mono", "IBM Plex Mono", "JetBrains Mono"]) for (const [w, h] of [[1920, 1080], [1280, 720]]) for (const l of ["en", "de"]) for (const [pool, org] of [[POOL, "org_kestrel"], [POOL, "org_aurelion"], [PP, "org_pink_long"]]) await step(`cosmos ${font} ${w} ${l} ${org}`, async () => {
+  await fresh(w, h, font); await go(fieldUrl(pool, org, null, null, null), l);
+  await page.locator('[data-testid="syntx-field"][data-observation-kind="ORGANIZATION"]').waitFor({ timeout: 30000 }); await page.waitForTimeout(1200);
+  const r = await page.evaluate(() => { const c = document.querySelector('[data-testid="syntx-cosmos-centre"]'); if (!c) return null; const cb = c.getBoundingClientRect();
+    const spans = [...c.querySelectorAll("span")]; const line = spans.find(s => /COSMOS|KOSMOS/i.test(s.textContent ?? "") && s.children.length >= 1) ?? spans.find(s => /COSMOS|KOSMOS/i.test(s.textContent ?? ""));
+    const rr = document.createRange(); rr.selectNodeContents(line); const rects = [...rr.getClientRects()].filter(q => q.width > 0.5); const tops = [...new Set(rects.map(q => Math.round(q.top)))];
+    const ext = rr.getBoundingClientRect(); const cs = getComputedStyle(line);
+    return { text: (line.textContent ?? "").replace(/\s+/g, " ").trim(), lines: tops.length, ext: [ext.left, ext.right], centre: [cb.left, cb.right], outside: Math.max(cb.left - ext.left, ext.right - cb.right, 0), fs: parseFloat(cs.fontSize), ls: cs.letterSpacing, hyphenBreak: rects.length > 1 && /-\s*$/.test("") };
+  });
+  res.cosmos.push({ font: font ?? "default", w, lang: l, org, ...r });
+});
+await step("inspector idle", async () => { await fresh(1920, 1080); await go("", "en"); await page.waitForTimeout(800); res.inspector.push(await page.evaluate(() => { const e = document.querySelector('[data-testid="decision-graph-inspector-idle"]'); if (!e) return null; const own = [...e.querySelectorAll("*")].concat([e]).filter(x => [...x.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim())); return own.map(x => ({ text: x.textContent.trim().slice(0, 60), fs: parseFloat(getComputedStyle(x).fontSize), color: getComputedStyle(x).color })); })); });
+// The current path step on role observation: no ellipsis, inside the orientation surface, no visible collision with another text.
+for (const [w, h] of [[1920, 1080], [1440, 900], [1280, 720]]) for (const l of ["en", "de"]) for (const [pool, org, role] of [...ENG, ...LONG]) await step(`path ${w} ${l} ${role}`, async () => {
+  await fresh(w, h); await go(fieldUrl(pool, org, role, null, null), l);
+  await page.locator('[data-testid="syntx-field"][data-observation-kind="ROLE"]').waitFor({ timeout: 30000 }); await page.waitForTimeout(900);
+  const r = await page.evaluate(() => { const b = document.querySelector('[data-testid="syntx-path-ROLE"]'); const o = document.querySelector("[data-sx-orient]"); if (!b) return null; const q = b.getBoundingClientRect(), ob = o.getBoundingClientRect();
+    const rr = document.createRange(); rr.selectNodeContents(b); const tops = [...new Set([...rr.getClientRects()].filter(x => x.width > 0.5).map(x => Math.round(x.top)))];
+    return { ellipsis: b.scrollWidth > b.clientWidth + 0.5 || [...b.querySelectorAll("*")].some(x => getComputedStyle(x).textOverflow === "ellipsis" && x.scrollWidth > x.clientWidth + 0.5), lines: tops.length, inside: q.left >= ob.left - 0.5 && q.right <= ob.right + 0.5, fs: parseFloat(getComputedStyle(b).fontSize) }; });
+  const m = await measure(page); const coll = m.collisions.filter(c => c.visible && (c.a.includes("syntx-path-") || c.b.includes("syntx-path-")));
+  res.path.push({ w, lang: l, role, ...r, collisions: coll.map(c => `${c.a} × ${c.b} ${c.w}x${c.h}`) });
+});
+writeFileSync(OUT, JSON.stringify(res));
+console.log(`EXTRAS shell ${res.shell.length} scope ${res.scopeTitle.length} dock ${res.dock.length} low ${res.low.length} cosmos ${res.cosmos.length} path ${res.path.length} errors ${res.errors.length}`);
+await browser.close();

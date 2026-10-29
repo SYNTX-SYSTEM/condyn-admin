@@ -1,0 +1,100 @@
+# Static contract of frontend/focus-readability 9fb1df6 against 38ebc31 (PINK)
+
+## commits
+9fb1df6 fix(career): focus name steps read the label as shown, in upper case (GELB F-FR-1)
+121dc6d docs(career): focus-dependent readability — state reconstruction, measures and run record (§13.2.37)
+26b54be feat(career): receded siblings keep readable names (owner FOCUS_DEPENDENT_READABILITY, decision 02)
+cebc78c feat(career): focused pool and organization names lead their context (owner FOCUS_DEPENDENT_READABILITY, decision 04)
+
+## files outside docs/
+ app/components/career/demo/CapabilityDeepFocusView.tsx |  2 +-
+ app/components/career/demo/SyntxField.tsx              | 15 ++++++++++-----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+## full code diff (app/, lib/, test/)
+diff --git a/app/components/career/demo/CapabilityDeepFocusView.tsx b/app/components/career/demo/CapabilityDeepFocusView.tsx
+index 33c1860..de5c0e1 100644
+--- a/app/components/career/demo/CapabilityDeepFocusView.tsx
++++ b/app/components/career/demo/CapabilityDeepFocusView.tsx
+@@ -78,7 +78,7 @@ export function CapabilityDeepFocusView({
+               transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity,
+               opacity: satellite.opacity, animation: "capabilityDeepFocusSatellite 0.72s cubic-bezier(0.16, 1, 0.3, 1) both",
+               ...SYNTX_SATELLITE_MATERIAL,
+-              fontFamily: SIL_TOKENS.typography.mono, fontSize: "10px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
++              fontFamily: SIL_TOKENS.typography.mono, fontSize: "11px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto"
+             } as React.CSSProperties}
+           >
+             {cluster?.title ?? satellite.title}
+diff --git a/app/components/career/demo/SyntxField.tsx b/app/components/career/demo/SyntxField.tsx
+index b4e4ba1..76b4dbc 100644
+--- a/app/components/career/demo/SyntxField.tsx
++++ b/app/components/career/demo/SyntxField.tsx
+@@ -172,6 +172,13 @@ const JOB_NODE_MATERIAL: React.CSSProperties = {
+   background: "radial-gradient(circle at 18% 0%, rgba(120, 212, 255, 0.15), transparent 46%), linear-gradient(172deg, rgba(8, 21, 36, 0.97), rgba(4, 11, 21, 0.97))",
+   boxShadow: `0 0 22px rgba(46, 132, 226, 0.16), 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(180, 232, 255, 0.12), inset 0 0 18px ${azure(0.04)}`
+ };
++/** Focused identities lead their context (owner "FOCUS_DEPENDENT_READABILITY", 2026-10-21): the pool's name in the field's core and the
++ * organization's name in its cosmos centre take the size their body holds without growing; a name too long for that keeps the earlier
++ * size, so no body changes its geometry. Steps by the length of the label as shown, upper case (ß → SS, GELB F-FR-1):
++ * [max characters, size]. */
++const POOL_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[36, "14px"], [54, "12px"]];
++const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[34, "13px"], [38, "12px"]];
++const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.toUpperCase().length <= max)?.[1] ?? fallback;
+ /** The organization cosmos' centre: the shared centre material with an opaque deep core, so the receded organization body behind it
+  * no longer shows through the text; a finer membrane and a calmer glow. */
+ const JOB_COSMOS_CENTRE_MATERIAL: React.CSSProperties = {
+@@ -434,8 +441,6 @@ ${SYNTX_FOCUS_PULSE_KEYFRAMES}
+ [data-sx-orient]::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; z-index: -1; box-shadow: 0 0 5px 0 rgba(56, 229, 255, 0.15), 0 0 16px 1px rgba(56, 229, 255, 0.055); transition: box-shadow .9s cubic-bezier(0.16, 1, 0.3, 1), opacity .9s cubic-bezier(0.16, 1, 0.3, 1); }
+ [data-sx-orient]:hover::after, [data-sx-orient]:has(:focus-visible)::after { box-shadow: 0 0 7px 1px rgba(56, 229, 255, 0.3), 0 0 22px 3px rgba(56, 229, 255, 0.11); }
+ [data-sx-orient][data-sx-resonance="retreated"]:not(:hover):not(:has(:focus-visible))::after { box-shadow: 0 0 4px 0 rgba(56, 229, 255, 0.05), 0 0 12px 0 rgba(56, 229, 255, 0.02); }
+-/* Very low viewports (browser zoom ≥ 200 % on 1080 p): the orientation surface scrolls instead of pushing its edge actions out of view
+- * (typography sweep 2026-10-20). Its outer halo is clipped there; at every other height nothing changes. */
+ /* Low windows (about 200 % zoom): below 1214 px 28vw narrows the surface until path and statement wrap past the window; 340 px keeps
+  * every edge action in view without a scroll area of its own (PINK D-TY-2). Wider windows already use 340 px. */
+ @media (max-height: 600px) { [data-sx-orient] { width: min(340px, 36vw) !important; } }
+@@ -742,7 +747,7 @@ function PlanetariumLayer({ field, mode, t, locale, size, onObserve }: LayerProp
+           <div style={{ textAlign: "center", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "center", maxWidth: "176px" }}>
+             <DecisionLoopLabsCoreEmblem idPrefix="sx-pool-dll" />
+             <div style={{ fontSize: "11px", color: CYAN, letterSpacing: "2px", fontWeight: 700, textTransform: "uppercase" }}>{tm.pool}</div>
+-            <div style={{ marginTop: "3px", fontSize: "10.5px", color: INK, letterSpacing: "0.6px", fontWeight: 700, textTransform: "uppercase", lineHeight: 1.25 }}>{wrapLines(field.pool.poolName, 18, 2).join(" ")}</div>
++            <div style={{ marginTop: "3px", fontSize: focusNameSize(field.pool.poolName, POOL_NAME_STEPS, "10.5px"), color: INK, letterSpacing: "0.6px", fontWeight: 700, textTransform: "uppercase", lineHeight: 1.25 }}>{wrapLines(field.pool.poolName, 18, 2).join(" ")}</div>
+             <div style={{ marginTop: "6px", fontSize: "11px", color: INK, padding: "3px 10px", borderRadius: "12px", backgroundColor: "rgba(56, 229, 255, 0.12)", border: `1px solid ${CYAN}`, letterSpacing: "0.5px" }}>⬡ {field.organizations.length} {t.organizations}</div>
+           </div>
+         </SyntxCoreOrganism>
+@@ -1002,7 +1007,7 @@ function OrganizationCosmosLayer({ field, mode, t, size, onObserve, organization
+           aria-label={t.manifest.returnToField}
+           tabIndex={-1}
+           onClick={stop(() => onObserve(returnFrom({ ...observation, kind: "ORGANIZATION", roleId: null, requirementId: null, apertureSignId: null })))}
+-          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, ...JOB_COSMOS_CENTRE_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: "11px", fontWeight: 700, letterSpacing: "1.4px", lineHeight: 1.4, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", opacity: recededLevel ? 0 : 1 }}
++          style={{ position: "absolute", left: `${layout.centerX}px`, top: `${layout.centerY}px`, transform: "translate(-50%, -50%)", ...SYNTX_COSMOS_CENTER_MATERIAL, ...JOB_COSMOS_CENTRE_MATERIAL, color: INK, cursor: "pointer", fontFamily: MONO, fontSize: focusNameSize(`${String(index + 1).padStart(2, "0")} ${organization.name}`, CENTRE_NAME_STEPS, "11px"), fontWeight: 700, letterSpacing: "1.4px", lineHeight: 1.4, padding: "18px 16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", opacity: recededLevel ? 0 : 1 }}
+         >
+           <span aria-hidden="true" style={{ position: "absolute", inset: "7px", borderRadius: "50%", border: `1px solid ${azure(0.16)}`, pointerEvents: "none" }} />
+           <span style={{ display: "block", textShadow: "0 0 12px rgba(56, 229, 255, 0.35)" }}>{String(index + 1).padStart(2, "0")} {organization.name.toUpperCase()}</span>
+@@ -1265,7 +1270,7 @@ function RequirementFocusLayer({ field, mode, t, onObserve, requirement, focus,
+               aria-label={`${sibling.name} · ${t.support[sibling.support]}`}
+               aria-pressed={false}
+               onClick={stop(observe)}
+-              style={{ position: "absolute", left: `${(satellite.width * satellite.scale) / 2 + 6}px`, top: `${(satellite.height * satellite.scale) / 2 + 6}px`, width: `${satellite.width}px`, minHeight: `${satellite.height}px`, transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity, opacity: satellite.opacity, animation: "sxSatelliteSettle 0.72s cubic-bezier(0.16, 1, 0.3, 1) both", ...JOB_SATELLITE_MATERIAL, fontFamily: MONO, fontSize: "9.5px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto", display: "flex", gap: "8px", alignItems: "flex-start" } as React.CSSProperties}
++              style={{ position: "absolute", left: `${(satellite.width * satellite.scale) / 2 + 6}px`, top: `${(satellite.height * satellite.scale) / 2 + 6}px`, width: `${satellite.width}px`, minHeight: `${satellite.height}px`, transform: "translate(-50%, -50%) scale(var(--satellite-scale))", "--satellite-scale": satellite.scale, "--satellite-opacity": satellite.opacity, opacity: satellite.opacity, animation: "sxSatelliteSettle 0.72s cubic-bezier(0.16, 1, 0.3, 1) both", ...JOB_SATELLITE_MATERIAL, fontFamily: MONO, fontSize: "11px", fontWeight: 700, textAlign: "left", cursor: "pointer", overflowWrap: "anywhere", hyphens: "auto", display: "flex", gap: "8px", alignItems: "flex-start" } as React.CSSProperties}
+             >
+               <svg aria-hidden="true" width={16} height={16} style={{ flexShrink: 0, overflow: "visible" }}><circle cx={8} cy={8} r={siblingShape.r * 0.8} fill={siblingShape.fill} stroke={siblingShape.stroke} strokeWidth={siblingShape.strokeWidth} strokeDasharray={siblingShape.dash} /></svg>
+               <span>{sibling.name}</span>
+
+## masked: every fontSize value / focusNameSize(...) call replaced by FS, comment lines dropped
+### SyntxField.tsx
+144a145,147
+> const POOL_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[36, "14px"], [54, "12px"]];
+> const CENTRE_NAME_STEPS: ReadonlyArray<readonly [number, string]> = [[34, "13px"], [38, "12px"]];
+> const focusNameSize = (label: string, steps: ReadonlyArray<readonly [number, string]>, fallback: string) => steps.find(([max]) => label.toUpperCase().length <= max)?.[1] ?? fallback;
+### CapabilityDeepFocusView.tsx
+(identical apart from the three step constants above)
+
+## step semantics read from the code (label as shown, upper case)
+pool name in the core:   upper length ≤ 36 → 14px; 37–54 → 12px; ≥ 55 → 10.5px (base 10.5px)
+cosmos centre label "NN NAME": upper length ≤ 34 → 13px; 35–38 → 12px; ≥ 39 → 11px (base 11px)
+requirement siblings (RequirementFocusLayer) 9.5px → 11px; capability deep-focus satellites 10px → 11px; scale and opacity unchanged
+
+## fixture names: upper-case length equals raw length (so 121dc6d and 9fb1df6 render the walk identically)
+DLL_JOBPOOL_AI_DATA: 6 names, upper-length differs: 0; pool 36 → 14px; centre labels 27/25/26/27/30
+DLL_JOBPOOL_ENGINEERING: 4 names, upper-length differs: 0; pool 35 → 14px; centre labels 34/29/28
+DLL_JOBPOOL_ENTERPRISE_SCALE: 17 names, upper-length differs: 0; pool 25 → 14px; centre labels 32/36/26/24/37/26/29/28/21/35/31/24/24/27/26/36

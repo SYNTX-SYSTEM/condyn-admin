@@ -1,0 +1,49 @@
+// PINK: first screen of GELB's live lab, GET only. Every non-GET request and every proxy/pdf request is aborted, never sent.
+import { pathToFileURL } from "node:url";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+import { writeFileSync } from "node:fs";
+const [BASE, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const PXJ = "ANL_1792628993472_10", PERSON = "ANL_1792628831636_456";
+const link = a => `${BASE}/career/demo?analysisId=${a}&focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`;
+const views = [["pxj", link(PXJ)], ["person", link(PERSON)]];
+const log = [], report = {};
+const browser = await chromium.launch();
+for (const [name, url] of views) {
+  const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+  await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const page = await ctx.newPage();
+  await page.route("**/*", route => {
+    const r = route.request(), u = new URL(r.url());
+    const blocked = r.method() !== "GET" || u.pathname.startsWith("/api/admin/proxy") || u.pathname.startsWith("/api/pdf") || (u.hostname !== "127.0.0.1" && u.hostname !== "localhost");
+    log.push(`${name} ${blocked ? "ABORTED" : "sent"} ${r.method()} ${u.hostname === "127.0.0.1" ? "" : u.host}${u.pathname}${u.search.replace(/[?&](token|key)=[^&]*/gi, "")}`.slice(0, 300));
+    return blocked ? route.abort() : route.continue();
+  });
+  const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 200)));
+  await page.goto(url, { waitUntil: "networkidle", timeout: 120000 });
+  await page.waitForTimeout(4000);
+  await page.screenshot({ path: `${OUT}/${name}-1920x1080.png` });
+  report[name] = await page.evaluate(() => {
+    const vis = el => { const r = el.getBoundingClientRect(), s = getComputedStyle(el); return r.width > 0 && r.height > 0 && r.top < innerHeight && r.bottom > 0 && r.left < innerWidth && r.right > 0 && s.visibility !== "hidden" && s.display !== "none" && +s.opacity > 0.05; };
+    const ids = [...document.querySelectorAll("[data-testid]")].filter(vis).map(el => [el.dataset.testid, (el.innerText || el.getAttribute("aria-label") || "").replace(/\s+/g, " ").trim().slice(0, 160)]);
+    return { url: location.pathname + location.search, scrollY, visibleTestids: ids.length, ids, body: document.body.innerText.replace(/\s+/g, " ").slice(0, 4000) };
+  });
+  const t = id => page.locator(`[data-testid="${id}"]`);
+  report[name].field = await page.locator('[data-testid="syntx-field"]').first().evaluate(el => Object.fromEntries([...el.attributes].filter(a => a.name.startsWith("data-")).map(a => [a.name, a.value]))).catch(e => String(e).slice(0, 120));
+  report[name].root = await page.locator('[data-investigation-mode]').first().evaluate(el => Object.fromEntries([...el.attributes].filter(a => a.name.startsWith("data-")).map(a => [a.name, a.value]))).catch(e => String(e).slice(0, 120));
+  report[name].requirements = await page.locator('[data-testid^="syntx-requirement-"]').evaluateAll(list => list.map(el => `${el.getAttribute("data-testid").replace("syntx-requirement-", "")}:${el.getAttribute("data-support")}`));
+  report[name].scopeIndicator = await t("job-scope-indicator").evaluate(el => [el.getAttribute("data-job-scope-state"), el.innerText.replace(/\s+/g, " ")]).catch(() => null);
+  await t("syntx-investigation-toggle").click();
+  await page.locator('[data-testid="syntx-coverage"]:not([data-coverage-state="LOADING"])').waitFor({ timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: `${OUT}/${name}-investigation-1920x1080.png` });
+  report[name].coverage = await t("syntx-coverage").evaluate(el => ({ attrs: Object.fromEntries([...el.attributes].filter(a => a.name.startsWith("data-")).map(a => [a.name, a.value])), text: el.innerText.replace(/\s+/g, " ").slice(0, 1500) })).catch(e => String(e).slice(0, 120));
+  report[name].coverageRows = await page.locator('[data-testid^="syntx-coverage-req-"]').evaluateAll(list => list.map(el => `${el.getAttribute("data-testid").replace("syntx-coverage-req-", "")}:${el.getAttribute("data-coverage")}/${el.getAttribute("data-match-basis") ?? ""}`));
+  report[name].pageErrors = errors;
+  await ctx.close();
+}
+await browser.close();
+writeFileSync(`${OUT}/first-screen.json`, JSON.stringify(report, null, 1));
+writeFileSync(`${OUT}/requests.txt`, log.join("\n") + "\n");
+console.log("done", Object.fromEntries(Object.entries(report).map(([k, v]) => [k, v.visibleTestids + " testids, errors " + v.pageErrors.length])));
+console.log("non-GET or blocked:", log.filter(l => l.includes("ABORTED")).length, "sent:", log.filter(l => l.includes(" sent ")).length);

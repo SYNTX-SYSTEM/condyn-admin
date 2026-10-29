@@ -2525,6 +2525,1111 @@ Factors measured in the DOM (`e6493a7`; the factor pair, then the outer orbit's 
 - Open, as the handoff states: everything about Antigravity itself (P-1 … P-3, P-5 … P-8) and the behaviour on real model failures.
 - PINK made no Gemini call. Evidence is in `evidence/handoff-60d2a3b-live-104410d/`.
 
+### 3.51 UI typography & readability sweep GRÜN `frontend/ui-typography` `7a3ca6a` (base `35f00bc`) (2026-10-20)
+
+**Request.**
+- GRÜN asked PINK to check `frontend/ui-typography` at `7a3ca6a` (base `35f00bc`) independently. The work follows the owner order "SFE::UI TYPOGRAPHY & READABILITY SWEEP" (2026-10-20). The owner lifted the VIDEO FREEZE for this isolated work only, and the branch stops before integration. PINK did not see the owner order first-hand.
+- GRÜN named six places where the geometry limits the size and asked PINK to check them on purpose:
+  1. the selected job's title;
+  2. the investigation selector below 1366 px;
+  3. the meta dock beside the brand at 1280 px in German;
+  4. the Source Dock at 1280 × 720;
+  5. the orientation surface below 600 px viewport height;
+  6. the inspector hint and the organization-cosmos line.
+- GRÜN also named two corrections: the mode statement no longer overlaps the field laws, and the current path step wraps instead of cutting the title.
+
+**Method.**
+- **Static.** PINK diffed every changed app and test file with all type values (font-size, letter-spacing, line-height) masked, so that only non-typographic changes remain (`static-contract.txt`). It classified every changed font size against GRÜN's step map, compared the role-card code byte for byte and computed the `textMuted` contrast.
+- **Walks.** PINK ran its own instrumented copy of GELB's `video-walk.mjs`: the checks are unchanged, and every shot also writes PINK's own frame measure (`pink-typo-measure.mjs.txt`, independent of GRÜN's `inventory.mjs`).
+  - The measure records every visible text run: its type, the per-line rectangles of the text itself, the cut by hidden or clip ancestors (separate from text that only scrolls inside a panel), ellipsis and line clamp.
+  - It counts a text collision only where both texts are actually painted. Text hidden under an opaque panel does not count.
+  - One fresh stand-in lab per run (GELB's `video-lab.ts`, port 41871, disposable databases, PINK's own PID, stopped after each run). Viewports 1920 × 1080, 1440 × 900, **1366 × 768** (not in GRÜN's set) and 1280 × 720, on both commits.
+- **Targeted probe** (`pink-typo-extras.mjs.txt`), identical on both commits:
+  - the shell row over 1240–1960 px in 8 px steps plus 1365 / 1366 / 1367, in six states, EN / DE;
+  - the selected job's title for all 9 engineering roles and 5 roles of PINK's own long-title pool, at five widths;
+  - START ANALYSIS in three dock states at four viewports;
+  - the orientation surface at six low viewports;
+  - the organization-cosmos kicker in five monospace settings × 2 widths × EN / DE × 3 organizations;
+  - the current path step for 14 roles × 3 viewports × EN / DE.
+- **Follow-up probes.** `pink-typo-probe2.mjs.txt` sweeps START ANALYSIS against the inspector over viewport heights 660–920 in 4 px steps. `pink-typo-probe3.mjs.txt` checks whether each edge action can be reached at every page-scroll position.
+- **Regression.** PINK's own suites on `7a3ca6a`, plus the full suite on both commits.
+- No Gemini call by PINK. The lab net logs show only Next dev's npm dist-tags check.
+
+**Confirmed.**
+- **Contracts.**
+  - Every `data-testid`, every visible copy literal and every `text-transform` is unchanged. No font size decreased.
+  - 141 steps follow the map exactly and 64 are smaller, geometry-bound steps; none is larger than the map.
+  - At run time: 6890 text runs matched across 77 frames, none smaller than before, and the smallest size is 7.5 px (the role cards' standing line, kept).
+  - `textMuted` #63788a → #7a8fa1: 4.45 → 6.09 : 1 on void and 4.22 → 5.78 : 1 on the field ground.
+- **Role cards unchanged.**
+  - `RoleCardTitle` is byte-identical, and in `OrganizationCosmosLayer` only the cosmos centre changed.
+  - Role cards 2697/2697: the report is identical to `d685003` except the five C-5 contrast lines. Those are sampled from the pixels behind the translucent cards; they are still ≥ 4.5 : 1 and at least 7.73.
+  - Orbit e2e 395/395 and geometry 56/56.
+- **Walks.**
+  - 30/30 at all four viewports on the base, and on `7a3ca6a` at 1920, 1440 and 1280.
+  - The first 1366 × 768 lab on `7a3ca6a` gave 28/29: V-11 timed out because the server answered the job-structure route with 404 at its first compile. The route has no 404 path, and a second lab gave 200 and 30/30. This is the Next dev environment, not the typography change.
+- **Corrections.**
+  - The mode statement and the field laws overlapped at **every** measured width on the base (94 of 94, at most 2.4 px), not only in 5 frames at 1920. On `7a3ca6a` there are at least 11.8 px between them everywhere, in both languages.
+  - `syntx-path-ROLE`: ellipsis on 36 of 84 role views before, 0 after. The step wraps to two or three lines, stays inside the surface and collides with nothing.
+  - No new cut text in any walk frame. 23 runs are no longer cut.
+- **The six places.**
+  1. **Job title.** It stays 12.5 px, and the title box is equally wide at 1280, 1366 and 1440. The same titles are cut as before, and none newly; at 1440 every engineering role fits. Every role title at 1280 and the 46–48-character titles at 1366 were cut by ellipsis already on the base.
+  2. **Investigation selector.** 9.5 px below 1366 and 10 px from 1366. At 1280 it is 216 px wide (base 224); from 1366 it is 240.6 px (+16.5).
+  3. **Shell row.** At least 8.0 px air everywhere in 1280–1920, in both fields, in six states, EN / DE. Base minimum: 6.9 px (Capability) and 2.4 px (German Job Field, meta dock against the brand). The Job Field meta dock keeps its width (158 / 200 / 162 px).
+  4. **Source Dock.** START ANALYSIS ends at 712.2 px (PERSON) and 720.1 px (PERSON × JOB) at 1280 × 720, against 723.2 px on the base.
+  5. **Orientation surface.** The scroll rule applies only at a viewport height of 600 px or less.
+  6. **Cosmos line.** The inspector hint stays 12 px. The organization-cosmos kicker (8 → 9 px, tracking 1.6 → 1 px) keeps its advance exactly (121.6 / 128 px EN / DE) and wraps between its two parts in all 60 cases on both commits. On the base, PINK saw no break inside "ORGANISATIONS-KOSMOS" in any of the five font settings, so the base break GRÜN describes was not reproduced.
+- **Regression on `7a3ca6a`.**
+  - tsc: one error, `relay-check.mts` (13,214), which is the same on `35f00bc` (O-TY-TSC confirmed).
+  - SSR and units 54/54, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97, url-boundary 1/1, syntx-walk 3/3, workflow e2e 10/10.
+  - Full suite (no e2e) on both commits: 37 failures on `7a3ca6a`, all 37 also on `35f00bc`. The base has one more failure, a timeout. There is no new failure, and net is 0.
+  - The base failures are the test database's legacy DDL drift (`career_policy_versions.version`, F-JP-5) and 5000 ms timeouts in the lifecycle suites. GRÜN counted 28 in its own environment.
+
+**Findings.**
+- **D-TY-1 (new, minor; not on the 1920 × 1080 video path).** At 1280 × 720, in PERSON with a staged PDF, START ANALYSIS rises 8–11 px and its label goes under the Decision Graph Inspector.
+  - Painted share of the label: 71 % → 29 %. Clickable rows on the button's centre line: 24 → 16.
+  - GELB's walk clicks START with a pointer click. On `7a3ca6a` that first hits the inspector, and Playwright scrolls the page by 301 px before the click lands. The field and the shell then stand shifted in the "analysis done" frame (`start-label-1280x720-base-after.png`).
+  - It is a shift inside a band that already exists (P-TY-START): the heights where the label is less than half visible are 660–844 px on the base and 660–836 px after. Heights 712–728 become worse, and 688–704 and 836–848 become better. In PERSON × JOB nothing measurable changes at 720.
+- **P-TY-START (existing, both commits; functional; not on the video path).** The dock is placed from the top and the inspector from the bottom.
+  - At viewport heights of 748–820 px on the base and 736–816 px on `7a3ca6a` (PERSON), for example 1366 × 768 and 1280 × 800, the inspector covers START ANALYSIS completely: no row of the button can be clicked. Below about 680 px the button lies under the viewport's edge.
+  - GELB's walk passes there only because Playwright scrolls the page; on both commits the page then stands 253 px higher at 1366 × 768.
+  - GRÜN's O-TY-720 describes this overlap at 720 only.
+- **D-TY-2 (new, minor; at about 200 % zoom).** At 960 × 540, the scroll rule `max-height: calc(100vh - 100px)` does not keep the surface inside the viewport, because the surface starts at 145 px. Its bottom reaches 585 px.
+  - POOLS · 1, + INTAKE and GEMINI OUTPUT start below the viewport. They are reached after 10–30 px of page scroll; on the base they were visible at once.
+  - SELECT AS JOB is visible at once in PINK's state. This differs from GRÜN's description "reachable only after scrolling".
+  - At 560–600 px heights everything fits.
+- **O-TY-WIDTH (documentation).** README §3 lists the edge actions, the surface title and the investigation selector among the single-line capitals that keep their width. Measured:
+  - the edge actions and toggles grow by 4–13 px (← CAPABILITY FIELD 129.8 → 137, ← RETURN 66.8 → 74, SELECT AS JOB 122.6 → 135.2);
+  - the investigation selector grows by 16.5 px from 1366;
+  - the controls grow 1–3 px in height (membrane 32 → 34, buttons 24 → 26, toggles 22 → 23). GRÜN's message says "geometry unchanged".
+  - No new collision results from this. Only the wording is imprecise.
+- **O-TY-UNBOUND (documentation).** The empty field's kicker "JOB FIELD // UNBOUND" stays 10 px. It is not listed in README §6.
+- **O-TY-SCROLLJUMP (existing).** At 1366 × 768 the document scrolls by up to 253 px on both commits. Since 7a3ca6a it also does so at 1280 × 720. The shell header then leaves the view. Its cause is P-TY-START or D-TY-1, through Playwright's pointer click.
+- **Not new, only measured:**
+  - A 2.4 px hairline between the faint region-state text (opacity 0.42) and the cosmos centre. The pattern of body text behind the translucent centre exists on both commits.
+  - The B2 and Job Structure panels scroll about 11 % longer.
+  - At widths below 1280 the shell row overlaps on both commits (after −30.8 px, base −37.6 px in German at 1240).
+
+**Run record.**
+- Evidence: `evidence/ui-typography-7a3ca6a/`.
+  - `static-contract.txt`, `walks.txt`, `frames-compare.txt`, `extras-compare.txt`, `start-vs-inspector.txt`, `low-viewports.txt`, `suites.txt`, `full-suite.txt`;
+  - `reports/` (C, O, U, G and T reports of `7a3ca6a`);
+  - `scripts/*.txt` (PINK's proofs, never committed as live tests);
+  - `start-label-1280x720-base-after.png`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean to `validation/hr-decision-loop-pink` after every run.
+- Nothing of GRÜN's worktrees or labs (:41807, :41808) was used. :3017, :41805, :41821, :41831, :41851 and :41803 were not touched.
+- No owner decision is taken here. Integration remains with the owner's GO, and D-TY-1 and D-TY-2 are GRÜN's to weigh.
+
+### 3.52 Typography follow-up GRÜN `38ebc31` (`frontend/ui-typography-pink-followup` = `7a3ca6a` + 1) to §3.51 (2026-10-21)
+
+**Request.**
+- GRÜN corrected D-TY-1 and D-TY-2 from §3.51 in `38ebc31`, on its own branch. `frontend/ui-typography` stays on `7a3ca6a` because the owner is accepting it on :41807.
+- GRÜN asked PINK to check `38ebc31` with PINK's own labs and probes.
+
+**What changed (`static-38ebc31.txt`).**
+- Two style values changed, and nothing else in app or test code:
+  - the Source Dock's section air went from 12 to 17 px;
+  - the low-window rule `max-height: calc(100vh − 100px); overflow-y: auto` is replaced by `width: min(340px, 36vw) !important` at `max-height: 600px`. This only acts below 1214 px width, because the surface is otherwise `min(340px, 28vw)`.
+- Leftover: the comment above the new rule still describes the removed one ("scrolls instead of … Its outer halo is clipped there").
+
+**Method.**
+- Same as §3.51, on fresh stand-in labs from `38ebc31` (port 41871, PINK's own PID, disposable databases, no Gemini):
+  - the instrumented walk at 1920, 1440, 1366 and 1280 against the base frames;
+  - the targeted probe, probe2 and probe3.
+- New `pink-typo-probe4.mjs.txt`, run on all three commits. It covers ten low windows from 768 × 432 to 1536 × 864, including 1213 / 1214 × 600 at the rule's width edge, in four Job Field states, EN / DE. For each it records the surface box, every painted collision with surface text, cut surface text and whether each edge action is reachable without scrolling.
+
+**Result: D-TY-1 and D-TY-2 are fixed, and nothing new of weight appears.**
+- **Walks and frames.**
+  - Walks 30/30 at all four viewports.
+  - Against the base (80 frames): nothing cut newly, 24 runs no longer cut, no size decreased.
+  - The painted collisions are the §3.51 set. The one addition is an orbiting capability node under the fixed SEMANTIC GUIDE toggle at 1366 (2.2 × 4.3 px); it depends on the orbit's phase.
+- **D-TY-1 fixed.** At 1280 × 720:
+  - PERSON: label painted 0.71 (base) → 0.29 (`7a3ca6a`) → **0.86**, with 24 clickable rows.
+  - PERSON × JOB: 0.71 → 0.71 → **1.00**.
+  - The page no longer jumps after GELB's pointer click at 1280 × 720 (root top 59; base 58, `7a3ca6a` −240).
+- **D-TY-2 fixed.** At 960 × 540 the surface is 340 px wide and ends at 534 px (base 517), with no scroll of its own, and every edge action is visible at start. All six probe3 windows show every action at start on `38ebc31`, as on the base.
+- **probe4.**
+  - No painted collision with surface text on any of the three commits.
+  - Edge actions out of view at start: only at 768 × 432 (≈ 250 %), and there on all three commits.
+  - Cut surface text: base 54 runs, `7a3ca6a` 37, `38ebc31` 25.
+  - Against the base, 5 runs are newly cut. Four are at 768 × 432. The fifth is GEMINI OUTPUT at 960 × 540 in German: it reaches 5.2 px past the viewport's edge, while its centre stays visible and clickable.
+- **Regression.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697 (only the C-5 pixel-contrast lines differ from `d685003`), SSR and units 54/54, geometry 56/56, orbit 395/395, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97, url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+  - The full suite was not repeated: the change is two style values, and `7a3ca6a` had no new failure.
+
+**Observations.**
+- **O-TY-PXJ-SHIFT (minor).** In PERSON × JOB, START sits 8 px lower than in PERSON: at 688–730 at 1280 × 720 (base 678–723 in both states), so its button reaches 10 px past the viewport's edge. The label (700–718) stays fully visible.
+  - Inside the existing band P-TY-START, the heights 700–712 and 844–860 px show less of the label than on the base. At the common heights 720, 768, 800 and 900 the result equals the base or is better.
+  - Fully covered: 756–832 px (base 748–820).
+- **O-TY-COMMENT.** The stale comment noted above.
+- P-TY-START and O-TY-SCROLLJUMP stay with the owner as a layout question, as GRÜN records.
+
+**Run record.**
+- Evidence: `evidence/ui-typography-38ebc31/`.
+  - `static-38ebc31.txt`, `walks-frames-38ebc31.txt`, `extras-compare-base-vs-38ebc31.txt`, `start-and-low-38ebc31.txt`, `probe4-low-windows.txt`, `suites-38ebc31.txt`;
+  - `scripts/*.txt`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean after every run. GRÜN's labs (:41807, :41809) and :3017 were not touched.
+- Integration remains with the owner's GO.
+
+### 3.53 Focus-dependent readability GRÜN `frontend/focus-readability` `9fb1df6` (base `38ebc31`) (2026-10-21)
+
+**Request.**
+- The owner mandates are "FOCUS_DEPENDENT_READABILITY" and "FOCUS_READABILITY_OWNER_DECISION". GRÜN relayed them, and PINK did not see them first-hand.
+  - Decision 04: the focused pool name and organization name lead their context.
+  - Decision 02: the receded siblings become slightly more readable, without changing opacity globally.
+- GRÜN asked PINK to check `121dc6d` and then moved the check to `9fb1df6` (fast-forward, + 1 commit). That commit fixes GELB's F-FR-1: the steps now count the label as shown, in upper case, so "ß" counts as "SS".
+- GRÜN asked PINK to check three things: the step edges, PINK's role-card and orbit suites, and keyboard and focus transitions. GELB asked for the edges ±1 with "ß", and for pool names of 37–54 characters at 12 px running through `wrapLines(…, 18, 2)`.
+- The base is `38ebc31`. GRÜN reports that the owner chose it after §3.52; PINK did not see that first-hand.
+
+**What changed (`static-9fb1df6.txt`).**
+- Only font sizes changed, in `SyntxField.tsx` and `CapabilityDeepFocusView.tsx`. With every font-size expression masked, the code is identical to `38ebc31` apart from the three step constants. No test id, copy, colour, weight, sign state or tabIndex changed, and nothing in `lib/` or `test/`.
+- The steps count the label as shown (upper case):
+  - pool name in the core: up to 36 characters 14 px, 37–54 characters 12 px, from 55 characters 10.5 px (base 10.5);
+  - cosmos centre label "NN NAME": up to 34 characters 13 px, 35–38 characters 12 px, from 39 characters 11 px (base 11);
+  - receded requirement siblings 9.5 → 11 px and capability deep-focus satellites 10 → 11 px; scale 0.78 and opacity 0.42 are kept.
+- The stale comment is removed (O-TY-COMMENT closed).
+- No fixture name changes length in upper case, so `121dc6d` and `9fb1df6` render GELB's walk identically.
+
+**Method.**
+- **Walks.** PINK's instrumented walk on `121dc6d` at 1920, 1440, 1366 and 1280, plus the §3.51 extras, compared with the `38ebc31` frames of §3.52.
+- **Length steps** (`pink-focus-edges.mjs.txt`): new and identical on both commits, one fresh stand-in lab per commit, reduced motion.
+  - 20 pool names and 20 organization names: at and around every step edge (pool 36/37 and 54/55, centre 34/35 and 38/39), in four shapes:
+    - natural words;
+    - adversarial word lengths, where every line holds one word;
+    - one long word (18–29 characters);
+    - "ß" at all four edges, with the raw length one below the edge in upper case.
+  - Measured:
+    - per line: the air to the core's body ring (220 px) and inner membrane (184 px), and to the 174 px centre disc;
+    - the chip;
+    - the role cards;
+    - PINK's frame measure.
+  - The receded siblings are measured in the REQUIREMENT state, reached through the URL's `jobRequirementId`. That uses the fixture and PINK's long requirement names (up to 77 characters).
+  - Viewports 1920 and 1280 (EN / DE) and 960 × 540.
+- **Keyboard** (`pink-focus-keys.mjs.txt`).
+  - Tab order: 70 stops in FIELD, ORGANIZATION, ROLE and REQUIREMENT at 1920 and 1280, recording each stop's test id, aria label, focus ring, visibility, focus box and observation kind.
+  - Keyboard descent: FIELD → organization → role → requirement by Tab + Enter, then Escape × 3.
+  - PINK's first keyboard run started with a click on the field's ground. That click returns one level, so the run was discarded on both commits and repeated without a click.
+- **Regression.** PINK's suites on `9fb1df6`.
+- No Gemini call by PINK. The net logs show only Next dev's npm dist-tags check.
+
+**Confirmed.**
+- **Step edges, including "ß" (GELB's F-FR-1 fixed).** Every variant gets the size its upper-case length calls for: pool 36 → 14, 37 → 12, 54 → 12, 55 → 10.5; centre 34 → 13, 35 → 12, 38 → 12, 39 → 11.
+  - The four "ß" names whose raw length is one below the edge each get the next step: raw 36 / upper 37 → 12, raw 54 / upper 55 → 10.5, raw 34 / upper 35 → 12, raw 38 / upper 39 → 11.
+  - The centre disc stays 174 × 174 in all 100 centre rows per commit, and no centre text is newly cut. The 25-character word at 11 px is cut on both commits. In the 100 core rows no name is cut and no painted collision appears.
+- **Pool names of 37–54 characters at 12 px.** The text that `wrapLines(…, 18, 2)` joins wraps to 2–4 lines in the browser. Every name line keeps at least 4.4 px inside the body ring. The worst case is PINK's adversarial 54-character name with four lines: the core's content block grows from 177 to 196 px, and the chip's corners reach 18 px past the body ring (base 10 px).
+- **Walks and frames.** 30/30 at all four viewports.
+  - Only the intended sizes changed: pool name 10.5 → 14 (2 lines stay 2), centre 11 → 13 (3 lines stay 3), capability satellites 10 → 11 (1 line stays 1).
+  - No size decreased and nothing is cut newly. The §3.51 extras (shell row, job title, START, low windows, cosmos kicker, path step) are identical.
+  - The painted collisions listed as new or gone belong to three families that occur on all four commits, depending on the orbit phase. On `35f00bc` / `7a3ca6a` / `38ebc31` / `121dc6d` they count:
+    - organization body text × the role card's RETURN line: 44 / 41 / 40 / 41;
+    - capability cosmos centre: 12 / 22 / 19 / 21;
+    - capability nucleus: 7 / 9 / 9 / 9.
+- **Siblings with fixture names.** At 11 px no card grows, none overlaps another or the nucleus, and no text leaves its card, at any viewport.
+- **Keyboard and focus.** Identical on both commits:
+  - 8 × 70 tab stops (order, names, focus ring, in view, kind; focus boxes ±0 px);
+  - the descent and the Escape steps, with the same URLs and the same focused element.
+- **Regression on `9fb1df6`.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697, byte-identical to the `38ebc31` report. Orbit 395/395; only the LIVE motion distances differ.
+  - SSR and units 54/54, geometry 56/56, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97 (with ports masked, identical to `38ebc31`), url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+
+**Finding.**
+- **D-FR-1 (new, minor; not in any fixture, not on the video path).** The steps count the whole label, not its longest word. A word that fitted at the old size no longer fits at the new one.
+  - **Centre, 13 px.**
+    - "TELECOMMUNICATIONS" (18 characters, label 32) reaches 3.1 px past the disc's rim.
+    - "VERSICHERUNGSGRUPPE" (19 characters, label 30) reaches 7.4 px past it, and its first and last letters sit on the rim.
+    - On the base both stayed 7.4 and 3.7 px inside.
+  - **Pool core, 14 px.** "GESUNDHEITSPLATTFORMEN" (22 characters, pool name 31) leaves the 176 px content width and reaches 3.9–4.3 px past the body ring; on the base it stayed 15–17 px inside.
+  - Evidence: `pairs/*.png` (left `38ebc31`, right `9fb1df6`).
+  - "STRASSENLOGISTIK" (16 characters) still fits at 13 px, 5.4 px inside. The longest word in any fixture name has 16 characters (Industrieanlagen).
+  - German compounds of this length are plausible in uploaded pools. How to bound it is GRÜN's choice; for example, the step could also depend on the longest word.
+
+**Observations.**
+- **O-FR-SIB.** "Sibling cards do not grow" holds for the fixture names. A requirement name of 77 characters grows its card from 78 to 90 px at 1920 and 1280. At 960 × 540 three long names grow: 98 → 104, 98 → 118 and 78 → 90; on the base two cards had already grown there. No overlap and nothing cut.
+- **Core at 14 px (intended growth, measured).** The fixture's two name lines pass the inner membrane by 8–9 px at their corners (base 6.6–7.3 px inside), and the content block grows by 8–9 px. Natural names keep at least 2.2 px inside the body ring.
+- **Measure note.** PINK's measure counts the radial-gradient centre core as translucent. It therefore lists receded organization-body text behind the centre as touching. The centre's core is opaque, so this text is not visible, and the counts are the same on both commits.
+
+**Run record.**
+- Evidence: `evidence/focus-readability-9fb1df6/`.
+  - `static-9fb1df6.txt`, `walks-frames-121dc6d.txt`, `edges-38ebc31-vs-9fb1df6.txt`, `keys-38ebc31-vs-9fb1df6.txt`, `suites-9fb1df6.txt`;
+  - `pairs/*.png`;
+  - `scripts/*.txt` (PINK's proofs, never committed as live tests);
+  - `manifest.sha256`.
+- PINK's worktree returned clean to `validation/hr-decision-loop-pink` after every run.
+- GRÜN's review labs :41809 and :41810 were not touched, nor were :3017, :41805, :41821, :41831, :41851 or :41803.
+- Integration remains with the owner's GO. D-FR-1 is GRÜN's to weigh.
+
+### 3.54 D-FR-1 fix GRÜN `9ac5702` / `49e2bc6` (`frontend/focus-readability`, base `38ebc31`) to §3.53 (2026-10-22)
+
+**Request.**
+- GRÜN fixed D-FR-1 from §3.53 in `9ac5702` and asked PINK to re-check it.
+- The tip then moved to `49e2bc6`, which adds one documentation line: GELB's L-FR-1 records the overlong single word as an existing limit. The base stays `38ebc31`.
+
+**What changed (`static-49e2bc6.txt`).**
+- `9fb1df6` → `9ac5702` changes only `focusNameSize` and the two step constants in `SyntxField.tsx`. `9ac5702` → `49e2bc6` changes nothing outside `docs/`.
+- Each step now also has a limit on the longest word, read from the label in upper case. A word is a run between whitespace, so hyphenated words count whole. The limits:
+  - pool: 14 px up to a 19-character word, 12 px up to 22, otherwise 10.5;
+  - centre: 13 px up to a 16-character word, 12 px up to 18, otherwise 11.
+- The label-length limits 36/54 and 34/38 are unchanged.
+- **Fixtures.** `fixture-steps-pink.mjs.txt` takes the step code verbatim from each commit's `SyntxField.tsx` and evaluates it for all 27 fixture pool names and centre labels. `9ac5702` gives the same size as `9fb1df6` for every one; the longest fixture word has 16 characters. GELB's walk therefore renders as in §3.53, and PINK did not repeat the walks.
+
+**Method.**
+- PINK's length-step probe from §3.53, extended by word edges and run on one fresh stand-in lab per commit, on `49e2bc6` and `38ebc31`. The extended set has 29 pool and 28 organization variants.
+- The word edges sit at and around every word limit:
+  - pool words of 19, 20, 22 and 23 characters;
+  - centre words of 16, 17, 18 and 19 characters.
+- Each is tested as a German compound, as W only (the widest capital), first in the label, and with "ß", which shows one character longer.
+- PINK's keyboard probe and suites ran on `49e2bc6`.
+
+**Result: D-FR-1 is fixed, and nothing new appears.**
+- **The §3.53 cases.**
+  - "TELECOMMUNICATIONS" → 12 px, 2.2 px inside the disc.
+  - "VERSICHERUNGSGRUPPE" → 11 px, 3.7 px inside, as on the base.
+  - "GESUNDHEITSPLATTFORMEN" → 12 px, 7.1 px inside the body ring, within the content width.
+  - "INTERNATIONALIZATION" → 12 px.
+  - The 29-character word → 10.5 px.
+- **Word edges.** At 1920, 1280 (EN / DE) and 960 the least line air is:
+  - pool 19 → 14 px, 6.9 px air;
+  - pool 20 and 22 → 12 px, 7.1–13.1 px;
+  - pool 23 → 10.5 px;
+  - centre 16 → 13 px, 5.4 px;
+  - centre 17 and 18 → 12 px, 2.2–6.2 px;
+  - centre 19 → 11 px.
+  - W-only words measure the same (monospace). A word placed first and the "ß" variants (STRASSENBAUFIRMEN, 17 shown → 12 px) follow the rule.
+- **Against the base** (285 name rows):
+  - No enlarged name lies closer to the edge than on `38ebc31`, and nothing is newly cut. The smallest air of an enlarged name is 2.2 px (centre, 18-character word at 12 px).
+  - Only the 29-character pool word and the 25-character centre word reach past the edge. They keep 10.5 / 11 px, exactly as on `38ebc31`; that is GELB's L-FR-1.
+- **Against `9fb1df6`.** Only the five D-FR-1 variants change size. Every other variant and the receded siblings are identical.
+- **Keyboard and focus.** Identical to `38ebc31`: 8 × 70 tab stops, and the descent with Escape steps.
+- **Regression on `49e2bc6`.**
+  - tsc: only the base's `relay-check.mts` error.
+  - Role cards 2697/2697, byte-identical to the `38ebc31` report. Orbit 395/395; only the LIVE motion distances differ.
+  - SSR and units 54/54, geometry 56/56, demo-ui-fix 62/62, gate 74/74, three-modes 91/91 + 97/97 (with ports masked, identical to `38ebc31`), url-boundary 1/1, syntx-walk 3/3, workflow 10/10.
+
+**Run record.**
+- Evidence: `evidence/focus-readability-49e2bc6/`.
+  - `static-49e2bc6.txt`, `edges-38ebc31-vs-49e2bc6.txt`, `keys-38ebc31-vs-49e2bc6.txt`, `suites-49e2bc6.txt`;
+  - `pairs/*.png` (left `38ebc31`, right `49e2bc6`);
+  - `scripts/*.txt`;
+  - `manifest.sha256`.
+- PINK's worktree returned clean. GRÜN's review labs :41809 and :41810 were not touched.
+- Integration remains with the owner's GO.
+
+### 3.55 Live PERSON × JOB run on GELB's lab :41862 (`49e2bc6`), GET only (2026-10-22)
+
+**Request.**
+- GELB asked PINK to check the real PERSON × JOB run of the owner order "SYNTX::SFE::PERSON_JOB_END_TO_END_FIELD_VALIDATION" (§09) independently: ten points, each PASS / FAIL / INCONCLUSIVE / NOT IMPLEMENTED. The owner's GO for the live Gemini calls was given to GELB; PINK did not see it first-hand.
+- Lab :41862 on `49e2bc6`, disposable database, live Gemini through GELB's relay (6 of 8 calls used). PINK was asked to send GET only.
+
+**Method.**
+- PINK read the code of every GET route it used and found no write, no Gemini call and no legacy analysis on them; the only side effect is the idempotent schema registration on a verified disposable database.
+- About 22 GETs with curl and 26 from a browser in which every non-GET request was aborted (none was). Inspector routes without a token answer 404, as designed.
+- **Inspector access.** PINK did not read the inspector token. Reading GELB's lab state was refused in PINK's session as credential exploration, and PINK did not work around it. After the owner's decision (PINK_EVIDENCE_ACCESS = AUTHORIZED_READ_ONLY_MINIMUM_SCOPE) GELB opened a token-free GET gate on :41864. PINK's first request to it was refused in PINK's session the same way, so 0 requests reached the gate. Lifting that needs the user's own permission rule.
+- Hashes recomputed with the pure code of `49e2bc6` in PINK's scratch (no database): `parseJobPoolUpload` for the pool file, `resolveJobScopeFromStoredPool` + `renderInvestigationScope` for the scope hash.
+- Quotes checked against the text of `docs/examples/cv.synthetic.pdf` (pdftotext, whitespace normalised).
+
+**Result.**
+
+| # | Point | Verdict |
+|---|---|---|
+| 1 | Session identity | PASS: job → analysis → discovery run → convergence agree in /jobs, /investigation and the B2 binding |
+| 2 | PDF identity | INCONCLUSIVE: content PASS (DOC_001 = cv.synthetic.pdf in both analyses, every quote in the PDF); the bundle hash is visible only through the inspector |
+| 3 | Pool identity | PASS: raw sha256 `6475800a…` of the file = lab; canonical `b94850c4…` recomputed → `JPOOL_B948…` |
+| 4 | Role identity | PASS: 9 requirements equal to the file; `investigationScopeHash` `8016b7c1…` recomputed from the file and the lab's mapping |
+| 5 | Real model execution | INCONCLUSIVE: neither inspector nor relay readable by PINK; GELB's `relay.jsonl` is not an independent source (E-7) |
+| 6 | Persisted result | PASS, through the read routes (no direct database read) |
+| 7 | Capability → requirement relations | PASS for B2: 8 COVERED / 1 NOT_COVERED recomputed from the pool file, all 9 rows equal to the server, scored false. The canonical relation is NOT IMPLEMENTED (NOT_EVALUATED, VERIFIED_CAPABILITY_SNAPSHOT_ABSENT) and declared as such |
+| 8 | Evidence traceability | PASS at quote level: 18 discovery quotes (SOURCE_MATCH_VERIFIED), 16 legacy context quotes and the 11 trace quotes of the role are verbatim in the PDF. Spans and document hashes: INCONCLUSIVE (inspector only) |
+| 9 | First screen | PINK saw the role deep link at 1920 × 1080: correct identities, B2 one click away. GELB's correction K-1 later named walk shot 14 (directly after ANALYZE) as the first screen; that screen is G1's subject (§3.56) |
+| 10 | No mixing across sessions or roles | PASS: no shared proposal, evidence or candidate id; B2 proposals = the PERSON × JOB projection; the negative GETs refuse (NOT_SCOPED, SCOPE_MISMATCH, SELECTION_REQUIRED, 409 on /matches for PERSON, 404 for unknown ids) |
+
+- **O-PXJ-NAME.** Under the scope all 8 proposals carry exactly the requirement names, so B2's name coverage is nearly circular; the substance is in the quotes (GELB V-7).
+- **O-PXJ-PERSONLINK.** A PERSON deep link without `investigationMode` lands in the default PERSON × JOB; the field correctly refuses the analysis (handled by G1 as MODE_MISMATCH).
+
+**Run record.** `evidence/pxj-e2e-49e2bc6-pink/` (`verdicts.txt`, `scripts/*.txt`, `manifest.sha256`): ids, hashes, counts and verdicts only, no quote and no model text (E-6). GELB took the result into §11 of its report (`0df3040`).
+
+### 3.56 G1 · PERSON × JOB first screen GRÜN `frontend/pxj-first-screen-g1` `50776fc` (base `49e2bc6`) (2026-10-22)
+
+**Request.**
+- GRÜN delivered G1 and GELB asked PINK to validate it against PA-01 … PA-14 of the assignment `CONDYN_PXJ_G1_GRUEN_ASSIGNMENT_2026-10-22.md` (`15332a5`, specification `9d9f519`).
+- Deviations as relayed: D-G1-1 and D-G1-2 (+ addendum) approved by the owner directly to GRÜN, K-G1-1 by GELB, D-G1-3 GRÜN's for review. PINK did not see the owner's words first-hand.
+
+**Method.**
+- **Static** (`static-50776fc.txt`): every changed file classified against §08; every hunk of the eight D-G1-2 test files read; the new code read.
+- **Stage 1b** (`stage-1b-41862.txt`): the persisted bodies of :41862 (result, /investigation, B2; GET only) through GRÜN's pure `decodeAnalysisResult` / `projectPxjFirstScreen` and the existing boundary and B2 decoders, in PINK's scratch. GRÜN's code did not run against the lab database.
+- **Stage 1c** (`walks-STANDIN-50776fc.txt`): PINK's own probe `pink-g1-walk.mjs` (independent of GRÜN's walk) on PINK's own lab (`video-lab.ts`, port 41873, disposable database, loopback **STAND-IN, no model execution**), at 1920 × 1080 and 1280 × 720. 19 steps: PERSON session, PERSON × JOB session, deep link, focus/hover/Tab, reload, German, role switch in the session, explicit role selection, a second PERSON × JOB analysis for another role, the first analysis under that role, PERSON × JOB analysis under PERSON, PERSON deep link in the default mode, the explicit mode switch, unknown id, no selected job, orbit 01 focus, role level. Every API request is logged with the active field at its time.
+- **Base comparison** (`role-level-and-person-base-vs-tip.txt`): the same PERSON session, PERSON deep link and Job Field role level on fresh labs of `49e2bc6` and `50776fc`.
+- **PINK proof** (`D-G1-P1-no-projection.txt`): a scratch SSR test on `50776fc` with GRÜN's mock harness, run once and removed; and GRÜN's pure functions on the persisted :41862 body.
+- **Suite** (`suite-50776fc-vs-49e2bc6.txt`): tsc and the whole isolated suite including e2e on both commits, fresh disposable databases, network sentinel.
+
+**Result.**
+
+| PA | Verdict | Evidence |
+|---|---|---|
+| PA-01 mapping M-01 … M-14 | PASS | 1b: AVAILABLE, 8/9, pool order, M-05 … M-14 field-equal with the server body, proposals = projection in order, 8/8 quotes byte-equal and verified with DOC_001 / cv.synthetic.pdf. Stand-in: DOM rows, bases, proposal ids, quote hashes and counts equal to the server bodies (7/9 there) |
+| PA-02 reconstruction | PASS | session, deep link and reload give the same state, rows, quotes and counts at both widths; T-02 green |
+| PA-03 no empty, no invented | PASS, except D-G1-P1 | the PERSON × JOB result is reconstructed after a reload; unknown id → RESULT_NOT_FOUND with no data of any analysis |
+| PA-04 only B2 | PASS | 0 `gemini-*` reads; `/matches` read 5 times per width, always with the Job Field active (D-G1-3 holds); B2 read only on the Capability Field and only for the analysis's own job; none in ROLE_MISMATCH or MODE_MISMATCH. L-1 … L-4 tested by GRÜN's T-05 |
+| PA-05 no legacy score, orbits 03–06 | **FAIL in one state (D-G1-P1)**, otherwise PASS | under PERSON × JOB only orbits 01/02, no coupling, no VIEW MATCHES, no forbidden word outside the mandated statements (EN/DE); under PERSON the session screen equals `49e2bc6` |
+| PA-06 boundaries | PASS | ROLE_MISMATCH without proposals (in session and deep link, orbit 02 "0 items"); MODE_MISMATCH switches nothing (mode unchanged after 3 s, switch only by the explicit button); a second analysis for another role replaces the URL's analysisId, and the first analysis under that role is ROLE_MISMATCH |
+| PA-07 provenance | PASS | quotes byte-equal; `HASH-` and "Unknown Document" never rendered; T-06/T-10 green |
+| PA-08 every state visible, no source jump | **FAIL in NO_PROJECTION (D-G1-P1)**, otherwise PASS | all other states seen or green in T-03 |
+| PA-09 mandatory texts and word bans | PASS | the five P-07 statements beside the coverage in EN and DE; "match" occurs only in the mandated "source-match verified" |
+| PA-10 role level unchanged | PASS | 26/26 role-level entries (requirements, traces, open boundaries, source) identical between `49e2bc6` and `50776fc` once the sources read has settled; new only `syntx-legacy-disclosure` with its text |
+| PA-11 focus is no selection | PASS | hover, focus and 25 × Tab: URL unchanged, 0 requests |
+| PA-12 stand-in marked | PASS | GRÜN's 3 measure files carry `"gemini": "STAND_IN"`, all shots are named `STANDIN-*` and carry the visible mark; no stand-in result is called Gemini or live |
+| PA-13 untouched, files | PASS | files within §08 plus D-G1-1, D-G1-2, K-G1-1; no backend file; no path, URL, key, token, :41862 id or quote in the diff (0 of 12 live quotes); PINK touched :41862 with GET only |
+| PA-14 T-12 | PASS | tsc only `relay-check.mts(13,214)` on both; suite 27 failed on `50776fc`, 28 on `49e2bc6`, 0 only on `50776fc` (the base's extra one is a postgres adapter test); the 27 are the lifecycle / policy-activation DDL drift (F-JP-5); 71/71 new tests and all eight D-G1-2 files green; no test lost |
+
+- **D-G1-P1 (new, PINK).** In NO_PROJECTION under PERSON × JOB the field still shows the analysis, and `demoStateFromResult` keeps the legacy analysis's capabilities when the projection is `null` (`applyCapabilityProposalProjectionToDemoState(…, null)` returns the legacy state; `withoutLegacyOrbits` empties 03–06 only).
+  - Orbit 02 then shows the unscoped legacy capabilities: "2 items" at L0, their names at zoom 1 and "93%" (`evidenceConfidence`) at zoom 2, while the panel says "This analysis has no capability proposals". On the persisted :41862 body with the projection set to `null`, orbit 02 would carry `CAP_001` … `CAP_005` with 0.9 / 0.95.
+  - Against P-08 (no `evidenceConfidence`), NO_HIDDEN_SOURCE_SUBSTITUTION and §04 NO_PROJECTION. GRÜN's fixture has `capabilities: []`, so its tests cannot see the path.
+  - Reach: only a PERSON × JOB analysis whose persisted result has no proposal projection; not on the live or the stand-in path of today. Under PERSON the behaviour is unchanged from `49e2bc6`.
+- **GRÜN's decisions inside the assignment** are compatible with §03/§04: PERSON_RESULT (today's screen, §04 last line); ROLE_MISMATCH also without a job (in practice the gate stays closed and the Job Field offers the analysis's job, as §03.4 asks); MODE_MISMATCH and BOUNDARY_* without proposals (stricter than §04 asks); a foreign result as RESULT_LOADING (late answers invisible).
+- **GELB's note.** A PERSON deep link with `investigationMode=PERSON` now restores the PERSON result (orbits 1/12 items instead of 0 on `49e2bc6`, plus the empty-projection halo on 03–06). The PERSON session screen itself is byte-for-byte the base's. Both follow from Q2 and §04.
+- **Observations.** At 1280 × 720 the inspector still covers START ANALYSIS (P-TY-START, pre-existing). A PINK probe timing artefact (role level read before the sources read) first looked like a T-11 difference; settled, both commits are identical.
+
+**Run record.**
+- Evidence: `evidence/pxj-g1-50776fc/`: `static-50776fc.txt`, `stage-1b-41862.txt`, `walks-STANDIN-50776fc.txt`, `walks-STANDIN-compare-runs.txt`, `role-level-and-person-base-vs-tip.txt`, `D-G1-P1-no-projection.txt`, `suite-50776fc-vs-49e2bc6.txt`, `shots/STANDIN-*.png` with `CAPTIONS.txt` (only screens without quotes, E-6), `scripts/*.txt`, `manifest.sha256`.
+- PINK's labs ran on port 41873 under PINK's PIDs and were stopped; the worktree returned clean to `validation/hr-decision-loop-pink`. GRÜN's lab :41871, :41862 (GET only), :41864 (no request reached it), :3017, :41805, :41821, :41831, :41851 and :41803 were otherwise not touched. No Gemini call.
+- No integration; D-G1-P1 is GRÜN's to fix or the owner's to accept.
+
+### 3.57 D-G1-P1 fix GRÜN `a9ff0ca` (`frontend/pxj-first-screen-g1`, on `50776fc`) to §3.56 (2026-10-22)
+
+**Request.** GRÜN fixed D-G1-P1 in `a9ff0ca`; GRÜN and GELB asked PINK to re-check PA-05 and PA-08, and T-07 under PERSON.
+
+**What changed (`static-a9ff0ca.txt`).** One line of code: under PERSON × JOB `withoutLegacyOrbits` keeps only capabilities with `projectionState` PROPOSED (the projection overlay sets it, the legacy adapter never does). `projectPxjFirstScreen` is unchanged. Tests: the legacy fixture now has capabilities with confidence; a unit test and SSR checks at L0, zoom 1 and zoom 2 were added.
+
+**Result: D-G1-P1 is fixed, nothing else changed.**
+- **PA-05 / PA-08 now PASS.** PINK's own proof test from §3.56, unchanged, on `a9ff0ca`: NO_PROJECTION with legacy capabilities → orbit 02 "0 items", no legacy name at zoom 1 or 2, no "%", the NO_PROJECTION statement shown. On `50776fc` the same test gave "2 items", the names and "93%". GRÜN's pure functions on the persisted :41862 body with the projection removed: orbit 02 0 capabilities (was `CAP_001` … `CAP_005`).
+- **AVAILABLE unchanged.** Stage 1b on the :41862 bodies gives output identical to `50776fc` (orbit 02 keeps the 8 PCAP proposals). PINK's stand-in walk on a fresh lab: all 20 steps equal to `50776fc` in state, proposals, rows, orbits, coupling and placeholders; orbit 02 "12 items" in AVAILABLE, "0" in ROLE_MISMATCH; PA-01 field-equal; session = deep link = reload; focus changes nothing; `/matches` never with the Capability Field active; 0 `gemini-*`.
+- **T-07 under PERSON.** GRÜN's PERSON markup test (byte-identical with `49e2bc6`) is green; on PINK's labs the PERSON session screen equals `49e2bc6` and the role level is 26/26 identical.
+- **Regression.** tsc: only `relay-check.mts(13,214)`. Whole suite: 74/74 G1 tests green; 33 failed = the 27 of `50776fc` plus 6 timeouts (5000 ms) in decision-core and outcome-valence files that import nothing of G1. Rerun alone, five of the six pass; the remaining replay file times out alone on `a9ff0ca`, `50776fc` and `49e2bc6` alike, so it is machine load, not G1.
+
+**Run record.** `evidence/pxj-g1-a9ff0ca/`: `static-a9ff0ca.txt`, `D-G1-P1-fix-proof.txt`, `walk-STANDIN-a9ff0ca.txt`, `role-level-and-person-49e2bc6-vs-a9ff0ca.txt`, `suite-a9ff0ca.txt`, `manifest.sha256` (ids, counts, verdicts; no quotes). PINK's lab on port 41873, stopped; worktree clean; GRÜN's :41871 not touched; no Gemini call. G1 now meets PA-01 … PA-14 on PINK's checks; integration remains with the owner.
+
+### 3.58 Role-field closure: F-RF-1 … F-RF-3 reproduced and the matrix X-01 … X-24 swept on `a9ff0ca` (2026-10-23)
+
+**Request.** GELB relayed the owner order "SYNTX::SFE::RECURSIVE_ROLE_FIELD_CLOSURE" (base `49e2bc6`, G1 candidate `a9ff0ca`; no integration, no deployment, no Gemini). Basis: GELB's state graph `CONDYN_ROLE_FIELD_CLOSURE_2026-10-22.md` (`c02d756`), all CODE_INSPECTION. PINK's lane: reproduce F-RF-1 … F-RF-3 before any fix, sweep X-01 … X-24 in the browser, keep the evidence classes apart.
+
+**Method.**
+- PINK's own probe `pink-rf-sweep.mjs` on a fresh lab of `a9ff0ca` (`video-lab.ts`, port 41873, disposable database). Evidence class **STAND_IN** (no model execution) for every browser step; the B2 409 checks of X-24 are GETs against the same lab. :41862 was not used (no PERSISTED_REAL_RESULT in this section).
+- Three pools uploaded to PINK's own lab: the DLL pool, a synthetic PINK pool (`pools/PINK_RF_POOL.json`: the DLL role id `role_kestrel_fullstack` again, two roles titled "Platform Engineer" in one organization and a third in another, a role without requirements) and the same pool with status ARCHIVED.
+- Each step records URL, mode, field, gate, selected job (state, used, shell text), observed role, first-screen state and statement, Job Field offer, proposals and orbit counts, and the requests. Phases that the stand-in finishes too fast were held by delaying responses in the browser; each such step says so.
+
+**Pool schema (X-07, X-09, X-10).** All three pools were accepted (201). The canonical mapping lists every role, `role_pink_empty` with 0 requirements; the ARCHIVED pool is stored as such. Selecting the empty role gives VALID, an analysis for it gives B2 200 with "0 covered · 0 not covered · 0 requirements".
+
+**Reproduced (`sweep-STANDIN-a9ff0ca.txt`).**
+- **F-RF-1 confirmed.** PxJ with a VALID job → ANALYZE → mode PERSON while the job runs (job polls held 4 s). After SUCCEEDED the URL says `investigationMode=PERSON_X_JOB` (the declared mode), the interface stays PERSON and shows MODE_MISMATCH; the reload shows PERSON × JOB with AVAILABLE. Session ≠ reload.
+- **F-RF-2 a confirmed.** Page without `analysisId` → A1 AVAILABLE (URL A1) → A2 (a text file named .pdf, so the worker fails with EXECUTION_FAILED). While A2 runs and after it failed, the screen shows NO_ANALYSIS although the URL names A1; the reload shows A1 AVAILABLE.
+- **F-RF-2 b confirmed.** Page with `?analysisId=A0` → A1 AVAILABLE (URL A1) → A2 running and failed: the screen shows **A0** (coverage bound to A0), neither the running analysis nor the URL's A1; the reload shows A1.
+- **F-RF-3 confirmed.**
+  - CHECKING (upload read held 7 s; result and boundary not delayed): from 2.5 s to 9.5 s the Job Field offers "No job is selected: this analysis belongs to the job below … SELECT THIS ROLE" while the shell says CHECKING; at 10 s VALID and coverage.
+  - INVALID, permanently: an unknown role id, a job of the ARCHIVED pool and an unknown upload all give the shell "JOB NOT VALID <role id>" and, below it, the offer "No job is selected".
+
+**Matrix.**
+
+| # | Result (STAND_IN) |
+|---|---|
+| X-01 / X-21 | role opened by click or deep link (`jobRoleId` only): job NONE, gate AWAITING_JOB, "select" not pressed; reload equal — PASS |
+| X-02 | select → VALID, URL `jobScope*`, gate OPEN, "select" pressed and disabled; reload equal — PASS |
+| X-03 | selecting again: button disabled, 0 requests — PASS |
+| X-04 | remove → NONE, URL without `jobScope*`, gate AWAITING_JOB, field FIELD, role stays opened, analyses 5 → 5; reload equal — PASS |
+| X-05 / X-06 | other role (same organization / other organization) in the session with A0 on view → ROLE_MISMATCH without proposals; reload equal — PASS |
+| X-07 | DLL role selected, PINK pool viewed with the same role id: "select" not pressed there, shell still names the DLL pool; Capability keeps A0 AVAILABLE — PASS |
+| X-08 | selecting that role in the PINK pool replaces the job (shell names the PINK pool); A0 → ROLE_MISMATCH; reload equal; B2 for the same role id under the other upload: 409 SCOPE_MISMATCH — PASS |
+| X-09 | role without requirements: VALID; analysis → B2 counts 0/0/0, proposals shown, no other number — PASS |
+| X-10 | twin A and twin B (same title, same organization): identical shell text "Platform Engineer · Kestrel … · PINK pool"; twin C differs only by its organization — **F-RF-5 confirmed** |
+| X-11 | mode PERSON with A0 on view: MODE_MISMATCH, shell "selected job not used"; reload equal — PASS |
+| X-12 | mode JOB: gate JOB_MODE, field FIELD, 0 analysis reads after the switch; reload equal — PASS |
+| X-13 | = F-RF-1 — FAIL |
+| X-14 | = F-RF-2 a/b — FAIL |
+| X-15 | another role selected while the analysis runs: ROLE_MISMATCH in the session and after the reload — PASS |
+| X-16 | reload equal in every step except X-13 / X-14 — PASS with those exceptions |
+| X-17 | = F-RF-3 CHECKING — FAIL |
+| X-18 | = F-RF-3 INVALID: shell, gate and the absent proposals are right, the naming is wrong — FAIL (naming) |
+| X-19 | unknown id → RESULT_NOT_FOUND; the PERSON analysis under PxJ → MODE_MISMATCH — PASS |
+| X-20 | `jobScopePoolUploadId` without role → NONE; malformed upload id → NONE; `investigationMode=FOO` → PERSON × JOB (the URL keeps "FOO") — PASS |
+| X-22 | Back leaves the state for the previous document (B-NAV confirmed). Forward restores the URL and mode PERSON, but 3.5 s later the first screen was still RESULT_LOADING with the job CHECKING — INCONCLUSIVE, to be repeated with a longer wait |
+| X-23 | PxJ without a job: START disabled, 0 ANALYZE posts — PASS |
+| X-24 | B2 for another role of A0's pool and for the same role id in another upload: 409 SCOPE_MISMATCH — PASS |
+
+**Run record.** `evidence/role-field-closure-a9ff0ca/`: `sweep-STANDIN-a9ff0ca.txt`, `pools/*.json` (synthetic), `shots/STANDIN-*.jpg` with `CAPTIONS.txt` (screens without CV quotes only), `scripts/*.txt`, `manifest.sha256`. PINK's lab on port 41873 under PINK's PID, stopped; worktree clean. :41862, :41864 and GRÜN's :41871 not touched. No Gemini call. The fixes of F-RF-1 … F-RF-3 are GRÜN's; PINK re-checks them on GELB's word.
+
+### 3.59 Role-field fixes GRÜN `575e225` / `0dd55e5` / `25e90bf` / `46a95bb` (tip `88539d3`) to §3.58, with G1 re-checked (2026-10-23)
+
+**Request.** GELB asked PINK to re-check GRÜN's fixes of F-RF-1, F-RF-2, F-RF-3 and F-RF-5 (tip `88539d3`, on `a9ff0ca`): the §3.58 sequences unchanged, X-11 … X-18 and X-16, X-22 with a longer wait, and PA-01 … PA-14 again.
+
+**What changed (`static-88539d3.txt`).** `SemanticCareerIntelligenceField.tsx`, `PxjFirstScreen.tsx`, `pxj-first-screen.ts`, `sil-language.ts` (all within §08) and two new test files:
+- F-RF-1: after SUCCEEDED the URL gets the interface's mode (`declaredModeRef` removed);
+- F-RF-2: the URL's analysis is state, replaced by every SUCCEEDED analysis;
+- F-RF-3: the optional input `pendingSelection` gives JOB_CHECKING (no offer) and JOB_INVALID (job and reason; the offer only when the analysis's job is another);
+- F-RF-5: the shell detail ends with the role id.
+
+**Result (STAND_IN, `sweep-a9ff0ca-vs-88539d3.txt`): the four findings are fixed, nothing else moved.**
+- **F-RF-1 PASS.** The same sequence: the URL keeps PERSON, the session shows MODE_MISMATCH, and so does the reload.
+- **F-RF-2 PASS.** a: while A2 runs and after it FAILED the screen shows A1 (the URL's) with its coverage, as the reload does. b: the screen shows A1, no longer A0.
+- **F-RF-3 PASS.** CHECKING held 7 s: no offer at any of the 20 samples, then VALID. INVALID, all three causes: the Job Field offer is JOB_INVALID with the reason (ROLE_NOT_IN_POOL, POOL_NOT_ACTIVE, UPLOAD_NOT_FOUND); "No job is selected" is gone.
+- **F-RF-5 PASS.** The twins now read "… · PINK role-field closure pool · role_pink_twin_a" and "… · role_pink_twin_b"; under PERSON "selected job not used: <title> · <role id>".
+- **Every other step of the sweep is unchanged** against `a9ff0ca`, apart from the role id in the shell: X-01 … X-12, X-15, X-19 … X-21, X-23, X-24. X-16: the reload equals the session in every step now, including X-13 and X-14.
+- **Pure functions** (`pure-and-proof-88539d3.txt`): stage 1b on the :41862 bodies identical to `50776fc`; NO_PROJECTION still 0 legacy capabilities; `pendingSelection` gives JOB_CHECKING / JOB_INVALID only without a VALID selection and never overrides one. PINK's NO_PROJECTION proof test is green.
+
+**G1 again (`g1-walk-STANDIN-88539d3.txt`, `role-level-and-person-49e2bc6-vs-88539d3.txt`, `suite-88539d3.txt`).** PINK's G1 walk at 1920 and 1280: all 20 steps equal to `50776fc`; PA-01 field-equal, session = deep link = reload, focus changes nothing, `/matches` never with the Capability Field active, 0 `gemini-*`. PERSON session equal to `49e2bc6`, role level 26/26 identical. tsc: only `relay-check.mts`. Suite: all 86 G1 tests green; 31 failed = the 27 of `50776fc` plus 4 timeouts (5000 ms) in the outcome-valence / decision-core files of §3.57. **PA-01 … PA-14 still hold.**
+
+**X-22 (`x22-back-forward.txt`): INCONCLUSIVE for the goal, but a pre-existing effect found (O-RF-2).**
+- Back leaves `/career/demo` for the previous document (B-NAV).
+- Forward loads the page again (`pageshow.persisted` false). In 2 of 3 cases it then sent **no API request for 20 s** and stood in the initial states (selected job CHECKING, first screen RESULT_LOADING or none); the reload heals it. The third case loaded normally.
+- The same happens on `49e2bc6` (job CHECKING, 0 requests), so it is not G1 and not the fixes. A production build could not be checked: `next build` fails at type check on `app/api/admin/proxy/[...path]/route.ts` (pre-existing).
+
+**Run record.** `evidence/role-field-closure-88539d3/`: `static-88539d3.txt`, `sweep-STANDIN-88539d3.txt`, `sweep-a9ff0ca-vs-88539d3.txt`, `pure-and-proof-88539d3.txt`, `g1-walk-STANDIN-88539d3.txt`, `role-level-and-person-49e2bc6-vs-88539d3.txt`, `suite-88539d3.txt`, `x22-back-forward.txt`, `scripts/*.txt`, `manifest.sha256`. PINK's labs on port 41873, stopped; the production-build attempt wrote only `.next` of PINK's worktree (ignored). :41862, :41871 not touched; no Gemini call.
+
+### 3.60 Full PxJ closure: candidate GRÜN `421e382` (N-1 … N-5 on `88539d3`), on PINK's stand-in lab and GET-only on the owner acceptance lab (2026-10-23)
+
+**Request.** Owner mandate "SYNTX::SFE::OWNER_GO_FULL_PXJ_CLOSURE" §06 / §07.9, relayed by GELB.
+- PINK confirms the final candidate independently on its own stand-in lab (movements, error cases, pool switches).
+- PINK checks the chain POOL → ORG → ROLE_OPEN → SELECT_AS_JOB → SOURCE_BINDING → analysis → CAPABILITY_FIELD → B2 → evidence → RELOAD → BACK → FORWARD → ROLE / POOL / MODE switch, forwards, backwards and inverse.
+- On GELB's owner acceptance lab :41872 (production build of `421e382`, copy of the 41862 DB, no worker, no Gemini, no token) PINK reads with GET only.
+- GELB added two cases:
+  - (a) in-page Back / Forward while a run is going;
+  - (b) a reload during a second run over an analysis on view.
+
+**What changed (`static-421e382.txt`, CODE_INSPECTION).** Fast-forward of `88539d3`, six commits, 35 files. All of them are in `app/`, `lib/career/ui/`, `test/` or `docs/`. There is no API, DB, worker or script file, no new fetch and no non-GET call. The leak scan of the added lines is clean.
+- N-1 B-NAV: one URL parser for a reload and for popstate. On popstate the dashboard is remounted. A user decision is a push, a system addendum is a replace, one action is one entry, and an unchanged URL writes nothing.
+- N-2 B-RUN: `analysisJobId` is only taken in the server's format and only when it stands once. It is followed by GET only. FAILED and 404 keep the parameter, show a banner and offer no retry.
+- N-3 O-RF-1: an unknown, empty or repeated mode is removed by replace.
+- N-4 F-RF-4: a comment.
+- N-5 B-SRC: a fixed hint while sources are staged.
+
+**Result, STAND_IN, production build (`nav-STANDIN-prod-421e382.txt`): 88 / 90, every check of the candidate passes.** The two failing steps, C15 and C18, are PINK probe errors:
+- C15 read the analysis from an element that is not mounted in the Capability Field; the URL and state are right.
+- C18 looked for the clear button at field level; it is offered at role level.
+- Clearing the job is covered by the acceptance lab (B07 PASS) and by the sweep (X-04).
+
+The production build is the local `next start` with LAB_ONLY_BUILD_FLAG, `Cache-Control: no-store`.
+- **Chain, one entry per decision.** Each step adds exactly one history entry: pool, organisation, role, "select as job" and Capability Field; Capability writes focus and observation together. Repeating the selection or choosing the mode already active adds none. Staging a source adds none.
+- **Analysis.** During the run `analysisJobId` stands in the URL by replace, without a new entry. One POST is sent. On SUCCEEDED, `analysisId` is set and `analysisJobId` removed; the first screen is AVAILABLE, bound to the analysis, with rows and quotes, and a row takes focus. The reload is field-equal.
+- **Switches.** Modes PERSON → JOB → PERSON_X_JOB add one entry each. The role switch gives ROLE_MISMATCH. The pool switch selects the same role id in the other pool and also gives ROLE_MISMATCH. The offer's "select this role" adds one entry and leads to AVAILABLE.
+- **History.** 22 × Back and 22 × Forward, all of them PASS: 44 / 44 equal to a fresh load of the same URL in a second tab. The comparison covers URL, mode, field, gate, job and its text, observation, first screen, binding, counts, rows, quote doc ids, sha256 of the first-screen text, offer and error banner. No step sent a POST. The document boundary is included: the last Back loads `/career/analyses` as a document, the first Forward loads `/career/demo` as a document, and that entry is also equal.
+- **Inverse.**
+  - FOO, empty, repeated and lowercase modes are removed without a new entry; the default is PERSON_X_JOB.
+  - A valid PERSON_X_JOB without scope stays "no job".
+  - An unknown role, the archived pool and an unknown upload give INVALID; a malformed pool gives no AVAILABLE.
+  - The other pool with the same role id gives ROLE_MISMATCH; an unknown analysis gives RESULT_NOT_FOUND.
+  - Five malformed `analysisJobId` values and a repeated one are removed, with 0 job reads.
+  - An unknown job gives NOT_FOUND with the job id and no retry; the analysis on view stays.
+  - A SUCCEEDED job in the URL leads, with 0 POSTs, to its analysis.
+- **B-RUN.**
+  - A reload during RUNNING: GET only (one job read), 0 non-GET, one POST in all, AVAILABLE afterwards, history unchanged.
+  - A reload after FAILED: the banner shows FAILED with the job id and no retry; A0 stays on view and in the URL (F-RF-2).
+- **(b) PASS.** A reload during a second run: meanwhile `analysisId=A0`, the binding A0 and AVAILABLE, with `analysisJobId` in the URL. On SUCCEEDED, A2 replaces A0. One POST.
+- **(a) PASS.** Back / Forward during a run. The PERSON entry pushed during the run carries the job id. Back and Forward are each equal to a fresh load, with the polls held 4 s in both tabs. After SUCCEEDED, Back to the earlier entry follows the job and shows its analysis, again equal to a fresh load. One POST, 0 non-GET during navigation.
+- **N-5.** The EN hint reads exactly "Staged sources live in this page only: reloading, Back or Forward discards them. Nothing is stored." After a reload, Back or Forward there are no staged sources and no hint. The DE copy was checked by code inspection only.
+- **X-22 / O-RF-2 in production (`x22-prod-421e382.txt`).** In 3 / 3 cases Forward shows, after 1 s and after 20 s, what the reload shows. `pageshow.persisted` is false and 5 to 6 API reads follow. The O-RF-2 stall stays a next dev effect, as GELB found (`no-cache` under dev, `no-store` under `next start`).
+
+**next dev (`nav-STANDIN-dev-421e382.txt`, `repro-AB-dev-vs-prod.txt`): DEV_ONLY, no finding.** The dev run had 82 / 90:
+- three PINK probe errors: C15, C18 and I22, where 2.5 s after the reload dev had not yet drawn the first screen; I22 is PASS in production;
+- five NAV ≠ RELOAD entries:
+  - (A) Back onto the other-pool entry showed for ≥ 1.2 s the previous entry (AVAILABLE, DLL);
+  - (B) entries with organisation or role but no `focus` showed the field level on the fresh load.
+- The targeted repro sampled each case at 1, 3, 8 and 15 s:
+  - under dev the fresh load reaches the same observation after 3 to 8 s, and in (A) Back reached the right state (ROLE_MISMATCH, RF pool) after 3 s;
+  - in the production build both cases are stable and equal to the reload from 1 s on.
+- GELB found the same in its own production lab (:41876, writable copy).
+- These are load and compile delays of next dev, not defects of the candidate.
+
+**Owner acceptance lab :41872, PERSISTED_REAL_RESULT, GET only (`accept-41872-*.txt`, `lineage-41872-api.txt`).**
+- **API lineage.**
+  - The B2 binding is ANL_1792628993472_10 / JOB_1792628993472_10, JPOOL_B94850C4… / role_kestrel_fullstack, scope hash `8016b7c1…`, RUN_6BB62BDC…, CONV_A30D955F… and TRPREV_3B6311C8…. The pool sha256 matches the upload id.
+  - B2 is SELECTED_ROLE_COVERAGE_V1 with 9 requirements: 8 COVERED, 1 NOT_COVERED (req_07), 8 proposals. Every proposal is EXACT and SOURCE_MATCH_VERIFIED; scored = false, authority NONE, relation NOT_EVALUATED (VERIFIED_CAPABILITY_SNAPSHOT_ABSENT).
+  - `/investigation` gives PERSON_X_JOB with the same run and hash.
+  - The job is SUCCEEDED → the same analysis. The other analysis is PERSON.
+  - The source bundle CSB_JOB_1792628993472_10 has no GET route; for PINK it is **INCONCLUSIVE**, stated by GELB from a read-only DB transaction.
+- **Browser, 1920 × 1080: 58 / 58 PASS. 1280 × 720: 57 / 58.**
+  - Each run had 522 requests, all GET. 0 requests were blocked (the probe aborts every non-GET), with 0 page errors and 0 inspector reads.
+  - Steps covered:
+    - the owner deep link and its reload (AVAILABLE, 9 rows, 8 COVERED, req_07 NOT_COVERED, 8 verified quotes, no percentage or score outside the quotes);
+    - 3 × Back / Forward over the document boundary, hydrated and equal to the deep link;
+    - mode, role, offer and clear-job decisions, one entry each;
+    - 11 × Back and 11 × Forward, each equal to a fresh load;
+    - the inverse cases (modes, no scope, unknown role or upload, PERSON analysis → MODE_MISMATCH, unknown analysis → RESULT_NOT_FOUND);
+    - the job cases (SUCCEEDED job → the same ANL by replace, unknown → NOT_FOUND without retry, malformed or repeated → removed with 0 job reads).
+- **O-PXJ-720, confirmed independently, owner decision.** At 1280 × 720 the B2 panel stands at 885,485 – 1256,925, 53 % visible without scrolling. Its scrollHeight is 2059 at clientHeight 438, the page's 1021. GELB reports the same layout since G1.
+
+**Regression (`regression-88539d3-vs-421e382.txt`, STAND_IN, dev).**
+- **Role-field sweep:** no failed step. Only the intended changes appear: `analysisJobId` during the run; after the reload of a FAILED A2 the FAILED banner while A1 stays; FOO removed (X-20c); X-22 now in-app, Forward correct after 574 ms.
+- **G1 walk, PA-01 … PA-14, at 1920 and 1280:** 20 / 20 steps, field-equal to `88539d3` apart from the staged-sources hint.
+
+**Suite (`suite-421e382.txt`).**
+- tsc as on `88539d3`: `relay-check`. The second message is from generated `.next/types` left in PINK's worktree (proxy route B-3).
+- Whole isolated suite: 2786 passed, 38 failed (31 on `88539d3`).
+  - The 9 new failures are 5000 ms timeouts (5016 – 5620 ms) in outcome-valence files the candidate does not touch.
+  - Rerun alone: 30 / 33 pass, the remaining 3 also time out at 5000 ms.
+- `test/career/pxj-first-screen`: 13 files, 127 / 127.
+
+**Observation for the owner, not a failure: O-NAV-SUBMIT (I24).**
+- Back within ≈ 0.3 s of ANALYZE, while the POST is still on its way, leaves a server job that no history entry names.
+- The released controller drops the 202. The job runs to SUCCEEDED and its analysis is persisted (listed in `/api/career/analyses`), but no entry of the session shows it. Back and Forward are each equal to a fresh load.
+- A reload during SUBMITTING has the same outcome class: no `analysisJobId` has been written yet.
+
+**Verdict.**
+- **PASS on PINK's stand-in lab (production build).** Chain, NAV ≡ RELOAD including document boundaries, B-RUN with (a) and (b), O-RF-1 and B-SRC all pass.
+- **PASS on the acceptance lab (GET only, real persisted data)**, except E01 at 1280 × 720 (O-PXJ-720, owner).
+- **INCONCLUSIVE:** CSB via GET, and the DE hint in the browser.
+- **Owner:** O-PXJ-720, O-NAV-SUBMIT, B-3 (proxy-route type error), integration.
+
+**Run record.** `evidence/pxj-full-closure-421e382/`:
+- README.txt, static-421e382.txt, suite-421e382.txt;
+- nav-STANDIN-dev-421e382.txt, nav-STANDIN-prod-421e382.txt, repro-AB-dev-vs-prod.txt, x22-prod-421e382.txt, regression-88539d3-vs-421e382.txt;
+- accept-41872-PERSISTED_REAL_RESULT-1920.txt and -1280.txt, lineage-41872-api.txt;
+- LAB_ONLY_BUILD_FLAG.txt (next.config.ts sha256 committed = restored `bf55df41…`, lab only `78a45603…`, diff);
+- scripts/ and manifest.sha256.
+
+No quote text and no screenshot is committed; first-screen text appears only as sha256/16. PINK's labs on :41873 are stopped by `stop-lab.sh` (its stop drops the lab's disposable DBs; no state file is left, no listener on :41873 / :41874). :41872 was only read.
+
+### 3.61 UX pre-sweep on `421e382` for the owner mandate "RECURSIVE UX/UI & SYSTEM CLOSURE" — findings only (2026-10-23)
+
+**Request.** GELB asked for an independent pre-sweep, findings only and no fixes; the list goes to GRÜN as the P3 fine list. It covers:
+- the keyboard journey;
+- focus and hover;
+- viewports 1920×1080, 1600×900, 1440×900, 1280×720 and 200 % zoom (overlap, clipping, real clickability);
+- readability (type size, contrast, long names, colour-only meaning);
+- loading, empty and error states and their next step.
+
+**Labs.** PERSISTED_REAL_RESULT on GELB's :41872, GET only: every non-GET is aborted in the browser; 0 were blocked and there were 0 page errors. STAND_IN on PINK's own production build of `421e382` with LAB_ONLY_BUILD_FLAG; there ANALYZE, the empty start, `.md` staging and a synthetic long-names pool were added. Screenshots mask every quote.
+
+**Findings (`findings.txt`).** Fifteen findings, V-01 … V-15, each with viewport, step, measured value, screenshot and evidence class. The ones that block an action or a reading:
+- **V-01.** The fixed Decision Graph Inspector covers "+ ENTER TEXT / MARKDOWN" at 1280×720: 0/5 points are clickable, even after scrolling. At 200 % of 1920 it covers "+ UPLOAD PDF" (1/5).
+- **V-02.** At 200 % of 1280×720 the JOB mode is clipped at x 733 > 640 and cannot be reached by pointer. The shell title runs under its buttons, and the job indicator shows only "J".
+- **V-03.** O-PXJ-720 extends to 1440×900: 94 % of the panel is visible, but the first row lies below the fold. At 200 % zoom the visible share drops to 13 % and 0 %.
+- **V-04 / V-05.** The reason for the closed Capability gate is only a title on a disabled button, which keyboard and screen-reader users cannot reach. During CHECKING it names the wrong reason.
+- **V-06.** NO_ANALYSIS, RESULT_NOT_FOUND and the job NOT_FOUND banner offer no next step.
+
+Type sizes go down to 7.5 px (V-09). Contrast is computable only partly (V-10); most field text sits on gradients. Also found: Tab order at role level (V-11), the mode radio group reachable only with Arrow keys (V-12), missing hover feedback (V-13), a 23 px target (V-14), and truncation without the full text (V-15).
+
+**Held.**
+- No focus trap; the focus indicator is present on every focused element.
+- 600 Tab presses per lab without a URL or history change (FOCUS ≠ SELECTION); hover never changed URL or history (HOVER ≠ AUTHORITY).
+- Esc returns level by level and closes the pool list.
+- The journey can be done by keyboard, from POOL to ANALYZE and RETURN.
+- Every B2 row carries a COVERED / NOT COVERED text chip.
+- No horizontal page scroll at any viewport.
+
+**Run record.** `evidence/ux-presweep-421e382/`: findings.txt, keyboard.txt, viewports.txt, readability.txt, states-hover-names.txt, shots/ (20 JPEGs, quotes masked), scripts/ and manifest.sha256.
+
+### 3.62 §10 validation of GRÜN's final candidate `41dfa25` (code `4b826cc`) for "RECURSIVE UX/UI & SYSTEM CLOSURE" (2026-10-24)
+
+**Request.** GELB asked for an independent §10 check of `41dfa25` on `frontend/pxj-ux-closure` (22 commits on `70d1cb4` = `421e382` + B-3), with a verdict per item and the evidence classes kept apart. It covers:
+- V-01 … V-15 from §3.61;
+- K-UX-2 (PERSON changes visually, not in markup);
+- O-NAV-SUBMIT on PINK's stand-in lab;
+- D-PICK;
+- V-12;
+- the held items and the keyboard journey.
+
+**Labs.** PERSISTED_REAL_RESULT on GELB's :41872 (production build of `41dfa25`, DB copy), GET only: every non-GET is aborted in the browser, 0 were blocked and there were 0 page errors. STAND_IN on 14 fresh PINK production builds of `41dfa25` and `70d1cb4`, without LAB_ONLY_BUILD_FLAG: `next.config.ts` was unchanged and the logs show no type-check skip. Static checks ran on `git archive` trees in PINK's scratch.
+
+**Static: PASS.**
+- Frontend only: no backend, API, DB, config or package file.
+- tsc reports 0 errors; GRÜN's focused group passes 57 files, 498 passed, 4 skipped.
+- Counter-proof on `421e382`: 43 of 60 fail and 17 pass, as GRÜN reports. GELB's 16 files / 45 / 18 was not reproduced.
+- One existing literal changed (K-UX-3).
+
+**Verdicts (`verdicts.txt`).**
+
+PASS:
+- **V-01.** ENTER TEXT is 5/5 clickable at 1280×720; both source actions are 5/5 after scrolling at every viewport.
+- **V-02.** JOB mode is in view at 640×360.
+- **V-03.** Wheel-scrolling in 60 px steps brings all 9/9 B2 rows fully into view and hits them at every viewport. With 240 px steps at 640×360 the result is 8/9, a step artefact that confirms GELB's note.
+- **V-04.** The gate cause and the way out are visible text, linked by `aria-describedby`.
+- **V-06.** Each state names its next step; the job NOT_FOUND banner closes with one push and no POST, and Back names the job again.
+- **V-07**, **V-12** (arrow keys move focus only; Enter or Space choose), **V-13**, **V-14** and **V-16**.
+- **V-05**, with one rest R-05: the `title` tooltip still says "Select a job … first" during CHECKING and INVALID.
+
+PARTIAL:
+- **V-09.** Role cards stay at 7.5 / 8.5 px (owner sizes); 9.5 px labels remain in the field and in the mode group at 200 %.
+- **V-10.** Receded role titles are still 1.02:1 (owner item).
+
+UNCHANGED: **V-15**, which the candidate did not address.
+
+FAIL:
+- **V-08 (D-S10-1).** The candidate is meant to drop RETRY for a broken PDF, but RETRY still appears. The running worker reports the failure as `EXECUTION_FAILED`, with `ERR_PDF_PARSE_FAILURE` only in the summary. `d8d97b8` checks `code === "ERR_PDF_PARSE_FAILURE"`, which is never true with the real worker. `.md` / `.txt` staging and the refusal of `.docx` work.
+- **V-11.** The keyboard path got longer. The same probe on base and candidate needs 14 → 21 Tab presses from Enter on the role to SELECT AS JOB, and 4 → 11 when the role view loads. The shell and header now come before the Job Field panel in Tab order. Inside the panel, UX-02 holds.
+- **K-UX-2.** The T-07 part passes: the Capability Field under PERSON is identical apart from a new `data-sx-layout` attribute on the dashboard wrapper. But the Job Field shown under `investigationMode=PERSON` changes text (UX-07 wording), elements (LEVEL, job hint, OPENED ROLE) and order. GRÜN's README §3 claim does not hold there. Whether the Job Field belongs to the PERSON perimeter is for GELB or the owner to decide.
+
+**O-NAV-SUBMIT (STAND_IN).**
+- **In-page: PASS.** Back 0.03–0.15 s after ANALYZE, with the POST held 1.5 s or not, and Back followed by Forward, all give 1 POST and 1 analysis. The analysis is named by replace in the entry on view, and B2 is AVAILABLE there.
+- **Observation.** When that entry has another boundary, the job is named there: a PERSON entry then shows MODE_MISMATCH, and an entry for another job shows ROLE_MISMATCH.
+- **FAIL across the document boundary (S6).** Example: the owner's deep link is the first entry, and the user presses Back 0.06 s after ANALYZE. The analysis is made, and no history entry names it. This is the same class as a reload during SUBMITTING, which is an open owner decision.
+
+**D-PICK: PASS, stand-in and real.**
+- Only the exact mode, upload and role are offered. The RF upload with the same role id and the same pool with another role never cross.
+- PERSON and JOB show no picker and make 0 boundary reads.
+- Nothing is read before the picker opens, and opening chooses nothing.
+- OPEN is one push (`analysisId`, `focus=CAPABILITY`) to B2 AVAILABLE, and Back removes it.
+- On :41872 only `ANL_1792628993472_10` is offered, never the PERSON analysis.
+
+**Regression: PASS.**
+- nav 88/90, the same two probe errors as `421e382`.
+- rf 54/54.
+- g1 states are identical; X-22 is identical.
+- 600 Tab presses per lab without a URL or history change, trap or hidden focus.
+- Hover never acts as authority; Esc steps back one level at a time.
+
+**New findings.**
+- **V-18.** From 1280×720 down, every role card switches to the packed form, and its domain line leaves the DOM. Base `70d1cb4` still showed it at 1280×720.
+- **V-19 (FAIL, real and stand-in).** At 1280×720 the organisation level puts the "Senior Full-Stack Engineer" card under the Job Field panel. The mouse hits it 0/5 in 6 samples, in PXJ and PERSON; base `70d1cb4` hits it 5/5. The owner's ORG → ROLE_OPEN step cannot be done by mouse at that size; the keyboard still works.
+- **Observation.** In the job NOT_FOUND state at 1920 the RUNTIME TELEMETRY box sits over the lower B2 rows. Not compared with base.
+
+**Run record.** `evidence/ux-closure-41dfa25/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, regression-STAND_IN.txt, shots/ (15 JPEGs; REAL ones have quotes masked or none on view, STANDIN ones are labelled), scripts/ and manifest.sha256.
+
+### 3.63 Review of GELB's isolated proof "CAPABILITY_TO_JOBPOOL_DISCOVERY" (`bf80a7d`) (2026-10-24)
+
+**Request.** Owner directive PRIORITY PRODUCT_CORE. GELB asked for an independent check of the proof in §5 and the code reconstruction in §1 of `CONDYN_CAPABILITY_TO_JOBPOOL_DISCOVERY_2026-10-24.md`, with five points:
+1. re-run;
+2. inverse check down to the quote;
+3. honesty of the relation kinds;
+4. the §05 cases;
+5. the code reconstruction.
+
+**Method.** GET only on GELB's disposable lab :41878; PINK uploaded nothing and made no Gemini call. Evidence classes are DETERMINISTIC (computation on PERSISTED_REAL_RESULT), live GET and CODE_INSPECTION. Quotes are never written to the evidence, only their sha256 prefix.
+
+**Verdicts (`evidence/discovery-bf80a7d/verdicts.txt`).**
+- **1 PASS.** Both runs reproduce exactly; the whole JSON equals GELB's evidence.
+  - PERSON: 78 roles, 507 requirements; PARTIAL 39, NO_RELATION 38, NO_REQUIREMENTS 1; inverse 52/52.
+  - PxJ: NO_RELATION 64, PARTIAL 9, ALL 4, NO_REQUIREMENTS 1; inverse 27/27.
+- **2 PASS.** The inverse check is PINK's own code, independent of `findSweepCoverage` and GELB's script.
+  - Every proposal exists, every quote belongs to its proposal, and every quote is verbatim in the pdftotext text.
+  - In 49/52 the quote names the requirement. The rest: "Backend Development" ×2, where "backend" appears only in the proposal name, and the "domain" part of "Dimensional and Domain Data Modeling".
+- **3 FAIL (labels).** The relation and status labels can mislead:
+  - 29 of the 39 PARTIAL roles rest on weak token hits only, 25 on a single one (mostly "Python" ← "Python ETL Development", including requirements aliased PyTorch / FastAPI / R).
+  - In the same proposal "TypeScript and Node.js Backend Development", TypeScript is NAME_COMPOSITE_CONSTITUENT but Node.js only WEAK.
+  - WEAK understates head-term hits (Kubernetes, PostgreSQL, React) and overstates one-word overlaps ("Linux Systems Engineering" ← "Linux Administration", the alias "ETL").
+  - Lexical misses confirm G-2: SQL ×10, "CI/CD Pipelines" missed only because of the plural against "CI/CD Pipeline Engineering", TDD against Automated Testing / Test Automation, and leadership and architecture variants.
+- **4 PASS.**
+  - The role without requirements is NO_REQUIREMENTS, and duplicate role ids and titles are kept apart by (upload, role) across 4 pools.
+  - Requirement ids also repeat across uploads (`req_kestrel_fullstack_01/02`), so a route must key requirements by upload + role + requirement.
+  - "Python" carries 7 different alias sets and collapses onto one proposal.
+- **5 FAIL (gap).** The blocks listed in §1 hold: matches refuses PERSON (live 409) and carries `resonanceScore`, the relation producer needs PHASE4_VERIFIED and has no app caller, and the embedding search exists but has no importer. Two gaps:
+  - **M-1, missed.** `GET /api/career/analyses/{id}` runs the legacy scored engine `matchCareerAnalysisAgainstPool(analysis, DEMO_COMPANY_POOL)` plus recommendations for every analysis, PERSON included. Live for ANL_…_456: pool `pool_demo_master_v1`, 3 roles with `resonanceScore`, 6 gaps, 5 actions. A PERSON analysis is therefore already compared with roles, scored and ordered; D-RD-1 must name this path.
+  - **M-2, INCONCLUSIVE.** The admin proxy forwards to an external backend that cannot be inspected from this repository.
+
+**Run record.** `evidence/discovery-bf80a7d/`: verdicts.txt, 1-rerun.txt, 2-inverse.txt, 3-relations.txt, 4-cases.txt, 5-code.txt, 5-live.txt, scripts/ and manifest.sha256.
+
+### 3.64 Round 2: GRÜN `b77c851` (code `9a8a28e`) re-checked against §3.62 (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of round 2, 9 commits on `41dfa25`. It covers:
+- the §3.62 FAILs: V-08, V-11, V-18, V-19 (card hits plus mouse-wheel reach);
+- R-05 and V-15;
+- V-20 at 1920 in the job NOT_FOUND state;
+- K-UX-2: the PERSON first screen;
+- regression of the held items, D-PICK and navigation;
+- GRÜN's claim about 200 %.
+
+Back across the document boundary during SUBMITTING (S6) stays an open owner class and is not counted as FAIL.
+
+**Labs.**
+- PERSISTED_REAL_RESULT on :41872, a production build of `b77c851`, GET only; 0 non-GET blocked in every probe.
+- STAND_IN on 9 PINK production builds without the flag, `b77c851` and `70d1cb4`.
+- No Gemini call.
+
+**Verdicts (`evidence/ux-closure-r2-b77c851/verdicts.txt`): every item PASS.**
+- **Static.** tsc reports 0 errors; the focused group passes 63 files, 514 tests, 4 skipped. The counter-proof of the 6 new files on `41dfa25` gives 10 FAIL, all REPRODUCE, and 6 PASS. Note: `job-levels.test.tsx` drops 5 expectations and adds 1. That is consistent with restoring `70d1cb4`'s order, but not a 1:1 replacement.
+- **V-08.** With the real worker the result stays `EXECUTION_FAILED`; there is no RETRY, the format way is shown, and there is 1 POST.
+- **V-11.** The same probe gives 14 Tab presses from Enter on the role and 4 on loading the role view, equal to `70d1cb4` (`41dfa25` had 21 / 11). The real lab gives 14 / 4.
+- **V-18.** Every role card keeps its domain line at all 6 viewports.
+- **V-19.** At 1280×720 the owner's card is hit 5/5, as on `70d1cb4` (`41dfa25` had 0/5). Frontend Architect 2/5 is the same as on `70d1cb4`.
+- **GRÜN's 200 % claim, confirmed.** Scrolling with the mouse wheel, `70d1cb4` reaches only 3/5 on the Full-Stack card at 640×360; `b77c851` reaches 5/5 on every card, stand-in and real.
+- **V-20.** In the job NOT_FOUND state the HUD and B2 overlap 0 px² at all four desktop viewports, and all 9 rows are hit.
+- **R-05.** The tooltip equals the visible cause and the way out.
+- **V-15.** Every visibly cut long name carries its full text. Retraction: the earlier item "syntx-summary cut without title" in §3.61 / §3.62 was a PINK probe false positive. That element is the visually hidden aria-live summary.
+- **K-UX-2.** The PERSON first screen is identical to `70d1cb4` apart from `data-sx-layout`, and T-07 is green. The Job Field shows the declared UX changes in every mode, and GRÜN's README §3 now lists both.
+- **D-PICK** and **O-NAV-SUBMIT in page** behave as in §3.62.
+- **Regression.** nav 88/90 with the same two probe errors as before. 600 Tab presses without a violation; hover is look-only; the Esc chain holds; no target is under 24 px; reach holds at all six viewports.
+
+**Still open.** S6 is an owner decision. At 640×360 the binding section and status line lie below the fold on load (GELB's 113/114).
+
+**Run record.** `evidence/ux-closure-r2-b77c851/`: verdicts.txt, static-MEASUREMENT.txt, real-41872-PERSISTED_REAL_RESULT.txt, standin-STAND_IN.txt, person-dom-K-UX-2-STAND_IN.txt, shots/ (4), scripts/ and manifest.sha256.
+
+### 3.65 Stage 1 POOL_ROLE_DISCOVERY_V1 and the relation cache (`ccc0cc1`) checked independently (2026-10-24)
+
+**Request.** GELB asked for an independent check of `backend/pool-role-discovery` (`96651af` route, `ccc0cc1` cache; base `b77c851`, not integrated) against the owner decision "OWNER_DECISION_ROLE_DISCOVERY", in six points:
+1. contract;
+2. the §3.63 findings;
+3. inverse trace through the route;
+4. read only;
+5. cache;
+6. regression.
+
+The owner's own text is not in the repository; PINK checked against its rendering in §8/§9 of the discovery doc (`ea3c845`) and GELB's request.
+
+**Method.** GET only on :41878, a production build of `ccc0cc1` on a disposable copy; PINK uploaded nothing. The cache probe ran as a scratch-only test on a fresh disposable database. No Gemini call.
+
+**Verdicts (`evidence/role-discovery-ccc0cc1/verdicts.txt`).**
+- **1 Contract: PASS.**
+  - Only the named uploads are compared: single, several and permuted requests give identical results. "ALL" gives 404; a missing parameter, duplicates, an empty or whitespace value and 11 uploads each give 400.
+  - The PERSON operand is unchanged against the analysis projection. PxJ is refused with 409.
+  - The authority block says no score, no ranking and no decision. Everything semantic is NOT_EXECUTED, and the plan says ENGINE_NOT_SPECIFIED.
+- **2 §3.63 findings: PASS.**
+  - My old PARTIAL 39 splits into PARTIAL_NAME_RELATED 10 and WEAK_LEXICAL_ONLY 29.
+  - The key (upload, role, requirement) is unique, and all 507 rows equal §3.63.
+  - `quoteNamesRequirement` is false exactly for the three rows. The TypeScript / Node.js asymmetry remains, because the lexical rule is unchanged.
+- **3 Inverse via the route: PASS.** 52/52 down to the quote in the PDF text.
+- **4 Read only: PASS.** The route has no write path, the counts are unchanged, there is no model client, and refusals carry no partial result. On a process's first GET the guarded registration may create the schema on the disposable database (existing pattern).
+- **5 Cache.**
+  - Keys **PASS**: independent of ids and order; content changes give new keys, and case and spaces count exactly.
+  - Plan **PASS**: 5 070 pairs, 77 calls, 470 distinct requirement contents, 4 700 distinct keys, recomputed with PINK's own hash code.
+  - DDL **PASS**: created only behind the disposable-database gate.
+  - DB checks **PASS**: the database refuses an unknown state, a NULL state and any authority other than NONE.
+  - Immutability **FAIL (D-RC-1)**: it holds in code only.
+    - UPDATE and DELETE succeed on the database.
+    - `record_json` is not tied to the checked columns: columns COVERS / NONE with JSON EQUIVALENT / VERIFIED are accepted.
+    - `getByKeys` returns the JSON unvalidated.
+  - Conditions for stage 3:
+    - **C-1.** The key has no role context, so the engine must not see role context either, or the key must include it.
+    - **C-2.** Re-storing an evaluated pair with another `createdAt` or raw output aborts with a conflict, so concurrent evaluations of one pair fail.
+- **6 Regression: PASS.**
+  - In `app/api` only the new route is added. `matches` for the PxJ analysis is identical to §3.63, and PERSON is still refused.
+  - B2 answers 200 for PxJ and 409 for PERSON.
+  - tsc reports 0 errors; GRÜN's focused list passes 67 files, 547 tests, 4 skipped. PINK counts 20 cache tests (16 + 4), where GELB names 17.
+
+**Run record.** `evidence/role-discovery-ccc0cc1/`: verdicts.txt, route-PERSISTED_REAL_RESULT.txt, cache-MEASUREMENT.txt, static-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
+### 3.66 Relation-cache fix `2dba126` (D-RC-1, C-2) re-checked (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of `2dba126` on `backend/pool-role-discovery`:
+- a trigger against UPDATE, DELETE and TRUNCATE;
+- CHECKs that bind `record_json` to the columns and fix the key and hash formats;
+- a reader that admits every row again;
+- first-wins writes (C-2).
+
+C-1 is decided as a specification in §10 of the discovery doc (`e2c7191`): the engine sees no role or organisation text.
+
+**Method.** Measurement on fresh verified disposable databases, with scratch-only probes. The probes ran on a fresh DB and on a table created first by `ccc0cc1`'s DDL. No Gemini call.
+
+**Verdicts (`evidence/role-discovery-2dba126/verdicts.txt`).**
+- **D-RC-1 on a fresh database: PASS.**
+  - UPDATE, DELETE and TRUNCATE are refused with ERR_RELATION_CACHE_IMMUTABLE.
+  - The database refuses JSON that differs from the columns, a bad key format and a bad hash format.
+  - Rows the database admits but that do not hold, such as an empty explanation or a key not derived from its parts, are refused by the reader with ERR_RELATION_CACHE_RECORD_CORRUPT.
+- **C-2: PASS.** The same result with another `createdAt` or raw output hash counts as a duplicate. Another result is reported as `divergent`, is not stored and raises no exception; the first record stays.
+- **Tests: PASS.**
+  - The subset passes 60 files, 479 tests, 4 skipped; `relation-cache.postgres` passes 7/7.
+  - On `ccc0cc1` the same test file gives 6 FAIL and 1 PASS, as GELB reports; tsc reports 0 errors.
+- **O-RC-3 (open).** A table that `ccc0cc1` already created gets only the new triggers, not the CHECKs, yet the registration reports REGISTERED. On such a table the database accepts JSON claiming VERIFIED and a malformed key. The reader still refuses those rows, but the database guarantee holds only on databases created from `2dba126` on.
+- **O-RC-4 (observation).** One corrupt row fails the whole read for all requested keys.
+- **O-RC-5 (recorded).** The table owner can still disable the trigger or drop the table.
+
+**Run record.** `evidence/role-discovery-2dba126/`: verdicts.txt, cache-recheck-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
+### 3.67 Relation-cache convergence `600c7c1` (O-RC-3) re-checked (2026-10-24)
+
+**Request.** GELB asked for a targeted re-check of `600c7c1` on `backend/pool-role-discovery`. The commit does three things:
+- it names every constraint (`prr_*`) and adds any that are missing by ALTER;
+- it verifies at registration, through `pg_constraint` and `pg_trigger`, that every guarantee exists;
+- it fails the registration when an existing row violates a constraint.
+
+O-RC-4 (fail-closed) and O-RC-5 (owner ≠ app role) are decided in §10 of the discovery doc (`427cac7`).
+
+**Method.** One fresh disposable database per table history: fresh, created by `ccc0cc1`'s DDL, created by `ccc0cc1`'s DDL plus a row whose JSON claims VERIFIED, and created by `2dba126`'s DDL. Each runs `600c7c1`'s registration. The probes are scratch only, and there is no Gemini call.
+
+**Verdicts (`evidence/role-discovery-600c7c1/verdicts.txt`).**
+- **Convergence: PASS.**
+  - The `ccc0cc1` and `2dba126` tables end with all 7 `prr_*` constraints and both triggers, exactly like a fresh table.
+  - Every invalid insert and every UPDATE, DELETE and TRUNCATE is refused; a valid row is accepted.
+- **Dirty table: PASS.** The registration throws, also on a second call, and the job pool application is refused, so nothing is reported as registered.
+- **Tests: PASS.** The subset passes 60 files, 480 tests, 4 skipped; `relation-cache.postgres` passes 8/8. On `2dba126` exactly the O-RC-3 test fails; tsc reports 0 errors.
+- **O-RC-6 (observation).** After a failed convergence the table stays half converged: 6 of 7 constraints, no trigger. The whole job pool persistence stays unavailable until the row is removed by hand. That is fail-closed, but it is worth a runbook line.
+- **Note.** Old tables keep their auto-named checks next to the `prr_*` ones. The overlap is harmless.
+
+**Run record.** `evidence/role-discovery-600c7c1/`: verdicts.txt, cache-converge-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
+### 3.68 Atomic relation-cache convergence `88ac5ed` (O-RC-6) and runbook re-checked (2026-10-29)
+
+**Request.** GELB asked for a targeted re-check of `88ac5ed`, in which convergence and verification run in one transaction, and of the runbook in §10 of the discovery doc (`27a4e87`).
+
+**Method.** Fresh disposable databases, one per case: a dirty `ccc0cc1` table, then fresh, `ccc0cc1`-clean and `2dba126`-clean tables. The route handlers were called in-process, as GELB's own `role-discovery.postgres` test does. The probes are scratch only, and there is no Gemini call.
+
+**Verdicts (`evidence/role-discovery-88ac5ed/verdicts.txt`).**
+- **O-RC-6: PASS.** A failed registration leaves exactly the previous state: 2 old checks, no `prr_*` constraint, no trigger, and the row is kept.
+- **Repair path: PASS.**
+  - The runbook's query finds the row, and DELETE succeeds.
+  - The next registration in the same process reports REGISTERED with 7 `prr_*` constraints and 2 triggers, and the pool list answers 200 again. A restart is not needed.
+- **Convergence regression: PASS.** Fresh, `ccc0cc1`-clean and `2dba126`-clean tables behave as in §3.67.
+- **Tests: PASS.** The subset passes 60 files, 480 tests, 4 skipped; `relation-cache.postgres` passes 8/8. On `600c7c1` exactly the new test fails; tsc reports 0 errors.
+- **Runbook effect: FAIL (R-RB-1).** The runbook says every job pool route answers 503 `ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`. While the registration fails, PINK measured:
+  - `GET /api/career/job-pools`: 500 `ERR_JOB_POOL_INTERNAL`, with the raw database message in the body.
+  - Role discovery: 500 `ERR_ROLE_DISCOVERY_FAILED`.
+
+  The registration throws instead of returning a non-REGISTERED verdict, so nothing maps it to 503. Either the code maps it to 503, or the runbook must say 500.
+
+**Run record.** `evidence/role-discovery-88ac5ed/`: verdicts.txt, cache-atomic-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
+### 3.69 Recovery branch `recovery/role-discovery` (`08ae201`) validated independently (2026-10-29)
+
+**Request.** Owner mandate "DLL FULL SYSTEM RECOVERY". GELB asked for an independent check of `08ae201`: base `175c481`, six Codex commits reverted, GELB's `backend/pool-role-discovery` merged up to `94e6028`, and four test files reset to `9112682`. No Codex claim was to be taken over unseen. Points:
+1. the reverts;
+2. the six-orbit PERSON contract and PxJ unchanged against `b77c851`;
+3. the four reset test files;
+4. no Gemini path on a GET;
+5. GELB's classification of the Codex work in §2 (a–d) of `CONDYN_DLL_SYSTEM_RECOVERY_2026-10-28.md` (`ece6ace`).
+
+**Method.** PINK used four kinds of evidence, kept apart:
+- code inspection;
+- the real result on :41878, GET only;
+- stand-in production labs on `08ae201` and `b77c851`, with the stand-in model's call log counted;
+- scratch probes on disposable databases.
+
+Read-only metadata of the `_sfe` sandboxes, the main checkout and :3017 complete the picture. Process environments and `codex-home` were not read. No Gemini call.
+
+**Verdicts (`evidence/recovery-08ae201/verdicts.txt`).**
+1. **Reverts: PASS.**
+   - Two reverts are pure; four leave out only hunks `175c481` had already removed, plus the Codex docs, which keep a SUPERSEDED banner.
+   - The named files are byte-identical with `ccc0cc1` and `9112682` at `46e4a0b`. No Codex trace remains on `08ae201`, and every changed file traces to `94e6028`, `175c481` or a documented GELB edit.
+   - **O-REC-1 (observation).** The RD-URL state in the field is unused (dead until stage 2).
+2. **Six orbits / PxJ: PASS.**
+   - PERSON shows shells 01–06, rays, the coupling and VIEW MATCHES on 03; a real click on 04 opens its cosmos.
+   - PxJ shows only 01–02 and B2 AVAILABLE.
+   - Stand-in `08ae201` equals `b77c851` in every scene at 1920 and 1280, and the PERSON DOM matches in 16 of 16 scenes.
+   - g1 is unchanged, nav is 88/90, and s10 matches §3.64.
+3. **Four reset test files: FAIL (narrow).** The 9 RD-5 inverses are rightly gone, and RD-5's component tests have field-level equivalents. The exception is "each Stage 03–06 component labels its empty projection in English and German". Its 4 checks pass on `08ae201`, yet no test covers the German empty projection of 03–06 any more. `career-demo-ui` and `first-screen-ssr` in their `175c481` versions hold every pre-RD-5 assertion.
+4. **No Gemini on a GET: PASS.**
+   - Providers are instantiated only in the worker and scripts.
+   - A stand-in sweep over 15 read routes leaves the model calls at 6 → 6, twice.
+   - The cache decoupling GELB asked for holds: the pool list returns 200 and the plan reports CACHE_UNAVAILABLE / not executable; repair works without restart.
+   - The three suite files pass on `08ae201` with real `node_modules` (3/3, 71/71). The focused list passes 70 files, 566 tests, and tsc reports 0.
+5. **Doc §2: PASS with two corrections and one INCONCLUSIVE.**
+   - Confirmed:
+     - (a) the `gruen` sandbox: 50 commits on stale `ee06ff6`, unpushed;
+     - (c) the local-only branch, including the silent all-ACTIVE pool set, Gemini plus cache write plus ranking inside the GET, and the `?discovery=PERSON` bypass;
+     - (d) :3017 runs from that branch at `175c481` with 0 analyses and 0 pools.
+   - **Correction (a).** The sandbox role discovery builds on embeddings / semantic search ranked by `similarityScore`, not on the demo-pool engine.
+   - **Correction (b).** The four untracked files in the main checkout are empty and date from 2026-08-31, so they predate Codex.
+   - **INCONCLUSIVE.** :3017's Gemini key, model and database name, because PINK reads no process environment.
+
+**Addendum (`164bade`).** Point 3 is now **PASS**. GELB restored the it.each block for the German and English empty-projection labels of components 03–06 verbatim from `175c481` into the six-orbit f12 file, with no RD-5 inverse back. The file passes 14/14, the four cases among them (`addendum-164bade.txt`). For :3017, GELB states that a model key is set. PINK did not read the environment, so in PINK's classes this stays INCONCLUSIVE; the risk is the owner's to weigh.
+
+**Run record.** `evidence/recovery-08ae201/`: verdicts.txt, 1-reverts-CODE_INSPECTION.txt, 2-orbits-PERSISTED_REAL_RESULT-and-STAND_IN.txt, 3-test-coverage-MEASUREMENT.txt, 4-gemini-get-and-decoupling.txt, 5-doc-section2-CODE.txt, shots/ (2, real, no quotes on view), scripts/ and manifest.sha256.
+
+### 3.70 Stage-3 semantic relation engine core `123604f` checked (2026-10-29)
+
+**Request.** GELB asked for an independent, inverse check of `lib/career/job-pool/semantic-relation-engine.ts`, with the stand-in only and no Gemini, in four points:
+1. C-1 on the real request;
+2. strict admission, actively hunting bypasses of the claim guard;
+3. exactly one attempt;
+4. the stand-in's identity.
+
+**Method.** A scratch probe ran with no database and no model. Its operands were the real PERSON proposals (read by GET from :41878) and the real requirements of 5 pool files, 86 roles and 586 requirements.
+
+**Verdicts (`evidence/semantic-engine-123604f/verdicts.txt`).**
+- **1 C-1: PASS.** The request carries only the proposals and the requirements under opaque ids `R1…`: no role, organisation or pool text, no requirement id, no domain, no necessity.
+- **2 Admission.**
+  - Structure **PASS**: every malformed, foreign, missing, duplicate or extra item fails the whole role, and stored quotes come only from the server.
+  - Claim guard **FAIL (D-ENG-1)**: the English, word-bounded regex lets through full-width "％", percent in words, "87 Prozent", "0.87", "9/10", "8 out of 10", inflections (scored, ranks, recommends, hired, qualifies, qualification, verification), "competent", "good fit", every German claim tested, spaced letters and a Cyrillic "о".
+  - Observations: O-ENG-1, a DIFFERENT or UNCLEAR pair without citation stores the proposal's first quote; O-ENG-2, the explanation has no length bound.
+- **3 One attempt: PASS.**
+  - Reservation, release and consumption behave as specified for a provider error, a refused output, an empty set and no budget.
+  - O-ENG-3: if consumption or the writer throws, there is no defined outcome.
+- **4 Stand-in: FAIL (D-ENG-2).** The stand-in labels its text but has no identity of its own. Run under the engine identity `gemini / gemini-3.1-pro-preview`, it stores records under the real engine's keys. That contradicts §5 of the spec; the provider must declare its identity, and a mismatch must be refused.
+
+**Run record.** `evidence/semantic-engine-123604f/`: verdicts.txt, engine-probe-DETERMINISTIC.txt, scripts/ and manifest.sha256.
+
+### 3.71 Role layer, engine hardening and investigation store on `c670b74` (2026-10-29)
+
+**Request.** GELB asked for validation of `c670b74` on `recovery/role-discovery`. It combines GRÜN's role layer `fccaafa`, GELB's engine hardening `c3a6a22` from §3.70, and the investigation store with call ledger `d90b22d`. Points:
+1. the role layer with real data and stand-in;
+2. six orbits and T-07 against `b77c851`;
+3. PxJ and the handover;
+4. the §3.70 findings;
+5. store and ledger.
+
+**Method.** Four kinds of evidence, kept apart:
+- real data on :41878, a production build of `c670b74` on a fresh 41862 copy with 4 pools, browser GET only;
+- PINK stand-in production labs on `c670b74` and `b77c851`;
+- scratch probes on disposable databases;
+- code inspection.
+
+No Gemini call.
+
+**Verdicts (`evidence/role-layer-c670b74/verdicts.txt`).**
+- **Static: PASS.** tsc reports 0 errors; GRÜN's list passes 78 files, 659 tests, 4 skipped; T-07 is green.
+- **1 Role layer: PASS** with real data and stand-in, at 1920 and 1280.
+  - The entry sits in the panel slot. Opening the panel changes neither URL nor history; nothing is preselected and there is no "all".
+  - A release is one push and one read of exactly the named pools. Reload, Back and Forward give the same view.
+  - The semantic line always reads "not executed". The CACHE_* forms show no numbers, and malformed plans are rejected by the decoder.
+  - No fit, suitability or semantic-positive wording. The trace from requirement to basis, proposal, quote and source equals the API.
+- **2 Six orbits / T-07: PASS.** The orbit scenes are identical to `b77c851`, also with the panel opened from the URL. With the panel open, VIEW MATCHES on hover over 03 and the click on 04 behave as before. The PERSON DOM matches in 16 of 16 scenes; g1, nav and s10 are unchanged.
+- **3 PxJ / handover: PASS.** Under PxJ there is no entry or panel, even with a release in the URL; B2 stays AVAILABLE. "Gezielt untersuchen" is one push to PERSON × JOB with the role, no analysisId, no release and NO_ANALYSIS; no POST.
+- **4 §3.70: PASS.** D-ENG-1, D-ENG-2 and O-ENG-1 to O-ENG-3 are closed.
+  - **New D-ENG-3: FAIL.** The new guard over-blocks. It refuses 29 of 586 real requirement names on their own, across 26 roles; examples are certifications, qualifications, "Data Provenance", HL7, Neo4j, ISO and IEC numbers, and "Architecture Communication" through a cross-word stem. It also refuses neutral words such as "one", "improve", "approved" and "Frankfurt". One refusal fails the whole role.
+- **5 Store / ledger.**
+  - **PASS:** idempotency, also under 8 concurrent opens; forward-only tasks, also under a race; atomic reservation against both limits; 20 parallel reservations against a limit of 3 give exactly 3; a real provider with a day limit of 0 runs nothing.
+  - **D-LED-1: FAIL.** The investigation status can go backward.
+  - **D-LED-2: FAIL.** A release by an investigation without a reservation frees another investigation's day unit.
+  - **O-LED-1 (observation).** A day limit lowered later the same day does not apply.
+  - **O-LED-2 (observation).** Tasks and ledger rows can be updated backward or deleted on the database.
+
+**Run record.** `evidence/role-layer-c670b74/`: verdicts.txt, measurements.txt, shots/ (2, real, no quote on view), scripts/ and manifest.sha256.
+
+### 3.72 Claim guard, ledger direction and database guards on `6c65d0c` (2026-10-29)
+
+**Request.** GELB asked for a re-check of `6c65d0c` on `recovery/role-discovery`, one commit on `c670b74` that fixes §3.71: a word-based, operand-aware claim guard (D-ENG-3), forward-only investigation status (D-LED-1), consume and release only on the own reservation (D-LED-2), the latest day limit (O-LED-1) and database guard triggers that the registration verifies (O-LED-2). GELB also asked whether any place in the UI would show these texts differently.
+
+**Method.** Scratch probes on disposable databases via `test:isolated` (engine, store / ledger, guard registration, guard vs. rendering) and code inspection. No lab: the commit changes three files in `lib/career/job-pool` and two test files, nothing under app, components or the UI library. No Gemini call.
+
+**Verdicts (`evidence/ledger-guard-6c65d0c/verdicts.txt`).**
+- **Static: PASS.** tsc reports 0 errors. The job-pool group passes 26 files, 258 tests, 4 skipped (equal to GELB's figures); the §3.71 focused group passes 78 files, 675 tests. Counter-proof: the two changed test files fail 16 cases on `c670b74`.
+- **D-ENG-3: PASS.** 0 of 586 real requirement names are refused and no role is affected. All 31 claims of §3.70 are still refused and all 23 neutral texts are admitted. Structural admission, C-1, the one-attempt outcomes and the identity guard are unchanged.
+- **D-ENG-4 (new): FAIL, narrow.** The guard and the rendering diverge, so an admitted text can still show a claim:
+  - operands are removed as raw substrings, so with the real alias "Go" the text "A good fit." is admitted;
+  - invisible format and mark characters (U+034F, U+2061–U+2064, U+180E, variation selectors, tag characters) and bidi overrides with reversed text are neither stripped nor refused;
+  - percent and ratio look-alikes (٪, ‰, ⁄, ∕) pass;
+  - for a later Markdown or HTML rendering, also markup and entities.
+  Cache rows are immutable, so an admitted text can never be corrected. Suggested: whole-word operand removal, refusing such characters, wider percent and ratio classes, and plain-text rendering in a later UI.
+- **O-ENG-4 (observation).** Evaluative wording outside the lists is admitted ("Excellent fit", "Top candidate", "Rated 4.5 stars", "passendes Profil", "Die Person ist kompetent", 16 of 21). The extent of a list guard is an owner question.
+- **UI (GELB's question): PASS, code inspection.** No UI file reads the explanation, the limitation, the relation states or the engine and store; both are imported only inside `lib/career/job-pool`. No surface shows these texts today, so none shows them differently. The difference that will matter when one does is D-ENG-4: the guard judges the text without its operands and invisible characters, while the browser shows it with them.
+- **D-LED-1: PASS.** In the store and on the database (trigger), a backward step, an identity change and a delete are refused.
+- **D-LED-2: PASS.** A foreign release or consume raises ERR_LEDGER_NO_RESERVATION; both rows stay unchanged.
+- **O-LED-1: PASS.** A day limit lowered to 0 refuses the reservation and is committed although refused, never below what is outstanding.
+- **O-LED-3 (new observation).** "Latest" means the latest call: a caller with the old configuration raises the day limit back to 5.
+- **O-LED-2: PASS.** The triggers are present on all three tables. Delete, backward status and decreasing counters are refused, `session_replication_role` is denied, and a dropped trigger is re-created by the next registration.
+- **O-LED-4 (new observation).** The registration does not notice a disabled trigger. A table owner can disable the trigger; the registration still reports REGISTERED, and a counter decrease and a delete then succeed. This also holds for the relation-cache triggers, since `600c7c1`.
+
+**Run record.** `evidence/ledger-guard-6c65d0c/`: verdicts.txt, measurements.txt, scripts/ (four probes as .txt) and manifest.sha256.
+
+### 3.73 Guard sees the rendered text, guard triggers cannot stay disabled, on `6823e93` (2026-10-29)
+
+**Request.** GELB asked for a targeted re-check of `6823e93` on `recovery/role-discovery`. This one commit on `6c65d0c` fixes the two §3.72 items:
+- **D-ENG-4.** Operands are removed only as whole words. Invisible, opaque and bidi characters, look-alikes for percent and ratio signs, and markup are refused outright rather than cleaned.
+- **O-LED-4.** The registration re-enables every guard trigger and requires `tgenabled <> 'D'`.
+
+**Method.** Scratch probes on disposable databases via `test:isolated`: guard against rendering, over-blocking on real data, the engine probe of §3.72 run again, and guard registration. No lab: the commit touches only two job-pool modules and their tests. No Gemini call.
+
+**Verdicts (`evidence/guard-render-6823e93/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The job-pool group passes 26 files with 282 tests passed and 4 skipped, equal to GELB. The focused group passes 78 files with 699 tests passed. Counter-proof: the two changed test files fail 17 cases on `6c65d0c`.
+- **D-ENG-4: PASS.**
+  - "A good fit." with the operand Go is refused, and "Gopher and Go" is admitted.
+  - The operand attack drops from 1 of 209 to 0.
+  - Every invisible, bidi, look-alike and markup case is refused.
+  - Umlauts in both NFC and NFD, typographic punctuation, C++ / C#, Node.js and R&D stay usable.
+  - Over-blocking is 0: no real requirement name is refused, also inside a German sentence. The rest of the engine probe is identical to 6c65d0c.
+- **O-LED-4: PASS.**
+  - Disabled, replica-only and always triggers on all four tables are enabled again after the registration.
+  - Afterwards a counter decrease, a delete and a truncate are refused.
+  - Boundary: the registration runs once per process. Disabling a trigger takes the table owner.
+- **O-ENG-5 (observation).** Ordinary letters that read as a claim still pass: small capitals, script g, Armenian o, dotless i, regional indicators, "GoodFit", and spaced or dotted letters. They fall under GELB's structural condition.
+- **O-ENG-6 (observation).** Fail-closed has a cost. "->", "<=", a footnote "*" and a CV quote containing a percent each fail the whole role after its call. The prompt should name these characters.
+- **Recorded conditions (GELB, for owner and GRÜN).**
+  - One configuration source per provider for the day limit (O-LED-3), as a condition on the start route.
+  - Model texts shown only as plain text marked "Modellaussage, ungeprüft, keine Bewertung", never in ranking or sorting (O-ENG-4 / O-ENG-5).
+  - PINK checks both when they arrive.
+
+**Run record.** `evidence/guard-render-6823e93/`: verdicts.txt, measurements.txt, scripts/ (three probes as .txt), manifest.sha256.
+
+### 3.74 Explicit start route of the semantic investigation on `c1954ca` (2026-10-29)
+
+**Request.** GELB asked for an independent, inverse check of the explicit start route on `recovery/role-discovery`: feature `3231136` plus the test correction `c1954ca`, stand-in only, no Gemini. The route is `POST …/role-discovery/investigations`; `GET …/investigations/{id}` reads. Operand loading is now shared between the read route and the start route. There is a single configuration source, `semantic-config.ts`, and a runner that works role by role. Seven points to check, plus the correction of the red group test.
+
+**Method.**
+- A route probe on a disposable database via `test:isolated`. It calls the handlers directly and counts stand-in calls on the provider.
+- A PINK stand-in production lab on `c1954ca` with the provider configured. Counts come from the lab's own database, plus the Gemini stand-in log.
+- Code inspection.
+
+**Verdicts (`evidence/start-route-c1954ca/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The job-pool group passes 27 files with 287 tests, twice. The red run of `3231136` is not reproduced; the correction is sound, because test files run one after another.
+- **1 Reads: PASS.** No route read and no page view writes an investigation, task, ledger entry or relation. Page views at both widths, before and after a run, leave the Gemini stand-in log at 6 → 6. No UI code calls the POST route.
+- **2 Refusals: PASS.** 33 cases, with no call and no write. They cover configuration, body, roles, pools, PxJ, analysis, call confirmation, request id and the cap of 25. An inactive pool cannot be created by upload, so that path was not exercised.
+- **3 Idempotency / race: PASS.** The same request returns the stored investigation even when the confirmed calls changed or the roles are reordered. Eight parallel identical starts create one investigation with 2 calls.
+- **4 One attempt / budget: PASS.**
+  - Day limit 0: BUDGET_EXHAUSTED, then CANCELLED, with 0 calls and nothing stored.
+  - Limit exhausted mid-run: SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED.
+  - A failing role keeps the earlier role's relations and releases its own unit.
+- **5 Cache reuse: PASS.** A new request id with 0 confirmed calls gives all CACHED and no call; the stale confirmation is refused.
+- **6 Evidence class: PASS.** The created response says STAND_IN, and every stored investigation and relation names the stand-in. A real provider is not configurable.
+  - **O-START-2:** the replay and the investigation GET carry no evidenceClass.
+- **7 No model texts: PASS.** No response carries explanation, limitation, raw text or refusals.
+- **Observations.**
+  - **O-START-1:** a cross-site text/plain POST starts an investigation. There is no origin or content-type check, the same as for every POST route of the app. Precondition before any real provider.
+  - **O-START-3:** a missing or invalid day limit falls back to 1000.
+  - **O-START-4:** two different requests for the same pending roles at the same time both pay.
+  - **O-START-5:** after a run the panel still reads "not executed".
+  - **O-START-6:** the run happens inside the request, and a process end mid-run leaves the investigation RUNNING.
+
+**Run record.** `evidence/start-route-c1954ca/`: verdicts.txt, measurements.txt, scripts/ (route probe and lab probe as .txt), manifest.sha256. No screenshots (the trace shows CV quotes).
+
+### 3.75 Start route fixes on `097e376` (2026-10-29)
+
+**Request.** GELB asked for a short re-check of `097e376` (with `0e03f69`) on `recovery/role-discovery`. It fixes three §3.74 observations on the start route and adds `discovery.startControl`. Stand-in only.
+
+**Method.** The route probe of §3.74, adapted, on a disposable database via `test:isolated`, plus 15 new header cases and a day-limit parser table. No Gemini call.
+
+**Verdicts (`evidence/start-route-097e376/verdicts.txt`).**
+- **Static: PASS.** tsc 0; the job-pool group passes 27 files with 288 tests (equal to GELB). The changed tests fail 3 cases on `c1954ca`.
+- **O-START-1: PASS.**
+  - Content types text/plain, none, form and multipart give 415.
+  - `sec-fetch-site: cross-site` gives 403, also with text/plain.
+  - No call, nothing written. The scope is this route only.
+  - **O-START-1b (observation):** prefix and exact-value checks let through "application/json-seq", a capitalised "CROSS-SITE" and a foreign Origin without `sec-fetch-site`. Browsers cannot exploit this, because a cross-origin JSON POST needs a CORS preflight the app does not grant. The app-wide Origin check remains an owner precondition.
+- **O-START-2: PASS.** `evidenceClass` is STAND_IN in the 201, in every replay and in the investigation GET.
+- **O-START-3: PASS.** Only 1–6 decimal digits count. Missing, empty and malformed values, 1e9 and 1000000 give 0 and nothing runs. 999999 caps at 100000. Stand-in users must now set the limit explicitly.
+- **startControl: PASS.** It reports `engineState` and `maxRoles` correctly for none, gemini and stand-in, and the read writes nothing.
+- **Regression: PASS.** Idempotency first, the 8-way race, budget cases, failing-role handling, cache reuse and the absence of model texts are unchanged. O-START-4, -5 and -6 remain open as GELB stated.
+
+**Run record.** `evidence/start-route-097e376/`.
+
+### 3.76 Role investigation UI on `frontend/role-investigation-ui` `9c40928` (2026-10-29)
+
+**Request.** GELB asked for an independent check of `9c40928` (worktree `condyn-admin-role-investigation`, base `edae658`), which holds the explicit start of a semantic check in the role-discovery panel. Stand-in only, nothing on :3017, no merge. The branch contains RI-CONTROL, RI-START and RI-URL, plus the `50dac39` fix for a dashboard that dropped the URL parameter. Five points to check.
+
+**Method.**
+- PINK stand-in production labs on `9c40928`: one with the stand-in configured, one with no provider, one with "gemini", one for a stale confirmation and one with day limit 1. Every `/api` request was recorded, together with the database counts and the Gemini stand-in log.
+- Unit groups on disposable databases, and code inspection.
+- Rewritten responses are labelled as such in the evidence.
+
+**Verdicts (`evidence/role-investigation-ui-9c40928/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The first-screen group passes 46 files with 276 tests, the job-pool group 27 files with 288, and the focused group (T-07 and F12 among them) 78 files with 699. The diff touches no API or job-pool file. The only POST to `/investigations` is in `semantic-investigation.ts`, called from one click handler.
+- **1 No POST: PASS.** Load, open, release, reload, Back, Forward, every URL-contract load, close and hand-over send 0 POST. One click is exactly one POST, also for two clicks in the same task. The Gemini stand-in log stays at 6.
+- **2 confirmedCalls: PASS.** The body carries the displayed number. Nothing is preselected and the cap is the `maxRoles` of the start control. The three "start not available" reasons read apart, and cache failure shows no pick boxes. A real stale case is refused with "the server now names 0 calls instead of the 2 you confirmed"; RE-READ PLAN is one GET, and the second explicit start stores all CACHED.
+- **3 URL contract: PASS.**
+  - Invalid, duplicate or malformed ids are removed without GET or POST.
+  - One valid id is read once by GET. Reload and Forward are identical, and Back returns to the state before the release.
+  - An unknown id gives NOT_FOUND.
+  - PxJ, no pools and no analysis read nothing.
+  - Close and "Gezielt untersuchen" remove the id.
+  - The hand-over chain is proven by the reload result itself.
+  - A changed release and an analysis change could not be exercised in the lab (one pool); they are covered by `discovery-ri-url.test.tsx` and are INCONCLUSIVE in the browser.
+- **4 Honesty: FAIL, narrow.**
+  - **F-RI-1:** after a run the plan line reads "not executed · 0 of 948 pairs in the relation cache · would need 9 calls · stand-in check: completed", with "partly completed" for budget cases. "Not executed" and "completed" contradict each other, and the numbers are those from before the run. A reload shows fresh numbers, but the sentence is the same. Suggested: drop "not executed" when a stored investigation is known, and re-read the plan after a completed POST.
+  - Everything else holds. The stand-in reads "Stand-in, no model", and no provider name appears in any state. A foreign provider, a missing or UNKNOWN evidenceClass, extra fields, another analysis' id, no tasks and a 500 on POST all give FAILED. No relation state, explanation, percent, rank or recommendation appears, and the D-RD-4 groups are unchanged.
+- **Budget (real): PASS.** Day limit 1 gives SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED with "partly completed" and the budget sentence, 1 call. A second start with the day spent makes no call.
+- **5 Regression: PASS.** The six-orbit scene probe is identical to `c670b74`. The panel walk, hand-over and trace are unchanged. All six viewports show no overflow and complete states.
+- **Observations.**
+  - **O-RI-1:** plan numbers stay stale in-session (same cause as F-RI-1).
+  - **O-RI-2:** an id without pools, analysis or in PxJ stays in the URL and is ignored.
+  - **O-RI-3:** a fresh release says "not started" although earlier investigations of these pools filled the cache.
+  - **O-RI-4:** after a run the picks stay ticked and START stays enabled.
+
+**Run record.** `evidence/role-investigation-ui-9c40928/`: verdicts.txt, measurements.txt, scripts/ (probe and runners as .txt), shots/ (5, no CV quote on view), manifest.sha256.
+
+### 3.77 Role investigation UI fix on `9bb6bed` (2026-10-29)
+
+**Request.** GELB asked for a recheck, stand-in only, of GRÜN's fix `9bb6bed` on `frontend/role-investigation-ui`. It addresses F-RI-1 and O-RI-1, O-RI-3 and O-RI-4 of §3.76. The plan is now re-read once per changed stored id, which adds one automatic GET.
+
+**Method.** The §3.76 probes, extended with settled counts (discovery GETs after start, reload, Back and Forward, and 8 s later) and a comparison of the displayed numbers with the database. Labs: stand-in, no provider, gemini, stale and day limit 1. Unit groups and code diff included.
+
+**Verdicts (`evidence/role-investigation-ui-9bb6bed/verdicts.txt`).**
+- **Static: PASS.** tsc 0; the first-screen group passes 47 files with 279 tests, job-pool 288 and the focused group 699. The diff touches no API or job-pool file.
+- **F-RI-1 / O-RI-1: PASS.** The line reads "Relation cache: N of M pairs · stand-in check: {status}" with no "not executed". The numbers equal the database after a full run (192), after a partial run (120) and after reload. The plan is re-read exactly once per changed id: 1 GET after a start and 2 on mount. The count is unchanged 8 s later, so there is no loop.
+- **No extra POST: PASS.** One click is one POST. Reload, Back, Forward, the URL cases, close and hand-over send 0 POST, and the Gemini stand-in log stays at 6.
+- **O-RI-4: PASS.** After a stored run the ticks are cleared and START is disabled.
+- **O-RI-3: PASS.** The wording is "no investigation named in this view".
+- **Unchanged: PASS.** The start-unavailable reasons, stale refusal, URL contract, FAILED cases, D-RD-4 groups and budget run behave as in §3.76.
+- **Regression: PASS.** Six-orbit scenes identical to `c670b74`, panel walk unchanged, six viewports complete. O-RI-2 remains an observation.
+
+**Run record.** `evidence/role-investigation-ui-9bb6bed/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

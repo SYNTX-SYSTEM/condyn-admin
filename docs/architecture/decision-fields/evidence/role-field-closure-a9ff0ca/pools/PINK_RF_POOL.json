@@ -1,0 +1,199 @@
+{
+ "pool": {
+  "id": "pool_pink_rf_v1",
+  "name": "PINK role-field closure pool",
+  "description": "Synthetic PINK pool for X-07 / X-09 / X-10 (same role id as the DLL pool, a role without requirements, equal titles).",
+  "version": 1,
+  "status": "ACTIVE",
+  "created_at": "2026-10-13T00:00:00.000Z"
+ },
+ "organizations": [
+  {
+   "id": "org_kestrel",
+   "pool_id": "pool_pink_rf_v1",
+   "org_id": "kestrel",
+   "name": "Kestrel Logistics Software GmbH",
+   "country_iso": "DE",
+   "region": "Hamburg",
+   "industry": "Logistics SaaS",
+   "scale": "Scaleup (400+)",
+   "description": "Builds a multi-tenant orchestration platform for mid-sized freight forwarders: route planning, dock scheduling, live shipment tracking and carrier settlement. Roughly 60 engineers in six product teams; TypeScript front to back, event-driven services on Kubernetes, customers in twelve European countries."
+  },
+  {
+   "id": "org_pink_other",
+   "pool_id": "pool_pink_rf_v1",
+   "org_id": "org_pink_other",
+   "name": "PINK Other Systems GmbH",
+   "country_iso": "DE",
+   "region": "Hamburg",
+   "industry": "Logistics SaaS",
+   "scale": "Scaleup (400+)",
+   "description": "Builds a multi-tenant orchestration platform for mid-sized freight forwarders: route planning, dock scheduling, live shipment tracking and carrier settlement. Roughly 60 engineers in six product teams; TypeScript front to back, event-driven services on Kubernetes, customers in twelve European countries."
+  }
+ ],
+ "roles": [
+  {
+   "id": "role_kestrel_fullstack",
+   "pool_id": "pool_pink_rf_v1",
+   "organization_id": "org_kestrel",
+   "title": "Senior Full-Stack Engineer – Shipment Tracking",
+   "seniority": "Senior / L4",
+   "domain_focus": "Web Platforms",
+   "description": "Kestrel's tracking team owns the live shipment view that dispatchers and end customers use around the clock. You build features end to end: a React and TypeScript front end with map visualisation, Node.js services that consume carrier telematics events from Kafka, and the PostgreSQL read models behind them. Typical work includes designing a new exception-handling flow for delayed loads, reducing the time-to-first-position for new shipments, and hardening the public tracking link against abuse. You pair with product design on interaction details, write the tests that keep releases boring, and take part in a one-week-in-six on-call rotation. We expect several years of production web development, comfort across the stack, and the judgement to keep a growing codebase understandable for the next engineer."
+  },
+  {
+   "id": "role_pink_twin_a",
+   "pool_id": "pool_pink_rf_v1",
+   "organization_id": "org_kestrel",
+   "title": "Platform Engineer",
+   "seniority": "Senior / L4",
+   "domain_focus": "Web Platforms",
+   "description": "Twin A (same title as twin B, same organization)."
+  },
+  {
+   "id": "role_pink_twin_b",
+   "pool_id": "pool_pink_rf_v1",
+   "organization_id": "org_kestrel",
+   "title": "Platform Engineer",
+   "seniority": "Senior / L4",
+   "domain_focus": "Web Platforms",
+   "description": "Twin B (same title as twin A, same organization)."
+  },
+  {
+   "id": "role_pink_twin_c",
+   "pool_id": "pool_pink_rf_v1",
+   "organization_id": "org_pink_other",
+   "title": "Platform Engineer",
+   "seniority": "Senior / L4",
+   "domain_focus": "Web Platforms",
+   "description": "Twin C (same title, other organization)."
+  },
+  {
+   "id": "role_pink_empty",
+   "pool_id": "pool_pink_rf_v1",
+   "organization_id": "org_kestrel",
+   "title": "Role Without Requirements",
+   "seniority": "Senior / L4",
+   "domain_focus": "Web Platforms",
+   "description": "No requirement at all."
+  }
+ ],
+ "requirements": [
+  {
+   "id": "req_kestrel_fullstack_01",
+   "role_id": "role_kestrel_fullstack",
+   "capability_name": "TypeScript",
+   "domain": "Software Engineering",
+   "weight": 0.9,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Production TypeScript code across front end and back end, e.g. typed domain models shared between client and services.",
+   "aliases": [
+    "TS"
+   ]
+  },
+  {
+   "id": "req_kestrel_fullstack_02",
+   "role_id": "role_kestrel_fullstack",
+   "capability_name": "React",
+   "domain": "Frontend",
+   "weight": 0.85,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Shipped React applications with non-trivial state (real-time updates, optimistic UI), ideally with hooks and a component library.",
+   "aliases": [
+    "React.js",
+    "ReactJS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_a_01",
+   "role_id": "role_pink_twin_a",
+   "capability_name": "TypeScript",
+   "domain": "Software Engineering",
+   "weight": 0.9,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Production TypeScript code across front end and back end, e.g. typed domain models shared between client and services.",
+   "aliases": [
+    "TS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_a_02",
+   "role_id": "role_pink_twin_a",
+   "capability_name": "React",
+   "domain": "Frontend",
+   "weight": 0.85,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Shipped React applications with non-trivial state (real-time updates, optimistic UI), ideally with hooks and a component library.",
+   "aliases": [
+    "React.js",
+    "ReactJS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_b_01",
+   "role_id": "role_pink_twin_b",
+   "capability_name": "TypeScript",
+   "domain": "Software Engineering",
+   "weight": 0.9,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Production TypeScript code across front end and back end, e.g. typed domain models shared between client and services.",
+   "aliases": [
+    "TS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_b_02",
+   "role_id": "role_pink_twin_b",
+   "capability_name": "React",
+   "domain": "Frontend",
+   "weight": 0.85,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Shipped React applications with non-trivial state (real-time updates, optimistic UI), ideally with hooks and a component library.",
+   "aliases": [
+    "React.js",
+    "ReactJS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_c_01",
+   "role_id": "role_pink_twin_c",
+   "capability_name": "TypeScript",
+   "domain": "Software Engineering",
+   "weight": 0.9,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Production TypeScript code across front end and back end, e.g. typed domain models shared between client and services.",
+   "aliases": [
+    "TS"
+   ]
+  },
+  {
+   "id": "req_role_pink_twin_c_02",
+   "role_id": "role_pink_twin_c",
+   "capability_name": "React",
+   "domain": "Frontend",
+   "weight": 0.85,
+   "required_level": "L4 - Advanced",
+   "necessity": "REQUIRED",
+   "requirement_type": "TOOL_TECHNOLOGY",
+   "evidence_hint": "Shipped React applications with non-trivial state (real-time updates, optimistic UI), ideally with hooks and a component library.",
+   "aliases": [
+    "React.js",
+    "ReactJS"
+   ]
+  }
+ ]
+}

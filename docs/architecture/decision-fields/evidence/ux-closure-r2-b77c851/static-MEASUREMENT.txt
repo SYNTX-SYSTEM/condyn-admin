@@ -1,0 +1,14 @@
+PINK §3.64 · static on b77c851 (code 9a8a28e). MEASUREMENT / CODE_INSPECTION, git archive trees in PINK's scratch.
+Scope 41dfa25..9a8a28e:  13 files changed, 342 insertions(+), 48 deletions(-); backend/API/DB/config files: 0; 9a8a28e..b77c851 docs only: yes
+tsc --noEmit: 0 errors. Production builds without the flag: 9 labs READY, 'Skipping validation of types' 0.
+Focused group:  Test Files 63 passed (63)  Tests 514 passed | 4 skipped (518)  · net sentinel 1 refused attempt (Next version check).
+Counter-proof, the 6 new files on 41dfa25:  Test Files 6 failed (6)  Tests 10 failed | 6 passed (16)  — every failure a REPRODUCE (as GELB).
+Changed existing tests (this branch's own): job-levels.test.tsx, viewport-layout.test.tsx. job-levels: 5 expectations removed, 1 added —
+the removed ones asserted SELECT AS JOB before every requirement sign and role card (the 41dfa25 order that §3.62 measured as V-11);
+the added one asserts path → RETURN → SELECT AS JOB inside the panel. Consistent with restoring 70d1cb4's order, but not a 1:1 replacement.
+  -    expect(select).toBeLessThan(position(html, "syntx-requirement-"));
+  -    expect(select).toBeLessThan(position(html, "syntx-role-"));
+  -    expect(firstSign).toBeGreaterThan(0);
+  -    expect(order.indexOf("syntx-job-scope-select")).toBeLessThan(firstSign);
+  -    expect(order.slice(0, order.indexOf("syntx-job-scope-select"))).toEqual(["syntx-exit-btn", "syntx-path-FIELD", "syntx-path-ORGANIZATION", "syntx-return-btn"]);
+  +    expect(order.slice(at0, order.indexOf("syntx-job-scope-select"))).toEqual(["syntx-exit-btn", "syntx-path-FIELD", "syntx-path-ORGANIZATION", "syntx-return-btn"]);

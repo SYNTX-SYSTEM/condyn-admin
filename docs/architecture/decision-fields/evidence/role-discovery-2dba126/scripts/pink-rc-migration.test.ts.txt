@@ -1,0 +1,21 @@
+// PINK scratch probe: a table created by ccc0cc1's DDL, then 2dba126's registration — do the new constraints reach it?
+import { expect, it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { RELATION_CACHE_DDL as OLD } from "./old-ccc0cc1-relation-cache-repository";
+import { RELATION_CACHE_TABLE as T } from "../../lib/career/job-pool/relation-cache-repository";
+import { attempt, rec } from "./pink-rc-common";
+const o: Record<string, unknown> = {}; const sql = db.$client;
+it("migration", async () => {
+  o.tableBefore = (await sql`SELECT count(*)::int n FROM information_schema.tables WHERE table_name = ${T}`)[0].n;
+  for (const s of OLD) await sql.unsafe(s);
+  o.registration = await ensureJobPoolPersistenceRegistration();
+  o.checks = (await sql`SELECT conname FROM pg_constraint WHERE conrelid = ${T}::regclass AND contype = 'c' ORDER BY conname`).map(r => r.conname);
+  o.triggers = (await sql`SELECT tgname FROM pg_trigger WHERE tgrelid = ${T}::regclass AND NOT tgisinternal ORDER BY tgname`).map(r => r.tgname);
+  const b = rec("SQL");
+  o.insertJsonAuthorityVerified = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', '${b.proposalContentHash}', '${b.requirementContentHash}', '${b.engineVersionHash}', 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, authorityState: "VERIFIED" })}', '${b.createdAt}')`));
+  o.insertBadKeyFormat = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('not-a-key', 'p', 'r', 'e', 'PARTIAL', 'NONE', '{}', 't')`));
+  o.update = await attempt(sql.unsafe(`UPDATE ${T} SET created_at = 'x'`));
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1)); expect(o.registration).toBe("REGISTERED");
+});

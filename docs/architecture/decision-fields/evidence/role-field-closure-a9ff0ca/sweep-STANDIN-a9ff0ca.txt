@@ -1,0 +1,363 @@
+# gemini=STAND_IN (STAND-IN · keine Modellausführung) viewport=1920x1080 pageErrors=0
+# uploads (POST to PINK's own lab): {"dll": {"status": 201, "id": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "code": null, "mapping": [["role_kestrel_fullstack", 9], ["role_kestrel_frontend_architect", 10], ["role_kestrel_engineering_lead", 9], ["role_aurelion_principal_architect", 10], ["role_aurelion_security_engineer", 8], ["role_aurelion_backend_interop", 9], ["role_brightwater_cloud_platform", 8], ["role_brightwater_devops", 8], ["role_brightwater_backend_ledger", 8]]}, "rf": {"status": 201, "id": "JPOOL_567719541400EE0F090CD3E55E7201A8", "code": null, "mapping": [["role_kestrel_fullstack", 2], ["role_pink_twin_a", 2], ["role_pink_twin_b", 2], ["role_pink_twin_c", 2], ["role_pink_empty", 0]]}, "rfArchived": {"status": 201, "id": "JPOOL_2347D191FEB54B52F5BD7A2DD55A1980", "code": null, "mapping": [["role_kestrel_fullstack", 2], ["role_pink_twin_a", 2], ["role_pink_twin_b", 2], ["role_pink_twin_c", 2], ["role_pink_empty", 0]]}, "rfView": {"status": 200, "poolStatus": "ACTIVE", "mappingRoles": [{"role": "role_kestrel_fullstack", "requirements": 2, "state": null}, {"role": "role_pink_twin_a", "requirements": 2, "state": null}, {"role": "role_pink_twin_b", "requirements": 2, "state": null}, {"role": "role_pink_twin_c", "requirements": 2, "state": null}, {"role": "role_pink_empty", "requirements": 0, "state": null}]}, "archView": {"status": 200, "poolStatus": "ARCHIVED"}}
+# analyses: A0=ANL_* P0=ANL_* A1=ANL_* A1b=ANL_* AE=ANL_*
+
+B0-pxj-analysis-A0  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"A0": "A0"}
+
+B1-person-analysis-P0  ok=True
+  mode=PERSON field=CAPABILITY gate=OPEN job=NONE used=false observed=None:None select=None
+  url: analysisId=P0 investigationMode=PERSON jobScopeRoleId=None jobScopePool=None jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['1', '12', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB NO JOB SCOPE · PERSON
+  extra: {"P0": "P0"}
+
+F1-run-then-person  ok=True  note: network delay: every GET /api/career/jobs/* held 4 s so the mode switch lands while the job runs
+  mode=PERSON field=CAPABILITY gate=OPEN job=VALID used=false observed=None:None select=None
+  url: analysisId=ANL_other investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=MODE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking
+  first statement: This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis ANL_other · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+  extra: {"during": {"url": {"focus": "CAPABILITY", "investigationMode": "PERSON", "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "jobScopePoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "jobScopeRoleId": "role_kestrel_fullstack"}, "mode": "PERSON", "field": "CAPABILITY", "gate": "OPEN", "job": {"state": "VALID", "used": "false", "text": "JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking"}, "observation": null, "select": null, "clear": false, "first": null, "offer": null, "proposals": 0, "rows": 0, "items": ["0", "0", "0", "0", "0", "0"], "analyzeRequired": null, "analyzeMode": "PERSON", "error": null, "success": false}, "serverJob": "SUCCEEDED", "resultAnalysisId": "ANL_other"}
+
+F1-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=ANL_other investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=ANL_other counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+F2a-A1  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"A1": "A1"}
+
+F2a-A2-running  ok=True  note: A2 = plain text named .pdf; job polls held 4 s
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=NO_ANALYSIS binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: No analysis yet: run ANALYZE in PERSON × JOB with the selected job.
+
+F2a-A2-failed  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=NO_ANALYSIS binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=EXECUTION_FAILED
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: No analysis yet: run ANALYZE in PERSON × JOB with the selected job.
+  extra: {"serverJob": "FAILED", "errorCode": "EXECUTION_FAILED"}
+
+F2a-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+F2b-open-A0  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+F2b-A1  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1b investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A1b counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"A1b": "A1b"}
+
+F2b-A2-running  ok=True  note: job polls held 4 s
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1b investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+F2b-A2-failed  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1b investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=EXECUTION_FAILED
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"serverJob": "FAILED", "errorCode": "EXECUTION_FAILED"}
+
+F2b-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A1b investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A1b counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+F3-checking  ok=True  note: network delay: GET /api/career/job-pools/<DLL> (pool view and selected-job validation) held 7 s; result and boundary not delayed
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"samples": [{"ms": 500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": null}, {"ms": 1000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": null}, {"ms": 1500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": null}, {"ms": 2000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": null}, {"ms": 2500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 3000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 3500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 4000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 4500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 5000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 5500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 6000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 6500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 7000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 7500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 8000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 8500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 9000, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 9500, "job": "CHECKING", "gate": "AWAITING_JOB", "field": "FIELD", "offer": "No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE"}, {"ms": 10000, "job": "VALID", "gate": "OPEN", "field": "CAPABILITY", "first": "COVERAGE_LOADING", "offer": null}]}
+
+F3-invalid-unknown-role  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=INVALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_does_not_exist jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB JOB NOT VALID role_pink_does_not_exist
+  job-field offer: No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE
+
+F3-invalid-unknown-role-capability-request  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=INVALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_does_not_exist jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB JOB NOT VALID role_pink_does_not_exist
+  job-field offer: No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE
+
+F3-invalid-archived-pool  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=INVALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB JOB NOT VALID role_kestrel_fullstack
+
+F3-invalid-unknown-upload  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=INVALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB JOB NOT VALID role_kestrel_fullstack
+  job-field offer: No job is selected: this analysis belongs to the job below. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 ◎ SELECT THIS ROLE
+
+X-21-role-deep-link-not-selected  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-01-role-opened-nothing  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-01-reload  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-02-select-role  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-02-reload  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-03-select-again  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"requestsAfterClick": []}
+
+X-04-clear  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+  extra: {"analysesBefore": 5, "analysesAfter": 5}
+
+X-04-reload  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-05-other-role-same-org  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_frontend_architect jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Frontend Architect Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_frontend_architect ◎ SELECT THIS ROLE
+
+X-05-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_frontend_architect jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Frontend Architect Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_frontend_architect ◎ SELECT THIS ROLE
+
+X-06-role-other-org  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_aurelion_backend_interop jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Backend Engineer – Interoperability Gateway Aurelion Health Systems AG · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_aurelion_backend_interop ◎ SELECT THIS ROLE
+
+X-06-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_aurelion_backend_interop jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Backend Engineer – Interoperability Gateway Aurelion Health Systems AG · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_aurelion_backend_interop ◎ SELECT THIS ROLE
+
+X-07-other-pool-same-role-id  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_kestrel_fullstack select={'selected': 'false', 'disabled': False, 'pressed': 'false'}
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=role_kestrel_fullstack
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-07b-capability  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-08-select-in-other-pool  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · PINK role-field closure pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_fullstack ◎ SELECT THIS ROLE
+
+X-08-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · PINK role-field closure pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_fullstack ◎ SELECT THIS ROLE
+
+X-09-select-empty-role  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_pink_empty select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_empty jobScopePool=set jobRoleId=role_pink_empty
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Role Without Requirements Kestrel Logistics Software GmbH · PINK role-field closure pool
+
+X-09-analyze-empty-role  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=AE investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_empty jobScopePool=set jobRoleId=None
+  first=BOUNDARY_RESOLVING binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Role Without Requirements Kestrel Logistics Software GmbH · PINK role-field closure pool
+  first statement: READING THE INVESTIGATION BOUNDARY … analysis AE
+  extra: {"serverJob": "FAILED", "AE": "AE", "b2": {"status": 200, "counts": {"requirements": 0, "covered": 0, "notCovered": 0, "proposals": 12}, "code": null}}
+
+X-09-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=AE investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_empty jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=AE counts=0 covered · 0 not covered · 0 requirements · NOT_EVALUATED proposals=12 rows=0 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Role Without Requirements Kestrel Logistics Software GmbH · PINK role-field closure pool
+
+X-10-select-role_pink_twin_a  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_pink_twin_a select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_twin_a jobScopePool=set jobRoleId=role_pink_twin_a
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Platform Engineer Kestrel Logistics Software GmbH · PINK role-field closure pool
+
+X-10-select-role_pink_twin_b  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_pink_twin_b select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_twin_b jobScopePool=set jobRoleId=role_pink_twin_b
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Platform Engineer Kestrel Logistics Software GmbH · PINK role-field closure pool
+
+X-10-select-role_pink_twin_c  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=OPEN job=VALID used=true observed=ROLE:role_pink_twin_c select={'selected': 'true', 'disabled': True, 'pressed': 'true'}
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_pink_twin_c jobScopePool=set jobRoleId=role_pink_twin_c
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Platform Engineer PINK Other Systems GmbH · PINK role-field closure pool
+
+X-11-mode-person  ok=True
+  mode=PERSON field=CAPABILITY gate=OPEN job=VALID used=false observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=MODE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking
+  first statement: This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis A0 · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+
+X-11-reload  ok=True
+  mode=PERSON field=CAPABILITY gate=OPEN job=VALID used=false observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=MODE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking
+  first statement: This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis A0 · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+
+X-12-mode-job  ok=True
+  mode=JOB field=FIELD gate=JOB_MODE job=VALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  extra: {"analysisReadsAfterSwitch": []}
+
+X-12-reload  ok=True
+  mode=JOB field=FIELD gate=JOB_MODE job=VALID used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=A0 investigationMode=JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-15-role-switch-during-run  ok=True  note: job polls held 4 s
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=ANL_other investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_frontend_architect jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Frontend Architect Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_frontend_architect ◎ SELECT THIS ROLE
+  extra: {"serverJob": "SUCCEEDED", "resultAnalysisId": "ANL_other"}
+
+X-15-reload  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=ANL_other investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_frontend_architect jobScopePool=set jobRoleId=None
+  first=ROLE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Frontend Architect Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: This analysis belongs to another job than the selected one: neither its proposals nor coverage are shown. job of this analysis: role_kestrel_fullstack · JPOOL_B94850C439974E27496FE3B1A9A076B5 · selected job: role_kestrel_frontend_architect ◎ SELECT THIS ROLE
+
+X-19-unknown-analysis  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=ANL_other investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=RESULT_NOT_FOUND binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: Analysis not found: no result, no demo data. analysis ANL_other
+
+X-19b-person-analysis-under-pxj  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=P0 investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=MODE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+  first statement: This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis P0 · ran in PERSON · interface PERSON × JOB SWITCH TO PERSON
+
+X-20a-pool-without-role  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-20b-malformed-pool  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+
+X-20c-unknown-mode  ok=True
+  mode=PERSON_X_JOB field=CAPABILITY gate=OPEN job=VALID used=true observed=None:None select=None
+  url: analysisId=A0 investigationMode=FOO jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=AVAILABLE binding=A0 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+  job shell: JOB Senior Full-Stack Engineer – Shipment Tracking Kestrel Logistics Software GmbH · DLL Engineering & Architecture Pool
+
+X-22-history  ok=True
+  mode=PERSON field=CAPABILITY gate=OPEN job=CHECKING used=false observed=None:None select=None
+  url: analysisId=A0 investigationMode=PERSON jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+  first=RESULT_LOADING binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+  job shell: JOB NO JOB SCOPE · PERSON
+  first statement: READING THE PERSISTED RESULT … analysis A0
+  extra: {"urlAfterChange": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "back": {"search": "?investigationMode=PERSON", "mode": "PERSON"}, "forward": {"search": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "mode": "PERSON", "first": "RESULT_LOADING"}}
+
+X-23-analyze-without-valid  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+  extra: {"startButton": {"disabled": true, "text": ""}, "analyzePosts": 0}
+
+X-24-b2-foreign-role  ok=True
+  mode=PERSON_X_JOB field=FIELD gate=AWAITING_JOB job=NONE used=true observed=FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5 select=None
+  url: analysisId=None investigationMode=PERSON_X_JOB jobScopeRoleId=None jobScopePool=None jobRoleId=None
+  first=None binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0'] errorBanner=None
+  job shell: JOB NO JOB SELECTED
+  extra: {"otherRole": {"status": 409, "code": "ERR_JOB_COMPARISON_SCOPE_MISMATCH"}, "samePoolRoleIdOtherUpload": {"status": 409, "code": "ERR_JOB_COMPARISON_SCOPE_MISMATCH"}}

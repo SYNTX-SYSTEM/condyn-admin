@@ -1,0 +1,127 @@
+# PINK §10: evidence texts from the probe outputs (ids, hashes, counts, verdicts; no quote text, no CV text, no local paths).
+import json, re, sys, os, glob, collections
+S, E = sys.argv[1], sys.argv[2]
+X = f"{S}/s10"
+def load(p): return json.load(open(p))
+def scrub(s): return re.sub(r"/(?:home|tmp)/[^\s\"']+", "<local>", s)
+def w(name, lines): open(f"{E}/{name}", "w").write(scrub("\n".join(lines)) + "\n")
+
+# ---------- real-41872.txt
+L = ["PINK §10 · GELB's owner acceptance lab :41872 (production build of 41dfa25, copy of the 41862 DB) · PERSISTED_REAL_RESULT",
+     "Every browser context aborts non-GET; counts below. No token, no state file, no upload, no ANALYZE.", ""]
+ux = load(f"{X}/real/pink-ux-real.json"); uxb = load(f"{S}/ux/real/pink-ux-real.json")
+L += [f"pink-ux (same probe as the pre-sweep §3.61): blockedNonGet {len(ux['blockedNonGet'])}, pageErrors {len(ux['pageErrors'])}", ""]
+L.append("Keyboard journey (Tab presses to reach each step), 421e382 → 41dfa25:")
+jb = {x["name"].split(" (")[0]: x for x in uxb["keyboard"]["journey"]}; ja = {x["name"].split(" (")[0]: x for x in ux["keyboard"]["journey"]}
+for k in ja:
+  if ja[k].get("reached") is None: continue
+  f = lambda x: (x["presses"] if x["reached"] else "not reached") if x and x.get("reached") is not None else "-"
+  L.append(f"  {k:<28} {f(jb.get(k))!s:>12} → {f(ja[k])}")
+tot = 0; viol = []
+for k in ["startSweep", "roleSweep", "capabilityNoAnalysisSweep", "b2Sweep", "b2ReverseSweep"]:
+  v = ux["keyboard"][k]; tot += v["steps"]
+  for kk in ["startUrlChangedByTabbing", "historyDelta", "urlChangesDuringTab", "trapped", "focusOnHidden", "focusOutsideViewport", "noIndicator", "unnamed"]:
+    if v.get(kk) not in (False, 0, None, []): viol.append((k, kk))
+L += [f"Tab sweeps: {tot} presses, violations (URL/history change, trap, hidden or off-view focus, no indicator, unnamed): {viol or 'none'}",
+      "Esc chain: " + " · ".join(f"{e['level']} → {e['after'].split(':')[0]}" for e in ux["keyboard"]["escape"]),
+      "Hover: " + " · ".join(f"{h['target']}: {'+'.join(h['styleChangedOnHover']) or 'no change'} (URL {h['urlChanged']}, history {h['historyDelta']})" for h in ux["hover"]), ""]
+# viewport matrix
+L.append("Viewport matrix at load (pink-ux), 421e382 → 41dfa25: actions whose clickable points or view state changed")
+def act(v): return {a["id"]: (a.get("clickablePoints") if a.get("present") else "absent", "in" if a.get("box", {}).get("fullyInViewport") else ("part" if a.get("box", {}).get("inViewport") else "out")) for a in v["actions"]}
+ib = {(v["viewport"], v["state"]): v for v in uxb["viewports"]}; ia = {(v["viewport"], v["state"]): v for v in ux["viewports"]}
+for key in sorted(ia, key=lambda k: (k[1], k[0])):
+  b, a = act(ib[key]), act(ia[key])
+  for i in sorted(set(a) | set(b)):
+    if a.get(i) != b.get(i): L.append(f"  {key[1]:<26} {key[0]:<18} {i:<40} {b.get(i)} → {a.get(i)}")
+  pb, pa = ib[key].get("panel") or {}, ia[key].get("panel") or {}
+  if pb.get("visibleShare") != pa.get("visibleShare"): L.append(f"  {key[1]:<26} {key[0]:<18} first-screen panel visible share {pb.get('visibleShare')} → {pa.get('visibleShare')}")
+L.append("  horizontal page scroll at any viewport: " + str(any(v["page"]["horizontalScroll"] for v in ux["viewports"])))
+L.append("")
+# readability
+L.append("Readability (min font px / texts under 10 px / low-contrast texts) per region, 421e382 → 41dfa25, where changed:")
+def rd(d): return {(r["viewport"], r["state"], k): (v["minFont"], v["under10"], v["lowContrast"]) for r in d["readability"] for k, v in r["regions"].items()}
+rb, ra = rd(uxb), rd(ux)
+for k in sorted(set(rb) | set(ra)):
+  if rb.get(k) != ra.get(k): L.append(f"  {k[0]:<18} {k[1]:<26} {k[2]:<36} {rb.get(k)} → {ra.get(k)}")
+L.append("Remaining examples (candidate): " + "; ".join(sorted({f"{e}" for r in ux["readability"] for k, v in r["regions"].items() for e in (v["examplesSmall"][:2] + v["examplesLowContrast"][:2]) if re.match(r"^(7|8|9)\.?\d*px|^\d\.\d+:1", e)})[:14]))
+small = sorted({(a["id"], a["box"]["h"]) for v in ux["viewports"] for a in v["actions"] if a.get("tooSmall")})
+L += [f"Targets under 24 px (V-14): {small or 'none'}", ""]
+# states
+L.append("States and their next step (V-04 … V-06), candidate:")
+for s in ux["states"]:
+  L.append(f"  {s['name']:<44} first {s.get('first')!s:<18} actions {s.get('firstActions') or (s.get('offer') or {}).get('actions') or '-'} gate describedBy {s['gate'].get('describedBy')} banner {(s.get('banner') or {}).get('code', '-')}")
+g = load(f"{X}/real/v0506.json")
+L += ["", f"Gate cause per job state (pink-v0506, 1920×1080, GET only, blocked {g['blocked']}):"]
+for k in ["NONE", "CHECKING", "CHECKING-after", "INVALID", "JOB", "VALID-field-no-analysis"]:
+  v = g[k]; L.append(f"  {k:<24} job {v['job']!s:<9} disabled {v['disabled']!s:<5} describedBy {v['describedBy']!s:<22} cause «{v['cause']}» way «{v['way']}» title «{v['title']}»")
+jn = g["jobNotFound"]; L.append(f"  followed job NOT_FOUND: banner {jn['banner0']}, CLOSE → banner {jn['closed']['banner']}, analysisJobId {jn['closed']['job']}, history +{jn['closed']['hDelta']}, B2 {jn['closed']['first']}; Back → banner {jn['closed']['back']['banner']}, job named again {jn['closed']['back']['job'] is not None}")
+gl = load(f"{X}/real/gate-look.json")
+L.append("  closed-gate texts: " + "; ".join(f"{v['vp']} {i['id']} {i['fontPx']}px pointer-events {i['pointerEvents']}" for v in gl["out"] for i in v["info"] if i["id"] != "field-focus-capability-btn") + " (visible in the crops V04-*.jpg; pointer-transparent, not covered)")
+# reach
+r = load(f"{X}/real/pink-reach-real.json")
+L += ["", f"Reach (pink-reach: at load and after a user's own scrolling; 5 points 3 px inside the box; blocked {r['blocked']}, pageErrors {len(r['pageErrors'])}):",
+      "  Partial points on rounded controls are their own parent containers (corners), listed with the covering element."]
+for m in r["measures"]:
+  if not m["present"]: L.append(f"  {m['vp']:<18} {m['scene']:<26} {m['id']:<36} absent"); continue
+  a, l = m["afterScroll"], m["atLoad"]
+  L.append(f"  {m['vp']:<18} {m['scene']:<26} {m['id'][:36]:<36} load {l['hit']} {'full' if l['full'] else 'part/out'} · after scroll {a['hit']} {'full' if a['full'] else 'NOT FULL'} cover {a['cover']} user-scrollable {m['userReach']}")
+L.append("B2 rows by mouse wheel (row counts when fully in view and its centre hits itself):")
+for x in r["wheel"]:
+  L.append(f"  {x['vp']:<18} step {x['step']:>3} px: {x['fullAndHit']}/{x['rows']} · at load head {x['trio']['head']} boundary {x['trio']['boundary']} binding {x['trio']['binding']} counts {x['trio']['counts']} status {x['trio']['status']}" + ("" if x["fullAndHit"] == x["rows"] else "  " + "; ".join(f"{k} {v}" for k, v in x["perRow"].items() if v.startswith("NO"))))
+# V-11 order
+L += ["", "V-11 · Tab order from ROLE_OPEN to SELECT AS JOB (pink-v11-order):"]
+for vp in ["1920x1080", "1280x720"]:
+  d = load(f"{X}/real/v11-{vp}.json")
+  for k in ["from-ORG-Enter-on-ROLE", "role-view-document-load"]:
+    L.append(f"  {vp:<10} {k:<26} {d[k]['presses']} presses: " + " → ".join(str(s['tid']) for s in d[k]["seq"]))
+mk = load(f"{X}/real/mode-keys.json")
+L += ["", f"V-12 · mode group by keyboard (pink-mode-keys, blocked {mk['blocked']}):"]
+for k, v in mk.items():
+  if isinstance(v, dict): L.append(f"  {k:<14} focus {v['active']:<34} checked {[t.split(':')[0] for t in v['tabindex'] if t.endswith(':true')]} URL mode {v['mode']} history {v['h']}")
+dp = load(f"{X}/real/dpick-real.json")
+L += ["", f"D-PICK on the real result (pink-dpick-real, blocked {dp['blocked']}):"]
+for c in dp["cases"]:
+  if "offered" in c: L.append(f"  {c['vp']:<10} {c['place']:<13} reads before open {c['readsBeforeOpen']} · offered {[(o['id'], o['mode'], o['role']) for o in c['offered']]} · open changed URL/history {not c['openChangedNothing']} · OPEN: history +{c['pick']['hDelta']}, analysisId {c['pick']['analysisId']}, focus {c['pick']['focus']}, B2 {c['pick']['first']}; Back → analysisId {c['pick']['backAnalysisId']}")
+  else: L.append(f"  {c['vp']:<10} {c['place']:<13} pickers {c['pickers']} boundary reads {c['boundaryReads']}")
+cb = load(f"{X}/real/cardbox.json")
+L += ["", f"Role-card form per viewport (pink-cardbox, blocked {cb['blocked']}): orbit = with domain line; packed = without"]
+for x in cb["out"]: L.append(f"  {x['vp']:<18} {x['scene']:<9} {x['cards']}")
+ch = load(f"{X}/real/cardhit-real.json")
+L += ["", f"V-19 · role cards at the organisation level, mouse hit over time (pink-cardhit: centre + 4 inner points, 6 samples in 3 s; blocked {ch['blocked']}):"]
+for x in ch["res"]:
+  L.append(f"  {x['vp']:<18} {x['scene']:<10} " + "  ".join(f"{k}: best {x[k]['hitSelfBest']} samples-with-hit {x[k]['samplesWithAnyHit']} cover {x[k]['cover']} box {x[k]['box']}" for k in ["fullstack", "frontend_architect", "engineering_lead"]))
+zo = load(f"{X}/real/zoomorg.json")
+L.append("  200 %: role cards below the fold at load; after mouse-wheel page scroll: " + "; ".join(f"{x['vp']} {x['hitAfterWheel']}" for x in zo["res"]))
+w("real-41872-PERSISTED_REAL_RESULT.txt", L)
+
+# ---------- standin.txt
+L = ["PINK §10 · PINK's STAND-IN labs (port 41873, own PIDs, disposable DBs): production build `next build --webpack` + `next start`,",
+     "next.config.ts committed = served (no LAB_ONLY_BUILD_FLAG; 'Skipping validation of types' 0 in every lab log), the real worker,",
+     "the loopback Gemini stand-in. STAND-IN · keine Modellausführung. Base 70d1cb4 for comparisons.", ""]
+for f in sorted(glob.glob(f"{X}/out-*/build-config.txt")): L.append(f"  {os.path.basename(os.path.dirname(f))}: " + open(f).read().strip().replace("\n", " "))
+s10 = load(f"{X}/out-cand2/pink-s10-cand2-1920.json")
+L += ["", f"pink-s10 (1920×1080): {sum(1 for c in s10['cases'] if c['ok'] is True)} PASS, {sum(1 for c in s10['cases'] if c['ok'] is None)} OBSERVATION, {sum(1 for c in s10['cases'] if c['ok'] is False)} FAIL of {len(s10['cases'])}; pageErrors {len(s10['pageErrors'])}; non-GET outside ANALYZE {s10['nonGetOutsideAnalyze'] or 'none'}",
+      "Analyses (sha256/8 of the id): " + json.dumps(s10["analyses"]), ""]
+for c in s10["cases"]:
+  v = "PASS" if c["ok"] is True else ("OBSERVATION" if c["ok"] is None else "FAIL")
+  d = {k: c[k] for k in c if k not in ("name", "ok", "entries", "seq", "offeredRaw", "ids")}
+  if c["name"].startswith("K1"): d = {"arrowsQuiet": c["arrowsQuiet"], "focusMoved": c["focusMoved"], "focusPath": [x["active"] for x in c["seq"]], "checkedAlways": c["seq"][-1]["checked"], "history": [x["h"] for x in c["seq"]], "enter": {k: c["enter"][k] for k in ("mode", "h")}, "space": {k: c["space"][k] for k in ("mode", "h")}, "apiDuringArrows": c["apiDuringArrows"]}
+  L.append(f"{v:<12} {c['name']}")
+  L.append("    " + json.dumps(d, ensure_ascii=False)[:1400])
+  if "entries" in c: L.append("    history entries (0 = on view, −n = n Backs): " + " | ".join(f"{e['at']}:{e['mode']}/{e['role'] or '-'}/{e['focus'] or '-'}{' NAMES-RESULT' if e['namesResult'] else ''}{' NAMES-JOB' if e['namesJob'] else ''}" for e in c["entries"]))
+ex = load(f"{X}/out-cand2/pink-extra.json")
+L += ["", "pink-extra (fresh lab, no pool yet):", "  V-07 empty list: " + json.dumps(ex["emptyIntake"]), "  V-08 .docx: " + json.dumps(ex["docx"]), "  V-08 broken .pdf: " + json.dumps(ex["brokenPdf"]) + f" · POSTs {ex['posts']}"]
+L += ["", "V-11 · Tab order, the same probe on base and candidate (pink-v11-order):"]
+for vp in ["1920x1080", "1280x720"]:
+  for lab in ["base2", "cand2"]:
+    d = load(f"{X}/out-{lab}/v11-{vp}.json")
+    for k in ["from-ORG-Enter-on-ROLE", "role-view-document-load"]:
+      L.append(f"  {vp:<10} {'70d1cb4' if lab == 'base2' else '41dfa25'} {k:<26} {d[k]['presses']:>3} presses: " + " → ".join(str(s['tid']) for s in d[k]["seq"]))
+uxs = load(f"{X}/out-cand/pink-ux-standin.json"); uxsb = load(f"{S}/fc/out-uxprod/pink-ux-standin.json")
+L += ["", f"pink-ux standin (421e382 → 41dfa25): blockedNonGet {len(uxs['blockedNonGet'])} pageErrors {len(uxs['pageErrors'])}",
+      "  journey: " + " · ".join(f"{x['name'].split(' (')[0]} {jb_}→{x['presses'] if x['reached'] else 'NR'}" for x in uxs["keyboard"]["journey"] if x.get("reached") is not None for jb_ in [next(((y['presses'] if y['reached'] else 'NR') for y in uxsb['keyboard']['journey'] if y['name'] == x['name']), '-')])]
+for x, y in zip(uxsb["names"][1:], uxs["names"][1:]):
+  f = lambda n: sorted((e["id"], e["truncated"], e["ellipsis"], e["full"], bool(e["title"])) for e in n["elements"] if e["id"] and (e["truncated"] or e["ellipsis"] or not e["full"]))
+  L.append(f"  V-15 long names {y['viewport']} {y['view']}: {'unchanged' if f(x) == f(y) else 'changed'} — " + "; ".join(f"{i}{' cut' if t else ''}{' …' if el else ''}{'' if fu else ' partial'}{' title' if ti else ''}" for i, t, el, fu, ti in f(y)))
+w("standin-STAND_IN.txt", L)
+print("ok")

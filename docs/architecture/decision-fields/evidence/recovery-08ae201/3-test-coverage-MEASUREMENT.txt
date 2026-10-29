@@ -1,0 +1,32 @@
+PINK §3.69 · the four reset test files: both versions run against 08ae201's code (scratch tree, isolated DB). MEASUREMENT.
+== career-f12-pulse-alignment.test.tsx: 08ae201 version {'passed': 10} · 175c481 version on 08ae201 code {'passed': 14, 'failed': 4}
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (field, Stage 01)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (field, Stage 02)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (components, Stage 03)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (components, Stage 04)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (components, Stage 05)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership renders active empty Stage bubble and empty projection beneath one shared shell (components, Stage 06)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership uses the Stage 03 shell—not bubble or empty projection—for asymmetric orbit translation (components)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership uses the Stage 04 shell—not bubble or empty projection—for asymmetric orbit translation (components)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership uses the Stage 05 shell—not bubble or empty projection—for asymmetric orbit translation (components)
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership locates the real Stage 05 empty-projection copy beneath its focus shell (components)
+   only 175c481 [failed] F12 actual empty-projection focus-shell DOM ownership RD-5 · under PERSON the field renders no Stage 03 shell, also when a focus requests it
+   only 175c481 [failed] F12 actual empty-projection focus-shell DOM ownership RD-5 · under PERSON the field renders no Stage 04 shell, also when a focus requests it
+   only 175c481 [failed] F12 actual empty-projection focus-shell DOM ownership RD-5 · under PERSON the field renders no Stage 05 shell, also when a focus requests it
+   only 175c481 [failed] F12 actual empty-projection focus-shell DOM ownership RD-5 · under PERSON the field renders no Stage 06 shell, also when a focus requests it
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership each Stage 03 component labels its empty projection in English and German
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership each Stage 04 component labels its empty projection in English and German
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership each Stage 05 component labels its empty projection in English and German
+   only 175c481 [passed] F12 actual empty-projection focus-shell DOM ownership each Stage 06 component labels its empty projection in English and German
+== career-sil-empty-orbit-visual-attention.test.tsx: 08ae201 version {'passed': 7} · 175c481 version on 08ae201 code {'passed': 7, 'failed': 2}
+   only 175c481 [failed] SIL empty-orbit visual attention wires both empty field orbits after SUCCEEDED; no orbit 03–06 under PERSON
+   only 175c481 [passed] SIL empty-orbit visual attention orbits 03–06 as components: each empty one breathes after SUCCEEDED, none while RUNNING
+   only 175c481 [passed] SIL empty-orbit visual attention orbits 03–06 as components: only an actually empty one is flagged
+== career-sil-global-language-wiring.test.tsx: 08ae201 version {'passed': 9} · 175c481 version on 08ae201 code {'failed': 2, 'passed': 8}
+   only 175c481 [passed] SIL global locale wiring orbits 03–06 (component) carry their names in the selected locale
+== career/hr-decision-loop/dock-ssr.test.tsx: 08ae201 version {'passed': 4} · 175c481 version on 08ae201 code {'passed': 3, 'failed': 1}
+
+Field-level equivalents in the 08ae201 version: render of every stage 01–06, asymmetric translation 03–05, Stage 05 copy,
+'wires all six empty orbits after SUCCEEDED', 'does not flag empty orbits while RUNNING', 'flags only actually empty orbits',
+the German root chrome incl. RESONANZ-ORBITS / ROLLENMANIFESTATION / SPANNUNGSFELD / ENTWICKLUNGSPFADE.
+NOT covered any more: the German empty projection of stages 03–06 (emptyFieldLabel / empty-copy-foreground with locale de).

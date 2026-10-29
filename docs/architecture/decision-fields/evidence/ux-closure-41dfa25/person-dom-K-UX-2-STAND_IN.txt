@@ -1,0 +1,681 @@
+PINK §10 · K-UX-2 PERSON: visual change without markup change? DOM inventory under investigationMode=PERSON (STAND_IN), base 70d1cb4 vs
+candidate 41dfa25, two fresh production labs, the same probe (pink-persondom): every element in document order — tag, attributes
+without style / class / SVG geometry, own text (ids normalised) — plus display/visibility. Scenes D1 (no mode = default) … D8.
+T-07 itself (server markup of the Capability Field under PERSON, byte-identical with 49e2bc6) is green in the focused suite (static.txt).
+
+== D1-plain@1920: rows 270->274 added ['capability-gate-reason', 'capability-gate-cause', 'capability-gate-way'] removed [] testid-order-changed True attr-changes ['JOB:', 'aria-describedby', 'aria-label', 'data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @job-scope-indicator: -['JOB'] +['SELECTED JOB']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D2-person@1920: rows 366->366 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D3-person-pool-opened@1920: rows 550->552 added ['syntx-level', 'syntx-job-scope-hint'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-summary: -[] +['JOB FIELD']
+== D4-person-role-opened@1920: rows 709->711 added ['syntx-level', 'syntx-opened-role'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-job-scope-select: -['returns selects moves between carriers', 'Esc', '·'] +[]
+   text @syntx-state: -[] +['returns selects moves between carriers', 'Esc', '·']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D5-person-job-selected-field@1920: rows 712->714 added ['syntx-level', 'syntx-opened-role'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-job-scope-clear: -['returns selects moves between carriers', 'Esc', '·'] +[]
+   text @syntx-state: -[] +['returns selects moves between carriers', 'Esc', '·']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D6-person-job-selected-capability@1920: rows 270->270 added [] removed [] testid-order-changed False attr-changes ['data-sx-layout']
+== D7-person-analysis@1920: rows 389->389 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D8-person-analysis-unknown@1920: rows 366->366 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D1-plain@1280: rows 270->274 added ['capability-gate-reason', 'capability-gate-cause', 'capability-gate-way'] removed [] testid-order-changed True attr-changes ['JOB:', 'aria-describedby', 'aria-label', 'data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @job-scope-indicator: -['JOB'] +['SELECTED JOB']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D2-person@1280: rows 366->366 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D3-person-pool-opened@1280: rows 550->552 added ['syntx-level', 'syntx-job-scope-hint'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-summary: -[] +['JOB FIELD']
+== D4-person-role-opened@1280: rows 709->708 added ['syntx-level', 'syntx-opened-role'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-job-scope-select: -['returns selects moves between carriers', 'Esc', '·'] +[]
+   text @syntx-role-role_kestrel_engineering_lead: -['Engineering Management'] +[]
+   text @syntx-role-role_kestrel_frontend_architect: -['Frontend Architecture', 'Web Platforms'] +[]
+   text @syntx-state: -[] +['returns selects moves between carriers', 'Esc', '·']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D5-person-job-selected-field@1280: rows 712->711 added ['syntx-level', 'syntx-opened-role'] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECTED'] +['OPENED']
+   text @syntx-investigation-statement: -['JOB FIELD'] +[]
+   text @syntx-job-scope-clear: -['returns selects moves between carriers', 'Esc', '·'] +[]
+   text @syntx-role-role_kestrel_engineering_lead: -['Engineering Management'] +[]
+   text @syntx-role-role_kestrel_frontend_architect: -['Frontend Architecture', 'Web Platforms'] +[]
+   text @syntx-state: -[] +['returns selects moves between carriers', 'Esc', '·']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D6-person-job-selected-capability@1280: rows 270->270 added [] removed [] testid-order-changed False attr-changes ['data-sx-layout']
+== D7-person-analysis@1280: rows 389->389 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+== D8-person-analysis-unknown@1280: rows 366->366 added [] removed [] testid-order-changed True attr-changes ['data-sx-layout']
+   text @job-pool-list: -['PERSISTED JOB POOL UPLOADS'] +['UPLOADED JOB POOLS']
+   text @job-pool-select-JPOOL_B94850C439974E27496FE3B1A9A076B5: -['SELECT'] +['OPEN']
+   text @syntx-no-pool: -['NO JOB POOL SELECTED', 'This field awaits an explicitly selected job pool.', 'Upload via INTAKE ·'] +['NO JOB POOL OPENED', 'This field awaits an explicitly opened job pool.', 'Open an uploaded pool in POOLS ·']
+   text @syntx-state: -['NO UPLOAD SELECTED (explicit selection only, never a latest pool)'] +['NO POOL OPENED (explicit choice only, never a latest pool)']
+   text @syntx-summary: -[] +['JOB FIELD']
+
+Full structural diff (first 40 lines per scene):
+D1-plain@1920                                rows 270 -> 274  structure/text/state diffs 74  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button aria-describedby=capability-gate-reason aria-disabled=true data-field-gate=AWAITING_JOB data-sx-orient-action=true data-testid=syntx-exit-btn disabled= title=Select a job in the Job Field first (open a role, then SELECT AS JOB)> ← CAPABILI
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D2-person@1920                               rows 366 -> 366  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D3-person-pool-opened@1920                   rows 550 -> 552  structure/text/state diffs 58  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=FIELD data-testid=syntx-level> LEVEL · POOL
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-FIELD disabled= title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +          <span data-testid=syntx-job-scope-hint> Open a role to select it as the job.
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+    -            <h3 > JOB FIELD
+    -              <span aria-hidden=true> 
+    -            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+D4-person-role-opened@1920                   rows 709 -> 711  structure/text/state diffs 78  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=ROLE data-testid=syntx-level> LEVEL · ROLE
+    +          <nav aria-label=ROLE data-testid=syntx-path> 
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-FIELD title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +            <span aria-hidden=true> ›
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-ORGANIZATION title=Kestrel Logistics Software GmbH> Kestrel Logistics Software GmbH
+    +            <span aria-hidden=true> ›
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-ROLE disabled= title=Senior Full-Stack Engineer – Shipment Tracking> Senior Full-Stack Engineer – Shipment Tracking
+    +            <button data-sx-orient-action=true data-testid=syntx-return-btn> ← RETURN
+    +          <span data-selected-job=false data-testid=syntx-opened-role> OPENED ROLE · not the selected job
+    +          <button aria-pressed=false data-job-scope-selected=false data-sx-orient-action=true data-testid=syntx-job-scope-select> ◎ SELECT AS JOB
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -                  <div    > 
+    +                  <div    > 
+    -                  <div    > 
+    +                  <div    > 
+    -                  <div    > 
+D5-person-job-selected-field@1920            rows 712 -> 714  structure/text/state diffs 82  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=ROLE data-testid=syntx-level> LEVEL · ROLE
+    +          <nav aria-label=ROLE data-testid=syntx-path> 
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-FIELD title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +            <span aria-hidden=true> ›
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-ORGANIZATION title=Kestrel Logistics Software GmbH> Kestrel Logistics Software GmbH
+    +            <span aria-hidden=true> ›
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-ROLE disabled= title=Senior Full-Stack Engineer – Shipment Tracking> Senior Full-Stack Engineer – Shipment Tracking
+    +            <button data-sx-orient-action=true data-testid=syntx-return-btn> ← RETURN
+    +          <span data-selected-job=true data-testid=syntx-opened-role> OPENED ROLE · the selected job
+    +          <div > 
+    +            <button aria-pressed=true data-job-scope-selected=true data-sx-orient-action=true data-testid=syntx-job-scope-select disabled=> ✓ SELECTED JOB
+    +            <button data-sx-orient-action=true data-testid=syntx-job-scope-clear title=Remove the selected job: ANALYZE is blocked until a job is selected again (sources and analyses stay)> × REMOVE JOB
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -                  <div    > 
+    +                  <div    > 
+    -                  <div    > 
+D6-person-job-selected-capability@1920       rows 270 -> 270  structure/text/state diffs 2  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+D7-person-analysis@1920                      rows 389 -> 389  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D8-person-analysis-unknown@1920              rows 366 -> 366  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=full data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D1-plain@1280                                rows 270 -> 274  structure/text/state diffs 74  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button aria-describedby=capability-gate-reason aria-disabled=true data-field-gate=AWAITING_JOB data-sx-orient-action=true data-testid=syntx-exit-btn disabled= title=Select a job in the Job Field first (open a role, then SELECT AS JOB)> ← CAPABILI
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D2-person@1280                               rows 366 -> 366  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D3-person-pool-opened@1280                   rows 550 -> 552  structure/text/state diffs 58  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=FIELD data-testid=syntx-level> LEVEL · POOL
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-FIELD disabled= title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +          <span data-testid=syntx-job-scope-hint> Open a role to select it as the job.
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+    -            <h3 > JOB FIELD
+    -              <span aria-hidden=true> 
+    -            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+D4-person-role-opened@1280                   rows 709 -> 708  structure/text/state diffs 89  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=ROLE data-testid=syntx-level> LEVEL · ROLE
+    +          <nav aria-label=ROLE data-testid=syntx-path> 
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-FIELD title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +            <span aria-hidden=true> ›
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-ORGANIZATION title=Kestrel Logistics Software GmbH> Kestrel Logistics Software GmbH
+    +            <span aria-hidden=true> ›
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-ROLE disabled= title=Senior Full-Stack Engineer – Shipment Tracking> Senior Full-Stack Engineer – Shipment Tracking
+    +            <button data-sx-orient-action=true data-testid=syntx-return-btn> ← RETURN
+    +          <span data-selected-job=false data-testid=syntx-opened-role> OPENED ROLE · not the selected job
+    +          <button aria-pressed=false data-job-scope-selected=false data-sx-orient-action=true data-testid=syntx-job-scope-select> ◎ SELECT AS JOB
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <div data-layout=full data-orbit-compactness-x=0.49 data-orbit-compactness-y=0.70 data-organization-id=org_kestrel data-testid=syntx-cosmos-organization> 
+    +              <div data-layout=full data-orbit-compactness-x=1.00 data-orbit-compactness-y=1.00 data-organization-id=org_kestrel data-testid=syntx-cosmos-organization> 
+    -                  <div    > 
+    -                    <button aria-label=Engineering Lead – Routing Platform · Kestrel Logistics Software GmbH aria-pressed=false data-card-box=orbit data-card-orientation=viewport-upright data-card-title-lines=2 data-manifestation-form=satellite data-matching-
+    +                  <div    > 
+D5-person-job-selected-field@1280            rows 712 -> 711  structure/text/state diffs 93  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <span data-level=ROLE data-testid=syntx-level> LEVEL · ROLE
+    +          <nav aria-label=ROLE data-testid=syntx-path> 
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-FIELD title=DLL Engineering & Architecture Pool> DLL Engineering & Architecture Pool
+    +            <span aria-hidden=true> ›
+    +            <button data-current=false data-sx-orient-step=true data-testid=syntx-path-ORGANIZATION title=Kestrel Logistics Software GmbH> Kestrel Logistics Software GmbH
+    +            <span aria-hidden=true> ›
+    +            <button data-current=true data-sx-orient-step=true data-testid=syntx-path-ROLE disabled= title=Senior Full-Stack Engineer – Shipment Tracking> Senior Full-Stack Engineer – Shipment Tracking
+    +            <button data-sx-orient-action=true data-testid=syntx-return-btn> ← RETURN
+    +          <span data-selected-job=true data-testid=syntx-opened-role> OPENED ROLE · the selected job
+    +          <div > 
+    +            <button aria-pressed=true data-job-scope-selected=true data-sx-orient-action=true data-testid=syntx-job-scope-select disabled=> ✓ SELECTED JOB
+    +            <button data-sx-orient-action=true data-testid=syntx-job-scope-clear title=Remove the selected job: ANALYZE is blocked until a job is selected again (sources and analyses stay)> × REMOVE JOB
+    +          <span data-state=NO_ANALYSIS data-testid=syntx-state> PERSON · NO JOB COMPARISON
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-pools-toggle> ⬡ POOLS · 1
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <div data-layout=full data-orbit-compactness-x=0.49 data-orbit-compactness-y=0.70 data-organization-id=org_kestrel data-testid=syntx-cosmos-organization> 
+    +              <div data-layout=full data-orbit-compactness-x=1.00 data-orbit-compactness-y=1.00 data-organization-id=org_kestrel data-testid=syntx-cosmos-organization> 
+    -                  <div    > 
+D6-person-job-selected-capability@1280       rows 270 -> 270  structure/text/state diffs 2  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+D7-person-analysis@1280                      rows 389 -> 389  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 
+D8-person-analysis-unknown@1280              rows 366 -> 366  structure/text/state diffs 62  visibility diffs 0
+    -  <div data-testid=career-intelligence-dashboard> 
+    +  <div data-sx-layout=fit data-testid=career-intelligence-dashboard> 
+    +        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    +          <span aria-hidden=true> 
+    +            <span > 
+    +            <span > 
+    +          <span aria-hidden=true> 
+    +          <span aria-hidden=true> 
+    +            <span data-sx-orient-pass=true> 
+    +          <div > 
+    +            <h3 > JOB FIELD
+    +              <span aria-hidden=true> 
+    +            <button data-field-gate=OPEN data-sx-orient-action=true data-testid=syntx-exit-btn> ← CAPABILITY FIELD
+    +          <nav aria-label=FIELD data-testid=syntx-path> 
+    +          <span data-state=NO_POOL data-testid=syntx-state> NO POOL OPENED (explicit choice only, never a latest pool)
+    +            <span aria-hidden=true> 
+    +          <span > returns selects moves between carriers
+    +            <kbd > Esc
+    +            <span > ·
+    +            <kbd > Enter
+    +            <span > ·
+    +            <kbd > Tab
+    +          <div > 
+    +            <button aria-expanded=true data-sx-orient-action=true data-testid=syntx-pools-toggle> HIDE POOLS
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=job-pool-intake-toggle> + INTAKE
+    +            <button aria-expanded=false data-sx-orient-action=true data-testid=syntx-gemini-output-toggle> GEMINI OUTPUT
+    -              <strong > NO JOB POOL SELECTED
+    -              <span > This field awaits an explicitly selected job pool.
+    +              <strong > NO JOB POOL OPENED
+    +              <span > This field awaits an explicitly opened job pool.
+    -                <span > Upload via INTAKE ·
+    -                <span > Select via POOLS
+    -        <div data-sx-orient=true data-sx-resonance=inactive data-sx-surface=header> 
+    -          <span aria-hidden=true> 
+    -            <span > 
+    -            <span > 
+    -          <span aria-hidden=true> 
+    -          <span aria-hidden=true> 
+    -            <span data-sx-orient-pass=true> 
+    -          <div > 

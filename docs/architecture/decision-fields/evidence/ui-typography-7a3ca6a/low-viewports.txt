@@ -1,0 +1,88 @@
+PINK low viewports (role observation Kestrel · Senior Full-Stack Engineer, before a job scope).
+probe2 (pink-typo-probe2.mjs.txt): orientation surface box, own scroll, document scroll, controls below the viewport.
+probe3 (pink-typo-probe3.mjs.txt): for every window scroll position (10 px steps) with the surface's own scroll at top and at bottom (S…),
+is each edge action visible and topmost at its centre.
+
+probe2 base  960x540: surface y [145, 517] overflowY visible own scroll 1 px, document scroll 481 px, controls below the viewport []
+probe2 base  1280x560: surface y [145, 461] overflowY visible own scroll 1 px, document scroll 461 px, controls below the viewport []
+probe2 base  1280x600: surface y [145, 461] overflowY visible own scroll 1 px, document scroll 421 px, controls below the viewport []
+probe2 base  1920x560: surface y [145, 461] overflowY visible own scroll 1 px, document scroll 461 px, controls below the viewport []
+probe2 base  1366x600: surface y [145, 461] overflowY visible own scroll 1 px, document scroll 421 px, controls below the viewport []
+probe2 after 960x540: surface y [145, 585] overflowY auto own scroll 8 px, document scroll 481 px, controls below the viewport ['syntx-pools-toggle', 'job-pool-intake-toggle', 'syntx-gemini-output-toggle']
+probe2 after 1280x560: surface y [145, 534] overflowY auto own scroll 1 px, document scroll 461 px, controls below the viewport []
+probe2 after 1280x600: surface y [145, 534] overflowY auto own scroll 1 px, document scroll 421 px, controls below the viewport []
+probe2 after 1920x560: surface y [145, 534] overflowY auto own scroll 1 px, document scroll 461 px, controls below the viewport []
+probe2 after 1366x600: surface y [145, 534] overflowY auto own scroll 1 px, document scroll 421 px, controls below the viewport []
+
+probe3 base  960x540 (document scroll 481 px)
+      syntx-job-scope-select       at start True  reachable: 70 positions, first 0, last S380
+      syntx-pools-toggle           at start True  reachable: 86 positions, first 0, last S460
+      job-pool-intake-toggle       at start True  reachable: 86 positions, first 0, last S460
+      syntx-gemini-output-toggle   at start True  reachable: 88 positions, first 0, last S480
+      syntx-return-btn             at start True  reachable: 44 positions, first 0, last S250
+probe3 base  1280x560 (document scroll 461 px)
+      syntx-job-scope-select       at start True  reachable: 66 positions, first 0, last S370
+      syntx-pools-toggle           at start True  reachable: 80 positions, first 0, last S430
+      job-pool-intake-toggle       at start True  reachable: 80 positions, first 0, last S430
+      syntx-gemini-output-toggle   at start True  reachable: 88 positions, first 0, last S430
+      syntx-return-btn             at start True  reachable: 44 positions, first 0, last S250
+probe3 base  1280x600 (document scroll 421 px)
+      syntx-job-scope-select       at start True  reachable: 66 positions, first 0, last S370
+      syntx-pools-toggle           at start True  reachable: 78 positions, first 0, last S420
+      job-pool-intake-toggle       at start True  reachable: 78 positions, first 0, last S420
+      syntx-gemini-output-toggle   at start True  reachable: 86 positions, first 0, last S420
+      syntx-return-btn             at start True  reachable: 44 positions, first 0, last S250
+probe3 base  1366x600 (document scroll 421 px)
+      syntx-job-scope-select       at start True  reachable: 66 positions, first 0, last S370
+      syntx-pools-toggle           at start True  reachable: 78 positions, first 0, last S420
+      job-pool-intake-toggle       at start True  reachable: 78 positions, first 0, last S420
+      syntx-gemini-output-toggle   at start True  reachable: 86 positions, first 0, last S420
+      syntx-return-btn             at start True  reachable: 44 positions, first 0, last S250
+probe3 base  1920x560 (document scroll 461 px)
+      syntx-job-scope-select       at start True  reachable: 66 positions, first 0, last S370
+      syntx-pools-toggle           at start True  reachable: 80 positions, first 0, last S430
+      job-pool-intake-toggle       at start True  reachable: 80 positions, first 0, last S430
+      syntx-gemini-output-toggle   at start True  reachable: 88 positions, first 0, last S430
+      syntx-return-btn             at start True  reachable: 44 positions, first 0, last S250
+probe3 base  1536x864 (document scroll 157 px)
+      syntx-job-scope-select       at start True  reachable: 32 positions, first 0, last S150
+      syntx-pools-toggle           at start True  reachable: 32 positions, first 0, last S150
+      job-pool-intake-toggle       at start True  reachable: 32 positions, first 0, last S150
+      syntx-gemini-output-toggle   at start True  reachable: 32 positions, first 0, last S150
+      syntx-return-btn             at start True  reachable: 30 positions, first 0, last S140
+probe3 after 960x540 (document scroll 481 px)
+      syntx-job-scope-select       at start True  reachable: 85 positions, first 0, last S450
+      syntx-pools-toggle           at start False reachable: 89 positions, first 10, last S480
+      job-pool-intake-toggle       at start False reachable: 89 positions, first 10, last S480
+      syntx-gemini-output-toggle   at start False reachable: 85 positions, first 30, last S440
+      syntx-return-btn             at start True  reachable: 55 positions, first 0, last S300
+probe3 after 1280x560 (document scroll 461 px)
+      syntx-job-scope-select       at start True  reachable: 78 positions, first 0, last S420
+      syntx-pools-toggle           at start True  reachable: 86 positions, first 0, last S460
+      job-pool-intake-toggle       at start True  reachable: 86 positions, first 0, last S460
+      syntx-gemini-output-toggle   at start True  reachable: 94 positions, first 0, last S460
+      syntx-return-btn             at start True  reachable: 49 positions, first 0, last S280
+probe3 after 1280x600 (document scroll 421 px)
+      syntx-job-scope-select       at start True  reachable: 78 positions, first 0, last S420
+      syntx-pools-toggle           at start True  reachable: 80 positions, first 0, last S390
+      job-pool-intake-toggle       at start True  reachable: 80 positions, first 0, last S390
+      syntx-gemini-output-toggle   at start True  reachable: 86 positions, first 0, last S420
+      syntx-return-btn             at start True  reachable: 49 positions, first 0, last S280
+probe3 after 1366x600 (document scroll 421 px)
+      syntx-job-scope-select       at start True  reachable: 78 positions, first 0, last S420
+      syntx-pools-toggle           at start True  reachable: 80 positions, first 0, last S390
+      job-pool-intake-toggle       at start True  reachable: 80 positions, first 0, last S390
+      syntx-gemini-output-toggle   at start True  reachable: 86 positions, first 0, last S420
+      syntx-return-btn             at start True  reachable: 49 positions, first 0, last S280
+probe3 after 1920x560 (document scroll 461 px)
+      syntx-job-scope-select       at start True  reachable: 78 positions, first 0, last S420
+      syntx-pools-toggle           at start True  reachable: 86 positions, first 0, last S460
+      job-pool-intake-toggle       at start True  reachable: 86 positions, first 0, last S460
+      syntx-gemini-output-toggle   at start True  reachable: 94 positions, first 0, last S460
+      syntx-return-btn             at start True  reachable: 49 positions, first 0, last S280
+probe3 after 1536x864 (document scroll 157 px)
+      syntx-job-scope-select       at start True  reachable: 32 positions, first 0, last S150
+      syntx-pools-toggle           at start True  reachable: 32 positions, first 0, last S150
+      job-pool-intake-toggle       at start True  reachable: 32 positions, first 0, last S150
+      syntx-gemini-output-toggle   at start True  reachable: 32 positions, first 0, last S150
+      syntx-return-btn             at start True  reachable: 32 positions, first 0, last S150

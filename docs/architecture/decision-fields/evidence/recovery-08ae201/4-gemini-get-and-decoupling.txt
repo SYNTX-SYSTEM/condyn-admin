@@ -1,0 +1,63 @@
+PINK §3.69 · no Gemini path on a GET.
+CODE: provider instantiations outside the provider modules:
+  scripts/test-multi-source-live.ts:54:  const provider = getCareerInferenceProvider();
+  scripts/test-live-outcome-chain.ts:31:  }], new GeminiProvider(), { jobScope });
+  scripts/test-pipeline-live.ts:28:  const provider = getCareerInferenceProvider();
+  scripts/test-live-recommendation-proof.ts:30:  }], new GeminiProvider(), { jobScope });
+  scripts/test-live-action-chain.ts:30:  }], new GeminiProvider(), { jobScope });
+  scripts/test-live-feedback-chain.ts:32:  }], new GeminiProvider(), { jobScope });
+  scripts/run-career-worker.ts:48:  const provider = new GeminiProvider();
+  scripts/run-career-worker.ts:101:      const provider = new GeminiCapabilityDiscoveryProvider({ model });
+  scripts/run-career-worker.ts:105:      const provider = new GeminiCapabilityConvergenceProvider({ model });
+  scripts/probe-gemini.ts:21:const ai = new GoogleGenAI({ apiKey });
+  scripts/test-live-learning-chain.ts:39:  }], new GeminiProvider(), { jobScope });
+  scripts/test-live-decision-chain.ts:29:  }], new GeminiProvider(), { jobScope });
+  scripts/list-models.ts:34:    const ai = new GoogleGenAI({ apiKey });
+  route → gemini module reachability (static, through the capability-core barrel only):
+    app/api/career/analyses/[analysisId]/gemini-result/route.ts ['GET']
+    app/api/career/analyses/[analysisId]/investigation/route.ts ['GET']
+    app/api/career/analyses/[analysisId]/job-comparison/route.ts ['GET']
+    app/api/career/analyses/[analysisId]/role-discovery/route.ts ['GET']
+    app/api/career/analyses/[analysisId]/route.ts ['GET']
+    app/api/career/analyze/route.ts ['POST']
+    app/api/career/canonical-sil/[associationId]/route.ts ['GET']
+    app/api/career/canonical-sil/execute/route.ts ['POST']
+    app/api/career/hr-decision-loop/contexts/[careerDecisionContextRevisionId]/route.ts ['GET']
+    app/api/career/hr-decision-loop/decisions/[humanDecisionRecordId]/route.ts ['GET']
+    app/api/career/hr-decision-loop/decisions/route.ts ['POST']
+    app/api/career/job-pools/[jobPoolUploadId]/matches/route.ts ['GET']
+    app/api/career/job-pools/[jobPoolUploadId]/roles/[poolRoleId]/structure/route.ts ['GET']
+    app/api/career/job-pools/[jobPoolUploadId]/route.ts ['GET']
+    app/api/career/job-pools/route.ts ['POST', 'GET']
+    app/api/career/jobs/[jobId]/gemini-exchanges/route.ts ['GET']
+    app/api/decision-contexts/[revisionId]/route.ts ['GET']
+    app/api/decision-contexts/route.ts ['POST']
+STAND_IN GET sweep (08ae201, two labs):
+  stand-in model calls before 6 after 6
+  stand-in model calls before 6 after 6
+    200                                            /api/career/analyses
+    200                                            /api/career/analyses/PERSON
+    200                                            /api/career/analyses/PERSON/investigation
+    404 ERR_NOT_FOUND                              /api/career/analyses/PERSON/gemini-result
+    200 plan ENGINE_NOT_SPECIFIED executable false /api/career/analyses/PERSON/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5
+    200                                            /api/career/analyses/PXJ
+    400 ERR_JOB_COMPARISON_SELECTION_REQUIRED      /api/career/analyses/PXJ/job-comparison
+    404 ERR_NOT_FOUND                              /api/career/analyses/PXJ/gemini-result
+    409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON      /api/career/analyses/PXJ/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5
+    200                                            /api/career/job-pools
+    200                                            /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5
+    200                                            /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/matches?analysisId=PXJ
+    409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS       /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/matches?analysisId=PERSON
+    409 ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS       /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/matches?analysisId=PERSON&discovery=PERSON
+    200                                            /api/career/job-pools/JPOOL_B94850C439974E27496FE3B1A9A076B5/roles/role_kestrel_fullstack/structure
+
+Decoupling (GELB request; scratch probe on a disposable DB, 08ae201):
+  dirtyRow                     ok 1
+  routesWithDirtyCache         {'jobPoolsList': '200 jobPools 0', 'roleDiscoveryUnknownAnalysis': '404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND'}
+  planWithDirtyCache           {'cacheState': 'UNAVAILABLE', 'code': 'ERR_RELATION_CACHE_REGISTRATION_FAILED', 'plan': {'state': 'CACHE_UNAVAILABLE', 'executable': False, 'cacheIssue': 'ERR_RELATION_CACHE_REGISTRATION_FAILED', 'pairs': 1}}
+  repair                       ok 1
+  planAfterRepair              {'cacheState': 'AVAILABLE', 'code': None, 'plan': {'state': 'PLANNED', 'executable': True, 'cacheIssue': None, 'pairs': 1}}
+  routesAfterRepair            {'jobPoolsList': '200 jobPools 0', 'roleDiscoveryUnknownAnalysis': '404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND'}
+
+Suites: three files on 08ae201 (PINK worktree, real node_modules):  Test Files 3 passed (3)  Tests 71 passed (71)  outbound 0
+Focused group (GRÜN's list) on 08ae201:  Test Files 70 passed (70)  Tests 566 passed | 4 skipped (570) ; tsc 0

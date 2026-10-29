@@ -1,0 +1,26 @@
+# PINK · GELB's owner acceptance lab :41872 (PERSISTED_REAL_RESULT), API lineage read with GET only (curl, no token). Ids, hashes, counts; no quote text.
+GET /api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=JPOOL_B948…&poolRoleId=role_kestrel_fullstack
+  comparisonVersion SELECTED_ROLE_COVERAGE_V1
+  authority {"comparisonBasis": "CAPABILITY_PROPOSAL_NAME_COVERAGE", "operand": "CAPABILITY_PROPOSAL_PROJECTION", "scored": false, "authorityState": "NONE", "capabilityRequirementRelationState": "NOT_EVALUATED", "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"}
+  binding {"analysisId": "ANL_1792628993472_10", "jobId": "JOB_1792628993472_10", "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_fullstack", "investigationScopeHash": "8016b7c10667d4720a01b2f2b24aff709b6bf77414385e376b113faf350870e7", "discoveryRunId": "RUN_6BB62BDC23F64FB4EA01E827", "convergenceRunId": "CONV_A30D955F50347CB808FBE8FF", "poolCanonicalSha256": "b94850c439974e27496fe3b1a9a076b5bb7b828cd5dbcc9e87532e3aa040eb58", "poolVersion": 1, "targetRoleProfileRevisionId": "TRPREV_3B6311C862014DC6FC2556169EF78332"}
+  counts {"requirements": 9, "covered": 8, "notCovered": 1, "proposals": 8}
+   req_kestrel_fullstack_01 COVERED PCAP_AAFB8C7F8820052B592BDE11 EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_02 COVERED PCAP_CD636CDD76F3EB4CB25D97D6 EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_03 COVERED PCAP_FFD5CA78438C60DEC0A1C6BB EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_04 COVERED PCAP_6B66C4A822CBE888BF11452D EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_05 COVERED PCAP_A760B8EBDBE4843296B6A18C EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_06 COVERED PCAP_6B8E12A0AE2A4A29AA45C784 EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_07 NOT_COVERED None None None scored=None evidence docs []
+   req_kestrel_fullstack_08 COVERED PCAP_91055A69A115375C99797880 EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+   req_kestrel_fullstack_09 COVERED PCAP_4F218651C9962531C79269DF EXACT SOURCE_MATCH_VERIFIED scored=False evidence docs ['DOC_001']
+  proposals 8
+  pool canonical sha256 → upload id: JPOOL_B94850C439974E27496FE3B1A9A076B5 == JPOOL_B94850C439974E27496FE3B1A9A076B5
+GET /api/career/analyses/ANL_1792628993472_10/investigation
+   {"investigationVersion": "ANALYSIS_INVESTIGATION_V1", "analysisId": "ANL_1792628993472_10", "jobId": "JOB_1792628993472_10", "mode": "PERSON_X_JOB", "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN", "discoveryRunId": "RUN_6BB62BDC23F64FB4EA01E827", "investigationScopeHash": "8016b7c10667d4720a01b2f2b24aff709b6bf77414385e376b113faf350870e7"}
+   jobScopeSelection {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_fullstack"}
+GET /api/career/jobs/JOB_1792628993472_10   {'status': 'SUCCEEDED', 'resultAnalysisId': 'ANL_1792628993472_10', 'errorCode': None}
+GET /api/career/jobs/JOB_1000000000000_1  HTTP 404
+GET /api/career/analyses/ANL_1792628831636_456/investigation  mode PERSON
+GET /api/career/job-pools   [('JPOOL_B94850C439974E27496FE3B1A9A076B5', 'ACTIVE')]
+GET /career/demo  Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+Source bundle CSB_JOB_1792628993472_10: no GET route exposes it → INCONCLUSIVE for PINK (stated by GELB from a read-only DB transaction).

@@ -1,0 +1,27 @@
+# PINK · static check of 88539d3..421e382 (CODE_INSPECTION)
+fast-forward 88539d3 → 421e382: yes
+  421e382 docs(career): navigation and recovery N-1 … N-5 in the G1 evidence and §13.2.39
+  2f96e63 fix(career): staged sources say they do not survive a reload, Back or Forward (N-5 B-SRC, minimal boundary)
+  1dcc273 docs(career): the analysisId comment says G1 loads the analysis for the first screen (N-4 F-RF-4)
+  e6d9ba2 fix(career): an unknown investigationMode is removed from the URL on mount (N-3 O-RF-1)
+  ee91062 fix(career): a running analysis survives a reload — followed by its job id, GET only (N-2 B-RUN)
+  dea34eb fix(career): Back / Forward stay in the app and show what a reload of the entry shows (N-1 B-NAV)
+files: 35; outside app/ lib/career/ui/ test/ docs/: 0; app/api, migrations, scripts, DB/store/worker files: 0
+added lines with a new fetch / non-GET method in app/ lib/: 0
+leak scan of all added lines: /home, /tmp, postgres URLs, API keys, inspector token assignments, bearer: 0 hits; quotes of the real run (local list, 0600) in added lines: 0
+Reading of the mechanics (what the probes then measured):
+- N-1 B-NAV: lib/career/ui/career-demo-url.ts is the one parser for the server's searchParams and for location.search after popstate;
+  CareerDemoHistory remounts the dashboard with key entry-<n> on every popstate. writeCareerDemoUrl: push for a user decision,
+  replace for the system's addendum; several parameters of one action share one entry (entryOpen reset by queueMicrotask);
+  an unchanged URL writes nothing. Old mount's controller is released (cleanup → released = true; no further polling or state).
+- N-2 B-RUN: analysisJobId accepted only as ^JOB_[0-9]{1,16}_[0-9]{1,6}$ and only when it stands once; resumeJob polls
+  GET /api/career/jobs/{id} (startPolling), no submit; FAILED / 404 keep the parameter, banner data-job-resume, no retry button.
+  SUCCEEDED: one replace of analysisId + investigationMode (interface mode) + removal of analysisJobId.
+- N-3 O-RF-1: investigationModeFromParam(...) === null → replace removing investigationMode (unknown, empty, repeated).
+- N-4 F-RF-4: comment only (analysisId prop docs).
+- N-5 B-SRC: staged-sources-not-kept (EN/DE copy in app/components/career/demo/navigation-copy.ts) while ≥ 1 staged source.
+  EN measured in the browser; DE checked by code inspection only (the locale switch lives in the codex modal; not driven).
+Observation by inspection, then measured (I24): Back while the ANALYZE POST is still on its way. The released controller drops
+  the 202, so no history entry ever names that job; the server job runs to its end and its analysis is persisted (listed in
+  /api/career/analyses), but no entry of this session shows it. A reload during SUBMITTING has the same outcome class
+  (no analysisJobId written yet), so NAV ≡ RELOAD holds; reported as O-NAV-SUBMIT for the owner, not as a failure.

@@ -1,0 +1,22 @@
+# PINK §10 K-UX-2 summary: per scene — attributes changed on the same element, testids added / removed, own-text changes,
+# order of testid-bearing elements. argv: <base json> <candidate json>
+import json, sys, re
+B, A = (json.load(open(f)) for f in sys.argv[1:3])
+def tid(r):
+  m = re.search(r"data-testid=(\S+)", r["a"]); return m.group(1) if m else None
+for scene in B["scenes"]:
+  b, a = B["scenes"][scene], A["scenes"][scene]
+  tb = [tid(r) for r in b if tid(r)]; ta = [tid(r) for r in a if tid(r)]
+  add = [t for t in dict.fromkeys(ta) if t not in tb]; rem = [t for t in dict.fromkeys(tb) if t not in ta]
+  common = [t for t in tb if t in ta]; common_a = [t for t in ta if t in tb]
+  moved = common != common_a
+  texts_b = {}; texts_a = {}
+  for rows, store in ((b, texts_b), (a, texts_a)):
+    cur = None
+    for r in rows:
+      if tid(r): cur = tid(r)
+      if r["t"]: store.setdefault(cur, []).append(r["t"])
+  tchg = [(k, [x for x in texts_b.get(k, []) if x not in texts_a.get(k, [])][:3], [x for x in texts_a.get(k, []) if x not in texts_b.get(k, [])][:3]) for k in set(texts_b) | set(texts_a) if texts_b.get(k) != texts_a.get(k) and k not in add + rem]
+  attr = sorted({re.sub(r"=.*", "", x) for rb, ra in zip(b, a) if tid(rb) and tid(rb) == tid(ra) and rb["a"] != ra["a"] for x in set(ra["a"].split(" ")) ^ set(rb["a"].split(" ")) if not x.startswith("data-orbital-motion")})
+  print(f"== {scene}: rows {len(b)}->{len(a)} added {add} removed {rem} testid-order-changed {moved} attr-changes {attr}")
+  for k, x, y in sorted(tchg, key=lambda z: str(z[0]))[:8]: print(f"   text @{k}: -{x} +{y}")

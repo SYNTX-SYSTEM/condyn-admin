@@ -1,0 +1,38 @@
+PINK probe2 on the three commits: START ANALYSIS vs the Decision Graph Inspector, PDF staged, heights 660–920 (4 px), widths 1280/1366/1440.
+
+person 35f00bc: @1280x720 button [678.2, 723.2] label [692.2, 709.2] painted 0.71 clickable rows 24 | heights label <50 %: 41 (660–844) | fully covered: 748–820
+person 7a3ca6a: @1280x720 button [670.2, 712.2] label [682.2, 700.2] painted 0.29 clickable rows 16 | heights label <50 %: 39 (660–836) | fully covered: 736–816
+person 38ebc31: @1280x720 button [680.2, 722.2] label [692.2, 710.2] painted 0.86 clickable rows 24 | heights label <50 %: 42 (660–848) | fully covered: 748–824
+pxj    35f00bc: @1280x720 button [678.2, 723.2] label [692.2, 709.2] painted 0.71 clickable rows 24 | heights label <50 %: 41 (660–844) | fully covered: 748–820
+pxj    7a3ca6a: @1280x720 button [678.1, 720.1] label [690.1, 708.1] painted 0.71 clickable rows 24 | heights label <50 %: 41 (660–844) | fully covered: 744–824
+pxj    38ebc31: @1280x720 button [688.1, 730.1] label [700.1, 718.1] painted 1.00 clickable rows 24 | heights label <50 %: 44 (660–856) | fully covered: 756–832
+
+7a3ca6a: heights where the label is >20 points less painted than on the base: 15; at 1280: [(712, 'person'), (716, 'person'), (720, 'person'), (724, 'person'), (728, 'person')]
+38ebc31: heights where the label is >20 points less painted than on the base: 27; at 1280: [(700, 'pxj'), (704, 'pxj'), (708, 'pxj'), (712, 'pxj'), (844, 'pxj'), (848, 'pxj'), (852, 'pxj'), (856, 'pxj'), (860, 'pxj')]
+
+Standard heights at 1280 (painted share person | pxj):
+   700: 35f00bc 0.43|0.43  7a3ca6a 1.00|0.57  38ebc31 0.43|0.00
+   720: 35f00bc 0.71|0.71  7a3ca6a 0.29|0.71  38ebc31 0.86|1.00
+   768: 35f00bc 0.00|0.00  7a3ca6a 0.00|0.00  38ebc31 0.00|0.00
+   800: 35f00bc 0.00|0.00  7a3ca6a 0.00|0.00  38ebc31 0.00|0.00
+   900: 35f00bc 1.00|1.00  7a3ca6a 1.00|1.00  38ebc31 1.00|1.00
+
+Low windows (probe2 surface, probe3 reach at start; full tables in probe4-low-windows.txt):
+   35f00bc 960x540: surface y [145, 517] overflowY visible | edge actions at start: all
+   35f00bc 1280x560: surface y [145, 461] overflowY visible | edge actions at start: all
+   35f00bc 1280x600: surface y [145, 461] overflowY visible | edge actions at start: all
+   35f00bc 1366x600: surface y [145, 461] overflowY visible | edge actions at start: all
+   35f00bc 1536x864: surface y - overflowY - | edge actions at start: all
+   35f00bc 1920x560: surface y [145, 461] overflowY visible | edge actions at start: all
+   7a3ca6a 960x540: surface y [145, 585] overflowY auto | edge actions at start: ['syntx-pools-toggle', 'job-pool-intake-toggle', 'syntx-gemini-output-toggle']
+   7a3ca6a 1280x560: surface y [145, 534] overflowY auto | edge actions at start: all
+   7a3ca6a 1280x600: surface y [145, 534] overflowY auto | edge actions at start: all
+   7a3ca6a 1366x600: surface y [145, 534] overflowY auto | edge actions at start: all
+   7a3ca6a 1536x864: surface y - overflowY - | edge actions at start: all
+   7a3ca6a 1920x560: surface y [145, 534] overflowY auto | edge actions at start: all
+   38ebc31 960x540: surface y [145, 534] overflowY visible | edge actions at start: all
+   38ebc31 1280x560: surface y [145, 534] overflowY visible | edge actions at start: all
+   38ebc31 1280x600: surface y [145, 534] overflowY visible | edge actions at start: all
+   38ebc31 1366x600: surface y [145, 534] overflowY visible | edge actions at start: all
+   38ebc31 1536x864: surface y - overflowY - | edge actions at start: all
+   38ebc31 1920x560: surface y [145, 534] overflowY visible | edge actions at start: all

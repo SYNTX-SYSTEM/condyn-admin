@@ -1,0 +1,25 @@
+// PINK V-20: in the job NOT_FOUND state (owner link + unknown analysisJobId) does the runtime telemetry HUD lie over B2? Overlap of
+// boxes, each B2 row's centre hit after the panel's own scroll, the HUD's box. GET only (non-GET aborted). argv: <base> <out dir>
+import { pathToFileURL } from "node:url";
+const [BASE, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const res = [];
+const url = `${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY&analysisJobId=JOB_1000000000000_1`;
+for (const [n, w, h] of [["1920x1080", 1920, 1080], ["1600x900", 1600, 900], ["1440x900", 1440, 900], ["1280x720", 1280, 720]]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); await p.goto(url, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 8000));
+  const r = await p.evaluate(async () => {
+    const box = e => { if (!e) return null; const r = e.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.right), Math.round(r.bottom)]; };
+    const hud = document.querySelector('[data-testid="inference-telemetry-hud"]'), panel = document.querySelector('[data-testid="pxj-first-screen"]');
+    const hb = box(hud), pb = box(panel); const ov = hb && pb ? Math.max(0, Math.min(hb[2], pb[2]) - Math.max(hb[0], pb[0])) * Math.max(0, Math.min(hb[3], pb[3]) - Math.max(hb[1], pb[1])) : null;
+    const banner = document.querySelector('[data-testid="intake-error-banner"]')?.dataset.errorCode ?? null;
+    // walk B2's own scroller (the nearest scrollable ancestor of the first row) and hit every row centre
+    const rows = [...document.querySelectorAll('[data-testid^="pxj-first-req-"]')]; let sc = rows[0]?.parentElement; while (sc && !(sc.scrollHeight > sc.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(sc).overflowY))) sc = sc.parentElement;
+    const hit = {}; for (const row of rows) { row.scrollIntoView({ block: "center" }); await new Promise(r => setTimeout(r, 80)); const rr = row.getBoundingClientRect(); const c = document.elementFromPoint(rr.left + rr.width / 2, Math.min(rr.top + rr.height / 2, innerHeight - 2)); hit[row.dataset.testid.replace("pxj-first-req-req_kestrel_fullstack_", "")] = c && row.contains(c) ? "self" : (c?.closest("[data-testid]")?.dataset.testid ?? c?.tagName ?? null); }
+    return { banner, hud: hb, hudVisible: hud ? getComputedStyle(hud).display !== "none" && getComputedStyle(hud).visibility !== "hidden" : false, panel: pb, overlapPx2: ov, scroller: sc?.dataset?.testid ?? sc?.tagName ?? null, rows: rows.length, hit };
+  });
+  res.push({ vp: n, ...r }); await p.screenshot({ path: `${OUT}/V20-job-not-found-${n}.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] });
+  await ctx.close();
+}
+console.log(JSON.stringify({ blocked, res }, null, 1)); await b.close();

@@ -1,0 +1,52 @@
+# PINK: baseline (35f00bc) vs after (7a3ca6a) from PINK's own frame measures (pink-typo-measure.mjs via pink-walk.mjs).
+# python3 -I pink-typo-compare.py <out-base> <out-after>
+import json,sys,glob,os,re,collections
+B,A=sys.argv[1:3]
+M={7:8.5,7.5:9,8:9.5,8.5:10,9:10.5,9.5:11,10:11.5,10.5:12,11:12,11.5:12.5,12:13,12.5:13.5,13:14}
+MOVING=re.compile(r'^(syntx-role-|syntx-organization-|syntx-requirement-|syntx-trace|syntx-source|evidence-node|capability-node|syntx-open-|syntx-moon|subspace|semantic-node)')
+def load(d):
+  out={}
+  for f in sorted(glob.glob(os.path.join(d,'*.m.json'))): out[os.path.basename(f)]=json.load(open(f))
+  return out
+b,a=load(B),load(A)
+frames=sorted(set(b)&set(a)); print(f'frames base {len(b)} after {len(a)} matched {len(frames)}; only base {sorted(set(b)-set(a))} only after {sorted(set(a)-set(b))}')
+# Cut text: clipped by a hidden/clip ancestor and not merely scrolled inside a scroll container; the field root's clip is left out
+# (fixed shell controls and window scroll put text outside the root's box without cutting it), as are ellipsis and line clamp kept in.
+clipped=lambda t:(t['clipPx']>0.5 and t.get('scrollPx',0)<=0.5 and t['clipBy']!='semantic-career-intelligence-field') or t['ellipsis'] or t['clamp']
+tot=collections.Counter(); steps=collections.Counter(); dec=[]; newclip=[]; goneclip=[]; newcol=[]; gonecol=[]; widths=[]; moved=collections.defaultdict(float); small=collections.Counter(); minfs=99
+for fr in frames:
+  tb={t['key']:t for t in b[fr]['texts']}; ta={t['key']:t for t in a[fr]['texts']}
+  common=set(tb)&set(ta); tot['texts-base']+=len(tb); tot['texts-after']+=len(ta); tot['matched']+=len(common)
+  for k in common:
+    x,y=tb[k],ta[k]; p,q=x['fs'],y['fs']
+    if q<p-0.01: dec.append((fr,k,p,q))
+    lab='kept' if abs(p-q)<0.01 else 'map' if p in M and abs(M[p]-q)<0.01 else 'smaller' if p in M and q<M[p] else 'larger' if p in M else 'other'
+    steps[lab]+=1
+    if lab=='kept' and p<14 and not MOVING.match(x['tp']): small[(x['tp'].split('<')[0],p)]+=1
+    if lab=='kept' and p<14 and MOVING.match(x['tp']): small[('(moving body) '+x['tp'].split('<')[0].rstrip('0123456789_abcdefghijklmnopqrstuvwxyz'),p)]+=1
+    if not MOVING.match(x['tp']) and clipped(y) and not clipped(x): newclip.append((fr,k[:110],y['clipPx'],y['ellipsis'],y['clamp'],y['clipBy']))
+    if not MOVING.match(x['tp']) and clipped(x) and not clipped(y): goneclip.append((fr,k[:90]))
+    if x['tt']=='uppercase' and len(x['lines'])==1 and len(y['lines'])==1 and x['ls'] not in ('normal','0px') and p!=q:
+      wb=x['lines'][0][2]-x['lines'][0][0]; wa=y['lines'][0][2]-y['lines'][0][0]; widths.append((round(wa-wb,1),fr,x['tp'].split('<')[0]+' | '+x['text'][:30],p,q,x['ls'],y['ls']))
+  for t in ta.values(): minfs=min(minfs,t['fs'])
+  cb={(c['a'],c['b']) for c in b[fr]['collisions'] if c['visible']}; ca={(c['a'],c['b']) for c in a[fr]['collisions'] if c['visible']}
+  for c in ca-cb: newcol.append((fr,)+c)
+  for c in cb-ca: gonecol.append((fr,)+c)
+  bb,ba=b[fr]['boxes'],a[fr]['boxes']
+  # Boxes only where the page sits at the same scroll offset in both runs (the field root's top is equal).
+  if bb.get('semantic-career-intelligence-field',[0,0])[1]!=ba.get('semantic-career-intelligence-field',[0,0])[1]: tot['frames-shifted']+=1; continue
+  for k in set(bb)&set(ba):
+    if MOVING.match(k): continue
+    d=max(abs(u-v) for u,v in zip(bb[k],ba[k])); moved[re.sub(r'#\d+$','',k)]=max(moved[re.sub(r'#\d+$','',k)],d)
+print('texts',dict(tot)); print('size steps',dict(steps)); print('min font size after',minfs)
+print(f'DECREASED {len(dec)}', dec[:10])
+print(f'new clipped (non-moving) {len(newclip)}'); [print('  ',*x) for x in newclip[:40]]
+print(f'clipped no more {len(goneclip)}'); [print('  ',*x) for x in goneclip[:40]]
+print(f'new visible collisions {len(newcol)}'); [print('  ',*x) for x in newcol[:40]]
+print(f'visible collisions gone {len(gonecol)}'); [print('  ',*x) for x in gonecol[:40]]
+ww=collections.defaultdict(list)
+for w in widths: ww[w[2]].append(w[0])
+print(f'tracked single-line caps whose size changed: {len(widths)} runs; width change after-base per carrier (min..max px):')
+for k,v in sorted(ww.items(),key=lambda kv:-max(abs(x) for x in kv[1])): print(f'   {min(v):+.1f}..{max(v):+.1f}  n={len(v)}  {k}')
+print('unchanged sizes < 14 px (carrier, size): count'); [print(f'   {k[1]:>5} {k[0]} : {n}') for k,n in sorted(small.items(),key=lambda kv:kv[0][1])]
+print('non-moving testid boxes moved/resized > 1 px (max over frames):'); [print(f'   {d:7.1f} {k}') for k,d in sorted(moved.items(),key=lambda kv:-kv[1]) if d>1]

@@ -1,0 +1,30 @@
+PINK §3.65 · relation cache probe (scratch-only vitest file, never committed as a live test), npm run test:isolated on a fresh verified
+disposable database, code tree = git archive of ccc0cc1. MEASUREMENT.
+
+registration: REGISTERED
+keys (true = same key):
+  proposal_evidenceReordered_idsChanged        True
+  proposal_nameCase                            False
+  proposal_trailingSpace                       False
+  proposal_definitionChanged                   False
+  proposal_quoteChanged                        False
+  requirement_aliasOrder                       True
+  requirement_aliasCase                        False
+  requirement_levelChanged                     False
+  requirement_necessityChanged                 False
+  requirement_extraFieldRoleTitle_ignored      True
+  engine_modelChanged                          False
+  engine_extraFieldTemperature_ignored         False
+store:
+  first                                {'inserted': 1, 'existing': 0}
+  sameAgain                            {'inserted': 0, 'existing': 1}
+  sameRelationLaterCreatedAt           Error: ERR_RELATION_CACHE_CONFLICT:PRREL_E70350A7EB172CD9875
+  sameRelationOtherRawOutput           Error: ERR_RELATION_CACHE_CONFLICT:PRREL_E70350A7EB172CD9875
+  dbUpdateAllowed                      rows 1
+  readAfterTamper                      [{"tampered":true}]
+  dbStateColumnVsJsonMismatchAllowed   inserted
+  dbKeyFormatChecked                   inserted (no format check)
+  dbDeleteAllowed                      rows 1
+  dbBadAuthority                       refused
+  dbBadState                           refused
+  dbNullState                          refused

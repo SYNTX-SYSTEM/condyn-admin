@@ -1,0 +1,33 @@
+PINK §3.69 · reverts and traces (CODE_INSPECTION).
+  7ec0f68 reverts 887da98: files only in the original 
+  b695342 reverts eff2480: files only in the original app/components/career/demo/SemanticCareerIntelligenceField.tsx 
+  4133af9 reverts d4616c7: files only in the original docs/architecture/ROLE_DISCOVERY_SEMANTIC_CACHE.md 
+  a353f67 reverts 993397e: files only in the original app/components/career/demo/SemanticCareerIntelligenceField.tsx 
+  95eff3f reverts a139392: files only in the original app/components/career/demo/SemanticCareerIntelligenceField.tsx docs/career_analysis/ROLE_DISCOVERY_AUTOMATIC_ASSIGNMENT.md 
+  46e4a0b reverts d821bb6: files only in the original 
+  46e4a0b vs ccc0cc1 IDENTICAL lib/career/job-pool/application.ts
+  46e4a0b vs ccc0cc1 IDENTICAL lib/career/job-pool/http.ts
+  46e4a0b vs ccc0cc1 IDENTICAL app/api/career/analyses/[analysisId]/role-discovery/route.ts
+  46e4a0b vs ccc0cc1 IDENTICAL lib/career/job-pool/relation-cache.ts
+  46e4a0b vs ccc0cc1 IDENTICAL lib/career/ui/useJobPool.ts
+  46e4a0b vs 9112682 IDENTICAL lib/career/ui/role-discovery.ts
+  46e4a0b vs 9112682 IDENTICAL test/career/pxj-first-screen/discovery-read.test.ts
+  Codex traces on 08ae201 (app lib test scripts): 0 files
+  files 9112682..08ae201 and their source:
+    =94e6028 app/api/career/analyses/[analysisId]/role-discovery/route.ts
+    =175c481 app/components/career/demo/SemanticCareerIntelligenceField.tsx
+    GELB edit docs/architecture/ROLE_DISCOVERY_SEMANTIC_CACHE.md
+    GELB edit docs/career_analysis/ROLE_DISCOVERY_AUTOMATIC_ASSIGNMENT.md
+    =175c481 docs/career_analysis/evidence/planetarium-demo-recovery.md
+    =175c481 docs/career_analysis/evidence/role-discovery/rd5-test-reset.md
+    =94e6028 lib/career/job-pool/persistence-schema.ts
+    =94e6028 lib/career/job-pool/relation-cache-registration.ts
+    =94e6028 lib/career/job-pool/relation-cache-repository.ts
+    =94e6028 lib/career/job-pool/relation-cache.ts
+    =175c481 test/career-demo-ui.test.tsx
+    =94e6028 test/career/job-pool/relation-cache-registration-gate.test.ts
+    =94e6028 test/career/job-pool/relation-cache.postgres.test.ts
+    =94e6028 test/career/job-pool/relation-cache.test.ts
+    GELB edit test/career/job-pool/role-discovery.postgres.test.ts
+    =175c481 test/career/pxj-first-screen/first-screen-ssr.test.tsx
+  field component 9112682 vs 08ae201:  1 file changed, 3 insertions(+), 2 deletions(-) (comment / indentation)

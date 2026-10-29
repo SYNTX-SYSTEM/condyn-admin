@@ -1,0 +1,15 @@
+role level entries base 26 tip 26 equal True
+== S1-person-session: stages base 010203040506 tip 010203040506 | coupling True/True | testids only base [] only tip []
+   field text equal True | items base ['1', '12', '0', '0', '0', '0'] tip ['1', '12', '0', '0', '0', '0']
+== S4-person-deep-link: stages base 010203040506 tip 010203040506 | coupling True/True | testids only base [] only tip ['empty-projection-breathing-halo', 'empty-projection-breathing-shell']
+   field text equal False | items base ['0', '0', '0', '0', '0', '0'] tip ['1', '12', '0', '0', '0', '0']
+    replace base: '); } } SYNTX CORE • ORGANISM◈ 0 SOURCES ACTIVE @keyframes orb' tip: '); } } SYNTX CORE • ORGANISM◈ 1 SOURCES ACTIVE @keyframes orb'
+    replace base: 'ty corePRE-CANONICAL DISCOVERY0 items @keyframes orbitFloatPh' tip: 'ty corePRE-CANONICAL DISCOVERY1 items @keyframes orbitFloatPh'
+    replace base: 'ty corePRE-CANONICAL DISCOVERY0 items @keyframes orbitFloatPh' tip: 'ty corePRE-CANONICAL DISCOVERY12 items @keyframes orbitFloatPh'
+== S3-role-level: stages base 010203040506eloner tip 0102eloner | coupling True/False | testids only base ['canonical-sil-region-state-03', 'canonical-sil-region-state-04', 'canonical-sil-region-state-05', 'canonical-sil-region-state-06', 'energy-ray-03', 'energy-ray-04', 'energy-ray-05', 'energy-ray-06', 'focus-anchor-recede-03', 'focus-anchor-recede-04', 'focus-anchor-recede-05', 'focus-anchor-recede-06'] only tip ['syntx-legacy-disclosure']
+   field text equal False | items base ['0', '0', '0', '0', '0', '0'] tip ['1', '12']
+    replace base: '); } } SYNTX CORE • ORGANISM◈ 0 SOURCES ACTIVE @keyframes orb' tip: '); } } SYNTX CORE • ORGANISM◈ 1 SOURCES ACTIVE @keyframes orb'
+    replace base: 'ty corePRE-CANONICAL DISCOVERY0 items @keyframes orbitFloatPh' tip: 'ty corePRE-CANONICAL DISCOVERY1 items @keyframes orbitFloatPh'
+    replace base: 'ty corePRE-CANONICAL DISCOVERY0 items @keyframes orbitFloatPhase2 { 0% { transform: translateY(0px) translateX(0px) scale(1); } 30% { transform: translateY(2px)' tip: 'ty corePRE-CANONICAL DISCOVERY12 items? HOW THIS WORKS📖 SYSTEM'
+    insert base: 'g← RETURNPRESENTATION MATCHING✓ SELECTED JOB× REMOVE JOBEsc ' tip: 'g← RETURNPRESENTATION MATCHINGLEGACY PRESENTATION · NOT B2Source: presentation matching JOB_* · first the legacy analysis without job scope (not deterministic),'
+    insert base: 'gineering & Architecture Pool @keyframes syntxFieldVeil { fr' tip: 'gineering & Architecture Pool · role_kestrel_fullstack @keyframes syntxFieldVeil { fr'

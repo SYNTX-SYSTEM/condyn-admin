@@ -1,0 +1,21 @@
+Point 4 · §05 cases on the two runs (DETERMINISTIC).
+
+ANL_1792628831636_456:
+  role without requirements: [('7201A8', 'role_pink_empty', 'NO_REQUIREMENTS', 0)]
+  (upload, role) unique True; role id alone unique False
+  role_kestrel_fullstack ×2: [('A076B5', 'PARTIAL', {'requirements': 9, 'nameRelated': 1, 'weakTokenOnly': 3, 'open': 5, 'requiredOpen': 3, 'required': 7}), ('7201A8', 'PARTIAL', {'requirements': 2, 'nameRelated': 1, 'weakTokenOnly': 1, 'open': 0, 'requiredOpen': 0, 'required': 2})]
+  'Platform Engineer' ×3: [('7201A8', 'role_pink_twin_a', 'Kestrel Logistics Software GmbH', 'PARTIAL'), ('7201A8', 'role_pink_twin_b', 'Kestrel Logistics Software GmbH', 'PARTIAL'), ('7201A8', 'role_pink_twin_c', 'PINK Other Systems GmbH', 'PARTIAL')]
+  requirement ids repeated across uploads: ['req_kestrel_fullstack_01', 'req_kestrel_fullstack_02'] (kept apart only by upload + role)
+  requirement names with different alias sets: 27, e.g. Python [(), ('FastAPI',), ('NumPy',), ('PyTorch',), ('R',), ('pandas',), ('pandas', 'NumPy')]
+  counts consistent (requirements = name + weak + open) for every role: True
+  by pool and status: {('DLL AI, Data & Semantic ', 'PARTIAL'): 14, ('DLL AI, Data & Semantic ', 'NO_RELATION'): 2, ('DLL Engineering & Archit', 'PARTIAL'): 6, ('DLL Engineering & Archit', 'NO_RELATION'): 3, ('DLL Enterprise Scale Poo', 'NO_RELATION'): 33, ('DLL Enterprise Scale Poo', 'PARTIAL'): 15, ('PINK role-field closure ', 'PARTIAL'): 4, ('PINK role-field closure ', 'NO_REQUIREMENTS'): 1}
+
+ANL_1792628993472_10:
+  role without requirements: [('7201A8', 'role_pink_empty', 'NO_REQUIREMENTS', 0)]
+  (upload, role) unique True; role id alone unique False
+  role_kestrel_fullstack ×2: [('A076B5', 'PARTIAL', {'requirements': 9, 'nameRelated': 8, 'weakTokenOnly': 0, 'open': 1, 'requiredOpen': 0, 'required': 7}), ('7201A8', 'ALL_REQUIREMENTS_NAME_RELATED', {'requirements': 2, 'nameRelated': 2, 'weakTokenOnly': 0, 'open': 0, 'requiredOpen': 0, 'required': 2})]
+  'Platform Engineer' ×3: [('7201A8', 'role_pink_twin_a', 'Kestrel Logistics Software GmbH', 'ALL_REQUIREMENTS_NAME_RELATED'), ('7201A8', 'role_pink_twin_b', 'Kestrel Logistics Software GmbH', 'ALL_REQUIREMENTS_NAME_RELATED'), ('7201A8', 'role_pink_twin_c', 'PINK Other Systems GmbH', 'ALL_REQUIREMENTS_NAME_RELATED')]
+  requirement ids repeated across uploads: ['req_kestrel_fullstack_01', 'req_kestrel_fullstack_02'] (kept apart only by upload + role)
+  requirement names with different alias sets: 27, e.g. Python [(), ('FastAPI',), ('NumPy',), ('PyTorch',), ('R',), ('pandas',), ('pandas', 'NumPy')]
+  counts consistent (requirements = name + weak + open) for every role: True
+  by pool and status: {('DLL AI, Data & Semantic ', 'NO_RELATION'): 16, ('DLL Engineering & Archit', 'PARTIAL'): 3, ('DLL Engineering & Archit', 'NO_RELATION'): 6, ('DLL Enterprise Scale Poo', 'NO_RELATION'): 42, ('DLL Enterprise Scale Poo', 'PARTIAL'): 6, ('PINK role-field closure ', 'ALL_REQUIREMENTS_NAME_RELATED'): 4, ('PINK role-field closure ', 'NO_REQUIREMENTS'): 1}

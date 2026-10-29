@@ -1,0 +1,33 @@
+# PINK · repro of the two NAV ≠ RELOAD observations of the dev run (N-back-02 = case A; N-back-18/19, N-forward-03/04 = case B).
+# Evidence class STAND_IN. Each case sampled 1 / 3 / 8 / 15 s after landing: fresh load of the URL, and the same URL reached by in-app Back.
+# observation · first-screen state · pool named by the job indicator (RF = PINK role-field pool, DLL) · job-scope state
+
+## next dev
+R2-fresh-org                 1s FIELD:JPOOL_x · None · ? · NONE | 3s FIELD:JPOOL_x · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R2-fresh-role                1s FIELD:JPOOL_x · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-fresh-org-focusFIELD      1s FIELD:JPOOL_x · None · ? · NONE | 3s ORGANIZATION:org_kestrel · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R2-fresh-role-focusFIELD     1s FIELD:JPOOL_x · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-session-org               ORGANIZATION:org_kestrel · None · ? · NONE
+R2-session-role              ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-back-to-role              1s ROLE:role_kestrel_fullstack · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-back-to-org               1s ORGANIZATION:org_kestrel · None · ? · NONE | 3s ORGANIZATION:org_kestrel · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R1-fresh-rf-scope            1s FIELD:JPOOL_x · None · ? · CHECKING | 3s FIELD:JPOOL_x · None · ? · CHECKING | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID
+R1-session-rf-scope          None · ROLE_MISMATCH · RF · VALID
+R1-session-offer-back        None · AVAILABLE · DLL · VALID
+R1-back-to-rf-scope          1s FIELD:JPOOL_x · None · ? · CHECKING | 3s None · ROLE_MISMATCH · RF · VALID | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID
+R1-reload-of-that-entry      1s FIELD:JPOOL_x · None · ? · CHECKING | 3s None · ROLE_MISMATCH · RF · VALID | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID
+
+## production build (LAB_ONLY_BUILD_FLAG)
+R2-fresh-org                 1s ORGANIZATION:org_kestrel · None · ? · NONE | 3s ORGANIZATION:org_kestrel · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R2-fresh-role                1s ROLE:role_kestrel_fullstack · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-fresh-org-focusFIELD      1s ORGANIZATION:org_kestrel · None · ? · NONE | 3s ORGANIZATION:org_kestrel · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R2-fresh-role-focusFIELD     1s ROLE:role_kestrel_fullstack · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-session-org               ORGANIZATION:org_kestrel · None · ? · NONE
+R2-session-role              ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-back-to-role              1s ROLE:role_kestrel_fullstack · None · ? · NONE | 3s ROLE:role_kestrel_fullstack · None · ? · NONE | 8s ROLE:role_kestrel_fullstack · None · ? · NONE | 15s ROLE:role_kestrel_fullstack · None · ? · NONE
+R2-back-to-org               1s ORGANIZATION:org_kestrel · None · ? · NONE | 3s ORGANIZATION:org_kestrel · None · ? · NONE | 8s ORGANIZATION:org_kestrel · None · ? · NONE | 15s ORGANIZATION:org_kestrel · None · ? · NONE
+R1-fresh-rf-scope            1s None · ROLE_MISMATCH · RF · VALID | 3s None · ROLE_MISMATCH · RF · VALID | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID
+R1-session-rf-scope          None · ROLE_MISMATCH · RF · VALID
+R1-session-offer-back        None · AVAILABLE · DLL · VALID
+R1-back-to-rf-scope          1s None · ROLE_MISMATCH · RF · VALID | 3s None · ROLE_MISMATCH · RF · VALID | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID
+R1-reload-of-that-entry      1s None · ROLE_MISMATCH · RF · VALID | 3s None · ROLE_MISMATCH · RF · VALID | 8s None · ROLE_MISMATCH · RF · VALID | 15s None · ROLE_MISMATCH · RF · VALID

@@ -1,0 +1,21 @@
+# PINK pure-function checks on 88539d3 (persisted :41862 bodies, GET only; no quote text):
+## stage 1b: identical output to 50776fc (diff empty)
+(identical)
+## NO_PROJECTION (projection removed):
+state NO_PROJECTION showsAnalysis true
+orbit 02 capabilities 0 ids 
+any PCAP_ id false | projectionState set 0
+fields  | evidenceConfidence values 
+legacy orbits 0 0 0 0
+## pendingSelection (new input of projectPxjFirstScreen):
+no pending, no selection     ROLE_MISMATCH   
+CHECKING own job             JOB_CHECKING selection=role_kestrel_fullstack  
+INVALID own job              JOB_INVALID selection=role_kestrel_fullstack NOT_ACTIVE 
+INVALID other job            JOB_INVALID selection=role_x ROLE_NOT_IN_POOL 
+VALID own + stale pending    COVERAGE_LOADING   proposals=8
+## PINK proof SSR test (scratch, run once, removed):
+PINK-NOPROJ {"state":"NO_PROJECTION","legacyNamesAnywhere":[false,false],"legacyNamesInShell02":[false,false],"orbit02Items":"0","confidenceLike":0,"noProposalsStatement":true}
+PINK-NOPROJ-PERSON {"legacyNamesAnywhere":[false,false]}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":1,"legacyNames":[false,false],"confidence":[],"legacyQuote":false}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":2,"legacyNames":[false,false],"confidence":[],"legacyQuote":false}
+      Tests  1 passed (1)

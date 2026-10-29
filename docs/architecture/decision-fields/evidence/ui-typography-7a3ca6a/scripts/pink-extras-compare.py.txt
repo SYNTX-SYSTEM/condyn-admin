@@ -1,0 +1,70 @@
+# PINK: baseline vs after of pink-typo-extras.mjs. python3 -I pink-extras-compare.py <base extras.json> <after extras.json>
+import json,sys,collections
+b,a=[json.load(open(p)) for p in sys.argv[1:3]]
+print('errors base',b['errors'],'after',a['errors'])
+def idx(rows,keys): return {tuple(r[k] for k in keys):r for r in rows}
+# 1 shell row
+sb,sa=idx(b['shell'],['state','lang','w']),idx(a['shell'],['state','lang','w'])
+print('\n== shell row: least air per state/lang over 1240–1960 (8 px steps + 1365/1366/1367); range 1280–1920 separately')
+g=collections.defaultdict(list)
+for k in sa: g[k[:2]].append(k)
+for st in g:
+  ks=sorted(g[st],key=lambda k:k[2]); inr=[k for k in ks if 1280<=k[2]<=1920]
+  mb=min(inr,key=lambda k:sb[k]['air']); ma=min(inr,key=lambda k:sa[k]['air'])
+  worse=[k[2] for k in inr if sa[k]['air']<sb[k]['air']-0.5 and sa[k]['air']<8]
+  lb=[k[2] for k in ks if k[2]<1280 and sa[k]['air']<sb[k]['air']-0.5]
+  print(f"  {st[0]:<20} {st[1]}  1280–1920 base min {sb[mb]['air']:6.1f} @{mb[2]} ({sb[mb]['pair']})  after min {sa[ma]['air']:6.1f} @{ma[2]} ({sa[ma]['pair']}) | after <8 & worse: {worse} | below 1280 worse at {lb} (after min {min(sa[k]['air'] for k in ks if k[2]<1280)}, base min {min(sb[k]['air'] for k in ks if k[2]<1280)})")
+# investigation selector size and statement gap
+print('\n== investigation mode font size by width (after): ', sorted({(r['w']>=1366, r['modeFs']) for r in a['shell']}), ' base:', sorted({r['modeFs'] for r in b['shell']}))
+for st in ['job-pool-scope-JOB','job-pool-PERSON','job-long-scope-JOB']:
+  for l in ['en','de']:
+    gb=[sb[(st,l,w)]['stmtGap'] for w in sorted({k[2] for k in sb}) if sb[(st,l,w)]['stmtGap'] is not None]
+    ga=[sa[(st,l,w)]['stmtGap'] for w in sorted({k[2] for k in sa}) if sa[(st,l,w)]['stmtGap'] is not None]
+    nb=sum(1 for x in gb if x<0); na=sum(1 for x in ga if x<0)
+    print(f'  statement vs field laws {st} {l}: vertical gap base min {min(gb) if gb else None} (overlapping widths {nb}/{len(gb)}), after min {min(ga) if ga else None} (overlapping {na}/{len(ga)})')
+# 2 scope titles
+print('\n== job scope title (fs, clipped) base -> after per width; roles clipped')
+tb,ta=idx(b['scopeTitle'],['role','lang','w']),idx(a['scopeTitle'],['role','lang','w'])
+for w in [1280,1366,1440,1600,1920]:
+  cb=sorted({k[0] for k in tb if k[2]==w and tb[k].get('clip')}); ca=sorted({k[0] for k in ta if k[2]==w and ta[k].get('clip')})
+  cwb=sorted({tb[k]['cw'] for k in tb if k[2]==w}); cwa=sorted({ta[k]['cw'] for k in ta if k[2]==w})
+  print(f'  {w}: title box width base {cwb} after {cwa}; clipped base {len(cb)} after {len(ca)}; newly clipped {sorted(set(ca)-set(cb))}; no longer {sorted(set(cb)-set(ca))}')
+print('  scope rows air <8 after:', sorted({(k[2],ta[k]['pair'],ta[k]['air']) for k in ta if ta[k]['air']<8})[:10])
+# 3 dock
+print('\n== source dock START ANALYSIS')
+db,da=idx(b['dock'],['w','h','state']),idx(a['dock'],['w','h','state'])
+for k in da:
+  x,y=db.get(k,{}),da[k]
+  f=lambda r:(None if not r.get('btn') else f"bottom {r['btn'][3]:.1f}/{r['vh']} onTop {r['onTop']} ({r['topIs']}) fs {r['fs']}")
+  print(f'  {k}: base {f(x)} | after {f(y)}')
+# 4 low
+print('\n== low viewports, orientation surface + SELECT AS JOB')
+lb,la=idx(b['low'],['w','h']),idx(a['low'],['w','h'])
+for k in la:
+  for v,r in [('base',lb.get(k)),('after',la[k])]:
+    if r: print(f"  {k} {v:5}: overflowY {r['before']['overflowY']} maxH {r['before']['maxHeight']} surface {[round(x) for x in r['before']['surface']]} btn {[round(x) for x in r['before']['btn']]} inView {r['before']['inView']} → after scroll {r['afterScroll']['inView']} onTop {r['afterScroll']['onTop']} pointer selects {r['pointerSelects']}")
+# 5 cosmos
+print('\n== organization cosmos centre kicker: lines, outside centre')
+cb,ca=idx(b['cosmos'],['font','w','lang','org']),idx(a['cosmos'],['font','w','lang','org'])
+cnt=collections.Counter()
+for k in ca:
+  x,y=cb.get(k),ca[k]
+  if not x or not y: cnt['missing']+=1; continue
+  cnt[(k[2],f'lines {x["lines"]}->{y["lines"]}',f'outside {x["outside"]>0.5}->{y["outside"]>0.5}')]+=1
+for k,n in sorted(cnt.items(),key=str): print('  ',k,n)
+print('  base fs/ls',{(r['fs'],r['ls']) for r in b['cosmos'] if r},'after',{(r['fs'],r['ls']) for r in a['cosmos'] if r})
+print('  ext widths en/de default 1920 base vs after:',[(k[3],k[2],round(cb[k]['ext'][1]-cb[k]['ext'][0],1),round(ca[k]['ext'][1]-ca[k]['ext'][0],1)) for k in ca if k[0]=='default' and k[1]==1920])
+# 6 inspector
+print('\n== inspector idle: base',b['inspector'],'\n   after',a['inspector'])
+# 7 path
+print('\n== path ROLE: ellipsis/inside/lines/collisions')
+pb,pa=idx(b['path'],['w','lang','role']),idx(a['path'],['w','lang','role'])
+c=collections.Counter()
+for k in pa:
+  x,y=pb.get(k),pa[k]
+  if not x or not y: continue
+  c[('ellipsis',x['ellipsis'],y['ellipsis'])]+=1; c[('inside',x['inside'],y['inside'])]+=1; c[('lines',x['lines'],y['lines'])]+=1; c[('collide',bool(x['collisions']),bool(y['collisions']))]+=1
+for k,n in sorted(c.items(),key=str): print('  ',k,n)
+for k in pa:
+  if pa[k] and pa[k]['collisions']: print('   after collision',k,pa[k]['collisions'][:2])
+  if pa[k] and not pa[k]['inside']: print('   after outside',k)

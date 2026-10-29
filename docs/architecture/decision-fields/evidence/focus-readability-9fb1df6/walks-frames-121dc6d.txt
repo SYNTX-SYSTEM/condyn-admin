@@ -1,0 +1,177 @@
+# PINK walks on 121dc6d (frontend/focus-readability), PINK's instrumented copy of GELB's video walk, one fresh stand-in lab per viewport (port 41871, disposable DBs, own PID).
+# 121dc6d → 9fb1df6 changes only focusNameSize (label.toUpperCase().length); no fixture name changes length under upper case (see static-9fb1df6.txt), so these frames stand for 9fb1df6.
+HEAD 121dc6d (focus)
+walk 1920x1080 exit 0 :: 30 PASS 0 FAIL :: 30/30 passed
+walk 1440x900 exit 0 :: 30 PASS 0 FAIL :: 30/30 passed
+walk 1366x768 exit 0 :: 30 PASS 0 FAIL :: 30/30 passed
+walk 1280x720 exit 0 :: 30 PASS 0 FAIL :: 30/30 passed
+extras exit 0 :: EXTRAS shell 1128 scope 140 dock 12 low 6 cosmos 60 path 84 errors 0
+
+# net (all four labs): only Next dev's npm dist-tags check
+1920x1080:  1 https://registry.npmjs.org
+1440x900:  1 https://registry.npmjs.org
+1366x768:  1 https://registry.npmjs.org
+1280x720:  1 https://registry.npmjs.org
+
+# frames: 38ebc31 (out-fix, §3.52) vs 121dc6d — python3 -I pink-focus-compare.py
+frames base 80 tip 80 matched 80; only base [] only tip []
+texts {'texts-base': 7348, 'texts-tip': 7348, 'matched': 7324, 'frames-shifted': 3}
+unmatched text keys (carrier: count):
+     12 syntx-gemini-output<syntx-field (tip only)
+     12 syntx-gemini-output<syntx-field (base only)
+      4 syntx-gemini-original<syntx-gemini-output (base only)
+      4 syntx-gemini-original<syntx-gemini-output (tip only)
+      4 syntx-gemini-processing<syntx-gemini-output (base only)
+      4 syntx-gemini-processing<syntx-gemini-output (tip only)
+      4 syntx-coverage<syntx-field (base only)
+      4 syntx-coverage<syntx-field (tip only)
+size changes (carrier | text | base→tip px | lines base→tip): frames
+     4  capability-focus-satellite-PCAP | Apache Kafka | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Automated Testing | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | CI/CD | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Docker | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | English | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Kubernetes | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Node.js | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | PostgreSQL | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Python | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | React | 10→11 | 1→1
+     4  capability-focus-satellite-PCAP | Team Leadership | 10→11 | 1→1
+     4  syntx-cosmos- | 01 KESTREL LOGISTICS SOFTWARE GMBH | 11→13 | 3→3
+    40  syntx-pool- | DLL Engineering & Architecture Pool | 10.5→14 | 2→2
+DECREASED 0 []
+new clipped 0
+clipped no more 0
+new visible collisions 7
+   04-capability-cosmos-1280x720.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   04-capability-cosmos-1366x768.m.json orbital-physics-02<focused-stage-bubble-02|Semantic capability core#1 capability-cosmos-center<capability-cosmos-view|02 CAPABILITY FIELD#1
+   04-capability-cosmos-1920x1080.m.json canonical-sil-region-state-02<orbital-physics-02|PRE-CANONICAL DISCOVERY#1 capability-cosmos-center<capability-cosmos-view|CAPABILITY COSMOS // PROPOSAL FIELD#1
+   05-capability-evidence-1440x900.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|RETURN TO CAPABILITY COSMOS#1
+   12-job-scope-selected-1280x720.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · Hamburg#1 syntx-role-role_kestrel_fullstack<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   12-job-scope-selected-1366x768.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|Logistics SaaS · Hamburg#1 syntx-role-role_kestrel_fullstack<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+   19-job-no-gemini-1920x1080.m.json syntx-body-org_kestrel<syntx-organization-org_kestrel|ORGANIZATION#1 syntx-role-role_kestrel_frontend_architect<syntx-ecology|RETURN TO THE ORGANIZATION COSMOS#1
+visible collisions gone 3
+   04-capability-cosmos-1366x768.m.json capability-cosmos-node-PCAP_4F218651C9962531C79269DF<capability-cosmos-view|1 EVIDENCE // EVIDENCE PASSED // SEMANTIC DEFINITION NOT RUN#1 semantic-guide-drawer-toggle<semantic-career-intelligence-field|ⓘ SEMANTIC GUIDE#1
+   04-capability-cosmos-1440x900.m.json orbital-physics-02<focused-stage-bubble-02|Semantic capability core#1 capability-cosmos-center<capability-cosmos-view|02 CAPABILITY FIELD#1
+   05-capability-evidence-1366x768.m.json orbital-physics-02<focused-stage-bubble-02|02#1 capability-focus-nucleus-PCAP_AAFB8C7F8820052B592BDE11<capability-deep-focus-view|RETURN TO CAPABILITY COSMOS#1
+non-moving testid boxes moved/resized > 1 px (max over frames):
+     302.5 photon-stream-core-to-orbit
+     283.2 photon-stream-orbit-to-core
+      96.8 rotating-background-rings
+      48.9 plasma-flare
+      21.5 empty-projection-breathing-halo
+      11.8 empty-projection-breathing-shell
+       5.1 orbital-physics-04
+       5.0 semiotic-signature-04
+       4.9 orbital-physics-03
+       4.8 semiotic-signature-03
+       4.7 canonical-sil-region-state-04
+       4.7 orbital-physics-02
+       4.6 semiotic-signature-02
+       4.4 canonical-sil-region-state-03
+       4.3 identity-core-dropzone
+       4.2 canonical-sil-region-state-02
+       3.8 orbital-physics-05
+       3.8 orbital-physics-06
+       3.7 plasma-core-rings
+       3.6 semiotic-signature-05
+       3.6 semiotic-signature-06
+       3.3 canonical-sil-region-state-06
+       3.1 orbital-physics-01
+       3.1 semiotic-signature-01
+       3.1 syntx-body-org_kestrel
+       2.9 energy-ray-02
+       2.8 canonical-sil-region-state-01
+       2.8 syntx-ray-org_kestrel
+       2.8 canonical-sil-region-state-05
+       1.9 syntx-ray-org_aurelion
+       1.9 syntx-ray-org_brightwater
+       1.8 energy-ray-01
+       1.8 energy-ray-04
+       1.7 syntx-body-org_brightwater
+       1.6 syntx-pool-core
+       1.3 syntx-body-org_aurelion
+
+# PINK extras (shell row, job title, START, low windows, cosmos kicker, path step) 38ebc31 vs 121dc6d — python3 -I pink-extras-compare.py
+errors base [] after []
+
+== shell row: least air per state/lang over 1240–1960 (8 px steps + 1365/1366/1367); range 1280–1920 separately
+  capability-person    en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -5, base min -5)
+  capability-person    de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -5, base min -5)
+  job-empty            en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -6.7)
+  job-empty            de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -30.8)
+  job-pool-scope-pxj   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -6.7)
+  job-pool-scope-pxj   de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -30.8)
+  job-pool-scope-JOB   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -6.7)
+  job-pool-scope-JOB   de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -30.8)
+  job-pool-PERSON      en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -6.7)
+  job-pool-PERSON      de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -30.8)
+  job-long-scope-JOB   en  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -6.7, base min -6.7)
+  job-long-scope-JOB   de  1280–1920 base min    8.0 @1280 (field-focus-strip|investigation-mode-selector)  after min    8.0 @1280 (field-focus-strip|investigation-mode-selector) | after <8 & worse: [] | below 1280 worse at [] (after min -30.8, base min -30.8)
+
+== investigation mode font size by width (after):  [(False, 9.5), (True, 10)]  base: [9.5, 10]
+  statement vs field laws job-pool-scope-JOB en: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-scope-JOB de: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-PERSON en: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-pool-PERSON de: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-long-scope-JOB en: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+  statement vs field laws job-long-scope-JOB de: vertical gap base min 11.8 (overlapping widths 0/94), after min 11.8 (overlapping 0/94)
+
+== job scope title (fs, clipped) base -> after per width; roles clipped
+  1280: title box width base [264] after [264]; clipped base 9 after 9; newly clipped []; no longer []
+  1366: title box width base [307] after [307]; clipped base 7 after 7; newly clipped []; no longer []
+  1440: title box width base [344] after [344]; clipped base 4 after 4; newly clipped []; no longer []
+  1600: title box width base [416, 422, 424] after [416, 422, 424]; clipped base 4 after 4; newly clipped []; no longer []
+  1920: title box width base [416, 422, 455, 475, 581, 583, 584] after [416, 422, 455, 475, 581, 583, 584]; clipped base 1 after 1; newly clipped []; no longer []
+  scope rows air <8 after: []
+
+== source dock START ANALYSIS
+  (1280, 720, 'person-empty'): base None | after None
+  (1280, 720, 'person-staged'): base bottom 722.2/720 onTop True (start-intake-analysis-btn) fs 14 | after bottom 722.2/720 onTop True (start-intake-analysis-btn) fs 14
+  (1280, 720, 'pxj-staged'): base bottom 730.1/720 onTop True (start-intake-analysis-btn) fs 14 | after bottom 730.1/720 onTop True (start-intake-analysis-btn) fs 14
+  (1366, 768, 'person-empty'): base None | after None
+  (1366, 768, 'person-staged'): base bottom 722.2/768 onTop False (P) fs 14 | after bottom 722.2/768 onTop False (P) fs 14
+  (1366, 768, 'pxj-staged'): base bottom 730.1/768 onTop False (P) fs 14 | after bottom 730.1/768 onTop False (P) fs 14
+  (1280, 800, 'person-empty'): base None | after None
+  (1280, 800, 'person-staged'): base bottom 722.2/800 onTop False (DIV) fs 14 | after bottom 722.2/800 onTop False (DIV) fs 14
+  (1280, 800, 'pxj-staged'): base bottom 730.1/800 onTop False (decision-graph-inspector-idle) fs 14 | after bottom 730.1/800 onTop False (decision-graph-inspector-idle) fs 14
+  (1440, 900, 'person-empty'): base None | after None
+  (1440, 900, 'person-staged'): base bottom 722.2/900 onTop True (start-intake-analysis-btn) fs 14 | after bottom 722.2/900 onTop True (start-intake-analysis-btn) fs 14
+  (1440, 900, 'pxj-staged'): base bottom 730.1/900 onTop True (start-intake-analysis-btn) fs 14 | after bottom 730.1/900 onTop True (start-intake-analysis-btn) fs 14
+
+== low viewports, orientation surface + SELECT AS JOB
+  (960, 540) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (960, 540) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 599) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 599) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 600) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 600) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 601) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1280, 601) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1920, 560) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1920, 560) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1536, 864) base : overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+  (1536, 864) after: overflowY visible maxH none surface [28, 145, 368, 534] btn [45, 415, 188, 441] inView True → after scroll True onTop True pointer selects True
+
+== organization cosmos centre kicker: lines, outside centre
+   ('de', 'lines 2->2', 'outside False->False') 30
+   ('en', 'lines 2->2', 'outside False->False') 30
+  base fs/ls {(9, '1px')} after {(9, '1px')}
+  ext widths en/de default 1920 base vs after: [('org_kestrel', 'en', 121.6, 121.6), ('org_aurelion', 'en', 121.6, 121.6), ('org_pink_long', 'en', 121.6, 121.6), ('org_kestrel', 'de', 128.0, 128.0), ('org_aurelion', 'de', 128.0, 128.0), ('org_pink_long', 'de', 128.0, 128.0)]
+
+== inspector idle: base [[{'text': 'DECISION GRAPH INSPECTOR', 'fs': 12, 'color': 'rgb(34, 211, 238)'}, {'text': 'SIL v3.0', 'fs': 11.5, 'color': 'rgb(148, 163, 184)'}, {'text': 'Hover or select any node in the Planetarium to inspect its b', 'fs': 12, 'color': 'rgb(100, 116, 139)'}]] 
+   after [[{'text': 'DECISION GRAPH INSPECTOR', 'fs': 12, 'color': 'rgb(34, 211, 238)'}, {'text': 'SIL v3.0', 'fs': 11.5, 'color': 'rgb(148, 163, 184)'}, {'text': 'Hover or select any node in the Planetarium to inspect its b', 'fs': 12, 'color': 'rgb(100, 116, 139)'}]]
+
+== path ROLE: ellipsis/inside/lines/collisions
+   ('collide', False, False) 84
+   ('ellipsis', False, False) 84
+   ('inside', True, True) 84
+   ('lines', 1, 1) 36
+   ('lines', 2, 2) 30
+   ('lines', 3, 3) 18
+
+# recurrence of the collision families listed as new/gone above, visible pairs per walk (35f00bc out-base, 7a3ca6a out-after, 38ebc31 out-fix, 121dc6d out-focus)
+   35f00bc: org body text × role card RETURN 44; region state / core × capability cosmos centre 12; stage bubble × capability focus nucleus 7
+   7a3ca6a: org body text × role card RETURN 41; region state / core × capability cosmos centre 22; stage bubble × capability focus nucleus 9
+   38ebc31: org body text × role card RETURN 40; region state / core × capability cosmos centre 19; stage bubble × capability focus nucleus 9
+   121dc6d: org body text × role card RETURN 41; region state / core × capability cosmos centre 21; stage bubble × capability focus nucleus 9

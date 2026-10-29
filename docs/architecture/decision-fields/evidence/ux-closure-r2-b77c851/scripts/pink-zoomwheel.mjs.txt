@@ -1,0 +1,21 @@
+// PINK: at 200 % (960×540 and 640×360, dsf 2) the organisation level — scroll the page by mouse wheel in 60 px steps like a user and
+// record per role card the best 5-point hit (centre + 4 inner points) seen; GET only in the browser. argv: <base> <out> [real|standin] [repo]
+import { readFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [BASE, OUT, KIND = "real", ROOT = ""] = process.argv.slice(2);
+if (KIND === "standin") await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_S10" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const res = [];
+for (const [n, w, h] of [["zoom200-1920x1080", 960, 540], ["zoom200-1280x720", 640, 360]]) for (const mode of ["PERSON_X_JOB", "PERSON"]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=${mode}&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 7000));
+  const best = {}; await p.mouse.move(w / 2, h / 2);
+  for (let k = 0; k < 40; k += 1) {
+    const s = await p.evaluate(() => Object.fromEntries(["fullstack", "frontend_architect", "engineering_lead"].map(r => { const e = document.querySelector(`[data-testid="syntx-role-role_kestrel_${r}"]`); if (!e) return [r, -1]; const b = e.getBoundingClientRect(); let hit = 0; for (const [fx, fy] of [[0.5, 0.5], [0.25, 0.25], [0.75, 0.25], [0.25, 0.75], [0.75, 0.75]]) { const x = b.left + b.width * fx, y = b.top + b.height * fy; if (x < 0 || y < 0 || x >= innerWidth || y >= innerHeight) continue; const c = document.elementFromPoint(x, y); if (c && e.contains(c)) hit += 1; } return [r, hit]; })));
+    for (const r in s) best[r] = Math.max(best[r] ?? -1, s[r]);
+    await p.mouse.wheel(0, 60); await new Promise(r => setTimeout(r, 150));
+  }
+  res.push({ vp: n, mode, best }); await ctx.close();
+}
+console.log(JSON.stringify({ kind: KIND, blocked, res })); await b.close();

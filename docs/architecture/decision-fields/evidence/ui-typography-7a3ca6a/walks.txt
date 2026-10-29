@@ -1,0 +1,35 @@
+PINK walks: PINK's instrumented copy of GELB's video-walk.mjs (make-walk.mjs.txt; the walk's checks unchanged, each shot also writes
+PINK's frame measure), one fresh stand-in lab per run (video-lab.ts, empty disposable database, loopback Gemini stand-in, gemini=STANDIN), port 41871.
+
+== base (35f00bc)
+   1920x1080: 30/30 passed
+   1440x900: 30/30 passed
+   1366x768: 30/30 passed
+   1280x720: 30/30 passed
+   1366x768 second lab: 30/30 passed
+== after (7a3ca6a)
+   1920x1080: 30/30 passed
+   1440x900: 30/30 passed
+   1366x768: 28/29 passed
+   1280x720: 30/30 passed
+   1366x768 second lab: 30/30 passed
+
+The one failure (7a3ca6a, first 1366x768 lab): V-11 step threw — TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+   The lab's server answered GET /api/career/job-pools/<pool>/roles/role_kestrel_frontend_architect/structure with 404 (2.4 s, first compile
+   of the route); the route handler has no 404 path (400/409 only). In the second 7a3ca6a lab the same step got 200 and the walk is 30/30.
+   Environment (Next dev first compile), not the typography change.
+
+Network (lab sentinel net.jsonl, every non-loopback connection of server and worker):
+   out-after/net-1280x720.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-after/net-1366x768.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-after/net-1440x900.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-after/net-1920x1080.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-base/net-1280x720.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-base/net-1366x768.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-base/net-1440x900.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out-base/net-1920x1080.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out2-after/net.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out2-base/net.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out3-after/net.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   out3-base/net.jsonl: 1 target(s) ['https://registry.npmjs.org/-/package/next/dist-tags']
+   (the npm registry dist-tags fetch is Next dev's own version check, as in every earlier PINK lab; no Gemini host)

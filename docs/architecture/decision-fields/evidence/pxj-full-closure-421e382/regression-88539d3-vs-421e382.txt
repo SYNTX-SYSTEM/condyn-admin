@@ -1,0 +1,55 @@
+# PINK · regression on PINK's stand-in lab (next dev, STAND_IN): role-field sweep X-01…X-24 + F-RF-1…3 and the G1 walk (PA-01…PA-14), 88539d3 vs 421e382.
+# rf sweep 421e382: DONE {"analyses":{"A0":"ANL_*","P0":"ANL_*","A1":"ANL_*","A1b":"ANL_*","AE":"ANL_*"},"uploads":{"dll":201,"rf":201,"rfArchived":201},"errors":0,"failedSteps":[]}
+## rf sweep: diff of the quote-free summaries (ids normalised; ms removed)
+25c25
+<   extra: {"during": {"url": {"focus": "CAPABILITY", "investigationMode": "PERSON", "jobPoolUploadId": "JPOOL_x", "jobScopePoolUploadId": "JPOOL_x", "jobScopeRoleId": "role_kestrel_fullstack"}, "mode": "PERSON", "field": "CAPABILITY", "gate": "OPEN", "job": {"state": "VALID", "used": "false", "text": "JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking · role_kestrel_fullstack"}, "observation": null, "select": null, "clear": false, "first": null, "offer": null, "offerState": null, "offerSelect": false, "offerInvalidReason": null, "proposals": 0, "rows": 0, "items": ["0", "0", "0", "0", "0", "0"], "analyzeRequired": null, "analyzeMode": "PERSON
+---
+>   extra: {"during": {"url": {"focus": "CAPABILITY", "investigationMode": "PERSON", "jobPoolUploadId": "JPOOL_x", "jobScopePoolUploadId": "JPOOL_x", "jobScopeRoleId": "role_kestrel_fullstack", "analysisJobId": "JOB_x"}, "mode": "PERSON", "field": "CAPABILITY", "gate": "OPEN", "job": {"state": "VALID", "used": "false", "text": "JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking · role_kestrel_fullstack"}, "observation": null, "select": null, "clear": false, "first": null, "offer": null, "offerState": null, "offerSelect": false, "offerInvalidReason": null, "proposals": 0, "rows": 0, "items": ["0", "0", "0", "0", "0", "0"], "analyzeRequired": nu
+57c57
+<   first=AVAILABLE binding=A1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+---
+>   first=AVAILABLE binding=A1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=EXECUTION_FAILED
+89c89
+<   first=AVAILABLE binding=A1b counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=None
+---
+>   first=AVAILABLE binding=A1b counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED proposals=12 rows=9 orbitItems=['1', '12'] errorBanner=EXECUTION_FAILED
+338c338
+<   url: analysisId=A0 investigationMode=FOO jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+---
+>   url: analysisId=A0 investigationMode=None jobScopeRoleId=role_kestrel_fullstack jobScopePool=set jobRoleId=None
+343c343
+<   mode=PERSON field=CAPABILITY gate=OPEN job=CHECKING used=false observed=None:None select=None
+---
+>   mode=PERSON field=CAPABILITY gate=OPEN job=VALID used=false observed=None:None select=None
+345,348c345,348
+<   first=RESULT_LOADING binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+<   job shell: JOB NO JOB SCOPE · PERSON
+<   first statement: READING THE PERSISTED RESULT … analysis A0
+<   extra: {"urlAfterChange": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_x&jobScopePoolUploadId=JPOOL_x&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "back": {"search": "?investigationMode=PERSON", "mode": "PERSON"}, "forward": {"search": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_x&jobScopePoolUploadId=JPOOL_x&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "mode": "PERSON", "first": "RESULT_LOADING", "job": "CHECKING", "waitedMs": 30005}}
+---
+>   first=MODE_MISMATCH binding=None counts=None proposals=0 rows=0 orbitItems=['0', '0', '0', '0', '0', '0'] errorBanner=None
+>   job shell: JOB NO JOB SCOPE · PERSON selected job not used: Senior Full-Stack Engineer – Shipment Tracking · role_kestrel_fullstack
+>   first statement: This analysis ran in another investigation mode: nothing is shown, nothing switches by itself. analysis A0 · ran in PERSON × JOB · interface PERSON SWITCH TO PERSON × JOB
+>   extra: {"urlAfterChange": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_x&jobScopePoolUploadId=JPOOL_x&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "back": {"search": "?focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_x&jobScopePoolUploadId=JPOOL_x&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "mode": "PERSON_X_JOB", "first": "AVAILABLE"}, "forward": {"search": "?focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=JPOOL_x&jobScopePoolUploadId=JPOOL_x&jobScopeRoleId=role_kestrel_fullstack&analysisId=A0", "mode": "PERSON", "first": "MODE_MISMATCH", "job": "VALID", "waitedMs": 574}}
+## reading
+- F1 during the run: analysisJobId now stands in the URL (N-2, by replace).
+- F2a / F2b reload after the failed A2: A1 / A1b stay AVAILABLE as before (F-RF-2); the reload now follows the FAILED job by its id
+  and says so (EXECUTION_FAILED banner, no retry) — N-2 as specified.
+- X-20c: investigationMode=FOO is removed from the URL (N-3); before, it stayed and the interface showed PERSON.
+- X-22: Back now lands on the in-app entry before the mode change (PERSON_X_JOB, AVAILABLE) and Forward on the PERSON entry
+  (MODE_MISMATCH, VALID) after 574 ms; before, Back left the document and Forward stalled (O-RF-2, dev only).
+## G1 walk (PA-01…PA-14): every recorded field per step compared, 88539d3 vs 421e382
+1920: steps 20 / 20, ok 20/20; differing fields 6
+   S1-person-session fieldTextNoPanel: only the staged-sources hint differs
+   S1-person-session testids +['staged-sources-not-kept'] -[]
+   S2-pxj-session fieldTextNoPanel: only the staged-sources hint differs
+   S2-pxj-session testids +['staged-sources-not-kept'] -[]
+   T7-pxj-session-other-role fieldTextNoPanel: only the staged-sources hint differs
+   T7-pxj-session-other-role testids +['staged-sources-not-kept'] -[]
+1280: steps 20 / 20, ok 20/20; differing fields 6
+   S1-person-session fieldTextNoPanel: only the staged-sources hint differs
+   S1-person-session testids +['staged-sources-not-kept'] -[]
+   S2-pxj-session fieldTextNoPanel: only the staged-sources hint differs
+   S2-pxj-session testids +['staged-sources-not-kept'] -[]
+   T7-pxj-session-other-role fieldTextNoPanel: only the staged-sources hint differs
+   T7-pxj-session-other-role testids +['staged-sources-not-kept'] -[]

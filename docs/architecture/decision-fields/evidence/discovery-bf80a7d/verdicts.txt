@@ -1,0 +1,31 @@
+PINK review of GELB's isolated proof "CAPABILITY_TO_JOBPOOL_DISCOVERY" (bf80a7d, doc §1 and §5), owner directive PRIORITY PRODUCT_CORE.
+Lab :41878 (GELB's writable disposable copy), GET only — PINK uploaded nothing. No Gemini call. Evidence classes: DETERMINISTIC (computation
+on PERSISTED_REAL_RESULT), PERSISTED_REAL_RESULT (live GET), CODE_INSPECTION. Quotes never written (sha256/10 only).
+
+1 Re-run              PASS          DETERMINISTIC        both analyses reproduced exactly; whole JSON equal to GELB's evidence (1-rerun.txt)
+2 Inverse             PASS (note)   DETERMINISTIC        independent code: 52/52 and 27/27 — proposal found, quote among its evidence, quote
+                                                         verbatim in the pdftotext text. Carrying: name or alias in the quote 49/52 (PERSON);
+                                                         rest: "Backend Development" ×2 (backend only in the proposal name), "Dimensional and
+                                                         Domain Data Modeling" (domain not carried). No quote that does not exist or belongs
+                                                         to another proposal (2-inverse.txt)
+3 Relation honesty    FAIL (labels) DETERMINISTIC        (a) role status PARTIAL is misleading: 29 of 39 PARTIAL roles rest on weak token hits
+                                                         only, 25 on one single weak hit (mostly "Python" ← "Python ETL Development", incl.
+                                                         requirements aliased PyTorch / FastAPI / R). (b) Asymmetry: in the same proposal
+                                                         "TypeScript and Node.js Backend Development" TypeScript is NAME_COMPOSITE_CONSTITUENT
+                                                         but Node.js only WEAK (the conjunction split leaves "Node.js Backend Development").
+                                                         (c) WEAK understates head-term hits (Kubernetes ← "Kubernetes Deployment", PostgreSQL ←
+                                                         "PostgreSQL Database Design…", React ← "React Frontend Development") and overstates
+                                                         one-word overlaps ("Linux Systems Engineering" ← "Linux Administration", "Data
+                                                         Mapping and Transformation" via alias "ETL"). (d) Lexical misses confirm G-2: SQL ×10,
+                                                         "CI/CD Pipelines" vs "CI/CD Pipeline Engineering" (plural), TDD vs Automated Testing /
+                                                         Test Automation, leadership and architecture variants (3-relations.txt)
+4 §05 cases           PASS (note)   DETERMINISTIC        role without requirements → NO_REQUIREMENTS; duplicate role id and titles kept apart
+                                                         by (upload, role); 4 pools; requirement ids also repeat across uploads
+                                                         (req_kestrel_fullstack_01/02) → a route must key requirements by upload + role +
+                                                         requirement; ambiguous names: "Python" with 7 alias sets collapses onto one proposal.
+                                                         Not covered (as GELB says): source / pool switch, reload, GitHub (4-cases.txt)
+5 Code reconstruction FAIL (gap)    CODE_INSPECTION +    the listed blocks hold; MISSED M-1: GET /api/career/analyses/{id} already compares
+                                    PERSISTED_REAL_RESULT every analysis, PERSON included, with a built-in demo pool, scored and ordered
+                                                         (legacy matchCareerAnalysisAgainstPool + recommendations; live for ANL_…_456: 3 roles
+                                                         with resonanceScore, 6 gaps, 5 actions). M-2 admin proxy to an external backend:
+                                                         INCONCLUSIVE beyond this repository (5-code.txt, 5-live.txt)

@@ -1,0 +1,195 @@
+PINK §3.72 · measurements (6c65d0c on recovery/role-discovery; scratch probes on disposable condyn_test_* DBs via test:isolated; no Gemini).
+
+== engine probe (DETERMINISTIC; 5 example pools, 86 roles, 586 requirements)
+   claims   {'REFUSED': 31, 'ADMITTED': 1}
+      REFUSED   Match 87% of the role.
+      REFUSED   Match 87 % of the role.
+      REFUSED   Match 87 % of the role.
+      REFUSED   Match 87％ of the role.
+      REFUSED   Match eighty-seven percent of the role.
+      REFUSED   Match 87 percent of the role.
+      REFUSED   Übereinstimmung 87 Prozent.
+      REFUSED   Rated 0.87 against the role.
+      REFUSED   Rated 9/10.
+      REFUSED   Rated 8 out of 10.
+      REFUSED   The candidate scored highly.
+      REFUSED   Scores well on Python.
+      REFUSED   It ranks first for this role.
+      REFUSED   We recommend this person.
+      REFUSED   He recommends the stack.
+      REFUSED   Hired twice before.
+      REFUSED   She qualifies for the role.
+      REFUSED   Qualification confirmed.
+      REFUSED   Verification passed.
+      REFUSED   Proof of skill.
+      REFUSED   The person is competent in Python.
+      REFUSED   Strong candidate, good fit.
+      REFUSED   Der Kandidat ist geeignet.
+      REFUSED   Eignung nachgewiesen.
+      REFUSED   Wir empfehlen die Einstellung.
+      REFUSED   Kompetenz verifiziert.
+      REFUSED   Qualifiziert für die Rolle.
+      REFUSED   SUITABLE
+      REFUSED   Suitable.
+      REFUSED   s c o r e
+      REFUSED   scоre (Cyrillic o)
+      ADMITTED  Neutral: the proposal name contains Python.
+   neutral  {'ADMITTED': 23}
+      ADMITTED  The proposal name and the requirement share one word.
+      ADMITTED  One quote mentions the stack.
+      ADMITTED  No one quote names it.
+      ADMITTED  The quote mentions an approved design.
+      ADMITTED  The work helped improve the pipeline.
+      ADMITTED  Provenance of the quote: the CV.
+      ADMITTED  Based in Frankfurt.
+      ADMITTED  Worked in Yorkshire.
+      ADMITTED  Uses snake_case and underscore names.
+      ADMITTED  Competition data was processed.
+      ADMITTED  ISO 27001 is named in the requirement.
+      ADMITTED  Python 3 is named.
+      ADMITTED  K8s is the alias.
+      ADMITTED  AWS S3 is named.
+      ADMITTED  OAuth 2.0 is named.
+      ADMITTED  C++17 appears.
+      ADMITTED  Level L3 is required.
+      ADMITTED  IEC 61508 is the standard.
+      ADMITTED  The quote is about first-line support.
+      ADMITTED  A single evidence line, none other.
+      ADMITTED  Kein Zitat nennt die Anforderung.
+      ADMITTED  Die Bereitstellung wurde automatisiert.
+      ADMITTED  Der Vorschlag nennt eine Voreinstellung.
+   extra    {'ADMITTED': 16, 'REFUSED': 5}
+      ADMITTED  Rated .87 against the role.
+      ADMITTED  Rated 4.5 stars.
+      ADMITTED  A high rating for the role.
+      ADMITTED  Rated highly.
+      ADMITTED  Grade A for this role.
+      ADMITTED  Note 1 für diese Rolle.
+      ADMITTED  The person fits the role well.
+      ADMITTED  It matches the role perfectly.
+      ADMITTED  Ein passendes Profil.
+      ADMITTED  Die Person ist kompetent.
+      REFUSED   Ein idealer Kandidat.
+      ADMITTED  Excellent fit.
+      ADMITTED  Top candidate.
+      ADMITTED  Number one for this role.
+      ADMITTED  First choice for the role.
+      REFUSED   Should be hired.
+      REFUSED   Hiring is advised.
+      ADMITTED  Expert in this area.
+      ADMITTED  Senior-level mastery.
+      REFUSED   Bestens geeignet.
+      REFUSED   Sehr gut bewertet.
+   overblock      {"requirements": 586, "refusedWithName": 0, "refusedNameOnly": 0, "digitInName": 13, "examples": [], "rolesAffected": 0}
+   operandAttack  {"shortOperands": 209, "bypasses": 1, "examples": ["Go ⇒ «A good fit.»"]}
+   C-1            {"pools": 5, "roles": 86, "requirements": 586, "leakCount": 25, "byKind": {"domain": 25}, "domainLeaksAreOtherRequirementTexts": true, "requestKeys": ["engine", "proposals", "requirements"], "requirementKeys": ["requirementId", "text", "aliases", "requiredLevel", "requirementType"], "proposalKeys": ["id", "name", "scope", "structuralDefinition", "evidence"], "domainOrNecessitySent": false}
+   structural     {"lowercaseState": ["STATE_UNKNOWN"], "requirementIdLower": ["UNKNOWN_ID", "PAIR_MISSING"], "requirementIdSpace": ["UNKNOWN_ID", "PAIR_MISSING"], "citeOtherProposalEvidence": ["CITED_EVIDENCE_NOT_OF_PROPOSAL"], "positiveNoCitation": ["POSITIVE_STATE_WITHOUT_EVIDENCE"], "duplicateCitation": ["CITATION_INVALID"], "modelQuoteField": [], "extraUnknownPair": ["UNKNOWN_ID"], "unclearNoCitation": [], "differentNoCitation": [], "hugeExplanation": ["TEXT_TOO_LONG"], "protoKey": ["PAIR_MISSING"]}
+   attempt        {"success": {"outcome": "SUCCEEDED", "calls": 1, "log": "reserve \u2192 call \u2192 consume \u2192 save 2"}, "providerThrows": {"outcome": "FAILED", "code": "ERR_PROVIDER_TIMEOUT", "calls": 1, "log": "reserve \u2192 call \u2192 release"}, "providerThrowsPlain": {"outcome": "FAILED", "code": "ERR_SEMANTIC_PROVIDER_FAILED", "calls": 1, "log": "reserve \u2192 call \u2192 release"}, "refusedOutput": {"outcome": "FAILED", "code": "ERR_SEMANTIC_OUTPUT_REFUSED", "calls": 1, "log": "reserve \u2192 call \u2192 consume"}, "partlyRefused": {"outcome": "FAILED", "code": "ERR_SEMANTIC_OUTPUT_REFUSED", "calls": 1, "log": "reserve \u2192 call \u2192 consume"}, "noBudget": {"outcome": "BUDGET_EXHAUSTED", "calls": 0, "log": "reserve"}, "emptyRequirements": {"outcome": "SUCCEEDED", "calls": 0, "log": ""}, "emptyProposals": {"outcome": "SUCCEEDED", "calls": 0, "log": ""}, "consumeThrows": "FAILED", "writerThrows": "FAILED"}
+   stand-in under real identity {"outcome": "FAILED", "stored": 0, "standInHasOwnIdentityProperty": ["identity"], "keyIsRealEngineKey": false}
+
+== store / ledger probe (MEASUREMENT)
+   registration                     "REGISTERED"
+   identity                         {"orderIndependent": true, "otherClientOtherKey": true, "idFormat": true}
+   openFirst                        {"created": true, "investigationId": "RINV_4E68530DE79BE14675A1CF6DCBB38F31", "status": "PLANNED"}
+   openAgain                        {"created": false, "investigationId": "RINV_4E68530DE79BE14675A1CF6DCBB38F31", "status": "PLANNED"}
+   openConcurrent                   [true, false, false, false, false, false, false, false]
+   investigationRows                2
+   taskRows                         4
+   transitions                      {"pendingToSucceeded": "refused: Error: ERR_INVESTIGATION_TASK_TRANSITION:PENDING->SUCCEEDED", "pendingToRunning": "ok undefined", "runningToRunningAgain": "refused: Error: ERR_INVESTIGATION_TASK_STATE_CONFLICT", "runningToSucceeded": "ok undefined", "succeededToRunning": "refused: Error: ERR_INVESTIGATION_TASK_TRANSITION:SUCCEEDED->RUNNING", "wrongFromState": "refused: Error: ERR_INVESTIGATION_TASK_STATE_CONFLICT"}
+   raceTwoRunning                   ["ok undefined", "refused: Error: ERR_INVESTIGATION_TASK_STATE_CONFLICT"]
+   statusPlannedToCompleted         "refused: Error: ERR_INVESTIGATION_STATUS_CONFLICT"
+   statusPlannedToRunning           "ok undefined"
+   statusRunningToCompleted         "ok undefined"
+   investigationBackwards           "refused: Error: ERR_INVESTIGATION_STATUS_CONFLICT"
+   dbInvestigationBackwards         "refused: PostgresError: ERR_INVESTIGATION_STATUS_BACKWARD: COMPLETED -> RUNNING"
+   dbInvestigationIdentityChange    "refused: PostgresError: ERR_INVESTIGATION_IMMUTABLE: identity fields are fixed"
+   dbInvestigationDelete            "refused: PostgresError: ERR_INVESTIGATION_IMMUTABLE: delete refused"
+   dbUpdateTaskBackwards            "refused: PostgresError: ERR_INVESTIGATION_STATUS_BACKWARD: SUCCEEDED -> PENDING"
+   dbDeleteTask                     "refused: PostgresError: ERR_INVESTIGATION_IMMUTABLE: delete refused"
+   dayLimit2                        [true, true, false]
+   afterDayRefusal                  ["DAY:stand-in:2026-10-29:2/2/0/0", "INV:RINV_A:5/2/0/0"]
+   invLimit1                        [true, false]
+   dayRowAfterInvRefusal            1
+   race20vsLimit3                   3
+   raceRows                         ["DAY:stand-in:2026-10-31:3", "INV:RINV_C:3"]
+   reserveRelease                   [true, "ok undefined", true, "ok undefined", false]
+   dayLimitLoweredToZeroLater       false
+   dayRowLimitAfter                 1
+   staleHigherConfigAfterLowering   true
+   dayRowLimitAfterStale            5
+   foreignRelease                   "refused: Error: ERR_LEDGER_NO_RESERVATION"
+   foreignConsume                   "refused: Error: ERR_LEDGER_NO_RESERVATION"
+   foreignReleaseRows               ["DAY:stand-in:2026-11-03:1/0", "INV:RINV_F1:1/0"]
+   realProviderDayLimit0            false
+   dbCounterDecrease                "refused: PostgresError: ERR_LEDGER_IMMUTABLE: counters never decrease"
+   dbLimitRaise                     "ok 1"
+   triggersPresent                  ["rel_inv_guard", "rel_ledger_guard", "rel_task_guard"]
+   ledgerDelete                     "refused: PostgresError: ERR_LEDGER_IMMUTABLE: delete refused"
+
+== guard registration probe (MEASUREMENT)
+   registration                     "REGISTERED"
+   isTableOwner                     true
+   isSuperuser                      false
+   reserve                          "ok true"
+   triggersBefore                   ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   drop                             "ok \"dropped\""
+   reRegisterAfterDrop              "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterDropReRegister      ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:O", "career_relation_role_tasks.rel_task_guard:O"]
+   disable                          "ok \"disabled\""
+   reRegisterAfterDisable           "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+   triggersAfterDisable             ["career_relation_investigations.rel_inv_guard:O", "career_relation_call_ledger.rel_ledger_guard:D", "career_relation_role_tasks.rel_task_guard:O"]
+   counterDecreaseWhileDisabled     "ok 1"
+   deleteWhileDisabled              "ok 1"
+   replicaRole                      "refused: PostgresError: permission denied to set parameter \"session_replication_role\""
+   cacheDisable                     "ok \"disabled\""
+   reRegisterAfterCacheDisable      "ok [\"career_proposal_requirement_relations\",\"career_relation_investigations\",\"career_relation"
+
+== render probe (DETERMINISTIC): guard verdict vs. what a browser renders
+   REFUSED   control  →  renders A good fit.
+   ADMITTED  U+034F combining grapheme joiner (invisible)  →  renders A good fit.
+   ADMITTED  U+2061 function application (invisible)  →  renders A good fit.
+   ADMITTED  U+2062 invisible times  →  renders A good fit.
+   ADMITTED  U+2063 invisible separator  →  renders A good fit.
+   ADMITTED  U+2064 invisible plus  →  renders A good fit.
+   ADMITTED  U+180E Mongolian vowel separator  →  renders A good fit.
+   ADMITTED  U+FE0F variation selector  →  renders A good fit.
+   ADMITTED  U+E0020 tag space  →  renders A good fit.
+   ADMITTED  U+202E right-to-left override (reversed)  →  renders A good fit. (rendered right to left)
+   ADMITTED  U+2067 RTL isolate (reversed)  →  renders A good fit. (rendered right to left)
+   ADMITTED  U+0336 combining stroke  →  renders A g̶ood fit.
+   ADMITTED  markdown bold letter  →  renders A good fit. (if rendered as Markdown)
+   ADMITTED  HTML entity  →  renders A good fit. (only if rendered as HTML)
+   ADMITTED  percent via entity  →  renders Match 87% (only if rendered as HTML)
+   ADMITTED  percent U+2052 commercial minus? no: U+066A Arabic percent  →  renders Match 87٪
+   ADMITTED  per mille  →  renders Match 870‰
+   ADMITTED  fraction slash  →  renders Rated 9⁄10
+   ADMITTED  division slash  →  renders Rated 9∕10
+   ADMITTED  operand Go (alias of a real requirement)  →  renders A good fit. (operand Go removed before the check)
+
+== static (6c65d0c)
+   tsc (tree without PINK scratch probes) errors 0
+   job-pool group test/career/job-pool      Test Files 26 passed (26) · Tests 258 passed | 4 skipped (262)
+   focused group (78 files of §3.71)         Test Files 78 passed (78) · Tests 675 passed | 4 skipped (679)
+   counter-proof: 6c65d0c's two changed test files on c670b74 code  Test Files 2 failed (2) · Tests 16 failed | 61 passed (77)
+      semantic investigation store (PostgreSQL) > the investigation status moves forward only, in the store and in the database (PINK D-LED-1, O-LED-2)
+      semantic investigation store (PostgreSQL) > the database refuses backward task updates, deletes and decreasing ledger counters (O-LED-2)
+      semantic investigation store (PostgreSQL) > release and consume act only on THIS investigation's own reservation, never on another's day unit (PINK D-
+      semantic investigation store (PostgreSQL) > a lowered day limit takes effect the same day, never below what is outstanding (PINK O-LED-1)
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: one quote mentions it
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: approved by a review board
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: improve later
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: provenance of the data
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: based in Frankfurt and Yorkshire
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: underscore naming
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: a competition entry
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: K8s and S3 and OAuth 2.0 at Level L3
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: ISO 26262 and ROS 2
+      claim guard bypasses found by PINK (D-ENG-1) > allows an innocent statement: Neo4j graph
+      claim guard bypasses found by PINK (D-ENG-1) > the operands' own names are data, not claims (D-ENG-3): Security Certification, Actuarial Qualification
+      claim guard bypasses found by PINK (D-ENG-1) > nothing is matched across word boundaries (re|comm), single-letter runs are still joined (s c o r e)
+
+== UI consumers (CODE_INSPECTION, git grep 6c65d0c -- app components lib/career/ui '*.tsx')
+   relationExplanation evidenceLimitation rawOutputSha256 getByKeys saveIfAbsent evaluateRole CachedRelation SemanticProvider
+   containsClaim EQUIVALENT COVERS semantic-relation-engine semantic-investigation-store → 0 files each
+   engine / store imported only by lib/career/job-pool/relation-cache-repository.ts and semantic-investigation-store.ts
+   c670b74..6c65d0c: 1 commit, 5 files (3 lib/career/job-pool, 2 test/career/job-pool), 0 files under app / components / lib/career/ui

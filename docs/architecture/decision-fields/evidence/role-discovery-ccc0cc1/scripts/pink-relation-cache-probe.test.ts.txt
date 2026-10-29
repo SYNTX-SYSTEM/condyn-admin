@@ -1,0 +1,52 @@
+// PINK probe (scratch only, never committed as a live test): relation cache keys and the PostgreSQL store on a verified disposable DB.
+import { beforeAll, describe, expect, it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../lib/career/job-pool/relation-cache";
+import { PostgresRelationCacheRepository, RELATION_CACHE_TABLE } from "../../lib/career/job-pool/relation-cache-repository";
+const out: Record<string, unknown> = {};
+const E = { contractVersion: "C1", promptChecksum: "P1", provider: "stand-in", model: "m" };
+const prop = (o: Record<string, unknown> = {}) => ({ name: "Python ETL Development", scope: "ATOMIC" as const, structuralDefinition: "d", evidence: [{ evidenceId: "E1", sourceDocumentId: "DOC_1", exactQuote: "q1", verificationState: "SOURCE_MATCH_VERIFIED" as const }, { evidenceId: "E2", sourceDocumentId: "DOC_1", exactQuote: "q2", verificationState: "SOURCE_MATCH_VERIFIED" as const }], ...o });
+const req = (o: Record<string, unknown> = {}) => ({ capability_name: "Python", aliases: ["pandas", "NumPy"], required_level: "L3", requirement_type: "CAPABILITY" as const, domain: "Data", necessity: "REQUIRED" as const, ...o });
+const P0 = proposalContentHash(prop() as never), R0 = requirementContentHash(req() as never);
+describe("PINK relation cache probe", () => {
+  it("keys", () => {
+    out.keys = {
+      proposal_evidenceReordered_idsChanged: proposalContentHash(prop({ evidence: [{ evidenceId: "X9", sourceDocumentId: "DOC_7", exactQuote: "q2", verificationState: "SOURCE_MATCH_VERIFIED" }, { evidenceId: "X8", sourceDocumentId: "DOC_7", exactQuote: "q1", verificationState: "SOURCE_MATCH_VERIFIED" }] }) as never) === P0,
+      proposal_nameCase: proposalContentHash(prop({ name: "python ETL development" }) as never) === P0,
+      proposal_trailingSpace: proposalContentHash(prop({ name: "Python ETL Development " }) as never) === P0,
+      proposal_definitionChanged: proposalContentHash(prop({ structuralDefinition: "d2" }) as never) === P0,
+      proposal_quoteChanged: proposalContentHash(prop({ evidence: [{ evidenceId: "E1", sourceDocumentId: "DOC_1", exactQuote: "q1 ", verificationState: "SOURCE_MATCH_VERIFIED" }] }) as never) === P0,
+      requirement_aliasOrder: requirementContentHash(req({ aliases: ["NumPy", "pandas"] }) as never) === R0,
+      requirement_aliasCase: requirementContentHash(req({ aliases: ["Pandas", "NumPy"] }) as never) === R0,
+      requirement_levelChanged: requirementContentHash(req({ required_level: "L4" }) as never) === R0,
+      requirement_necessityChanged: requirementContentHash(req({ necessity: "PREFERRED" }) as never) === R0,
+      requirement_extraFieldRoleTitle_ignored: requirementContentHash(req({ role_id: "r2", id: "q9", role_title: "ML Engineer" }) as never) === R0,
+      engine_modelChanged: engineVersionHash({ ...E, model: "m2" }) === engineVersionHash(E),
+      engine_extraFieldTemperature_ignored: engineVersionHash({ ...E, temperature: 0.7 } as never) === engineVersionHash({ ...E, temperature: 0 } as never)
+    };
+  });
+  const repo = new PostgresRelationCacheRepository(db.$client);
+  const rec = (createdAt = "2026-10-24T00:00:00.000Z", raw = "a".repeat(64)): CachedRelation => { const eh = engineVersionHash(E); return { relationKey: relationKey(P0, R0, eh), proposalContentHash: P0, requirementContentHash: R0, engineVersionHash: eh, engine: E, state: "PARTIAL", capabilityName: "Python ETL Development", requirementText: "Python", sourceEvidence: [{ sourceDocumentId: "DOC_1", exactQuote: "q1" }], relationExplanation: "x", evidenceLimitation: "y", rawOutputSha256: raw, authorityState: "NONE", createdAt }; };
+  beforeAll(async () => { out.registration = await ensureJobPoolPersistenceRegistration(); });
+  it("store", async () => {
+    const s: Record<string, unknown> = {};
+    s.first = await repo.saveIfAbsent([rec()]);
+    s.sameAgain = await repo.saveIfAbsent([rec()]);
+    s.sameRelationLaterCreatedAt = await repo.saveIfAbsent([rec("2026-10-25T00:00:00.000Z")]).then(r => r, e => String(e).slice(0, 60));
+    s.sameRelationOtherRawOutput = await repo.saveIfAbsent([rec(undefined, "b".repeat(64))]).then(r => r, e => String(e).slice(0, 60));
+    const key = rec().relationKey;
+    s.dbUpdateAllowed = await db.$client.unsafe(`UPDATE ${RELATION_CACHE_TABLE} SET record_json = '{"tampered":true}' WHERE relation_key = '${key}'`).then(r => `rows ${r.count}`, e => `refused: ${String(e).slice(0, 80)}`);
+    s.readAfterTamper = await repo.getByKeys([key]).then(r => JSON.stringify(r).slice(0, 60), e => String(e).slice(0, 60));
+    s.dbStateColumnVsJsonMismatchAllowed = await db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('PRREL_PINKMISMATCH','p','r','e','COVERS','NONE','{"state":"EQUIVALENT","authorityState":"VERIFIED"}','t')`).then(() => "inserted", e => `refused: ${String(e).slice(0, 60)}`);
+    s.dbKeyFormatChecked = await db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('not-a-key','p','r','e','COVERS','NONE','{}','t')`).then(() => "inserted (no format check)", e => `refused: ${String(e).slice(0, 60)}`);
+    s.dbDeleteAllowed = await db.$client.unsafe(`DELETE FROM ${RELATION_CACHE_TABLE} WHERE relation_key = '${key}'`).then(r => `rows ${r.count}`, e => `refused: ${String(e).slice(0, 80)}`);
+    s.dbBadAuthority = await db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('K_A','p','r','e','COVERS','VERIFIED','{}','t')`).then(() => "inserted", () => "refused");
+    s.dbBadState = await db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} VALUES ('K_S','p','r','e','SUPPORTS','NONE','{}','t')`).then(() => "inserted", () => "refused");
+    s.dbNullState = await db.$client.unsafe(`INSERT INTO ${RELATION_CACHE_TABLE} (relation_key, proposal_content_hash, requirement_content_hash, engine_version_hash, authority_state, record_json, created_at) VALUES ('K_N','p','r','e','NONE','{}','t')`).then(() => "inserted", () => "refused");
+    out.store = s;
+    writeFileSync(process.env.PINK_PROBE_OUT ?? "pink-relation-cache-probe.json", JSON.stringify(out, null, 1));
+    expect(out.registration).toBe("REGISTERED");
+  });
+});

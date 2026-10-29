@@ -1,0 +1,14 @@
+PINK §3.65 · static on ccc0cc1 (base b77c851). MEASUREMENT / CODE_INSPECTION.
+Scope:  9 files changed, 826 insertions(+), 1 deletion(-); app/api changes: only the new role-discovery route; local-composition-gate.test.ts diff: 0 lines.
+New code: no model client, no fetch; the only INSERT is PostgresRelationCacheRepository.saveIfAbsent, which has no caller outside tests (the route reads the cache only with an engine, and the engine is null).
+DDL: registerRelationCacheSchema runs inside registerJobPoolPersistenceSchema, i.e. only after ensureJobPoolPersistenceRegistration verified a disposable DB (B-ENTRY); on the first GET of a process the guarded registration may run (pre-existing pattern of every job pool route).
+tsc --noEmit: 0 errors. Focused group (GRÜN's list):  Test Files  67 passed (67)       Tests  547 passed | 4 skipped (551)  net 1
+  career/job-pool/job-comparison.postgres.test.ts          passed 2 failed 0
+  career/job-pool/job-pool.postgres.test.ts                passed 8 failed 0
+  career/job-pool/local-composition-gate.test.ts           passed 2 failed 0
+  career/job-pool/pool-role-discovery.test.ts              passed 9 failed 0
+  career/job-pool/relation-cache.postgres.test.ts          passed 4 failed 0
+  career/job-pool/relation-cache.test.ts                   passed 16 failed 0
+  career/job-pool/role-discovery.postgres.test.ts          passed 4 failed 0
+  Count note: discovery 9 + 4 = 13 (as GELB); relation cache 16 + 4 = 20 (GELB names 17).
+Live regression (:41878, GET): matches for the PxJ analysis identical to the §3.63 capture; matches PERSON → ERR_JOB_POOL_MATCHES_PERSON_ANALYSIS; job-comparison PxJ 200, PERSON 409 ERR_JOB_COMPARISON_NOT_SCOPED; pool list and view 200.

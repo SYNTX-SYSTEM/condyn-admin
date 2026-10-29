@@ -1,0 +1,58 @@
+# a9ff0ca had no offerState attribute in the probe; "present" = an offer was rendered. Analysis ids mapped to A0/A1/A1b/P0/AE per lab.
+B0-pxj-analysis-A0                         {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+B1-person-analysis-P0                      same
+F1-run-then-person                         {"urlMode": ["PERSON_X_JOB", "PERSON"], "jobShellEnd": [" Full-Stack Engineer – Shipment Tracking", "ipment Tracking · role_kestrel_fullstack"]}
+F1-reload                                  {"mode": ["PERSON_X_JOB", "PERSON"], "first": ["AVAILABLE", "MODE_MISMATCH"], "binding": ["other", null], "urlMode": ["PERSON_X_JOB", "PERSON"], "proposals": [12, 0], "jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "ipment Tracking · role_kestrel_fullstack"]}
+F2a-A1                                     {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2a-A2-running                             {"first": ["NO_ANALYSIS", "AVAILABLE"], "binding": [null, "A1"], "proposals": [0, 12], "jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2a-A2-failed                              {"first": ["NO_ANALYSIS", "AVAILABLE"], "binding": [null, "A1"], "proposals": [0, 12], "jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2a-reload                                 {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2b-open-A0                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2b-A1                                     {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2b-A2-running                             {"binding": ["A0", "A1b"], "jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2b-A2-failed                              {"binding": ["A0", "A1b"], "jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F2b-reload                                 {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F3-checking                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+F3-invalid-unknown-role                    {"offer": ["present", "JOB_INVALID"], "invalidReason": [null, "ROLE_NOT_IN_POOL"]}
+F3-invalid-unknown-role-capability-request {"offer": ["present", "JOB_INVALID"], "invalidReason": [null, "ROLE_NOT_IN_POOL"]}
+F3-invalid-archived-pool                   {"offer": [null, "JOB_INVALID"], "invalidReason": [null, "POOL_NOT_ACTIVE"]}
+F3-invalid-unknown-upload                  {"offer": ["present", "JOB_INVALID"], "invalidReason": [null, "UPLOAD_NOT_FOUND"]}
+X-21-role-deep-link-not-selected           same
+X-01-role-opened-nothing                   same
+X-01-reload                                same
+X-02-select-role                           {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-02-reload                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-03-select-again                          {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-04-clear                                 same
+X-04-reload                                same
+X-05-other-role-same-org                   {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "e Pool · role_kestrel_frontend_architect"]}
+X-05-reload                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "e Pool · role_kestrel_frontend_architect"]}
+X-06-role-other-org                        {"jobShellEnd": ["AG · DLL Engineering & Architecture Pool", "ure Pool · role_aurelion_backend_interop"]}
+X-06-reload                                {"jobShellEnd": ["AG · DLL Engineering & Architecture Pool", "ure Pool · role_aurelion_backend_interop"]}
+X-07-other-pool-same-role-id               {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-07b-capability                           {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-08-select-in-other-pool                  {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "ld closure pool · role_kestrel_fullstack"]}
+X-08-reload                                {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "ld closure pool · role_kestrel_fullstack"]}
+X-09-select-empty-role                     {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "ole-field closure pool · role_pink_empty"]}
+X-09-analyze-empty-role                    {"first": ["BOUNDARY_RESOLVING", "AVAILABLE"], "binding": [null, "AE"], "proposals": [0, 12], "jobShellEnd": ["ware GmbH · PINK role-field closure pool", "ole-field closure pool · role_pink_empty"]}
+X-09-reload                                {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "ole-field closure pool · role_pink_empty"]}
+X-10-select-role_pink_twin_a               {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "le-field closure pool · role_pink_twin_a"]}
+X-10-select-role_pink_twin_b               {"jobShellEnd": ["ware GmbH · PINK role-field closure pool", "le-field closure pool · role_pink_twin_b"]}
+X-10-select-role_pink_twin_c               {"jobShellEnd": ["tems GmbH · PINK role-field closure pool", "le-field closure pool · role_pink_twin_c"]}
+X-11-mode-person                           {"jobShellEnd": [" Full-Stack Engineer – Shipment Tracking", "ipment Tracking · role_kestrel_fullstack"]}
+X-11-reload                                {"jobShellEnd": [" Full-Stack Engineer – Shipment Tracking", "ipment Tracking · role_kestrel_fullstack"]}
+X-12-mode-job                              {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-12-reload                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-15-role-switch-during-run                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "e Pool · role_kestrel_frontend_architect"]}
+X-15-reload                                {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "e Pool · role_kestrel_frontend_architect"]}
+X-19-unknown-analysis                      {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-19b-person-analysis-under-pxj            {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-20a-pool-without-role                    same
+X-20b-malformed-pool                       same
+X-20c-unknown-mode                         {"jobShellEnd": ["bH · DLL Engineering & Architecture Pool", "chitecture Pool · role_kestrel_fullstack"]}
+X-22-history                               same
+X-23-analyze-without-valid                 same
+X-24-b2-foreign-role                       same
+
+F3-checking samples on 88539d3 (ms, job, offer state): [(500, 'CHECKING', None), (1000, 'CHECKING', None), (1500, 'CHECKING', None), (2000, 'CHECKING', None), (2500, 'CHECKING', None), (3000, 'CHECKING', None), (3500, 'CHECKING', None), (4000, 'CHECKING', None), (4500, 'CHECKING', None), (5000, 'CHECKING', None), (5500, 'CHECKING', None), (6000, 'CHECKING', None), (6500, 'CHECKING', None), (7000, 'CHECKING', None), (7500, 'CHECKING', None), (8000, 'CHECKING', None), (8500, 'VALID', None), (9000, 'VALID', None), (9500, 'VALID', None), (10000, 'VALID', None)]
+F3-checking samples on a9ff0ca (ms, job, offer): [(500, 'CHECKING', None), (1000, 'CHECKING', None), (1500, 'CHECKING', None), (2000, 'CHECKING', None), (2500, 'CHECKING', 'offer'), (3000, 'CHECKING', 'offer'), (3500, 'CHECKING', 'offer'), (4000, 'CHECKING', 'offer'), (4500, 'CHECKING', 'offer'), (5000, 'CHECKING', 'offer'), (5500, 'CHECKING', 'offer'), (6000, 'CHECKING', 'offer'), (6500, 'CHECKING', 'offer'), (7000, 'CHECKING', 'offer'), (7500, 'CHECKING', 'offer'), (8000, 'CHECKING', 'offer'), (8500, 'CHECKING', 'offer'), (9000, 'CHECKING', 'offer'), (9500, 'CHECKING', 'offer'), (10000, 'VALID', None)]

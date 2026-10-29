@@ -1,0 +1,69 @@
+// PINK role-discovery panel walk (c670b74). Browser GET only (non-GET aborted, counted). Quotes recorded only as sha256/10.
+// argv: <base> <out dir> <label> <personAnalysisId> <pxjAnalysisId> [W] [H]
+import { pathToFileURL } from "node:url";
+import { writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
+const [BASE, OUT, LABEL, PERSON, PXJ, W = "1920", H = "1080"] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms)); const h10 = s => createHash("sha256").update(s).digest("hex").slice(0, 10);
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: +W, height: +H } }); let blocked = 0; const reqs = [];
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+await ctx.route("**/*", r => { const m = r.request().method(), u = new URL(r.request().url()); if (u.pathname.startsWith("/api/")) reqs.push({ m, p: u.pathname, q: u.search }); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(String(e).slice(0, 140)));
+const url = () => new URL(p.url()); const params = () => url().searchParams; const hist = () => p.evaluate(() => history.length);
+const panelText = () => p.evaluate(() => document.querySelector('[data-testid="role-discovery-panel"]')?.innerText ?? "");
+const state = () => p.evaluate(() => { const q = s => document.querySelector(s); return { entry: !!q('[data-testid="rd-entry"]'), panel: !!q('[data-testid="role-discovery-panel"]'), shells: document.querySelectorAll('[data-testid^="focus-transition-stage-shell-"]').length,
+  rdState: q('[data-testid="rd-state"]')?.dataset.state ?? null, plan: q('[data-testid="rd-semantic"]')?.dataset.planState ?? null, semanticText: q('[data-testid="rd-semantic"]')?.innerText ?? null, scope: q('[data-testid="rd-scope"]')?.innerText ?? null,
+  groups: Object.fromEntries([...document.querySelectorAll('[data-testid^="rd-group-"][data-count]')].map(e => [e.dataset.testid.replace("rd-group-", ""), +e.dataset.count])),
+  checked: [...document.querySelectorAll('[data-testid^="rd-pool-"] input[type=checkbox]')].map(i => i.checked), released: [...document.querySelectorAll('[data-testid^="rd-pool-"]')].filter(e => e.dataset.released === "true").map(e => e.dataset.testid.replace("rd-pool-", "")),
+  first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null, mode: q('[data-testid="semantic-career-intelligence-field"]')?.dataset.investigationMode ?? null }; });
+const out = { label: LABEL, viewport: `${W}x${H}`, steps: {} };
+const capPerson = `${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PERSON}`;
+await p.goto(capPerson, { waitUntil: "domcontentloaded" }); await sleep(7000);
+out.steps.load = { ...(await state()), discoveryParam: params().getAll("discoveryPoolUploadId"), discoveryReads: reqs.filter(r => r.p.endsWith("/role-discovery")).length };
+// orbit actions with the entry present (hover 03, click 04 later with panel open)
+const h0 = await hist(), u0 = p.url(); await p.getByTestId("rd-open").click(); await sleep(2500);
+const poolIds = await p.evaluate(() => [...document.querySelectorAll('[data-testid^="rd-pool-"]')].map(e => e.dataset.testid.replace("rd-pool-", "")));
+const buttons = await p.evaluate(() => [...document.querySelectorAll('[data-testid="role-discovery-panel"] button, [data-testid="role-discovery-panel"] input')].map(e => (e.innerText || e.value || e.type || "").trim().slice(0, 30)));
+out.steps.open = { ...(await state()), urlChanged: p.url() !== u0, historyDelta: (await hist()) - h0, pools: poolIds.length, anyPreselected: (await state()).checked.some(Boolean), allButton: buttons.some(t => /^(all|alle|select all|alle auswählen)$/i.test(t)), discoverDisabled: await p.getByTestId("rd-discover").isDisabled(), discoveryReads: reqs.filter(r => r.p.endsWith("/role-discovery")).length };
+// release two pools: one push
+const chosen = poolIds.slice(0, 2); for (const id of chosen) await p.locator(`[data-testid="rd-pool-${id}"] input`).check(); await sleep(400);
+const h1 = await hist(), r1 = reqs.length; await p.getByTestId("rd-discover").click(); await p.waitForFunction(() => document.querySelector('[data-testid="rd-state"]')?.dataset.state === "AVAILABLE", null, { timeout: 30000 }).catch(() => {}); await sleep(1500);
+const afterRelease = await state(); const roleReads = reqs.slice(r1).filter(r => r.p.endsWith("/role-discovery"));
+out.steps.release = { ...afterRelease, historyDelta: (await hist()) - h1, discoveryParam: params().getAll("discoveryPoolUploadId").map(x => x.slice(-6)), chosen: chosen.map(x => x.slice(-6)), reads: roleReads.map(r => r.q.replace(/JPOOL_[0-9A-F]{26}/g, "JPOOL_…")), readsNamedExactly: roleReads.every(r => { const q = new URLSearchParams(r.q).getAll("jobPoolUploadId"); return q.length === chosen.length && chosen.every(c => q.includes(c)); }) };
+const pt = await panelText(); out.steps.release.wording = { notSemanticHeader: /not semantic|nicht semantisch/i.test(pt), notExecuted: /not executed|nicht ausgeführt/i.test(pt), forbidden: (pt.match(/\b(fits?|passt|passend|geeignet|suitable|score[ds]?|rank(ed|ing)?|recommend\w*|empfehl\w*|best match|top match)\b/gi) ?? []), semanticPositive: (pt.match(/semantic(ally)? (match|related|equivalent)|semantisch (passend|verwandt|gleich)/gi) ?? []) };
+// API truth for the same release
+const api = await (await ctx.request.get(`${BASE}/api/career/analyses/${PERSON}/role-discovery?${chosen.map(c => `jobPoolUploadId=${c}`).join("&")}`)).json();
+const apiGroups = Object.fromEntries(api.discovery.groups.map(g => [g.status, g.roles.length])); out.steps.release.groupsEqualApi = Object.entries(apiGroups).every(([k, v]) => (afterRelease.groups[k] ?? 0) === v); out.steps.release.apiPlan = api.discovery.semanticPlan.state;
+await p.screenshot({ path: `${OUT}/${LABEL}-panel-${W}.jpg`, type: "jpeg", quality: 70, mask: [p.locator('[data-testid="rd-trace-quote"], [data-pxj-quote]')] });
+// NAV ≡ RELOAD
+const snap = async () => { const s = await state(); return JSON.stringify({ panel: s.panel, rdState: s.rdState, plan: s.plan, groups: s.groups, released: s.released, param: params().getAll("discoveryPoolUploadId") }); };
+const beforeReload = await snap(); await p.reload({ waitUntil: "domcontentloaded" }); await sleep(7000); out.steps.reloadEqual = (await snap()) === beforeReload;
+const hb = await hist(); await p.goBack({ waitUntil: "commit" }); await sleep(4000); const back = await state(); out.steps.back = { panel: back.panel, entry: back.entry, param: params().getAll("discoveryPoolUploadId").length, historySame: (await hist()) === hb };
+await p.goForward({ waitUntil: "commit" }); await sleep(5000); out.steps.forwardEqual = (await snap()) === beforeReload;
+// trace: the first role with a name-related requirement
+await p.evaluate(() => { for (const t of document.querySelectorAll('[data-testid^="rd-group-toggle-"]')) if (t.getAttribute("aria-expanded") !== "true") t.click(); }); await sleep(800);
+const traced = await p.evaluate(() => { const roles = [...document.querySelectorAll('[data-testid="rd-role"]')]; const r = roles.find(x => x.dataset.status === "PARTIAL_NAME_RELATED") ?? roles.find(x => x.dataset.status === "WEAK_LEXICAL_ONLY"); if (!r) return null; r.querySelector('[data-testid="rd-role-trace"]')?.click(); return r.dataset.roleKey; }); await sleep(1500);
+const trace = await p.evaluate(() => [...document.querySelectorAll('[data-testid="rd-trace-requirement"]')].map(e => ({ req: e.dataset.requirementId, basis: e.dataset.basis, proposal: e.dataset.proposalId ?? null, basisText: e.querySelector('[data-testid="rd-trace-basis"]')?.innerText ?? null, quotes: [...e.querySelectorAll('[data-testid="rd-trace-quote"]')].map(q => ({ doc: q.dataset.sourceDocumentId, text: q.innerText })), silent: !!e.querySelector('[data-testid="rd-trace-quote-silent"]') })));
+const apiRole = api.discovery.roles.find(r => `${r.key.jobPoolUploadId}\u0000${r.key.poolRoleId}` === traced || `${r.key.jobPoolUploadId}:${r.key.poolRoleId}` === traced || traced?.includes(r.key.poolRoleId));
+const apiReq = new Map((apiRole?.requirements ?? []).map(q => [q.key.poolRequirementId, q]));
+out.steps.trace = { role: traced ? h10(traced) : null, related: trace.length, everyQuoteFromApi: trace.every(t => t.quotes.every(q => (apiReq.get(t.req)?.lexical.evidence ?? []).some(e => q.text.includes(e.exactQuote.slice(0, 40)) && e.sourceDocumentId === q.doc))), everyRelatedHasQuoteAndSource: trace.every(t => t.quotes.length > 0 && t.quotes.every(q => !!q.doc)), basisMatchesApi: trace.every(t => apiReq.get(t.req)?.lexical.basis === t.basis), silentMatchesApi: trace.every(t => (apiReq.get(t.req)?.lexical.quoteNamesRequirement === false) === t.silent), basisTexts: [...new Set(trace.map(t => t.basisText))], quoteHashes: trace.flatMap(t => t.quotes.map(q => h10(q.text))).slice(0, 6), openCount: await p.evaluate(() => +(document.querySelector('[data-testid="rd-trace-open"]')?.dataset.count ?? -1)), apiOpen: (apiRole?.requirements ?? []).filter(q => q.lexical.basis === "NONE").length };
+// orbit actions with the panel open
+const b03 = p.locator('[data-testid="focus-transition-stage-shell-03"]').first(); const bx = await b03.boundingBox(); await p.mouse.move(bx.x + bx.width / 2, bx.y + bx.height / 2); await sleep(1500);
+const vm = await p.evaluate(() => [...document.querySelectorAll("button")].filter(e => /VIEW MATCHES/i.test(e.textContent ?? "") && e.getBoundingClientRect().width > 0).length);
+const b04 = await p.locator('[data-testid="focus-transition-stage-shell-04"]').first().boundingBox(); const hc = await hist(); await p.mouse.click(b04.x + b04.width / 2, b04.y + b04.height / 2); await sleep(2500);
+out.steps.orbitsWithPanel = { shells: (await state()).shells, viewMatchesOnHover03: vm, click04Cosmos: await p.locator('[data-testid="orbital-cosmos-view-04"]').count(), historyDelta: (await hist()) - hc, panelDimmed: await p.evaluate(() => { const e = document.querySelector('[data-testid="role-discovery-panel"]')?.parentElement; return e ? getComputedStyle(e).pointerEvents : null; }) };
+await p.keyboard.press("Escape"); await sleep(1500);
+// handover from a fresh released view
+await p.goto(`${capPerson}&${chosen.map(c => `discoveryPoolUploadId=${c}`).join("&")}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+await p.evaluate(() => { for (const t of document.querySelectorAll('[data-testid^="rd-group-toggle-"]')) if (t.getAttribute("aria-expanded") !== "true") t.click(); }); await sleep(600);
+await p.evaluate(() => { const r = document.querySelector('[data-testid="rd-role"][data-status="PARTIAL_NAME_RELATED"]') ?? document.querySelector('[data-testid="rd-role"]'); r?.querySelector('[data-testid="rd-role-trace"]')?.click(); }); await sleep(1200);
+const inv = p.getByTestId("rd-investigate").first(); const target = { up: await inv.getAttribute("data-job-pool-upload-id"), role: await inv.getAttribute("data-pool-role-id") };
+const hh = await hist(), rh = reqs.length; await inv.click(); await sleep(6000); const ps = params();
+out.steps.handover = { historyDelta: (await hist()) - hh, mode: ps.get("investigationMode"), scopeUpload: ps.get("jobScopePoolUploadId") === target.up, scopeRole: ps.get("jobScopeRoleId") === target.role, analysisId: ps.get("analysisId"), discoveryParam: ps.getAll("discoveryPoolUploadId").length, focus: ps.get("focus"), first: (await state()).first, panel: (await state()).panel, entry: (await state()).entry, nonGetAfter: reqs.slice(rh).filter(r => r.m !== "GET").length, analyzePost: reqs.slice(rh).some(r => r.p === "/api/career/analyze") };
+await p.screenshot({ path: `${OUT}/${LABEL}-handover-${W}.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] });
+// PxJ: no entry, no panel, B2
+await p.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=${PXJ}&discoveryPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+const px = await state(); out.steps.pxj = { entry: px.entry, panel: px.panel, first: px.first, shells: px.shells, discoveryReadsForPxj: reqs.filter(r => r.p.includes(PXJ) && r.p.endsWith("/role-discovery")).length };
+out.blocked = blocked; out.pageErrors = errors; out.nonGet = reqs.filter(r => r.m !== "GET").map(r => `${r.m} ${r.p}`);
+writeFileSync(`${OUT}/rd-ui-${LABEL}-${W}.json`, JSON.stringify(out, null, 1)); console.log(JSON.stringify(out, null, 1).slice(0, 6000)); await b.close();

@@ -1,0 +1,18 @@
+PINK §3.67 · targeted re-check of 600c7c1 (O-RC-3) on backend/pool-role-discovery. MEASUREMENT. No Gemini.
+
+O-RC-3 converge        PASS      a table created by ccc0cc1's DDL and one created by 2dba126's DDL both end with all 7 prr_* constraints
+                                 and both triggers after 600c7c1's registration (REGISTERED); on them JSON authority VERIFIED, JSON state
+                                 ≠ column, bad key and bad hash format are refused, a valid row is accepted, UPDATE / DELETE / TRUNCATE
+                                 refused — the same as on a fresh database
+O-RC-3 dirty table     PASS      an old table holding a row whose JSON claims VERIFIED: registration throws (check constraint
+                                 prr_record_binds_columns violated), again on a second call (the memo is reset), and the job pool
+                                 application is refused — nothing is reported as registered
+Tests / counter-proof  PASS      subset 60 files 480 passed 4 skipped; relation-cache.postgres 8/8; on 2dba126 the new O-RC-3 test is
+                                 the one failing (7 / 1); tsc 0
+O-RC-4, O-RC-5         NOTED     decided in doc §10 (427cac7): fail-closed on a corrupt row; owner ≠ app role belongs to the production
+                                 migration decision
+O-RC-6 (observation)   OPEN      after a failed convergence the table stays half converged (here 6 of 7 prr_* constraints, no trigger)
+                                 and the whole job pool persistence is unavailable (registration fails for every job pool route, not
+                                 only the discovery) until the offending row is removed by hand — fail-closed, but the blast radius and
+                                 the repair path deserve a line in the runbook
+Duplicate checks       NOTE      tables from ccc0cc1 / 2dba126 keep their auto-named checks next to the prr_* ones (harmless overlap)

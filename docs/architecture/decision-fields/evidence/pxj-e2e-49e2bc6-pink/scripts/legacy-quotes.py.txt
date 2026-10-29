@@ -1,0 +1,16 @@
+# PINK: legacy structured evidence (context_quote) of both analyses against the PDF text.
+import json,re
+norm=lambda s:re.sub(r'\s+',' ',s).strip()
+T=norm(open('cv-raw.txt').read()); TL=norm(open('cv.txt').read())
+def quotes(o,p=''):
+  if isinstance(o,dict):
+    for k,v in o.items():
+      if k=='context_quote' and isinstance(v,str): yield p,v
+      else: yield from quotes(v,p+'.'+k)
+  elif isinstance(o,list):
+    for i,v in enumerate(o): yield from quotes(v,p+'[%d]'%i)
+for f in ['get/a-person.json','get/a-pxj.json']:
+  a=json.load(open(f))['analysis']['structured_data']['analysis']
+  qs=list(quotes(a)); miss=[(p,q) for p,q in qs if norm(q) not in T and norm(q) not in TL]
+  print(f'== {f}: context_quote {len(qs)} in-pdf {len(qs)-len(miss)} missing {len(miss)}')
+  for p,q in miss: print('   MISSING',p,'|',q[:120])

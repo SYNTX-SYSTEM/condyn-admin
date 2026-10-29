@@ -1,0 +1,7 @@
+import { engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "../../lib/career/job-pool/relation-cache";
+export const E = { contractVersion: "C1", promptChecksum: "P1", provider: "stand-in", model: "m" };
+const p = { name: "Python ETL Development", scope: "ATOMIC" as const, structuralDefinition: "d", evidence: [{ evidenceId: "E1", sourceDocumentId: "DOC_1", exactQuote: "q1", verificationState: "SOURCE_MATCH_VERIFIED" as const }] };
+const r = (name: string) => ({ capability_name: name, aliases: [], required_level: "L3", requirement_type: "CAPABILITY" as const, domain: "Data", necessity: "REQUIRED" as const });
+export const rec = (req = "Python", o: Partial<CachedRelation> = {}): CachedRelation => { const ph = proposalContentHash(p as never), rh = requirementContentHash(r(req) as never), eh = engineVersionHash(E);
+  return { relationKey: relationKey(ph, rh, eh), proposalContentHash: ph, requirementContentHash: rh, engineVersionHash: eh, engine: E, state: "PARTIAL", capabilityName: p.name, requirementText: req, sourceEvidence: [{ sourceDocumentId: "DOC_1", exactQuote: "q1" }], relationExplanation: "x", evidenceLimitation: "y", rawOutputSha256: "a".repeat(64), authorityState: "NONE", createdAt: "2026-10-24T00:00:00.000Z", ...o }; };
+export const attempt = (p: Promise<unknown>) => p.then(r => `ok ${JSON.stringify((r as { count?: number })?.count ?? r).slice(0, 80)}`, e => `refused: ${String(e).replace(/\s+/g, " ").slice(0, 90)}`);

@@ -1,0 +1,21 @@
+PINK §3.77 · frontend/role-investigation-ui 9bb6bed (GRÜN fix of §3.76 on 9c40928). STAND_IN only; no Gemini.
+
+STATIC                 PASS   tsc 0; pxj-first-screen 47 files 279 passed; job-pool 27 files 288 passed 4 skipped; focused group (T-07, F12) 78 files 699
+                              passed 4 skipped; diff touches 0 files in app/api or lib/career/job-pool
+F-RI-1 / O-RI-1        PASS   with a stored investigation the line is "Relation cache: N of M pairs · stand-in check: {status}", never "not executed"
+                              beside it; the numbers equal the database: after the full run 192 of 948 = 192 relations, after the partial run (day
+                              limit 1) 120 of 948 = 120, and the same after reload; the plan is re-read once per changed stored id: 1 discovery GET
+                              after a start, 2 on mount / reload / Forward (the mount read plus the one re-read), unchanged after 8 s more — no loop
+No extra POST          PASS   one START = one POST; reload, Back, Forward, 11 URL-contract loads, close and hand-over: 0 POST; the GET of the named
+                              investigation stays 1 per mount; the Gemini stand-in log stays 6; the budget run's reload: 0 POST, 1 GET, 2 discovery GETs
+O-RI-4                 PASS   after a stored run the ticks are cleared (picked 0) and START is disabled; the stale-refusal case keeps the ticks for the
+                              re-read (the plan changed under them) and the second explicit START stores CACHED
+O-RI-3                 PASS   a view with no named investigation reads "… · no investigation named in this view" (not "not started"); in the stale
+                              case after RE-READ the same wording, with the real numbers (204 of 948 cached)
+Unchanged              PASS   start missing with its three reasons and 0 pick boxes; stale refusal text; URL contract (invalid / duplicate removed,
+                              unknown id NOT_FOUND, PxJ / no pools / no analysis read nothing, close and hand-over clear); foreign provider, missing or
+                              UNKNOWN evidenceClass, extra fields, foreign analysis, no tasks and a 500 = FAILED; D-RD-4 groups identical before / after;
+                              budget run PARTIAL then FAILED with the budget sentence and no call
+Regression             PASS   six-orbit scenes at 1920 and 1280 identical to c670b74; rd-ui walk (reload / Forward equal, handover 0 non-GET); six viewports
+                              (1280×720, 1440×900, 1600×900, 1920×1080, 200 % zoom at 1920 and 1280): width = viewport, six shells, picked / completed /
+                              reload complete; the earlier O-RI-2 (an unused id stays in the URL) remains as observed, harmless

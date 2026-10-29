@@ -1,0 +1,35 @@
+// PINK §10 D-PICK on GELB's acceptance lab, GET only (non-GET aborted): the owner's link without analysisId, first screen and role view;
+// PERSON and JOB without picker. Ids only. argv: <base> <out dir>
+import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [BASE, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack", sel = `&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`;
+const b = await chromium.launch(); let blocked = 0; const out = { evidenceClass: "PERSISTED_REAL_RESULT", cases: [] };
+for (const [vp, w, h] of [["1920x1080", 1920, 1080], ["1280x720", 1280, 720]]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); const reqs = []; p.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) reqs.push(`${r.method()} ${u.pathname.replace(/ANL_\d+_\d+/, "ANL_…")}`); });
+  const offered = () => p.evaluate(() => [...document.querySelectorAll('[data-testid^="analysis-pick-item-"]')].map(e => ({ id: e.dataset.analysisId, mode: e.dataset.mode, up: e.dataset.bindingUpload, role: e.dataset.bindingRole, onView: e.dataset.onView })));
+  for (const place of ["first-screen", "role-view"]) {
+    const url = place === "first-screen" ? `${BASE}/career/demo?investigationMode=PERSON_X_JOB${sel}&focus=CAPABILITY` : `${BASE}/career/demo?investigationMode=PERSON_X_JOB${sel}&jobOrganizationId=org_kestrel&jobRoleId=${ROLE}`;
+    await p.goto(url, { waitUntil: "domcontentloaded" }); await sleep(6000); const r0 = reqs.length; const h0 = await p.evaluate(() => history.length), u0 = p.url();
+    const tg = p.locator(`[data-testid="analysis-picker"][data-picker-place="${place}"] [data-testid="analysis-picker-toggle"]`);
+    if (!(await tg.count())) { out.cases.push({ vp, place, error: "no toggle" }); continue; }
+    const readsBeforeOpen = reqs.slice(r0).filter(x => /analyses/.test(x)).length;
+    await tg.click(); await sleep(4000); const list = await offered(); const h1 = await p.evaluate(() => history.length), u1 = p.url();
+    let pick = null; if (list.length === 1) { await p.getByTestId(`analysis-pick-${list[0].id}`).click(); await sleep(5000); const q = new URL(p.url()).searchParams; pick = { hDelta: (await p.evaluate(() => history.length)) - h1, analysisId: q.get("analysisId"), focus: q.get("focus"), first: await p.evaluate(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state ?? null) };
+      await p.goBack({ waitUntil: "commit" }); await sleep(4000); pick.backAnalysisId = new URL(p.url()).searchParams.get("analysisId"); }
+    if (vp === "1920x1080") await p.screenshot({ path: `${OUT}/REAL-D-PICK-${place}-1920.jpg`, type: "jpeg", quality: 70, mask: [p.locator("[data-pxj-quote]")] });
+    out.cases.push({ vp, place, readsBeforeOpen, offered: list, openChangedNothing: h0 === h1 && u0 === u1, pick, reads: reqs.slice(r0) });
+  }
+  for (const [name, url] of [["PERSON", `${BASE}/career/demo?investigationMode=PERSON${sel}&focus=CAPABILITY`], ["PERSON-role", `${BASE}/career/demo?investigationMode=PERSON${sel}&jobOrganizationId=org_kestrel&jobRoleId=${ROLE}`], ["JOB-role", `${BASE}/career/demo?investigationMode=JOB${sel}&jobOrganizationId=org_kestrel&jobRoleId=${ROLE}`]]) {
+    const r0 = reqs.length; await p.goto(url, { waitUntil: "domcontentloaded" }); await sleep(5000);
+    out.cases.push({ vp, place: name, pickers: await p.locator('[data-testid="analysis-picker"]').count(), boundaryReads: reqs.slice(r0).filter(x => /investigation$/.test(x)).length });
+  }
+  await ctx.close();
+}
+out.blocked = blocked; writeFileSync(`${OUT}/dpick-real.json`, JSON.stringify(out, null, 1));
+for (const c of out.cases) console.log(JSON.stringify({ ...c, reads: c.reads ? [...new Set(c.reads)] : undefined }));
+console.log("blocked", blocked); await b.close();

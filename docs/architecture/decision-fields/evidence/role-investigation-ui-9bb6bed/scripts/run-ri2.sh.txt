@@ -1,0 +1,32 @@
+#!/bin/bash
+# PINK role-investigation UI: STAND-IN production labs on one commit (detached), port 41873, own PIDs, disposable DBs.
+# argv: <commit> <label>
+S=$SCRATCH; R=$SCRATCH/rd11; P=$REPO
+C=$1; L=$2
+cd $P && git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD) ($L)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT_HOME/node_modules/playwright/index.mjs VIDEO_LAB_PROD=1
+OUT=$R/out2-$L; mkdir -p $OUT
+for PR in s b; do
+  case $PR in
+    s) export ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3;;
+    b) export ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1 ROLE_DISCOVERY_MAX_ROLES=3;;
+  esac
+  LAB=$R/lab2-$L-$PR; rm -rf "${LAB:?}"; mkdir -p $LAB
+  VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+  for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+  if grep -qE "VIDEO LAB READY" $LAB/lab.log; then
+    B=$(python3 -c "import json;print(json.load(open(\"$LAB/state.json\"))[\"base\"])")
+    echo "$PR lab $(grep -oE "gemini=[A-Z]+" $LAB/lab.log | head -1)"
+    timeout 1800 node $S/rec/pink-rec-setup.mjs $LAB/state.json $P $OUT/rec-setup-$PR.json > $OUT/rec-setup-$PR.log 2>&1; echo "setup exit $?"
+    PA=$(python3 -c "import json;print(json.load(open(\"$OUT/rec-setup-$PR.json\"))[\"person\"])"); XA=$(python3 -c "import json;print(json.load(open(\"$OUT/rec-setup-$PR.json\"))[\"pxj\"])")
+    ri() { LB=$1; MD=$2; shift 2; timeout 1500 node $R/pink-ri.mjs $LAB/state.json $P $OUT $PA $XA $LB $MD "$@" 2>&1 | tail -3 | cut -c1-300; }
+    if [ $PR = s ]; then ri s-stale stale 1920 1080 1; else ri b-budget budget 1920 1080 1; fi
+    cp $LAB/net.jsonl $OUT/net-$PR.jsonl 2>/dev/null
+  else echo "$PR lab failed"; grep -E "Error|failed" $LAB/lab.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -5; fi
+  bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+done
+wait
+git status --short | head -5; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo "RI2-END $L"

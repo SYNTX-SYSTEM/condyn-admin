@@ -1,0 +1,155 @@
+// PINK §10 (owner "RECURSIVE UX/UI & SYSTEM CLOSURE"): GRÜN candidate on PINK's STAND-IN lab only (no model execution).
+// argv: <lab state.json> <repo root> <out dir> <rf pool json> <label> [W] [H]
+// S · O-NAV-SUBMIT matrix: Back / Forward right after ANALYZE (POST held or not), same boundary, other mode, other job, double Back,
+//     Back+Forward, document boundary. Recorded: POSTs, server jobs, which history entry names the job (ids only, hashed).
+// P · D-PICK: four analyses (DLL×ROLE, DLL×ROLE2, RF×ROLE (same role id, other upload), PERSON); offered sets per scope and place,
+//     no choice without click, one push per OPEN, PERSON / JOB without picker, RESULT_NOT_FOUND → picker, request audit.
+// K · V-12: arrows move focus only (URL, history, checked state unchanged); Enter / Space choose.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, RF_POOL, LABEL, W = "1920", H = "1080"] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const PDF = `${ROOT}/docs/examples/cv.synthetic.pdf`;
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", KES = "org_kestrel", ROLE = "role_kestrel_fullstack", ROLE2 = "role_kestrel_frontend_architect";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const h8 = s => s ? createHash("sha256").update(s).digest("hex").slice(0, 8) : null;
+const get = async p => { const r = await fetch(`${BASE}${p}`, { cache: "no-store" }); return { status: r.status, body: await r.json().catch(() => null) }; };
+const upload = async file => { const r = await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_S10" }, body: readFileSync(file, "utf8") }); const b = await r.json().catch(() => ({})); return b?.jobPoolUploadId ?? null; };
+const rec = { label: LABEL, evidenceClass: "STAND_IN", note: "STAND-IN · keine Modellausführung", viewport: `${W}x${H}`, cases: [] };
+await upload(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`); const RF = await upload(RF_POOL);
+const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: +W, height: +H } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 200)));
+let phase = "setup"; const requests = []; const jobs = [];
+page.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/") || r.resourceType() === "document") requests.push({ phase, method: r.method(), type: r.resourceType(), path: u.pathname }); });
+page.on("response", async r => { if (r.request().method() === "POST" && new URL(r.url()).pathname === "/api/career/analyze") { const b = await r.json().catch(() => null); jobs.push({ phase, status: r.status(), jobId: b?.jobId ?? null }); } });
+const posts = () => requests.filter(r => r.method === "POST" && r.path === "/api/career/analyze").length;
+const nonGet = from => requests.slice(from).filter(r => r.method !== "GET" && r.method !== "HEAD").map(r => `${r.method} ${r.path}`);
+const hist = () => page.evaluate(() => history.length);
+const params = () => Object.fromEntries(new URL(page.url()).searchParams.entries());
+const waitParam = async (n, v, timeout = 120000) => page.waitForFunction(([n, v]) => { const x = new URL(location.href).searchParams.get(n); return v === "__NULL__" ? x === null : v === "__SET__" ? x !== null : x === v; }, [n, v], { timeout });
+const waitJob = async (s, timeout = 60000) => page.waitForFunction(s => document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState === s, s, { timeout });
+const settle = async (ms = 1200) => { await page.waitForSelector('[data-testid="semantic-career-intelligence-field"]', { timeout: 60000 }).catch(() => {}); await page.waitForFunction(() => { const f = document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state; const j = document.querySelector('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState; return !/LOADING|RESOLVING|CHECKING/.test(f ?? "") && j !== "CHECKING"; }, null, { timeout: 30000 }).catch(() => {}); await sleep(ms); };
+const obs = () => page.evaluate(() => { const q = s => document.querySelector(s); const root = q('[data-testid="semantic-career-intelligence-field"]'); const cov = q('[data-testid="pxj-first-coverage"]'); const b = q('[data-testid="intake-error-banner"]');
+  return { mode: root?.dataset.investigationMode ?? null, field: root?.dataset.fieldFocus ?? null, gate: root?.dataset.capabilityGate ?? null, job: q('[data-testid="job-scope-indicator"]')?.dataset.jobScopeState ?? null, first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null, binding: cov?.dataset.bindingAnalysis ?? null, bindingRole: cov?.dataset.bindingRole ?? null, analysisOnView: q('[data-testid="syntx-field"]')?.dataset.analysisId ?? null, analyzing: !!q('[data-testid="intake-telemetry-banner"]'), success: !!q('[data-testid="intake-success-banner"]'), error: b ? `${b.dataset.errorCode}|${b.dataset.jobResume ?? ""}` : null, pickers: [...document.querySelectorAll('[data-testid="analysis-picker"]')].map(p => `${p.dataset.pickerPlace}:${p.dataset.pickerState}`) }; }).catch(e => ({ error: String(e).slice(0, 120) }));
+const capUrl = (mode, pool, role, extra = "") => `${BASE}/career/demo?focus=CAPABILITY&investigationMode=${mode}&jobPoolUploadId=${pool}${pool && role ? `&jobScopePoolUploadId=${pool}&jobScopeRoleId=${role}` : ""}${extra}`;
+const stage = async () => { await t("source-dock-file-input").setInputFiles(PDF); await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); };
+const serverDone = async (jobId, timeout = 420000) => { const t0 = Date.now(); while (Date.now() - t0 < timeout) { const j = await get(`/api/career/jobs/${jobId}`); if (["SUCCEEDED", "FAILED"].includes(j.body?.status)) return j.body; await sleep(1000); } return null; };
+const openRole = async (org, role) => { await t(`syntx-organization-${org}`).dispatchEvent("click"); await t(`syntx-role-${role}`).waitFor({ timeout: 20000 }); await t(`syntx-role-${role}`).dispatchEvent("click"); await page.waitForFunction(r => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === r, role, { timeout: 20000 }); };
+const analyses = async () => ((await get("/api/career/analyses")).body?.analyses ?? []).map(a => a.analysisId);
+const boundary = async id => { const b = (await get(`/api/career/analyses/${id}/investigation`)).body; return b ? { mode: b.mode ?? b.investigation?.mode ?? null, sel: JSON.stringify(b.jobScopeSelection ?? b.investigation?.jobScopeSelection ?? null) } : null; };
+const record = (name, ok, data) => { rec.cases.push({ name, ok, ...data }); console.log(`${ok === null ? "OBS " : ok ? "PASS" : "FAIL"} ${name} :: ${JSON.stringify(data).slice(0, 600)}`); };
+const guard = async (name, fn) => { phase = name; try { await fn(); } catch (e) { record(name, false, { error: String(e).split("\n")[0].slice(0, 300), obs: await obs() }); } };
+// One analysis by the interface: document load of the capability entry, stage, ANALYZE, wait for the server.
+const makeAnalysis = async (mode, pool, role) => { await page.goto(mode === "PERSON" ? `${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY` : capUrl(mode, pool, role), { waitUntil: "domcontentloaded" }); if (mode !== "PERSON") await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]', { timeout: 60000 }); await settle(); await stage(); const n = jobs.length; await t("start-intake-analysis-btn").click(); for (let i = 0; i < 60 && jobs.length === n; i += 1) await sleep(500); const j = await serverDone(jobs.at(-1).jobId); await sleep(3000); return j?.resultAnalysisId ?? null; };
+
+// ===================================================== P · D-PICK
+const ONLY = process.env.S10_ONLY ?? "PKS";
+const A = {};
+if (ONLY.includes("P")) await guard("P0-make-analyses", async () => {
+  A.dllRole = await makeAnalysis("PERSON_X_JOB", DLL, ROLE); A.dllRole2 = await makeAnalysis("PERSON_X_JOB", DLL, ROLE2); A.rfRole = await makeAnalysis("PERSON_X_JOB", RF, ROLE); A.person = await makeAnalysis("PERSON");
+  const b = {}; for (const [k, id] of Object.entries(A)) b[k] = id ? await boundary(id) : null;
+  record("P0-make-analyses", Object.values(A).every(Boolean) && new Set(Object.values(A)).size === 4, { ids: Object.fromEntries(Object.entries(A).map(([k, v]) => [k, h8(v)])), boundaries: b });
+});
+const label = id => Object.entries(A).find(([, v]) => v === id)?.[0] ?? `other:${h8(id)}`;
+const offered = () => page.evaluate(() => [...document.querySelectorAll('[data-testid^="analysis-pick-item-"]')].map(e => ({ id: e.dataset.analysisId, mode: e.dataset.mode, up: e.dataset.bindingUpload, role: e.dataset.bindingRole, onView: e.dataset.onView })));
+const pickerCase = async (name, url, expectKey, place) => { await guard(name, async () => {
+  await page.goto(url, { waitUntil: "domcontentloaded" }); await settle(2000);
+  const h0 = await hist(), u0 = page.url(), r0 = requests.length, before = await obs();
+  if (place === "role-view") { await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); await openRole(KES, expectKey.role); await settle(1500); }
+  const h1 = await hist(), u1 = page.url();
+  const toggle = page.locator(`[data-testid="analysis-picker"][data-picker-place="${place}"] [data-testid="analysis-picker-toggle"]`);
+  const present = await toggle.count(); if (!present) { record(name, false, { error: "no picker toggle", before, pickers: (await obs()).pickers }); return; }
+  const readsBeforeOpen = requests.slice(r0).filter(r => /^\/api\/career\/analyses(\/[^/]+\/investigation)?$/.test(r.path)).length;
+  await toggle.click(); await page.waitForFunction(p => /AVAILABLE|FAILED/.test(document.querySelector(`[data-testid="analysis-picker"][data-picker-place="${p}"]`)?.dataset.pickerState ?? ""), place, { timeout: 30000 }); await sleep(2500);
+  const list = await offered(), h2 = await hist(), u2 = page.url(), afterOpen = await obs();
+  const reads = requests.slice(r0).filter(r => r.path === "/api/career/analyses").length, bReads = requests.slice(r0).filter(r => /\/investigation$/.test(r.path)).length;
+  const offeredLabels = list.map(x => label(x.id)).sort();
+  const noChoice = h2 === h1 && u2 === u1 && !new URL(u2).searchParams.get("analysisId");
+  let pick = null;
+  if (list.length === 1) { const h3 = await hist(); await t(`analysis-pick-${list[0].id}`).click(); await waitParam("analysisId", list[0].id, 30000).catch(() => {}); await settle(2500); const o = await obs(); const p = params();
+    pick = { entries: (await hist()) - h3, analysisId: label(p.analysisId), focus: p.focus ?? null, first: o.first, binding: label(o.binding), mode: o.mode };
+    await page.goBack({ waitUntil: "commit" }); await settle(2000); pick.backAnalysisId = params().analysisId ?? null; pick.backFirst = (await obs()).first; }
+  const ok = JSON.stringify(offeredLabels) === JSON.stringify([expectKey.offer]) && noChoice && readsBeforeOpen === 0 && reads >= 1 && bReads <= 25 && nonGet(r0).length === 0 && pick?.entries === 1 && pick.analysisId === expectKey.offer && pick.first === "AVAILABLE" && pick.binding === expectKey.offer && pick.backAnalysisId === null && (place === "role-view" || pick.focus === "CAPABILITY");
+  record(name, ok, { place, before: { first: before.first, pickers: before.pickers }, offered: offeredLabels, offeredRaw: list.map(x => ({ ...x, id: label(x.id) })), noChoiceOnOpen: noChoice, readsBeforeOpen, listReads: reads, boundaryReads: bReads, nonGet: nonGet(r0), pick });
+}); };
+if (ONLY.includes("P")) await pickerCase("P1-first-screen-DLLxROLE", capUrl("PERSON_X_JOB", DLL, ROLE), { offer: "dllRole" }, "first-screen");
+if (ONLY.includes("P")) await pickerCase("P2-first-screen-DLLxROLE2", capUrl("PERSON_X_JOB", DLL, ROLE2), { offer: "dllRole2" }, "first-screen");
+if (ONLY.includes("P")) await pickerCase("P3-first-screen-RFxROLE(same role id, other upload)", capUrl("PERSON_X_JOB", RF, ROLE), { offer: "rfRole" }, "first-screen");
+if (ONLY.includes("P")) await pickerCase("P4-role-view-DLLxROLE", capUrl("PERSON_X_JOB", DLL, ROLE), { offer: "dllRole", role: ROLE }, "role-view");
+if (ONLY.includes("P")) await pickerCase("P5-role-view-RFxROLE", capUrl("PERSON_X_JOB", RF, ROLE), { offer: "rfRole", role: ROLE }, "role-view");
+// role view of an OPENED role that is not the selected job: no picker of another role's analyses
+if (ONLY.includes("P")) await guard("P6-role-view-opened-not-selected", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", DLL, ROLE), { waitUntil: "domcontentloaded" }); await settle(2000); await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); await openRole(KES, ROLE2); await settle(1500);
+  const tg = page.locator('[data-testid="analysis-picker"] [data-testid="analysis-picker-toggle"]'); let list = []; if (await tg.count()) { await tg.first().click(); await sleep(4000); list = (await offered()).map(x => label(x.id)); }
+  record("P6-role-view-opened-not-selected", list.every(l => l === "dllRole") && !list.includes("dllRole2"), { pickers: (await obs()).pickers, offered: list, note: "opened ROLE2, selected job ROLE: a picker, if shown, offers only the selected job's analyses" });
+});
+if (ONLY.includes("P")) for (const [name, url] of [["P7-PERSON-no-picker", `${BASE}/career/demo?investigationMode=PERSON`], ["P8-PERSON-capability-no-picker", `${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`], ["P9-PERSON-field-role-no-picker", `${BASE}/career/demo?investigationMode=PERSON&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}&jobRoleId=${ROLE}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`], ["P10-JOB-no-picker", `${BASE}/career/demo?investigationMode=JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${KES}&jobRoleId=${ROLE}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`]])
+  await guard(name, async () => { const r0 = requests.length; await page.goto(url, { waitUntil: "domcontentloaded" }); await settle(2500); const o = await obs(); const pr = requests.slice(r0).filter(r => /\/investigation$/.test(r.path)).length; record(name, o.pickers.length === 0 && pr === 0, { mode: o.mode, field: o.field, pickers: o.pickers, boundaryReads: pr }); });
+if (ONLY.includes("P")) await guard("P11-RESULT_NOT_FOUND-to-picker", async () => { await page.goto(capUrl("PERSON_X_JOB", DLL, ROLE, "&analysisId=ANL_1000000000000_1"), { waitUntil: "domcontentloaded" }); await settle(2500); const o = await obs(); const tg = page.locator('[data-testid="analysis-picker-toggle"]'); let list = []; if (await tg.count()) { await tg.first().click(); await sleep(4000); list = (await offered()).map(x => label(x.id)); }
+  record("P11-RESULT_NOT_FOUND-to-picker", o.first === "RESULT_NOT_FOUND" && JSON.stringify(list) === '["dllRole"]', { first: o.first, pickers: o.pickers, offered: list }); });
+if (ONLY.includes("P")) await guard("P12-on-view-not-chosen-again", async () => { await page.goto(capUrl("PERSON_X_JOB", DLL, ROLE, `&analysisId=${A.dllRole}`), { waitUntil: "domcontentloaded" }); await settle(2500); await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); await openRole(KES, ROLE); await settle(1500);
+  const tg = page.locator('[data-testid="analysis-picker-toggle"]'); let list = [], dis = null; if (await tg.count()) { await tg.first().click(); await sleep(4000); list = await offered(); dis = await t(`analysis-pick-${A.dllRole}`).isDisabled().catch(() => null); }
+  record("P12-on-view-not-chosen-again", list.length === 1 && list[0].onView === "true" && dis === true, { pickers: (await obs()).pickers, offered: list.map(x => `${label(x.id)}:${x.onView}`), disabled: dis }); });
+
+// ===================================================== K · V-12 mode group
+if (ONLY.includes("K")) await guard("K1-mode-arrows", async () => {
+  await page.goto(capUrl("PERSON_X_JOB", DLL, ROLE, `&analysisId=${A.dllRole}`), { waitUntil: "domcontentloaded" }); await settle(2500);
+  const s = () => page.evaluate(() => ({ active: document.activeElement?.dataset?.testid ?? null, checked: [...document.querySelectorAll('[data-testid^="investigation-mode-"]')].filter(e => e.getAttribute("aria-checked") === "true").map(e => e.dataset.testid), tab: [...document.querySelectorAll('[data-testid^="investigation-mode-"]')].map(e => e.getAttribute("tabindex")), mode: new URL(location.href).searchParams.get("investigationMode"), h: history.length, root: document.querySelector('[data-testid="semantic-career-intelligence-field"]')?.dataset.investigationMode }));
+  await t("investigation-mode-PERSON_X_JOB").focus(); const seq = [{ k: "start", ...(await s()) }]; const r0 = requests.length;
+  for (const k of ["ArrowRight", "ArrowRight", "ArrowLeft", "ArrowLeft", "ArrowLeft", "Home", "End"]) { await page.keyboard.press(k); await sleep(900); seq.push({ k, ...(await s()) }); }
+  const arrowsQuiet = seq.slice(1).every(x => x.mode === seq[0].mode && x.h === seq[0].h && JSON.stringify(x.checked) === JSON.stringify(seq[0].checked) && x.root === seq[0].root);
+  const moved = new Set(seq.map(x => x.active)).size > 1;
+  await page.keyboard.press("Home"); await sleep(400); const fPerson = (await s()).active; await page.keyboard.press("Enter"); await sleep(1500); const enter = await s();
+  await page.keyboard.press("ArrowRight"); await sleep(400); await page.keyboard.press("ArrowRight"); await sleep(400); await page.keyboard.press("Space"); await sleep(1500); const space = await s();
+  record("K1-mode-arrows", arrowsQuiet && moved && enter.mode === "PERSON" && enter.h === seq[0].h + 1 && space.mode === "JOB" && space.h === enter.h + 1, { seq, arrowsQuiet, focusMoved: moved, homeFocus: fPerson, enter, space, apiDuringArrows: requests.slice(r0).length });
+});
+
+// ===================================================== S · O-NAV-SUBMIT
+const holdPost = async ms => page.route("**/api/career/analyze", async r => { if (ms) await sleep(ms); try { await r.continue(); } catch {} });
+const releasePost = async () => page.unroute("**/api/career/analyze");
+// walks the same-document history from the current entry: up to `n` Backs, then the same number of Forwards; records each entry's job naming
+const scan = async (jobId, resultId, n = 6) => { const out = []; const name = () => { const p = params(); return { mode: p.investigationMode ?? null, role: p.jobScopeRoleId ?? null, pool: p.jobScopePoolUploadId ? (p.jobScopePoolUploadId === DLL ? "DLL" : "RF") : null, focus: p.focus ?? null, namesJob: p.analysisJobId === jobId, namesResult: !!resultId && p.analysisId === resultId, analysisId: p.analysisId ? label(p.analysisId) : null, jobParam: p.analysisJobId ? (p.analysisJobId === jobId ? "THIS" : "OTHER") : null, path: new URL(page.url()).pathname }; };
+  out.push({ at: 0, ...name() }); let k = 0; for (; k < n; k += 1) { const u = page.url(); await page.goBack({ waitUntil: "commit" }).catch(() => {}); await sleep(1500); if (page.url() === u || !new URL(page.url()).pathname.startsWith("/career/demo")) { out.push({ at: -(k + 1), ...name() }); k += 1; break; } out.push({ at: -(k + 1), ...name() }); }
+  for (let i = 0; i < k; i += 1) { await page.goForward({ waitUntil: "commit" }).catch(() => {}); await sleep(1200); } await settle(1500); return out; };
+const submitCase = async (name, prepare, act, holdMs, note) => { await guard(name, async () => {
+  await prepare(); await settle(1500);
+  const h0 = await hist(), entryBefore = params(); const anBefore = new Set(await analyses());
+  await holdPost(holdMs); await stage(); const p0 = posts(), j0 = jobs.length; await t("start-intake-analysis-btn").click();
+  await act(); const afterAct = { ...(await obs()), h: await hist(), url: params() };
+  for (let i = 0; i < 60 && jobs.length === j0; i += 1) await sleep(500); await releasePost();
+  const jobId = jobs.length > j0 ? jobs.at(-1).jobId : null; const server = jobId ? await serverDone(jobId) : null;
+  let newAnalyses = []; for (let i = 0; i < 240; i += 1) { newAnalyses = (await analyses()).filter(id => !anBefore.has(id)); if (newAnalyses.length) break; await sleep(1000); } await sleep(4000); await settle(2500);
+  const resultId = server?.resultAnalysisId ?? (newAnalyses.length === 1 ? newAnalyses[0] : null);
+  const view = { ...(await obs()), url: params(), h: await hist() };
+  const entries = await scan(jobId, resultId);
+  let entryView = null; if (resultId) { const u = page.url(); const tw = await ctx.newPage(); const p = new URL(u); p.searchParams.set("focus", "CAPABILITY"); await tw.goto(p.toString(), { waitUntil: "domcontentloaded" }); await sleep(6000); entryView = await tw.evaluate(() => { const q = s => document.querySelector(s); const r = q('[data-testid="semantic-career-intelligence-field"]'); return { mode: r?.dataset.investigationMode ?? null, gate: r?.dataset.capabilityGate ?? null, first: q('[data-testid="pxj-first-screen"]')?.dataset.state ?? null, bindingRole: q('[data-testid="pxj-first-coverage"]')?.dataset.bindingRole ?? null }; }).catch(() => null); await tw.close(); }
+  const named = entries.filter(e => e.namesJob || e.namesResult);
+  const data = { holdMs, postsDelta: posts() - p0, answered202: jobs.length - j0, newAnalyses: newAnalyses.length, server: server?.status ?? null, resultIsNew: !!resultId && newAnalyses.includes(resultId), entryViewWithCapabilityFocus: entryView, entryBefore: { mode: entryBefore.investigationMode, role: entryBefore.jobScopeRoleId }, afterAct: { mode: afterAct.mode, field: afterAct.field, analyzing: afterAct.analyzing, h: afterAct.h - h0, jobParam: afterAct.url.analysisJobId ? "set" : null }, onView: { mode: view.mode, field: view.field, first: view.first, binding: view.binding ? label(view.binding) : null, bindingRole: view.bindingRole, analyzing: view.analyzing, success: view.success, error: view.error, hDelta: view.h - h0, analysisId: view.url.analysisId ? label(view.url.analysisId) : null, jobParam: view.url.analysisJobId ? "set" : null }, entries, namedEntries: named.length, result: h8(resultId) };
+  const ok = data.postsDelta === 1 && data.newAnalyses <= 1 && (data.newAnalyses === 0 || named.length >= 1);
+  record(name, note ? (ok ? null : false) : ok, { ...data, note });
+}); };
+const toCapabilityChain = async (role, viaFieldFrom = null) => { // in-app chain: pool → org → role → SELECT AS JOB → CAPABILITY (one document)
+  await page.goto(`${BASE}/career/demo`, { waitUntil: "domcontentloaded" }); await settle(1500);
+  await t(`job-pool-select-${DLL}`).click(); await waitParam("jobPoolUploadId", DLL); await openRole(KES, role); await t("syntx-job-scope-select").click(); await waitParam("jobScopeRoleId", role); await waitJob("VALID");
+  await t("field-focus-capability-btn").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]', { timeout: 30000 }); };
+const back = async (n = 1, gap = 0) => { for (let i = 0; i < n; i += 1) { await page.goBack({ waitUntil: "commit" }).catch(() => {}); if (gap) await sleep(gap); } };
+if (ONLY.includes("S")) await submitCase("S1-back-held-1500-same-boundary", () => toCapabilityChain(ROLE), async () => { await sleep(150); await back(); await sleep(400); }, 1500);
+if (ONLY.includes("S")) await submitCase("S2-back-no-latency-same-boundary", () => toCapabilityChain(ROLE), async () => { await sleep(30); await back(); await sleep(400); }, 0);
+if (ONLY.includes("S")) await submitCase("S3-back-held-to-PERSON-entry", async () => { await toCapabilityChain(ROLE); await t("investigation-mode-PERSON").click(); await waitParam("investigationMode", "PERSON"); await t("investigation-mode-PERSON_X_JOB").click(); await waitParam("investigationMode", "PERSON_X_JOB"); }, async () => { await sleep(150); await back(); await sleep(400); }, 1500, "observation: the entry on view after Back is PERSON (other boundary)");
+if (ONLY.includes("S")) await submitCase("S4-back-held-to-other-job-entry", async () => { await toCapabilityChain(ROLE2); await t("job-pool-panel-toggle").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="FIELD"]', { timeout: 20000 }); await openRole(KES, ROLE); await t("syntx-job-scope-select").click(); await waitParam("jobScopeRoleId", ROLE); await waitJob("VALID"); await t("field-focus-capability-btn").click(); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]', { timeout: 30000 }); },
+  async () => { await sleep(150); await back(2, 120); await sleep(400); }, 1500, "observation: Back twice lands on the role view whose selected job is still ROLE2 (other job)");
+if (ONLY.includes("S")) await submitCase("S5-back-forward-held", () => toCapabilityChain(ROLE), async () => { await sleep(150); await back(); await sleep(250); await page.goForward({ waitUntil: "commit" }).catch(() => {}); await sleep(400); }, 1500);
+if (ONLY.includes("S")) await submitCase("S6-back-across-document", async () => { await page.goto(`${BASE}/career/analyses`, { waitUntil: "domcontentloaded" }); await page.goto(capUrl("PERSON_X_JOB", DLL, ROLE), { waitUntil: "domcontentloaded" }); await page.waitForSelector('[data-testid="semantic-career-intelligence-field"][data-capability-gate="OPEN"]', { timeout: 60000 }); },
+  async () => { await sleep(60); await back(); await sleep(1500); }, 0, "observation: Back leaves the document (page session ends) — outside the in-page handover by design (like reload during SUBMITTING)");
+
+rec.analyses = Object.fromEntries(Object.entries(A).map(([k, v]) => [k, h8(v)]));
+rec.jobs = jobs.map(j => ({ phase: j.phase, status: j.status, jobId: h8(j.jobId) }));
+rec.pageErrors = errors; rec.nonGetOutsideAnalyze = requests.filter(r => r.method !== "GET" && r.method !== "HEAD" && r.path !== "/api/career/analyze").map(r => `${r.phase} ${r.method} ${r.path}`);
+rec.requests = requests.map(r => ({ phase: r.phase, method: r.method, type: r.type, path: r.path.replace(/(ANL|JOB|JPOOL)_[A-Z0-9_]+/g, "$1_…") }));
+writeFileSync(`${OUT}/pink-s10-${LABEL}-${W}.json`, JSON.stringify(rec, null, 1));
+console.log("DONE", JSON.stringify({ pass: rec.cases.filter(c => c.ok === true).length, obs: rec.cases.filter(c => c.ok === null).length, fail: rec.cases.filter(c => c.ok === false).map(c => c.name), of: rec.cases.length, errors: errors.length }));
+await browser.close();

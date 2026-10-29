@@ -1,0 +1,295 @@
+# PINK · OWNER_GO_FULL_PXJ_CLOSURE · candidate 421e382 (frontend/pxj-first-screen-g1 = 88539d3 + N-1…N-5)
+# Evidence class STAND_IN, PINK's own lab :41873, production build (next start) with LAB_ONLY_BUILD_FLAG (see LAB_ONLY_BUILD_FLAG.txt).
+# {"label": "prod", "gemini": "STAND_IN", "note": "STAND-IN \u00b7 keine Modellausf\u00fchrung", "viewport": "1920x1080"}
+# uploads (POST to PINK's own stand-in lab only): {'dll': 201, 'rf': 201, 'rfArchived': 201}
+C00-other-document               PASS  h=1→2  mode=None field=None job=None first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: 
+C01-demo-plain                   PASS  h=2→3  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: 
+C02-POOL                         PASS  h=3→4  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: jobPoolUploadId=DLL
+                                  extra: {"h0": 3}
+C03-ORG                          PASS  h=4→5  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL
+                                  extra: {"h0": 4}
+C04-ROLE_OPEN                    PASS  h=5→6  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 5}
+C05-SELECT_AS_JOB                PASS  h=6→7  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 6}
+C05b-select-again-no-entry       PASS  h=7→7  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 7}
+C06-CAPABILITY                   PASS  h=7→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=NO_ANALYSIS binding=None counts=None rows=0 quotes=0 err=None
+                                  url: focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 7}
+C06b-same-mode-no-entry          PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=NO_ANALYSIS binding=None counts=None rows=0 quotes=0 err=None
+                                  url: focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 8}
+C07-SOURCE_BINDING               PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=NO_ANALYSIS binding=None counts=None rows=0 quotes=0 err=None
+                                  url: focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 8}
+C08-ANALYSE                      PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 8, "hRunning": 8, "runJobPattern": true, "postsDelta": 1}
+                                  note: job polls held 1.5 s so analysisJobId is observable in the URL
+                                  non-GET: ["POST /api/career/analyze"]
+C09-B2                           PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"b2Reads": 1}
+C10-EVIDENCE                     PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"focused": "true"}
+C11-RELOAD                       PASS  h=8→8  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"reloadDiff": [], "stagedAfter": 0}
+C12-MODE-PERSON                  PASS  h=8→9  mode=PERSON field=CAPABILITY job=VALID first=MODE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 8}
+C13-MODE-JOB                     PASS  h=9→10  mode=JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 9}
+C14-MODE-PXJ                     PASS  h=10→11  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 10}
+C15-ROLE_SWITCH                  FAIL  h=11→16  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"h0": 11, "hField": 12}
+C16-POOL_SWITCH                  PASS  h=16→22  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  note: the other pool carries a role with the same id (role_kestrel_fullstack)
+C17-OFFER-ROLE-BACK              PASS  h=22→23  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 22}
+C18-CLEAR-JOB                    FAIL  h=None→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  error=TimeoutError: locator.click: Timeout 30000ms exceeded.
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+N-back-01                        PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-02                        PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-03                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-04                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-05                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-06                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-07                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-08                        PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-09                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_frontend_architect&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-back-10                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_frontend_architect&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-11                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-12                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-13                        PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-14                        PASS  h=24→24  mode=JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-15                        PASS  h=24→24  mode=PERSON field=CAPABILITY job=VALID first=MODE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-16                        PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-17                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-18                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-back-19                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL
+                                  extra: {"postsDelta": 0}
+N-back-20                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobPoolUploadId=DLL
+                                  extra: {"postsDelta": 0}
+N-back-21                        PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: 
+                                  extra: {"postsDelta": 0}
+N-back-22                        PASS  h=24→24  mode=None field=None job=None first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: 
+                                  extra: {"postsDelta": 0}
+N-forward-01                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: 
+                                  extra: {"postsDelta": 0}
+N-forward-02                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobPoolUploadId=DLL
+                                  extra: {"postsDelta": 0}
+N-forward-03                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL
+                                  extra: {"postsDelta": 0}
+N-forward-04                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-05                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-06                     PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-07                     PASS  h=24→24  mode=PERSON field=CAPABILITY job=VALID first=MODE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-08                     PASS  h=24→24  mode=JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-09                     PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-10                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-11                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-12                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_frontend_architect&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-13                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=DLL&jobRoleId=role_kestrel_frontend_architect&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-14                     PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-15                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-16                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-17                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-18                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_frontend_architect
+                                  extra: {"postsDelta": 0}
+N-forward-19                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobOrganizationId=org_kestrel&jobPoolUploadId=JPOOL_other&jobRoleId=role_kestrel_fullstack&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-20                     PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-21                     PASS  h=24→24  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+N-forward-22                     PASS  h=24→24  mode=PERSON_X_JOB field=FIELD job=VALID first=None binding=None counts=None rows=0 quotes=0 err=None  NAV≡RELOAD=True
+                                  url: analysisId=ANL#1&focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_other&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+I01-mode-FOO                     PASS  h=24→25  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 25}
+I02-mode-empty                   PASS  h=25→26  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 26}
+I03-mode-repeated                PASS  h=26→27  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 27}
+I04-mode-lowercase               PASS  h=27→28  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 28}
+                                  note: lowercase is not a mode (exact values only)
+I05-pxj-without-scope            PASS  h=28→29  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL
+                                  extra: {"h0": 29}
+                                  note: valid mode, no job: stays 'no job' with the offer (O-RF-1 does not touch it)
+I06-unknown-role                 PASS  h=29→30  mode=PERSON_X_JOB field=FIELD job=INVALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_pink_does_not_exist
+                                  extra: {"h0": 30}
+I07-archived-pool                PASS  h=30→31  mode=PERSON_X_JOB field=FIELD job=INVALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 31}
+I08-unknown-upload               PASS  h=31→32  mode=PERSON_X_JOB field=FIELD job=INVALID first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=JPOOL_0…0&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 32}
+I09-malformed-pool               PASS  h=32→33  mode=PERSON_X_JOB field=FIELD job=NONE first=None binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=not-a-pool&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 33}
+I10-other-pool-same-role-id      PASS  h=33→34  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=ROLE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=JPOOL_other&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 34}
+                                  note: selection RF/role_kestrel_fullstack, analysis bound to DLL/role_kestrel_fullstack
+I11-unknown-analysis             PASS  h=34→35  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=RESULT_NOT_FOUND binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#2&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 35}
+I12-job-traversal                PASS  h=35→36  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I13-job-short                    PASS  h=36→37  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I14-job-lowercase                PASS  h=37→38  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I15-job-too-long                 PASS  h=38→39  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I16-job-suffix                   PASS  h=39→40  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I17-job-repeated                 PASS  h=40→41  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"jobReads": 0}
+I18-job-unknown                  PASS  h=41→42  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=NOT_FOUND|404|NOT_FOUND
+                                  url: analysisId=ANL#1&analysisJobId=JOB#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+                                  note: the analysis on view stays
+I19-job-succeeded-in-url         PASS  h=42→43  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 0}
+                                  note: an already SUCCEEDED job named by the URL: read, its analysis set (replace), no POST
+I20-reload-running               PASS  h=43→44  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#3 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#3&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"h0": 44, "jobMatches": true, "during": {"url": ["analysisJobId=JOB#2", "focus=CAPABILITY", "investigationMode=PERSON_X_JOB", "jobPoolUploadId=DLL", "jobScopePoolUploadId=DLL", "jobScopeRoleId=role_kestrel_fullstack"], "analyzing": true, "first": "NO_ANALYSIS", "error": null}, "postsDelta": 1, "nonGetAfterReload": [], "jobReadsAfterReload": 1}
+                                  note: job polls held 3 s; one POST before the reload, none after
+                                  non-GET: ["POST /api/career/analyze"]
+I21-reload-failed                PASS  h=44→45  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=EXECUTION_FAILED||FAILED
+                                  url: analysisId=ANL#1&analysisJobId=JOB#3&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"serverJob": "FAILED", "postsDelta": 1, "job": true}
+                                  note: the old analysis A0 stays on view (F-RF-2)
+                                  non-GET: ["POST /api/career/analyze"]
+I22-second-run-reload            PASS  h=45→46  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#4 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#4&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"during": {"analysisParam": true, "binding": true, "first": "AVAILABLE", "jobParam": true}, "postsDelta": 1}
+                                  note: GELB case (b)
+                                  non-GET: ["POST /api/career/analyze"]
+I23-back-forward-running         PASS  h=46→48  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#5 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#5&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"job": true, "entryPersonCarriesJob": true, "back": {"equal": true, "diff": [], "jobParam": true, "mode": "PERSON_X_JOB", "binding": true}, "forward": {"equal": true, "diff": [], "mode": "PERSON"}, "done": {"mode": "PERSON", "newAnalysis": true}, "backAfter": {"equal": true, "diff": [], "mode": "PERSON_X_JOB", "jobParam": false, "analysis": "other"}, "postsDelta": 1, "nonGetDuringNav": []}
+                                  note: GELB case (a); job polls held 4 s in both tabs
+                                  non-GET: ["POST /api/career/analyze"]
+I24-back-during-submitting       PASS  h=48→50  mode=PERSON_X_JOB field=CAPABILITY job=VALID first=AVAILABLE binding=ANL#1 counts=7 covered · 2 not covered · 9 requirements · NOT_EVALUATED rows=9 quotes=7 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON_X_JOB&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"postsDelta": 1, "analyzeAnswered": {"status": 202, "phase": "I24:back"}, "serverJob": "SUCCEEDED", "analysesDelta": 1, "back": {"equal": true, "mode": "PERSON", "jobParam": false, "analyzing": false}, "laterOnBackEntry": {"analyzing": false, "jobParam": false, "binding": false}, "forward": {"equal": true, "jobParam": false, "binding": true, "analyzing": false}}
+                                  note: observation: POST /api/career/analyze held 3 s, Back 0.3 s after ANALYZE; what becomes of the job is recorded, not judged
+                                  non-GET: ["POST /api/career/analyze"]
+I25-staged-after-nav             PASS  h=50→50  mode=PERSON field=CAPABILITY job=VALID first=MODE_MISMATCH binding=None counts=None rows=0 quotes=0 err=None
+                                  url: analysisId=ANL#1&focus=CAPABILITY&investigationMode=PERSON&jobPoolUploadId=DLL&jobScopePoolUploadId=DLL&jobScopeRoleId=role_kestrel_fullstack
+                                  extra: {"stagedBefore": 1, "hintBefore": true, "back": [0, null], "forward": [0, null]}
+# navigation: {"historyLengthAtEnd": 24, "backs": 22, "documentLoadsDuringInAppNav": [{"step": "N-back-22", "docs": ["GET DOC /career/analyses"]}, {"step": "N-forward-01", "docs": ["GET DOC /career/demo"]}]}
+# analyses: {"A0": "set", "A2": "set", "distinct": true}
+# jobs: [{"phase": "C08-ANALYSE", "status": 202, "jobId": "JOB_\u2026"}, {"phase": "I20-reload-running", "status": 202, "jobId": "JOB_\u2026"}, {"phase": "I21-reload-failed", "status": 202, "jobId": "JOB_\u2026"}, {"phase": "I22-second-run-reload", "status": 202, "jobId": "JOB_\u2026"}, {"phase": "I23-back-forward-running", "status": 202, "jobId": "JOB_\u2026"}, {"phase": "I24:back", "status": 202, "jobId": "JOB_\u2026"}]
+# pageErrors: []
+# inspectorReads: 0
+# requests by method: {'GET': 798, 'POST': 6}
+# non-GET requests (all tabs): ['C08-ANALYSE POST /api/career/analyze', 'I20-reload-running POST /api/career/analyze', 'I21-reload-failed POST /api/career/analyze', 'I22-second-run-reload POST /api/career/analyze', 'I23-back-forward-running POST /api/career/analyze', 'I24-back-during-submitting POST /api/career/analyze']

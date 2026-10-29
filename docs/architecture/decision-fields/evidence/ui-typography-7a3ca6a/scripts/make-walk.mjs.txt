@@ -1,0 +1,11 @@
+// Writes PINK's instrumented copy of GELB's video-walk.mjs: identical except that every shot also writes PINK's measure of that frame.
+// node make-walk.mjs <video-walk.mjs> <out.mjs>
+import { readFileSync, writeFileSync } from "node:fs";
+const [src, dst] = process.argv.slice(2);
+let s = readFileSync(src, "utf8");
+const line = 'const shot = async name => { shotNo += 1; await page.waitForTimeout(700); await page.screenshot({ path: `${OUT}/${String(shotNo).padStart(2, "0")}-${name}-${W}.png` }); };';
+if (s.split(line).length !== 2) { console.error("shot line not found exactly once"); process.exit(2); }
+s = s.replace(line, 'const shot = async name => { shotNo += 1; await page.waitForTimeout(700); const tag = `${String(shotNo).padStart(2, "0")}-${name}-${W}x${H}`; await page.screenshot({ path: `${OUT}/${tag}.png` }); writeFileSync(`${OUT}/${tag}.m.json`, JSON.stringify(await PINK_MEASURE(page))); };');
+s = s.replace('import { readFileSync, writeFileSync } from "node:fs";', 'import { readFileSync, writeFileSync } from "node:fs";\nimport { measure as PINK_MEASURE } from "' + new URL("./pink-typo-measure.mjs", import.meta.url).pathname + '";');
+s = s.replace("`${OUT}/walk-results-${W}.json`", "`${OUT}/walk-results-${W}x${H}.json`");
+writeFileSync(dst, s); console.log("written", dst);

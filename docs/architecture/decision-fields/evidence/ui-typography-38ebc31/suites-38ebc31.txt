@@ -1,0 +1,33 @@
+PINK regression on 38ebc31 (PINK's worktree, detached; disposable condyn_test_* databases; no Gemini key; PINK proofs copied for the run, removed after).
+
+HEAD 38ebc31
+role-cards.e2e.test.ts = evidence d685003
+role-cards-ssr.test.tsx = evidence d685003
+tsc exit 2 errors 1:       1 docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts 
+cards exit 0 :: 2697/2697 checks ok · page errors 0 · non-GET 0 · net 1
+ssr+units exit 0 ::       Tests  54 passed (54)
+geom exit 0 ::       Tests  56 passed (56)
+orbit exit 0 :: 395/395 checks ok · page errors 0 · non-GET 0 · net 1
+demo-ui-fix exit 0 :: 62/62 checks ok
+gate exit 0 :: 74/74 checks ok
+three-modes plain exit 0 :: 91/91 checks ok (T-report-plain)
+three-modes inspector exit 0 :: 97/97 checks ok (T-report-inspector)
+url-boundary exit 0 ::       Tests  1 passed (1)
+syntx-walk exit 0 ::       Tests  3 passed (3)
+workflow exit 0 ::       Tests  10 passed (10)
+net cards: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net orbit: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net uifix: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net tm-plain: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net tm-inspector: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+net ub: fetch https://registry.npmjs.org/-/package/next/dist-tags 
+
+role-cards C-report 38ebc31 vs d685003 (changed lines, C-5 pixel contrast only expected):
+   > ok   C-5 least contrast of the standing line over every card (1600 × 1000, 1280 × 720)
+   > ok   C-5 least contrast of the title line over every card (1600 × 1000, 1280 × 720) �
+   > ok   C-5 least contrast of the domain line over every card (1600 × 1000, 1280 × 720) �
+   > ok   C-5 least contrast of the requirements line over every card (1600 × 1000, 1280 × 
+   > ok   C-5 least contrast of the matching line over every card (1600 × 1000, 1280 × 720)
+
+Full vitest suite not repeated: 38ebc31 changes two style values in two components against 7a3ca6a (no test, no logic), and 7a3ca6a's
+full suite had no new failure (§3.51).

@@ -1,0 +1,15 @@
+# PINK §10 K-UX-2: PERSON DOM inventory base (70d1cb4) vs candidate (41dfa25), per scene and viewport. Structure / text / state
+# compared in document order (tag, attributes without style/class/geometry, own text); "hidden" (display/visibility) compared apart.
+import json, sys, difflib
+B, A = (json.load(open(f)) for f in sys.argv[1:3])
+for scene in B["scenes"]:
+  b, a = B["scenes"][scene], A["scenes"].get(scene)
+  if a is None: print(scene, "MISSING in candidate"); continue
+  key = lambda r: f'{"  " * min(r["d"], 30)}<{r["tag"]} {r["a"]}> {r["t"]}'
+  kb, ka = [key(r) for r in b], [key(r) for r in a]
+  struct = [d for d in difflib.unified_diff(kb, ka, lineterm="", n=0) if d[:1] in "+-" and not d.startswith(("+++", "---"))]
+  hb = [(key(r), r["hidden"]) for r in b]; ha = [(key(r), r["hidden"]) for r in a]
+  hid = [] if struct else [f'{x[0].strip()[:150]} hidden {x[1]} -> {y[1]}' for x, y in zip(hb, ha) if x[1] != y[1]]
+  print(f"{scene:<44} rows {len(b)} -> {len(a)}  structure/text/state diffs {len(struct)}  visibility diffs {len(hid)}")
+  for d in struct[:40]: print("   ", d[:260])
+  for d in hid[:12]: print("    V", d)

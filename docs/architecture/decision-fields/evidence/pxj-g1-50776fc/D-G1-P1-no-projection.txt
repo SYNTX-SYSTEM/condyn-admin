@@ -1,0 +1,15 @@
+# PINK proof (scratch test, run once on 50776fc in PINK's worktree with npm run test:isolated, then removed; never committed as a live test).
+# NO_PROJECTION under PERSON x JOB with a legacy analysis that has capabilities (GRÜN's fixture has capabilities: [], so its own tests cannot see this path).
+
+PINK-NOPROJ {"state":"NO_PROJECTION","legacyNamesAnywhere":[false,false],"legacyNamesInShell02":[false,false],"orbit02Items":"2","confidenceLike":0,"noProposalsStatement":true}
+PINK-NOPROJ-PERSON {"legacyNamesAnywhere":[false,false]}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":1,"legacyNames":[true,true],"confidence":[],"legacyQuote":false}
+PINK-NOPROJ-FOCUS02 {"zoomLevel":2,"legacyNames":[true,true],"confidence":["93%","93%"],"legacyQuote":false}
+      Tests  1 passed (1)
+
+# The same with GRÜN's pure functions on the persisted :41862 body (capabilityProposalProjection set to null):
+state NO_PROJECTION showsAnalysis true
+orbit 02 capabilities 5 ids CAP_001,CAP_002,CAP_003,CAP_004,CAP_005
+any PCAP_ id false | projectionState set 0
+fields id,name,domain,evidenceConfidence,evidenceSummary | evidenceConfidence values 0.95,0.9,0.9,0.95,0.9
+legacy orbits 0 0 0 0

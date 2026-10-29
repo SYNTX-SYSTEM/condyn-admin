@@ -1,0 +1,23 @@
+// PINK §10 V-19b: at 200 % (stack tier) the organisation level — can a user wheel the role cards into view and hit them? GET only.
+import { pathToFileURL } from "node:url";
+const [BASE, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const b = await chromium.launch(); let blocked = 0; const res = [];
+for (const [n, w, h] of [["zoom200-1920x1080", 960, 540], ["zoom200-1280x720", 640, 360]]) {
+  const ctx = await b.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  await ctx.route("**/*", r => { const m = r.request().method(); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel`, { waitUntil: "domcontentloaded" }); await new Promise(r => setTimeout(r, 7000));
+  const doc = await p.evaluate(() => ({ scrollH: document.scrollingElement.scrollHeight, vh: innerHeight, scrollers: [...document.querySelectorAll("*")].filter(e => e.scrollHeight > e.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(e).overflowY)).map(e => ({ tid: e.dataset.testid ?? e.tagName.toLowerCase(), sh: e.scrollHeight, ch: e.clientHeight })).slice(0, 6), stage: (() => { const s = document.querySelector('[data-testid="syntx-stage"]'); if (!s) return null; const r = s.getBoundingClientRect(); return { box: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)], overflow: getComputedStyle(s).overflow }; })() }));
+  const seen = { fullstack: 0, frontend_architect: 0, engineering_lead: 0 };
+  await p.mouse.move(w / 2, h / 2);
+  for (let k = 0; k < 60; k += 1) {
+    const hits = await p.evaluate(() => Object.fromEntries(["fullstack", "frontend_architect", "engineering_lead"].map(r => { const e = document.querySelector(`[data-testid="syntx-role-role_kestrel_${r}"]`); if (!e) return [r, 0]; const b = e.getBoundingClientRect(); const c = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2); return [r, c && e.contains(c) ? 1 : 0]; })));
+    for (const r in hits) seen[r] = Math.max(seen[r], hits[r]);
+    await p.mouse.wheel(0, 60); await new Promise(r => setTimeout(r, 150));
+  }
+  const end = await p.evaluate(() => ({ scrollY: Math.round(scrollY), max: document.scrollingElement.scrollHeight - innerHeight }));
+  res.push({ vp: n, doc, hitAfterWheel: seen, end });
+  await p.screenshot({ path: `${OUT}/V19b-zoom-org-${n}.jpg`, type: "jpeg", quality: 75 });
+  await ctx.close();
+}
+console.log(JSON.stringify({ blocked, res }, null, 1)); await b.close();

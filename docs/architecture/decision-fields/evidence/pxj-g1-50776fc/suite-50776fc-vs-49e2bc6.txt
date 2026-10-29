@@ -1,0 +1,37 @@
+# PINK T-12 / PA-14: tsc and the whole isolated suite (npm run test:isolated, e2e included, fresh disposable databases, network sentinel) on 50776fc and 49e2bc6 in PINK's worktree.
+HEAD 50776fc
+tsc 50776fc exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this call. 
+full 50776fc exit 1 ::  Test Files  4 failed | 403 passed | 11 skipped (418)       Tests  27 failed | 2741 passed | 20 skipped (2788)  net 2
+HEAD 49e2bc6
+tsc 49e2bc6 exit 2 errors 1: docs/career_analysis/evidence/video-readiness/scripts/relay-check.mts(13,214): error TS2769: No overload matches this call. 
+full 49e2bc6 exit 1 ::  Test Files  5 failed | 398 passed | 11 skipped (414)       Tests  28 failed | 2669 passed | 20 skipped (2717)  net 2
+back on validation/hr-decision-loop-pink
+SUITE-END
+
+Failing files on 49e2bc6:
+      6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+      6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+      5  FAIL  test/career-lifecycle-recovery.test.ts
+     10  FAIL  test/career-policy-activation-atomicity.test.ts
+      1  FAIL  test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+
+Failing files on 50776fc:
+      6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+      6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+      5  FAIL  test/career-lifecycle-recovery.test.ts
+     10  FAIL  test/career-policy-activation-atomicity.test.ts
+
+failed 50776fc 27 | 49e2bc6 28 | only on 50776fc 0 | only on 49e2bc6 1
+  only on 49e2bc6: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+tests present on 49e2bc6 and gone on 50776fc: 0
+test/career/pxj-first-screen: {'first-screen-ssr.test.tsx': 34, 'person-markup.test.tsx': 1, 'projection.test.ts': 34, 'result-hook.test.ts': 2} = 71 all passed: True
+  D-G1-2 file test/career-demo-e2e.test.tsx: 7 tests, statuses ['passed']
+  D-G1-2 file test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts: 7 tests, statuses ['passed', 'skipped']
+  D-G1-2 file test/career/job-pool/syntx-field-ssr.test.tsx: 11 tests, statuses ['passed']
+  D-G1-2 file test/career-demo-ui.test.tsx: 4 tests, statuses ['passed']
+  D-G1-2 file test/career-f12-pulse-alignment.test.tsx: 10 tests, statuses ['passed']
+  D-G1-2 file test/career-sil-empty-orbit-visual-attention.test.tsx: 7 tests, statuses ['passed']
+  D-G1-2 file test/career-sil-global-language-wiring.test.tsx: 9 tests, statuses ['passed']
+  D-G1-2 file test/career/hr-decision-loop/dock-ssr.test.tsx: 4 tests, statuses ['passed']
+
+Net sentinel: both runs logged only Next dev's npm dist-tags check (2 lines each); no other non-loopback connection.

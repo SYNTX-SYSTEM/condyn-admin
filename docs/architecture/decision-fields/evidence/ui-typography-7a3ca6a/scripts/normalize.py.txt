@@ -1,0 +1,7 @@
+import re,sys
+t=open(sys.argv[1]).read()
+for k in ['fontSize','letterSpacing','lineHeight']:
+    t=re.sub(r'\b'+k+r'\s*:\s*[^,}\n]+', k+': «V»', t)
+for k in ['font-size','letter-spacing','line-height']:
+    t=re.sub(k+r'\s*:\s*[^;"`}\n]+', k+': «V»', t)
+open(sys.argv[2],'w').write(t)

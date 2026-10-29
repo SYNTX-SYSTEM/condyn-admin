@@ -1,0 +1,22 @@
+Point 2 · PINK's independent inverse check (pink-inverse.py): own code, not findSweepCoverage and not GELB's script. Per related row:
+proposal by id from a fresh GET of the projection → quote among that proposal's evidence → quote in the pdftotext text (own
+normalisation; also de-hyphenated) → does the quote carry the requirement (requirement name or an alias in the quote, else shared
+tokens)? Quotes appear here only as sha256/10 (E-6).
+
+ANL_1792628831636_456: {"related": 52, "proposalFound": 52, "quoteAmongProposalEvidence": 52, "quoteInPdfText": 52, "quoteInPdfDehyphenated": 52, "reqNameInQuote": 49, "reqTokenInQuote": 1, "noReqTokenInQuote": 2}
+  name/alias NOT in the quote: pool …9F16C2 role_northbeam_data_architect req_northbeam_data_architect_02 «Dimensional and Domain Data Modeling» WEAK_TOKEN_CONTAINMENT ← «Dimensional Data Modeling» quote ['64ba7ee27c'] shared tokens ['data', 'dimensional']
+  name/alias NOT in the quote: pool …A076B5 role_aurelion_backend_interop req_aurelion_backend_interop_08 «Backend Development» WEAK_TOKEN_CONTAINMENT ← «TypeScript and Node.js Backend Development» quote ['3b13fe356a'] shared tokens []
+  name/alias NOT in the quote: pool …A076B5 role_brightwater_backend_ledger req_brightwater_backend_ledger_08 «Backend Development» WEAK_TOKEN_CONTAINMENT ← «TypeScript and Node.js Backend Development» quote ['3b13fe356a'] shared tokens []
+ANL_1792628993472_10: {"related": 27, "proposalFound": 27, "quoteAmongProposalEvidence": 27, "quoteInPdfText": 27, "quoteInPdfDehyphenated": 27, "reqNameInQuote": 24, "reqTokenInQuote": 3, "noReqTokenInQuote": 0}
+  name/alias NOT in the quote: pool …A076B5 role_kestrel_fullstack req_kestrel_fullstack_06 «Automated Testing» NAME_EXACT ← «Automated Testing» quote ['bc5388f5ab'] shared tokens ['test', 'unit']
+  name/alias NOT in the quote: pool …A076B5 role_kestrel_fullstack req_kestrel_fullstack_08 «Web Platform Engineering» NAME_EXACT ← «Web Platform Engineering» quote ['e156ec9e97'] shared tokens ['web']
+  name/alias NOT in the quote: pool …276294 role_tessaro_qa_automation req_tessaro_qa_automation_01 «Test Automation» NAME_ALIAS ← «Automated Testing» quote ['bc5388f5ab'] shared tokens ['test']
+
+Reading (PINK): every quote exists verbatim in the PDF text and belongs to the named proposal (mechanically 52/52, 27/27).
+Carrying: in 49/52 (PERSON) the requirement name or an alias is in the quote. The 3 rest:
+  - «Backend Development» ×2 ← «TypeScript and Node.js Backend Development»: the quote names TypeScript / Node.js / services; 'backend'
+    is only in the model-given proposal name — plausible, but the quote does not say it.
+  - «Dimensional and Domain Data Modeling» ← «Dimensional Data Modeling»: the quote carries the dimensional part, not 'domain'.
+  PxJ (negative control): «Web Platform Engineering» NAME_EXACT rests on a profile summary sentence; «Automated Testing» EXACT and
+  «Test Automation» ALIAS rest on a test-driven-development / unit-coverage sentence — carried, but the EXACT name exists only because
+  the scoped proposal was named after the requirement (G-3).

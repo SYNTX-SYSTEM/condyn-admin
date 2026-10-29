@@ -1,0 +1,83 @@
+PINK §3.74 · measurements (c1954ca on recovery/role-discovery; STAND_IN only, no Gemini).
+
+== route probe (DETERMINISTIC on a disposable DB via test:isolated; route handlers called directly; stand-in calls counted on the provider prototype)
+   inactiveUpload             "refused JobPoolError: ERR_JOB_POOL_SCHEMA_INVALID: The upload does not match the Company"
+   fixture                    {"personAnalysis": true, "rolesP1": 9, "rolesAll": 73, "pools": 3, "planP1": {"cacheVersion": "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", "engineVersionHash": "24a0e181792eace9089ce4d19cea6870d899b0e316893be63e54354e4d0f0147", "state": "PLANNED", "executable": true, "cacheIssue": null, "pairs": 79, "cachedPairs": 0, "pendingPairs": 79, "callsNeeded": 9, "roles": [{"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_backend_interop", "pairs": 9, "cachedPairs": 0, "pendingPairs": 9}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_principal_architect", "pairs": 10, "cachedPairs": 0, "pendingPairs": 10}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_security_engineer", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_backend_ledger", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_cloud_platform", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_devops", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_engineering_lead", "pairs": 9, "cachedPairs": 0, "pendingPairs": 9}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_frontend_architect", "pairs": 10, "cachedPairs": 0, "pendingPairs": 10}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_fullstack", "pairs": 9, "cachedPairs": 0, "pendingPairs": 9}]}}
+   config                     {"none": "NOT_CONFIGURED", "gemini": "PROVIDER_NOT_AUTHORIZED", "STAND-IN upper": "PROVIDER_NOT_AUTHORIZED", "' stand-in ' padded": "READY day 1000 max 10", "day abc": "READY day 1000 max 10", "day -1": "READY day 1000 max 10", "day empty": "READY day 0 max 10", "day 2.5": "READY day 1000 max 10", "day 1e9": "READY day 100000 max 10", "max 100": "READY day 1000 max 25", "max 0": "READY day 1000 max 1", "max abc": "READY day 1000 max 10"}
+   reads                      {"before": {"calls": 0, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0, "ledgerReleased": 0}, "after": {"calls": 0, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0, "ledgerReleased": 0}, "unchanged": true, "geminiConfiguredReadPlan": "ENGINE_NOT_SPECIFIED", "unknownInvestigation": 404, "malformedInvestigation": 404}
+   refusals (status code; CALLS! would mark a call):
+      not configured                           409 ERR_SEMANTIC_ENGINE_NOT_CONFIGURED
+      provider gemini                          409 ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED
+      non-JSON                                 400 ERR_INVESTIGATION_BODY_INVALID
+      array body                               400 ERR_INVESTIGATION_BODY_INVALID
+      null body                                400 ERR_INVESTIGATION_BODY_INVALID
+      roles not array                          400 ERR_INVESTIGATION_BODY_INVALID
+      empty roles                              400 ERR_INVESTIGATION_ROLES_INVALID
+      role extra fields only                   400 ERR_INVESTIGATION_BODY_INVALID
+      missing jobPoolUploadIds                 400 ERR_INVESTIGATION_BODY_INVALID
+      duplicate role                           400 ERR_INVESTIGATION_ROLES_INVALID
+      role id padded                           400 ERR_INVESTIGATION_BODY_INVALID
+      role id other case                       400 ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY
+      unknown role                             400 ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY
+      role of a pool not released              400 ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY
+      role of P1 under another upload id       400 ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY
+      unknown pool                             404 ERR_ROLE_DISCOVERY_POOL_NOT_FOUND
+      inactive pool                            404 ERR_ROLE_DISCOVERY_POOL_NOT_FOUND
+      duplicate pool ids                       400 ERR_ROLE_DISCOVERY_POOLS_INVALID
+      11 pools                                 400 ERR_ROLE_DISCOVERY_POOLS_INVALID
+      no pools                                 400 ERR_ROLE_DISCOVERY_POOLS_REQUIRED
+      PxJ operand                              409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON
+      unknown analysis                         404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND
+      confirmedCalls wrong (1)                 409 ERR_INVESTIGATION_CALLS_NOT_CONFIRMED callsNeeded=2
+      confirmedCalls high (99)                 409 ERR_INVESTIGATION_CALLS_NOT_CONFIRMED callsNeeded=2
+      confirmedCalls -2                        409 ERR_INVESTIGATION_CALLS_NOT_CONFIRMED callsNeeded=2
+      confirmedCalls '2'                       400 ERR_INVESTIGATION_BODY_INVALID
+      confirmedCalls 2.5                       400 ERR_INVESTIGATION_BODY_INVALID
+      confirmedCalls missing                   400 ERR_INVESTIGATION_BODY_INVALID
+      clientRequestId empty                    400 ERR_INVESTIGATION_BODY_INVALID
+      clientRequestId padded                   400 ERR_INVESTIGATION_BODY_INVALID
+      clientRequestId number                   400 ERR_INVESTIGATION_BODY_INVALID
+      26 roles, max 100 configured             400 ERR_INVESTIGATION_TOO_MANY_ROLES max=25
+      11 roles, default max                    400 ERR_INVESTIGATION_TOO_MANY_ROLES max=10
+   refusalsWroteNothing       true
+   refusalsSnap               {"calls": 0, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0, "ledgerReleased": 0}
+   contentType                {"textPlain": "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED", "none": "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED"}
+   first                      {"status": 201, "created": true, "evidenceClass": "STAND_IN", "inv": "COMPLETED", "provider": "stand-in", "tasks": ["SUCCEEDED/9/9", "SUCCEEDED/10/10"], "run": "COMPLETED", "calls": 2, "ledger": [4, 4], "relationsAdded": 19, "keys": ["success", "created", "evidenceClass", "investigation", "tasks", "run"], "textLeaks": []}
+   repeat                     {"same body": {"status": 200, "created": false, "code": null, "sameInvestigation": true, "evidenceClass": null, "nothingWritten": true, "textLeaks": []}, "same body, confirmedCalls now 0": {"status": 200, "created": false, "code": null, "sameInvestigation": true, "evidenceClass": null, "nothingWritten": true, "textLeaks": []}, "same body, confirmedCalls 99": {"status": 200, "created": false, "code": null, "sameInvestigation": true, "evidenceClass": null, "nothingWritten": true, "textLeaks": []}, "roles reversed": {"status": 200, "created": false, "code": null, "sameInvestigation": true, "evidenceClass": null, "nothingWritten": true, "textLeaks": []}, "extra unknown field": {"status": 200, "created": false, "code": null, "sameInvestigation": true, "evidenceClass": null, "nothingWritten": true, "textLeaks": []}}
+   getInvestigation           {"status": 200, "keys": ["success", "investigation", "tasks"], "invKeys": ["investigationId", "analysisId", "provider", "engineVersionHash", "status", "createdAt", "updatedAt"], "taskKeys": ["jobPoolUploadId", "poolRoleId", "status", "errorCode", "pairs", "stored"], "evidenceClass": null, "textLeaks": [], "foreignAnalysis": 404}
+   readAfterRun               {"textLeaks": [], "plan": {"cacheVersion": "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", "engineVersionHash": "24a0e181792eace9089ce4d19cea6870d899b0e316893be63e54354e4d0f0147", "state": "PLANNED", "executable": true, "cacheIssue": null, "pairs": 79, "cachedPairs": 19, "pendingPairs": 60, "callsNeeded": 7, "roles": [{"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_backend_interop", "pairs": 9, "cachedPairs": 9, "pendingPairs": 0}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_principal_architect", "pairs": 10, "cachedPairs": 10, "pendingPairs": 0}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_aurelion_security_engineer", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_backend_ledger", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_cloud_platform", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_brightwater_devops", "pairs": 8, "cachedPairs": 0, "pendingPairs": 8}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_engineering_lead", "pairs": 9, "cachedPairs": 0, "pendingPairs": 9}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_frontend_architect", "pairs": 10, "cachedPairs": 0, "pendingPairs": 10}, {"jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5", "poolRoleId": "role_kestrel_fullstack", "pairs": 9, "cachedPairs": 0, "pendingPairs": 9}]}}
+   race                       {"statuses": ["200:false", "201:true", "200:false", "200:false", "200:false", "200:false", "200:false", "200:false"], "createdCount": 1, "ids": 1, "calls": 2, "investigationsAdded": 1, "tasksAdded": 2}
+   raceDifferentRequests      {"statuses": ["201:true:SUCCEEDED,SUCCEEDED", "201:true:SUCCEEDED,SUCCEEDED"], "calls": 4, "relationsAdded": 16}
+   reuse                      {"staleConfirmation": "409 ERR_INVESTIGATION_CALLS_NOT_CONFIRMED callsNeeded=0", "status": 201, "tasks": ["CACHED", "CACHED"], "inv": "COMPLETED", "calls": 0, "ledgerReservedAdded": 0, "relationsAdded": 0}
+   dayLimitZero               {"status": 201, "tasks": ["BUDGET_EXHAUSTED", "CANCELLED", "CANCELLED"], "inv": "FAILED", "calls": 0, "relationsAdded": 0, "ledgerReservedAdded": 0}
+   dayLimitExhaustedMidRun    {"dayUsedBefore": 8, "limit": 9, "tasks": ["SUCCEEDED", "BUDGET_EXHAUSTED", "CANCELLED"], "runOrder": ["SUCCEEDED", "BUDGET_EXHAUSTED", "CANCELLED"], "inv": "PARTIAL", "calls": 1, "relationsAdded": 9}
+   failingRoleKeepsEarlier    {"runOrder": ["SUCCEEDED", "FAILED:ERR_PROVIDER_TIMEOUT", "SUCCEEDED"], "inv": "PARTIAL", "calls": 3, "relationsAdded": 15, "ledger": [6, 4, 2], "textLeaks": []}
+   storedIdentities           {"investigations": ["stand-in:8"], "relations": ["relation_key", "proposal_content_hash", "requirement_content_hash", "engine_version_hash", "relation_state", "authority_state", "record_json", "created_at"], "relationProviders": "no provider column", "relationRecordProviders": ["stand-in:75"]}
+   totalCalls                 12
+   note: ledger sums cover both scopes (DAY and INV), so one call reserves 2 units in the sum; inactiveUpload: the pool schema refuses an
+         INACTIVE pool at upload, so 'inactive pool' ran into ERR_ROLE_DISCOVERY_POOL_NOT_FOUND (inactive path not exercised here)
+
+== stand-in production lab :41873 on c1954ca (ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in; counts read from the lab's own disposable DB)
+   {"phase": "count", "at": {"geminiStandInCalls": 6, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0}}
+   {"phase": "count", "at": {"geminiStandInCalls": 6, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0}}
+   {"phase": "start", "at": {"geminiStandInCalls": 6, "relation_investigations": 0, "relation_role_tasks": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0, "ledgerReserved": 0, "ledgerConsumed": 0}, "post": {"headers": "start", "status": 201, "created": true, "evidenceClass": "STAND_IN", "inv": "COMPLETED", "tasks": ["SUCCEEDED"], "confirmed": 1, "textLeak": false}, "getInvestigation": {"status": 200, "textLeak": false}, "pxjPost": "409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON", "after": {"geminiStandInCalls": 6, "relation_investigations": 1, "relation_role_tasks": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 108, "ledgerReserved": 2, "ledgerConsumed": 2}}
+   {"phase": "count", "at": {"geminiStandInCalls": 6, "relation_investigations": 1, "relation_role_tasks": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 108, "ledgerReserved": 2, "ledgerConsumed": 2}}
+   {"phase": "csrf", "at": {"geminiStandInCalls": 6, "relation_investigations": 1, "relation_role_tasks": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 108, "ledgerReserved": 2, "ledgerConsumed": 2}, "post": {"headers": "csrf", "status": 201, "created": true, "evidenceClass": "STAND_IN", "inv": "COMPLETED", "tasks": ["SUCCEEDED"], "confirmed": 1, "textLeak": false}, "pxjPost": "409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON", "after": {"geminiStandInCalls": 6, "relation_investigations": 2, "relation_role_tasks": 2, "relation_call_ledger": 3, "proposal_requirement_relations": 228, "ledgerReserved": 4, "ledgerConsumed": 4}}
+   rd-ui 1920: semantic line 'Semantic check: not executed · 0 of 948 pairs in the relation cache · would need 9 calls · not started'; wording {"notSemanticHeader": true, "notExecuted": true, "forbidden": ["scored", "ranking"], "semanticPositive": []}; reload/forward equal True/True; handover PERSON_X_JOB non-GET 0; blocked 0
+   rd-ui 1280: semantic line 'Semantic check: not executed · 108 of 948 pairs in the relation cache · would need 8 calls · not started'; wording {"notSemanticHeader": true, "notExecuted": true, "forbidden": ["scored", "ranking"], "semanticPositive": []}; reload/forward equal True/True; handover PERSON_X_JOB non-GET 0; blocked 0
+   order: count → rd-ui 1920 (panel, release, trace, reload, Back/Forward, handover) → count → explicit HTTP start (positive control) → rd-ui 1280 → count → cross-site text/plain POST
+
+== static
+   tsc c1954ca (without PINK scratch probes) errors 0
+   job-pool group c1954ca run 1  Test Files 27 passed (27) · Tests 287 passed | 4 skipped (291)
+   job-pool group c1954ca run 2  Test Files 27 passed (27) · Tests 287 passed | 4 skipped (291)
+   job-pool group 3231136        Test Files 27 passed (27) · Tests 287 passed | 4 skipped (291)   (GELB's red run not reproduced)
+   3231136 route test file alone Test Files 1 passed (1) · Tests 5 passed (5)
+   writers first (relation-cache, store, role-discovery, role-investigation): 3231136 Test Files 4 passed (4) · Tests 28 passed (28) · c1954ca Test Files 4 passed (4) · Tests 28 passed (28)
+   vitest.config: fileParallelism false, singleThread — files run one after another on one disposable DB, so before / after comparisons are stable
+
+== CODE_INSPECTION
+   no file outside app/api calls role-discovery/investigations (git grep c1954ca -- app components lib ':!app/api')
+   POST: no content-type or origin check (request.json() parses any body); same for every POST route of the app (no middleware)
+   POST runs the whole investigation inside the request; the provider is always new StandInSemanticProvider(); config READY only for 'stand-in'
+   replay (line 81 / 93) and GET investigation return no evidenceClass; the creating 201 returns evidenceClass STAND_IN
