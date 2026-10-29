@@ -1,0 +1,79 @@
+/* GELB isolated proof for owner "SYNTX::SFE::OWNER_DIRECTIVE — CAPABILITY_TO_JOBPOOL_DISCOVERY" §06.5.
+ * One source (the analysed PDF) → its PERSON capability proposals (persisted real result, no new model call) → every role of every
+ * listed pool → per requirement: relation basis, proposal, evidence, source → inverse check of every covered requirement down to the
+ * exact quote in the source text. Deterministic name coverage only (the existing findSweepCoverage, the B2 rule): no score, no
+ * semantic relation, no ranking. GET only against a disposable lab copy.
+ * argv: <repo root> <base url> <analysisId> <source text file> <out json> */
+import { readFileSync, writeFileSync } from "node:fs";
+const [ROOT, BASE, ANALYSIS, SOURCE_TEXT, OUT] = process.argv.slice(2);
+const { findSweepCoverage } = await import(`${ROOT}/lib/career/job-pool/presentation-matching.ts`);
+const get = async (path: string) => { const r = await fetch(`${BASE}${path}`, { cache: "no-store" }); if (r.status !== 200) throw new Error(`${path} → ${r.status}`); return r.json(); };
+const norm = (s: string) => s.normalize("NFKC").replace(/[‐-―]/g, "-").replace(/\s+/g, " ").trim();
+const sourceText = norm(readFileSync(SOURCE_TEXT, "utf8"));
+
+const analysis = await get(`/api/career/analyses/${ANALYSIS}`);
+const investigation = (await get(`/api/career/analyses/${ANALYSIS}/investigation`)).investigation;
+const projection = analysis.capabilityProposalProjection;
+if (!projection || !Array.isArray(projection.capabilities)) throw new Error("no capability proposal projection");
+const proposals = projection.capabilities.map((c: any) => ({ id: c.id, name: c.name, scope: c.scope, evidence: (c.evidence ?? []).map((e: any) => ({ sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote })) }));
+const byId = new Map(proposals.map((p: any) => [p.id, p]));
+
+const pools = ((await get("/api/career/job-pools")).jobPools ?? []) as Array<{ jobPoolUploadId: string; poolName: string }>;
+const roles: any[] = [];
+const inverse = { checked: 0, proposalFound: 0, quoteInProjection: 0, quoteInSource: 0, failures: [] as any[] };
+for (const summary of pools) {
+  const view = await get(`/api/career/job-pools/${summary.jobPoolUploadId}`);
+  const pool = view.pool, mapping = view.canonicalMapping;
+  const mapByReq = new Map<string, any>();
+  for (const role of mapping.roles) for (const req of role.requirements) mapByReq.set(req.poolRequirementId, req);
+  for (const role of pool.roles) {
+    const organization = pool.organizations.find((o: any) => o.id === role.organization_id);
+    const requirements = pool.requirements.filter((r: any) => r.role_id === role.id).map((r: any) => {
+      const m = mapByReq.get(r.id) ?? {};
+      const cov = proposals.length ? findSweepCoverage(r, proposals) : null;
+      const relation = cov === null ? "NO_NAME_RELATION" : cov.matchBasis === "TOKEN_CONTAINMENT" ? "WEAK_TOKEN_CONTAINMENT" : `NAME_${cov.matchBasis}`;
+      if (cov) {
+        inverse.checked += 1;
+        const p: any = byId.get(cov.capabilityProposalId);
+        if (p) inverse.proposalFound += 1;
+        const quotes = cov.evidence.map((e: any) => e.quote ?? e.exactQuote);
+        const inProj = p && quotes.every((q: string) => p.evidence.some((e: any) => e.exactQuote === q));
+        if (inProj) inverse.quoteInProjection += 1;
+        const inSrc = quotes.length > 0 && quotes.every((q: string) => sourceText.includes(norm(q)));
+        if (inSrc) inverse.quoteInSource += 1;
+        if (!p || !inProj || !inSrc) inverse.failures.push({ pool: summary.jobPoolUploadId, role: role.id, requirement: r.id, proposal: cov.capabilityProposalId, inProj, inSrc });
+      }
+      return {
+        poolRequirementId: r.id, capabilityName: r.capability_name, aliases: r.aliases ?? [], necessity: r.necessity ?? "UNDECLARED",
+        requirementType: r.requirement_type ?? "CAPABILITY", matchingEligibility: m.matchingEligibility ?? null,
+        relation, proposal: cov ? { id: cov.capabilityProposalId, name: cov.name, constituent: cov.matchedConstituent } : null,
+        evidence: cov ? cov.evidence.map((e: any) => ({ sourceDocumentId: e.docId ?? e.sourceDocumentId, quote: e.quote ?? e.exactQuote })) : []
+      };
+    });
+    const count = (pred: (x: any) => boolean) => requirements.filter(pred).length;
+    const strong = count(x => x.relation.startsWith("NAME_")), weak = count(x => x.relation === "WEAK_TOKEN_CONTAINMENT");
+    const required = requirements.filter(x => x.necessity === "REQUIRED");
+    const status = requirements.length === 0 ? "NO_REQUIREMENTS" : strong + weak === 0 ? "NO_RELATION" : strong === requirements.length ? "ALL_REQUIREMENTS_NAME_RELATED" : "PARTIAL";
+    roles.push({
+      jobPoolUploadId: summary.jobPoolUploadId, poolName: summary.poolName, poolOrganizationId: role.organization_id, organizationName: organization?.name ?? null,
+      poolRoleId: role.id, title: role.title, status,
+      counts: { requirements: requirements.length, nameRelated: strong, weakTokenOnly: weak, open: requirements.length - strong - weak, requiredOpen: required.filter(x => x.relation === "NO_NAME_RELATION").length, required: required.length },
+      requirements
+    });
+  }
+}
+const titleCount = new Map<string, number>(); for (const r of roles) titleCount.set(r.title, (titleCount.get(r.title) ?? 0) + 1);
+const idCount = new Map<string, number>(); for (const r of roles) idCount.set(r.poolRoleId, (idCount.get(r.poolRoleId) ?? 0) + 1);
+const byStatus: Record<string, number> = {}; for (const r of roles) byStatus[r.status] = (byStatus[r.status] ?? 0) + 1;
+const out = {
+  proof: "CAPABILITY_TO_JOBPOOL_DISCOVERY isolated proof (GELB)",
+  evidenceClass: "DETERMINISTIC computation on PERSISTED_REAL_RESULT (no new model call)",
+  authority: { scored: false, ranking: false, comparisonBasis: "CAPABILITY_PROPOSAL_NAME_COVERAGE (findSweepCoverage, B2 rule)", semanticRelation: "NOT_EVALUATED", decision: false },
+  analysis: { analysisId: ANALYSIS, mode: investigation.mode, jobScopeSelection: investigation.jobScopeSelection ?? null, projectionState: projection.projectionState, evidenceState: projection.evidenceState, proposals: proposals.map((p: any) => ({ id: p.id, name: p.name, scope: p.scope, evidence: p.evidence.length })) },
+  pools: pools.map(p => ({ jobPoolUploadId: p.jobPoolUploadId, poolName: p.poolName })),
+  totals: { roles: roles.length, requirements: roles.reduce((n, r) => n + r.counts.requirements, 0), byStatus, duplicateTitles: [...titleCount].filter(([, n]) => n > 1).map(([t, n]) => ({ title: t, n })), duplicateRoleIdsAcrossPools: [...idCount].filter(([, n]) => n > 1).map(([id, n]) => ({ id, n })) },
+  inverse,
+  roles
+};
+writeFileSync(OUT, JSON.stringify(out, null, 1));
+console.log(JSON.stringify({ analysis: out.analysis.analysisId, mode: out.analysis.mode, proposals: proposals.length, pools: pools.length, ...out.totals, inverse: { ...inverse, failures: inverse.failures.length } }, null, 1));

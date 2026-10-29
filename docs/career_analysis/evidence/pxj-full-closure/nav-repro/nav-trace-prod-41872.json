@@ -1,0 +1,119 @@
+[
+ {
+  "label": "deep",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY",
+  "field": "CAPABILITY",
+  "obs": null,
+  "first": "AVAILABLE",
+  "len": 2,
+  "log": [
+   {
+    "at": 846,
+    "m": "replaceState",
+    "url": "focus=CAPABILITY Organi=- RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0310.js:2:10916 | at ik (http://127.0.0.1:41872/_next/static/chunks/c185a74a-b7b97900af8ae2a2.js:1:92673) | at uu (http://127.0.0.1:41872/_next/static/chunks/c185a74a-b7b97900af8ae2a2.js:1:108581)"
+   }
+  ]
+ },
+ {
+  "label": "click field toggle",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+  "field": "FIELD",
+  "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+  "first": null,
+  "len": 3,
+  "log": [
+   {
+    "at": 4952,
+    "m": "pushState",
+    "url": "focus=FIELD Organi=- RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.pushState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0 | at aw (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js | at eK (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js"
+   }
+  ]
+ },
+ {
+  "label": "open role2",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect",
+  "field": "FIELD",
+  "obs": "ROLE:role_kestrel_frontend_architect",
+  "first": null,
+  "len": 5,
+  "log": [
+   {
+    "at": 8188,
+    "m": "pushState",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.pushState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0 | at aw (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js | at e$ (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js"
+   },
+   {
+    "at": 10887,
+    "m": "pushState",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=role_kestrel_frontend_architect ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.pushState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0 | at aw (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js | at e$ (http://127.0.0.1:41872/_next/static/chunks/app/career/demo/page-aa5cd021e127effc.js"
+   }
+  ]
+ },
+ {
+  "label": "BACK 1",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel",
+  "field": "FIELD",
+  "obs": "ORGANIZATION:org_kestrel",
+  "first": null,
+  "len": 5,
+  "log": [
+   {
+    "at": 13994,
+    "m": "POPSTATE",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB"
+   },
+   {
+    "at": 14127,
+    "m": "replaceState",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.replaceState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb11 | at http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0310.js:2:10916 | at ik (http://127.0.0.1:41872/_next/static/chunks/c185a74a-b7b97900af8ae2a2.js:1:92673)"
+   }
+  ]
+ },
+ {
+  "label": "BACK 2",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD",
+  "field": "FIELD",
+  "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+  "first": null,
+  "len": 5,
+  "log": [
+   {
+    "at": 17021,
+    "m": "POPSTATE",
+    "url": "focus=FIELD Organi=- RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB"
+   },
+   {
+    "at": 17079,
+    "m": "replaceState",
+    "url": "focus=FIELD Organi=- RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.replaceState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb11 | at http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0310.js:2:10916 | at ik (http://127.0.0.1:41872/_next/static/chunks/c185a74a-b7b97900af8ae2a2.js:1:92673)"
+   }
+  ]
+ },
+ {
+  "label": "FWD 1",
+  "url": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel",
+  "field": "FIELD",
+  "obs": "ORGANIZATION:org_kestrel",
+  "first": null,
+  "len": 5,
+  "log": [
+   {
+    "at": 20032,
+    "m": "POPSTATE",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB"
+   },
+   {
+    "at": 20076,
+    "m": "replaceState",
+    "url": "focus=FIELD Organi=org_kestrel RoleId=- ScopeR=role_kestrel_fullstack invest=PERSON_X_JOB",
+    "stack": "at window.history.replaceState (http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb11 | at http://127.0.0.1:41872/_next/static/chunks/9826-8fa208bb110d0310.js:2:10916 | at ik (http://127.0.0.1:41872/_next/static/chunks/c185a74a-b7b97900af8ae2a2.js:1:92673)"
+   }
+  ]
+ }
+]

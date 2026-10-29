@@ -1,0 +1,28 @@
+// GELB trace: every history write and popstate in the A sequence (first document = owner deep link). argv: <base> <out>
+import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const [BASE, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack", ROLE2 = "role_kestrel_frontend_architect", ANL = "ANL_1792628993472_10";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } });
+await ctx.addInitScript(() => {
+  try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {}
+  const log = []; window.__navlog = log; const short = u => { try { const x = new URL(u, location.href); const p = x.searchParams; return ["focus", "jobOrganizationId", "jobRoleId", "jobScopeRoleId", "investigationMode"].map(k => `${k.replace("job", "").slice(0, 6)}=${p.get(k) ?? "-"}`).join(" "); } catch { return String(u); } };
+  for (const m of ["pushState", "replaceState"]) { const orig = history[m].bind(history); history[m] = function (s, t, u) { log.push({ at: Math.round(performance.now()), m, url: u === undefined ? "(same)" : short(u), stack: (new Error().stack || "").split("\n").slice(2, 5).map(l => l.trim().slice(0, 90)).join(" | ") }); return orig(s, t, u); }; }
+  addEventListener("popstate", () => log.push({ at: Math.round(performance.now()), m: "POPSTATE", url: short(location.href) }));
+});
+const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+const OBS = () => { const q = s => document.querySelector(s); const root = q('[data-testid="semantic-career-intelligence-field"]'), f = q('[data-testid="syntx-field"]'), p = q('[data-testid="pxj-first-screen"]'); return { field: root?.dataset.fieldFocus, obs: f ? `${f.dataset.observationKind}:${f.dataset.observationId ?? ""}` : null, first: p?.dataset.state ?? null, len: history.length }; };
+const steps = [];
+const snap = async label => { await page.waitForLoadState("networkidle").catch(() => {}); await sleep(3000); const o = await page.evaluate(OBS); const log = await page.evaluate(() => window.__navlog.splice(0)); steps.push({ label, url: new URL(page.url()).search, ...o, log }); };
+const openRole = async role => { for (let i = 0; i < 6; i += 1) { await t(`syntx-role-${role}`).first().dispatchEvent("click"); try { await page.waitForFunction(r => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === r, role, { timeout: 2500 }); return; } catch {} } };
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisId=${ANL}&focus=CAPABILITY`, { waitUntil: "networkidle" }); await snap("deep");
+await t("job-pool-panel-toggle").click(); await snap("click field toggle");
+await openRole(ROLE2); await snap("open role2");
+await page.goBack(); await snap("BACK 1");
+await page.goBack(); await snap("BACK 2");
+await page.goForward(); await snap("FWD 1");
+writeFileSync(OUT, JSON.stringify(steps, null, 1));
+for (const s of steps) { console.log(`## ${s.label} len=${s.len} field=${s.field} obs=${s.obs} first=${s.first}\n   url ${s.url.slice(0, 200)}`); for (const l of s.log) console.log(`   ${l.at} ${l.m} ${l.url}${l.stack ? "  <- " + l.stack.slice(0, 160) : ""}`); }
+await b.close();

@@ -1,0 +1,19 @@
+import { pathToFileURL } from "node:url";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const [URL_, OUT] = process.argv.slice(2);
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 640, height: 360 }, deviceScaleFactor: 2 });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const p = await ctx.newPage(); await p.goto(URL_, { waitUntil: "networkidle" });
+await p.waitForFunction(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state === "AVAILABLE", null, { timeout: 60000 }); await p.waitForTimeout(1500);
+const info = await p.evaluate(() => { const rows = [...document.querySelectorAll('[data-testid^="pxj-first-req-"]')].map(e => { const r = e.getBoundingClientRect(); return { id: e.dataset.testid.slice(-2), h: Math.round(r.height), top: Math.round(r.top) }; }); const panel = document.querySelector('[data-testid="pxj-first-screen"]'); const cs = getComputedStyle(panel); return { rows, panel: { oy: cs.overflowY, sh: panel.scrollHeight, ch: panel.clientHeight }, page: { sh: document.scrollingElement.scrollHeight, ch: innerHeight } }; });
+console.log(JSON.stringify(info));
+// wheel the page in 60 px steps; every row must at some step be fully in view and hit at its centre
+const seen = {};
+for (let i = 0; i < 60; i += 1) {
+  const st = await p.evaluate(() => [...document.querySelectorAll('[data-testid^="pxj-first-req-"]')].map(e => { const r = e.getBoundingClientRect(); const full = r.top >= 0 && r.bottom <= innerHeight; const hit = full ? document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) : null; return [e.dataset.testid.slice(-2), full && !!hit && e.contains(hit)]; }));
+  for (const [id, ok] of st) if (ok) seen[id] = true;
+  await p.mouse.move(320, 200); await p.mouse.wheel(0, 60); await p.waitForTimeout(60);
+}
+console.log("rows fully in view and hit at some scroll step:", Object.keys(seen).sort().join(","), Object.keys(seen).length, "/ 9");
+await p.evaluate(() => document.querySelector('[data-testid="pxj-first-req-req_kestrel_fullstack_03"]').scrollIntoView({ block: "start" })); await p.waitForTimeout(300);
+await p.screenshot({ path: OUT }); await b.close();

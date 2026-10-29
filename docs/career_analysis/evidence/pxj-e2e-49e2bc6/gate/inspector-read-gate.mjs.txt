@@ -1,0 +1,87 @@
+// GELB inspector read gate (owner "SYNTX::SFE::OWNER_DECISION_G1" Q5: conditional architectural approval only).
+// One process under GELB's PID. Listens on 127.0.0.1 only and forwards exactly the allow-listed GET paths to one fixed
+// loopback upstream, adding the inspector token itself. The token is read from a 0600 file named in the config, never
+// taken from argv or the environment, never logged and never returned. Nothing else is forwarded: other paths, query
+// strings, methods, hosts and all client headers stay local. Start only on the owner's word.
+import http from "node:http";
+import { readFileSync, appendFileSync, writeFileSync, unlinkSync, statSync } from "node:fs";
+
+const LOOPBACK = "127.0.0.1";
+const TOKEN_HEADER = "x-condyn-result-inspector-token";
+const ALLOWED_SHAPE = /^\/api\/career\/(analyses\/ANL_[0-9]+_[0-9]+\/gemini-result|jobs\/JOB_[0-9]+_[0-9]+\/gemini-exchanges)$/;
+const refuse = code => { process.stderr.write(`[gate] refused: ${code}\n`); process.exit(2); };
+
+let config;
+try { config = JSON.parse(readFileSync(process.argv[2] ?? "", "utf8")); } catch { refuse("CONFIG_UNREADABLE"); }
+if (config.listenHost !== LOOPBACK) refuse("LISTEN_NOT_LOOPBACK");
+let upstream;
+try { upstream = new URL(config.upstream); } catch { refuse("UPSTREAM_INVALID"); }
+if (upstream.protocol !== "http:" || upstream.hostname !== LOOPBACK || !upstream.port || upstream.pathname !== "/" || upstream.search || upstream.username || upstream.password) refuse("UPSTREAM_NOT_LOOPBACK");
+if (!Number.isInteger(config.listenPort) || config.listenPort < 1024 || config.listenPort > 65535 || String(config.listenPort) === upstream.port) refuse("LISTEN_PORT_INVALID");
+if (!Array.isArray(config.allow) || config.allow.length < 1 || config.allow.length > 8 || !config.allow.every(path => typeof path === "string" && ALLOWED_SHAPE.test(path))) refuse("ALLOWLIST_INVALID");
+const allow = new Set(config.allow);
+const ttlSeconds = Number.isInteger(config.ttlSeconds) && config.ttlSeconds > 0 && config.ttlSeconds <= 86400 ? config.ttlSeconds : refuse("TTL_INVALID");
+const maxBytes = Number.isInteger(config.maxBytes) && config.maxBytes > 0 && config.maxBytes <= 64 * 1024 * 1024 ? config.maxBytes : refuse("MAX_BYTES_INVALID");
+for (const key of ["logFile", "pidFile", "tokenFile", "tokenKey"]) if (typeof config[key] !== "string" || config[key].length === 0) refuse(`${key.toUpperCase()}_INVALID`);
+
+let token = "";
+try {
+  if ((statSync(config.tokenFile).mode & 0o077) !== 0) refuse("TOKEN_FILE_MODE");
+  const value = JSON.parse(readFileSync(config.tokenFile, "utf8"))[config.tokenKey];
+  token = typeof value === "string" ? value : "";
+} catch { refuse("TOKEN_FILE_UNREADABLE"); }
+if (token.length < 32) refuse("TOKEN_INVALID");
+
+const log = entry => appendFileSync(config.logFile, `${JSON.stringify(entry)}\n`, { mode: 0o600 });
+
+const server = http.createServer((request, response) => {
+  const raw = request.url ?? "";
+  const entry = { t: new Date().toISOString(), method: String(request.method).slice(0, 16), path: raw.slice(0, 200), forwarded: false };
+  const local = (status, code) => {
+    response.writeHead(status, { "content-type": "application/json", "cache-control": "no-store" });
+    response.end(JSON.stringify({ gate: code }));
+    log({ ...entry, status, code });
+  };
+  // DNS-rebinding guard: only the literal loopback authority of this gate.
+  if (request.headers.host !== `${LOOPBACK}:${config.listenPort}`) return local(403, "HOST_REJECTED");
+  if (request.method !== "GET") return local(405, "METHOD_NOT_ALLOWED");
+  // Exact match on the raw request target: no decoding, no normalisation, no query, no absolute form.
+  if (!allow.has(raw)) return local(403, "PATH_NOT_ALLOWED");
+  // A fresh header set: no client header (cookie, authorization, a token of its own) ever reaches the upstream.
+  const forward = http.request({ host: LOOPBACK, port: Number(upstream.port), path: raw, method: "GET", headers: { accept: "application/json", [TOKEN_HEADER]: token }, timeout: 60000 }, upstreamResponse => {
+    response.writeHead(upstreamResponse.statusCode ?? 502, { "content-type": upstreamResponse.headers["content-type"] ?? "application/octet-stream", "cache-control": "no-store" });
+    let bytes = 0;
+    upstreamResponse.on("data", chunk => {
+      bytes += chunk.length;
+      if (bytes > maxBytes) { upstreamResponse.destroy(); response.destroy(); log({ ...entry, status: upstreamResponse.statusCode, forwarded: true, bytes, code: "TRUNCATED_MAX_BYTES" }); return; }
+      response.write(chunk);
+    });
+    upstreamResponse.on("end", () => { if (bytes <= maxBytes) { response.end(); log({ ...entry, status: upstreamResponse.statusCode, forwarded: true, bytes }); } });
+  });
+  forward.on("timeout", () => forward.destroy(new Error("timeout")));
+  forward.on("error", () => { if (!response.headersSent) local(502, "UPSTREAM_UNAVAILABLE"); else response.destroy(); });
+  forward.end();
+});
+// CONNECT and protocol upgrades are never served.
+server.on("connect", (_request, socket) => { socket.end("HTTP/1.1 405 Method Not Allowed\r\nconnection: close\r\ncontent-length: 0\r\n\r\n"); log({ t: new Date().toISOString(), method: "CONNECT", status: 405, forwarded: false, code: "METHOD_NOT_ALLOWED" }); });
+server.on("upgrade", (_request, socket) => { socket.end("HTTP/1.1 405 Method Not Allowed\r\nconnection: close\r\ncontent-length: 0\r\n\r\n"); });
+server.headersTimeout = 10000;
+server.requestTimeout = 70000;
+
+let closing = false;
+const shutdown = reason => {
+  if (closing) return; closing = true;
+  log({ t: new Date().toISOString(), event: "STOP", reason });
+  server.close(() => { try { unlinkSync(config.pidFile); } catch {} process.exit(0); });
+  server.closeAllConnections?.();
+  setTimeout(() => { try { unlinkSync(config.pidFile); } catch {} process.exit(0); }, 3000).unref();
+};
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
+server.on("error", error => refuse(error && error.code === "EADDRINUSE" ? "LISTEN_PORT_BUSY" : "LISTEN_FAILED"));
+server.listen(config.listenPort, LOOPBACK, () => {
+  writeFileSync(config.pidFile, JSON.stringify({ pid: process.pid, port: config.listenPort }), { mode: 0o600 });
+  log({ t: new Date().toISOString(), event: "START", pid: process.pid, port: config.listenPort, allow: [...allow], ttlSeconds });
+  setTimeout(() => shutdown("TTL"), ttlSeconds * 1000).unref();
+  process.stdout.write(`[gate] listening 127.0.0.1:${config.listenPort} · ${allow.size} paths · ttl ${ttlSeconds}s\n`);
+});

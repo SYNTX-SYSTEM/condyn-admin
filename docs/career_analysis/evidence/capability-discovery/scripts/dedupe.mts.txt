@@ -1,0 +1,7 @@
+// Distinct requirement contents across the released pools (GET only) → distinct relation pairs a cache would store.
+const [ROOT, BASE] = process.argv.slice(2);
+const { requirementContentHash } = await import(`${ROOT}/lib/career/job-pool/relation-cache.ts`);
+const pools = (await (await fetch(`${BASE}/api/career/job-pools`)).json()).jobPools;
+let total = 0; const hashes = new Set<string>(); const names = new Set<string>();
+for (const p of pools) { const v = await (await fetch(`${BASE}/api/career/job-pools/${p.jobPoolUploadId}`)).json(); for (const r of v.pool.requirements) { total += 1; hashes.add(requirementContentHash(r)); names.add(r.capability_name.toLowerCase()); } }
+console.log(JSON.stringify({ requirements: total, distinctRequirementContents: hashes.size, distinctNames: names.size, pairsPerAnalysisWith10Proposals: { total: total * 10, distinctCacheKeys: hashes.size * 10 } }));

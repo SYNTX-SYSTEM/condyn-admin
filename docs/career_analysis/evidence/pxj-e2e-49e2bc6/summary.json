@@ -1,0 +1,1103 @@
+{
+  "summaryVersion": "LIVE_GEMINI_VALIDATION_SUMMARY_V1",
+  "person": {
+    "analysisId": "ANL_1792628831636_456",
+    "jobId": "JOB_1792628831636_456",
+    "httpStatus": {
+      "analysis": 200,
+      "investigation": 200,
+      "geminiResult": 200,
+      "b2": 409
+    },
+    "analysisStatus": "VERIFIED",
+    "investigation": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792628831636_456",
+        "jobId": "JOB_1792628831636_456",
+        "mode": "PERSON",
+        "jobScopeSelection": null,
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_AD78E73E4C84D315317E8156",
+        "investigationScopeHash": null
+      }
+    },
+    "input": {
+      "mode": "PERSON",
+      "jobScopeSelection": null,
+      "scopeState": "UNSCOPED",
+      "scopeTextMatchesHash": null,
+      "scopeTextLength": null,
+      "inference": {
+        "provider": "gemini",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "kernel": "discovery-v1",
+      "discoveryRunId": "RUN_AD78E73E4C84D315317E8156",
+      "reused": false
+    },
+    "discoveryResponse": {
+      "state": "RETAINED",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "responseId": "XVjZav3nNcHT28oP2aW7wQo",
+      "finishReason": "STOP",
+      "usageMetadata": {
+        "promptTokenCount": 611,
+        "candidatesTokenCount": 1934,
+        "totalTokenCount": 5434,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 611
+          }
+        ],
+        "thoughtsTokenCount": 2889,
+        "serviceTier": "standard"
+      },
+      "textLength": 7093,
+      "textSha256": "1612634dc9178482c8147671b242f6ab3bf116ccce3dad3d24968273333db499",
+      "textMatchesSha256": true,
+      "parserResultMatchesText": true
+    },
+    "proposedByModel": [
+      {
+        "name": "TypeScript and Node.js Backend Development",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "React Frontend Development",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+        ]
+      },
+      {
+        "name": "PostgreSQL Database Design and Querying",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries."
+        ]
+      },
+      {
+        "name": "Test-Driven Development (TDD)",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%."
+        ]
+      },
+      {
+        "name": "CI/CD Pipeline Engineering",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "Engineering Leadership and Architecture Review",
+        "scope": "COMPOSITE",
+        "domain": "Engineering Management",
+        "level": null,
+        "confidence": 0.9,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "Python ETL Development",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Dimensional Data Modeling",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Modelled the dimensional data model for monthly carrier reports."
+        ]
+      },
+      {
+        "name": "Kubernetes Deployment",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Deployed services to a Kubernetes test cluster"
+        ]
+      },
+      {
+        "name": "Linux Administration",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "maintained Linux build agents."
+        ]
+      }
+    ],
+    "coverageAudit": {
+      "capability_count": 10,
+      "atomic_capability_count": 9,
+      "source_documents_examined": 1,
+      "attribution_pass_completed": true,
+      "composite_capability_count": 1,
+      "unresolved_target_operations": 0,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "segments_classified_as_external_source_content": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0,
+      "segments_classified_as_target_subject_operation": 10,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0
+    },
+    "verification": [
+      {
+        "name": "TypeScript and Node.js Backend Development",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "React Frontend Development",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "PostgreSQL Database Design and Querying",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Test-Driven Development (TDD)",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "CI/CD Pipeline Engineering",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Set up CI/CD pipelines with GitHub Actions and built Docker images for every service.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Engineering Leadership and Architecture Review",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Led a team of four engineers and ran the weekly architecture review.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Python ETL Development",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Dimensional Data Modeling",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Modelled the dimensional data model for monthly carrier reports.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Kubernetes Deployment",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Deployed services to a Kubernetes test cluster",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Linux Administration",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "maintained Linux build agents.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      }
+    ],
+    "convergence": {
+      "runId": "CONV_1FE8F5CB589FB1C9B00C3650",
+      "reconciliation": "PASSED",
+      "drafts": [
+        {
+          "name": "Dimensional Data Modeling",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Test-Driven Development (TDD)",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "PostgreSQL Database Design and Querying",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "CI/CD Pipeline Engineering",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "React Frontend Development",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "TypeScript and Node.js Backend Development",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Engineering Leadership and Architecture Review",
+          "scope": "COMPOSITE",
+          "members": 1
+        },
+        {
+          "name": "Kubernetes Deployment",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Python ETL Development",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Linux Administration",
+          "scope": "ATOMIC",
+          "members": 1
+        }
+      ],
+      "relations": 0,
+      "excluded": null
+    },
+    "projection": [
+      {
+        "name": "Dimensional Data Modeling",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Modelled the dimensional data model for monthly carrier reports."
+        ]
+      },
+      {
+        "name": "Test-Driven Development (TDD)",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%."
+        ]
+      },
+      {
+        "name": "PostgreSQL Database Design and Querying",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries."
+        ]
+      },
+      {
+        "name": "CI/CD Pipeline Engineering",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+        ]
+      },
+      {
+        "name": "React Frontend Development",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+        ]
+      },
+      {
+        "name": "TypeScript and Node.js Backend Development",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "Engineering Leadership and Architecture Review",
+        "scope": "COMPOSITE",
+        "domain": "Engineering Management",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Led a team of four engineers and ran the weekly architecture review."
+        ]
+      },
+      {
+        "name": "Kubernetes Deployment",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Deployed services to a Kubernetes test cluster"
+        ]
+      },
+      {
+        "name": "Python ETL Development",
+        "scope": "ATOMIC",
+        "domain": "Data Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Linux Administration",
+        "scope": "ATOMIC",
+        "domain": "DevOps",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "maintained Linux build agents."
+        ]
+      }
+    ],
+    "legacyAnalysis": {
+      "capabilities": [
+        {
+          "name": "TypeScript",
+          "confidence": 0.95,
+          "validation": "PASSED",
+          "quotes": [
+            "Built the customer billing platform in TypeScript and Node.js with Express"
+          ]
+        },
+        {
+          "name": "React",
+          "confidence": 0.95,
+          "validation": "PASSED",
+          "quotes": [
+            "Implemented the React dashboard used by 300 dispatchers"
+          ]
+        },
+        {
+          "name": "Python",
+          "confidence": 0.9,
+          "validation": "PASSED",
+          "quotes": [
+            "Wrote Python ETL jobs that load shipment events from Apache Kafka"
+          ]
+        }
+      ],
+      "counts": {
+        "roles": 2,
+        "domains": 0,
+        "documents": 1,
+        "strategies": 0,
+        "capabilities": 3,
+        "requirements": 0,
+        "opportunities": 0,
+        "organizations": 2,
+        "search_queries": 0,
+        "organization_classes": 0
+      }
+    },
+    "b2": {
+      "success": false,
+      "issues": [
+        {
+          "code": "ERR_JOB_COMPARISON_NOT_SCOPED"
+        }
+      ]
+    }
+  },
+  "personXJob": {
+    "analysisId": "ANL_1792628993472_10",
+    "jobId": "JOB_1792628993472_10",
+    "httpStatus": {
+      "analysis": 200,
+      "investigation": 200,
+      "geminiResult": 200,
+      "b2": 200
+    },
+    "analysisStatus": "VERIFIED",
+    "investigation": {
+      "success": true,
+      "investigation": {
+        "investigationVersion": "ANALYSIS_INVESTIGATION_V1",
+        "analysisId": "ANL_1792628993472_10",
+        "jobId": "JOB_1792628993472_10",
+        "mode": "PERSON_X_JOB",
+        "jobScopeSelection": {
+          "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+          "poolRoleId": "role_kestrel_fullstack"
+        },
+        "basis": "JOB_DECLARATION_AND_DISCOVERY_RUN",
+        "discoveryRunId": "RUN_6BB62BDC23F64FB4EA01E827",
+        "investigationScopeHash": "8016b7c10667d4720a01b2f2b24aff709b6bf77414385e376b113faf350870e7"
+      }
+    },
+    "input": {
+      "mode": "PERSON_X_JOB",
+      "jobScopeSelection": {
+        "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+        "poolRoleId": "role_kestrel_fullstack"
+      },
+      "scopeState": "RETAINED",
+      "scopeTextMatchesHash": true,
+      "scopeTextLength": 8626,
+      "inference": {
+        "provider": "gemini",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "kernel": "discovery-v1",
+      "discoveryRunId": "RUN_6BB62BDC23F64FB4EA01E827",
+      "reused": false
+    },
+    "discoveryResponse": {
+      "state": "RETAINED",
+      "modelVersion": "gemini-3.1-pro-preview",
+      "responseId": "_ljZarOMB7GFxs0PzJP2sQc",
+      "finishReason": "STOP",
+      "usageMetadata": {
+        "promptTokenCount": 3487,
+        "candidatesTokenCount": 1608,
+        "totalTokenCount": 7816,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 3487
+          }
+        ],
+        "thoughtsTokenCount": 2721,
+        "serviceTier": "standard"
+      },
+      "textLength": 5813,
+      "textSha256": "14c9bc24b7e1eae609144ed38ca3357072eb030754bda292c60ee30387c084c6",
+      "textMatchesSha256": true,
+      "parserResultMatchesText": true
+    },
+    "proposedByModel": [
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "level": "L4",
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Frontend",
+        "level": "L4",
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+        ]
+      },
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Backend",
+        "level": "L4",
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "level": "L3",
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries."
+        ]
+      },
+      {
+        "name": "Event-Driven Architecture",
+        "scope": "COMPOSITE",
+        "domain": "Software Architecture",
+        "level": "L3",
+        "confidence": 0.9,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "scope": "COMPOSITE",
+        "domain": "Quality Engineering",
+        "level": "L4",
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%."
+        ]
+      },
+      {
+        "name": "Web Platform Engineering",
+        "scope": "COMPOSITE",
+        "domain": "Software Engineering",
+        "level": null,
+        "confidence": 0.95,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "Senior software engineer with eight years of experience building web platforms and data pipelines in logistics."
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Communication",
+        "level": null,
+        "confidence": 0.99,
+        "evidenceMode": "EXPLICIT",
+        "quotes": [
+          "English (C1)."
+        ]
+      }
+    ],
+    "coverageAudit": {
+      "capability_count": 8,
+      "atomic_capability_count": 5,
+      "source_documents_examined": 1,
+      "attribution_pass_completed": true,
+      "composite_capability_count": 3,
+      "unresolved_target_operations": 0,
+      "atomic_extraction_pass_completed": true,
+      "method_capability_pass_completed": true,
+      "global_convergence_pass_completed": true,
+      "target_state_ownership_pass_completed": true,
+      "composite_reconstruction_pass_completed": true,
+      "inventory_reconciliation_pass_completed": true,
+      "final_reconciliation_produced_new_capabilities": false,
+      "segments_classified_as_external_source_content": 0,
+      "segments_excluded_due_to_attribution_ambiguity": 0,
+      "segments_classified_as_target_subject_operation": 8,
+      "segments_classified_as_target_organization_capability": 0,
+      "segments_classified_as_target_subject_designed_target_state": 0
+    },
+    "verification": [
+      {
+        "name": "TypeScript",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "React",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Node.js",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Event-Driven Architecture",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Automated Testing",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "Web Platform Engineering",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "Senior software engineer with eight years of experience building web platforms and data pipelines in logistics.",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      },
+      {
+        "name": "English",
+        "status": "EVIDENCE_PASSED",
+        "claims": [
+          {
+            "quote": "English (C1).",
+            "verdict": "VERIFIED",
+            "matchedDocId": "DOC_001"
+          }
+        ]
+      }
+    ],
+    "convergence": {
+      "runId": "CONV_A30D955F50347CB808FBE8FF",
+      "reconciliation": "PASSED",
+      "drafts": [
+        {
+          "name": "Automated Testing",
+          "scope": "COMPOSITE",
+          "members": 1
+        },
+        {
+          "name": "Node.js",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "PostgreSQL",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "Event-Driven Architecture",
+          "scope": "COMPOSITE",
+          "members": 1
+        },
+        {
+          "name": "Web Platform Engineering",
+          "scope": "COMPOSITE",
+          "members": 1
+        },
+        {
+          "name": "TypeScript",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "English",
+          "scope": "ATOMIC",
+          "members": 1
+        },
+        {
+          "name": "React",
+          "scope": "ATOMIC",
+          "members": 1
+        }
+      ],
+      "relations": 0,
+      "excluded": null
+    },
+    "projection": [
+      {
+        "name": "Automated Testing",
+        "scope": "COMPOSITE",
+        "domain": "Quality Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%."
+        ]
+      },
+      {
+        "name": "Node.js",
+        "scope": "ATOMIC",
+        "domain": "Backend",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "PostgreSQL",
+        "scope": "ATOMIC",
+        "domain": "Data",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries."
+        ]
+      },
+      {
+        "name": "Event-Driven Architecture",
+        "scope": "COMPOSITE",
+        "domain": "Software Architecture",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+        ]
+      },
+      {
+        "name": "Web Platform Engineering",
+        "scope": "COMPOSITE",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Senior software engineer with eight years of experience building web platforms and data pipelines in logistics."
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "scope": "ATOMIC",
+        "domain": "Software Engineering",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+        ]
+      },
+      {
+        "name": "English",
+        "scope": "ATOMIC",
+        "domain": "Communication",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "English (C1)."
+        ]
+      },
+      {
+        "name": "React",
+        "scope": "ATOMIC",
+        "domain": "Frontend",
+        "evidenceState": "EVIDENCE_PASSED",
+        "quotes": [
+          "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+        ]
+      }
+    ],
+    "legacyAnalysis": {
+      "capabilities": [
+        {
+          "name": "TypeScript and Node.js Development",
+          "confidence": 0.95,
+          "validation": "PASSED",
+          "quotes": [
+            "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+          ]
+        },
+        {
+          "name": "React Frontend Development",
+          "confidence": 0.9,
+          "validation": "PASSED",
+          "quotes": [
+            "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+          ]
+        },
+        {
+          "name": "Data Pipeline Engineering",
+          "confidence": 0.9,
+          "validation": "PASSED",
+          "quotes": [
+            "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "name": "Engineering Leadership",
+          "confidence": 0.95,
+          "validation": "PASSED",
+          "quotes": [
+            "Led a team of four engineers and ran the weekly architecture review."
+          ]
+        },
+        {
+          "name": "CI/CD and Containerization",
+          "confidence": 0.9,
+          "validation": "PASSED",
+          "quotes": [
+            "Set up CI/CD pipelines with GitHub Actions and built Docker images for every service."
+          ]
+        }
+      ],
+      "counts": {
+        "roles": 2,
+        "domains": 0,
+        "documents": 1,
+        "strategies": 0,
+        "capabilities": 5,
+        "requirements": 0,
+        "opportunities": 0,
+        "organizations": 2,
+        "search_queries": 0,
+        "organization_classes": 0
+      }
+    },
+    "b2": {
+      "counts": {
+        "requirements": 9,
+        "covered": 8,
+        "notCovered": 1,
+        "proposals": 8
+      },
+      "authority": {
+        "comparisonBasis": "CAPABILITY_PROPOSAL_NAME_COVERAGE",
+        "operand": "CAPABILITY_PROPOSAL_PROJECTION",
+        "scored": false,
+        "authorityState": "NONE",
+        "capabilityRequirementRelationState": "NOT_EVALUATED",
+        "reason": "VERIFIED_CAPABILITY_SNAPSHOT_ABSENT"
+      },
+      "requirements": [
+        {
+          "id": "req_kestrel_fullstack_01",
+          "capability": "TypeScript",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "TypeScript",
+          "quotes": [
+            "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_02",
+          "capability": "React",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "React",
+          "quotes": [
+            "Implemented the React dashboard used by 300 dispatchers, including accessibility fixes against WCAG 2.1."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_03",
+          "capability": "Node.js",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Node.js",
+          "quotes": [
+            "Built the customer billing platform in TypeScript and Node.js with Express; migrated 40 services to strict TypeScript."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_04",
+          "capability": "PostgreSQL",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "PostgreSQL",
+          "quotes": [
+            "Designed the PostgreSQL schema for orders and invoices and wrote complex SQL reporting queries."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_05",
+          "capability": "Event-Driven Architecture",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Event-Driven Architecture",
+          "quotes": [
+            "Wrote Python ETL jobs that load shipment events from Apache Kafka into the data warehouse."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_06",
+          "capability": "Automated Testing",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Automated Testing",
+          "quotes": [
+            "Introduced test-driven development with Jest and raised unit test coverage from 35% to 80%."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_07",
+          "capability": "Geospatial Visualisation",
+          "coverage": "NOT_COVERED",
+          "matchBasis": null,
+          "proposal": null,
+          "quotes": []
+        },
+        {
+          "id": "req_kestrel_fullstack_08",
+          "capability": "Web Platform Engineering",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "Web Platform Engineering",
+          "quotes": [
+            "Senior software engineer with eight years of experience building web platforms and data pipelines in logistics."
+          ]
+        },
+        {
+          "id": "req_kestrel_fullstack_09",
+          "capability": "English",
+          "coverage": "COVERED",
+          "matchBasis": "EXACT",
+          "proposal": "English",
+          "quotes": [
+            "English (C1)."
+          ]
+        }
+      ]
+    }
+  },
+  "exchanges": [
+    {
+      "jobId": "JOB_1792628831636_456",
+      "archive": "AVAILABLE",
+      "exchanges": [
+        {
+          "runId": "RUN_AD78E73E4C84D315317E8156",
+          "outcome": "COMPLETED",
+          "errorCode": null,
+          "attempt": {
+            "jobId": "JOB_1792628831636_456",
+            "leaseVersion": 1
+          },
+          "model": "gemini-3.1-pro-preview",
+          "scopeBlock": false,
+          "responseId": "XVjZav3nNcHT28oP2aW7wQo",
+          "finishReason": "STOP",
+          "textLength": 7093,
+          "textSha256": "1612634dc9178482c8147671b242f6ab3bf116ccce3dad3d24968273333db499",
+          "textMatchesSha256": true
+        }
+      ]
+    },
+    {
+      "jobId": "JOB_1792628993472_10",
+      "archive": "AVAILABLE",
+      "exchanges": [
+        {
+          "runId": "RUN_6BB62BDC23F64FB4EA01E827",
+          "outcome": "COMPLETED",
+          "errorCode": null,
+          "attempt": {
+            "jobId": "JOB_1792628993472_10",
+            "leaseVersion": 1
+          },
+          "model": "gemini-3.1-pro-preview",
+          "scopeBlock": true,
+          "responseId": "_ljZarOMB7GFxs0PzJP2sQc",
+          "finishReason": "STOP",
+          "textLength": 5813,
+          "textSha256": "14c9bc24b7e1eae609144ed38ca3357072eb030754bda292c60ee30387c084c6",
+          "textMatchesSha256": true
+        }
+      ]
+    }
+  ]
+}

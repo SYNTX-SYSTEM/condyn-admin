@@ -1,0 +1,121 @@
+// GELB security verification of the inspector read gate against a loopback double (no lab, no real token).
+import { spawn, execFileSync } from "node:child_process";
+import { writeFileSync, readFileSync, existsSync, mkdirSync, chmodSync, rmSync } from "node:fs";
+import { randomBytes } from "node:crypto";
+import net from "node:net";
+import path from "node:path";
+const [GATE, WORK] = process.argv.slice(2);
+rmSync(WORK, { recursive: true, force: true }); mkdirSync(WORK, { recursive: true, mode: 0o700 });
+const MOCK_PORT = 41897, GATE_PORT = 41898;
+const token = randomBytes(36).toString("base64url");            // dummy token, 48 chars, never the lab's
+const tokenFile = path.join(WORK, "state.json"); writeFileSync(tokenFile, JSON.stringify({ token }), { mode: 0o600 });
+const record = path.join(WORK, "mock-received.jsonl"); writeFileSync(record, "");
+const ALLOW = ["/api/career/analyses/ANL_1792628831636_456/gemini-result", "/api/career/analyses/ANL_1792628993472_10/gemini-result", "/api/career/jobs/JOB_1792628831636_456/gemini-exchanges", "/api/career/jobs/JOB_1792628993472_10/gemini-exchanges"];
+const baseConfig = { listenHost: "127.0.0.1", listenPort: GATE_PORT, upstream: `http://127.0.0.1:${MOCK_PORT}/`, allow: ALLOW, tokenFile, tokenKey: "token", logFile: path.join(WORK, "gate.log"), pidFile: path.join(WORK, "gate.pid"), ttlSeconds: 600, maxBytes: 32 * 1024 * 1024 };
+const writeConfig = (name, patch) => { const file = path.join(WORK, name); writeFileSync(file, JSON.stringify({ ...baseConfig, ...patch }), { mode: 0o600 }); return file; };
+const results = []; const check = (id, ok, detail) => { results.push({ id, ok: !!ok, detail }); };
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+const listening = port => execFileSync("ss", ["-ltnH", `sport = :${port}`]).toString().trim().split("\n").filter(Boolean).map(line => line.split(/\s+/)[3]);
+const raw = (port, text, host = "127.0.0.1") => new Promise(resolve => {
+  const socket = net.connect({ port, host }); let data = "";
+  socket.on("connect", () => socket.write(text)); socket.on("data", chunk => { data += chunk; }); socket.on("end", () => resolve({ data })); socket.on("close", () => resolve({ data }));
+  socket.on("error", error => resolve({ error: error.code })); socket.setTimeout(4000, () => { socket.destroy(); resolve({ data, timeout: true }); });
+});
+const get = (target, { method = "GET", host = `127.0.0.1:${GATE_PORT}`, headers = {}, version = "1.1" } = {}) => {
+  const lines = [`${method} ${target} HTTP/${version}`]; if (host !== null) lines.push(`host: ${host}`);
+  for (const [key, value] of Object.entries(headers)) lines.push(`${key}: ${value}`);
+  lines.push("connection: close", "", ""); return raw(GATE_PORT, lines.join("\r\n"));
+};
+const status = r => Number((r.data ?? "").match(/^HTTP\/1\.[01] (\d{3})/)?.[1] ?? 0);
+const received = () => readFileSync(record, "utf8").split("\n").filter(Boolean).map(line => JSON.parse(line));
+const responses = [];
+
+const mock = spawn(process.execPath, [new URL("./mock-inspector.mjs", import.meta.url).pathname, String(MOCK_PORT), tokenFile, record], { stdio: ["ignore", "pipe", "pipe"] });
+await wait(600);
+let gateOut = "";
+const gate = spawn(process.execPath, [GATE, writeConfig("config.json", {})], { stdio: ["ignore", "pipe", "pipe"], env: { PATH: process.env.PATH } });
+gate.stdout.on("data", c => { gateOut += c; }); gate.stderr.on("data", c => { gateOut += c; });
+await wait(800);
+
+// S1 loopback-only binding
+const bound = listening(GATE_PORT);
+check("S1.1 bound only to 127.0.0.1", bound.length === 1 && bound[0] === `127.0.0.1:${GATE_PORT}`, bound);
+for (const ip of ["192.168.2.124", "172.17.0.1", "192.168.123.1"]) { const r = await raw(GATE_PORT, "GET / HTTP/1.1\r\n\r\n", ip); check(`S1.2 unreachable via ${ip}`, r.error === "ECONNREFUSED", r.error ?? "connected"); }
+
+// S2 allowlist: exactly the four paths are forwarded
+for (const p of ALLOW) { const r = await get(p); responses.push(r.data); check(`S2.1 allowed ${p.split("/").slice(-2).join("/")}`, status(r) === 200, status(r)); }
+const afterAllowed = received().length;
+check("S2.2 upstream received exactly the allowed calls", afterAllowed === 4 && received().every(e => e.tokenOk && e.method === "GET" && ALLOW.includes(e.url)), afterAllowed);
+const rejects = [
+  "/api/career/analyze", "/api/career/analyses/ANL_1792628993472_10", "/api/career/analyses/ANL_1792628993472_10/job-comparison?jobPoolUploadId=x&poolRoleId=y",
+  "/api/career/analyses/ANL_1792628993472_10/investigation", "/api/career/analyses/ANL_9999999999999_1/gemini-result", "/api/career/jobs/JOB_9999999999999_1/gemini-exchanges",
+  `${ALLOW[1]}?raw=1`, `${ALLOW[1]}/`, `/${ALLOW[1]}`, `${ALLOW[1]}#x`, `${ALLOW[1]}/../../ANL_9999999999999_1/gemini-result`,
+  "/api/career/analyses/ANL_1792628993472_10%2Fgemini-result", "/api/career/analyses/ANL_1792628993472_10/gemini-result%00", "/API/career/analyses/ANL_1792628993472_10/gemini-result",
+  `http://127.0.0.1:41862${ALLOW[1]}`, `http://evil.example${ALLOW[1]}`, "*", "/" + "a".repeat(6000), "/"
+];
+for (const target of rejects) { const r = await get(target); responses.push(r.data); check(`S2.3 rejected ${target.slice(0, 70)}`, status(r) === 403, status(r)); }
+check("S2.4 nothing rejected reached the upstream", received().length === afterAllowed, received().length);
+
+// S3 no write methods (and no HEAD)
+for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "TRACE"]) { const r = await get(ALLOW[1], { method, headers: method === "HEAD" ? {} : { "content-length": "2" } }); check(`S3.1 ${method} refused`, status(r) === 405, status(r)); }
+const connect = await raw(GATE_PORT, `CONNECT 127.0.0.1:41862 HTTP/1.1\r\nhost: 127.0.0.1:41862\r\n\r\n`); check("S3.2 CONNECT refused", status(connect) === 405, status(connect));
+const upgrade = await get(ALLOW[1], { headers: { upgrade: "websocket", connection: "upgrade" } }); check("S3.3 upgrade not forwarded", status(upgrade) !== 101, status(upgrade));
+check("S3.4 no refused method reached the upstream", received().length === afterAllowed, received().length);
+
+// S5 host guard (DNS rebinding) and S4 client headers
+for (const host of ["evil.example", `localhost:${GATE_PORT}`, `127.0.0.1:41862`, null]) { const r = await get(ALLOW[1], { host, version: host === null ? "1.0" : "1.1" }); check(`S5.1 host ${host ?? "(none)"} rejected`, status(r) === 403, status(r)); }
+check("S5.2 no rejected host reached the upstream", received().length === afterAllowed, received().length);
+const spoof = await get(ALLOW[0], { headers: { "x-condyn-result-inspector-token": "client-supplied-wrong-token-000000000000", cookie: "a=b", authorization: "Bearer client", "x-client-marker": "1", "x-forwarded-for": "8.8.8.8", origin: "http://evil.example" } });
+responses.push(spoof.data);
+const last = received().at(-1);
+check("S4.1 client headers not forwarded (fresh header set)", status(spoof) === 200 && last.tokenOk && JSON.stringify(last.headerNames) === JSON.stringify(["accept", "connection", "host", "x-condyn-result-inspector-token"]), last.headerNames);
+const head = spoof.data.split("\r\n\r\n")[0].toLowerCase();
+check("S6.1 no set-cookie, no CORS, no upstream extra headers", !head.includes("set-cookie") && !head.includes("access-control") && !head.includes("x-upstream-secret-header"), head.split("\r\n").slice(1).map(line => line.split(":")[0]));
+
+// S10 upstream down: local 502, nothing leaks
+mock.kill("SIGTERM"); await wait(400);
+const down = await get(ALLOW[1]); responses.push(down.data); check("S10.1 upstream down gives local 502", status(down) === 502, status(down));
+
+// S4 token disclosure
+const gateLog = readFileSync(baseConfig.logFile, "utf8");
+const cmdline = readFileSync(`/proc/${gate.pid}/cmdline`, "utf8"); const environ = readFileSync(`/proc/${gate.pid}/environ`, "utf8");
+check("S4.2 token absent from every response", responses.every(r => !String(r ?? "").includes(token)), responses.length);
+check("S4.3 token absent from gate log, stdout and stderr", !gateLog.includes(token) && !gateOut.includes(token), { logLines: gateLog.split("\n").length - 1 });
+check("S4.4 token absent from argv and environment", !cmdline.includes(token) && !environ.includes(token), { argv: cmdline.split("\0").filter(Boolean).map(a => path.basename(a)), envKeys: environ.split("\0").filter(Boolean).map(e => e.split("=")[0]) });
+check("S4.5 log holds metadata only", gateLog.split("\n").filter(Boolean).every(line => { const e = JSON.parse(line); return Object.keys(e).every(k => ["t", "method", "path", "forwarded", "status", "code", "bytes", "event", "pid", "port", "allow", "ttlSeconds", "reason"].includes(k)); }), "keys");
+
+// S9 explicit shutdown
+const stop = execFileSync("bash", [new URL("../stop-gate.sh", import.meta.url).pathname, baseConfig.pidFile]).toString().trim();
+await wait(300);
+check("S9.1 stop by own PID closes the port and removes the pid file", listening(GATE_PORT).length === 0 && !existsSync(baseConfig.pidFile) && gate.exitCode === 0, stop);
+
+// S9 TTL self-stop
+const ttlGate = spawn(process.execPath, [GATE, writeConfig("config-ttl.json", { ttlSeconds: 2 })], { stdio: "ignore", env: { PATH: process.env.PATH } });
+await wait(800); const ttlUp = listening(GATE_PORT).length === 1; await wait(2600);
+check("S9.2 TTL stops the gate by itself", ttlUp && listening(GATE_PORT).length === 0 && ttlGate.exitCode === 0 && !existsSync(baseConfig.pidFile), { upBefore: ttlUp, exit: ttlGate.exitCode });
+
+// S8 start refusals: each exits 2 and binds nothing
+const refusal = (name, patch, prepare) => new Promise(resolve => {
+  if (prepare) prepare();
+  const child = spawn(process.execPath, [GATE, writeConfig(`config-${name}.json`, patch)], { stdio: ["ignore", "ignore", "pipe"], env: { PATH: process.env.PATH } });
+  let err = ""; child.stderr.on("data", c => { err += c; });
+  child.on("exit", code => resolve({ code, err: err.trim(), bound: listening(GATE_PORT).length }));
+});
+const shortTokenFile = path.join(WORK, "short.json"); writeFileSync(shortTokenFile, JSON.stringify({ token: "short" }), { mode: 0o600 });
+const openTokenFile = path.join(WORK, "open.json"); writeFileSync(openTokenFile, JSON.stringify({ token }), { mode: 0o644 }); chmodSync(openTokenFile, 0o644);
+const cases = [
+  ["listen-any", { listenHost: "0.0.0.0" }], ["listen-lan", { listenHost: "192.168.2.124" }], ["upstream-lan", { upstream: "http://192.168.2.124:41862/" }],
+  ["upstream-https", { upstream: "https://127.0.0.1:41862/" }], ["upstream-remote", { upstream: "http://generativelanguage.googleapis.com/" }], ["upstream-path", { upstream: "http://127.0.0.1:41862/api/" }],
+  ["same-port", { listenPort: MOCK_PORT, upstream: `http://127.0.0.1:${MOCK_PORT}/` }], ["allow-analyze", { allow: ["/api/career/analyze"] }],
+  ["allow-b2", { allow: ["/api/career/analyses/ANL_1792628993472_10/job-comparison"] }], ["allow-empty", { allow: [] }], ["token-short", { tokenFile: shortTokenFile }], ["token-mode", { tokenFile: openTokenFile }],
+  ["ttl-missing", { ttlSeconds: 0 }]
+];
+for (const [name, patch] of cases) { const r = await refusal(name, patch); check(`S8 refuses ${name}`, r.code === 2 && r.bound === 0, r); }
+const blocker = net.createServer().listen(GATE_PORT, "127.0.0.1"); await wait(200);
+const busy = await refusal("port-busy", {}); blocker.close();
+check("S8 refuses port-busy", busy.code === 2, busy);
+
+writeFileSync(path.join(WORK, "verification.json"), JSON.stringify({ when: new Date().toISOString(), passed: results.filter(r => r.ok).length, failed: results.filter(r => !r.ok).length, results }, null, 1));
+for (const r of results) process.stdout.write(`${r.ok ? "PASS" : "FAIL"} ${r.id}${r.ok ? "" : " · " + JSON.stringify(r.detail)}\n`);
+process.stdout.write(`\n${results.filter(r => r.ok).length}/${results.length} passed\n`);
+process.exit(0);

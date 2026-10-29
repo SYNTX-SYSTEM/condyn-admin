@@ -1,0 +1,328 @@
+{
+ "B-no-focus": [
+  {
+   "dir": "back",
+   "to": "org",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel"
+  },
+  {
+   "dir": "back",
+   "to": "pool",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5"
+  },
+  {
+   "dir": "back",
+   "to": "start",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB"
+  },
+  {
+   "dir": "fwd",
+   "to": "pool",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5"
+  },
+  {
+   "dir": "fwd",
+   "to": "org",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel"
+  },
+  {
+   "dir": "fwd",
+   "to": "role",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_fullstack",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_fullstack",
+    "first": null,
+    "job": "NONE:JOB NO JOB SELECTED",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_fullstack"
+  }
+ ],
+ "A-first-doc-deep-link": [
+  {
+   "dir": "back",
+   "to": "select-role2",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": "ROLE_MISMATCH"
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": "ROLE_MISMATCH"
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_frontend_architect&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect"
+  },
+  {
+   "dir": "back",
+   "to": "role2",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect"
+  },
+  {
+   "dir": "back",
+   "to": "field",
+   "urlOk": false,
+   "same": false,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD"
+  },
+  {
+   "dir": "back",
+   "to": "deep",
+   "urlOk": false,
+   "same": false,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "mode": "PERSON_X_JOB",
+    "obs": null,
+    "first": "AVAILABLE",
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=CAPABILITY"
+  },
+  {
+   "dir": "fwd",
+   "to": "field",
+   "urlOk": false,
+   "same": false,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ORGANIZATION:org_kestrel",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "FIELD:JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD"
+  },
+  {
+   "dir": "fwd",
+   "to": "role2",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Senior Full-Stack Engineer \u2013 Shipment Tracking Kestrel Logistics Software Gm",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect"
+  },
+  {
+   "dir": "fwd",
+   "to": "select-role2",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": "ROLE_MISMATCH"
+   },
+   "there": {
+    "field": "FIELD",
+    "mode": "PERSON_X_JOB",
+    "obs": "ROLE:role_kestrel_frontend_architect",
+    "first": null,
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": "ROLE_MISMATCH"
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_frontend_architect&analysisId=ANL_1792628993472_10&focus=FIELD&jobOrganizationId=org_kestrel&jobRoleId=role_kestrel_frontend_architect"
+  },
+  {
+   "dir": "fwd",
+   "to": "capability-mismatch",
+   "urlOk": true,
+   "same": true,
+   "here": {
+    "field": "CAPABILITY",
+    "mode": "PERSON_X_JOB",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": null
+   },
+   "there": {
+    "field": "CAPABILITY",
+    "mode": "PERSON_X_JOB",
+    "obs": null,
+    "first": "ROLE_MISMATCH",
+    "job": "VALID:JOB Frontend Architect Kestrel Logistics Software GmbH \u00b7 DLL Engineering & Archi",
+    "offer": null
+   },
+   "search": "?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_frontend_architect&analysisId=ANL_1792628993472_10&focus=CAPABILITY"
+  }
+ ]
+}

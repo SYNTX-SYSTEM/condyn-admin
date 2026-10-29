@@ -1,0 +1,26 @@
+# GELB: full isolated suite on b77c851 (npm run test:isolated, review worktree with symlinked node_modules)
+ Test Files  7 failed | 431 passed | 11 skipped (449)
+      Tests  27 failed | 2879 passed | 32 skipped (2938)
+   Duration  549.14s (transform 7.36s, setup 2.69s, collect 105.15s, tests 361.38s, environment 93ms, prepare 29.60s)
+# failing files:
+      6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+      6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+      5  FAIL  test/career-lifecycle-recovery.test.ts
+     10  FAIL  test/career-policy-activation-atomicity.test.ts
+      1  FAIL  test/decision-integration/g2-g3-vertical-proof.test.ts
+      1  FAIL  test/decision-integration/hr-decision-loop-p7.test.ts
+      1  FAIL  test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts
+# failure signatures:
+     21 Error: Failed query: insert into "career_policy_versions" ("id", "version", "par
+      1 Error: R5 Next server did not reach the Decision endpoint. Output:
+      1 Error: P7 Next server did not reach the Decision endpoint. Output:
+      1 Error: P3 Next server did not reach the Decision endpoint. Output:
+      1 Error: Failed query: insert into "career_commitments" ("id", "decision_id", "tim
+      1 AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_FEEDBA
+      1 AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_DECISI
+      1 AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_COMMIT
+      1 AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_ACTION
+      1 AssertionError: expected [Function] to throw error including 'ERR_POLICY_NOT_FOU
+      1     117|   throw new Error(`R5 Next server did not reach the Decision endpoint.…
+      1     110|   throw new Error(`P7 Next server did not reach the Decision endpoint.…
+# the three file-level failures: Turbopack panic 'Symlink [project]/node_modules is invalid, it points out of the filesystem root' (environment of the review worktree)

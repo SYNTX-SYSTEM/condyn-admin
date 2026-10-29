@@ -1,0 +1,121 @@
+{
+ "first": {
+  "url": "http://127.0.0.1:41862/career/demo?analysisId=ANL_1792628993472_10&jobScopePoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobScopeRoleId=role_kestrel_fullstack",
+  "rootMode": "PERSON_X_JOB",
+  "requirementNodes": 0,
+  "coverage": 0,
+  "requirementTextHits": 0,
+  "jobIndicator": "JOB\nSenior Full-Stack Engineer – Shipment Tracking\nKestrel Logistics Software GmbH · DLL Engineering & Architecture Pool"
+ },
+ "role": {
+  "requirements": [
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_01",
+    "data-support": "SUPPORTED",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "2",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_02",
+    "data-support": "WEAK",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "2",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_03",
+    "data-support": "WEAK",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "2",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_04",
+    "data-support": "SWEEP_ONLY",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "1",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_05",
+    "data-support": "SWEEP_ONLY",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "1",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_06",
+    "data-support": "SWEEP_ONLY",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "1",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_08",
+    "data-support": "SWEEP_ONLY",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "1",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_09",
+    "data-support": "SWEEP_ONLY",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "1",
+    "data-role-id": "role_kestrel_fullstack"
+   },
+   {
+    "data-testid": "syntx-requirement-req_kestrel_fullstack_07",
+    "data-support": "OPEN",
+    "data-evaluation-state": "NOT_EVALUATED",
+    "data-trace-count": "0",
+    "data-role-id": "role_kestrel_fullstack"
+   }
+  ],
+  "open": [
+   {
+    "data-testid": "syntx-open-req_kestrel_fullstack_07",
+    "data-sign-id": "open:req_kestrel_fullstack_07",
+    "data-sign-source": "matching_contribution",
+    "data-sign-relation": "missing_support",
+    "data-sign-state": "field",
+    "data-sign-manifestation": "open_boundary",
+    "data-sign-interaction": "inspect",
+    "data-sign-transition": "trace_rise",
+    "data-proof-upload-id": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "data-proof-role-id": "role_kestrel_fullstack",
+    "data-proof-requirement-id": "req_kestrel_fullstack_07",
+    "data-proof-analysis-id": "ANL_1792628993472_10",
+    "aria-label": "no delivered support · Geospatial Visualisation"
+   }
+  ],
+  "sources": [
+   {
+    "data-testid": "syntx-source-DOC_001",
+    "data-source-title-state": "RESOLVED",
+    "data-trace-count": "11",
+    "data-sign-id": "source:DOC_001",
+    "data-sign-source": "evidence",
+    "data-sign-relation": "supports",
+    "data-sign-state": "field",
+    "data-sign-manifestation": "carrier",
+    "data-sign-interaction": "none",
+    "data-sign-transition": "trace_rise",
+    "data-proof-upload-id": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+    "data-proof-role-id": "role_kestrel_fullstack",
+    "data-proof-analysis-id": "ANL_1792628993472_10",
+    "data-proof-doc-id": "DOC_001",
+    "aria-label": "SOURCE · cv.synthetic.pdf"
+   }
+  ]
+ },
+ "p3": {
+  "id": "req_kestrel_fullstack_01",
+  "aperture": "",
+  "attrs": []
+ },
+ "p4": "NODE_ABSENT",
+ "p5": "NODE_ABSENT",
+ "nonGetRequests": []
+}

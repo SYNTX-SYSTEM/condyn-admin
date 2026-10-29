@@ -1,0 +1,82 @@
+{
+ "semanticPlan": {
+  "cacheVersion": "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1",
+  "engineVersionHash": null,
+  "state": "ENGINE_NOT_SPECIFIED",
+  "pairs": 5070,
+  "cachedPairs": 0,
+  "pendingPairs": 5070,
+  "callsNeeded": 77
+ },
+ "counts": {
+  "pools": 4,
+  "roles": 78,
+  "requirements": 507,
+  "proposals": 10
+ },
+ "groups": [
+  [
+   "ALL_REQUIREMENTS_NAME_RELATED",
+   0
+  ],
+  [
+   "PARTIAL_NAME_RELATED",
+   10
+  ],
+  [
+   "WEAK_LEXICAL_ONLY",
+   29
+  ],
+  [
+   "NO_LEXICAL_RELATION",
+   38
+  ],
+  [
+   "NO_REQUIREMENTS",
+   1
+  ]
+ ],
+ "authority": {
+  "relationBasis": "LEXICAL_NAME_COVERAGE",
+  "operand": "PERSON_CAPABILITY_PROPOSAL_PROJECTION",
+  "semanticRelationState": "NOT_EXECUTED",
+  "scored": false,
+  "ranking": false,
+  "authorityState": "NONE",
+  "decision": false
+ },
+ "pools": [
+  {
+   "jobPoolUploadId": "JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2",
+   "poolId": "pool_dll_ai_data_v1",
+   "poolVersion": 1,
+   "poolName": "DLL AI, Data & Semantic Systems Pool",
+   "canonicalSha256": "0dcdb34ae9f8ff8a3d335ba26c9f16c226bc79091f8ebd98f02856048de69e30",
+   "roleCount": 16
+  },
+  {
+   "jobPoolUploadId": "JPOOL_B94850C439974E27496FE3B1A9A076B5",
+   "poolId": "pool_dll_engineering_v1",
+   "poolVersion": 1,
+   "poolName": "DLL Engineering & Architecture Pool",
+   "canonicalSha256": "b94850c439974e27496fe3b1a9a076b5bb7b828cd5dbcc9e87532e3aa040eb58",
+   "roleCount": 9
+  },
+  {
+   "jobPoolUploadId": "JPOOL_D39ADA99F34A60B982ADE5F929276294",
+   "poolId": "pool_dll_enterprise_scale_v1",
+   "poolVersion": 1,
+   "poolName": "DLL Enterprise Scale Pool",
+   "canonicalSha256": "d39ada99f34a60b982ade5f929276294f5061da07439ca7513f298eec6374726",
+   "roleCount": 48
+  },
+  {
+   "jobPoolUploadId": "JPOOL_567719541400EE0F090CD3E55E7201A8",
+   "poolId": "pool_pink_rf_v1",
+   "poolVersion": 1,
+   "poolName": "PINK role-field closure pool",
+   "canonicalSha256": "567719541400ee0f090cd3e55e7201a84d32aade6731dd62eea392e2e4229014",
+   "roleCount": 5
+  }
+ ]
+}

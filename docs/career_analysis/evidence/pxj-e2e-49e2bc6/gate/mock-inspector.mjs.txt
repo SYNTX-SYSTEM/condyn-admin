@@ -1,0 +1,11 @@
+// Loopback double of the lab's inspector routes (verification only). Records every request it receives.
+import http from "node:http";
+import { appendFileSync, readFileSync } from "node:fs";
+const [port, tokenFile, recordFile] = process.argv.slice(2);
+const token = JSON.parse(readFileSync(tokenFile, "utf8")).token;
+http.createServer((request, response) => {
+  appendFileSync(recordFile, JSON.stringify({ method: request.method, url: request.url, headerNames: Object.keys(request.headers).sort(), tokenOk: request.headers["x-condyn-result-inspector-token"] === token }) + "\n");
+  if (request.headers["x-condyn-result-inspector-token"] !== token) { response.writeHead(404, { "content-type": "application/json" }); response.end('{"success":false,"issues":[{"code":"ERR_NOT_FOUND"}]}'); return; }
+  response.writeHead(200, { "content-type": "application/json", "set-cookie": "session=mock; HttpOnly", "access-control-allow-origin": "*", "x-upstream-secret-header": "mock" });
+  response.end(JSON.stringify({ success: true, path: request.url }));
+}).listen(Number(port), "127.0.0.1", () => process.stdout.write("mock ready\n"));

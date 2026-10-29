@@ -1,0 +1,43 @@
+// GELB probe for PINK's NAV ≠ RELOAD reports (A)/(B) on the read-only acceptance lab. argv: <base> <out json>
+import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const [BASE, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack", ROLE2 = "role_kestrel_frontend_architect", ANL = "ANL_1792628993472_10";
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const OBS = () => { const q = s => document.querySelector(s); const root = q('[data-testid="semantic-career-intelligence-field"]'), f = q('[data-testid="syntx-field"]'), p = q('[data-testid="pxj-first-screen"]'), ind = q('[data-testid="job-scope-indicator"]');
+  return { field: root?.dataset.fieldFocus ?? null, mode: root?.dataset.investigationMode ?? null, obs: f ? `${f.dataset.observationKind}:${f.dataset.observationId ?? ""}` : null, first: p?.dataset.state ?? null, job: ind ? `${ind.dataset.jobScopeState}:${ind.innerText.replace(/\s+/g, " ").slice(0, 80)}` : null, offer: q('[data-testid="pxj-analysis-job-offer"]')?.dataset.state ?? null }; };
+const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+const settle = async (ms = 3000) => { await page.waitForLoadState("networkidle").catch(() => {}); await sleep(ms); };
+const fresh = async url => { const p2 = await ctx.newPage(); await p2.goto(url, { waitUntil: "networkidle" }); await sleep(3000); const o = await p2.evaluate(OBS); await p2.close(); return o; };
+const openRole = async role => { for (let i = 0; i < 6; i += 1) { await t(`syntx-role-${role}`).first().dispatchEvent("click"); try { await page.waitForFunction(r => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === r, role, { timeout: 2500 }); return; } catch {} } throw new Error("role not opened"); };
+const rec = {};
+const run = async (name, build) => {
+  const entries = []; const mark = async l => entries.push({ l, url: page.url() });
+  await build(mark);
+  const checks = [];
+  for (let i = entries.length - 2; i >= 0; i -= 1) { await page.goBack(); for (const ms of [1000, 3000, 8000]) { await sleep(ms === 1000 ? 1000 : ms - (ms === 3000 ? 1000 : 3000)); } const here = await page.evaluate(OBS); const there = await fresh(entries[i].url); checks.push({ dir: "back", to: entries[i].l, urlOk: page.url() === entries[i].url, same: JSON.stringify(here) === JSON.stringify(there), here, there, search: new URL(entries[i].url).search }); }
+  for (let i = 1; i < entries.length; i += 1) { await page.goForward(); await sleep(8000); const here = await page.evaluate(OBS); const there = await fresh(entries[i].url); checks.push({ dir: "fwd", to: entries[i].l, urlOk: page.url() === entries[i].url, same: JSON.stringify(here) === JSON.stringify(there), here, there, search: new URL(entries[i].url).search }); }
+  rec[name] = checks; console.log(name, checks.map(c => `${c.dir}:${c.to}:${c.same && c.urlOk ? "=" : "≠"}`).join(" "));
+};
+// (B) entries without focus: /career/demo → pool → organisation → role
+await run("B-no-focus", async mark => {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB`, { waitUntil: "networkidle" }); await settle(); await mark("start");
+  if (await t(`job-pool-select-${POOL}`).count() === 0) await t("syntx-pools-toggle").click().catch(() => {});
+  if (await t(`job-pool-select-${POOL}`).count() === 0) await t("job-pool-panel-toggle").click();
+  if (await t(`job-pool-select-${POOL}`).count() === 0) await t("syntx-pools-toggle").click();
+  await t(`job-pool-select-${POOL}`).click(); await settle(); await mark("pool");
+  await t(`syntx-organization-${ORG}`).dispatchEvent("click"); await t(`syntx-role-${ROLE}`).waitFor({ timeout: 20000 }); await settle(); await mark("org");
+  await openRole(ROLE); await settle(); await mark("role");
+});
+// (A-hypothesis) first document = owner deep link; then in-app changes; Back/Forward
+await run("A-first-doc-deep-link", async mark => {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}&analysisId=${ANL}&focus=CAPABILITY`, { waitUntil: "networkidle" }); await settle(); await mark("deep");
+  await t("job-pool-panel-toggle").click(); await settle(); await mark("field");
+  await openRole(ROLE2); await settle(); await mark("role2");
+  await t("syntx-job-scope-select").click(); await settle(); await mark("select-role2");
+  await t("field-focus-capability-btn").click(); await settle(); await mark("capability-mismatch");
+});
+writeFileSync(OUT, JSON.stringify(rec, null, 1)); await b.close();

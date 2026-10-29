@@ -1,0 +1,26 @@
+// GELB read-only probe: individual capability-to-requirement inspection at requirement focus (deep link), one trace opened per requirement.
+import { pathToFileURL } from "node:url";
+import { writeFileSync } from "node:fs";
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href);
+const { chromium } = pw.chromium ? pw : pw.default;
+const [BASE, A, OUT] = process.argv.slice(2);
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const browser = await chromium.launch(); const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+const writes = []; page.on("request", r => { if (!["GET", "HEAD"].includes(r.method())) writes.push(`${r.method()} ${r.url()}`); });
+const dump = async sel => page.$$eval(sel, els => els.map(e => Object.fromEntries([...e.attributes].filter(a => a.name.startsWith("data-") || a.name === "aria-label").map(a => [a.name, a.value]))));
+const res = {};
+for (const [i, req, sel] of [["p3", "req_kestrel_fullstack_01", '[data-testid^="syntx-trace-trace:req_kestrel_fullstack_01:supports"]'], ["p4", "req_kestrel_fullstack_06", '[data-testid^="syntx-trace-"][data-testid*="req_kestrel_fullstack_06"]'], ["p5", "req_kestrel_fullstack_07", '[data-testid="syntx-open-req_kestrel_fullstack_07"]']]) {
+  await page.goto(`${BASE}/career/demo?analysisId=${A}&focus=FIELD&jobPoolUploadId=${POOL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`, { waitUntil: "networkidle" });
+  await page.waitForTimeout(4000);
+  const close = page.locator('[data-testid="onboarding-close-btn"]'); if (await close.count()) { await close.click(); await page.waitForTimeout(800); }
+  const r = { req, zoom: await page.getAttribute("[data-zoom-level]", "data-zoom-level").catch(() => null), traces: await dump('[data-testid^="syntx-trace-"]'), open: await dump('[data-testid^="syntx-open-"]') };
+  const target = page.locator(sel).first(); r.sel = sel; r.found = await target.count(); r.ids = r.traces.map(t => t['data-testid']).filter(x => x.includes(req));
+  if (await target.count()) { await target.dispatchEvent("click"); await page.waitForTimeout(2500); }
+  r.aperture = (await page.locator('[data-testid="syntx-aperture"]').innerText().catch(() => "")).replace(/\s+/g, " ").slice(0, 1400);
+  r.apertureAttrs = await dump('[data-testid^="syntx-aperture"]');
+  await page.screenshot({ path: `${OUT}/${i}-requirement-${req}-1920.png` });
+  res[i] = r;
+}
+res.nonGetRequests = writes;
+writeFileSync(`${OUT}/requirement-probe.json`, JSON.stringify(res, null, 1));
+await browser.close();

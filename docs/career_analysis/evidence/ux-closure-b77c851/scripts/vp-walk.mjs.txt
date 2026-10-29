@@ -1,0 +1,118 @@
+// GELB viewport + D-PICK walk on a read-only real-result lab (PERSISTED_REAL_RESULT, GET only). argv: <state.json> <out dir>
+// Viewports: 1920×1080, 1600×900, 1440×900, 1280×720, and 200 % browser zoom of 1920×1080 and 1280×720 (CSS viewport halved,
+// deviceScaleFactor 2). Reachability is measured only by what a user can do: wheel-scrolling the page or the element's own
+// scroll container, then elementFromPoint at the element's centre and four inner points, then a real click where it is harmless.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, OUT] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base;
+if (st.gemini !== "NONE" || st.worker !== "NONE") throw new Error("not a read-only lab");
+const POOL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ROLE = "role_kestrel_fullstack", ANL = "ANL_1792628993472_10", PERSON_ANL = "ANL_1792628831636_456";
+const SCOPE = `investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobScopePoolUploadId=${POOL}&jobScopeRoleId=${ROLE}`;
+const OWNER = `${BASE}/career/demo?${SCOPE}&analysisId=${ANL}&focus=CAPABILITY`;
+const VIEWPORTS = [["1920x1080", 1920, 1080, 1], ["1600x900", 1600, 900, 1], ["1440x900", 1440, 900, 1], ["1280x720", 1280, 720, 1], ["zoom200-1920x1080", 960, 540, 2], ["zoom200-1280x720", 640, 360, 2]];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const browser = await chromium.launch();
+const out = { evidenceClass: "PERSISTED_REAL_RESULT", commit: st.commit, viewports: {} };
+const nonGet = [];
+for (const [name, w, h, dsf] of VIEWPORTS) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dsf });
+  await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+  page.on("request", r => { if (r.method() !== "GET" && r.method() !== "HEAD" && new URL(r.url()).pathname.startsWith("/api/")) nonGet.push(`${name} ${r.method()} ${new URL(r.url()).pathname}`); });
+  const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 160)));
+  const rec = { checks: [] }; out.viewports[name] = rec;
+  const check = (id, ok, detail = {}) => { rec.checks.push({ id, ok, ...detail }); console.log(`${name} ${ok ? "PASS" : "FAIL"} ${id} ${JSON.stringify(detail).slice(0, 220)}`); };
+  /** Hit-test an element as a user can reach it: wheel the page (and the nearest scrollable ancestor) until it is in view. */
+  const reach = async selector => {
+    for (let i = 0; i < 90; i += 1) {
+      const m = await page.evaluate(sel => {
+        const el = document.querySelector(sel); if (!el) return { missing: true };
+        const r = el.getBoundingClientRect(); const vw = innerWidth, vh = innerHeight;
+        const inView = r.width > 0 && r.height > 0 && r.top >= 0 && r.bottom <= vh && r.left >= 0 && r.right <= vw;
+        let sc = el.parentElement; while (sc && !(/(auto|scroll)/.test(getComputedStyle(sc).overflowY) && sc.scrollHeight > sc.clientHeight)) sc = sc.parentElement;
+        const scr = sc ? sc.getBoundingClientRect() : null;
+        const pts = [[0.5, 0.5], [0.2, 0.3], [0.8, 0.3], [0.2, 0.7], [0.8, 0.7]].map(([fx, fy]) => { const x = r.left + r.width * fx, y = r.top + r.height * fy; const hit = x >= 0 && y >= 0 && x < vw && y < vh ? document.elementFromPoint(x, y) : null; return !!hit && (hit === el || el.contains(hit)); });
+        return { inView, hits: pts.filter(Boolean).length, rect: [r.left, r.top, r.right, r.bottom].map(Math.round), below: r.top >= vh || r.bottom > vh, scroller: scr ? [scr.left + scr.width / 2, Math.max(scr.top, 0) + Math.min(scr.height, vh - Math.max(scr.top, 0)) / 2].map(Math.round) : null, pageScrollable: document.scrollingElement.scrollHeight > innerHeight + 1 };
+      }, selector);
+      if (m.missing) return { missing: true };
+      if (m.inView) return m;
+      const [x, y] = m.scroller ?? [Math.round(w / 2), Math.round(h / 2)];
+      await page.mouse.move(x, y); await page.mouse.wheel(0, m.below ? 80 : -80); await sleep(90);
+      if (i > 30 && !m.scroller && !m.pageScrollable) return m;
+    }
+    return await page.evaluate(() => ({ inView: false, hits: 0, gaveUp: true }));
+  };
+  const reset = () => page.evaluate(() => { window.scrollTo(0, 0); document.querySelectorAll("*").forEach(e => { if (e.scrollTop) e.scrollTop = 0; }); });
+  // 1 — owner deep link: B2 exists at first sight (header, binding, counts in the viewport without any scroll), every row reachable
+  await page.goto(OWNER, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state === "AVAILABLE", null, { timeout: 60000 }); await sleep(1500);
+  const firstSight = await page.evaluate(() => { const vh = innerHeight, vw = innerWidth; const box = s => { const e = document.querySelector(s); if (!e) return null; const r = e.getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), visible: r.top >= 0 && r.bottom <= vh && r.left >= 0 && r.right <= vw }; }; return { panel: box('[data-testid="pxj-first-screen"]'), state: box('[data-testid="pxj-first-state"]'), counts: box('[data-testid="pxj-first-counts"]'), boundary: box('[data-testid="pxj-first-coverage-boundary"]'), hScroll: document.scrollingElement.scrollWidth > innerWidth + 1 }; });
+  await page.screenshot({ path: `${OUT}/REAL-01-owner-deep-link-${name}.png` });
+  check("B2-first-sight", !!firstSight.counts?.visible && !!firstSight.state?.visible, firstSight);
+  check("no-horizontal-page-scroll", !firstSight.hScroll);
+  const rows = await page.evaluate(() => [...document.querySelectorAll('[data-testid^="pxj-first-req-"]')].map(e => e.dataset.testid));
+  let rowsOk = 0; const rowFails = [];
+  for (const id of rows) { const m = await reach(`[data-testid="${id}"]`); if (m.inView && m.hits >= 4) rowsOk += 1; else rowFails.push({ id, ...m }); }
+  check("B2-rows-reachable", rows.length === 9 && rowsOk === 9, { rows: rows.length, ok: rowsOk, fails: rowFails.slice(0, 3) });
+  await page.screenshot({ path: `${OUT}/REAL-02-last-row-${name}.png` });
+  // 2 — controls not covered: mode buttons, field strip, source dock actions, job indicator
+  await reset(); await sleep(400);
+  for (const sel of ['[data-testid="investigation-mode-PERSON"]', '[data-testid="investigation-mode-PERSON_X_JOB"]', '[data-testid="investigation-mode-JOB"]', '[data-testid="job-pool-panel-toggle"]', '[data-testid="add-text-source-btn"]', '[data-testid="add-pdf-source-btn"]', '[data-testid="job-scope-indicator"]']) {
+    const m = await reach(sel); if (m.missing) { rec.checks.push({ id: `control ${sel}`, ok: null, missing: true }); continue; }
+    check(`control ${sel.replace(/\[data-testid="|"\]/g, "")}`, m.inView && m.hits >= 4, { hits: m.hits, rect: m.rect });
+  }
+  // real click on ENTER TEXT (harmless: opens the text input, stages nothing)
+  { await reset(); const m = await reach('[data-testid="add-text-source-btn"]'); if (m.inView) { const r = m.rect; await page.mouse.click((r[0] + r[2]) / 2, (r[1] + r[3]) / 2); await sleep(400); } const opened = await t("source-text-input").count(); check("click ENTER TEXT opens the text input", opened > 0); await page.screenshot({ path: `${OUT}/REAL-03-enter-text-${name}.png` }); }
+  // 3 — gate reason (UX-04): PxJ without a job → visible cause and way
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY`, { waitUntil: "networkidle" }); await sleep(2000);
+  const gate = await page.evaluate(() => { const c = document.querySelector('[data-testid="capability-gate-cause"]'), wy = document.querySelector('[data-testid="capability-gate-way"]'); const vis = e => { if (!e) return false; const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && getComputedStyle(e).visibility !== "hidden"; }; const btn = document.querySelector('[data-testid="field-focus-capability-btn"]'); return { cause: c?.textContent?.trim().slice(0, 120) ?? null, way: wy?.textContent?.trim().slice(0, 120) ?? null, visible: vis(c) && vis(wy), describedBy: btn?.getAttribute("aria-describedby") ?? null }; });
+  check("gate-reason-visible", gate.visible && !!gate.describedBy, gate);
+  await page.screenshot({ path: `${OUT}/REAL-04-gate-${name}.png` });
+  // 4 — D-PICK: selected job, no analysis → existing investigation offered (only the fitting one), explicit click only
+  await page.goto(`${BASE}/career/demo?${SCOPE}&focus=CAPABILITY`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state === "NO_ANALYSIS", null, { timeout: 60000 }); await sleep(1000);
+  const ways = await page.evaluate(() => ({ existing: !!document.querySelector('[data-testid="pxj-first-way-existing"]'), analyze: !!document.querySelector('[data-testid="pxj-first-way-analyze"]') }));
+  check("NO_ANALYSIS names both ways", ways.existing && ways.analyze, ways);
+  const urlBefore = page.url(), lenBefore = await page.evaluate(() => history.length);
+  const tog = await reach('[data-testid="analysis-picker-toggle"]');
+  if (tog.inView) { const r = tog.rect; await page.mouse.click((r[0] + r[2]) / 2, (r[1] + r[3]) / 2); }
+  await page.waitForSelector(`[data-testid="analysis-pick-item-${ANL}"], [data-testid="analysis-picker-empty"], [data-testid="analysis-picker-failed"]`, { timeout: 30000 }).catch(() => {});
+  await sleep(500);
+  const listed = await page.evaluate(() => [...document.querySelectorAll('[data-testid^="analysis-pick-item-"]')].map(e => e.dataset.testid.replace("analysis-pick-item-", "")));
+  const noAutoPick = page.url() === urlBefore && await page.evaluate(() => history.length) === lenBefore;
+  check("picker lists exactly the fitting analysis", listed.length === 1 && listed[0] === ANL && !listed.includes(PERSON_ANL), { listed });
+  check("opening the picker selects nothing", noAutoPick);
+  await page.screenshot({ path: `${OUT}/REAL-05-picker-${name}.png` });
+  const pick = await reach(`[data-testid="analysis-pick-${ANL}"]`);
+  if (pick.inView) { const r = pick.rect; await page.mouse.click((r[0] + r[2]) / 2, (r[1] + r[3]) / 2); }
+  await page.waitForFunction(() => document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state === "AVAILABLE", null, { timeout: 60000 }).catch(() => {});
+  await sleep(1200);
+  const after = await page.evaluate(() => ({ state: document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state, analysisId: new URL(location.href).searchParams.get("analysisId"), len: history.length }));
+  check("explicit pick opens the analysis as one entry", after.state === "AVAILABLE" && after.analysisId === ANL && after.len === lenBefore + 1, after);
+  await page.screenshot({ path: `${OUT}/REAL-06-picked-${name}.png` });
+  await page.goBack(); await sleep(2500);
+  const back = await page.evaluate(() => ({ state: document.querySelector('[data-testid="pxj-first-screen"]')?.dataset.state, analysisId: new URL(location.href).searchParams.get("analysisId") }));
+  check("Back returns before the pick", back.state === "NO_ANALYSIS" && back.analysisId === null, back);
+  // 6 — V-19: at the organisation level the owner's role card is hit by a real mouse click (cards orbit: up to 8 tries)
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&jobPoolUploadId=${POOL}&jobOrganizationId=org_kestrel&focus=FIELD`, { waitUntil: "networkidle" }); await sleep(2500);
+  let opened = false, tries = 0;
+  for (; tries < 8 && !opened; tries += 1) {
+    const m = await reach(`[data-testid="syntx-role-${ROLE}"]`);
+    if (m.inView && m.hits >= 3) { const r = m.rect; await page.mouse.click((r[0] + r[2]) / 2, (r[1] + r[3]) / 2); await sleep(900); }
+    opened = await page.evaluate(role => document.querySelector('[data-testid="syntx-field"]')?.dataset.observationId === role, ROLE);
+    if (!opened) await sleep(700);
+  }
+  check("org level: mouse click opens the owner role card", opened, { tries });
+  await page.screenshot({ path: `${OUT}/REAL-07-role-opened-by-mouse-${name}.png` });
+  // 5 — PERSON: the PxJ analysis is never offered there (filter); the PERSON first screen is unchanged (no picker shown)
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "networkidle" }); await sleep(2000);
+  check("PERSON shows no PxJ picker", await page.locator('[data-testid="analysis-picker"]').count() === 0);
+  check("page errors", errors.length === 0, { errors: errors.slice(0, 3) });
+  await ctx.close();
+}
+out.nonGet = nonGet;
+writeFileSync(`${OUT}/vp-walk.json`, JSON.stringify(out, null, 1));
+const all = Object.values(out.viewports).flatMap(v => v.checks); console.log(`TOTAL ${all.filter(c => c.ok === true).length} PASS / ${all.filter(c => c.ok === false).length} FAIL / ${all.filter(c => c.ok === null).length} n/a · nonGet ${nonGet.length}`);
+await browser.close();

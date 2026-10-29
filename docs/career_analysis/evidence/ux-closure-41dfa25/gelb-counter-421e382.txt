@@ -1,0 +1,73 @@
+   × D-PICK · the first screen's NO_ANALYSIS offers the existing investigations of this job > REPRODUCE: opened by a click, read by GET only, exactly the selected job's analysis offered — and nothing chosen by itself 40ms
+   × D-PICK · the first screen's NO_ANALYSIS offers the existing investigations of this job > REPRODUCE: the click is one push of analysisId; the screen then runs the B2 checks and equals a fresh load of the URL 15ms
+   × D-PICK · the selected job's role view in the Job Field > REPRODUCE: one click — analysisId and focus=CAPABILITY in one entry; Back is the role view without analysisId, as a fresh load 20ms
+   ✓ D-PICK · where it is not > inverse: PERSON and JOB offer no picker and read no analysis list; without a valid job none either 279ms
+   ✓ D-PICK · where it is not > inverse: an analysis on view — no NO_ANALYSIS, no picker on the first screen; without a click the URL keeps its analysis 88ms
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the pool list is the UPLOADED pools; its item is OPENED, not SELECTED (EN, DE) 62ms
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the opened role says whether it is the selected job 58ms
+   × UX-07 · uploaded, opened, selected > REPRODUCE: the shell names the job SELECTED JOB in PERSON × JOB and JOB (DE GEWÄHLTER JOB) 33ms
+   ✓ UX-07 · uploaded, opened, selected > inverse: under PERSON the shell keeps JOB (the job is not used there) 25ms
+   × V-09 · type sizes > REPRODUCE: the Job Field has no text under 10 px outside the role cards (pool, organisation and role level) 65ms
+   × V-09 · type sizes > REPRODUCE: the B2 panel has no text under 10.5 px 65ms
+   × V-09 · type sizes > REPRODUCE: the shared job indicator reads at 11 px (stylesheet; its markup unchanged) 40ms
+   ✓ V-09 · inverse > inverse: the role cards keep their owner-set sizes — footer at most 8.5 px, standing 7.5 px (orbit geometry unchanged) 43ms
+   × V-10 · the telemetry's inactive levels and separators reach AA > REPRODUCE: inactive levels and separators get an AA colour (stylesheet; markup unchanged) 26ms
+   × V-13 · hover in the Job Field > REPRODUCE (V-13): SELECT AS JOB, the pool item and its OPEN show a hover (look only) 41ms
+   × V-14 · target size in the Job Field > REPRODUCE (V-14): the panel's actions (POOLS, + INTAKE, …) are at least 24 px high 14ms
+   × O-PXJ-720 rest · 640×360 > REPRODUCE: in the stack tier B2's binding and counts come first, the boundary statement right after them — no duplicate 23ms
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > REPRODUCE: Back while the POST is on its way — the 202's job id lands in the entry on view (replace) and is followed by GET only 80ms
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > guard (GELB): the handover is taken once — a further mount on an entry without the job neither follows nor names it; no reset 68ms
+   × O-NAV-SUBMIT · a run submitted before Back keeps its name > REPRODUCE: the released controller hands the 202's job over and does not poll it itself 7ms
+   ✓ O-NAV-SUBMIT · a run submitted before Back keeps its name > inverse: without a remount the 202 stays with its own field — named in its own entry, one POST, nothing handed over 33ms
+   ✓ O-NAV-SUBMIT · a run submitted before Back keeps its name > inverse: a submission refused after the remount (422) names nothing and reads no job; still one POST 55ms
+   × UX-04 · the closed Capability Field says why and how it opens > REPRODUCE: PERSON × JOB without a job — the cause and the way stand as text at the shell; the control points to them (EN, DE) 62ms
+   × UX-04 · the closed Capability Field says why and how it opens > REPRODUCE: a job still checked and an invalid job are named as such; JOB says it has no person field 20ms
+   ✓ UX-04 · the closed Capability Field says why and how it opens > inverse: the gate is unchanged — closed it stays closed (disabled, the Job Field active); no cause names an analysis 55ms
+   ✓ UX-04 · the closed Capability Field says why and how it opens > inverse: open — PERSON always, PERSON × JOB with a valid job — no reason is shown and nothing points to one 50ms
+   × UX-02 · where the job is chosen > REPRODUCE: at the pool and the organisation level the panel says to open a role (EN, DE); no action there 47ms
+   × UX-02 · where the job is chosen > REPRODUCE (V-11): at the role SELECT AS JOB follows the path — before the state, the legacy box and every requirement sign 61ms
+   × UX-02 · where the job is chosen > REPRODUCE: the legacy box below the action has a collapse control; open by default with its source and limits 44ms
+   ✓ UX-02 · where the job is chosen > inverse: the selection contract is unchanged — the one action at the role, its test id, pressed state and label 43ms
+   × V-12 · the mode group: the arrow moves the focus, Enter / Space choose > REPRODUCE: → and ← and Home / End change neither the mode, the URL nor the history 95ms
+   ✓ V-12 · the mode group: the arrow moves the focus, Enter / Space choose > guard: the Tab stop follows the focus — the option the arrow reached is the one Tab returns to (on 421e382 too, there by choosing) 35ms
+   ✓ V-12 · the mode group: the arrow moves the focus, Enter / Space choose > inverse: Enter / Space (the button's click) choose — one push, the mode checked 72ms
+   × UX-01 · the level stands in the panel as text > REPRODUCE: POOL, ORGANIZATION and ROLE are named at their level (EN, DE) 47ms
+   × V-06 · a job followed from the URL: its banner closes > REPRODUCE: NOT FOUND — CLOSE hides the banner by one push without analysisJobId; no retry, no POST; Back names the job again 27ms
+   ✓ V-06 · a job followed from the URL: its banner closes > inverse: a run of this session that FAILED keeps its banner with RETRY and has no CLOSE (unchanged) 14ms
+   × V-06 · RESULT_NOT_FOUND has a way out > REPRODUCE: the first screen offers the existing investigations of the selected role (D-PICK) 15ms
+   × V-05 · the gate names an invalid job with its reason > REPRODUCE: INVALID — the cause carries the validation's reason, not the sentence of no job 15ms
+   × V-05 · the gate names an invalid job with its reason > inverse: no job — the cause names none, without a reason 15ms
+   × V-06 · the Job Field's NO_ANALYSIS with a selected job > REPRODUCE: it does not ask to select a job that is selected; it names the selected job's role and ANALYZE 36ms
+   × V-06 · the Job Field's NO_ANALYSIS with a selected job > inverse: without a selected job it still asks for one first 21ms
+   × UX-03 · NO_ANALYSIS names its next steps > REPRODUCE: the first screen names (a) an existing investigation of this role, with its control, and (b) a source and ANALYZE (EN, DE) 45ms
+   × UX-03 · NO_ANALYSIS names its next steps > REPRODUCE: no NO_ANALYSIS statement asks for a deep link; the Job Field's names both ways (its chip renders this copy: three-modes-ssr) 2ms
+   ✓ UX-03 · NO_ANALYSIS names its next steps > inverse: with an analysis on view (any other state) no ways and no picker; PERSON's first screen stays absent 32ms
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: .md, .markdown and .txt are read as text and staged as text, with their name and content 20ms
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: without an extension the MIME type decides (text/markdown → text) 5ms
+   × F-G1-MD · a file's kind decides how it is staged > REPRODUCE: any other file is refused with a sentence and not staged 4ms
+   ✓ F-G1-MD · a file's kind decides how it is staged > inverse: a .pdf stays pdf (read as a data URL, base64 content) 3ms
+   × V-08 · a format failure offers no pointless RETRY > REPRODUCE: ERR_PDF_PARSE_FAILURE — no RETRY; the banner names the way to a readable source 21ms
+   ✓ V-08 · a format failure offers no pointless RETRY > inverse: another worker failure keeps its RETRY 14ms
+   × UX-06 · the uploaded pools first, the upload after them > REPRODUCE: with uploaded pools the start's statement leads with opening one of them; the upload comes second (EN, DE) 35ms
+   × UX-06 · the uploaded pools first, the upload after them > REPRODUCE (V-07): with none uploaded the list and the statement point to + INTAKE, and the list opens it 7ms
+   ✓ UX-06 · the uploaded pools first, the upload after them > inverse: unchanged — without an opened pool the uploaded pools are listed at once, the intake form stays closed 6ms
+   ✓ B-3 · App Router route files export only the route contract > finds the route files, the proxy route among them 3ms
+   × B-3 · App Router route files export only the route contract > REPRODUCE: no route file exports a name outside the route contract 13ms
+   × B-3 · App Router route files export only the route contract > inverse: the proxy route still serves GET, POST, PUT and DELETE with one handler 2ms
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: below 1600 × 1000 the B2 panel spans from below the shell to the bottom edge; the page is the viewport 14ms
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: the Job Field's panel ends above the bottom edge (its own scroll) and the uploaded pools open beside it 3ms
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: the source dock starts below the shell and ends above the fixed inspector (V-01) 1ms
+   × O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: at 200 % the shell, the panel, the planetarium, the dock and the inspector stand in one scrolling column (V-02) 1ms
+   ✓ O-PXJ-720 · the dashboard carries the viewport rules > inverse: no viewport tier applies at or above 1600 × 1000 (1920 × 1080 changes only by V-16, below) 1ms
+   × V-16 · the zoom telemetry stands in view, below the shell row > REPRODUCE: at every viewport it leaves top −46 px (clipped by the field: invisible, out of reach) for page y 128, uncapped 2ms
+   × V-16 · the zoom telemetry stands in view, below the shell row > REPRODUCE: in the fit tier it stands over the free area and may wrap; at 200 % it is part of the column 3ms
+ FAIL  test/career/pxj-first-screen/gate-reason.test.tsx > UX-04 · the closed Capability Field says why and how it opens > REPRODUCE: PERSON × JOB without a job — the cause and the way stand as text at the shell; the control points to them (EN, DE)
+     38|   it("REPRODUCE: PERSON × JOB without a job — the cause and the way st…
+     41|     expect(textOf(en, "capability-gate-cause")).toBe("PERSON × JOB nee…
+"NO ANALYSIS: run the capability sweep (identity core) or open the page with an exact analysisId No analysis yet: run ANALYZE in PERSON × JOB with the selected job. No analysis yet: run ANALYZE in PERSON × JOB with this job selected."
+ FAIL  test/career/pxj-first-screen/readability.test.tsx > O-PXJ-720 rest · 640×360 > REPRODUCE: in the stack tier B2's binding and counts come first, the boundary statement right after them — no duplicate
+ FAIL  test/career/pxj-first-screen/terms.test.tsx > UX-07 · uploaded, opened, selected > REPRODUCE: the shell names the job SELECTED JOB in PERSON × JOB and JOB (DE GEWÄHLTER JOB)
+ FAIL  test/career/pxj-first-screen/viewport-layout.test.tsx > O-PXJ-720 · the dashboard carries the viewport rules > REPRODUCE: below 1600 × 1000 the B2 panel spans from below the shell to the bottom edge; the page is the viewport
+     27|   it("REPRODUCE: below 1600 × 1000 the B2 panel spans from below the s…
+ Test Files  16 failed (16)
+      Tests  45 failed | 18 passed (63)
