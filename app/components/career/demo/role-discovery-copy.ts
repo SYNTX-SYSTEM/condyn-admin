@@ -18,6 +18,9 @@ export interface RoleDiscoveryCopy {
   poolsHint: string;
   poolsLoading: string;
   poolsEmpty: string;
+  /** GELB decision on the DLL-full path review, point 2: a real action beside the empty-pools text (an existing field
+   *  switch, the same as the SYNTX field selector's own toggle — no new URL parameter). */
+  poolsGoToJobField: string;
   poolsNotProvisioned: string;
   poolsFailed: string;
   poolInactive: (status: string) => string;
@@ -114,6 +117,7 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
     poolsHint: "Only the pools you tick are read. Nothing is preselected and there is no “all”.",
     poolsLoading: "Reading the uploaded job pools …",
     poolsEmpty: "No job pool is uploaded. Upload one in the Job Field.",
+    poolsGoToJobField: "GO TO JOB FIELD",
     poolsNotProvisioned: "Job pool persistence is not provisioned on this server.",
     poolsFailed: "The uploaded job pools could not be read.",
     poolInactive: status => `${status} · not releasable`,
@@ -228,6 +232,7 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
     poolsHint: "Gelesen werden nur die Pools, die du ankreuzt. Nichts ist vorausgewählt, es gibt kein „alle“.",
     poolsLoading: "Die hochgeladenen Job-Pools werden gelesen …",
     poolsEmpty: "Es ist kein Job-Pool hochgeladen. Lade einen im Job Field hoch.",
+    poolsGoToJobField: "ZUM JOB-FELD",
     poolsNotProvisioned: "Die Job-Pool-Persistenz ist auf diesem Server nicht eingerichtet.",
     poolsFailed: "Die hochgeladenen Job-Pools konnten nicht gelesen werden.",
     poolInactive: status => `${status} · nicht freigebbar`,

@@ -1731,7 +1731,8 @@ export function SemanticCareerIntelligenceField({
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
           <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole}
-            investigation={semanticInvestigation.state} onStart={startSemanticInvestigation} onReread={() => setDiscoveryRevision(previous => previous + 1)} />
+            investigation={semanticInvestigation.state} onStart={startSemanticInvestigation} onReread={() => setDiscoveryRevision(previous => previous + 1)}
+            onGoToJobField={() => switchFieldFocus("FIELD")} />
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (
