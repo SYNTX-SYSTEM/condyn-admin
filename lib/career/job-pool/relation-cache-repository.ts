@@ -75,13 +75,16 @@ export async function registerRelationCacheSchema(sql: Sql): Promise<readonly st
     for (const statement of RELATION_CACHE_DDL) await tx.unsafe(statement);
     for (const statement of INVESTIGATION_DDL) await tx.unsafe(statement);
     for (const statement of INVESTIGATION_GUARD_DDL) await tx.unsafe(statement);
+    // A trigger that exists but is DISABLED does not protect (PINK O-LED-4): registration enables every guard again.
+    for (const name of RELATION_CACHE_TRIGGERS) await tx.unsafe(`ALTER TABLE ${RELATION_CACHE_TABLE} ENABLE TRIGGER ${name}`);
+    for (const [name, table] of [["rel_inv_guard", "career_relation_investigations"], ["rel_task_guard", "career_relation_role_tasks"], ["rel_ledger_guard", "career_relation_call_ledger"]]) await tx.unsafe(`ALTER TABLE ${table} ENABLE TRIGGER ${name}`);
     const constraints = await tx.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
-    const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
+    const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal AND tgenabled <> 'D'`);
     const missing = [
       ...RELATION_CACHE_CONSTRAINTS.map(([name]) => name).filter(name => !constraints.some(c => c.conname === name)),
       ...RELATION_CACHE_TRIGGERS.filter(name => !triggers.some(t => t.tgname === name))
     ];
-    const invTriggers = (await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgname LIKE 'rel\\_%guard' AND NOT tgisinternal`)).map(x => x.tgname);
+    const invTriggers = (await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgname LIKE 'rel\\_%guard' AND NOT tgisinternal AND tgenabled <> 'D'`)).map(x => x.tgname);
     missing.push(...INVESTIGATION_TRIGGERS.filter(name => !invTriggers.includes(name)));
     if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
   });

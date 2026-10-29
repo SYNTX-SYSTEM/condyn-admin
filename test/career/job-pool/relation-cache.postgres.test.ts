@@ -112,6 +112,19 @@ describe("relation cache repository (PostgreSQL)", () => {
     }
   });
 
+  it("registration enables a DISABLED guard trigger again and the guard works afterwards (PINK O-LED-4)", async () => {
+    await db.$client.unsafe(`ALTER TABLE ${RELATION_CACHE_TABLE} DISABLE TRIGGER ${RELATION_CACHE_TABLE}_no_update_delete`);
+    const sample = make("Disabled Guard Probe", "Probe");
+    await repository.saveIfAbsent([sample]);
+    await expect(db.$client.unsafe(`DELETE FROM ${RELATION_CACHE_TABLE} WHERE relation_key = $1`, [sample.relationKey])).resolves.toBeDefined(); // unguarded while disabled
+    await registerRelationCacheSchema(db.$client);
+    const [row] = await db.$client<{ tgenabled: string }[]>`SELECT tgenabled FROM pg_trigger WHERE tgname = ${`${RELATION_CACHE_TABLE}_no_update_delete`}`;
+    expect(row.tgenabled).toBe("O");
+    const again = make("Enabled Guard Probe", "Probe2");
+    await repository.saveIfAbsent([again]);
+    await expect(db.$client.unsafe(`DELETE FROM ${RELATION_CACHE_TABLE} WHERE relation_key = $1`, [again.relationKey])).rejects.toThrow(/ERR_RELATION_CACHE_IMMUTABLE/);
+  });
+
   it("refuses invalid records before the database", async () => {
     await expect(repository.saveIfAbsent([{ ...make("X", "Y"), evidenceLimitation: "" }])).rejects.toThrow(/ERR_RELATION_CACHE_RECORD_INVALID/);
   });

@@ -136,3 +136,18 @@ describe("honest evidence, identity and defined failure outcomes (PINK D-ENG-2, 
     expect(await evaluateRole({ engine: ENGINE, provider, ledger: l, writer: brokenWriter, proposals: P, pendingRequirements: R, now: () => NOW })).toMatchObject({ status: "FAILED", code: "ERR_RELATION_CACHE_RECORD_CORRUPT" });
   });
 });
+
+describe("the guard checks the text a reader sees (PINK D-ENG-4)", () => {
+  it("a short operand (Go) is removed only as a whole word: it cannot hide a claim around it", () => {
+    expect(containsClaim("A good fit.", ["Go"])).toBe(true);
+    expect(containsClaim("The quote names Go but not the tooling.", ["Go"])).toBe(false);
+    expect(containsClaim("Gopher and Go", ["Go"])).toBe(false);
+  });
+  it.each([
+    ["combining grapheme joiner", "A g\u034Food fit."], ["invisible plus", "A good\u2062 fit."], ["mongolian vowel separator", "A go\u180Eod fit."], ["variation selector", "A good\uFE0F fit."],
+    ["tag character", "A good fit.\u{E0041}"], ["bidi override", "\u202EA tif doog"], ["bidi isolate", "A \u2066good\u2069 fit."], ["private use", "A good\uE000 fit."], ["control character", "A good\u0007 fit."], ["Zalgo", "A go\u0301\u0302\u0303od fit."]
+  ])("refuses (not cleans) invisible or opaque characters: %s", (_label, text) => expect(containsClaim(text)).toBe(true));
+  it.each(["Eight tenths ٪ here", "7‰ of it", "3 ‱", "9⁄10", "9∕10", "9÷10"])("percent and fraction look-alikes: %s", text => expect(containsClaim(text)).toBe(true));
+  it.each(["**g**ood fit", "<b>good</b>", "&#103;ood fit", "&amp; more", "`code`"])("markup a renderer could interpret is refused: %s", text => expect(containsClaim(text)).toBe(true));
+  it("plain accented letters stay usable (NFC-composed German)", () => { expect(containsClaim("Keine gemeinsamen Begriffe im Zitat, nur Übereinstimmung des Ortes.")).toBe(false); });
+});

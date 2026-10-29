@@ -56,9 +56,18 @@ const NUMBER_WORDS = "zero one two three four five six seven eight nine ten elev
 const NUM = `(?:\\d+(?:[.,]\\d+)?|(?:${NUMBER_WORDS.split(" ").join("|")})(?:[ -](?:${NUMBER_WORDS.split(" ").join("|")}))?)`;
 const RATIO = new RegExp(`\\b${NUM}\\s*(?:/|out of|von|of)\\s*${NUM}\\b`);
 const norm = (text: string) => [...text.normalize("NFKC").toLowerCase().replace(/[\u200b-\u200f\u2060\ufeff\u00ad]/g, "")].map(ch => LOOKALIKE[ch] ?? ch).join("");
+/** What the guard refuses outright instead of cleaning (PINK D-ENG-4): the text it checks must be the text a reader sees. Invisible
+ *  format, unassigned, private-use and surrogate characters, control characters other than newline and tab, variation selectors,
+ *  Unicode tags, bidirectional overrides, combining marks left after NFC, and markup that a later renderer could interpret. */
+const OPAQUE = /[\p{Cf}\p{Cn}\p{Co}\p{Cs}]|[\u{FE00}-\u{FE0F}\u{E0100}-\u{E01EF}\u{E0000}-\u{E007F}\u034F\u180E\u061C]/u;
+const CONTROL = /[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/;
+const MARKUP = /[<>`*]|&#?\w+;/;
+const operandRe = (operand: string) => new RegExp(`(?<![\\p{L}\\p{N}])${operand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![\\p{L}\\p{N}])`, "gu");
 export function containsClaim(text: string, operandTexts: string[] = []): boolean {
-  let t = norm(text);
-  for (const operand of operandTexts.map(norm).filter(o => o.length > 1).sort((x, y) => y.length - x.length)) t = t.split(operand).join(" ");
+  if (OPAQUE.test(text) || CONTROL.test(text) || MARKUP.test(text) || /\p{M}/u.test(text.normalize("NFC"))) return true;
+  let t = norm(text).replace(/[٪‰‱﹪]/g, "%").replace(/[⁄∕÷]/g, "/");
+  // The operands' own names are data: removed only as WHOLE words/phrases, so a short operand like „Go“ cannot hide „good fit“.
+  for (const operand of operandTexts.map(norm).filter(o => o.length > 0).sort((x, y) => y.length - x.length)) t = t.replace(operandRe(operand), " ");
   if (/%|％/.test(t) || /\b0[.,]\d+/.test(t) || /\d\s?(?:percent|prozent|pct)/.test(t) || RATIO.test(t.replace(/[-–]/g, " "))) return true;
   const raw = t.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
   const words: string[] = [];
