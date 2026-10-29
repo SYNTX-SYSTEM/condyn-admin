@@ -128,3 +128,17 @@ suite files 71/71 in a real checkout), decoupling measured (dirty cache table: p
 Point 3 narrow FAIL — the German empty-projection checks of components 03–06 — fixed in the next commit (`restore the German/English
 empty-projection checks`). Observation O-REC-1: the RD-URL state in the field (`discoveryPools`, `releaseDiscoveryPools`) is parsed but unused until
 stage 2 — dead code by design until GRÜN's panel. INCONCLUSIVE for PINK: :3017's key/model/database (PINK does not read process environments).
+
+## 10 Stage 3 start route and investigation UI (2026-10-29), final SFE status
+
+Not integrated, not on :3017, no real Gemini call. Evidence classes: STAND_IN and CODE_INSPECTION.
+
+| Layer | State |
+|---|---|
+| Implementation | `recovery/role-discovery` `edae658`: explicit start route (POST/GET `…/role-discovery/investigations`), single config source, `startControl` (engineState, maxRoles), same-site JSON only, day limit fails closed, `evidenceClass` on every answer. GRÜN `frontend/role-investigation-ui` `9bb6bed` on top: start panel, honest states, `roleInvestigationId` in the URL (NAV ≡ RELOAD). |
+| Tests passed | job-pool 288 (+4 skipped), pxj-first-screen 279, six-orbit suites 154, focused T-07/F12 group 699, tsc 0. PINK §3.74, §3.75, §3.76, §3.77: all findings fixed (F-RI-1 and O-START-1/2/3 closed). |
+| Host runtime | PINK stand-in production labs on c1954ca..9bb6bed (disposable DBs). Nothing on :3017. |
+| Browser proof | PINK six viewports, no POST without a click, URL contract, budget cases, stand-in labelled "no model". |
+| Full product E2E | NOT done: PDF → real Gemini capability extraction → real semantic relation. Needs an owner call budget and a real provider adapter. |
+
+Open for the owner: O-START-1 app-wide origin check before a real provider; O-START-4 concurrent distinct request ids both pay (rule needed); O-START-6 RUNNING after process end (202 plus resume before a real provider, O-NAV-RUNNING); O-RI-2 harmless; integration GO; whether :3017 moves; real Gemini budget and adapter.
