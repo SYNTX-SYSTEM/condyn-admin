@@ -35,6 +35,15 @@ describe("IdentityCoreDropZone → SourceDock intake (DLL-full path review point
     expect(seen[0].name).toBe("my-real-cv.md");
   });
 
+  it("REPRODUCE (F-INT-4, PINK §3.78 mutation testing): one drop calls onDropFile exactly once — never a double intake", () => {
+    const onDropFile = vi.fn();
+    const zone = instance<Record<string, unknown>>(IdentityCoreDropZone);
+    const tree = zone.settle({ sources: EMPTY_CAREER_INTELLIGENCE_DATA.sources, onDropFile });
+    const organism = organismOf(tree)!;
+    (organism.props.onDrop as (e: React.DragEvent<HTMLDivElement>) => void)(dropEvent([textFile("once.md", "# once")]));
+    expect(onDropFile).toHaveBeenCalledTimes(1);
+  });
+
   it("REPRODUCE: the forwarded file reaches SourceDock's own intake — the same validation the file button uses, staged there", async () => {
     // This suite runs without a DOM; FileReader (unrelated to the fix itself) gets a minimal Node polyfill for this one case.
     class NodeFileReader { onload: ((e: { target: { result: string } }) => void) | null = null; readAsText(file: File) { file.text().then(text => this.onload?.({ target: { result: text } })); } readAsDataURL(file: File) { file.arrayBuffer().then(buf => this.onload?.({ target: { result: `data:${file.type};base64,${Buffer.from(buf).toString("base64")}` } })); } }
@@ -48,7 +57,11 @@ describe("IdentityCoreDropZone → SourceDock intake (DLL-full path review point
     ref.current!.stageFile(file);
     await new Promise(resolve => setTimeout(resolve, 0)); // FileReader.onload (text) resolves on a macrotask
     const tree = dock.settle({ locale: "en" });
-    expect(JSON.stringify(tree)).toContain("evidence.md");
+    const html = JSON.stringify(tree);
+    expect(html).toContain("evidence.md");
+    // F-INT-4: one stageFile call stages the file exactly once — a double-intake mutant (stageFile itself calling
+    // setStagedDocs twice, or appending the new document twice in one update) would leave it staged twice over.
+    expect(html.split("evidence.md").length - 1).toBe(1);
   });
 
   it("inverse: without onDropFile the drop does nothing (no crash) and the drag-over label never promises acceptance", () => {
