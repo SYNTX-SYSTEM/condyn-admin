@@ -3613,6 +3613,23 @@ No Gemini call.
 
 **Run record.** `evidence/role-investigation-ui-9c40928/`: verdicts.txt, measurements.txt, scripts/ (probe and runners as .txt), shots/ (5, no CV quote on view), manifest.sha256.
 
+### 3.77 Role investigation UI fix on `9bb6bed` (2026-10-29)
+
+**Request.** GELB asked for a recheck, stand-in only, of GRÜN's fix `9bb6bed` on `frontend/role-investigation-ui`. It addresses F-RI-1 and O-RI-1, O-RI-3 and O-RI-4 of §3.76. The plan is now re-read once per changed stored id, which adds one automatic GET.
+
+**Method.** The §3.76 probes, extended with settled counts (discovery GETs after start, reload, Back and Forward, and 8 s later) and a comparison of the displayed numbers with the database. Labs: stand-in, no provider, gemini, stale and day limit 1. Unit groups and code diff included.
+
+**Verdicts (`evidence/role-investigation-ui-9bb6bed/verdicts.txt`).**
+- **Static: PASS.** tsc 0; the first-screen group passes 47 files with 279 tests, job-pool 288 and the focused group 699. The diff touches no API or job-pool file.
+- **F-RI-1 / O-RI-1: PASS.** The line reads "Relation cache: N of M pairs · stand-in check: {status}" with no "not executed". The numbers equal the database after a full run (192), after a partial run (120) and after reload. The plan is re-read exactly once per changed id: 1 GET after a start and 2 on mount. The count is unchanged 8 s later, so there is no loop.
+- **No extra POST: PASS.** One click is one POST. Reload, Back, Forward, the URL cases, close and hand-over send 0 POST, and the Gemini stand-in log stays at 6.
+- **O-RI-4: PASS.** After a stored run the ticks are cleared and START is disabled.
+- **O-RI-3: PASS.** The wording is "no investigation named in this view".
+- **Unchanged: PASS.** The start-unavailable reasons, stale refusal, URL contract, FAILED cases, D-RD-4 groups and budget run behave as in §3.76.
+- **Regression: PASS.** Six-orbit scenes identical to `c670b74`, panel walk unchanged, six viewports complete. O-RI-2 remains an observation.
+
+**Run record.** `evidence/role-investigation-ui-9bb6bed/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
