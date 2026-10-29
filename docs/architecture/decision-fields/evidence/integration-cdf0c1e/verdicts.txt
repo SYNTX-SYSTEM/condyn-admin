@@ -1,0 +1,59 @@
+PINK §3.78 · integration/dll-full cdf0c1e (29ae2d7 + frontend/dll-entry-gaps; = 9bb6bed + docs + PINK validation branch). STAND_IN only; no Gemini;
+nothing on :3017; main b712152 untouched. Classes: STAND_IN (production labs, no flag) · DETERMINISTIC (suites, mutations) · CODE_INSPECTION.
+
+1 Suite / tsc / build  PASS   tsc 0; full suite on a disposable DB with a real node_modules: 473 files, 458 green, 11 skipped, 4 red; 3113 tests green,
+                              27 red, 20 skipped; next build (production, no flag) exit 0. The 4 red files are the lifecycle files below, nothing else.
+                              Differences to GELB's run (7 red files, 27 red, 32 skipped): the four decision-integration / e2e files are GREEN here
+                              (they fail only with a symlinked node_modules — a scratch tree — or a worktree of that kind: Turbopack panic); the
+                              skip count differs by environment. The red test count is the same 27
+Base redness           —      the 27 red tests are NOT caused by the integration. Same four files, same 27 tests red on 27f3253, edae658, 29ae2d7
+                              and cdf0c1e (identical failing sets). main b712152 has no tests at all (no test directory, no test:isolated); the files
+                              were added with 1c64dc1 (2026-08-17). Cause, independently confirmed: lib/career/db/client.ts creates
+                              career_policy_versions with id, timestamp, payload_hash, payload while lib/career/db/schema.ts and the repositories
+                              use id, version, parent_version, created_at, created_by, payload_hash, payload (21 × missing column "version", 1 × NOT
+                              NULL "actor", the rest follow-ups). = F-JP-5 (§3.5), a legacy DDL drift, owner item. Not repaired here
+2 Product path         PASS   PDF upload through the interface → PERSON analysis → pool release → lexical discovery (0 POST, 1 GET) → pick 2 of at
+                              most 3 → explicit stand-in start (1 POST, confirmedCalls = displayed 2) → "Relation cache: 192 of 948 pairs · stand-in
+                              check: completed" = 192 relations in the database → reload / Back / Forward (0 POST, plan re-read once per id, no
+                              loop) → cache reuse (a new request id: all CACHED, 0 calls, 0 relations; a stale confirmation refused) → budget PARTIAL
+                              / FAILED. Identical to the 29ae2d7 and 9bb6bed runs
+                              Website source: PASS through the interface — a loopback page is fetched server-side, the job SUCCEEDED, 1 analysis;
+                              invalid host / protocol / missing URL are refused 400. GitHub source: the route accepts only github.com (400
+                              otherwise); the loader needs the network, which the stand-in lab refuses: the job ends FAILED EXECUTION_FAILED
+                              (a clean failure) — the success path is INCONCLUSIVE here (the unit suite covers the loader with a fake fetcher).
+                              What is missing: no PDF / text / website / GitHub source is shown anywhere in the role-discovery panel; no
+                              LinkedIn input (the types exist in lib, no UI)
+3 Integrity            PASS   six-orbit scenes identical to c670b74 at 1920 and 1280; persondom 16 scenes errors 0; nav 88 / 90 (the two probe
+                              errors of §3.71); g1 walk at both widths; x22 Back / Forward equal; s10 17 / 20 with S6 (owner class since §3.64);
+                              the three modes, pool workflow, G1 first screen, /matches guard and old routes run through those probes and the
+                              suite (job-pool-validation, e2e) green
+4 Inverse              PASS*  25 mutations, one per seam: 20 caught (route: idempotency-first, confirmedCalls, cross-site, content type; GET:
+                              startControl; client: confirmedCalls + 1, double-POST guard, foreign provider; panel: confirmedCalls source, auto-POST
+                              on tick; URL: release keeps the id, Dashboard drops the id, no plan re-read; decoder; drop zone: ignored / invented /
+                              no validation; GO TO JOB FIELD target; gate text EN and DE). Survivors:
+  F-INT-1 (test gap)  FAIL   M05 day limit fails open (missing / malformed → 1000): NOT caught. The test "a missing or malformed day limit fails
+                              closed" asserts out.run?.calls ?? 0, a field the run never returns, and the starts are refused earlier for other
+                              reasons — the assertion cannot fail. (The parser itself was measured correct in §3.75)
+  F-INT-2 (test gap)  FAIL   M10 lowercase roleInvestigationId accepted by the URL parser: NOT caught (the browser probe shows a lowercase id is
+                              removed with no GET, and the decoder's own check hides it from the user, but no test pins the parser)
+  F-INT-3 (test gap)  FAIL   M14 picks not cleared after a stored run (O-RI-4): NOT caught; the browser probe asserts picked 0 / START disabled
+  F-INT-4 (test gap)  FAIL   M22 a drop forwarded twice (double intake): NOT caught by the unit tests; the browser probe asserts exactly one staged
+                              source per drop (not run against the mutant)
+  M17 start offered although unavailable: survives as an equivalent mutant (plan.state !== PLANNED already excludes every unavailable case)
+                              Widened to all of test/career: the survivors stay uncaught (the 27 baseline failures are the only red)
+5 Viewports            PASS   six viewports (1280×720, 1440×900, 1600×900, 1920×1080, 200 % zoom at 1920 and 1280) in the production build without a flag:
+                              width = viewport, six shells, picked / completed / reload complete, 0 POST on reload
+dll-entry-gaps         PASS   (1) gate text names both ways in EN and DE in the tooltip and the banner line (browser, locale switched through the
+                              codex), PERSON stays open; (2) EMPTY pools: "GO TO JOB FIELD" → focus switches to the Job Field (one history push,
+                              only focus changes, analysis kept, no POST), the Capability Field returns with the panel open; (3) a drop on the
+                              identity core: the dragover label reads "DROP SOURCE NOW", a PDF is staged under its own name, .docx refused (TYPE,
+                              names the file), an empty .txt refused (EMPTY), a .txt staged, a drop without a file stages nothing, each drop = one
+                              staged source, the staged dock equals the file button's, ANALYZE after one drop = exactly 1 POST and 1 analysis; no
+                              upload without validation; PxJ without a job has no drop target (the field is closed); T-07 / six orbits unchanged
+O-INT-1 (security obs.) OBS   SSRF: the analyze route and the website loader accept any http(s) URL — a loopback page, the link-local metadata address
+                              and the app's own API are all accepted (202) and the server fetches them (the loopback hit was observed). No private
+                              or loopback guard; the app is local-only and unauthenticated in this build, so a precondition before any
+                              deployment beyond a local lab (owner item, with the app-wide Origin check)
+O-INT-2 (obs.)        OBS    the analyze route accepts an unknown document type (type "ftp") with 202; the worker decides later
+O-INT-3 (obs.)        OBS    the full suite shows one flaky file under load, test/database-isolation/disposable-database.test.ts ("must be a
+                              superuser to terminate superuser process"), green alone on 27f3253, edae658, 29ae2d7 (4 / 4) and green in the cdf0c1e run

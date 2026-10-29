@@ -1,0 +1,43 @@
+// PINK product-path sources probe (integration 29ae2d7) — STAND-IN lab only. Website / GitHub sources through the UI and the route.
+// argv: <state.json> <repo> <out dir> <label>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createServer } from "node:http";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const hits = []; const PORT = 41890;
+const srv = createServer((req, res) => { hits.push({ path: req.url, ua: String(req.headers["user-agent"] ?? "").slice(0, 40) }); res.setHeader("content-type", "text/html"); res.end("<html><head><title>x</title></head><body><nav>menu</nav><p>Portfolio of a software engineer: led the migration of a dispatch platform to event-driven services, TypeScript, PostgreSQL, Kafka.</p><script>1</script></body></html>"); }).listen(PORT, "127.0.0.1");
+const out = { label: LABEL, ui: {}, route: {} };
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(); const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 140)));
+const analyzeResp = []; page.on("response", async r => { if (r.url().endsWith("/api/career/analyze") && r.request().method() === "POST") analyzeResp.push({ status: r.status(), body: await r.json().catch(() => null) }); });
+const ids = async () => ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId);
+const jobStatus = async jobId => { for (let i = 0; i < 150; i += 1) { const j = await (await fetch(`${BASE}/api/career/jobs/${jobId}`)).json().catch(() => ({})); if (["SUCCEEDED", "FAILED", "DEAD_LETTER", "CANCELLED"].includes(j.status)) return { status: j.status, code: j.error?.code ?? j.issues?.[0]?.code ?? j.errorCode ?? null, keys: Object.keys(j).slice(0, 12), resultAnalysis: !!j.resultAnalysisId }; await sleep(2000); } return { status: "TIMEOUT" }; };
+const addUrl = async (kind, url, title) => { await page.getByTestId(`add-${kind}-source-btn`).click(); await page.getByTestId("source-url-input").fill(url); await page.locator('input[placeholder]').first().fill(title).catch(() => {}); await page.getByTestId("submit-source-btn").click(); await sleep(800); };
+for (const [kind, url] of [["website", `http://127.0.0.1:${PORT}/portfolio`], ["github", "https://github.com/octocat/Hello-World"]]) {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(6000);
+  const before = new Set(await ids()); const h0 = hits.length; const n0 = analyzeResp.length;
+  await addUrl(kind, url, `PINK ${kind}`);
+  const staged = await page.getByTestId("source-dock").innerText(); 
+  await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 20000 }).catch(() => {});
+  await page.getByTestId("start-intake-analysis-btn").click().catch(() => {}); await sleep(3000);
+  const resp = analyzeResp[n0] ?? null; const job = resp?.body?.jobId ? await jobStatus(resp.body.jobId) : null; const after = (await ids()).filter(x => !before.has(x));
+  out.ui[kind] = { stagedShowsType: /WEB|GIT/.test(staged), analyzePost: resp && { status: resp.status, hasJobId: !!resp.body?.jobId }, job, newAnalyses: after.length, localServerHits: hits.length - h0, hitSample: hits.slice(h0, h0 + 2) };
+}
+// route-level negatives and the loopback case (same-origin JSON POSTs)
+const post = async body => { const r = await fetch(`${BASE}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ investigation: { mode: "PERSON" }, ...body }) }); const j = await r.json().catch(() => ({})); return `${r.status} ${j.issues?.[0]?.code ?? (j.jobId ? "ACCEPTED" : "")}`; };
+out.route = {
+  "github, other host": await post({ documents: [{ type: "github", url: "https://evil.example/o/r", title: "t", docId: "d1" }] }),
+  "github, no url": await post({ documents: [{ type: "github", title: "t", docId: "d1" }] }),
+  "website, ftp": await post({ documents: [{ type: "website", url: "ftp://x/y", title: "t", docId: "d1" }] }),
+  "website, file": await post({ documents: [{ type: "website", url: "file:///etc/hostname", title: "t", docId: "d1" }] }),
+  "website, no url": await post({ documents: [{ type: "website", title: "t", docId: "d1" }] }),
+  "website, loopback http": await post({ documents: [{ type: "website", url: `http://127.0.0.1:${PORT}/route`, title: "t", docId: "d1" }] }),
+  "website, link-local metadata address": await post({ documents: [{ type: "website", url: "http://169.254.169.254/latest/meta-data/", title: "t", docId: "d1" }] }),
+  "website, the lab's own API": await post({ documents: [{ type: "website", url: `${BASE}/api/career/analyses`, title: "t", docId: "d1" }] }),
+  "empty documents": await post({ documents: [] }), "unknown type": await post({ documents: [{ type: "ftp", url: "x", title: "t", docId: "d1" }] }),
+};
+await sleep(15000); out.route["local server hits after the route POSTs"] = hits.filter(h => h.path === "/route").length;
+out.pageErrors = errors; srv.close(); await b.close(); writeFileSync(`${OUT}/src-${LABEL}.json`, JSON.stringify(out, null, 1)); console.log("SRC", JSON.stringify(out).slice(0, 1500)); process.exit(0);

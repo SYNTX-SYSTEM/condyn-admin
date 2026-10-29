@@ -1,0 +1,11 @@
+740f239becdc0a4090a1fd32406e5f0b0b5075c015fb128187e52e0c8baed6eb  ./measurements.txt
+fd963efd178ac1e85b697a6178b2748ddde82fba46e444ee17e42f993115546d  ./scripts/mutate.py.txt
+4747ae5d5403209b26f327c5178e8dfe8c5a5adccdd8d4b7cea97579c13a079e  ./scripts/pink-gaps.mjs.txt
+494429c3fdf39f2439b4d8404569d282256a9e0983f4dfd2f7e5204ddd0d330e  ./scripts/pink-ri.mjs.txt
+b11add333bfef51d2a6b1b668cbe95556dbf4993fbc48798d589479bcba1d4c5  ./scripts/pink-src.mjs.txt
+c07d84003279e28ab8e5da847aa99543661de2ed4c3a0db624490586e3bf890d  ./scripts/run8.sh.txt
+58d14b57d4a41479d98216aae9f11d0bc3860093082aea3ea487201a05638666  ./scripts/runcdf.sh.txt
+5ea19ae395c4da69c19e289cb0506f021af44752e14e14671e4b030ba301c50a  ./scripts/rundi.sh.txt
+0945b15ef3eae5935f3f5da3d52fb860f81556cadb6eb6ab8c22204d2af0adda  ./scripts/run-gaps.sh.txt
+ba4d2fc780cb1c012c361e4cbb5feb05c5b512ffc780c22c91163d2bebda75c4  ./scripts/run-int.sh.txt
+447e72c5d9c31ec26963d218972afc967dcb757a99665303b796d7010ab44ef7  ./verdicts.txt

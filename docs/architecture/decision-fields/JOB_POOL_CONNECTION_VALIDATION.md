@@ -3630,6 +3630,43 @@ No Gemini call.
 
 **Run record.** `evidence/role-investigation-ui-9bb6bed/`.
 
+### 3.78 Integrated state `integration/dll-full` `cdf0c1e` (2026-10-29)
+
+**Request.** GELB, after the owner GO "DLL FULL INTEGRATION", asked for an independent, inverse validation of the integrated state: `29ae2d7` first, then `cdf0c1e` (plus `frontend/dll-entry-gaps`). Stand-in only; `main` stays at `b712152`. Five points, plus whether GELB's red files are base redness.
+
+**Method.**
+- Full suite, tsc and production build in a detached worktree with a real `node_modules`, on a disposable database.
+- Scratch trees for the same files on `27f3253`, `edae658` and `29ae2d7`.
+- Stand-in production labs without a flag: product path, sources, the dll-entry-gaps probe and the integrity probes of earlier rounds.
+- 25 one-line mutations, one per seam, against the relevant tests.
+
+**Verdicts (`evidence/integration-cdf0c1e/verdicts.txt`).**
+- **1 Suite: PASS.**
+  - tsc 0, build exit 0.
+  - 473 files with 458 green, 3113 tests green, 27 red.
+  - The red ones are only the four lifecycle files. The decision-integration and e2e files are green with a real `node_modules`; they fail only in scratch trees with a symlinked one (Turbopack panic).
+- **Base redness: confirmed.**
+  - The same 27 tests in the same four files are red on `27f3253`, `edae658`, `29ae2d7` and `cdf0c1e`.
+  - `main` `b712152` has no tests at all; they arrived with `1c64dc1` on 2026-08-17.
+  - The cause is `lib/career/db/client.ts` creating `career_policy_versions` with `timestamp` where the Drizzle schema and repositories use `version`, `parent_version`, `created_at` and `created_by` (F-JP-5, §3.5). The integration did not cause it.
+- **2 Product path: PASS.** Upload, PERSON, release, lexical discovery, explicit stand-in start, cache reuse, reload, Back and Forward all behave as in §3.77, with the displayed numbers equal to the database. The website source works end to end. The GitHub success path is INCONCLUSIVE in the network-less lab. No source is shown in the discovery panel, and there is no LinkedIn input.
+- **3 Integrity: PASS.** Six orbits are identical to `c670b74`, and the integrity probes match earlier rounds (nav 88/90 and s10 17/20 with S6, both as before).
+- **4 Inverse: 20 of 25 mutations caught.**
+  - **F-INT-1:** the day-limit fails-closed test is vacuous (it reads `run.calls`, which does not exist), so a fail-open limit survives.
+  - **F-INT-2:** a lowercase `roleInvestigationId` accepted by the parser survives.
+  - **F-INT-3:** picks not cleared after a stored run survive.
+  - **F-INT-4:** a drop forwarded twice survives.
+  - One further survivor is an equivalent mutant.
+  - The browser probes pin the behaviour behind F-INT-3 and F-INT-4.
+- **5 Viewports: PASS.** Six viewports in the production build without a flag.
+- **dll-entry-gaps: PASS.** The gate text names both ways in EN and DE, GO TO JOB FIELD works, and a drop reaches the real intake with the same validation as the file button, once per drop.
+- **Observations.**
+  - **O-INT-1 (security):** the analyze route and the website loader fetch loopback and link-local addresses (SSRF). That is acceptable only while the app stays local and unauthenticated.
+  - **O-INT-2:** an unknown document type is accepted.
+  - **O-INT-3:** one database-isolation test is flaky under load.
+
+**Run record.** `evidence/integration-cdf0c1e/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

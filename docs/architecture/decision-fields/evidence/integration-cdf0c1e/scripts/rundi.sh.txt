@@ -1,0 +1,6 @@
+#!/bin/bash
+I=$SCRATCH/int; P=$REPO
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER
+cd $P
+for p in 29ae2d7:t29 27f3253:t27 edae658:tedae; do c=${p%%:*}; T=${p##*:}; git checkout -q --detach $c && npm run -s test:isolated -- test/decision-integration/g2-g3-vertical-proof.test.ts test/decision-integration/hr-decision-loop-p7.test.ts > $I/di-$T.log 2>&1; echo "di $T exit $?"; done
+git checkout -q validation/hr-decision-loop-pink; echo "DI-END"

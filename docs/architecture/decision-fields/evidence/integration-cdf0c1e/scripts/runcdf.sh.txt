@@ -1,0 +1,8 @@
+#!/bin/bash
+I=$SCRATCH/int; P=$REPO
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES
+cd $P && git checkout -q --detach cdf0c1e && echo "HEAD $(git rev-parse --short HEAD)"
+npx tsc --noEmit -p . > $I/cdf-tsc.log 2>&1; echo "tsc exit $? errors $(grep -c 'error TS' $I/cdf-tsc.log)"
+npm run -s test:isolated > $I/cdf-suite.log 2>&1; echo "suite exit $?"
+( time npx next build ) > $I/cdf-build.log 2>&1; echo "build exit $?"
+git status --short | head -5; git checkout -q validation/hr-decision-loop-pink; echo "CDF-END"

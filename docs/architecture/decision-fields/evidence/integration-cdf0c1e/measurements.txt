@@ -1,0 +1,272 @@
+PINK §3.78 · measurements (integration/dll-full cdf0c1e; STAND_IN labs, DETERMINISTIC suites and mutations, CODE_INSPECTION).
+
+== static
+   tsc errors 0
+   full suite (test:isolated, real node_modules, detached worktree) Test Files 4 failed | 458 passed | 11 skipped (473) · Tests 27 failed | 3113 passed | 20 skipped (3160)
+   red files: career-lifecycle-concurrency-idempotency 6, career-lifecycle-postgres-persistence 6, career-lifecycle-recovery 5, career-policy-activation-atomicity 10
+   next build (production, no flag): exit 0, 44.5 s
+   29ae2d7 for comparison: 470 files, 5 failed (the same 4 + database-isolation/disposable-database, green alone on all commits: 4/4), 3104 passed, 28 failed
+
+== base redness of the four lifecycle files (same bounded test conditions: test:isolated, least-privilege admin role)
+   29ae2d7 (six files): Test Files 6 failed (6) · Tests 29 failed | 66 passed | 11 skipped (106)
+   27f3253 (six files): Test Files 6 failed (6) · Tests 29 failed | 66 passed | 11 skipped (106)
+   edae658 (six files): Test Files 6 failed (6) · Tests 29 failed | 66 passed | 11 skipped (106)
+   cdf0c1e (four files): Test Files 4 failed (4) · Tests 27 failed | 9 passed (36)
+   causes on cdf0c1e: 21 × column "version" of relation "career_policy_versions" does not exist, 1 × NOT NULL "actor", the rest follow-ups
+   main b712152 (2026-05-19): no test directory at all, no test:isolated — the files do not exist there; they were added with 1c64dc1 (2026-08-17, TEST005C)
+   DDL (lib/career/db/client.ts) career_policy_versions: id, timestamp, payload_hash, payload; Drizzle schema (lib/career/db/schema.ts): id, version, parent_version, created_at, created_by, payload_hash, payload
+
+== the other four files of GELB's eight (need a real node_modules; Turbopack panics on a symlinked one)
+   decision-integration g2-g3 + hr-decision-loop-p7 on 29ae2d7 / 27f3253 / edae658 in the real worktree: Test Files 2 passed (2) · Tests 70 passed (70) / Test Files 2 passed (2) · Tests 70 passed (70) / Test Files 2 passed (2) · Tests 70 passed (70)
+   the two e2e files (local-decision-context-http, job-pool-workflow) in the real worktree: exit 0 on 29ae2d7 and 27f3253; both green inside the full suite on cdf0c1e
+
+== product path on cdf0c1e (rec-setup: PDF upload through the interface → PERSON analysis; then pink-ri main flow)
+   load: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "entry": 1}
+   openRelease: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": true, "startControlPlan": "PLANNED", "semantic": "Semantic check: not executed · 0 of 948 pairs in the relation cache · would need 9 calls · no investigation named in this view", "picked": "0", "calls": "0", "runDisabled": true, "nothingPreselected": true, "pickable": 5, "groups": {"ALL_REQUIREMENTS_NAME_RELATED": 0, "PARTIAL_NAME_RELATED": 5, "WEAK_LEXICAL_ONLY": 0, "NO_LEXICAL_RELATION": 4, "NO_REQUIREMENTS": 0}, "startControlApi": {"engineState": "READY", "maxRoles": 3}, "planCallsApi": 9}
+   pick: {"maxRoles": 3, "requested": 5, "picked": "3", "calls": "3", "selection": "Picked: 3 of at most 3 roles · would need 3 calls for 288 open pairs", "runConfirmed": "3", "displayedNumbers": ["3", "3", "3", "288"], "disabledAfterCap": 6, "checked": 3}
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "postBody": {"confirmedCalls": 2, "roles": 2, "uploads": 1, "keys": ["clientRequestId", "confirmedCalls", "jobPoolUploadIds", "roles"]}, "displayedCalls": "2", "riValid": true, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "notStartedShown": false, "db": {"before": {"geminiStandIn": 6, "relation_investigations": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0}, "after": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}}
+   startSettled: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "runDisabled": true, "pickedChecked": 0, "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "equal": true, "replayed": false, "invState": "STORED"}
+   reloadSettled: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   backForward: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "historyLen": 3, "back": {"panel": false, "inv": null, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": true, "mode": "PERSON"}}, "forward": {"equal": true, "invState": "STORED", "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}}, "settled": {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2}, "forwardSemantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   main flow equal to the 29ae2d7 and 9bb6bed runs (POST, GET, text and DB counts)
+   stale confirmation + cache reuse: {"stale": {"inv": {"state": "REFUSED", "text": "Not started: the server now names 0 calls instead of the 2 you confirmed. Re-read the plan and confirm again.\nCode: ERR_INVESTIGATION_CALLS_NOT_CONFIRMED\nPlan as read: 0 of 948 pairs in the relation cache · would need 9 calls\nRE-READ PLAN"}, "afterReread": {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "semantic": "Semantic check: not executed · 204 of 948 pairs in the relation cache · would need 7 calls · no investigation named in this view", "calls": "0", "picked": "2", "runConfirmed": "0", "inv": "REFUSED"}, "secondStart": {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "status": "COMPLETED", "tasks": ["CACHED", "CACHED"]}, "urlRi": 1}}}
+   day limit 1: {"run1": {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "inv": {"state": "STORED", "status": "PARTIAL", "tasks": ["SUCCEEDED", "BUDGET_EXHAUSTED", "CANCELLED"], "budget": true, "engine": "Stand-in, no model"}, "text": "Semantic check: partly completed\nStand-in, no model\nBudget exhausted: the remaining roles were cancelled without a call.\nPrincipal Software Architect – Clinical Platform · Aurelion Health Systems AG\ncompleted · 120 pairs · 120 relations stored\nSecurity Engineer – Clinical Systems · Aurelion Health Systems AG\nbudget exhausted · 96 pairs · 0 relations stored · Code: ERR_BUDGET_EXHAUSTED\nEngineering Lead – Routing Platform · Kestrel Logistics Software GmbH\ncancelled, no call · 108 pairs · 0 relations stored\nThe relations themselves are not shown here.\nRE-READ PLAN", "semantic": "Relation cache: 120 of 948 pairs · stand-in check: partly compl
+   viewports: 1280x720@1 POST 1 reload POST 0 width-ok True shells 6; 1440x900@1 POST 1 reload POST 0 width-ok True shells 6; 1600x900@1 POST 1 reload POST 0 width-ok True shells 6; 1920x1080@1 POST 1 reload POST 0 width-ok True shells 6; 640x360@2 POST 1 reload POST 0 width-ok True shells 6; 960x540@2 POST 1 reload POST 0 width-ok True shells 6
+
+== sources (website / GitHub), stand-in lab
+{
+ "label": "w-src",
+ "ui": {
+  "website": {
+   "stagedShowsType": true,
+   "analyzePost": {
+    "status": 202,
+    "hasJobId": true
+   },
+   "job": {
+    "status": "SUCCEEDED",
+    "code": null,
+    "keys": [
+     "jobId",
+     "status",
+     "resultAnalysisId"
+    ],
+    "resultAnalysis": true
+   },
+   "newAnalyses": 1,
+   "localServerHits": 1,
+   "hitSample": [
+    {
+     "path": "/portfolio",
+     "ua": "node"
+    }
+   ]
+  },
+  "github": {
+   "stagedShowsType": true,
+   "analyzePost": {
+    "status": 202,
+    "hasJobId": true
+   },
+   "job": {
+    "status": "FAILED",
+    "code": "EXECUTION_FAILED",
+    "keys": [
+     "jobId",
+     "status",
+     "errorCode",
+     "errorSummary"
+    ],
+    "resultAnalysis": false
+   },
+   "newAnalyses": 0,
+   "localServerHits": 0,
+   "hitSample": []
+  }
+ },
+ "route": {
+  "github, other host": "400 ERR_INVALID_GITHUB_URL",
+  "github, no url": "400 ERR_MISSING_SOURCE_URL",
+  "website, ftp": "400 ERR_INVALID_WEBSITE_URL",
+  "website, file": "400 ERR_INVALID_WEBSITE_URL",
+  "website, no url": "400 ERR_MISSING_SOURCE_URL",
+  "website, loopback http": "202 ACCEPTED",
+  "website, link-local metadata address": "202 ACCEPTED",
+  "website, the lab's own API": "202 ACCEPTED",
+  "empty documents": "400 ERR_NO_DOCUMENTS",
+  "unknown type": "202 ACCEPTED",
+  "local server hits after the route POSTs": 1
+ },
+ "pageErrors": []
+}
+
+== dll-entry-gaps (lab with NO pool uploaded)
+{
+ "gate": {
+  "pxjNoJobEN": {
+   "title": "PERSON needs no job: choose it above. PERSON × JOB needs a valid role selected as the job — open one in the Job Field, then SELECT AS JOB",
+   "way": "Way: PERSON needs no job — choose it above; PERSON × JOB needs a role opened in the Job Field, then SELECT AS JOB",
+   "gate": "AWAITING_JOB",
+   "bothWays": [
+    true,
+    true
+   ]
+  },
+  "codexButtons": [
+   "L0 PLANETARIUM",
+   "L1 CLUSTER",
+   "L2 EVIDENCE",
+   "L3 SOURCE",
+   "L4 ORIGINAL",
+   "+ UPLOAD PDF DOCUMENT",
+   "+ GITHUB URL",
+   "+ WEBSITE URL",
+   "+ ENTER TEXT / MARKDOWN",
+   "? HOW THIS WORKS",
+   "📖 SYSTEM CODEX [DE|EN]",
+   "ⓘ SEMANTIC GUIDE",
+   "← CAPABILITY FIELD",
+   "HIDE POOLS",
+   "+ INTAKE",
+   "GEMINI OUTPUT",
+   "+ INTAKE",
+   "UPLOAD →",
+   "SELECTED JOBNO JOB SELEC",
+   "◈ CAPABILITY FIELD",
+   "⬡ JOB FIELD",
+   "PERSON",
+   "PERSON × JOB",
+   "JOB",
+   "🇩🇪 DEUTSCH",
+   "🇬🇧 ENGLISH",
+   "✕ CLOSE",
+   "1. WHAT IS CONDYN?",
+   "2. THE 2 CORE LAWS & 8 I",
+   "3. IDENTITY CORE & THE 6",
+   "4. SEMANTIC ZOOM L0–L4",
+   "5. DECISION GRAPH: SUPPO",
+   "6. ONTOLOGY: NODES & EDG",
+   "7. THE 5 TRUST QUESTIONS",
+   "8. STEP-BY-STEP OPERATIN"
+  ],
+  "pxjNoJobDE": {
+   "localeToggled": "🇩🇪 DEUTSCH",
+   "title": "PERSON braucht keinen Job: wähle ihn oben. PERSON × JOB braucht eine gültige Rolle als gewählten Job — öffne eine im Job-Feld, dann ALS JOB WÄHLEN",
+   "way": "Weg: PERSON braucht keinen Job — oben wählen; PERSON × JOB braucht eine im Job-Feld geöffnete Rolle, dann ALS JOB WÄHLEN",
+   "gate": "AWAITING_JOB",
+   "bothWays": [
+    true,
+    true
+   ]
+  },
+  "personOpen": {
+   "title": null,
+   "way": null,
+   "gate": "OPEN"
+  }
+ },
+ "drop": {
+  "dragOverLabel": "SYNTX CORE • ORGANISM ⚡ DROP SOURCE NOW",
+  "before": "0",
+  "pdf": {
+   "staged": "1",
+   "showsName": true,
+   "refused": null,
+   "posts": []
+  },
+  "docx": {
+   "staged": "1",
+   "refused": "TYPE",
+   "refusedNamesFile": true
+  },
+  "emptyTxt": {
+   "staged": "1",
+   "refused": "EMPTY"
+  },
+  "txt": {
+   "staged": "2",
+   "refused": null,
+   "showsName": true
+  },
+  "dropWithoutFile": {
+   "staged": "2"
+  },
+  "twoQuickDrops": {
+   "staged": "4",
+   "expected": 0,
+   "stagedAfter": "4"
+  },
+  "sameAsButton": {
+   "buttonStaged": "1",
+   "dropStaged": "1",
+   "sameDockText": true,
+   "buttonAnalyzeDisabled": false,
+   "dropAnalyzeDisabled": false
+  },
+  "analyze": {
+   "posts": [
+    "/api/career/analyze"
+   ],
+   "newAnalyses": 1,
+   "analysisReady": true
+  },
+  "pxjNoJob": {
+   "dropTarget": false,
+   "dockVisible": false,
+   "gate": "AWAITING_JOB"
+  }
+ },
+ "empty": {
+  "poolsEmptyText": true,
+  "button": "GO TO JOB FIELD",
+  "discoverDisabled": null,
+  "after": {
+   "capBtn": "false",
+   "panel": false,
+   "jobField": true,
+   "urlChangedParams": [
+    "focus"
+   ],
+   "historyDelta": 1,
+   "posts": [],
+   "analysisKept": true
+  },
+  "backToCapability": {
+   "panelOpen": true,
+   "entry": false
+  }
+ }
+}
+   pageErrors []
+
+== integrity probes on cdf0c1e (PINK scripts of earlier rounds, production build, no flag)
+   g1 walk 1920 + 1280: exit 0 (steps AVAILABLE / ROLE_MISMATCH as before); persondom: 16 scenes, rows identical, errors 0; nav: 88 of 90 (C15-ROLE_SWITCH, C18-CLEAR-JOB — the same probe errors as §3.71); x22: Back/Forward states equal; s10 1920: 17 of 20, S6-back-across-document (owner class since §3.64); orbits 1920 + 1280 identical to c670b74 (scene JSON); rd-ui reload / Forward equal, handover 0 non-GET
+
+== inverse: one mutation per seam, tests of the relevant group (UI = test/career/pxj-first-screen + dropzone; route / config = test/career/job-pool)
+   M01 start route: idempotency not first: RED Test Files 1 failed | 26 passed (27) · Tests 1 failed | 287 passed | 4 skipped (292) · explicit semantic investigation route (PostgreSQL, stand-in) > explicit start: one call per role, relations st
+   M02 start route: confirmedCalls not checked: RED Test Files 1 failed | 26 passed (27) · Tests 2 failed | 286 passed | 4 skipped (292) · explicit semantic investigation route (PostgreSQL, stand-in) > explicit start: one call per role, relations st
+   M03 start route: cross-site accepted: RED Test Files 1 failed | 26 passed (27) · Tests 1 failed | 287 passed | 4 skipped (292) · explicit semantic investigation route (PostgreSQL, stand-in) > a start is a same-site JSON call; a missing or 
+   M04 start route: content type unchecked: RED Test Files 1 failed | 26 passed (27) · Tests 1 failed | 287 passed | 4 skipped (292) · explicit semantic investigation route (PostgreSQL, stand-in) > a start is a same-site JSON call; a missing or 
+   M05 config: day limit fails open: GREEN (not caught) Test Files 27 passed (27) · Tests 288 passed | 4 skipped (292) 
+   M06 GET route: startControl missing: RED Test Files 1 failed | 75 passed (76) · Tests 1 failed | 571 passed | 4 skipped (576) · role discovery route (PostgreSQL, no Gemini) > 200 no-store: every role of the released upload, lexical relati
+   M07 UI client: confirmedCalls + 1: RED Test Files 2 failed | 47 passed (49) · Tests 2 failed | 282 passed (284) · RI-START · flows > REPRODUCE: no POST on a load, a reload or a re-read; one START is one POST with the confirm
+   M08 hook: no open-guard (double POST): RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-START · flows > REPRODUCE: no POST on a load, a reload or a re-read; one START is one POST with the confirm
+   M09 panel: confirmedCalls = picked roles: RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-START · flows > REPRODUCE: picking states the count — calls only for roles with open pairs, at most the lim
+   M10 URL: lowercase id accepted: GREEN (not caught) Test Files 49 passed (49) · Tests 284 passed (284) 
+   M11 Dashboard: id not handed on (50dac39): RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-URL · the named investigation in the URL > REPRODUCE: the real server page threads roleInvestigationId down
+   M12 field: release keeps the id in the URL: RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-URL · the named investigation in the URL > REPRODUCE: closing the panel, a new release, a new analysis and 
+   M13 field: no plan re-read after a stored id: RED Test Files 2 failed | 47 passed (49) · Tests 2 failed | 282 passed (284) · RI-START refresh · F-RI-1 / O-RI-1 / O-RI-3 / O-RI-4 > REPRODUCE: after a completed run the plan is re-read on
+   M14 panel: picks not cleared after a stored run: GREEN (not caught) Test Files 49 passed (49) · Tests 284 passed (284) 
+   M15 decoder: foreign provider accepted: RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-START · the explicit start, its states and its client > REPRODUCE: the client sends exactly the confirmed r
+   M16 decoder: start control not checked: RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-CONTROL · the start control beside the plan > REPRODUCE: a start control outside the contract (absent, a pr
+   M17 panel: start offered although unavailable: GREEN (not caught) Test Files 49 passed (49) · Tests 284 passed (284) 
+   M18 field: start by pick (auto POST on tick): RED Test Files 1 failed | 48 passed (49) · Tests 1 failed | 283 passed (284) · RI-START · flows > REPRODUCE: picking states the count — calls only for roles with open pairs, at most the lim
+   M19 dropzone: dropped file ignored: RED Test Files 1 failed | 50 passed (51) · Tests 1 failed | 297 passed (298) · IdentityCoreDropZone → SourceDock intake (DLL-full path review point 3) > REPRODUCE: a dropped file reaches on
+   M20 dropzone: invents a file (the old no-op): RED Test Files 1 failed | 50 passed (51) · Tests 1 failed | 297 passed (298) · IdentityCoreDropZone → SourceDock intake (DLL-full path review point 3) > REPRODUCE: a dropped file reaches on
+   M21 intake: refused type no longer refused: RED Test Files 1 failed | 50 passed (51) · Tests 1 failed | 297 passed (298) · F-G1-MD · a file's kind decides how it is staged > REPRODUCE: any other file is refused with a sentence and no
+   M22 field: drop forwarded twice (double intake): GREEN (not caught) Test Files 51 passed (51) · Tests 298 passed (298) 
+   M23 panel: GO TO JOB FIELD goes to the Capability Field: RED Test Files 1 failed | 50 passed (51) · Tests 1 failed | 297 passed (298) · RD-PANEL pools-empty handover · a real action to the Job Field > REPRODUCE: clicking it switches the field the
+   M24 gate text EN: one way only again: RED Test Files 2 failed | 49 passed (51) · Tests 2 failed | 296 passed (298) · Gate text (DLL-full review point 1) · both ways named, no job prescribed as the only one > REPRODUCE: PERSON ×
+   M25 gate text DE: one way only again: RED Test Files 1 failed | 50 passed (51) · Tests 1 failed | 297 passed (298) · Gate text (DLL-full review point 1) · both ways named, no job prescribed as the only one > REPRODUCE: PERSON ×
+   widened to all of test/career for the four survivors M05 M10 M14 M17: red only by the 27 baseline lifecycle failures (the same 27), so still not caught
