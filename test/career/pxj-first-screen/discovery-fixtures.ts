@@ -76,3 +76,28 @@ export async function discoveryBodyWithPlan(engine: RelationEngineIdentity | nul
   const startControl = engine ? { engineState: "READY", maxRoles } : { engineState: "NOT_CONFIGURED", maxRoles: null };
   return { success: true, discovery: { ...discovery, semanticPlan, startControl } };
 }
+
+/** A cache reader holding exactly the given relation keys (records reduced to their key; the plan reads only that). */
+const holding = (keys: ReadonlySet<string> | "ALL") => ({ getByKeys: async (wanted: string[]) => wanted.filter(key => keys === "ALL" || keys.has(key)).map(relationKey => ({ relationKey })) as never });
+
+/**
+ * READY bodies from the real producer: `cachedRoles` roles at the front of the discovery fully cached (their keys are the first of
+ * the plan's distinct keys), "ALL" every pair cached; the rest pending.
+ */
+export async function plannedBody(cachedRoles: number | "ALL" = 0, maxRoles = 10, pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
+  if (cachedRoles === "ALL") return discoveryBodyWithPlan(STANDIN_ENGINE, { state: "AVAILABLE", reader: holding("ALL") }, pools, maxRoles);
+  let seen: string[] = [];
+  const recording = { getByKeys: async (wanted: string[]) => { seen = wanted; return []; } };
+  const first = await discoveryBodyWithPlan(STANDIN_ENGINE, { state: "AVAILABLE", reader: recording }, pools, maxRoles);
+  const count = first.discovery.semanticPlan.roles.slice(0, cachedRoles).reduce((n, r) => n + r.pairs, 0);
+  return discoveryBodyWithPlan(STANDIN_ENGINE, { state: "AVAILABLE", reader: holding(new Set(seen.slice(0, count))) }, pools, maxRoles);
+}
+
+/** The investigation route's stored state (GELB c1954ca, semantic-investigation-store.ts) for this analysis. */
+export const INVESTIGATION_ID = "RINV_0123456789ABCDEF0123456789ABCDEF";
+export function storedInvestigation(status: string, tasks: Array<{ jobPoolUploadId: string; poolRoleId: string; status: string; errorCode?: string | null; pairs?: number; stored?: number }>, extra: Record<string, unknown> = {}) {
+  return {
+    investigation: { investigationId: INVESTIGATION_ID, analysisId: PERSON_ANALYSIS, provider: "stand-in", engineVersionHash: "a".repeat(64), status, createdAt: "2026-10-29T10:00:00.000Z", updatedAt: "2026-10-29T10:00:01.000Z", ...extra },
+    tasks: tasks.map(task => ({ jobPoolUploadId: task.jobPoolUploadId, poolRoleId: task.poolRoleId, status: task.status, errorCode: task.errorCode ?? null, pairs: task.pairs ?? 4, stored: task.stored ?? 0 }))
+  };
+}

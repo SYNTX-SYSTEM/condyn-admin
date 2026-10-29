@@ -9,6 +9,7 @@ import type { DiscoveryRole, PoolRoleDiscovery, RoleLexicalStatus } from "../../
 import type { JobScope } from "../../../../lib/career/job-pool/job-scope";
 import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
 import { ROLE_DISCOVERY_COPY, formatCount, type RoleDiscoveryCopy } from "./role-discovery-copy";
+import type { InvestigationRoleKey, InvestigationState, InvestigationTask } from "../../../../lib/career/ui/semantic-investigation";
 
 /**
  * Role discovery (GELB stage 2, additive — recovery §8): a panel in the B2 panel grammar beside the six-orbit planetarium of a
@@ -46,14 +47,20 @@ export interface RoleDiscoveryPanelProps {
   onClose(): void;
   /** RD-HANDOVER: the explicit "investigate this role" (the field selects it as the job and switches to PERSON × JOB). */
   onInvestigate?(scope: JobScope): void;
+  /** RI-START: the investigation of this release (the field's one POST per click), its explicit start and a fresh read of the plan. */
+  investigation?: InvestigationState;
+  onStart?(roles: InvestigationRoleKey[], confirmedCalls: number): void;
+  onReread?(): void;
 }
 
-export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose, onInvestigate }: RoleDiscoveryPanelProps) {
+export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose, onInvestigate, investigation, onStart, onReread }: RoleDiscoveryPanelProps) {
   const c = ROLE_DISCOVERY_COPY[locale];
   const [ticked, setTicked] = useState<string[]>(() => [...(released ?? [])]);
   const [open, setOpen] = useState<RoleLexicalStatus[]>(() => ROLE_DISCOVERY_STATUSES.filter(status => !FOLDED.includes(status)));
   /** RD-DETAIL: the role whose trace is open — a disclosure inside the panel, not a selection (no URL, no history). */
   const [traced, setTraced] = useState<string | null>(null);
+  /** RI-START: the roles the user picked for the semantic check — nothing preselected, no "all", in the panel only (no URL). */
+  const [picked, setPicked] = useState<string[]>([]);
   const choices = pools.state === "AVAILABLE" ? pools.jobPools : [];
   // The release keeps the list's order (deterministic); a release equal to the one in force is no new step.
   const chosen = choices.map(pool => pool.jobPoolUploadId).filter(id => ticked.includes(id));
@@ -106,16 +113,20 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
             )}
         </section>
 
-        <RoleDiscoveryResults c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} traced={traced} onTrace={key => setTraced(previous => previous === key ? null : key)} onInvestigate={onInvestigate} />
+        <RoleDiscoveryResults c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} traced={traced} onTrace={key => setTraced(previous => previous === key ? null : key)} onInvestigate={onInvestigate}
+          investigation={investigation} picked={picked} onPick={key => setPicked(previous => previous.includes(key) ? previous.filter(other => other !== key) : [...previous, key])} onStart={onStart} onReread={onReread} />
       </aside>
     </>
   );
 }
 
-export interface RoleDiscoveryResultsProps { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void; traced: string | null; onTrace(key: string): void; onInvestigate?(scope: JobScope): void }
+export interface RoleDiscoveryResultsProps {
+  c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void; traced: string | null; onTrace(key: string): void; onInvestigate?(scope: JobScope): void;
+  investigation?: InvestigationState; picked?: readonly string[]; onPick?(key: string): void; onStart?(roles: InvestigationRoleKey[], confirmedCalls: number): void; onReread?(): void;
+}
 
 /** The read's state or its result: the semantic state, the scope, the five groups with their roles (and the one traced role). */
-export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onTrace, onInvestigate }: RoleDiscoveryResultsProps) {
+export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onTrace, onInvestigate, investigation = { state: "IDLE" }, picked = [], onPick, onStart, onReread }: RoleDiscoveryResultsProps) {
   if (discovery.state !== "AVAILABLE") {
     const sentence = discovery.state === "BOUNDARY_UNRESOLVED" ? c.boundaryUnresolved(discovery.reason ?? "—")
       : discovery.state === "POOL_NOT_FOUND" ? c.poolNotFound(discovery.jobPoolUploadId ?? "—")
@@ -131,11 +142,22 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   }
   const d = discovery.discovery;
   const plan = d.semanticPlan;
-  const semantic = plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs))
+  const shown = investigation.state !== "IDLE";
+  const semantic = shown && plan.state === "PLANNED" ? c.run.planAtRead(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
+    : plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs))
     : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
     : c.semantic[plan.state](plan.cacheIssue ?? "—");
   // RI-CONTROL: the start is offered only on READY with an executable plan; otherwise the reason stands (two engine states apart).
   const unavailable = d.startControl.engineState !== "READY" ? d.startControl.engineState : plan.executable ? null : "CACHE" as const;
+  // RI-START: the roles picked, in the discovery's own order; the calls are the picked roles with open pairs (one call per role).
+  const startable = unavailable === null && plan.state === "PLANNED" && plan.executable && d.startControl.maxRoles !== null && onStart !== undefined;
+  const max = d.startControl.maxRoles ?? 0;
+  const planRole = new Map<string, (typeof plan.roles)[number]>(plan.roles.map(entry => [`${entry.jobPoolUploadId}:${entry.poolRoleId}`, entry]));
+  const pickedRoles = d.roles.map(role => role.key).filter(key => picked.includes(`${key.jobPoolUploadId}:${key.poolRoleId}`));
+  const calls = pickedRoles.filter(key => (planRole.get(`${key.jobPoolUploadId}:${key.poolRoleId}`)?.pendingPairs ?? 0) > 0).length;
+  const pending = pickedRoles.reduce((sum, key) => sum + (planRole.get(`${key.jobPoolUploadId}:${key.poolRoleId}`)?.pendingPairs ?? 0), 0);
+  const running = investigation.state === "STARTING";
+  const tasks = new Map<string, InvestigationTask>(investigation.state === "STORED" ? investigation.investigation.tasks.map(task => [`${task.jobPoolUploadId}:${task.poolRoleId}`, task]) : []);
   const byKey = new Map(d.roles.map(role => [`${role.key.jobPoolUploadId}\u0000${role.key.poolRoleId}`, role] as const));
   const poolName = new Map(d.pools.map(pool => [pool.jobPoolUploadId, pool.poolName] as const));
   return (
@@ -145,6 +167,16 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
         {unavailable !== null && <span data-testid="rd-start-unavailable" data-engine-state={d.startControl.engineState} data-plan-state={plan.state} style={meta}>{c.startUnavailable[unavailable]}</span>}
         <span data-testid="rd-scope" style={meta}>{c.scope(d.counts.pools, d.counts.roles, d.counts.requirements, d.counts.proposals)}</span>
       </div>
+      {startable && (
+        <section data-testid="rd-start" data-picked={pickedRoles.length} data-calls={calls} style={layer}>
+          <span style={kicker}>{c.run.title}</span>
+          <span style={meta}>{c.run.hint(max)}</span>
+          <span data-testid="rd-start-selection" style={statement}>{pickedRoles.length === 0 ? c.run.none : c.run.selection(pickedRoles.length, max, formatCount(calls), formatCount(pending))}</span>
+          {pickedRoles.length >= max && <span style={meta}>{c.run.limit(max)}</span>}
+          <button type="button" data-testid="rd-start-run" data-confirmed-calls={calls} disabled={pickedRoles.length === 0 || running} onClick={() => { if (pickedRoles.length > 0 && !running) onStart!(pickedRoles.map(key => ({ jobPoolUploadId: key.jobPoolUploadId, poolRoleId: key.poolRoleId })), calls); }} style={{ ...action, opacity: pickedRoles.length === 0 || running ? 0.45 : 1, cursor: pickedRoles.length === 0 || running ? "default" : "pointer" }}>{c.run.start}</button>
+        </section>
+      )}
+      {shown && <RoleInvestigationState c={c} investigation={investigation} roles={d.roles} onReread={onReread} />}
       {d.groups.map(group => {
         const expanded = open.includes(group.status);
         return (
@@ -160,13 +192,19 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
               return (
                 <div key={roleKey} data-testid="rd-role" data-role-key={roleKey} data-status={role.status} data-traced={tracing ? "true" : "false"} style={{ display: "flex", flexDirection: "column", gap: "1px", paddingTop: "6px", borderTop: "1px solid rgba(120, 214, 255, 0.08)" }}>
                   <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "8px" }}>
-                    <span style={statement}>{role.title}</span>
+                    {startable && (planRole.get(roleKey)?.pairs ?? 0) > 0 ? (
+                      <label data-testid="rd-role-pick" data-role-key={roleKey} style={{ display: "flex", alignItems: "baseline", gap: "8px", minWidth: 0, cursor: "pointer" }}>
+                        <input type="checkbox" aria-label={`${role.title} · ${c.run.pick}`} checked={picked.includes(roleKey)} disabled={running || (!picked.includes(roleKey) && pickedRoles.length >= max)} onChange={() => onPick?.(roleKey)} style={{ flex: "0 0 auto", width: "14px", height: "14px", margin: 0, padding: 0, accentColor: SIL_TOKENS.colors.cyanActive }} />
+                        <span style={statement}>{role.title}</span>
+                      </label>
+                    ) : <span style={statement}>{role.title}</span>}
                     {role.counts.requirements > 0 && <button type="button" data-testid="rd-role-trace" aria-expanded={tracing} onClick={() => onTrace(roleKey)} style={{ ...action, padding: "2px 9px", flexShrink: 0 }}>{tracing ? c.detail.shut : c.detail.open}</button>}
                   </div>
                   <span style={meta}>{role.organizationName} · {poolName.get(key.jobPoolUploadId)}</span>
                   {role.counts.requirements > 0 && <span data-testid="rd-role-counts" style={meta}>{c.roleCounts(role.counts.nameRelated, role.counts.requirements, role.counts.weakLexicalOnly, role.counts.withoutLexicalRelation)}</span>}
                   {role.counts.required > 0 && <span style={meta}>{c.roleRequired(role.counts.required, role.counts.requiredWithoutLexicalRelation)}</span>}
-                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} onInvestigate={onInvestigate} />}
+                  {tasks.has(roleKey) && <span data-testid="rd-role-task" data-status={tasks.get(roleKey)!.status} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.roleTask(c.run.task[tasks.get(roleKey)!.status])}</span>}
+                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} onInvestigate={onInvestigate} task={tasks.get(roleKey)} />}
                 </div>
               );
             })}
@@ -178,17 +216,69 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
 }
 
 /**
+ * RI-START: the state of the explicit semantic check — running while the user's own POST is open, then exactly what is stored (the
+ * investigation and its role tasks, in the discovery's role order): the status, the stand-in named as no model, the budget, every
+ * task with its pairs and the count of relations stored. A refusal says that nothing ran; no readable answer says that it is unknown.
+ * The relations themselves are not shown; nothing is ranked or re-sorted.
+ */
+export function RoleInvestigationState({ c, investigation, roles, onReread }: { c: RoleDiscoveryCopy; investigation: InvestigationState; roles: readonly DiscoveryRole[]; onReread?: () => void }) {
+  const reread = onReread && <button type="button" data-testid="rd-replan" onClick={onReread} style={{ ...action, padding: "2px 9px" }}>{c.run.reread}</button>;
+  const box = (state: string, warn: boolean, children: React.ReactNode, extra: Record<string, string | number> = {}) => (
+    <section data-testid="rd-investigation" data-state={state} role="status" aria-busy={state === "STARTING" || state === "LOADING"} {...extra} style={{ ...layer, border: `1px solid rgba(${warn ? AMBER_RGB : CYAN_RGB}, 0.4)` }}>{children}</section>
+  );
+  if (investigation.state === "IDLE") return null;
+  if (investigation.state === "STARTING") return box("STARTING", false, <span style={statement}>{c.run.running(investigation.roles.length, investigation.confirmedCalls)}</span>);
+  if (investigation.state === "LOADING") return box("LOADING", false, <span style={statement}>{c.run.loading}</span>);
+  if (investigation.state === "NOT_FOUND") return box("NOT_FOUND", true, <span style={{ ...statement, color: `rgb(${AMBER_RGB})` }}>{c.run.notFound}</span>);
+  if (investigation.state === "FAILED") return box("FAILED", true, <>
+    <span style={{ ...statement, color: `rgb(${AMBER_RGB})` }}>{c.run.failed}</span>
+    {investigation.code !== null && <span style={meta}>{c.failedCode(investigation.code)}</span>}
+  </>);
+  if (investigation.state === "REFUSED") {
+    const sentence = investigation.code === "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED" && investigation.callsNeeded !== null ? c.run.callsChanged(investigation.callsNeeded, investigation.confirmedCalls)
+      : investigation.code === "ERR_INVESTIGATION_TOO_MANY_ROLES" && investigation.max !== null ? c.run.tooMany(investigation.max)
+      : c.run.refused[investigation.code] ?? c.run.refusedOther;
+    return box("REFUSED", true, <>
+      <span style={{ ...statement, color: `rgb(${AMBER_RGB})` }}>{sentence}</span>
+      <span style={meta}>{c.failedCode(investigation.code)}</span>
+      {investigation.code === "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED" && reread}
+    </>, { "data-code": investigation.code });
+  }
+  const stored = investigation.investigation;
+  const order = new Map<string, number>(roles.map((role, at) => [`${role.key.jobPoolUploadId}:${role.key.poolRoleId}`, at]));
+  const title = new Map<string, string>(roles.map(role => [`${role.key.jobPoolUploadId}:${role.key.poolRoleId}`, `${role.title} · ${role.organizationName}`]));
+  const keyOf = (task: { jobPoolUploadId: string; poolRoleId: string }) => `${task.jobPoolUploadId}:${task.poolRoleId}`;
+  // The discovery's role order (tasks of roles outside it, which the route does not create, after them in the store's order).
+  const tasks = [...stored.tasks].map((task, at) => ({ task, at: order.get(keyOf(task)) ?? roles.length + at })).sort((a, b) => a.at - b.at).map(entry => entry.task);
+  const warn = stored.status !== "COMPLETED";
+  return box("STORED", warn, <>
+    <span data-testid="rd-investigation-status" data-status={stored.status} style={{ ...statement, fontWeight: 600, color: warn ? `rgb(${AMBER_RGB})` : "#e6f1f8" }}>{c.run.summary(c.run.status[stored.status])}</span>
+    <span data-testid="rd-investigation-engine" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.standIn}</span>
+    {investigation.created === false && <span data-testid="rd-investigation-replayed" style={meta}>{c.run.replayed}</span>}
+    {stored.tasks.some(task => task.status === "BUDGET_EXHAUSTED") && <span data-testid="rd-investigation-budget" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.budget}</span>}
+    {tasks.map(task => (
+      <div key={keyOf(task)} data-testid="rd-investigation-task" data-role-key={keyOf(task)} data-status={task.status} style={{ display: "flex", flexDirection: "column", gap: "1px", paddingTop: "4px", borderTop: "1px solid rgba(120, 214, 255, 0.08)" }}>
+        <span style={statement}>{title.get(keyOf(task)) ?? keyOf(task)}</span>
+        <span style={meta}>{c.run.task[task.status]} · {c.run.taskCounts(task.pairs, task.stored)}{task.errorCode !== null ? ` · ${c.failedCode(task.errorCode)}` : ""}</span>
+      </div>
+    ))}
+    <span style={meta}>{c.run.relationsHidden}</span>
+    {reread}
+  </>, { "data-investigation-id": stored.investigationId, "data-status": stored.status });
+}
+
+/**
  * RD-DETAIL: one role's trace in pool order — each requirement with a name relation: its lexical basis (weak named weak), the
  * capability proposal, the proposal's source-verified quotes with their source, and the evidence limitation when a quote does not
  * name the requirement; then the open requirements (no name relation). Nothing is concluded; the semantic state is stated.
  */
-export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"]; onInvestigate?: (scope: JobScope) => void }) {
+export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate, task }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"]; onInvestigate?: (scope: JobScope) => void; task?: InvestigationTask }) {
   const related = role.requirements.filter(requirement => requirement.lexical.basis !== "NONE");
   const open = role.requirements.filter(requirement => requirement.lexical.basis === "NONE");
   const named = new Map(proposals.map(proposal => [proposal.id, proposal.name] as const));
   return (
     <div data-testid="rd-trace" style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(120, 214, 255, 0.12)", background: "rgba(2, 8, 14, 0.55)" }}>
-      <span style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.detail.semantic}</span>
+      <span data-testid="rd-trace-semantic" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{task ? c.run.roleTask(c.run.task[task.status]) : c.detail.semantic}</span>
       {related.map(requirement => {
         const lexical = requirement.lexical;
         if (lexical.basis === "NONE") return null;

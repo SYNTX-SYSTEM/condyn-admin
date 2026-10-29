@@ -148,8 +148,9 @@ export async function readRoleDiscovery(analysisId: string, pools: readonly stri
 }
 
 /** The read for the analysis on view and the released pools; nothing without both. A change discards, aborts and drops a late answer. */
-export function useRoleDiscovery(analysisId: string | null, pools: readonly string[] | null, fetcher?: Fetcher): RoleDiscoveryState {
-  const key = analysisId === null || pools === null || pools.length === 0 ? null : JSON.stringify([analysisId, ...pools]);
+export function useRoleDiscovery(analysisId: string | null, pools: readonly string[] | null, fetcher?: Fetcher, revision = 0): RoleDiscoveryState {
+  // RI-START: `revision` is the user's explicit "re-read the plan" (GET again, nothing else changes).
+  const key = analysisId === null || pools === null || pools.length === 0 ? null : JSON.stringify([analysisId, ...pools, revision]);
   const [entry, setEntry] = useState<{ key: string | null; value: RoleDiscoveryState }>({ key: null, value: { state: "IDLE" } });
   const generation = useRef(0);
   useEffect(() => {

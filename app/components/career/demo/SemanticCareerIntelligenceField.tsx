@@ -36,6 +36,7 @@ import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
 import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
 import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
+import { useSemanticInvestigation } from "../../../../lib/career/ui/semantic-investigation";
 import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
@@ -507,7 +508,11 @@ export function SemanticCareerIntelligenceField({
    *  result is loading, missing or of another mode, the first screen speaks and nothing is discovered; the pools are released for
    *  that analysis only. */
   const discoveryAnalysisId = investigationMode === "PERSON" && firstScreen.state === "PERSON_RESULT" ? firstScreen.analysisId : null;
-  const roleDiscovery = useRoleDiscovery(discoveryAnalysisId, discoveryPools);
+  /** RI-START: "re-read the plan" is the user's explicit second GET of the same release (after a run or a changed call count). */
+  const [discoveryRevision, setDiscoveryRevision] = useState(0);
+  const roleDiscovery = useRoleDiscovery(discoveryAnalysisId, discoveryPools, undefined, discoveryRevision);
+  /** RI-START: the semantic check of picked roles — one POST per click of START, never by a load, an open or a reload. */
+  const semanticInvestigation = useSemanticInvestigation(discoveryAnalysisId, discoveryPools);
   /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
    *  the Job Field; V-06: also when the analysis on view is not found (a way out besides Back). Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
    *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
@@ -1699,7 +1704,8 @@ export function SemanticCareerIntelligenceField({
           analysis, never under PERSON × JOB or JOB. */}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
-          <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole} />
+          <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole}
+            investigation={semanticInvestigation.state} onStart={(roles, calls) => { void semanticInvestigation.start(roles, calls); }} onReread={() => setDiscoveryRevision(previous => previous + 1)} />
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (

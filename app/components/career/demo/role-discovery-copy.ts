@@ -1,5 +1,6 @@
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
+import type { InvestigationStatus, InvestigationTaskStatus } from "../../../../lib/career/ui/semantic-investigation";
 
 /**
  * Copy of the role discovery panel (GELB stage 2, additive, recovery §8), EN and DE. Kept beside its components, like
@@ -37,6 +38,35 @@ export interface RoleDiscoveryCopy {
   };
   /** RI-CONTROL: why an explicit start of the semantic check is not offered (the server's start control, or the cache). */
   startUnavailable: Record<"NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "CACHE", string>;
+  /** RI-START: the explicit start of the semantic check (stand-in only) and its stored state — never a relation, never a ranking. */
+  run: {
+    title: string;
+    hint: (max: number) => string;
+    pick: string;
+    selection: (picked: number, max: number, calls: string, pending: string) => string;
+    none: string;
+    limit: (max: number) => string;
+    start: string;
+    running: (roles: number, calls: number) => string;
+    standIn: string;
+    summary: (status: string) => string;
+    status: Record<InvestigationStatus, string>;
+    replayed: string;
+    budget: string;
+    task: Record<InvestigationTaskStatus, string>;
+    taskCounts: (pairs: number, stored: number) => string;
+    relationsHidden: string;
+    refused: Record<string, string>;
+    refusedOther: string;
+    callsChanged: (needed: number, confirmed: number) => string;
+    tooMany: (max: number) => string;
+    failed: string;
+    notFound: string;
+    loading: string;
+    planAtRead: (cached: string, pairs: string, calls: string) => string;
+    reread: string;
+    roleTask: (status: string) => string;
+  };
   scope: (pools: number, roles: number, requirements: number, proposals: number) => string;
   groups: Record<RoleLexicalStatus, string>;
   groupRoles: Count;
@@ -104,6 +134,40 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls) => `Semantic check: not executed · ${cached} of ${pairs} pairs in the relation cache · would need ${calls} calls · not started`,
       CACHE_UNAVAILABLE: issue => `Semantic check: not executed · relation cache unavailable (${issue}) · calls unknown · not started`,
       CACHE_CORRUPT: issue => `Semantic check: not executed · relation cache corrupt (${issue}) · calls unknown · not started`
+    },
+    run: {
+      title: "SEMANTIC CHECK · START EXPLICITLY",
+      hint: max => `Pick the roles yourself, at most ${max}. Nothing is preselected; only this button starts the check.`,
+      pick: "pick for the check",
+      selection: (picked, max, calls, pending) => `Picked: ${picked} of at most ${max} roles · would need ${calls} calls for ${pending} open pairs`,
+      none: "No role picked yet.",
+      limit: max => `At most ${max} roles per start.`,
+      start: "START SEMANTIC CHECK",
+      running: (roles, calls) => `Semantic check running · ${n(roles)} roles · ${n(calls)} confirmed calls`,
+      standIn: "Stand-in, no model",
+      summary: status => `Semantic check: ${status}`,
+      status: { PLANNED: "planned, not run yet", RUNNING: "running (stored state)", COMPLETED: "completed", PARTIAL: "partly completed", INTERRUPTED: "interrupted", FAILED: "failed" },
+      replayed: "Same start as before: the stored state, nothing was run again.",
+      budget: "Budget exhausted: the remaining roles were cancelled without a call.",
+      task: { PENDING: "waiting", RUNNING: "running", SUCCEEDED: "completed", FAILED: "failed", BUDGET_EXHAUSTED: "budget exhausted", INTERRUPTED: "interrupted", CANCELLED: "cancelled, no call", CACHED: "from the relation cache, no call" },
+      taskCounts: (pairs, stored) => `${n(pairs)} pairs · ${n(stored)} relations stored`,
+      relationsHidden: "The relations themselves are not shown here.",
+      refused: {
+        ERR_SEMANTIC_ENGINE_NOT_CONFIGURED: "Not started: no check engine is configured on this server.",
+        ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED: "Not started: the configured provider is not authorised.",
+        ERR_INVESTIGATION_ROLES_INVALID: "Not started: the role choice is not valid.",
+        ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY: "Not started: a picked role is not part of this release's role discovery.",
+        ERR_RELATION_CACHE_UNAVAILABLE: "Not started: the relation cache is not available."
+      },
+      refusedOther: "Not started.",
+      callsChanged: (needed, confirmed) => `Not started: the server now names ${n(needed)} calls instead of the ${n(confirmed)} you confirmed. Re-read the plan and confirm again.`,
+      tooMany: max => `Not started: at most ${max} roles per start.`,
+      failed: "No readable answer from the server. Whether anything ran is unknown.",
+      notFound: "The server knows no such investigation for this analysis.",
+      loading: "Reading the stored investigation …",
+      planAtRead: (cached, pairs, calls) => `Plan as read: ${cached} of ${pairs} pairs in the relation cache · would need ${calls} calls`,
+      reread: "RE-READ PLAN",
+      roleTask: status => `Semantic check of this role: ${status} · stand-in, no model`
     },
     startUnavailable: {
       NOT_CONFIGURED: "Start not available: no check engine is configured on this server.",
@@ -181,6 +245,40 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls) => `Semantische Prüfung: nicht ausgeführt · ${cached} von ${pairs} Paaren im Relationen-Cache · würde ${calls} Aufrufe benötigen · nicht gestartet`,
       CACHE_UNAVAILABLE: issue => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (${issue}) · Aufrufzahl unbekannt · nicht gestartet`,
       CACHE_CORRUPT: issue => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (${issue}) · Aufrufzahl unbekannt · nicht gestartet`
+    },
+    run: {
+      title: "SEMANTISCHE PRÜFUNG · AUSDRÜCKLICH STARTEN",
+      hint: max => `Wähle die Rollen selbst aus, höchstens ${max}. Nichts ist vorausgewählt; gestartet wird nur mit diesem Knopf.`,
+      pick: "für die Prüfung wählen",
+      selection: (picked, max, calls, pending) => `Auswahl: ${picked} von höchstens ${max} Rollen · würde ${calls} Aufrufe für ${pending} offene Paare benötigen`,
+      none: "Noch keine Rolle gewählt.",
+      limit: max => `Höchstens ${max} Rollen je Start.`,
+      start: "SEMANTISCHE PRÜFUNG STARTEN",
+      running: (roles, calls) => `Semantische Prüfung läuft · ${n(roles)} Rollen · ${n(calls)} bestätigte Aufrufe`,
+      standIn: "Stand-in, kein Modell",
+      summary: status => `Semantische Prüfung: ${status}`,
+      status: { PLANNED: "geplant, noch nicht gelaufen", RUNNING: "läuft (gespeicherter Stand)", COMPLETED: "abgeschlossen", PARTIAL: "teilweise abgeschlossen", INTERRUPTED: "unterbrochen", FAILED: "fehlgeschlagen" },
+      replayed: "Gleicher Start wie zuvor: gespeicherter Stand, nichts neu ausgeführt.",
+      budget: "Budget erschöpft: Die übrigen Rollen wurden ohne Aufruf abgebrochen.",
+      task: { PENDING: "wartet", RUNNING: "läuft", SUCCEEDED: "abgeschlossen", FAILED: "fehlgeschlagen", BUDGET_EXHAUSTED: "Budget erschöpft", INTERRUPTED: "unterbrochen", CANCELLED: "abgebrochen, kein Aufruf", CACHED: "aus dem Relationen-Cache, kein Aufruf" },
+      taskCounts: (pairs, stored) => `${n(pairs)} Paare · ${n(stored)} Relationen gespeichert`,
+      relationsHidden: "Die Relationen selbst werden hier nicht angezeigt.",
+      refused: {
+        ERR_SEMANTIC_ENGINE_NOT_CONFIGURED: "Nicht gestartet: Auf diesem Server ist keine Prüf-Engine konfiguriert.",
+        ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED: "Nicht gestartet: Der konfigurierte Anbieter ist nicht freigegeben.",
+        ERR_INVESTIGATION_ROLES_INVALID: "Nicht gestartet: Die Rollenauswahl ist ungültig.",
+        ERR_INVESTIGATION_ROLE_NOT_IN_DISCOVERY: "Nicht gestartet: Eine gewählte Rolle gehört nicht zur Rollenfindung dieser Freigabe.",
+        ERR_RELATION_CACHE_UNAVAILABLE: "Nicht gestartet: Der Relationen-Cache ist nicht verfügbar."
+      },
+      refusedOther: "Nicht gestartet.",
+      callsChanged: (needed, confirmed) => `Nicht gestartet: Der Server nennt jetzt ${n(needed)} Aufrufe statt der bestätigten ${n(confirmed)}. Lies den Plan neu und bestätige erneut.`,
+      tooMany: max => `Nicht gestartet: höchstens ${max} Rollen je Start.`,
+      failed: "Keine lesbare Antwort des Servers. Ob etwas gelaufen ist, ist unbekannt.",
+      notFound: "Der Server kennt diese Untersuchung für diese Analyse nicht.",
+      loading: "Die gespeicherte Untersuchung wird gelesen …",
+      planAtRead: (cached, pairs, calls) => `Plan beim Lesen: ${cached} von ${pairs} Paaren im Relationen-Cache · würde ${calls} Aufrufe benötigen`,
+      reread: "PLAN NEU LESEN",
+      roleTask: status => `Semantische Prüfung dieser Rolle: ${status} · Stand-in, kein Modell`
     },
     startUnavailable: {
       NOT_CONFIGURED: "Start nicht verfügbar: Auf diesem Server ist keine Prüf-Engine konfiguriert.",
