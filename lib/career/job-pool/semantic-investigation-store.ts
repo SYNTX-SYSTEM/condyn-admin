@@ -135,6 +135,11 @@ export class PostgresInvestigationStore {
     if (rows.length !== 1) throw new Error("ERR_INVESTIGATION_STATUS_CONFLICT");
   }
 
+  async investigation(investigationId: string): Promise<{ investigationId: string; analysisId: string; provider: string; engineVersionHash: string; status: InvestigationStatus; createdAt: string; updatedAt: string } | null> {
+    const [r] = await this.sql<{ investigation_id: string; analysis_id: string; provider: string; engine_version_hash: string; status: InvestigationStatus; created_at: string; updated_at: string }[]>`SELECT investigation_id, analysis_id, provider, engine_version_hash, status, created_at, updated_at FROM career_relation_investigations WHERE investigation_id = ${investigationId}`;
+    return r ? { investigationId: r.investigation_id, analysisId: r.analysis_id, provider: r.provider, engineVersionHash: r.engine_version_hash, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at } : null;
+  }
+
   async tasks(investigationId: string): Promise<Array<{ jobPoolUploadId: string; poolRoleId: string; status: TaskStatus; errorCode: string | null; pairs: number; stored: number }>> {
     const rows = await this.sql<{ job_pool_upload_id: string; pool_role_id: string; status: TaskStatus; error_code: string | null; pairs: number; stored: number }[]>`SELECT job_pool_upload_id, pool_role_id, status, error_code, pairs, stored FROM career_relation_role_tasks WHERE investigation_id = ${investigationId} ORDER BY job_pool_upload_id, pool_role_id`;
     return rows.map(r => ({ jobPoolUploadId: r.job_pool_upload_id, poolRoleId: r.pool_role_id, status: r.status, errorCode: r.error_code, pairs: r.pairs, stored: r.stored }));
