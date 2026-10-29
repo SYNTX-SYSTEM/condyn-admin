@@ -1,0 +1,38 @@
+PINK §3.70 · stage-3 semantic relation engine core 123604f (lib/career/job-pool/semantic-relation-engine.ts), on the git archive of
+164bade. Stand-in only, no Gemini, no database in the probe (run through test:isolated because the repo's global setup requires an isolated
+DB). Operands: the real PERSON proposals of ANL_1792628831636_456 (GET from :41878) and the real requirements of 5 pool files (lab DLL
+pool, PINK RF pool, the three docs/examples DLL pools). Classes: CODE_INSPECTION · DETERMINISTIC (probe). Quotes never written here.
+
+1 C-1 (no role / org / pool text) PASS   the request has exactly {engine, proposals[id, name, scope, structuralDefinition, evidence[id,
+                                         quote]], requirements[requirementId R1…, text, aliases, requiredLevel, requirementType]}; built
+                                         for every role of the 5 pools (86 roles, 586 requirements): 0 role ids / titles / descriptions, 0
+                                         organisation ids / names, 0 pool or upload ids / names, 0 requirement ids, domain and necessity
+                                         not sent. (25 raw hits were domain strings that equal another requirement's own name in the same
+                                         role — that requirement's text, not the domain field.) Note: the cache key also hashes domain and
+                                         necessity, which the provider does not see — more misses, never a wrong hit
+2 Admission – structure            PASS   lower-case state, unknown / lower-case / padded requirement id, a cited id of another proposal,
+                                         a positive state without citation, duplicate citations, a missing pair, an extra unknown pair,
+                                         non-JSON, a __proto__ trick: all refused and the whole role fails; a model "exactQuote" field is
+                                         ignored, stored quotes come from the server
+2 Admission – claim guard          FAIL   (D-ENG-1) the English-only, word-boundary regex lets through: "87％" (full-width), "eighty-seven
+                                         percent", "87 percent", "87 Prozent", "0.87", "9/10", "8 out of 10", "scored", "Scores", "ranks",
+                                         "recommends", "Hired", "qualifies", "Qualification", "Verification", "Proof", "competent",
+                                         "good fit", every German claim tested ("geeignet", "Eignung nachgewiesen", "empfehlen die
+                                         Einstellung", "Kompetenz verifiziert", "Qualifiziert"), "s c o r e", a Cyrillic "о" in "scоre".
+                                         Refused correctly: "87%", "87 %", "87<NBSP>%", "recommend", "suitable" in any case
+  observations                     —      O-ENG-1 a DIFFERENT / UNCLEAR pair without citation is stored with the proposal's first evidence as
+                                         sourceEvidence — a quote the model did not cite (the cache requires one); O-ENG-2 no length bound on
+                                         explanation / limitation (300 000 characters admitted)
+3 One attempt                      PASS   success: reserve → call → consume → save; provider error (coded or plain): reserve → call → release,
+                                         FAILED, 1 call; non-JSON or one refused pair: reserve → call → consume, FAILED, nothing stored, 1
+                                         call; no budget: reserve only, 0 calls; nothing pending / no proposals: no reservation, 0 calls
+  observation                      —      O-ENG-3 if ledger.consume throws, the reservation is neither consumed nor released and evaluateRole
+                                         throws; if the writer throws (e.g. a corrupt cache), the call is consumed, nothing is stored and an
+                                         exception replaces the RoleOutcome — both need a defined outcome before the ledger is persisted
+4 Stand-in identity                FAIL   (D-ENG-2) the stand-in labels its texts ("STAND-IN rule …") but carries no identity of its own:
+                                         evaluateRole accepts any engine identity with any provider. Run with engine {provider: "gemini",
+                                         model: "gemini-3.1-pro-preview"} it SUCCEEDED and produced records with engine.provider "gemini"
+                                         under the real engine's keys — exactly what spec §5 says cannot happen ("a stand-in record can
+                                         never answer a real-engine lookup"). Suggest: the provider object declares its identity
+                                         (provider, model) and evaluateRole refuses a mismatch; the stand-in's identity is fixed to
+                                         "stand-in"

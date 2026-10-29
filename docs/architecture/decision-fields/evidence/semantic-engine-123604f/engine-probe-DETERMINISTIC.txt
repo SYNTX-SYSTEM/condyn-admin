@@ -1,0 +1,65 @@
+PINK §3.70 · engine probe output (DETERMINISTIC; quotes omitted).
+
+C-1: {"pools": 5, "roles": 86, "requirements": 586, "leakCount": 25, "byKind": {"domain": 25}, "domainLeaksAreOtherRequirementTexts": true, "requestKeys": ["engine", "proposals", "requirements"], "requirementKeys": ["requirementId", "text", "aliases", "requiredLevel", "requirementType"], "proposalKeys": ["id", "name", "scope", "structuralDefinition", "evidence"], "domainOrNecessitySent": false}
+
+Claim guard (explanation text → result):
+  REFUSED   Match 87% of the role.
+  REFUSED   Match 87 % of the role.
+  REFUSED   Match 87 % of the role.
+  ADMITTED  Match 87％ of the role.
+  ADMITTED  Match eighty-seven percent of the role.
+  ADMITTED  Match 87 percent of the role.
+  ADMITTED  Übereinstimmung 87 Prozent.
+  ADMITTED  Rated 0.87 against the role.
+  ADMITTED  Rated 9/10.
+  ADMITTED  Rated 8 out of 10.
+  ADMITTED  The candidate scored highly.
+  ADMITTED  Scores well on Python.
+  ADMITTED  It ranks first for this role.
+  REFUSED   We recommend this person.
+  ADMITTED  He recommends the stack.
+  ADMITTED  Hired twice before.
+  ADMITTED  She qualifies for the role.
+  ADMITTED  Qualification confirmed.
+  ADMITTED  Verification passed.
+  ADMITTED  Proof of skill.
+  ADMITTED  The person is competent in Python.
+  ADMITTED  Strong candidate, good fit.
+  ADMITTED  Der Kandidat ist geeignet.
+  ADMITTED  Eignung nachgewiesen.
+  ADMITTED  Wir empfehlen die Einstellung.
+  ADMITTED  Kompetenz verifiziert.
+  ADMITTED  Qualifiziert für die Rolle.
+  REFUSED   SUITABLE
+  REFUSED   Suitable.
+  ADMITTED  s c o r e
+  ADMITTED  scоre (Cyrillic o)
+  ADMITTED  Neutral: the proposal name contains Python.
+
+Structural admission:
+  lowercaseState             {"records": 0, "refusals": ["STATE_UNKNOWN"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  requirementIdLower         {"records": 0, "refusals": ["UNKNOWN_ID", "PAIR_MISSING"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  requirementIdSpace         {"records": 0, "refusals": ["UNKNOWN_ID", "PAIR_MISSING"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  citeOtherProposalEvidence  {"records": 0, "refusals": ["CITED_EVIDENCE_NOT_OF_PROPOSAL"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  positiveNoCitation         {"records": 0, "refusals": ["POSITIVE_STATE_WITHOUT_EVIDENCE"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  duplicateCitation          {"records": 0, "refusals": ["CITATION_INVALID"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+  modelQuoteField            {"records": 2, "refusals": [], "storedQuoteFromServer": true, "inventedQuoteStored": false, "explanationLength": 14}
+  extraUnknownPair           {"records": 2, "refusals": ["UNKNOWN_ID"], "storedQuoteFromServer": true, "inventedQuoteStored": false, "explanationLength": 14}
+  unclearNoCitation          {"records": 2, "refusals": [], "storedQuoteFromServer": true, "inventedQuoteStored": false, "explanationLength": 14}
+  differentNoCitation        {"records": 2, "refusals": [], "storedQuoteFromServer": true, "inventedQuoteStored": false, "explanationLength": 14}
+  hugeExplanation            {"records": 2, "refusals": [], "storedQuoteFromServer": true, "inventedQuoteStored": false, "explanationLength": 299999}
+  protoKey                   {"records": 0, "refusals": ["PAIR_MISSING"], "storedQuoteFromServer": null, "inventedQuoteStored": false}
+
+One attempt (outcome, provider calls, ledger / writer log):
+  success              {"outcome": "SUCCEEDED", "calls": 1, "log": "reserve \u2192 call \u2192 consume \u2192 save 2"}
+  providerThrows       {"outcome": "FAILED", "code": "ERR_PROVIDER_TIMEOUT", "calls": 1, "log": "reserve \u2192 call \u2192 release"}
+  providerThrowsPlain  {"outcome": "FAILED", "code": "ERR_SEMANTIC_PROVIDER_FAILED", "calls": 1, "log": "reserve \u2192 call \u2192 release"}
+  refusedOutput        {"outcome": "FAILED", "code": "ERR_SEMANTIC_OUTPUT_REFUSED", "calls": 1, "log": "reserve \u2192 call \u2192 consume"}
+  partlyRefused        {"outcome": "FAILED", "code": "ERR_SEMANTIC_OUTPUT_REFUSED", "calls": 1, "log": "reserve \u2192 call \u2192 consume"}
+  noBudget             {"outcome": "BUDGET_EXHAUSTED", "calls": 0, "log": "reserve"}
+  emptyRequirements    {"outcome": "SUCCEEDED", "calls": 0, "log": ""}
+  emptyProposals       {"outcome": "SUCCEEDED", "calls": 0, "log": ""}
+  consumeThrows        "thrown: Error: ledger down \u00b7 log reserve \u2192 consume-throws"
+  writerThrows         "thrown: Error: ERR_RELATION_CACHE_RECORD_CORRUPT \u00b7 log reserve \u2192 consume \u2192 save-throws"
+
+Stand-in under a real engine identity: outcome SUCCEEDED, stored 2, record engine {'contractVersion': 'PROPOSAL_REQUIREMENT_RELATION_V1', 'promptChecksum': 'PX', 'provider': 'gemini', 'model': 'gemini-3.1-pro-preview'}, explanation «STAND-IN rule: no shared words.», own identity fields on the provider []

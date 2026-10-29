@@ -3413,6 +3413,29 @@ Read-only metadata of the `_sfe` sandboxes, the main checkout and :3017 complete
 
 **Run record.** `evidence/recovery-08ae201/`: verdicts.txt, 1-reverts-CODE_INSPECTION.txt, 2-orbits-PERSISTED_REAL_RESULT-and-STAND_IN.txt, 3-test-coverage-MEASUREMENT.txt, 4-gemini-get-and-decoupling.txt, 5-doc-section2-CODE.txt, shots/ (2, real, no quotes on view), scripts/ and manifest.sha256.
 
+### 3.70 Stage-3 semantic relation engine core `123604f` checked (2026-10-29)
+
+**Request.** GELB asked for an independent, inverse check of `lib/career/job-pool/semantic-relation-engine.ts`, with the stand-in only and no Gemini, in four points:
+1. C-1 on the real request;
+2. strict admission, actively hunting bypasses of the claim guard;
+3. exactly one attempt;
+4. the stand-in's identity.
+
+**Method.** A scratch probe ran with no database and no model. Its operands were the real PERSON proposals (read by GET from :41878) and the real requirements of 5 pool files, 86 roles and 586 requirements.
+
+**Verdicts (`evidence/semantic-engine-123604f/verdicts.txt`).**
+- **1 C-1: PASS.** The request carries only the proposals and the requirements under opaque ids `R1…`: no role, organisation or pool text, no requirement id, no domain, no necessity.
+- **2 Admission.**
+  - Structure **PASS**: every malformed, foreign, missing, duplicate or extra item fails the whole role, and stored quotes come only from the server.
+  - Claim guard **FAIL (D-ENG-1)**: the English, word-bounded regex lets through full-width "％", percent in words, "87 Prozent", "0.87", "9/10", "8 out of 10", inflections (scored, ranks, recommends, hired, qualifies, qualification, verification), "competent", "good fit", every German claim tested, spaced letters and a Cyrillic "о".
+  - Observations: O-ENG-1, a DIFFERENT or UNCLEAR pair without citation stores the proposal's first quote; O-ENG-2, the explanation has no length bound.
+- **3 One attempt: PASS.**
+  - Reservation, release and consumption behave as specified for a provider error, a refused output, an empty set and no budget.
+  - O-ENG-3: if consumption or the writer throws, there is no defined outcome.
+- **4 Stand-in: FAIL (D-ENG-2).** The stand-in labels its text but has no identity of its own. Run under the engine identity `gemini / gemini-3.1-pro-preview`, it stores records under the real engine's keys. That contradicts §5 of the spec; the provider must declare its identity, and a mismatch must be refused.
+
+**Run record.** `evidence/semantic-engine-123604f/`: verdicts.txt, engine-probe-DETERMINISTIC.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

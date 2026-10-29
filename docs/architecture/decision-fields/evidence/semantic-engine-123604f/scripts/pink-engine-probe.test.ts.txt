@@ -1,0 +1,73 @@
+// PINK scratch probe (never a live test): stage-3 engine core 123604f — C-1 on real requests, admission bypasses, one attempt, stand-in
+// identity. No database, no network, no model (stand-in provider only).
+import { it } from "vitest";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { admitProviderOutput, buildProviderRequest, evaluateRole, StandInSemanticProvider, type EngineProposal, type EngineRequirement } from "../../lib/career/job-pool/semantic-relation-engine";
+import type { RelationEngineIdentity } from "../../lib/career/job-pool/relation-cache";
+const D = process.env.PINK_DATA!; const out: Record<string, unknown> = {};
+const STAND_IN: RelationEngineIdentity = { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", promptChecksum: "PX", provider: "stand-in", model: "stand-in" };
+const REAL: RelationEngineIdentity = { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", promptChecksum: "PX", provider: "gemini", model: "gemini-3.1-pro-preview" };
+const proposals: EngineProposal[] = JSON.parse(readFileSync(`${D}/person-proposals.json`, "utf8")).map((c: any) => ({ id: c.id, name: c.name, scope: c.scope, structuralDefinition: c.structuralDefinition ?? "", evidence: c.evidence.map((e: any) => ({ evidenceId: e.evidenceId, sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote })) }));
+const poolFiles = [`${D}/pool-JPOOL_B94850C439974E27496FE3B1A9A076B5.json`, `${D}/PINK_RF_POOL.json`, ...readdirSync(process.env.PINK_EXAMPLES!).filter(f => /^DLL_.*\.json$/.test(f)).map(f => `${process.env.PINK_EXAMPLES}/${f}`)];
+it("C-1 on real requests", () => {
+  const leaks: string[] = []; let roles = 0, reqs = 0;
+  for (const file of poolFiles) {
+    const j = JSON.parse(readFileSync(file, "utf8")); const pool = Array.isArray(j.roles) ? j : j.pool; const upload = j.jobPoolUploadId ?? "UPLOAD_LOCAL";
+    const secrets = new Set<string>([upload, pool.pool?.id, pool.pool?.name, ...(pool.organizations ?? []).flatMap((o: any) => [o.id, o.org_id, o.name, o.industry, o.description]), ...(pool.roles ?? []).flatMap((r: any) => [r.id, r.title, r.organization_id, r.description, r.seniority])].filter((s: any) => typeof s === "string" && s.length >= 6));
+    for (const role of pool.roles ?? []) {
+      const rq: EngineRequirement[] = (pool.requirements ?? []).filter((q: any) => q.role_id === role.id).map((q: any) => ({ key: { jobPoolUploadId: upload, poolRoleId: role.id, poolRequirementId: q.id }, capability_name: q.capability_name, aliases: q.aliases, required_level: q.required_level, requirement_type: q.requirement_type, domain: q.domain, necessity: q.necessity }));
+      if (!rq.length) continue; roles += 1; reqs += rq.length;
+      const text = JSON.stringify(buildProviderRequest(STAND_IN, proposals, rq).request);
+      const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); for (const s of secrets) if (new RegExp(`(^|[^\\p{L}\\p{N}_])${esc(s)}([^\\p{L}\\p{N}_]|$)`, "u").test(text) && !rq.some(q => [q.capability_name, ...(q.aliases ?? [])].some(n => n && n.includes(s)))) leaks.push(`${file.split("/").pop()} ${role.id}: «${s.slice(0, 50)}»`);
+      for (const q of rq) { if (text.includes(`"${q.key.poolRequirementId}"`)) leaks.push(`${role.id}: requirement id ${q.key.poolRequirementId}`); if (q.domain && q.domain.length >= 4 && text.includes(`"${q.domain}"`) && ![q.capability_name, ...(q.aliases ?? [])].includes(q.domain)) leaks.push(`${role.id}: domain ${q.domain}`); }
+    }
+  }
+  const sample = buildProviderRequest(STAND_IN, proposals.slice(0, 1), [{ key: { jobPoolUploadId: "U", poolRoleId: "R", poolRequirementId: "Q" }, capability_name: "Python", aliases: ["pandas"], required_level: "L3", requirement_type: "CAPABILITY", domain: "Data Engineering", necessity: "REQUIRED" }]).request;
+  out.c1 = { pools: poolFiles.length, roles, requirements: reqs, leaks: leaks.slice(0, 20), leakCount: leaks.length, byKind: leaks.reduce((m: any, l) => { const k = /: domain /.test(l) ? "domain" : /requirement id/.test(l) ? "requirementId" : "role/org/pool text"; m[k] = (m[k] ?? 0) + 1; return m; }, {}), domainLeaksAreOtherRequirementTexts: leaks.filter(l => /: domain /.test(l)).every(l => { const [rid, dom] = [l.split(":")[0], l.split(": domain ")[1]]; return poolFiles.some(f => { const j = JSON.parse(readFileSync(f, "utf8")); const p = Array.isArray(j.roles) ? j : j.pool; return (p.requirements ?? []).some((q: any) => q.role_id === rid && [q.capability_name, ...(q.aliases ?? [])].includes(dom)); }); }), requestKeys: Object.keys(sample), requirementKeys: Object.keys(sample.requirements[0]), proposalKeys: Object.keys(sample.proposals[0]), domainOrNecessitySent: JSON.stringify(sample).includes("Data Engineering") || JSON.stringify(sample).includes("REQUIRED") };
+});
+it("admission bypasses", () => {
+  const P = proposals.slice(0, 2), R: EngineRequirement[] = [{ key: { jobPoolUploadId: "U", poolRoleId: "r", poolRequirementId: "q1" }, capability_name: "Python", required_level: "L3", domain: "", necessity: "REQUIRED" }];
+  const { idOf } = buildProviderRequest(STAND_IN, P, R);
+  const make = (expl: string, lim = "Name overlap only; the quote was read.", state = "PARTIAL") => JSON.stringify({ relations: P.map(p => ({ proposalId: p.id, requirementId: "R1", state, citedEvidenceIds: [p.evidence[0].evidenceId], relationExplanation: expl, evidenceLimitation: lim })) });
+  const texts = ["Match 87% of the role.", "Match 87 % of the role.", "Match 87 % of the role.", "Match 87％ of the role.", "Match eighty-seven percent of the role.", "Match 87 percent of the role.", "Übereinstimmung 87 Prozent.", "Rated 0.87 against the role.", "Rated 9/10.", "Rated 8 out of 10.", "The candidate scored highly.", "Scores well on Python.", "It ranks first for this role.", "We recommend this person.", "He recommends the stack.", "Hired twice before.", "She qualifies for the role.", "Qualification confirmed.", "Verification passed.", "Proof of skill.", "The person is competent in Python.", "Strong candidate, good fit.", "Der Kandidat ist geeignet.", "Eignung nachgewiesen.", "Wir empfehlen die Einstellung.", "Kompetenz verifiziert.", "Qualifiziert für die Rolle.", "SUITABLE", "Suitable.", "s c o r e", "scоre (Cyrillic o)", "Neutral: the proposal name contains Python."];
+  out.claims = Object.fromEntries(texts.map(t => [t, (() => { const r = admitProviderOutput({ rawText: make(t), engine: STAND_IN, proposals: P, requirements: R, idOf, now: "2026-10-29T00:00:00.000Z" }); return r.refusals.some(x => x.reason === "CLAIM_IN_TEXT") ? "REFUSED" : r.records.length === P.length ? "ADMITTED" : `other ${r.refusals.map(x => x.reason).join(",")}`; })()]));
+  // structural cases
+  const base = (over: (x: any, i: number) => any) => JSON.stringify({ relations: P.map((p, i) => over({ proposalId: p.id, requirementId: "R1", state: "PARTIAL", citedEvidenceIds: [p.evidence[0].evidenceId], relationExplanation: "Names overlap.", evidenceLimitation: "Name only." }, i)) });
+  const cases: Record<string, string> = {
+    lowercaseState: base(x => ({ ...x, state: "partial" })), requirementIdLower: base(x => ({ ...x, requirementId: "r1" })), requirementIdSpace: base(x => ({ ...x, requirementId: " R1" })),
+    citeOtherProposalEvidence: base((x, i) => ({ ...x, citedEvidenceIds: [P[1 - i].evidence[0].evidenceId] })), positiveNoCitation: base(x => ({ ...x, state: "COVERS", citedEvidenceIds: [] })),
+    duplicateCitation: base(x => ({ ...x, citedEvidenceIds: [x.citedEvidenceIds[0], x.citedEvidenceIds[0]] })), modelQuoteField: base(x => ({ ...x, exactQuote: "INVENTED QUOTE", quote: "INVENTED" })),
+    extraUnknownPair: JSON.stringify({ relations: [...JSON.parse(base(x => x)).relations, { proposalId: "PCAP_X", requirementId: "R1", state: "UNCLEAR", citedEvidenceIds: [], relationExplanation: "x", evidenceLimitation: "y" }] }),
+    unclearNoCitation: base(x => ({ ...x, state: "UNCLEAR", citedEvidenceIds: [] })), differentNoCitation: base(x => ({ ...x, state: "DIFFERENT", citedEvidenceIds: [] })),
+    hugeExplanation: base(x => ({ ...x, relationExplanation: "Names overlap. ".repeat(20000) })), protoKey: '{"relations":[],"__proto__":{"relations":[1]}}'
+  };
+  out.structural = Object.fromEntries(Object.entries(cases).map(([k, raw]) => { const r = admitProviderOutput({ rawText: raw, engine: STAND_IN, proposals: P, requirements: R, idOf, now: "2026-10-29T00:00:00.000Z" });
+    return [k, { records: r.records.length, refusals: [...new Set(r.refusals.map(x => x.reason))], storedQuoteFromServer: r.records[0] ? r.records[0].sourceEvidence[0].exactQuote === P[0].evidence[0].exactQuote : null, inventedQuoteStored: JSON.stringify(r.records).includes("INVENTED"), explanationLength: r.records[0]?.relationExplanation.length }]; }));
+});
+it("one attempt", async () => {
+  const P = proposals.slice(0, 2), R: EngineRequirement[] = [{ key: { jobPoolUploadId: "U", poolRoleId: "r", poolRequirementId: "q1" }, capability_name: "Python", required_level: "L3", domain: "", necessity: "REQUIRED" }];
+  const mk = (reserveOk = true) => { const log: string[] = []; return { log, ledger: { reserve: async () => { log.push("reserve"); return reserveOk; }, consume: async () => { log.push("consume"); }, release: async () => { log.push("release"); } }, writer: { saveIfAbsent: async (r: any[]) => { log.push(`save ${r.length}`); return { inserted: r.length, duplicates: 0, divergent: [] }; } } }; };
+  const run = async (provider: any, reserveOk = true, props = P, reqs = R) => { const m = mk(reserveOk); let calls = 0; const prov = { evaluate: async (q: any) => { calls += 1; m.log.push("call"); return provider(q); } }; const r = await evaluateRole({ engine: STAND_IN, provider: prov, ledger: m.ledger, writer: m.writer, proposals: props, pendingRequirements: reqs, now: () => "2026-10-29T00:00:00.000Z" }).catch(e => ({ thrown: String(e).slice(0, 80) })); return { outcome: (r as any).status ?? r, code: (r as any).code, calls, log: m.log.join(" → ") }; };
+  out.attempt = {
+    success: await run((q: any) => new StandInSemanticProvider().evaluate(q)),
+    providerThrows: await run(() => { throw new Error("ERR_PROVIDER_TIMEOUT: x"); }),
+    providerThrowsPlain: await run(() => { throw new Error("socket hang up"); }),
+    refusedOutput: await run(() => ({ rawText: "not json" })),
+    partlyRefused: await run(async (q: any) => { const t = JSON.parse((await new StandInSemanticProvider().evaluate(q)).rawText); t.relations[0].relationExplanation = "score 90"; return { rawText: JSON.stringify(t) }; }),
+    noBudget: await run((q: any) => new StandInSemanticProvider().evaluate(q), false),
+    emptyRequirements: await run((q: any) => new StandInSemanticProvider().evaluate(q), true, P, []),
+    emptyProposals: await run((q: any) => new StandInSemanticProvider().evaluate(q), true, [], R)
+  };
+  // consume or writer failing after the call
+  const m = mk(); m.ledger.consume = async () => { m.log.push("consume-throws"); throw new Error("ledger down"); };
+  out.attempt.consumeThrows = await evaluateRole({ engine: STAND_IN, provider: new StandInSemanticProvider(), ledger: m.ledger, writer: m.writer, proposals: P, pendingRequirements: R, now: () => "t" }).then(r => r.status, e => `thrown: ${String(e).slice(0, 40)} · log ${m.log.join(" → ")}`);
+  const m2 = mk(); m2.writer.saveIfAbsent = async () => { m2.log.push("save-throws"); throw new Error("ERR_RELATION_CACHE_RECORD_CORRUPT:X"); };
+  out.attempt.writerThrows = await evaluateRole({ engine: STAND_IN, provider: new StandInSemanticProvider(), ledger: m2.ledger, writer: m2.writer, proposals: P, pendingRequirements: R, now: () => "t" }).then(r => r.status, e => `thrown: ${String(e).slice(0, 40)} · log ${m2.log.join(" → ")}`);
+});
+it("stand-in identity", async () => {
+  const P = proposals.slice(0, 2), R: EngineRequirement[] = [{ key: { jobPoolUploadId: "U", poolRoleId: "r", poolRequirementId: "q1" }, capability_name: "Python", required_level: "L3", domain: "", necessity: "REQUIRED" }];
+  const saved: any[] = []; const provider = new StandInSemanticProvider();
+  const r = await evaluateRole({ engine: REAL, provider, ledger: { reserve: async () => true, consume: async () => {}, release: async () => {} }, writer: { saveIfAbsent: async rec => { saved.push(...rec); return { inserted: rec.length, duplicates: 0, divergent: [] }; } }, proposals: P, pendingRequirements: R, now: () => "2026-10-29T00:00:00.000Z" });
+  out.standInUnderRealIdentity = { outcome: r.status, stored: saved.length, recordEngine: saved[0]?.engine, explanation: saved[0]?.relationExplanation, standInHasOwnIdentityProperty: Object.keys(provider).filter(k => k !== "calls"), keyIsRealEngineKey: saved.length > 0 };
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(out, null, 1));
+});
