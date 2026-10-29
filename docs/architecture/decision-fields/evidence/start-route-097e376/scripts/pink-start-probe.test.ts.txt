@@ -1,0 +1,160 @@
+// PINK scratch probe (never a live test): 097e376 explicit start route, inverse checks. STAND_IN only, no network, disposable DB.
+import { it } from "vitest";
+import { readFileSync, writeFileSync } from "node:fs";
+import { sql as dsql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createSourceDocument } from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { GET } from "../../app/api/career/analyses/[analysisId]/role-discovery/route";
+import { POST } from "../../app/api/career/analyses/[analysisId]/role-discovery/investigations/route";
+import { GET as GET_INV } from "../../app/api/career/analyses/[analysisId]/role-discovery/investigations/[investigationId]/route";
+import { StandInSemanticProvider } from "../../lib/career/job-pool/semantic-relation-engine";
+import { readSemanticConfig } from "../../lib/career/job-pool/semantic-config";
+import { TEST_JOB_SCOPE, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../career/result-inspector/fixture";
+
+const o: Record<string, unknown> = {}; const sqlc = db.$client;
+// stand-in call counter (every route instantiates its own provider) and an optional failure on the n-th call
+let calls = 0; let failOn: number | null = null;
+const orig = StandInSemanticProvider.prototype.evaluate;
+StandInSemanticProvider.prototype.evaluate = async function (req) { calls += 1; if (failOn !== null && calls === failOn) throw new Error("ERR_PROVIDER_TIMEOUT"); return orig.call(this, req); };
+const T = ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger", "career_proposal_requirement_relations"];
+const snap = async () => { const r: Record<string, number> = { calls }; for (const t of T) { const e = ((await sqlc.unsafe(`SELECT to_regclass('${t}') IS NOT NULL AS e`)) as any)[0].e; r[t.replace("career_", "")] = e ? Number((await sqlc.unsafe(`SELECT count(*)::int AS n FROM ${t}`) as any)[0].n) : -1; }
+  const l = ((await sqlc.unsafe(`SELECT to_regclass('career_relation_call_ledger') IS NOT NULL AS e`)) as any)[0].e ? (await sqlc.unsafe(`SELECT coalesce(sum(reserved),0)::int AS r, coalesce(sum(consumed),0)::int AS c, coalesce(sum(released),0)::int AS x FROM career_relation_call_ledger`) as any)[0] : { r: -1, c: -1, x: -1 };
+  return { ...r, ledgerReserved: l.r, ledgerConsumed: l.c, ledgerReleased: l.x }; };
+const same = (a: object, b: object) => JSON.stringify(a) === JSON.stringify(b);
+const base = (a: string) => `http://local/api/career/analyses/${a}/role-discovery`;
+const read = (a: string, pools: string[]) => GET(new Request(`${base(a)}?${pools.map(p => `jobPoolUploadId=${p}`).join("&")}`), { params: Promise.resolve({ analysisId: a }) });
+const post = (a: string, body: unknown, headers: Record<string, string> = { "content-type": "application/json" }) => POST(new Request(`${base(a)}/investigations`, { method: "POST", headers, body: typeof body === "string" ? body : JSON.stringify(body) }), { params: Promise.resolve({ analysisId: a }) });
+const getInv = (a: string, id: string) => GET_INV(new Request("http://local/x"), { params: Promise.resolve({ analysisId: a, investigationId: id }) });
+const res = async (r: Response) => { const j = await r.json().catch(() => null); return { status: r.status, code: j?.issues?.[0]?.code ?? null, extra: j?.issues?.[0] ?? null, j }; };
+const TEXT_MARKERS = ["STAND-IN rule", "no model read the quote", "relationExplanation", "evidenceLimitation", "rawText", "rawOutput", "refusals"];
+const leaks = (j: unknown) => TEXT_MARKERS.filter(m => JSON.stringify(j ?? null).includes(m));
+const env = (p?: string, day: string | undefined = "1000", max?: string) => { for (const [k, v] of [["ROLE_DISCOVERY_SEMANTIC_PROVIDER", p], ["ROLE_DISCOVERY_DAY_LIMIT", day], ["ROLE_DISCOVERY_MAX_ROLES", max]] as const) if (v === undefined) delete process.env[k]; else process.env[k] = v; };
+
+it("start route, inverse", async () => {
+  await initDbSchema(); await uploadEngineeringJobScope(); const scope = await resolveStoredTestJobScope();
+  const jobs = new JobRepository(db);
+  const world: InspectorWorld = { capabilityRepository: new PostgresCapabilityCoreRepository(db), references: new PostgresCapabilityProposalProjectionReferenceRepository(db), sourceBundles: new PostgresCandidateSourceBundleRepository(db),
+    saveJob: async job => { await jobs.enqueueJob(job); }, saveAnalysis: async (analysisId, createdAt) => { await db.insert(careerAnalyses).values({ analysisId, createdAt, validationState: "VERIFIED", payload: { structured_data: {} } }); } };
+  const src = (l: string) => createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${l})` });
+  const person = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("pk")])), null, "pk", src(`pk-${Date.now()}`), "TypeScript");
+  const pxj = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("px")])), scope, "px", src(`px-${Date.now()}`), "TypeScript");
+  // more pools: the other DLL examples through the production application
+  const { createJobPoolApplication } = await import("../../lib/career/job-pool/application");
+  const app = createJobPoolApplication({ database: drizzle(sqlc), analyses: { load: async () => null } });
+  const P1 = TEST_JOB_SCOPE.jobPoolUploadId; const extra: string[] = [];
+  for (const f of ["DLL_JOBPOOL_AI_DATA.json", "DLL_JOBPOOL_ENTERPRISE_SCALE.json"]) extra.push((await app.upload(readFileSync(`docs/examples/job-pool-tests/${f}`, "utf8"), "pink-probe")).view.jobPoolUploadId);
+  const inactiveRaw = JSON.parse(readFileSync("docs/examples/job-pool-tests/DLL_JOBPOOL_AI_DATA.json", "utf8")); const ip = Array.isArray(inactiveRaw.roles) ? inactiveRaw : inactiveRaw.pool; ip.pool.status = "INACTIVE"; ip.pool.id = "pool_pink_inactive"; ip.pool.version = 99;
+  for (const k of ["organizations", "roles", "requirements"]) for (const x of ip[k]) x.pool_id = "pool_pink_inactive";
+  o.inactiveUpload = await app.upload(JSON.stringify(inactiveRaw), "pink-probe").then(r => r.view.jobPoolUploadId, e => `refused ${String(e).slice(0, 80)}`);
+  const ALL = [P1, ...extra];
+  env("stand-in");
+  const disc = async (pools: string[]) => (await (await read(person.analysisId, pools)).json()).discovery;
+  const d1 = await disc([P1]); const rolesP1 = d1.roles.filter((r: any) => r.counts.requirements > 0).map((r: any) => r.key);
+  const dAll = await disc(ALL); const rolesAll = dAll.roles.filter((r: any) => r.counts.requirements > 0).map((r: any) => r.key);
+  o.fixture = { personAnalysis: !!person.analysisId, rolesP1: rolesP1.length, rolesAll: rolesAll.length, pools: ALL.length, planP1: d1.semanticPlan };
+
+  // 0 configuration source
+  o.config = Object.fromEntries([["none", {}], ["gemini", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini" }], ["STAND-IN upper", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "STAND-IN" }], ["' stand-in ' padded", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: " stand-in " }],
+    ["day abc", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "abc" }], ["day -1", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "-1" }], ["day empty", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "" }],
+    ["day 2.5", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "2.5" }], ["day 1e9", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "1e9" }], ["max 100", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_MAX_ROLES: "100" }],
+    ["max 0", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_MAX_ROLES: "0" }], ["max abc", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_MAX_ROLES: "abc" }]].map(([n, e]) => { const c = readSemanticConfig(e as any) as any; return [n, c.state === "READY" ? `READY day ${c.dayLimit} max ${c.maxRoles}` : c.state]; }));
+
+  // 1 reads never start anything
+  const s0 = await snap();
+  for (const pools of [[P1], ALL, extra]) await read(person.analysisId, pools);
+  await read(pxj.analysisId, [P1]); await getInv(person.analysisId, "RINV_00000000000000000000000000000000"); await getInv(person.analysisId, "nope");
+  env(undefined); await read(person.analysisId, [P1]); env("gemini"); const gemRead = await res(await read(person.analysisId, [P1])); env("stand-in");
+  o.reads = { before: s0, after: await snap(), unchanged: same(s0, await snap()), geminiConfiguredReadPlan: gemRead.j?.discovery?.semanticPlan?.state ?? gemRead.code,
+    unknownInvestigation: (await res(await getInv(person.analysisId, "RINV_00000000000000000000000000000000"))).status, malformedInvestigation: (await res(await getInv(person.analysisId, "nope"))).status };
+
+  // 2 refusals: nothing written, no call
+  const cr = `pink-${Date.now()}`; const body = (over: Record<string, unknown> = {}) => ({ jobPoolUploadIds: [P1], roles: rolesP1.slice(0, 2), clientRequestId: cr, confirmedCalls: 2, ...over });
+  const s1 = await snap(); const ref: Record<string, unknown> = {};
+  const cases: Array<[string, () => Promise<Response>]> = [
+    ["not configured", async () => { env(undefined); const r = await post(person.analysisId, body()); env("stand-in"); return r; }],
+    ["provider gemini", async () => { env("gemini"); const r = await post(person.analysisId, body()); env("stand-in"); return r; }],
+    ["non-JSON", () => post(person.analysisId, "{nope")], ["array body", () => post(person.analysisId, [body()])], ["null body", () => post(person.analysisId, "null")],
+    ["roles not array", () => post(person.analysisId, body({ roles: rolesP1[0] }))], ["empty roles", () => post(person.analysisId, body({ roles: [] }))],
+    ["role extra fields only", () => post(person.analysisId, body({ roles: [{ poolRoleId: rolesP1[0].poolRoleId }] }))],
+    ["missing jobPoolUploadIds", () => post(person.analysisId, { roles: rolesP1.slice(0, 2), clientRequestId: cr, confirmedCalls: 2 })],
+    ["duplicate role", () => post(person.analysisId, body({ roles: [rolesP1[0], rolesP1[0]] }))],
+    ["role id padded", () => post(person.analysisId, body({ roles: [{ ...rolesP1[0], poolRoleId: ` ${rolesP1[0].poolRoleId}` }, rolesP1[1]] }))],
+    ["role id other case", () => post(person.analysisId, body({ roles: [{ ...rolesP1[0], poolRoleId: rolesP1[0].poolRoleId.toUpperCase() }, rolesP1[1]] }))],
+    ["unknown role", () => post(person.analysisId, body({ roles: [{ jobPoolUploadId: P1, poolRoleId: "role_does_not_exist" }] }))],
+    ["role of a pool not released", () => post(person.analysisId, body({ roles: [rolesAll.find((r: any) => r.jobPoolUploadId === extra[0])], confirmedCalls: 1 }))],
+    ["role of P1 under another upload id", () => post(person.analysisId, body({ jobPoolUploadIds: [P1, extra[0]], roles: [{ jobPoolUploadId: extra[0], poolRoleId: rolesP1[0].poolRoleId }], confirmedCalls: 1 }))],
+    ["unknown pool", () => post(person.analysisId, body({ jobPoolUploadIds: ["JPOOL_00000000000000000000000000000000"] }))],
+    ["inactive pool", () => post(person.analysisId, body({ jobPoolUploadIds: [String(o.inactiveUpload)] }))],
+    ["duplicate pool ids", () => post(person.analysisId, body({ jobPoolUploadIds: [P1, P1] }))], ["11 pools", () => post(person.analysisId, body({ jobPoolUploadIds: Array.from({ length: 11 }, (_, i) => `JPOOL_${i}`) }))],
+    ["no pools", () => post(person.analysisId, body({ jobPoolUploadIds: [] }))],
+    ["PxJ operand", () => post(pxj.analysisId, body())], ["unknown analysis", () => post("ANL_DOES_NOT_EXIST", body())],
+    ["confirmedCalls wrong (1)", () => post(person.analysisId, body({ confirmedCalls: 1 }))], ["confirmedCalls high (99)", () => post(person.analysisId, body({ confirmedCalls: 99 }))],
+    ["confirmedCalls -2", () => post(person.analysisId, body({ confirmedCalls: -2 }))], ["confirmedCalls '2'", () => post(person.analysisId, body({ confirmedCalls: "2" }))],
+    ["confirmedCalls 2.5", () => post(person.analysisId, body({ confirmedCalls: 2.5 }))], ["confirmedCalls missing", () => post(person.analysisId, { jobPoolUploadIds: [P1], roles: rolesP1.slice(0, 2), clientRequestId: cr })],
+    ["clientRequestId empty", () => post(person.analysisId, body({ clientRequestId: "" }))], ["clientRequestId padded", () => post(person.analysisId, body({ clientRequestId: ` ${cr}` }))],
+    ["clientRequestId number", () => post(person.analysisId, body({ clientRequestId: 7 }))],
+    ["26 roles, max 100 configured", async () => { env("stand-in", undefined, "100"); const r = await post(person.analysisId, { jobPoolUploadIds: ALL, roles: rolesAll.slice(0, 26), clientRequestId: cr, confirmedCalls: 26 }); env("stand-in"); return r; }],
+    ["11 roles, default max", () => post(person.analysisId, { jobPoolUploadIds: ALL, roles: rolesAll.slice(0, 11), clientRequestId: cr, confirmedCalls: 11 })],
+  ];
+  for (const [n, f] of cases) { const before = calls; const r = await res(await f()); ref[n] = `${r.status} ${r.code}${r.extra?.callsNeeded !== undefined ? ` callsNeeded=${r.extra.callsNeeded}` : ""}${r.extra?.max !== undefined ? ` max=${r.extra.max}` : ""}${calls !== before ? " CALLS!" : ""}`; }
+  o.refusals = ref; o.refusalsWroteNothing = same(s1, await snap()); o.refusalsSnap = await snap();
+  // text/plain (a cross-site form can send it) and no content-type
+  o.contentType = { textPlain: (await res(await post(person.analysisId, body({ confirmedCalls: 1 }), { "content-type": "text/plain" }))).code, none: (await res(await post(person.analysisId, body({ confirmedCalls: 1 }), {}))).code };
+
+  const ctBody = body({ confirmedCalls: 1 }); const ct: Record<string, string> = {};
+  for (const [n, h] of [["text/plain", { "content-type": "text/plain" }], ["none", {}], ["form", { "content-type": "application/x-www-form-urlencoded" }], ["multipart", { "content-type": "multipart/form-data; boundary=x" }],
+    ["application/json; charset=utf-8", { "content-type": "application/json; charset=utf-8" }], ["APPLICATION/JSON", { "content-type": "APPLICATION/JSON" }], ["application/json-seq", { "content-type": "application/json-seq" }], [" application/json (leading space)", { "content-type": " application/json" }],
+    ["json + sec-fetch-site cross-site", { "content-type": "application/json", "sec-fetch-site": "cross-site" }], ["json + sec-fetch-site CROSS-SITE", { "content-type": "application/json", "sec-fetch-site": "CROSS-SITE" }],
+    ["json + sec-fetch-site same-site", { "content-type": "application/json", "sec-fetch-site": "same-site" }], ["json + sec-fetch-site same-origin", { "content-type": "application/json", "sec-fetch-site": "same-origin" }], ["json + sec-fetch-site none", { "content-type": "application/json", "sec-fetch-site": "none" }],
+    ["text/plain + cross-site", { "content-type": "text/plain", "sec-fetch-site": "cross-site" }], ["json + foreign Origin, no sec-fetch-site", { "content-type": "application/json", origin: "http://elsewhere.example" }]] as const) {
+    const b = calls; const r = await res(await post(person.analysisId, ctBody, h as Record<string, string>)); ct[n] = `${r.status} ${r.code}${calls !== b ? " CALLS!" : ""}`; }
+  o.contentTypeAndSite = ct; o.contentTypeWroteNothing = same(s1, await snap());
+  o.dayLimitParser = Object.fromEntries([undefined, "", "abc", "-1", "2.5", "1e9", "+5", " 5 ", "007", "999999", "1000000", "\u0665", "0x10", "5 6"].map(v => [String(JSON.stringify(v)), (readSemanticConfig({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ...(v === undefined ? {} : { ROLE_DISCOVERY_DAY_LIMIT: v === "\\u0665" ? "\u0665" : v }) }) as any).dayLimit]));
+  const sc: Record<string, unknown> = {}; for (const [n, p] of [["none", undefined], ["gemini", "gemini"], ["stand-in", "stand-in"]] as const) { env(p, "1000", p === "stand-in" ? "7" : undefined); sc[n] = (await (await read(person.analysisId, [P1])).json()).discovery.startControl; } env("stand-in"); o.startControl = sc;
+  // 3 idempotency first + race
+  const s2 = await snap(); const first = await res(await post(person.analysisId, body())); const s3 = await snap();
+  o.first = { status: first.status, created: first.j?.created, evidenceClass: first.j?.evidenceClass, inv: first.j?.investigation?.status, provider: first.j?.investigation?.provider, tasks: first.j?.tasks?.map((t: any) => `${t.status}/${t.pairs}/${t.stored}`), run: first.j?.run?.status, calls: s3.calls - s2.calls, ledger: [s3.ledgerReserved - s2.ledgerReserved, s3.ledgerConsumed - s2.ledgerConsumed], relationsAdded: s3.proposal_requirement_relations - s2.proposal_requirement_relations, keys: Object.keys(first.j ?? {}), textLeaks: leaks(first.j) };
+  const invId = first.j?.investigation?.investigationId;
+  const rep: Record<string, unknown> = {};
+  for (const [n, b] of [["same body", body()], ["same body, confirmedCalls now 0", body({ confirmedCalls: 0 })], ["same body, confirmedCalls 99", body({ confirmedCalls: 99 })], ["roles reversed", body({ roles: [...rolesP1.slice(0, 2)].reverse() })], ["extra unknown field", { ...body(), priority: "high" }]] as const) {
+    const b0 = await snap(); const r = await res(await post(person.analysisId, b)); const b1 = await snap();
+    rep[n] = { status: r.status, created: r.j?.created ?? null, code: r.code, sameInvestigation: r.j?.investigation?.investigationId === invId, evidenceClass: r.j?.evidenceClass ?? null, nothingWritten: same(b0, b1), textLeaks: leaks(r.j) }; }
+  o.repeat = rep;
+  const ig = await res(await getInv(person.analysisId, invId)); o.getInvestigation = { status: ig.status, keys: Object.keys(ig.j ?? {}), invKeys: Object.keys(ig.j?.investigation ?? {}), taskKeys: Object.keys(ig.j?.tasks?.[0] ?? {}), evidenceClass: ig.j?.evidenceClass ?? null, textLeaks: leaks(ig.j), foreignAnalysis: (await res(await getInv(pxj.analysisId, invId))).status };
+  const rd = await res(await read(person.analysisId, [P1])); o.readAfterRun = { textLeaks: leaks(rd.j), plan: rd.j?.discovery?.semanticPlan };
+  // race: 8 identical parallel starts (new request id, 2 fresh roles)
+  const raceRoles = rolesP1.slice(2, 4); const rb = { jobPoolUploadIds: [P1], roles: raceRoles, clientRequestId: `race-${cr}`, confirmedCalls: 2 };
+  const r0 = await snap(); const race = await Promise.all(Array.from({ length: 8 }, () => post(person.analysisId, rb).then(res))); const r1 = await snap();
+  o.race = { statuses: race.map(r => `${r.status}:${r.j?.created ?? r.code}`), createdCount: race.filter(r => r.j?.created === true).length, ids: new Set(race.map(r => r.j?.investigation?.investigationId)).size, calls: r1.calls - r0.calls, investigationsAdded: r1.relation_investigations - r0.relation_investigations, tasksAdded: r1.relation_role_tasks - r0.relation_role_tasks };
+  // race of two DIFFERENT request ids for the same fresh roles
+  const dr = rolesP1.slice(4, 6); const d0 = await snap();
+  const diff = await Promise.all(["a", "b"].map(x => post(person.analysisId, { jobPoolUploadIds: [P1], roles: dr, clientRequestId: `diff-${x}-${cr}`, confirmedCalls: 2 }).then(res))); const d1s = await snap();
+  o.raceDifferentRequests = { statuses: diff.map(r => `${r.status}:${r.j?.created ?? r.code}:${r.j?.tasks?.map((t: any) => t.status).join(",")}`), calls: d1s.calls - d0.calls, relationsAdded: d1s.proposal_requirement_relations - d0.proposal_requirement_relations };
+
+  // 5 cache reuse: new request id, same roles
+  const c0 = await snap(); const stale = await res(await post(person.analysisId, body({ clientRequestId: `reuse-${cr}`, confirmedCalls: 2 })));
+  const reuse = await res(await post(person.analysisId, body({ clientRequestId: `reuse-${cr}`, confirmedCalls: 0 }))); const c1 = await snap();
+  o.reuse = { staleConfirmation: `${stale.status} ${stale.code} callsNeeded=${stale.extra?.callsNeeded}`, status: reuse.status, tasks: reuse.j?.tasks?.map((t: any) => t.status), inv: reuse.j?.investigation?.status, calls: c1.calls - c0.calls, ledgerReservedAdded: c1.ledgerReserved - c0.ledgerReserved, relationsAdded: c1.proposal_requirement_relations - c0.proposal_requirement_relations };
+
+  // 4 budget: day limit 0; exhausted mid-run; a failing role keeps earlier ones
+  const fresh = (n: number, from: number) => rolesAll.filter((r: any) => r.jobPoolUploadId !== P1).slice(from, from + n);
+  env("stand-in", "0"); const b0 = await snap(); const z = await res(await post(person.analysisId, { jobPoolUploadIds: ALL, roles: fresh(3, 0), clientRequestId: `zero-${cr}`, confirmedCalls: 3 })); const b1 = await snap();
+  o.dayLimitZero = { status: z.status, tasks: z.j?.tasks?.map((t: any) => t.status), inv: z.j?.investigation?.status, calls: b1.calls - b0.calls, relationsAdded: b1.proposal_requirement_relations - b0.proposal_requirement_relations, ledgerReservedAdded: b1.ledgerReserved - b0.ledgerReserved };
+  const today = new Date().toISOString().slice(0, 10); const used = Number((await sqlc`SELECT coalesce(max(reserved - released), 0)::int AS u FROM career_relation_call_ledger WHERE scope_key = ${`DAY:stand-in:${today}`}`)[0].u);
+  env("stand-in", String(used + 1)); const m0 = await snap(); const mid = await res(await post(person.analysisId, { jobPoolUploadIds: ALL, roles: fresh(3, 3), clientRequestId: `mid-${cr}`, confirmedCalls: 3 })); const m1 = await snap();
+  o.dayLimitExhaustedMidRun = { dayUsedBefore: used, limit: used + 1, tasks: mid.j?.tasks?.map((t: any) => t.status), runOrder: mid.j?.run?.roles?.map((r: any) => r.status), inv: mid.j?.investigation?.status, calls: m1.calls - m0.calls, relationsAdded: m1.proposal_requirement_relations - m0.proposal_requirement_relations };
+  env("stand-in"); failOn = calls + 2; const f0 = await snap(); const fl = await res(await post(person.analysisId, { jobPoolUploadIds: ALL, roles: fresh(3, 6), clientRequestId: `fail-${cr}`, confirmedCalls: 3 })); const f1 = await snap(); failOn = null;
+  o.failingRoleKeepsEarlier = { runOrder: fl.j?.run?.roles?.map((r: any) => `${r.status}${r.code ? ":" + r.code : ""}`), inv: fl.j?.investigation?.status, calls: f1.calls - f0.calls, relationsAdded: f1.proposal_requirement_relations - f0.proposal_requirement_relations, ledger: [f1.ledgerReserved - f0.ledgerReserved, f1.ledgerConsumed - f0.ledgerConsumed, f1.ledgerReleased - f0.ledgerReleased], textLeaks: leaks(fl.j) };
+  // 6 evidence class: what every stored row names
+  o.storedIdentities = { investigations: (await sqlc`SELECT provider, count(*)::int AS n FROM career_relation_investigations GROUP BY provider`).map(r => `${r.provider}:${r.n}`),
+    relations: (await sqlc.unsafe(`SELECT column_name FROM information_schema.columns WHERE table_name = 'career_proposal_requirement_relations'`)).map((r: any) => r.column_name) };
+  const cols = o.storedIdentities as any; const pc = ["provider", "model", "engine_provider"].find(c => cols.relations.includes(c));
+  cols.relationProviders = pc ? (await sqlc.unsafe(`SELECT ${pc} AS p, count(*)::int AS n FROM career_proposal_requirement_relations GROUP BY 1`)).map((r: any) => `${r.p}:${r.n}`) : "no provider column";
+  cols.relationRecordProviders = cols.relations.includes("record_json") ? (await sqlc.unsafe(`SELECT record_json::jsonb #>> '{engine,provider}' AS p, count(*)::int AS n FROM career_proposal_requirement_relations GROUP BY 1`)).map((r: any) => `${r.p}:${r.n}`) : null;
+  o.totalCalls = calls;
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+}, 600000);

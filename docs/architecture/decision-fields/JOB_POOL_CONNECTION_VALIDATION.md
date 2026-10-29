@@ -3559,6 +3559,26 @@ No Gemini call.
 
 **Run record.** `evidence/start-route-c1954ca/`: verdicts.txt, measurements.txt, scripts/ (route probe and lab probe as .txt), manifest.sha256. No screenshots (the trace shows CV quotes).
 
+### 3.75 Start route fixes on `097e376` (2026-10-29)
+
+**Request.** GELB asked for a short re-check of `097e376` (with `0e03f69`) on `recovery/role-discovery`. It fixes three §3.74 observations on the start route and adds `discovery.startControl`. Stand-in only.
+
+**Method.** The route probe of §3.74, adapted, on a disposable database via `test:isolated`, plus 15 new header cases and a day-limit parser table. No Gemini call.
+
+**Verdicts (`evidence/start-route-097e376/verdicts.txt`).**
+- **Static: PASS.** tsc 0; the job-pool group passes 27 files with 288 tests (equal to GELB). The changed tests fail 3 cases on `c1954ca`.
+- **O-START-1: PASS.**
+  - Content types text/plain, none, form and multipart give 415.
+  - `sec-fetch-site: cross-site` gives 403, also with text/plain.
+  - No call, nothing written. The scope is this route only.
+  - **O-START-1b (observation):** prefix and exact-value checks let through "application/json-seq", a capitalised "CROSS-SITE" and a foreign Origin without `sec-fetch-site`. Browsers cannot exploit this, because a cross-origin JSON POST needs a CORS preflight the app does not grant. The app-wide Origin check remains an owner precondition.
+- **O-START-2: PASS.** `evidenceClass` is STAND_IN in the 201, in every replay and in the investigation GET.
+- **O-START-3: PASS.** Only 1–6 decimal digits count. Missing, empty and malformed values, 1e9 and 1000000 give 0 and nothing runs. 999999 caps at 100000. Stand-in users must now set the limit explicitly.
+- **startControl: PASS.** It reports `engineState` and `maxRoles` correctly for none, gemini and stand-in, and the read writes nothing.
+- **Regression: PASS.** Idempotency first, the 8-way race, budget cases, failing-role handling, cache reuse and the absence of model texts are unchanged. O-START-4, -5 and -6 remain open as GELB stated.
+
+**Run record.** `evidence/start-route-097e376/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
