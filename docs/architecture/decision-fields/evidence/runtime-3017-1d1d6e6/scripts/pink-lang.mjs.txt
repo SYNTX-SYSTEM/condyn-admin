@@ -1,0 +1,15 @@
+// GET-only: EN → DE → EN, which words differ after the round trip. argv: <base> <path>
+import { pathToFileURL } from "node:url";
+const [BASE, PATH] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+let blocked = 0; await ctx.route("**/*", r => { if (!["GET", "HEAD"].includes(r.request().method())) { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); await p.goto(`${BASE}${PATH}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+const txt = () => p.evaluate(() => document.body.innerText);
+const toggle = async re => { await p.getByText(/SYSTEM CODEX/i).first().click(); await sleep(800); const ok = await p.evaluate(src => { const x = [...document.querySelectorAll("button")].find(b => new RegExp(src).test(b.textContent ?? "")); if (x) { x.click(); return true; } return false; }, re); await sleep(800); await p.keyboard.press("Escape"); await sleep(1500); return ok; };
+const en1 = await txt(); await toggle("DEUTSCH"); const de = await txt(); await toggle("ENGLISH"); const en2 = await txt();
+const lines = t => t.split("\n").map(s => s.trim()).filter(Boolean);
+const a = lines(en1), c = lines(en2);
+console.log(JSON.stringify({ blocked, onlyBefore: a.filter(x => !c.includes(x)).slice(0, 12), onlyAfter: c.filter(x => !a.includes(x)).slice(0, 12), codexStillOpen: await p.evaluate(() => /SYSTEM CODEX &|BEDIENHANDBUCH|OPERATING MANUAL/i.test(document.body.innerText)) }, null, 1));
+await b.close();

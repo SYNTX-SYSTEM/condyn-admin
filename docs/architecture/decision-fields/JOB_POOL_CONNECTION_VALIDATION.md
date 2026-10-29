@@ -3715,6 +3715,30 @@ No Gemini call.
 
 **Addendum (C1 corrected).** GELB's first context ids were truncated to 30 characters; that caused the 404 in 2a, not missing data. With the full ids (`DCTXREV_25E6B6DA8048EDCA22B1C41380A1B71C`, `DCTXREV_5EFC324ADF56B112661878848951FDD2`), :41890 renders both contexts with their chains and no page error, and the context API answers 200. GELB reports 200 on :3017 itself with the old code. 2a is PASS for code and data, and C1 is met. C2 and C3 stand, and GO is unchanged (`evidence/runtime-candidate-489b167/addendum-c1.txt`).
 
+### 3.81 :3017 after the cutover to `main` `1d1d6e6` (2026-10-30) — PASS
+
+**Request.** After the cutover, GELB asked for an independent, inverse check of the live :3017, which runs a dev server on `main` `1d1d6e6`: the `489b167` code plus the switch script and docs. Two parts:
+- the full product path, six orbits with their interactions, the three modes, Reload/Back/Forward, both languages and six viewports;
+- live :3017 with GET only, including the HR contexts, a dev-versus-production comparison, the configuration, and no writes.
+
+**Method.**
+- PINK's own production labs of `1d1d6e6`: the runner's seeded world (the data shape of :3017) and the restored real :41862 world, both with the stand-in and day limit 1000, without key or worker.
+- On :3017, a browser that aborts every non-GET request; none occurred.
+
+**Verdict: PASS** (`evidence/runtime-3017-1d1d6e6/verdicts.txt`). The GO of §3.80 is confirmed in operation.
+- **Product path on the real world.** One POST per start; "190 of 790" equals the database; "Stand-in, no model". Reload, Back and Forward send 0 POST. Six viewports.
+- **Modes.** Three modes from every view, retraced exactly by Back ×3 and Forward ×3; the DE/EN switch works.
+- **Orbits.** 01 and 03–06 open their cosmos, 02 focuses the Capability Field.
+- **GET without writes.** The GET sweep wrote nothing.
+- **Live :3017 equals the production build.** On the same data shape, text and testid sets are identical by hash; only the dev overlay adds six elements. HR contexts A and B render.
+- **Empty world on :3017.** :3017 holds no analysis and no pool, so no start is offered, which is correct. The stand-in label was verified in the lab.
+- **Observations.**
+  - **O-RT-1:** Escape closes neither the orbit focus nor the codex modal.
+  - **O-RT-2:** dev-server compile latency on the HR chain.
+  - **O-RT-3:** :3017 runs as a dev server with the worker; an analysis submitted through the UI would call Gemini if a key is set. This is unchanged by the cutover and an owner item.
+
+**Run record.** `evidence/runtime-3017-1d1d6e6/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,56 @@
+PINK §3.81 · measurements (:3017 live = main 1d1d6e6 dev server; PINK production labs of 1d1d6e6; STAND_IN; no Gemini).
+
+== code: 489b167..1d1d6e6 changes scripts/runtime/port-3017.sh and docs only; the switch script exports ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in and
+   ROLE_DISCOVERY_DAY_LIMIT=1000 by default; it starts job-pool:local (server + worker) unless --no-worker
+
+== live :3017 (dev, GET only) · 1920x1080@1 · blocked non-GET 0 · page errors 0
+   scene default: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 303 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   scene person: status 200 mode PERSON gate OPEN shells 6 elements 305 testids 87 idsHash c63245a7d7 textLen 1126 textHash 7a7443c8b0 entry False api ['GET /api/career/job-pools']
+   scene pxj-noscope: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 303 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   modes {"sequence": [{"clicked": "PERSON_X_JOB", "present": true, "mode": "PERSON_X_JOB", "urlMode": "PERSON_X_JOB", "shells": 2, "gate": "AWAITING_JOB"}, {"clicked": "JOB", "present": true, "mode": "JOB", "urlMode": "JOB", "shells": 6, "gate": "AWAITING_JOB"}, {"clicked": "PERSON", "present": true, "mode": "PERSON", "urlMode": "PERSON", "shells": 6, "gate": "OPEN"}], "historyDelta": 3, "back": ["JOB", "PERSON_X_JOB", "PERSON"], "forward": ["PERSON_X_JOB", "JOB", "PERSON"], "afterReload": "PERSON"}
+   orbits (sequential, Escape between) {"01": 1, "02": 0, "03": 1, "04": 0, "05": 1, "06": 0}
+   language {"toDe": true, "toEn": true, "deDiffersFromEn": true, "backToEnglishSame": false, "germanMarkers": ["WISSEN", "QUELLEN", "FELD"]}
+   hr {"A": {"status": 200, "context": true, "chain": false, "notFound": false, "testids": 79}, "B": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 108}}
+== PINK prod lab, the runner's seeded world (the :3017 data shape) · 1920x1080@1 · blocked non-GET 0 · page errors 0
+   scene default: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 297 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   scene person: status 200 mode PERSON gate OPEN shells 6 elements 299 testids 87 idsHash c63245a7d7 textLen 1126 textHash 7a7443c8b0 entry False api ['GET /api/career/job-pools']
+   scene pxj-noscope: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 297 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   modes {"sequence": [{"clicked": "PERSON_X_JOB", "present": true, "mode": "PERSON_X_JOB", "urlMode": "PERSON_X_JOB", "shells": 2, "gate": "AWAITING_JOB"}, {"clicked": "JOB", "present": true, "mode": "JOB", "urlMode": "JOB", "shells": 6, "gate": "AWAITING_JOB"}, {"clicked": "PERSON", "present": true, "mode": "PERSON", "urlMode": "PERSON", "shells": 6, "gate": "OPEN"}], "historyDelta": 3, "back": ["JOB", "PERSON_X_JOB", "PERSON"], "forward": ["PERSON_X_JOB", "JOB", "PERSON"], "afterReload": "PERSON"}
+   orbits (sequential, Escape between) {"01": 1, "02": 0, "03": 1, "04": 0, "05": 1, "06": 0}
+   language {"toDe": true, "toEn": true, "deDiffersFromEn": true, "backToEnglishSame": false, "germanMarkers": ["WISSEN", "QUELLEN", "FELD"]}
+   hr {"A": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 123}, "B": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 108}}
+== live :3017 (dev, GET only) · 1280x720@1 · blocked non-GET 0 · page errors 0
+   scene default: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 303 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   scene person: status 200 mode PERSON gate OPEN shells 6 elements 305 testids 87 idsHash c63245a7d7 textLen 1126 textHash 7a7443c8b0 entry False api ['GET /api/career/job-pools']
+   scene pxj-noscope: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 303 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   modes {"sequence": [{"clicked": "PERSON_X_JOB", "present": true, "mode": "PERSON_X_JOB", "urlMode": "PERSON_X_JOB", "shells": 2, "gate": "AWAITING_JOB"}, {"clicked": "JOB", "present": true, "mode": "JOB", "urlMode": "JOB", "shells": 6, "gate": "AWAITING_JOB"}, {"clicked": "PERSON", "present": true, "mode": "PERSON", "urlMode": "PERSON", "shells": 6, "gate": "OPEN"}], "historyDelta": 3, "back": ["JOB", "PERSON_X_JOB", "PERSON"], "forward": ["PERSON_X_JOB", "JOB", "PERSON"], "afterReload": "PERSON"}
+   orbits (sequential, Escape between) {"01": 1, "02": 0, "03": 1, "04": 0, "05": 1, "06": 0}
+   language {"toDe": true, "toEn": true, "deDiffersFromEn": true, "backToEnglishSame": false, "germanMarkers": ["WISSEN", "QUELLEN", "FELD"]}
+   hr {"A": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 123}, "B": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 108}}
+== PINK prod lab, the runner's seeded world (the :3017 data shape) · 1280x720@1 · blocked non-GET 0 · page errors 0
+   scene default: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 297 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   scene person: status 200 mode PERSON gate OPEN shells 6 elements 299 testids 87 idsHash c63245a7d7 textLen 1126 textHash 7a7443c8b0 entry False api ['GET /api/career/job-pools']
+   scene pxj-noscope: status 200 mode PERSON_X_JOB gate AWAITING_JOB shells 2 elements 297 testids 72 idsHash 44eafaf171 textLen 973 textHash 2f54957d75 entry False api ['GET /api/career/job-pools']
+   modes {"sequence": [{"clicked": "PERSON_X_JOB", "present": true, "mode": "PERSON_X_JOB", "urlMode": "PERSON_X_JOB", "shells": 2, "gate": "AWAITING_JOB"}, {"clicked": "JOB", "present": true, "mode": "JOB", "urlMode": "JOB", "shells": 6, "gate": "AWAITING_JOB"}, {"clicked": "PERSON", "present": true, "mode": "PERSON", "urlMode": "PERSON", "shells": 6, "gate": "OPEN"}], "historyDelta": 3, "back": ["JOB", "PERSON_X_JOB", "PERSON"], "forward": ["PERSON_X_JOB", "JOB", "PERSON"], "afterReload": "PERSON"}
+   orbits (sequential, Escape between) {"01": 1, "02": 0, "03": 1, "04": 0, "05": 1, "06": 0}
+   language {"toDe": true, "toEn": true, "deDiffersFromEn": true, "backToEnglishSame": false, "germanMarkers": ["WISSEN", "QUELLEN", "FELD"]}
+   hr {"A": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 123}, "B": {"status": 200, "context": true, "chain": true, "notFound": false, "testids": 108}}
+== live :3017, each shell on a fresh page (GET only, blocked 0): 01: cosmos ['01'] → after Escape ['01']; 02: cosmos [] → after Escape []; 03: cosmos ['03'] → after Escape ['03']; 04: cosmos ['04'] → after Escape ['04']; 05: cosmos ['05'] → after Escape ['05']; 06: cosmos ['06'] → after Escape ['06']
+== live :3017 language round trip: the only lines that differ EN-before vs EN-after are the still-open codex modal (Escape does not close it); no German left
+
+== PINK prod lab, restored real world: GET sweep rowChanges {'career_proposal_requirement_relations': ['absent', 0], 'career_relation_call_ledger': ['absent', 0], 'career_relation_investigations': ['absent', 0], 'career_relation_role_tasks': ['absent', 0]} tuples {'before': {'ins': 298, 'upd': 0, 'del': 0}, 'after': {'ins': 298, 'upd': 0, 'del': 0}} outbound 0 blocked 0
+   modes probe 1280x720@1: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   modes probe 1440x900@1: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   modes probe 1600x900@1: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   modes probe 1920x1080@1: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   modes probe 640x360@2: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   modes probe 960x540@2: {"default": [200, "PERSON_X_JOB", 2, null], "person": [200, "PERSON", 6, null], "pxj-scope": [200, "PERSON_X_JOB", 2, "NO_ANALYSIS"], "job": [200, "JOB", 9, null], "pxj-noscope": [200, "PERSON_X_JOB", 2, null]} back ['JOB', 'PERSON_X_JOB', 'PERSON'] forward ['PERSON_X_JOB', 'JOB', 'PERSON'] reload PERSON DE True blocked 0 errors 0
+   product path: start POST body {'confirmedCalls': 2, 'roles': 2, 'uploads': 1, 'keys': ['clientRequestId', 'confirmedCalls', 'jobPoolUploadIds', 'roles']}; line 'Relation cache: 190 of 790 pairs · stand-in check: completed'; relations in DB 190; engine label 'Stand-in, no model'; reload POST 0; Back/Forward POST 0; URL-contract POST 0
+   viewport 1280x720@1: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   viewport 1440x900@1: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   viewport 1600x900@1: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   viewport 1920x1080@1: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   viewport 640x360@2: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   viewport 960x540@2: start POST 1, COMPLETED, reload POST 0, width ok True, shells 6
+   rd-ui: reload/forward equal True/True; orbits with panel {'shells': 6, 'viewMatchesOnHover03': 1, 'click04Cosmos': 1, 'historyDelta': 0, 'panelDimmed': 'none'}; handover PERSON_X_JOB non-GET 0
+   orbit scene probe 1920 and 1280: identical to the §3.80 world run
