@@ -134,11 +134,16 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
     expect(upper.status).toBe(403);
     const seq = await POST(new Request(`${url(person.analysisId)}/investigations`, { method: "POST", headers: { "content-type": "application/json-seq" }, body: JSON.stringify(body()) }), { params: Promise.resolve({ analysisId: person.analysisId }) });
     expect(seq.status).toBe(415);
-    for (const bad of [undefined, "", "abc", "-1", "2.5", "1e9"]) {
+    // PINK F-INT-1: each malformed limit gets its OWN uncached role, passes every earlier check (201, created) and must still make no call.
+    const relationsBefore = await rows("career_proposal_requirement_relations");
+    expect(roles.length).toBeGreaterThanOrEqual(8);
+    for (const [k, bad] of [undefined, "", "abc", "-1", "2.5", "1e9"].entries()) {
       if (bad === undefined) delete process.env.ROLE_DISCOVERY_DAY_LIMIT; else process.env.ROLE_DISCOVERY_DAY_LIMIT = bad;
-      const out = await (await start(person.analysisId, body({ clientRequestId: `limit-${String(bad)}` }))).json();
-      expect(out.run?.calls ?? 0).toBe(0);
+      const response = await start(person.analysisId, body({ roles: [roles[2 + k]], confirmedCalls: 1, clientRequestId: `limit-${k}` }));
+      const out = await response.json();
+      expect([response.status, out.tasks.map((t: { status: string }) => t.status)]).toEqual([201, ["BUDGET_EXHAUSTED"]]);
     }
+    expect(await rows("career_proposal_requirement_relations")).toBe(relationsBefore);
     expect([await rows("career_relation_call_ledger")]).toEqual([before[1]]);
   });
 
