@@ -1,4 +1,5 @@
 import type { Sql } from "postgres";
+import { INVESTIGATION_DDL, INVESTIGATION_TABLES } from "./semantic-investigation-store";
 import { assertCachedRelation, canonicalJson, type CachedRelation, type RelationCacheReader } from "./relation-cache";
 
 /**
@@ -72,6 +73,7 @@ export async function registerRelationCacheSchema(sql: Sql): Promise<readonly st
   // half-converged one. Repair path: RUNBOOK in CONDYN_CAPABILITY_TO_JOBPOOL_DISCOVERY_2026-10-24.md §10.
   await sql.begin(async tx => {
     for (const statement of RELATION_CACHE_DDL) await tx.unsafe(statement);
+    for (const statement of INVESTIGATION_DDL) await tx.unsafe(statement);
     const constraints = await tx.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
     const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
     const missing = [
@@ -80,7 +82,7 @@ export async function registerRelationCacheSchema(sql: Sql): Promise<readonly st
     ];
     if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
   });
-  return [RELATION_CACHE_TABLE];
+  return [RELATION_CACHE_TABLE, ...INVESTIGATION_TABLES];
 }
 
 const CHUNK = 500;
