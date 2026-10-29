@@ -15,6 +15,8 @@ export const dynamic = "force-dynamic";
 const NO_STORE = { "cache-control": "no-store" };
 const issue = (code: string, status: number, extra: Record<string, unknown> = {}) => NextResponse.json({ success: false, issues: [{ code, ...extra }] }, { status, headers: NO_STORE });
 const isRecord = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
+/** The class is derived from the stored provider; only the labelled stand-in exists in this build. */
+const evidenceClassOf = (provider: string) => (provider === "stand-in" ? "STAND_IN" : "UNKNOWN");
 const str = (v: unknown): v is string => typeof v === "string" && v.length > 0 && v === v.trim();
 
 /**
@@ -27,6 +29,9 @@ const str = (v: unknown): v is string => typeof v === "string" && v.length > 0 &
 export async function POST(request: Request, { params }: { params: Promise<{ analysisId: string }> }) {
   const { analysisId } = await params;
   try {
+    // A start is a deliberate same-site JSON call (PINK O-START-1): a cross-site fetch or a form post cannot trigger it.
+    if (request.headers.get("sec-fetch-site") === "cross-site") return issue("ERR_INVESTIGATION_CROSS_SITE", 403);
+    if (!(request.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) return issue("ERR_INVESTIGATION_CONTENT_TYPE", 415);
     const config = readSemanticConfig();
     if (config.state === "NOT_CONFIGURED") return issue("ERR_SEMANTIC_ENGINE_NOT_CONFIGURED", 409);
     if (config.state === "PROVIDER_NOT_AUTHORIZED") return issue("ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", 409, { provider: config.provider });
@@ -54,7 +59,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ ana
     const now = () => new Date().toISOString();
     // Idempotency first (spec §4): the same submit returns the stored investigation and runs nothing, whatever the cache holds now.
     const existing = await store.investigation(identity.investigationId);
-    if (existing) return NextResponse.json({ success: true, created: false, investigation: existing, tasks: await store.tasks(identity.investigationId) }, { headers: NO_STORE });
+    if (existing) return NextResponse.json({ success: true, created: false, evidenceClass: evidenceClassOf(existing.provider), investigation: existing, tasks: await store.tasks(identity.investigationId) }, { headers: NO_STORE });
     const poolRequirements = new Map(pools.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as const)));
     const proposals: EngineProposal[] = projection.capabilities.map(c => ({ id: c.id, name: c.name, scope: c.scope, structuralDefinition: c.structuralDefinition, evidence: c.evidence.map(e => ({ evidenceId: e.evidenceId, sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote })) }));
     const plan = await planSemanticInvestigation({
@@ -66,7 +71,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ ana
 
     const opened = await store.open({ ...identity, analysisId, engineVersionHash: engineHash, provider: config.engine.provider, request: { uploads: body.jobPoolUploadIds, roles: roleKeys, callsNeeded: plan.callsNeeded }, now: now(),
       tasks: plan.roles.map(r => ({ jobPoolUploadId: r.jobPoolUploadId, poolRoleId: r.poolRoleId, pairs: r.pairs })) });
-    if (!opened.created) return NextResponse.json({ success: true, created: false, investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId) }, { headers: NO_STORE }); // a concurrent identical submit
+    if (!opened.created) return NextResponse.json({ success: true, created: false, evidenceClass: evidenceClassOf(config.engine.provider), investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId) }, { headers: NO_STORE }); // a concurrent identical submit
 
     const ledger = new PostgresCallLedger(db.$client, { investigationId: opened.investigationId, provider: config.engine.provider, day: now().slice(0, 10), dayLimit: config.dayLimit, investigationLimit: plan.callsNeeded });
     const run = await runInvestigation({

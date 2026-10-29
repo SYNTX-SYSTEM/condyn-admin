@@ -15,7 +15,7 @@ const POOL = TEST_JOB_SCOPE.jobPoolUploadId;
 const stamp = `${Date.now()}`;
 const url = (analysisId: string) => `http://local/api/career/analyses/${analysisId}/role-discovery`;
 const read = (analysisId: string) => GET(new Request(`${url(analysisId)}?jobPoolUploadId=${POOL}`), { params: Promise.resolve({ analysisId }) });
-const start = (analysisId: string, body: unknown) => POST(new Request(`${url(analysisId)}/investigations`, { method: "POST", body: JSON.stringify(body) }), { params: Promise.resolve({ analysisId }) });
+const start = (analysisId: string, body: unknown, headers: Record<string, string> = {}) => POST(new Request(`${url(analysisId)}/investigations`, { method: "POST", headers: { "content-type": "application/json", ...headers }, body: JSON.stringify(body) }), { params: Promise.resolve({ analysisId }) });
 // The investigation tables are registered lazily with the relation cache: absent counts as no rows.
 const rows = async (table: string) => { const exists = ((await db.execute(sql.raw(`SELECT to_regclass('${table}') IS NOT NULL AS e`))) as unknown as Array<{ e: boolean }>)[0].e; return exists ? Number(((await db.execute(sql.raw(`SELECT count(*)::int AS n FROM ${table}`))) as unknown as Array<{ n: number }>)[0].n) : 0; };
 const source = (label: string) => createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${label})` });
@@ -66,6 +66,7 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
 
   it("a read never starts anything: the GET plans (PLANNED, nothing cached) and writes no investigation, no ledger, no relation", async () => {
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
+    process.env.ROLE_DISCOVERY_DAY_LIMIT = "1000";
     const before = [await rows("career_relation_investigations"), await rows("career_relation_call_ledger"), await rows("career_proposal_requirement_relations")];
     const plan = (await (await read(person.analysisId)).json()).discovery.semanticPlan;
     expect(plan).toMatchObject({ state: "PLANNED", executable: true });
@@ -74,6 +75,7 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
 
   it("refuses: wrong body, duplicate or foreign roles, too many roles, PERSON × JOB operand, unconfirmed call volume", async () => {
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
+    process.env.ROLE_DISCOVERY_DAY_LIMIT = "1000";
     const before = [await rows("career_relation_investigations"), await rows("career_proposal_requirement_relations")];
     const code = async (r: Response) => [r.status, (await r.json()).issues[0].code];
     expect(await code(await start(person.analysisId, { nope: 1 }))).toEqual([400, "ERR_INVESTIGATION_BODY_INVALID"]);
@@ -90,6 +92,7 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
 
   it("explicit start: one call per role, relations stored, STAND_IN labelled; a repeat runs nothing; a new request reuses the cache without a call", async () => {
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
+    process.env.ROLE_DISCOVERY_DAY_LIMIT = "1000";
     const first = await start(person.analysisId, body());
     const out = await first.json();
     if (!out.success) throw new Error(JSON.stringify(out));
@@ -101,7 +104,7 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
     expect(await ledger()).toMatchObject({ reserved: 2, consumed: 2 });
 
     const repeat = await (await start(person.analysisId, body())).json();
-    expect([repeat.created, repeat.investigation.investigationId]).toEqual([false, out.investigation.investigationId]);
+    expect([repeat.created, repeat.evidenceClass, repeat.investigation.investigationId]).toEqual([false, "STAND_IN", out.investigation.investigationId]);
     expect(await rows("career_proposal_requirement_relations")).toBe(stored);
     expect(await ledger()).toMatchObject({ reserved: 2, consumed: 2 });
 
@@ -113,9 +116,26 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
     expect(await rows("career_proposal_requirement_relations")).toBe(stored);
 
     const read2 = await GET_INVESTIGATION(new Request("http://local/x"), { params: Promise.resolve({ analysisId: person.analysisId, investigationId: out.investigation.investigationId }) });
-    expect([read2.status, (await read2.json()).investigation.status]).toEqual([200, "COMPLETED"]);
+    const read2Body = await read2.json();
+    expect([read2.status, read2Body.evidenceClass, read2Body.investigation.status]).toEqual([200, "STAND_IN", "COMPLETED"]);
     const foreign = await GET_INVESTIGATION(new Request("http://local/x"), { params: Promise.resolve({ analysisId: scoped.analysisId, investigationId: out.investigation.investigationId }) });
     expect(foreign.status).toBe(404);
+  });
+
+  it("a start is a same-site JSON call; a missing or malformed day limit fails closed (PINK O-START-1/3)", async () => {
+    process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
+    process.env.ROLE_DISCOVERY_DAY_LIMIT = "1000";
+    const before = [await rows("career_relation_investigations"), await rows("career_relation_call_ledger")];
+    const cross = await start(person.analysisId, body(), { "sec-fetch-site": "cross-site" });
+    expect([cross.status, (await cross.json()).issues[0].code]).toEqual([403, "ERR_INVESTIGATION_CROSS_SITE"]);
+    const form = await POST(new Request(`${url(person.analysisId)}/investigations`, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify(body()) }), { params: Promise.resolve({ analysisId: person.analysisId }) });
+    expect([form.status, (await form.json()).issues[0].code]).toEqual([415, "ERR_INVESTIGATION_CONTENT_TYPE"]);
+    for (const bad of [undefined, "", "abc", "-1", "2.5", "1e9"]) {
+      if (bad === undefined) delete process.env.ROLE_DISCOVERY_DAY_LIMIT; else process.env.ROLE_DISCOVERY_DAY_LIMIT = bad;
+      const out = await (await start(person.analysisId, body({ clientRequestId: `limit-${String(bad)}` }))).json();
+      expect(out.run?.calls ?? 0).toBe(0);
+    }
+    expect([await rows("career_relation_call_ledger")]).toEqual([before[1]]);
   });
 
   it("budget exhausted: no call is made, the first role is BUDGET_EXHAUSTED, the rest CANCELLED, nothing stored", async () => {

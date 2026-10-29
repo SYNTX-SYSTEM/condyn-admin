@@ -13,6 +13,8 @@ export type SemanticConfig =
   | { state: "READY"; engine: RelationEngineIdentity; dayLimit: number; maxRoles: number };
 
 const int = (value: string | undefined, fallback: number, max: number) => { const n = Number(value); return Number.isInteger(n) && n >= 0 ? Math.min(n, max) : fallback; };
+/** The day limit fails CLOSED (PINK O-START-3): only plain decimal digits count; missing, empty or malformed means 0, so nothing runs. */
+const dayLimit = (value: string | undefined) => (value !== undefined && /^[0-9]{1,6}$/.test(value.trim()) ? Math.min(Number(value.trim()), 100000) : 0);
 
 export function readSemanticConfig(env: Record<string, string | undefined> = process.env): SemanticConfig {
   const provider = env.ROLE_DISCOVERY_SEMANTIC_PROVIDER?.trim();
@@ -21,7 +23,7 @@ export function readSemanticConfig(env: Record<string, string | undefined> = pro
   return {
     state: "READY",
     engine: { contractVersion: "PROPOSAL_REQUIREMENT_RELATION_V1", promptChecksum: "ROLE_RELATION_STANDIN_V1", provider: "stand-in", model: "stand-in" },
-    dayLimit: int(env.ROLE_DISCOVERY_DAY_LIMIT, 1000, 100000),
+    dayLimit: dayLimit(env.ROLE_DISCOVERY_DAY_LIMIT),
     maxRoles: Math.max(1, int(env.ROLE_DISCOVERY_MAX_ROLES, SEMANTIC_ROLES_DEFAULT, SEMANTIC_ROLES_HARD_CAP))
   };
 }

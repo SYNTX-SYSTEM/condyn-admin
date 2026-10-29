@@ -15,7 +15,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ ana
     const store = new PostgresInvestigationStore(db.$client);
     const investigation = await store.investigation(investigationId);
     if (!investigation || investigation.analysisId !== analysisId) return NextResponse.json({ success: false, issues: [{ code: "ERR_INVESTIGATION_NOT_FOUND" }] }, { status: 404, headers: NO_STORE });
-    return NextResponse.json({ success: true, investigation, tasks: await store.tasks(investigationId) }, { headers: NO_STORE });
+    return NextResponse.json({ success: true, evidenceClass: investigation.provider === "stand-in" ? "STAND_IN" : "UNKNOWN", investigation, tasks: await store.tasks(investigationId) }, { headers: NO_STORE });
   } catch {
     return NextResponse.json({ success: false, issues: [{ code: "ERR_INVESTIGATION_FAILED" }] }, { status: 500, headers: NO_STORE });
   }
