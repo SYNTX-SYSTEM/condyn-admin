@@ -40,7 +40,9 @@ const byId = (tree: unknown, id: string) => findBy(tree, props => props["data-te
 /** The dock with one file chosen; returns what ANALYZE would hand over, and the drawn dock. */
 function choose(file: { name: string; type: string; text?: string }) {
   const analyzed: unknown[][] = [];
-  const dock = instance<Record<string, unknown>>(SourceDock);
+  // SourceDock is a forwardRef component since the DLL-full path review (point 3, a drop-forwarded file reaches its own
+  // intake via an imperative handle) — this suite has no ref to give it, so .render is called directly with none.
+  const dock = instance<Record<string, unknown>>((props: Record<string, unknown>) => (SourceDock as unknown as { render(p: unknown, r: null): ReactElement<Record<string, unknown>> }).render(props, null));
   const props = { onAnalyze: (documents: unknown[]) => { analyzed.push(documents); } };
   let tree = dock.render(props);
   (byId(tree, "source-dock-file-input")!.props.onChange as (event: unknown) => void)({ target: { files: [{ text: "", ...file }], value: file.name } });

@@ -3,8 +3,8 @@ import type { ReactElement } from "react";
 /**
  * A minimal hook runtime for calling one component function at a time (the repo has no DOM renderer), shared by the navigation
  * tests (N-1 … N-3); the same model as role-field-closure.test.tsx: useState with lazy initialisers, useRef, useMemo / useCallback
- * with dependency comparison, useEffect committed after each render in declaration order (cleanup before a re-run), and
- * useSyncExternalStore read synchronously (subscribed once, unsubscribed on unmount). Each `instance()` keeps its own slots, so a
+ * with dependency comparison, useEffect committed after each render in declaration order (cleanup before a re-run), useSyncExternalStore read synchronously (subscribed once, unsubscribed on unmount), and useImperativeHandle set as a
+ * same-timing effect (a plain object ref only; a function ref is called). Each `instance()` keeps its own slots, so a
  * remount is a fresh instance. It proves a component's own state logic across renders and what it hands its children; it does not
  * prove React's scheduling, key semantics or the children's rendering.
  *
@@ -43,7 +43,12 @@ export function mockReact<T extends object>(original: T): T {
     if (!(index in self.slots)) { self.slots[index] = true; self.unsubscribe.push(subscribe(() => undefined)); }
     return getSnapshot();
   };
-  const hooks = { useState, useRef, useMemo, useCallback, useEffect, useLayoutEffect: useEffect, useSyncExternalStore };
+  /** forwardRef's imperative handle: set on the same effect timing as useEffect above (after the pending render's effects run). */
+  const useImperativeHandle = <S,>(ref: { current: S | null } | ((value: S | null) => void) | null | undefined, factory: () => S, deps?: unknown[]) => {
+    const assign = (value: S | null) => { if (!ref) return; if (typeof ref === "function") ref(value); else ref.current = value; };
+    useEffect(() => { assign(factory()); return () => assign(null); }, deps);
+  };
+  const hooks = { useState, useRef, useMemo, useCallback, useEffect, useLayoutEffect: useEffect, useSyncExternalStore, useImperativeHandle };
   return { ...original, ...hooks, default: { ...(original as unknown as { default: object }).default, ...hooks } } as T;
 }
 

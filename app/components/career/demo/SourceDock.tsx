@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import { SIL_COPY, type SilLocale } from "../../../../lib/career/view-model/sil-language";
 import { NAVIGATION_COPY } from "./navigation-copy";
@@ -11,6 +11,12 @@ export interface StagedDocumentItem {
   title: string;
   content?: string;
   url?: string;
+}
+
+/** The DLL-full path review point 3: a dropped file reaches this exact intake — same validation as the file button, no new
+ *  rules — through this imperative handle, since SourceDock owns `stagedDocs` itself. */
+export interface SourceDockHandle {
+  stageFile(file: File): void;
 }
 
 export interface SourceDockProps {
@@ -44,14 +50,14 @@ export function sourceFileKind(name: string, mime: string): "text" | "pdf" | nul
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c)
  * SourceDock: Functional left-side ingestion dock focused on feeding the core with PDF, URL, and Text sources.
  */
-export function SourceDock({
+export const SourceDock = forwardRef<SourceDockHandle, SourceDockProps>(function SourceDock({
   onAnalyze,
   isAnalyzing = false,
   initialStagedDocs = [],
   locale = SIL_COPY.defaultLocale,
   analyzeBlockedMessage = null,
   investigation = null
-}: SourceDockProps) {
+}: SourceDockProps, forwardedRef) {
   const t = SIL_COPY[locale].sourceDock;
   const [stagedDocs, setStagedDocs] = useState<StagedDocumentItem[]>(initialStagedDocs);
   const [activeInputMode, setActiveInputMode] = useState<"none" | "github" | "website" | "text">("none");
@@ -63,12 +69,11 @@ export function SourceDock({
   /** F-G1-MD: the last file refused (its name and why), shown until the next file is chosen. */
   const [refusedFile, setRefusedFile] = useState<{ name: string; reason: "TYPE" | "EMPTY" } | null>(null);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  /** The one file intake, whatever triggered it (the file button's change event, or a drop on the identity core). */
+  const stageFile = (file: File) => {
     const kind = sourceFileKind(file.name, file.type);
     setRefusedFile(kind === null ? { name: file.name, reason: "TYPE" } : null);
-    if (kind === null) { e.target.value = ""; return; }
+    if (kind === null) return;
 
     const reader = new FileReader();
     if (kind === "text") {
@@ -78,7 +83,6 @@ export function SourceDock({
         setStagedDocs((prev) => [...prev, { id: `doc_text_${Date.now()}`, type: "text", title: file.name, content: text }]);
       };
       reader.readAsText(file);
-      e.target.value = "";
       return;
     }
     reader.onload = (event) => {
@@ -94,8 +98,13 @@ export function SourceDock({
       setStagedDocs((prev) => [...prev, newDoc]);
     };
     reader.readAsDataURL(file);
+  };
+  useImperativeHandle(forwardedRef, () => ({ stageFile }));
 
-    // reset input
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    stageFile(file);
     e.target.value = "";
   };
 
@@ -489,7 +498,7 @@ export function SourceDock({
         >
           {isAnalyzing ? t.analysisRunning : `${t.startAnalysis} (POST)`}
         </button>
-      )}
+       )}
     </div>
   );
-}
+});
