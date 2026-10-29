@@ -99,3 +99,22 @@ nachvollziehbares Ranking“ as the goal (D-RD-4 = A had excluded ranking by cov
 - Owner: (1) confirm „six orbits stay, role discovery added“; (2) ranking rule (explainable, from semantic relations, never
   from lexical coverage or legacy scores); (3) how pools are authorised (explicit release per analysis vs. an owner-maintained
   authorised list); (4) GO for real Gemini with a call budget; (5) whether :3017 should move off the Codex code.
+
+## 8 Autonomous decisions derived from the existing architecture (owner „AUTONOMOUS ARCHITECTURE RECOVERY“, 2026-10-29)
+
+Derivation order: owner texts → G1 / UX decisions → D-RD-1…5 → stage-3 spec. Where texts conflict the **newer owner text wins**, the
+older contract is narrowed, never silently dropped.
+
+| Decision | Derived rule | Source |
+|---|---|---|
+| **Six orbits** | All six stay under PERSON with their rays, coupling, HUD actions and interactions; hidden only under PERSON × JOB (G1). Nothing removed. Supersedes the replacement in D-RD-5 = B. | recovery mandate §2/§4; boundary 1; G1 Q1 |
+| **Role discovery placement (D-RD-5 narrowed)** | Additive: a role-discovery panel in the B2 panel grammar (fit/stack/telemetry rules), opened by an explicit „DISCOVER JOBS“ action and reachable from orbit 04 (Role Manifestation, the roles orbit); the planetarium stays the centre. The panel is the only place that shows discovery results; orbits 03–06 keep their original content. | D-RD-5 („preserve the existing PERSON proposals; no legacy scoring in the **map** of discovery“), UX closure grammar |
+| **Legacy score** | Not touched in the legacy orbits (original behaviour, boundary 1). Discovery never reads or shows it; the legacy orbit content gets the existing label „legacy presentation · not authority“ if it lacks one (label only). | D-RD-5, G1 |
+| **D-RD-4 and „nachvollziehbares Ranking“** | Grouping by relation status stays (D-RD-4 A). A **ranking exists only from persisted semantic relations** (stage 3): inside a group, roles are ordered by an explicit, displayed relation profile — (required requirements EQUIVALENT/COVERS, then PARTIAL, then open), then pool, organisation, role — shown as such („ordering by established relations, not a suitability score“); never from lexical coverage, similarity or the legacy score. Without executed semantic relations: no ranking, status „semantic check not executed“. | owner recovery text (explainable ranking) narrows D-RD-4 „no numeric coverage ranking“ to: no ranking from unverified signals |
+| **Pool authorisation** | Explicit per analysis through the existing `discoveryPoolUploadId` (RD-URL: one push, NAV ≡ RELOAD); no default, no „all pools“. The UI lists uploaded pools as unchecked choices. Pools created by Codex sandboxes or the runner's empty database are not authorised by existing. | D-RD-1; „no silent comparison against every stored pool“ |
+| **Execution contract** | Stage-3 spec unchanged: explicit start, role-level calls, ledger budget, no silent retry, idempotency, replay, provider in the engine identity. Real Gemini stays blocked behind a budget number the owner names. Stand-in development proceeds. | D-RD-3, spec 2026-10-24 |
+| **Codex semantic code** | Not reused: read-only GET stays read-only. The useful parts (Gemini provider adapter idea) are reimplemented against the spec by GELB. | boundary 1, D-RD-3 |
+| **:3017** | Not touched; reported. | owner rule |
+
+Returned to the owner (missing authorisations only): the Gemini call budget number for real execution; whether :3017 may be moved
+to the recovered branch.
