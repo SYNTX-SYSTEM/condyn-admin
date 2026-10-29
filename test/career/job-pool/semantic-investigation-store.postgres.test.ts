@@ -67,4 +67,54 @@ describe("semantic investigation store (PostgreSQL)", () => {
   it("the database refuses an impossible ledger row", async () => {
     await expect(db.$client.unsafe(`INSERT INTO career_relation_call_ledger (scope_key, limit_units, reserved) VALUES ('X:bad', 1, 2)`)).rejects.toThrow();
   });
+
+  it("the investigation status moves forward only, in the store and in the database (PINK D-LED-1, O-LED-2)", async () => {
+    const id = identity("status");
+    await store.open({ ...id, analysisId: `ANL_${stamp}`, engineVersionHash: "a".repeat(64), provider: "stand-in", request: {}, tasks: [], now: NOW });
+    await store.setStatus(id.investigationId, "RUNNING", NOW);
+    await store.setStatus(id.investigationId, "COMPLETED", NOW);
+    await expect(store.setStatus(id.investigationId, "PLANNED", NOW)).rejects.toThrow(/ERR_INVESTIGATION_STATUS_CONFLICT/);
+    await expect(store.setStatus(id.investigationId, "RUNNING", NOW)).rejects.toThrow(/ERR_INVESTIGATION_STATUS_CONFLICT/);
+    await expect(db.$client.unsafe(`UPDATE career_relation_investigations SET status = 'PLANNED' WHERE investigation_id = $1`, [id.investigationId])).rejects.toThrow(/ERR_INVESTIGATION_STATUS_BACKWARD/);
+    await expect(db.$client.unsafe(`DELETE FROM career_relation_investigations WHERE investigation_id = $1`, [id.investigationId])).rejects.toThrow(/ERR_INVESTIGATION_IMMUTABLE/);
+    await expect(db.$client.unsafe(`UPDATE career_relation_investigations SET request_json = '{"changed":true}' WHERE investigation_id = $1`, [id.investigationId])).rejects.toThrow(/ERR_INVESTIGATION_IMMUTABLE/);
+  });
+
+  it("the database refuses backward task updates, deletes and decreasing ledger counters (O-LED-2)", async () => {
+    const id = identity("dbguard");
+    await store.open({ ...id, analysisId: `ANL_${stamp}`, engineVersionHash: "a".repeat(64), provider: "stand-in", request: {}, tasks: [{ jobPoolUploadId: "U1", poolRoleId: "role_a", pairs: 1 }], now: NOW });
+    await store.moveTask({ investigationId: id.investigationId, jobPoolUploadId: "U1", poolRoleId: "role_a", from: "PENDING", to: "RUNNING", now: NOW });
+    await expect(db.$client.unsafe(`UPDATE career_relation_role_tasks SET status = 'PENDING' WHERE investigation_id = $1`, [id.investigationId])).rejects.toThrow(/ERR_INVESTIGATION_STATUS_BACKWARD/);
+    await expect(db.$client.unsafe(`DELETE FROM career_relation_role_tasks WHERE investigation_id = $1`, [id.investigationId])).rejects.toThrow(/ERR_INVESTIGATION_IMMUTABLE/);
+    const ledger = new PostgresCallLedger(db.$client, { investigationId: id.investigationId, provider: `g${Math.random()}`, day: "2026-10-29", dayLimit: 2, investigationLimit: 2 });
+    await ledger.reserve();
+    await expect(db.$client.unsafe(`UPDATE career_relation_call_ledger SET reserved = 0 WHERE scope_key = $1`, [`INV:${id.investigationId}`])).rejects.toThrow(/ERR_LEDGER_IMMUTABLE/);
+    await expect(db.$client.unsafe(`DELETE FROM career_relation_call_ledger WHERE scope_key = $1`, [`INV:${id.investigationId}`])).rejects.toThrow(/ERR_LEDGER_IMMUTABLE/);
+  });
+
+  it("release and consume act only on THIS investigation's own reservation, never on another's day unit (PINK D-LED-2)", async () => {
+    const provider = `own${Math.random()}`;
+    const mk = (investigationId: string) => new PostgresCallLedger(db.$client, { investigationId, provider, day: "2026-10-29", dayLimit: 5, investigationLimit: 5 });
+    const a = mk(`RINV_OA${stamp}${Math.random()}`), b = mk(`RINV_OB${stamp}${Math.random()}`);
+    await a.reserve();
+    await expect(b.release()).rejects.toThrow(/ERR_LEDGER_NO_RESERVATION/);
+    await expect(b.consume({ requestBytes: 1, responseBytes: 1 })).rejects.toThrow(/ERR_LEDGER_NO_RESERVATION/);
+    const day = async () => (await db.$client<{ reserved: number; released: number; consumed: number }[]>`SELECT reserved, released, consumed FROM career_relation_call_ledger WHERE scope_key = ${`DAY:${provider}:2026-10-29`}`)[0];
+    expect(await day()).toMatchObject({ reserved: 1, released: 0, consumed: 0 });
+    await a.consume({ requestBytes: 1, responseBytes: 1 });
+    await expect(a.release()).rejects.toThrow(/ERR_LEDGER_NO_RESERVATION/); // the only reservation is consumed
+    expect(await day()).toMatchObject({ reserved: 1, released: 0, consumed: 1 });
+  });
+
+  it("a lowered day limit takes effect the same day, never below what is outstanding (PINK O-LED-1)", async () => {
+    const provider = `low${Math.random()}`;
+    const mk = (limit: number, id: string) => new PostgresCallLedger(db.$client, { investigationId: id, provider, day: "2026-10-29", dayLimit: limit, investigationLimit: 9 });
+    const first = mk(5, `RINV_LA${stamp}${Math.random()}`);
+    expect([await first.reserve(), await first.reserve()]).toEqual([true, true]);
+    const lowered = mk(0, `RINV_LB${stamp}${Math.random()}`);
+    expect(await lowered.reserve()).toBe(false);
+    expect(await lowered.reserve()).toBe(false); // the lowered limit stays in force
+    const rows = await db.$client<{ limit_units: number; reserved: number }[]>`SELECT limit_units, reserved FROM career_relation_call_ledger WHERE scope_key = ${`DAY:${provider}:2026-10-29`}`;
+    expect(rows[0]).toMatchObject({ limit_units: 2, reserved: 2 });
+  });
 });

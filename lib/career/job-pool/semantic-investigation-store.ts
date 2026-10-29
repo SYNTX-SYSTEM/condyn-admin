@@ -47,6 +47,42 @@ export const INVESTIGATION_DDL = [
   )`
 ] as const;
 
+/** Database-enforced direction (PINK O-LED-2): no delete anywhere, statuses forward only, ledger counters never decrease. */
+export const INVESTIGATION_TRIGGERS = ["rel_inv_guard", "rel_task_guard", "rel_ledger_guard"] as const;
+export const INVESTIGATION_GUARD_DDL = [
+  `CREATE OR REPLACE FUNCTION rel_inv_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_INVESTIGATION_IMMUTABLE: delete refused'; END IF;
+    IF NEW.investigation_id <> OLD.investigation_id OR NEW.idempotency_key <> OLD.idempotency_key OR NEW.analysis_id <> OLD.analysis_id
+       OR NEW.engine_version_hash <> OLD.engine_version_hash OR NEW.provider <> OLD.provider OR NEW.request_json <> OLD.request_json OR NEW.created_at <> OLD.created_at
+      THEN RAISE EXCEPTION 'ERR_INVESTIGATION_IMMUTABLE: identity fields are fixed'; END IF;
+    IF NOT (NEW.status = OLD.status OR (OLD.status = 'PLANNED' AND NEW.status IN ('RUNNING','FAILED','INTERRUPTED'))
+       OR (OLD.status = 'RUNNING' AND NEW.status IN ('COMPLETED','PARTIAL','INTERRUPTED','FAILED')))
+      THEN RAISE EXCEPTION 'ERR_INVESTIGATION_STATUS_BACKWARD: % -> %', OLD.status, NEW.status; END IF;
+    RETURN NEW; END $$`,
+  `CREATE OR REPLACE FUNCTION rel_task_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_INVESTIGATION_IMMUTABLE: delete refused'; END IF;
+    IF NEW.investigation_id <> OLD.investigation_id OR NEW.job_pool_upload_id <> OLD.job_pool_upload_id OR NEW.pool_role_id <> OLD.pool_role_id OR NEW.pairs <> OLD.pairs
+      THEN RAISE EXCEPTION 'ERR_INVESTIGATION_IMMUTABLE: identity fields are fixed'; END IF;
+    IF NOT ((OLD.status = 'PENDING' AND NEW.status IN ('RUNNING','CACHED','CANCELLED'))
+       OR (OLD.status = 'RUNNING' AND NEW.status IN ('SUCCEEDED','FAILED','BUDGET_EXHAUSTED','INTERRUPTED')))
+      THEN RAISE EXCEPTION 'ERR_INVESTIGATION_STATUS_BACKWARD: % -> %', OLD.status, NEW.status; END IF;
+    RETURN NEW; END $$`,
+  `CREATE OR REPLACE FUNCTION rel_ledger_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: delete refused'; END IF;
+    IF NEW.scope_key <> OLD.scope_key OR NEW.reserved < OLD.reserved OR NEW.consumed < OLD.consumed OR NEW.released < OLD.released
+       OR NEW.request_bytes < OLD.request_bytes OR NEW.response_bytes < OLD.response_bytes
+      THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: counters never decrease'; END IF;
+    RETURN NEW; END $$`,
+  `DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_inv_guard' AND tgrelid = 'career_relation_investigations'::regclass) THEN
+      CREATE TRIGGER rel_inv_guard BEFORE UPDATE OR DELETE ON career_relation_investigations FOR EACH ROW EXECUTE FUNCTION rel_inv_guard(); END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_task_guard' AND tgrelid = 'career_relation_role_tasks'::regclass) THEN
+      CREATE TRIGGER rel_task_guard BEFORE UPDATE OR DELETE ON career_relation_role_tasks FOR EACH ROW EXECUTE FUNCTION rel_task_guard(); END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_ledger_guard' AND tgrelid = 'career_relation_call_ledger'::regclass) THEN
+      CREATE TRIGGER rel_ledger_guard BEFORE UPDATE OR DELETE ON career_relation_call_ledger FOR EACH ROW EXECUTE FUNCTION rel_ledger_guard(); END IF;
+  END $$`
+] as const;
+
 const sha = (value: string) => createHash("sha256").update(value, "utf8").digest("hex");
 
 /** Investigation id and idempotency key from what makes two submits the same (spec §4). */
@@ -92,8 +128,11 @@ export class PostgresInvestigationStore {
     if (rows.length !== 1) throw new Error("ERR_INVESTIGATION_TASK_STATE_CONFLICT");
   }
 
+  /** Forward only (PINK D-LED-1): PLANNED → RUNNING | FAILED | INTERRUPTED; RUNNING → a terminal state. Anything else throws. */
   async setStatus(investigationId: string, status: InvestigationStatus, now: string): Promise<void> {
-    await this.sql`UPDATE career_relation_investigations SET status = ${status}, updated_at = ${now} WHERE investigation_id = ${investigationId}`;
+    const from: Record<InvestigationStatus, InvestigationStatus[]> = { PLANNED: [], RUNNING: ["PLANNED"], COMPLETED: ["RUNNING"], PARTIAL: ["RUNNING"], INTERRUPTED: ["PLANNED", "RUNNING"], FAILED: ["PLANNED", "RUNNING"] };
+    const rows = await this.sql<{ investigation_id: string }[]>`UPDATE career_relation_investigations SET status = ${status}, updated_at = ${now} WHERE investigation_id = ${investigationId} AND status = ANY(${from[status]}) RETURNING investigation_id`;
+    if (rows.length !== 1) throw new Error("ERR_INVESTIGATION_STATUS_CONFLICT");
   }
 
   async tasks(investigationId: string): Promise<Array<{ jobPoolUploadId: string; poolRoleId: string; status: TaskStatus; errorCode: string | null; pairs: number; stored: number }>> {
@@ -111,9 +150,12 @@ export class PostgresCallLedger implements CallLedger {
 
   async reserve(): Promise<boolean> {
     const { day, inv } = this.keys;
+    // The configured limit of today is the latest one, never below what is already outstanding (PINK O-LED-1: lowering takes effect).
+    // Its own statement: it must be committed even when the reservation below is refused.
+    await this.sql`INSERT INTO career_relation_call_ledger (scope_key, limit_units) VALUES (${day}, ${this.scope.dayLimit})
+      ON CONFLICT (scope_key) DO UPDATE SET limit_units = GREATEST(EXCLUDED.limit_units, career_relation_call_ledger.reserved - career_relation_call_ledger.released)`;
     try {
       await this.sql.begin(async tx => {
-        await tx`INSERT INTO career_relation_call_ledger (scope_key, limit_units) VALUES (${day}, ${this.scope.dayLimit}) ON CONFLICT (scope_key) DO NOTHING`;
         await tx`INSERT INTO career_relation_call_ledger (scope_key, limit_units) VALUES (${inv}, ${this.scope.investigationLimit}) ON CONFLICT (scope_key) DO NOTHING`;
         for (const key of [day, inv]) {
           const rows = await tx<{ scope_key: string }[]>`UPDATE career_relation_call_ledger SET reserved = reserved + 1 WHERE scope_key = ${key} AND reserved - released < limit_units RETURNING scope_key`;
@@ -123,12 +165,22 @@ export class PostgresCallLedger implements CallLedger {
       return true;
     } catch (error) { if (error instanceof LedgerRefused) return false; throw error; }
   }
+  /** Marks one of THIS investigation's outstanding reservations as consumed; without one it throws (PINK D-LED-2). */
   async consume(meta: { requestBytes: number; responseBytes: number }): Promise<void> {
     const { day, inv } = this.keys;
-    await this.sql`UPDATE career_relation_call_ledger SET consumed = consumed + 1, request_bytes = request_bytes + ${meta.requestBytes}, response_bytes = response_bytes + ${meta.responseBytes} WHERE scope_key IN (${day}, ${inv})`;
+    await this.sql.begin(async tx => {
+      const own = await tx<{ scope_key: string }[]>`UPDATE career_relation_call_ledger SET consumed = consumed + 1, request_bytes = request_bytes + ${meta.requestBytes}, response_bytes = response_bytes + ${meta.responseBytes} WHERE scope_key = ${inv} AND reserved - released - consumed > 0 RETURNING scope_key`;
+      if (own.length === 0) throw new Error("ERR_LEDGER_NO_RESERVATION");
+      await tx`UPDATE career_relation_call_ledger SET consumed = consumed + 1, request_bytes = request_bytes + ${meta.requestBytes}, response_bytes = response_bytes + ${meta.responseBytes} WHERE scope_key = ${day}`;
+    });
   }
+  /** Releases one of THIS investigation's unconsumed reservations from both scopes; never a unit of another investigation. */
   async release(): Promise<void> {
     const { day, inv } = this.keys;
-    await this.sql`UPDATE career_relation_call_ledger SET released = released + 1 WHERE scope_key IN (${day}, ${inv}) AND released < reserved`;
+    await this.sql.begin(async tx => {
+      const own = await tx<{ scope_key: string }[]>`UPDATE career_relation_call_ledger SET released = released + 1 WHERE scope_key = ${inv} AND reserved - released - consumed > 0 RETURNING scope_key`;
+      if (own.length === 0) throw new Error("ERR_LEDGER_NO_RESERVATION");
+      await tx`UPDATE career_relation_call_ledger SET released = released + 1 WHERE scope_key = ${day}`;
+    });
   }
 }

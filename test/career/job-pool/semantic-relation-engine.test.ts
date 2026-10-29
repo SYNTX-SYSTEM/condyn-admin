@@ -99,8 +99,18 @@ describe("claim guard bypasses found by PINK (D-ENG-1)", () => {
   const claims = ["87％", "eighty-seven percent", "87 percent", "87 Prozent", "0.87", "9/10", "8 out of 10", "scored", "Scores", "ranks", "recommends", "Hired", "qualifies", "Qualification", "Verification", "Proof",
     "competent", "a good fit", "geeignet", "Eignung nachgewiesen", "wir empfehlen die Einstellung", "Kompetenz verifiziert", "Qualifiziert", "s c o r e", "sc\u043ere", "sc\u200bore", "SCORE", "r a n k i n g", "twenty out of thirty"];
   it.each(claims)("refuses: %s", claim => expect(containsClaim(`The proposal ${claim} here.`)).toBe(true));
-  const innocent = ["Names differ; nothing shown.", "The quote mentions Kubernetes but not the requirement's tooling.", "Partly overlapping scope: operation versus design.", "Keine gemeinsamen Begriffe im Zitat."];
+  const innocent = ["Names differ; nothing shown.", "one quote mentions it", "approved by a review board", "improve later", "provenance of the data", "based in Frankfurt and Yorkshire", "underscore naming", "a competition entry", "K8s and S3 and OAuth 2.0 at Level L3", "ISO 26262 and ROS 2", "Neo4j graph", "The quote mentions Kubernetes but not the requirement's tooling.", "Partly overlapping scope: operation versus design.", "Keine gemeinsamen Begriffe im Zitat."];
   it.each(innocent)("allows an innocent statement: %s", text => expect(containsClaim(text)).toBe(false));
+  it("the operands' own names are data, not claims (D-ENG-3): Security Certification, Actuarial Qualification, Data Provenance, Architecture Communication", () => {
+    for (const name of ["Security Certification", "Actuarial Qualification", "Data Provenance", "HL7 FHIR", "Architecture Communication", "B2B Industrial Products"]) {
+      expect(containsClaim(`The requirement ${name} is not named in the quote.`, [name])).toBe(false);
+      expect(containsClaim(`The requirement ${name} is qualified.`, [name])).toBe(true);
+    }
+  });
+  it("nothing is matched across word boundaries (re|comm), single-letter runs are still joined (s c o r e)", () => {
+    expect(containsClaim("Architecture Communication in the team")).toBe(false);
+    expect(containsClaim("s c o r e")).toBe(true);
+  });
 });
 
 describe("honest evidence, identity and defined failure outcomes (PINK D-ENG-2, O-ENG-1, O-ENG-3)", () => {

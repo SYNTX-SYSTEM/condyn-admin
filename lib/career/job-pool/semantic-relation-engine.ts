@@ -37,22 +37,36 @@ export interface CallLedger { reserve(): Promise<boolean>; consume(meta: { reque
 export interface RelationWriter { saveIfAbsent(records: CachedRelation[]): Promise<{ inserted: number; duplicates: number; divergent: string[] }> }
 
 /**
- * Claim guard (PINK D-ENG-1). A blocklist can never be complete, so the guard is defence in depth and the real protection is
+ * Claim guard (PINK D-ENG-1, D-ENG-3). A blocklist can never be complete, so the guard is defence in depth and the real protection is
  * structural: a model statement is stored and shown only as an unverified model statement with authority NONE, and never feeds a
- * ranking or a decision. The text is normalised (NFKC, case, zero-width and spacing removed, Cyrillic/Greek look-alikes mapped) and
- * refused when it carries ANY digit or percent (numbers are where scores hide), a number word, or a claim stem in English or German.
+ * ranking or a decision. To stay usable it is word-based and operand-aware:
+ *  - the operands' own names (proposal names, requirement texts and aliases) are removed before the check — „Security Certification“
+ *    or „Neo4j“ are data, not claims;
+ *  - text is normalised (NFKC, case, zero-width characters, Cyrillic/Greek look-alikes) and split into WORDS; runs of single letters
+ *    („s c o r e“) are joined; a claim stem must START a word (so „improve“, „approved“, „provenance“, „Yorkshire“, „competition“
+ *    pass, „scored“, „Qualification“, „recommends“ do not), and nothing is matched across word boundaries;
+ *  - numbers are refused where scores hide: a percent sign or percent word, a ratio („9/10“, „8 out of 10“, „acht von zehn“), a
+ *    leading-zero decimal („0.87“); other digits („OAuth 2.0“, „L3“, „ISO 26262“) are data.
  */
 const LOOKALIKE: Record<string, string> = { "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "у": "y", "х": "x", "і": "i", "ѕ": "s", "ο": "o", "α": "a", "ε": "e", "ρ": "p", "ν": "v", "ι": "i", "κ": "k" };
-const CLAIM_STEMS = ["score", "scor", "rank", "recomm", "hire", "hiring", "qualif", "suitab", "compet", "verifi", "proof", "prove", "certif", "percent", "prozent", "goodfit", "bestfit", "perfectmatch", "wellsuited", "empfehl", "eignung", "geeignet", "einstell", "kompetenz", "nachgewiesen", "bewert", "qualifiz", "verifiz", "passtgut", "idealer", "ideal"];
-const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand", "half", "quarter", "null", "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "zehn", "zwanzig", "dreissig", "hundert", "tausend", "halb"];
-export function containsClaim(text: string): boolean {
-  const base = text.normalize("NFKC").toLowerCase().replace(/[\u200b-\u200f\u2060\ufeff\u00ad]/g, "");
-  const mapped = [...base].map(ch => LOOKALIKE[ch] ?? ch).join("");
-  if (/[0-9%]|\p{Nd}/u.test(mapped)) return true;
-  const squashed = mapped.replace(/[^\p{L}]/gu, "");
-  if (CLAIM_STEMS.some(stem => squashed.includes(stem))) return true;
-  const words = mapped.split(/[^\p{L}]+/u).filter(Boolean);
-  return words.some(w => NUMBER_WORDS.includes(w));
+const CLAIM_PREFIXES = ["scor", "rank", "recomm", "hire", "hiring", "qualif", "suitab", "competen", "verifi", "certifi", "percent", "prozent", "empfehl", "eignung", "geeignet", "einstell", "kompetenz", "nachgewiesen", "bewert", "verifiz"];
+const CLAIM_WORDS = new Set(["proof", "proofs", "prove", "proves", "proved", "proven", "pct", "idealer", "ideal"]);
+const CLAIM_PHRASES = [/\b(good|best|perfect|great|strong) (fit|match)\b/, /\bwell suited\b/, /\bpasst gut\b/];
+const NUMBER_WORDS = "zero one two three four five six seven eight nine ten eleven twelve twenty thirty forty fifty sixty seventy eighty ninety hundred null eins zwei drei vier fuenf sechs sieben acht neun zehn zwanzig dreissig hundert";
+const NUM = `(?:\\d+(?:[.,]\\d+)?|(?:${NUMBER_WORDS.split(" ").join("|")})(?:[ -](?:${NUMBER_WORDS.split(" ").join("|")}))?)`;
+const RATIO = new RegExp(`\\b${NUM}\\s*(?:/|out of|von|of)\\s*${NUM}\\b`);
+const norm = (text: string) => [...text.normalize("NFKC").toLowerCase().replace(/[\u200b-\u200f\u2060\ufeff\u00ad]/g, "")].map(ch => LOOKALIKE[ch] ?? ch).join("");
+export function containsClaim(text: string, operandTexts: string[] = []): boolean {
+  let t = norm(text);
+  for (const operand of operandTexts.map(norm).filter(o => o.length > 1).sort((x, y) => y.length - x.length)) t = t.split(operand).join(" ");
+  if (/%|％/.test(t) || /\b0[.,]\d+/.test(t) || /\d\s?(?:percent|prozent|pct)/.test(t) || RATIO.test(t.replace(/[-–]/g, " "))) return true;
+  const raw = t.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  const words: string[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    if (raw[i].length === 1 && /\p{L}/u.test(raw[i])) { let j = i, joined = ""; while (j < raw.length && raw[j].length === 1 && /\p{L}/u.test(raw[j])) { joined += raw[j]; j += 1; } words.push(joined); i = j - 1; } else words.push(raw[i]);
+  }
+  if (CLAIM_PHRASES.some(re => re.test(words.join(" ")))) return true;
+  return words.some(w => CLAIM_WORDS.has(w) || CLAIM_PREFIXES.some(prefix => w.startsWith(prefix)));
 }
 /** Upper bound for the model's free text fields (PINK O-ENG-2). */
 export const MAX_TEXT_LENGTH = 1000;
@@ -101,7 +115,8 @@ export function admitProviderOutput(input: { rawText: string; engine: RelationEn
     const state = v.state as SemanticRelationState;
     if (!nonEmpty(v.relationExplanation) || !nonEmpty(v.evidenceLimitation)) { fail("EXPLANATION_OR_LIMITATION_MISSING"); continue; }
     if (v.relationExplanation.length > MAX_TEXT_LENGTH || v.evidenceLimitation.length > MAX_TEXT_LENGTH) { fail("TEXT_TOO_LONG"); continue; }
-    if (containsClaim(v.relationExplanation) || containsClaim(v.evidenceLimitation)) { fail("CLAIM_IN_TEXT"); continue; }
+    const operandTexts = [proposal.name, requirement.capability_name, ...(requirement.aliases ?? [])];
+    if (containsClaim(v.relationExplanation, operandTexts) || containsClaim(v.evidenceLimitation, operandTexts)) { fail("CLAIM_IN_TEXT"); continue; }
     const cited = Array.isArray(v.citedEvidenceIds) ? v.citedEvidenceIds : null;
     if (cited === null || cited.some(id => typeof id !== "string") || new Set(cited).size !== cited.length) { fail("CITATION_INVALID"); continue; }
     const byId = new Map(proposal.evidence.map(e => [e.evidenceId, e]));

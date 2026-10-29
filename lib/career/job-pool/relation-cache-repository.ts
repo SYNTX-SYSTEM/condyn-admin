@@ -1,5 +1,5 @@
 import type { Sql } from "postgres";
-import { INVESTIGATION_DDL, INVESTIGATION_TABLES } from "./semantic-investigation-store";
+import { INVESTIGATION_DDL, INVESTIGATION_GUARD_DDL, INVESTIGATION_TABLES, INVESTIGATION_TRIGGERS } from "./semantic-investigation-store";
 import { assertCachedRelation, canonicalJson, type CachedRelation, type RelationCacheReader } from "./relation-cache";
 
 /**
@@ -74,12 +74,15 @@ export async function registerRelationCacheSchema(sql: Sql): Promise<readonly st
   await sql.begin(async tx => {
     for (const statement of RELATION_CACHE_DDL) await tx.unsafe(statement);
     for (const statement of INVESTIGATION_DDL) await tx.unsafe(statement);
+    for (const statement of INVESTIGATION_GUARD_DDL) await tx.unsafe(statement);
     const constraints = await tx.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
     const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal`);
     const missing = [
       ...RELATION_CACHE_CONSTRAINTS.map(([name]) => name).filter(name => !constraints.some(c => c.conname === name)),
       ...RELATION_CACHE_TRIGGERS.filter(name => !triggers.some(t => t.tgname === name))
     ];
+    const invTriggers = (await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgname LIKE 'rel\\_%guard' AND NOT tgisinternal`)).map(x => x.tgname);
+    missing.push(...INVESTIGATION_TRIGGERS.filter(name => !invTriggers.includes(name)));
     if (missing.length) throw new Error(`ERR_RELATION_CACHE_GUARANTEES_MISSING:${missing.join(",")}`);
   });
   return [RELATION_CACHE_TABLE, ...INVESTIGATION_TABLES];
