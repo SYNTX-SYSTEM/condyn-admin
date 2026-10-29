@@ -1,0 +1,17 @@
+# Runtime status after GELB background-shell cleanup (2026-10-29)
+
+Owner mandate: reconstruct GELB's three long-running background shells, end orphaned or finished test processes, clean their temporary resources, keep services, port 3017, data and Git unchanged.
+
+| Shell | What it was | Activity | Action |
+|---|---|---|---|
+| `be1djk9qq` | video-lab launcher, live-Gemini lab :41862 on 49e2bc6 (7 d 21 h), disposable source DB with the one real result copy | idle since 2026-10-22 (last request), budget 8 | Source DB dumped first (custom-format `pg_dump`, 2 analyses, 124 table-data entries, private scratchpad), then SIGTERM to the launcher PID only (cwd and script verified); launcher stopped server and worker and dropped its DB |
+| `bnrsmwm9y` | acceptance-lab :41878, production build of c670b74 (superseded by main) | 15 min, no use left | SIGTERM to the launcher PID (verified), launcher dropped its copy DB |
+| `bvc7ki2ps` | acceptance-lab :41872, production build of b77c851, owner acceptance copy | idle since 2026-10-23, owner visual acceptance pending | KEPT running (owner service); its worktree `wt6` kept |
+
+Also removed: four clean scratch worktrees whose HEADs are contained in origin (wt7, wt8, wt-int, wt-docs).
+
+Unchanged: :3017 (owner demo, Codex branch 175c481), all Git branches and `main` (ddf356f), all data in the shared condyn database, the 31 other `condyn_test_*` databases (not created by these shells; incl. the two old ones awaiting an owner decision).
+
+Not GELB's shells, observed only, not touched: lab chains of other sessions (three-modes `modes-lab.ts` 8 d, a `tsx` chain 10 d, hr-decision-loop-local on :3017's worktree). Owner to decide.
+
+Recovery of the preserved Gemini result source: restore the dump into a fresh disposable database; no new Gemini call is needed.
