@@ -3579,6 +3579,40 @@ No Gemini call.
 
 **Run record.** `evidence/start-route-097e376/`.
 
+### 3.76 Role investigation UI on `frontend/role-investigation-ui` `9c40928` (2026-10-29)
+
+**Request.** GELB asked for an independent check of `9c40928` (worktree `condyn-admin-role-investigation`, base `edae658`), which holds the explicit start of a semantic check in the role-discovery panel. Stand-in only, nothing on :3017, no merge. The branch contains RI-CONTROL, RI-START and RI-URL, plus the `50dac39` fix for a dashboard that dropped the URL parameter. Five points to check.
+
+**Method.**
+- PINK stand-in production labs on `9c40928`: one with the stand-in configured, one with no provider, one with "gemini", one for a stale confirmation and one with day limit 1. Every `/api` request was recorded, together with the database counts and the Gemini stand-in log.
+- Unit groups on disposable databases, and code inspection.
+- Rewritten responses are labelled as such in the evidence.
+
+**Verdicts (`evidence/role-investigation-ui-9c40928/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The first-screen group passes 46 files with 276 tests, the job-pool group 27 files with 288, and the focused group (T-07 and F12 among them) 78 files with 699. The diff touches no API or job-pool file. The only POST to `/investigations` is in `semantic-investigation.ts`, called from one click handler.
+- **1 No POST: PASS.** Load, open, release, reload, Back, Forward, every URL-contract load, close and hand-over send 0 POST. One click is exactly one POST, also for two clicks in the same task. The Gemini stand-in log stays at 6.
+- **2 confirmedCalls: PASS.** The body carries the displayed number. Nothing is preselected and the cap is the `maxRoles` of the start control. The three "start not available" reasons read apart, and cache failure shows no pick boxes. A real stale case is refused with "the server now names 0 calls instead of the 2 you confirmed"; RE-READ PLAN is one GET, and the second explicit start stores all CACHED.
+- **3 URL contract: PASS.**
+  - Invalid, duplicate or malformed ids are removed without GET or POST.
+  - One valid id is read once by GET. Reload and Forward are identical, and Back returns to the state before the release.
+  - An unknown id gives NOT_FOUND.
+  - PxJ, no pools and no analysis read nothing.
+  - Close and "Gezielt untersuchen" remove the id.
+  - The hand-over chain is proven by the reload result itself.
+  - A changed release and an analysis change could not be exercised in the lab (one pool); they are covered by `discovery-ri-url.test.tsx` and are INCONCLUSIVE in the browser.
+- **4 Honesty: FAIL, narrow.**
+  - **F-RI-1:** after a run the plan line reads "not executed · 0 of 948 pairs in the relation cache · would need 9 calls · stand-in check: completed", with "partly completed" for budget cases. "Not executed" and "completed" contradict each other, and the numbers are those from before the run. A reload shows fresh numbers, but the sentence is the same. Suggested: drop "not executed" when a stored investigation is known, and re-read the plan after a completed POST.
+  - Everything else holds. The stand-in reads "Stand-in, no model", and no provider name appears in any state. A foreign provider, a missing or UNKNOWN evidenceClass, extra fields, another analysis' id, no tasks and a 500 on POST all give FAILED. No relation state, explanation, percent, rank or recommendation appears, and the D-RD-4 groups are unchanged.
+- **Budget (real): PASS.** Day limit 1 gives SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED with "partly completed" and the budget sentence, 1 call. A second start with the day spent makes no call.
+- **5 Regression: PASS.** The six-orbit scene probe is identical to `c670b74`. The panel walk, hand-over and trace are unchanged. All six viewports show no overflow and complete states.
+- **Observations.**
+  - **O-RI-1:** plan numbers stay stale in-session (same cause as F-RI-1).
+  - **O-RI-2:** an id without pools, analysis or in PxJ stays in the URL and is ignored.
+  - **O-RI-3:** a fresh release says "not started" although earlier investigations of these pools filled the cache.
+  - **O-RI-4:** after a run the picks stay ticked and START stays enabled.
+
+**Run record.** `evidence/role-investigation-ui-9c40928/`: verdicts.txt, measurements.txt, scripts/ (probe and runners as .txt), shots/ (5, no CV quote on view), manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

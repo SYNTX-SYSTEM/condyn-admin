@@ -1,0 +1,169 @@
+// PINK role-investigation UI probe (9c40928) — STAND-IN lab only. Real POSTs are allowed (the stand-in lab), every /api request is recorded.
+// argv: <state.json> <repo> <out dir> <person> <pxj> <label> <mode: main|vp|config> [W H DSF]
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, PA, XA, LABEL, MODE, W = "1920", H = "1080", DSF = "1"] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+if (!/^condyn_test_[0-9a-f]+$/.test(st.database)) throw new Error("not a disposable db");
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const postgres = (await import(pathToFileURL(`${ROOT}/node_modules/postgres/src/index.js`).href)).default;
+const au = new URL(process.env.TEST_DATABASE_ADMIN_URL); au.pathname = `/${st.database}`; const sql = postgres(au.toString(), { max: 1, onnotice: () => {} });
+const LOG = STATE.replace(/state\.json$/, "standin.jsonl"); const gem = () => { try { return readFileSync(LOG, "utf8").split("\n").filter(Boolean).length; } catch { return 0; } };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+const dbCount = async () => { const r = { geminiStandIn: gem() }; for (const t of ["career_relation_investigations", "career_relation_call_ledger", "career_proposal_requirement_relations"]) { const [{ e }] = await sql.unsafe(`SELECT to_regclass('${t}') IS NOT NULL AS e`); r[t.replace("career_", "")] = e ? (await sql.unsafe(`SELECT count(*)::int AS n FROM ${t}`))[0].n : 0; } return r; };
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: +W, height: +H }, deviceScaleFactor: +DSF });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const reqs = []; const mark = () => reqs.length;
+ctx.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) reqs.push({ m: r.method(), p: u.pathname.replace(/ANL_\d+_\d+/g, "ANL").replace(/RINV_[0-9A-F]{32}/g, "RINV"), body: r.method() === "POST" ? r.postData() : null }); });
+const page = await ctx.newPage(); const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 160)));
+const q = (s) => page.locator(s);
+const since = n => { const l = reqs.slice(n); return { POST: l.filter(r => r.m === "POST").length, postsToInvestigations: l.filter(r => r.m === "POST" && r.p.endsWith("/investigations")).length, getInv: l.filter(r => r.m === "GET" && /investigations\/RINV$/.test(r.p)).length, getDiscovery: l.filter(r => r.m === "GET" && r.p.endsWith("/role-discovery")).length }; };
+const urlInfo = () => { const u = new URL(page.url()); return { ri: u.searchParams.getAll("roleInvestigationId").map(x => x.replace(/[0-9A-F]{32}$/, "…")), riCount: u.searchParams.getAll("roleInvestigationId").length, pools: u.searchParams.getAll("discoveryPoolUploadId").length, analysis: u.searchParams.has("analysisId"), mode: u.searchParams.get("investigationMode") }; };
+const rawRi = () => new URL(page.url()).searchParams.get("roleInvestigationId");
+const view = () => page.evaluate(() => { const g = s => document.querySelector(s); const t = s => g(s)?.innerText ?? null;
+  return { panel: !!g('[data-testid="role-discovery-panel"]'), rdState: g('[data-testid="rd-state"]')?.dataset.state ?? null, plan: g('[data-testid="rd-semantic"]')?.dataset.planState ?? null, semantic: t('[data-testid="rd-semantic"]'),
+    start: !!g('[data-testid="rd-start"]'), picked: g('[data-testid="rd-start"]')?.dataset.picked ?? null, calls: g('[data-testid="rd-start"]')?.dataset.calls ?? null, selection: t('[data-testid="rd-start-selection"]'), runDisabled: g('[data-testid="rd-start-run"]')?.disabled ?? null, runConfirmed: g('[data-testid="rd-start-run"]')?.dataset.confirmedCalls ?? null,
+    unavailable: g('[data-testid="rd-start-unavailable"]') ? { engine: g('[data-testid="rd-start-unavailable"]').dataset.engineState, text: t('[data-testid="rd-start-unavailable"]') } : null,
+    inv: g('[data-testid="rd-investigation"]') ? { state: g('[data-testid="rd-investigation"]').dataset.state, id: !!g('[data-testid="rd-investigation"]').dataset.investigationId, status: g('[data-testid="rd-investigation"]').dataset.status ?? null, engine: t('[data-testid="rd-investigation-engine"]'), replayed: !!g('[data-testid="rd-investigation-replayed"]'), budget: !!g('[data-testid="rd-investigation-budget"]'),
+      tasks: [...document.querySelectorAll('[data-testid="rd-investigation-task"]')].map(e => e.dataset.status), text: g('[data-testid="rd-investigation"]').innerText } : null,
+    pickable: [...document.querySelectorAll('[data-testid="rd-role-pick"] input')].map(i => ({ checked: i.checked, disabled: i.disabled })),
+    groups: Object.fromEntries([...document.querySelectorAll('[data-testid^="rd-group-"][data-count]')].map(e => [e.dataset.testid.replace("rd-group-", ""), +e.dataset.count])),
+    shells: document.querySelectorAll('[data-testid^="focus-transition-stage-shell-"]').length, mode: g('[data-testid="semantic-career-intelligence-field"]')?.dataset.investigationMode ?? null, panelText: g('[data-testid="role-discovery-panel"]')?.innerText ?? "" }; });
+const FORBID = /\b(gemini|google|openai|claude|anthropic|vertex|palm|llm|rank(ed|ing)?|recommend\w*|empfehl\w*|score[ds]?|best match|top match|fits?|passt|geeignet|suitable|COVERS|EQUIVALENT|DIFFERENT|UNCLEAR)\b|\d\s?%|STAND-IN rule|no model read the quote/i;
+const honesty = v => ({ forbiddenWords: (v.panelText.match(new RegExp(FORBID.source, "gi")) ?? []), mentionsStandIn: /stand-in/i.test(v.panelText) });
+const gotoPerson = async (extra = "") => { await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PA}${extra}`, { waitUntil: "domcontentloaded" }); await sleep(7000); };
+const poolQ = `&discoveryPoolUploadId=${DLL}`;
+const openAndRelease = async () => { if (!(await q('[data-testid="role-discovery-panel"]').count())) { await q('[data-testid="rd-open"]').click(); await sleep(2000); } const cb = q(`[data-testid="rd-pool-${DLL}"] input`); if (!(await cb.isChecked())) await cb.check(); await q('[data-testid="rd-discover"]').click(); await page.waitForFunction(() => document.querySelector('[data-testid="rd-state"]')?.dataset.state === "AVAILABLE", null, { timeout: 30000 }); await sleep(1200); };
+const expandAll = async () => { await page.evaluate(() => { for (const t of document.querySelectorAll('[data-testid^="rd-group-toggle-"]')) if (t.getAttribute("aria-expanded") !== "true") t.click(); }); await sleep(700); };
+const pickN = async n => { await expandAll(); const boxes = q('[data-testid="rd-role-pick"] input'); const total = await boxes.count(); let done = 0; for (let i = 0; i < total && done < n; i += 1) { if (await boxes.nth(i).isDisabled()) continue; if (!(await boxes.nth(i).isChecked())) { await boxes.nth(i).check(); done += 1; } } await sleep(500); return { total, done }; };
+const shot = async name => page.screenshot({ path: `${OUT}/${LABEL}-${name}.jpg`, type: "jpeg", quality: 70, mask: [page.locator('[data-testid="rd-trace-quote"], [data-pxj-quote]')] });
+const out = { label: LABEL, mode: MODE, viewport: `${W}x${H}@${DSF}`, steps: {} }; const S = out.steps;
+
+if (MODE === "main") {
+  // 1 load / open / release: no POST
+  let n = mark(); await gotoPerson(); S.load = { ...since(n), url: urlInfo(), entry: await q('[data-testid="rd-entry"]').count() };
+  n = mark(); await openAndRelease(); let v = await view();
+  S.openRelease = { ...since(n), url: urlInfo(), startOffered: v.start, startControlPlan: v.plan, semantic: v.semantic, picked: v.picked, calls: v.calls, runDisabled: v.runDisabled, nothingPreselected: v.pickable.every(p => !p.checked), pickable: v.pickable.length, groups: v.groups, honesty: honesty(v) };
+  const apiRel = await (await ctx.request.get(`${BASE}/api/career/analyses/${PA}/role-discovery?jobPoolUploadId=${DLL}`)).json(); S.openRelease.startControlApi = apiRel.discovery.startControl; S.openRelease.planCallsApi = apiRel.discovery.semanticPlan.callsNeeded;
+  // 2 cap: maxRoles+1 cannot be picked; confirmedCalls = displayed number
+  const maxRoles = apiRel.discovery.startControl.maxRoles; const pk = await pickN(maxRoles + 2); v = await view();
+  S.pick = { maxRoles, requested: maxRoles + 2, picked: v.picked, calls: v.calls, selection: v.selection, runConfirmed: v.runConfirmed, displayedNumbers: (v.selection ?? "").match(/\d+/g), disabledAfterCap: v.pickable.filter(p => !p.checked && p.disabled).length, checked: v.pickable.filter(p => p.checked).length };
+  // uncheck down to 2 picked
+  const boxes = q('[data-testid="rd-role-pick"] input'); const cnt = await boxes.count(); let on = 0; for (let i = 0; i < cnt; i += 1) if (await boxes.nth(i).isChecked()) { on += 1; if (on > 2) await boxes.nth(i).uncheck(); } await sleep(400);
+  v = await view(); S.pick2 = { picked: v.picked, calls: v.calls, selection: v.selection, runConfirmed: v.runConfirmed };
+  await shot("picked");
+  // 3 two clicks in the same task: exactly one POST
+  n = mark(); const ci = await dbCount(); await page.evaluate(() => { const b = document.querySelector('[data-testid="rd-start-run"]'); b.click(); b.click(); }); await page.waitForFunction(() => document.querySelector('[data-testid="rd-investigation"]')?.dataset.state === "STORED", null, { timeout: 60000 }).catch(() => {}); await sleep(1500);
+  v = await view(); const posts = reqs.slice(n).filter(r => r.m === "POST"); const co = await dbCount();
+  S.start = { ...since(n), postBody: posts[0] ? (() => { const x = JSON.parse(posts[0].body); return { confirmedCalls: x.confirmedCalls, roles: x.roles.length, uploads: x.jobPoolUploadIds.length, keys: Object.keys(x).sort() }; })() : null, displayedCalls: S.pick2.calls, urlAfter: urlInfo(), riValid: /^RINV_[0-9A-F]{32}$/.test(rawRi() ?? ""), inv: v.inv && { ...v.inv, text: undefined }, semantic: v.semantic, notStartedShown: /not started|nicht gestartet/i.test(v.semantic ?? ""), db: { before: ci, after: co }, honesty: honesty(v), groupsAfter: v.groups, groupsBefore: S.openRelease.groups, invText: v.inv?.text.replace(/RINV_[0-9A-F]{32}/g, "RINV") };
+  const RI = rawRi(); await shot("completed");
+  // 4 reload: only GET
+  const before = JSON.stringify({ s: v.inv?.status, t: v.inv?.tasks, sem: v.semantic, g: v.groups }); n = mark(); await page.reload({ waitUntil: "domcontentloaded" }); await sleep(7000); v = await view();
+  S.reload = { ...since(n), equal: JSON.stringify({ s: v.inv?.status, t: v.inv?.tasks, sem: v.semantic, g: v.groups }) === before, url: urlInfo(), replayed: v.inv?.replayed, invState: v.inv?.state }; await shot("reload");
+  // 5 Back / Forward
+  n = mark(); const h = await page.evaluate(() => history.length); await page.goBack({ waitUntil: "commit" }).catch(() => {}); await sleep(5000); const back = await view(); const backUrl = urlInfo();
+  await page.goForward({ waitUntil: "commit" }).catch(() => {}); await sleep(6000); const fwd = await view();
+  S.backForward = { ...since(n), historyLen: h, back: { panel: back.panel, inv: back.inv?.state ?? null, url: backUrl }, forward: { equal: JSON.stringify({ s: fwd.inv?.status, t: fwd.inv?.tasks, sem: fwd.semantic }) === JSON.stringify({ s: v.inv?.status, t: v.inv?.tasks, sem: v.semantic }), invState: fwd.inv?.state ?? null, url: urlInfo() } };
+  // 6 URL contract
+  const U = {}; const cases = [
+    ["valid id, pools, analysis", `${poolQ}&roleInvestigationId=${RI}`], ["lowercase id", `${poolQ}&roleInvestigationId=${RI.toLowerCase()}`], ["short id", `${poolQ}&roleInvestigationId=RINV_ABC`],
+    ["duplicate same id", `${poolQ}&roleInvestigationId=${RI}&roleInvestigationId=${RI}`], ["duplicate two ids", `${poolQ}&roleInvestigationId=${RI}&roleInvestigationId=RINV_${"0".repeat(32)}`],
+    ["valid format, unknown id", `${poolQ}&roleInvestigationId=RINV_${"A".repeat(32)}`], ["id, no pools", `&roleInvestigationId=${RI}`], ["id with injected suffix", `${poolQ}&roleInvestigationId=${RI}%0A`]];
+  for (const [name, extra] of cases) { n = mark(); await gotoPerson(extra); const vv = await view(); U[name] = { ...since(n), url: urlInfo(), invState: vv.inv?.state ?? null, status: vv.inv?.status ?? null, panel: vv.panel, startOffered: vv.start }; }
+  n = mark(); await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY${poolQ}&roleInvestigationId=${RI}`, { waitUntil: "domcontentloaded" }); await sleep(6000); { const vv = await view(); U["id, pools, no analysisId"] = { ...since(n), url: urlInfo(), invState: vv.inv?.state ?? null, panel: vv.panel }; }
+  n = mark(); await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY&analysisId=${XA}${poolQ}&roleInvestigationId=${RI}&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_kestrel_fullstack`, { waitUntil: "domcontentloaded" }); await sleep(7000); { const vv = await view(); U["PxJ analysis + id + pools"] = { ...since(n), url: urlInfo(), invState: vv.inv?.state ?? null, panel: vv.panel, entry: await q('[data-testid="rd-entry"]').count() }; }
+  n = mark(); await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${XA}${poolQ}&roleInvestigationId=${RI}`, { waitUntil: "domcontentloaded" }); await sleep(7000); { const vv = await view(); U["PERSON mode, PxJ analysisId + id"] = { ...since(n), url: urlInfo(), invState: vv.inv?.state ?? null, panel: vv.panel }; }
+  S.urlContract = U;
+  // 7 the id leaves the URL: close, new release, Gezielt untersuchen
+  const L = {}; await gotoPerson(`${poolQ}&roleInvestigationId=${RI}`); await expandAll();
+  n = mark(); await q('[data-testid="rd-close"]').click(); await sleep(1500); L.close = { ...since(n), url: urlInfo(), panel: await q('[data-testid="role-discovery-panel"]').count() };
+  await gotoPerson(`${poolQ}&roleInvestigationId=${RI}`); await expandAll();
+  n = mark(); await q(`[data-testid="rd-pool-${DLL}"] input`).uncheck(); await q('[data-testid="rd-discover"]').click().catch(() => {}); await sleep(2500); L.releaseEmpty = { ...since(n), url: urlInfo(), invShown: await q('[data-testid="rd-investigation"]').count() };
+  await gotoPerson(`${poolQ}&roleInvestigationId=${RI}`); await expandAll();
+  await page.evaluate(() => { const r = document.querySelector('[data-testid="rd-role"]'); r?.querySelector('[data-testid="rd-role-trace"]')?.click(); }); await sleep(1200);
+  n = mark(); const inv = q('[data-testid="rd-investigate"]'); if (await inv.count()) { await inv.first().click(); await sleep(4000); } L.investigate = { ...since(n), clicked: await inv.count() > 0, url: urlInfo(), mode: (await view()).mode, panel: await q('[data-testid="role-discovery-panel"]').count() };
+  S.cleared = L;
+  // 8 stale confirmation (real): pick two roles, run them through the API, then click START with the old count
+  await gotoPerson(poolQ); await openAndRelease().catch(() => {}); await expandAll(); v = await view();
+  const pk2 = await pickN(2); v = await view(); const shown = v.calls; const keys = await page.evaluate(() => [...document.querySelectorAll('[data-testid="rd-role-pick"]')].filter(e => e.querySelector("input").checked).map(e => e.dataset.roleKey));
+  const apiRoles = keys.map(k => { const [u, ...r] = k.split(":"); return { jobPoolUploadId: u, poolRoleId: r.join(":") }; });
+  const pre = await ctx.request.post(`${BASE}/api/career/analyses/${PA}/role-discovery/investigations`, { headers: { "content-type": "application/json" }, data: { jobPoolUploadIds: [DLL], roles: apiRoles, clientRequestId: "pink-ri-stale", confirmedCalls: +shown } });
+  n = mark(); if (pk2.done > 0) { await q('[data-testid="rd-start-run"]').click(); await page.waitForFunction(() => document.querySelector('[data-testid="rd-investigation"]')?.dataset.state === "REFUSED", null, { timeout: 30000 }).catch(() => {}); await sleep(800); }
+  v = await view(); S.stale = { apiPreRun: pre.status(), shownBefore: shown, ...since(n), inv: v.inv && { state: v.inv.state, text: v.inv.text }, replanButton: await q('[data-testid="rd-replan"]').count(), replanLine: await q('[data-testid="rd-start-replan"]').count() };
+  n = mark(); if (await q('[data-testid="rd-replan"]').count()) { await q('[data-testid="rd-replan"]').click(); await sleep(3000); } v = await view(); S.stale.afterReread = { ...since(n), semantic: v.semantic, calls: v.calls, picked: v.picked, inv: v.inv?.state ?? null };
+  await shot("stale");
+  // 9 foreign provider / missing evidenceClass / broken answers by response rewrite (class: STAND_IN with a rewritten response)
+  const rewrite = async (pattern, fn) => { await page.route(pattern, async route => { const res = await route.fetch(); const j = await res.json(); await route.fulfill({ response: res, json: fn(j) }); }); };
+  const M = {}; const runMock = async (name, pattern, fn) => { await rewrite(pattern, fn); n = mark(); await gotoPerson(`${poolQ}&roleInvestigationId=${RI}`); const vv = await view(); M[name] = { ...since(n), inv: vv.inv?.state ?? null, text: vv.inv?.text?.replace(/RINV_[0-9A-F]{32}/g, "RINV") ?? null, forbidden: honesty(vv).forbiddenWords, providerNameShown: /gemini|google|openai/i.test(vv.panelText) }; await page.unroute(pattern); };
+  const GET_INV = /role-discovery\/investigations\/RINV_/;
+  await runMock("provider gemini", GET_INV, j => ({ ...j, evidenceClass: "STAND_IN", investigation: { ...j.investigation, provider: "gemini" } }));
+  await runMock("evidenceClass missing", GET_INV, j => { const { evidenceClass, ...rest } = j; return rest; });
+  await runMock("evidenceClass UNKNOWN", GET_INV, j => ({ ...j, evidenceClass: "UNKNOWN" }));
+  await runMock("extra field on investigation", GET_INV, j => ({ ...j, investigation: { ...j.investigation, relationExplanation: "x" } }));
+  await runMock("task with an explanation", GET_INV, j => ({ ...j, tasks: j.tasks.map(t => ({ ...t, relationExplanation: "x" })) }));
+  await runMock("analysisId of another analysis", GET_INV, j => ({ ...j, investigation: { ...j.investigation, analysisId: "ANL_0_0" } }));
+  await runMock("no tasks", GET_INV, j => ({ ...j, tasks: [] }));
+  S.mocks = M;
+  // 10 POST answers rewritten: 500 after a run; ok but wrong evidence class
+  const P = {}; await gotoPerson(poolQ); await openAndRelease().catch(() => {});
+  const postMock = async (name, handler) => { await page.route(/role-discovery\/investigations$/, handler); await expandAll(); const pk3 = await pickN(1); if (pk3.done === 0) { P[name] = "nothing pickable"; await page.unroute(/role-discovery\/investigations$/); return; } n = mark(); await q('[data-testid="rd-start-run"]').click(); await sleep(3500); const vv = await view(); P[name] = { ...since(n), inv: vv.inv?.state ?? null, text: vv.inv?.text?.slice(0, 300) ?? null, urlRi: urlInfo().riCount }; await page.unroute(/role-discovery\/investigations$/); };
+  await postMock("POST 500 (unknown whether it ran)", route => route.fulfill({ status: 500, json: { success: false, issues: [{ code: "ERR_INVESTIGATION_FAILED" }] } }));
+  S.postMocks = P;
+}
+
+
+const pickLast = async n => { await expandAll(); const boxes = q('[data-testid="rd-role-pick"] input'); const total = await boxes.count(); let done = 0; for (let i = total - 1; i >= 0 && done < n; i -= 1) { if (await boxes.nth(i).isDisabled()) continue; if (!(await boxes.nth(i).isChecked())) { await boxes.nth(i).check(); done += 1; } } await sleep(500); return { total, done }; };
+const waitState = async st => page.waitForFunction(s => document.querySelector('[data-testid="rd-investigation"]')?.dataset.state === s, st, { timeout: 60000 }).catch(() => {});
+if (MODE === "stale") {
+  await gotoPerson(); await openAndRelease(); const pk = await pickLast(2); let v = await view(); const shown = v.calls;
+  const keys = await page.evaluate(() => [...document.querySelectorAll('[data-testid="rd-role-pick"]')].filter(e => e.querySelector("input").checked).map(e => e.dataset.roleKey));
+  const apiRoles = keys.map(k => { const [u, ...r] = k.split(":"); return { jobPoolUploadId: u, poolRoleId: r.join(":") }; });
+  const pre = await ctx.request.post(`${BASE}/api/career/analyses/${PA}/role-discovery/investigations`, { headers: { "content-type": "application/json" }, data: { jobPoolUploadIds: [DLL], roles: apiRoles, clientRequestId: "pink-ri-stale", confirmedCalls: +shown } });
+  let n = mark(); await q('[data-testid="rd-start-run"]').click(); await waitState("REFUSED"); await sleep(800); v = await view();
+  S.stale = { picked: pk, shownBefore: shown, apiPreRun: pre.status(), ...since(n), inv: v.inv && { state: v.inv.state, text: v.inv.text }, urlRi: urlInfo().riCount, replanButton: await q('[data-testid="rd-replan"]').count(), replanLine: await q('[data-testid="rd-start-replan"]').count(), dbAfter: await dbCount() };
+  await shot("stale-refused");
+  n = mark(); if (await q('[data-testid="rd-replan"]').count()) { await q('[data-testid="rd-replan"]').click(); await sleep(3000); } v = await view();
+  S.stale.afterReread = { ...since(n), semantic: v.semantic, calls: v.calls, picked: v.picked, runConfirmed: v.runConfirmed, inv: v.inv?.state ?? null };
+  n = mark(); await q('[data-testid="rd-start-run"]').click().catch(() => {}); await waitState("STORED"); await sleep(1000); v = await view();
+  S.stale.secondStart = { ...since(n), inv: v.inv && { state: v.inv.state, status: v.inv.status, tasks: v.inv.tasks }, urlRi: urlInfo().riCount };
+}
+if (MODE === "budget") {
+  await gotoPerson(); await openAndRelease(); const pk = await pickLast(3); let v = await view(); S.picked = { ...pk, selection: v.selection, runConfirmed: v.runConfirmed };
+  let n = mark(); const d0 = await dbCount(); await q('[data-testid="rd-start-run"]').click(); await waitState("STORED"); await sleep(1200); v = await view();
+  S.run1 = { ...since(n), inv: v.inv && { state: v.inv.state, status: v.inv.status, tasks: v.inv.tasks, budget: v.inv.budget, engine: v.inv.engine }, text: v.inv?.text.replace(/RINV_[0-9A-F]{32}/g, "RINV"), semantic: v.semantic, urlRi: urlInfo().riCount, db: { before: d0, after: await dbCount() }, honesty: honesty(v) };
+  await shot("budget-partial");
+  // second start in the same lab: nothing left of the day limit
+  await q('[data-testid="rd-replan"]').click(); await sleep(2500); await expandAll(); const pk2 = await pickLast(2); v = await view(); const d1 = await dbCount(); n = mark();
+  await q('[data-testid="rd-start-run"]').click().catch(() => {}); await waitState("STORED"); await sleep(1200); const v2 = await view();
+  S.run2 = { picked: pk2, selection: v.selection, ...since(n), inv: v2.inv && { state: v2.inv.state, status: v2.inv.status, tasks: v2.inv.tasks, budget: v2.inv.budget }, db: { before: d1, after: await dbCount() }, honesty: honesty(v2) };
+  await shot("budget-failed");
+}
+
+if (MODE === "vp") {
+  await gotoPerson(); await openAndRelease(); await expandAll(); const pk = await pickN(2); const v1 = await view(); await shot("1-picked");
+  let n = mark(); if (pk.done > 0 && v1.start) { await q('[data-testid="rd-start-run"]').click(); await page.waitForFunction(() => document.querySelector('[data-testid="rd-investigation"]')?.dataset.state === "STORED", null, { timeout: 60000 }).catch(() => {}); await sleep(1200); }
+  const v2 = await view(); await shot("2-completed"); const s2 = since(n);
+  n = mark(); await page.reload({ waitUntil: "domcontentloaded" }); await sleep(7000); const v3 = await view(); await shot("3-reload"); const s3 = since(n);
+  // layout: nothing wider than the viewport, the start controls reachable
+  const lay = await page.evaluate(() => { const p = document.querySelector('[data-testid="role-discovery-panel"]'); const r = p?.getBoundingClientRect(); const btn = document.querySelector('[data-testid="rd-start-run"]')?.getBoundingClientRect(); return { docScrollW: document.documentElement.scrollWidth, innerW: innerWidth, panel: r ? { left: Math.round(r.left), right: Math.round(r.right), top: Math.round(r.top), bottom: Math.round(r.bottom) } : null, btn: btn ? { w: Math.round(btn.width), h: Math.round(btn.height) } : null, innerH: innerHeight }; });
+  out.steps = { pickable: pk, selection: v1.selection, start: s2, completed: v2.inv && { state: v2.inv.state, status: v2.inv.status, tasks: v2.inv.tasks, engine: v2.inv.engine }, reload: { ...s3, state: v3.inv?.state, status: v3.inv?.status, equal: JSON.stringify(v3.inv?.tasks) === JSON.stringify(v2.inv?.tasks) }, layout: lay, shells: v3.shells, honesty: honesty(v3) };
+}
+
+if (MODE === "config") {
+  let n = mark(); await gotoPerson(); await openAndRelease(); const v = await view();
+  S.config = { ...since(n), startOffered: v.start, unavailable: v.unavailable, plan: v.plan, semantic: v.semantic, honesty: honesty(v), pickBoxes: v.pickable.length, runButton: v.runDisabled };
+  const apiRel = await (await ctx.request.get(`${BASE}/api/career/analyses/${PA}/role-discovery?jobPoolUploadId=${DLL}`)).json(); S.config.startControlApi = apiRel.discovery.startControl;
+  // cache unreadable: the read answer rewritten (class: STAND_IN with a rewritten response)
+  if (apiRel.discovery.startControl.engineState === "READY") { /* only in the READY lab */ }
+  await shot("config");
+}
+if (MODE === "cache") {
+  const rewrite = async fn => page.route(/role-discovery\?jobPoolUploadId/, async route => { const res = await route.fetch(); const j = await res.json(); await route.fulfill({ response: res, json: fn(j) }); });
+  for (const state of ["CACHE_UNAVAILABLE", "CACHE_CORRUPT"]) {
+    await rewrite(j => { const p = j.discovery.semanticPlan; return { ...j, discovery: { ...j.discovery, semanticPlan: { ...p, state, executable: false, cacheIssue: state === "CACHE_CORRUPT" ? "ERR_RELATION_CACHE_RECORD_CORRUPT" : "ERR_RELATION_CACHE_REGISTRATION_FAILED", cachedPairs: null, pendingPairs: null, callsNeeded: null, roles: p.roles.map(r => ({ ...r, cachedPairs: null, pendingPairs: null })) } } }; });
+    let n = mark(); await gotoPerson(); await openAndRelease(); const v = await view(); S[state] = { ...since(n), startOffered: v.start, unavailable: v.unavailable, semantic: v.semantic, honesty: honesty(v) }; await page.unroute(/role-discovery\?jobPoolUploadId/);
+  }
+}
+await sql.end(); out.pageErrors = errors; out.apiTotals = { POST: reqs.filter(r => r.m === "POST").length, nonGetOther: reqs.filter(r => !["GET", "POST"].includes(r.m)).length };
+writeFileSync(`${OUT}/ri-${LABEL}-${MODE}.json`, JSON.stringify(out, null, 1)); await b.close(); console.log("RI", MODE, LABEL, "done", JSON.stringify(out.apiTotals), "errors", errors.length);
