@@ -70,6 +70,7 @@ describe("role discovery route (PostgreSQL, no Gemini)", () => {
     expect(typescript.length).toBeGreaterThan(1);
     expect(typescript.every((q: { lexical: { basis: string; evidence: Array<{ exactQuote: string }> } }) => q.lexical.basis === "NAME_EXACT" && q.lexical.evidence[0].exactQuote === SOURCE)).toBe(true);
     // The semantic layer is not executed and says so; the plan counts the call volume (one call per role with requirements).
+    expect(discovery.startControl).toEqual({ engineState: "NOT_CONFIGURED", maxRoles: null });
     expect(discovery.semanticPlan).toMatchObject({ cacheVersion: "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", state: "ENGINE_NOT_SPECIFIED", engineVersionHash: null, pairs: 79, cachedPairs: 0, pendingPairs: 79, callsNeeded: 9 });
     expect(raw).not.toContain(LEGACY_MARKER);
     expect(raw).not.toContain(other);

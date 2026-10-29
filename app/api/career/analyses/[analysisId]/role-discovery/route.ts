@@ -30,7 +30,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ anal
       requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
       engine: config.state === "READY" ? config.engine : null, cache: config.state === "READY" ? await openRelationCache() : null
     });
-    return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan } }, { headers: NO_STORE });
+    return NextResponse.json({ success: true, discovery: { ...discovery, semanticPlan, startControl: { engineState: config.state, maxRoles: config.state === "READY" ? config.maxRoles : null } } }, { headers: NO_STORE });
   } catch (error) {
     if (error instanceof JobPoolError && error.status === 503) return issue(error.code, 503);
     console.error("[role-discovery] failed", error instanceof Error ? error.name : "unknown");
