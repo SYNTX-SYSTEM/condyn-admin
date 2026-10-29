@@ -3499,6 +3499,35 @@ No Gemini call.
 
 **Run record.** `evidence/ledger-guard-6c65d0c/`: verdicts.txt, measurements.txt, scripts/ (four probes as .txt) and manifest.sha256.
 
+### 3.73 Guard sees the rendered text, guard triggers cannot stay disabled, on `6823e93` (2026-10-29)
+
+**Request.** GELB asked for a targeted re-check of `6823e93` on `recovery/role-discovery`. This one commit on `6c65d0c` fixes the two §3.72 items:
+- **D-ENG-4.** Operands are removed only as whole words. Invisible, opaque and bidi characters, look-alikes for percent and ratio signs, and markup are refused outright rather than cleaned.
+- **O-LED-4.** The registration re-enables every guard trigger and requires `tgenabled <> 'D'`.
+
+**Method.** Scratch probes on disposable databases via `test:isolated`: guard against rendering, over-blocking on real data, the engine probe of §3.72 run again, and guard registration. No lab: the commit touches only two job-pool modules and their tests. No Gemini call.
+
+**Verdicts (`evidence/guard-render-6823e93/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The job-pool group passes 26 files with 282 tests passed and 4 skipped, equal to GELB. The focused group passes 78 files with 699 tests passed. Counter-proof: the two changed test files fail 17 cases on `6c65d0c`.
+- **D-ENG-4: PASS.**
+  - "A good fit." with the operand Go is refused, and "Gopher and Go" is admitted.
+  - The operand attack drops from 1 of 209 to 0.
+  - Every invisible, bidi, look-alike and markup case is refused.
+  - Umlauts in both NFC and NFD, typographic punctuation, C++ / C#, Node.js and R&D stay usable.
+  - Over-blocking is 0: no real requirement name is refused, also inside a German sentence. The rest of the engine probe is identical to 6c65d0c.
+- **O-LED-4: PASS.**
+  - Disabled, replica-only and always triggers on all four tables are enabled again after the registration.
+  - Afterwards a counter decrease, a delete and a truncate are refused.
+  - Boundary: the registration runs once per process. Disabling a trigger takes the table owner.
+- **O-ENG-5 (observation).** Ordinary letters that read as a claim still pass: small capitals, script g, Armenian o, dotless i, regional indicators, "GoodFit", and spaced or dotted letters. They fall under GELB's structural condition.
+- **O-ENG-6 (observation).** Fail-closed has a cost. "->", "<=", a footnote "*" and a CV quote containing a percent each fail the whole role after its call. The prompt should name these characters.
+- **Recorded conditions (GELB, for owner and GRÜN).**
+  - One configuration source per provider for the day limit (O-LED-3), as a condition on the start route.
+  - Model texts shown only as plain text marked "Modellaussage, ungeprüft, keine Bewertung", never in ranking or sorting (O-ENG-4 / O-ENG-5).
+  - PINK checks both when they arrive.
+
+**Run record.** `evidence/guard-render-6823e93/`: verdicts.txt, measurements.txt, scripts/ (three probes as .txt), manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

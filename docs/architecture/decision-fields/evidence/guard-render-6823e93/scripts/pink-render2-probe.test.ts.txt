@@ -1,0 +1,45 @@
+// PINK scratch probe (never a live test): 6823e93 D-ENG-4 — guard vs. rendering, residual look-alikes, over-blocking of real texts.
+import { it } from "vitest";
+import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { containsClaim } from "../../lib/career/job-pool/semantic-relation-engine";
+const D = process.env.PINK_DATA!, X = process.env.PINK_EXAMPLES!;
+const g = (t: string, ops: string[] = []) => containsClaim(t, ops) ? "REFUSED" : "ADMITTED";
+const cls = (t: string) => ({ opaque: /[\p{Cf}\p{Cn}\p{Co}\p{Cs}]|[\u{FE00}-\u{FE0F}\u{E0100}-\u{E01EF}\u{E0000}-\u{E007F}͏᠎؜]/u.test(t), control: /[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/.test(t), markup: /[<>`*]|&#?\w+;/.test(t), mark: /\p{M}/u.test(t.normalize("NFC")) });
+it("render2", () => {
+  const o: Record<string, unknown> = {};
+  const fixed: Array<[string, string, string[]?]> = [
+    ["control", "A good fit."], ["operand Go", "A good fit.", ["Go"]], ["Gopher and Go (operand Go)", "Gopher and Go are named.", ["Go"]],
+    ["U+034F", "A go͏od fit."], ["U+2061", "A go⁡od fit."], ["U+2064", "A go⁤od fit."], ["U+180E", "A go᠎od fit."],
+    ["U+FE0F", "A go️od fit."], ["U+E0020 tag", "A go\u{E0020}od fit."], ["U+202E RLO reversed", "‮.tif doog A‬"], ["U+2067 RLI reversed", "⁧.tif doog A⁩"],
+    ["U+061C ALM", "A go؜od fit."], ["U+0336 combining stroke", "A g̶ood fit."], ["markdown", "A **g**ood fit."], ["entity", "A &#103;ood fit."], ["entity percent", "Match 87&#37; of the role."],
+    ["٪", "Match 87٪ of the role."], ["‰", "Match 870‰."], ["‱", "Match 8700‱."], ["﹪", "Match 87﹪."], ["⁄", "Rated 9⁄10."], ["∕", "Rated 9∕10."], ["÷", "Rated 9÷10."],
+    // residual look-alikes that render as the claim but are ordinary letters
+    ["small capitals ɢᴏᴏᴅ ꜰɪᴛ", "A ɢᴏᴏd ꜰɪᴛ."], ["script g ɡood fit", "A ɡood fit."], ["Armenian o gօօd fit", "A gօօd fit."],
+    ["dotless i good fıt", "A good fıt."], ["Latin alpha / iota? goοd (Greek omicron)", "A goοd fit."], ["Cherokee Ꮐ? (GOOD FIT upper Cyrillic О)", "A GOОD FIT."],
+    ["one word GoodFit", "A GoodFit."], ["spaced letters g o o d f i t", "A g o o d f i t."], ["dotted g.o.o.d f.i.t", "A g.o.o.d f.i.t."], ["hyphen good-fit", "A good-fit."],
+    ["underscore good_fit", "A good_fit."], ["NBSP good fit", "A good fit."], ["em space", "A good fit."], ["newline", "A good\nfit."], ["regional indicators 🇬🇴🇴🇩", "A \u{1F1EC}\u{1F1F4}\u{1F1F4}\u{1F1E9} fit."],
+    ["circled ⓖⓞⓞⓓ", "A ⓖⓞⓞⓓ fit."], ["math bold 𝐠𝐨𝐨𝐝", "A \u{1D420}\u{1D428}\u{1D428}\u{1D41D} fit."], ["fullwidth ｇｏｏｄ", "A ｇｏｏｄ fit."],
+    ["superscript ᵍᵒᵒᵈ", "A ᵍᵒᵒᵈ fit."], ["percent sign words 87 v.H.", "Match 87 v. H."], ["Prozentpunkte", "87 Prozentpunkte."],
+    // neutral texts that must stay usable
+    ["umlauts NFC", "Die Anforderung nennt Größe, Übersicht und Äußerung."], ["umlauts NFD (decomposed)", "Die Anforderung nennt Grösse."], ["C++ and C#", "C++ und C# werden genannt.", ["C++", "C#"]],
+    ["Node.js / R&D / Q&A", "Node.js, R&D und Q&A sind genannt."], ["German quotes „…“", "Das Zitat nennt „Kubernetes“."], ["typographic ’ – →", "It’s named – see the quote → CV."],
+    ["tab", "Named\tonce."], ["parentheses / colon", "Named (once): Python 3.11."], ["emoji ✓", "Named ✓."], ["accented é ñ", "Café and España are named."], ["ellipsis …", "Named …"],
+    ["less-than ≥ ≤", "At least ≥ 5 years is required."], ["arrow ->", "Python -> Django."], ["ASCII <=", "Level <= 3."], ["asterisk footnote", "Named in the quote*."],
+  ];
+  const r: Record<string, string> = {}; for (const [n, t, ops] of fixed) r[n] = g(t, ops); o.fixed = r;
+  // over-blocking on real data: requirement names and aliases, person proposal names, CV quotes (counts only, E-6)
+  const files = [`${D}/pool-JPOOL_B94850C439974E27496FE3B1A9A076B5.json`, `${D}/PINK_RF_POOL.json`, ...readdirSync(X).filter(f => /^DLL_.*\.json$/.test(f)).map(f => `${X}/${f}`)];
+  let reqs = 0, refused = 0, refusedAsText = 0; const ex: string[] = []; const roles = new Set<string>(); const nameCls: Record<string, number> = {};
+  for (const f of files) { const j = JSON.parse(readFileSync(f, "utf8")); const p = Array.isArray(j.roles) ? j : j.pool;
+    for (const q of p.requirements ?? []) { reqs += 1; const ops = [q.capability_name, ...(q.aliases ?? [])].filter((x: unknown) => typeof x === "string");
+      for (const n of ops) for (const [k, v] of Object.entries(cls(n))) if (v) nameCls[k] = (nameCls[k] ?? 0) + 1;
+      const t1 = `The quote names ${ops.join(", ")}.`; if (containsClaim(t1, ops)) { refused += 1; roles.add(q.role_id); if (ex.length < 12) ex.push(ops.join(" | ")); }
+      if (containsClaim(`Die Anforderung ${q.capability_name} ist im Zitat nicht genannt.`, ops)) refusedAsText += 1; } }
+  o.overblock = { files: files.length, requirements: reqs, refusedNamed: refused, refusedGermanSentence: refusedAsText, rolesAffected: roles.size, examples: ex, nameCharClasses: nameCls };
+  const props = JSON.parse(readFileSync(`${D}/person-proposals.json`, "utf8"));
+  const pn = props.map((p: any) => p.name as string); const quotes = props.flatMap((p: any) => p.evidence.map((e: any) => e.exactQuote as string));
+  o.proposals = { names: pn.length, namesRefusedAsOwnOperand: pn.filter((n: string) => containsClaim(`The proposal ${n} is cited.`, [n])).length,
+    quotes: quotes.length, quotesRefusedVerbatim: quotes.filter((q: string) => containsClaim(q)).length,
+    quotesWithCharClass: quotes.reduce((m: Record<string, number>, q: string) => { for (const [k, v] of Object.entries(cls(q))) if (v) m[k] = (m[k] ?? 0) + 1; return m; }, {}) };
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+});
