@@ -22,13 +22,14 @@ and recursive with real integration proof, (3) everything documented.
 (2026-08-31) — two months older than the system (no job pools, no three modes, no B2, no G1/UX, no stage 1). gelb and pink: no
 new commits. gruen: **50 commits on 10-24/25** (57 files, +2152) building a second role discovery next to ours — own route
 `/api/career/role-discovery`, own `lib/career/matching/{role-discovery,gemini-runtime,job-assignment,authorized-job-pool-adapter,
-person-profile,…}`, on the old demo-pool matching engine. **Classification: parallel implementation on a stale base, not
+person-profile,…}`; per PINK §3.69 it is built on `embeddings/search` and orders by `similarityScore` (the embedding similarity D-RD-2 D
+excludes as proof), not on the demo-pool engine. **Classification: parallel implementation on a stale base, not
 integrable; duplicates POOL_ROLE_DISCOVERY_V1 and the job pool architecture.** One idea kept as input: an explicitly authorised
 pool list. Nothing of it was pushed.
 
 **(b) Main checkout** `<dev>/condyn-admin`: switched to a new branch `capability-mapping` (`59076c0` = two docs
-commits on `ee06ff6`) with four stray untracked files (`RUNNING`, `currentOperation`, `exact`, `rejected` — shell redirection
-leftovers). Left untouched (owner's checkout).
+commits on `ee06ff6`) with four untracked files (`RUNNING`, `currentOperation`, `exact`, `rejected`) — empty, dated 2026-08-31, i.e. older than the Codex
+work (PINK §3.69); not a Codex change. Left untouched (owner's checkout).
 
 **(c) The real branch `frontend/role-discovery-map`** (GRÜN's worktree, local only, never pushed) — 13 commits on 10-26:
 
@@ -48,7 +49,8 @@ leftovers). Left untouched (owner's checkout).
 ~10-26) with the local runner `hr-decision-loop-local.ts up --with-worker` on disposable `condyn_test_48c146bfe9c3b69d`
 (0 analyses, 0 pools, 0 relation rows — the empty runner database), **`GEMINI_API_KEY` set, model gemini-3.1-pro-preview**.
 With the Codex route, a role discovery read for a PERSON analysis there would call Gemini per role without budget. So far no such
-call is possible (no analysis, no pool). Not touched by GELB (owner rule for :3017).
+call is possible (no analysis, no pool). Not touched by GELB (owner rule for :3017). **Risk (PINK §3.69):** :3017 runs `175c481`, which still contains the Gemini-in-GET path
+(`d4616c7`) and the `?discovery=PERSON` bypass; the recovery branch removes both, :3017 does not.
 
 ## 3 Reconstruction on `recovery/role-discovery` (GELB, no integration)
 
@@ -118,3 +120,11 @@ older contract is narrowed, never silently dropped.
 
 Returned to the owner (missing authorisations only): the Gemini call budget number for real execution; whether :3017 may be moved
 to the recovered branch.
+
+## 9 PINK §3.69 on 08ae201 (`cabc168`)
+
+Reverts, six orbits / PxJ (REAL + STAND_IN, DOM identical to b77c851 in 16/16 PERSON scenes), no model call in a GET (stand-in call count 6 → 6; three
+suite files 71/71 in a real checkout), decoupling measured (dirty cache table: pool list 200, plan CACHE_UNAVAILABLE, recovery without restart): PASS.
+Point 3 narrow FAIL — the German empty-projection checks of components 03–06 — fixed in the next commit (`restore the German/English
+empty-projection checks`). Observation O-REC-1: the RD-URL state in the field (`discoveryPools`, `releaseDiscoveryPools`) is parsed but unused until
+stage 2 — dead code by design until GRÜN's panel. INCONCLUSIVE for PINK: :3017's key/model/database (PINK does not read process environments).
