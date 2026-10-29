@@ -55,7 +55,7 @@ Kept (reason):
 | `…3d714d7c` | orphan Antigravity/video lab :41861, 4 Gemini runs (2026-10-19) | unattributed owner line; owner word |
 | `…040e600c`, `…fa4b40cd` | 4 and 2 Gemini runs (2026-10-15, 2026-10-20), no session claims them | holds model output, unattributed |
 | `…5c805faa`, `…80e1d2be`, `…cd4af6ca` | empty, no disposable marker | the repo guard refuses to drop unmarked databases; nobody knows them |
-Dumps of all dropped databases exist; the six real-result databases above are additionally covered by the dumps taken this session except `…e9c3b69d`, `…3d714d7c` and the unmarked ones (not dumped, not dropped).
+Dumps exist for every dropped database and for every kept database that holds data (`…e46502b7`, `…dcf3ada4`, `…a8e5d256`, `…3d714d7c`, `…040e600c`, `…fa4b40cd`). Not dumped and not dropped: the running :3017 runner database `…e9c3b69d` and the three unmarked empty databases.
 
 The preserved Gemini results of :41862 (`condyn_test_f96356700c836e92.dump`) and the :41872 acceptance copy remain as described in §2.
 
