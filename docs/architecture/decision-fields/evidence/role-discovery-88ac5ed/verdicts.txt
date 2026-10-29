@@ -1,0 +1,15 @@
+PINK §3.68 · targeted re-check of 88ac5ed (O-RC-6) and the runbook in doc §10 (27a4e87). MEASUREMENT. No Gemini.
+
+O-RC-6 atomic           PASS      dirty ccc0cc1 table: the failed registration leaves exactly the previous state (2 old checks, 0 prr_*,
+                                  0 triggers, the row kept) — no half-converged table
+Repair path             PASS      the runbook's find query lists the row; DELETE succeeds (no trigger yet); the next registration in
+                                  the SAME process is REGISTERED (memo reset after failure) with 7 prr_* + 2 triggers; job pool list
+                                  then 200 — a restart is not needed (harmless instruction)
+Convergence regression  PASS      fresh, ccc0cc1-clean and 2dba126-clean tables as in §3.67 (all guarantees, every invalid write refused)
+Tests / counter-proof   PASS      subset 60 files 480 passed 4 skipped; relation-cache.postgres 8/8; on 600c7c1 exactly the new case
+                                  fails (7 / 1); tsc 0
+Runbook effect          FAIL      (R-RB-1) the runbook says every job pool route answers 503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED;
+                                  measured while the registration fails: GET /api/career/job-pools → 500 ERR_JOB_POOL_INTERNAL (the raw
+                                  PostgresError message in the body), role discovery → 500 ERR_ROLE_DISCOVERY_FAILED. The registration
+                                  throws instead of returning a non-REGISTERED verdict, so createLocalJobPoolApplication never maps it to
+                                  503. Either map it (then the runbook holds) or correct the runbook

@@ -3346,6 +3346,27 @@ O-RC-4 (fail-closed) and O-RC-5 (owner ≠ app role) are decided in §10 of the 
 
 **Run record.** `evidence/role-discovery-600c7c1/`: verdicts.txt, cache-converge-MEASUREMENT.txt, scripts/ and manifest.sha256.
 
+### 3.68 Atomic relation-cache convergence `88ac5ed` (O-RC-6) and runbook re-checked (2026-10-29)
+
+**Request.** GELB asked for a targeted re-check of `88ac5ed`, in which convergence and verification run in one transaction, and of the runbook in §10 of the discovery doc (`27a4e87`).
+
+**Method.** Fresh disposable databases, one per case: a dirty `ccc0cc1` table, then fresh, `ccc0cc1`-clean and `2dba126`-clean tables. The route handlers were called in-process, as GELB's own `role-discovery.postgres` test does. The probes are scratch only, and there is no Gemini call.
+
+**Verdicts (`evidence/role-discovery-88ac5ed/verdicts.txt`).**
+- **O-RC-6: PASS.** A failed registration leaves exactly the previous state: 2 old checks, no `prr_*` constraint, no trigger, and the row is kept.
+- **Repair path: PASS.**
+  - The runbook's query finds the row, and DELETE succeeds.
+  - The next registration in the same process reports REGISTERED with 7 `prr_*` constraints and 2 triggers, and the pool list answers 200 again. A restart is not needed.
+- **Convergence regression: PASS.** Fresh, `ccc0cc1`-clean and `2dba126`-clean tables behave as in §3.67.
+- **Tests: PASS.** The subset passes 60 files, 480 tests, 4 skipped; `relation-cache.postgres` passes 8/8. On `600c7c1` exactly the new test fails; tsc reports 0 errors.
+- **Runbook effect: FAIL (R-RB-1).** The runbook says every job pool route answers 503 `ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED`. While the registration fails, PINK measured:
+  - `GET /api/career/job-pools`: 500 `ERR_JOB_POOL_INTERNAL`, with the raw database message in the body.
+  - Role discovery: 500 `ERR_ROLE_DISCOVERY_FAILED`.
+
+  The registration throws instead of returning a non-REGISTERED verdict, so nothing maps it to 503. Either the code maps it to 503, or the runbook must say 500.
+
+**Run record.** `evidence/role-discovery-88ac5ed/`: verdicts.txt, cache-atomic-MEASUREMENT.txt, scripts/ and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

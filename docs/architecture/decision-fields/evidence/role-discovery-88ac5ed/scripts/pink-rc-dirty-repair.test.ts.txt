@@ -1,0 +1,30 @@
+// PINK scratch probe (never a live test): dirty ccc0cc1 table → 88ac5ed registration → state after failure, route answers, repair path.
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureJobPoolPersistenceRegistration } from "../../lib/career/job-pool/local-composition";
+import { RELATION_CACHE_TABLE as T } from "../../lib/career/job-pool/relation-cache-repository";
+import { GET as listPools } from "../../app/api/career/job-pools/route";
+import { GET as discovery } from "../../app/api/career/analyses/[analysisId]/role-discovery/route";
+import { RELATION_CACHE_DDL as DDL_CCC } from "./old-ccc0cc1-repo";
+import { attempt, rec } from "./pink-rc-common";
+const state = async () => ({ checks: (await db.$client`SELECT conname FROM pg_constraint WHERE conrelid = ${T}::regclass AND contype = 'c' ORDER BY conname`).map(r => r.conname), triggers: (await db.$client`SELECT tgname FROM pg_trigger WHERE tgrelid = ${T}::regclass AND NOT tgisinternal ORDER BY tgname`).map(r => r.tgname), rows: (await db.$client`SELECT count(*)::int n FROM ${db.$client(T)}`)[0].n });
+const routes = async () => { const a = await listPools(); const b = await discovery(new Request("http://local/api/career/analyses/ANL_1000000000000_1/role-discovery?jobPoolUploadId=JPOOL_" + "0".repeat(32)), { params: Promise.resolve({ analysisId: "ANL_1000000000000_1" }) });
+  const body = async (r: Response) => { const j = await r.json(); return (j.error?.code ?? j.issues?.[0]?.code ?? (Array.isArray(j.jobPools) ? `jobPools ${j.jobPools.length}` : "?")); };
+  return { jobPoolsList: `${a.status} ${await body(a)}`, roleDiscovery: `${b.status} ${await body(b)}` }; };
+it("dirty → fail → repair", async () => {
+  const o: Record<string, unknown> = {}; const sql = db.$client;
+  for (const s of DDL_CCC) await sql.unsafe(s);
+  const b = rec("SQL");
+  o.dirtyRow = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', '${b.proposalContentHash}', '${b.requirementContentHash}', '${b.engineVersionHash}', 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, authorityState: "VERIFIED" })}', '${b.createdAt}')`));
+  o.stateBefore = await state();
+  o.registration = await ensureJobPoolPersistenceRegistration().then(r => r, e => `threw: ${String(e).slice(0, 140)}`);
+  o.stateAfterFailure = await state();
+  o.routesWhileFailed = await routes();
+  o.runbookFindQuery = (await sql.unsafe(`SELECT relation_key FROM ${T} WHERE (record_json::jsonb ->> 'authorityState') IS DISTINCT FROM authority_state OR (record_json::jsonb ->> 'state') IS DISTINCT FROM relation_state`)).length;
+  o.repairDelete = await attempt(sql.unsafe(`DELETE FROM ${T} WHERE relation_key = '${b.relationKey}'`));
+  o.registrationAfterRepair = await ensureJobPoolPersistenceRegistration().then(r => r, e => `threw: ${String(e).slice(0, 140)}`);
+  o.stateAfterRepair = await state();
+  o.routesAfterRepair = await routes();
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+}, 120000);

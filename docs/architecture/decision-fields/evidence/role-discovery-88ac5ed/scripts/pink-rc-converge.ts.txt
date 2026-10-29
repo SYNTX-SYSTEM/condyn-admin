@@ -1,0 +1,35 @@
+// PINK scratch probe body (never a live test): old table → 600c7c1 registration → guarantees? argv via env PINK_CASE.
+import { writeFileSync } from "node:fs";
+import { db } from "../../lib/career/db/client";
+import { ensureJobPoolPersistenceRegistration, createLocalJobPoolApplication } from "../../lib/career/job-pool/local-composition";
+import { RELATION_CACHE_TABLE as T } from "../../lib/career/job-pool/relation-cache-repository";
+import { RELATION_CACHE_DDL as DDL_CCC } from "./old-ccc0cc1-repo";
+import { RELATION_CACHE_DDL as DDL_2DB } from "./old-2dba126-repo";
+import { attempt, rec } from "./pink-rc-common";
+export async function run(kind: "fresh" | "ccc-clean" | "ccc-dirty" | "2db-clean") {
+  const o: Record<string, unknown> = { kind }; const sql = db.$client;
+  o.tableBefore = (await sql`SELECT count(*)::int n FROM information_schema.tables WHERE table_name = ${T}`)[0].n;
+  if (kind.startsWith("ccc")) for (const s of DDL_CCC) await sql.unsafe(s);
+  if (kind === "2db-clean") for (const s of DDL_2DB) await sql.unsafe(s);
+  if (kind === "ccc-dirty") { const b = rec("SQL"); o.dirtyRow = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', '${b.proposalContentHash}', '${b.requirementContentHash}', '${b.engineVersionHash}', 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, authorityState: "VERIFIED" })}', '${b.createdAt}')`)); }
+  o.registration = await ensureJobPoolPersistenceRegistration().then(r => r, e => `threw: ${String(e).slice(0, 160)}`);
+  o.registrationAgain = await ensureJobPoolPersistenceRegistration().then(r => r, e => `threw: ${String(e).slice(0, 100)}`);
+  o.application = await createLocalJobPoolApplication().then(() => "created", e => `refused: ${String(e).slice(0, 100)}`);
+  o.constraints = (await sql`SELECT conname FROM pg_constraint WHERE conrelid = ${T}::regclass AND contype = 'c' ORDER BY conname`).map(r => r.conname);
+  o.triggers = (await sql`SELECT tgname FROM pg_trigger WHERE tgrelid = ${T}::regclass AND NOT tgisinternal ORDER BY tgname`).map(r => r.tgname);
+  if (!kind.endsWith("dirty")) {
+    const b = rec("Kubernetes"), cols = `'${b.proposalContentHash}', '${b.requirementContentHash}', '${b.engineVersionHash}'`;
+    o.insertJsonAuthorityVerified = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', ${cols}, 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, authorityState: "VERIFIED" })}', '${b.createdAt}')`));
+    o.insertJsonStateMismatch = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', ${cols}, 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, state: "COVERS" })}', '${b.createdAt}')`));
+    o.insertBadKeyFormat = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('not-a-key', ${cols}, 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, relationKey: "not-a-key" })}', '${b.createdAt}')`));
+    o.insertBadHashFormat = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', 'XYZ', '${b.requirementContentHash}', '${b.engineVersionHash}', 'PARTIAL', 'NONE', '${JSON.stringify({ ...b, proposalContentHash: "XYZ" })}', '${b.createdAt}')`));
+    o.insertValid = await attempt(sql.unsafe(`INSERT INTO ${T} VALUES ('${b.relationKey}', ${cols}, 'PARTIAL', 'NONE', '${JSON.stringify(b)}', '${b.createdAt}')`));
+    o.update = await attempt(sql.unsafe(`UPDATE ${T} SET created_at = created_at`));
+    o.delete = await attempt(sql.unsafe(`DELETE FROM ${T}`));
+    o.truncate = await attempt(sql.unsafe(`TRUNCATE ${T}`));
+  } else {
+    o.dirtyRowStillThere = (await sql`SELECT count(*)::int n FROM ${sql(T)}`)[0].n;
+  }
+  writeFileSync(process.env.PINK_PROBE_OUT!, JSON.stringify(o, null, 1));
+  return o;
+}
