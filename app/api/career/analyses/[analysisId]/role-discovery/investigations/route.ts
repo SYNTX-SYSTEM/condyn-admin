@@ -30,8 +30,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ ana
   const { analysisId } = await params;
   try {
     // A start is a deliberate same-site JSON call (PINK O-START-1): a cross-site fetch or a form post cannot trigger it.
-    if (request.headers.get("sec-fetch-site") === "cross-site") return issue("ERR_INVESTIGATION_CROSS_SITE", 403);
-    if (!(request.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) return issue("ERR_INVESTIGATION_CONTENT_TYPE", 415);
+    if ((request.headers.get("sec-fetch-site") ?? "").trim().toLowerCase() === "cross-site") return issue("ERR_INVESTIGATION_CROSS_SITE", 403);
+    if ((request.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase() !== "application/json") return issue("ERR_INVESTIGATION_CONTENT_TYPE", 415);
     const config = readSemanticConfig();
     if (config.state === "NOT_CONFIGURED") return issue("ERR_SEMANTIC_ENGINE_NOT_CONFIGURED", 409);
     if (config.state === "PROVIDER_NOT_AUTHORIZED") return issue("ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", 409, { provider: config.provider });

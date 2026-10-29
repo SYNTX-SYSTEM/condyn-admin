@@ -130,6 +130,10 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
     expect([cross.status, (await cross.json()).issues[0].code]).toEqual([403, "ERR_INVESTIGATION_CROSS_SITE"]);
     const form = await POST(new Request(`${url(person.analysisId)}/investigations`, { method: "POST", headers: { "content-type": "text/plain" }, body: JSON.stringify(body()) }), { params: Promise.resolve({ analysisId: person.analysisId }) });
     expect([form.status, (await form.json()).issues[0].code]).toEqual([415, "ERR_INVESTIGATION_CONTENT_TYPE"]);
+    const upper = await start(person.analysisId, body(), { "sec-fetch-site": " CROSS-SITE " });
+    expect(upper.status).toBe(403);
+    const seq = await POST(new Request(`${url(person.analysisId)}/investigations`, { method: "POST", headers: { "content-type": "application/json-seq" }, body: JSON.stringify(body()) }), { params: Promise.resolve({ analysisId: person.analysisId }) });
+    expect(seq.status).toBe(415);
     for (const bad of [undefined, "", "abc", "-1", "2.5", "1e9"]) {
       if (bad === undefined) delete process.env.ROLE_DISCOVERY_DAY_LIMIT; else process.env.ROLE_DISCOVERY_DAY_LIMIT = bad;
       const out = await (await start(person.analysisId, body({ clientRequestId: `limit-${String(bad)}` }))).json();
