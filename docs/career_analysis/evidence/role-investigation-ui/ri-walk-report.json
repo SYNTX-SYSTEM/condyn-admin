@@ -1,0 +1,134 @@
+[
+  {
+    "vname": "1920x1080",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 1 calls for 32 open pairs",
+    "confirmedCalls": "1",
+    "status": "COMPLETED",
+    "investigationId": "RINV_69A0AF471C95D4D1716A2249B8958523"
+  },
+  {
+    "vname": "1600x900",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 0 calls for 0 open pairs",
+    "confirmedCalls": "0",
+    "status": "COMPLETED",
+    "investigationId": "RINV_9BD533EA388D584746FA21C857CA770E"
+  },
+  {
+    "vname": "1440x900",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 0 calls for 0 open pairs",
+    "confirmedCalls": "0",
+    "status": "COMPLETED",
+    "investigationId": "RINV_346F31D795DE30C0B46D667494E198AC"
+  },
+  {
+    "vname": "1280x720",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 0 calls for 0 open pairs",
+    "confirmedCalls": "0",
+    "status": "COMPLETED",
+    "investigationId": "RINV_927FCE65C13194D9430EE48EB2D687E6"
+  },
+  {
+    "vname": "zoom200-1920x1080",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 0 calls for 0 open pairs",
+    "confirmedCalls": "0",
+    "status": "COMPLETED",
+    "investigationId": "RINV_BAA4D838F923939773400F6FB465993A"
+  },
+  {
+    "vname": "zoom200-1280x720",
+    "checks": {
+      "startOffered": true,
+      "picksPresent": true,
+      "exactlyOnePost": true,
+      "completed": true,
+      "standInNamed": true,
+      "noModelNamed": true,
+      "urlNamesInvestigation": true,
+      "reloadNoPost": true,
+      "reloadReadsInvestigation": true,
+      "reloadSameStatus": true,
+      "backToEntry": true,
+      "forwardNoPost": true,
+      "forwardSameStatus": true
+    },
+    "selection": "Picked: 1 of at most 10 roles · would need 0 calls for 0 open pairs",
+    "confirmedCalls": "0",
+    "status": "COMPLETED",
+    "investigationId": "RINV_EC82D8F53E2CFBDE4267812CA90C668C"
+  }
+]
