@@ -1,0 +1,11 @@
+PINK §3.80 addendum · C1 corrected (2026-10-29).
+
+GELB's first two context ids were truncated to 30 characters (an output error on GELB's side); the full ids are DCTXREV_25E6B6DA8048EDCA22B1C41380A1B71C
+and DCTXREV_5EFC324ADF56B112661878848951FDD2. The 404 in point 2a came from the truncated ids, not from missing data.
+Recheck on :41890 (489b167 on a copy of the :3017 database), GET only, with the full ids: context API 200 for both;
+   page DCTXREV_25E6…: status 200 context True chain True notFound False failed False bound ['hr-decision-loop-bound-revisions'] reloadSame True pageErrors 0
+   page DCTXREV_5EFC…: status 200 context True chain True notFound False failed False bound ['hr-decision-loop-bound-revisions', 'hr-decision-loop-bound-revisions-none'] reloadSame True pageErrors 0
+   blocked non-GET 0
+
+Verdict 2a: PASS (code and data). C1 is met on the copy (checked by PINK) and, per GELB, on :3017 itself with the old code (GET only; not checked by PINK,
+nothing on :3017). Remaining cutover conditions: C2 rollback as tested, C3 environment (stand-in, explicit day limit, no Gemini change). GO unchanged.

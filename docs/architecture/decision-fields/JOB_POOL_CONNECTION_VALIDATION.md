@@ -3713,6 +3713,8 @@ No Gemini call.
 
 **Run record.** `evidence/runtime-candidate-489b167/`.
 
+**Addendum (C1 corrected).** GELB's first context ids were truncated to 30 characters; that caused the 404 in 2a, not missing data. With the full ids (`DCTXREV_25E6B6DA8048EDCA22B1C41380A1B71C`, `DCTXREV_5EFC324ADF56B112661878848951FDD2`), :41890 renders both contexts with their chains and no page error, and the context API answers 200. GELB reports 200 on :3017 itself with the old code. 2a is PASS for code and data, and C1 is met. C2 and C3 stand, and GO is unchanged (`evidence/runtime-candidate-489b167/addendum-c1.txt`).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
