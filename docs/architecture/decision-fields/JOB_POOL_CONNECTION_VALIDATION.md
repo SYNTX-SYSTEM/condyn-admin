@@ -3409,6 +3409,8 @@ Read-only metadata of the `_sfe` sandboxes, the main checkout and :3017 complete
    - **Correction (b).** The four untracked files in the main checkout are empty and date from 2026-08-31, so they predate Codex.
    - **INCONCLUSIVE.** :3017's Gemini key, model and database name, because PINK reads no process environment.
 
+**Addendum (`164bade`).** Point 3 is now **PASS**. GELB restored the it.each block for the German and English empty-projection labels of components 03–06 verbatim from `175c481` into the six-orbit f12 file, with no RD-5 inverse back. The file passes 14/14, the four cases among them (`addendum-164bade.txt`). For :3017, GELB states that a model key is set. PINK did not read the environment, so in PINK's classes this stays INCONCLUSIVE; the risk is the owner's to weigh.
+
 **Run record.** `evidence/recovery-08ae201/`: verdicts.txt, 1-reverts-CODE_INSPECTION.txt, 2-orbits-PERSISTED_REAL_RESULT-and-STAND_IN.txt, 3-test-coverage-MEASUREMENT.txt, 4-gemini-get-and-decoupling.txt, 5-doc-section2-CODE.txt, shots/ (2, real, no quotes on view), scripts/ and manifest.sha256.
 
 ## 4. Boundaries and findings for coordination

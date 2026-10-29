@@ -3,6 +3,7 @@ ab4e712d24654c6f127eace5d759c40d5c9384f86fcf8d337326d8464588b9b6  ./2-orbits-PER
 3197f67798d9dec7e6bd81b3cf1c21a09fae59c38b74bb8bfb52f78a3605d8db  ./3-test-coverage-MEASUREMENT.txt
 9f0b519b2398c7cb39b73fdb040b27b104aea0b4b74dcf92d833c2cd6274c08a  ./4-gemini-get-and-decoupling.txt
 2886d708c21b13cb26666fa3fea2a711ceb4cb5bec66c89728bc2dae35d4338b  ./5-doc-section2-CODE.txt
+5893ad7527c5723477d3237c16fa6ce718bcfa50f2da9cc2d2de8010bbcc00d7  ./addendum-164bade.txt
 fc1c10c32326441733047de02e1dcca115ed4f17176bfb28b9c41a2cb0942842  ./scripts/import-graph.py.txt
 24c020219106d57c2328eab838c6204f01c3a2109252858ed3cb54de097fdee0  ./scripts/pink-click04.mjs.txt
 4bd33e9ac1f6f371939ee32c4cc549a1a05f920fa925fc492e02789931dcd221  ./scripts/pink-decouple.test.ts.txt
