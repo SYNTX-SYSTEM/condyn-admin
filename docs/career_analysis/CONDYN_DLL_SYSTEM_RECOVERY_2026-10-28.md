@@ -18,7 +18,7 @@ and recursive with real integration proof, (3) everything documented.
 
 ## 2 What Codex actually changed (verified)
 
-**(a) `_sfe` sandboxes** (`/home/codi/Entwicklung/_sfe/condyn-admin/{gelb,gruen,pink}`): clones of `origin` on `ee06ff6`
+**(a) `_sfe` sandboxes** (`<dev>/_sfe/condyn-admin/{gelb,gruen,pink}`): clones of `origin` on `ee06ff6`
 (2026-08-31) — two months older than the system (no job pools, no three modes, no B2, no G1/UX, no stage 1). gelb and pink: no
 new commits. gruen: **50 commits on 10-24/25** (57 files, +2152) building a second role discovery next to ours — own route
 `/api/career/role-discovery`, own `lib/career/matching/{role-discovery,gemini-runtime,job-assignment,authorized-job-pool-adapter,
@@ -26,7 +26,7 @@ person-profile,…}`, on the old demo-pool matching engine. **Classification: pa
 integrable; duplicates POOL_ROLE_DISCOVERY_V1 and the job pool architecture.** One idea kept as input: an explicitly authorised
 pool list. Nothing of it was pushed.
 
-**(b) Main checkout** `/home/codi/Entwicklung/condyn-admin`: switched to a new branch `capability-mapping` (`59076c0` = two docs
+**(b) Main checkout** `<dev>/condyn-admin`: switched to a new branch `capability-mapping` (`59076c0` = two docs
 commits on `ee06ff6`) with four stray untracked files (`RUNNING`, `currentOperation`, `exact`, `rejected` — shell redirection
 leftovers). Left untouched (owner's checkout).
 
