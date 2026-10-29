@@ -6,6 +6,7 @@ import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { JobPoolListState } from "../../../../lib/career/ui/useJobPool";
 import { ROLE_DISCOVERY_STATUSES, type RoleDiscoveryState } from "../../../../lib/career/ui/role-discovery";
 import type { DiscoveryRole, PoolRoleDiscovery, RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
+import type { JobScope } from "../../../../lib/career/job-pool/job-scope";
 import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
 import { ROLE_DISCOVERY_COPY, formatCount, type RoleDiscoveryCopy } from "./role-discovery-copy";
 
@@ -43,9 +44,11 @@ export interface RoleDiscoveryPanelProps {
   discovery: RoleDiscoveryState;
   onRelease(ids: string[]): void;
   onClose(): void;
+  /** RD-HANDOVER: the explicit "investigate this role" (the field selects it as the job and switches to PERSON × JOB). */
+  onInvestigate?(scope: JobScope): void;
 }
 
-export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose }: RoleDiscoveryPanelProps) {
+export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose, onInvestigate }: RoleDiscoveryPanelProps) {
   const c = ROLE_DISCOVERY_COPY[locale];
   const [ticked, setTicked] = useState<string[]>(() => [...(released ?? [])]);
   const [open, setOpen] = useState<RoleLexicalStatus[]>(() => ROLE_DISCOVERY_STATUSES.filter(status => !FOLDED.includes(status)));
@@ -103,16 +106,16 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
             )}
         </section>
 
-        <RoleDiscoveryResults c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} traced={traced} onTrace={key => setTraced(previous => previous === key ? null : key)} />
+        <RoleDiscoveryResults c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} traced={traced} onTrace={key => setTraced(previous => previous === key ? null : key)} onInvestigate={onInvestigate} />
       </aside>
     </>
   );
 }
 
-export interface RoleDiscoveryResultsProps { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void; traced: string | null; onTrace(key: string): void }
+export interface RoleDiscoveryResultsProps { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void; traced: string | null; onTrace(key: string): void; onInvestigate?(scope: JobScope): void }
 
 /** The read's state or its result: the semantic state, the scope, the five groups with their roles (and the one traced role). */
-export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onTrace }: RoleDiscoveryResultsProps) {
+export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onTrace, onInvestigate }: RoleDiscoveryResultsProps) {
   if (discovery.state !== "AVAILABLE") {
     const sentence = discovery.state === "BOUNDARY_UNRESOLVED" ? c.boundaryUnresolved(discovery.reason ?? "—")
       : discovery.state === "POOL_NOT_FOUND" ? c.poolNotFound(discovery.jobPoolUploadId ?? "—")
@@ -160,7 +163,7 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
                   <span style={meta}>{role.organizationName} · {poolName.get(key.jobPoolUploadId)}</span>
                   {role.counts.requirements > 0 && <span data-testid="rd-role-counts" style={meta}>{c.roleCounts(role.counts.nameRelated, role.counts.requirements, role.counts.weakLexicalOnly, role.counts.withoutLexicalRelation)}</span>}
                   {role.counts.required > 0 && <span style={meta}>{c.roleRequired(role.counts.required, role.counts.requiredWithoutLexicalRelation)}</span>}
-                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} />}
+                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} onInvestigate={onInvestigate} />}
                 </div>
               );
             })}
@@ -176,7 +179,7 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
  * capability proposal, the proposal's source-verified quotes with their source, and the evidence limitation when a quote does not
  * name the requirement; then the open requirements (no name relation). Nothing is concluded; the semantic state is stated.
  */
-export function RoleDiscoveryTrace({ c, role, proposals }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"] }) {
+export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"]; onInvestigate?: (scope: JobScope) => void }) {
   const related = role.requirements.filter(requirement => requirement.lexical.basis !== "NONE");
   const open = role.requirements.filter(requirement => requirement.lexical.basis === "NONE");
   const named = new Map(proposals.map(proposal => [proposal.id, proposal.name] as const));
@@ -208,6 +211,12 @@ export function RoleDiscoveryTrace({ c, role, proposals }: { c: RoleDiscoveryCop
           <span key={requirement.key.poolRequirementId} data-testid="rd-trace-open-requirement" data-requirement-id={requirement.key.poolRequirementId} style={meta}>{requirement.requirementText} · {c.detail.level(requirement.necessity, requirement.requiredLevel)}</span>
         ))}
       </div>
+      {onInvestigate && (
+        <div data-testid="rd-investigate-way" style={{ display: "flex", flexDirection: "column", gap: "4px", paddingTop: "6px", borderTop: "1px solid rgba(120, 214, 255, 0.1)" }}>
+          <span style={meta}>{c.detail.investigateHint}</span>
+          <button type="button" data-testid="rd-investigate" data-job-pool-upload-id={role.key.jobPoolUploadId} data-pool-role-id={role.key.poolRoleId} onClick={() => onInvestigate({ jobPoolUploadId: role.key.jobPoolUploadId, poolRoleId: role.key.poolRoleId })} style={action}>{c.detail.investigate}</button>
+        </div>
+      )}
     </div>
   );
 }

@@ -566,6 +566,18 @@ export function SemanticCareerIntelligenceField({
           locale
         )
       : null;
+  /** RD-HANDOVER ("Gezielt untersuchen"): the discovered role becomes the selected job and the investigation PERSON × JOB, as one
+   *  push. No analysis is carried over (analysisId leaves the URL, the session's result steps back as after an explicit choice), the
+   *  release ends with its analysis, nothing is started: PERSON × JOB then shows NO_ANALYSIS for exactly this role (D-PICK / ANALYZE). */
+  const investigateDiscoveredRole = (scope: JobScope) => {
+    setJobScope(scope);
+    setInvestigationMode("PERSON_X_JOB");
+    setUrlAnalysisId(null);
+    setAnalysisPicked(true);
+    setDiscoveryPools(null);
+    setDiscoveryOpen(false);
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: scope.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: scope.poolRoleId, [INVESTIGATION_URL_PARAM]: "PERSON_X_JOB", analysisId: null, [DISCOVERY_POOLS_URL_PARAM]: null });
+  };
   /** ROLE_MISMATCH offers the analysis's own job as an explicit choice; the selection changes only by this action. */
   const selectAnalysisJob = (scope: JobScope) => {
     setJobScope(scope);
@@ -1687,7 +1699,7 @@ export function SemanticCareerIntelligenceField({
           analysis, never under PERSON × JOB or JOB. */}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
-          <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} />
+          <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole} />
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (

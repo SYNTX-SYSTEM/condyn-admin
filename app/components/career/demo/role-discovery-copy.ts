@@ -55,6 +55,9 @@ export interface RoleDiscoveryCopy {
     openTitle: (count: number) => string;
     openNone: string;
     level: (necessity: string, level: string) => string;
+    /** RD-HANDOVER: the role as the job of a PERSON × JOB investigation — no analysis carried over, nothing started. */
+    investigate: string;
+    investigateHint: string;
   };
 }
 
@@ -129,7 +132,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       noQuote: "No quote delivered.",
       openTitle: count => `OPEN REQUIREMENTS · NO NAME RELATION (${count})`,
       openNone: "None.",
-      level: (necessity, level) => `${necessity} · level ${level}`
+      level: (necessity, level) => `${necessity} · level ${level}`,
+      investigate: "INVESTIGATE THIS ROLE",
+      investigateHint: "Selects this role as the job and switches to PERSON × JOB, without an analysis. Nothing is started: run ANALYZE there yourself or open an existing analysis for this role."
     }
   },
   de: {
@@ -199,7 +204,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       noQuote: "Kein Zitat geliefert.",
       openTitle: count => `OFFENE ANFORDERUNGEN · KEIN NAMENSBEZUG (${count})`,
       openNone: "Keine.",
-      level: (necessity, level) => `${necessity} · Stufe ${level}`
+      level: (necessity, level) => `${necessity} · Stufe ${level}`,
+      investigate: "GEZIELT UNTERSUCHEN",
+      investigateHint: "Wählt diese Rolle als Job und wechselt zu PERSON × JOB, ohne Analyse. Gestartet wird nichts: ANALYZE startest du dort selbst, oder du öffnest eine vorhandene Analyse zu dieser Rolle."
     }
   }
 };
