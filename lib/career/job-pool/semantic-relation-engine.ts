@@ -31,12 +31,31 @@ export interface ProviderRequest {
   proposals: Array<{ id: string; name: string; scope: string; structuralDefinition: string; evidence: Array<{ evidenceId: string; exactQuote: string }> }>;
   requirements: Array<{ requirementId: string; text: string; aliases: string[]; requiredLevel: string; requirementType: string }>;
 }
-export interface SemanticProvider { evaluate(request: ProviderRequest): Promise<{ rawText: string }> }
+/** A provider declares who it is; the engine serves only the engine identity it declares (PINK D-ENG-2). */
+export interface SemanticProvider { readonly identity: { provider: string; model: string }; evaluate(request: ProviderRequest): Promise<{ rawText: string }> }
 export interface CallLedger { reserve(): Promise<boolean>; consume(meta: { requestBytes: number; responseBytes: number }): Promise<void>; release(): Promise<void> }
 export interface RelationWriter { saveIfAbsent(records: CachedRelation[]): Promise<{ inserted: number; duplicates: number; divergent: string[] }> }
 
-/** Phrases that turn a classification into a competence, suitability or score claim; an explanation containing one is refused. */
-const CLAIM = /\b(verified|proven|proves?|certified|qualified|suitable|suitability|recommend(ed|ation)?|hire|hiring|best fit|perfect match|score|rank(ed|ing)?)\b|\d\s?%/i;
+/**
+ * Claim guard (PINK D-ENG-1). A blocklist can never be complete, so the guard is defence in depth and the real protection is
+ * structural: a model statement is stored and shown only as an unverified model statement with authority NONE, and never feeds a
+ * ranking or a decision. The text is normalised (NFKC, case, zero-width and spacing removed, Cyrillic/Greek look-alikes mapped) and
+ * refused when it carries ANY digit or percent (numbers are where scores hide), a number word, or a claim stem in English or German.
+ */
+const LOOKALIKE: Record<string, string> = { "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t", "у": "y", "х": "x", "і": "i", "ѕ": "s", "ο": "o", "α": "a", "ε": "e", "ρ": "p", "ν": "v", "ι": "i", "κ": "k" };
+const CLAIM_STEMS = ["score", "scor", "rank", "recomm", "hire", "hiring", "qualif", "suitab", "compet", "verifi", "proof", "prove", "certif", "percent", "prozent", "goodfit", "bestfit", "perfectmatch", "wellsuited", "empfehl", "eignung", "geeignet", "einstell", "kompetenz", "nachgewiesen", "bewert", "qualifiz", "verifiz", "passtgut", "idealer", "ideal"];
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety", "hundred", "thousand", "half", "quarter", "null", "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "zehn", "zwanzig", "dreissig", "hundert", "tausend", "halb"];
+export function containsClaim(text: string): boolean {
+  const base = text.normalize("NFKC").toLowerCase().replace(/[\u200b-\u200f\u2060\ufeff\u00ad]/g, "");
+  const mapped = [...base].map(ch => LOOKALIKE[ch] ?? ch).join("");
+  if (/[0-9%]|\p{Nd}/u.test(mapped)) return true;
+  const squashed = mapped.replace(/[^\p{L}]/gu, "");
+  if (CLAIM_STEMS.some(stem => squashed.includes(stem))) return true;
+  const words = mapped.split(/[^\p{L}]+/u).filter(Boolean);
+  return words.some(w => NUMBER_WORDS.includes(w));
+}
+/** Upper bound for the model's free text fields (PINK O-ENG-2). */
+export const MAX_TEXT_LENGTH = 1000;
 const sha256 = (value: string) => createHash("sha256").update(value, "utf8").digest("hex");
 /** The proposal as the cache hashes it (its evidence is source-verified by construction). */
 const forHash = (p: EngineProposal) => ({ name: p.name, scope: p.scope, structuralDefinition: p.structuralDefinition, evidence: p.evidence.map(e => ({ ...e, verificationState: "SOURCE_MATCH_VERIFIED" as const })) });
@@ -81,14 +100,14 @@ export function admitProviderOutput(input: { rawText: string; engine: RelationEn
     if (!SEMANTIC_RELATION_STATES.includes(v.state as SemanticRelationState)) { fail("STATE_UNKNOWN"); continue; }
     const state = v.state as SemanticRelationState;
     if (!nonEmpty(v.relationExplanation) || !nonEmpty(v.evidenceLimitation)) { fail("EXPLANATION_OR_LIMITATION_MISSING"); continue; }
-    if (CLAIM.test(v.relationExplanation) || CLAIM.test(v.evidenceLimitation)) { fail("CLAIM_IN_TEXT"); continue; }
+    if (v.relationExplanation.length > MAX_TEXT_LENGTH || v.evidenceLimitation.length > MAX_TEXT_LENGTH) { fail("TEXT_TOO_LONG"); continue; }
+    if (containsClaim(v.relationExplanation) || containsClaim(v.evidenceLimitation)) { fail("CLAIM_IN_TEXT"); continue; }
     const cited = Array.isArray(v.citedEvidenceIds) ? v.citedEvidenceIds : null;
     if (cited === null || cited.some(id => typeof id !== "string") || new Set(cited).size !== cited.length) { fail("CITATION_INVALID"); continue; }
     const byId = new Map(proposal.evidence.map(e => [e.evidenceId, e]));
     if (cited.some(id => !byId.has(id as string))) { fail("CITED_EVIDENCE_NOT_OF_PROPOSAL"); continue; }
     if (cited.length === 0 && (state === "EQUIVALENT" || state === "COVERS" || state === "PARTIAL")) { fail("POSITIVE_STATE_WITHOUT_EVIDENCE"); continue; }
-    const sourceEvidence = (cited.length ? cited : proposal.evidence.slice(0, 1).map(e => e.evidenceId)).map(id => { const e = byId.get(id as string)!; return { sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote }; });
-    if (sourceEvidence.length === 0) { fail("NO_EVIDENCE_AVAILABLE"); continue; }
+    const sourceEvidence = cited.map(id => { const e = byId.get(id as string)!; return { sourceDocumentId: e.sourceDocumentId, exactQuote: e.exactQuote }; });
     const record: CachedRelation = {
       relationKey: relationKey(proposalContentHash(forHash(proposal)), requirementContentHash(requirement), engineHash),
       proposalContentHash: proposalContentHash(forHash(proposal)), requirementContentHash: requirementContentHash(requirement), engineVersionHash: engineHash, engine: input.engine,
@@ -105,29 +124,40 @@ export type RoleOutcome =
   | { status: "BUDGET_EXHAUSTED" }
   | { status: "FAILED"; code: string; refusals: Refusal[] };
 
-/** One role, one attempt. The reservation happens before the provider is called; a refused output stores nothing for the role. */
+const codeOf = (error: unknown, fallback: string) => error instanceof Error && /^ERR_[A-Z_]+/.test(error.message) ? error.message.split(":")[0] : fallback;
+
+/**
+ * One role, one attempt; never throws (PINK O-ENG-3). The reservation happens before the provider is called. Outcomes:
+ * provider failure → released; ledger consume failure → FAILED ERR_LEDGER_CONSUME_FAILED (the call happened, nothing stored);
+ * refused output → FAILED, nothing stored; store failure → FAILED ERR_RELATION_WRITE_FAILED (the call is consumed, nothing stored).
+ * An engine identity the provider does not declare is refused before anything is reserved.
+ */
 export async function evaluateRole(input: {
   engine: RelationEngineIdentity; provider: SemanticProvider; ledger: CallLedger; writer: RelationWriter;
   proposals: EngineProposal[]; pendingRequirements: EngineRequirement[]; now: () => string;
 }): Promise<RoleOutcome> {
+  if (input.provider.identity.provider !== input.engine.provider || input.provider.identity.model !== input.engine.model) return { status: "FAILED", code: "ERR_ENGINE_IDENTITY_MISMATCH", refusals: [] };
   if (input.pendingRequirements.length === 0 || input.proposals.length === 0) return { status: "SUCCEEDED", stored: 0, duplicates: 0, divergent: [] };
-  if (!(await input.ledger.reserve())) return { status: "BUDGET_EXHAUSTED" };
+  let reserved: boolean;
+  try { reserved = await input.ledger.reserve(); } catch (error) { return { status: "FAILED", code: codeOf(error, "ERR_LEDGER_RESERVE_FAILED"), refusals: [] }; }
+  if (!reserved) return { status: "BUDGET_EXHAUSTED" };
   const { request, idOf } = buildProviderRequest(input.engine, input.proposals, input.pendingRequirements);
   let raw: { rawText: string };
   try { raw = await input.provider.evaluate(request); } catch (error) {
-    await input.ledger.release();
-    return { status: "FAILED", code: error instanceof Error && /^ERR_[A-Z_]+/.test(error.message) ? error.message.split(":")[0] : "ERR_SEMANTIC_PROVIDER_FAILED", refusals: [] };
+    try { await input.ledger.release(); } catch { /* the failure below is the outcome */ }
+    return { status: "FAILED", code: codeOf(error, "ERR_SEMANTIC_PROVIDER_FAILED"), refusals: [] };
   }
-  await input.ledger.consume({ requestBytes: Buffer.byteLength(JSON.stringify(request)), responseBytes: Buffer.byteLength(raw.rawText) });
+  try { await input.ledger.consume({ requestBytes: Buffer.byteLength(JSON.stringify(request)), responseBytes: Buffer.byteLength(raw.rawText) }); } catch { return { status: "FAILED", code: "ERR_LEDGER_CONSUME_FAILED", refusals: [] }; }
   const { records, refusals } = admitProviderOutput({ rawText: raw.rawText, engine: input.engine, proposals: input.proposals, requirements: input.pendingRequirements, idOf, now: input.now() });
   if (refusals.length > 0) return { status: "FAILED", code: "ERR_SEMANTIC_OUTPUT_REFUSED", refusals };
-  const saved = await input.writer.saveIfAbsent(records);
-  return { status: "SUCCEEDED", stored: saved.inserted, duplicates: saved.duplicates, divergent: saved.divergent };
+  try { const saved = await input.writer.saveIfAbsent(records); return { status: "SUCCEEDED", stored: saved.inserted, duplicates: saved.duplicates, divergent: saved.divergent }; }
+  catch (error) { return { status: "FAILED", code: codeOf(error, "ERR_RELATION_WRITE_FAILED") === "ERR_RELATION_CACHE_RECORD_CORRUPT" ? "ERR_RELATION_CACHE_RECORD_CORRUPT" : "ERR_RELATION_WRITE_FAILED", refusals: [] }; }
 }
 
 /** Deterministic stand-in (provider "stand-in"): a labelled test double, never presented as a model. Requirement name fully inside the
  *  proposal name → COVERS citing that proposal's first evidence; some shared token → PARTIAL; otherwise UNCLEAR without a citation. */
 export class StandInSemanticProvider implements SemanticProvider {
+  readonly identity = { provider: "stand-in", model: "stand-in" } as const;
   calls = 0;
   async evaluate(request: ProviderRequest): Promise<{ rawText: string }> {
     this.calls += 1;

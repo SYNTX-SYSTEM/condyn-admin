@@ -85,7 +85,7 @@ export function assertCachedRelation(record: CachedRelation): void {
   const fail = (detail: string): never => { throw new Error(`ERR_RELATION_CACHE_RECORD_INVALID:${detail}`); };
   if (!SEMANTIC_RELATION_STATES.includes(record.state)) fail("state");
   for (const field of ["capabilityName", "requirementText", "relationExplanation", "evidenceLimitation", "rawOutputSha256", "proposalContentHash", "requirementContentHash", "engineVersionHash", "createdAt"] as const) if (!text(record[field])) fail(field);
-  if (!Array.isArray(record.sourceEvidence) || record.sourceEvidence.length === 0 || record.sourceEvidence.some(e => !text(e.sourceDocumentId) || !text(e.exactQuote))) fail("sourceEvidence");
+  if (!Array.isArray(record.sourceEvidence) || record.sourceEvidence.some(e => !text(e.sourceDocumentId) || !text(e.exactQuote)) || (record.sourceEvidence.length === 0 && record.state !== "DIFFERENT" && record.state !== "UNCLEAR")) fail("sourceEvidence");
   if (record.authorityState !== "NONE") fail("authorityState");
   if (engineVersionHash(record.engine) !== record.engineVersionHash) fail("engineVersionHash");
   if (relationKey(record.proposalContentHash, record.requirementContentHash, record.engineVersionHash) !== record.relationKey) fail("relationKey");
