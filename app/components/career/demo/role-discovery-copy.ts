@@ -42,6 +42,20 @@ export interface RoleDiscoveryCopy {
   hide: string;
   roleCounts: (nameRelated: number, requirements: number, weak: number, without: number) => string;
   roleRequired: (required: number, without: number) => string;
+  /** RD-DETAIL: the trace of one role, requirement by requirement (requirement → lexical basis → proposal → quote → source). */
+  detail: {
+    open: string;
+    shut: string;
+    semantic: string;
+    basis: Record<"NAME_EXACT" | "NAME_ALIAS" | "NAME_COMPOSITE_CONSTITUENT" | "WEAK_TOKEN_CONTAINMENT", (constituent: string | null) => string>;
+    proposal: string;
+    source: string;
+    quoteSilent: string;
+    noQuote: string;
+    openTitle: (count: number) => string;
+    openNone: string;
+    level: (necessity: string, level: string) => string;
+  };
 }
 
 const n = (value: number) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -98,7 +112,25 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
     show: "SHOW",
     hide: "HIDE",
     roleCounts: (related, requirements, weak, without) => `${n(related)} of ${n(requirements)} requirements with a name relation · ${n(weak)} word matches only (weak) · ${n(without)} open`,
-    roleRequired: (required, without) => `required: ${n(required)} · of them open: ${n(without)}`
+    roleRequired: (required, without) => `required: ${n(required)} · of them open: ${n(without)}`,
+    detail: {
+      open: "TRACE",
+      shut: "HIDE TRACE",
+      semantic: "Semantic check of this role: not executed",
+      basis: {
+        NAME_EXACT: () => "Name relation: exact name · lexical",
+        NAME_ALIAS: () => "Name relation: alias · lexical",
+        NAME_COMPOSITE_CONSTITUENT: part => `Name relation: constituent “${part ?? "—"}” of a composite proposal · lexical`,
+        WEAK_TOKEN_CONTAINMENT: () => "Word match only (weak) · lexical"
+      },
+      proposal: "Capability proposal",
+      source: "Source",
+      quoteSilent: "The quote does not name this requirement: the name relation rests on the proposal's name only.",
+      noQuote: "No quote delivered.",
+      openTitle: count => `OPEN REQUIREMENTS · NO NAME RELATION (${count})`,
+      openNone: "None.",
+      level: (necessity, level) => `${necessity} · level ${level}`
+    }
   },
   de: {
     entry: "DISCOVER JOBS",
@@ -150,6 +182,24 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
     show: "ANZEIGEN",
     hide: "AUSBLENDEN",
     roleCounts: (related, requirements, weak, without) => `${n(related)} von ${n(requirements)} Anforderungen mit Namensbezug · ${n(weak)} nur Wort-Treffer (schwach) · ${n(without)} offen`,
-    roleRequired: (required, without) => `Pflicht: ${n(required)} · davon offen: ${n(without)}`
+    roleRequired: (required, without) => `Pflicht: ${n(required)} · davon offen: ${n(without)}`,
+    detail: {
+      open: "SPUR",
+      shut: "SPUR AUSBLENDEN",
+      semantic: "Semantische Prüfung dieser Rolle: nicht ausgeführt",
+      basis: {
+        NAME_EXACT: () => "Namensbezug: exakter Name · lexikalisch",
+        NAME_ALIAS: () => "Namensbezug: Alias · lexikalisch",
+        NAME_COMPOSITE_CONSTITUENT: part => `Namensbezug: Bestandteil „${part ?? "—"}“ eines zusammengesetzten Vorschlags · lexikalisch`,
+        WEAK_TOKEN_CONTAINMENT: () => "Nur Wort-Treffer (schwach) · lexikalisch"
+      },
+      proposal: "Fähigkeitsvorschlag",
+      source: "Quelle",
+      quoteSilent: "Das Zitat nennt diese Anforderung nicht: Der Namensbezug ruht nur auf dem Namen des Vorschlags.",
+      noQuote: "Kein Zitat geliefert.",
+      openTitle: count => `OFFENE ANFORDERUNGEN · KEIN NAMENSBEZUG (${count})`,
+      openNone: "Keine.",
+      level: (necessity, level) => `${necessity} · Stufe ${level}`
+    }
   }
 };

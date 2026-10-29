@@ -5,7 +5,7 @@ import { SIL_TOKENS } from "./SILTokens";
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { JobPoolListState } from "../../../../lib/career/ui/useJobPool";
 import { ROLE_DISCOVERY_STATUSES, type RoleDiscoveryState } from "../../../../lib/career/ui/role-discovery";
-import type { RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
+import type { DiscoveryRole, PoolRoleDiscovery, RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
 import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
 import { ROLE_DISCOVERY_COPY, formatCount, type RoleDiscoveryCopy } from "./role-discovery-copy";
 
@@ -49,6 +49,8 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
   const c = ROLE_DISCOVERY_COPY[locale];
   const [ticked, setTicked] = useState<string[]>(() => [...(released ?? [])]);
   const [open, setOpen] = useState<RoleLexicalStatus[]>(() => ROLE_DISCOVERY_STATUSES.filter(status => !FOLDED.includes(status)));
+  /** RD-DETAIL: the role whose trace is open — a disclosure inside the panel, not a selection (no URL, no history). */
+  const [traced, setTraced] = useState<string | null>(null);
   const choices = pools.state === "AVAILABLE" ? pools.jobPools : [];
   // The release keeps the list's order (deterministic); a release equal to the one in force is no new step.
   const chosen = choices.map(pool => pool.jobPoolUploadId).filter(id => ticked.includes(id));
@@ -101,13 +103,16 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
             )}
         </section>
 
-        <DiscoveryBody c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} />
+        <RoleDiscoveryResults c={c} discovery={discovery} open={open} onToggle={status => setOpen(previous => previous.includes(status) ? previous.filter(s => s !== status) : [...previous, status])} traced={traced} onTrace={key => setTraced(previous => previous === key ? null : key)} />
       </aside>
     </>
   );
 }
 
-function DiscoveryBody({ c, discovery, open, onToggle }: { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void }) {
+export interface RoleDiscoveryResultsProps { c: RoleDiscoveryCopy; discovery: RoleDiscoveryState; open: RoleLexicalStatus[]; onToggle(status: RoleLexicalStatus): void; traced: string | null; onTrace(key: string): void }
+
+/** The read's state or its result: the semantic state, the scope, the five groups with their roles (and the one traced role). */
+export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onTrace }: RoleDiscoveryResultsProps) {
   if (discovery.state !== "AVAILABLE") {
     const sentence = discovery.state === "BOUNDARY_UNRESOLVED" ? c.boundaryUnresolved(discovery.reason ?? "—")
       : discovery.state === "POOL_NOT_FOUND" ? c.poolNotFound(discovery.jobPoolUploadId ?? "—")
@@ -144,12 +149,18 @@ function DiscoveryBody({ c, discovery, open, onToggle }: { c: RoleDiscoveryCopy;
             </div>
             {expanded && group.roles.map(key => {
               const role = byKey.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}`)!;
+              const roleKey = `${key.jobPoolUploadId}:${key.poolRoleId}`;
+              const tracing = traced === roleKey;
               return (
-                <div key={`${key.jobPoolUploadId}:${key.poolRoleId}`} data-testid="rd-role" data-role-key={`${key.jobPoolUploadId}:${key.poolRoleId}`} data-status={role.status} style={{ display: "flex", flexDirection: "column", gap: "1px", paddingTop: "6px", borderTop: "1px solid rgba(120, 214, 255, 0.08)" }}>
-                  <span style={statement}>{role.title}</span>
+                <div key={roleKey} data-testid="rd-role" data-role-key={roleKey} data-status={role.status} data-traced={tracing ? "true" : "false"} style={{ display: "flex", flexDirection: "column", gap: "1px", paddingTop: "6px", borderTop: "1px solid rgba(120, 214, 255, 0.08)" }}>
+                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "8px" }}>
+                    <span style={statement}>{role.title}</span>
+                    {role.counts.requirements > 0 && <button type="button" data-testid="rd-role-trace" aria-expanded={tracing} onClick={() => onTrace(roleKey)} style={{ ...action, padding: "2px 9px", flexShrink: 0 }}>{tracing ? c.detail.shut : c.detail.open}</button>}
+                  </div>
                   <span style={meta}>{role.organizationName} · {poolName.get(key.jobPoolUploadId)}</span>
                   {role.counts.requirements > 0 && <span data-testid="rd-role-counts" style={meta}>{c.roleCounts(role.counts.nameRelated, role.counts.requirements, role.counts.weakLexicalOnly, role.counts.withoutLexicalRelation)}</span>}
                   {role.counts.required > 0 && <span style={meta}>{c.roleRequired(role.counts.required, role.counts.requiredWithoutLexicalRelation)}</span>}
+                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} />}
                 </div>
               );
             })}
@@ -157,6 +168,47 @@ function DiscoveryBody({ c, discovery, open, onToggle }: { c: RoleDiscoveryCopy;
         );
       })}
     </>
+  );
+}
+
+/**
+ * RD-DETAIL: one role's trace in pool order — each requirement with a name relation: its lexical basis (weak named weak), the
+ * capability proposal, the proposal's source-verified quotes with their source, and the evidence limitation when a quote does not
+ * name the requirement; then the open requirements (no name relation). Nothing is concluded; the semantic state is stated.
+ */
+export function RoleDiscoveryTrace({ c, role, proposals }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"] }) {
+  const related = role.requirements.filter(requirement => requirement.lexical.basis !== "NONE");
+  const open = role.requirements.filter(requirement => requirement.lexical.basis === "NONE");
+  const named = new Map(proposals.map(proposal => [proposal.id, proposal.name] as const));
+  return (
+    <div data-testid="rd-trace" style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(120, 214, 255, 0.12)", background: "rgba(2, 8, 14, 0.55)" }}>
+      <span style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.detail.semantic}</span>
+      {related.map(requirement => {
+        const lexical = requirement.lexical;
+        if (lexical.basis === "NONE") return null;
+        return (
+          <div key={requirement.key.poolRequirementId} data-testid="rd-trace-requirement" data-requirement-id={requirement.key.poolRequirementId} data-basis={lexical.basis} data-proposal-id={lexical.proposalId} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <span style={{ ...statement, fontWeight: 600 }}>{requirement.requirementText}</span>
+            <span style={meta}>{c.detail.level(requirement.necessity, requirement.requiredLevel)}</span>
+            <span data-testid="rd-trace-basis" style={{ ...meta, color: lexical.basis === "WEAK_TOKEN_CONTAINMENT" ? `rgb(${AMBER_RGB})` : "rgba(160, 232, 250, 0.92)" }}>{c.detail.basis[lexical.basis](lexical.matchedConstituent)}</span>
+            <span style={meta}>{c.detail.proposal}: {named.get(lexical.proposalId) ?? lexical.proposalName}</span>
+            {lexical.evidence.length === 0 ? <span style={meta}>{c.detail.noQuote}</span> : lexical.evidence.map((quote, at) => (
+              <blockquote key={at} data-testid="rd-trace-quote" data-source-document-id={quote.sourceDocumentId} style={{ margin: 0, padding: "4px 8px", borderLeft: `2px solid rgba(${CYAN_RGB}, 0.4)`, display: "flex", flexDirection: "column", gap: "1px" }}>
+                <span style={{ ...statement, fontStyle: "italic" }}>“{quote.exactQuote}”</span>
+                <span style={meta}>{c.detail.source}: {quote.sourceDocumentId}</span>
+              </blockquote>
+            ))}
+            {lexical.quoteNamesRequirement === false && <span data-testid="rd-trace-quote-silent" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.detail.quoteSilent}</span>}
+          </div>
+        );
+      })}
+      <div data-testid="rd-trace-open" data-count={open.length} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <span style={kicker}>{c.detail.openTitle(open.length)}</span>
+        {open.length === 0 ? <span style={meta}>{c.detail.openNone}</span> : open.map(requirement => (
+          <span key={requirement.key.poolRequirementId} data-testid="rd-trace-open-requirement" data-requirement-id={requirement.key.poolRequirementId} style={meta}>{requirement.requirementText} · {c.detail.level(requirement.necessity, requirement.requiredLevel)}</span>
+        ))}
+      </div>
+    </div>
   );
 }
 
