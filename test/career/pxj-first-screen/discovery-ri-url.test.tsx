@@ -24,6 +24,7 @@ import { RoleDiscoveryPanel } from "../../../app/components/career/demo/RoleDisc
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
 import { ROLE_INVESTIGATION_URL_PARAM, careerDemoPropsFromSearchParams, careerDemoSearchParamsFromSearch, roleInvestigationIdFromParam } from "../../../lib/career/ui/career-demo-url";
 import { decodeAnalysisResult } from "../../../lib/career/view-model/pxj-first-screen";
+import CareerIntelligenceDemoPage from "../../../app/career/demo/page";
 
 const BASE = "http://127.0.0.1/career/demo";
 const POOLS = [UPLOAD_ALPHA, UPLOAD_ZETA];
@@ -65,6 +66,27 @@ const start = (search: string) => {
 };
 
 describe("RI-URL · the named investigation in the URL", () => {
+  it("REPRODUCE: the real server page threads roleInvestigationId down through CareerDemoHistory → CareerIntelligenceDashboard", async () => {
+    // A real reload runs page.tsx → CareerDemoHistory → CareerIntelligenceDashboard → the field; an explicit prop list missing it
+    // anywhere on that path drops the param silently even though the shared parser and the field itself both already support it
+    // (this harness renders one component at a time, so it checks the prop at each hop rather than the field's deep-rendered markup
+    // — exactly the bug the production walk found: CareerIntelligenceDashboard had no `roleInvestigationId` in its own prop list).
+    const search = `?${RELEASED}&${ROLE_INVESTIGATION_URL_PARAM}=${RINV}`;
+    const page = await CareerIntelligenceDemoPage({ searchParams: Promise.resolve(careerDemoSearchParamsFromSearch(search)) }) as ReactElement<Record<string, unknown>>;
+    expect((page.props.initial as Record<string, unknown>).roleInvestigationId, "page.tsx → initial").toBe(RINV);
+    const tab = browser(`${BASE}?${search.slice(1)}`);
+    vi.stubGlobal("window", tab.window);
+    vi.stubGlobal("localStorage", { getItem: () => "1", setItem: () => undefined });
+    const history = instance<Record<string, unknown>>(page.type);
+    const dashboard = history.settle(page.props) as ReactElement<Record<string, unknown>>;
+    expect(dashboard.props.roleInvestigationId, "CareerDemoHistory → CareerIntelligenceDashboard").toBe(RINV);
+    history.unmount();
+    const { CareerIntelligenceDashboard } = await import("../../../app/components/career/demo/CareerIntelligenceDashboard");
+    const field = instance<Record<string, unknown>>(CareerIntelligenceDashboard).settle(dashboard.props) as ReactElement<Record<string, unknown>>;
+    expect(find(field, SemanticCareerIntelligenceField)!.props.roleInvestigationId, "CareerIntelligenceDashboard → SemanticCareerIntelligenceField").toBe(RINV);
+  });
+
+
   it("REPRODUCE: the shared parser reads only the server's own id format, as a single value", () => {
     expect(roleInvestigationIdFromParam(RINV)).toBe(RINV);
     expect(props(`?roleInvestigationId=${RINV}`).roleInvestigationId).toBe(RINV);
