@@ -92,7 +92,7 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
                   const full = !checked && chosen.length >= DISCOVERY_POOLS_MAX;
                   return (
                     <label key={pool.jobPoolUploadId} data-testid={`rd-pool-${pool.jobPoolUploadId}`} data-released={released?.includes(pool.jobPoolUploadId) ? "true" : "false"} style={{ display: "flex", alignItems: "flex-start", gap: "8px", cursor: active && !full ? "pointer" : "default", opacity: active ? 1 : 0.6 }}>
-                      <input type="checkbox" checked={checked} disabled={!active || full} onChange={() => toggle(pool.jobPoolUploadId)} style={{ marginTop: "3px", accentColor: SIL_TOKENS.colors.cyanActive }} />
+                      <input type="checkbox" checked={checked} disabled={!active || full} onChange={() => toggle(pool.jobPoolUploadId)} style={{ flex: "0 0 auto", width: "14px", height: "14px", margin: "3px 0 0", padding: 0, accentColor: SIL_TOKENS.colors.cyanActive }} />
                       <span style={{ display: "flex", flexDirection: "column", gap: "1px", minWidth: 0 }}>
                         <span style={statement}>{pool.poolName}</span>
                         <span style={meta}>{c.poolRoles(pool.roleCount)} · v{pool.poolVersion} · {active ? pool.jobPoolUploadId : c.poolInactive(pool.poolStatus)}{released?.includes(pool.jobPoolUploadId) ? ` · ${c.released}` : ""}</span>
@@ -221,12 +221,13 @@ export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate }: { c: R
   );
 }
 
-/** The explicit entry (recovery §8: "DISCOVER JOBS", reachable near orbit 04 Role Manifestation, below it); the orbit's own HUD
- *  actions stay as they are. */
+/** The explicit entry (recovery §8: "DISCOVER JOBS"; the orbit's own HUD actions stay as they are). It stands where the panel will
+ *  open — the right column below the telemetry bar: below orbit 04 it covered that orbit at 1600 × 900, 1440 × 900 and 1280 × 720
+ *  (measured); in the stack it takes its place in the column (career-demo-layout.ts). */
 export function RoleDiscoveryEntry({ locale, onOpen }: { locale: SilLocale; onOpen(): void }) {
   const c = ROLE_DISCOVERY_COPY[locale];
   return (
-    <div data-testid="rd-entry" data-sx-shell="rd-entry" style={{ position: "absolute", left: "50%", bottom: "28px", transform: "translateX(-50%)", zIndex: 31, display: "flex", alignItems: "center", gap: "12px", maxWidth: "min(560px, calc(100vw - 48px))", boxSizing: "border-box", padding: "6px 8px 6px 14px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.94))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)", backdropFilter: "blur(10px)" }}>
+    <div data-testid="rd-entry" data-sx-shell="rd-entry" style={{ position: "absolute", right: "24px", top: "180px", zIndex: 31, display: "flex", alignItems: "center", gap: "12px", width: "min(400px, 29vw)", boxSizing: "border-box", padding: "8px 8px 8px 14px", borderRadius: "14px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.94))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)", backdropFilter: "blur(10px)" }}>
       <span style={{ ...meta, color: "rgba(196, 222, 236, 0.92)" }}>{c.entryHint}</span>
       <button type="button" data-testid="rd-open" onClick={onOpen} style={{ ...action, flexShrink: 0 }}>{c.entry}</button>
     </div>
