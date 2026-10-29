@@ -39,12 +39,12 @@ describe("UX-04 · the closed Capability Field says why and how it opens", () =>
     const en = field({ investigationMode: "PERSON_X_JOB" });
     expect(tag(en, "capability-gate-reason")).toContain('data-gate="NONE"');
     expect(textOf(en, "capability-gate-cause")).toBe("PERSON × JOB needs a valid role selected as the job: none is selected");
-    expect(textOf(en, "capability-gate-way")).toBe("Way: open a role in the Job Field, then SELECT AS JOB");
+    expect(textOf(en, "capability-gate-way")).toBe("Way: PERSON needs no job — choose it above; PERSON × JOB needs a role opened in the Job Field, then SELECT AS JOB");
     expect(tag(en, "field-focus-capability-btn")).toContain('aria-describedby="capability-gate-reason"');
     expect(tag(en, "syntx-exit-btn")).toContain('aria-describedby="capability-gate-reason"');
     const de = field({ investigationMode: "PERSON_X_JOB", initialLocale: "de" });
     expect(textOf(de, "capability-gate-cause")).toBe("PERSON × JOB braucht eine gültige Rolle als gewählten Job: keine ist gewählt");
-    expect(textOf(de, "capability-gate-way")).toBe("Weg: im Job-Feld eine Rolle öffnen, dann ALS JOB WÄHLEN");
+    expect(textOf(de, "capability-gate-way")).toBe("Weg: PERSON braucht keinen Job — oben wählen; PERSON × JOB braucht eine im Job-Feld geöffnete Rolle, dann ALS JOB WÄHLEN");
   });
 
   it("REPRODUCE: a job still checked and an invalid job are named as such; JOB says it has no person field", () => {

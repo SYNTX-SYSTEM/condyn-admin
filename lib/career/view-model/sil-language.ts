@@ -480,7 +480,7 @@ export const SIL_COPY = {
       title: "JOB FIELD",
       toggle: "⬡ JOB FIELD",
       /** The field selector of the application shell: two equal fields of one system. */
-      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD", capabilityGated: "Select a job in the Job Field first (open a role, then SELECT AS JOB)" },
+      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD", capabilityGated: "PERSON needs no job: choose it above. PERSON × JOB needs a valid role selected as the job — open one in the Job Field, then SELECT AS JOB" },
       /** UX-04: why the Capability Field is closed and the way to open it, visible at the shell (the gate itself is unchanged). */
       gate: {
         label: "CAPABILITY FIELD CLOSED",
@@ -491,7 +491,7 @@ export const SIL_COPY = {
           JOB: "JOB investigates the job only: no person field in this mode"
         },
         way: {
-          NONE: "Way: open a role in the Job Field, then SELECT AS JOB",
+          NONE: "Way: PERSON needs no job — choose it above; PERSON × JOB needs a role opened in the Job Field, then SELECT AS JOB",
           CHECKING: "Way: wait for the check; it opens once the job is valid",
           INVALID: "Way: open a valid role in the Job Field, then SELECT AS JOB",
           JOB: "Way: choose PERSON or PERSON × JOB as the investigation boundary"
@@ -1361,7 +1361,7 @@ export const SIL_COPY = {
     syntx: {
       title: "JOB-FELD",
       toggle: "⬡ JOB-FELD",
-      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD", capabilityGated: "Zuerst im Job-Feld einen Job wählen (Rolle öffnen, dann ALS JOB WÄHLEN)" },
+      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD", capabilityGated: "PERSON braucht keinen Job: wähle ihn oben. PERSON × JOB braucht eine gültige Rolle als gewählten Job — öffne eine im Job-Feld, dann ALS JOB WÄHLEN" },
       gate: {
         label: "CAPABILITY-FELD GESCHLOSSEN",
         reason: {
@@ -1371,7 +1371,7 @@ export const SIL_COPY = {
           JOB: "JOB untersucht nur den Job: kein Personenfeld in diesem Modus"
         },
         way: {
-          NONE: "Weg: im Job-Feld eine Rolle öffnen, dann ALS JOB WÄHLEN",
+          NONE: "Weg: PERSON braucht keinen Job — oben wählen; PERSON × JOB braucht eine im Job-Feld geöffnete Rolle, dann ALS JOB WÄHLEN",
           CHECKING: "Weg: die Prüfung abwarten; es öffnet sich, sobald der Job gültig ist",
           INVALID: "Weg: im Job-Feld eine gültige Rolle öffnen, dann ALS JOB WÄHLEN",
           JOB: "Weg: PERSON oder PERSON × JOB als Untersuchungsgrenze wählen"
