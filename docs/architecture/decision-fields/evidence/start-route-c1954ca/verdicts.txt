@@ -1,0 +1,42 @@
+PINK §3.74 · c1954ca on recovery/role-discovery (3231136 explicit start route + c1954ca test correction, on 6823e93). STAND_IN only, no Gemini.
+Classes: DETERMINISTIC (route probe on a disposable DB via test:isolated, stand-in calls counted) · STAND_IN (PINK production lab :41873 on
+c1954ca with ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in, counts from the lab's own disposable DB) · CODE_INSPECTION.
+
+STATIC                 PASS   tsc 0; job-pool group 27 files 287 passed 4 skipped, twice (= GELB). The red run of 3231136 is not reproduced (group,
+                              file alone, writers first: all green); the correction (before / after instead of absolute zero) is sound — the
+                              files run one after another (fileParallelism false), so the comparison is stable
+1 Reads                PASS   route: discovery GET over 1 / 3 pools, PxJ GET, investigation GET (unknown, malformed) — calls 0, investigations,
+                              tasks, ledger and relations unchanged; with "gemini" configured the plan reads ENGINE_NOT_SPECIFIED. Lab: page
+                              views at 1920 (panel, release, trace, reload, Back / Forward, handover) and, after a start, at 1280 — rows and
+                              ledger unchanged, Gemini stand-in log 6 → 6; no UI code calls the POST route
+2 Refusals             PASS   33 cases, 0 calls, nothing written: no / foreign configuration (409), non-JSON / array / null body, roles not an
+                              array, empty, duplicate, padded or other-case id, unknown role, role of a pool not released or under another
+                              upload id, unknown pool, duplicate pools, 11 pools, no pools, PxJ (409 NOT_PERSON, also over HTTP), unknown
+                              analysis, confirmedCalls 1 / 99 / −2 (409 callsNeeded=2), "2" / 2.5 / missing, clientRequestId empty / padded /
+                              number, 26 roles with MAX 100 configured (max=25), 11 roles by default (max=10). INACTIVE pool: not exercisable
+                              (the pool schema refuses it at upload); the code path is the shared operand rule
+3 Idempotency / race   PASS   the same body (also with confirmedCalls now 0 or 99, roles reversed, an unknown extra field) returns the stored
+                              investigation, created false, nothing written; 8 parallel identical starts → 1 created, 1 investigation, 2 calls
+                              for 2 roles
+4 One attempt / budget PASS   first start: 2 roles, 2 calls, reserved = consumed; day limit 0 → BUDGET_EXHAUSTED, CANCELLED, CANCELLED, 0 calls,
+                              0 relations, 0 reserved, status FAILED; limit = used + 1 → SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED, 1 call,
+                              PARTIAL; a provider failure on role 2 → SUCCEEDED, FAILED (ERR_PROVIDER_TIMEOUT, unit released), SUCCEEDED,
+                              PARTIAL, the first role's relations kept
+5 Cache reuse          PASS   a new request id for the same roles: the old confirmation 2 is refused (callsNeeded 0); with 0 → CACHED, CACHED,
+                              COMPLETED, 0 calls, 0 reserved, 0 relations
+6 Evidence class       PASS   201 says evidenceClass STAND_IN; every stored investigation names provider stand-in, every stored relation record
+                              engine provider stand-in; config READY only for "stand-in" ("STAND-IN", "gemini" refused); the provider is always
+                              the stand-in class. O-START-2: the replay (200, created false) and GET …/investigations/{id} carry no evidenceClass
+7 No model texts       PASS   POST 201, replays, GET investigation, discovery GET after a run, a failed role: no relationExplanation,
+                              evidenceLimitation, raw text, refusals or stand-in wording; tasks carry status, errorCode, pairs, stored only
+O-START-1 (obs.)       OBS    no origin / content-type check: a cross-site text/plain POST (Origin elsewhere, sec-fetch-site cross-site) starts
+                              an investigation (201, 1 call) in the lab. Same for every POST route of the app (no middleware; local-auth items
+                              open). Harmless with the stand-in; a precondition before any real provider is authorised
+O-START-3 (obs.)       OBS    configuration falls open: ROLE_DISCOVERY_DAY_LIMIT missing, "abc", "−1" or "2.5" → 1000 (only "" gives 0); "1e9" →
+                              100000. Suggest missing or invalid → not configured (or 0) before a real provider
+O-START-4 (obs.)       OBS    two different request ids for the same pending roles at the same time both pay: 4 calls for 2 roles (relations
+                              stored once). Each stays within its own confirmed count and the day limit
+O-START-5 (obs.)       OBS    after a run the panel still reads "Semantic check: not executed · 108 of 948 pairs in the relation cache · would
+                              need 8 calls · not started" — true for this view, but it can read as if nothing ever ran (GRÜN wording)
+O-START-6 (obs.)       OBS    the POST runs the whole investigation inside the request; a process end mid-run leaves it RUNNING (nothing
+                              resumes by itself, as specified). Matters for a real provider (up to 25 sequential calls)

@@ -3528,6 +3528,37 @@ No Gemini call.
 
 **Run record.** `evidence/guard-render-6823e93/`: verdicts.txt, measurements.txt, scripts/ (three probes as .txt), manifest.sha256.
 
+### 3.74 Explicit start route of the semantic investigation on `c1954ca` (2026-10-29)
+
+**Request.** GELB asked for an independent, inverse check of the explicit start route on `recovery/role-discovery`: feature `3231136` plus the test correction `c1954ca`, stand-in only, no Gemini. The route is `POST …/role-discovery/investigations`; `GET …/investigations/{id}` reads. Operand loading is now shared between the read route and the start route. There is a single configuration source, `semantic-config.ts`, and a runner that works role by role. Seven points to check, plus the correction of the red group test.
+
+**Method.**
+- A route probe on a disposable database via `test:isolated`. It calls the handlers directly and counts stand-in calls on the provider.
+- A PINK stand-in production lab on `c1954ca` with the provider configured. Counts come from the lab's own database, plus the Gemini stand-in log.
+- Code inspection.
+
+**Verdicts (`evidence/start-route-c1954ca/verdicts.txt`).**
+- **Static: PASS.** tsc 0. The job-pool group passes 27 files with 287 tests, twice. The red run of `3231136` is not reproduced; the correction is sound, because test files run one after another.
+- **1 Reads: PASS.** No route read and no page view writes an investigation, task, ledger entry or relation. Page views at both widths, before and after a run, leave the Gemini stand-in log at 6 → 6. No UI code calls the POST route.
+- **2 Refusals: PASS.** 33 cases, with no call and no write. They cover configuration, body, roles, pools, PxJ, analysis, call confirmation, request id and the cap of 25. An inactive pool cannot be created by upload, so that path was not exercised.
+- **3 Idempotency / race: PASS.** The same request returns the stored investigation even when the confirmed calls changed or the roles are reordered. Eight parallel identical starts create one investigation with 2 calls.
+- **4 One attempt / budget: PASS.**
+  - Day limit 0: BUDGET_EXHAUSTED, then CANCELLED, with 0 calls and nothing stored.
+  - Limit exhausted mid-run: SUCCEEDED, BUDGET_EXHAUSTED, CANCELLED.
+  - A failing role keeps the earlier role's relations and releases its own unit.
+- **5 Cache reuse: PASS.** A new request id with 0 confirmed calls gives all CACHED and no call; the stale confirmation is refused.
+- **6 Evidence class: PASS.** The created response says STAND_IN, and every stored investigation and relation names the stand-in. A real provider is not configurable.
+  - **O-START-2:** the replay and the investigation GET carry no evidenceClass.
+- **7 No model texts: PASS.** No response carries explanation, limitation, raw text or refusals.
+- **Observations.**
+  - **O-START-1:** a cross-site text/plain POST starts an investigation. There is no origin or content-type check, the same as for every POST route of the app. Precondition before any real provider.
+  - **O-START-3:** a missing or invalid day limit falls back to 1000.
+  - **O-START-4:** two different requests for the same pending roles at the same time both pay.
+  - **O-START-5:** after a run the panel still reads "not executed".
+  - **O-START-6:** the run happens inside the request, and a process end mid-run leaves the investigation RUNNING.
+
+**Run record.** `evidence/start-route-c1954ca/`: verdicts.txt, measurements.txt, scripts/ (route probe and lab probe as .txt), manifest.sha256. No screenshots (the trace shows CV quotes).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

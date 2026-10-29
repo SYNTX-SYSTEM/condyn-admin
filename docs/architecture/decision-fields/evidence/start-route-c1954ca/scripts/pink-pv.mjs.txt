@@ -1,0 +1,28 @@
+// PINK c1954ca page-view probe (STAND-IN lab only): DB rows + ledger + Gemini stand-in log before / after page views, then one explicit
+// HTTP start as positive control, then page views again. argv: <state.json> <repo> <out dir> <person analysis> <pxj analysis> <phase: count|start|csrf>
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, PA, XA, PHASE] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab");
+const postgres = (await import(pathToFileURL(`${ROOT}/node_modules/postgres/src/index.js`).href)).default;
+const u = new URL(process.env.TEST_DATABASE_ADMIN_URL); u.pathname = `/${st.database}`; if (!/^condyn_test_[0-9a-f]+$/.test(st.database)) throw new Error("not a disposable db");
+const sql = postgres(u.toString(), { max: 1, onnotice: () => {} });
+const LOG = STATE.replace(/state\.json$/, "standin.jsonl"); const gem = () => { try { return readFileSync(LOG, "utf8").split("\n").filter(Boolean).length; } catch { return 0; } };
+const count = async () => { const r = { geminiStandInCalls: gem() };
+  for (const t of ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger", "career_proposal_requirement_relations"]) { const [{ e }] = await sql.unsafe(`SELECT to_regclass('${t}') IS NOT NULL AS e`); r[t.replace("career_", "")] = e ? (await sql.unsafe(`SELECT count(*)::int AS n FROM ${t}`))[0].n : "absent"; }
+  if (r.relation_call_ledger !== "absent") { const [l] = await sql`SELECT coalesce(sum(reserved),0)::int AS r, coalesce(sum(consumed),0)::int AS c FROM career_relation_call_ledger`; r.ledgerReserved = l.r; r.ledgerConsumed = l.c; } return r; };
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5"; const out = { phase: PHASE, at: await count() };
+const base = `${st.base}/api/career/analyses/${PA}/role-discovery`;
+if (PHASE === "start" || PHASE === "csrf") {
+  const disc = (await (await fetch(`${base}?jobPoolUploadId=${DLL}`)).json()).discovery; const roles = disc.roles.filter(r => r.counts.requirements > 0).map(r => r.key);
+  const pick = PHASE === "start" ? roles.slice(0, 1) : roles.slice(1, 2); const need = disc.semanticPlan.roles.filter(r => pick.some(p => p.poolRoleId === r.poolRoleId)).filter(r => r.pendingPairs > 0).length;
+  const headers = PHASE === "start" ? { "content-type": "application/json" } : { "content-type": "text/plain;charset=UTF-8", origin: "http://elsewhere.example", "sec-fetch-site": "cross-site" };
+  const r = await fetch(`${base}/investigations`, { method: "POST", headers, body: JSON.stringify({ jobPoolUploadIds: [DLL], roles: pick, clientRequestId: `pink-${PHASE}`, confirmedCalls: need }) });
+  const j = await r.json(); out.post = { headers: PHASE, status: r.status, created: j.created ?? null, evidenceClass: j.evidenceClass ?? null, inv: j.investigation?.status ?? j.issues?.[0]?.code, tasks: j.tasks?.map(t => t.status), confirmed: need, textLeak: /STAND-IN rule|no model read|relationExplanation|evidenceLimitation/.test(JSON.stringify(j)) };
+  if (PHASE === "start") { const g = await fetch(`${base}/investigations/${j.investigation.investigationId}`); out.getInvestigation = { status: g.status, textLeak: /STAND-IN rule|no model read|relationExplanation|evidenceLimitation/.test(await g.text()) }; }
+  // the PxJ analysis can never start
+  const x = await fetch(`${st.base}/api/career/analyses/${XA}/role-discovery/investigations`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ jobPoolUploadIds: [DLL], roles: pick, clientRequestId: "pink-pxj", confirmedCalls: need }) });
+  out.pxjPost = `${x.status} ${(await x.json()).issues?.[0]?.code}`;
+  out.after = await count();
+}
+await sql.end(); writeFileSync(`${OUT}/pv-${PHASE}-${Date.now()}.json`, JSON.stringify(out, null, 1)); console.log("PV", JSON.stringify(out));
