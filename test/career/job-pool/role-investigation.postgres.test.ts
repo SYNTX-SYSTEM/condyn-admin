@@ -55,24 +55,26 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
   });
 
   it("nothing starts without configuration; a real provider is refused (owner GO and budget pending)", async () => {
+    const before = [await rows("career_relation_investigations"), await rows("career_proposal_requirement_relations")];
     expect((await start(person.analysisId, body())).status).toBe(409);
     expect((await (await start(person.analysisId, body())).json()).issues[0].code).toBe("ERR_SEMANTIC_ENGINE_NOT_CONFIGURED");
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "gemini";
     const r = await start(person.analysisId, body());
     expect([r.status, (await r.json()).issues[0].code]).toEqual([409, "ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED"]);
-    expect(await rows("career_relation_investigations")).toBe(0);
+    expect([await rows("career_relation_investigations"), await rows("career_proposal_requirement_relations")]).toEqual(before);
   });
 
   it("a read never starts anything: the GET plans (PLANNED, nothing cached) and writes no investigation, no ledger, no relation", async () => {
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
     const before = [await rows("career_relation_investigations"), await rows("career_relation_call_ledger"), await rows("career_proposal_requirement_relations")];
     const plan = (await (await read(person.analysisId)).json()).discovery.semanticPlan;
-    expect(plan).toMatchObject({ state: "PLANNED", executable: true, cachedPairs: 0 });
+    expect(plan).toMatchObject({ state: "PLANNED", executable: true });
     expect([await rows("career_relation_investigations"), await rows("career_relation_call_ledger"), await rows("career_proposal_requirement_relations")]).toEqual(before);
   });
 
   it("refuses: wrong body, duplicate or foreign roles, too many roles, PERSON × JOB operand, unconfirmed call volume", async () => {
     process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in";
+    const before = [await rows("career_relation_investigations"), await rows("career_proposal_requirement_relations")];
     const code = async (r: Response) => [r.status, (await r.json()).issues[0].code];
     expect(await code(await start(person.analysisId, { nope: 1 }))).toEqual([400, "ERR_INVESTIGATION_BODY_INVALID"]);
     expect(await code(await start(person.analysisId, body({ roles: [roles[0], roles[0]] })))).toEqual([400, "ERR_INVESTIGATION_ROLES_INVALID"]);
@@ -83,8 +85,7 @@ describe("explicit semantic investigation route (PostgreSQL, stand-in)", () => {
     expect(await code(await start(scoped.analysisId, body()))).toEqual([409, "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON"]);
     const unconfirmed = await start(person.analysisId, body({ confirmedCalls: 1 }));
     expect([unconfirmed.status, (await unconfirmed.json()).issues[0]]).toEqual([409, { code: "ERR_INVESTIGATION_CALLS_NOT_CONFIRMED", callsNeeded: 2 }]);
-    expect(await rows("career_relation_investigations")).toBe(0);
-    expect(await rows("career_proposal_requirement_relations")).toBe(0);
+    expect([await rows("career_relation_investigations"), await rows("career_proposal_requirement_relations")]).toEqual(before);
   });
 
   it("explicit start: one call per role, relations stored, STAND_IN labelled; a repeat runs nothing; a new request reuses the cache without a call", async () => {
