@@ -1,0 +1,62 @@
+[
+  {
+    "vname": "1920x1080",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  },
+  {
+    "vname": "1600x900",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  },
+  {
+    "vname": "1440x900",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  },
+  {
+    "vname": "1280x720",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  },
+  {
+    "vname": "zoom200-1920x1080",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  },
+  {
+    "vname": "zoom200-1280x720",
+    "checks": {
+      "wayNamesBoth": true,
+      "tooltipNamesBoth": true,
+      "personOpensGateNoJob": true,
+      "droppedFileStaged": true,
+      "discoveryPanelOpens": "no PERSON result on view (no analysis to discover from) — expected without an ANALYZE run"
+    }
+  }
+]

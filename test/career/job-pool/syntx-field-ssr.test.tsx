@@ -50,7 +50,7 @@ describe("SYNTX field (server-rendered)", () => {
     const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} analysisId="ANL_TEST" />);
     expect(html).toContain('data-field-focus="FIELD"');
     expect(html).toContain('data-capability-gate="AWAITING_JOB"');
-    expect(html).toMatch(/data-testid="field-focus-capability-btn"[^>]*data-field-focus-active="false"[^>]*data-field-gate="AWAITING_JOB"[^>]*aria-pressed="false"[^>]*disabled=""[^>]*aria-disabled="true"[^>]*title="Select a job in the Job Field first/);
+    expect(html).toMatch(/data-testid="field-focus-capability-btn"[^>]*data-field-focus-active="false"[^>]*data-field-gate="AWAITING_JOB"[^>]*aria-pressed="false"[^>]*disabled=""[^>]*aria-disabled="true"[^>]*title="PERSON needs no job/);
     expect(html).toMatch(/data-testid="job-pool-panel-toggle"[^>]*data-field-focus-active="true"/);
     expect(html).toContain("⬡ JOB FIELD");
     expect(html).toContain('data-testid="syntx-field"');

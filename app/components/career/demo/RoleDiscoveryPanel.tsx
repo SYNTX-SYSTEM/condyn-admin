@@ -52,9 +52,13 @@ export interface RoleDiscoveryPanelProps {
   investigation?: InvestigationState;
   onStart?(roles: InvestigationRoleKey[], confirmedCalls: number): void;
   onReread?(): void;
+  /** DLL-full path review point 2: no pool is uploaded yet — the existing field switch to the Job Field (the same action
+   *  the SYNTX field selector's own toggle takes), so the dead-end text gets a real way out. Omitted keeps the old,
+   *  text-only behaviour (e.g. a caller that has no field switch to offer). */
+  onGoToJobField?(): void;
 }
 
-export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose, onInvestigate, investigation, onStart, onReread }: RoleDiscoveryPanelProps) {
+export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelease, onClose, onInvestigate, investigation, onStart, onReread, onGoToJobField }: RoleDiscoveryPanelProps) {
   const c = ROLE_DISCOVERY_COPY[locale];
   const [ticked, setTicked] = useState<string[]>(() => [...(released ?? [])]);
   const [open, setOpen] = useState<RoleLexicalStatus[]>(() => ROLE_DISCOVERY_STATUSES.filter(status => !FOLDED.includes(status)));
@@ -93,7 +97,12 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
           <span style={kicker}>{c.poolsTitle}</span>
           <span style={meta}>{c.poolsHint}</span>
           {pools.state === "IDLE" || pools.state === "LOADING" ? <span style={meta}>{c.poolsLoading}</span>
-            : pools.state === "EMPTY" ? <span style={meta}>{c.poolsEmpty}</span>
+            : pools.state === "EMPTY" ? (
+              <>
+                <span style={meta}>{c.poolsEmpty}</span>
+                {onGoToJobField && <button type="button" data-testid="rd-pools-go-to-job-field" onClick={onGoToJobField} style={{ ...action, alignSelf: "flex-start" }}>{c.poolsGoToJobField}</button>}
+              </>
+            )
             : pools.state === "NOT_PROVISIONED" ? <span style={meta}>{c.poolsNotProvisioned}</span>
             : pools.state === "FAILED" ? <span style={meta}>{c.poolsFailed}</span>
             : (

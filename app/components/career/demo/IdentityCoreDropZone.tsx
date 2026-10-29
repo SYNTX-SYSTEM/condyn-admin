@@ -7,7 +7,9 @@ import { SyntxCoreOrganism } from "./manifestation/SyntxCoreOrganism";
 
 export interface IdentityCoreDropZoneProps {
   sources: DemoSourceItem[];
-  onDropSource?: (source: { title: string; kind: string }) => void;
+  /** DLL-full path review point 3: the real dropped file (GELB decision — forward it, never invent one). Omitted keeps the
+   *  drop inert; the drag-over label then only lights up, it never claims to accept a file it cannot stage. */
+  onDropFile?: (file: File) => void;
   isCommunicating?: boolean;
 }
 
@@ -15,7 +17,7 @@ export interface IdentityCoreDropZoneProps {
  * CONDYN / SYNTX — Semantic Interface Language (SIL v2.5 Phase 2b)
  * IdentityCoreDropZone: The living central star organism of the Bedeutungsraum.
  */
-export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = false }: IdentityCoreDropZoneProps) {
+export function IdentityCoreDropZone({ sources, onDropFile, isCommunicating = false }: IdentityCoreDropZoneProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -37,9 +39,8 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
       onDrop={(e) => {
         e.preventDefault();
         setIsDragging(false);
-        if (onDropSource) {
-          onDropSource({ title: "dropped-source.pdf", kind: "PDF" });
-        }
+        const file = e.dataTransfer.files[0];
+        if (file && onDropFile) onDropFile(file);
       }}
     >
         {/* Center Logo Emblem */}
@@ -90,7 +91,7 @@ export function IdentityCoreDropZone({ sources, onDropSource, isCommunicating = 
               letterSpacing: "0.5px"
             }}
           >
-            {isDragging ? "⚡ DROP SOURCE NOW" : `◈ ${sources.length} SOURCES ACTIVE`}
+            {isDragging && onDropFile ? "⚡ DROP SOURCE NOW" : isDragging ? "◈ DROP NOT AVAILABLE HERE" : `◈ ${sources.length} SOURCES ACTIVE`}
           </div>
         </div>
     </SyntxCoreOrganism>

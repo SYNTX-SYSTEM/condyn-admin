@@ -9,7 +9,7 @@ import {
   SilOrbitEmptyState,
   SilOrbitEmptyStateCopy
 } from "./SilOrbitEmptyState";
-import { SourceDock } from "./SourceDock";
+import { SourceDock, type SourceDockHandle } from "./SourceDock";
 import { SemanticGuideDrawer } from "./SemanticGuideDrawer";
 import { SystemCodexModal } from "./SystemCodexModal";
 import { GuidedOnboardingOverlay } from "./GuidedOnboardingOverlay";
@@ -616,6 +616,9 @@ export function SemanticCareerIntelligenceField({
   };
   const [inferenceTelemetry, setInferenceTelemetry] = useState<any>(initialAnalysisState?.inferenceTelemetry ?? null);
   const [lastStagedDocs, setLastStagedDocs] = useState<any[]>([]);
+  /** DLL-full path review point 3: SourceDock owns its own staged-file state; a drop on the identity core reaches the same
+   *  intake (stageFile) this ref exposes — no new validation, the exact path the file button already uses. */
+  const sourceDockRef = React.useRef<SourceDockHandle>(null);
   const [isCodexOpen, setIsCodexOpen] = useState(false);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
@@ -976,7 +979,7 @@ export function SemanticCareerIntelligenceField({
         pointerEvents: isOrbitStageFocus ? "none" : "auto",
         transition: "transform 0.62s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.56s ease, filter 0.56s ease"
       }}>
-        <SourceDock onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} analyzeBlockedMessage={analyzeBlockedMessage} investigation={{ mode: investigationMode, label: `${investigationCopy.group} · ${investigationCopy.modes[investigationMode]}`, hint: investigationCopy.hints[investigationMode] }} />
+        <SourceDock ref={sourceDockRef} onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} locale={locale} analyzeBlockedMessage={analyzeBlockedMessage} investigation={{ mode: investigationMode, label: `${investigationCopy.group} · ${investigationCopy.modes[investigationMode]}`, hint: investigationCopy.hints[investigationMode] }} />
       </div>
 
       {/* Telemetry Ingestion Status Banner */}
@@ -1284,7 +1287,7 @@ export function SemanticCareerIntelligenceField({
                 transition: "all 0.5s ease"
               }}
             >
-              <IdentityCoreDropZone sources={activeData.sources} isCommunicating={!!focusedStageId} />
+              <IdentityCoreDropZone sources={activeData.sources} isCommunicating={!!focusedStageId} onDropFile={file => sourceDockRef.current?.stageFile(file)} />
             </div>
 
             {/* Orbiting Resonance Bubbles */}
@@ -1731,7 +1734,8 @@ export function SemanticCareerIntelligenceField({
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
           <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole}
-            investigation={semanticInvestigation.state} onStart={startSemanticInvestigation} onReread={() => setDiscoveryRevision(previous => previous + 1)} />
+            investigation={semanticInvestigation.state} onStart={startSemanticInvestigation} onReread={() => setDiscoveryRevision(previous => previous + 1)}
+            onGoToJobField={() => switchFieldFocus("FIELD")} />
         </div>
       )}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (
