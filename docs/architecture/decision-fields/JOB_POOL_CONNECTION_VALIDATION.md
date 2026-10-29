@@ -3473,6 +3473,32 @@ No Gemini call.
 
 **Run record.** `evidence/role-layer-c670b74/`: verdicts.txt, measurements.txt, shots/ (2, real, no quote on view), scripts/ and manifest.sha256.
 
+### 3.72 Claim guard, ledger direction and database guards on `6c65d0c` (2026-10-29)
+
+**Request.** GELB asked for a re-check of `6c65d0c` on `recovery/role-discovery`, one commit on `c670b74` that fixes §3.71: a word-based, operand-aware claim guard (D-ENG-3), forward-only investigation status (D-LED-1), consume and release only on the own reservation (D-LED-2), the latest day limit (O-LED-1) and database guard triggers that the registration verifies (O-LED-2). GELB also asked whether any place in the UI would show these texts differently.
+
+**Method.** Scratch probes on disposable databases via `test:isolated` (engine, store / ledger, guard registration, guard vs. rendering) and code inspection. No lab: the commit changes three files in `lib/career/job-pool` and two test files, nothing under app, components or the UI library. No Gemini call.
+
+**Verdicts (`evidence/ledger-guard-6c65d0c/verdicts.txt`).**
+- **Static: PASS.** tsc reports 0 errors. The job-pool group passes 26 files, 258 tests, 4 skipped (equal to GELB's figures); the §3.71 focused group passes 78 files, 675 tests. Counter-proof: the two changed test files fail 16 cases on `c670b74`.
+- **D-ENG-3: PASS.** 0 of 586 real requirement names are refused and no role is affected. All 31 claims of §3.70 are still refused and all 23 neutral texts are admitted. Structural admission, C-1, the one-attempt outcomes and the identity guard are unchanged.
+- **D-ENG-4 (new): FAIL, narrow.** The guard and the rendering diverge, so an admitted text can still show a claim:
+  - operands are removed as raw substrings, so with the real alias "Go" the text "A good fit." is admitted;
+  - invisible format and mark characters (U+034F, U+2061–U+2064, U+180E, variation selectors, tag characters) and bidi overrides with reversed text are neither stripped nor refused;
+  - percent and ratio look-alikes (٪, ‰, ⁄, ∕) pass;
+  - for a later Markdown or HTML rendering, also markup and entities.
+  Cache rows are immutable, so an admitted text can never be corrected. Suggested: whole-word operand removal, refusing such characters, wider percent and ratio classes, and plain-text rendering in a later UI.
+- **O-ENG-4 (observation).** Evaluative wording outside the lists is admitted ("Excellent fit", "Top candidate", "Rated 4.5 stars", "passendes Profil", "Die Person ist kompetent", 16 of 21). The extent of a list guard is an owner question.
+- **UI (GELB's question): PASS, code inspection.** No UI file reads the explanation, the limitation, the relation states or the engine and store; both are imported only inside `lib/career/job-pool`. No surface shows these texts today, so none shows them differently. The difference that will matter when one does is D-ENG-4: the guard judges the text without its operands and invisible characters, while the browser shows it with them.
+- **D-LED-1: PASS.** In the store and on the database (trigger), a backward step, an identity change and a delete are refused.
+- **D-LED-2: PASS.** A foreign release or consume raises ERR_LEDGER_NO_RESERVATION; both rows stay unchanged.
+- **O-LED-1: PASS.** A day limit lowered to 0 refuses the reservation and is committed although refused, never below what is outstanding.
+- **O-LED-3 (new observation).** "Latest" means the latest call: a caller with the old configuration raises the day limit back to 5.
+- **O-LED-2: PASS.** The triggers are present on all three tables. Delete, backward status and decreasing counters are refused, `session_replication_role` is denied, and a dropped trigger is re-created by the next registration.
+- **O-LED-4 (new observation).** The registration does not notice a disabled trigger. A table owner can disable the trigger; the registration still reports REGISTERED, and a counter decrease and a delete then succeed. This also holds for the relation-cache triggers, since `600c7c1`.
+
+**Run record.** `evidence/ledger-guard-6c65d0c/`: verdicts.txt, measurements.txt, scripts/ (four probes as .txt) and manifest.sha256.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

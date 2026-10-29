@@ -1,0 +1,54 @@
+PINK §3.72 · 6c65d0c on recovery/role-discovery (one commit on c670b74; GELB fix of §3.71: D-ENG-3, D-LED-1, D-LED-2, O-LED-1, O-LED-2).
+Classes: DETERMINISTIC / MEASUREMENT (scratch probes on disposable condyn_test_* DBs via test:isolated) · CODE_INSPECTION. No Gemini, no lab
+needed: the commit touches 3 files in lib/career/job-pool and 2 test files, none under app / components / lib/career/ui.
+
+STATIC                 PASS   tsc 0; job-pool group 26 files 258 passed 4 skipped (= GELB); focused group of §3.71 78 files 675 passed 4 skipped;
+                              counter-proof: 6c65d0c's two changed test files on c670b74 code → 16 failed (4 store / ledger, 12 claim guard)
+D-ENG-3                PASS   over-blocking gone: 0 of 586 real requirement names refused, 0 roles affected (13 names with digits among them);
+                              every §3.70 bypass still refused (31 / 31 claims); 23 / 23 neutral texts admitted (one, approved, improve,
+                              provenance, Frankfurt, Yorkshire, underscore, competition, K8s, S3, OAuth 2.0, Level L3, ISO 27001, C++17 …);
+                              structural admission, C-1 (86 roles), one-attempt outcomes and the identity guard unchanged
+D-ENG-4 (new)          FAIL   narrow — guard and rendering diverge, so a text the guard admits can still show a claim:
+                              (a) operands are removed as raw substrings: with the real alias "Go", "A good fit." becomes "A  od fit." and is
+                                  admitted (1 of 209 short real operands; the rendered text still reads "A good fit.");
+                              (b) invisible format / mark characters are neither stripped nor refused: U+034F, U+2061–U+2064, U+180E, U+FE0F,
+                                  tag characters, a combining stroke inside a word, and bidi overrides / isolates (U+202E, U+2067 with the
+                                  text reversed) — all admitted; all but the stroke render as "A good fit.";
+                              (c) percent / ratio look-alikes: ٪ (U+066A), ‰, ⁄ (U+2044), ∕ (U+2215) admitted;
+                              (d) only relevant if a later UI renders Markdown or HTML: "**g**ood fit", "&#103;ood fit", "87&#37;" admitted.
+                              Weight: rows of the relation cache are immutable (triggers), so an admitted text can never be corrected; today no
+                              UI shows it (see UI). Suggest: remove operands only as whole words (word boundaries after normalisation);
+                              refuse — not strip — any text containing \p{Cf}, \p{Cn}, \p{Co}, bidi controls, variation selectors, tag
+                              characters or a combining mark not absorbed by NFC; add ٪ ‰ ‱ to the percent class and ⁄ ∕ ÷ to the ratio class;
+                              a later UI renders these fields as plain text only
+O-ENG-4 (obs.)         OBS    evaluative words outside the lists are admitted: "Rated .87", "Rated 4.5 stars", "A high rating", "Rated highly",
+                              "Grade A", "Note 1 für diese Rolle", "fits the role well", "matches the role perfectly", "passendes Profil", "Die
+                              Person ist kompetent", "Excellent fit", "Top candidate", "Number one", "First choice", "Expert", "Senior-level
+                              mastery" (16 / 21; "idealer Kandidat", "Should be hired", "Hiring is advised", "Bestens geeignet", "Sehr gut
+                              bewertet" refused). A list guard stays open by nature; owner to decide how far it goes (Q: is the explanation
+                              ever shown to a person, or only stored?)
+UI                     PASS   CODE_INSPECTION: no file under app / components / lib/career/ui / *.tsx reads relationExplanation,
+  (GELB's question)           evidenceLimitation, rawOutputSha256, getByKeys, saveIfAbsent, evaluateRole, CachedRelation, SemanticProvider,
+                              containsClaim, EQUIVALENT or COVERS; engine and store are imported only inside lib/career/job-pool. No surface
+                              shows these texts or relation states today, so none shows them differently. The difference that will matter
+                              when one does is D-ENG-4: the guard judges the text without its operands and without its invisible characters,
+                              the browser shows it with them
+D-LED-1                PASS   store: PLANNED → COMPLETED refused, PLANNED → RUNNING → COMPLETED ok, COMPLETED → PLANNED refused
+                              (ERR_INVESTIGATION_STATUS_CONFLICT); database: UPDATE COMPLETED → RUNNING refused (ERR_INVESTIGATION_STATUS_BACKWARD),
+                              identity change refused, DELETE refused
+D-LED-2                PASS   release and consume without an own reservation → ERR_LEDGER_NO_RESERVATION; the day row stays 1 / 0 and the
+                              reserving investigation stays 1 / 0
+O-LED-1                PASS   a day limit lowered to 0 refuses the reserve and is committed although refused; it never goes below what is
+                              outstanding (stored 1 with 1 outstanding)
+O-LED-3 (new obs.)     OBS    "latest configured" means latest call: a caller still holding the old limit 5 reserves after the lowering and
+                              the day row goes back to 5. Two processes with different configuration flip the day limit; the owner cannot pin a
+                              lower limit while an older configuration is still running
+O-LED-2                PASS   triggers present on all three tables; database refuses backward task updates, task / investigation / ledger
+  (with O-LED-4)              DELETE and decreasing counters; session_replication_role is denied to the test role (no superuser); a dropped
+                              trigger is re-created by the next registration; limit_units stays writable (configuration, by design)
+O-LED-4 (new obs.)     OBS    the registration does not notice a DISABLED trigger: as table owner, ALTER TABLE … DISABLE TRIGGER rel_ledger_guard
+                              → registration REGISTERED (tgenabled D), then a counter decrease and a DELETE succeed. The same holds for the
+                              relation-cache triggers (registration REGISTERED with all its triggers disabled; since 600c7c1). Suggest: the
+                              verification also requires tgenabled <> 'D' (or re-enables) for every guard trigger
+Store / ledger core    PASS   identity, idempotent and concurrent open, task transitions and their race, day and investigation limits, 20 vs
+                              limit 3 → 3, reserve / release / consume, real provider with day limit 0: all as in §3.71
