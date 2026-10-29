@@ -68,9 +68,41 @@ export function decodeRoleDiscovery(value: unknown, analysisId: string, pools: r
     roleKeys.add(`${role.key.jobPoolUploadId}\u0000${role.key.poolRoleId}`);
   }
   if (!Array.isArray(value.groups) || value.groups.length !== ROLE_DISCOVERY_STATUSES.length || !value.groups.every((group, at) => isRecord(group) && group.status === ROLE_DISCOVERY_STATUSES[at] && Array.isArray(group.roles) && group.roles.every(key => isRecord(key) && roleKeys.has(`${key.jobPoolUploadId}\u0000${key.poolRoleId}`)))) return null;
-  const plan = value.semanticPlan;
-  if (!isRecord(plan) || (plan.state !== "ENGINE_NOT_SPECIFIED" && plan.state !== "PLANNED") || !isCount(plan.pairs) || !isCount(plan.cachedPairs) || !isCount(plan.pendingPairs) || !isCount(plan.callsNeeded)) return null;
+  if (!isSemanticPlan(value.semanticPlan, value.roles as Array<{ key: { jobPoolUploadId: string; poolRoleId: string } }>)) return null;
   return value as unknown as RoleDiscoveryWithPlan;
+}
+
+/**
+ * RD-PLAN: the semantic plan exactly in one of the four forms of SemanticInvestigationPlan (lib/career/job-pool/relation-cache.ts),
+ * one entry per discovered role in the discovery's order, its numbers adding up:
+ *   ENGINE_NOT_SPECIFIED — no engine; nothing cached (0), every pair pending; not executable; no cache issue.
+ *   PLANNED              — an engine; the cache read: cached + pending = pairs; executable; no cache issue.
+ *   CACHE_UNAVAILABLE / CACHE_CORRUPT — an engine, the cache not trusted: cached / pending / calls unknown (null, never guessed),
+ *                          per role too; not executable; the cache issue named.
+ * Anything else (another state, a guessed number under a cache failure, a ranking) is not this contract.
+ */
+function isSemanticPlan(plan: unknown, roles: Array<{ key: { jobPoolUploadId: string; poolRoleId: string } }>): boolean {
+  if (!isRecord(plan) || plan.cacheVersion !== "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1" || !isCount(plan.pairs) || !Array.isArray(plan.roles) || plan.roles.length !== roles.length) return false;
+  const allowed = ["cacheVersion", "engineVersionHash", "state", "executable", "cacheIssue", "pairs", "cachedPairs", "pendingPairs", "callsNeeded", "roles"];
+  if (Object.keys(plan).some(key => !allowed.includes(key))) return false;
+  const known = plan.state === "ENGINE_NOT_SPECIFIED" || plan.state === "PLANNED";
+  const failed = plan.state === "CACHE_UNAVAILABLE" || plan.state === "CACHE_CORRUPT";
+  if (!known && !failed) return false;
+  if (plan.state === "ENGINE_NOT_SPECIFIED" ? plan.engineVersionHash !== null : !isString(plan.engineVersionHash)) return false;
+  if (plan.executable !== (plan.state === "PLANNED")) return false;
+  if (failed ? !isString(plan.cacheIssue) : plan.cacheIssue !== null) return false;
+  const counts = (pairs: unknown, cached: unknown, pending: unknown) => known
+    ? isCount(pairs) && isCount(cached) && isCount(pending) && cached + pending === pairs && (plan.state === "PLANNED" || cached === 0)
+    : isCount(pairs) && cached === null && pending === null;
+  if (!counts(plan.pairs, plan.cachedPairs, plan.pendingPairs) || (known ? !isCount(plan.callsNeeded) : plan.callsNeeded !== null)) return false;
+  let pairs = 0;
+  const entries = plan.roles as unknown[];
+  for (let at = 0; at < entries.length; at += 1) {
+    const entry = entries[at];
+    if (!isRecord(entry) || entry.jobPoolUploadId !== roles[at].key.jobPoolUploadId || entry.poolRoleId !== roles[at].key.poolRoleId || !counts(entry.pairs, entry.cachedPairs, entry.pendingPairs)) return false;
+    pairs += entry.pairs as number;
+  }
+  return pairs === plan.pairs;
 }
 
 export function roleDiscoveryUrl(analysisId: string, pools: readonly string[]): string {

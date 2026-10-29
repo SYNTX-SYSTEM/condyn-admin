@@ -1,4 +1,5 @@
 import { buildPoolRoleDiscovery, type DiscoveryPoolInput } from "../../../lib/career/job-pool/pool-role-discovery";
+import { planSemanticInvestigation, type RelationCacheState, type RelationEngineIdentity } from "../../../lib/career/job-pool/relation-cache";
 
 /**
  * A synthetic POOL_ROLE_DISCOVERY_V1 body for the frontend (no real CV text, no real pool): built with GELB's own builder
@@ -39,11 +40,37 @@ const ALPHA = upload(UPLOAD_ALPHA, "Alpha Pool", [org("org_k", "Kestrel"), org("
 ]);
 const ZETA = upload(UPLOAD_ZETA, "Zeta Pool", [org("org_k", "Kestrel")], [role("role_fs", "org_k", "Full-Stack Engineer"), role("role_an", "org_k", "Analyst")], [req("req_01", "role_fs", "TypeScript"), req("req_a1", "role_an", "Market Research")]);
 
-/** The route's body for the pools in this order (the route orders roles by pool name itself). */
-export function discoveryBody(pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
+const discoveryOf = (pools: string[]) => {
   const inputs = pools.map(id => (id === UPLOAD_ALPHA ? ALPHA : ZETA));
-  const discovery = buildPoolRoleDiscovery({ analysis: { analysisId: PERSON_ANALYSIS, jobId: "JOB_1792000000101_101", discoveryRunId: "RUN_PERSON" }, projection: PROJECTION as never, pools: inputs });
-  const pairs = discovery.roles.reduce((n, r) => n + r.requirements.length * PROJECTION.capabilities.length, 0);
-  const semanticPlan = { cacheVersion: "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", engineVersionHash: null, state: "ENGINE_NOT_SPECIFIED", pairs, cachedPairs: 0, pendingPairs: pairs, callsNeeded: discovery.roles.filter(r => r.requirements.length > 0).length, roles: [] };
+  return { inputs, discovery: buildPoolRoleDiscovery({ analysis: { analysisId: PERSON_ANALYSIS, jobId: "JOB_1792000000101_101", discoveryRunId: "RUN_PERSON" }, projection: PROJECTION as never, pools: inputs }) };
+};
+
+/**
+ * The route's body for the pools in this order (the route orders roles by pool name itself), with the plan the route returns today
+ * (no engine contract: ENGINE_NOT_SPECIFIED) written out — `planFor` proves it equals the producer's.
+ */
+export function discoveryBody(pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
+  const { discovery } = discoveryOf(pools);
+  const per = discovery.roles.map(r => ({ jobPoolUploadId: r.key.jobPoolUploadId, poolRoleId: r.key.poolRoleId, pairs: r.requirements.length * PROJECTION.capabilities.length }));
+  const pairs = per.reduce((n, r) => n + r.pairs, 0);
+  const semanticPlan = {
+    cacheVersion: "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", engineVersionHash: null, state: "ENGINE_NOT_SPECIFIED", executable: false, cacheIssue: null,
+    pairs, cachedPairs: 0, pendingPairs: pairs, callsNeeded: per.filter(r => r.pairs > 0).length, roles: per.map(r => ({ ...r, cachedPairs: 0, pendingPairs: r.pairs }))
+  };
+  return { success: true, discovery: { ...discovery, semanticPlan } };
+}
+
+/** A stand-in engine identity (no provider is called; it only makes the plan read the cache). */
+export const STANDIN_ENGINE: RelationEngineIdentity = { contractVersion: "TEST_ENGINE_V1", promptChecksum: "sha256:test", provider: "STANDIN", model: "standin" };
+
+/** The body with the plan of GELB's own producer (lib/career/job-pool/relation-cache.ts) for this engine and cache, as the route builds it. */
+export async function discoveryBodyWithPlan(engine: RelationEngineIdentity | null, cache: RelationCacheState | null, pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
+  const { inputs, discovery } = discoveryOf(pools);
+  const requirements = new Map(inputs.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as const)));
+  const semanticPlan = await planSemanticInvestigation({
+    discovery, proposals: PROJECTION.capabilities as never,
+    requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
+    engine, cache
+  });
   return { success: true, discovery: { ...discovery, semanticPlan } };
 }

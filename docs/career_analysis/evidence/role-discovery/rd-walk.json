@@ -1,0 +1,572 @@
+[
+  {
+    "vname": "1920x1080",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  },
+  {
+    "vname": "1600x900",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  },
+  {
+    "vname": "1440x900",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  },
+  {
+    "vname": "1280x720",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  },
+  {
+    "vname": "zoom200-1920x1080",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  },
+  {
+    "vname": "zoom200-1280x720",
+    "checks": {
+      "sixOrbits": true,
+      "entryReachable": true,
+      "entryOverlapsNothing": true,
+      "openNoUrlStep": true,
+      "poolsUnticked": true,
+      "releaseOnePush": true,
+      "releaseOneGet": true,
+      "groupsOrder": true,
+      "sixOrbitsWithPanel": true,
+      "panelOverlapsNothing": true,
+      "panelControlsReachable": true,
+      "traceNoUrlStep": true,
+      "traceControlsReachable": true,
+      "reloadSame": true,
+      "backToEntry": true,
+      "forwardToPanel": true,
+      "handoverOnePush": true,
+      "handoverNoDiscovery": true,
+      "noPost": true,
+      "discoveryReadsGetOnly": true
+    },
+    "entryOverlaps": [],
+    "text": {
+      "header": "Name relation · lexical · not semantic · not scored · no ranking",
+      "semantic": "Semantic check: not executed · would need 11 calls for 340 pairs · not started",
+      "groups": [
+        "ALL_REQUIREMENTS_NAME_RELATED:true:0",
+        "PARTIAL_NAME_RELATED:true:1",
+        "WEAK_LEXICAL_ONLY:true:1",
+        "NO_LEXICAL_RELATION:false:9",
+        "NO_REQUIREMENTS:false:1"
+      ]
+    },
+    "panelOverlaps": [],
+    "reach": [
+      {
+        "id": "rd-close",
+        "ok": true,
+        "by": "rd-close"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_B94850C439974E27496FE3B1A9A076B5"
+      },
+      {
+        "id": "INPUT",
+        "ok": true,
+        "by": "rd-pool-JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+      },
+      {
+        "id": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-ALL_REQUIREMENTS_NAME_RELATED"
+      },
+      {
+        "id": "rd-group-toggle-PARTIAL_NAME_RELATED",
+        "ok": true,
+        "by": "rd-group-toggle-PARTIAL_NAME_RELATED"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-WEAK_LEXICAL_ONLY",
+        "ok": true,
+        "by": "rd-group-toggle-WEAK_LEXICAL_ONLY"
+      },
+      {
+        "id": "rd-role-trace",
+        "ok": true,
+        "by": "rd-role-trace"
+      },
+      {
+        "id": "rd-group-toggle-NO_LEXICAL_RELATION",
+        "ok": true,
+        "by": "rd-group-toggle-NO_LEXICAL_RELATION"
+      },
+      {
+        "id": "rd-group-toggle-NO_REQUIREMENTS",
+        "ok": true,
+        "by": "rd-group-toggle-NO_REQUIREMENTS"
+      }
+    ],
+    "requests": [
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7",
+      "GET /api/career/analyses/ANL_1793239518211_24/role-discovery?jobPoolUploadId=JPOOL_B94850C439974E27496FE3B1A9A076B5&jobPoolUploadId=JPOOL_6CA8892F9AD0F6AC316F8FC3F6294BB7"
+    ]
+  }
+]

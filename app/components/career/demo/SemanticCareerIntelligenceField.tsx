@@ -34,6 +34,8 @@ import { ANALYSIS_JOB_URL_PARAM, DISCOVERY_POOLS_URL_PARAM, analysisJobIdFromPar
 import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
 import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
+import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
+import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
 import { NAVIGATION_COPY } from "./navigation-copy";
 import { decodeAnalysisResult, demoStateFromResult, firstScreenCoverageRequest, projectPxjFirstScreen, showsAnalysis, withoutLegacyOrbits, type AnalysisResultState } from "../../../../lib/career/view-model/pxj-first-screen";
 import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./PxjFirstScreen";
@@ -349,6 +351,12 @@ export function SemanticCareerIntelligenceField({
     setDiscoveryPools(next);
     pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null });
   };
+  /** RD-PANEL: opened only by the explicit DISCOVER JOBS (not a URL state); a release in the URL opens it on its own (NAV ≡ RELOAD). */
+  const [discoveryOpen, setDiscoveryOpen] = useState(false);
+  const closeDiscovery = () => {
+    setDiscoveryOpen(false);
+    if (discoveryPools !== null) releaseDiscoveryPools([]);
+  };
   const investigationCopy = t.syntx.investigation;
 
   // Job Connection: one workflow read shared by the control panel and the Job Field focus (presentation only).
@@ -470,8 +478,10 @@ export function SemanticCareerIntelligenceField({
    *  run was declared with: a mode chosen during the run stays chosen, and the session and a reload show the same (GELB F-RF-1). */
   useEffect(() => {
     if (jobState !== "SUCCEEDED" || !job.state.resultAnalysisId) return;
-    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode, [ANALYSIS_JOB_URL_PARAM]: null }, "replace");
+    // A release is given for one analysis (RD-PANEL): a new analysis on view starts without released pools.
+    writeCareerDemoUrl({ analysisId: job.state.resultAnalysisId, [INVESTIGATION_URL_PARAM]: investigationMode, [ANALYSIS_JOB_URL_PARAM]: null, [DISCOVERY_POOLS_URL_PARAM]: null }, "replace");
     setUrlAnalysisId(job.state.resultAnalysisId);
+    setDiscoveryPools(null);
   }, [jobState, job.state.resultAnalysisId]);
   /** The session's own result (M-01) has precedence; it is decoded exactly like a reload's. */
   const sessionResult = React.useMemo(
@@ -493,6 +503,11 @@ export function SemanticCareerIntelligenceField({
   const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;
   const firstScreenCoverage = useSelectedRoleCoverage(coverageRequest?.analysisId ?? null, coverageRequest?.scope ?? null);
   const firstScreen = projectPxjFirstScreen({ ...firstScreenInput, coverage: firstScreenCoverage });
+  /** RD-PANEL: role discovery belongs to the PERSON result on view (its boundary resolved PERSON, its result read) — while that
+   *  result is loading, missing or of another mode, the first screen speaks and nothing is discovered; the pools are released for
+   *  that analysis only. */
+  const discoveryAnalysisId = investigationMode === "PERSON" && firstScreen.state === "PERSON_RESULT" ? firstScreen.analysisId : null;
+  const roleDiscovery = useRoleDiscovery(discoveryAnalysisId, discoveryPools);
   /** D-PICK (UX-05): in PERSON × JOB with a valid selected job, at NO_ANALYSIS on the first screen and at the selected job's role in
    *  the Job Field; V-06: also when the analysis on view is not found (a way out besides Back). Read only while opened there (GET only); chosen only by the explicit OPEN — one push of analysisId (from the role
    *  view with focus=CAPABILITY, one decision), never by itself. Opening runs the first screen's B2 checks unchanged. */
@@ -506,7 +521,8 @@ export function SemanticCareerIntelligenceField({
     setUrlAnalysisId(picked);
     setAnalysisPicked(true);
     setPickerOpen(false);
-    pushUrl({ analysisId: picked });
+    pushUrl({ analysisId: picked, [DISCOVERY_POOLS_URL_PARAM]: null });
+    setDiscoveryPools(null);
     if (fromRole) switchFieldFocus("CAPABILITY");
   };
   const analysisPicker = (place: "first-screen" | "role-view") => pickerPlace !== place ? undefined : (
@@ -550,6 +566,18 @@ export function SemanticCareerIntelligenceField({
           locale
         )
       : null;
+  /** RD-HANDOVER ("Gezielt untersuchen"): the discovered role becomes the selected job and the investigation PERSON × JOB, as one
+   *  push. No analysis is carried over (analysisId leaves the URL, the session's result steps back as after an explicit choice), the
+   *  release ends with its analysis, nothing is started: PERSON × JOB then shows NO_ANALYSIS for exactly this role (D-PICK / ANALYZE). */
+  const investigateDiscoveredRole = (scope: JobScope) => {
+    setJobScope(scope);
+    setInvestigationMode("PERSON_X_JOB");
+    setUrlAnalysisId(null);
+    setAnalysisPicked(true);
+    setDiscoveryPools(null);
+    setDiscoveryOpen(false);
+    pushUrl({ [JOB_SCOPE_URL_PARAMS.jobPoolUploadId]: scope.jobPoolUploadId, [JOB_SCOPE_URL_PARAMS.poolRoleId]: scope.poolRoleId, [INVESTIGATION_URL_PARAM]: "PERSON_X_JOB", analysisId: null, [DISCOVERY_POOLS_URL_PARAM]: null });
+  };
   /** ROLE_MISMATCH offers the analysis's own job as an explicit choice; the selection changes only by this action. */
   const selectAnalysisJob = (scope: JobScope) => {
     setJobScope(scope);
@@ -1666,6 +1694,17 @@ export function SemanticCareerIntelligenceField({
         </div>
       )}
       {activeFieldFocus === "FIELD" && investigationMode === "PERSON_X_JOB" && <PxjAnalysisJobOffer screen={firstScreen} locale={locale} onSelectRole={selectAnalysisJob} />}
+
+      {/* RD-PANEL (GELB stage 2, additive): role discovery for the PERSON analysis on view, beside the six orbits; never without an
+          analysis, never under PERSON × JOB or JOB. */}
+      {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && (discoveryOpen || discoveryPools !== null) && (
+        <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
+          <RoleDiscoveryPanel locale={locale} pools={jobPoolWorkflow.pools} released={discoveryPools} discovery={roleDiscovery} onRelease={releaseDiscoveryPools} onClose={closeDiscovery} onInvestigate={investigateDiscoveredRole} />
+        </div>
+      )}
+      {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (
+        <RoleDiscoveryEntry locale={locale} onOpen={() => setDiscoveryOpen(true)} />
+      )}
 
       {/* Persistent Top-Right How This Works / Codex Button */}
       <div
