@@ -47,7 +47,7 @@ const discoveryOf = (pools: string[]) => {
 
 /**
  * The route's body for the pools in this order (the route orders roles by pool name itself), with the plan the route returns today
- * (no engine contract: ENGINE_NOT_SPECIFIED) written out — `planFor` proves it equals the producer's.
+ * (no engine contract: ENGINE_NOT_SPECIFIED, start control NOT_CONFIGURED) written out — `planFor` proves it equals the producer's.
  */
 export function discoveryBody(pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
   const { discovery } = discoveryOf(pools);
@@ -57,14 +57,14 @@ export function discoveryBody(pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
     cacheVersion: "PROPOSAL_REQUIREMENT_RELATION_CACHE_V1", engineVersionHash: null, state: "ENGINE_NOT_SPECIFIED", executable: false, cacheIssue: null,
     pairs, cachedPairs: 0, pendingPairs: pairs, callsNeeded: per.filter(r => r.pairs > 0).length, roles: per.map(r => ({ ...r, cachedPairs: 0, pendingPairs: r.pairs }))
   };
-  return { success: true, discovery: { ...discovery, semanticPlan } };
+  return { success: true, discovery: { ...discovery, semanticPlan, startControl: { engineState: "NOT_CONFIGURED", maxRoles: null } } };
 }
 
 /** A stand-in engine identity (no provider is called; it only makes the plan read the cache). */
 export const STANDIN_ENGINE: RelationEngineIdentity = { contractVersion: "TEST_ENGINE_V1", promptChecksum: "sha256:test", provider: "STANDIN", model: "standin" };
 
 /** The body with the plan of GELB's own producer (lib/career/job-pool/relation-cache.ts) for this engine and cache, as the route builds it. */
-export async function discoveryBodyWithPlan(engine: RelationEngineIdentity | null, cache: RelationCacheState | null, pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA]) {
+export async function discoveryBodyWithPlan(engine: RelationEngineIdentity | null, cache: RelationCacheState | null, pools: string[] = [UPLOAD_ALPHA, UPLOAD_ZETA], maxRoles = 10) {
   const { inputs, discovery } = discoveryOf(pools);
   const requirements = new Map(inputs.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as const)));
   const semanticPlan = await planSemanticInvestigation({
@@ -72,5 +72,7 @@ export async function discoveryBodyWithPlan(engine: RelationEngineIdentity | nul
     requirementsByKey: key => requirements.get(`${key.jobPoolUploadId}\u0000${key.poolRoleId}\u0000${key.poolRequirementId}`) ?? null,
     engine, cache
   });
-  return { success: true, discovery: { ...discovery, semanticPlan } };
+  // The route's start control (GELB 0e03f69): READY with the configured role limit when an engine is named, else NOT_CONFIGURED.
+  const startControl = engine ? { engineState: "READY", maxRoles } : { engineState: "NOT_CONFIGURED", maxRoles: null };
+  return { success: true, discovery: { ...discovery, semanticPlan, startControl } };
 }

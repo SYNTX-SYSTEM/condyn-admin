@@ -35,6 +35,8 @@ export interface RoleDiscoveryCopy {
     CACHE_UNAVAILABLE: (issue: string) => string;
     CACHE_CORRUPT: (issue: string) => string;
   };
+  /** RI-CONTROL: why an explicit start of the semantic check is not offered (the server's start control, or the cache). */
+  startUnavailable: Record<"NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "CACHE", string>;
   scope: (pools: number, roles: number, requirements: number, proposals: number) => string;
   groups: Record<RoleLexicalStatus, string>;
   groupRoles: Count;
@@ -102,6 +104,11 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls) => `Semantic check: not executed · ${cached} of ${pairs} pairs in the relation cache · would need ${calls} calls · not started`,
       CACHE_UNAVAILABLE: issue => `Semantic check: not executed · relation cache unavailable (${issue}) · calls unknown · not started`,
       CACHE_CORRUPT: issue => `Semantic check: not executed · relation cache corrupt (${issue}) · calls unknown · not started`
+    },
+    startUnavailable: {
+      NOT_CONFIGURED: "Start not available: no check engine is configured on this server.",
+      PROVIDER_NOT_AUTHORIZED: "Start not available: the configured provider is not authorised.",
+      CACHE: "Start not available while the relation cache cannot be read."
     },
     scope: (pools, roles, requirements, proposals) => `${n(pools)} pools · ${n(roles)} roles · ${n(requirements)} requirements · ${n(proposals)} capability proposals`,
     groups: {
@@ -174,6 +181,11 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       PLANNED: (cached, pairs, calls) => `Semantische Prüfung: nicht ausgeführt · ${cached} von ${pairs} Paaren im Relationen-Cache · würde ${calls} Aufrufe benötigen · nicht gestartet`,
       CACHE_UNAVAILABLE: issue => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (${issue}) · Aufrufzahl unbekannt · nicht gestartet`,
       CACHE_CORRUPT: issue => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (${issue}) · Aufrufzahl unbekannt · nicht gestartet`
+    },
+    startUnavailable: {
+      NOT_CONFIGURED: "Start nicht verfügbar: Auf diesem Server ist keine Prüf-Engine konfiguriert.",
+      PROVIDER_NOT_AUTHORIZED: "Start nicht verfügbar: Der konfigurierte Anbieter ist nicht freigegeben.",
+      CACHE: "Start nicht verfügbar, solange der Relationen-Cache nicht gelesen werden kann."
     },
     scope: (pools, roles, requirements, proposals) => `${n(pools)} Pools · ${n(roles)} Rollen · ${n(requirements)} Anforderungen · ${n(proposals)} Fähigkeitsvorschläge`,
     groups: {

@@ -134,12 +134,15 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   const semantic = plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs))
     : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0))
     : c.semantic[plan.state](plan.cacheIssue ?? "—");
+  // RI-CONTROL: the start is offered only on READY with an executable plan; otherwise the reason stands (two engine states apart).
+  const unavailable = d.startControl.engineState !== "READY" ? d.startControl.engineState : plan.executable ? null : "CACHE" as const;
   const byKey = new Map(d.roles.map(role => [`${role.key.jobPoolUploadId}\u0000${role.key.poolRoleId}`, role] as const));
   const poolName = new Map(d.pools.map(pool => [pool.jobPoolUploadId, pool.poolName] as const));
   return (
     <>
       <div data-testid="rd-state" data-state="AVAILABLE" role="status" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
         <span data-testid="rd-semantic" data-plan-state={plan.state} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{semantic}</span>
+        {unavailable !== null && <span data-testid="rd-start-unavailable" data-engine-state={d.startControl.engineState} data-plan-state={plan.state} style={meta}>{c.startUnavailable[unavailable]}</span>}
         <span data-testid="rd-scope" style={meta}>{c.scope(d.counts.pools, d.counts.roles, d.counts.requirements, d.counts.proposals)}</span>
       </div>
       {d.groups.map(group => {

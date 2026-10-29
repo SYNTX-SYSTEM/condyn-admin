@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { PoolRoleDiscovery, RoleLexicalStatus } from "../job-pool/pool-role-discovery";
 import type { SemanticInvestigationPlan } from "../job-pool/relation-cache";
+import { SEMANTIC_ROLES_HARD_CAP } from "../job-pool/semantic-config";
 
 /**
  * Role discovery, the read (owner "OWNER_DECISION_ROLE_DISCOVERY" D-RD-1 = B; GELB stage 2, RD-READ). GET only:
@@ -12,7 +13,7 @@ import type { SemanticInvestigationPlan } from "../job-pool/relation-cache";
  * Read only for a PERSON analysis on view and the pools the user released (never "all", never a latest pool). The decoder is strict:
  * a body that is not exactly the contract — its version, its fixed authority (lexical, not semantic, not scored, no ranking, no
  * decision), the analysis and the pools that were asked for, the five status groups in their fixed order, every requirement's
- * semantic NOT_EXECUTED — is FAILED, never a partial success. Every refusal of the route has its own state.
+ * semantic NOT_EXECUTED, the semantic plan and the start control — is FAILED, never a partial success. Every refusal of the route has its own state.
  */
 type Fetcher = (input: string, init: { method: "GET"; cache: "no-store"; signal?: AbortSignal }) => Promise<{ status: number; json(): Promise<unknown> }>;
 const defaultFetcher: Fetcher = (input, init) => fetch(input, init);
@@ -21,7 +22,10 @@ export const ROLE_DISCOVERY_STATUSES: readonly RoleLexicalStatus[] = ["ALL_REQUI
 const BASES = ["NAME_EXACT", "NAME_ALIAS", "NAME_COMPOSITE_CONSTITUENT", "WEAK_TOKEN_CONTAINMENT", "NONE"];
 const AUTHORITY: Record<string, unknown> = { relationBasis: "LEXICAL_NAME_COVERAGE", operand: "PERSON_CAPABILITY_PROPOSAL_PROJECTION", semanticRelationState: "NOT_EXECUTED", scored: false, ranking: false, authorityState: "NONE", decision: false };
 
-export type RoleDiscoveryWithPlan = PoolRoleDiscovery & { semanticPlan: SemanticInvestigationPlan };
+/** Beside the plan (GELB 0e03f69): whether an explicit start is configured at all, and the role limit of one start (READY only). */
+export type SemanticEngineState = "NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "READY";
+export interface RoleDiscoveryStartControl { engineState: SemanticEngineState; maxRoles: number | null }
+export type RoleDiscoveryWithPlan = PoolRoleDiscovery & { semanticPlan: SemanticInvestigationPlan; startControl: RoleDiscoveryStartControl };
 
 export type RoleDiscoveryState =
   | { state: "IDLE" }
@@ -69,6 +73,7 @@ export function decodeRoleDiscovery(value: unknown, analysisId: string, pools: r
   }
   if (!Array.isArray(value.groups) || value.groups.length !== ROLE_DISCOVERY_STATUSES.length || !value.groups.every((group, at) => isRecord(group) && group.status === ROLE_DISCOVERY_STATUSES[at] && Array.isArray(group.roles) && group.roles.every(key => isRecord(key) && roleKeys.has(`${key.jobPoolUploadId}\u0000${key.poolRoleId}`)))) return null;
   if (!isSemanticPlan(value.semanticPlan, value.roles as Array<{ key: { jobPoolUploadId: string; poolRoleId: string } }>)) return null;
+  if (!isStartControl(value.startControl, value.semanticPlan as SemanticInvestigationPlan)) return null;
   return value as unknown as RoleDiscoveryWithPlan;
 }
 
@@ -103,6 +108,16 @@ function isSemanticPlan(plan: unknown, roles: Array<{ key: { jobPoolUploadId: st
     pairs += entry.pairs as number;
   }
   return pairs === plan.pairs;
+}
+
+/**
+ * RI-CONTROL: the start control exactly — READY names an engine (the plan is not ENGINE_NOT_SPECIFIED) and a role limit 1 … 25;
+ * NOT_CONFIGURED and PROVIDER_NOT_AUTHORIZED name none (the plan has no engine, the limit is null). No provider name, no other key.
+ */
+function isStartControl(control: unknown, plan: SemanticInvestigationPlan): boolean {
+  if (!isRecord(control) || Object.keys(control).length !== 2 || !("maxRoles" in control)) return false;
+  if (control.engineState === "READY") return plan.state !== "ENGINE_NOT_SPECIFIED" && isCount(control.maxRoles) && control.maxRoles >= 1 && control.maxRoles <= SEMANTIC_ROLES_HARD_CAP;
+  return (control.engineState === "NOT_CONFIGURED" || control.engineState === "PROVIDER_NOT_AUTHORIZED") && control.maxRoles === null && plan.state === "ENGINE_NOT_SPECIFIED";
 }
 
 export function roleDiscoveryUrl(analysisId: string, pools: readonly string[]): string {
