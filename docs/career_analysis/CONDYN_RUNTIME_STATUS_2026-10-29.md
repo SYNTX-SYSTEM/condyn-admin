@@ -36,3 +36,27 @@ After: 20 databases.
 - The job pool `pool_dll_engineering_v1` (3 organizations, 9 roles, 79 requirements) was uploaded as JSON and reconstructed deterministically (`DETERMINISTIC_DECLARED_FIELDS`, no model); the 79 requirement and 9 role records are not Gemini output.
 - Relation to the current architecture: `ANL_1792628831636_456` is exactly the operand `POOL_ROLE_DISCOVERY_V1` requires (PERSON, scope-free discovery run, projection reference present); `ANL_…_10` is a PxJ analysis and is refused as operand (NOT_PERSON), as designed. No semantic-relation (stage 3) result exists in this data: the stage-3 engine ran only with the labelled stand-in; the real capability proposals are the only real-Gemini data and are what the lexical discovery relates to the 79 requirements. A real stage-3 run needs a call budget and a provider adapter (separate owner GO).
 - Recovery: restore `condyn_test_f96356700c836e92.dump` into a fresh disposable database; no new Gemini call.
+
+## 3 Synchronized final state (owner FULL_RUNTIME_RECONSTRUCTION, 2026-10-29)
+
+Sessions asked per database and process (GRÜN, PINK; no other peer sessions exist). Attribution from process environments, state files, memory and the evidence documents.
+
+**Processes.** GRÜN released and ended its two 8-day review labs itself (:41809 ui-typography, :41810 focus-readability; inner launcher PIDs, all ten processes of both chains gone, both databases dropped by the launchers). PINK has no process left. Remaining listener: :3017 (owner demo, unchanged).
+
+**Databases: 20 → 10.** Before dropping, 14 databases were dumped (custom format, private scratchpad `preserved/inventory-2026-10-29/`, 21 MB). Dropped (marker present, 0 connections, no consumer, owner session released or nobody references them): `…0809e044`, `…c81fab13`, `…e65c1246` (GRÜN review labs :41803/:41805/:41807), `…89d0c7bb` (GRÜN crashed first start of :41871, the long-open owner item), `…6f0a7069` (fixture rest, PINK released), `…1554ad87`, `…16f9d2f9`, `…b6d8fb98` (empty shells, no analyses, no references). Together with the two lab databases GRÜN removed and the earlier cleanups: 31 → 10.
+
+Kept (reason):
+| Database | Content / owner | Reason |
+|---|---|---|
+| `…e9c3b69d` (was listed as 48c146bf) | runner DB of :3017 | running owner demo |
+| `…e46502b7` | early `job-pool:local` world, real analysis `ANL_1791660225500_612` (10 Gemini runs, 2026-10-12) | cited as "preserved database" in JOB_POOL_CONNECTION_VALIDATION.md, the acceptance plan v1.9 and CONDYN_STAND_2026-10-14.md; owner decides |
+| `…dcf3ada4` | job-field E2E world :41821, 2 real Gemini analyses (2026-10-13) | cited in JOB_FIELD_E2E_SWEEP_2026-10-13.md; owner word |
+| `…a8e5d256` | DLL demo :41831, real Gemini (2026-10-13) | not reproducible without a new Gemini GO; owner word |
+| `…3d714d7c` | orphan Antigravity/video lab :41861, 4 Gemini runs (2026-10-19) | unattributed owner line; owner word |
+| `…040e600c`, `…fa4b40cd` | 4 and 2 Gemini runs (2026-10-15, 2026-10-20), no session claims them | holds model output, unattributed |
+| `…5c805faa`, `…80e1d2be`, `…cd4af6ca` | empty, no disposable marker | the repo guard refuses to drop unmarked databases; nobody knows them |
+Dumps of all dropped databases exist; the six real-result databases above are additionally covered by the dumps taken this session except `…e9c3b69d`, `…3d714d7c` and the unmarked ones (not dumped, not dropped).
+
+The preserved Gemini results of :41862 (`condyn_test_f96356700c836e92.dump`) and the :41872 acceptance copy remain as described in §2.
+
+Unchanged: :3017, the shared `condyn`, `metaroom`, `hr_timesheet` databases, all Git history; `main` only received documentation.
