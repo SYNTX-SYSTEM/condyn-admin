@@ -47,6 +47,16 @@ export function sourceFileKind(name: string, mime: string): "text" | "pdf" | nul
 }
 
 /**
+ * AUTO_CAPABILITY (owner 2026-10-30): whether a GitHub URL names an account (`https://github.com/<account>`, one path segment) rather
+ * than a repository. Only the staged item's default title follows it; whether the URL is accepted is the server loader's decision.
+ */
+export function githubAccountUrl(value: string): boolean {
+  let url: URL;
+  try { url = new URL(value.trim()); } catch { return false; }
+  return (url.hostname === "github.com" || url.hostname === "www.github.com") && url.pathname.split("/").filter(Boolean).length === 1;
+}
+
+/**
  * CONDYN / SYNTX — Semantic Interface Language (SIL v3.0 Phase 3c)
  * SourceDock: Functional left-side ingestion dock focused on feeding the core with PDF, URL, and Text sources.
  */
@@ -114,7 +124,7 @@ export const SourceDock = forwardRef<SourceDockHandle, SourceDockProps>(function
     const newDoc: StagedDocumentItem = {
       id: `doc_${type}_${Date.now()}`,
       type,
-      title: inputTitle.trim() || (type === "github" ? "GitHub Repository" : "Website Source"),
+      title: inputTitle.trim() || (type === "github" ? (githubAccountUrl(inputUrl) ? t.githubAccountTitle : "GitHub Repository") : "Website Source"),
       url: inputUrl.trim()
     };
 
@@ -323,7 +333,7 @@ export const SourceDock = forwardRef<SourceDockHandle, SourceDockProps>(function
           {(activeInputMode === "github" || activeInputMode === "website") ? (
             <input
               type="url"
-              placeholder={activeInputMode === "github" ? "https://github.com/org/repo" : "https://example.com"}
+              placeholder={activeInputMode === "github" ? t.githubPlaceholder : "https://example.com"}
               value={inputUrl}
               onChange={(e) => setInputUrl(e.target.value)}
               style={{
@@ -337,7 +347,9 @@ export const SourceDock = forwardRef<SourceDockHandle, SourceDockProps>(function
               }}
               data-testid="source-url-input"
             />
-          ) : (
+          ) : null}
+          {activeInputMode === "github" && <span data-testid="source-github-hint" style={{ fontSize: "10.5px", lineHeight: 1.45, color: "rgba(176, 200, 216, 0.82)" }}>{t.githubHint}</span>}
+          {activeInputMode === "text" && (
             <textarea
               rows={4}
               placeholder={t.textPlaceholder}
