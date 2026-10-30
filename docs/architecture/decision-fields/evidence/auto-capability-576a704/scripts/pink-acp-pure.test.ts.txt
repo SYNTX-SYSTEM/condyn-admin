@@ -1,0 +1,152 @@
+// PINK blocks B and D (AUTOMATED_CAPABILITY_TO_JOB): configuration gate, Gemini provider seam, ROLE_RANKING_V1 oracle. DETERMINISTIC, no DB, no network, fake client only.
+import { describe, it, expect, afterAll } from "vitest";
+import { writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { readSemanticConfig, evidenceClassOfProvider } from "../../lib/career/job-pool/semantic-config";
+import { disabledReason, activePoolSnapshot, selectAutomaticRoles } from "../../lib/career/job-pool/auto-match";
+import { GeminiSemanticProvider, createSemanticProvider, GEMINI_SEMANTIC_PROMPT } from "../../lib/career/job-pool/gemini-semantic-provider";
+import { StandInSemanticProvider } from "../../lib/career/job-pool/semantic-relation-engine";
+import { buildRoleRanking, pickBestFinding, type SemanticFinding } from "../../lib/career/job-pool/role-ranking";
+
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const code = async (f: () => unknown) => { try { await f(); return "OK"; } catch (e) { return String((e as Error).message); } };
+
+describe("PINK B gate", () => {
+  it("B1-B4 configuration matrix (env objects passed in, process env untouched)", () => {
+    const K = { GEMINI_API_KEY: "k" };
+    const cases: Array<[string, Record<string, string | undefined>, string]> = [
+      ["empty", {}, "NOT_CONFIGURED/-"], ["provider blank", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "  " }, "NOT_CONFIGURED/-"],
+      ["gemini ok", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5", ...K }, "READY/5"],
+      ["gemini trimmed", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: " gemini ", ROLE_DISCOVERY_DAY_LIMIT: " 7 ", ...K }, "READY/7"],
+      ["Gemini case", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "Gemini", ROLE_DISCOVERY_DAY_LIMIT: "5", ...K }, "PROVIDER_NOT_AUTHORIZED/-"],
+      ["gemini key blank", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5", GEMINI_API_KEY: "  " }, "PROVIDER_NOT_AUTHORIZED/-"],
+      ["gemini no key", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5" }, "PROVIDER_NOT_AUTHORIZED/-"],
+      ...(["", " ", "0", "-1", "1e3", "0x10", "٣", "1.0", "1000001", "5abc", "+5"] as const).map(v => [`gemini limit ${JSON.stringify(v)}`, { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: v, ...K }, "PROVIDER_NOT_AUTHORIZED/-"] as [string, Record<string, string>, string]),
+      ["gemini limit missing", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ...K }, "PROVIDER_NOT_AUTHORIZED/-"],
+      ["gemini limit 000003", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "000003", ...K }, "READY/3"],
+      ["gemini limit 999999", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "999999", ...K }, "READY/100000"],
+      ["openai", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "openai", ROLE_DISCOVERY_DAY_LIMIT: "5", ...K }, "PROVIDER_NOT_AUTHORIZED/-"],
+      ["stand-in limit 0", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "0" }, "READY/0 DAY_LIMIT_ZERO"],
+      ["stand-in no limit", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in" }, "READY/0 DAY_LIMIT_ZERO"],
+      ["stand-in 1000", { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "1000" }, "READY/1000"]
+    ];
+    const got = cases.map(([name, env]) => { const c = readSemanticConfig(env); const r = disabledReason(c); return [name, `${c.state}/${c.state === "READY" ? c.dayLimit : "-"}${c.state === "READY" && r ? " " + r : ""}`]; });
+    rec.config = Object.fromEntries(got);
+    expect(Object.fromEntries(got)).toEqual(Object.fromEntries(cases.map(([n, , w]) => [n, w])));
+    const m = (e: Record<string, string>) => { const c = readSemanticConfig({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5", ...K, ...e }); return c.state === "READY" ? [c.engine.model, c.maxRoles] : null; };
+    rec.modelAndRoles = { both: m({ ROLE_DISCOVERY_GEMINI_MODEL: "a", GEMINI_MODEL: "b" }), generic: m({ GEMINI_MODEL: "b" }), roles0: m({ ROLE_DISCOVERY_MAX_ROLES: "0" }), roles99: m({ ROLE_DISCOVERY_MAX_ROLES: "99" }), rolesAbc: m({ ROLE_DISCOVERY_MAX_ROLES: "abc" }) };
+    expect(rec.modelAndRoles).toMatchObject({ both: ["a", 10], generic: ["b", 10], roles0: [expect.any(String), 1], roles99: [expect.any(String), 25], rolesAbc: [expect.any(String), 10] });
+    const g = readSemanticConfig({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5", ...K });
+    expect(g.state === "READY" && g.engine.promptChecksum).toBe(createHash("sha256").update(GEMINI_SEMANTIC_PROMPT, "utf8").digest("hex"));
+    expect([evidenceClassOfProvider("stand-in"), evidenceClassOfProvider("gemini"), evidenceClassOfProvider("Gemini"), evidenceClassOfProvider("")]).toEqual(["STAND_IN", "REAL_GEMINI", "UNKNOWN", "UNKNOWN"]);
+  });
+
+  it("B5-B7 provider seam: one factory, codes only, key never in an error", async () => {
+    const KEY = "PINK_SECRET_KEY_9f3a";
+    const thrower = { models: { async generateContent() { throw new Error(`401 API key ${KEY} invalid`); } } };
+    const reply = (text: unknown, finishReason?: string) => ({ models: { async generateContent(req: unknown) { (reply as any).last = req; return { text, candidates: finishReason === undefined ? [] : [{ finishReason }] }; } } });
+    const P = (client: unknown) => new GeminiSemanticProvider({ model: "m", apiKey: KEY, client: client as never });
+    const req = { proposals: [{ id: "p", name: "n", scope: "s", structuralDefinition: "d", evidence: [] }], requirements: [{ requirementId: "R1", text: "t", aliases: [], requiredLevel: "x", requirementType: "CAPABILITY" }] } as never;
+    const out = {
+      sdkThrowsWithKey: await code(() => P(thrower).evaluate(req)), maxTokens: await code(() => P(reply("{}", "MAX_TOKENS")).evaluate(req)), safety: await code(() => P(reply("{}", "SAFETY")).evaluate(req)),
+      noFinishReason: await code(() => P(reply("{}")).evaluate(req)), empty: await code(() => P(reply("  ", "STOP")).evaluate(req)), nonString: await code(() => P(reply(42, "STOP")).evaluate(req)),
+      noKeyNoClient: await code(() => new GeminiSemanticProvider({ model: "m" }).evaluate(req)), noModel: await code(() => new GeminiSemanticProvider({ model: " ", apiKey: KEY })),
+      factoryGeminiNoKey: await code(() => createSemanticProvider({ provider: "gemini", model: "m" } as never, {})), factoryOpenai: await code(() => createSemanticProvider({ provider: "openai", model: "m" } as never, { GEMINI_API_KEY: KEY })),
+      factoryStandIn: createSemanticProvider({ provider: "stand-in", model: "stand-in" } as never, {}) instanceof StandInSemanticProvider,
+      factoryGemini: createSemanticProvider({ provider: "gemini", model: "m" } as never, { GEMINI_API_KEY: KEY }) instanceof GeminiSemanticProvider
+    };
+    rec.provider = out;
+    expect(JSON.stringify(out).includes(KEY)).toBe(false);
+    expect(out).toEqual({ sdkThrowsWithKey: "ERR_SEMANTIC_PROVIDER_FAILED", maxTokens: "ERR_SEMANTIC_PROVIDER_INCOMPLETE", safety: "ERR_SEMANTIC_PROVIDER_INCOMPLETE", noFinishReason: "OK", empty: "ERR_SEMANTIC_PROVIDER_EMPTY", nonString: "ERR_SEMANTIC_PROVIDER_EMPTY", noKeyNoClient: "ERR_SEMANTIC_PROVIDER_KEY_MISSING", noModel: "ERR_SEMANTIC_PROVIDER_MODEL_NOT_CONFIGURED", factoryGeminiNoKey: "ERR_SEMANTIC_PROVIDER_KEY_MISSING", factoryOpenai: "ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", factoryStandIn: true, factoryGemini: true });
+    const r = reply("{}", "STOP"); await P(r).evaluate(req); const last = (reply as any).last as { contents: string; config: Record<string, unknown> };
+    rec.request = { startsWithPrompt: last.contents.startsWith(GEMINI_SEMANTIC_PROMPT), config: last.config, keyInRequest: JSON.stringify(last).includes(KEY) };
+    expect(rec.request).toEqual({ startsWithPrompt: true, config: { responseMimeType: "application/json", temperature: 0.1, maxOutputTokens: 32768 }, keyInRequest: false });
+  });
+
+  it("C snapshot and role selection (pure)", () => {
+    const s = (id: string, name: string, poolStatus: string) => ({ jobPoolUploadId: id, poolName: name, poolStatus }) as never;
+    const snap = activePoolSnapshot([s("J3", "b", "ACTIVE"), s("J1", "a", "DRAFT"), s("J2", "a", "ARCHIVED"), s("J9", "b", "ACTIVE"), ...Array.from({ length: 12 }, (_, i) => s(`K${String(i).padStart(2, "0")}`, "z", "ACTIVE"))]).map((p: any) => p.jobPoolUploadId);
+    const role = (id: string, status: string, n: number) => ({ key: { jobPoolUploadId: "J", poolRoleId: id }, status, counts: { requirements: n } });
+    const sel = selectAutomaticRoles({ roles: [role("a", "NO_LEXICAL_RELATION", 2), role("b", "ALL_REQUIREMENTS_NAME_RELATED", 1), role("c", "NO_REQUIREMENTS", 0), role("d", "WEAK_LEXICAL_ONLY", 3), role("e", "PARTIAL_NAME_RELATED", 1), role("f", "ALL_REQUIREMENTS_NAME_RELATED", 4)] } as never, 4).map(k => k.poolRoleId);
+    rec.snapshot = { snap, sel, sel0: selectAutomaticRoles({ roles: [role("a", "NO_LEXICAL_RELATION", 2)] } as never, 0).length };
+    expect(snap).toEqual(["J3", "J9", "K00", "K01", "K02", "K03", "K04", "K05", "K06", "K07"]);
+    expect(sel).toEqual(["b", "f", "e", "d"]);
+  });
+});
+
+// ---- D: an independent PINK oracle of ROLE_RANKING_V1 from the spec text and GELB's Q3, compared with the implementation ----
+type Req = { id: string; necessity: string; basis: string; finding: SemanticFinding | null };
+type Role = { pool: string; id: string; title: string; reqs: Req[] };
+const F = (state: SemanticFinding["state"], name = "cap"): SemanticFinding => ({ state, capabilityName: name, explanation: `e-${state}`, evidenceLimitation: "l", quotes: [{ sourceDocumentId: "CV", exactQuote: "q" }] });
+function oracle(roles: Role[]) {
+  const W: Record<string, number> = { REQUIRED: 3, PREFERRED: 2, OPTIONAL: 1 }; const SV: Record<string, number> = { EQUIVALENT: 1, COVERS: 1, PARTIAL: 0.5, DIFFERENT: 0, UNCLEAR: 0 };
+  const rows = roles.map(r => { const q = r.reqs.map(x => { const w = W[x.necessity] ?? 1; const v = x.finding ? SV[x.finding.state] : (x.basis === "NAME_EXACT" || x.basis === "NAME_ALIAS" ? 0.5 : 0); return { w, v, req: x.necessity === "REQUIRED", sem: !!x.finding }; });
+    const sw = q.reduce((n, x) => n + x.w, 0); return { key: `${r.pool}/${r.id}`, title: r.title, pool: r.pool, id: r.id, tier: q.some(x => x.sem) ? 0 : 1, fit: sw > 0 ? Math.round((q.reduce((n, x) => n + x.w * x.v, 0) / sw) * 1e6) / 1e6 : null, gaps: q.filter(x => x.req && x.v === 0).length }; });
+  const c = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+  return rows.sort((a, b) => a.tier - b.tier || (a.fit === null ? 1 : 0) - (b.fit === null ? 1 : 0) || (b.fit ?? 0) - (a.fit ?? 0) || a.gaps - b.gaps || c(a.title, b.title) || c(a.pool, b.pool) || c(a.id, b.id)).map(r => `${r.key} ${r.tier ? "LEXICAL_ONLY" : "SEMANTIC"} ${r.fit} g${r.gaps}`);
+}
+function discoveryOf(roles: Role[]) {
+  const findings = new Map<string, SemanticFinding | null>();
+  const discovery = { pools: [...new Set(roles.map(r => r.pool))].map(p => ({ jobPoolUploadId: p, poolName: `name-${p}` })), roles: roles.map(r => ({ key: { jobPoolUploadId: r.pool, poolRoleId: r.id }, title: r.title, organizationName: "o",
+    requirements: r.reqs.map(x => { const key = { jobPoolUploadId: r.pool, poolRoleId: r.id, poolRequirementId: x.id }; findings.set(`${r.pool}/${r.id}/${x.id}`, x.finding);
+      return { key, requirementText: x.id, necessity: x.necessity, lexical: x.basis === "NONE" ? { basis: "NONE", proposalId: null, proposalName: null, matchedConstituent: null, evidence: [], quoteNamesRequirement: null } : { basis: x.basis, proposalId: "p", proposalName: "lex", matchedConstituent: null, evidence: [{ sourceDocumentId: "CV", exactQuote: "lq" }], quoteNamesRequirement: true } }; }) })) };
+  return { discovery: discovery as never, findingFor: (q: any) => findings.get(`${q.key.jobPoolUploadId}/${q.key.poolRoleId}/${q.key.poolRequirementId}`) ?? null };
+}
+const ROLES: Role[] = [
+  { pool: "P1", id: "r1", title: "Mix", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NONE", finding: F("COVERS") }, { id: "b", necessity: "PREFERRED", basis: "NAME_EXACT", finding: F("PARTIAL") }, { id: "c", necessity: "OPTIONAL", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "r2", title: "Beta", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NAME_EXACT", finding: F("DIFFERENT") }, { id: "b", necessity: "REQUIRED", basis: "NONE", finding: F("EQUIVALENT") }] },
+  { pool: "P1", id: "r6", title: "Alpha", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NONE", finding: F("UNCLEAR") }, { id: "b", necessity: "REQUIRED", basis: "NONE", finding: F("COVERS") }] },
+  { pool: "P1", id: "r3", title: "Lex", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NAME_ALIAS", finding: null }, { id: "b", necessity: "PREFERRED", basis: "NONE", finding: null }] },
+  { pool: "P1", id: "r4", title: "Empty", reqs: [] },
+  { pool: "P0", id: "r4b", title: "Empty", reqs: [] },
+  { pool: "P1", id: "r5", title: "Unclear", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NAME_EXACT", finding: F("UNCLEAR") }] },
+  { pool: "P1", id: "r7", title: "Weak", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NAME_COMPOSITE_CONSTITUENT", finding: null }, { id: "b", necessity: "OPTIONAL", basis: "WEAK_TOKEN_CONTAINMENT", finding: null }] },
+  { pool: "P1", id: "r8", title: "Lowercase", reqs: [{ id: "a", necessity: "required", basis: "NONE", finding: F("PARTIAL") }, { id: "b", necessity: "UNKNOWN", basis: "NONE", finding: null }] },
+  { pool: "P2", id: "t1", title: "Twin", reqs: [{ id: "a", necessity: "PREFERRED", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "t2", title: "Twin", reqs: [{ id: "a", necessity: "PREFERRED", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "t0", title: "Twin", reqs: [{ id: "a", necessity: "PREFERRED", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "u1", title: "Ümlaut", reqs: [{ id: "a", necessity: "OPTIONAL", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "u2", title: "Zulu", reqs: [{ id: "a", necessity: "OPTIONAL", basis: "NAME_EXACT", finding: null }] },
+  { pool: "P1", id: "g1", title: "Gaps", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NONE", finding: F("COVERS") }, { id: "b", necessity: "REQUIRED", basis: "NONE", finding: F("DIFFERENT") }, { id: "c", necessity: "OPTIONAL", basis: "NONE", finding: F("COVERS") }, { id: "d", necessity: "OPTIONAL", basis: "NONE", finding: F("COVERS") }, { id: "e", necessity: "OPTIONAL", basis: "NONE", finding: F("COVERS") }] },
+  { pool: "P1", id: "g0", title: "Gaps", reqs: [{ id: "a", necessity: "REQUIRED", basis: "NONE", finding: F("COVERS") }, { id: "b", necessity: "PREFERRED", basis: "NONE", finding: F("DIFFERENT") }, { id: "c", necessity: "OPTIONAL", basis: "NONE", finding: F("DIFFERENT") }, { id: "d", necessity: "OPTIONAL", basis: "NONE", finding: F("COVERS") }] }
+];
+const impl = (roles: Role[]) => { const { discovery, findingFor } = discoveryOf(roles); return buildRoleRanking({ analysisId: "ANL_X", discovery, findingFor, evidenceClass: "STAND_IN", poolsDropped: ["JDROP"] }); };
+
+describe("PINK D ranking", () => {
+  it("D1-D5 implementation equals the independent oracle; hand values", () => {
+    const r = impl(ROLES);
+    const got = r.ranks.map(x => `${x.role.jobPoolUploadId}/${x.role.poolRoleId} ${x.tier} ${x.fit} g${x.requiredGaps}`);
+    rec.rankingOrder = got; rec.oracleOrder = oracle(ROLES);
+    expect(got).toEqual(oracle(ROLES));
+    const by = Object.fromEntries(r.ranks.map(x => [x.role.poolRoleId, x]));
+    expect([by.r1.fit, by.r2.fit, by.r6.fit, by.r3.fit, by.r4.fit, by.r5.fit, by.r7.fit, by.r8.fit]).toEqual([0.75, 0.5, 0.5, 0.3, null, 0, 0, 0.25]);
+    expect([by.r1.tier, by.r3.tier, by.r4.tier, by.r8.tier]).toEqual(["SEMANTIC", "LEXICAL_ONLY", "LEXICAL_ONLY", "SEMANTIC"]);
+    expect(by.r1.semanticCoverage).toEqual({ evaluated: 2, total: 3 });
+    expect(by.r1.requirements.map(q => [q.source, q.state, q.weight, q.value, q.contribution])).toEqual([["SEMANTIC", "COVERS", 3, 1, 3], ["SEMANTIC", "PARTIAL", 2, 0.5, 1], ["LEXICAL", "NAME_EXACT", 1, 0.5, 0.5]]);
+    expect(by.r2.requirements[0].source).toBe("SEMANTIC"); // DIFFERENT (0) overrides NAME_EXACT (0.5)
+    expect(by.r8.requirements[0].necessity).toBe("UNKNOWN");
+    expect(got.slice(-2)).toEqual(["P0/r4b LEXICAL_ONLY null g0", "P1/r4 LEXICAL_ONLY null g0"]);
+  });
+  it("D6 permutation invariance (300 seeded shuffles of roles)", () => {
+    const want = JSON.stringify(impl(ROLES).ranks); /* pools follow the requested discovery order, not under test here */ let seed = 11; const rnd = () => (seed = (seed * 48271) % 2147483647) / 2147483647; const seen = new Set<string>();
+    for (let i = 0; i < 300; i += 1) seen.add(JSON.stringify(impl([...ROLES].sort(() => rnd() - 0.5)).ranks));
+    const diff = [...seen].filter(x => x !== want).slice(0, 1).map(x => { const a = JSON.parse(want), b = JSON.parse(x); const i = a.findIndex((r: unknown, k: number) => JSON.stringify(r) !== JSON.stringify(b[k])); return { at: i, want: JSON.stringify(a[i]).slice(0, 300), got: JSON.stringify(b[i]).slice(0, 300) }; });
+    rec.permutations = { distinct: seen.size, firstDiff: diff }; expect(seen.size).toBe(1);
+  });
+  it("D7/D8 explanation carried, contributions sum to fit, authority, no decision", () => {
+    const r = impl(ROLES);
+    for (const x of r.ranks) { const w = x.requirements.reduce((n, q) => n + q.weight, 0); if (w > 0) expect(x.fit).toBeCloseTo(x.requirements.reduce((n, q) => n + q.contribution, 0) / w, 6); for (const q of x.requirements) expect(q.contribution).toBe(q.weight * q.value); }
+    const sem = r.ranks.flatMap(x => x.requirements).filter(q => q.source === "SEMANTIC");
+    expect(sem.every(q => q.explanation?.startsWith("e-") && q.evidenceLimitation === "l" && q.quotes.length === 1)).toBe(true);
+    const lex = r.ranks.flatMap(x => x.requirements).filter(q => q.source === "LEXICAL");
+    expect(lex.every(q => q.explanation === null && q.quotes[0]?.exactQuote === "lq")).toBe(true);
+    rec.authority = { authority: r.authority, version: r.rankingVersion, poolsDropped: r.poolsDropped, counts: r.counts, decisionWords: /\b(hire|reject|decision:\s*true|suitab|qualif)/i.test(JSON.stringify(r.ranks)) };
+    expect(r.authority).toEqual({ ranking: true, decision: false, authorityState: "NONE" });
+    expect(r.poolsDropped).toEqual(["JDROP"]);
+  });
+  it("pickBestFinding", () => {
+    const out = [pickBestFinding([F("PARTIAL", "b"), F("COVERS", "z"), F("EQUIVALENT", "y")])?.state, pickBestFinding([F("COVERS", "b"), F("COVERS", "a")])?.capabilityName, pickBestFinding([F("DIFFERENT", "a"), F("UNCLEAR", "b")])?.state, pickBestFinding([])];
+    rec.pickBest = out; expect(out).toEqual(["EQUIVALENT", "a", "DIFFERENT", null]);
+  });
+});

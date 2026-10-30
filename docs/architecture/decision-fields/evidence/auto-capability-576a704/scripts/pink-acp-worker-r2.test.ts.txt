@@ -1,0 +1,31 @@
+// PINK F-AM-1: the afterSuccess hook runs inside the single worker loop; while it is pending no further analysis job is claimed. DETERMINISTIC, PostgreSQL, no model.
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { createJob, type JobRecord } from "../../lib/career/orchestration/job";
+import { CareerJobWorker } from "../../lib/career/orchestration/worker";
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+describe("PINK worker hook", () => {
+  beforeAll(async () => { await initDbSchema(); });
+  it("a pending hook does not hold the loop: the next queued analysis is claimed", async () => {
+    const repo = new JobRepository(db);
+    const j1 = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [] } }); await repo.enqueueJob(j1);
+    await new Promise(r => setTimeout(r, 20));
+    const j2 = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [] } }); await repo.enqueueJob(j2);
+    let release!: () => void; const gate = new Promise<void>(r => (release = r));
+    const processed: string[] = [];
+    const worker = new CareerJobWorker("pink-hook-worker", repo, async (job: JobRecord) => { processed.push(job.jobId); const analysisId = job.jobId.replace("JOB_", "ANL_"); await db.insert(careerAnalyses).values({ analysisId, createdAt: new Date().toISOString(), validationState: "VERIFIED", payload: { structured_data: {} } }); return { resultAnalysisId: analysisId }; }, 50, 30000, async () => { await gate; });
+    worker.start();
+    await new Promise(r => setTimeout(r, 3000));
+    const during = { processed: processed.length, j1: (await repo.getJob(j1.jobId))!.status, j2: (await repo.getJob(j2.jobId))!.status };
+    release();
+    let after = during; for (let i = 0; i < 60 && after.j2 !== "SUCCEEDED"; i += 1) { await new Promise(r => setTimeout(r, 100)); after = { processed: processed.length, j1: (await repo.getJob(j1.jobId))!.status, j2: (await repo.getJob(j2.jobId))!.status }; }
+    worker.stop();
+    rec.worker = { pollIntervalMs: 50, during3sOfPendingHook: during, afterRelease: after };
+    expect(during).toEqual({ processed: 2, j1: "SUCCEEDED", j2: "SUCCEEDED" });
+    expect(after.j2).toBe("SUCCEEDED");
+  }, 60000);
+});

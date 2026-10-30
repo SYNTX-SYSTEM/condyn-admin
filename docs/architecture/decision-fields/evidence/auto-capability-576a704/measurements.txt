@@ -1,0 +1,424 @@
+PINK §3.85 measurements — AUTOMATED_CAPABILITY_TO_JOB, backend af24134 → 571c201/5c5e1ea, frontend 576a704 (on e5f0908). Classes: DETERMINISTIC (vitest, own condyn_test_* DB per run, stand-in or a mocked @google/genai, network refused), STAND_IN (GRÜN's lab: production build, real worker, loopback Gemini fake, network sentinel), CODE_INSPECTION, MEASUREMENT. No model call, no GitHub request, nothing on main or :3017.
+
+== A  block A after F-ACC-1/2 (37c51f1): mutants on GELB's suites incl. career-github-account-intake
+  RED   A-M01 fork filter off
+  RED   A-M02 archived filter off
+  RED   A-M03 disabled filter off
+  RED   A-M04 private filter off
+  RED   A-M05 oldest push first
+  RED   A-M06 name tie-break reversed
+  RED   A-M07 hard cap gone
+  RED   A-M08 default 5 -> 100
+  RED   A-M09 env 0 taken as 1 (not default)
+  RED   A-M10 env ignored
+  RED   A-M11 owner name not checked
+  RED   A-M12 host suffix accepted
+  RED   A-M13 listing includes member repos
+  RED   A-M14 every repo failure swallowed
+  RED   A-M15 unknown account reads as empty
+  RED   A-M16 two segments read as account
+  RED   A-M17 worker entry back to repo-only
+  RED   A-M18 repo index dropped from doc ids
+  RED   A-M19 selection unbounded
+  RED   A-M20 empty account succeeds
+
+== B  gate and provider (pink-acp-pure, af24134; same result on 576a704 and 571c201)
+  empty                        NOT_CONFIGURED/-
+  provider blank               NOT_CONFIGURED/-
+  gemini ok                    READY/5
+  gemini trimmed               READY/7
+  Gemini case                  PROVIDER_NOT_AUTHORIZED/-
+  gemini key blank             PROVIDER_NOT_AUTHORIZED/-
+  gemini no key                PROVIDER_NOT_AUTHORIZED/-
+  gemini limit ""              PROVIDER_NOT_AUTHORIZED/-
+  gemini limit " "             PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "0"             PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "-1"            PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "1e3"           PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "0x10"          PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "٣"             PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "1.0"           PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "1000001"       PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "5abc"          PROVIDER_NOT_AUTHORIZED/-
+  gemini limit "+5"            PROVIDER_NOT_AUTHORIZED/-
+  gemini limit missing         PROVIDER_NOT_AUTHORIZED/-
+  gemini limit 000003          READY/3
+  gemini limit 999999          READY/100000
+  openai                       PROVIDER_NOT_AUTHORIZED/-
+  stand-in limit 0             READY/0 DAY_LIMIT_ZERO
+  stand-in no limit            READY/0 DAY_LIMIT_ZERO
+  stand-in 1000                READY/1000
+  model/roles: {"both": ["a", 10], "generic": ["b", 10], "roles0": ["gemini-2.0-flash", 1], "roles99": ["gemini-2.0-flash", 25], "rolesAbc": ["gemini-2.0-flash", 10]}
+  provider: {"sdkThrowsWithKey": "ERR_SEMANTIC_PROVIDER_FAILED", "maxTokens": "ERR_SEMANTIC_PROVIDER_INCOMPLETE", "safety": "ERR_SEMANTIC_PROVIDER_INCOMPLETE", "noFinishReason": "OK", "empty": "ERR_SEMANTIC_PROVIDER_EMPTY", "nonString": "ERR_SEMANTIC_PROVIDER_EMPTY", "noKeyNoClient": "ERR_SEMANTIC_PROVIDER_KEY_MISSING", "noModel": "ERR_SEMANTIC_PROVIDER_MODEL_NOT_CONFIGURED", "factoryGeminiNoKey": "ERR_SEMANTIC_PROVIDER_KEY_MISSING", "factoryOpenai": "ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", "factoryStandIn": true, "factoryGemini": true}
+  request: {"startsWithPrompt": true, "config": {"responseMimeType": "application/json", "temperature": 0.1, "maxOutputTokens": 32768}, "keyInRequest": false}
+
+== E  read APIs on a database without the relation tables (7 ids × 5 configurations)
+  relation tables before reads: []; whole-database fingerprint difference after all reads: []; SDK constructed 0, fetches 0
+  none ANL_1793361738115_42                auto 200 DISABLED SEMANTIC_NOT_CONFIGURED no-store | rank 200 9 ranks 0 sem ec=null no-store
+  none ANL_1793361738213_97                auto 200 DISABLED SEMANTIC_NOT_CONFIGURED no-store | rank 409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON no-store
+  none ANL_does_not_exist                  auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  none x                                   auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  none ANL_' OR '1'='1                     auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  none %00                                 auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  none AAAAAAAAAAAAAAAAAAAA                auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in ANL_1793361738115_42            auto 200 NOT_STARTED  no-store | rank 200 9 ranks 0 sem ec=null no-store
+  stand-in ANL_1793361738213_97            auto 200 SKIPPED NOT_PERSON no-store | rank 409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON no-store
+  stand-in ANL_does_not_exist              auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in x                               auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in ANL_' OR '1'='1                 auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in %00                             auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in AAAAAAAAAAAAAAAAAAAA            auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in-0 ANL_1793361738115_42          auto 200 DISABLED DAY_LIMIT_ZERO no-store | rank 200 9 ranks 0 sem ec=null no-store
+  stand-in-0 ANL_1793361738213_97          auto 200 DISABLED DAY_LIMIT_ZERO no-store | rank 409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON no-store
+  stand-in-0 ANL_does_not_exist            auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in-0 x                             auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in-0 ANL_' OR '1'='1               auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in-0 %00                           auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  stand-in-0 AAAAAAAAAAAAAAAAAAAA          auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-ready ANL_1793361738115_42        auto 200 NOT_STARTED  no-store | rank 200 9 ranks 0 sem ec=null no-store
+  gemini-ready ANL_1793361738213_97        auto 200 SKIPPED NOT_PERSON no-store | rank 409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON no-store
+  gemini-ready ANL_does_not_exist          auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-ready x                           auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-ready ANL_' OR '1'='1             auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-ready %00                         auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-ready AAAAAAAAAAAAAAAAAAAA        auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-no-budget ANL_1793361738115_42    auto 200 DISABLED PROVIDER_NOT_AUTHORIZED no-store | rank 200 9 ranks 0 sem ec=null no-store
+  gemini-no-budget ANL_1793361738213_97    auto 200 DISABLED PROVIDER_NOT_AUTHORIZED no-store | rank 409 ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON no-store
+  gemini-no-budget ANL_does_not_exist      auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-no-budget x                       auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-no-budget ANL_' OR '1'='1         auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-no-budget %00                     auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+  gemini-no-budget AAAAAAAAAAAAAAAAAAAA    auto 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND  no-store | rank 404 ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND no-store
+
+== C  automatic run (af24134)
+  disabled: {"none": {"outcome": "DISABLED", "reason": "SEMANTIC_NOT_CONFIGURED"}, "stand-in-0": {"outcome": "DISABLED", "reason": "DAY_LIMIT_ZERO"}, "gemini-no-key": {"outcome": "DISABLED", "reason": "PROVIDER_NOT_AUTHORIZED"}, "scoped": {"outcome": "SKIPPED", "reason": "NOT_PERSON"}}
+  concurrent ×3 + repeat: {"rejected": [], "outcomes": ["STARTED:RINV_7788443218110C09049E5E8EBEB9FAE3", "STARTED:RINV_7788443218110C09049E5E8EBEB9FAE3", "STARTED:RINV_7788443218110C09049E5E8EBEB9FAE3"], "repeat": "STARTED:RINV_7788443218110C09049E5E8EBEB9FAE3", "investigations": 1, "ledger": [0, 3, 3]}
+  repeated concurrency ×4 in 5 analyses: [{"fulfilled": 4, "rejected": [], "investigations": 1}, {"fulfilled": 4, "rejected": [], "investigations": 1}, {"fulfilled": 4, "rejected": [], "investigations": 1}, {"fulfilled": 4, "rejected": [], "investigations": 1}, {"fulfilled": 4, "rejected": [], "investigations": 1}]
+  snapshot / later pool: {"rankingBefore": {"pools": ["JPOOL_B94850C439974E27496FE3B1A9A076B5"], "dropped": [], "ranks": 9, "semantic": 3, "evidenceClass": "STAND_IN"}, "rankingAfterNewPool": {"pools": ["JPOOL_B94850C439974E27496FE3B1A9A076B5"], "dropped": [], "ranks": 9, "semantic": 3, "evidenceClass": "STAND_IN"}}
+  poolsDropped: {"pools": ["JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2", "JPOOL_B94850C439974E27496FE3B1A9A076B5"], "dropped": ["JPOOL_D39ADA99F34A60B982ADE5F929276294"], "ranksOfDropped": 0} (status column ['pool_status'])
+  budget (af24134): {"spent": 38, "limit": 40, "after": 40, "outcome": "STARTED", "view": {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "budget": {"rolesPlanned": 25, "rolesEvaluated": 2, "callsLimit": 25}}, "tasks": [{"status": "BUDGET_EXHAUSTED", "n": 1}, {"status": "CANCELLED", "n": 22}, {"status": "SUCCEEDED", "n": 2}]}
+  collision (af24134): {"manual": "CREATED", "manualId": "RINV_3890A306F901B946FA0732D4F3FCF914", "auto": "STARTED:RINV_3890A306F901B946FA0732D4F3FCF914", "sameInvestigation": true, "view": {"state": "NOT_STARTED", "reason": null, "investigationId": null}}
+  F-RK-1 (af24134) ranking under other configurations after a stand-in run: {"stand-in": ["PARTIAL STAND_IN", 3, "STAND_IN"], "none": ["PARTIAL STAND_IN", 0, null], "stand-in-0": ["PARTIAL STAND_IN", 3, "STAND_IN"], "gemini-ready": ["PARTIAL STAND_IN", 0, null]}
+  Gemini path via mocked SDK: {"outcome": "STARTED", "view": {"state": "PARTIAL", "evidenceClass": "REAL_GEMINI", "budget": {"rolesPlanned": 2, "rolesEvaluated": 2, "callsLimit": 2}}, "ranking": {"evidenceClass": "REAL_GEMINI", "semantic": 7, "sampleExplanation": "The proposal contains the requirement."}, "claim": {"outcome": "STARTED", "view": {"state": "FAILED", "reason": "ERR_SEMANTIC_OUTPUT_REFUSED"}, "semantic": 0, "claimTextRanked": false}, "sdk": {"constructed": 4, "keysPassed": ["PINK_FAKE_KEY"], "requests": 4}, "keyInStoredRows": false, "roleOrOrgTextInRequests": [], "network": 0}
+  hang (af24134): {"settledAfter4s": false, "stateWhileHanging": "RUNNING", "afterRelease": "STARTED"}
+  worker hook (af24134): {"pollIntervalMs": 50, "during3sOfPendingHook": {"processed": 1, "j1": "SUCCEEDED", "j2": "PENDING"}, "afterRelease": {"processed": 2, "j1": "SUCCEEDED", "j2": "SUCCEEDED"}}
+  not provisioned (af24134): {"run": {"outcome": "FAILED", "reason": "ERR_RELATION_CACHE_UNAVAILABLE"}, "tables": 0, "read": "NOT_STARTED"}
+
+== C/E after GELB's fixes (571c201), same probes with the fixed expectations
+  F-RK-1: {"stand-in": ["PARTIAL STAND_IN", 3, "STAND_IN"], "none": ["PARTIAL STAND_IN", 3, "STAND_IN"], "stand-in-0": ["PARTIAL STAND_IN", 3, "STAND_IN"], "gemini-ready": ["PARTIAL STAND_IN", 3, "STAND_IN"]}
+  F-AM-1 worker: {"pollIntervalMs": 50, "during3sOfPendingHook": {"processed": 2, "j1": "SUCCEEDED", "j2": "SUCCEEDED"}, "afterRelease": {"processed": 2, "j1": "SUCCEEDED", "j2": "SUCCEEDED"}}
+  F-AM-1 provider timeout seen by the SDK: ["{\"timeout\":120000}"]
+  F-AM-2: {"run": {"outcome": "DISABLED", "reason": "NOT_PROVISIONED"}, "tables": 0, "read": ["DISABLED NOT_PROVISIONED", "DISABLED NOT_PROVISIONED"]}
+  F-AM-3: {"spent": 38, "limit": 40, "after": 40, "reason": "DAY_BUDGET_EXHAUSTED", "tasks": [{"status": "BUDGET_EXHAUSTED", "n": 1}, {"status": "CANCELLED", "n": 22}, {"status": "SUCCEEDED", "n": 2}]}
+  F-AM-4: {"route": "400 ERR_INVESTIGATION_BODY_INVALID", "manual": "NOT_TRIED_DIRECTLY", "manualId": null, "auto": "STARTED:RINV_F7164996660F67834C9A8FC37A1FE040", "sameInvestigation": false, "view": {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "investigationId": "RINV_F7164996660F67834C9A8FC37A1FE040"}}
+  Gemini path: {"keyInStoredRows": false, "roleOrOrgTextInRequests": [], "network": 0}
+
+== D  ranking (pink-acp-pure): implementation == independent PINK oracle
+  P1/r1 SEMANTIC 0.75 g0
+  P1/g1 SEMANTIC 0.666667 g1
+  P1/g0 SEMANTIC 0.571429 g0
+  P1/r6 SEMANTIC 0.5 g1
+  P1/r2 SEMANTIC 0.5 g1
+  P1/r8 SEMANTIC 0.25 g0
+  P1/r5 SEMANTIC 0 g1
+  P1/t0 LEXICAL_ONLY 0.5 g0
+  P1/t2 LEXICAL_ONLY 0.5 g0
+  P2/t1 LEXICAL_ONLY 0.5 g0
+  P1/u2 LEXICAL_ONLY 0.5 g0
+  P1/u1 LEXICAL_ONLY 0.5 g0
+  P1/r3 LEXICAL_ONLY 0.3 g0
+  P1/r7 LEXICAL_ONLY 0 g1
+  P0/r4b LEXICAL_ONLY null g0
+  P1/r4 LEXICAL_ONLY null g0
+  permutations: {"distinct": 1, "firstDiff": []} · pickBest ["EQUIVALENT", "a", "DIFFERENT", null] · authority {"authority": {"ranking": true, "decision": false, "authorityState": "NONE"}, "version": "ROLE_RANKING_V1", "poolsDropped": ["JDROP"], "counts": {"pools": 3, "roles": 16, "ranked": 16}, "decisionWords": false}
+  claim guard, engine, relation cache, investigation run, discovery: diff 9fa2cdc..571c201 = 0 lines (CODE_INSPECTION)
+
+== G  mutants (red = a failure outside the pristine run's failures; pristine runs were green)
+  -- backend af24134, 46 mutants, GELB's suites (14 job-pool files): 38 red of 46
+     RED   B-M01 gemini READY without key
+     RED   B-M02 gemini READY without budget
+     RED   B-M03 day limit parse loosened
+     RED   B-M04 gemini labelled STAND_IN
+     RED   B-M05 prompt not in engine identity
+     RED   B-M06 factory: gemini answered by stand-in
+     RED   B-M07 factory: unknown provider runs stand-in
+     RED   B-M08 SDK message (with key) leaks
+     RED   B-M09 finishReason ignored
+     ALIVE B-M10 shared start always stand-in
+     RED   C-M01 hook never called
+     RED   C-M02 hook failure rethrown
+     ALIVE C-M03 worker script not wired
+     RED   C-M04 clientRequestId not idempotent
+     ALIVE C-M05 snapshot takes every pool status
+     ALIVE C-M06 snapshot unbounded
+     RED   C-M07 role budget uncapped
+     RED   C-M08 DAY_LIMIT_ZERO not disabling
+     RED   C-M09 lexical role order ignored
+     RED   C-M10 roles without requirements planned
+     RED   C-M11 automatic marker lost
+     RED   C-M12 PxJ analysis fails instead of skip
+     RED   C-M13 beyond-budget reads COMPLETED
+     ALIVE C-M14 running reads terminal
+     RED   C-M15 explicit route confirmation bypassed
+     RED   C-M16 idempotency check removed
+     RED   D-M01 weights REQUIRED/PREFERRED swapped
+     RED   D-M02 PARTIAL counts 1
+     RED   D-M03 lexical exact counts 1
+     RED   D-M04 tier ignored
+     ALIVE D-M05 required-gaps tie-break dropped
+     ALIVE D-M06 title tie-break reversed
+     RED   D-M07 null fit first
+     RED   D-M08 decision true
+     RED   D-M09 lexical overrides semantic
+     RED   D-M10 every role tier SEMANTIC
+     RED   D-M11 best finding = worst
+     RED   D-M12 source quotes dropped
+     RED   E-M01 auto-match GET registers the tables
+     RED   E-M02 ranking ignores the run snapshot
+     RED   E-M03 dropped pools kept
+     RED   E-M04 auto-match GET cacheable
+     RED   E-M05 job-ranking GET cacheable
+     RED   E-M06 auto-match GET starts the run
+     RED   E-M07 unknown analysis not 404
+     ALIVE E-M08 latest automatic ignores the marker
+  -- af24134 survivors re-run on 576a704 with test/career/auto-capability added: 1 red of 8
+     ALIVE B-M10 shared start always stand-in
+     ALIVE C-M03 worker script not wired
+     ALIVE C-M05 snapshot takes every pool status
+     ALIVE C-M06 snapshot unbounded
+     RED   C-M14 running reads terminal
+     ALIVE D-M05 required-gaps tie-break dropped
+     ALIVE D-M06 title tie-break reversed
+     ALIVE E-M08 latest automatic ignores the marker
+  -- backend 571c201, 55 mutants (C-M02/C-M03 re-cut for the new hook, N-M01…N-M07 for the fixes), GELB's suites incl. auto-match-gemini and auto-match-hook: 52 red of 55
+     RED   B-M01 gemini READY without key
+     RED   B-M02 gemini READY without budget
+     RED   B-M03 day limit parse loosened
+     RED   B-M04 gemini labelled STAND_IN
+     RED   B-M05 prompt not in engine identity
+     RED   B-M06 factory: gemini answered by stand-in
+     RED   B-M07 factory: unknown provider runs stand-in
+     RED   B-M08 SDK message (with key) leaks
+     RED   B-M09 finishReason ignored
+     RED   B-M10 shared start always stand-in
+     RED   C-M01 hook never called
+     RED   C-M04 clientRequestId not idempotent
+     RED   C-M05 snapshot takes every pool status
+     RED   C-M06 snapshot unbounded
+     RED   C-M07 role budget uncapped
+     RED   C-M08 DAY_LIMIT_ZERO not disabling
+     RED   C-M09 lexical role order ignored
+     RED   C-M10 roles without requirements planned
+     RED   C-M11 automatic marker lost
+     RED   C-M12 PxJ analysis fails instead of skip
+     RED   C-M13 beyond-budget reads COMPLETED
+     RED   C-M14 running reads terminal
+     RED   C-M15 explicit route confirmation bypassed
+     RED   C-M16 idempotency check removed
+     RED   D-M01 weights REQUIRED/PREFERRED swapped
+     RED   D-M02 PARTIAL counts 1
+     RED   D-M03 lexical exact counts 1
+     RED   D-M04 tier ignored
+     RED   D-M05 required-gaps tie-break dropped
+     RED   D-M06 title tie-break reversed
+     RED   D-M07 null fit first
+     RED   D-M08 decision true
+     RED   D-M09 lexical overrides semantic
+     RED   D-M10 every role tier SEMANTIC
+     RED   D-M11 best finding = worst
+     RED   D-M12 source quotes dropped
+     ALIVE E-M01 auto-match GET registers the tables
+     RED   E-M02 ranking ignores the run snapshot
+     RED   E-M03 dropped pools kept
+     RED   E-M04 auto-match GET cacheable
+     RED   E-M05 job-ranking GET cacheable
+     RED   E-M06 auto-match GET starts the run
+     RED   E-M07 unknown analysis not 404
+     RED   E-M08 latest automatic ignores the marker
+     RED   C-M02 hook awaited again (holds the loop)
+     RED   C-M02b hook failure rethrown
+     RED   C-M03 worker script not wired
+     RED   C-M03b hook never runs the match
+     RED   N-M01 provider timeout removed
+     RED   N-M02 ranking uses the configured engine
+     RED   N-M03 run engine not stored
+     ALIVE N-M04 NOT_PROVISIONED run reads FAILED
+     ALIVE N-M05 GET NOT_PROVISIONED dropped
+     RED   N-M06 day budget reason dropped
+     RED   N-M07 route accepts auto: ids
+  -- frontend 576a704, 19 mutants, test/career/auto-capability + pxj-first-screen + demo-ui + SIL language + drop-zone intake: 18 red of 19
+     RED   F-M01 wait never ends
+     RED   F-M02 no second read while open
+     RED   F-M03 ranking read while the run is open
+     RED   F-M04 decoder accepts decision true
+     RED   F-M05 decoder accepts any evidence class
+     RED   F-M06 tier order not checked
+     RED   F-M07 fit not recomputed
+     RED   F-M08 ranking of another analysis accepted
+     RED   F-M09 reads become POST
+     RED   F-M10 field never reads the run
+     RED   F-M11 manual discovery entry dropped
+     RED   F-M12 evidence badge dropped
+     RED   F-M13 authority line dropped
+     RED   F-M14 dropped pools hidden
+     RED   F-M15 gemini investigation read as stand-in
+     RED   F-M16 manual stand-in engine text changed
+     ALIVE F-M17 DE beyond-budget line in EN
+     RED   F-M18 account URL not recognised
+     RED   F-M20 GO TO JOB FIELD on every skip
+
+== F  frontend in the browser (576a704, STAND_IN lab)
+  S7 gate, 40 states × 1920/1280 vs 0ab9baf (main's line):
+   == 1920: states baseline(0ab9baf = main line) 40 candidate(576a704) 40; missing [] extra []
+     DIFF pool:job+roleOpen·de: topText: ["DECISION LOOP LABS", "/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD", "? SO FUN -> ["DECISION LOOP LABS", "/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD", "? SO FUN
+     DIFF pool:pxj+roleOpen·de: topText: ["DECISION LOOP LABS", "/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD", "? SO FUN -> ["DECISION LOOP LABS", "/ SYNTX — SEMANTIC CAREER INTELLIGENCE FIELD", "? SO FUN
+     states with any difference: 2 of 40
+   == 1280: states baseline(0ab9baf = main line) 40 candidate(576a704) 40; missing [] extra []
+     states with any difference: 0 of 40
+  geometry, 88 visits × 4 captures vs 0ab9baf:
+   visits baseline 0ab9baf 88 candidate 576a704 88; covered elements candidate 0; intake gaps [12, 248, 288, 290, 308, 310, 324, 332, 443, 480, 498]; rim proofs 24; errors 0; blocked 0
+     DIFF ('1152x864@1', 'pool:pxj+roleOpen') ['enIntake'] {"line": {"visible": true, "entry": "ROLE_NOT_CHOSEN", "rect": [904, 128, 220, 130], "position": "fixed", "overflowX": false, "overflowY": false, "offscreen": false}, "action": [954, 233, 120, 18], "cover
+     DIFF ('1440x900@1', 'pool:person+roleOpen') ['enIntake'] {"line": {"visible": true, "entry": "PERSON_OPEN", "rect": [1152, 128, 260, 101], "position": "fixed", "overflowX": false, "overflowY": false, "offscreen": false}, "action": [1203, 204, 157, 18], "cove
+     DIFF ('1600x900@1', 'pool:person+roleOpen') ['deIntake'] {"line": {"visible": true, "entry": "PERSON_OPEN", "rect": [1256, 128, 316, 84], "position": "fixed", "overflowX": false, "overflowY": false, "offscreen": false}, "action": [1339, 187, 150, 18], "cover
+     DIFF ('1920x1080@1', 'pool:person+roleOpen') ['enIntake', 'deIntake'] {"line": {"visible": true, "entry": "PERSON_OPEN", "rect": [1576, 128, 316, 84], "position": "fixed", "overflowX": false, "overflowY": false, "offscreen": false}, "action": [1655, 187, 157
+   visits differing from the baseline: 4
+   ('1152x864@1', 'pool:pxj+roleOpen') enIntake [('.intake', 'null', None), ('.intake.gapBelowLine', None, '12'), ('.intake.overlapsLine', None, 'false'), ('.intake.rect', None, '[813, 270, 311, 307]')]
+   ('1440x900@1', 'pool:person+roleOpen') enIntake [('.intake', 'null', None), ('.intake.gapBelowLine', None, '12'), ('.intake.overlapsLine', None, 'false'), ('.intake.rect', None, '[1096, 241, 316, 307]')]
+   ('1600x900@1', 'pool:person+roleOpen') deIntake [('.intake', 'null', None), ('.intake.gapBelowLine', None, '12'), ('.intake.overlapsLine', None, 'false'), ('.intake.rect', None, '[1256, 224, 316, 322]')]
+   ('1920x1080@1', 'pool:person+roleOpen') enIntake [('.intake', 'null', None), ('.intake.gapBelowLine', None, '12'), ('.intake.overlapsLine', None, 'false'), ('.intake.rect', None, '[1576, 224, 316, 307]')]
+   ('1920x1080@1', 'pool:person+roleOpen') deIntake [('.intake', None, 'null'), ('.intake.gapBelowLine', '12', None), ('.intake.overlapsLine', 'false', None), ('.intake.rect', '[1576, 224, 316, 322]', None)]
+  S8 on the restored real world vs 0ab9baf:
+   SAME gaps-cand2.json: 92 vs 92 leaves, 0 differing
+   SAME hit.json: 161 vs 161 leaves, 0 differing
+   DIFF modes-1280x720@1.json: 174 vs 175 leaves, 7 differing
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+       .scenes.person.textLen: 1201 -> 1414
+   DIFF modes-1440x900@1.json: 174 vs 175 leaves, 7 differing
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+       .scenes.person.textLen: 1201 -> 1414
+   DIFF modes-1600x900@1.json: 174 vs 175 leaves, 7 differing
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+       .scenes.person.textLen: 1201 -> 1414
+   DIFF modes-1920x1080@1.json: 174 vs 175 leaves, 7 differing
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+       .scenes.person.textLen: 1201 -> 1414
+   DIFF modes-640x360@2.json: 174 vs 175 leaves, 9 differing
+       .orbits.01.anyFocus: 1 -> 0
+       .orbits.01.cosmos: 1 -> 0
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+   DIFF modes-960x540@2.json: 174 vs 175 leaves, 7 differing
+       .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+       .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+       .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+       .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+       .scenes.person.testids: 91 -> 96
+       .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+       .scenes.person.textLen: 1201 -> 1414
+   DIFF orbits-cand2-1920.json: 155 vs 156 leaves, 4 differing
+       .apis[3]: "GET /api/career/job-pools/JPOOL_…" -> "GET /api/career/analyses/ANL_…/auto-match"
+       .apis[4]: "GET /api/career/analyses/ANL_…/job-comparison" -> "GET /api/career/job-pools/JPOOL_…"
+       .apis[5]: "GET /api/career/analyses/ANL_…/role-discovery" -> "GET /api/career/analyses/ANL_…/job-comparison"
+       .apis[6]: null -> "GET /api/career/analyses/ANL_…/role-discovery"
+   SAME rd-ui-cand2-1920.json: 97 vs 97 leaves, 0 differing
+   SAME ri-cand2-1280x720-vp.json: 37 vs 37 leaves, 0 differing
+   SAME ri-cand2-1920-main.json: 419 vs 419 leaves, 0 differing
+  walk semantic on (text and PDF):
+   en pdf: inputs after ANALYZE 0 · sequence ['no-panel', 'NOT_STARTED|IDLE', 'PARTIAL|AVAILABLE'] · line PARTIAL role=status live=polite · ranking AVAILABLE ranks 73 semantic 0 evidence NONE · decision false authority NONE · controls ['button:auto-rank', 'button:rd'] · UI = API first 15 True · writes after ANALYZE [] · reload writes [] · WHY {'reqs': 6, 'explanations': 0, 'limitations': 0, 'quotes': 0} · page errors 0
+      run: {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "evidenceClass": "STAND_IN", "budget": {"rolesPlanned": 10, "rolesEvaluated": 10, "callsLimit": 0}}
+   en text: inputs after ANALYZE 0 · sequence ['no-panel', 'RUNNING|IDLE', 'PARTIAL|AVAILABLE'] · line PARTIAL role=status live=polite · ranking AVAILABLE ranks 73 semantic 22 evidence STAND_IN · decision false authority NONE · controls ['button:auto-rank', 'button:rd'] · UI = API first 15 True · writes after ANALYZE [] · reload writes [] · WHY {'reqs': 9, 'explanations': 9, 'limitations': 9, 'quotes': 4} · page errors 0
+      run: {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "evidenceClass": "STAND_IN", "budget": {"rolesPlanned": 10, "rolesEvaluated": 10, "callsLimit": 10}}
+   de text: inputs after ANALYZE 0 · sequence ['no-panel', 'RUNNING|IDLE', 'PARTIAL|AVAILABLE'] · line PARTIAL role=status live=polite · ranking AVAILABLE ranks 73 semantic 22 evidence STAND_IN · decision false authority NONE · controls ['button:auto-rank', 'button:rd'] · UI = API first 15 True · writes after ANALYZE [] · reload writes [] · WHY {'reqs': 9, 'explanations': 9, 'limitations': 9, 'quotes': 4} · page errors 0
+      run: {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "evidenceClass": "STAND_IN", "budget": {"rolesPlanned": 10, "rolesEvaluated": 10, "callsLimit": 0}}
+   view 1920x1080@1: panel [1496, 193, 400, 852] covered [] hscroll False writes 0 errors 0
+   view 1600x900@1: panel [1176, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+   view 1440x900@1: panel [1016, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+   view 1280x720@1: panel [872, 132, 384, 572] covered [] hscroll False writes 0 errors 0
+   view 960x540@2: panel [16, 202, 928, 8758] covered [] hscroll False writes 0 errors 0
+   view 640x360@2: panel [16, 202, 608, 10517] covered [] hscroll False writes 0 errors 0
+  walk semantic off:
+   en pdf: inputs after ANALYZE 0 · sequence ['no-panel', 'DISABLED|AVAILABLE'] · line DISABLED role=status live=polite · ranking AVAILABLE ranks 73 semantic 0 evidence NONE · decision false authority NONE · controls ['button:auto-rank', 'button:rd'] · UI = API first 15 False · writes after ANALYZE [] · reload writes [] · WHY {'reqs': 6, 'explanations': 0, 'limitations': 0, 'quotes': 0} · page errors 0
+      run: {"state": "DISABLED", "reason": "SEMANTIC_NOT_CONFIGURED", "evidenceClass": null, "budget": null}
+   de pdf: inputs after ANALYZE 0 · sequence ['no-panel', 'DISABLED|AVAILABLE'] · line DISABLED role=status live=polite · ranking AVAILABLE ranks 73 semantic 0 evidence NONE · decision false authority NONE · controls ['button:auto-rank', 'button:rd'] · UI = API first 15 False · writes after ANALYZE [] · reload writes [] · WHY {'reqs': 6, 'explanations': 0, 'limitations': 0, 'quotes': 0} · page errors 0
+      run: {"state": "DISABLED", "reason": "SEMANTIC_NOT_CONFIGURED", "evidenceClass": null, "budget": null}
+   view 1920x1080@1: panel [1496, 193, 400, 852] covered [] hscroll False writes 0 errors 0
+   view 1600x900@1: panel [1176, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+   view 1440x900@1: panel [1016, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+   view 1280x720@1: panel [872, 132, 384, 572] covered [] hscroll False writes 0 errors 0
+   view 960x540@2: panel [16, 202, 928, 8738] covered [] hscroll False writes 0 errors 0
+   view 640x360@2: panel [16, 202, 608, 10771] covered [] hscroll False writes 0 errors 0
+  zero proposals and stack tier (dig):
+   pdf: run {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "evidenceClass": "STAND_IN", "budget": {"rolesPlanned": 10, "rolesEvaluated": 10, "callsLimit": 0}} · discovery proposals 0 roles 73 · tasks ['CACHED:0/0', 'CACHED:0/0', 'CACHED:0/0']… · ranking {"ranks": 73, "semantic": 0, "maxFit": 0, "evidenceClass": null}
+      stack 960×540@2 {"docHeight": 9997, "panelTop": 202, "panelHeight": 8758, "shell01Top": 8963, "shell06Top": 9068, "dockTop": null, "shell01OpensAfterScroll": 1}
+      stack 640×360@2 {"docHeight": 11888, "panelTop": 202, "panelHeight": 10827, "shell01Top": 11035, "shell06Top": 11104, "dockTop": null, "shell01OpensAfterScroll": 1}
+   text: run {"state": "PARTIAL", "reason": "ROLES_BEYOND_BUDGET", "evidenceClass": "STAND_IN", "budget": {"rolesPlanned": 10, "rolesEvaluated": 10, "callsLimit": 0}} · discovery proposals 0 roles 73 · tasks ['CACHED:0/0', 'CACHED:0/0', 'CACHED:0/0']… · ranking {"ranks": 73, "semantic": 0, "maxFit": 0, "evidenceClass": null}
+      stack 960×540@2 {"docHeight": 9997, "panelTop": 202, "panelHeight": 8758, "shell01Top": 8963, "shell06Top": 9068, "dockTop": null, "shell01OpensAfterScroll": 1}
+      stack 640×360@2 {"docHeight": 11888, "panelTop": 202, "panelHeight": 10827, "shell01Top": 11035, "shell06Top": 11104, "dockTop": null, "shell01OpensAfterScroll": 1}
+
+== O-AC-1 manual START stand-in texts, 42380bf vs 576a704 (rendered with the same arguments)
+  SAME en semantic.stored: "Relation cache: 3 of 9 pairs · stand-in check: completed"
+  SAME en semantic.storedUnknownCache: "Relation cache: unavailable on this read · stand-in check: completed"
+  SAME en run.standIn / run.engine.STAND_IN: "Stand-in, no model"
+  SAME en run.roleTask: "Semantic check of this role: succeeded · stand-in, no model"
+       en gemini: "Relation cache: 3 of 9 pairs · Gemini check: completed" | "Gemini, model statements · unverified, no authority" | "Semantic check of this role: succeeded · Gemini, model statements"
+       en all other copy entries identical: false
+  SAME de semantic.stored: "Relationen-Cache: 3 von 9 Paaren · Stand-in-Prüfung: completed"
+  SAME de semantic.storedUnknownCache: "Relationen-Cache: bei diesem Lesen nicht verfügbar · Stand-in-Prüfung: completed"
+  SAME de run.standIn / run.engine.STAND_IN: "Stand-in, kein Modell"
+  SAME de run.roleTask: "Semantische Prüfung dieser Rolle: succeeded · Stand-in, kein Modell"
+       de gemini: "Relationen-Cache: 3 von 9 Paaren · Gemini-Prüfung: completed" | "Gemini, Modellaussagen · ungeprüft, keine Autorität" | "Semantische Prüfung dieser Rolle: succeeded · Gemini, Modellaussagen"
+       de all other copy entries identical: false
+  stand-in differences: 0
+  paths old 218 new 228; differing 20
+    de.run.engine.REAL_GEMINI: null -> "Gemini, Modellaussagen · ungeprüft, keine Autorität"
+    de.run.engine.STAND_IN: null -> "Stand-in, kein Modell"
+    de.run.roleTask: "fn/1:Semantische Prüfung dieser Rolle: A0 · Stand-in, kein Modell" -> "fn/2:Semantische Prüfung dieser Rolle: A0 · A1"
+    de.run.roleTaskEngine.REAL_GEMINI: null -> "Gemini, Modellaussagen"
+    de.run.roleTaskEngine.STAND_IN: null -> "Stand-in, kein Modell"
+    de.run.standIn: "Stand-in, kein Modell" -> null
+    de.semantic.check.REAL_GEMINI: null -> "Gemini-Prüfung"
+    de.semantic.check.STAND_IN: null -> "Stand-in-Prüfung"
+    de.semantic.stored: "fn/3:Relationen-Cache: A0 von A1 Paaren · Stand-in-Prüfung: A2" -> "fn/4:Relationen-Cache: A0 von A1 Paaren · A3: A2"
+    de.semantic.storedUnknownCache: "fn/1:Relationen-Cache: bei diesem Lesen nicht verfügbar · Stand-in-Prüfung: A0" -> "fn/2:Relationen-Cache: bei diesem Lesen nicht verfügbar · A1: A0"
+    en.run.engine.REAL_GEMINI: null -> "Gemini, model statements · unverified, no authority"
+    en.run.engine.STAND_IN: null -> "Stand-in, no model"
+    en.run.roleTask: "fn/1:Semantic check of this role: A0 · stand-in, no model" -> "fn/2:Semantic check of this role: A0 · A1"
+    en.run.roleTaskEngine.REAL_GEMINI: null -> "Gemini, model statements"
+    en.run.roleTaskEngine.STAND_IN: null -> "stand-in, no model"
+    en.run.standIn: "Stand-in, no model" -> null
+    en.semantic.check.REAL_GEMINI: null -> "Gemini check"
+    en.semantic.check.STAND_IN: null -> "stand-in check"
+    en.semantic.stored: "fn/3:Relation cache: A0 of A1 pairs · stand-in check: A2" -> "fn/4:Relation cache: A0 of A1 pairs · A3: A2"
+    en.semantic.storedUnknownCache: "fn/1:Relation cache: unavailable on this read · stand-in check: A0" -> "fn/2:Relation cache: unavailable on this read · A1: A0"
+
+== Suites
+  tsc 0 on af24134, 576a704 and 571c201.
+  af24134: Test Files  14 failed | 389 passed | 6 skipped (409) · Tests  45 failed | 2530 passed | 13 skipped (2588)
+  base 9fa2cdc: Test Files  9 failed | 388 passed | 6 skipped (403) · Tests  36 failed | 2499 passed | 13 skipped (2548)
+  576a704: Test Files  10 failed | 400 passed | 6 skipped (416) · Tests  37 failed | 2590 passed | 13 skipped (2640)
+  571c201: Test Files  8 failed | 397 passed | 6 skipped (411) · Tests  37 failed | 2553 passed | 13 skipped (2603)
+  isolated re-runs (af24134 vs base): tacp [test/career-worker-config-validation.test.ts] exit 1  Tests 2 failed (2) | tacpbase [test/career-worker-config-validation.test.ts] exit 1  Tests 2 failed (2) | tacp [test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts] exit 1  Tests 1 failed | 3 passed | 3 skipped (7) | tacpbase [test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts] exit 0  Tests 4 passed | 3 skipped (7) | tacp [test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts] exit 1  Tests 1 failed | 5 passed | 4 skipped (10) | tacpbase [test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts] exit 0  Tests 6 passed | 4 skipped (10) | tacp [test/career/outcome-valence-feedback-context-revision-lifecycle test/career/relation/outcome-valence-feedback-context-revision] exit 0  Tests 19 passed (19) | tacpbase [test/career/outcome-valence-feedback-context-revision-lifecycle test/career/relation/outcome-valence-feedback-context-revision] exit 1  Tests 3 failed | 16 passed (19) | [exited with code 0]

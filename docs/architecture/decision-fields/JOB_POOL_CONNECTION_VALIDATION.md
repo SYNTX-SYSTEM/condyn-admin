@@ -3816,6 +3816,33 @@ GELB asked for the gate probe again, a hit test and click proof in all states an
 
 **Run record.** `evidence/auto-capability-30f42b0/`.
 
+### 3.85 Automated capability-to-job path, whole path: backend `af24134` → `571c201`, frontend `576a704` (2026-10-30) — NO-GO on the current pair
+
+**Request.** GELB asked for the independent and inverse validation of the whole path (blocks B–G) and a GO/NO-GO for merge and :3017. The path covers the gate and provider, the automatic run after a PERSON analysis, `ROLE_RANKING_V1`, the two read APIs, the worker hook, and GRÜN's frontend: the GitHub account input, the automatic ranking panel, and O-AC-1. The mandate is unchanged ("NUR DAS. MEHR NICHT."). GELB fixed PINK's interim findings during the check in `ab47d51`/`571c201`, and PINK re-checked those fixes.
+
+**Method.**
+- **Evidence classes.** DETERMINISTIC vitest probes on their own `condyn_test_*` databases, with the stand-in or a mocked `@google/genai` and the network refused; STAND_IN browser walks in GRÜN's lab (production build, real worker, loopback Gemini fake, network sentinel); CODE_INSPECTION.
+- **Probes.** Gate matrix, provider seam, whole-database fingerprint around the reads, concurrency, snapshot and poolsDropped, budget, Gemini path, worker hook, NOT_PROVISIONED, and an independent ranking oracle.
+- **Browser.** S7 gate in 40 states, the §3.83 geometry, and S8 on the restored real world. Walks: PDF and text, EN/DE, semantic on and off, in 6 viewports.
+- **Mutants and suites.** 46 + 55 backend mutants and 19 frontend mutants. tsc and the test/career regression against base `9fa2cdc`.
+
+**Verdict: NO-GO on the current pair** (`evidence/auto-capability-576a704/verdicts.txt`). Backend blocks B–E pass after GELB's fixes. Two blocking findings remain:
+- **F-AC-1.** In the stack tier (960×540@2, 640×360@2) the ranking is an uncollapsed 73-rank list of 8.8–10.8k px above the six orbits. S8 no longer reaches orbit 01 at 640×360.
+- **F-AC-2.** Backend `571c201` reports `PARTIAL · DAY_BUDGET_EXHAUSTED`, but the frontend `576a704` decoder refuses that reason, so such a run reads as READ_FAILED.
+
+Open but not blocking:
+- **F-AM-6.** An analysis without capability proposals still reads "10 of 10 roles checked semantically" (CACHED tasks with 0 pairs).
+- **F-AM-7.** Test gaps: E-M01, N-M04 and N-M05 in the backend, F-M17 in the frontend.
+
+**What passes.**
+- **Product path.** After ANALYZE the path runs through with 0 inputs, 0 writes, and no picker or confirmation. With text input the UI shows 22 SEMANTIC ranks out of 73, labelled STAND-IN, and they equal the API ranking.
+- **Reads and ranking.** The reads write nothing and register nothing. The ranking equals PINK's oracle. The claim guard is unchanged.
+- **Fixes.** F-RK-1 and F-AM-1…5 are closed. On block A, F-ACC-1/2 are closed (§3.84; 20/20 mutants red).
+- **O-AC-1.** The stand-in texts are byte-identical.
+- **Owner notes.** O-AC-2 (the 3-minute wait against real Gemini latency), O-AC-3 (fit shown as a percentage), O-AM-4 (shutdown during a run), and the budget and operations notes O-A-2/3.
+
+**Run record.** `evidence/auto-capability-576a704/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

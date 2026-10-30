@@ -1,0 +1,236 @@
+// PINK blocks C and E (AUTOMATED_CAPABILITY_TO_JOB) on PostgreSQL: read APIs, automatic run, snapshot, budget, idempotence, Gemini path.
+// DETERMINISTIC: discovery via the fake Gemini client of the fixture, relations via the labelled stand-in or a mocked @google/genai
+// module (no SDK, no network). Runs alone in its own disposable condyn_test_* database.
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { writeFileSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { createHash } from "node:crypto";
+
+const G = globalThis as unknown as { __pink: { mode: string; constructed: number; keys: string[]; requests: string[]; release: Array<() => void> } };
+G.__pink = { mode: "good", constructed: 0, keys: [], requests: [], release: [] };
+vi.mock("@google/genai", () => ({
+  GoogleGenAI: class {
+    models: { generateContent(r: { contents: string }): Promise<unknown> };
+    constructor(o: { apiKey: string }) {
+      const P = (globalThis as any).__pink; P.constructed += 1; P.keys.push(o.apiKey);
+      this.models = { async generateContent(r: { contents: string }) {
+        P.requests.push(r.contents);
+        const body = JSON.parse(r.contents.slice(r.contents.lastIndexOf("\n\n") + 2)) as { proposals: Array<{ id: string; evidence: Array<{ evidenceId: string }> }>; requirements: Array<{ requirementId: string }> };
+        if (P.mode === "hang") await new Promise<void>(res => P.release.push(res));
+        const claim = P.mode === "claim";
+        const relations = body.proposals.flatMap(p => body.requirements.map(q => ({ proposalId: p.id, requirementId: q.requirementId, state: "COVERS", citedEvidenceIds: p.evidence.slice(0, 1).map(e => e.evidenceId),
+          relationExplanation: claim ? "The person scores 92% and is highly qualified for hiring." : "The proposal contains the requirement.", evidenceLimitation: "The quote does not show depth." })));
+        return { text: JSON.stringify({ relations }), candidates: [{ finishReason: "STOP" }] };
+      } };
+    }
+  }
+}));
+
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createSourceDocument } from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { GET as GET_AUTO } from "../../app/api/career/analyses/[analysisId]/auto-match/route";
+import { GET as GET_RANK } from "../../app/api/career/analyses/[analysisId]/job-ranking/route";
+import { runAutoMatch, activePoolSnapshot, selectAutomaticRoles } from "../../lib/career/job-pool/auto-match";
+import { readSemanticConfig } from "../../lib/career/job-pool/semantic-config";
+import { startSemanticInvestigation } from "../../lib/career/job-pool/semantic-investigation-start";
+import { loadRoleDiscoveryOperand } from "../../lib/career/job-pool/role-discovery-operand";
+import { createLocalJobPoolApplication } from "../../lib/career/job-pool/local-composition";
+import { resolveStoredTestJobScope, uploadEngineeringJobScope } from "../support/job-scope";
+import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../career/result-inspector/fixture";
+
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const KEY = "PINK_FAKE_KEY_7c1e";
+const ENV = ["ROLE_DISCOVERY_SEMANTIC_PROVIDER", "ROLE_DISCOVERY_DAY_LIMIT", "ROLE_DISCOVERY_MAX_ROLES", "GEMINI_API_KEY", "ROLE_DISCOVERY_GEMINI_MODEL"] as const;
+const setEnv = (v: Partial<Record<typeof ENV[number], string>>) => { for (const k of ENV) { if (v[k] === undefined) delete process.env[k]; else process.env[k] = v[k]; } };
+const STAND = (limit = "1000", roles = "3") => setEnv({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: limit, ROLE_DISCOVERY_MAX_ROLES: roles });
+const GEM = (limit = "50", roles = "2") => setEnv({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: limit, ROLE_DISCOVERY_MAX_ROLES: roles, GEMINI_API_KEY: KEY, ROLE_DISCOVERY_GEMINI_MODEL: "gemini-pink-fake" });
+const q = async <T>(s: string) => (await db.execute(sql.raw(s))) as unknown as T[];
+const params = (analysisId: string) => ({ params: Promise.resolve({ analysisId }) });
+const auto = async (id: string) => { const r = await GET_AUTO(new Request("http://local/x"), params(id)); return { status: r.status, cache: r.headers.get("cache-control"), body: await r.json() }; };
+const rank = async (id: string) => { const r = await GET_RANK(new Request("http://local/x"), params(id)); return { status: r.status, cache: r.headers.get("cache-control"), body: await r.json() }; };
+/** Whole-database fingerprint: every table of the schema with its column list and an md5 over all rows. */
+async function fingerprint() {
+  const tables = (await q<{ t: string }>(`SELECT tablename AS t FROM pg_tables WHERE schemaname = current_schema() ORDER BY 1`)).map(r => r.t);
+  const out: Record<string, string> = {};
+  for (const t of tables) {
+    const cols = (await q<{ c: string }>(`SELECT string_agg(column_name || ':' || data_type, ',' ORDER BY ordinal_position) AS c FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = '${t}'`))[0].c;
+    const h = (await q<{ h: string | null; n: number }>(`SELECT md5(coalesce(string_agg(x::text, '|' ORDER BY x::text), '')) AS h, count(*)::int AS n FROM "${t}" x`))[0];
+    out[t] = `${h.n} ${h.h} ${createHashShort(cols)}`;
+  }
+  return out;
+}
+const createHashShort = (s: string) => createHash("sha256").update(s ?? "").digest("hex").slice(0, 12);
+const diff = (a: Record<string, string>, b: Record<string, string>) => [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]).map(k => `${k}: ${a[k] ?? "absent"} -> ${b[k] ?? "absent"}`);
+const ledgerSum = async () => (await q<{ n: number }>(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key LIKE 'DAY:%'`))[0].n;
+const autoInvestigations = async (id: string) => (await q<{ n: number }>(`SELECT count(*)::int AS n FROM career_relation_investigations WHERE analysis_id = '${id}'`))[0].n;
+const fetchCalls: string[] = [];
+
+describe("PINK C/E on PostgreSQL", () => {
+  const jobs = new JobRepository(db);
+  const world: InspectorWorld = {
+    capabilityRepository: new PostgresCapabilityCoreRepository(db), references: new PostgresCapabilityProposalProjectionReferenceRepository(db), sourceBundles: new PostgresCandidateSourceBundleRepository(db),
+    saveJob: async job => { await jobs.enqueueJob(job); },
+    saveAnalysis: async (analysisId, createdAt) => { await db.insert(careerAnalyses).values({ analysisId, createdAt, validationState: "VERIFIED", payload: { structured_data: {} } }); }
+  };
+  const person = (label: string, group: string) => produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText(label)])), null, label, createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${label}-${Date.now()})` }), group);
+  const upload = async (file: string) => (await (await createLocalJobPoolApplication()).upload(readFileSync(path.resolve(__dirname, `../../docs/examples/job-pool-tests/${file}`), "utf8"), "JOB_POOL_UPLOADER:PINK")).view;
+  let A: Awaited<ReturnType<typeof person>>; let scoped: Awaited<ReturnType<typeof person>>;
+  const realFetch = globalThis.fetch;
+
+  beforeAll(async () => {
+    vi.stubGlobal("fetch", async (u: unknown) => { fetchCalls.push(String(u)); throw new Error("PINK: network refused in this probe"); });
+    await initDbSchema();
+    await uploadEngineeringJobScope();
+    A = await person("pa", "TypeScript");
+    scoped = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("ps")])), await resolveStoredTestJobScope(), "ps", createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (ps-${Date.now()})` }), "TypeScript");
+  }, 120000);
+  afterAll(() => { vi.stubGlobal("fetch", realFetch); });
+
+  it("E1/E2 reads on a database without the relation tables: no DDL, no row change, no model, no network; for every configuration", async () => {
+    const relTables = ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger", "career_proposal_requirement_relations"];
+    const existing = (await q<{ t: string }>(`SELECT tablename AS t FROM pg_tables WHERE schemaname = current_schema()`)).map(r => r.t);
+    rec.relationTablesBeforeReads = relTables.filter(t => existing.includes(t));
+    const before = await fingerprint();
+    const ids = [A.analysisId, scoped.analysisId, "ANL_does_not_exist", "x", "ANL_' OR '1'='1", "%00", "A".repeat(500)];
+    const out: Record<string, unknown> = {};
+    for (const [name, apply] of [["none", () => setEnv({})], ["stand-in", () => STAND()], ["stand-in-0", () => STAND("0")], ["gemini-ready", () => GEM()], ["gemini-no-budget", () => GEM("0")]] as Array<[string, () => void]>) {
+      apply();
+      for (const id of ids) { const a = await auto(id); const r = await rank(id); out[`${name} ${id.slice(0, 20)}`] = `auto ${a.status} ${a.body.autoMatch?.state ?? a.body.issues?.[0]?.code} ${a.body.autoMatch?.reason ?? ""} ${a.cache} | rank ${r.status} ${r.body.ranking ? `${r.body.ranking.ranks.length} ranks ${r.body.ranking.ranks.filter((x: { tier: string }) => x.tier === "SEMANTIC").length} sem ec=${r.body.ranking.evidenceClass}` : r.body.issues?.[0]?.code} ${r.cache}`; }
+    }
+    const after = await fingerprint();
+    rec.readsWithoutTables = out; rec.readsWithoutTablesDiff = diff(before, after); rec.readsModel = { constructed: G.__pink.constructed, fetch: fetchCalls.length };
+    expect(diff(before, after)).toEqual([]);
+    expect([G.__pink.constructed, fetchCalls.length]).toEqual([0, 0]);
+    expect(Object.values(out).every(v => !String(v).includes(" 500 "))).toBe(true);
+  });
+
+  it("C1 disabled states make no investigation; C4 concurrent and repeated runs: one investigation, calls counted once", async () => {
+    const dis: Record<string, unknown> = {};
+    for (const [n, apply] of [["none", () => setEnv({})], ["stand-in-0", () => STAND("0")], ["gemini-no-key", () => setEnv({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "5" })]] as Array<[string, () => void]>) { apply(); dis[n] = await runAutoMatch(A.analysisId); }
+    dis.scoped = (STAND(), await runAutoMatch(scoped.analysisId));
+    rec.disabled = dis;
+    expect(dis).toEqual({ none: { outcome: "DISABLED", reason: "SEMANTIC_NOT_CONFIGURED" }, "stand-in-0": { outcome: "DISABLED", reason: "DAY_LIMIT_ZERO" }, "gemini-no-key": { outcome: "DISABLED", reason: "PROVIDER_NOT_AUTHORIZED" }, scoped: { outcome: "SKIPPED", reason: "NOT_PERSON" } });
+    STAND("1000", "3");
+    const fresh = await fingerprint();
+    const l0 = (await q<{ t: string }>(`SELECT to_regclass('career_relation_call_ledger') IS NOT NULL AS t`))[0].t ? await ledgerSum() : 0;
+    const settled = await Promise.allSettled([runAutoMatch(A.analysisId), runAutoMatch(A.analysisId), runAutoMatch(A.analysisId)]);
+    const runs = settled.filter((r): r is PromiseFulfilledResult<Awaited<ReturnType<typeof runAutoMatch>>> => r.status === 'fulfilled').map(r => r.value);
+    const rejected = settled.filter((r): r is PromiseRejectedResult => r.status === 'rejected').map(r => String((r.reason as Error)?.message ?? r.reason).slice(0, 120));
+    const l1 = await ledgerSum();
+    const again = await runAutoMatch(A.analysisId); const l2 = await ledgerSum();
+    const view = (await auto(A.analysisId)).body.autoMatch;
+    const tasks = await q<{ status: string; n: number }>(`SELECT t.status, count(*)::int AS n FROM career_relation_role_tasks t JOIN career_relation_investigations i USING (investigation_id) WHERE i.analysis_id = '${A.analysisId}' GROUP BY 1 ORDER BY 1`);
+    rec.concurrent = { rejected, outcomes: runs.map(r => `${r.outcome}:${r.investigationId}`), repeat: `${again.outcome}:${again.investigationId}`, investigations: await autoInvestigations(A.analysisId), ledger: [l0, l1, l2], tasks, view, tablesCreatedByRun: diff(fresh, await fingerprint()).filter(d => d.includes("absent ->")) };
+    expect(new Set(runs.map(r => r.investigationId)).size).toBe(1);
+    expect(await autoInvestigations(A.analysisId)).toBe(1);
+    expect(l2).toBe(l1);
+    expect(view.evidenceClass).toBe("STAND_IN");
+  }, 120000);
+
+  it("E reads after a run write nothing; C2 snapshot: a pool uploaded later is not ranked; D-F-RK ranking under another configuration", async () => {
+    STAND("1000", "3");
+    const before = await fingerprint();
+    const a1 = await auto(A.analysisId); const r1 = await rank(A.analysisId);
+    expect(diff(before, await fingerprint())).toEqual([]);
+    const aiData = await upload("DLL_JOBPOOL_AI_DATA.json");
+    const r2 = (await rank(A.analysisId)).body.ranking;
+    const summary = (r: any) => ({ pools: r.pools.map((p: any) => p.jobPoolUploadId), dropped: r.poolsDropped, ranks: r.ranks.length, semantic: r.ranks.filter((x: any) => x.tier === "SEMANTIC").length, evidenceClass: r.evidenceClass });
+    const under: Record<string, unknown> = {};
+    for (const [n, apply] of [["stand-in", () => STAND()], ["none", () => setEnv({})], ["stand-in-0", () => STAND("0")], ["gemini-ready", () => GEM()]] as Array<[string, () => void]>) { apply(); const a = (await auto(A.analysisId)).body.autoMatch; under[n] = { auto: `${a.state} ${a.evidenceClass}`, ranking: summary((await rank(A.analysisId)).body.ranking) }; }
+    rec.afterRun = { auto: a1.body.autoMatch, rankingBefore: summary(r1.body.ranking), aiDataId: aiData.jobPoolUploadId, rankingAfterNewPool: summary(r2), underConfigurations: under };
+    expect(summary(r2).pools).not.toContain(aiData.jobPoolUploadId);
+  }, 120000);
+
+  it("C2 poolsDropped: a pool of the run that is no longer ACTIVE is removed and reported", async () => {
+    STAND("1000", "25");
+    const ent = await upload("DLL_JOBPOOL_ENTERPRISE_SCALE.json");
+    const B = await person("pb", "Kubernetes Operator Design");
+    const out = await runAutoMatch(B.analysisId);
+    const statusCol = (await q<{ c: string }>(`SELECT column_name AS c FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = 'career_job_pool_uploads' AND column_name ILIKE '%status%'`)).map(r => r.c);
+    const before = (await rank(B.analysisId)).body.ranking;
+    if (statusCol.includes("pool_status")) await q(`UPDATE career_job_pool_uploads SET pool_status = 'ARCHIVED' WHERE job_pool_upload_id = '${ent.jobPoolUploadId}'`);
+    const after = (await rank(B.analysisId)).body.ranking;
+    const view = (await auto(B.analysisId)).body.autoMatch;
+    rec.poolsDropped = { outcome: out.outcome, statusColumns: statusCol, entId: ent.jobPoolUploadId, snapshotPools: view.pools.map((p: any) => p.jobPoolUploadId), before: { pools: before.pools.map((p: any) => p.jobPoolUploadId), dropped: before.poolsDropped }, after: { pools: after.pools.map((p: any) => p.jobPoolUploadId), dropped: after.poolsDropped, ranksOfDropped: after.ranks.filter((r: any) => r.role.jobPoolUploadId === ent.jobPoolUploadId).length }, view: { state: view.state, reason: view.reason, budget: view.budget } };
+    if (statusCol.includes("pool_status")) { expect(after.poolsDropped).toEqual([ent.jobPoolUploadId]); expect(after.ranks.filter((r: any) => r.role.jobPoolUploadId === ent.jobPoolUploadId).length).toBe(0); }
+  }, 180000);
+
+  it("C4b repeated concurrency: identical automatic runs started at the same moment (pre-existing store.open path)", async () => {
+    STAND("100000", "2");
+    const out: Array<{ fulfilled: number; rejected: string[]; investigations: number }> = [];
+    for (let i = 0; i < 5; i += 1) {
+      const P = await person(`race${i}`, `Race Topic ${i}`);
+      const s = await Promise.allSettled([runAutoMatch(P.analysisId), runAutoMatch(P.analysisId), runAutoMatch(P.analysisId), runAutoMatch(P.analysisId)]);
+      out.push({ fulfilled: s.filter(r => r.status === "fulfilled").length, rejected: s.filter((r): r is PromiseRejectedResult => r.status === "rejected").map(r => String((r.reason as Error)?.message ?? r.reason).slice(0, 100)), investigations: await autoInvestigations(P.analysisId) });
+    }
+    rec.race = out;
+    expect(out.every(o => o.investigations === 1)).toBe(true);
+  }, 180000);
+
+  it("C3 budget: the shared day limit is never exceeded", async () => {
+    const spent = await ledgerSum();
+    STAND(String(spent + 2), "25");
+    const C = await person("pc", "Rust Borrow Checker Internals");
+    const out = await runAutoMatch(C.analysisId);
+    const after = await ledgerSum();
+    const view = (await auto(C.analysisId)).body.autoMatch;
+    const tasks = await q<{ status: string; n: number }>(`SELECT t.status, count(*)::int AS n FROM career_relation_role_tasks t JOIN career_relation_investigations i USING (investigation_id) WHERE i.analysis_id = '${C.analysisId}' GROUP BY 1 ORDER BY 1`);
+    rec.budget = { spent, limit: spent + 2, after, outcome: out.outcome, view: { state: view.state, reason: view.reason, budget: view.budget }, tasks };
+    expect(after - spent).toBeLessThanOrEqual(2);
+  }, 120000);
+
+  it("C-collision: an explicit start with clientRequestId auto:<analysisId> and the same roles pre-empts the automatic run", async () => {
+    STAND("100000", "3");
+    const D = await person("pd", "Event Sourcing Consistency");
+    const ids = activePoolSnapshot(await (await createLocalJobPoolApplication()).list()).map(p => p.jobPoolUploadId);
+    const operand = await loadRoleDiscoveryOperand(D.analysisId, ids);
+    const config = readSemanticConfig();
+    if (!operand.ok || config.state !== "READY") throw new Error("fixture");
+    const roleKeys = selectAutomaticRoles(operand.discovery, Math.min(config.maxRoles, 25));
+    const manual = await startSemanticInvestigation({ analysisId: D.analysisId, config, jobPoolUploadIds: ids, roleKeys, clientRequestId: `auto:${D.analysisId}`, confirmedCalls: "AS_PLANNED" });
+    const run = await runAutoMatch(D.analysisId);
+    const view = (await auto(D.analysisId)).body.autoMatch;
+    rec.collision = { manual: manual.kind, manualId: (manual as any).investigationId, auto: `${run.outcome}:${run.investigationId}`, sameInvestigation: (manual as any).investigationId === run.investigationId, view: { state: view.state, reason: view.reason, investigationId: view.investigationId } };
+  }, 120000);
+
+  it("B6/B7 Gemini path through the mocked SDK: REAL_GEMINI, key only in the SDK constructor, never stored; C-1 request content; refused claims never ranked", async () => {
+    GEM("50", "2");
+    G.__pink.mode = "good";
+    const E = await person("pe", "GraphQL Federation");
+    const out = await runAutoMatch(E.analysisId);
+    const view = (await auto(E.analysisId)).body.autoMatch; const r = (await rank(E.analysisId)).body.ranking;
+    G.__pink.mode = "claim";
+    const F2 = await person("pf", "Terraform Module Design");
+    const outClaim = await runAutoMatch(F2.analysisId);
+    const viewClaim = (await auto(F2.analysisId)).body.autoMatch; const rClaim = (await rank(F2.analysisId)).body.ranking;
+    const dump = (await q<{ d: string }>(`SELECT string_agg(x, '') AS d FROM (SELECT (SELECT string_agg(t::text, '') FROM ${"career_relation_investigations"} t) AS x UNION ALL SELECT (SELECT string_agg(t::text, '') FROM career_relation_role_tasks t) UNION ALL SELECT (SELECT string_agg(t::text, '') FROM career_relation_call_ledger t) UNION ALL SELECT (SELECT string_agg(t::text, '') FROM career_proposal_requirement_relations t)) s`))[0].d ?? "";
+    const pool = JSON.parse(readFileSync(path.resolve(__dirname, "../../docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json"), "utf8"));
+    const titles: string[] = [...(pool.roles ?? []).map((x: any) => x.title), ...(pool.organizations ?? []).map((x: any) => x.name), pool.pool?.name].filter((s: unknown): s is string => typeof s === "string" && s.length > 3);
+    const leaked = titles.filter(t => G.__pink.requests.some(c => c.includes(t)));
+    rec.gemini = { outcome: out.outcome, view: { state: view.state, evidenceClass: view.evidenceClass, budget: view.budget }, ranking: { evidenceClass: r.evidenceClass, semantic: r.ranks.filter((x: any) => x.tier === "SEMANTIC").length, sampleExplanation: r.ranks[0]?.requirements.find((x: any) => x.source === "SEMANTIC")?.explanation ?? null },
+      claim: { outcome: outClaim.outcome, view: { state: viewClaim.state, reason: viewClaim.reason }, semantic: rClaim.ranks.filter((x: any) => x.tier === "SEMANTIC").length, claimTextRanked: JSON.stringify(rClaim).includes("92%") },
+      sdk: { constructed: G.__pink.constructed, keysPassed: [...new Set(G.__pink.keys)].map(k => (k === KEY ? "PINK_FAKE_KEY" : "OTHER")), requests: G.__pink.requests.length }, keyInStoredRows: dump.includes(KEY), roleOrOrgTextInRequests: leaked, network: fetchCalls.length };
+    expect(view.evidenceClass).toBe("REAL_GEMINI");
+    expect(dump.includes(KEY)).toBe(false);
+    expect(JSON.stringify(rClaim).includes("92%")).toBe(false);
+    expect(fetchCalls.length).toBe(0);
+  }, 180000);
+
+  it("F-AM-1 a provider call that never answers holds runAutoMatch (no timeout in the provider)", async () => {
+    GEM("50", "1");
+    G.__pink.mode = "hang";
+    const H = await person("ph", "Hanging Provider Topic");
+    let settled = false;
+    const p = runAutoMatch(H.analysisId).then(o => { settled = true; return o; });
+    await new Promise(r => setTimeout(r, 4000));
+    const viewWhile = (await auto(H.analysisId)).body.autoMatch;
+    rec.hang = { settledAfter4s: settled, stateWhileHanging: viewWhile.state };
+    G.__pink.mode = "good"; for (const f of G.__pink.release.splice(0)) f();
+    const o = await p; rec.hang = { ...(rec.hang as object), afterRelease: o.outcome };
+    expect((rec.hang as { settledAfter4s: boolean }).settledAfter4s).toBe(false);
+  }, 120000);
+});

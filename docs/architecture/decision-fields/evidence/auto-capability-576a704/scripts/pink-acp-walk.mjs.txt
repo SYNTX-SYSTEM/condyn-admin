@@ -1,0 +1,84 @@
+// PINK block F walk (AUTOMATED_CAPABILITY_TO_JOB): PDF → ANALYZE in PERSON, then NO input; the automatic run and ranking in the browser.
+// STAND-IN lab only (GRÜN's lab.ts, loopback Gemini fake, network sentinel). argv: <state.json> <repo> <out dir> <label>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(`${OUT}/shots`, { recursive: true });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const browser = await chromium.launch();
+const rec = { label: LABEL, semantic: st.semantic, pools: Object.keys(st.uploads ?? {}).length, flows: [], views: [] };
+async function ctxFor(w, h, dsf) {
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: dsf });
+  await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const page = await ctx.newPage(); const requests = [], errors = [];
+  page.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) requests.push({ at: Date.now(), m: r.method(), p: u.pathname }); });
+  page.on("pageerror", e => errors.push(String(e).slice(0, 160)));
+  return { ctx, page, requests, errors };
+}
+const german = async page => { await page.click('[data-testid="open-system-codex-btn"]'); await page.click('[data-testid="switch-lang-de"]'); await page.click('[data-testid="system-codex-close"]'); await sleep(400); };
+const panel = page => page.evaluate(() => {
+  const p = document.querySelector('[data-testid="auto-ranking-panel"]'); if (!p) return null;
+  const t = s => p.querySelector(s)?.textContent?.trim() ?? null;
+  const ranks = [...p.querySelectorAll('[data-rank]')].map(e => ({ rank: Number(e.getAttribute("data-rank")), tier: e.getAttribute("data-tier"), fit: e.getAttribute("data-fit"), id: (e.getAttribute("data-testid") ?? "").replace(/^auto-rank-/, "") }));
+  const controls = [...p.querySelectorAll('button, input, select, textarea, [role="checkbox"], [role="radio"], [role="listbox"]')].map(e => `${e.tagName.toLowerCase()}:${e.getAttribute("data-testid") ?? (e.textContent ?? "").trim().slice(0, 24)}`);
+  const line = p.querySelector('[data-testid="auto-line"]');
+  return { line: p.getAttribute("data-auto-line"), ranking: p.getAttribute("data-ranking-state"), lineRole: line?.getAttribute("role") ?? null, lineLive: line?.getAttribute("aria-live") ?? null, lineText: t('[data-testid="auto-line"]'), evidence: p.querySelector('[data-testid="auto-evidence"]')?.getAttribute("data-evidence-class") ?? null, evidenceText: t('[data-testid="auto-evidence"]'),
+    authority: { decision: p.querySelector('[data-decision]')?.getAttribute("data-decision") ?? null, state: p.querySelector('[data-authority-state]')?.getAttribute("data-authority-state") ?? null, text: t('[data-testid="auto-authority"]') }, ranks: ranks.length, semantic: ranks.filter(r => r.tier === "SEMANTIC").length, first: ranks.slice(0, 15), controlKinds: [...new Set(controls.map(c => c.replace(/-[A-Za-z0-9_]+$/, "").replace(/:auto-rank-why.*/, ":auto-rank-why")))] };
+});
+const GTEXT = (readFileSync(`${ROOT}/docs/career_analysis/evidence/auto-capability-path/scripts/walk.mjs`, "utf8").match(/^const TEXT = (".*");$/m) ?? [null, "\"\""])[1];
+async function flow(lang, kind = "pdf") {
+  const { ctx, page, requests, errors } = await ctxFor(1920, 1080, 1);
+  const before = new Set(((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId));
+  await page.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON`, { waitUntil: "networkidle" });
+  if (lang === "de") await german(page);
+  let inputs = 0; const act = async fn => { inputs += 1; await fn(); };
+  if (kind === "pdf") await act(() => page.getByTestId("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`));
+  else { await act(() => page.getByTestId("add-text-source-btn").click()); await act(() => page.getByTestId("source-text-input").fill(JSON.parse(GTEXT))); await act(() => page.getByTestId("submit-source-btn").click()); }
+  await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 });
+  await act(() => page.getByTestId("start-intake-analysis-btn").click());
+  const t0 = Date.now(); const inputsAtAnalyze = inputs; const seq = []; let last = null; let final = null;
+  for (let i = 0; i < 180; i += 1) {
+    await sleep(1000); const p = await panel(page); const key = p ? `${p.line}|${p.ranking}` : "no-panel";
+    if (key !== last) { seq.push({ s: Math.round((Date.now() - t0) / 100) / 10, key }); last = key; }
+    if (p && p.ranking && !["LOADING", "WAITING", "IDLE", "NOT_REQUESTED"].includes(p.ranking) && !["READING", "NOT_STARTED", "RUNNING"].includes(p.line)) { final = p; break; }
+  }
+  const analysisId = ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId).find(id => !before.has(id)) ?? null;
+  const writesAfter = requests.filter(r => r.at >= t0 && !["GET", "HEAD"].includes(r.m)).map(r => `${r.m} ${r.p}`);
+  const api = analysisId ? (await (await fetch(`${BASE}/api/career/analyses/${analysisId}/job-ranking`)).json()).ranking : null;
+  const apiAuto = analysisId ? (await (await fetch(`${BASE}/api/career/analyses/${analysisId}/auto-match`)).json()).autoMatch : null;
+  const uiVsApi = final && api ? { uiRanks: final.ranks, apiRanks: api.ranks.length, sameFirst15: JSON.stringify(final.first.map(r => [r.id, r.tier, String(r.fit)])) === JSON.stringify(api.ranks.slice(0, 15).map(r => [`${r.role.jobPoolUploadId}:${r.role.poolRoleId}`, r.tier, String(r.fit ?? "")])), uiFirst: final.first.slice(0, 3), apiFirst: api.ranks.slice(0, 3).map(r => [`${r.role.jobPoolUploadId}-${r.role.poolRoleId}`, r.tier, r.fit]) } : null;
+  await page.screenshot({ path: `${OUT}/shots/flow-${LABEL}-${lang}-1920.png` });
+  // reload of the result URL: same panel, no write
+  const nReq = requests.length; await page.reload({ waitUntil: "networkidle" }); await sleep(6000); const reload = await panel(page);
+  const reloadWrites = requests.slice(nReq).filter(r => !["GET", "HEAD"].includes(r.m)).map(r => `${r.m} ${r.p}`);
+  // WHY of the first rank (opened only to count; no shot of quotes)
+  let why = null; const semRank = page.locator('[data-tier="SEMANTIC"] [data-testid="auto-rank-why"]').first(); const w = (await semRank.count()) ? semRank : page.locator('[data-testid="auto-rank-why"]').first(); if (await w.count()) { await w.click(); await sleep(400); why = await page.evaluate(() => { const p = document.querySelector('[data-testid="auto-ranking-panel"]'); return { reqs: p.querySelectorAll('[data-testid^="auto-req-"][data-source]').length, explanations: p.querySelectorAll('[data-testid="auto-req-explanation"]').length, limitations: p.querySelectorAll('[data-testid="auto-req-limitation"]').length, quotes: p.querySelectorAll('[data-testid="auto-req-quote"]').length }; }); }
+  const url = page.url();
+  rec.flows.push({ lang, kind, inputsBeforeAndAtAnalyze: inputsAtAnalyze, inputsAfterAnalyze: inputs - inputsAtAnalyze, analysisId: analysisId ? "set" : null, sequence: seq, final, apiAuto: apiAuto && { state: apiAuto.state, reason: apiAuto.reason, evidenceClass: apiAuto.evidenceClass, budget: apiAuto.budget }, uiVsApi, writesAfterAnalyze: writesAfter, reload: reload && { line: reload.line, ranking: reload.ranking, ranks: reload.ranks }, reloadWrites, why, urlParams: [...new URL(url).searchParams.keys()], pageErrors: errors });
+  console.log("flow", lang, kind, JSON.stringify({ seq: seq.map(s => `${s.s}s ${s.key}`), final: final && [final.line, final.ranking, final.ranks, final.semantic, final.evidence], writesAfter, reloadWrites, ui: uiVsApi?.sameFirst15 }));
+  await ctx.close(); return url;
+}
+await flow("en", "pdf"); const urlEn = await flow("en", "text"); await flow("de", "text");
+// the result URL on 6 viewports: covered elements under the panel (topmost hit at element centres) and horizontal scroll
+for (const [w, h, d] of [[1920, 1080, 1], [1600, 900, 1], [1440, 900, 1], [1280, 720, 1], [960, 540, 2], [640, 360, 2]]) {
+  const { ctx, page, requests, errors } = await ctxFor(w, h, d);
+  await page.goto(urlEn, { waitUntil: "networkidle" }); await sleep(7000);
+  const geo = await page.evaluate(() => {
+    const p = document.querySelector('[data-testid="auto-ranking-panel"]'); if (!p) return { panel: null };
+    const r = p.getBoundingClientRect(); const covered = [];
+    for (const e of document.querySelectorAll('[data-testid], [data-sx-shell], [data-orbit], button, a')) {
+      if (p.contains(e) || e.contains(p)) continue; const b = e.getBoundingClientRect(); if (b.width < 2 || b.height < 2) continue;
+      const ix = Math.max(0, Math.min(b.right, r.right) - Math.max(b.left, r.left)), iy = Math.max(0, Math.min(b.bottom, r.bottom) - Math.max(b.top, r.top)); if (ix * iy <= 0) continue;
+      const pts = [[0.5, 0.5], [0.2, 0.2], [0.8, 0.2], [0.2, 0.8], [0.8, 0.8]].map(([fx, fy]) => [b.left + b.width * fx, b.top + b.height * fy]).filter(([x, y]) => x >= r.left && x <= r.right && y >= r.top && y <= r.bottom && x >= 0 && y >= 0 && x < innerWidth && y < innerHeight);
+      const hidden = pts.filter(([x, y]) => { const top = document.elementFromPoint(x, y); return top && p.contains(top); }).length;
+      if (hidden > 0) covered.push(`${e.getAttribute("data-testid") ?? e.getAttribute("data-sx-shell") ?? e.tagName.toLowerCase()} ${hidden}/${pts.length}`);
+    }
+    return { panel: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)], covered: [...new Set(covered)].slice(0, 20), hscroll: document.documentElement.scrollWidth > innerWidth + 1, line: p.getAttribute("data-auto-line"), ranking: p.getAttribute("data-ranking-state") };
+  });
+  await page.screenshot({ path: `${OUT}/shots/view-${LABEL}-${w}x${h}.png` });
+  rec.views.push({ vp: `${w}x${h}@${d}`, ...geo, writes: requests.filter(r => !["GET", "HEAD"].includes(r.m)).length, pageErrors: errors.length });
+  console.log("view", `${w}x${h}`, JSON.stringify(geo).slice(0, 300));
+  await ctx.close();
+}
+writeFileSync(`${OUT}/walk-${LABEL}.json`, JSON.stringify(rec, null, 1)); await browser.close();

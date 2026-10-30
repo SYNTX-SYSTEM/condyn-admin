@@ -1,0 +1,23 @@
+#!/bin/bash
+# PINK §3.85 block F: gate (S7), geometry, S8 on the restored real world, and the automatic walk on GRÜN's stand-in lab — all on 576a704, port 41873.
+S=$SCRATCH; G=$S/sem; O=$S/acp/out; P=$REPO; C=576a704
+until grep -q T576-END $S/acp/out/run-576.out 2>/dev/null; do sleep 30; done
+bash $G/run-gate2.sh $C ac > $O/lab-gate.log 2>&1; tail -3 $O/lab-gate.log
+bash $G/run-geo.sh $C ac > $O/lab-geo.log 2>&1; tail -3 $O/lab-geo.log
+bash $G/run-382.sh $C ac > $O/lab-s8.log 2>&1; tail -12 $O/lab-s8.log
+cd $P && git checkout -q --detach $C && echo "walk HEAD $(git rev-parse --short HEAD)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES GITHUB_TOKEN
+export CONDYN_PLAYWRIGHT_MODULE=$NQUIRY/node_modules/playwright/index.mjs
+for V in on off; do
+  LD=$S/acp/lab-$V; rm -rf "${LD:?}"; mkdir -p $LD
+  if ss -ltn | grep -q ":41873 "; then echo "PORT BUSY"; break; fi
+  ( [ $V = off ] && export LAB_SEMANTIC=off; LAB_PORT=41873 LAB_DIR=$LD LAB_STATE_FILE=$LD/state.json npx tsx docs/career_analysis/evidence/auto-capability-path/scripts/lab.ts > $LD/lab.log 2>&1 ) &
+  for k in $(seq 1 200); do grep -qE "LAB READY|Error|rror:" $LD/lab.log && break; sleep 3; done
+  grep -E "LAB READY" $LD/lab.log | sed -E 's/worker=[0-9]+/worker=<pid>/'
+  if grep -q "LAB READY" $LD/lab.log; then timeout 1800 node $S/acp/web/pink-acp-walk.mjs $LD/state.json $P $O/walk $V > $O/walk-$V.log 2>&1; echo "walk $V exit $?"; tail -8 $O/walk-$V.log | cut -c1-400; fi
+  PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 30); do ss -ltn | grep -q ":41873 " || break; sleep 1; done; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"
+  [ -f $LD/net.jsonl ] && echo "net sentinel log lines: $(wc -l < $LD/net.jsonl)" || echo "net sentinel log: none"
+done
+cd $P && git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo LAB-END

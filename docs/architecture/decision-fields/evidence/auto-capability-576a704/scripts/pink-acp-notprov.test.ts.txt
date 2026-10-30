@@ -1,0 +1,31 @@
+// PINK Q2 probe: the automatic run on a database whose relation store is NOT provisioned (registration gate refuses). The gate module is
+// replaced by its refusing answer only; everything else is the candidate's code. DETERMINISTIC, stand-in config, no model.
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { writeFileSync } from "node:fs";
+vi.mock("../../lib/career/job-pool/relation-cache-registration", async orig => ({ ...(await orig() as object), ensureRelationCacheRegistration: async () => "NOT_PROVISIONED", openRelationCache: async () => ({ state: "NOT_PROVISIONED" }) }));
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createSourceDocument } from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { GET as GET_AUTO } from "../../app/api/career/analyses/[analysisId]/auto-match/route";
+import { runAutoMatch } from "../../lib/career/job-pool/auto-match";
+import { uploadEngineeringJobScope } from "../support/job-scope";
+import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../career/result-inspector/fixture";
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+describe("PINK Q2 NOT_PROVISIONED", () => {
+  const jobs = new JobRepository(db);
+  const world: InspectorWorld = { capabilityRepository: new PostgresCapabilityCoreRepository(db), references: new PostgresCapabilityProposalProjectionReferenceRepository(db), sourceBundles: new PostgresCandidateSourceBundleRepository(db),
+    saveJob: async job => { await jobs.enqueueJob(job); }, saveAnalysis: async (analysisId, createdAt) => { await db.insert(careerAnalyses).values({ analysisId, createdAt, validationState: "VERIFIED", payload: { structured_data: {} } }); } };
+  beforeAll(async () => { await initDbSchema(); await uploadEngineeringJobScope(); }, 120000);
+  it("run and read", async () => {
+    process.env.ROLE_DISCOVERY_SEMANTIC_PROVIDER = "stand-in"; process.env.ROLE_DISCOVERY_DAY_LIMIT = "1000";
+    const A = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("np")])), null, "np", createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (np-${Date.now()})` }), "TypeScript");
+    const out = await runAutoMatch(A.analysisId);
+    const tables = ((await db.execute(sql.raw(`SELECT count(*)::int AS n FROM pg_tables WHERE schemaname = current_schema() AND tablename LIKE 'career_relation_%'`))) as unknown as Array<{ n: number }>)[0].n;
+    const reads = [] as unknown[]; for (let i = 0; i < 2; i += 1) { const r = await GET_AUTO(new Request("http://local/x"), { params: Promise.resolve({ analysisId: A.analysisId }) }); reads.push({ status: r.status, autoMatch: (await r.json()).autoMatch }); }
+    rec.notProvisioned = { run: out, relationTables: tables, reads };
+    expect(out.outcome).not.toBe("STARTED");
+  }, 120000);
+});

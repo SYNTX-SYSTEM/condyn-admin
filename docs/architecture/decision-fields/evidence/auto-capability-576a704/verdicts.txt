@@ -1,0 +1,30 @@
+PINK §3.85 — AUTOMATED_CAPABILITY_TO_JOB, whole path: backend af24134 → fixes 571c201 (5c5e1ea test-only), frontend 576a704 (on e5f0908) — 2026-10-30
+Evidence classes: DETERMINISTIC, STAND_IN, CODE_INSPECTION, MEASUREMENT. No model call (stand-in, mocked @google/genai, loopback Gemini fake behind a network sentinel; 0 fetches, sentinel log never created), no GitHub request, nothing on main or :3017.
+
+VERDICT: NO-GO for merge and :3017 on the current pair (frontend 576a704 + backend 571c201). Backend B–E PASS after GELB's fixes; three frontend/path findings remain, two of them blocking.
+
+PASS
+A   GitHub account input (37c51f1)       F-ACC-1 closed (route accepts www.github.com, CODE_INSPECTION), F-ACC-2 closed: 20/20 mutants red in GELB's suites
+B   gate / provider                      26 env cases as specified (Q1, fail closed); errors are codes only, a key in an SDK error never leaks; one factory; prompt checksum in the engine identity; SDK timeout 120 s (571c201)
+C   automatic run                        disabled/skipped without a call; concurrent ×3/×4 → one investigation, repeat costs 0; later pool not ranked; archived pool → poolsDropped, no rank; shared day budget never exceeded; Gemini path (mocked SDK): REAL_GEMINI, key in no stored row, no role/organisation/pool text in requests, claim output refused and never ranked
+C   after the fixes (571c201)            F-RK-1 closed (ranking keeps the run's 3 semantic roles under every configuration); F-AM-1 closed (next job claimed while the hook is pending; SDK gets timeout 120000); F-AM-2 closed (run and GET: DISABLED · NOT_PROVISIONED, 0 tables); F-AM-3 closed (DAY_BUDGET_EXHAUSTED); F-AM-4 closed (route 400 for auto: ids)
+D   ranking                              implementation = independent PINK oracle (16 roles, every tie-break), invariant over 300 permutations, contributions sum to fit, authority ranking:true decision:false NONE; claim guard / engine / cache / run / discovery diff 0
+E   read APIs                            7 ids × 5 configurations on a database without relation tables: 0 DDL, 0 row change (whole-database fingerprint), 0 SDK constructions, 0 fetches, 404/409 never 500, no-store
+F   browser (576a704)                    PERSON → ANALYZE, then 0 inputs: run → ranking by itself (text: 22 SEMANTIC of 73, STAND-IN labelled; DE likewise), UI ranks = API ranks, 0 writes after ANALYZE and on reload, no picker/confirmation (only WHY and the manual entry), line role=status polite, authority line shown; WHY: 9 explanations, 9 limitations, 4 quotes; semantic off: DISABLED · line + lexical ranking; 0 covered elements and no horizontal scroll in 6 viewports; S7 gate 40 states × 2 identical to main's line; geometry 0 covered in 88 visits; S8 identical except the PERSON scene (new GET auto-match + panel) and orbit 01 at 640×360 (F-AC-1)
+O-AC-1 manual START                      stand-in texts byte-identical in EN/DE (4 strings each); 198 other copy paths unchanged; Gemini named as Gemini
+Suites                                   tsc 0 (af24134, 576a704, 571c201); test/career + root career suites: only base-red files differ (outcome-valence DDL-drift domain, worker-config-validation red on base in isolation); the e2e failures of af24134 (node:crypto in the client bundle, O-AM-3) are gone on 576a704 and 571c201
+
+FINDINGS (open)
+F-AC-1  BLOCKING  Stack tier (960×540@2, 640×360@2): the automatic ranking is a full-width, uncollapsed list of all 73 ranks above the six orbits — panel 8758 / 10827 px tall, orbit 01 at document y 8963 / 11035. The S8 probe no longer reaches orbit 01 at 640×360 (cosmos 1 → 0); it opens only after scrolling ~9–11k px. Existing orbit access in the zoom tiers is damaged (boundary 1).
+F-AC-2  BLOCKING  Contract mismatch: backend 571c201 reports PARTIAL · DAY_BUDGET_EXHAUSTED; frontend 576a704 accepts only ROLES_BEYOND_BUDGET | ROLE_FAILURES, so such a run decodes as READ_FAILED. Needs GRÜN's mirror (announced by GELB).
+F-AM-6  An analysis with 0 capability proposals (both walks with a non-matching text/PDF: 0 proposals) still gives a run "PARTIAL · 10 of 10 roles checked semantically · call limit 0": 10 tasks CACHED with 0 pairs. Nothing was checked; the line claims it. Suggest: 0 proposals → SKIPPED (e.g. NO_PROPOSALS), or count only tasks with pairs.
+F-AM-7  test gaps: backend 571c201 E-M01 (auto-match GET registers the tables), N-M04, N-M05 (NOT_PROVISIONED run/read) alive in GELB's suites (PINK's probes pink-acp-db E1 and pink-acp-notprov-r2 catch all three); frontend F-M17 (DE beyond-budget line replaced by EN) alive.
+
+OBSERVATIONS / OWNER NOTES
+O-AM-1  one duplicate key on career_relation_investigations_pkey in 24 concurrent groups (pre-existing store.open race, unchanged code)
+O-AM-2  roles with identical requirement content take their findings from the cache: 2 evaluated roles → 7 SEMANTIC roles
+O-AM-3  backend tips 19b472c…af24134 broke the existing frontend (node:crypto in the client bundle; e2e red only there); fixed in e5f0908
+O-AM-4  the hook is now fire-and-forget: a worker stopped mid-run leaves the investigation RUNNING (UI → WAITED_OUT after 3 min); a FAILED before store.open leaves no trace (GELB owner note)
+O-AC-2  the UI waits at most 3 min; with real Gemini (10–25 calls, up to 120 s each) a run can outlast it → WAITED_OUT and an early (lexical) ranking until reload. Not measurable without a paid run.
+O-AC-3  the panel shows the fit as a percentage ("fit 24 %"); the ranking is not a decision, a percent may read like a match score (owner wording)
+O-A-2/3 account input: up to 100 documents per ANALYZE; unauthenticated GitHub rate limit ≈ 3 account analyses per hour (owner budget / operations)
