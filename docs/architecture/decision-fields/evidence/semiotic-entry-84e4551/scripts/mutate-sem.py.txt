@@ -1,0 +1,58 @@
+import subprocess, shutil, os, sys, json, re
+I = sys.argv[1]; PRISTINE = f"{I}/tsem"; WORK = f"{I}/tmsem"
+FES = "lib/career/view-model/field-entry-state.ts"; F = "app/components/career/demo/SemanticCareerIntelligenceField.tsx"; SEL = "app/components/career/demo/SyntxFieldSelector.tsx"; SIL = "lib/career/view-model/sil-language.ts"; LAY = "app/components/career/demo/career-demo-layout.ts"
+T = ["test/career/pxj-first-screen", "test/career/job-pool", "test/career/three-modes"]
+M = [
+ ("E01 derive: no pool reads as pools not opened", FES, 'if (input.pools === "EMPTY") return "NO_POOL";', 'if (input.pools === "EMPTY") return "POOL_NOT_OPENED";'),
+ ("E02 derive: opened pool ignored", FES, 'if (!input.poolOpen) return "POOL_NOT_OPENED";', 'if (true) return "POOL_NOT_OPENED";'),
+ ("E03 derive: opened role ignored", FES, '  return "ROLE_NOT_CHOSEN";\n}', '  return "ROLE_NOT_OPENED";\n}'),
+ ("E04 derive: unread pools read as no pool", FES, 'if (input.pools === "EMPTY") return "NO_POOL";', 'if (input.pools !== "AVAILABLE") return "NO_POOL";'),
+ ("E05 derive: PERSON line inside the Capability Field (T-07)", FES, 'return input.focus === "FIELD" ? "PERSON_OPEN" : null;', 'return "PERSON_OPEN";'),
+ ("E06 derive: line although the gate is open", FES, "  if (input.gateOpen) return null;\n", ""),
+ ("E07 derive: CHECKING reads as INVALID", FES, 'if (input.scope === "CHECKING") return "CHECKING";', 'if (input.scope === "CHECKING") return "INVALID";'),
+ ("E08 gate cause: role-not-chosen loses data-gate NONE", FES, 'if (state === "PERSON_OPEN") return null;', 'if (state === "PERSON_OPEN" || state === "ROLE_NOT_CHOSEN") return null;'),
+ ("E09 field: pool-open source constant", F, "poolOpen: jobPoolWorkflow.selectedJobPoolUploadId !== null", "poolOpen: true"),
+ ("E10 field: role-open source constant false", F, "roleOpen: observedRoleId !== null", "roleOpen: false"),
+ ("E11 field: requirement observation not a role", F, 'observation.kind === "ROLE" || observation.kind === "REQUIREMENT" ? observation.roleId : null;\n  const fieldEntry', 'observation.kind === "ROLE" ? observation.roleId : null;\n  const fieldEntry'),
+ ("E12 field: choose-role switches the mode instead", F, "onActivate: () => selectJobScope(observedRoleId) }", 'onActivate: () => selectInvestigationMode("PERSON") }'),
+ ("E13 field: person action selects JOB", F, '{ id: "person", label: entryCopy.action.person, onActivate: () => selectInvestigationMode("PERSON") }', '{ id: "person", label: entryCopy.action.person, onActivate: () => selectInvestigationMode("JOB") }'),
+ ("E14 field: capability action goes to the Job Field", F, 'onActivate: () => switchFieldFocus("CAPABILITY") }', 'onActivate: () => switchFieldFocus("FIELD") }'),
+ ("E15 field: tooltip out of sync with the line", F, "`${capabilityGate.reason} ${capabilityGate.way}`;", '"Select a job first";'),
+ ("E16 field: gate opens for JOB (mode logic)", F, 'const capabilityGateOpen = investigationMode === "PERSON" ||', 'const capabilityGateOpen = investigationMode === "PERSON" || investigationMode === "JOB" ||'),
+ ("E17 selector: role alert", SEL, 'role="status"', 'role="alert"'),
+ ("E18 selector: aria-live removed", SEL, '          aria-live="polite"\n', ""),
+ ("E19 selector: amber path label", SEL, 'color: "rgba(150, 214, 236, 0.78)"', 'color: "rgba(255, 206, 128, 0.96)"'),
+ ("E20 selector: describedby target id dropped", SEL, "id={open ? undefined : CAPABILITY_GATE_REASON_ID}", "id={undefined}"),
+ ("E21 selector: data-gate carries the entry state", SEL, "data-gate={capabilityGate.state ?? undefined}", "data-gate={capabilityGate.entry}"),
+ ("E22 selector: action not rendered", SEL, "{capabilityGate.action && (", "{false && capabilityGate.action && ("),
+ ("E23 copy EN: lock language back", SIL, 'NO_POOL: "No job pool in the field yet."', 'NO_POOL: "CAPABILITY FIELD CLOSED: no job pool."'),
+ ("E24 copy DE: lock language back", SIL, 'NO_POOL: "Im Feld liegt noch kein Job-Pool."', 'NO_POOL: "Capability-Feld gesperrt: zuerst einen Job-Pool."'),
+ ("E25 copy EN: 2a and 2b same sentence", SIL, 'ROLE_NOT_OPENED: "The pool is open; no role is open in it yet."', 'ROLE_NOT_OPENED: "Job pools are in the field; none is open."'),
+ ("E26 copy DE: state 4 untranslated", SIL, 'ROLE_NOT_CHOSEN: "Eine Rolle ist geöffnet; sie ist noch nicht der Job."', 'ROLE_NOT_CHOSEN: "A role is open; it is not the job yet."'),
+ ("E27 copy EN: state 4 = state 2b", SIL, 'ROLE_NOT_CHOSEN: "A role is open; it is not the job yet."', 'ROLE_NOT_CHOSEN: "The pool is open; no role is open in it yet."'),
+ ("E28 layout: FIT room rule removed", LAY, "> [data-sx-shell=\"gate-reason\"] { left: calc(56px + min(340px, 28vw) + min(316px, 27vw)) !important;", "> [data-sx-shell=\"gate-reason-x\"] { left: calc(56px + min(340px, 28vw) + min(316px, 27vw)) !important;"),
+]
+if sys.argv[2:3] == ["check"]:
+    for name, f, old, new in M: print(open(f"{PRISTINE}/{f}").read().count(old), name)
+    sys.exit()
+if os.path.exists(WORK): shutil.rmtree(WORK)
+shutil.copytree(PRISTINE, WORK, symlinks=True)
+env = {**os.environ}; results = []; sel = sys.argv[2:]
+for name, f, old, new in M:
+    if sel and name.split()[0] not in sel: continue
+    tests = ["test/career"] if os.environ.get("WIDE") else T
+    src = open(f"{PRISTINE}/{f}").read(); n = src.count(old)
+    if n != 1: results.append({"mutation": name, "error": f"pattern count {n}"}); print(name, "PATTERN", n, flush=True); continue
+    open(f"{WORK}/{f}", "w").write(src.replace(old, new))
+    try:
+        p = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *tests], cwd=WORK, env=env, capture_output=True, text=True, timeout=1500); out = p.stdout + p.stderr; code = p.returncode
+    except subprocess.TimeoutExpired as e:
+        out = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or ""); code = "TIMEOUT"
+    finally:
+        shutil.copyfile(f"{PRISTINE}/{f}", f"{WORK}/{f}")
+    tot = " · ".join(re.sub(r"\s+", " ", m).strip() for m in re.findall(r"(?m)^\s*(?:Test Files|Tests)\s.*$", out))
+    failed = sorted({re.sub(r"\s+\d+ms$", "", l.split(" > ", 1)[-1].strip())[:110] for l in out.splitlines() if l.startswith(" FAIL ")})
+    results.append({"mutation": name, "file": f, "exit": code, "red": code != 0, "totals": tot, "failedTests": failed[:6], "failedCount": len(failed)})
+    print(name, "RED" if code != 0 else "GREEN (not caught)", tot, flush=True)
+json.dump(results, open(f"{I}/mut/results-sem{os.environ.get('MUT_TAG', '')}.json", "w"), indent=1, ensure_ascii=False)
+print("MUT-END")

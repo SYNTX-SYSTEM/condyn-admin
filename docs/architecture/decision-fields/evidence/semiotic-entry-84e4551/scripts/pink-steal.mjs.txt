@@ -1,0 +1,28 @@
+// PINK §3.82 F-SEM-1 click proof: a click on the visible part of the KESTREL organization node that lies under the entry action. STAND-IN lab. argv: <state.json> <repo> <out dir> <label>
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5";
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_SEM" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+const b = await chromium.launch(); const rows = [];
+for (const [W, H] of [[1920, 1080], [1600, 900], [1440, 900], [1280, 720]]) for (const mode of ["PERSON", "PERSON_X_JOB"]) {
+  const ctx = await b.newContext({ viewport: { width: W, height: H } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const p = await ctx.newPage(); await p.goto(`${BASE}/career/demo?investigationMode=${mode}&jobPoolUploadId=${DLL}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+  const pt = await p.evaluate(() => { const n = document.querySelector('[data-testid="syntx-organization-org_kestrel"]'); const a = document.querySelector('[data-testid="field-entry-action"]'); if (!n) return null; const r = n.getBoundingClientRect();
+    for (let j = 1; j < 16; j += 1) for (let i = 1; i < 24; i += 1) { const x = r.left + r.width * i / 24, y = r.top + r.height * j / 16; const h = document.elementFromPoint(x, y); if (a && h && a.contains(h)) return { x, y, node: [r.left, r.top, r.width, r.height].map(Math.round), action: (() => { const q = a.getBoundingClientRect(); return [q.left, q.top, q.width, q.height].map(Math.round); })() }; }
+    return { x: null, node: [r.left, r.top, r.width, r.height].map(Math.round), action: a ? (() => { const q = a.getBoundingClientRect(); return [q.left, q.top, q.width, q.height].map(Math.round); })() : null }; });
+  let after = null;
+  if (pt?.x != null) { if (W === 1280 && mode === "PERSON") await p.screenshot({ path: `${OUT}/f-sem-1-${LABEL}-1280-person-pool-open.png`, clip: { x: Math.max(0, pt.node[0] - 160), y: 110, width: pt.node[2] + 320, height: pt.node[3] + 60 } });
+    await p.mouse.click(pt.x, pt.y); await sleep(2500); after = { url: new URL(p.url()).search.replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL"), focus: await p.evaluate(() => document.querySelector('[data-testid="semantic-career-intelligence-field"]')?.dataset.fieldFocus ?? null) }; }
+  // control: a click at the node centre
+  const ctx2 = await b.newContext({ viewport: { width: W, height: H } }); await ctx2.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const p2 = await ctx2.newPage(); await p2.goto(`${BASE}/career/demo?investigationMode=${mode}&jobPoolUploadId=${DLL}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+  await p2.locator('[data-testid="syntx-organization-org_kestrel"]').click({ timeout: 3000 }).catch(() => {}); await sleep(2500);
+  const centre = { url: new URL(p2.url()).search.replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL"), focus: await p2.evaluate(() => document.querySelector('[data-testid="semantic-career-intelligence-field"]')?.dataset.fieldFocus ?? null) };
+  rows.push({ vp: `${W}x${H}`, mode, stolenPoint: pt, afterClickOnNodePart: after, controlCentreClick: centre }); console.log(W, mode, JSON.stringify(pt), JSON.stringify(after), JSON.stringify(centre));
+  await ctx.close(); await ctx2.close();
+}
+await b.close(); writeFileSync(`${OUT}/steal-${LABEL}.json`, JSON.stringify(rows, null, 1)); console.log("STEAL-END");

@@ -3739,6 +3739,38 @@ No Gemini call.
 
 **Run record.** `evidence/runtime-3017-1d1d6e6/`.
 
+### 3.82 Semiotic entry line, GRÜN `84e4551` (2026-10-30) — NO-GO for :3017 (one new finding)
+
+**Request.** SEMIOTIC_ENTRY_FIX: GRÜN replaced the closed-gate note at the Capability Field entry ("CAPABILITY FIELD CLOSED … Way: …", amber, `role="note"`) with a calm field-state line in cool tokens (`role="status"`, `aria-live="polite"`), derived by `field-entry-state.ts`. The gate and the mode logic stay unchanged. GELB asked for GO/NO-GO for the rollout on :3017 and named the checks: S7 gate identity against `cd1e4de`, no regression, and that the line covers nothing new.
+
+**Method.**
+- **Gate probe v2.** Own empty stand-in production lab, run on the candidate and on `cd1e4de` with the same recipe: 40 states × EN/DE × 1920/1280. It covers no pool, pool, pool open, role open, job selected, invalid job, pools unread, job being checked, PERSON (both focuses) and JOB, and records attributes, click, Tab/Enter, entry action, colours, words and overlaps.
+- **Hit test and click proof.** A hit test on the restored real world and a click proof in the stand-in lab.
+- **Mutants.** 28 one-line mutants against GRÜN's suites.
+- **Suites.** tsc and the full isolated suite on both trees.
+- **Regression.** On the restored real world in a production build: modes in 6 viewports, orbits, role discovery, rd-ui and the drop zone, compared with §3.81 (`cd1e4de` has the same app code as `1d1d6e6`).
+
+**Verdict: NO-GO** (`evidence/semiotic-entry-84e4551/verdicts.txt`).
+- **Passing.**
+  - **S1.** 9 distinct states in each language.
+  - **S2.** 0 lock words.
+  - **S3.** 0 warm tones.
+  - **S4.** status/polite only.
+  - **S5.** Natural EN/DE, with wording observations.
+  - **S7.** 0 gate differences in 40 states at both viewports.
+  - **S8.** Identical except the new line itself.
+  - **Overlaps.** PxJ/JOB overlaps are reduced or removed, which confirms GRÜN.
+- **F-SEM-1 (new, blocking).** PERSON with an opened pool in the Job Field now shows the PERSON_OPEN line over the KESTREL organization node, including its name. Its action "◈ CAPABILITY FIELD" takes clicks on the node's top edge, so a click there enters the Capability Field instead of opening the organization. Reproduced at 1920/1600/1440/1280; the baseline had no line in this state.
+- **Test gaps, no production finding.** F-SEM-2 (requirement as opened role), F-SEM-3 (amber path label) and F-SEM-4 (dangling aria-describedby).
+- **Observations.**
+  - **O-SEM-1.** States 1/2a/2b/unread differ by text only.
+  - **O-SEM-2.** The "trägt / holds" and "bleibt außen" wordings.
+  - **O-SEM-3.** The PERSON action keeps focus=CAPABILITY from the URL.
+  - **O-SEM-4.** The §3.78 gaps needles are obsolete.
+- **Re-check after the fix.** About 40 minutes: gate probe, hit test, click proof and the alive mutants.
+
+**Run record.** `evidence/semiotic-entry-84e4551/` (verdicts, measurements, scripts, line shots of the empty lab and the F-SEM-1 shot).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
