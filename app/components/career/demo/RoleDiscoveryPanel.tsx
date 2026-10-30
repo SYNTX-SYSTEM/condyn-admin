@@ -10,7 +10,7 @@ import type { DiscoveryRole, PoolRoleDiscovery, RoleLexicalStatus } from "../../
 import type { JobScope } from "../../../../lib/career/job-pool/job-scope";
 import { DISCOVERY_POOLS_MAX } from "../../../../lib/career/ui/career-demo-url";
 import { ROLE_DISCOVERY_COPY, formatCount, type RoleDiscoveryCopy } from "./role-discovery-copy";
-import type { InvestigationRoleKey, InvestigationState, InvestigationTask } from "../../../../lib/career/ui/semantic-investigation";
+import { investigationEvidenceClass, type InvestigationEvidenceClass, type InvestigationRoleKey, type InvestigationState, type InvestigationTask } from "../../../../lib/career/ui/semantic-investigation";
 
 /**
  * Role discovery (GELB stage 2, additive — recovery §8): a panel in the B2 panel grammar beside the six-orbit planetarium of a
@@ -169,8 +169,8 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   const shown = investigation.state !== "IDLE";
   const semantic = investigation.state === "STORED"
     ? (plan.cachedPairs !== null
-        ? c.semantic.stored(formatCount(plan.cachedPairs), formatCount(plan.pairs), c.run.status[investigation.investigation.status])
-        : c.semantic.storedUnknownCache(c.run.status[investigation.investigation.status]))
+        ? c.semantic.stored(formatCount(plan.cachedPairs), formatCount(plan.pairs), c.run.status[investigation.investigation.status], c.semantic.check[investigationEvidenceClass(investigation.investigation)])
+        : c.semantic.storedUnknownCache(c.run.status[investigation.investigation.status], c.semantic.check[investigationEvidenceClass(investigation.investigation)]))
     : plan.state === "ENGINE_NOT_SPECIFIED" ? c.semantic.ENGINE_NOT_SPECIFIED(formatCount(plan.callsNeeded ?? 0), formatCount(plan.pairs), c.semantic.notStarted)
     : plan.state === "PLANNED" ? c.semantic.PLANNED(formatCount(plan.cachedPairs ?? 0), formatCount(plan.pairs), formatCount(plan.callsNeeded ?? 0), c.semantic.notStarted)
     : c.semantic[plan.state](plan.cacheIssue ?? "—", c.semantic.notStarted);
@@ -185,6 +185,8 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
   const pending = pickedRoles.reduce((sum, key) => sum + (planRole.get(`${key.jobPoolUploadId}:${key.poolRoleId}`)?.pendingPairs ?? 0), 0);
   const running = investigation.state === "STARTING";
   const tasks = new Map<string, InvestigationTask>(investigation.state === "STORED" ? investigation.investigation.tasks.map(task => [`${task.jobPoolUploadId}:${task.poolRoleId}`, task]) : []);
+  // O-AC-1: the stored investigation's evidence class names the engine of every role task (tasks exist only for a stored one).
+  const engine = investigation.state === "STORED" ? investigationEvidenceClass(investigation.investigation) : undefined;
   const byKey = new Map(d.roles.map(role => [`${role.key.jobPoolUploadId}\u0000${role.key.poolRoleId}`, role] as const));
   const poolName = new Map(d.pools.map(pool => [pool.jobPoolUploadId, pool.poolName] as const));
   return (
@@ -230,8 +232,8 @@ export function RoleDiscoveryResults({ c, discovery, open, onToggle, traced, onT
                   <span style={meta}>{role.organizationName} · {poolName.get(key.jobPoolUploadId)}</span>
                   {role.counts.requirements > 0 && <span data-testid="rd-role-counts" style={meta}>{c.roleCounts(role.counts.nameRelated, role.counts.requirements, role.counts.weakLexicalOnly, role.counts.withoutLexicalRelation)}</span>}
                   {role.counts.required > 0 && <span style={meta}>{c.roleRequired(role.counts.required, role.counts.requiredWithoutLexicalRelation)}</span>}
-                  {tasks.has(roleKey) && <span data-testid="rd-role-task" data-status={tasks.get(roleKey)!.status} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.roleTask(c.run.task[tasks.get(roleKey)!.status])}</span>}
-                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} onInvestigate={onInvestigate} task={tasks.get(roleKey)} />}
+                  {tasks.has(roleKey) && <span data-testid="rd-role-task" data-evidence-class={engine} data-status={tasks.get(roleKey)!.status} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.roleTask(c.run.task[tasks.get(roleKey)!.status], c.run.roleTaskEngine[engine!])}</span>}
+                  {tracing && <RoleDiscoveryTrace c={c} role={role} proposals={d.proposals} onInvestigate={onInvestigate} task={tasks.get(roleKey)} engine={engine} />}
                 </div>
               );
             })}
@@ -282,7 +284,7 @@ export function RoleInvestigationState({ c, investigation, roles, plan, onReread
   const warn = stored.status !== "COMPLETED";
   return box("STORED", warn, <>
     <span data-testid="rd-investigation-status" data-status={stored.status} style={{ ...statement, fontWeight: 600, color: warn ? `rgb(${AMBER_RGB})` : "#e6f1f8" }}>{c.run.summary(c.run.status[stored.status])}</span>
-    <span data-testid="rd-investigation-engine" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.standIn}</span>
+    <span data-testid="rd-investigation-engine" data-evidence-class={investigationEvidenceClass(stored)} style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.engine[investigationEvidenceClass(stored)]}</span>
     {investigation.created === false && <span data-testid="rd-investigation-replayed" style={meta}>{c.run.replayed}</span>}
     {stored.tasks.some(task => task.status === "BUDGET_EXHAUSTED") && <span data-testid="rd-investigation-budget" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{c.run.budget}</span>}
     {tasks.map(task => (
@@ -301,13 +303,13 @@ export function RoleInvestigationState({ c, investigation, roles, plan, onReread
  * capability proposal, the proposal's source-verified quotes with their source, and the evidence limitation when a quote does not
  * name the requirement; then the open requirements (no name relation). Nothing is concluded; the semantic state is stated.
  */
-export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate, task }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"]; onInvestigate?: (scope: JobScope) => void; task?: InvestigationTask }) {
+export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate, task, engine }: { c: RoleDiscoveryCopy; role: DiscoveryRole; proposals: PoolRoleDiscovery["proposals"]; onInvestigate?: (scope: JobScope) => void; task?: InvestigationTask; engine?: InvestigationEvidenceClass }) {
   const related = role.requirements.filter(requirement => requirement.lexical.basis !== "NONE");
   const open = role.requirements.filter(requirement => requirement.lexical.basis === "NONE");
   const named = new Map(proposals.map(proposal => [proposal.id, proposal.name] as const));
   return (
     <div data-testid="rd-trace" style={{ display: "flex", flexDirection: "column", gap: "8px", marginTop: "6px", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(120, 214, 255, 0.12)", background: "rgba(2, 8, 14, 0.55)" }}>
-      <span data-testid="rd-trace-semantic" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{task ? c.run.roleTask(c.run.task[task.status]) : c.detail.semantic}</span>
+      <span data-testid="rd-trace-semantic" style={{ ...meta, color: `rgb(${AMBER_RGB})` }}>{task && engine ? c.run.roleTask(c.run.task[task.status], c.run.roleTaskEngine[engine]) : c.detail.semantic}</span>
       {related.map(requirement => {
         const lexical = requirement.lexical;
         if (lexical.basis === "NONE") return null;

@@ -11,8 +11,11 @@ import { useEffect, useRef, useState } from "react";
  *
  * A POST only by the user's click, exactly one per click, carrying exactly the call count the user was shown; never on a load, an
  * open or a reload. The answer is shown from the stored investigation and its role tasks only (the same for POST and GET); the run
- * summary and the relations themselves are not shown. In this build only the labelled stand-in exists: any other provider is not
- * this contract (FAILED, its name never shown).
+ * summary and the relations themselves are not shown. Two providers are this contract, each with its own evidence class, exactly as
+ * the backend names them (semantic-config.ts evidenceClassOfProvider): the labelled stand-in (STAND_IN, no model) and Gemini
+ * (REAL_GEMINI, model statements; AUTO_CAPABILITY O-AC-1, GELB 2026-10-30). The class reported with an answer must be the stored
+ * investigation's own; any other provider or class, or a pair that does not match, is not this contract (FAILED, its name never
+ * shown).
  */
 type Fetcher = (input: string, init: { method: "GET" | "POST"; cache: "no-store"; headers?: Record<string, string>; body?: string; signal?: AbortSignal }) => Promise<{ status: number; json(): Promise<unknown> }>;
 const defaultFetcher: Fetcher = (input, init) => fetch(input, init);
@@ -23,13 +26,19 @@ const STATUSES: readonly InvestigationStatus[] = ["PLANNED", "RUNNING", "COMPLET
 const TASK_STATUSES: readonly InvestigationTaskStatus[] = ["PENDING", "RUNNING", "SUCCEEDED", "FAILED", "BUDGET_EXHAUSTED", "INTERRUPTED", "CANCELLED", "CACHED"];
 /** The server's own id format; nothing else is an investigation id (never guessed, never derived). */
 export const INVESTIGATION_ID = /^RINV_[0-9A-F]{32}$/;
-/** The one provider of this build: the labelled stand-in (no model). */
+/** The labelled stand-in (no model). */
 export const STAND_IN_PROVIDER = "stand-in";
+/** Each provider of the contract and the evidence class the backend reports for it; nothing else (UNKNOWN stays refused). */
+export const INVESTIGATION_PROVIDERS = { [STAND_IN_PROVIDER]: "STAND_IN", gemini: "REAL_GEMINI" } as const;
+export type InvestigationProvider = keyof typeof INVESTIGATION_PROVIDERS;
+export type InvestigationEvidenceClass = typeof INVESTIGATION_PROVIDERS[InvestigationProvider];
+/** The evidence class of a stored investigation: its provider's, never assumed. */
+export const investigationEvidenceClass = (investigation: Pick<StoredInvestigation, "provider">): InvestigationEvidenceClass => INVESTIGATION_PROVIDERS[investigation.provider];
 
 export interface InvestigationRoleKey { jobPoolUploadId: string; poolRoleId: string }
 export interface InvestigationTask extends InvestigationRoleKey { status: InvestigationTaskStatus; errorCode: string | null; pairs: number; stored: number }
 export interface StoredInvestigation {
-  investigationId: string; analysisId: string; provider: typeof STAND_IN_PROVIDER; engineVersionHash: string; status: InvestigationStatus;
+  investigationId: string; analysisId: string; provider: InvestigationProvider; engineVersionHash: string; status: InvestigationStatus;
   createdAt: string; updatedAt: string; tasks: InvestigationTask[];
 }
 export type InvestigationState =
@@ -56,7 +65,7 @@ const TASK_KEYS = ["jobPoolUploadId", "poolRoleId", "status", "errorCode", "pair
 export function decodeStoredInvestigation(investigation: unknown, tasks: unknown, analysisId: string, investigationId?: string): StoredInvestigation | null {
   if (!isRecord(investigation) || !exactly(investigation, INVESTIGATION_KEYS)) return null;
   if (!isText(investigation.investigationId) || !INVESTIGATION_ID.test(investigation.investigationId) || (investigationId !== undefined && investigation.investigationId !== investigationId)) return null;
-  if (investigation.analysisId !== analysisId || investigation.provider !== STAND_IN_PROVIDER || !isText(investigation.engineVersionHash) || !/^[0-9a-f]{64}$/.test(investigation.engineVersionHash)) return null;
+  if (investigation.analysisId !== analysisId || !(typeof investigation.provider === "string" && Object.hasOwn(INVESTIGATION_PROVIDERS, investigation.provider)) || !isText(investigation.engineVersionHash) || !/^[0-9a-f]{64}$/.test(investigation.engineVersionHash)) return null;
   if (!STATUSES.includes(investigation.status as InvestigationStatus) || !isText(investigation.createdAt) || !isText(investigation.updatedAt)) return null;
   if (!Array.isArray(tasks) || tasks.length === 0) return null;
   const seen = new Set<string>();
@@ -77,7 +86,7 @@ const firstIssue = (body: unknown) => isRecord(body) && Array.isArray(body.issue
 
 export interface InvestigationRequest { jobPoolUploadIds: readonly string[]; roles: readonly InvestigationRoleKey[]; clientRequestId: string; confirmedCalls: number }
 
-/** ONE POST: the start the user confirmed. 201 ran it (evidence STAND_IN), 200 is the stored one of an identical submit. */
+/** ONE POST: the start the user confirmed. 201 ran it, 200 is the stored one of an identical submit; the class is the stored provider's. */
 export async function startInvestigation(analysisId: string, request: InvestigationRequest, fetcher: Fetcher = defaultFetcher): Promise<InvestigationState> {
   let response, body: unknown = null;
   const payload = { jobPoolUploadIds: [...request.jobPoolUploadIds], roles: request.roles.map(r => ({ jobPoolUploadId: r.jobPoolUploadId, poolRoleId: r.poolRoleId })), clientRequestId: request.clientRequestId, confirmedCalls: request.confirmedCalls };
@@ -86,10 +95,11 @@ export async function startInvestigation(analysisId: string, request: Investigat
   if ((response.status === 201 || response.status === 200) && isRecord(body) && body.success === true) {
     const ran = response.status === 201;
     // PINK §3.74 O-START-2: evidenceClass is reported on every success path now (201, the 200 repeat, and GET below) — required,
-    // never optional. The provider field of the stored investigation is checked too, independently (a safeguard, not a substitute).
-    if (body.created !== ran || body.evidenceClass !== "STAND_IN") return { state: "FAILED", code: null };
+    // never optional. O-AC-1: it must be exactly the stored investigation's provider's class (stand-in → STAND_IN, gemini →
+    // REAL_GEMINI); a class without its provider, or a provider without its class, is not this contract.
+    if (body.created !== ran) return { state: "FAILED", code: null };
     const investigation = decodeStoredInvestigation(body.investigation, body.tasks, analysisId);
-    return investigation === null ? { state: "FAILED", code: null } : { state: "STORED", created: ran, investigation };
+    return investigation === null || body.evidenceClass !== investigationEvidenceClass(investigation) ? { state: "FAILED", code: null } : { state: "STORED", created: ran, investigation };
   }
   const issue = firstIssue(body);
   const code = isText(issue?.code) ? issue.code : null;
@@ -106,8 +116,8 @@ export async function readInvestigation(analysisId: string, investigationId: str
   try { response = await fetcher(investigationUrl(analysisId, investigationId), { method: "GET", cache: "no-store", signal }); } catch { return { state: "FAILED", code: null }; }
   try { body = await response.json(); } catch { /* FAILED below */ }
   if (response.status === 200) {
-    const investigation = isRecord(body) && body.success === true && body.evidenceClass === "STAND_IN" ? decodeStoredInvestigation(body.investigation, body.tasks, analysisId, investigationId) : null;
-    return investigation === null ? { state: "FAILED", code: null } : { state: "STORED", created: null, investigation };
+    const investigation = isRecord(body) && body.success === true ? decodeStoredInvestigation(body.investigation, body.tasks, analysisId, investigationId) : null;
+    return investigation === null || !isRecord(body) || body.evidenceClass !== investigationEvidenceClass(investigation) ? { state: "FAILED", code: null } : { state: "STORED", created: null, investigation };
   }
   const issue = firstIssue(body);
   if (response.status === 404 && issue?.code === "ERR_INVESTIGATION_NOT_FOUND") return { state: "NOT_FOUND" };

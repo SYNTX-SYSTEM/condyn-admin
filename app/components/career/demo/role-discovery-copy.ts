@@ -1,6 +1,6 @@
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
 import type { RoleLexicalStatus } from "../../../../lib/career/job-pool/pool-role-discovery";
-import type { InvestigationStatus, InvestigationTaskStatus } from "../../../../lib/career/ui/semantic-investigation";
+import type { InvestigationEvidenceClass, InvestigationStatus, InvestigationTaskStatus } from "../../../../lib/career/ui/semantic-investigation";
 
 /**
  * Copy of the role discovery panel (GELB stage 2, additive, recovery §8), EN and DE. Kept beside its components, like
@@ -43,8 +43,10 @@ export interface RoleDiscoveryCopy {
     CACHE_UNAVAILABLE: (issue: string, tail: string) => string;
     CACHE_CORRUPT: (issue: string, tail: string) => string;
     notStarted: string;
-    stored: (cached: string, pairs: string, status: string) => string;
-    storedUnknownCache: (status: string) => string;
+    stored: (cached: string, pairs: string, status: string, check: string) => string;
+    storedUnknownCache: (status: string, check: string) => string;
+    /** O-AC-1: the stored check named by its evidence class (the stand-in never named a model, Gemini never named a stand-in). */
+    check: Record<InvestigationEvidenceClass, string>;
   };
   /** RI-CONTROL: why an explicit start of the semantic check is not offered (the server's start control, or the cache). */
   startUnavailable: Record<"NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "CACHE", string>;
@@ -58,7 +60,8 @@ export interface RoleDiscoveryCopy {
     limit: (max: number) => string;
     start: string;
     running: (roles: number, calls: number) => string;
-    standIn: string;
+    /** O-AC-1: the engine of the stored investigation, by its evidence class. */
+    engine: Record<InvestigationEvidenceClass, string>;
     summary: (status: string) => string;
     status: Record<InvestigationStatus, string>;
     replayed: string;
@@ -75,7 +78,8 @@ export interface RoleDiscoveryCopy {
     loading: string;
     planAtRead: (cached: string, pairs: string, calls: string) => string;
     reread: string;
-    roleTask: (status: string) => string;
+    roleTask: (status: string, engine: string) => string;
+    roleTaskEngine: Record<InvestigationEvidenceClass, string>;
   };
   scope: (pools: number, roles: number, requirements: number, proposals: number) => string;
   groups: Record<RoleLexicalStatus, string>;
@@ -146,8 +150,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       CACHE_UNAVAILABLE: (issue, tail) => `Semantic check: not executed · relation cache unavailable (${issue}) · calls unknown · ${tail}`,
       CACHE_CORRUPT: (issue, tail) => `Semantic check: not executed · relation cache corrupt (${issue}) · calls unknown · ${tail}`,
       notStarted: "no investigation named in this view",
-      stored: (cached, pairs, status) => `Relation cache: ${cached} of ${pairs} pairs · stand-in check: ${status}`,
-      storedUnknownCache: status => `Relation cache: unavailable on this read · stand-in check: ${status}`
+      stored: (cached, pairs, status, check) => `Relation cache: ${cached} of ${pairs} pairs · ${check}: ${status}`,
+      storedUnknownCache: (status, check) => `Relation cache: unavailable on this read · ${check}: ${status}`,
+      check: { STAND_IN: "stand-in check", REAL_GEMINI: "Gemini check" }
     },
     run: {
       title: "SEMANTIC CHECK · START EXPLICITLY",
@@ -158,7 +163,7 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       limit: max => `At most ${max} roles per start.`,
       start: "START SEMANTIC CHECK",
       running: (roles, calls) => `Semantic check running · ${n(roles)} roles · ${n(calls)} confirmed calls`,
-      standIn: "Stand-in, no model",
+      engine: { STAND_IN: "Stand-in, no model", REAL_GEMINI: "Gemini, model statements · unverified, no authority" },
       summary: status => `Semantic check: ${status}`,
       status: { PLANNED: "planned, not run yet", RUNNING: "running (stored state)", COMPLETED: "completed", PARTIAL: "partly completed", INTERRUPTED: "interrupted", FAILED: "failed" },
       replayed: "Same start as before: the stored state, nothing was run again.",
@@ -181,7 +186,8 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       loading: "Reading the stored investigation …",
       planAtRead: (cached, pairs, calls) => `Plan as read: ${cached} of ${pairs} pairs in the relation cache · would need ${calls} calls`,
       reread: "RE-READ PLAN",
-      roleTask: status => `Semantic check of this role: ${status} · stand-in, no model`
+      roleTask: (status, engine) => `Semantic check of this role: ${status} · ${engine}`,
+      roleTaskEngine: { STAND_IN: "stand-in, no model", REAL_GEMINI: "Gemini, model statements" }
     },
     startUnavailable: {
       NOT_CONFIGURED: "Start not available: no check engine is configured on this server.",
@@ -261,8 +267,9 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       CACHE_UNAVAILABLE: (issue, tail) => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache nicht verfügbar (${issue}) · Aufrufzahl unbekannt · ${tail}`,
       CACHE_CORRUPT: (issue, tail) => `Semantische Prüfung: nicht ausgeführt · Relationen-Cache beschädigt (${issue}) · Aufrufzahl unbekannt · ${tail}`,
       notStarted: "keine Untersuchung in dieser Ansicht benannt",
-      stored: (cached, pairs, status) => `Relationen-Cache: ${cached} von ${pairs} Paaren · Stand-in-Prüfung: ${status}`,
-      storedUnknownCache: status => `Relationen-Cache: bei diesem Lesen nicht verfügbar · Stand-in-Prüfung: ${status}`
+      stored: (cached, pairs, status, check) => `Relationen-Cache: ${cached} von ${pairs} Paaren · ${check}: ${status}`,
+      storedUnknownCache: (status, check) => `Relationen-Cache: bei diesem Lesen nicht verfügbar · ${check}: ${status}`,
+      check: { STAND_IN: "Stand-in-Prüfung", REAL_GEMINI: "Gemini-Prüfung" }
     },
     run: {
       title: "SEMANTISCHE PRÜFUNG · AUSDRÜCKLICH STARTEN",
@@ -273,7 +280,7 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       limit: max => `Höchstens ${max} Rollen je Start.`,
       start: "SEMANTISCHE PRÜFUNG STARTEN",
       running: (roles, calls) => `Semantische Prüfung läuft · ${n(roles)} Rollen · ${n(calls)} bestätigte Aufrufe`,
-      standIn: "Stand-in, kein Modell",
+      engine: { STAND_IN: "Stand-in, kein Modell", REAL_GEMINI: "Gemini, Modellaussagen · ungeprüft, keine Autorität" },
       summary: status => `Semantische Prüfung: ${status}`,
       status: { PLANNED: "geplant, noch nicht gelaufen", RUNNING: "läuft (gespeicherter Stand)", COMPLETED: "abgeschlossen", PARTIAL: "teilweise abgeschlossen", INTERRUPTED: "unterbrochen", FAILED: "fehlgeschlagen" },
       replayed: "Gleicher Start wie zuvor: gespeicherter Stand, nichts neu ausgeführt.",
@@ -296,7 +303,8 @@ export const ROLE_DISCOVERY_COPY: Readonly<Record<SilLocale, RoleDiscoveryCopy>>
       loading: "Die gespeicherte Untersuchung wird gelesen …",
       planAtRead: (cached, pairs, calls) => `Plan beim Lesen: ${cached} von ${pairs} Paaren im Relationen-Cache · würde ${calls} Aufrufe benötigen`,
       reread: "PLAN NEU LESEN",
-      roleTask: status => `Semantische Prüfung dieser Rolle: ${status} · Stand-in, kein Modell`
+      roleTask: (status, engine) => `Semantische Prüfung dieser Rolle: ${status} · ${engine}`,
+      roleTaskEngine: { STAND_IN: "Stand-in, kein Modell", REAL_GEMINI: "Gemini, Modellaussagen" }
     },
     startUnavailable: {
       NOT_CONFIGURED: "Start nicht verfügbar: Auf diesem Server ist keine Prüf-Engine konfiguriert.",
