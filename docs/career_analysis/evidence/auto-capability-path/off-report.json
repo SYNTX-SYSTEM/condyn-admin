@@ -1,0 +1,109 @@
+{
+ "tag": "off",
+ "flow": {
+  "actions": [
+   "mode PERSON",
+   "Capability Field",
+   "ENTER TEXT",
+   "type text",
+   "ADD",
+   "ANALYZE"
+  ],
+  "actionsAfterAnalyze": 0,
+  "analysisId": "ANL_1793363735654_415",
+  "seen": [
+   {
+    "t": 0,
+    "state": "no-panel"
+   },
+   {
+    "t": 2,
+    "state": "DISABLED/LOADING"
+   },
+   {
+    "t": 2.4,
+    "state": "DISABLED/AVAILABLE"
+   }
+  ],
+  "summary": {
+   "line": "PERSON ⟶ JOB POOLS ⟶ RANKINGSemantic matching is not switched on here; the jobs are ranked by name relation.→ the ranked jobs belowno semantic provider configured",
+   "evidence": "NONE",
+   "authority": "Authority: none · a ranking from unverified relations, not a decision",
+   "ranks": 73,
+   "top": [
+    {
+     "rank": "1",
+     "tier": "LEXICAL_ONLY",
+     "fit": "0",
+     "text": "1Compiler Engineer – Workflow LanguageTessaro Workflow GmbH · DLL Enterprise Scale PoolNAME RELATION ONLYfit 0 % · 0 of "
+    },
+    {
+     "rank": "2",
+     "tier": "LEXICAL_ONLY",
+     "fit": "0",
+     "text": "2Cryptography Engineer – Post-QuantumIronquay Cryptography Ltd · DLL Enterprise Scale PoolNAME RELATION ONLYfit 0 % · 0 "
+    },
+    {
+     "rank": "3",
+     "tier": "LEXICAL_ONLY",
+     "fit": "0",
+     "text": "3DICOM Integration EngineerCarelink Imaging B.V. · DLL Enterprise Scale PoolNAME RELATION ONLYfit 0 % · 0 of 6 requireme"
+    },
+    {
+     "rank": "4",
+     "tier": "LEXICAL_ONLY",
+     "fit": "0",
+     "text": "4Data Analyst – Fleet TelematicsCorvane Mobility s.r.o. · DLL Enterprise Scale PoolNAME RELATION ONLYfit 0 % · 0 of 6 re"
+    },
+    {
+     "rank": "5",
+     "tier": "LEXICAL_ONLY",
+     "fit": "0",
+     "text": "5Embedded Software Engineer – Pump ControllersNordisk Pumps & Fluid Systems A/S · DLL Enterprise Scale PoolNAME RELATION"
+    }
+   ],
+   "tiers": {
+    "LEXICAL_ONLY": 73
+   }
+  },
+  "reasons": [
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "Compiler Constructionrequired · none · no relation · ×3 · 0 → 0"
+   },
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "Static Analysisrequired · none · no relation · ×3 · 0 → 0"
+   },
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "Language Server Protocolpreferred · none · no relation · ×2 · 0 → 0"
+   },
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "Kotlinrequired · none · no relation · ×3 · 0 → 0"
+   },
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "TypeScriptpreferred · none · no relation · ×2 · 0 → 0"
+   },
+   {
+    "source": "NONE",
+    "state": "NONE",
+    "text": "Business Process Modelingoptional · none · no relation · ×1 · 0 → 0"
+   }
+  ],
+  "writes": [
+   "POST /api/career/analyze"
+  ],
+  "errors": [],
+  "url": "/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=ANL_1793363735654_415"
+ },
+ "views": [],
+ "github": []
+}
