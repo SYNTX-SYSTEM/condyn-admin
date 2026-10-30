@@ -67,6 +67,16 @@ describe("SEMIOTIC_ENTRY · the actions are the existing ones", () => {
     expect(tab.param("jobScopeRoleId")).toBe(ROLE_A);
   });
 
+  it("F-SEM-2 REPRODUCE: with a requirement of the role opened, SELECT AS JOB selects that requirement's role", () => {
+    world("AVAILABLE", UPLOAD_ID); control.viewState = "AVAILABLE";
+    const draw = load(`focus=FIELD&investigationMode=PERSON_X_JOB&jobPoolUploadId=${UPLOAD_ID}&jobOrganizationId=ORG_1&jobRoleId=${ROLE_A}&jobRequirementId=REQ_1`);
+    const entry = gate(draw());
+    expect(entry?.entry).toBe("ROLE_NOT_CHOSEN");
+    expect(entry?.action?.id).toBe("choose-role");
+    entry!.action!.onActivate();
+    expect(tab.param("jobScopeRoleId")).toBe(ROLE_A);
+  });
+
   it("REPRODUCE states 1/2: → PERSON chooses the mode PERSON (one push); state 3: the Capability Field is entered", () => {
     world("EMPTY");
     let draw = load("focus=FIELD&investigationMode=PERSON_X_JOB");

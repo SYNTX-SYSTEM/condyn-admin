@@ -275,3 +275,86 @@ describe("SEMIOTIC_ENTRY · F-SEM-1 (PINK §3.82): the line stands in the right 
     expect(all).not.toContain('[data-testid="job-pool-list"]:not([hidden])) > [data-sx-shell="gate-reason"]');
   });
 });
+
+describe("SEMIOTIC_ENTRY · PINK §3.82 test gaps F-SEM-2 … F-SEM-4", () => {
+  /** The whole element (its subtree) that carries a test id: from its tag to the matching close. */
+  const outer = (html: string, testId: string): string => {
+    const at = html.indexOf(`data-testid="${testId}"`);
+    if (at < 0) return "";
+    const open = html.lastIndexOf("<", at), name = /^<([a-z0-9]+)/.exec(html.slice(open))![1];
+    const re = new RegExp(`<(/?)${name}\\b[^>]*>`, "g");
+    re.lastIndex = open;
+    let depth = 0;
+    for (let m = re.exec(html); m !== null; m = re.exec(html)) { depth += m[1] === "/" ? -1 : 1; if (depth === 0) return html.slice(open, m.index + m[0].length); }
+    return html.slice(open);
+  };
+  /** Every colour in the markup as [r, g, b]. */
+  const colours = (markup: string): number[][] => [
+    ...[...markup.matchAll(/rgba?\((\d+),\s*(\d+),\s*(\d+)/g)].map(m => [Number(m[1]), Number(m[2]), Number(m[3])]),
+    ...[...markup.matchAll(/#([0-9a-f]{6})\b/gi)].map(m => [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16)))
+  ];
+  /** Cool: a cyan/azure hue (150°–260°), or near neutral (chroma < 24). */
+  const cool = ([r, g, b]: number[]) => {
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), c = max - min;
+    if (c < 24) return true;
+    const h = max === r ? (60 * ((g - b) / c) + 360) % 360 : max === g ? 60 * ((b - r) / c) + 120 : 60 * ((r - g) / c) + 240;
+    return h >= 150 && h <= 260;
+  };
+
+  it("F-SEM-2 REPRODUCE: an opened REQUIREMENT is an opened role — state 4 with SELECT AS JOB, not 2b", () => {
+    world("AVAILABLE", UPLOAD_ID);
+    for (const locale of ["en", "de"] as const) {
+      const html = pxj({ jobPoolUploadId: UPLOAD_ID, jobOrganizationId: "ORG_1", jobRoleId: ROLE_A, jobRequirementId: "REQ_1", initialLocale: locale });
+      expect(tag(html, "capability-gate-reason")).toContain('data-entry-state="ROLE_NOT_CHOSEN"');
+      expect(tag(html, "field-entry-action")).toContain('data-action="choose-role"');
+      expect(textOf(html, "capability-gate-cause")).toBe(SIL_COPY[locale].syntx.entry.line.ROLE_NOT_CHOSEN);
+    }
+  });
+
+  it("F-SEM-3 REPRODUCE: every colour in the line — path label, sentence, transition, action, frame — is cool, in every state", () => {
+    const states: Array<[string, string | null, Record<string, unknown>]> = [
+      ["EMPTY", null, { investigationMode: "PERSON_X_JOB" }], ["AVAILABLE", null, { investigationMode: "PERSON_X_JOB" }],
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "PERSON_X_JOB", jobPoolUploadId: UPLOAD_ID }],
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "PERSON_X_JOB", jobPoolUploadId: UPLOAD_ID, jobOrganizationId: "ORG_1", jobRoleId: ROLE_A }],
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "PERSON", jobPoolUploadId: UPLOAD_ID }], ["AVAILABLE", null, { investigationMode: "JOB" }]
+    ];
+    for (const [pools, selected, props] of states) {
+      world(pools, selected);
+      const html = ssr(props);
+      const line = outer(html, "capability-gate-reason") || outer(html, "field-entry-state");
+      expect(line, JSON.stringify(props)).toContain("data-sx-entry-path");
+      const found = colours(line);
+      expect(found.length).toBeGreaterThan(5);
+      for (const rgb of found) expect(cool(rgb), `${JSON.stringify(props)} rgb(${rgb})`).toBe(true);
+    }
+  });
+
+  it("F-SEM-3 inverse: the check itself sees warm tones — amber, the old gate border, red", () => {
+    for (const warm of [[255, 206, 128], [255, 190, 92], [255, 96, 96]]) expect(cool(warm)).toBe(false);
+    expect(colours('<span style="color:rgba(255, 206, 128, 0.96)">x</span>')).toEqual([[255, 206, 128]]);
+  });
+
+  it("F-SEM-4 REPRODUCE: in every closed state the Capability controls' aria-describedby resolves to the line itself (role=status)", () => {
+    const closed: Array<[string, string | null, Record<string, unknown>]> = [
+      ["EMPTY", null, {}], ["AVAILABLE", null, {}], ["AVAILABLE", UPLOAD_ID, { jobPoolUploadId: UPLOAD_ID }],
+      ["AVAILABLE", UPLOAD_ID, { jobPoolUploadId: UPLOAD_ID, jobOrganizationId: "ORG_1", jobRoleId: ROLE_A }]
+    ];
+    for (const [pools, selected, props] of closed) {
+      world(pools, selected);
+      const html = pxj(props);
+      const line = tag(html, "capability-gate-reason");
+      const id = /\bid="([^"]+)"/.exec(line)?.[1];
+      expect(id, JSON.stringify(props)).toBeTruthy();
+      expect(line).toContain('role="status"');
+      expect(html.split(` id="${id}"`).length - 1).toBe(1);
+      for (const control of ["field-focus-capability-btn", "syntx-exit-btn"]) expect(/aria-describedby="([^"]+)"/.exec(tag(html, control))?.[1], control).toBe(id);
+    }
+  });
+
+  it("F-SEM-4 inverse: the open line (PERSON) is no description target — it carries no id, and nothing points to it", () => {
+    world("AVAILABLE", UPLOAD_ID);
+    const html = ssr({ investigationMode: "PERSON", jobPoolUploadId: UPLOAD_ID });
+    expect(tag(html, "field-entry-state")).not.toMatch(/\bid="/);
+    expect(tag(html, "field-focus-capability-btn")).not.toContain("aria-describedby");
+  });
+});
