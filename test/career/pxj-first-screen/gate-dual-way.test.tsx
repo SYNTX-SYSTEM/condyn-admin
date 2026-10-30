@@ -35,8 +35,10 @@ describe("Gate text (DLL-full review point 1) · both ways named, no job prescri
       const html = field(locale);
       const tooltip = title(html, "field-focus-capability-btn")!;
       const way = textOf(html, "capability-gate-way");
-      const needle = locale === "en" ? ["PERSON", "no job", "PERSON × JOB"] : ["PERSON", "keinen Job", "PERSON × JOB"];
-      for (const part of needle) { expect(tooltip, `${locale} tooltip: ${part}`).toContain(part); expect(way, `${locale} way: ${part}`).toContain(part); }
+      // SFE::SEMIOTIC_ENTRY_FIX: the line names PERSON × JOB's reading, the transition names PERSON's (no role needed).
+      const needle = locale === "en" ? ["PERSON", "no role", "PERSON × JOB"] : ["PERSON", "keine Rolle", "PERSON × JOB"];
+      const line = `${textOf(html, "capability-gate-cause")} ${way}`;
+      for (const part of needle) { expect(tooltip, `${locale} tooltip: ${part}`).toContain(part); expect(line, `${locale} line: ${part}`).toContain(part); }
       // Named as what each mode needs, not as the single instruction to follow (the sentence states both, it does not say
       // "you must" or name only one of the two as the way forward).
       expect(tooltip.toLowerCase()).not.toMatch(locale === "en" ? /^select a job/ : /^zuerst.*job/);
@@ -47,13 +49,13 @@ describe("Gate text (DLL-full review point 1) · both ways named, no job prescri
   it("inverse: CHECKING / INVALID / JOB keep their own specific wording — only the no-job (NONE) case changed", () => {
     control.scope = { state: "CHECKING", scope: selection };
     const checking = field();
-    expect(textOf(checking, "capability-gate-way")).toBe(SIL_COPY.en.syntx.gate.way.CHECKING);
+    expect(textOf(checking, "capability-gate-way")).toBe(SIL_COPY.en.syntx.entry.next.CHECKING);
     control.scope = { state: "INVALID", scope: selection, reason: "ROLE_NOT_IN_POOL" };
     const invalid = field();
-    expect(textOf(invalid, "capability-gate-way")).toBe(SIL_COPY.en.syntx.gate.way.INVALID);
+    expect(textOf(invalid, "capability-gate-way")).toBe(SIL_COPY.en.syntx.entry.next.INVALID);
     const job = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="JOB" jobScopePoolUploadId={UPLOAD} jobScopeRoleId={ROLE} />);
-    expect(textOf(job, "capability-gate-way")).toBe(SIL_COPY.en.syntx.gate.way.JOB);
-    expect(SIL_COPY.en.syntx.gate.way.CHECKING).not.toContain("PERSON needs no job");
-    expect(SIL_COPY.en.syntx.gate.way.INVALID).not.toContain("PERSON needs no job");
+    expect(textOf(job, "capability-gate-way")).toBe(SIL_COPY.en.syntx.entry.next.JOB);
+    expect(SIL_COPY.en.syntx.entry.next.CHECKING).not.toContain("PERSON needs no role");
+    expect(SIL_COPY.en.syntx.entry.next.INVALID).not.toContain("PERSON needs no role");
   });
 });

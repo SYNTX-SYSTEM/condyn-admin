@@ -98,12 +98,12 @@ describe("V-05 · the gate names an invalid job with its reason", () => {
     const tree = load(pxj())();
     const gate = find(tree, SyntxFieldSelector)?.props.capabilityGate as { state: string; reason: string } | undefined;
     expect(gate?.state).toBe("INVALID");
-    expect(gate?.reason).toBe(`${SIL_COPY.en.syntx.gate.reason.INVALID} · ROLE_NOT_IN_POOL`);
+    expect(gate?.reason).toBe(`${SIL_COPY.en.syntx.entry.line.INVALID.replace(/\.$/, "")} · ROLE_NOT_IN_POOL.`);
   });
 
   it("inverse: no job — the cause names none, without a reason", () => {
     const tree = load("focus=CAPABILITY&investigationMode=PERSON_X_JOB")();
-    expect((find(tree, SyntxFieldSelector)?.props.capabilityGate as { reason: string }).reason).toBe(SIL_COPY.en.syntx.gate.reason.NONE);
+    expect((find(tree, SyntxFieldSelector)?.props.capabilityGate as { reason: string }).reason).toBe(SIL_COPY.en.syntx.entry.line.POOLS_UNREAD);
   });
 });
 

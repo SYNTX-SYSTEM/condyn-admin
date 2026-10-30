@@ -38,13 +38,14 @@ describe("UX-04 · the closed Capability Field says why and how it opens", () =>
   it("REPRODUCE: PERSON × JOB without a job — the cause and the way stand as text at the shell; the control points to them (EN, DE)", () => {
     const en = field({ investigationMode: "PERSON_X_JOB" });
     expect(tag(en, "capability-gate-reason")).toContain('data-gate="NONE"');
-    expect(textOf(en, "capability-gate-cause")).toBe("PERSON × JOB needs a valid role selected as the job: none is selected");
-    expect(textOf(en, "capability-gate-way")).toBe("Way: PERSON needs no job — choose it above; PERSON × JOB needs a role opened in the Job Field, then SELECT AS JOB");
+    // SFE::SEMIOTIC_ENTRY_FIX: the pool list not read yet (IDLE here) — a calm orientation, no prohibition.
+    expect(textOf(en, "capability-gate-cause")).toBe("PERSON × JOB reads the person against one chosen role.");
+    expect(textOf(en, "capability-gate-way")).toBe("→ choose a role in the Job Field · PERSON needs no role");
     expect(tag(en, "field-focus-capability-btn")).toContain('aria-describedby="capability-gate-reason"');
     expect(tag(en, "syntx-exit-btn")).toContain('aria-describedby="capability-gate-reason"');
     const de = field({ investigationMode: "PERSON_X_JOB", initialLocale: "de" });
-    expect(textOf(de, "capability-gate-cause")).toBe("PERSON × JOB braucht eine gültige Rolle als gewählten Job: keine ist gewählt");
-    expect(textOf(de, "capability-gate-way")).toBe("Weg: PERSON braucht keinen Job — oben wählen; PERSON × JOB braucht eine im Job-Feld geöffnete Rolle, dann ALS JOB WÄHLEN");
+    expect(textOf(de, "capability-gate-cause")).toBe("PERSON × JOB liest die Person an einer gewählten Rolle.");
+    expect(textOf(de, "capability-gate-way")).toBe("→ im Job-Feld eine Rolle wählen · PERSON braucht keine Rolle");
   });
 
   it("REPRODUCE: a job still checked and an invalid job are named as such; JOB says it has no person field", () => {
@@ -52,12 +53,12 @@ describe("UX-04 · the closed Capability Field says why and how it opens", () =>
     expect(tag(field({ investigationMode: "PERSON_X_JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE }), "capability-gate-reason")).toContain('data-gate="CHECKING"');
     control.scope = scopeOf("INVALID");
     const invalid = field({ investigationMode: "PERSON_X_JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE });
-    expect(textOf(invalid, "capability-gate-cause")).toContain("the selected job is not valid");
+    expect(textOf(invalid, "capability-gate-cause")).toBe("The chosen job does not hold here · ROLE_NOT_IN_POOL.");
     control.scope = VALID;
     const job = field({ investigationMode: "JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE });
     expect(tag(job, "capability-gate-reason")).toContain('data-gate="JOB"');
-    expect(textOf(job, "capability-gate-cause")).toBe("JOB investigates the job only: no person field in this mode");
-    expect(textOf(job, "capability-gate-way")).toBe("Way: choose PERSON or PERSON × JOB as the investigation boundary");
+    expect(textOf(job, "capability-gate-cause")).toBe("JOB reads the job alone; the person stays outside.");
+    expect(textOf(job, "capability-gate-way")).toBe("→ PERSON or PERSON × JOB brings the person in");
   });
 
   it("inverse: the gate is unchanged — closed it stays closed (disabled, the Job Field active); no cause names an analysis", () => {

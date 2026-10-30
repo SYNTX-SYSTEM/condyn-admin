@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { SIL_TOKENS } from "./SILTokens";
+import type { FieldEntryState } from "../../../../lib/career/view-model/field-entry-state";
 
 /**
  * SYNTX field selector (application shell, not field logic).
@@ -55,13 +56,25 @@ export interface SyntxJobScopePresentation {
   used?: boolean;
 }
 
-/** UX-04: why the Capability Field is closed and how it opens (the gate's contract is unchanged; this only says it). */
+/**
+ * UX-04 → SFE::SEMIOTIC_ENTRY_FIX (owner, 2026-10-30): the entry into the Capability Field as a field state — where the field
+ * stands and the next context, never a prohibition (the gate's contract is unchanged; this only says it). A quiet status
+ * channel in the field's own cool tokens: a node path, one calm sentence, one transition, at most one existing action.
+ */
 export interface SyntxCapabilityGatePresentation {
-  /** The cause: no job, a job still checked, an invalid job (PERSON × JOB), or the mode JOB. */
-  state: "NONE" | "CHECKING" | "INVALID" | "JOB";
+  /** The gate cause the closed controls name (data-gate, unchanged): no job, a job still checked, an invalid job, the mode JOB;
+   *  null when nothing is closed (PERSON in the Job Field: the entry is open, the line only orients). */
+  state: "NONE" | "CHECKING" | "INVALID" | "JOB" | null;
+  /** The field-entry state (lib/career/view-model/field-entry-state.ts). */
+  entry: FieldEntryState;
+  /** The node path, e.g. "PERSON × JOB ⟶ ◈ CAPABILITY FIELD". */
   label: string;
+  /** The one calm sentence of the state. */
   reason: string;
+  /** The transition to the next context ("→ …"). */
   way: string;
+  /** At most one existing action (choose PERSON, enter the Capability Field, select the opened role as the job). */
+  action?: { id: "person" | "capability" | "choose-role"; label: string; onActivate(): void } | null;
 }
 
 export const CAPABILITY_GATE_REASON_ID = "capability-gate-reason";
@@ -169,20 +182,30 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
         );
       })}
     </div>
-    {capabilityGated && capabilityGate !== null && (
-      <p
-        id={CAPABILITY_GATE_REASON_ID}
-        data-testid="capability-gate-reason"
-        data-sx-shell="gate-reason"
-        data-gate={capabilityGate.state}
-        role="note"
-        style={{ position: "fixed", left: "50%", top: "128px", transform: "translateX(-50%)", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: "min(540px, calc(44vw - 80px))", margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "2px", padding: "6px 14px 7px", borderRadius: "12px", border: "1px solid rgba(255, 190, 92, 0.34)", background: "linear-gradient(180deg, rgba(14, 22, 30, 0.92), rgba(5, 10, 16, 0.94))", boxShadow: "0 8px 22px rgba(0, 0, 0, 0.45)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
-      >
-        <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "rgba(255, 206, 128, 0.96)" }}>{capabilityGate.label}</span>
-        <span data-testid="capability-gate-cause" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "#e6f1f8" }}>{capabilityGate.reason}</span>
-        <span data-testid="capability-gate-way" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "rgba(196, 226, 240, 0.92)" }}>{capabilityGate.way}</span>
-      </p>
-    )}
+    {capabilityGate !== null && (capabilityGated || capabilityGate.state === null) && (() => {
+      const open = capabilityGate.state === null;
+      return (
+        <div
+          id={open ? undefined : CAPABILITY_GATE_REASON_ID}
+          data-testid={open ? "field-entry-state" : "capability-gate-reason"}
+          data-sx-shell="gate-reason"
+          data-gate={capabilityGate.state ?? undefined}
+          data-entry-state={capabilityGate.entry}
+          role="status"
+          aria-live="polite"
+          style={{ position: "fixed", left: "50%", top: "128px", transform: "translateX(-50%)", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: "min(560px, calc(44vw - 80px))", margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "5px 14px 6px", borderRadius: "14px", border: "1px solid rgba(92, 200, 255, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.93))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.5), 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 18px rgba(92, 200, 255, 0.07)", backdropFilter: "blur(10px)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
+        >
+          <span data-sx-entry-path style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(150, 214, 236, 0.78)", whiteSpace: "nowrap" }}>{capabilityGate.label}</span>
+          <span style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", justifyContent: "center", columnGap: "10px", rowGap: "2px" }}>
+            <span data-testid={open ? "field-entry-cause" : "capability-gate-cause"} style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "#e6f1f8" }}>{capabilityGate.reason}</span>
+            <span data-testid={open ? "field-entry-way" : "capability-gate-way"} style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "11.5px", lineHeight: 1.4, color: "rgba(150, 214, 236, 0.9)" }}>{capabilityGate.way}</span>
+            {capabilityGate.action && (
+              <button type="button" data-testid="field-entry-action" data-action={capabilityGate.action.id} onClick={capabilityGate.action.onActivate} style={{ pointerEvents: "auto", alignSelf: "center", padding: "1px 10px", borderRadius: "999px", border: "1px solid rgba(92, 200, 255, 0.42)", background: "rgba(92, 200, 255, 0.08)", color: "#cdf6ff", fontFamily: SIL_TOKENS.typography.mono, fontSize: "10.5px", fontWeight: 700, letterSpacing: "1.2px", cursor: "pointer", whiteSpace: "nowrap" }}>{capabilityGate.action.label}</button>
+            )}
+          </span>
+        </div>
+      );
+    })()}
     </>
   );
 }

@@ -43,6 +43,7 @@ import { PxjAnalysisJobOffer, PxjFirstScreen, pxjFirstScreenVisible } from "./Px
 import { legacyJobComparisonPermitted } from "../../../../lib/career/investigation/client";
 import { JOB_SCOPE_REQUIRED_MESSAGE, JOB_SCOPE_URL_PARAMS, isJobScopeErrorCode, jobScopeFromParams, type JobScope } from "../../../../lib/career/job-pool/job-scope";
 import type { SyntxCapabilityGatePresentation, SyntxJobScopePresentation } from "./SyntxFieldSelector";
+import { fieldEntryState, gateCauseOf } from "../../../../lib/career/view-model/field-entry-state";
 import { DEFAULT_INVESTIGATION_MODE, INVESTIGATION_URL_PARAM, declareAnalysis, investigationModeFromParam, isInvestigationErrorCode, type InvestigationMode } from "../../../../lib/career/job-pool/investigation-mode";
 import { describeAnalysisSource } from "../../../../lib/career/job-pool/frontend-presentation";
 import { buildEvidenceGraph } from "../../../../lib/career/evidence/traversal";
@@ -475,13 +476,29 @@ export function SemanticCareerIntelligenceField({
   /** ANALYZE per mode: PERSON needs no job; PERSON × JOB only with a VALID scope (otherwise the owner's sentence stands at the
    *  trigger, verbatim); JOB is no document analysis. */
   const analyzeBlockedMessage = investigationMode === "PERSON" ? null : investigationMode === "JOB" ? investigationCopy.jobNotAnalyzable : jobScopeValidation.state === "VALID" ? null : JOB_SCOPE_REQUIRED_MESSAGE;
-  const capabilityGatedHint = investigationMode === "JOB" ? investigationCopy.capabilityGatedJob : t.syntx.selector.capabilityGated;
-  /** UX-04: the closed gate names its cause and the way to open it (PERSON is always open; the gate itself is unchanged). */
-  const capabilityGateCause: SyntxCapabilityGatePresentation["state"] | null = capabilityGateOpen ? null : investigationMode === "JOB" ? "JOB" : jobScopeValidation.state === "VALID" ? null : jobScopeValidation.state;
-  const capabilityGate: SyntxCapabilityGatePresentation | null = capabilityGateCause === null ? null : { state: capabilityGateCause, label: t.syntx.gate.label, reason: capabilityGateCause === "INVALID" && jobScopeValidation.state === "INVALID" ? `${t.syntx.gate.reason.INVALID} · ${jobScopeValidation.reason}` : t.syntx.gate.reason[capabilityGateCause], way: t.syntx.gate.way[capabilityGateCause] };
-  /** R-05: while a job is checked or invalid the closed controls' tooltip says what the visible note says (not "Select a job …
-   *  first"); for no job and for JOB the existing sentence already says it. */
-  const capabilityGateTitle = capabilityGate !== null && (capabilityGate.state === "CHECKING" || capabilityGate.state === "INVALID") ? `${capabilityGate.reason}. ${capabilityGate.way}` : capabilityGatedHint;
+  /** SFE::SEMIOTIC_ENTRY_FIX (owner, 2026-10-30): the entry into the Capability Field as ONE field state (field-entry-state.ts) —
+   *  a calm sentence, the next context, at most one existing action; never a prohibition. The gate (capabilityGateOpen) and the
+   *  mode logic are unchanged: this only names where the field stands. PERSON inside the Capability Field says nothing (T-07). */
+  const observedRoleId = observation.kind === "ROLE" || observation.kind === "REQUIREMENT" ? observation.roleId : null;
+  const fieldEntry = fieldEntryState({
+    mode: investigationMode, gateOpen: capabilityGateOpen, focus: activeFieldFocus, scope: jobScopeValidation.state,
+    pools: jobPoolWorkflow.pools.state, poolOpen: jobPoolWorkflow.selectedJobPoolUploadId !== null, roleOpen: observedRoleId !== null
+  });
+  const entryCopy = t.syntx.entry;
+  const capabilityGateCause = fieldEntry === null ? null : gateCauseOf(fieldEntry);
+  const capabilityGate: SyntxCapabilityGatePresentation | null = fieldEntry === null ? null : {
+    state: capabilityGateCause,
+    entry: fieldEntry,
+    label: `${investigationCopy.modes[investigationMode]} ${investigationMode === "JOB" ? "·" : "⟶"} ${entryCopy.target}`,
+    reason: fieldEntry === "INVALID" && jobScopeValidation.state === "INVALID" ? `${entryCopy.line.INVALID.replace(/\.$/, "")} · ${jobScopeValidation.reason}.` : entryCopy.line[fieldEntry],
+    way: entryCopy.next[fieldEntry],
+    action: fieldEntry === "PERSON_OPEN" ? { id: "capability", label: entryCopy.action.capability, onActivate: () => switchFieldFocus("CAPABILITY") }
+      : fieldEntry === "ROLE_NOT_CHOSEN" && observedRoleId !== null ? { id: "choose-role", label: entryCopy.action.chooseRole, onActivate: () => selectJobScope(observedRoleId) }
+      : fieldEntry === "CHECKING" || fieldEntry === "INVALID" ? null
+      : { id: "person", label: entryCopy.action.person, onActivate: () => selectInvestigationMode("PERSON") }
+  };
+  /** The closed controls' tooltip says exactly what the line says (R-05, consistent with the visible state). */
+  const capabilityGateTitle = capabilityGate === null || capabilityGate.state === null ? undefined : `${capabilityGate.reason} ${capabilityGate.way}`;
   /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
    *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
   useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);

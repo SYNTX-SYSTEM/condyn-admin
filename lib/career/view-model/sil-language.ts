@@ -480,22 +480,36 @@ export const SIL_COPY = {
       title: "JOB FIELD",
       toggle: "⬡ JOB FIELD",
       /** The field selector of the application shell: two equal fields of one system. */
-      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD", capabilityGated: "PERSON needs no job: choose it above. PERSON × JOB needs a valid role selected as the job — open one in the Job Field, then SELECT AS JOB" },
+      selector: { group: "SYNTX FIELD", capability: "◈ CAPABILITY FIELD" },
       /** UX-04: why the Capability Field is closed and the way to open it, visible at the shell (the gate itself is unchanged). */
-      gate: {
-        label: "CAPABILITY FIELD CLOSED",
-        reason: {
-          NONE: "PERSON × JOB needs a valid role selected as the job: none is selected",
-          CHECKING: "PERSON × JOB needs a valid role selected as the job: the selected job is still being checked",
-          INVALID: "PERSON × JOB needs a valid role selected as the job: the selected job is not valid",
-          JOB: "JOB investigates the job only: no person field in this mode"
+      /** SFE::SEMIOTIC_ENTRY_FIX (owner, 2026-10-30): the entry into the Capability Field as a field state — orientation and the
+       *  next context, never a prohibition. One calm sentence, one transition (→), at most one existing action. Keyed by
+       *  fieldEntryState (lib/career/view-model/field-entry-state.ts); the gate itself is unchanged. */
+      entry: {
+        target: "◈ CAPABILITY FIELD",
+        line: {
+          NO_POOL: "No job pool in the field yet.",
+          POOL_NOT_OPENED: "Job pools are in the field; none is open.",
+          ROLE_NOT_OPENED: "The pool is open; no role is open in it yet.",
+          PERSON_OPEN: "PERSON reads capabilities without a role.",
+          ROLE_NOT_CHOSEN: "A role is open; it is not the job yet.",
+          POOLS_UNREAD: "PERSON × JOB reads the person against one chosen role.",
+          CHECKING: "The chosen job is being read.",
+          INVALID: "The chosen job does not hold here.",
+          JOB: "JOB reads the job alone; the person stays outside."
         },
-        way: {
-          NONE: "Way: PERSON needs no job — choose it above; PERSON × JOB needs a role opened in the Job Field, then SELECT AS JOB",
-          CHECKING: "Way: wait for the check; it opens once the job is valid",
-          INVALID: "Way: open a valid role in the Job Field, then SELECT AS JOB",
-          JOB: "Way: choose PERSON or PERSON × JOB as the investigation boundary"
-        }
+        next: {
+          NO_POOL: "→ add one with + INTAKE · PERSON needs no role",
+          POOL_NOT_OPENED: "→ open a pool, then a role · PERSON needs no role",
+          ROLE_NOT_OPENED: "→ open a role in the pool · PERSON needs no role",
+          PERSON_OPEN: "→ continue in the Capability Field",
+          ROLE_NOT_CHOSEN: "→ select it as the job to read the person against it",
+          POOLS_UNREAD: "→ choose a role in the Job Field · PERSON needs no role",
+          CHECKING: "→ the Capability Field follows once it holds",
+          INVALID: "→ open another role in the Job Field · SELECT AS JOB",
+          JOB: "→ PERSON or PERSON × JOB brings the person in"
+        },
+        action: { person: "→ PERSON", capability: "◈ CAPABILITY FIELD", chooseRole: "SELECT AS JOB" }
       },
       exit: "← CAPABILITY FIELD",
       observation: { FIELD: "FIELD", ORGANIZATION: "ORGANIZATION", ROLE: "ROLE", REQUIREMENT: "REQUIREMENT" },
@@ -539,7 +553,6 @@ export const SIL_COPY = {
         personScope: "NO JOB SCOPE · PERSON",
         personScopeKept: "selected job not used: ",
         jobNotAnalyzable: "JOB reads the job itself: no document analysis in this mode.",
-        capabilityGatedJob: "JOB investigates the job only: the Capability Field holds no person in this mode",
         state: { PERSON: "PERSON · NO JOB COMPARISON", JOB: "JOB · STRUCTURE FROM THE POOL SOURCE" },
         field: {
           PERSON: "PERSON investigates the person without a job scope: the pools stay readable, no analysis is compared with a job.",
@@ -1361,21 +1374,33 @@ export const SIL_COPY = {
     syntx: {
       title: "JOB-FELD",
       toggle: "⬡ JOB-FELD",
-      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD", capabilityGated: "PERSON braucht keinen Job: wähle ihn oben. PERSON × JOB braucht eine gültige Rolle als gewählten Job — öffne eine im Job-Feld, dann ALS JOB WÄHLEN" },
-      gate: {
-        label: "CAPABILITY-FELD GESCHLOSSEN",
-        reason: {
-          NONE: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: keine ist gewählt",
-          CHECKING: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: der gewählte Job wird noch geprüft",
-          INVALID: "PERSON × JOB braucht eine gültige Rolle als gewählten Job: der gewählte Job ist nicht gültig",
-          JOB: "JOB untersucht nur den Job: kein Personenfeld in diesem Modus"
+      selector: { group: "SYNTX-FELD", capability: "◈ CAPABILITY-FELD" },
+      /** SFE::SEMIOTIC_ENTRY_FIX: der Eintritt ins Capability-Feld als Feldzustand — Orientierung und nächster Kontext, kein Verbot. */
+      entry: {
+        target: "◈ CAPABILITY-FELD",
+        line: {
+          NO_POOL: "Im Feld liegt noch kein Job-Pool.",
+          POOL_NOT_OPENED: "Job-Pools liegen im Feld; keiner ist geöffnet.",
+          ROLE_NOT_OPENED: "Der Pool ist geöffnet; darin ist noch keine Rolle offen.",
+          PERSON_OPEN: "PERSON liest Fähigkeiten ohne Rolle.",
+          ROLE_NOT_CHOSEN: "Eine Rolle ist geöffnet; sie ist noch nicht der Job.",
+          POOLS_UNREAD: "PERSON × JOB liest die Person an einer gewählten Rolle.",
+          CHECKING: "Der gewählte Job wird gelesen.",
+          INVALID: "Der gewählte Job trägt hier nicht.",
+          JOB: "JOB liest den Job allein; die Person bleibt außen."
         },
-        way: {
-          NONE: "Weg: PERSON braucht keinen Job — oben wählen; PERSON × JOB braucht eine im Job-Feld geöffnete Rolle, dann ALS JOB WÄHLEN",
-          CHECKING: "Weg: die Prüfung abwarten; es öffnet sich, sobald der Job gültig ist",
-          INVALID: "Weg: im Job-Feld eine gültige Rolle öffnen, dann ALS JOB WÄHLEN",
-          JOB: "Weg: PERSON oder PERSON × JOB als Untersuchungsgrenze wählen"
-        }
+        next: {
+          NO_POOL: "→ mit + INTAKE einen hinzufügen · PERSON braucht keine Rolle",
+          POOL_NOT_OPENED: "→ einen Pool öffnen, dann eine Rolle · PERSON braucht keine Rolle",
+          ROLE_NOT_OPENED: "→ eine Rolle im Pool öffnen · PERSON braucht keine Rolle",
+          PERSON_OPEN: "→ im Capability-Feld weiter",
+          ROLE_NOT_CHOSEN: "→ als Job wählen, um die Person an ihr zu lesen",
+          POOLS_UNREAD: "→ im Job-Feld eine Rolle wählen · PERSON braucht keine Rolle",
+          CHECKING: "→ das Capability-Feld folgt, sobald er trägt",
+          INVALID: "→ im Job-Feld eine andere Rolle öffnen · ALS JOB WÄHLEN",
+          JOB: "→ PERSON oder PERSON × JOB holt die Person herein"
+        },
+        action: { person: "→ PERSON", capability: "◈ CAPABILITY-FELD", chooseRole: "ALS JOB WÄHLEN" }
       },
       exit: "← CAPABILITY-FELD",
       observation: { FIELD: "FELD", ORGANIZATION: "ORGANISATION", ROLE: "ROLLE", REQUIREMENT: "ANFORDERUNG" },
@@ -1412,7 +1437,6 @@ export const SIL_COPY = {
         personScope: "KEIN JOB-SCOPE · PERSON",
         personScopeKept: "gewählter Job nicht verwendet: ",
         jobNotAnalyzable: "JOB liest den Job selbst: in diesem Modus gibt es keine Dokumentanalyse.",
-        capabilityGatedJob: "JOB untersucht nur den Job: das Capability-Feld enthält in diesem Modus keine Person",
         state: { PERSON: "PERSON · KEIN JOBVERGLEICH", JOB: "JOB · STRUKTUR AUS DER POOL-QUELLE" },
         field: {
           PERSON: "PERSON untersucht die Person ohne Job-Scope: die Pools bleiben lesbar, keine Analyse wird mit einem Job verglichen.",

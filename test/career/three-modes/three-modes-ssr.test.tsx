@@ -82,7 +82,7 @@ describe("the investigation boundary at the shell", () => {
     const html = field({ investigationMode: "JOB", fieldFocus: "CAPABILITY" });
     expect(tag(html, "semantic-career-intelligence-field")).toContain('data-capability-gate="JOB_MODE"');
     expect(tag(html, "semantic-career-intelligence-field")).toContain('data-field-focus="FIELD"');
-    expect(tag(html, "field-focus-capability-btn")).toContain(`title="${en.investigation.capabilityGatedJob}"`);
+    expect(tag(html, "field-focus-capability-btn")).toContain(`title="${en.entry.line.JOB} ${en.entry.next.JOB}"`);
   });
 
   it.each([

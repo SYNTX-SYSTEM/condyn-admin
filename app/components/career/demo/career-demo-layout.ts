@@ -135,6 +135,9 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${JOB} > [data-sx-orient] { max-height: calc(100vh - 161px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
   /* … so the uploaded pools open beside it, not below it (out of the viewport). */
   ${JOB} > [data-testid="job-pool-list"] { top: 84px !important; left: calc(40px + min(340px, 28vw)) !important; max-height: calc(100vh - 161px) !important; }
+  /* SEMIOTIC_ENTRY: while the uploaded pools stand beside the panel, the entry line gives them room — it starts right of the list
+     (the list's own left + width + 16 px) instead of over it; centred again once the list is hidden. */
+  ${FIELD}[data-field-focus="FIELD"]:has(${JOB} > [data-testid="job-pool-list"]:not([hidden])) > [data-sx-shell="gate-reason"] { left: calc(56px + min(340px, 28vw) + min(316px, 27vw)) !important; transform: none !important; max-width: min(560px, calc(100vw - 84px - min(340px, 28vw) - min(316px, 27vw))) !important; }
   ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; align-self: stretch !important; }
 }
 @media ${STACK} {

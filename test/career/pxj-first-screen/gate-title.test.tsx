@@ -18,7 +18,7 @@ import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
 
 const html = () => renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON_X_JOB" jobScopePoolUploadId={UPLOAD} jobScopeRoleId={ROLE} />);
 const title = (markup: string, id: string) => new RegExp(`data-testid="${id}"[^>]*title="([^"]*)"`).exec(markup)?.[1]?.replace(/&#x27;/g, "'") ?? null;
-const gate = SIL_COPY.en.syntx.gate;
+const entry = SIL_COPY.en.syntx.entry;
 
 beforeEach(() => { control.scope = { state: "NONE" }; });
 
@@ -26,15 +26,15 @@ describe("R-05 · the tooltip says what the visible cause says", () => {
   it("REPRODUCE: CHECKING — the capsule's and the exit's tooltip carry the cause and the way", () => {
     control.scope = { state: "CHECKING", scope: selection };
     const markup = html();
-    for (const id of ["field-focus-capability-btn", "syntx-exit-btn"]) expect(title(markup, id), id).toBe(`${gate.reason.CHECKING}. ${gate.way.CHECKING}`);
+    for (const id of ["field-focus-capability-btn", "syntx-exit-btn"]) expect(title(markup, id), id).toBe(`${entry.line.CHECKING} ${entry.next.CHECKING}`);
   });
 
   it("REPRODUCE: INVALID — with the validation's reason", () => {
     control.scope = { state: "INVALID", scope: selection, reason: "ROLE_NOT_IN_POOL" };
-    expect(title(html(), "field-focus-capability-btn")).toBe(`${gate.reason.INVALID} · ROLE_NOT_IN_POOL. ${gate.way.INVALID}`);
+    expect(title(html(), "field-focus-capability-btn")).toBe(`${entry.line.INVALID.replace(/\.$/, "")} · ROLE_NOT_IN_POOL. ${entry.next.INVALID}`);
   });
 
   it("inverse: no job — the existing sentence stays (it says the same)", () => {
-    expect(title(renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON_X_JOB" />), "field-focus-capability-btn")).toBe(SIL_COPY.en.syntx.selector.capabilityGated);
+    expect(title(renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON_X_JOB" />), "field-focus-capability-btn")).toBe(`${entry.line.POOLS_UNREAD} ${entry.next.POOLS_UNREAD}`);
   });
 });
