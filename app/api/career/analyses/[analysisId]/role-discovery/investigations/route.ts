@@ -4,10 +4,11 @@ import { JobPoolError } from "../../../../../../../lib/career/job-pool/errors";
 import { loadRoleDiscoveryOperand } from "../../../../../../../lib/career/job-pool/role-discovery-operand";
 import { engineVersionHash, planSemanticInvestigation } from "../../../../../../../lib/career/job-pool/relation-cache";
 import { openRelationCache } from "../../../../../../../lib/career/job-pool/relation-cache-registration";
-import { SEMANTIC_ROLES_HARD_CAP, readSemanticConfig } from "../../../../../../../lib/career/job-pool/semantic-config";
+import { SEMANTIC_ROLES_HARD_CAP, evidenceClassOfProvider, readSemanticConfig } from "../../../../../../../lib/career/job-pool/semantic-config";
 import { PostgresCallLedger, PostgresInvestigationStore, investigationIdentity } from "../../../../../../../lib/career/job-pool/semantic-investigation-store";
 import { runInvestigation } from "../../../../../../../lib/career/job-pool/semantic-investigation-run";
-import { StandInSemanticProvider, type EngineProposal, type EngineRequirement } from "../../../../../../../lib/career/job-pool/semantic-relation-engine";
+import { createSemanticProvider } from "../../../../../../../lib/career/job-pool/gemini-semantic-provider";
+import type { EngineProposal, EngineRequirement } from "../../../../../../../lib/career/job-pool/semantic-relation-engine";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,8 +16,8 @@ export const dynamic = "force-dynamic";
 const NO_STORE = { "cache-control": "no-store" };
 const issue = (code: string, status: number, extra: Record<string, unknown> = {}) => NextResponse.json({ success: false, issues: [{ code, ...extra }] }, { status, headers: NO_STORE });
 const isRecord = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
-/** The class is derived from the stored provider; only the labelled stand-in exists in this build. */
-const evidenceClassOf = (provider: string) => (provider === "stand-in" ? "STAND_IN" : "UNKNOWN");
+/** The class is derived from the stored provider. */
+const evidenceClassOf = evidenceClassOfProvider;
 const str = (v: unknown): v is string => typeof v === "string" && v.length > 0 && v === v.trim();
 
 /**
@@ -75,10 +76,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ ana
 
     const ledger = new PostgresCallLedger(db.$client, { investigationId: opened.investigationId, provider: config.engine.provider, day: now().slice(0, 10), dayLimit: config.dayLimit, investigationLimit: plan.callsNeeded });
     const run = await runInvestigation({
-      investigationId: opened.investigationId, store, engine: config.engine, provider: new StandInSemanticProvider(), ledger, cache: cache.reader, proposals, now,
+      investigationId: opened.investigationId, store, engine: config.engine, provider: createSemanticProvider(config.engine), ledger, cache: cache.reader, proposals, now,
       roles: selected.map(r => ({ key: r.key, requirements: r.requirements.map(q => ({ key: q.key, ...(poolRequirements.get(`${q.key.jobPoolUploadId}\u0000${q.key.poolRoleId}\u0000${q.key.poolRequirementId}`) as object) }) as EngineRequirement) }))
     });
-    return NextResponse.json({ success: true, created: true, evidenceClass: "STAND_IN", investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId), run }, { status: 201, headers: NO_STORE });
+    return NextResponse.json({ success: true, created: true, evidenceClass: evidenceClassOf(config.engine.provider), investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId), run }, { status: 201, headers: NO_STORE });
   } catch (error) {
     if (error instanceof JobPoolError && error.status === 503) return issue(error.code, 503);
     console.error("[role-discovery-investigation] failed", error instanceof Error ? error.name : "unknown");
