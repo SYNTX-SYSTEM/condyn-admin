@@ -1,9 +1,10 @@
 import { sql } from "drizzle-orm";
+import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
 import { db } from "../db/client";
 import { createLocalJobPoolApplication } from "./local-composition";
 import { POOL_ROLE_DISCOVERY_MAX_POOLS, ROLE_LEXICAL_STATUSES, buildPoolRoleDiscovery, type PoolRoleDiscovery } from "./pool-role-discovery";
 import { loadPersonOperandBase, loadRoleDiscoveryOperand, type OperandIssue } from "./role-discovery-operand";
-import { engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation } from "./relation-cache";
+import { engineVersionHash, proposalContentHash, relationKey, requirementContentHash, type CachedRelation, type RelationEngineIdentity } from "./relation-cache";
 import { PostgresRelationCacheRepository } from "./relation-cache-repository";
 import { SEMANTIC_ROLES_HARD_CAP, evidenceClassOfProvider, readSemanticConfig, type SemanticConfig } from "./semantic-config";
 import { startSemanticInvestigation } from "./semantic-investigation-start";
@@ -69,9 +70,13 @@ export async function runAutoMatch(analysisId: string, now: () => string = () =>
   if (roleKeys.length === 0) return { outcome: "SKIPPED", reason: "NO_ACTIVE_POOLS" };
   const started = await startSemanticInvestigation({
     analysisId, config, jobPoolUploadIds: ids, roleKeys, clientRequestId: `${AUTO_MATCH_REQUEST_PREFIX}${analysisId}`, confirmedCalls: "AS_PLANNED", now,
-    requestExtra: { auto: true, rolesTotal: operand.discovery.roles.filter(r => r.counts.requirements > 0).length }
+    requestExtra: { auto: true, engine: config.engine, rolesTotal: operand.discovery.roles.filter(r => r.counts.requirements > 0).length }
   });
-  if (started.kind === "ISSUE") return { outcome: "FAILED", reason: started.code };
+  if (started.kind === "ISSUE") {
+    // A database that is not a verified disposable one gets no table: nothing is written and the state says why (DISABLED, never a silent FAILED).
+    if (started.code === "ERR_RELATION_CACHE_UNAVAILABLE" && started.extra?.cache === "NOT_PROVISIONED") return { outcome: "DISABLED", reason: "NOT_PROVISIONED" };
+    return { outcome: "FAILED", reason: started.code };
+  }
   return { outcome: "STARTED", reason: null, investigationId: started.investigationId };
 }
 
@@ -90,7 +95,7 @@ export function viewOfAutoInvestigation(input: {
   let state: AutoMatchState; let reason: string | null = null;
   if (!terminal) state = "RUNNING";
   else if (investigation.status === "COMPLETED") { state = rolesTotal > planned ? "PARTIAL" : "COMPLETED"; reason = state === "PARTIAL" ? "ROLES_BEYOND_BUDGET" : null; }
-  else if (investigation.status === "PARTIAL") { state = "PARTIAL"; reason = tasks.some(t => t.status === "FAILED") ? "ROLE_FAILURES" : "ROLES_BEYOND_BUDGET"; }
+  else if (investigation.status === "PARTIAL") { state = "PARTIAL"; reason = tasks.some(t => t.status === "FAILED") ? "ROLE_FAILURES" : tasks.some(t => t.status === "BUDGET_EXHAUSTED") ? "DAY_BUDGET_EXHAUSTED" : "ROLES_BEYOND_BUDGET"; }
   else { state = "FAILED"; reason = investigation.status === "INTERRUPTED" ? "ERR_INVESTIGATION_INTERRUPTED" : tasks.find(t => t.errorCode)?.errorCode ?? "ERR_AUTO_MATCH_FAILED"; }
   return {
     state, reason, evidenceClass: evidenceClass(investigation.provider),
@@ -98,6 +103,13 @@ export function viewOfAutoInvestigation(input: {
     budget: { rolesPlanned: planned, rolesEvaluated: evaluated, callsLimit: typeof request.callsNeeded === "number" ? request.callsNeeded : 0 },
     investigationId: investigation.investigationId, startedAt: investigation.createdAt, finishedAt: terminal ? investigation.updatedAt : null
   };
+}
+
+/** The engine identity a run stored in its request; anything malformed counts as absent. */
+export function engineOfRequest(request: Record<string, unknown>): RelationEngineIdentity | null {
+  const e = request.engine as Record<string, unknown> | undefined;
+  return e && typeof e.contractVersion === "string" && typeof e.promptChecksum === "string" && typeof e.provider === "string" && typeof e.model === "string"
+    ? { contractVersion: e.contractVersion, promptChecksum: e.promptChecksum, provider: e.provider, model: e.model } : null;
 }
 
 const tableExists = async (table: string) => ((await db.execute(sql.raw(`SELECT to_regclass('${table}') IS NOT NULL AS e`))) as unknown as Array<{ e: boolean }>)[0].e;
@@ -116,6 +128,8 @@ export async function readAutoMatch(analysisId: string): Promise<Outcome<AutoMat
   }
   const reason = disabledReason(readSemanticConfig());
   if (reason !== null) return { ok: true, value: { state: "DISABLED", reason, ...EMPTY } };
+  // The run needs the investigation tables, which exist only on a verified disposable database (same gate as the relation cache).
+  if (!(await tableExists("career_relation_investigations")) && (await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(() => true, () => false)) === false) return { ok: true, value: { state: "DISABLED", reason: "NOT_PROVISIONED", ...EMPTY } };
   if (!base.ok) return { ok: true, value: { state: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "SKIPPED" : "NOT_STARTED", reason: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "NOT_PERSON" : null, ...EMPTY } };
   if (activePoolSnapshot(summaries).length === 0) return { ok: true, value: { state: "SKIPPED", reason: "NO_ACTIVE_POOLS", ...EMPTY } };
   return { ok: true, value: { state: "NOT_STARTED", reason: null, ...EMPTY } };
@@ -128,9 +142,12 @@ export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<
   const summaries = await (await createLocalJobPoolApplication()).list();
   const active = new Set(summaries.filter(p => p.poolStatus === "ACTIVE").map(p => p.jobPoolUploadId));
   let snapshot = activePoolSnapshot(summaries).map(p => p.jobPoolUploadId);
+  // The engine that produced the relations is the engine OF THE RUN (a later change of the configuration must not hide earlier results).
+  let runEngine: RelationEngineIdentity | null = null;
   if (await tableExists("career_relation_investigations")) {
     const run = await new PostgresInvestigationStore(db.$client).latestAutomatic(analysisId);
     if (run && Array.isArray(run.request.uploads)) snapshot = run.request.uploads.filter((u): u is string => typeof u === "string");
+    runEngine = run ? engineOfRequest(run.request) : null;
   }
   const keep = snapshot.filter(id => active.has(id));
   const poolsDropped = snapshot.filter(id => !active.has(id));
@@ -142,9 +159,10 @@ export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<
     discovery = operand.discovery; pools = operand.pools as never;
   }
   const config = readSemanticConfig();
+  const engine: RelationEngineIdentity | null = runEngine ?? (config.state === "READY" ? config.engine : null);
   const findings = new Map<string, SemanticFinding>();
-  if (config.state === "READY" && discovery.roles.length > 0 && await tableExists("career_proposal_requirement_relations")) {
-    const engineHash = engineVersionHash(config.engine);
+  if (engine !== null && discovery.roles.length > 0 && await tableExists("career_proposal_requirement_relations")) {
+    const engineHash = engineVersionHash(engine);
     const proposalHashes = base.projection.capabilities.map(c => ({ capability: c, hash: proposalContentHash(c) }));
     const content = new Map<string, unknown>(pools.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as [string, unknown])));
     const keyed: Array<{ requirementKey: string; relationKey: string }> = [];
@@ -169,7 +187,7 @@ export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<
   const ranking = buildRoleRanking({
     analysisId, discovery, poolsDropped,
     findingFor: r => findings.get(`${r.key.jobPoolUploadId}\u0000${r.key.poolRoleId}\u0000${r.key.poolRequirementId}`) ?? null,
-    evidenceClass: findings.size > 0 && config.state === "READY" ? evidenceClassOfProvider(config.engine.provider) : null
+    evidenceClass: findings.size > 0 && engine !== null ? evidenceClassOfProvider(engine.provider) : null
   });
   return { ok: true, value: ranking };
 }

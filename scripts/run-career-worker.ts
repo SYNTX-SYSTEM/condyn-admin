@@ -33,7 +33,7 @@ import { isIssuedPersonInvestigation, requireActiveAnalysisBoundary } from "../l
 import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
 import { providerExchangeArchiveFromEnvironment } from "../lib/career/result-inspector/postgres-exchange-store";
 import { runWithExchangeAttempt } from "../lib/career/result-inspector/attempt";
-import { runAutoMatch } from "../lib/career/job-pool/auto-match";
+import { createAutoMatchHook } from "../lib/career/job-pool/auto-match-hook";
 
 /** The legacy pipeline names the same issued boundary as the capability sweep. */
 const pipelineBoundary = (boundary: ReturnType<typeof requireActiveAnalysisBoundary>) =>
@@ -157,10 +157,7 @@ async function main() {
     30000, // lease duration
     // The automatic match of the product path: after a succeeded analysis the capabilities are related to the ACTIVE job pools. Without a
     // READY semantic configuration and a call budget it does nothing; it never changes the job result and never throws into the loop.
-    async (_job, resultAnalysisId) => {
-      const outcome = await runAutoMatch(resultAnalysisId);
-      console.log(`[Worker ${workerId}] AUTO_MATCH ${resultAnalysisId} ${outcome.outcome}${outcome.reason ? ` ${outcome.reason}` : ""}`);
-    }
+    createAutoMatchHook(workerId)
   );
 
   worker.start();

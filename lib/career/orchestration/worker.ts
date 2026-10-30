@@ -78,7 +78,8 @@ export class CareerJobWorker {
           // Capability proposal artifacts are sidecar state, never job results.
           await this.jobRepo.updateJobState(job.jobId, this.workerId, job.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId });
           if (this.afterSuccess) {
-            await this.afterSuccess(job, resultAnalysisId).catch(error => {
+            // Not awaited: a long follow-up (the automatic match) never holds the next claim of the worker (the analysis path stays as it was).
+            void Promise.resolve().then(() => this.afterSuccess!(job, resultAnalysisId)).catch(error => {
               console.error(`[Worker ${this.workerId}] AFTER_SUCCESS failed for ${job.jobId}: ${error instanceof Error ? error.message.split(":")[0].slice(0, 80) : "unknown"}`);
             });
           }

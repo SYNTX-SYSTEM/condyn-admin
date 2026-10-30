@@ -4,6 +4,8 @@ import { StandInSemanticProvider, type ProviderRequest, type SemanticProvider } 
 import { GEMINI_SEMANTIC_PROMPT } from "./semantic-prompt";
 
 export { GEMINI_SEMANTIC_PROMPT };
+/** One call may not hold a role (and the run) for ever: after this the call fails with a code and the budget unit is released. */
+export const GEMINI_SEMANTIC_TIMEOUT_MS = 120_000;
 
 /**
  * The real semantic provider (stage 3), behind the unchanged `SemanticProvider` seam: one request is one generateContent call, the
@@ -26,7 +28,7 @@ export class GeminiSemanticProvider implements SemanticProvider {
     if (!this.apiKey && !this.client) throw new Error("ERR_SEMANTIC_PROVIDER_KEY_MISSING");
     let text: unknown; let finishReason: unknown;
     try {
-      const client = this.client ?? new GoogleGenAI({ apiKey: this.apiKey! });
+      const client = this.client ?? new GoogleGenAI({ apiKey: this.apiKey!, httpOptions: { timeout: GEMINI_SEMANTIC_TIMEOUT_MS } });
       const response = await client.models.generateContent({
         model: this.identity.model,
         contents: `${GEMINI_SEMANTIC_PROMPT}\n\n${JSON.stringify({ proposals: request.proposals, requirements: request.requirements })}`,

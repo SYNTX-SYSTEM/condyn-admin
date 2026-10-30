@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { sql } from "drizzle-orm";
 import { db, initDbSchema } from "../../../lib/career/db/client";
 import { careerAnalyses } from "../../../lib/career/db/schema";
@@ -42,8 +42,16 @@ describe("worker afterSuccess hook", () => {
       seen.push({ id, status: (await repo.getJob(j.jobId))!.status });
     });
     expect(job.status).toBe("SUCCEEDED");
+    await vi.waitFor(() => expect(seen).toHaveLength(1));
     expect(seen).toEqual([{ id: job.jobId.replace("JOB_", "ANL_"), status: "SUCCEEDED" }]);
     expect(repository).toBeInstanceOf(JobRepository);
+  });
+
+  it("a hook that never ends does not hold the loop: the iteration returns with the job SUCCEEDED", async () => {
+    let started = false;
+    const { job } = await iteration(succeeds, () => { started = true; return new Promise<void>(() => undefined); });
+    expect(job.status).toBe("SUCCEEDED");
+    await vi.waitFor(() => expect(started).toBe(true));
   });
 
   it("a failing hook leaves the job SUCCEEDED and the loop alive", async () => {

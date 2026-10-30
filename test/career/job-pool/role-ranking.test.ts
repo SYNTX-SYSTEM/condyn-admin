@@ -84,6 +84,13 @@ describe("ROLE_RANKING_V1: order, tiers, determinism", () => {
     const out = rank([list[2], list[0]], f);
     // Alpha (0 required gaps) before Gamma (1 required gap), although both have fit 0.5
     expect(out.ranks.map(r => [r.role.title, r.requiredGaps])).toEqual([["Alpha", 0], ["Gamma", 1]]);
+    // the gap rule alone decides here: the role with the gap has the title that sorts FIRST
+    const zeta = role("z", "Zeta", [req("z", "1", "REQUIRED")]), aaa = role("g", "Aaa", [req("g", "1", "REQUIRED"), req("g", "2", "REQUIRED")]);
+    const tie = rank([aaa, zeta], { [key(zeta.requirements[0])]: finding("PARTIAL"), [key(aaa.requirements[0])]: finding("COVERS"), [key(aaa.requirements[1])]: finding("UNCLEAR") });
+    expect(tie.ranks.map(r => [r.role.title, r.fit, r.requiredGaps])).toEqual([["Zeta", 0.5, 0], ["Aaa", 0.5, 1]]);
+    // title decides when fit and gaps are equal, whatever the role ids say
+    const t1 = role("a_id", "Zulu", [req("a_id", "1", "REQUIRED")]), t2 = role("z_id", "Alpha", [req("z_id", "1", "REQUIRED")]);
+    expect(rank([t1, t2]).ranks.map(r => r.role.title)).toEqual(["Alpha", "Zulu"]);
     const x = role("x", "Same", [req("x", "1", "REQUIRED")]), y = role("y", "Same", [req("y", "1", "REQUIRED")]);
     expect(rank([y, x]).ranks.map(r => r.role.poolRoleId)).toEqual(["x", "y"]);
   });

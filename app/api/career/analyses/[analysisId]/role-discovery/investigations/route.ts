@@ -29,6 +29,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ ana
     if (config.state === "PROVIDER_NOT_AUTHORIZED") return issue("ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", 409, { provider: config.provider });
     let body: unknown;
     try { body = await request.json(); } catch { return issue("ERR_INVESTIGATION_BODY_INVALID", 400); }
+    if (isRecord(body) && typeof body.clientRequestId === "string" && body.clientRequestId.startsWith("auto:")) return issue("ERR_INVESTIGATION_BODY_INVALID", 400); // the identity of the automatic run is reserved
     if (!isRecord(body) || !Array.isArray(body.jobPoolUploadIds) || !body.jobPoolUploadIds.every(str) || !Array.isArray(body.roles) || !str(body.clientRequestId) || !Number.isInteger(body.confirmedCalls)) return issue("ERR_INVESTIGATION_BODY_INVALID", 400);
     const roles = body.roles as unknown[];
     if (!roles.every(r => isRecord(r) && str(r.jobPoolUploadId) && str(r.poolRoleId))) return issue("ERR_INVESTIGATION_BODY_INVALID", 400);

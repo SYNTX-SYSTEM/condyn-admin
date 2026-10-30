@@ -6,7 +6,10 @@ import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreReposito
 import { JobRepository } from "../../../lib/career/orchestration/job-repository";
 import { GET as GET_AUTO_MATCH } from "../../../app/api/career/analyses/[analysisId]/auto-match/route";
 import { GET as GET_RANKING } from "../../../app/api/career/analyses/[analysisId]/job-ranking/route";
-import { runAutoMatch, selectAutomaticRoles } from "../../../lib/career/job-pool/auto-match";
+import { POST as POST_START } from "../../../app/api/career/analyses/[analysisId]/role-discovery/investigations/route";
+import { activePoolSnapshot, engineOfRequest, runAutoMatch, selectAutomaticRoles, viewOfAutoInvestigation } from "../../../lib/career/job-pool/auto-match";
+import { readSemanticConfig } from "../../../lib/career/job-pool/semantic-config";
+import { startSemanticInvestigation } from "../../../lib/career/job-pool/semantic-investigation-start";
 import { TEST_JOB_SCOPE, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../../support/job-scope";
 import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../result-inspector/fixture";
 
@@ -168,6 +171,31 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
     expect(await rows("career_relation_call_ledger")).toBeGreaterThanOrEqual(before);
   });
 
+  it("the ranking uses the engine OF THE RUN: a later change of the configuration does not hide it and does not contradict the state read", async () => {
+    setEnv("stand-in", "1000", "25");
+    await runAutoMatch(person.analysisId, () => DAY);
+    for (const [name, apply] of [["no provider", () => setEnv(undefined)], ["gemini with key and budget", () => setEnv("gemini", "50", "25", "k")], ["unknown provider", () => setEnv("openai", "50")]] as const) {
+      apply();
+      const rank = (await ranking(person.analysisId)).body.ranking;
+      expect([rank.evidenceClass, rank.ranks.some((r: { tier: string }) => r.tier === "SEMANTIC")], name).toEqual(["STAND_IN", true]);
+    }
+  });
+
+  it("an explicit start never takes the identity of the automatic run, and a manual investigation is not an automatic one", async () => {
+    setEnv("stand-in", "1000", "25");
+    const manual = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("am4")])), null, "am4", source(`am4-${Date.now()}`), "Manual Only Group");
+    const config = readSemanticConfig();
+    if (config.state !== "READY") throw new Error("fixture");
+    const roleKey = ((await (await import("../../../app/api/career/analyses/[analysisId]/role-discovery/route")).GET(new Request(`http://local/x?jobPoolUploadId=${POOL}`), params(manual.analysisId))).json() as Promise<{ discovery: { roles: Array<{ key: { jobPoolUploadId: string; poolRoleId: string }; counts: { requirements: number } }> } }>);
+    const first = (await roleKey).discovery.roles.find(r => r.counts.requirements > 0)!.key;
+    const started = await startSemanticInvestigation({ analysisId: manual.analysisId, config, jobPoolUploadIds: [POOL], roleKeys: [first], clientRequestId: "manual-only", confirmedCalls: "AS_PLANNED", now: () => DAY });
+    expect(started.kind).toBe("CREATED");
+    expect((await autoMatch(manual.analysisId)).body.autoMatch.state).toBe("NOT_STARTED");
+    const forged = await POST_START(new Request("http://local/x", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ jobPoolUploadIds: [POOL], roles: [first], clientRequestId: `auto:${manual.analysisId}`, confirmedCalls: 0 }) }), params(manual.analysisId));
+    expect([forged.status, (await forged.json()).issues[0].code]).toEqual([400, "ERR_INVESTIGATION_BODY_INVALID"]);
+    expect((await autoMatch(manual.analysisId)).body.autoMatch.state).toBe("NOT_STARTED");
+  });
+
   it("a pool of the run that is no longer ACTIVE is dropped from the ranking and named in poolsDropped", async () => {
     setEnv("stand-in", "1000", "25");
     await runAutoMatch(person.analysisId, () => DAY);
@@ -189,5 +217,40 @@ describe("selectAutomaticRoles", () => {
     expect(selectAutomaticRoles(discovery, 99).map(k => k.poolRoleId)).toEqual(["all", "part1", "part2", "weak", "none"]);
     expect(selectAutomaticRoles(discovery, 2).map(k => k.poolRoleId)).toEqual(["all", "part1"]);
     expect(selectAutomaticRoles(discovery, 0)).toEqual([]);
+  });
+});
+
+describe("pure parts of the automatic match", () => {
+  const summary = (id: string, name: string, status = "ACTIVE") => ({ jobPoolUploadId: id, poolName: name, poolStatus: status }) as never;
+  it("the pool snapshot is ACTIVE pools only, ordered by name then id, at most 10", () => {
+    const list = [summary("U3", "B"), summary("U1", "A"), summary("U9", "A", "ARCHIVED"), summary("U2", "A")];
+    expect(activePoolSnapshot(list).map(p => p.jobPoolUploadId)).toEqual(["U1", "U2", "U3"]);
+    const many = Array.from({ length: 14 }, (_, i) => summary(`U${String(i).padStart(2, "0")}`, "P"));
+    expect(activePoolSnapshot(many)).toHaveLength(10);
+    expect(activePoolSnapshot(many).map(p => p.jobPoolUploadId)).toEqual(many.slice(0, 10).map(p => (p as unknown as { jobPoolUploadId: string }).jobPoolUploadId));
+  });
+
+  const run = (status: string, request: Record<string, unknown> = {}, tasks: Array<{ status: string; errorCode: string | null }> = []) => viewOfAutoInvestigation({
+    investigation: { investigationId: "RINV_X", provider: "stand-in", status: status as never, createdAt: "t0", updatedAt: "t1", request: { uploads: ["U1"], roles: [{}, {}], callsNeeded: 2, rolesTotal: 2, ...request } },
+    tasks: tasks as never, poolNames: new Map([["U1", "Pool One"]])
+  });
+  it("PLANNED and RUNNING read as RUNNING without a finish time; terminal statuses read as themselves", () => {
+    for (const status of ["PLANNED", "RUNNING"]) expect([run(status).state, run(status).finishedAt], status).toEqual(["RUNNING", null]);
+    expect([run("COMPLETED").state, run("COMPLETED").reason, run("COMPLETED").finishedAt]).toEqual(["COMPLETED", null, "t1"]);
+    expect([run("FAILED", {}, [{ status: "FAILED", errorCode: "ERR_X" }]).state, run("FAILED", {}, [{ status: "FAILED", errorCode: "ERR_X" }]).reason]).toEqual(["FAILED", "ERR_X"]);
+    expect([run("INTERRUPTED").state, run("INTERRUPTED").reason]).toEqual(["FAILED", "ERR_INVESTIGATION_INTERRUPTED"]);
+  });
+  it("reasons of a partial run: failures first, then an exhausted day budget, else roles beyond the budget; roles left out make a completed run PARTIAL", () => {
+    expect(run("PARTIAL", {}, [{ status: "FAILED", errorCode: "E" }, { status: "BUDGET_EXHAUSTED", errorCode: null }]).reason).toBe("ROLE_FAILURES");
+    expect(run("PARTIAL", {}, [{ status: "SUCCEEDED", errorCode: null }, { status: "BUDGET_EXHAUSTED", errorCode: null }, { status: "CANCELLED", errorCode: null }]).reason).toBe("DAY_BUDGET_EXHAUSTED");
+    expect(run("PARTIAL", {}, [{ status: "SUCCEEDED", errorCode: null }]).reason).toBe("ROLES_BEYOND_BUDGET");
+    expect([run("COMPLETED", { rolesTotal: 9 }).state, run("COMPLETED", { rolesTotal: 9 }).reason]).toEqual(["PARTIAL", "ROLES_BEYOND_BUDGET"]);
+    const v = run("COMPLETED", {}, [{ status: "SUCCEEDED", errorCode: null }, { status: "CACHED", errorCode: null }, { status: "FAILED", errorCode: "E" }]);
+    expect([v.budget, v.pools, v.evidenceClass]).toEqual([{ rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2 }, [{ jobPoolUploadId: "U1", poolName: "Pool One" }], "STAND_IN"]);
+  });
+  it("the engine of a run is read back only when complete", () => {
+    const e = { contractVersion: "c", promptChecksum: "p", provider: "gemini", model: "m" };
+    expect(engineOfRequest({ engine: e })).toEqual(e);
+    for (const bad of [{}, { engine: { ...e, model: 3 } }, { engine: null }, { engine: "gemini" }]) expect(engineOfRequest(bad as never)).toBeNull();
   });
 });
