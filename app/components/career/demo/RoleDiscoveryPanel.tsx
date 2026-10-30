@@ -37,6 +37,11 @@ const layer: React.CSSProperties = { display: "flex", flexDirection: "column", g
 /** Folded by default: the groups that carry no name relation (D-RD-4: present, findable, not in the way). */
 const FOLDED: readonly RoleLexicalStatus[] = ["NO_LEXICAL_RELATION", "NO_REQUIREMENTS"];
 
+/** The panel slot beside the six orbits (right, below the shell) — shared with the automatic job ranking (AutoJobRankingPanel), which
+ *  stands in the same slot while no manual discovery is open, so the two never stand together. */
+export const RD_PANEL_BOX: React.CSSProperties = { position: "absolute", right: "24px", top: "132px", bottom: "96px", zIndex: 32, width: "min(400px, 29vw)", display: "flex", flexDirection: "column", gap: "10px", boxSizing: "border-box", padding: "14px 14px 16px", overflowY: "auto", borderRadius: "14px", border: "1px solid rgba(120, 214, 255, 0.2)", background: "radial-gradient(120% 70% at 0% 0%, rgba(56, 229, 255, 0.07), transparent 62%), linear-gradient(180deg, rgba(6, 15, 26, 0.94), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 26px rgba(56, 229, 255, 0.08)", backdropFilter: "blur(10px)", color: "#e6f1f8", maxHeight: "calc(100vh - 228px)", alignSelf: "flex-start" };
+export const RD_PANEL_TIER_CSS = `@media (max-width: 1599px) { [data-rd-panel] { top: calc(50% - 56px) !important; max-height: calc(50% - 40px) !important; } }`;
+
 export interface RoleDiscoveryPanelProps {
   locale: SilLocale;
   /** The uploaded pools (GET /api/career/job-pools), offered as choices. */
@@ -77,7 +82,7 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
   const toggle = (id: string) => setTicked(previous => previous.includes(id) ? previous.filter(other => other !== id) : [...previous, id]);
   return (
     <>
-      <style>{`@media (max-width: 1599px) { [data-rd-panel] { top: calc(50% - 56px) !important; max-height: calc(50% - 40px) !important; } }`}</style>
+      <style>{RD_PANEL_TIER_CSS}</style>
       <aside
         data-testid="role-discovery-panel"
         data-pxj-panel
@@ -85,7 +90,7 @@ export function RoleDiscoveryPanel({ locale, pools, released, discovery, onRelea
         data-state={discovery.state}
         aria-label={c.title}
         onClick={event => event.stopPropagation()}
-        style={{ position: "absolute", right: "24px", top: "132px", bottom: "96px", zIndex: 32, width: "min(400px, 29vw)", display: "flex", flexDirection: "column", gap: "10px", boxSizing: "border-box", padding: "14px 14px 16px", overflowY: "auto", borderRadius: "14px", border: "1px solid rgba(120, 214, 255, 0.2)", background: "radial-gradient(120% 70% at 0% 0%, rgba(56, 229, 255, 0.07), transparent 62%), linear-gradient(180deg, rgba(6, 15, 26, 0.94), rgba(3, 8, 15, 0.95))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.6), 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 26px rgba(56, 229, 255, 0.08)", backdropFilter: "blur(10px)", color: "#e6f1f8", maxHeight: "calc(100vh - 228px)", alignSelf: "flex-start" }}
+        style={RD_PANEL_BOX}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
           <span style={kicker}>{c.title}</span>
@@ -341,10 +346,13 @@ export function RoleDiscoveryTrace({ c, role, proposals, onInvestigate, task }: 
 /** The explicit entry (recovery §8: "DISCOVER JOBS"; the orbit's own HUD actions stay as they are). It stands where the panel will
  *  open — the right column below the telemetry bar: below orbit 04 it covered that orbit at 1600 × 900, 1440 × 900 and 1280 × 720
  *  (measured); in the stack it takes its place in the column (career-demo-layout.ts). */
-export function RoleDiscoveryEntry({ locale, onOpen }: { locale: SilLocale; onOpen(): void }) {
+const ENTRY_BOX: React.CSSProperties = { position: "absolute", right: "24px", top: "180px", zIndex: 31, display: "flex", alignItems: "center", gap: "12px", width: "min(400px, 29vw)", boxSizing: "border-box", padding: "8px 8px 8px 14px", borderRadius: "14px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.94))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)", backdropFilter: "blur(10px)"  };
+/** The manual discovery's entry. `inline`: inside the automatic job ranking's panel (AUTO_CAPABILITY), the same action without its
+ *  own place in the field (no position, no shell attribute); otherwise unchanged, at its place right below the shell. */
+export function RoleDiscoveryEntry({ locale, onOpen, inline = false }: { locale: SilLocale; onOpen(): void; inline?: boolean }) {
   const c = ROLE_DISCOVERY_COPY[locale];
   return (
-    <div data-testid="rd-entry" data-sx-shell="rd-entry" style={{ position: "absolute", right: "24px", top: "180px", zIndex: 31, display: "flex", alignItems: "center", gap: "12px", width: "min(400px, 29vw)", boxSizing: "border-box", padding: "8px 8px 8px 14px", borderRadius: "14px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.94))", boxShadow: "0 12px 32px rgba(0, 0, 0, 0.5)", backdropFilter: "blur(10px)" }}>
+    <div data-testid="rd-entry" data-sx-shell={inline ? undefined : "rd-entry"} style={inline ? { ...ENTRY_BOX, position: "relative", right: undefined, top: undefined, zIndex: undefined, width: "100%" } : ENTRY_BOX}>
       <span style={{ ...meta, color: "rgba(196, 222, 236, 0.92)" }}>{c.entryHint}</span>
       <button type="button" data-testid="rd-open" onClick={onOpen} style={{ ...action, flexShrink: 0 }}>{c.entry}</button>
     </div>
