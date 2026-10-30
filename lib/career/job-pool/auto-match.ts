@@ -50,6 +50,9 @@ export function disabledReason(config: SemanticConfig): string | null {
   return config.dayLimit < 1 ? "DAY_LIMIT_ZERO" : null;
 }
 
+/** An analysis without any capability proposal has nothing to compare: no run, no claim that roles were checked. */
+export const hasCapabilityProposals = (projection: { capabilities: unknown[] }): boolean => projection.capabilities.length > 0;
+
 export type AutoMatchOutcome = { outcome: "DISABLED" | "SKIPPED" | "FAILED" | "STARTED"; reason: string | null; investigationId?: string };
 
 /**
@@ -66,6 +69,7 @@ export async function runAutoMatch(analysisId: string, now: () => string = () =>
   const ids = pools.map(p => p.jobPoolUploadId);
   const operand = await loadRoleDiscoveryOperand(analysisId, ids);
   if (!operand.ok) return operand.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? { outcome: "SKIPPED", reason: "NOT_PERSON" } : { outcome: "FAILED", reason: operand.issue.code };
+  if (!hasCapabilityProposals(operand.projection)) return { outcome: "SKIPPED", reason: "NO_PROPOSALS" };
   const roleKeys = selectAutomaticRoles(operand.discovery, Math.min(config.maxRoles, SEMANTIC_ROLES_HARD_CAP));
   if (roleKeys.length === 0) return { outcome: "SKIPPED", reason: "NO_ACTIVE_POOLS" };
   const started = await startSemanticInvestigation({
@@ -132,6 +136,7 @@ export async function readAutoMatch(analysisId: string): Promise<Outcome<AutoMat
   if (!(await tableExists("career_relation_investigations")) && (await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(() => true, () => false)) === false) return { ok: true, value: { state: "DISABLED", reason: "NOT_PROVISIONED", ...EMPTY } };
   if (!base.ok) return { ok: true, value: { state: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "SKIPPED" : "NOT_STARTED", reason: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "NOT_PERSON" : null, ...EMPTY } };
   if (activePoolSnapshot(summaries).length === 0) return { ok: true, value: { state: "SKIPPED", reason: "NO_ACTIVE_POOLS", ...EMPTY } };
+  if (!hasCapabilityProposals(base.projection)) return { ok: true, value: { state: "SKIPPED", reason: "NO_PROPOSALS", ...EMPTY } };
   return { ok: true, value: { state: "NOT_STARTED", reason: null, ...EMPTY } };
 }
 
