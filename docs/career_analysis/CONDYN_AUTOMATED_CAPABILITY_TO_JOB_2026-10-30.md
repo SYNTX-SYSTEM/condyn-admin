@@ -31,7 +31,7 @@ After a PERSON analysis succeeded, the worker runs the **auto-match run** (a hoo
 1. Operand: pools = all ACTIVE job pools at that moment (snapshot, deterministic order, at most 10) = "authorized job pools" of the mandate; recorded in the run.
 2. Lexical discovery (read only) → role order by lexical status (all related, partial, weak, none), then deterministic order.
 3. Budget: the first `min(maxRoles, 25, remaining day limit)` roles get a semantic evaluation (one call per role with pending pairs, cached pairs cost nothing), through the existing `runInvestigation` with `clientRequestId = auto:<analysisId>` (idempotent), `confirmedCalls = plan.callsNeeded` supplied by the runner. The remaining roles stay lexical-only and are marked so.
-4. Persisted state (`career_auto_match_runs`, registered like the relation cache: only on a verified disposable database, `CREATE TABLE IF NOT EXISTS`).
+4. **No new table.** The run IS the semantic investigation of the existing engine, marked `auto: true` in its stored request (with `rolesTotal`), idempotent by `clientRequestId = auto:<analysisId>`. The state of the run is derived from it on read. (Decision during implementation: a second table would only have duplicated the investigation, the ledger and the task rows.)
 Enabled only when `readSemanticConfig()` is READY (the provider setting is the single gate); otherwise state DISABLED and no call.
 
 ### 3.4 Explainable ranking (GELB) — `ROLE_RANKING_V1`
@@ -41,10 +41,14 @@ Pure function over discovery + cached semantic relations; read only, never a mod
 - Role fit = Σ(weight × value) / Σ(weight). Tiers: roles with a semantic evaluation first (SEMANTIC), then LEXICAL_ONLY. Order inside a tier: fit desc, required gaps asc, title, role id (deterministic).
 - Every rank carries its formula inputs per requirement (state, source, weight, contribution), the model explanation and evidence limitation, and the source quotes. Authority: `ranking: true`, `decision: false`, `authorityState: NONE`; the ranking is derived from unverified model statements and never a hiring decision.
 
+### 3.4a Shared start (GELB)
+The explicit start route and the automatic run both call `startSemanticInvestigation` (extracted unchanged from the route; PINK/own tests green): operand, role selection, cache, idempotency before confirmation, plan, open, ledger-reserved run. The run passes `confirmedCalls: "AS_PLANNED"`; the ledger (day limit shared with manual starts, plus the investigation limit) still reserves every call first.
+
 ### 3.5 Read APIs (GELB)
 - `GET /api/career/analyses/{id}/auto-match` → `{ success, autoMatch: { state: NOT_STARTED | DISABLED | RUNNING | COMPLETED | PARTIAL | FAILED | SKIPPED, reason, evidenceClass, pools, budget: { rolesPlanned, rolesEvaluated, callsLimit }, investigationId, startedAt, finishedAt } }`
 - `GET /api/career/analyses/{id}/job-ranking` → `{ success, ranking: ROLE_RANKING_V1 }` (computed on read for the pool snapshot of the run, or all ACTIVE pools if no run exists).
-Both: `cache-control: no-store`, never write, never call a model.
+Both: `cache-control: no-store`, never write, never register a table (`to_regclass` checks), never call a model.
+Details fixed with GRÜN/PINK: reasons — DISABLED: SEMANTIC_NOT_CONFIGURED | PROVIDER_NOT_AUTHORIZED | DAY_LIMIT_ZERO; SKIPPED: NOT_PERSON | NO_ACTIVE_POOLS; PARTIAL: ROLES_BEYOND_BUDGET | ROLE_FAILURES; FAILED: error code (an exhausted day budget ends as FAILED / ERR_BUDGET_EXHAUSTED). `fit` is null for a role without requirements; per rank `semanticCoverage {evaluated,total}`; `poolsDropped` lists snapshot pools that are no longer ACTIVE; the best relation of all proposals carries a requirement (highest value, then EQUIVALENT > COVERS > PARTIAL, then capability name).
 
 ### 3.6 Frontend (GRÜN)
 Input accepts a GitHub account URL. After `ANALYZE` of a PERSON analysis the field proceeds without further input: waits for the job, then for the auto-match run (state line in the existing entry/transition language), then shows the ranked jobs with their explanation in the Capability Map / role discovery area. No pool picker, no role picker, no confirmation step on this path. Existing orbits, modes, drop zone, role discovery panel and manual start stay.
