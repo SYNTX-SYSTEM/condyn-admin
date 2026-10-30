@@ -3771,6 +3771,31 @@ No Gemini call.
 
 **Run record.** `evidence/semiotic-entry-84e4551/` (verdicts, measurements, scripts, line shots of the empty lab and the F-SEM-1 shot).
 
+### 3.83 Semiotic entry line, round 2, GRÜN `0ab9baf` (2026-10-30) — GO for :3017
+
+**Request.** GRÜN fixed the §3.82 findings:
+- F-SEM-1: the line now sits in the Job Field's right column, under the mode selector, and the intake panel opens 12 px below it.
+- F-SEM-2…4: test gaps closed.
+- O-SEM-2: wording changed.
+
+GELB asked for the gate probe again, a hit test and click proof in all states and both languages, the three mutants, S8, and a new check that the right column covers nothing new. It asked for GO/NO-GO.
+
+**Method.**
+- **Gate probe v2.** Same probe as §3.82 against `cd1e4de`.
+- **New geometry probe.** A generic scan of every visible element with a testid, text or interactivity under the line. It runs in 8 viewports, EN and DE, with and without the intake panel open, and includes the KESTREL rim click proof.
+- **Hit test.** On the restored real world.
+- **Mutants.** 32 mutants: E29–E33 are new for the right column, and E28 is obsolete.
+- **Tests and regression.** tsc and test/career, then the S8 regression against §3.81.
+
+**Verdict: GO** (`evidence/semiotic-entry-0ab9baf/verdicts.txt`).
+- **F-SEM-1 closed.** The line covers 0 elements in 88 visits × 4 captures. The intake panel always sits 12 px below the line. Every KESTREL rim click opens the organization, and the real-world hit test finds 0 nodes under the line.
+- **Other checks.** S7 shows 0 gate differences in 40 states at 1920/1280. S1–S5 pass, including the new wording. S8 is identical to §3.81 except for the line itself.
+- **Mutants.** 30 of 31 applicable mutants are red, so F-SEM-2…4 are closed.
+- **Remaining test gap (F-SEM-5, E32).** If the dashboard stopped writing the entry clearance, the suites would not notice. The browser measures the 12 px, so the shipped code is correct.
+- **Owner items, unchanged.** O-SEM-3, the INVALID code, and O-RT-3 (:3017 runs as a dev server with the worker).
+
+**Run record.** `evidence/semiotic-entry-0ab9baf/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

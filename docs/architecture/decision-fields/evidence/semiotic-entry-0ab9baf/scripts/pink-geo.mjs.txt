@@ -1,0 +1,73 @@
+// PINK §3.83 geometry probe: what the entry line covers in the right column (generic scan), the intake panel below it, EN and DE,
+// 10 viewports, and the KESTREL rim click proof. STAND-IN video-lab only (it uploads the DLL pool after the no-pool phase).
+// argv: <state.json> <repo> <out dir> <label>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack", Q = "/career/demo?investigationMode=";
+const VPS = [[1920, 1080, 1], [1600, 900, 1], [1440, 900, 1], [1280, 720, 1], [1200, 800, 1], [1152, 864, 1], [960, 540, 2], [640, 360, 2]];
+const scan = (p) => p.evaluate(() => {
+  const line = document.querySelector('[data-sx-shell="gate-reason"]'); if (!line) return { line: null };
+  const vis = e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none" && +cs.opacity > 0.05; };
+  if (!vis(line)) return { line: { visible: false } };
+  const L = line.getBoundingClientRect(); const VA = innerWidth * innerHeight;
+  const inter = r => Math.max(0, Math.min(r.right, L.right) - Math.max(r.left, L.left)) * Math.max(0, Math.min(r.bottom, L.bottom) - Math.max(r.top, L.top));
+  const covered = [];
+  for (const e of document.querySelectorAll("body *")) {
+    if (e === line || line.contains(e) || e.contains(line) || !vis(e)) continue;
+    const r = e.getBoundingClientRect(); const a = inter(r); if (a <= 0) continue;
+    if (r.width * r.height > 0.4 * VA) continue; // stage / background containers
+    const interactive = e.matches('button, a[href], input, select, textarea, [role="button"], [tabindex="0"]');
+    const text = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+    const tid = e.dataset?.testid ?? null;
+    if (!interactive && !text && !tid) continue;
+    covered.push({ tid, tag: e.tagName.toLowerCase(), interactive, text: text ? e.textContent.trim().slice(0, 40) : null, px: Math.round(a), share: +(a / (r.width * r.height)).toFixed(3), rect: [r.left, r.top, r.width, r.height].map(Math.round) });
+  }
+  const intake = document.querySelector('[data-sx-panel="intake"]'); const I = intake && vis(intake) ? intake.getBoundingClientRect() : null;
+  const act = line.querySelector('[data-testid="field-entry-action"]')?.getBoundingClientRect();
+  const sel = document.querySelector('[data-sx-shell="selector"]')?.getBoundingClientRect(); const inv = document.querySelector('[data-sx-shell="investigation"]')?.getBoundingClientRect();
+  const box = document.querySelector('[data-testid="syntx-pool"]')?.getBoundingClientRect();
+  const org = document.querySelector('[data-testid="syntx-organization-org_kestrel"]')?.getBoundingClientRect();
+  return { line: { visible: true, entry: line.dataset.entryState, rect: [L.left, L.top, L.width, L.height].map(Math.round), position: getComputedStyle(line).position, overflowX: line.scrollWidth > line.clientWidth + 1, overflowY: line.scrollHeight > line.clientHeight + 1, offscreen: L.right > innerWidth + 0.5 || L.left < -0.5 },
+    action: act ? [act.left, act.top, act.width, act.height].map(Math.round) : null, covered,
+    intake: I ? { rect: [I.left, I.top, I.width, I.height].map(Math.round), gapBelowLine: Math.round(I.top - L.bottom), overlapsLine: inter(I) > 0 } : null,
+    selector: sel ? Math.round(sel.bottom) : null, investigation: inv ? [inv.left, inv.top, inv.width, inv.height].map(Math.round) : null,
+    poolBox: box ? [box.left, box.top, box.width, box.height].map(Math.round) : null, airToPoolBox: box ? Math.round(L.left - box.right) : null,
+    orgRing: org ? [org.left, org.top, org.width, org.height].map(Math.round) : null, pageScrollX: document.documentElement.scrollWidth > innerWidth + 1 };
+});
+async function toDE(p) { await p.getByText(/SYSTEM CODEX/i).first().click().catch(() => {}); await sleep(700); await p.evaluate(() => [...document.querySelectorAll("button")].find(b => /DEUTSCH/.test(b.textContent ?? ""))?.click()); await sleep(700); await p.getByText(/CLOSE|SCHLIESSEN/).first().click().catch(() => {}); await sleep(1200); }
+const b = await chromium.launch(); const rows = [];
+async function page(W, H, D) { const ctx = await b.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: D }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  let blocked = 0; await ctx.route("**/*", r => { if (!["GET", "HEAD"].includes(r.request().method())) { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(String(e).slice(0, 120))); return { ctx, p, errors, get blocked() { return blocked; } }; }
+async function visit(phase, name, path, W, H, D, rim) {
+  const pg = await page(W, H, D); const p = pg.p;
+  await p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }); await sleep(6500);
+  const en = await scan(p);
+  let enIntake = null; const tog = p.locator('[data-testid="job-pool-intake-toggle"]:visible, [data-testid="job-pool-list-empty-intake"]:visible').first();
+  if (en.line?.visible && await tog.count()) { await tog.click({ timeout: 3000 }).catch(() => {}); await sleep(1200); enIntake = await scan(p); await tog.click({ timeout: 3000 }).catch(() => {}); await sleep(600); }
+  await toDE(p); const de = await scan(p);
+  let deIntake = null; if (de.line?.visible && await tog.count()) { await tog.click({ timeout: 3000 }).catch(() => {}); await sleep(1200); deIntake = await scan(p); }
+  if (W === 1920 && D === 1 && de.line?.visible) await p.screenshot({ path: `${OUT}/geo-${LABEL}-${name.replace(/[:+]/g, "_")}-de-intake-1920.png`, clip: { x: 960, y: 0, width: 960, height: 760 } }).catch(() => {});
+  await pg.ctx.close();
+  // KESTREL rim click proof: points along the node's top band; every point that is not the node itself is recorded; click 3 rim points on fresh pages
+  let rimProof = null;
+  if (rim) { rimProof = [];
+    for (const frac of [0.35, 0.65]) { const q = await page(W, H, D); await q.p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }); await sleep(6500);
+      const pt = await q.p.evaluate((f) => { const n = document.querySelector('[data-testid="syntx-organization-org_kestrel"]'); if (!n) return null; const r = n.getBoundingClientRect(); for (let j = 1; j < 30; j += 1) { const x = r.left + r.width * f, y = r.top + j; const h = document.elementFromPoint(x, y); if (h && n.contains(h)) return { x, y, hit: "node" }; if (h && h.closest('[data-sx-shell="gate-reason"]')) return { x, y, hit: "LINE" }; } return { x: r.left + r.width * f, y: r.top + 8, hit: "other" }; }, frac);
+      if (pt) { await q.p.mouse.click(pt.x, pt.y); await sleep(2500); }
+      rimProof.push({ frac, pt, url: new URL(q.p.url()).search.replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL"), focus: await q.p.evaluate(() => document.querySelector('[data-testid="semantic-career-intelligence-field"]')?.dataset.fieldFocus ?? null) }); await q.ctx.close(); } }
+  const row = { vp: `${W}x${H}@${D}`, state: `${phase}:${name}`, en, enIntake, de, deIntake, rimProof, blocked: pg.blocked, errors: pg.errors };
+  rows.push(row);
+  const cov = s => s?.line?.visible ? (s.covered.length ? s.covered.map(c => `${c.tid ?? c.tag}${c.interactive ? "*" : ""}:${c.px}`).join(",") : "-") : "noline";
+  console.log(row.vp, row.state, "EN", cov(en), "EN+I", cov(enIntake), enIntake?.intake?.gapBelowLine ?? "", "DE", cov(de), "DE+I", cov(deIntake), deIntake?.intake?.gapBelowLine ?? "", rimProof ? rimProof.map(r => `${r.pt?.hit}->${r.focus}${/jobOrganizationId/.test(r.url) ? "+org" : ""}`).join(" ") : "");
+}
+const NOPOOL = [["pxj", `${Q}PERSON_X_JOB`], ["job", `${Q}JOB`], ["person", `${Q}PERSON`]];
+const POOL = [["pxj", `${Q}PERSON_X_JOB`], ["pxj+poolOpen", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}`, true], ["pxj+roleOpen", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}`], ["person", `${Q}PERSON`], ["person+poolOpen", `${Q}PERSON&jobPoolUploadId=${DLL}`, true], ["person+roleOpen", `${Q}PERSON&jobPoolUploadId=${DLL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}`], ["job+poolOpen", `${Q}JOB&jobPoolUploadId=${DLL}`, true], ["pxj+invalidJob", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_pink_absent`]];
+for (const [W, H, D] of VPS) for (const [n, path] of NOPOOL) await visit("nopool", n, path, W, H, D, false);
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_SEM" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+for (const [W, H, D] of VPS) for (const [n, path, rim] of POOL) await visit("pool", n, path, W, H, D, !!rim);
+await b.close(); writeFileSync(`${OUT}/geo-${LABEL}.json`, JSON.stringify(rows, null, 1)); console.log("GEO-END", LABEL, rows.length);
