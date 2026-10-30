@@ -53,7 +53,7 @@ describe("UX-04 · the closed Capability Field says why and how it opens", () =>
     expect(tag(field({ investigationMode: "PERSON_X_JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE }), "capability-gate-reason")).toContain('data-gate="CHECKING"');
     control.scope = scopeOf("INVALID");
     const invalid = field({ investigationMode: "PERSON_X_JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE });
-    expect(textOf(invalid, "capability-gate-cause")).toBe("The chosen job does not hold here · ROLE_NOT_IN_POOL.");
+    expect(textOf(invalid, "capability-gate-cause")).toBe("The chosen job is not readable in this field · ROLE_NOT_IN_POOL.");
     control.scope = VALID;
     const job = field({ investigationMode: "JOB", jobScopePoolUploadId: UPLOAD, jobScopeRoleId: ROLE });
     expect(tag(job, "capability-gate-reason")).toContain('data-gate="JOB"');

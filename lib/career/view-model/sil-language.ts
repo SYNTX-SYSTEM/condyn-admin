@@ -495,7 +495,7 @@ export const SIL_COPY = {
           ROLE_NOT_CHOSEN: "A role is open; it is not the job yet.",
           POOLS_UNREAD: "PERSON × JOB reads the person against one chosen role.",
           CHECKING: "The chosen job is being read.",
-          INVALID: "The chosen job does not hold here.",
+          INVALID: "The chosen job is not readable in this field.",
           JOB: "JOB reads the job alone; the person stays outside."
         },
         next: {
@@ -505,7 +505,7 @@ export const SIL_COPY = {
           PERSON_OPEN: "→ continue in the Capability Field",
           ROLE_NOT_CHOSEN: "→ select it as the job to read the person against it",
           POOLS_UNREAD: "→ choose a role in the Job Field · PERSON needs no role",
-          CHECKING: "→ the Capability Field follows once it holds",
+          CHECKING: "→ the Capability Field follows once it is read",
           INVALID: "→ open another role in the Job Field · SELECT AS JOB",
           JOB: "→ PERSON or PERSON × JOB brings the person in"
         },
@@ -1386,8 +1386,8 @@ export const SIL_COPY = {
           ROLE_NOT_CHOSEN: "Eine Rolle ist geöffnet; sie ist noch nicht der Job.",
           POOLS_UNREAD: "PERSON × JOB liest die Person an einer gewählten Rolle.",
           CHECKING: "Der gewählte Job wird gelesen.",
-          INVALID: "Der gewählte Job trägt hier nicht.",
-          JOB: "JOB liest den Job allein; die Person bleibt außen."
+          INVALID: "Der gewählte Job ist in diesem Feld nicht lesbar.",
+          JOB: "JOB liest den Job allein; die Person bleibt außen vor."
         },
         next: {
           NO_POOL: "→ mit + INTAKE einen hinzufügen · PERSON braucht keine Rolle",
@@ -1396,7 +1396,7 @@ export const SIL_COPY = {
           PERSON_OPEN: "→ im Capability-Feld weiter",
           ROLE_NOT_CHOSEN: "→ als Job wählen, um die Person an ihr zu lesen",
           POOLS_UNREAD: "→ im Job-Feld eine Rolle wählen · PERSON braucht keine Rolle",
-          CHECKING: "→ das Capability-Feld folgt, sobald er trägt",
+          CHECKING: "→ das Capability-Feld folgt, sobald er gelesen ist",
           INVALID: "→ im Job-Feld eine andere Rolle öffnen · ALS JOB WÄHLEN",
           JOB: "→ PERSON oder PERSON × JOB holt die Person herein"
         },

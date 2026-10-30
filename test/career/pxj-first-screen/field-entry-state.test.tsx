@@ -193,6 +193,11 @@ describe("SEMIOTIC_ENTRY · the four states, each its own calm line (EN, DE)", (
     const job = ssr({ investigationMode: "JOB" });
     expect(tag(job, "capability-gate-reason")).toContain('data-gate="JOB"');
     expect(textOf(job, "capability-gate-cause")).toBe("JOB reads the job alone; the person stays outside.");
+    expect(SIL_COPY.de.syntx.entry.line.JOB).toBe("JOB liest den Job allein; die Person bleibt außen vor.");
+    expect(SIL_COPY.en.syntx.entry.line.INVALID).toBe("The chosen job is not readable in this field.");
+    expect(SIL_COPY.de.syntx.entry.line.INVALID).toBe("Der gewählte Job ist in diesem Feld nicht lesbar.");
+    expect(SIL_COPY.en.syntx.entry.next.CHECKING).toBe("→ the Capability Field follows once it is read");
+    expect(SIL_COPY.de.syntx.entry.next.CHECKING).toBe("→ das Capability-Feld folgt, sobald er gelesen ist");
   });
 });
 
