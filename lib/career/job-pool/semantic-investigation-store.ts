@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import type { Sql } from "postgres";
 import type { CallLedger } from "./semantic-relation-engine";
 import { canonicalJson } from "./relation-cache";
+import { PROVIDER_CALL_DDL, PROVIDER_CALL_GUARD_DDL, PROVIDER_CALL_TABLE } from "../provider-calls/register";
 
 /**
  * Persistence of explicit semantic investigations (stage 3, spec §6): the investigation (idempotent by key), its role tasks and the
@@ -9,7 +10,7 @@ import { canonicalJson } from "./relation-cache";
  * Statuses move forward only; nothing is deleted. The ledger reserves a call atomically against BOTH limits (day per provider and
  * investigation) before anything is sent; a day limit of 0 means nothing runs (the default for real providers).
  */
-export const INVESTIGATION_TABLES = ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger"] as const;
+export const INVESTIGATION_TABLES = ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger", PROVIDER_CALL_TABLE] as const;
 
 export const INVESTIGATION_DDL = [
   `CREATE TABLE IF NOT EXISTS career_relation_investigations (
@@ -44,11 +45,16 @@ export const INVESTIGATION_DDL = [
     request_bytes bigint NOT NULL DEFAULT 0,
     response_bytes bigint NOT NULL DEFAULT 0,
     CHECK (released <= reserved AND consumed <= reserved - released AND reserved - released <= limit_units)
-  )`
+  )`,
+  // Lease of the run (point 3): who runs it and until when; a run whose lease expired is STALLED and is taken up again by any worker.
+  `ALTER TABLE career_relation_investigations ADD COLUMN IF NOT EXISTS lease_owner text`,
+  `ALTER TABLE career_relation_investigations ADD COLUMN IF NOT EXISTS lease_expires_at text`,
+  `ALTER TABLE career_relation_investigations ADD COLUMN IF NOT EXISTS heartbeat_at text`,
+  ...PROVIDER_CALL_DDL
 ] as const;
 
 /** Database-enforced direction (PINK O-LED-2): no delete anywhere, statuses forward only, ledger counters never decrease. */
-export const INVESTIGATION_TRIGGERS = ["rel_inv_guard", "rel_task_guard", "rel_ledger_guard"] as const;
+export const INVESTIGATION_TRIGGERS = ["rel_inv_guard", "rel_task_guard", "rel_ledger_guard", "rel_call_guard"] as const;
 export const INVESTIGATION_GUARD_DDL = [
   `CREATE OR REPLACE FUNCTION rel_inv_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
     IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_INVESTIGATION_IMMUTABLE: delete refused'; END IF;
@@ -80,7 +86,8 @@ export const INVESTIGATION_GUARD_DDL = [
       CREATE TRIGGER rel_task_guard BEFORE UPDATE OR DELETE ON career_relation_role_tasks FOR EACH ROW EXECUTE FUNCTION rel_task_guard(); END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_ledger_guard' AND tgrelid = 'career_relation_call_ledger'::regclass) THEN
       CREATE TRIGGER rel_ledger_guard BEFORE UPDATE OR DELETE ON career_relation_call_ledger FOR EACH ROW EXECUTE FUNCTION rel_ledger_guard(); END IF;
-  END $$`
+  END $$`,
+  ...PROVIDER_CALL_GUARD_DDL
 ] as const;
 
 const sha = (value: string) => createHash("sha256").update(value, "utf8").digest("hex");
@@ -140,13 +147,53 @@ export class PostgresInvestigationStore {
     return r ? { investigationId: r.investigation_id, analysisId: r.analysis_id, provider: r.provider, engineVersionHash: r.engine_version_hash, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at } : null;
   }
 
-  /** The latest investigation an automatic run started for this analysis, with its stored request (read only). */
-  async latestAutomatic(analysisId: string): Promise<{ investigationId: string; provider: string; status: InvestigationStatus; createdAt: string; updatedAt: string; request: Record<string, unknown> } | null> {
-    const [r] = await this.sql<{ investigation_id: string; provider: string; status: InvestigationStatus; created_at: string; updated_at: string; request_json: string }[]>`SELECT investigation_id, provider, status, created_at, updated_at, request_json FROM career_relation_investigations WHERE analysis_id = ${analysisId} AND request_json::jsonb @> '{"auto": true}'::jsonb ORDER BY created_at DESC, investigation_id DESC LIMIT 1`;
-    if (!r) return null;
-    let request: Record<string, unknown>;
-    try { request = JSON.parse(r.request_json) as Record<string, unknown>; } catch { request = {}; }
-    return { investigationId: r.investigation_id, provider: r.provider, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at, request };
+  /** The latest investigation an automatic run started for this analysis, with its stored request and lease (read only; a table registered before the lease columns existed reads them as absent). */
+  async latestAutomatic(analysisId: string): Promise<AutomaticRunRow | null> {
+    const [r] = await this.sql<AutomaticRunRaw[]>`SELECT investigation_id, analysis_id, provider, status, created_at, updated_at, request_json, to_jsonb(i)->>'lease_owner' AS lease_owner, to_jsonb(i)->>'lease_expires_at' AS lease_expires_at
+      FROM career_relation_investigations i WHERE analysis_id = ${analysisId} AND request_json::jsonb @> '{"auto": true}'::jsonb ORDER BY created_at DESC, investigation_id DESC LIMIT 1`;
+    return r ? automaticRow(r) : null;
+  }
+
+  /** Automatic runs nobody is running any more: PLANNED/RUNNING whose lease ran out (a run without a lease: no sign of life since `legacyBefore`). */
+  async abandonedAutomatic(now: string, legacyBefore: string): Promise<AutomaticRunRow[]> {
+    const rows = await this.sql<AutomaticRunRaw[]>`SELECT investigation_id, analysis_id, provider, status, created_at, updated_at, request_json, to_jsonb(i)->>'lease_owner' AS lease_owner, to_jsonb(i)->>'lease_expires_at' AS lease_expires_at
+      FROM career_relation_investigations i WHERE status IN ('PLANNED','RUNNING') AND request_json::jsonb @> '{"auto": true}'::jsonb
+        AND (CASE WHEN to_jsonb(i)->>'lease_expires_at' IS NOT NULL THEN to_jsonb(i)->>'lease_expires_at' < ${now} ELSE updated_at < ${legacyBefore} END) ORDER BY created_at, investigation_id`;
+    return rows.map(automaticRow);
+  }
+
+  /** Terminal automatic runs that may be continued (PARTIAL/FAILED/INTERRUPTED, marked resumable), newest first, finished before `before`. */
+  async resumableAutomatic(before: string): Promise<AutomaticRunRow[]> {
+    const rows = await this.sql<AutomaticRunRaw[]>`SELECT investigation_id, analysis_id, provider, status, created_at, updated_at, request_json, to_jsonb(i)->>'lease_owner' AS lease_owner, to_jsonb(i)->>'lease_expires_at' AS lease_expires_at
+      FROM career_relation_investigations i WHERE status IN ('PARTIAL','FAILED','INTERRUPTED') AND request_json::jsonb @> '{"auto": true, "resumable": true}'::jsonb AND updated_at < ${before} ORDER BY created_at, investigation_id`;
+    return rows.map(automaticRow);
+  }
+
+  /** Takes (or renews) the lease of a PLANNED/RUNNING run: the one holder, or anyone once it ran out. False = somebody else holds it. */
+  async takeLease(investigationId: string, owner: string, expiresAt: string, now: string): Promise<boolean> {
+    const rows = await this.sql`UPDATE career_relation_investigations SET lease_owner = ${owner}, lease_expires_at = ${expiresAt}, heartbeat_at = ${now}
+      WHERE investigation_id = ${investigationId} AND status IN ('PLANNED','RUNNING') AND (lease_owner IS NULL OR lease_owner = ${owner} OR lease_expires_at < ${now}) RETURNING investigation_id`;
+    return rows.length === 1;
+  }
+
+  /** Marks a run nobody runs any more INTERRUPTED; only the worker whose conditional update matches wins (race-free take-over). */
+  async interruptAbandoned(investigationId: string, now: string, legacyBefore: string): Promise<boolean> {
+    return this.sql.begin(async tx => {
+      const rows = await tx`UPDATE career_relation_investigations SET status = 'INTERRUPTED', updated_at = ${now}
+        WHERE investigation_id = ${investigationId} AND status IN ('PLANNED','RUNNING')
+          AND (CASE WHEN lease_expires_at IS NOT NULL THEN lease_expires_at < ${now} ELSE updated_at < ${legacyBefore} END) RETURNING investigation_id`;
+      if (rows.length !== 1) return false;
+      // What the lost worker left open is closed forward-only: the task it was working on, and the ones it never reached.
+      await tx`UPDATE career_relation_role_tasks SET status = 'INTERRUPTED', error_code = 'ERR_WORKER_LOST', updated_at = ${now} WHERE investigation_id = ${investigationId} AND status = 'RUNNING'`;
+      await tx`UPDATE career_relation_role_tasks SET status = 'CANCELLED', updated_at = ${now} WHERE investigation_id = ${investigationId} AND status = 'PENDING'`;
+      return true;
+    });
+  }
+
+  /** The newest sign of progress of a run: its last task movement or status change. */
+  async lastProgressAt(investigationId: string): Promise<string | null> {
+    const [r] = await this.sql<{ t: string | null }[]>`SELECT GREATEST((SELECT max(updated_at) FROM career_relation_role_tasks WHERE investigation_id = ${investigationId}), (SELECT updated_at FROM career_relation_investigations WHERE investigation_id = ${investigationId})) AS t`;
+    return r?.t ?? null;
   }
 
   async tasks(investigationId: string): Promise<Array<{ jobPoolUploadId: string; poolRoleId: string; status: TaskStatus; errorCode: string | null; pairs: number; stored: number }>> {
@@ -154,6 +201,18 @@ export class PostgresInvestigationStore {
     return rows.map(r => ({ jobPoolUploadId: r.job_pool_upload_id, poolRoleId: r.pool_role_id, status: r.status, errorCode: r.error_code, pairs: r.pairs, stored: r.stored }));
   }
 }
+
+export interface AutomaticRunRow { investigationId: string; analysisId: string; provider: string; status: InvestigationStatus; createdAt: string; updatedAt: string; request: Record<string, unknown>; leaseOwner: string | null; leaseExpiresAt: string | null }
+interface AutomaticRunRaw { investigation_id: string; analysis_id: string; provider: string; status: InvestigationStatus; created_at: string; updated_at: string; request_json: string; lease_owner: string | null; lease_expires_at: string | null }
+function automaticRow(r: AutomaticRunRaw): AutomaticRunRow {
+  let request: Record<string, unknown>;
+  try { request = JSON.parse(r.request_json) as Record<string, unknown>; } catch { request = {}; }
+  return { investigationId: r.investigation_id, analysisId: r.analysis_id, provider: r.provider, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at, request, leaseOwner: r.lease_owner, leaseExpiresAt: r.lease_expires_at };
+}
+
+/** A run holds its lease for this long and renews it by heartbeat; a holder that stops renewing (dead worker) loses it. */
+export const RUN_LEASE_MS = 90_000;
+export const RUN_HEARTBEAT_MS = 20_000;
 
 class LedgerRefused extends Error {}
 

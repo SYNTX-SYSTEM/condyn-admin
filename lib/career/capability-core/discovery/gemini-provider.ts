@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { sha256Utf8 } from "../hashing";
+import { ProviderCallBlocked, guardedGenerateContent } from "../../provider-calls/guard";
 import { CapabilityKernelOutputSchema } from "../schema";
 import { getGeminiCapabilityKernelResponseJsonSchema } from "./gemini-schema-projector";
 import { CapabilityProviderResponseError, type CapabilityDiscoveryProvider, type CapabilityDiscoveryProviderRequest, type CapabilityDiscoveryProviderResult, type CapabilityProviderResponseRecord } from "./types";
@@ -22,7 +23,7 @@ export class GeminiCapabilityDiscoveryProvider implements CapabilityDiscoveryPro
     if (!this.apiKey && !this.client) throw new Error("ERR_CAPABILITY_DISCOVERY_GEMINI_KEY_MISSING");
     try {
       const client = this.client ?? new GoogleGenAI({ apiKey: this.apiKey! });
-      const response = await client.models.generateContent({ model: this.model, contents: `${request.systemPrompt}\n\n${request.userPrompt}`, config: { ...GENERATION_PROFILE, responseJsonSchema: getGeminiCapabilityKernelResponseJsonSchema() } });
+      const response = await guardedGenerateContent("EXTRACTION_DISCOVERY", () => client.models.generateContent({ model: this.model, contents: `${request.systemPrompt}\n\n${request.userPrompt}`, config: { ...GENERATION_PROFILE, responseJsonSchema: getGeminiCapabilityKernelResponseJsonSchema() } }));
       const finishReason = (response as { candidates?: Array<{ finishReason?: unknown }> }).candidates?.[0]?.finishReason;
       let rawText: unknown; let extractionFailed = false;
       try { rawText = typeof (response as { text?: unknown }).text === "function" ? await ((response as { text: () => Promise<unknown> }).text()) : (response as { text?: unknown }).text; } catch { extractionFailed = true; }
@@ -46,6 +47,7 @@ export class GeminiCapabilityDiscoveryProvider implements CapabilityDiscoveryPro
       let kernelOutput; try { kernelOutput = CapabilityKernelOutputSchema.parse(parsed); } catch { return refuse(); }
       return { kernelOutput, providerResponse };
     } catch (error) {
+      if (error instanceof ProviderCallBlocked) throw error;
       if (error instanceof Error && error.message.startsWith("ERR_CAPABILITY_DISCOVERY_")) throw error;
       throw new Error("ERR_CAPABILITY_DISCOVERY_PROVIDER_FAILURE");
     }

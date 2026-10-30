@@ -4,8 +4,10 @@ import { engineVersionHash, planSemanticInvestigation } from "./relation-cache";
 import { openRelationCache } from "./relation-cache-registration";
 import { evidenceClassOfProvider, type SemanticConfig } from "./semantic-config";
 import { createSemanticProvider } from "./gemini-semantic-provider";
-import { PostgresCallLedger, PostgresInvestigationStore, investigationIdentity } from "./semantic-investigation-store";
-import { runInvestigation } from "./semantic-investigation-run";
+import { PostgresCallLedger, PostgresInvestigationStore, RUN_HEARTBEAT_MS, RUN_LEASE_MS, investigationIdentity } from "./semantic-investigation-store";
+import { ROLE_MAX_ATTEMPTS, runInvestigation } from "./semantic-investigation-run";
+import { PostgresProviderCallRegister, readJobCallLimit } from "../provider-calls/register";
+import { providerCallRecorderActive, runWithProviderCallRecorder } from "../provider-calls/guard";
 import type { EngineProposal, EngineRequirement } from "./semantic-relation-engine";
 
 /**
@@ -26,6 +28,8 @@ export async function startSemanticInvestigation(input: {
   clientRequestId: string; confirmedCalls: number | "AS_PLANNED"; now?: () => string;
   /** Stored beside the request (not part of the identity): the automatic run marks itself and records what its budget left out. */
   requestExtra?: Record<string, unknown>;
+  /** The worker (or process) that runs the investigation: holds its lease. */
+  runnerId?: string;
 }): Promise<StartResult> {
   const { analysisId, config, roleKeys } = input;
   const issue = (code: string, status: number, extra?: Record<string, unknown>): StartResult => ({ kind: "ISSUE", code, status, ...(extra ? { extra } : {}) });
@@ -58,10 +62,26 @@ export async function startSemanticInvestigation(input: {
     tasks: plan.roles.map(r => ({ jobPoolUploadId: r.jobPoolUploadId, poolRoleId: r.poolRoleId, pairs: r.pairs })) });
   if (!opened.created) return { kind: "EXISTING", evidenceClass: evidenceClassOfProvider(config.engine.provider), investigationId: opened.investigationId, investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId) }; // a concurrent identical submit
 
-  const ledger = new PostgresCallLedger(db.$client, { investigationId: opened.investigationId, provider: config.engine.provider, day: now().slice(0, 10), dayLimit: config.dayLimit, investigationLimit: plan.callsNeeded });
-  const run = await runInvestigation({
-    investigationId: opened.investigationId, store, engine: config.engine, provider: createSemanticProvider(config.engine), ledger, cache: cache.reader, proposals, now,
+  // An automatic run may ask a role a second time after a TRANSIENT provider failure; the confirmed (explicit) path keeps exactly one call per role.
+  const maxAttempts = input.confirmedCalls === "AS_PLANNED" ? ROLE_MAX_ATTEMPTS : 1;
+  const ledger = new PostgresCallLedger(db.$client, { investigationId: opened.investigationId, provider: config.engine.provider, day: now().slice(0, 10), dayLimit: config.dayLimit, investigationLimit: plan.callsNeeded * maxAttempts });
+  // The lease of the run (point 3): renewed by heartbeat while this process runs it; a dead process loses it and the run is taken up again.
+  const owner = input.runnerId ?? `runner-${process.pid}`;
+  const leaseUntil = () => new Date(Date.parse(now()) + RUN_LEASE_MS).toISOString();
+  const renew = () => store.takeLease(opened.investigationId, owner, leaseUntil(), now()).catch(() => false);
+  await renew();
+  const heartbeat = setInterval(() => { void renew(); }, RUN_HEARTBEAT_MS);
+  heartbeat.unref?.();
+  const execute = () => runInvestigation({
+    investigationId: opened.investigationId, store, engine: config.engine, provider: createSemanticProvider(config.engine), ledger, cache: cache.reader, proposals, now, maxAttempts,
+    touch: async () => { await renew(); },
     roles: selected.map(r => ({ key: r.key, requirements: r.requirements.map(q => ({ key: q.key, ...(poolRequirements.get(`${q.key.jobPoolUploadId}\u0000${q.key.poolRoleId}\u0000${q.key.poolRequirementId}`) as object) }) as EngineRequirement) }))
   });
+  // Real model calls go through the call register of the job (budget, write-ahead); the explicit route and the automatic run share this one place.
+  const withRegister = config.engine.provider === "gemini" && !providerCallRecorderActive()
+    ? () => runWithProviderCallRecorder(new PostgresProviderCallRegister(db.$client, { jobId: operand.investigation.jobId, limit: readJobCallLimit(), now }), execute)
+    : execute;
+  let run;
+  try { run = await withRegister(); } finally { clearInterval(heartbeat); }
   return { kind: "CREATED", evidenceClass: evidenceClassOfProvider(config.engine.provider), investigationId: opened.investigationId, investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId), run };
 }

@@ -14,7 +14,7 @@ describe("the worker's automatic-match hook", () => {
   });
   it("the career worker script hands the hook to the worker", () => {
     const script = readFileSync("scripts/run-career-worker.ts", "utf8");
-    expect(script).toMatch(/import \{ createAutoMatchHook \} from "\.\.\/lib\/career\/job-pool\/auto-match-hook"/);
+    expect(script).toMatch(/import \{ createAutoMatchHook, startAutoMatchSweeper \} from "\.\.\/lib\/career\/job-pool\/auto-match-hook"/);
     expect(script).toMatch(/new CareerJobWorker\([\s\S]*?createAutoMatchHook\(workerId\)\s*\);/);
   });
 });

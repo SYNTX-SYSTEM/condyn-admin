@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { InferenceProvider, PromptBuilderOutput } from "../adapter";
 import { getGeminiCareerResponseJsonSchema } from "../schema-projector";
 import * as crypto from "crypto";
+import { ProviderCallBlocked, guardedGenerateContent } from "../provider-calls/guard";
 
 export const DEFAULT_GEMINI_MODEL_CASCADE = [
   "gemini-2.0-flash",
@@ -249,11 +250,11 @@ export class GeminiProvider implements InferenceProvider {
               console.log("===============================");
             }
 
-            const response = await ai.models.generateContent({
+            const response = await guardedGenerateContent("EXTRACTION_LEGACY", () => ai.models.generateContent({
               model: currentModel,
               contents: initialContents,
               config: lastRequestConfig
-            });
+            }));
 
             const candidate = (response as any).candidates?.[0];
             finishReason = candidate?.finishReason || "STOP";
@@ -298,11 +299,11 @@ export class GeminiProvider implements InferenceProvider {
               maxOutputTokens: effectiveMaxOutputTokens
             };
 
-            const response = await ai.models.generateContent({
+            const response = await guardedGenerateContent("EXTRACTION_LEGACY", () => ai.models.generateContent({
               model: currentModel,
               contents,
               config: lastRequestConfig
-            });
+            }));
 
             const candidate = (response as any).candidates?.[0];
             finishReason = candidate?.finishReason || "STOP";
@@ -359,6 +360,8 @@ export class GeminiProvider implements InferenceProvider {
 
         return fullRawText;
       } catch (err: any) {
+        // A call the register refused (budget spent, no row possible) was never sent: no model of the cascade is tried, nothing is retried.
+        if (err instanceof ProviderCallBlocked) throw err;
         const schemaUsed = lastRequestConfig?.responseJsonSchema;
         const maxTokensSent = lastRequestConfig?.maxOutputTokens || 65536;
         

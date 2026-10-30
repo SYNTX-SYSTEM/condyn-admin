@@ -77,7 +77,7 @@ export async function registerRelationCacheSchema(sql: Sql): Promise<readonly st
     for (const statement of INVESTIGATION_GUARD_DDL) await tx.unsafe(statement);
     // A trigger that exists but is DISABLED does not protect (PINK O-LED-4): registration enables every guard again.
     for (const name of RELATION_CACHE_TRIGGERS) await tx.unsafe(`ALTER TABLE ${RELATION_CACHE_TABLE} ENABLE TRIGGER ${name}`);
-    for (const [name, table] of [["rel_inv_guard", "career_relation_investigations"], ["rel_task_guard", "career_relation_role_tasks"], ["rel_ledger_guard", "career_relation_call_ledger"]]) await tx.unsafe(`ALTER TABLE ${table} ENABLE TRIGGER ${name}`);
+    for (const [name, table] of [["rel_inv_guard", "career_relation_investigations"], ["rel_task_guard", "career_relation_role_tasks"], ["rel_ledger_guard", "career_relation_call_ledger"], ["rel_call_guard", "career_provider_calls"]]) await tx.unsafe(`ALTER TABLE ${table} ENABLE TRIGGER ${name}`);
     const constraints = await tx.unsafe<{ conname: string }[]>(`SELECT conname FROM pg_constraint WHERE conrelid = '${RELATION_CACHE_TABLE}'::regclass`);
     const triggers = await tx.unsafe<{ tgname: string }[]>(`SELECT tgname FROM pg_trigger WHERE tgrelid = '${RELATION_CACHE_TABLE}'::regclass AND NOT tgisinternal AND tgenabled <> 'D'`);
     const missing = [
