@@ -4,8 +4,8 @@ import { renderToString } from "react-dom/server";
 import { AutoJobRankingPanel, RankRow, autoMatchLine } from "../../../app/components/career/demo/AutoJobRankingPanel";
 import { AUTO_MATCH_COPY } from "../../../app/components/career/demo/auto-match-copy";
 import { RoleDiscoveryEntry } from "../../../app/components/career/demo/RoleDiscoveryPanel";
-import { decodeAutoMatch, decodeRoleRanking, type AutoMatchRunState, type AutoMatchWatch, type JobRankingState } from "../../../lib/career/ui/auto-match";
-import { ANALYSIS, autoMatch, ranking } from "./fixtures";
+import { decodeAutoMatch, decodeRoleRanking, readAutoMatch, type AutoMatchRunState, type AutoMatchWatch, type JobRankingState } from "../../../lib/career/ui/auto-match";
+import { ANALYSIS, autoMatch, autoMatchBody, ranking } from "./fixtures";
 
 /**
  * AUTO_CAPABILITY (owner 2026-10-30), GRÜN points 3 and 4: the panel, server-rendered. Per run state its own line in the entry
@@ -49,6 +49,7 @@ const LINES: Array<[string, AutoMatchWatch, string]> = [
   ["DISABLED not provisioned", watch("DISABLED", { reason: "NOT_PROVISIONED" }), "DISABLED"],
   ["SKIPPED no pools", watch("SKIPPED"), "SKIPPED"],
   ["SKIPPED not person", watch("SKIPPED", { reason: "NOT_PERSON" }), "SKIPPED"],
+  ["SKIPPED no proposals", watch("SKIPPED", { reason: "NO_PROPOSALS" }), "SKIPPED"],
   ["FAILED", watch("FAILED"), "FAILED"],
   ["FAILED budget", watch("FAILED", { reason: "ERR_BUDGET_EXHAUSTED" }), "FAILED"]
 ];
@@ -69,7 +70,7 @@ describe("AC-PANEL · the state line", () => {
         expect((line.cause.match(/[.!?](\s|$)/g) ?? []).length, `${label}: one sentence`).toBe(1);
         sentences.add(`${line.cause}|${line.way}`);
       }
-      // 17 situations, 14 distinct lines: the three DISABLED reasons share the sentence and differ in the named reason, the two FAILED
+      // 18 situations, 15 distinct lines: the three DISABLED reasons share the sentence and differ in the named reason, the two FAILED
       // runs share it and differ in the named code (both stand beside the line, auto-line-detail).
       expect(sentences.size, locale).toBe(LINES.length - 3);
     }
@@ -100,6 +101,22 @@ describe("AC-PANEL · the state line", () => {
     }
     // The Job Field switch only where no active pool was in the field.
     for (const [label, w] of LINES) expect(panel(w).includes('data-testid="auto-go-to-job-field"'), label).toBe(label === "SKIPPED no pools");
+  });
+});
+
+describe("AC-PANEL · PINK §3.85 F-AM-6", () => {
+  it("REPRODUCE: SKIPPED · NO_PROPOSALS read from the route is its own calm line, never READ_FAILED, without an action, EN and DE", async () => {
+    const read = await readAutoMatch(ANALYSIS, (async () => ({ status: 200, json: async () => autoMatchBody("SKIPPED", { reason: "NO_PROPOSALS" }) })) as never);
+    expect(read.state).toBe("AVAILABLE");
+    const w: AutoMatchWatch = { read, waitedOut: false };
+    expect(autoMatchLine(w, AUTO_MATCH_COPY.en)).toMatchObject({ key: "SKIPPED", cause: "This analysis names no capability; there is nothing to match against the job pools.", way: "→ a source with demonstrated capabilities is matched by itself", action: null });
+    expect(autoMatchLine(w, AUTO_MATCH_COPY.de)).toMatchObject({ key: "SKIPPED", cause: "Diese Analyse nennt keine Fähigkeit; es gibt nichts mit den Job-Pools abzugleichen.", way: "→ eine Quelle mit belegten Fähigkeiten wird von selbst abgeglichen", action: null });
+    expect(panel(w)).not.toContain('data-line="READ_FAILED"');
+  });
+
+  it("inverse: the reason another state carries is not NO_PROPOSALS' — the same reason under DISABLED is not the contract (read fails, not this line)", async () => {
+    const read = await readAutoMatch(ANALYSIS, (async () => ({ status: 200, json: async () => autoMatchBody("DISABLED", { reason: "NO_PROPOSALS" }) })) as never);
+    expect(read).toEqual({ state: "FAILED", code: null });
   });
 });
 

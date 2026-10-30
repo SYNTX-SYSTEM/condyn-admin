@@ -25,7 +25,8 @@ export type EvidenceClass = "STAND_IN" | "REAL_GEMINI";
 /** The reason each state may carry (GELB): FAILED carries the run's own ERR_… code; COMPLETED, RUNNING and NOT_STARTED none. */
 export const AUTO_MATCH_REASONS = {
   DISABLED: ["SEMANTIC_NOT_CONFIGURED", "PROVIDER_NOT_AUTHORIZED", "DAY_LIMIT_ZERO", "NOT_PROVISIONED"],
-  SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS"],
+  // NO_PROPOSALS (GELB b972905, PINK §3.85 F-AM-6): the analysis names no capability proposal — nothing to match, no run.
+  SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS", "NO_PROPOSALS"],
   // DAY_BUDGET_EXHAUSTED (GELB ab47d51, PINK §3.85): the day's call budget ran out during the run.
   PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES", "DAY_BUDGET_EXHAUSTED"]
 } as const;

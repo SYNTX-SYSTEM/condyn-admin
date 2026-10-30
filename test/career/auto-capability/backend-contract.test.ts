@@ -106,6 +106,7 @@ describe("AC-BACKEND · the backend's run view is the client's contract", () => 
     for (const reason of ["SEMANTIC_NOT_CONFIGURED", "PROVIDER_NOT_AUTHORIZED", "DAY_LIMIT_ZERO"]) expect(decodeAutoMatch({ state: "DISABLED", reason, ...empty }), reason).not.toBeNull();
     expect(decodeAutoMatch({ state: "SKIPPED", reason: "NOT_PERSON", ...empty })).not.toBeNull();
     expect(decodeAutoMatch({ state: "SKIPPED", reason: "NO_ACTIVE_POOLS", ...empty })).not.toBeNull();
+    expect(decodeAutoMatch({ state: "SKIPPED", reason: "NO_PROPOSALS", ...empty }), "GELB b972905").not.toBeNull();
     expect(decodeAutoMatch({ state: "NOT_STARTED", reason: null, ...empty })).not.toBeNull();
   });
 

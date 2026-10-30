@@ -21,6 +21,8 @@ describe("AC-CONTRACT · auto-match run", () => {
     // PINK §3.85 / GELB ab47d51: the day's budget used up during the run; NOT_PROVISIONED as a DISABLED reason (already in the contract).
     expect(decodeAutoMatch(autoMatch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("DISABLED", { reason: "NOT_PROVISIONED" }))).not.toBeNull();
+    // PINK §3.85 F-AM-6 / GELB b972905: an analysis without capability proposals — SKIPPED, no run.
+    expect(decodeAutoMatch(autoMatch("SKIPPED", { reason: "NO_PROPOSALS" }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { evidenceClass: "REAL_GEMINI" }))).not.toBeNull();
   });
 
@@ -28,7 +30,8 @@ describe("AC-CONTRACT · auto-match run", () => {
     const wrong: Array<[AutoMatchRunState, unknown]> = [
       ["DISABLED", "NO_ACTIVE_POOLS"], ["DISABLED", null], ["SKIPPED", "SEMANTIC_NOT_CONFIGURED"], ["PARTIAL", null], ["PARTIAL", "NOT_PERSON"],
       ["FAILED", null], ["FAILED", "SEMANTIC_FAILED"], ["COMPLETED", "ROLES_BEYOND_BUDGET"], ["RUNNING", "ROLE_FAILURES"], ["NOT_STARTED", "NOT_PERSON"],
-      ["DISABLED", "DAY_BUDGET_EXHAUSTED"], ["COMPLETED", "DAY_BUDGET_EXHAUSTED"], ["SKIPPED", "DAY_BUDGET_EXHAUSTED"], ["PARTIAL", "NOT_PROVISIONED"], ["SKIPPED", "NOT_PROVISIONED"], ["PARTIAL", "BUDGET_EXHAUSTED"]
+      ["DISABLED", "DAY_BUDGET_EXHAUSTED"], ["COMPLETED", "DAY_BUDGET_EXHAUSTED"], ["SKIPPED", "DAY_BUDGET_EXHAUSTED"], ["PARTIAL", "NOT_PROVISIONED"], ["SKIPPED", "NOT_PROVISIONED"], ["PARTIAL", "BUDGET_EXHAUSTED"],
+      ["DISABLED", "NO_PROPOSALS"], ["PARTIAL", "NO_PROPOSALS"], ["NOT_STARTED", "NO_PROPOSALS"], ["SKIPPED", "NO_PROPOSAL"]
     ];
     for (const [state, reason] of wrong) expect(decodeAutoMatch(autoMatch(state, { reason })), `${state} ${String(reason)}`).toBeNull();
   });
@@ -46,6 +49,7 @@ describe("AC-CONTRACT · auto-match run", () => {
     expect(decodeAutoMatch(autoMatch("NOT_STARTED", { budget: { rolesPlanned: 0, rolesEvaluated: 0, callsLimit: 0 } }))).toBeNull();
     expect(decodeAutoMatch(autoMatch("DISABLED", { pools: [{ jobPoolUploadId: POOL_A, poolName: "Pool Alpha" }] }))).toBeNull();
     expect(decodeAutoMatch(autoMatch("SKIPPED", { pools: [{ jobPoolUploadId: POOL_A, poolName: "Pool Alpha" }] }))).toBeNull();
+    expect(decodeAutoMatch(autoMatch("SKIPPED", { reason: "NO_PROPOSALS", evidenceClass: "STAND_IN" })), "no run, no class").toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { pools: [{ jobPoolUploadId: POOL_A, poolName: "A" }, { jobPoolUploadId: POOL_A, poolName: "A" }] }))).toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { investigationId: "rinv_0123456789abcdef0123456789abcdef" }))).toBeNull();
     expect(decodeAutoMatch(autoMatch("NOT_STARTED", { startedAt: "2026-10-30T10:00:00.000Z" }))).toBeNull();

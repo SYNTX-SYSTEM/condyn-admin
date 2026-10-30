@@ -24,7 +24,7 @@ export interface AutoMatchCopy {
   partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES" | "DAY_BUDGET_EXHAUSTED", Line>;
   disabled: Line;
   disabledReason: Record<"SEMANTIC_NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "DAY_LIMIT_ZERO" | "NOT_PROVISIONED", string>;
-  skipped: Record<"NOT_PERSON" | "NO_ACTIVE_POOLS", Line>;
+  skipped: Record<"NOT_PERSON" | "NO_ACTIVE_POOLS" | "NO_PROPOSALS", Line>;
   failed: Line;
   code: (code: string) => string;
   goToJobField: string;
@@ -79,7 +79,8 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "no semantic provider configured", PROVIDER_NOT_AUTHORIZED: "provider not authorised", DAY_LIMIT_ZERO: "no call budget for today", NOT_PROVISIONED: "the match store is not provisioned" },
     skipped: {
       NOT_PERSON: { cause: "This analysis is not a PERSON analysis; it is not matched against the job pools.", way: "→ a PERSON analysis is matched by itself" },
-      NO_ACTIVE_POOLS: { cause: "No active job pool was in the field when the analysis finished.", way: "→ job pools enter through the Job Field's intake" }
+      NO_ACTIVE_POOLS: { cause: "No active job pool was in the field when the analysis finished.", way: "→ job pools enter through the Job Field's intake" },
+      NO_PROPOSALS: { cause: "This analysis names no capability; there is nothing to match against the job pools.", way: "→ a source with demonstrated capabilities is matched by itself" }
     },
     failed: { cause: "The matching run stopped; the jobs are ranked by what was matched.", way: "→ the ranked jobs below" },
     code: code => `code ${code}`,
@@ -142,7 +143,8 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "kein semantischer Provider eingerichtet", PROVIDER_NOT_AUTHORIZED: "Provider nicht freigegeben", DAY_LIMIT_ZERO: "kein Aufrufbudget für heute", NOT_PROVISIONED: "der Abgleichspeicher ist nicht eingerichtet" },
     skipped: {
       NOT_PERSON: { cause: "Diese Analyse ist keine PERSON-Analyse; sie wird nicht mit den Job-Pools abgeglichen.", way: "→ eine PERSON-Analyse wird von selbst abgeglichen" },
-      NO_ACTIVE_POOLS: { cause: "Als die Analyse fertig war, lag kein aktiver Job-Pool im Feld.", way: "→ Job-Pools kommen über die Aufnahme im Job-Feld hinein" }
+      NO_ACTIVE_POOLS: { cause: "Als die Analyse fertig war, lag kein aktiver Job-Pool im Feld.", way: "→ Job-Pools kommen über die Aufnahme im Job-Feld hinein" },
+      NO_PROPOSALS: { cause: "Diese Analyse nennt keine Fähigkeit; es gibt nichts mit den Job-Pools abzugleichen.", way: "→ eine Quelle mit belegten Fähigkeiten wird von selbst abgeglichen" }
     },
     failed: { cause: "Der Abgleich hat angehalten; die Jobs sind nach dem gereiht, was abgeglichen ist.", way: "→ die gereihten Jobs unten" },
     code: code => `Code ${code}`,
