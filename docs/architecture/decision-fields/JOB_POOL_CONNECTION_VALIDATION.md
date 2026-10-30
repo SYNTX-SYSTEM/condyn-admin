@@ -3866,6 +3866,24 @@ Open but not blocking:
 
 **Run record.** `evidence/auto-capability-0e44cce/`.
 
+### 3.87 Real end-to-end run on :3017, analysis `ANL_1793382839627_744` (2026-10-30) — result consistent; call count not provable read-only
+
+**Request.** Owner mandate SFE::REAL END-TO-END EXECUTION ("Ein Durchlauf, maximal 10 echte Gemini-Aufrufe … NUR DIESEN DURCHLAUF. MEHR NICHT."). GELB ran the one real run. PINK's only task was to check it inversely, GET and read only, with no ANALYZE and no Gemini call. The four points to check:
+1. UI ranking = API ranking.
+2. Every cited quote stands verbatim in the PDF, with no claim beyond the authority.
+3. The failed roles are not counted as evaluated.
+4. The number of calls (≤ 10 including extraction) is plausibly shown.
+
+**Verdict** (`evidence/real-e2e-ANL_1793382839627_744/verdicts.txt`, counts only, no model text or CV quote per E-6):
+- **Point 1, PASS.** 73 UI ranks equal the 73 API ranks in order, tier and fit. The page visit made no request other than GET.
+- **Point 2, PASS.** Quotes: semantic 29 of 29 and lexical 40 of 40 occurrences stand verbatim in the PDF. The explanations contain 0 score or hiring words, and the authority is ranking only with no decision.
+- **Point 3, PASS.** The run counts 4 of 7 roles as evaluated.
+  - The two provider failures are LEXICAL_ONLY.
+  - The role whose output was refused carries one relation from the identical requirement content of a succeeded role (cache by content). That is not its own evaluation.
+- **Point 4, open.** The semantic part made up to 7 requests. Extraction makes at least 3 calls (legacy pipeline ≥ 1, discovery 1, convergence 1).
+  - If the two failed requests went out (8-minute run, consistent with 120 s timeouts), the lower bound is exactly 10 calls, with no margin.
+  - The read APIs do not show the extraction call count. GELB's exchange archive or worker log must name it.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

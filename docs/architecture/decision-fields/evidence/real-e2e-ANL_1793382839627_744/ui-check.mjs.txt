@@ -1,0 +1,18 @@
+// PINK: :3017 GET only — the result view of one analysis: UI ranks vs API ranks; no request other than GET/HEAD.
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [BASE, A, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const browser = await chromium.launch(); const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } });
+await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(); const nonGet = []; const errors = [];
+await page.route("**/*", route => { const m = route.request().method(); if (m !== "GET" && m !== "HEAD") { nonGet.push(`${m} ${new URL(route.request().url()).pathname}`); return route.abort(); } return route.continue(); });
+page.on("pageerror", e => errors.push(String(e).slice(0, 120)));
+await page.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON&analysisId=${A}`, { waitUntil: "domcontentloaded", timeout: 180000 });
+let ui = null; for (let i = 0; i < 180; i += 1) { await sleep(1000); ui = await page.evaluate(() => { const p = document.querySelector('[data-testid="auto-ranking-panel"]'); if (!p) return null; return { line: p.getAttribute("data-auto-line"), ranking: p.getAttribute("data-ranking-state"), evidence: p.querySelector('[data-testid="auto-evidence"]')?.getAttribute("data-evidence-class") ?? null, decision: p.querySelector("[data-decision]")?.getAttribute("data-decision") ?? null, ranks: [...p.querySelectorAll("[data-rank]")].map(e => [e.getAttribute("data-testid").replace(/^auto-rank-/, ""), e.getAttribute("data-tier"), e.getAttribute("data-fit")]) }; }); if (ui && ui.ranking === "AVAILABLE") break; }
+const api = JSON.parse(readFileSync(`${OUT}/rank.json`, "utf8")).ranking.ranks.map(r => [`${r.role.jobPoolUploadId}:${r.role.poolRoleId}`, r.tier, String(r.fit ?? "")]);
+const same = ui ? JSON.stringify(ui.ranks) === JSON.stringify(api) : false;
+const firstDiff = ui ? ui.ranks.findIndex((r, i) => JSON.stringify(r) !== JSON.stringify(api[i])) : null;
+const rec = { line: ui?.line, ranking: ui?.ranking, evidence: ui?.evidence, decision: ui?.decision, uiRanks: ui?.ranks.length, apiRanks: api.length, identicalOrderTierFit: same, firstDiff, nonGetRequests: nonGet, pageErrors: errors };
+writeFileSync(`${OUT}/ui-check.json`, JSON.stringify(rec, null, 1)); console.log(JSON.stringify(rec)); await browser.close();
