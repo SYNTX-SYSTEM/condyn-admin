@@ -104,7 +104,7 @@ describe("AC-PANEL · the state line", () => {
   });
 });
 
-describe("AC-PANEL · PINK §3.85 F-AM-6", () => {
+describe("AC-PANEL · PINK §3.85 F-AM-6 and F-M17", () => {
   it("REPRODUCE: SKIPPED · NO_PROPOSALS read from the route is its own calm line, never READ_FAILED, without an action, EN and DE", async () => {
     const read = await readAutoMatch(ANALYSIS, (async () => ({ status: 200, json: async () => autoMatchBody("SKIPPED", { reason: "NO_PROPOSALS" }) })) as never);
     expect(read.state).toBe("AVAILABLE");
@@ -117,6 +117,21 @@ describe("AC-PANEL · PINK §3.85 F-AM-6", () => {
   it("inverse: the reason another state carries is not NO_PROPOSALS' — the same reason under DISABLED is not the contract (read fails, not this line)", async () => {
     const read = await readAutoMatch(ANALYSIS, (async () => ({ status: 200, json: async () => autoMatchBody("DISABLED", { reason: "NO_PROPOSALS" }) })) as never);
     expect(read).toEqual({ state: "FAILED", code: null });
+  });
+
+  it("REPRODUCE (F-M17): every German line is German — none is its English counterpart, and the budget lines read as written", () => {
+    for (const [label, w] of LINES) {
+      const en = autoMatchLine(w, AUTO_MATCH_COPY.en), de = autoMatchLine(w, AUTO_MATCH_COPY.de);
+      expect(de.cause, label).not.toBe(en.cause);
+      expect(de.way, label).not.toBe(en.way);
+      de.detail.forEach((d, at) => { if (!/^(Job-Pools|Code) /.test(d)) expect(d, `${label} detail ${at}`).not.toBe(en.detail[at]); });
+    }
+    const de = AUTO_MATCH_COPY.de;
+    expect(de.partial.ROLES_BEYOND_BUDGET.cause).toBe("Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.");
+    expect(de.partial.DAY_BUDGET_EXHAUSTED.cause).toBe("Das heutige Aufrufbudget war während des Abgleichs aufgebraucht; die nicht erreichten Rollen sind nach Namensrelation gereiht.");
+    expect(de.partial.ROLE_FAILURES.cause).toBe("Der Abgleich ist fertig; einige Rollen ließen sich nicht prüfen und sind nach Namensrelation gereiht.");
+    expect(de.budget(2, 2, 2)).toBe("2 von 2 Rollen semantisch geprüft · Aufruflimit 2");
+    expect(de.disabledReason.DAY_LIMIT_ZERO).toBe("kein Aufrufbudget für heute");
   });
 });
 
