@@ -203,10 +203,14 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
     try {
       await set("ARCHIVED");
       const body = (await ranking(person.analysisId)).body.ranking;
-      expect([body.poolsDropped, body.ranks, body.pools, body.counts]).toEqual([[POOL], [], [], { pools: 0, roles: 0, ranked: 0 }]);
+      // other files of a full run may have left further ACTIVE pools: only this pool's fate is asserted
+      expect(body.poolsDropped).toContain(POOL);
+      expect(body.pools.map((p: { jobPoolUploadId: string }) => p.jobPoolUploadId)).not.toContain(POOL);
+      expect(body.ranks.some((r: { role: { jobPoolUploadId: string } }) => r.role.jobPoolUploadId === POOL)).toBe(false);
     } finally { await set("ACTIVE"); }
     const back = (await ranking(person.analysisId)).body.ranking;
-    expect([back.poolsDropped, back.ranks.length > 0]).toEqual([[], true]);
+    expect(back.poolsDropped).not.toContain(POOL);
+    expect(back.ranks.some((r: { role: { jobPoolUploadId: string } }) => r.role.jobPoolUploadId === POOL)).toBe(true);
   });
 });
 
