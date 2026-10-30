@@ -84,3 +84,10 @@ Unchanged: :3017, the shared `condyn`, `metaroom`, `hr_timesheet` databases, all
 **Observations (none blocking).** Legacy label on orbits 03–06 still missing (T-07, owner); 960x540 overlap of 2.9 px; 1920x1080 page scrolls. O-RT-1: Escape closes neither orbit focus, cosmos nor the codex modal (✕ CLOSE or click only). O-RT-2: the dev server compiles HR context A on first view in more than 9 s at 1920. O-RT-3 (owner): :3017 is a dev server and the switch script starts the worker by default; with a Gemini key in the environment, an ANALYZE from the UI calls Gemini, as before the move. A production build and `--no-worker` would be stricter. D-PICK-PERSON: no way in the UI to open an existing PERSON analysis (opened by URL in the mirror). The "SEMANTIC GUIDE" drawer stays English in DE (hard-coded since before c670b74).
 
 Cleanup: mirror and its databases removed, scratch worktree removed. State: :3017 = main on the DLL checkout, ten `condyn_test_*` databases, Git synchronized.
+
+## 6. SEMIOTIC_ENTRY_FIX (2026-10-30)
+
+- GRÜN `frontend/semiotic-entry`: 84e4551 (Einstiegszeile als Feldzustand, 9 Zustände EN/DE, `role="status"`, kühle Töne, keine Sperrsprache), F-SEM-1 Lage (e32764f, rechte Spalte unter dem Modusauswähler), Testlücken F-SEM-2…4 (b29d307), Wortlaut (4c969af), Evidenz 0ab9baf.
+- PINK §3.82 (Runde 1): NO-GO wegen F-SEM-1 (PERSON_OPEN-Zeile über KESTREL, Klick fing den Rand ab). §3.83 (Runde 2, 0ab9baf): GO. Gate in 40 Zuständen byte-identisch zu cd1e4de, 0 verdeckte Elemente in 88 Besuchen, Klickbeweis am KESTREL-Rand, 30 von 31 Mutanten rot.
+- Ausrollung: `main` cd1e4de → 0ab9baf (Fast-Forward), Worktree `condyn-admin-dll-runtime` per ff nachgezogen, Dev-Server (HMR) ohne Neustart; :3017 antwortet 200, SSR-Einstieg trägt `data-entry-state`, keine CLOSED/GESCHLOSSEN-Wörter. Rollback: `git -C …/condyn-admin-dll-runtime reset --hard cd1e4de`. Keine Gemini-Calls, DB und Worker unverändert.
+- Offen: F-SEM-5 (Testlücke: Dashboard schreibt `--sx-entry-clear` nicht mehr), O-SEM-3 (`→ PERSON` übernimmt focus=CAPABILITY), INVALID trägt den Validierungscode (V-05), O-RT-3.
