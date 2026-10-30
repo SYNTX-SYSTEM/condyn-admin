@@ -78,6 +78,18 @@ export function applyCareerDemoHudClearance(root: HTMLElement) {
   root.style.setProperty("--sx-hud-h", `${hud === null ? 0 : Math.ceil(hud.getBoundingClientRect().height)}px`);
 }
 
+/**
+ * PINK §3.82 F-SEM-1: the intake panel opens in the right column the entry line stands in (fixed, below the shell). Its top inside
+ * the Job Field is written on the root: the line's bottom edge (viewport) less the Job Field's top at page scroll 0, plus 12 px air.
+ * No line, no variable (the panel keeps its own 150 px).
+ */
+export function applyCareerDemoEntryClearance(root: HTMLElement) {
+  const line = root.querySelector<HTMLElement>('[data-sx-shell="gate-reason"]');
+  const job = root.querySelector<HTMLElement>(JOB);
+  if (line === null || job === null) { root.style.removeProperty("--sx-entry-clear"); return; }
+  root.style.setProperty("--sx-entry-clear", `${Math.ceil(line.getBoundingClientRect().bottom - (job.getBoundingClientRect().top + window.scrollY) + 12)}px`);
+}
+
 /** Writes the tier's variables on the dashboard root (no re-render; the field's markup is not touched). */
 export function applyCareerDemoStageFit(root: HTMLElement, width: number, height: number, header: number) {
   const free = careerDemoStageFit(width, height, header, false), panel = careerDemoStageFit(width, height, header, true);
@@ -105,6 +117,12 @@ const INSPECTOR = '[data-testid="decision-graph-inspector-idle"], [data-testid="
 const HUD_BOX = '[data-testid="inference-telemetry-hud"]';
 const FIT = `(min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-width: ${LAYOUT_FULL.width - 1}px), (min-width: ${LAYOUT_FIT.width}px) and (min-height: ${LAYOUT_FIT.height}px) and (max-height: ${LAYOUT_FULL.height - 1}px)`;
 const STACK = `(max-width: ${LAYOUT_FIT.width - 1}px), (max-height: ${LAYOUT_FIT.height - 1}px)`;
+/**
+ * PINK §3.82 F-SEM-1: the entry line stands in the Job Field's right column (SyntxFieldSelector), the column the intake panel opens
+ * in; while the line is there the intake panel starts below it (--sx-entry-clear, applyCareerDemoEntryClearance) instead of under
+ * it — in the full and the fit tier, where the shell stays fixed. The stack tier sets both into the page's column.
+ */
+const INTAKE_BELOW_ENTRY = `${FIELD}:has(> [data-sx-shell="gate-reason"]) ${JOB} > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`;
 
 export const CAREER_DEMO_LAYOUT_CSS = `
 ${HUD} { top: ${HUD_TOP_FULL - 61}px !important; max-width: none !important; }
@@ -118,9 +136,11 @@ ${HUD} button:disabled { color: rgba(156, 186, 204, 0.95) !important; }
 ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
 @media (min-width: ${LAYOUT_FULL.width}px) and (min-height: ${LAYOUT_FULL.height}px) {
   ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(97px + var(--sx-hud-h, 110px)) !important; max-height: calc(100% - 132px - 97px - var(--sx-hud-h, 110px)) !important; }
+  ${INTAKE_BELOW_ENTRY}
 }
 @media ${FIT} {
   ${FIELD}:has(${HUD_BOX}) [data-pxj-panel] { bottom: calc(36px + var(--sx-hud-h, 110px)) !important; }
+  ${INTAKE_BELOW_ENTRY}
   ${HUD} { top: ${FIT_TOP - 61}px !important; left: var(--sx-hud-x, 50%) !important; max-width: var(--sx-hud-w, 560px) !important; flex-wrap: wrap; justify-content: center; row-gap: 2px; }
   ${FIELD}:has([data-pxj-panel]) > [data-testid="semantic-zoom-telemetry"] { left: var(--sx-hud-x-panel, 50%) !important; max-width: var(--sx-hud-w-panel, 560px) !important; }
   /* V-18 / V-19: only the Capability Field becomes the viewport. The Job Field keeps 70d1cb4's size (≥ 960 px, the page scrolls):
@@ -135,9 +155,6 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${JOB} > [data-sx-orient] { max-height: calc(100vh - 161px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
   /* … so the uploaded pools open beside it, not below it (out of the viewport). */
   ${JOB} > [data-testid="job-pool-list"] { top: 84px !important; left: calc(40px + min(340px, 28vw)) !important; max-height: calc(100vh - 161px) !important; }
-  /* SEMIOTIC_ENTRY: while the uploaded pools stand beside the panel, the entry line gives them room — it starts right of the list
-     (the list's own left + width + 16 px) instead of over it; centred again once the list is hidden. */
-  ${FIELD}[data-field-focus="FIELD"]:has(${JOB} > [data-testid="job-pool-list"]:not([hidden])) > [data-sx-shell="gate-reason"] { left: calc(56px + min(340px, 28vw) + min(316px, 27vw)) !important; transform: none !important; max-width: min(560px, calc(100vw - 84px - min(340px, 28vw) - min(316px, 27vw))) !important; }
   ${FIELD} [data-pxj-panel] { top: ${FIT_TOP - 61}px !important; bottom: 16px !important; right: 24px !important; max-height: none !important; width: min(400px, 30vw) !important; align-self: stretch !important; }
 }
 @media ${STACK} {
@@ -156,7 +173,7 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} > [data-sx-shell="selector"] button { width: auto !important; min-width: 0; padding-left: 14px !important; padding-right: 14px !important; }
   ${FIELD} > [data-sx-shell="job-scope"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 3; grid-column: 1 !important; max-width: 100% !important; justify-self: stretch; }
   ${FIELD} > [data-sx-shell="investigation"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 3; grid-column: 2 !important; justify-self: end; align-self: center; }
-  ${FIELD} > [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
+  ${FIELD} > [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
   ${FIELD} > [data-testid="intake-telemetry-banner"], ${FIELD} > [data-testid="intake-error-banner"], ${FIELD} > [data-testid="intake-success-banner"] { position: relative !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; width: auto !important; }
   ${PANEL_WRAP} { order: 6; }
   ${FIELD} > div:has(> ${HUD_BOX}) { order: 5; }

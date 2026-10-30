@@ -78,6 +78,15 @@ export interface SyntxCapabilityGatePresentation {
 }
 
 export const CAPABILITY_GATE_REASON_ID = "capability-gate-reason";
+/**
+ * PINK §3.82 F-SEM-1: the entry line stands in the Job Field's right column, under the mode selector — never over the cosmos. The
+ * cosmos (the planetarium box, at most 800 × 1.04 = 832 px) is centred in the viewport, so the column right of it is
+ * 50vw − 416 px; the line keeps 16 px air to it and 28 px to the edge (the intake panel's column), at most the intake panel's
+ * 316 px and at least 220 px (in the fit tier the box is 752 px; below 1248 px viewport width the 220 px line reaches into the
+ * box's empty upper-right corner, outside the organization ring). Over the top centre it covered the pool's first organization
+ * and took clicks on its rim.
+ */
+export const ENTRY_LINE_MAX_WIDTH = "clamp(220px, calc(50vw - 460px), 316px)";
 
 const SCOPE_TONE: Record<SyntxJobScopePresentation["state"], string> = { VALID: "92, 200, 255", CHECKING: "120, 170, 200", NONE: "255, 190, 92", INVALID: "255, 150, 92" };
 
@@ -193,9 +202,9 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
           data-entry-state={capabilityGate.entry}
           role="status"
           aria-live="polite"
-          style={{ position: "fixed", left: "50%", top: "128px", transform: "translateX(-50%)", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: "min(560px, calc(44vw - 80px))", margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "5px 14px 6px", borderRadius: "14px", border: "1px solid rgba(92, 200, 255, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.93))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.5), 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 18px rgba(92, 200, 255, 0.07)", backdropFilter: "blur(10px)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
+          style={{ position: "fixed", right: "28px", top: "128px", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: ENTRY_LINE_MAX_WIDTH, margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "5px 14px 6px", borderRadius: "14px", border: "1px solid rgba(92, 200, 255, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.93))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.5), 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 18px rgba(92, 200, 255, 0.07)", backdropFilter: "blur(10px)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
         >
-          <span data-sx-entry-path style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(150, 214, 236, 0.78)", whiteSpace: "nowrap" }}>{capabilityGate.label}</span>
+          <span data-sx-entry-path style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(150, 214, 236, 0.78)", textWrap: "balance" }}>{capabilityGate.label}</span>
           <span style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", justifyContent: "center", columnGap: "10px", rowGap: "2px" }}>
             <span data-testid={open ? "field-entry-cause" : "capability-gate-cause"} style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "#e6f1f8" }}>{capabilityGate.reason}</span>
             <span data-testid={open ? "field-entry-way" : "capability-gate-way"} style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "11.5px", lineHeight: 1.4, color: "rgba(150, 214, 236, 0.9)" }}>{capabilityGate.way}</span>

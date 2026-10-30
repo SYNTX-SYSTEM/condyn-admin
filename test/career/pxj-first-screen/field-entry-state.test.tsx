@@ -32,6 +32,8 @@ vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => {
 
 import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
 import { CareerIntelligenceDashboard } from "../../../app/components/career/demo/CareerIntelligenceDashboard";
+import { ENTRY_LINE_MAX_WIDTH } from "../../../app/components/career/demo/SyntxFieldSelector";
+import { applyCareerDemoEntryClearance } from "../../../app/components/career/demo/career-demo-layout";
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
 import { SIL_COPY } from "../../../lib/career/view-model/sil-language";
 import { fieldEntryState, type FieldEntryInput } from "../../../lib/career/view-model/field-entry-state";
@@ -214,26 +216,62 @@ describe("SEMIOTIC_ENTRY · fieldEntryState (pure)", () => {
   });
 });
 
-describe("SEMIOTIC_ENTRY · the entry line gives the uploaded pools room (FIT tier)", () => {
+describe("SEMIOTIC_ENTRY · F-SEM-1 (PINK §3.82): the line stands in the right column, never over the cosmos", () => {
   /** The dashboard's own viewport style (the same reading as viewport-layout.test.tsx). */
   const css = () => {
     const html = renderToString(<CareerIntelligenceDashboard data={EMPTY_CAREER_INTELLIGENCE_DATA} investigationMode="PERSON" />);
     return (/<div[^>]*data-testid="career-intelligence-dashboard"[^>]*><style>([\s\S]*?)<\/style>/.exec(html)?.[1] ?? "").replace(/&quot;/g, '"').replace(/&gt;/g, ">");
   };
   const media = (all: string, head: string) => { const at = all.indexOf(head); if (at < 0) return ""; let depth = 0, i = all.indexOf("{", at); const start = i; for (; i < all.length; i += 1) { if (all[i] === "{") depth += 1; if (all[i] === "}" && --depth === 0) break; } return all.slice(start, i); };
+  const FULL = "@media (min-width: 1600px) and (min-height: 1000px)";
   const FIT = "@media (min-width: 1100px) and (min-height: 600px) and (max-width: 1599px)";
   const STACK = "@media (max-width: 1099px), (max-height: 599px)";
-  const RULE = '[data-field-focus="FIELD"]:has([data-sx-field="job"] > [data-testid="job-pool-list"]:not([hidden])) > [data-sx-shell="gate-reason"] { left: calc(56px + min(340px, 28vw) + min(316px, 27vw)) !important; transform: none !important;';
+  const INTAKE = '[data-sx-field="job"] > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }';
+  const styleOf = (html: string, testId: string) => /style="([^"]*)"/.exec(tag(html, testId))?.[1] ?? "";
 
-  it("REPRODUCE: in the FIT tier, while the pool list is visible in the Job Field, the line starts right of it (state 3 and 2a at 1280–1600 px)", () => {
-    expect(media(css(), FIT)).toContain(RULE);
-    // The list's own placement it follows (unchanged): left 40 px + min(340px, 28vw), width min(316px, 27vw).
-    expect(media(css(), FIT)).toContain('[data-sx-field="job"] > [data-testid="job-pool-list"] { top: 84px !important; left: calc(40px + min(340px, 28vw)) !important;');
+  it("REPRODUCE: PERSON with an opened pool (PINK's state) and every closed state — the line is docked right, under the mode selector", () => {
+    const states: Array<[string, string | null, Record<string, unknown>, string]> = [
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "PERSON", jobPoolUploadId: UPLOAD_ID }, "field-entry-state"],
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "PERSON_X_JOB", jobPoolUploadId: UPLOAD_ID }, "capability-gate-reason"],
+      ["AVAILABLE", UPLOAD_ID, { investigationMode: "JOB", jobPoolUploadId: UPLOAD_ID }, "capability-gate-reason"],
+      ["EMPTY", null, { investigationMode: "PERSON_X_JOB" }, "capability-gate-reason"]
+    ];
+    for (const [pools, selected, props, id] of states) {
+      world(pools, selected);
+      const style = styleOf(ssr(props), id);
+      expect(style, JSON.stringify(props)).toContain("position:fixed;right:28px;top:128px");
+      expect(style).toContain(`max-width:${ENTRY_LINE_MAX_WIDTH}`);
+      expect(style).not.toMatch(/left:50%|translateX/);
+    }
+    // 16 px right of the widest cosmos box (800 × 1.04 / 2 = 416 px from the centre) and 28 px from the edge; ≤ the intake's 316 px.
+    expect(ENTRY_LINE_MAX_WIDTH).toBe("clamp(220px, calc(50vw - 460px), 316px)");
   });
 
-  it("inverse: nowhere else — not in the full tier (the list sits below the panel there), and the stack tier still sets the line into the column", () => {
+  it("REPRODUCE: the intake panel, which opens in the same column, starts below the line while the line is there (full and fit tier)", () => {
+    for (const tier of [FULL, FIT]) expect(media(css(), tier), tier).toContain(`:has(> [data-sx-shell="gate-reason"]) ${INTAKE}`);
+    const root = { style: { values: new Map<string, string>(), setProperty(k: string, v: string) { this.values.set(k, v); }, removeProperty(k: string) { this.values.delete(k); } } };
+    const at = (top: number, bottom: number) => ({ getBoundingClientRect: () => ({ top, bottom }) });
+    const dom = (line: unknown, job: unknown) => ({ ...root, querySelector: (q: string) => (q.includes("gate-reason") ? line : q.includes('data-sx-field="job"') ? job : null) }) as unknown as HTMLElement;
+    vi.stubGlobal("window", { scrollY: 0 });
+    const withLine = dom(at(128, 214.4), at(61, 900));
+    applyCareerDemoEntryClearance(withLine);
+    expect(root.style.values.get("--sx-entry-clear")).toBe("166px");
+    // Scrolled by 40 px: the Job Field's top moved, the fixed line did not — the panel's place in the field stays the same.
+    vi.stubGlobal("window", { scrollY: 40 });
+    applyCareerDemoEntryClearance(dom(at(128, 214.4), at(21, 860)));
+    expect(root.style.values.get("--sx-entry-clear")).toBe("166px");
+    vi.unstubAllGlobals();
+  });
+
+  it("inverse: no line, no clearance (the intake keeps its own 150 px); the stack tier sets the line back into the column, right undone", () => {
+    const root = { style: { values: new Map<string, string>([["--sx-entry-clear", "166px"]]), setProperty(k: string, v: string) { this.values.set(k, v); }, removeProperty(k: string) { this.values.delete(k); } } };
+    applyCareerDemoEntryClearance({ ...root, querySelector: () => null } as unknown as HTMLElement);
+    expect(root.style.values.has("--sx-entry-clear")).toBe(false);
     const all = css();
-    expect(all.split(RULE).length - 1).toBe(1);
-    expect(media(all, STACK)).toContain('> [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important;');
+    expect(all.split(INTAKE).length - 1).toBe(2);
+    expect(media(all, STACK)).not.toContain(INTAKE);
+    expect(media(all, STACK)).toContain('> [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; transform: none !important;');
+    // The earlier rule that only moved the line off the pool list (FIT) is gone with the centred line it corrected.
+    expect(all).not.toContain('[data-testid="job-pool-list"]:not([hidden])) > [data-sx-shell="gate-reason"]');
   });
 });
