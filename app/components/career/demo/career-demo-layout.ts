@@ -187,6 +187,10 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} [data-pxj-panel] [data-pxj-section=proposals] { order: 4; }
   ${FIELD} [data-pxj-panel] [data-pxj-section=requirements] { order: 5; }
   ${FIELD} [data-pxj-panel] { position: relative !important; top: auto !important; right: auto !important; bottom: auto !important; width: 100% !important; max-height: none !important; overflow: visible !important; }
+  /* PINK §3.85 F-AC-1: the automatic job ranking takes the panel rule above (in the column, before the stage) but not its unbounded
+     height — its 70+ ranks would stand ~10 000 px over the six orbits. It keeps at most half the viewport and scrolls in itself, so
+     the orbits follow right below it; the manual discovery panel and the B2 panel are unchanged. */
+  ${FIELD} [data-testid="auto-ranking-panel"] { max-height: 50vh !important; overflow-y: auto !important; overscroll-behavior: contain; }
   ${STAGE} { position: relative !important; left: auto !important; top: auto !important; transform: none !important; zoom: var(--sx-stage-zoom, 0.6); order: 7; justify-self: center; }
   ${FIELD} > [data-testid="semantic-zoom-telemetry"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 8; justify-self: center; max-width: 100%; }
   ${DOCK} { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 9; justify-self: stretch; }
