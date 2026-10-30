@@ -19,7 +19,7 @@ import { INVESTIGATION_ID } from "./semantic-investigation";
 type Fetcher = (input: string, init: { method: "GET"; cache: "no-store"; signal?: AbortSignal }) => Promise<{ status: number; json(): Promise<unknown> }>;
 const defaultFetcher: Fetcher = (input, init) => fetch(input, init);
 
-export const AUTO_MATCH_STATES = ["NOT_STARTED", "DISABLED", "RUNNING", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"] as const;
+export const AUTO_MATCH_STATES = ["NOT_STARTED", "DISABLED", "RUNNING", "STALLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"] as const;
 export type AutoMatchRunState = typeof AUTO_MATCH_STATES[number];
 export type EvidenceClass = "STAND_IN" | "REAL_GEMINI";
 /** The reason each state may carry (GELB): FAILED carries the run's own ERR_… code; COMPLETED, RUNNING and NOT_STARTED none. */
@@ -28,9 +28,12 @@ export const AUTO_MATCH_REASONS = {
   // NO_PROPOSALS (GELB b972905, PINK §3.85 F-AM-6): the analysis names no capability proposal — nothing to match, no run.
   SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS", "NO_PROPOSALS"],
   // DAY_BUDGET_EXHAUSTED (GELB ab47d51, PINK §3.85): the day's call budget ran out during the run.
-  PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES", "DAY_BUDGET_EXHAUSTED"]
+  // PAIRS_REFUSED (owner "SFE::THREE-POINT IMPLEMENTATION GO", GELB): every role evaluated, single pairs refused by the claim guard.
+  PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES", "DAY_BUDGET_EXHAUSTED", "PAIRS_REFUSED"],
+  // STALLED (same mandate): the run is RUNNING but its lease ran out; a worker takes it up again by itself, then it is RUNNING again.
+  STALLED: ["WORKER_LOST"]
 } as const;
-/** A run settled: the ranking can be read for it. NOT_STARTED and RUNNING are not (yet). */
+/** A run settled: it changes no more. NOT_STARTED, RUNNING and STALLED are open. */
 export const AUTO_MATCH_SETTLED: readonly AutoMatchRunState[] = ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"];
 
 export interface AutoMatchPool { jobPoolUploadId: string; poolName: string }
@@ -39,10 +42,16 @@ export interface AutoMatch {
   reason: string | null;
   evidenceClass: EvidenceClass | null;
   pools: AutoMatchPool[];
-  budget: { rolesPlanned: number; rolesEvaluated: number; callsLimit: number } | null;
+  /** callsUsed: the model calls registered for this analysis, failures included; callsJobLimit: the job's call limit. Both are null
+   *  in an answer from before the write-ahead registry (decoded with null). */
+  budget: { rolesPlanned: number; rolesEvaluated: number; callsLimit: number; callsUsed: number | null; callsJobLimit: number | null } | null;
   investigationId: string | null;
   startedAt: string | null;
   finishedAt: string | null;
+  /** 0 = the first run; > 0 = taken up again by itself after a lost worker. An answer from before the leases is decoded with 0. */
+  revision: number;
+  lastProgressAt: string | null;
+  leaseExpiresAt: string | null;
 }
 
 export const NECESSITY_WEIGHT = { REQUIRED: 3, PREFERRED: 2, OPTIONAL: 1, UNKNOWN: 1 } as const;
@@ -119,13 +128,21 @@ const isPools = (value: unknown): value is AutoMatchPool[] => Array.isArray(valu
 const isEvidenceClass = (value: unknown): value is EvidenceClass => value === "STAND_IN" || value === "REAL_GEMINI";
 
 const AUTO_MATCH_KEYS = ["state", "reason", "evidenceClass", "pools", "budget", "investigationId", "startedAt", "finishedAt"] as const;
+/** The three-point fields (GELB backend/three-point), additive: an answer carries all of them or, from before them, none. */
+const SYNC_KEYS = ["revision", "lastProgressAt", "leaseExpiresAt"] as const;
+const BUDGET_KEYS = ["rolesPlanned", "rolesEvaluated", "callsLimit"] as const;
+const CALL_KEYS = ["callsUsed", "callsJobLimit"] as const;
+const isCountOrNull = (value: unknown) => value === null || isCount(value);
+const isTimeOrNull = (value: unknown) => value === null || isTime(value);
 
-/** Strict decoder of the auto-match run (GELB §3.5 A). */
+/** Strict decoder of the auto-match run (GELB §3.5 A, extended by the three-point contract). */
 export function decodeAutoMatch(value: unknown): AutoMatch | null {
-  if (!isRecord(value) || !exactly(value, AUTO_MATCH_KEYS) || !AUTO_MATCH_STATES.includes(value.state as AutoMatchRunState)) return null;
+  if (!isRecord(value) || !AUTO_MATCH_STATES.includes(value.state as AutoMatchRunState)) return null;
+  const synced = exactly(value, [...AUTO_MATCH_KEYS, ...SYNC_KEYS]);
+  if (!synced && !exactly(value, AUTO_MATCH_KEYS)) return null;
   const state = value.state as AutoMatchRunState;
   // The reason belongs to its state.
-  if (state === "DISABLED" || state === "SKIPPED" || state === "PARTIAL") { if (!(AUTO_MATCH_REASONS[state] as readonly string[]).includes(value.reason as string)) return null; }
+  if (state === "DISABLED" || state === "SKIPPED" || state === "PARTIAL" || state === "STALLED") { if (!(AUTO_MATCH_REASONS[state] as readonly string[]).includes(value.reason as string)) return null; }
   else if (state === "FAILED") { if (!isText(value.reason) || !value.reason.startsWith("ERR_")) return null; }
   else if (value.reason !== null) return null;
   // No evidence class where no evaluation can stand (no run, switched off, skipped); a run names its own.
@@ -134,14 +151,27 @@ export function decodeAutoMatch(value: unknown): AutoMatch | null {
   if (!isPools(value.pools) || ((state === "NOT_STARTED" || state === "DISABLED") && value.pools.length > 0)) return null;
   if (state === "SKIPPED" && value.reason === "NO_ACTIVE_POOLS" && value.pools.length > 0) return null;
   const budget = value.budget;
-  if (budget !== null && !(isRecord(budget) && exactly(budget, ["rolesPlanned", "rolesEvaluated", "callsLimit"]) && isCount(budget.rolesPlanned) && isCount(budget.rolesEvaluated) && isCount(budget.callsLimit) && budget.rolesEvaluated <= budget.rolesPlanned)) return null;
-  const run = state === "RUNNING" || state === "COMPLETED" || state === "PARTIAL";
+  const called = isRecord(budget) && exactly(budget, [...BUDGET_KEYS, ...CALL_KEYS]);
+  if (budget !== null && !(isRecord(budget) && (called || exactly(budget, BUDGET_KEYS)) && isCount(budget.rolesPlanned) && isCount(budget.rolesEvaluated) && isCount(budget.callsLimit) && budget.rolesEvaluated <= budget.rolesPlanned
+    && (!called || (isCountOrNull(budget.callsUsed) && isCountOrNull(budget.callsJobLimit))))) return null;
+  const open = state === "RUNNING" || state === "STALLED";
+  const run = open || state === "COMPLETED" || state === "PARTIAL";
   if (run ? budget === null : (state === "NOT_STARTED" || state === "DISABLED") && budget !== null) return null;
   if (!(value.investigationId === null || (isText(value.investigationId) && INVESTIGATION_ID.test(value.investigationId)))) return null;
   if (!(value.startedAt === null || isTime(value.startedAt)) || !(value.finishedAt === null || isTime(value.finishedAt))) return null;
   if (state === "NOT_STARTED" && (value.investigationId !== null || value.startedAt !== null || value.finishedAt !== null)) return null;
-  if (state === "RUNNING" && (value.startedAt === null || value.finishedAt !== null)) return null;
-  return value as unknown as AutoMatch;
+  if (open && (value.startedAt === null || value.finishedAt !== null)) return null;
+  if (synced) {
+    if (!isCount(value.revision) || !isTimeOrNull(value.lastProgressAt) || !isTimeOrNull(value.leaseExpiresAt)) return null;
+    // No run, no lease and no resumption.
+    if (state === "NOT_STARTED" && (value.revision !== 0 || value.lastProgressAt !== null || value.leaseExpiresAt !== null)) return null;
+  }
+  // The server's values, with the additive fields an older answer lacks set to their defaults.
+  return {
+    ...(value as unknown as AutoMatch),
+    budget: budget === null ? null : { ...(budget as unknown as NonNullable<AutoMatch["budget"]>), ...(called ? {} : { callsUsed: null, callsJobLimit: null }) },
+    ...(synced ? {} : { revision: 0, lastProgressAt: null, leaseExpiresAt: null })
+  };
 }
 
 const RANKING_KEYS = ["rankingVersion", "authority", "analysisId", "evidenceClass", "pools", "poolsDropped", "formula", "counts", "ranks"] as const;
@@ -274,16 +304,23 @@ export async function readJobRanking(analysisId: string, fetcher: Fetcher = defa
   return { state: "FAILED", code };
 }
 
-/** Bounded wait for a run that has not settled (GELB: NOT_STARTED is also every older analysis's lasting state). */
-export const AUTO_MATCH_POLL = { intervalMs: 2000, maxMs: 180_000 } as const;
-export interface AutoMatchWatch { read: AutoMatchState; /** The bounded wait ended with the run still NOT_STARTED or RUNNING. */ waitedOut: boolean }
+/**
+ * How the run is read (GELB, three-point contract): every 2 s while it is RUNNING, falling back to every 10 s while it does not move,
+ * without an end — a running run is read until it settles. A STALLED run (its worker lost, taken up again by itself) is read every
+ * 15 s, without an end. Only NOT_STARTED (no run yet; also every older analysis's lasting state) keeps the 3-minute wait.
+ */
+export const AUTO_MATCH_POLL = { intervalMs: 2000, maxIntervalMs: 10_000, stalledMs: 15_000, maxMs: 180_000 } as const;
+export interface AutoMatchPoll { intervalMs: number; maxIntervalMs: number; stalledMs: number; maxMs: number }
+export interface AutoMatchWatch { read: AutoMatchState; /** The 3-minute wait ended with still no run (NOT_STARTED). */ waitedOut: boolean }
+/** What a moving run changes: its state, its resumption, its evaluated roles, its last progress. */
+const progressOf = (run: AutoMatch) => JSON.stringify([run.state, run.revision, run.budget?.rolesEvaluated ?? null, run.lastProgressAt]);
 
 /**
- * The run of the analysis on view: one GET at once, then one every 2 s while it is NOT_STARTED or RUNNING, for at most 3 min
- * (GET only; the worker starts and runs it, nothing here does). A settled state, a read failure or the end of the wait stops it;
- * a new analysis (or none) aborts the open read and drops a late answer.
+ * The run of the analysis on view: one GET at once, then as AUTO_MATCH_POLL says (GET only; the worker starts, runs and resumes it,
+ * nothing here does). A settled state, a read failure or the end of the NOT_STARTED wait stops it; a new analysis (or none) aborts
+ * the open read and drops a late answer.
  */
-export function useAutoMatch(analysisId: string | null, fetcher?: Fetcher, poll: { intervalMs: number; maxMs: number } = AUTO_MATCH_POLL): AutoMatchWatch {
+export function useAutoMatch(analysisId: string | null, fetcher?: Fetcher, poll: AutoMatchPoll = AUTO_MATCH_POLL): AutoMatchWatch {
   const [entry, setEntry] = useState<{ key: string | null; value: AutoMatchWatch }>({ key: null, value: { read: { state: "IDLE" }, waitedOut: false } });
   const generation = useRef(0);
   useEffect(() => {
@@ -293,16 +330,29 @@ export function useAutoMatch(analysisId: string | null, fetcher?: Fetcher, poll:
     const controller = new AbortController();
     const started = Date.now();
     let timer: ReturnType<typeof setTimeout> | null = null;
+    let progress: string | null = null;
+    let interval = poll.intervalMs;
     const live = () => generation.current === current && !controller.signal.aborted;
     const once = () => {
       void readAutoMatch(analysisId, fetcher, controller.signal)
         .catch((): AutoMatchState => ({ state: "FAILED", code: null }))
         .then(read => {
           if (!live()) return;
-          const open = read.state === "AVAILABLE" && (read.autoMatch.state === "NOT_STARTED" || read.autoMatch.state === "RUNNING");
-          const waitedOut = open && Date.now() - started + poll.intervalMs > poll.maxMs;
+          const run = read.state === "AVAILABLE" ? read.autoMatch : null;
+          const waitedOut = run?.state === "NOT_STARTED" && Date.now() - started + poll.intervalMs > poll.maxMs;
           setEntry({ key: analysisId, value: { read, waitedOut } });
-          if (open && !waitedOut) timer = setTimeout(once, poll.intervalMs);
+          if (run === null || waitedOut) return;
+          let next: number | null = null;
+          if (run.state === "NOT_STARTED") next = poll.intervalMs;
+          else if (run.state === "STALLED") next = poll.stalledMs;
+          else if (run.state === "RUNNING") {
+            const now = progressOf(run);
+            // A run that moved is read again soon; one that did not falls back step by step to the longest interval.
+            interval = now === progress ? Math.min(interval * 2, poll.maxIntervalMs) : poll.intervalMs;
+            next = interval;
+          }
+          progress = progressOf(run);
+          if (next !== null) timer = setTimeout(once, next);
         });
     };
     setEntry({ key: analysisId, value: { read: { state: "LOADING" }, waitedOut: false } });
@@ -314,32 +364,37 @@ export function useAutoMatch(analysisId: string | null, fetcher?: Fetcher, poll:
 }
 
 /**
- * The ranking, read once per settled run: `settledKey` names the run's settled state (state + finish time), or the end of the
- * bounded wait; null while the run is open — nothing is read then. A new key reads again (GET), a late answer is dropped.
+ * The ranking, read again whenever the run moves: `runKey` names the run's state, resumption and evaluated roles (and a settled run's
+ * finish time), or the end of the NOT_STARTED wait; null while there is no run — nothing is read then. A new key reads again (GET);
+ * the ranking already shown for this analysis stays while the next one is read, so it grows during the run. A late answer is dropped.
  */
-export function useJobRanking(analysisId: string | null, settledKey: string | null, fetcher?: Fetcher): JobRankingState {
-  const key = analysisId === null || settledKey === null ? null : JSON.stringify([analysisId, settledKey]);
-  const [entry, setEntry] = useState<{ key: string | null; value: JobRankingState }>({ key: null, value: { state: "IDLE" } });
+export function useJobRanking(analysisId: string | null, runKey: string | null, fetcher?: Fetcher): JobRankingState {
+  const key = analysisId === null || runKey === null ? null : JSON.stringify([analysisId, runKey]);
+  const [entry, setEntry] = useState<{ key: string | null; analysisId: string | null; value: JobRankingState }>({ key: null, analysisId: null, value: { state: "IDLE" } });
   const generation = useRef(0);
   useEffect(() => {
     const current = generation.current + 1;
     generation.current = current;
-    if (key === null) { setEntry({ key: null, value: { state: "IDLE" } }); return; }
+    if (key === null) { setEntry({ key: null, analysisId: null, value: { state: "IDLE" } }); return; }
     const controller = new AbortController();
-    setEntry({ key, value: { state: "LOADING" } });
+    setEntry(previous => previous.analysisId === analysisId && previous.value.state === "AVAILABLE" ? { ...previous, key } : { key, analysisId, value: { state: "LOADING" } });
     void readJobRanking(analysisId!, fetcher, controller.signal)
       .catch((): JobRankingState => ({ state: "FAILED", code: null }))
-      .then(value => { if (generation.current === current && !controller.signal.aborted) setEntry({ key, value }); });
+      .then(value => { if (generation.current === current && !controller.signal.aborted) setEntry({ key, analysisId, value }); });
     return () => controller.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- the key carries the analysis and the settled run.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the key carries the analysis and the run.
   }, [key]);
-  return entry.key === key ? entry.value : key === null ? { state: "IDLE" } : { state: "LOADING" };
+  if (entry.key === key) return entry.value;
+  if (key !== null && entry.analysisId === analysisId && entry.value.state === "AVAILABLE") return entry.value;
+  return key === null ? { state: "IDLE" } : { state: "LOADING" };
 }
 
-/** When the ranking may be read: a settled run (its state and finish time), or the bounded wait's end; otherwise null. */
+/** When the ranking is read: on every change of the run's state, resumption or evaluated roles (a settled run with its finish time),
+ *  and at the end of the NOT_STARTED wait; null while there is no run or no readable state. */
 export function rankingKey(watch: AutoMatchWatch): string | null {
   const read = watch.read;
   if (read.state !== "AVAILABLE") return null;
-  if (AUTO_MATCH_SETTLED.includes(read.autoMatch.state)) return `${read.autoMatch.state}:${read.autoMatch.finishedAt ?? ""}`;
-  return watch.waitedOut ? `WAITED_OUT:${read.autoMatch.state}` : null;
+  const run = read.autoMatch;
+  if (run.state === "NOT_STARTED") return watch.waitedOut ? "WAITED_OUT:NOT_STARTED" : null;
+  return `${run.state}:${run.revision}:${run.budget?.rolesEvaluated ?? "-"}:${run.finishedAt ?? ""}`;
 }

@@ -20,15 +20,20 @@ export interface AutoMatchCopy {
   notStarted: Line;
   waitedOut: Line;
   running: (evaluated: number, planned: number) => Line;
+  /** STALLED · WORKER_LOST: the run's worker was lost; a worker takes it up again by itself. */
+  stalled: Line;
+  /** A run taken up again by itself (revision > 0) — named, no action. */
+  resumed: string;
   completed: (pools: number) => Line;
-  partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES" | "DAY_BUDGET_EXHAUSTED", Line>;
+  partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES" | "DAY_BUDGET_EXHAUSTED" | "PAIRS_REFUSED", Line>;
   disabled: Line;
   disabledReason: Record<"SEMANTIC_NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "DAY_LIMIT_ZERO" | "NOT_PROVISIONED", string>;
   skipped: Record<"NOT_PERSON" | "NO_ACTIVE_POOLS" | "NO_PROPOSALS", Line>;
   failed: Line;
   code: (code: string) => string;
   goToJobField: string;
-  budget: (evaluated: number, planned: number, limit: number) => string;
+  /** `used`: the model calls registered for the analysis (null in an answer from before the registry — then only the limit). */
+  budget: (evaluated: number, planned: number, limit: number, used: number | null) => string;
   pools: (names: string) => string;
   evidence: Record<EvidenceClass | "NONE", string>;
   authority: string;
@@ -68,12 +73,15 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     analysisNotFound: { cause: "This analysis is not on record.", way: "→ an analysis on record is matched by itself" },
     notStarted: { cause: "The analysis is in; the matching against the job pools has not begun yet.", way: "→ it begins by itself" },
     waitedOut: { cause: "No matching run is recorded for this analysis.", way: "→ the ranking below rests on the name relation" },
-    running: (evaluated, planned) => ({ cause: `The capabilities are being matched against the job pools · ${formatCount(evaluated)} of ${formatCount(planned)} roles checked.`, way: "→ the ranking follows once the run is done" }),
+    running: (evaluated, planned) => ({ cause: `The capabilities are being matched against the job pools · ${formatCount(evaluated)} of ${formatCount(planned)} roles checked.`, way: "→ the ranking below grows as the roles are checked" }),
+    stalled: { cause: "Processing was interrupted; it continues by itself.", way: "→ the ranking below holds what is checked so far" },
+    resumed: "resumed by itself",
     completed: pools => ({ cause: `The matching is done across ${formatCount(pools)} ${pools === 1 ? "job pool" : "job pools"}.`, way: "→ the ranked jobs below, each with its reasons" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "The matching checked the roles its budget allows; the others are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
       ROLE_FAILURES: { cause: "The matching is done; some roles could not be checked and are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
-      DAY_BUDGET_EXHAUSTED: { cause: "Today's call budget ran out during the matching; the roles not reached are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" }
+      DAY_BUDGET_EXHAUSTED: { cause: "Today's call budget ran out during the matching; the roles not reached are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
+      PAIRS_REFUSED: { cause: "The matching is done; single requirement relations were refused by the evidence check and count by name relation.", way: "→ the ranked jobs below, each with its reasons" }
     },
     disabled: { cause: "Semantic matching is not switched on here; the jobs are ranked by name relation.", way: "→ the ranked jobs below" },
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "no semantic provider configured", PROVIDER_NOT_AUTHORIZED: "provider not authorised", DAY_LIMIT_ZERO: "no call budget for today", NOT_PROVISIONED: "the match store is not provisioned" },
@@ -85,7 +93,7 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     failed: { cause: "The matching run stopped; the jobs are ranked by what was matched.", way: "→ the ranked jobs below" },
     code: code => `code ${code}`,
     goToJobField: "GO TO JOB FIELD",
-    budget: (evaluated, planned, limit) => `${formatCount(evaluated)} of ${formatCount(planned)} roles checked semantically · call limit ${formatCount(limit)}`,
+    budget: (evaluated, planned, limit, used) => `${formatCount(evaluated)} of ${formatCount(planned)} roles checked semantically · ${used === null ? "" : `${formatCount(used)} ${used === 1 ? "call" : "calls"} · `}call limit ${formatCount(limit)}`,
     pools: names => `Job pools: ${names}`,
     evidence: { STAND_IN: "STAND-IN · labelled, no model", REAL_GEMINI: "GEMINI · model statements", NONE: "NAME RELATION · no model statement" },
     authority: "Authority: none · a ranking from unverified relations, not a decision",
@@ -132,12 +140,15 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     analysisNotFound: { cause: "Diese Analyse ist nicht verzeichnet.", way: "→ eine verzeichnete Analyse wird von selbst abgeglichen" },
     notStarted: { cause: "Die Analyse liegt vor; der Abgleich mit den Job-Pools hat noch nicht begonnen.", way: "→ er beginnt von selbst" },
     waitedOut: { cause: "Für diese Analyse ist kein Abgleich verzeichnet.", way: "→ die Rangfolge unten stützt sich auf die Namensrelation" },
-    running: (evaluated, planned) => ({ cause: `Die Fähigkeiten werden mit den Job-Pools abgeglichen · ${formatCount(evaluated)} von ${formatCount(planned)} Rollen geprüft.`, way: "→ die Rangfolge folgt, sobald der Lauf fertig ist" }),
+    running: (evaluated, planned) => ({ cause: `Die Fähigkeiten werden mit den Job-Pools abgeglichen · ${formatCount(evaluated)} von ${formatCount(planned)} Rollen geprüft.`, way: "→ die Rangfolge unten wächst mit jeder geprüften Rolle" }),
+    stalled: { cause: "Die Verarbeitung wurde unterbrochen; sie wird automatisch fortgesetzt.", way: "→ die Rangfolge unten zeigt, was bisher geprüft ist" },
+    resumed: "automatisch fortgesetzt",
     completed: pools => ({ cause: `Der Abgleich ist über ${formatCount(pools)} ${pools === 1 ? "Job-Pool" : "Job-Pools"} fertig.`, way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
       ROLE_FAILURES: { cause: "Der Abgleich ist fertig; einige Rollen ließen sich nicht prüfen und sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
-      DAY_BUDGET_EXHAUSTED: { cause: "Das heutige Aufrufbudget war während des Abgleichs aufgebraucht; die nicht erreichten Rollen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }
+      DAY_BUDGET_EXHAUSTED: { cause: "Das heutige Aufrufbudget war während des Abgleichs aufgebraucht; die nicht erreichten Rollen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
+      PAIRS_REFUSED: { cause: "Der Abgleich ist fertig; einzelne Anforderungsrelationen wurden von der Belegprüfung abgewiesen und zählen nach Namensrelation.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }
     },
     disabled: { cause: "Der semantische Abgleich ist hier nicht eingeschaltet; die Jobs sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten" },
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "kein semantischer Provider eingerichtet", PROVIDER_NOT_AUTHORIZED: "Provider nicht freigegeben", DAY_LIMIT_ZERO: "kein Aufrufbudget für heute", NOT_PROVISIONED: "der Abgleichspeicher ist nicht eingerichtet" },
@@ -149,7 +160,7 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     failed: { cause: "Der Abgleich hat angehalten; die Jobs sind nach dem gereiht, was abgeglichen ist.", way: "→ die gereihten Jobs unten" },
     code: code => `Code ${code}`,
     goToJobField: "ZUM JOB-FELD",
-    budget: (evaluated, planned, limit) => `${formatCount(evaluated)} von ${formatCount(planned)} Rollen semantisch geprüft · Aufruflimit ${formatCount(limit)}`,
+    budget: (evaluated, planned, limit, used) => `${formatCount(evaluated)} von ${formatCount(planned)} Rollen semantisch geprüft · ${used === null ? "" : `${formatCount(used)} ${used === 1 ? "Aufruf" : "Aufrufe"} · `}Aufruflimit ${formatCount(limit)}`,
     pools: names => `Job-Pools: ${names}`,
     evidence: { STAND_IN: "STAND-IN · gekennzeichnet, kein Modell", REAL_GEMINI: "GEMINI · Modellaussagen", NONE: "NAMENSRELATION · keine Modellaussage" },
     authority: "Autorität: keine · eine Rangfolge aus ungeprüften Relationen, keine Entscheidung",

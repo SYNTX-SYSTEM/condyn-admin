@@ -11,18 +11,30 @@ export const POOL_B = "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
 export const RINV = "RINV_0123456789ABCDEF0123456789ABCDEF";
 export const POOLS = [{ jobPoolUploadId: POOL_A, poolName: "Pool Alpha" }, { jobPoolUploadId: POOL_B, poolName: "Pool Beta" }];
 const T0 = "2026-10-30T10:00:00.000Z", T1 = "2026-10-30T10:01:30.000Z";
+const TP = "2026-10-30T10:00:40.000Z", TL = "2026-10-30T10:01:10.000Z";
+/** The three-point fields (GELB backend/three-point): no run → no lease; a first run is revision 0; callsUsed null = not registered. */
+const unsynced = { revision: 0, lastProgressAt: null, leaseExpiresAt: null };
+const budgetOf = (rolesPlanned: number, rolesEvaluated: number, callsLimit: number) => ({ rolesPlanned, rolesEvaluated, callsLimit, callsUsed: null, callsJobLimit: null });
 
 export function autoMatch(state: AutoMatchRunState, patch: Record<string, unknown> = {}): Record<string, unknown> {
   const base: Record<AutoMatchRunState, Record<string, unknown>> = {
-    NOT_STARTED: { state, reason: null, evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: null },
-    DISABLED: { state, reason: "SEMANTIC_NOT_CONFIGURED", evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: T1 },
-    RUNNING: { state, reason: null, evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: { rolesPlanned: 4, rolesEvaluated: 1, callsLimit: 25 }, investigationId: RINV, startedAt: T0, finishedAt: null },
-    COMPLETED: { state, reason: null, evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: { rolesPlanned: 4, rolesEvaluated: 4, callsLimit: 25 }, investigationId: RINV, startedAt: T0, finishedAt: T1 },
-    PARTIAL: { state, reason: "ROLES_BEYOND_BUDGET", evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: { rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2 }, investigationId: RINV, startedAt: T0, finishedAt: T1 },
-    FAILED: { state, reason: "ERR_SEMANTIC_PROVIDER_FAILED", evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: null, investigationId: null, startedAt: T0, finishedAt: T1 },
-    SKIPPED: { state, reason: "NO_ACTIVE_POOLS", evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: T1 }
+    NOT_STARTED: { state, reason: null, evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: null, ...unsynced },
+    DISABLED: { state, reason: "SEMANTIC_NOT_CONFIGURED", evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: T1, ...unsynced },
+    RUNNING: { state, reason: null, evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: budgetOf(4, 1, 25), investigationId: RINV, startedAt: T0, finishedAt: null, revision: 0, lastProgressAt: TP, leaseExpiresAt: T1 },
+    STALLED: { state, reason: "WORKER_LOST", evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: budgetOf(4, 2, 25), investigationId: RINV, startedAt: T0, finishedAt: null, revision: 0, lastProgressAt: TP, leaseExpiresAt: TL },
+    COMPLETED: { state, reason: null, evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: budgetOf(4, 4, 25), investigationId: RINV, startedAt: T0, finishedAt: T1, revision: 0, lastProgressAt: T1, leaseExpiresAt: null },
+    PARTIAL: { state, reason: "ROLES_BEYOND_BUDGET", evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: budgetOf(2, 2, 2), investigationId: RINV, startedAt: T0, finishedAt: T1, revision: 0, lastProgressAt: T1, leaseExpiresAt: null },
+    FAILED: { state, reason: "ERR_SEMANTIC_PROVIDER_FAILED", evidenceClass: "STAND_IN", pools: POOLS.map(p => ({ ...p })), budget: null, investigationId: null, startedAt: T0, finishedAt: T1, ...unsynced },
+    SKIPPED: { state, reason: "NO_ACTIVE_POOLS", evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: T1, ...unsynced }
   };
   return { ...base[state], ...patch };
+}
+/** The same run as an answer from before the three-point contract: no revision/progress/lease, a budget without its calls. */
+export function legacyAutoMatch(state: AutoMatchRunState, patch: Record<string, unknown> = {}): Record<string, unknown> {
+  const { revision: _r, lastProgressAt: _p, leaseExpiresAt: _l, ...rest } = autoMatch(state);
+  const budget = rest.budget as Record<string, unknown> | null;
+  const old = budget === null ? null : { rolesPlanned: budget.rolesPlanned, rolesEvaluated: budget.rolesEvaluated, callsLimit: budget.callsLimit };
+  return { ...rest, budget: old, ...patch };
 }
 export const autoMatchBody = (state: AutoMatchRunState, patch: Record<string, unknown> = {}) => ({ success: true, autoMatch: autoMatch(state, patch) });
 

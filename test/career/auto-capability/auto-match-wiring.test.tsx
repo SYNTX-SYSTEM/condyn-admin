@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactElement } from "react";
 import { browser, find, instance } from "../pxj-first-screen/harness";
 import { ANALYSIS, boundary, resultBody } from "../pxj-first-screen/fixtures";
-import { autoMatchBody, rankingBody } from "./fixtures";
+import { autoMatch, autoMatchBody, rankingBody } from "./fixtures";
 
 /**
  * AUTO_CAPABILITY (owner "SFE::AUTOMATED_CAPABILITY_TO_JOB_EXECUTE", GRÜN point 3): after the analysis of a PERSON source the field goes
@@ -27,7 +27,7 @@ import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "../../../app/components/
 import { EMPTY_CAREER_INTELLIGENCE_DATA } from "../../../app/career/demo/demo-data";
 import { careerDemoPropsFromSearchParams, careerDemoSearchParamsFromSearch } from "../../../lib/career/ui/career-demo-url";
 import { decodeAnalysisResult } from "../../../lib/career/view-model/pxj-first-screen";
-import { useAutoMatch, type AutoMatchRunState, type AutoMatchWatch } from "../../../lib/career/ui/auto-match";
+import { useAutoMatch, useJobRanking, type AutoMatchRunState, type AutoMatchWatch, type JobRankingState } from "../../../lib/career/ui/auto-match";
 
 const BASE = "http://127.0.0.1/career/demo";
 const IDLE_JOB = { state: "IDLE", activeJobId: null, resultAnalysisId: null, canonicalAnalysis: null, currentOperation: null, attemptCount: null, errorCode: null, errorSummary: null, httpStatus: null };
@@ -38,7 +38,8 @@ const AUTO = `/api/career/analyses/${ANALYSIS}/auto-match`, RANKING = `/api/care
 
 /** The server as the test plays it: the run's states in turn (the last one stays), the ranking for this analysis. */
 let calls: Array<{ method: string; url: string; init: Record<string, unknown> }> = [];
-let runs: AutoMatchRunState[] = [];
+type Run = AutoMatchRunState | [AutoMatchRunState, Record<string, unknown>];
+let runs: Run[] = [];
 beforeEach(() => {
   const decoded = decodeAnalysisResult(resultBody(), ANALYSIS);
   if (!decoded.ok) throw new Error(decoded.code);
@@ -48,7 +49,7 @@ beforeEach(() => {
   calls = []; runs = ["COMPLETED"];
   vi.stubGlobal("fetch", async (url: string, init: Record<string, unknown>) => {
     calls.push({ method: String(init.method), url, init });
-    if (url === AUTO) { const state = runs.length > 1 ? runs.shift()! : runs[0]; return { status: 200, json: async () => autoMatchBody(state) }; }
+    if (url === AUTO) { const next = runs.length > 1 ? runs.shift()! : runs[0]; const [state, patch] = Array.isArray(next) ? next : [next, {}]; return { status: 200, json: async () => autoMatchBody(state, patch) }; }
     if (url === RANKING) return { status: 200, json: async () => rankingBody({ analysisId: ANALYSIS }) };
     return { status: 404, json: async () => ({ issues: [{ code: "ERR_UNEXPECTED_ROUTE" }] }) };
   });
@@ -86,22 +87,108 @@ describe("AC-FLOW · the PERSON result goes on by itself", () => {
     view.unmount();
   });
 
-  it("REPRODUCE: NOT_STARTED → RUNNING → COMPLETED — read every 2 s while open, the ranking once after it settled, then quiet", async () => {
+  it("REPRODUCE: NOT_STARTED → RUNNING → RUNNING (unmoved) → COMPLETED — 2 s, falling back while unmoved; the ranking at each move, then quiet", async () => {
     vi.useFakeTimers();
     runs = ["NOT_STARTED", "RUNNING", "RUNNING", "COMPLETED"];
     const { view, props } = start(PERSON);
     let tree = view.settle(props);
-    await flush(); tree = view.settle(props);
+    const settle = async () => { await flush(); tree = view.settle(props); await flush(); tree = view.settle(props); };
+    await settle();
     expect([gets(AUTO), gets(RANKING)]).toEqual([1, 0]);
     expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "NOT_STARTED" } } });
-    for (let step = 2; step <= 4; step += 1) { await vi.advanceTimersByTimeAsync(2000); await flush(); tree = view.settle(props); expect(gets(AUTO), `read ${step}`).toBe(step); }
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect([gets(AUTO), gets(RANKING)], "RUNNING: read again, the ranking read during the run").toEqual([2, 1]);
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect([gets(AUTO), gets(RANKING)], "unmoved: no new ranking").toEqual([3, 1]);
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect(gets(AUTO), "unmoved: the next read falls back to 4 s").toBe(3);
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect(gets(AUTO)).toBe(4);
     expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "COMPLETED" } }, waitedOut: false });
-    await flush(); tree = view.settle(props); await flush(); tree = view.settle(props);
-    expect(gets(RANKING)).toBe(1);
-    await vi.advanceTimersByTimeAsync(60_000); await flush(); view.settle(props);
-    expect([gets(AUTO), gets(RANKING)], "a settled run is not read again").toEqual([4, 1]);
+    expect(gets(RANKING)).toBe(2);
+    await vi.advanceTimersByTimeAsync(60_000); await settle();
+    expect([gets(AUTO), gets(RANKING)], "a settled run is not read again").toEqual([4, 2]);
     expect(calls.every(call => call.method === "GET")).toBe(true);
     view.unmount();
+  });
+
+  it("REPRODUCE: a RUNNING run is read past 3 min without end (falling back to 10 s) and is never waited out; a moving run stays at 2 s", async () => {
+    vi.useFakeTimers();
+    runs = ["RUNNING"];
+    const { view, props } = start(PERSON);
+    let tree = view.settle(props);
+    const settle = async () => { await flush(); tree = view.settle(props); await flush(); tree = view.settle(props); };
+    await settle();
+    // Reads at 0, 2, 6, 14, then every 10 s: 24 … 394.
+    await vi.advanceTimersByTimeAsync(400_000); await settle();
+    expect(gets(AUTO)).toBe(42);
+    expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "RUNNING" } }, waitedOut: false });
+    await vi.advanceTimersByTimeAsync(100_000); await settle();
+    expect(gets(AUTO), "still read, every 10 s").toBe(52);
+    expect(gets(RANKING), "the unmoved run is ranked once").toBe(1);
+    view.unmount();
+    vi.useRealTimers();
+    // Moving: rolesEvaluated 1, 2, 3, 4 — every read is a move, so every 2 s, and each move reads the ranking.
+    vi.useFakeTimers();
+    calls = [];
+    const budget = (n: number) => ({ ...(autoMatch("RUNNING").budget as object), rolesEvaluated: n });
+    runs = [1, 2, 3, 4].map(n => ["RUNNING", { budget: budget(n) }] as Run);
+    const moving = start(PERSON);
+    moving.view.settle(moving.props);
+    for (let step = 1; step <= 4; step += 1) {
+      await flush(); moving.view.settle(moving.props); await flush(); moving.view.settle(moving.props);
+      expect([gets(AUTO), gets(RANKING)], `move ${step}`).toEqual([step, step]);
+      await vi.advanceTimersByTimeAsync(2000);
+    }
+    moving.view.unmount();
+    vi.useRealTimers();
+    // A resumption alone (revision 0 → 1, nothing else changed) is a move: back to 2 s after the fallback.
+    vi.useFakeTimers();
+    calls = [];
+    runs = ["RUNNING", "RUNNING", ["RUNNING", { revision: 1 }]];
+    const resumed = start(PERSON);
+    resumed.view.settle(resumed.props);
+    const settleResumed = async () => { await flush(); resumed.view.settle(resumed.props); await flush(); resumed.view.settle(resumed.props); };
+    await settleResumed();
+    await vi.advanceTimersByTimeAsync(2000); await settleResumed();
+    await vi.advanceTimersByTimeAsync(4000); await settleResumed();
+    expect([gets(AUTO), gets(RANKING)], "reads at 0, 2, 6; the resumption reads the ranking").toEqual([3, 2]);
+    await vi.advanceTimersByTimeAsync(2000); await settleResumed();
+    expect(gets(AUTO), "the next read 2 s after the resumption, not 8 s").toBe(4);
+    resumed.view.unmount();
+  });
+
+  it("REPRODUCE: STALLED is read every 15 s without end; resumed (revision 1) it is RUNNING again — the ranking follows each change", async () => {
+    vi.useFakeTimers();
+    const resumed = { revision: 1, budget: { ...(autoMatch("RUNNING").budget as object), rolesEvaluated: 3 } };
+    runs = ["RUNNING", "STALLED", "STALLED", ["RUNNING", resumed]];
+    const { view, props } = start(PERSON);
+    let tree = view.settle(props);
+    const settle = async () => { await flush(); tree = view.settle(props); await flush(); tree = view.settle(props); };
+    await settle();
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "STALLED", reason: "WORKER_LOST" } }, waitedOut: false });
+    expect([gets(AUTO), gets(RANKING)]).toEqual([2, 2]);
+    await vi.advanceTimersByTimeAsync(14_000); await settle();
+    expect(gets(AUTO), "not before 15 s").toBe(2);
+    await vi.advanceTimersByTimeAsync(1000); await settle();
+    expect([gets(AUTO), gets(RANKING)], "STALLED unmoved: no new ranking").toEqual([3, 2]);
+    await vi.advanceTimersByTimeAsync(15_000); await settle();
+    expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "RUNNING", revision: 1 } } });
+    expect([gets(AUTO), gets(RANKING)]).toEqual([4, 3]);
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect(gets(AUTO), "a resumed run is read at 2 s again").toBe(5);
+    view.unmount();
+    // Inverse: a run STALLED for good is read on, every 15 s, and never waited out.
+    vi.useRealTimers(); vi.useFakeTimers();
+    calls = []; runs = ["STALLED"];
+    const held = start(PERSON);
+    let heldTree = held.view.settle(held.props);
+    await flush(); heldTree = held.view.settle(held.props);
+    await vi.advanceTimersByTimeAsync(600_000); await flush(); heldTree = held.view.settle(held.props);
+    expect(gets(AUTO)).toBe(41);
+    expect(find(heldTree, AutoJobRankingPanel)!.props.watch).toMatchObject({ waitedOut: false });
+    held.view.unmount();
   });
 
   it("REPRODUCE: a run that never settles (an older analysis) — the wait ends after 3 min, then the ranking is read once (name relation)", async () => {
@@ -122,13 +209,13 @@ describe("AC-FLOW · the PERSON result goes on by itself", () => {
     view.unmount();
   });
 
-  it("REPRODUCE: every settled state reads the ranking; RUNNING and NOT_STARTED do not (before the wait ends)", async () => {
-    for (const state of ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED", "RUNNING", "NOT_STARTED"] as const) {
+  it("REPRODUCE: every state with a run reads the ranking (RUNNING and STALLED too, so it grows); NOT_STARTED does not (before the wait ends)", async () => {
+    for (const state of ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED", "RUNNING", "STALLED", "NOT_STARTED"] as const) {
       vi.useFakeTimers();
       calls = []; runs = [state];
       const { view, props } = start(PERSON);
       view.settle(props); await flush(); view.settle(props); await flush(); view.settle(props);
-      expect(gets(RANKING), state).toBe(state === "RUNNING" || state === "NOT_STARTED" ? 0 : 1);
+      expect(gets(RANKING), state).toBe(state === "NOT_STARTED" ? 0 : 1);
       view.unmount();
       vi.useRealTimers();
     }
@@ -187,6 +274,41 @@ describe("AC-FLOW · the PERSON result goes on by itself", () => {
     // No analysis at all: idle, nothing read.
     expect((hook.render({ id: null }) as unknown as AutoMatchWatch).read).toEqual({ state: "IDLE" });
     expect(calls).toHaveLength(2);
+    hook.unmount();
+  });
+
+  it("REPRODUCE: the ranking shown stays while the next one is read (it grows, it does not blink); inverse: another analysis reads afresh", async () => {
+    let release!: () => void;
+    let gate: Promise<void> = Promise.resolve();
+    let served = 0;
+    vi.stubGlobal("fetch", async (url: string, init: Record<string, unknown>) => {
+      calls.push({ method: String(init.method), url, init });
+      served += 1;
+      const at = served;
+      await gate;
+      return { status: 200, json: async () => rankingBody({ analysisId: url.includes(ANALYSIS) ? ANALYSIS : "CAN_OTHER_ANALYSIS", counts: { pools: 2, roles: 4 + at, ranked: 4 } }) };
+    });
+    const hook = instance<{ id: string | null; key: string | null }>(({ id, key }: { id: string | null; key: string | null }) => useJobRanking(id, key) as unknown as Tree);
+    hook.render({ id: ANALYSIS, key: "RUNNING:0:1:" });
+    await flush();
+    let state = hook.render({ id: ANALYSIS, key: "RUNNING:0:1:" }) as unknown as JobRankingState;
+    expect(state).toMatchObject({ state: "AVAILABLE", ranking: { counts: { roles: 5 } } });
+    gate = new Promise<void>(resolve => { release = resolve; });
+    state = hook.render({ id: ANALYSIS, key: "RUNNING:0:2:" }) as unknown as JobRankingState;
+    expect(state, "the first frame of the next key keeps the last ranking").toMatchObject({ state: "AVAILABLE", ranking: { counts: { roles: 5 } } });
+    await flush();
+    state = hook.render({ id: ANALYSIS, key: "RUNNING:0:2:" }) as unknown as JobRankingState;
+    expect(state, "while the next read is open, the last ranking stands").toMatchObject({ state: "AVAILABLE", ranking: { counts: { roles: 5 } } });
+    release(); await flush();
+    state = hook.render({ id: ANALYSIS, key: "RUNNING:0:2:" }) as unknown as JobRankingState;
+    expect(state).toMatchObject({ state: "AVAILABLE", ranking: { counts: { roles: 6 } } });
+    gate = new Promise<void>(resolve => { release = resolve; });
+    expect(hook.render({ id: "CAN_OTHER_ANALYSIS", key: "RUNNING:0:1:" }), "not even for one frame").toEqual({ state: "LOADING" });
+    await flush();
+    state = hook.render({ id: "CAN_OTHER_ANALYSIS", key: "RUNNING:0:1:" }) as unknown as JobRankingState;
+    expect(state, "another analysis never shows this one's ranking").toEqual({ state: "LOADING" });
+    release(); await flush();
+    expect(calls.every(call => call.method === "GET")).toBe(true);
     hook.unmount();
   });
 });
