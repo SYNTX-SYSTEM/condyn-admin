@@ -1,5 +1,5 @@
 import { loadWebsiteDocument } from "../loaders/website";
-import { loadGitHubRepositoryDocuments } from "../loaders/github";
+import { loadGitHubSourceDocuments } from "../loaders/github";
 import { loadDocumentBatch } from "../loaders/batch";
 import { DocumentInput } from "../adapter";
 
@@ -42,7 +42,7 @@ export async function prepareDocuments(documents: any[]): Promise<{ normalizedDo
       if (!item.url || !String(item.url).trim()) {
         throw new Error("ERR_MISSING_SOURCE_URL: Missing url property for github source.");
       }
-      const docs = await loadGitHubRepositoryDocuments(item.url);
+      const docs = await loadGitHubSourceDocuments(item.url);
       docs.forEach(d => {
         const canonicalId = getNextCanonicalId();
         if (item.docId) {
