@@ -30,7 +30,7 @@ const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
   console.log(`[lab] world database ${world.databaseName}`);
   const standInLog = resolve(DIR, "standin.jsonl");
   const { startGeminiStandIn } = await import(`${W}/docs/career_analysis/evidence/job-pool/three-modes/scripts/gemini-standin`);
-  const standIn = await startGeminiStandIn(record => appendFileSync(standInLog, `${JSON.stringify(record)}\n`));
+  const standIn = await startGeminiStandIn((record: unknown) => appendFileSync(standInLog, `${JSON.stringify(record)}\n`));
   const token = randomBytes(36).toString("base64url");
   const base = `http://127.0.0.1:${PORT}`;
   const common = { DATABASE_URL: world.databaseUrl, NEXT_TELEMETRY_DISABLED: "1", CONDYN_GEMINI_EXCHANGE_ARCHIVE: "1", NODE_OPTIONS: `--require ${SENTINEL}`, LAB_NET_LOG: resolve(DIR, "net.jsonl"), ...(process.env.LAB_SEMANTIC === "off" ? {} : { ROLE_DISCOVERY_SEMANTIC_PROVIDER: "stand-in", ROLE_DISCOVERY_DAY_LIMIT: "1000", ROLE_DISCOVERY_MAX_ROLES: "10" }) };
