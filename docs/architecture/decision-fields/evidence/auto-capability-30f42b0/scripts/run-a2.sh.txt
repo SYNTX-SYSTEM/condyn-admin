@@ -1,0 +1,8 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+T="test/career-github-account-loader.test.ts test/career-github-loader.test.ts test/career-analyze-multisource.test.ts test/career-source-metadata.test.ts test/career-analyze-flow.test.ts"
+cd $S/int/tacpA && npx tsc --noEmit -p . > $O/a-tsc.log 2>&1; echo "cand tsc errors $(grep -c 'error TS' $O/a-tsc.log)"
+for n in tacpA tacpbase; do cd $S/int/$n; TT=$T; [ $n = tacpbase ] && TT=${T#test/career-github-account-loader.test.ts }; npm run -s test:isolated -- $TT > $O/a-suite-$n.log 2>&1; echo "$n exit $? $(grep -E '^\s*(Test Files|Tests) ' $O/a-suite-$n.log | tr -s ' ' | tr '\n' ' ')"; grep -E '^ FAIL ' $O/a-suite-$n.log | sed 's/ [0-9]*ms$//' | sort -u > $O/a-fails-$n.txt; done
+PRISTINE_NAME=tacpA python3 $S/acp/mutate-acp.py $S/int A > $O/mut-A.log 2>&1; echo "red $(grep -c ' RED ' $O/mut-A.log)"; grep -v ' RED ' $O/mut-A.log
+echo A2-END

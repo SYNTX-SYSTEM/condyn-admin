@@ -1,0 +1,56 @@
+import subprocess, shutil, os, sys, json, re
+# PINK inverse check: each mutant applied to a copy of the pristine tree; red = the suites catch it. argv: <int dir> <block> [ids...]
+I = sys.argv[1]; BLOCK = sys.argv[2]; PRISTINE = f"{I}/" + os.environ["PRISTINE_NAME"]; WORK = PRISTINE + "-mut"
+GH = "lib/career/loaders/github.ts"; DL = "lib/career/orchestration/document-loader.ts"
+BLOCKS = {
+ "A": (["test/career-github-account-loader.test.ts", "test/career-github-loader.test.ts", "test/career-analyze-multisource.test.ts", "test/career-source-metadata.test.ts", "test/career-analyze-flow.test.ts"], [
+  ("A-M01 fork filter off", GH, '(r as any).fork !== true && ', ''),
+  ("A-M02 archived filter off", GH, '(r as any).archived !== true && ', ''),
+  ("A-M03 disabled filter off", GH, '(r as any).disabled !== true && ', ''),
+  ("A-M04 private filter off", GH, ' && (r as any).private !== true);', ');'),
+  ("A-M05 oldest push first", GH, 'time(b) - time(a) ||', 'time(a) - time(b) ||'),
+  ("A-M06 name tie-break reversed", GH, '(a.name < b.name ? -1 : a.name > b.name ? 1 : 0)', '(a.name < b.name ? 1 : a.name > b.name ? -1 : 0)'),
+  ("A-M07 hard cap gone", GH, 'Math.min(Math.floor(value), GITHUB_ACCOUNT_MAX_REPOS_HARD_CAP)', 'Math.floor(value)'),
+  ("A-M08 default 5 -> 100", GH, 'export const GITHUB_ACCOUNT_MAX_REPOS_DEFAULT = 5;', 'export const GITHUB_ACCOUNT_MAX_REPOS_DEFAULT = 100;'),
+  ("A-M09 env 0 taken as 1 (not default)", GH, 'Number.isInteger(fromEnv) && fromEnv >= 1', 'Number.isInteger(fromEnv) && fromEnv >= 0'),
+  ("A-M10 env ignored", GH, 'const value = requested ?? (Number.isInteger(fromEnv) && fromEnv >= 1 ? fromEnv : GITHUB_ACCOUNT_MAX_REPOS_DEFAULT);', 'const value = requested ?? GITHUB_ACCOUNT_MAX_REPOS_DEFAULT;'),
+  ("A-M11 owner name not checked", GH, 'if (parts.length === 0 || !GITHUB_ACCOUNT_NAME.test(parts[0]))', 'if (parts.length === 0)'),
+  ("A-M12 host suffix accepted", GH, 'if (url.hostname !== "github.com" && url.hostname !== "www.github.com") throw new Error(`ERR_INVALID_GITHUB_URL: URL "${sourceUrl}" must point to github.com.`);', 'if (!url.hostname.endsWith("github.com")) throw new Error(`ERR_INVALID_GITHUB_URL: URL "${sourceUrl}" must point to github.com.`);'),
+  ("A-M13 listing includes member repos", GH, '/repos?type=owner&sort=pushed&per_page=100', '/repos?type=all&sort=pushed&per_page=100'),
+  ("A-M14 every repo failure swallowed", GH, 'if (!String(error?.message ?? "").startsWith("ERR_GITHUB_EMPTY_REPOSITORY_CONTENT")) throw error;', 'void error;'),
+  ("A-M15 unknown account reads as empty", GH, 'if (listing === null) throw new Error(`ERR_GITHUB_ACCOUNT_NOT_FOUND: GitHub account "${parsed.owner}" was not found.`);', ''),
+  ("A-M16 two segments read as account", GH, 'if (parts.length === 1) return { kind: "account", owner: parts[0] };', 'if (parts.length <= 2) return { kind: "account", owner: parts[0] };'),
+  ("A-M17 worker entry back to repo-only", DL, 'const docs = await loadGitHubSourceDocuments(item.url);', 'const docs = await (await import("../loaders/github")).loadGitHubRepositoryDocuments(item.url);'),
+  ("A-M18 repo index dropped from doc ids", GH, 'docIdPrefix: `${options?.docIdPrefix || "DOC_GH_"}R${index + 1}_`', 'docIdPrefix: `${options?.docIdPrefix || "DOC_GH_"}R_`'),
+  ("A-M19 selection unbounded", GH, '.slice(0, Math.floor(max));', ';'),
+  ("A-M20 empty account succeeds", GH, 'if (documents.length === 0) throw new Error(`ERR_GITHUB_EMPTY_ACCOUNT_CONTENT: GitHub account "${parsed.owner}" has no repository with usable documentation files.`);', ''),
+ ]),
+}
+T, M = BLOCKS[BLOCK]
+if sys.argv[3:4] == ["check"]:
+    for name, f, old, new in M: print(open(f"{PRISTINE}/{f}").read().count(old), name)
+    sys.exit()
+if os.path.exists(WORK): shutil.rmtree(WORK)
+shutil.copytree(PRISTINE, WORK, symlinks=True)
+for p in ["test/pink"]:
+    if os.path.exists(f"{WORK}/{p}"): shutil.rmtree(f"{WORK}/{p}")
+BASE = set(l.split(" > ",1)[-1].strip()[:110] for l in open(os.environ["BASE_FAILS"]) if l.strip()) if os.environ.get("BASE_FAILS") else set()
+results = []; sel = sys.argv[3:]
+for name, f, old, new in M:
+    if sel and name.split()[0] not in sel: continue
+    src = open(f"{PRISTINE}/{f}").read(); n = src.count(old)
+    if n != 1: results.append({"mutation": name, "error": f"pattern count {n}"}); print(name, "PATTERN", n, flush=True); continue
+    open(f"{WORK}/{f}", "w").write(src.replace(old, new))
+    try:
+        p = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *T], cwd=WORK, capture_output=True, text=True, timeout=1500); out = p.stdout + p.stderr; code = p.returncode
+    except subprocess.TimeoutExpired as e:
+        out = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or ""); code = "TIMEOUT"
+    finally:
+        shutil.copyfile(f"{PRISTINE}/{f}", f"{WORK}/{f}")
+    tot = " · ".join(re.sub(r"\s+", " ", m).strip() for m in re.findall(r"(?m)^\s*(?:Test Files|Tests)\s.*$", out))
+    failed = sorted({re.sub(r"\s+\d+ms$", "", l.split(" > ", 1)[-1].strip())[:110] for l in out.splitlines() if l.startswith(" FAIL ")})
+    new = [t for t in failed if t not in BASE]; red = code == "TIMEOUT" or bool(new) or (code != 0 and not failed)
+    results.append({"mutation": name, "file": f, "exit": code, "red": red, "totals": tot, "newFailures": new[:6]})
+    print(name, "RED" if red else "GREEN (not caught)", tot, flush=True)
+json.dump(results, open(f"{I}/../acp/out/mut-{BLOCK}{os.environ.get('MUT_TAG', '')}.json", "w"), indent=1, ensure_ascii=False)
+print("MUT-END")

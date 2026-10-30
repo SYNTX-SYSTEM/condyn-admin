@@ -1,0 +1,126 @@
+PINK block A measurements — GitHub account input, GELB 30f42b0 (base main 9fa2cdc). Evidence class DETERMINISTIC (fake fetcher, no network, no model). Disposable condyn_test_* DB per run.
+
+== A1/A2 parse matrix (url -> kind)
+  'https://github.com/octo'                                    -> account:octo
+  'https://github.com/octo/'                                   -> account:octo
+  'https://www.github.com/octo'                                -> account:octo
+  'https://GitHub.COM/octo'                                    -> account:octo
+  'https://github.com/octo?tab=repositories'                   -> account:octo
+  'https://github.com/octo#x'                                  -> account:octo
+  'https://github.com/octo/tool'                               -> repo:octo/tool
+  'https://github.com/octo/tool/tree/main'                     -> repo:octo/tool
+  'https://github.com/octo/tool.git'                           -> repo:octo/tool.git
+  'https://github.com/a'                                       -> account:a
+  'https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' -> account:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  'https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' -> ERR_INVALID_GITHUB_URL
+  'https://github.com/a-b-c'                                   -> account:a-b-c
+  'https://github.com/a--b'                                    -> ERR_INVALID_GITHUB_URL
+  'https://github.com/a-'                                      -> ERR_INVALID_GITHUB_URL
+  'https://github.com/-a'                                      -> ERR_INVALID_GITHUB_URL
+  'https://github.com/a_b'                                     -> ERR_INVALID_GITHUB_URL
+  'https://github.com/%C3%A4'                                  -> ERR_INVALID_GITHUB_URL
+  'https://github.com/%2e%2e'                                  -> ERR_INVALID_GITHUB_URL
+  'https://github.com/octo%2F..'                               -> ERR_INVALID_GITHUB_URL
+  'https://github.com/octo/%2e%2e'                             -> ERR_INVALID_GITHUB_URL
+  'https://github.com/octo/../evil'                            -> account:evil
+  'https://gist.github.com/octo'                               -> ERR_INVALID_GITHUB_URL
+  'https://api.github.com/octo'                                -> ERR_INVALID_GITHUB_URL
+  'https://raw.githubusercontent.com/octo'                     -> ERR_INVALID_GITHUB_URL
+  'https://github.com.evil.example/octo'                       -> ERR_INVALID_GITHUB_URL
+  'https://evil.example/github.com/octo'                       -> ERR_INVALID_GITHUB_URL
+  'ftp://github.com/octo'                                      -> ERR_INVALID_GITHUB_URL
+  'javascript://github.com/octo'                               -> ERR_INVALID_GITHUB_URL
+  'https://github.com'                                         -> ERR_INVALID_GITHUB_URL
+  'github.com/octo'                                            -> ERR_INVALID_GITHUB_URL
+  ''                                                           -> ERR_INVALID_GITHUB_URL
+  'https://user:pw@github.com/octo'                            -> account:octo
+  'https://github.com:8443/octo'                               -> account:octo
+  'http://github.com/octo'                                     -> account:octo
+  'https://github.com/settings'                                -> account:settings
+  'https://github.com/orgs/acme'                               -> repo:orgs/acme
+
+== A3 request set (12 repos listed, default bound)
+  {"total": 16, "listing": ["https://api.github.com/users/octo/repos?type=owner&sort=pushed&per_page=100"], "hosts": ["api.github.com"], "reposTouched": ["r00", "r01", "r02", "r03", "r04"], "docs": 5}
+
+== A4 selection (13 entries incl. fork/archived/private/disabled/malformed; 200 seeded permutations)
+  {"order": ["forkstr", "zz", "B", "a", "b", "bad", "nul"], "distinctOrdersOver200Permutations": 1, "inputUnchanged": true}
+  note: fork:"true" (string, not the API's boolean) is not filtered — the API returns booleans (O-A-4).
+
+== A5 bounds (14 repos listed)
+  env=undefined opt=undefined -> 5 (want 5)
+  env="" opt=undefined -> 5 (want 5)
+  env="0" opt=undefined -> 5 (want 5)
+  env="-1" opt=undefined -> 5 (want 5)
+  env="abc" opt=undefined -> 5 (want 5)
+  env="1.5" opt=undefined -> 5 (want 5)
+  env="3" opt=undefined -> 3 (want 3)
+  env="10" opt=undefined -> 10 (want 10)
+  env="11" opt=undefined -> 10 (want 10)
+  env="999999" opt=undefined -> 10 (want 10)
+  env="1" opt=undefined -> 1 (want 1)
+  env=undefined opt=50 -> 10 (want 10)
+  env=undefined opt=0 -> 1 (want 1)
+  env=undefined opt=2.9 -> 2 (want 2)
+  env="3" opt=7 -> 7 (want 7)
+
+== A6 failures
+  listing403               ERR_GITHUB_FETCH_FAILURE
+  listing500               ERR_GITHUB_FETCH_FAILURE
+  listingBadJson           ERR_GITHUB_FETCH_FAILURE
+  listingObject            ERR_GITHUB_EMPTY_ACCOUNT_CONTENT
+  user404                  ERR_GITHUB_ACCOUNT_NOT_FOUND
+  secondRepo403            ERR_GITHUB_FETCH_FAILURE
+  allEmpty                 ERR_GITHUB_EMPTY_ACCOUNT_CONTENT
+  onlyForks                ERR_GITHUB_EMPTY_ACCOUNT_CONTENT
+  repoUrlToAccountLoader   ERR_INVALID_GITHUB_URL
+  invalidBeforeRequest     ERR_INVALID_GITHUB_URL requests=0
+
+== A7 determinism
+  {"docIds": ["DOC_GH_R1_001", "DOC_GH_R2_001"], "equal": true}
+
+== Repo path through prepareDocuments (worker entry), base 9fa2cdc vs candidate 30f42b0, loadedAt removed
+  SAME 'https://github.com/octo/tool'                base: ok requests=3                    cand: ok requests=3
+  SAME 'https://github.com/octo/tool/tree/main'      base: ok requests=3                    cand: ok requests=3
+  SAME 'https://www.github.com/octo/tool'            base: ok requests=3                    cand: ok requests=3
+  SAME 'https://github.com/octo/tool.git'            base: ok requests=3                    cand: ok requests=3
+  DIFF 'https://github.com/a_b/tool'                 base: ok requests=3                    cand: ERR_INVALID_GITHUB_URL requests=0
+  DIFF 'https://github.com/a--b/tool'                base: ok requests=3                    cand: ERR_INVALID_GITHUB_URL requests=0
+  DIFF 'https://github.com/-x/tool'                  base: ok requests=3                    cand: ERR_INVALID_GITHUB_URL requests=0
+  DIFF 'ftp://github.com/octo/tool'                  base: ok requests=3                    cand: ERR_INVALID_GITHUB_URL requests=0
+  SAME 'https://github.com/orgs/acme'                base: ok requests=3                    cand: ok requests=3
+
+== tsc (candidate): 0 errors
+
+== suites on candidate 30f42b0: failing tests
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should execute pipeline via MockInferenceProvider, verify schema, save to demo per
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should reject document with empty content string with HTTP 400 Bad Request
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should reject empty document array with HTTP 400 Bad Request
+  FAIL  test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should preserve exact response str
+
+== suites on base 9fa2cdc: failing tests
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should execute pipeline via MockInferenceProvider, verify schema, save to demo per
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should reject document with empty content string with HTTP 400 Bad Request
+  FAIL  test/career-analyze-flow.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should reject empty document array with HTTP 400 Bad Request
+  FAIL  test/career-analyze-multisource.test.ts > CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should preserve exact response str
+
+== Mutants (GELB's suites: career-github-account-loader, career-github-loader, career-analyze-multisource, career-source-metadata, career-analyze-flow; red = a failure outside the 4 base-red tests)
+  RED   A-M01 fork filter off                      Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M02 archived filter off                  Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M03 disabled filter off                  Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M04 private filter off                   Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M05 oldest push first                    Test Files 3 failed | 2 passed (5) · Tests 6 failed | 23 passed (29)
+  RED   A-M06 name tie-break reversed              Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  ALIVE A-M07 hard cap gone                        Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  ALIVE A-M08 default 5 -> 100                     Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  ALIVE A-M09 env 0 taken as 1 (not default)       Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  ALIVE A-M10 env ignored                          Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  RED   A-M11 owner name not checked               Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M12 host suffix accepted                 Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M13 listing includes member repos        Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  ALIVE A-M14 every repo failure swallowed         Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  RED   A-M15 unknown account reads as empty       Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M16 two segments read as account         Test Files 3 failed | 2 passed (5) · Tests 8 failed | 21 passed (29)
+  ALIVE A-M17 worker entry back to repo-only       Test Files 2 failed | 3 passed (5) · Tests 4 failed | 25 passed (29)
+  RED   A-M18 repo index dropped from doc ids      Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)
+  RED   A-M19 selection unbounded                  Test Files 3 failed | 2 passed (5) · Tests 6 failed | 23 passed (29)
+  RED   A-M20 empty account succeeds               Test Files 3 failed | 2 passed (5) · Tests 5 failed | 24 passed (29)

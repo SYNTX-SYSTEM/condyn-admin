@@ -1,0 +1,101 @@
+// PINK block A probe (AUTOMATED_CAPABILITY_TO_JOB): GitHub account input. DETERMINISTIC, fake fetcher only, no network.
+import { describe, it, expect, afterEach } from "vitest";
+import { writeFileSync } from "node:fs";
+import { parseGitHubSourceUrl, selectAccountRepositories, loadGitHubAccountDocuments, loadGitHubSourceDocuments } from "../../lib/career/loaders/github";
+
+const OUT = process.env.PINK_OUT ?? "/dev/null";
+const rec: Record<string, unknown> = {};
+const b64 = (t: string) => Buffer.from(t).toString("base64");
+const repo = (name: string, pushed_at: string | null, extra: Record<string, unknown> = {}) => ({ name, fork: false, archived: false, disabled: false, private: false, pushed_at, ...extra });
+function api(listing: unknown, readme: (name: string) => unknown = n => ({ ok: true, status: 200, json: async () => ({ path: "README.md", content: b64(`# ${n}`) }) }), listingResponse?: unknown) {
+  const urls: string[] = [];
+  const fetcher = async (url: string) => {
+    urls.push(url);
+    if (url.startsWith("https://api.github.com/users/")) return listingResponse ?? (listing === null ? { ok: false, status: 404 } : { ok: true, status: 200, json: async () => listing });
+    const m = url.match(/^https:\/\/api\.github\.com\/repos\/[^/]+\/([^/]+)\/readme$/); if (m) return readme(m[1]);
+    return { ok: false, status: 404 };
+  };
+  return { fetcher: fetcher as never, urls };
+}
+const kind = (u: string) => { try { const p = parseGitHubSourceUrl(u); return p.kind === "account" ? `account:${p.owner}` : `repo:${p.owner}/${p.repo}`; } catch (e) { return String((e as Error).message).split(":")[0]; } };
+const env0 = process.env.GITHUB_ACCOUNT_MAX_REPOS;
+afterEach(() => { if (env0 === undefined) delete process.env.GITHUB_ACCOUNT_MAX_REPOS; else process.env.GITHUB_ACCOUNT_MAX_REPOS = env0; });
+
+describe("PINK A", () => {
+  it("A1/A2 parse matrix", () => {
+    const M: Record<string, string> = {
+      "https://github.com/octo": "account:octo", "https://github.com/octo/": "account:octo", "https://www.github.com/octo": "account:octo",
+      "https://GitHub.COM/octo": "account:octo", "https://github.com/octo?tab=repositories": "account:octo", "https://github.com/octo#x": "account:octo",
+      "https://github.com/octo/tool": "repo:octo/tool", "https://github.com/octo/tool/tree/main": "repo:octo/tool", "https://github.com/octo/tool.git": "repo:octo/tool.git",
+      "https://github.com/a": "account:a", ["https://github.com/" + "a".repeat(39)]: "account:" + "a".repeat(39), ["https://github.com/" + "a".repeat(40)]: "ERR_INVALID_GITHUB_URL",
+      "https://github.com/a-b-c": "account:a-b-c", "https://github.com/a--b": "ERR_INVALID_GITHUB_URL", "https://github.com/a-": "ERR_INVALID_GITHUB_URL", "https://github.com/-a": "ERR_INVALID_GITHUB_URL",
+      "https://github.com/a_b": "ERR_INVALID_GITHUB_URL", "https://github.com/%C3%A4": "ERR_INVALID_GITHUB_URL", "https://github.com/%2e%2e": "ERR_INVALID_GITHUB_URL", "https://github.com/octo%2F..": "ERR_INVALID_GITHUB_URL",
+      "https://github.com/octo/%2e%2e": "ERR_INVALID_GITHUB_URL", "https://github.com/octo/../evil": "account:evil",
+      "https://gist.github.com/octo": "ERR_INVALID_GITHUB_URL", "https://api.github.com/octo": "ERR_INVALID_GITHUB_URL", "https://raw.githubusercontent.com/octo": "ERR_INVALID_GITHUB_URL",
+      "https://github.com.evil.example/octo": "ERR_INVALID_GITHUB_URL", "https://evil.example/github.com/octo": "ERR_INVALID_GITHUB_URL", "ftp://github.com/octo": "ERR_INVALID_GITHUB_URL",
+      "javascript://github.com/octo": "ERR_INVALID_GITHUB_URL", "https://github.com": "ERR_INVALID_GITHUB_URL", "github.com/octo": "ERR_INVALID_GITHUB_URL", "": "ERR_INVALID_GITHUB_URL",
+      "https://user:pw@github.com/octo": "account:octo", "https://github.com:8443/octo": "account:octo", "http://github.com/octo": "account:octo",
+      "https://github.com/settings": "account:settings", "https://github.com/orgs/acme": "repo:orgs/acme"
+    };
+    const got = Object.fromEntries(Object.keys(M).map(u => [u, kind(u)]));
+    rec.parse = got; expect(got).toEqual(M);
+  });
+
+  it("A3 request set: one listing call on api.github.com, selected repos only", async () => {
+    const a = api(Array.from({ length: 12 }, (_, i) => repo(`r${String(i).padStart(2, "0")}`, `2025-01-${String(28 - i).padStart(2, "0")}T00:00:00Z`)));
+    const docs = await loadGitHubAccountDocuments("https://github.com/octo", { fetcher: a.fetcher });
+    const listing = a.urls.filter(u => u.includes("/users/"));
+    rec.requests = { total: a.urls.length, listing, hosts: [...new Set(a.urls.map(u => new URL(u).host))], reposTouched: [...new Set(a.urls.filter(u => u.includes("/repos/")).map(u => u.split("/")[5]))], docs: docs.length };
+    expect(listing).toEqual(["https://api.github.com/users/octo/repos?type=owner&sort=pushed&per_page=100"]);
+    expect(new Set(a.urls.map(u => new URL(u).host))).toEqual(new Set(["api.github.com"]));
+    expect([...new Set(a.urls.filter(u => u.includes("/repos/")).map(u => u.split("/")[5]))]).toEqual(["r00", "r01", "r02", "r03", "r04"]);
+  });
+
+  it("A4 selection: filters, order, ties, null pushed_at, permutation invariance", () => {
+    const L = [repo("b", "2025-01-01T00:00:00Z"), repo("B", "2025-01-01T00:00:00Z"), repo("a", "2025-01-01T00:00:00Z"), repo("nul", null), repo("bad", "not a date"), repo("zz", "2026-01-01T00:00:00Z"),
+      repo("f", "2027-01-01T00:00:00Z", { fork: true }), repo("ar", "2027-01-01T00:00:00Z", { archived: true }), repo("pr", "2027-01-01T00:00:00Z", { private: true }), repo("di", "2027-01-01T00:00:00Z", { disabled: true }),
+      repo("forkstr", "2027-01-01T00:00:00Z", { fork: "true" }), { name: "", pushed_at: "2027-01-01T00:00:00Z" }, { pushed_at: "2027-01-01T00:00:00Z" }];
+    const base = selectAccountRepositories(L, 99).map(r => r.name);
+    const perms = new Set<string>(); let seed = 7; const rnd = () => (seed = (seed * 48271) % 2147483647) / 2147483647;
+    for (let i = 0; i < 200; i += 1) { const s = [...L].sort(() => rnd() - 0.5); perms.add(selectAccountRepositories(s, 99).map(r => r.name).join(",")); }
+    rec.selection = { order: base, distinctOrdersOver200Permutations: perms.size, inputUnchanged: L[0].name === "b" };
+    expect(base).toEqual(["forkstr", "zz", "B", "a", "b", "bad", "nul"]);
+    expect(perms.size).toBe(1);
+  });
+
+  it("A5 bounds: env and option", async () => {
+    const L = Array.from({ length: 14 }, (_, i) => repo(`r${String(i).padStart(2, "0")}`, `2025-02-${String(28 - i).padStart(2, "0")}T00:00:00Z`));
+    const count = async (envv: string | undefined, maxRepos?: number) => { if (envv === undefined) delete process.env.GITHUB_ACCOUNT_MAX_REPOS; else process.env.GITHUB_ACCOUNT_MAX_REPOS = envv; const a = api(L); await loadGitHubAccountDocuments("https://github.com/octo", { fetcher: a.fetcher, maxRepos }); return new Set(a.urls.filter(u => u.includes("/repos/octo/")).map(u => u.split("/")[5])).size; };
+    const cases: Array<[string | undefined, number | undefined, number]> = [[undefined, undefined, 5], ["", undefined, 5], ["0", undefined, 5], ["-1", undefined, 5], ["abc", undefined, 5], ["1.5", undefined, 5], ["3", undefined, 3], ["10", undefined, 10], ["11", undefined, 10], ["999999", undefined, 10], ["1", undefined, 1], [undefined, 50, 10], [undefined, 0, 1], [undefined, 2.9, 2], ["3", 7, 7]];
+    const got: string[] = []; for (const [e, m, want] of cases) { const n = await count(e, m); got.push(`env=${JSON.stringify(e)} opt=${m} -> ${n} (want ${want})`); }
+    rec.bounds = got; for (let i = 0; i < cases.length; i += 1) expect(got[i]).toBe(`env=${JSON.stringify(cases[i][0])} opt=${cases[i][1]} -> ${got[i].split(" -> ")[1].split(" ")[0]} (want ${cases[i][2]})`);
+    expect(got.every(g => { const m = g.match(/-> (\d+) \(want (\d+)\)/)!; return m[1] === m[2]; })).toBe(true);
+  });
+
+  it("A6 failures stay failures", async () => {
+    const res = async (f: () => Promise<unknown>) => { try { await f(); return "OK"; } catch (e) { return String((e as Error).message).split(":")[0]; } };
+    const two = [repo("one", "2025-01-02T00:00:00Z"), repo("two", "2025-01-01T00:00:00Z")];
+    const out = {
+      listing403: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(two, undefined, { ok: false, status: 403 }).fetcher })),
+      listing500: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(two, undefined, { ok: false, status: 500 }).fetcher })),
+      listingBadJson: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(two, undefined, { ok: true, status: 200, json: async () => { throw new Error("x"); } }).fetcher })),
+      listingObject: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api({ message: "API rate limit exceeded" }).fetcher })),
+      user404: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(null).fetcher })),
+      secondRepo403: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(two, n => n === "two" ? { ok: false, status: 403 } : { ok: true, status: 200, json: async () => ({ path: "README.md", content: b64("# one") }) }).fetcher })),
+      allEmpty: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(two, () => ({ ok: false, status: 404 })).fetcher })),
+      onlyForks: await res(() => loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api([repo("f", "2025-01-01T00:00:00Z", { fork: true })]).fetcher })),
+      repoUrlToAccountLoader: await res(() => loadGitHubAccountDocuments("https://github.com/octo/tool", { fetcher: api(two).fetcher })),
+      invalidBeforeRequest: await (async () => { const a = api(two); const r = await res(() => loadGitHubSourceDocuments("https://github.com/a--b", { fetcher: a.fetcher })); return `${r} requests=${a.urls.length}`; })()
+    };
+    rec.failures = out;
+    expect(out).toEqual({ listing403: "ERR_GITHUB_FETCH_FAILURE", listing500: "ERR_GITHUB_FETCH_FAILURE", listingBadJson: "ERR_GITHUB_FETCH_FAILURE", listingObject: "ERR_GITHUB_EMPTY_ACCOUNT_CONTENT", user404: "ERR_GITHUB_ACCOUNT_NOT_FOUND", secondRepo403: "ERR_GITHUB_FETCH_FAILURE", allEmpty: "ERR_GITHUB_EMPTY_ACCOUNT_CONTENT", onlyForks: "ERR_GITHUB_EMPTY_ACCOUNT_CONTENT", repoUrlToAccountLoader: "ERR_INVALID_GITHUB_URL", invalidBeforeRequest: "ERR_INVALID_GITHUB_URL requests=0" });
+  });
+
+  it("A7 determinism", async () => {
+    const L = [repo("one", "2025-01-02T00:00:00Z"), repo("two", "2025-01-01T00:00:00Z")];
+    const d1 = await loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api(L).fetcher }); const d2 = await loadGitHubAccountDocuments("https://github.com/octo", { fetcher: api([...L].reverse()).fetcher });
+    rec.determinism = { docIds: d1.map(d => d.docId), equal: JSON.stringify(d1) === JSON.stringify(d2) };
+    expect(JSON.stringify(d1)).toBe(JSON.stringify(d2));
+    writeFileSync(OUT, JSON.stringify(rec, null, 1));
+  });
+});

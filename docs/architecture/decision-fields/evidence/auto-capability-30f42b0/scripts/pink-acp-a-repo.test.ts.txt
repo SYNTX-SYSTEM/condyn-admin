@@ -1,0 +1,13 @@
+// PINK block A non-regression: the repository path through prepareDocuments (the worker entry), global fetch stubbed, no network. Runs on base and candidate.
+import { describe, it, vi, afterAll } from "vitest";
+import { writeFileSync } from "node:fs";
+import { prepareDocuments } from "../../lib/career/orchestration/document-loader";
+const b64 = (t: string) => Buffer.from(t).toString("base64");
+const urls: string[] = [];
+vi.stubGlobal("fetch", async (url: string) => { urls.push(url); const m = String(url).match(/\/repos\/([^/]+)\/([^/]+)\/readme$/); if (m) return { ok: true, status: 200, json: async () => ({ path: "README.md", content: b64(`# ${m[1]}/${m[2]}`) }) }; return { ok: false, status: 404 }; });
+const out: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT_REPO ?? "/dev/null", JSON.stringify(out, null, 1)));
+describe("PINK A repo path", () => {
+  for (const u of ["https://github.com/octo/tool", "https://github.com/octo/tool/tree/main", "https://www.github.com/octo/tool", "https://github.com/octo/tool.git", "https://github.com/a_b/tool", "https://github.com/a--b/tool", "https://github.com/-x/tool", "ftp://github.com/octo/tool", "https://github.com/orgs/acme"])
+    it(u, async () => { urls.length = 0; try { const r = await prepareDocuments([{ type: "github", url: u }]); out[u] = { ok: true, docs: (r as any).normalizedDocuments?.map((d: any) => [d.docId, d.content]) ?? r, urls: [...urls] }; } catch (e) { out[u] = { ok: false, code: String((e as Error).message).split(":")[0], urls: [...urls] }; } });
+});

@@ -3796,6 +3796,26 @@ GELB asked for the gate probe again, a hit test and click proof in all states an
 
 **Run record.** `evidence/semiotic-entry-0ab9baf/`.
 
+### 3.84 Automated capability-to-job path, block A: GitHub account input, GELB `30f42b0` (2026-10-30) — PASS with two open findings
+
+**Request.** Owner mandate SFE::AUTOMATED_CAPABILITY_TO_JOB_EXECUTE ("NUR DAS. MEHR NICHT."), spec `b3ebb6d`. GELB delivers the backend block by block; block A is the GitHub account input: `github.com/<user>` selects the account's own public, active repositories automatically (newest push first, default 5, hard cap 10) and loads them with the existing repository loader. GELB's decisions Q1–Q5 on the spec are the oracle (`evidence/auto-capability-30f42b0/scripts/grid.md.txt`).
+
+**Method.** Deterministic only: a fake fetcher, no network, no model, a disposable `condyn_test_*` database per run.
+- **Probe `pink-acp-a`.** URL matrix (37 URLs), request set, selection with 200 seeded permutations, bounds (15 cases), failure cases (10), determinism.
+- **Repo-path non-regression.** Nine repository URLs through `prepareDocuments` (the worker entry) on base `9fa2cdc` and on the candidate.
+- **Suites and tsc.** GELB's suites on both trees.
+- **Mutants.** 20 mutants of the new rules, judged against the base-red set.
+
+**Verdict: PASS with F-ACC-1 and F-ACC-2 open** (`evidence/auto-capability-30f42b0/verdicts.txt`).
+- **A1–A7 pass.** Only `api.github.com`, one listing call, forks, archived, private and disabled repositories excluded, the order is stable, the bounds follow Q4, and failures are not hidden.
+- **Repo path.** 5 of 9 URLs identical to base. Four are refused earlier now (O-A-1, fail closed).
+- **tsc and suites.** tsc 0. The same 4 tests fail on base and candidate (3 in career-analyze-flow, CATEGORY C in career-analyze-multisource).
+- **F-ACC-1.** The analyze route still accepts only `github.com`, so `www.github.com/<user>` (an account per Q4) gets HTTP 400 end to end.
+- **F-ACC-2.** 6 of 20 mutants stay green in GELB's suites: hard cap, default, env handling (3), swallowed repository failures, and the worker entry `document-loader`. The account path's entry into the worker is not covered by any test.
+- **Observations.** O-A-2: up to 100 documents per ANALYZE in the one extraction call, bounded by count, not bytes. O-A-3: without `GITHUB_TOKEN`, the GitHub rate limit allows about 3 account analyses per hour.
+
+**Run record.** `evidence/auto-capability-30f42b0/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
