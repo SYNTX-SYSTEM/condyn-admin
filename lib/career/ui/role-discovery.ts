@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { PoolRoleDiscovery, RoleLexicalStatus } from "../job-pool/pool-role-discovery";
 import type { SemanticInvestigationPlan } from "../job-pool/relation-cache";
-import { SEMANTIC_ROLES_HARD_CAP } from "../job-pool/semantic-config";
+import { SEMANTIC_ROLES_HARD_CAP } from "../job-pool/semantic-limits";
 
 /**
  * Role discovery, the read (owner "OWNER_DECISION_ROLE_DISCOVERY" D-RD-1 = B; GELB stage 2, RD-READ). GET only:

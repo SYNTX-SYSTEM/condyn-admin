@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { DEFAULT_GEMINI_MODEL_CASCADE } from "../providers/gemini";
 import type { RelationEngineIdentity } from "./relation-cache";
 import { GEMINI_SEMANTIC_PROMPT } from "./semantic-prompt";
+import { SEMANTIC_ROLES_DEFAULT, SEMANTIC_ROLES_HARD_CAP } from "./semantic-limits";
 
 /**
  * The ONE configuration source of the semantic investigation (PINK O-LED-3): read from the process environment in this module only.
@@ -9,8 +10,7 @@ import { GEMINI_SEMANTIC_PROMPT } from "./semantic-prompt";
  * digits >= 1 (`ROLE_DISCOVERY_DAY_LIMIT`, fails closed): the budget is the owner's release (D-RD-3). Without configuration nothing
  * can start. The same configuration gates the automatic run after an analysis.
  */
-export const SEMANTIC_ROLES_DEFAULT = 10;
-export const SEMANTIC_ROLES_HARD_CAP = 25;
+export { SEMANTIC_ROLES_DEFAULT, SEMANTIC_ROLES_HARD_CAP };
 export type SemanticConfig =
   | { state: "NOT_CONFIGURED" }
   | { state: "PROVIDER_NOT_AUTHORIZED"; provider: string }
