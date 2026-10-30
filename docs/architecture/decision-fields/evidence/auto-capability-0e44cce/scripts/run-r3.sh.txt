@@ -1,0 +1,28 @@
+#!/bin/bash
+# PINK §3.85 re-check on 0e44cce (frontend r2 on backend b972905): only the conditions named in §3.85.
+S=$SCRATCH; O=$S/acp/out/r3; P=$REPO; C=0e44cce; mkdir -p $O
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/t0e4 && npx tsc --noEmit -p . > $O/tsc.log 2>&1; echo "tsc errors $(grep -c 'error TS' $O/tsc.log)"
+for f in r3-decoder db-r2 worker-r2 notprov-r2; do PINK_OUT=$O/$f.json npm run -s test:isolated -- test/pink/pink-acp-$f.test.* > $O/$f.log 2>&1; echo "probe $f exit $? $(grep -E '^\s*Tests ' $O/$f.log | tr -s ' ')"; done
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts"
+npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg.log 2>&1; echo "regression exit $? $(grep -E '^\s*(Test Files|Tests) ' $O/reg.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg.log > $O/reg-fails.txt
+echo "fails only on 0e44cce (vs base 9fa2cdc):"; comm -23 $O/reg-fails.txt $S/acp/out/reg-fails-tacpbase.txt | cut -c1-180
+for B in R3 R3F; do PRISTINE_NAME=t0e4 WORK_TAG=$B python3 $S/acp/mutate-acp.py $S/int $B > $O/mut-$B.log 2>&1; echo "$B: $(grep -c ' RED ' $O/mut-$B.log) red; $(grep -E 'GREEN|PATTERN' $O/mut-$B.log | cut -c1-70 | tr '\n' ';')"; done
+# browser: S8 on the restored real world (modes 6 viewports incl. 960/640, orbits, RI, rd-ui, gaps), then the walk and the stack dig on GRÜN's lab
+bash $S/sem/run-382.sh $C r3 > $O/s8.log 2>&1; tail -4 $O/s8.log | cut -c1-200
+cd $P && git checkout -q --detach $C && echo "walk HEAD $(git rev-parse --short HEAD)"
+export CONDYN_PLAYWRIGHT_MODULE=$NQUIRY/node_modules/playwright/index.mjs
+LD=$S/acp/lab-r3; rm -rf "${LD:?}"; mkdir -p $LD $O/walk $O/dig
+if ! ss -ltn | grep -q ":41873 "; then
+  LAB_PORT=41873 LAB_DIR=$LD LAB_STATE_FILE=$LD/state.json npx tsx docs/career_analysis/evidence/auto-capability-path/scripts/lab.ts > $LD/lab.log 2>&1 &
+  for k in $(seq 1 200); do grep -qE "LAB READY|Error|rror:" $LD/lab.log && break; sleep 3; done
+  if grep -q "LAB READY" $LD/lab.log; then
+    timeout 1500 node $S/acp/web/pink-acp-walk.mjs $LD/state.json $P $O/walk r3 > $O/walk.log 2>&1; echo "walk exit $?"; cut -c1-300 $O/walk.log
+    timeout 1200 node $S/acp/web/pink-acp-dig.mjs $LD/state.json $P $O/dig > $O/dig.log 2>&1; echo "dig exit $?"; cut -c1-400 $O/dig.log
+  fi
+  PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 30); do ss -ltn | grep -q ":41873 " || break; sleep 1; done; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"
+  [ -f $LD/net.jsonl ] && echo "net sentinel log lines: $(wc -l < $LD/net.jsonl)" || echo "net sentinel log: none"
+else echo "PORT BUSY"; fi
+cd $P && git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"
+echo R3-END

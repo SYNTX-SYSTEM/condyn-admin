@@ -1,0 +1,32 @@
+// PINK §3.85 re-check (F-AC-2, F-AM-6): the backend's own view objects for PARTIAL · DAY_BUDGET_EXHAUSTED and SKIPPED · NO_PROPOSALS go
+// through the client decoder and the panel (server-rendered), EN and DE — never READ_FAILED. DETERMINISTIC, no DB, no network.
+import React from "react";
+import { describe, expect, it, afterAll } from "vitest";
+import { writeFileSync } from "node:fs";
+import { renderToString } from "react-dom/server";
+import { viewOfAutoInvestigation } from "../../lib/career/job-pool/auto-match";
+import { decodeAutoMatch } from "../../lib/career/ui/auto-match";
+import { AutoJobRankingPanel } from "../../app/components/career/demo/AutoJobRankingPanel";
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const strip = (h: string) => h.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+describe("PINK r3 decoder", () => {
+  it("backend views decode and render with their own line", () => {
+    const partialDay = viewOfAutoInvestigation({ investigation: { investigationId: "RINV_0123456789ABCDEF0123456789ABCDEF", provider: "stand-in", status: "PARTIAL", createdAt: "2026-10-30T10:00:00.000Z", updatedAt: "2026-10-30T10:00:05.000Z", request: { uploads: ["JPOOL_A"], roles: [{}, {}, {}], callsNeeded: 3, rolesTotal: 3 } },
+      tasks: [{ status: "SUCCEEDED", errorCode: null }, { status: "BUDGET_EXHAUSTED", errorCode: "ERR_BUDGET_EXHAUSTED" }, { status: "CANCELLED", errorCode: null }], poolNames: new Map([["JPOOL_A", "Pool A"]]) });
+    const skippedNoProposals = { state: "SKIPPED", reason: "NO_PROPOSALS", evidenceClass: null, pools: [], budget: null, investigationId: null, startedAt: null, finishedAt: null };
+    const out: Record<string, unknown> = {};
+    for (const [name, view] of [["PARTIAL·DAY_BUDGET_EXHAUSTED", partialDay], ["SKIPPED·NO_PROPOSALS", skippedNoProposals]] as const) {
+      const decoded = decodeAutoMatch(JSON.parse(JSON.stringify(view)));
+      const r: Record<string, unknown> = { backend: `${(view as any).state}·${(view as any).reason}`, decoded: decoded !== null };
+      for (const locale of ["en", "de"] as const) {
+        const html = renderToString(React.createElement(AutoJobRankingPanel, { locale, watch: { read: decoded ? { state: "AVAILABLE", autoMatch: decoded } : { state: "FAILED", code: null }, waitedOut: false }, ranking: { state: "IDLE" }, onGoToJobField: () => {} } as never));
+        r[locale] = { line: html.match(/data-auto-line="([^"]+)"/)?.[1] ?? null, text: strip(html).slice(0, 400), ownCause: [/call budget ran out/, /Aufrufbudget war während des Abgleichs aufgebraucht/, /names no capability/, /nennt keine Fähigkeit/].filter(r => r.test(html)).map(String), goToJobField: html.includes("auto-go-to-job-field") };
+      }
+      out[name] = r;
+    }
+    rec.decoder = out;
+    expect((out["PARTIAL·DAY_BUDGET_EXHAUSTED"] as any).backend).toBe("PARTIAL·DAY_BUDGET_EXHAUSTED");
+    for (const v of Object.values(out) as any[]) { expect(v.decoded).toBe(true); expect(v.en.line).not.toBe("READ_FAILED"); expect(v.de.line).not.toBe("READ_FAILED"); expect(v.en.text).not.toBe(v.de.text); }
+  });
+});

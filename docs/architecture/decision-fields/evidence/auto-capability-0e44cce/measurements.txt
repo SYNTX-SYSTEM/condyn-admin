@@ -1,0 +1,111 @@
+PINK §3.86 re-check of §3.85 on frontend 0e44cce (on backend b972905) — only the conditions named in §3.85. DETERMINISTIC (vitest, own condyn_test_* DB, no network) and STAND_IN (GRÜN's lab, loopback Gemini fake, network sentinel: no log). No model call, nothing on main or :3017.
+
+== tsc: 0 errors
+== probe r3-decoder: ['Tests  1 passed (1)']
+== probe db-r2: ['Tests  9 passed (9)']
+== probe worker-r2: ['Tests  1 passed (1)']
+== probe notprov-r2: ['Tests  1 passed (1)']
+
+== F-AC-2 / F-AM-6 decoder and panel (backend view objects → client decoder → server-rendered panel)
+  PARTIAL·DAY_BUDGET_EXHAUSTED: decoded True · EN line PARTIAL ['/call budget ran out/'] · DE line PARTIAL ['/Aufrufbudget war während des Abgleichs aufgebraucht/'] · GO TO JOB FIELD False
+  SKIPPED·NO_PROPOSALS: decoded True · EN line SKIPPED ['/names no capability/'] · DE line SKIPPED ['/nennt keine Fähigkeit/'] · GO TO JOB FIELD False
+
+== regression test/career + root career suites
+  Test Files  7 failed | 407 passed | 6 skipped (420) · Tests  31 failed | 2618 passed | 13 skipped (2662)
+  failing only on 0e44cce vs base 9fa2cdc: 1
+     FAIL  test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts > T49 COVFCR deterministic lifecycle integration > preserves every valence through first-revision persi
+
+== mutants (pristine green)
+  RED   E-M01 auto-match GET registers the tables
+  RED   N-M04 NOT_PROVISIONED run reads FAILED
+  RED   N-M05 GET NOT_PROVISIONED dropped
+  RED   R-M01 NO_PROPOSALS run check removed
+  RED   R-M02 NO_PROPOSALS read check removed
+  RED   F-M17 DE beyond-budget line in EN
+  RED   R-F01 client refuses DAY_BUDGET_EXHAUSTED
+  RED   R-F02 client refuses NO_PROPOSALS
+  RED   R-F03 stack-tier height cap removed
+
+== S8 on the restored real world vs 0ab9baf
+  SAME gaps-cand2.json: 0 differing
+  SAME hit.json: 0 differing
+  DIFF modes-1280x720@1.json: 7 differing
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF modes-1440x900@1.json: 7 differing
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF modes-1600x900@1.json: 7 differing
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF modes-1920x1080@1.json: 7 differing
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF modes-640x360@2.json: 9 differing
+      .orbits.01.anyFocus: 1 -> 0
+      .orbits.01.cosmos: 1 -> 0
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF modes-960x540@2.json: 7 differing
+      .scenes.person.api[1]: "GET /api/career/analyses/ANL/investigation" -> "GET /api/career/analyses/ANL/auto-match"
+      .scenes.person.api[2]: "GET /api/career/job-pools" -> "GET /api/career/analyses/ANL/investigation"
+      .scenes.person.api[3]: null -> "GET /api/career/job-pools"
+      .scenes.person.idsHash: "112a9bbe63" -> "5826ed88db"
+      .scenes.person.testids: 91 -> 96
+      .scenes.person.textHash: "57ab7bc713" -> "d5a63081d9"
+      .scenes.person.textLen: 1201 -> 1414
+  DIFF orbits-cand2-1920.json: 4 differing
+      .apis[3]: "GET /api/career/job-pools/JPOOL_…" -> "GET /api/career/analyses/ANL_…/auto-match"
+      .apis[4]: "GET /api/career/analyses/ANL_…/job-comparison" -> "GET /api/career/job-pools/JPOOL_…"
+      .apis[5]: "GET /api/career/analyses/ANL_…/role-discovery" -> "GET /api/career/analyses/ANL_…/job-comparison"
+      .apis[6]: null -> "GET /api/career/analyses/ANL_…/role-discovery"
+  SAME rd-ui-cand2-1920.json: 0 differing
+  SAME ri-cand2-1280x720-vp.json: 0 differing
+  SAME ri-cand2-1920-main.json: 0 differing
+  orbits 960x540@2: baseline {"01": {"viewMatches": 1, "cosmos": 1, "emptyProjection": 0, "anyFocus": 1, "historyDelta": 0}, "02": {"viewMatches": 0, "cosmos": 0, "emptyProjection": 0, "anyFocus": 0, "historyDelta": 0}, "0
+                0e44cce  {"01": {"viewMatches": 1, "cosmos": 1, "emptyProjection": 0, "anyFocus": 1, "historyDelta": 0}, "02": {"viewMatches": 0, "cosmos": 0, "emptyProjection": 0, "anyFocus": 0, "historyDelta": 0}, "03": 
+  orbits 640x360@2: baseline {"01": {"viewMatches": 1, "cosmos": 1, "emptyProjection": 0, "anyFocus": 1, "historyDelta": 0}, "02": {"viewMatches": 0, "cosmos": 0, "emptyProjection": 0, "anyFocus": 0, "historyDelta": 0}, "0
+                0e44cce  {"01": {"viewMatches": 0, "cosmos": 0, "emptyProjection": 0, "anyFocus": 0, "historyDelta": 0}, "02": {"viewMatches": 0, "cosmos": 0, "emptyProjection": 0, "anyFocus": 0, "historyDelta": 0}, "03": 
+
+== walk (semantic on)
+  en pdf: inputs after ANALYZE 0 · line SKIPPED · ranks 73 semantic 0 evidence NONE · UI = API True · writes [] reload [] · errors 0
+     line text: PERSON ⟶ JOB POOLS ⟶ RANKINGThis analysis names no capability; there is nothing to match against the job pools.→ a source with demonstrated capabilities is matched by itself
+  en text: inputs after ANALYZE 0 · line PARTIAL · ranks 73 semantic 22 evidence STAND_IN · UI = API True · writes [] reload [] · errors 0
+     line text: PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically ·
+  de text: inputs after ANALYZE 0 · line PARTIAL · ranks 73 semantic 22 evidence STAND_IN · UI = API True · writes [] reload [] · errors 0
+     line text: PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 R
+  view 1920x1080@1: panel [1496, 193, 400, 852] covered [] hscroll False writes 0 errors 0
+  view 1600x900@1: panel [1176, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+  view 1440x900@1: panel [1016, 132, 400, 752] covered [] hscroll False writes 0 errors 0
+  view 1280x720@1: panel [872, 132, 384, 572] covered [] hscroll False writes 0 errors 0
+  view 960x540@2: panel [16, 202, 928, 270] covered [] hscroll False writes 0 errors 0
+  view 640x360@2: panel [16, 202, 608, 180] covered [] hscroll False writes 0 errors 0
+
+== stack tier (document positions; viewport 960×540 / 640×360 CSS px; before the path orbit 01 stood at ~193/196 per GRÜN; PINK baseline: S8 reached orbit 01 without scrolling in both tiers)
+  pdf: run SKIPPED·NO_PROPOSALS · 960 {"docHeight": 1509, "panelTop": 202, "panelHeight": 270, "shell01Top": 475, "shell06Top": 580, "dockTop": null, "shell01OpensAfterScroll": 1} · 640 {"docHeight": 1241, "panelTop": 202, "panelHeight": 180, "shell01Top": 388, "shell06Top": 457, "dockTop": null, "shell01OpensAfterScroll": 1}
+  text: run SKIPPED·NO_PROPOSALS · 960 {"docHeight": 1509, "panelTop": 202, "panelHeight": 270, "shell01Top": 475, "shell06Top": 580, "dockTop": null, "shell01OpensAfterScroll": 1} · 640 {"docHeight": 1241, "panelTop": 202, "panelHeight": 180, "shell01Top": 388, "shell06Top": 457, "dockTop": null, "shell01OpensAfterScroll": 1}

@@ -3843,6 +3843,29 @@ Open but not blocking:
 
 **Run record.** `evidence/auto-capability-576a704/`.
 
+### 3.86 Automated capability-to-job path, re-check of §3.85 on frontend `0e44cce` (backend `b972905`, 2026-10-30) — GO
+
+**Request.** GELB asked PINK to re-check only the conditions named in §3.85 (mandate "NUR DAS. MEHR NICHT.") on the integrated pair: frontend `frontend/auto-capability-path-r2` `0e44cce` on backend `b972905`, and to give GO/NO-GO.
+
+**Method.**
+- **Browser.** A stack-tier walk and a stack dig in GRÜN's stand-in lab, and S8 on the restored real world (including 960×540@2 and 640×360@2).
+- **Decoder.** The backend's own view objects for `PARTIAL · DAY_BUDGET_EXHAUSTED` and `SKIPPED · NO_PROPOSALS`, run through the client decoder and the server-rendered panel in EN and DE.
+- **Inverse.** 9 targeted mutants, plus PINK's backend probes, tsc and the test/career regression against base `9fa2cdc`.
+
+**Verdict: GO for merge and :3017** (`evidence/auto-capability-0e44cce/verdicts.txt`). On :3017 the stand-in stays the provider until the owner releases a budget.
+- **F-AC-1 closed.** In the stack tier the ranking panel now keeps at most half the viewport (270 / 180 px, was 8758 / 10827 px). Orbit 01 sits at document y 475 / 388 and opens.
+  - At 960×540, S8 reaches orbit 01 without scrolling, as on the baseline.
+  - **D-AC-1 (accepted deviation).** At 640×360 orbit 01 starts 28 px below the first viewport, so it needs one short scroll. On the baseline, orbits 02–06 already needed scrolling there.
+- **F-AC-2 closed.** `DAY_BUDGET_EXHAUSTED` decodes and has its own line in EN and DE.
+- **F-AM-6 closed.** An analysis without capability proposals reads as `SKIPPED · NO_PROPOSALS`: no run, no claim that roles were checked.
+- **F-AM-7 closed.** All 9 mutants are red.
+- **Rest of the path.** Unchanged: 0 inputs and 0 writes after ANALYZE, 22 SEMANTIC ranks out of 73, UI = API, EN/DE.
+- **tsc and regression.** tsc 0. The regression differs from base only in the base-red outcome-valence domain.
+
+**Owner notes** carried over from §3.85: O-AC-2, O-AC-3, O-AM-4, O-A-2/3, and D-AC-1 above.
+
+**Run record.** `evidence/auto-capability-0e44cce/`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
