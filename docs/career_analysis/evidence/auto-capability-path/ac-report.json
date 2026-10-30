@@ -1,0 +1,660 @@
+{
+ "tag": "ac",
+ "flow": {
+  "actions": [
+   "mode PERSON",
+   "Capability Field",
+   "ENTER TEXT",
+   "type text",
+   "ADD",
+   "ANALYZE"
+  ],
+  "actionsAfterAnalyze": 0,
+  "analysisId": "ANL_1793363849869_583",
+  "seen": [
+   {
+    "t": 0,
+    "state": "no-panel"
+   },
+   {
+    "t": 2,
+    "state": "NOT_STARTED/IDLE"
+   },
+   {
+    "t": 4.1,
+    "state": "RUNNING/IDLE"
+   },
+   {
+    "t": 6.1,
+    "state": "PARTIAL/LOADING"
+   },
+   {
+    "t": 6.5,
+    "state": "PARTIAL/AVAILABLE"
+   }
+  ],
+  "summary": {
+   "line": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "evidence": "STAND_IN",
+   "authority": "Authority: none · a ranking from unverified relations, not a decision",
+   "ranks": 73,
+   "top": [
+    {
+     "rank": "1",
+     "tier": "SEMANTIC",
+     "fit": "0.24",
+     "text": "1AI Systems ArchitectLumen Semantic Labs GmbH · DLL AI, Data & Semantic Systems PoolSEMANTICfit 24 % · 9 of 9 requiremen"
+    },
+    {
+     "rank": "2",
+     "tier": "SEMANTIC",
+     "fit": "0.175",
+     "text": "2Backend Engineer – LedgerBrightwater Payments B.V. · DLL Engineering & Architecture PoolSEMANTICfit 18 % · 8 of 8 requi"
+    },
+    {
+     "rank": "3",
+     "tier": "SEMANTIC",
+     "fit": "0.142857",
+     "text": "3Data Architect – LakehouseNorthbeam Analytics AB · DLL AI, Data & Semantic Systems PoolSEMANTICfit 14 % · 8 of 8 requir"
+    },
+    {
+     "rank": "4",
+     "tier": "SEMANTIC",
+     "fit": "0.075",
+     "text": "4Perception Engineer – Production RobotsHelix Robotics Research Ltd · DLL AI, Data & Semantic Systems PoolSEMANTICfit 8 "
+    },
+    {
+     "rank": "5",
+     "tier": "SEMANTIC",
+     "fit": "0.052632",
+     "text": "5Applied AI Research Engineer – Vision-Language ManipulationHelix Robotics Research Ltd · DLL AI, Data & Semantic System"
+    }
+   ],
+   "tiers": {
+    "SEMANTIC": 22,
+    "LEXICAL_ONLY": 51
+   }
+  },
+  "reasons": [
+   {
+    "source": "SEMANTIC",
+    "state": "PARTIAL",
+    "text": "AI System Architecturerequired · semantic · partial · ×3 · 0.5 → 1.5capability: Distributed Systems ArchitectureStatement: STAND-IN rule: some words of the requirement occur in the proposal name.Limit"
+   },
+   {
+    "source": "SEMANTIC",
+    "state": "UNCLEAR",
+    "text": "Retrieval-Augmented Generationrequired · semantic · unclear · ×3 · 0 → 0capability: Distributed Systems ArchitectureStatement: STAND-IN rule: no shared words.Limitation: Stand-in classification by wor"
+   },
+   {
+    "source": "SEMANTIC",
+    "state": "UNCLEAR",
+    "text": "LLM Evaluationrequired · semantic · unclear · ×3 · 0 → 0capability: Distributed Systems ArchitectureStatement: STAND-IN rule: no shared words.Limitation: Stand-in classification by word overlap; no mo"
+   },
+   {
+    "source": "SEMANTIC",
+    "state": "UNCLEAR",
+    "text": "Hybrid Searchpreferred · semantic · unclear · ×2 · 0 → 0capability: Distributed Systems ArchitectureStatement: STAND-IN rule: no shared words.Limitation: Stand-in classification by word overlap; no mo"
+   },
+   {
+    "source": "SEMANTIC",
+    "state": "PARTIAL",
+    "text": "Multi-Tenant SaaS Architecturerequired · semantic · partial · ×3 · 0.5 → 1.5capability: Distributed Systems ArchitectureStatement: STAND-IN rule: some words of the requirement occur in the proposal na"
+   },
+   {
+    "source": "SEMANTIC",
+    "state": "UNCLEAR",
+    "text": "Cloud Cost Engineeringpreferred · semantic · unclear · ×2 · 0 → 0capability: Distributed Systems ArchitectureStatement: STAND-IN rule: no shared words.Limitation: Stand-in classification by word overl"
+   }
+  ],
+  "writes": [
+   "POST /api/career/analyze"
+  ],
+  "errors": [],
+  "url": "/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=ANL_1793363849869_583"
+ },
+ "views": [
+  {
+   "vp": "1920x1080",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1496,
+    193,
+    400,
+    852
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1920x1080",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1496,
+    193,
+    400,
+    852
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1600x900",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1176,
+    132,
+    400,
+    752
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1600x900",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1176,
+    132,
+    400,
+    752
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1440x900",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1016,
+    132,
+    400,
+    752
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1440x900",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    1016,
+    132,
+    400,
+    752
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1280x720",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    872,
+    132,
+    384,
+    572
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "1280x720",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    872,
+    132,
+    384,
+    572
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "zoom200-1920x1080",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    16,
+    202,
+    928,
+    8758
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "zoom200-1920x1080",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    16,
+    202,
+    928,
+    8758
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "zoom200-1280x720",
+   "locale": "en",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB POOLS ⟶ RANKINGThe matching checked the roles its budget allows; the others are ranked by name relation.→ the ranked jobs below, each with its reasons10 of 10 roles checked semantically · call limit 10Job pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    16,
+    202,
+    608,
+    10517
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  },
+  {
+   "vp": "zoom200-1280x720",
+   "locale": "de",
+   "panel": true,
+   "line": "PARTIAL",
+   "ranking": "AVAILABLE",
+   "lineText": "PERSON ⟶ JOB-POOLS ⟶ RANGFOLGEDer Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.→ die gereihten Jobs unten, jeder mit seinen Gründen10 von 10 Rollen semantisch geprüft · Aufruflimit 10Job-Pools: DLL AI, Data & Semantic Systems Pool · DLL Engineering & Architecture Pool · DLL Enterprise Scale Pool",
+   "role": "status",
+   "live": "polite",
+   "evidence": "STAND_IN",
+   "authority": true,
+   "ranks": 73,
+   "orbits": 6,
+   "orbitOverlap": [],
+   "shellOverlap": [],
+   "panelBox": [
+    16,
+    202,
+    608,
+    10627
+   ],
+   "panelInView": true,
+   "entry": true,
+   "checkbox": false,
+   "pageScroll": false,
+   "why": {
+    "open": "true",
+    "reasons": 9,
+    "quotes": 4,
+    "statements": 9
+   },
+   "manual": {
+    "opened": {
+     "manual": true,
+     "auto": false
+    },
+    "closed": {
+     "manual": false,
+     "auto": true
+    }
+   },
+   "writes": [],
+   "errors": []
+  }
+ ],
+ "github": [
+  {
+   "locale": "en",
+   "placeholder": "https://github.com/<account> or …/<owner>/<repo>",
+   "hint": "A repository is read as it is. An account is read through its own public repositories, chosen automatically.",
+   "errors": []
+  },
+  {
+   "locale": "de",
+   "placeholder": "https://github.com/<account> oder …/<owner>/<repo>",
+   "hint": "Ein Repository wird so gelesen, wie es ist. Ein Account wird über seine eigenen öffentlichen Repositories gelesen, automatisch gewählt.",
+   "errors": []
+  }
+ ]
+}

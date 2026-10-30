@@ -1,0 +1,45 @@
+{
+ "tag": "nopools",
+ "flow": {
+  "actions": [
+   "mode PERSON",
+   "Capability Field",
+   "ENTER TEXT",
+   "type text",
+   "ADD",
+   "ANALYZE"
+  ],
+  "actionsAfterAnalyze": 0,
+  "analysisId": "ANL_1793363774376_892",
+  "seen": [
+   {
+    "t": 0,
+    "state": "no-panel"
+   },
+   {
+    "t": 2.1,
+    "state": "READING/IDLE"
+   },
+   {
+    "t": 2.5,
+    "state": "SKIPPED/AVAILABLE"
+   }
+  ],
+  "summary": {
+   "line": "PERSON ⟶ JOB POOLS ⟶ RANKINGNo active job pool was in the field when the analysis finished.→ job pools enter through the Job Field's intakeGO TO JOB FIELD",
+   "evidence": "NONE",
+   "authority": "Authority: none · a ranking from unverified relations, not a decision",
+   "ranks": 0,
+   "top": [],
+   "tiers": {}
+  },
+  "reasons": [],
+  "writes": [
+   "POST /api/career/analyze"
+  ],
+  "errors": [],
+  "url": "/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=ANL_1793363774376_892"
+ },
+ "views": [],
+ "github": []
+}
