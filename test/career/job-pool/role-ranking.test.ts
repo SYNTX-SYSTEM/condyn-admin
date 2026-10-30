@@ -3,9 +3,9 @@ import { ROLE_RANKING_VERSION, buildRoleRanking, pickBestFinding, type SemanticF
 import type { DiscoveryRequirement, DiscoveryRole, PoolRoleDiscovery } from "../../../lib/career/job-pool/pool-role-discovery";
 
 /** DETERMINISTIC_FIXTURE: a hand-built discovery and hand-built findings; no database, no network, no model. */
-const lex = (basis: "NONE" | "NAME_EXACT" | "NAME_ALIAS" | "NAME_COMPOSITE_CONSTITUENT" | "WEAK_TOKEN_CONTAINMENT") => basis === "NONE"
-  ? { basis: "NONE", proposalId: null, proposalName: null, matchedConstituent: null, evidence: [], quoteNamesRequirement: null } as const
-  : { basis, proposalId: "P1", proposalName: "Kubernetes Deployment", matchedConstituent: null, evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Ran Kubernetes." }], quoteNamesRequirement: true } as const;
+const lex = (basis: "NONE" | "NAME_EXACT" | "NAME_ALIAS" | "NAME_COMPOSITE_CONSTITUENT" | "WEAK_TOKEN_CONTAINMENT"): DiscoveryRequirement["lexical"] => basis === "NONE"
+  ? { basis: "NONE", proposalId: null, proposalName: null, matchedConstituent: null, evidence: [], quoteNamesRequirement: null } as never
+  : { basis, proposalId: "P1", proposalName: "Kubernetes Deployment", matchedConstituent: null, evidence: [{ sourceDocumentId: "DOC_001", exactQuote: "Ran Kubernetes." }], quoteNamesRequirement: true } as never;
 const req = (role: string, id: string, necessity: DiscoveryRequirement["necessity"], basis: Parameters<typeof lex>[0] = "NONE"): DiscoveryRequirement => ({
   key: { jobPoolUploadId: "U1", poolRoleId: role, poolRequirementId: id }, requirementText: `Req ${id}`, aliases: [], requiredLevel: "L3", necessity, requirementType: "CAPABILITY",
   matchingEligibility: null, targetRequirementRevisionId: null, lexical: lex(basis), semantic: { state: "NOT_EXECUTED" } });

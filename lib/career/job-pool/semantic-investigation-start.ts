@@ -24,6 +24,8 @@ export type StartResult =
 export async function startSemanticInvestigation(input: {
   analysisId: string; config: ReadyConfig; jobPoolUploadIds: string[]; roleKeys: Array<{ jobPoolUploadId: string; poolRoleId: string }>;
   clientRequestId: string; confirmedCalls: number | "AS_PLANNED"; now?: () => string;
+  /** Stored beside the request (not part of the identity): the automatic run marks itself and records what its budget left out. */
+  requestExtra?: Record<string, unknown>;
 }): Promise<StartResult> {
   const { analysisId, config, roleKeys } = input;
   const issue = (code: string, status: number, extra?: Record<string, unknown>): StartResult => ({ kind: "ISSUE", code, status, ...(extra ? { extra } : {}) });
@@ -52,7 +54,7 @@ export async function startSemanticInvestigation(input: {
   if (plan.state !== "PLANNED" || plan.callsNeeded === null) return issue("ERR_RELATION_CACHE_UNAVAILABLE", 503, { plan: plan.state });
   if (input.confirmedCalls !== "AS_PLANNED" && input.confirmedCalls !== plan.callsNeeded) return issue("ERR_INVESTIGATION_CALLS_NOT_CONFIRMED", 409, { callsNeeded: plan.callsNeeded });
 
-  const opened = await store.open({ ...identity, analysisId, engineVersionHash: engineHash, provider: config.engine.provider, request: { uploads: input.jobPoolUploadIds, roles: roleKeys, callsNeeded: plan.callsNeeded }, now: now(),
+  const opened = await store.open({ ...identity, analysisId, engineVersionHash: engineHash, provider: config.engine.provider, request: { uploads: input.jobPoolUploadIds, roles: roleKeys, callsNeeded: plan.callsNeeded, ...(input.requestExtra ?? {}) }, now: now(),
     tasks: plan.roles.map(r => ({ jobPoolUploadId: r.jobPoolUploadId, poolRoleId: r.poolRoleId, pairs: r.pairs })) });
   if (!opened.created) return { kind: "EXISTING", evidenceClass: evidenceClassOfProvider(config.engine.provider), investigationId: opened.investigationId, investigation: await store.investigation(opened.investigationId), tasks: await store.tasks(opened.investigationId) }; // a concurrent identical submit
 

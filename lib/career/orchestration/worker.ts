@@ -20,7 +20,12 @@ export class CareerJobWorker {
       reportOperation: ReportCareerJobRuntimeOperation
     ) => Promise<{ resultAnalysisId: string }>,
     private readonly pollIntervalMs: number = 2000,
-    private readonly leaseDurationMs: number = 30000
+    private readonly leaseDurationMs: number = 30000,
+    /**
+     * Runs after the job is SUCCEEDED (the automatic match of the product path). It can never change the job: a failure is logged
+     * with its code only and the loop goes on.
+     */
+    private readonly afterSuccess?: (job: JobRecord, resultAnalysisId: string) => Promise<void>
   ) {}
 
   start() {
@@ -72,6 +77,11 @@ export class CareerJobWorker {
           // Job success remains tied to the canonical Career Analysis result;
           // Capability proposal artifacts are sidecar state, never job results.
           await this.jobRepo.updateJobState(job.jobId, this.workerId, job.leaseVersion, "RUNNING", "SUCCEEDED", { resultAnalysisId });
+          if (this.afterSuccess) {
+            await this.afterSuccess(job, resultAnalysisId).catch(error => {
+              console.error(`[Worker ${this.workerId}] AFTER_SUCCESS failed for ${job.jobId}: ${error instanceof Error ? error.message.split(":")[0].slice(0, 80) : "unknown"}`);
+            });
+          }
         } catch (error: any) {
           // Determine if error is terminal. For now, assume retryable for general errors.
           const isTerminal = error?.name === "TERMINAL_ERROR";

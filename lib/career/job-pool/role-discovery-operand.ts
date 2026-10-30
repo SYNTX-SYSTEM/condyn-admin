@@ -25,10 +25,11 @@ export function validateRequestedPools(requested: string[]): OperandIssue | null
   return null;
 }
 
-export async function loadRoleDiscoveryOperand(analysisId: string, requested: string[]): Promise<RoleDiscoveryOperand> {
-  const invalid = validateRequestedPools(requested);
-  if (invalid) return { ok: false, issue: invalid };
-  const application = await createLocalJobPoolApplication();
+/** The person side of the operand, one rule for the explicit routes, the automatic run and the status reads: a PERSON analysis whose
+ *  Discovery run the persisted boundary proves scope-free, and its proposal projection. Read only. */
+export type PersonOperandBase = { ok: true; investigation: PersistedAnalysisInvestigation & { discoveryRunId: string }; projection: CapabilityProposalProjection } | { ok: false; issue: OperandIssue };
+
+export async function loadPersonOperandBase(analysisId: string): Promise<PersonOperandBase> {
   const references = new PostgresCapabilityProposalProjectionReferenceRepository(db);
   const capabilityRepository = new PostgresCapabilityCoreRepository(db);
   let investigation: PersistedAnalysisInvestigation;
@@ -46,6 +47,16 @@ export async function loadRoleDiscoveryOperand(analysisId: string, requested: st
   if (investigation.basis !== "JOB_DECLARATION_AND_DISCOVERY_RUN" || investigation.discoveryRunId === null || investigation.investigationScopeHash !== null) return { ok: false, issue: { code: "ERR_ROLE_DISCOVERY_PROJECTION_ABSENT", status: 409 } };
   const projection = await createCapabilityProposalProjectionReader({ references, capabilityRepository }).read(analysisId).catch(() => null);
   if (projection === null) return { ok: false, issue: { code: "ERR_ROLE_DISCOVERY_PROJECTION_ABSENT", status: 409 } };
+  return { ok: true, investigation: { ...investigation, discoveryRunId: investigation.discoveryRunId }, projection };
+}
+
+export async function loadRoleDiscoveryOperand(analysisId: string, requested: string[]): Promise<RoleDiscoveryOperand> {
+  const invalid = validateRequestedPools(requested);
+  if (invalid) return { ok: false, issue: invalid };
+  const application = await createLocalJobPoolApplication();
+  const base = await loadPersonOperandBase(analysisId);
+  if (!base.ok) return base;
+  const { investigation, projection } = base;
   const pools: DiscoveryPoolInput[] = [];
   for (const jobPoolUploadId of requested) {
     let view;

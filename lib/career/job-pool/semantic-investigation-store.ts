@@ -140,6 +140,15 @@ export class PostgresInvestigationStore {
     return r ? { investigationId: r.investigation_id, analysisId: r.analysis_id, provider: r.provider, engineVersionHash: r.engine_version_hash, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at } : null;
   }
 
+  /** The latest investigation an automatic run started for this analysis, with its stored request (read only). */
+  async latestAutomatic(analysisId: string): Promise<{ investigationId: string; provider: string; status: InvestigationStatus; createdAt: string; updatedAt: string; request: Record<string, unknown> } | null> {
+    const [r] = await this.sql<{ investigation_id: string; provider: string; status: InvestigationStatus; created_at: string; updated_at: string; request_json: string }[]>`SELECT investigation_id, provider, status, created_at, updated_at, request_json FROM career_relation_investigations WHERE analysis_id = ${analysisId} AND request_json::jsonb @> '{"auto": true}'::jsonb ORDER BY created_at DESC, investigation_id DESC LIMIT 1`;
+    if (!r) return null;
+    let request: Record<string, unknown>;
+    try { request = JSON.parse(r.request_json) as Record<string, unknown>; } catch { request = {}; }
+    return { investigationId: r.investigation_id, provider: r.provider, status: r.status, createdAt: r.created_at, updatedAt: r.updated_at, request };
+  }
+
   async tasks(investigationId: string): Promise<Array<{ jobPoolUploadId: string; poolRoleId: string; status: TaskStatus; errorCode: string | null; pairs: number; stored: number }>> {
     const rows = await this.sql<{ job_pool_upload_id: string; pool_role_id: string; status: TaskStatus; error_code: string | null; pairs: number; stored: number }[]>`SELECT job_pool_upload_id, pool_role_id, status, error_code, pairs, stored FROM career_relation_role_tasks WHERE investigation_id = ${investigationId} ORDER BY job_pool_upload_id, pool_role_id`;
     return rows.map(r => ({ jobPoolUploadId: r.job_pool_upload_id, poolRoleId: r.pool_role_id, status: r.status, errorCode: r.error_code, pairs: r.pairs, stored: r.stored }));
