@@ -43,8 +43,10 @@ const LINES: Array<[string, AutoMatchWatch, string]> = [
   ["COMPLETED", watch("COMPLETED"), "COMPLETED"],
   ["PARTIAL budget", watch("PARTIAL"), "PARTIAL"],
   ["PARTIAL failures", watch("PARTIAL", { reason: "ROLE_FAILURES" }), "PARTIAL"],
+  ["PARTIAL day budget", watch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" }), "PARTIAL"],
   ["DISABLED", watch("DISABLED"), "DISABLED"],
   ["DISABLED day limit", watch("DISABLED", { reason: "DAY_LIMIT_ZERO" }), "DISABLED"],
+  ["DISABLED not provisioned", watch("DISABLED", { reason: "NOT_PROVISIONED" }), "DISABLED"],
   ["SKIPPED no pools", watch("SKIPPED"), "SKIPPED"],
   ["SKIPPED not person", watch("SKIPPED", { reason: "NOT_PERSON" }), "SKIPPED"],
   ["FAILED", watch("FAILED"), "FAILED"],
@@ -67,9 +69,9 @@ describe("AC-PANEL · the state line", () => {
         expect((line.cause.match(/[.!?](\s|$)/g) ?? []).length, `${label}: one sentence`).toBe(1);
         sentences.add(`${line.cause}|${line.way}`);
       }
-      // 15 situations, 13 distinct lines: the two DISABLED reasons share the sentence and differ in the named reason, the two FAILED
+      // 17 situations, 14 distinct lines: the three DISABLED reasons share the sentence and differ in the named reason, the two FAILED
       // runs share it and differ in the named code (both stand beside the line, auto-line-detail).
-      expect(sentences.size, locale).toBe(LINES.length - 2);
+      expect(sentences.size, locale).toBe(LINES.length - 3);
     }
   });
 
@@ -78,6 +80,10 @@ describe("AC-PANEL · the state line", () => {
     expect(text(panel(watch("COMPLETED")))).toContain("4 of 4 roles checked semantically · call limit 25");
     expect(text(panel(watch("COMPLETED")))).toContain("Job pools: Pool Alpha · Pool Beta");
     expect(text(panel(watch("DISABLED", { reason: "DAY_LIMIT_ZERO" })))).toContain("no call budget for today");
+    expect(text(panel(watch("DISABLED", { reason: "NOT_PROVISIONED" })))).toContain("the match store is not provisioned");
+    expect(text(panel(watch("DISABLED", { reason: "NOT_PROVISIONED" }), { state: "IDLE" }, "de"))).toContain("der Abgleichspeicher ist nicht eingerichtet");
+    expect(text(panel(watch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" })))).toContain("Today's call budget ran out during the matching; the roles not reached are ranked by name relation.");
+    expect(text(panel(watch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" }), { state: "IDLE" }, "de"))).toContain("Das heutige Aufrufbudget war während des Abgleichs aufgebraucht");
     expect(text(panel(watch("FAILED", { reason: "ERR_BUDGET_EXHAUSTED" })))).toContain("code ERR_BUDGET_EXHAUSTED");
     expect(text(panel(watch("COMPLETED"), { state: "IDLE" }, "de"))).toContain("4 von 4 Rollen semantisch geprüft · Aufruflimit 25");
   });

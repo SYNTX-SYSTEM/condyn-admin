@@ -26,7 +26,8 @@ export type EvidenceClass = "STAND_IN" | "REAL_GEMINI";
 export const AUTO_MATCH_REASONS = {
   DISABLED: ["SEMANTIC_NOT_CONFIGURED", "PROVIDER_NOT_AUTHORIZED", "DAY_LIMIT_ZERO", "NOT_PROVISIONED"],
   SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS"],
-  PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES"]
+  // DAY_BUDGET_EXHAUSTED (GELB ab47d51, PINK §3.85): the day's call budget ran out during the run.
+  PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES", "DAY_BUDGET_EXHAUSTED"]
 } as const;
 /** A run settled: the ranking can be read for it. NOT_STARTED and RUNNING are not (yet). */
 export const AUTO_MATCH_SETTLED: readonly AutoMatchRunState[] = ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"];

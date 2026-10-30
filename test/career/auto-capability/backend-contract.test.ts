@@ -97,6 +97,8 @@ describe("AC-BACKEND · the backend's run view is the client's contract", () => 
       seen += 1;
     }
     expect(seen).toBe(144);
+    // PINK §3.85 / GELB ab47d51: a PARTIAL run whose budget ran out carries DAY_BUDGET_EXHAUSTED — decoded above, named here.
+    expect(view("PARTIAL", "stand-in", ["SUCCEEDED", "BUDGET_EXHAUSTED"], 2).reason).toBe("DAY_BUDGET_EXHAUSTED");
   });
 
   it("REPRODUCE: the route's states without a stored run (configuration, analysis, pools) decode", () => {

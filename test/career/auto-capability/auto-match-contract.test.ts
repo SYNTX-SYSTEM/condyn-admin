@@ -18,13 +18,17 @@ describe("AC-CONTRACT · auto-match run", () => {
     for (const reason of ["SEMANTIC_NOT_CONFIGURED", "PROVIDER_NOT_AUTHORIZED", "DAY_LIMIT_ZERO", "NOT_PROVISIONED"]) expect(decodeAutoMatch(autoMatch("DISABLED", { reason }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("SKIPPED", { reason: "NOT_PERSON" }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("PARTIAL", { reason: "ROLE_FAILURES" }))).not.toBeNull();
+    // PINK §3.85 / GELB ab47d51: the day's budget used up during the run; NOT_PROVISIONED as a DISABLED reason (already in the contract).
+    expect(decodeAutoMatch(autoMatch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" }))).not.toBeNull();
+    expect(decodeAutoMatch(autoMatch("DISABLED", { reason: "NOT_PROVISIONED" }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { evidenceClass: "REAL_GEMINI" }))).not.toBeNull();
   });
 
   it("inverse: a reason of another state (or none where one belongs, or one where none may stand) is not the contract", () => {
     const wrong: Array<[AutoMatchRunState, unknown]> = [
       ["DISABLED", "NO_ACTIVE_POOLS"], ["DISABLED", null], ["SKIPPED", "SEMANTIC_NOT_CONFIGURED"], ["PARTIAL", null], ["PARTIAL", "NOT_PERSON"],
-      ["FAILED", null], ["FAILED", "SEMANTIC_FAILED"], ["COMPLETED", "ROLES_BEYOND_BUDGET"], ["RUNNING", "ROLE_FAILURES"], ["NOT_STARTED", "NOT_PERSON"]
+      ["FAILED", null], ["FAILED", "SEMANTIC_FAILED"], ["COMPLETED", "ROLES_BEYOND_BUDGET"], ["RUNNING", "ROLE_FAILURES"], ["NOT_STARTED", "NOT_PERSON"],
+      ["DISABLED", "DAY_BUDGET_EXHAUSTED"], ["COMPLETED", "DAY_BUDGET_EXHAUSTED"], ["SKIPPED", "DAY_BUDGET_EXHAUSTED"], ["PARTIAL", "NOT_PROVISIONED"], ["SKIPPED", "NOT_PROVISIONED"], ["PARTIAL", "BUDGET_EXHAUSTED"]
     ];
     for (const [state, reason] of wrong) expect(decodeAutoMatch(autoMatch(state, { reason })), `${state} ${String(reason)}`).toBeNull();
   });

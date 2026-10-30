@@ -21,7 +21,7 @@ export interface AutoMatchCopy {
   waitedOut: Line;
   running: (evaluated: number, planned: number) => Line;
   completed: (pools: number) => Line;
-  partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES", Line>;
+  partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES" | "DAY_BUDGET_EXHAUSTED", Line>;
   disabled: Line;
   disabledReason: Record<"SEMANTIC_NOT_CONFIGURED" | "PROVIDER_NOT_AUTHORIZED" | "DAY_LIMIT_ZERO" | "NOT_PROVISIONED", string>;
   skipped: Record<"NOT_PERSON" | "NO_ACTIVE_POOLS", Line>;
@@ -72,7 +72,8 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     completed: pools => ({ cause: `The matching is done across ${formatCount(pools)} ${pools === 1 ? "job pool" : "job pools"}.`, way: "→ the ranked jobs below, each with its reasons" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "The matching checked the roles its budget allows; the others are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
-      ROLE_FAILURES: { cause: "The matching is done; some roles could not be checked and are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" }
+      ROLE_FAILURES: { cause: "The matching is done; some roles could not be checked and are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
+      DAY_BUDGET_EXHAUSTED: { cause: "Today's call budget ran out during the matching; the roles not reached are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" }
     },
     disabled: { cause: "Semantic matching is not switched on here; the jobs are ranked by name relation.", way: "→ the ranked jobs below" },
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "no semantic provider configured", PROVIDER_NOT_AUTHORIZED: "provider not authorised", DAY_LIMIT_ZERO: "no call budget for today", NOT_PROVISIONED: "the match store is not provisioned" },
@@ -134,7 +135,8 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     completed: pools => ({ cause: `Der Abgleich ist über ${formatCount(pools)} ${pools === 1 ? "Job-Pool" : "Job-Pools"} fertig.`, way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
-      ROLE_FAILURES: { cause: "Der Abgleich ist fertig; einige Rollen ließen sich nicht prüfen und sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }
+      ROLE_FAILURES: { cause: "Der Abgleich ist fertig; einige Rollen ließen sich nicht prüfen und sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
+      DAY_BUDGET_EXHAUSTED: { cause: "Das heutige Aufrufbudget war während des Abgleichs aufgebraucht; die nicht erreichten Rollen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }
     },
     disabled: { cause: "Der semantische Abgleich ist hier nicht eingeschaltet; die Jobs sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten" },
     disabledReason: { SEMANTIC_NOT_CONFIGURED: "kein semantischer Provider eingerichtet", PROVIDER_NOT_AUTHORIZED: "Provider nicht freigegeben", DAY_LIMIT_ZERO: "kein Aufrufbudget für heute", NOT_PROVISIONED: "der Abgleichspeicher ist nicht eingerichtet" },
