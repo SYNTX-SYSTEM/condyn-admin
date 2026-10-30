@@ -17,6 +17,7 @@ const autoMatch = async (analysisId: string) => { const r = await GET_AUTO_MATCH
 const ranking = async (analysisId: string) => { const r = await GET_RANKING(new Request("http://local/x"), params(analysisId)); return { status: r.status, cache: r.headers.get("cache-control"), body: await r.json() }; };
 const exists = async (table: string) => ((await db.execute(sql.raw(`SELECT to_regclass('${table}') IS NOT NULL AS e`))) as unknown as Array<{ e: boolean }>)[0].e;
 const rows = async (table: string) => (await exists(table)) ? Number(((await db.execute(sql.raw(`SELECT count(*)::int AS n FROM ${table}`))) as unknown as Array<{ n: number }>)[0].n) : 0;
+const DAY = "2099-01-01T00:00:00.000Z";
 const WRITES = ["career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger", "career_proposal_requirement_relations"] as const;
 const snapshot = async () => Promise.all(WRITES.map(async t => [t, await exists(t), await rows(t)] as const));
 const source = (label: string) => createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${label})` });
@@ -43,7 +44,8 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
     await initDbSchema();
     await uploadEngineeringJobScope();
     const scope = await resolveStoredTestJobScope();
-    person = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("am1")])), null, "am1", source(`am1-${Date.now()}`), "TypeScript");
+    // Own capability groups and an own ledger day: this file leaves nothing in the cache or the day scope that other files count on.
+    person = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("am1")])), null, "am1", source(`am1-${Date.now()}`), "Auto Match Alpha");
     // A different capability group: its proposals are different content, so nothing of the first run is cached for it.
     person2 = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("am2")])), null, "am2", source(`am2-${Date.now()}`), "Kubernetes Operator Design");
     scoped = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("ams")])), scope, "ams", source(`ams-${Date.now()}`), "TypeScript");
@@ -79,7 +81,7 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
   it("a PERSON × JOB analysis is skipped without a call; an unknown analysis is 404", async () => {
     setEnv("stand-in", "1000");
     const before = await snapshot();
-    expect(await runAutoMatch(scoped.analysisId)).toEqual({ outcome: "SKIPPED", reason: "NOT_PERSON" });
+    expect(await runAutoMatch(scoped.analysisId, () => DAY)).toEqual({ outcome: "SKIPPED", reason: "NOT_PERSON" });
     const read = await autoMatch(scoped.analysisId);
     expect([read.body.autoMatch.state, read.body.autoMatch.reason]).toEqual(["SKIPPED", "NOT_PERSON"]);
     expect((await autoMatch("ANL_does_not_exist")).status).toBe(404);
@@ -102,7 +104,7 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
 
   it("the run: one investigation within the budget, STAND_IN, COMPLETED; a repeat runs nothing; the ranking now carries semantic roles first", async () => {
     setEnv("stand-in", "1000", "25");
-    const out = await runAutoMatch(person.analysisId);
+    const out = await runAutoMatch(person.analysisId, () => DAY);
     expect(out.outcome).toBe("STARTED");
     const read = (await autoMatch(person.analysisId)).body.autoMatch;
     expect(["COMPLETED", "PARTIAL"]).toContain(read.state);
@@ -115,7 +117,7 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
 
     const ledgerBefore = await rows("career_relation_call_ledger");
     const relationsBefore = await rows("career_proposal_requirement_relations");
-    const again = await runAutoMatch(person.analysisId);
+    const again = await runAutoMatch(person.analysisId, () => DAY);
     expect([again.outcome, again.investigationId]).toEqual(["STARTED", out.investigationId]);
     expect([await rows("career_relation_call_ledger"), await rows("career_proposal_requirement_relations")]).toEqual([ledgerBefore, relationsBefore]);
 
@@ -141,7 +143,7 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
 
   it("a role count beyond the budget is reported: PARTIAL with ROLES_BEYOND_BUDGET, the rest stays lexical-only", async () => {
     setEnv("stand-in", "1000", "1");
-    const out = await runAutoMatch(person2.analysisId);
+    const out = await runAutoMatch(person2.analysisId, () => DAY);
     expect(out.outcome).toBe("STARTED");
     const read = (await autoMatch(person2.analysisId)).body.autoMatch;
     expect([read.state, read.reason, read.budget.rolesPlanned]).toEqual(["PARTIAL", "ROLES_BEYOND_BUDGET", 1]);
@@ -152,16 +154,16 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
 
   it("the day limit is shared with the manual starts: a spent budget stops every role, the run ends FAILED with BUDGET_EXHAUSTED and makes no call", async () => {
     // person (run above) and person2 already used calls of today's stand-in scope; a limit of exactly what is spent leaves nothing
-    const spent = Number(((await db.execute(sql.raw(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key LIKE 'DAY:stand-in:%'`))) as unknown as Array<{ n: number }>)[0].n);
+    const spent = Number(((await db.execute(sql.raw(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key = 'DAY:stand-in:2099-01-01'`))) as unknown as Array<{ n: number }>)[0].n);
     expect(spent).toBeGreaterThan(0);
     setEnv("stand-in", String(spent), "25");
     const fresh = await produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText("am3")])), null, "am3", source(`am3-${Date.now()}`), "Rust Borrow Checker Internals");
     const before = await rows("career_relation_call_ledger");
-    const out = await runAutoMatch(fresh.analysisId);
+    const out = await runAutoMatch(fresh.analysisId, () => DAY);
     expect(out.outcome).toBe("STARTED");
     const read = (await autoMatch(fresh.analysisId)).body.autoMatch;
     expect([read.state, read.reason, read.budget.rolesEvaluated]).toEqual(["FAILED", "ERR_BUDGET_EXHAUSTED", 0]);
-    const consumed = Number(((await db.execute(sql.raw(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key LIKE 'DAY:stand-in:%'`))) as unknown as Array<{ n: number }>)[0].n);
+    const consumed = Number(((await db.execute(sql.raw(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key = 'DAY:stand-in:2099-01-01'`))) as unknown as Array<{ n: number }>)[0].n);
     expect(consumed).toBe(spent);
     expect(await rows("career_relation_call_ledger")).toBeGreaterThanOrEqual(before);
   });
