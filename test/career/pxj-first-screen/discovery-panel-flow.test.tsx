@@ -17,6 +17,9 @@ vi.mock("../../../lib/career/ui/useJobPoolSources", () => ({ useAnalysisSources:
 vi.mock("../../../lib/career/ui/useJobPool", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useJobPool")>()), useJobPoolWorkflow: () => ({ pools: { state: "AVAILABLE", jobPools: [] }, upload: { state: "IDLE" }, selectedJobPoolUploadId: null, view: { state: "IDLE" }, matches: { state: "IDLE" }, submitUpload: async () => undefined, select: () => undefined, reloadPools: async () => undefined, reloadMatches: async () => undefined }) }));
 vi.mock("../../../lib/career/ui/useRoleInvestigation", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useRoleInvestigation")>()), useAnalysisBoundary: (id: string | null) => id === null ? { state: "IDLE" } : control.boundary, useSelectedRoleCoverage: () => ({ state: "IDLE" }) }));
 vi.mock("../../../lib/career/ui/useAnalysisResult", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/useAnalysisResult")>()), useAnalysisResult: (id: string | null) => id === null ? { state: "IDLE" } : control.result }));
+// AUTO_CAPABILITY (owner 2026-10-30): the PERSON analysis on view reads its automatic run and ranking by itself now (GET on other
+// routes, auto-match-wiring.test.tsx). This file holds the manual discovery's own reads and POSTs, so those two hooks stand still here.
+vi.mock("../../../lib/career/ui/auto-match", async (importOriginal) => ({ ...(await importOriginal<typeof import("../../../lib/career/ui/auto-match")>()), useAutoMatch: () => ({ read: { state: "IDLE" }, waitedOut: false }), useJobRanking: () => ({ state: "IDLE" }) }));
 
 import { SemanticCareerIntelligenceField } from "../../../app/components/career/demo/SemanticCareerIntelligenceField";
 // The panel module is new: loaded lazily, so a base without it fails test by test, not at the file's import.

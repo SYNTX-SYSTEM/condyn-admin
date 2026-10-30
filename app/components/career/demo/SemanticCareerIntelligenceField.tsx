@@ -35,6 +35,8 @@ import { careerJobHandoff } from "../../../../lib/career/ui/career-job-handoff";
 import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
 import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
+import { AutoJobRankingPanel } from "./AutoJobRankingPanel";
+import { rankingKey, useAutoMatch, useJobRanking } from "../../../../lib/career/ui/auto-match";
 import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
 import { useSemanticInvestigation, type InvestigationRoleKey } from "../../../../lib/career/ui/semantic-investigation";
 import { NAVIGATION_COPY } from "./navigation-copy";
@@ -543,6 +545,10 @@ export function SemanticCareerIntelligenceField({
   /** RI-START: the semantic check of picked roles — one POST per click of START, never by a load, an open or a reload; a named
    *  roleInvestigationId is read again by GET only (RI-URL, NAV ≡ RELOAD). */
   const semanticInvestigation = useSemanticInvestigation(discoveryAnalysisId, discoveryPools, roleInvestigationId);
+  /** AUTO_CAPABILITY (owner 2026-10-30): the PERSON analysis on view goes on by itself — the run the worker starts after it (GET, a
+   *  bounded wait while it has not settled), then the ranking of that run (GET, once it has settled). Nothing is chosen or started here. */
+  const autoMatch = useAutoMatch(discoveryAnalysisId);
+  const jobRanking = useJobRanking(discoveryAnalysisId, rankingKey(autoMatch));
   const startSemanticInvestigation = (roles: InvestigationRoleKey[], confirmedCalls: number) => {
     void semanticInvestigation.start(roles, confirmedCalls).then(result => {
       if (result?.state === "STORED") { setRoleInvestigationId(result.investigation.investigationId); writeCareerDemoUrl({ [ROLE_INVESTIGATION_URL_PARAM]: result.investigation.investigationId }, "replace"); }
@@ -1755,8 +1761,14 @@ export function SemanticCareerIntelligenceField({
             onGoToJobField={() => switchFieldFocus("FIELD")} />
         </div>
       )}
-      {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && !isOrbitStageFocus && (
-        <RoleDiscoveryEntry locale={locale} onOpen={() => setDiscoveryOpen(true)} />
+      {/* AUTO_CAPABILITY: while no manual discovery is open, the automatic ranking stands in the same slot — the run's state line, then
+          the ranked jobs with their reasons; the manual discovery's entry is its last row, unchanged (hidden during an orbit focus, as before). */}
+      {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && (
+        <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
+          <AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}>
+            {!isOrbitStageFocus && <RoleDiscoveryEntry locale={locale} inline onOpen={() => setDiscoveryOpen(true)} />}
+          </AutoJobRankingPanel>
+        </div>
       )}
 
       {/* Persistent Top-Right How This Works / Codex Button */}
