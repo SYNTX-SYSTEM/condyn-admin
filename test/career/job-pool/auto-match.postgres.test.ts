@@ -6,7 +6,7 @@ import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreReposito
 import { JobRepository } from "../../../lib/career/orchestration/job-repository";
 import { GET as GET_AUTO_MATCH } from "../../../app/api/career/analyses/[analysisId]/auto-match/route";
 import { GET as GET_RANKING } from "../../../app/api/career/analyses/[analysisId]/job-ranking/route";
-import { runAutoMatch } from "../../../lib/career/job-pool/auto-match";
+import { runAutoMatch, selectAutomaticRoles } from "../../../lib/career/job-pool/auto-match";
 import { TEST_JOB_SCOPE, resolveStoredTestJobScope, uploadEngineeringJobScope } from "../../support/job-scope";
 import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../result-inspector/fixture";
 
@@ -166,5 +166,28 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
     const consumed = Number(((await db.execute(sql.raw(`SELECT COALESCE(SUM(consumed),0)::int AS n FROM career_relation_call_ledger WHERE scope_key = 'DAY:stand-in:2099-01-01'`))) as unknown as Array<{ n: number }>)[0].n);
     expect(consumed).toBe(spent);
     expect(await rows("career_relation_call_ledger")).toBeGreaterThanOrEqual(before);
+  });
+
+  it("a pool of the run that is no longer ACTIVE is dropped from the ranking and named in poolsDropped", async () => {
+    setEnv("stand-in", "1000", "25");
+    await runAutoMatch(person.analysisId, () => DAY);
+    const set = async (status: string) => db.execute(sql`UPDATE career_job_pool_uploads SET pool_status = ${status} WHERE job_pool_upload_id = ${POOL}`);
+    try {
+      await set("ARCHIVED");
+      const body = (await ranking(person.analysisId)).body.ranking;
+      expect([body.poolsDropped, body.ranks, body.pools, body.counts]).toEqual([[POOL], [], [], { pools: 0, roles: 0, ranked: 0 }]);
+    } finally { await set("ACTIVE"); }
+    const back = (await ranking(person.analysisId)).body.ranking;
+    expect([back.poolsDropped, back.ranks.length > 0]).toEqual([[], true]);
+  });
+});
+
+describe("selectAutomaticRoles", () => {
+  const role = (id: string, status: string, requirements: number) => ({ key: { jobPoolUploadId: "U", poolRoleId: id }, status, counts: { requirements } }) as never;
+  it("most name-related first, then discovery order; roles without requirements never take a call; bounded", () => {
+    const discovery = { roles: [role("none", "NO_LEXICAL_RELATION", 3), role("weak", "WEAK_LEXICAL_ONLY", 3), role("empty", "NO_REQUIREMENTS", 0), role("all", "ALL_REQUIREMENTS_NAME_RELATED", 3), role("part1", "PARTIAL_NAME_RELATED", 3), role("part2", "PARTIAL_NAME_RELATED", 3)] };
+    expect(selectAutomaticRoles(discovery, 99).map(k => k.poolRoleId)).toEqual(["all", "part1", "part2", "weak", "none"]);
+    expect(selectAutomaticRoles(discovery, 2).map(k => k.poolRoleId)).toEqual(["all", "part1"]);
+    expect(selectAutomaticRoles(discovery, 0)).toEqual([]);
   });
 });
