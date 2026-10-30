@@ -68,4 +68,24 @@ describe("GitHub account input: the automatic, bounded repository selection", ()
     expect((await loadGitHubSourceDocuments("https://github.com/octo/tool", { fetcher: repoApi.fetcher })).length).toBe(1);
     expect(repoApi.urls.some(u => u.includes("/users/"))).toBe(false);
   });
+
+  describe("bounds (PINK F-ACC-2)", () => {
+    const many = (n: number) => Array.from({ length: n }, (_, i) => repo(`r${String(i).padStart(2, "0")}`, `2025-01-${String(28 - (i % 27)).padStart(2, "0")}T00:00:00Z`));
+    const readmes = Object.fromEntries(Array.from({ length: 30 }, (_, i) => [`r${String(i).padStart(2, "0")}`, `# R${i}`]));
+    const withEnv = async <T,>(value: string | undefined, run: () => Promise<T>) => { const saved = process.env.GITHUB_ACCOUNT_MAX_REPOS; if (value === undefined) delete process.env.GITHUB_ACCOUNT_MAX_REPOS; else process.env.GITHUB_ACCOUNT_MAX_REPOS = value; try { return await run(); } finally { if (saved === undefined) delete process.env.GITHUB_ACCOUNT_MAX_REPOS; else process.env.GITHUB_ACCOUNT_MAX_REPOS = saved; } };
+    const count = async (value: string | undefined, option?: number) => withEnv(value, async () => (await loadGitHubAccountDocuments("https://github.com/octo", { fetcher: fakeGitHub(many(30), readmes).fetcher, ...(option === undefined ? {} : { maxRepos: option }) })).length);
+    it("default 5, hard cap 10, invalid or zero environment values fall back to the default, the option is capped as well", async () => {
+      expect(await count(undefined)).toBe(5);
+      expect(await count("7")).toBe(7);
+      expect(await count("99")).toBe(10);
+      for (const bad of ["abc", "0", "-1", "", "2.5"]) expect(await count(bad), bad).toBe(5);
+      expect(await count(undefined, 500)).toBe(10);
+      expect(await count("3", 8)).toBe(8);
+    });
+    it("a failure on a later repository (rate limit) is a failure, not a quiet partial result", async () => {
+      const api = fakeGitHub([repo("one", "2025-01-02T00:00:00Z"), repo("two", "2025-01-01T00:00:00Z")], { one: "# One", two: "# Two" });
+      const limited = (async (url: string, options?: unknown) => (url.includes("/repos/octo/two/") ? { ok: false, status: 403 } : (api.fetcher as never as (u: string, o?: unknown) => Promise<unknown>)(url, options))) as never;
+      await expect(loadGitHubAccountDocuments("https://github.com/octo", { fetcher: limited })).rejects.toThrow(/ERR_GITHUB_FETCH_FAILURE/);
+    });
+  });
 });

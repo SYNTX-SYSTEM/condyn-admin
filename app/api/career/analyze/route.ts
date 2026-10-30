@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         }
         try {
           const urlObj = new URL(doc.url);
-          if (urlObj.hostname !== "github.com") {
+          if (urlObj.hostname !== "github.com" && urlObj.hostname !== "www.github.com") {
             return NextResponse.json({ success: false, status: "FAILED", issues: [{ code: "ERR_INVALID_GITHUB_URL", message: "Invalid Github URL." }] }, { status: 400 });
           }
         } catch {
