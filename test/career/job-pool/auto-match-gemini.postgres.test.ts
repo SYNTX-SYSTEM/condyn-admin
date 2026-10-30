@@ -30,7 +30,7 @@ vi.mock("@google/genai", () => ({
 const KEY = "AIza-owner-like-secret-9876543210";
 const DAY = "2099-02-02T00:00:00.000Z";
 const params = (analysisId: string) => ({ params: Promise.resolve({ analysisId }) });
-const get = async (handler: typeof GET_AUTO_MATCH, analysisId: string) => (await handler(new Request("http://local/x"), params(analysisId))).json();
+const get = async (handler: (request: Request, context: { params: Promise<{ analysisId: string }> }) => Promise<Response>, analysisId: string) => (await handler(new Request("http://local/x"), params(analysisId))).json();
 const setEnv = (o: Record<string, string | undefined>) => { for (const [k, v] of Object.entries(o)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } };
 
 describe("automatic match with the Gemini provider (mocked SDK, PostgreSQL)", () => {
