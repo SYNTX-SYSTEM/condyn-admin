@@ -41,10 +41,11 @@ async function listModels() {
     let count = 0;
     const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.list());
     let modelList: any[] = [];
-    if (Symbol.asyncIterator in Object(response)) {
-      for await (const m of (response as any)) {
-        modelList.push(m);
-      }
+    if (typeof (response as any)?.nextPage === "function") {
+      // Every page is its own request: each one passes the call register (iterating the pager would fetch later pages unregistered).
+      const pager = response as any;
+      modelList.push(...pager.page);
+      while (pager.hasNextPage()) modelList.push(...(await guardedGenerateContent("DIAGNOSTIC", () => pager.nextPage())));
     } else if (Array.isArray(response)) {
       modelList = response;
     } else if (response && Array.isArray((response as any).models)) {

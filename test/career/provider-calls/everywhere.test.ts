@@ -30,10 +30,13 @@ describe("no recorder, no call", () => {
 const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => { const p = join(dir, name); return statSync(p).isDirectory() ? (name === "node_modules" || name === ".next" ? [] : walk(p)) : /\.(ts|tsx|mjs|js)$/.test(name) ? [p] : []; });
 
 describe("architecture: every Gemini API call passes the seam, nothing installs a default recorder", () => {
-  const sources = ["lib", "scripts", "app"].flatMap(d => { try { return walk(d); } catch { return []; } }).filter(f => !f.startsWith(join("lib", "career", "provider-calls")));
-  const SDK_CALL = /\b(?:ai|client|this\.client)\.models\.(generateContent|generateContentStream|embedContent|countTokens|computeTokens|get|list)\s*\(/g;
+  const root = readdirSync(".").filter(f => /\.(ts|tsx|mjs|js|cjs)$/.test(f) && statSync(f).isFile());
+  const sources = [...["lib", "scripts", "app"].flatMap(d => { try { return walk(d); } catch { return []; } }), ...root].filter(f => !f.startsWith(join("lib", "career", "provider-calls")) && f !== "vitest.config.ts");
+  const SDK_CALL = /\b[\w.]+\.(?:models\.(generateContent|generateContentStream|embedContent|countTokens|computeTokens|get|list)|nextPage)\s*\(/g;
 
-  it("each SDK models.* call sits inside guardedGenerateContent(", () => {
+  it("the scan covers the repository root scripts too", () => { expect(sources).toContain("test-schema.ts"); expect(sources).toContain(join("scripts", "list-models.ts")); });
+
+  it("each SDK models.* call (and every pager page) sits inside guardedGenerateContent(", () => {
     const bare: string[] = [];
     for (const file of sources) {
       const text = readFileSync(file, "utf8");
