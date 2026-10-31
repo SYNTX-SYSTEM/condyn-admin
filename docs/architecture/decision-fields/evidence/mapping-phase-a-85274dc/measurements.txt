@@ -1,0 +1,41 @@
+PINK §3.93 measurements — 85274dc, 2026-10-31
+== recomputation vs 21 vectors ==
+layout LV01-single-role: MATCH
+layout LV02-three-pools-mixed-tiers: MATCH
+layout LV03-equal-fit-ties: MATCH
+layout LV04-crowded-60: MATCH
+layout LV05-capacity-exceeded-overflow: MATCH
+layout LV08-checked-fit-0-pressed-to-the-horizon: MATCH
+layout LV09-shelf-fit-0-pressed-to-the-field-edge: MATCH
+layout LV11-shelf-wide-bodies-cannot-leave-the-field: MATCH
+layout LV12-shelf-medium-bodies-cannot-cross-the-field-edge: MATCH
+layout LV10-checked-fit-1-pressed-from-the-inner-edge: MATCH
+layout LV06-no-roles: MATCH
+layout LV07-real-shape-73: MATCH
+arcs AV01-seven-requirements: MATCH
+arcs AV02-single: MATCH
+arcs AV03-empty: MATCH
+arcs AV04-ties-by-id: MATCH
+constellation CV00-0-capabilities: MATCH
+constellation CV01-1-capabilities: MATCH
+constellation CV05-5-capabilities: MATCH
+constellation CV40-40-capabilities: MATCH
+constellation CV80-80-capabilities: MATCH
+== invariants (LV12) ==
+LV12-shelf-medium-bodies-cannot-cross-the-field-edge: bodies 200 drawn 200 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisplaced 89) 0 fitOrderInverted 0 displaced 111 (radial 99, shelf 111) share360 ok size 0
+== band variants ==
+shelf upper edge = radius (500) without - rho (M16): noticed by layout LV12-shelf-medium-bodies-cannot-cross-the-field-edge
+shelf upper edge = shelfFar: noticed by layout LV09-shelf-fit-0-pressed-to-the-field-edge
+shelf upper edge exclusive: noticed by layout LV08-checked-fit-0-pressed-to-the-horizon, layout LV09-shelf-fit-0-pressed-to-the-field-edge
+checked upper edge = horizon without - rho: noticed by layout LV05-capacity-exceeded-overflow
+checked upper edge = zeroFit: noticed by layout LV08-checked-fit-0-pressed-to-the-horizon
+== mutants vs GELB's tests, default timeout ==
+M16 RED oracle: shelf band upper edge = field radius (disc may cross the field edge) | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a checked role lies inside the horizon, a name-only role beyo']
+M09 RED decoder: one extra field of any name tolerated | Tests  1 failed | 58 passed (59) | ['INVERSE: an unknown field beside the old shape (13 fields, no capabili']
+M12 RED oracle: checked band ends at zeroFit, not horizon - rho | Tests  2 failed | 57 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'the committed vectors are exactly what the reference produces now (no ']
+M13 RED oracle: shelf band unbounded outward (bodies may leave the field) | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a checked role lies inside the horizon, a name-only role beyo']
+== GELB's five phase-A files, unmutated, parallel under load ==
+run 1:  Test Files 5 passed (5)  Tests 59 passed (59) 
+run 2:  Test Files 5 passed (5)  Tests 59 passed (59) 
+NO OVERLAP duration run 1: 5873ms
+tsc --noEmit: 0 errors

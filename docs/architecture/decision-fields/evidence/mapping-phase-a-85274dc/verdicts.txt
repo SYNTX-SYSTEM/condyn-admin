@@ -1,0 +1,22 @@
+PINK §3.93 — re-check of the §3.92 remainders on GELB backend/mapping-phase-a 85274dc (only F-PA-2 rest, F-PA-T2, F-PA-3; owner hardlock "NUR PHASE A. MEHR NICHT.") — 2026-10-31
+Method:
+  * PINK's own layout recomputation (unchanged since §3.91) against all 21 vectors, plus the band variants.
+  * Mutants M16, M09, M12 and M13 against GELB's phase-A tests with vitest's DEFAULT timeout.
+  * Two runs of GELB's five files without mutation, in parallel with each other and with the mutants (load average about 5 on 8 cores).
+  * tsc.
+Evidence class: DETERMINISTIC_FIXTURE. No model, no network. main and :3017 untouched.
+
+VERDICT: GO — every condition of §3.91 is closed.
+
+F-PA-2 CLOSED
+  * LV12 is the counterexample of §3.92: 200 shelf roles, fit 0, weightSum 6.
+  * The other 20 vectors and layout-spec.json are unchanged in content.
+  * PINK's recomputation matches 21/21. The invariants hold on LV12: overlap 0, field 0, horizon 0, and 111 bodies are displaced.
+  * The variant "shelf upper edge 500 instead of 500 − rho" is now noticed by LV12. The variants shelfFar, exclusive edge, horizon
+    without − rho and zeroFit are still noticed.
+  * Mutant M16 is red on GELB's tests (3 tests). M12 and M13 are still red.
+F-PA-T2 CLOSED  M09 (old shape + one unknown field) is red: "INVERSE: an unknown field beside the old shape (13 fields, no capabilityKey)".
+F-PA-3 CLOSED  the slow layout tests have an explicit 60 s timeout. Both unmutated runs under load: 5 files, 59/59 green. Under that load
+  "NO OVERLAP" took 5.9 s, which would have failed with the old default of 5 s.
+Notes: tsc 0. The doc comment is back above buildAnalysisRanking. The spec now lists twelve layouts, LV08–LV12. The only product change
+  since ea1e29f is that comment.

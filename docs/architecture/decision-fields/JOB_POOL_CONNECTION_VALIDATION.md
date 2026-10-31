@@ -3998,6 +3998,21 @@ Open but not blocking:
   - "NO OVERLAP" takes 3.5–4.5 s against vitest's 5 s limit, and it timed out once in PINK's run.
   - Fix: an explicit timeout or a cheaper pair check.
 
+### 3.93 PERSON × JOB phase A, re-check of the §3.92 remainders on GELB `85274dc` (2026-10-31) — GO
+
+**Request.** Re-check only the F-PA-2 rest, F-PA-T2 and F-PA-3 (owner hardlock "NUR PHASE A. MEHR NICHT.").
+
+**Verdict: GO.** Every condition of §3.91 is closed (`evidence/mapping-phase-a-85274dc/verdicts.txt`).
+- **F-PA-2: closed.**
+  - LV12 is PINK's counterexample (200 shelf roles, fit 0, weight 6).
+  - PINK's recomputation matches 21/21 vectors, and the other 20 are unchanged.
+  - The variant "shelf edge 500 instead of 500 − ρ" is now noticed, and M16 is red on GELB's tests.
+- **F-PA-T2: closed.** M09 is red.
+- **F-PA-3: closed.**
+  - The slow layout tests have a 60 s timeout.
+  - Two unmutated runs under load were each 59/59 green. "NO OVERLAP" took 5.9 s, which would have failed with the old 5 s default.
+- **Product code.** Since `ea1e29f` it changed only a doc comment. tsc 0.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
