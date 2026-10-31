@@ -2,6 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "./lib/career/schema-projector";
 import * as fs from "fs";
 import * as path from "path";
+import { guardedGenerateContent } from "./lib/career/provider-calls/guard";
+import { withJobCallRegister } from "./lib/career/provider-calls/job-context";
 import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope";
 
 try {
@@ -19,7 +21,7 @@ const schema = getGeminiCareerResponseJsonSchema();
 
 async function run() {
   try {
-    const response = await ai.models.generateContent({
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-3.5-flash",
       contents: "Respond with an empty JSON object.",
       config: {
@@ -27,7 +29,7 @@ async function run() {
         responseJsonSchema: schema,
         temperature: 0.1
       }
-    });
+    }));
     console.log("SUCCESS WITH SCHEMA");
   } catch (err: any) {
     console.error("FAIL WITH SCHEMA:");
@@ -35,14 +37,14 @@ async function run() {
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-3.5-flash",
       contents: "Respond with an empty JSON object.",
       config: {
         responseMimeType: "application/json",
         temperature: 0.1
       }
-    });
+    }));
     console.log("SUCCESS WITHOUT SCHEMA");
   } catch (err: any) {
     console.error("FAIL WITHOUT SCHEMA:");
@@ -51,4 +53,4 @@ async function run() {
 }
 
 // SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
-resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => run()).catch(console.error);
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => withJobCallRegister("SCRIPT:test-schema", run)).catch(console.error);

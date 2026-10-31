@@ -5,6 +5,8 @@ import { buildCareerAnalysisPrompt } from "./lib/career/adapter";
 import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "./lib/career/schema-projector";
 import dotenv from "dotenv";
+import { guardedGenerateContent } from "./lib/career/provider-calls/guard";
+import { withJobCallRegister } from "./lib/career/provider-calls/job-context";
 import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope";
 
 try {
@@ -33,11 +35,11 @@ async function testPrefix(contentPrefix: string): Promise<number> {
   const initialContents = `${prompt.systemPrompt}\n\n${prompt.userPrompt}`;
   
   try {
-    await ai.models.generateContent({
+    await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-3.5-flash",
       contents: initialContents,
       config
-    });
+    }));
     return 200;
   } catch (err: any) {
     if (contentPrefix.length === 0) {
@@ -59,4 +61,4 @@ async function run() {
 }
 
 // SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
-resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => run()).catch(console.error);
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => withJobCallRegister("SCRIPT:bisection", run)).catch(console.error);

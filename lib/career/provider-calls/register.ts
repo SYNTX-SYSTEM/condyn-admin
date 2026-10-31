@@ -7,7 +7,7 @@ import { ProviderCallBlocked, type ProviderCallRecorder, type ProviderCallStage,
  * RESERVED (budget unit taken, nothing sent) → SENT (committed BEFORE the request) → COMPLETED | FAILED_AFTER_SEND | UNKNOWN
  * (a SENT row that never got an end, e.g. a crashed worker); RESERVED → FAILED_BEFORE_SEND is the only way a unit comes back.
  * The job budget is the scope `JOB:<jobId>` of the existing call ledger; a call counts from the moment it may have left the process.
- * Registered with the investigation tables (same guarded, transactional registration: disposable databases only).
+ * The register has its own additive registration on every database (register-schema.ts); without it no call is made.
  */
 export const PROVIDER_CALL_TABLE = "career_provider_calls";
 export const PROVIDER_CALL_DEFAULT_JOB_LIMIT = 12;
@@ -17,7 +17,7 @@ export const PROVIDER_CALL_DDL = [
   `CREATE TABLE IF NOT EXISTS ${PROVIDER_CALL_TABLE} (
     call_id text PRIMARY KEY CHECK (call_id ~ '^PCALL_[0-9A-F]{32}$'),
     job_id text NOT NULL,
-    stage text NOT NULL CHECK (stage IN ('EXTRACTION_LEGACY','EXTRACTION_DISCOVERY','EXTRACTION_CONVERGENCE','SEMANTIC')),
+    stage text NOT NULL CHECK (stage IN ('EXTRACTION_LEGACY','EXTRACTION_DISCOVERY','EXTRACTION_CONVERGENCE','SEMANTIC','EMBEDDING','DIAGNOSTIC')),
     investigation_id text,
     job_pool_upload_id text,
     pool_role_id text,
@@ -32,7 +32,42 @@ export const PROVIDER_CALL_DDL = [
     sent_at text,
     ended_at text
   )`,
+  // A table registered before EMBEDDING / DIAGNOSTIC existed keeps its rows; only its stage list is widened.
+  `DO $$ BEGIN
+    IF EXISTS (SELECT 1 FROM pg_constraint WHERE conname = '${PROVIDER_CALL_TABLE}_stage_check' AND conrelid = '${PROVIDER_CALL_TABLE}'::regclass
+        AND pg_get_constraintdef(oid) NOT LIKE '%DIAGNOSTIC%') THEN
+      ALTER TABLE ${PROVIDER_CALL_TABLE} DROP CONSTRAINT ${PROVIDER_CALL_TABLE}_stage_check;
+      ALTER TABLE ${PROVIDER_CALL_TABLE} ADD CONSTRAINT ${PROVIDER_CALL_TABLE}_stage_check CHECK (stage IN ('EXTRACTION_LEGACY','EXTRACTION_DISCOVERY','EXTRACTION_CONVERGENCE','SEMANTIC','EMBEDDING','DIAGNOSTIC'));
+    END IF;
+  END $$`,
   `CREATE INDEX IF NOT EXISTS ${PROVIDER_CALL_TABLE}_job_idx ON ${PROVIDER_CALL_TABLE} (job_id)`
+] as const;
+
+/** The job budget ledger (also the day / investigation ledger of the semantic stage): counters only grow. */
+export const CALL_LEDGER_DDL = [
+  `CREATE TABLE IF NOT EXISTS career_relation_call_ledger (
+    scope_key text PRIMARY KEY,
+    limit_units integer NOT NULL CHECK (limit_units >= 0),
+    reserved integer NOT NULL DEFAULT 0 CHECK (reserved >= 0),
+    consumed integer NOT NULL DEFAULT 0 CHECK (consumed >= 0),
+    released integer NOT NULL DEFAULT 0 CHECK (released >= 0),
+    request_bytes bigint NOT NULL DEFAULT 0,
+    response_bytes bigint NOT NULL DEFAULT 0,
+    CHECK (released <= reserved AND consumed <= reserved - released AND reserved - released <= limit_units)
+  )`
+] as const;
+
+export const CALL_LEDGER_GUARD_DDL = [
+  `CREATE OR REPLACE FUNCTION rel_ledger_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: delete refused'; END IF;
+    IF NEW.scope_key <> OLD.scope_key OR NEW.reserved < OLD.reserved OR NEW.consumed < OLD.consumed OR NEW.released < OLD.released
+       OR NEW.request_bytes < OLD.request_bytes OR NEW.response_bytes < OLD.response_bytes
+      THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: counters never decrease'; END IF;
+    RETURN NEW; END $$`,
+  `DO $$ BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_ledger_guard' AND tgrelid = 'career_relation_call_ledger'::regclass) THEN
+      CREATE TRIGGER rel_ledger_guard BEFORE UPDATE OR DELETE ON career_relation_call_ledger FOR EACH ROW EXECUTE FUNCTION rel_ledger_guard(); END IF;
+  END $$`
 ] as const;
 
 export const PROVIDER_CALL_GUARD_DDL = [

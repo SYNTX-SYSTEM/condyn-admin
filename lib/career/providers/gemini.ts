@@ -375,12 +375,12 @@ export class GeminiProvider implements InferenceProvider {
             const ai = new GoogleGenAI({ apiKey: resolvedKey });
             
             const [tokenCountRes, modelInfoRes] = await Promise.all([
-              ai.models.countTokens({
+              guardedGenerateContent("DIAGNOSTIC", () => ai.models.countTokens({
                 model: currentModel,
                 contents: initialContents
-              }),
+              })),
               
-              ai.models.get({ model: currentModel })
+              guardedGenerateContent("DIAGNOSTIC", () => ai.models.get({ model: currentModel }))
             ]);
 
             if (tokenCountRes?.totalTokens) {

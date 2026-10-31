@@ -1,3 +1,5 @@
+import { guardedGenerateContent } from "../lib/career/provider-calls/guard";
+import { withJobCallRegister } from "../lib/career/provider-calls/job-context";
 import { GoogleGenAI } from "@google/genai";
 import { getGeminiCareerResponseJsonSchema } from "../lib/career/schema-projector";
 import * as fs from "fs";
@@ -23,7 +25,7 @@ const ai = new GoogleGenAI({ apiKey });
 async function probeA() {
   console.log("--- PROBE A: Tiny prompt + tiny JSON schema ---");
   try {
-    const response = await ai.models.generateContent({
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-1.5-pro",
       contents: "Tell me a joke about a dog.",
       config: {
@@ -37,7 +39,7 @@ async function probeA() {
           required: ["joke"]
         }
       }
-    });
+    }));
     console.log("✅ PROBE A SUCCESS");
     console.log("Output:", response.text);
   } catch (error: any) {
@@ -49,7 +51,7 @@ async function probeB() {
   console.log("\n--- PROBE B: Tiny prompt + our full schema ---");
   try {
     const schema = getGeminiCareerResponseJsonSchema();
-    const response = await ai.models.generateContent({
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-1.5-pro",
       contents: "Analyze this career: Software Engineer for 10 years.",
       config: {
@@ -58,7 +60,7 @@ async function probeB() {
         // The GoogleGenAI SDK usually maps these, but let's pass it exactly as we do in production:
         responseJsonSchema: schema
       } as any
-    });
+    }));
     console.log("✅ PROBE B SUCCESS (with responseJsonSchema)");
     console.log("Output excerpt:", response.text?.substring(0, 200) + "...");
   } catch (error: any) {
@@ -67,14 +69,14 @@ async function probeB() {
     console.log("\n--- Retrying PROBE B with responseSchema instead ---");
     try {
       const schema = getGeminiCareerResponseJsonSchema();
-      const response = await ai.models.generateContent({
+      const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
         model: "gemini-1.5-pro",
         contents: "Analyze this career: Software Engineer for 10 years.",
         config: {
           responseMimeType: "application/json",
           responseSchema: schema
         }
-      });
+      }));
       console.log("✅ PROBE B SUCCESS (with responseSchema)");
       console.log("Output excerpt:", response.text?.substring(0, 200) + "...");
     } catch (err: any) {
@@ -89,4 +91,4 @@ async function run() {
 }
 
 // SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
-resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => run());
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => withJobCallRegister("SCRIPT:probe-gemini", run));

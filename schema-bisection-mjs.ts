@@ -14,6 +14,8 @@ import {
   ConsistencyClusterSchema,
   CanonicalIdSchema
 } from "./lib/career/schema-projector.ts";
+import { guardedGenerateContent } from "./lib/career/provider-calls/guard.ts";
+import { withJobCallRegister } from "./lib/career/provider-calls/job-context.ts";
 import { exitOnJobScopeRefusal, resolveScriptJobScope } from "./lib/career/job-scope/script-scope.ts";
 
 try {
@@ -119,7 +121,7 @@ if (unsupportedKeywords.size > 0 || illegalRefSiblings.size > 0) {
 async function testSchema(name, schema) {
   const bytes = JSON.stringify(schema).length;
   try {
-    const response = await ai.models.generateContent({
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.generateContent({
       model: "gemini-3.5-flash",
       contents: "test",
       config: {
@@ -128,7 +130,7 @@ async function testSchema(name, schema) {
         temperature: 0.1,
         maxOutputTokens: 256
       }
-    });
+    }));
     console.log(`PROBE | ${name.padEnd(25)} | ${bytes} | HTTP: 200`);
     return true;
   } catch (err) {
@@ -234,4 +236,4 @@ async function runPhase2() {
 }
 
 // SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
-resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => runPhase2()).catch(console.error);
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => withJobCallRegister("SCRIPT:schema-bisection-mjs", runPhase2)).catch(console.error);

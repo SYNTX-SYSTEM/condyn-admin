@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     test: {
       env,
       globalSetup: ["./test/support/database-isolation/global-setup.ts"],
-      setupFiles: ["./test/support/database-isolation/setup.ts"],
+      setupFiles: ["./test/support/database-isolation/setup.ts", "./test/support/provider-calls/setup.ts"],
       poolOptions: {
         threads: {
           singleThread: true
