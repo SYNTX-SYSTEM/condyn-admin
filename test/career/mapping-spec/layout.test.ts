@@ -84,6 +84,23 @@ describe("LAYOUT · promises on every vector", () => {
     }
   });
 
+  it("BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactly (horizon - rho, field - rho) and never cross them or the inner edge", () => {
+    const by = Object.fromEntries(layouts.map(([name, input]) => [name, referenceLayout(input).bodies.filter(b => !b.overflow)]));
+    const horizon = by["LV08-checked-fit-0-pressed-to-the-horizon"], shelf = by["LV09-shelf-fit-0-pressed-to-the-field-edge"], inner = by["LV10-checked-fit-1-pressed-from-the-inner-edge"];
+    expect(Math.max(...horizon.map(b => b.distance + b.bodyRadius))).toBeCloseTo(SPEC.rings.horizon, 6);
+    expect(Math.max(...shelf.map(b => b.distance + b.bodyRadius))).toBeCloseTo(SPEC.field.radius, 6);
+    expect(Math.min(...inner.map(b => b.distance))).toBeCloseTo(SPEC.rings.bestFit, 6);
+    expect(Math.min(...horizon.map(b => b.distance))).toBeGreaterThanOrEqual(SPEC.rings.bestFit);
+    expect(Math.min(...shelf.map(b => b.distance))).toBeGreaterThanOrEqual(SPEC.rings.shelfNear);
+    expect(new Set(horizon.map(b => b.displacement[0])).has(-1)).toBe(true);
+    expect(Math.max(...inner.map(b => b.displacement[0]))).toBeGreaterThanOrEqual(2);
+    expect(Math.min(...inner.map(b => b.displacement[0]))).toBe(0);
+    const wide = by["LV11-shelf-wide-bodies-cannot-leave-the-field"];
+    expect(Math.max(...wide.map(b => b.distance + b.bodyRadius))).toBeLessThanOrEqual(SPEC.field.radius + 1e-6);
+    expect(Math.min(...wide.map(b => b.displacement[0]))).toBe(-1);
+    expect(Math.max(...wide.map(b => b.displacement[0]))).toBe(0);
+  });
+
   it("CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit completely; only the stress vector overflows", () => {
     const by = Object.fromEntries(layouts.map(([name, input]) => [name, referenceLayout(input).overflowCount]));
     expect(by["LV07-real-shape-73"]).toBe(0);

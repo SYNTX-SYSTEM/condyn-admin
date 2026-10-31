@@ -41,6 +41,7 @@
   "runStateRules": {
     "pendingBreath": "While the run is RUNNING and fewer roles are evaluated than planned (budget), arcs of source LEXICAL or NONE breathe slowly: 'being worked on'. It is a field-level mark; which role is next is not in the ranking.",
     "frozen": "STALLED freezes every breath and motion; a still sentence stands beside the field. Never an alarm.",
+    "stalledWithResumePending": "STALLED can come with resumePending=true (interrupted, inside the window): the field stays frozen, no pulse; the still sentence says the run is taken up again.",
     "resumePulse": "One quiet pulse at the field's edge while resumePending; no repeat faster than 6 s.",
     "reducedMotion": "Under prefers-reduced-motion nothing breathes, pulses or travels; pending is shown by a static dashed outline."
   },

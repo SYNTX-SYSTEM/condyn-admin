@@ -270,6 +270,28 @@ export async function resumeAutoMatches(now: () => string = () => new Date().toI
 }
 
 /** GET: the explainable ranking over the pools of the run (or the current ACTIVE pools) and the stored relations of the configured engine. Read only. */
+/** The cache keys to read, one per (requirement, PERSON proposal), each remembering the id of the proposal it was made for. */
+export function relationKeysOf(proposals: Array<{ id: string; hash: string }>, requirements: Array<{ requirementKey: string; requirementHash: string }>, engineHash: string): Array<{ requirementKey: string; relationKey: string; proposalId: string }> {
+  const keyed: Array<{ requirementKey: string; relationKey: string; proposalId: string }> = [];
+  for (const r of requirements) for (const p of proposals) keyed.push({ requirementKey: r.requirementKey, relationKey: relationKey(p.hash, r.requirementHash, engineHash), proposalId: p.id });
+  return keyed;
+}
+
+/** The best stored relation per requirement, carrying the id of the PERSON proposal it belongs to (the mapping's `capabilityKey`). */
+export function findingsOf(keyed: Array<{ requirementKey: string; relationKey: string; proposalId: string }>, stored: Map<string, CachedRelation>): Map<string, SemanticFinding> {
+  const candidates = new Map<string, SemanticFinding[]>();
+  for (const k of keyed) {
+    const relation = stored.get(k.relationKey);
+    if (!relation) continue;
+    const list = candidates.get(k.requirementKey) ?? [];
+    list.push({ state: relation.state, capabilityName: relation.capabilityName, capabilityKey: k.proposalId, explanation: relation.relationExplanation, evidenceLimitation: relation.evidenceLimitation, quotes: relation.sourceEvidence.map(q => ({ ...q })) });
+    candidates.set(k.requirementKey, list);
+  }
+  const out = new Map<string, SemanticFinding>();
+  for (const [requirementKey, list] of candidates) { const best = pickBestFinding(list); if (best) out.set(requirementKey, best); }
+  return out;
+}
+
 export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<RoleRanking>> {
   const base = await loadPersonOperandBase(analysisId);
   if (!base.ok) return base;
@@ -299,24 +321,15 @@ export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<
     const engineHash = engineVersionHash(engine);
     const proposalHashes = base.projection.capabilities.map(c => ({ capability: c, hash: proposalContentHash(c) }));
     const content = new Map<string, unknown>(pools.flatMap(p => p.pool.requirements.map(r => [`${p.jobPoolUploadId}\u0000${r.role_id}\u0000${r.id}`, r] as [string, unknown])));
-    const keyed: Array<{ requirementKey: string; relationKey: string; proposalId: string }> = [];
+    const requirementHashes: Array<{ requirementKey: string; requirementHash: string }> = [];
     for (const role of discovery.roles) for (const requirement of role.requirements) {
       const requirementKey = `${requirement.key.jobPoolUploadId}\u0000${requirement.key.poolRoleId}\u0000${requirement.key.poolRequirementId}`;
       const pool = content.get(requirementKey);
-      if (!pool) continue;
-      const requirementHash = requirementContentHash(pool as never);
-      for (const p of proposalHashes) keyed.push({ requirementKey, relationKey: relationKey(p.hash, requirementHash, engineHash), proposalId: p.capability.id });
+      if (pool) requirementHashes.push({ requirementKey, requirementHash: requirementContentHash(pool as never) });
     }
+    const keyed = relationKeysOf(proposalHashes.map(p => ({ id: p.capability.id, hash: p.hash })), requirementHashes, engineHash);
     const stored = new Map((await new PostgresRelationCacheRepository(db.$client).getByKeys(keyed.map(k => k.relationKey))).map(r => [r.relationKey, r] as const));
-    const candidates = new Map<string, SemanticFinding[]>();
-    for (const k of keyed) {
-      const relation: CachedRelation | undefined = stored.get(k.relationKey);
-      if (!relation) continue;
-      const list = candidates.get(k.requirementKey) ?? [];
-      list.push({ state: relation.state, capabilityName: relation.capabilityName, capabilityKey: k.proposalId, explanation: relation.relationExplanation, evidenceLimitation: relation.evidenceLimitation, quotes: relation.sourceEvidence.map(q => ({ ...q })) });
-      candidates.set(k.requirementKey, list);
-    }
-    for (const [requirementKey, list] of candidates) { const best = pickBestFinding(list); if (best) findings.set(requirementKey, best); }
+    for (const [requirementKey, finding] of findingsOf(keyed, stored)) findings.set(requirementKey, finding);
   }
   const ranking = buildRoleRanking({
     analysisId, discovery, poolsDropped,

@@ -26,6 +26,10 @@ export function layoutInputs(): Record<string, LayoutInput> {
     "LV03-equal-fit-ties": { pools: [pool(0)], roles: ranked(Array.from({ length: 12 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "SEMANTIC" as const, fit: 0.5, weightSum: 18 }))) },
     "LV04-crowded-60": { pools: [pool(0)], roles: ranked(crowded) },
     "LV05-capacity-exceeded-overflow": { pools: [pool(0)], roles: ranked(Array.from({ length: 320 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "SEMANTIC" as const, fit: 0.5, weightSum: 27 }))) },
+    "LV08-checked-fit-0-pressed-to-the-horizon": { pools: [pool(0)], roles: ranked(Array.from({ length: 200 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "SEMANTIC" as const, fit: 0, weightSum: 1 }))) },
+    "LV09-shelf-fit-0-pressed-to-the-field-edge": { pools: [pool(0)], roles: ranked(Array.from({ length: 260 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "LEXICAL_ONLY" as const, fit: 0, weightSum: 1 }))) },
+    "LV11-shelf-wide-bodies-cannot-leave-the-field": { pools: [pool(0)], roles: ranked(Array.from({ length: 120 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "LEXICAL_ONLY" as const, fit: 0, weightSum: 40 }))) },
+    "LV10-checked-fit-1-pressed-from-the-inner-edge": { pools: [pool(0)], roles: ranked(Array.from({ length: 160 }, (_, i) => ({ poolId: "pool-a", roleId: `role-${String(i).padStart(3, "0")}`, tier: "SEMANTIC" as const, fit: 1, weightSum: 1 }))) },
     "LV06-no-roles": { pools: [pool(1), pool(0)], roles: [] },
     "LV07-real-shape-73": { pools: [pool(0), pool(1), pool(2)], roles: real.map((r, i) => ({ poolId: r.pool, roleId: `role-${String(i).padStart(3, "0")}`, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })) }
   };
@@ -50,4 +54,5 @@ export function computeVectors() {
     constellations: Object.fromEntries(Object.entries(constellationInputs).map(([name, input]) => [name, { input, expected: referenceConstellation(input) }]))
   };
 }
-export const writeVectors = () => writeFileSync(VECTORS_FILE, `${JSON.stringify(computeVectors(), null, 1)}\n`);
+/** Pretty, but every innermost object on one line (a body per line keeps the file reviewable). */
+export const writeVectors = () => writeFileSync(VECTORS_FILE, `${JSON.stringify(computeVectors(), null, 1).replace(/\{[^{}]*\}/g, m => m.replace(/\s*\n\s*/g, " "))}\n`);

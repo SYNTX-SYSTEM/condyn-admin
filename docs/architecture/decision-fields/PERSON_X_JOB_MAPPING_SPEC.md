@@ -21,7 +21,9 @@ planetarium are unchanged. The full architecture (phases A–G) was released as 
 `RankedRequirement.capabilityKey: string | null` (additive to `ROLE_RANKING_V1`, backend `role-ranking.ts`, client `lib/career/ui/auto-match.ts`).
 
 * **Value:** the id of the PERSON proposal the coupling rests on — the id the semantic provider was shown (semantic relation) or the
-  proposal the name relation names (`lexical.proposalId`). **Never derived from a name.** Two proposals of the same name keep two keys.
+  proposal the name relation names (`lexical.proposalId`). **Never derived from a name.** The proposal id is a hash of the normalised name and the scope
+  (`capability-core/identity.ts`): the same name with the same scope is the same proposal (a second one in one analysis is refused upstream);
+  the same name with a different scope is two proposals and keeps two keys.
 * **null:** no relation (`source: NONE`), or a finding that carries no key. A key is only ever present together with `capabilityName`.
 * **Backend:** the relation cache stays content-addressed (it never stores the run-bound id). The id is resolved at read time from the
   PERSON projection through the same `relationKey` the cache is read with (`auto-match.ts` `buildAnalysisRanking`), so no historical
@@ -51,15 +53,19 @@ Pure function `layout(pools, roles in rank order) → sectors + bodies`; no rand
 * **Distance = fit.** Checked (SEMANTIC) roles: `160 + (1 − fit) · 220`; name-only roles on the shelf: `430 + 50 · (1 − min(fit, 0.5)/0.5)`; the horizon is
   at 400, the person constellation inside 90, the field ends at 500. A role without requirements (fit null) sits at the far end of the shelf.
 * **Size = requirement mass.** `ρ = clamp(3 + 2.2·√Σweights, 6, 16)`.
-* **Collisions.** Bodies are placed in rank order at their fit position; if it is taken the search tries radial offsets 0, ±1 … ±6 steps (step = 2ρ+2)
-  and, at each, angular offsets 0, ±1 … ±30 steps inside the sector, first free wins. If none is free the body is counted as `overflow`
+* **Collisions.** Bodies are placed in rank order at their fit position; if it is taken the search tries radial offsets 0, +1, −1 … ±6 steps (step = 2ρ+2)
+  and, at each (radial is the outer loop), angular offsets 0, +1, −1 … ±30 steps of `step/distance` inside the sector, first free wins. Collision distance is ρ₁+ρ₂+2;
+  overflow bodies take no part. **Bands (inclusive):** a checked role in `[160, 400−ρ]`, a shelf role in `[430, 500−ρ]`; a candidate outside is skipped. The full rule list is `layout-spec.json` → `search.rules`;
+  the vectors LV08–LV11 press bodies against all edges (inner, horizon, field edge, and wide bodies that must not leave the field) so a product module cannot get them wrong and still match. If none is free the body is counted as `overflow`
   (placed on the overflow radius 520, **not drawn**; the interface shows "+n"). `displacement` records the step taken; a displaced body is
   approximate in distance, so quantitative statements always come from the data, never from the position.
 * **Requirement ring.** Necessity order REQUIRED, PREFERRED, OPTIONAL, UNKNOWN, then weight descending, then id; arc length ∝ weight; 6° gaps (none for a single arc).
 * **Person constellation.** Capabilities by name then key; one in the centre; otherwise rings of radius 30 / 52 / 74 filled in order; the rest is counted.
-* **Golden vectors:** `layout-golden-vectors.json` — seven layouts (single role, three pools with mixed tiers, equal-fit ties, 60 crowded, 320 roles
-  beyond capacity, no roles, and the **real shape** of 73 roles in 3 pools — structure only, no text — from the real run), four requirement rings, five constellations.
-  The reference oracle is `test/support/mapping/layout-reference.ts` (not product code); a product module must match the vectors within 1e-6.
+* **Golden vectors:** `layout-golden-vectors.json` — eleven layouts (single role, three pools with mixed tiers, equal-fit ties, 60 crowded, 320 roles
+  beyond capacity, four edge-pressure vectors, no roles, and the **real shape** of 73 roles in 3 pools — structure only, no text — from the real run), four requirement rings, five constellations.
+  Compare `x`/`y` of the vectors directly (recomputing them from the rounded angle and distance differs by up to ~4e-6). The reference oracle is `test/support/mapping/layout-reference.ts` (not product code); a product module must match the vectors within 1e-6.
+
+Run-state note: the backend can report STALLED together with `resumePending = true` (an interrupted run inside its window); the field then stays frozen — a resume pulse is only for PARTIAL and FAILED.
 
 ## 5. Checks (phase A)
 
