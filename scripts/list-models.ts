@@ -1,3 +1,5 @@
+import { guardedGenerateContent } from "../lib/career/provider-calls/guard";
+import { withJobCallRegister } from "../lib/career/provider-calls/job-context";
 import { GoogleGenAI } from "@google/genai";
 import * as fs from "fs";
 import * as path from "path";
@@ -37,7 +39,7 @@ async function listModels() {
     console.log("------------------------------------------------------------");
     
     let count = 0;
-    const response = await ai.models.list();
+    const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.list());
     let modelList: any[] = [];
     if (Symbol.asyncIterator in Object(response)) {
       for await (const m of (response as any)) {
@@ -71,4 +73,4 @@ async function listModels() {
 }
 
 // SFE JOB POOL FIRST: no Career-Analysis and no Gemini call without a valid pool + selected job (CONDYN_JOB_POOL_UPLOAD_ID, CONDYN_POOL_ROLE_ID).
-resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => listModels());
+resolveScriptJobScope().catch(exitOnJobScopeRefusal).then(() => withJobCallRegister("SCRIPT:list-models", listModels));

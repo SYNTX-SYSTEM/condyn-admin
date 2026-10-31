@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { ProviderCallBlocked, guardedGenerateContent } from "../provider-calls/guard";
 import { EmbeddingProvider } from "./types";
 
 export interface GeminiEmbeddingProviderOptions {
@@ -43,13 +44,13 @@ export class GeminiEmbeddingProvider implements EmbeddingProvider {
     try {
       const ai = new GoogleGenAI({ apiKey: resolvedKey });
 
-      const response = await ai.models.embedContent({
+      const response = await guardedGenerateContent("EMBEDDING", () => ai.models.embedContent({
         model: this.model,
         contents: cleanText,
         config: {
           outputDimensionality: 768
         }
-      });
+      }));
 
       const values =
         (response as any)?.embeddings?.[0]?.values ||
@@ -62,6 +63,7 @@ export class GeminiEmbeddingProvider implements EmbeddingProvider {
       this._dimensions = values.length;
       return values;
     } catch (err: any) {
+      if (err instanceof ProviderCallBlocked) throw err;
       const errorMsg = err.message || String(err);
       if (errorMsg.startsWith("ERR_EMBEDDING_PROVIDER_FAILURE:")) {
         throw err;

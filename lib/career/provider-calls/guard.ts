@@ -2,11 +2,11 @@ import { AsyncLocalStorage } from "node:async_hooks";
 
 /**
  * Every call of the Gemini API that can generate content passes through ONE seam (owner mandate THREE-POINT, point 2): a call is
- * written down BEFORE it is sent (write-ahead) and counted from the moment it may have left the process. Inside a job context
- * (the worker binds one per job) a call without a register row does not happen; outside of one (tests, scripts, stand-ins) the call
- * is passed through unchanged, so nothing existing changes.
+ * written down BEFORE it is sent (write-ahead) and counted from the moment it may have left the process. A call without a
+ * register row does not happen, on any database: with no recorder bound the call is refused before it is sent (owner BUDGET
+ * BOUNDARY: no model call without persistent registration). Only a test setup may install a default recorder.
  */
-export type ProviderCallStage = "EXTRACTION_LEGACY" | "EXTRACTION_DISCOVERY" | "EXTRACTION_CONVERGENCE" | "SEMANTIC";
+export type ProviderCallStage = "EXTRACTION_LEGACY" | "EXTRACTION_DISCOVERY" | "EXTRACTION_CONVERGENCE" | "SEMANTIC" | "EMBEDDING" | "DIAGNOSTIC";
 export type ProviderErrorClass = "TRANSIENT" | "PERMANENT" | "INCOMPLETE" | "EMPTY" | "UNKNOWN";
 export interface ProviderCallMeta { investigationId?: string; jobPoolUploadId?: string; poolRoleId?: string; attempt?: number }
 export interface ProviderFailureInfo { errorClass: ProviderErrorClass; errorCode: string; httpStatus: number | null }
@@ -30,6 +30,10 @@ const storage = new AsyncLocalStorage<Context>();
 export const runWithProviderCallRecorder = <T>(recorder: ProviderCallRecorder, fn: () => T): T => storage.run({ recorder, meta: {} }, fn);
 export const withProviderCallMeta = <T>(meta: ProviderCallMeta, fn: () => T): T => { const ctx = storage.getStore(); return ctx ? storage.run({ ...ctx, meta: { ...ctx.meta, ...meta } }, fn) : fn(); };
 export const providerCallRecorderActive = (): boolean => storage.getStore() !== undefined;
+
+/** Recorder for calls outside a bound context. Production never sets one (architecture test); the test setup installs a pass-through. */
+let defaultRecorder: ProviderCallRecorder | undefined;
+export const setDefaultProviderCallRecorder = (recorder: ProviderCallRecorder | undefined): void => { defaultRecorder = recorder; };
 
 /** HTTP status of an SDK error, when it carries one. */
 export function httpStatusOf(error: unknown): number | null {
@@ -58,11 +62,11 @@ export function classifyProviderError(error: unknown): ProviderFailureInfo {
 /**
  * Sends one call through the register. `send` is the generateContent call itself; it is invoked only after the row exists and is
  * marked SENT. A throw of `send` is a call that may have left the process: it stays counted (FAILED_AFTER_SEND) and the original
- * error propagates unchanged. Without a bound recorder `send` runs as it always did.
+ * error propagates unchanged. Without a recorder `send` is never invoked.
  */
 export async function guardedGenerateContent<T>(stage: ProviderCallStage, send: () => Promise<T>, size: { requestBytes?: number; responseBytes?: (result: T) => number } = {}): Promise<T> {
-  const ctx = storage.getStore();
-  if (!ctx) return send();
+  const ctx = storage.getStore() ?? (defaultRecorder ? { recorder: defaultRecorder, meta: {} } : undefined);
+  if (!ctx) throw new ProviderCallBlocked("ERR_PROVIDER_CALL_REGISTER_FAILED");
   const { recorder } = ctx;
   let callId: string;
   try { callId = await recorder.begin({ stage, ...ctx.meta }); } catch (error) { throw error instanceof ProviderCallBlocked ? error : new ProviderCallBlocked("ERR_PROVIDER_CALL_REGISTER_FAILED"); }

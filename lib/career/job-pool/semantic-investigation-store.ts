@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import type { Sql } from "postgres";
 import type { CallLedger } from "./semantic-relation-engine";
 import { canonicalJson } from "./relation-cache";
-import { PROVIDER_CALL_DDL, PROVIDER_CALL_GUARD_DDL, PROVIDER_CALL_TABLE } from "../provider-calls/register";
+import { CALL_LEDGER_DDL, CALL_LEDGER_GUARD_DDL, PROVIDER_CALL_DDL, PROVIDER_CALL_GUARD_DDL, PROVIDER_CALL_TABLE } from "../provider-calls/register";
 
 /**
  * Persistence of explicit semantic investigations (stage 3, spec §6): the investigation (idempotent by key), its role tasks and the
@@ -36,16 +36,7 @@ export const INVESTIGATION_DDL = [
     updated_at text NOT NULL,
     PRIMARY KEY (investigation_id, job_pool_upload_id, pool_role_id)
   )`,
-  `CREATE TABLE IF NOT EXISTS career_relation_call_ledger (
-    scope_key text PRIMARY KEY,
-    limit_units integer NOT NULL CHECK (limit_units >= 0),
-    reserved integer NOT NULL DEFAULT 0 CHECK (reserved >= 0),
-    consumed integer NOT NULL DEFAULT 0 CHECK (consumed >= 0),
-    released integer NOT NULL DEFAULT 0 CHECK (released >= 0),
-    request_bytes bigint NOT NULL DEFAULT 0,
-    response_bytes bigint NOT NULL DEFAULT 0,
-    CHECK (released <= reserved AND consumed <= reserved - released AND reserved - released <= limit_units)
-  )`,
+  ...CALL_LEDGER_DDL,
   // Lease of the run (point 3): who runs it and until when; a run whose lease expired is STALLED and is taken up again by any worker.
   `ALTER TABLE career_relation_investigations ADD COLUMN IF NOT EXISTS lease_owner text`,
   `ALTER TABLE career_relation_investigations ADD COLUMN IF NOT EXISTS lease_expires_at text`,
@@ -73,20 +64,13 @@ export const INVESTIGATION_GUARD_DDL = [
        OR (OLD.status = 'RUNNING' AND NEW.status IN ('SUCCEEDED','FAILED','BUDGET_EXHAUSTED','INTERRUPTED')))
       THEN RAISE EXCEPTION 'ERR_INVESTIGATION_STATUS_BACKWARD: % -> %', OLD.status, NEW.status; END IF;
     RETURN NEW; END $$`,
-  `CREATE OR REPLACE FUNCTION rel_ledger_guard() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
-    IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: delete refused'; END IF;
-    IF NEW.scope_key <> OLD.scope_key OR NEW.reserved < OLD.reserved OR NEW.consumed < OLD.consumed OR NEW.released < OLD.released
-       OR NEW.request_bytes < OLD.request_bytes OR NEW.response_bytes < OLD.response_bytes
-      THEN RAISE EXCEPTION 'ERR_LEDGER_IMMUTABLE: counters never decrease'; END IF;
-    RETURN NEW; END $$`,
   `DO $$ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_inv_guard' AND tgrelid = 'career_relation_investigations'::regclass) THEN
       CREATE TRIGGER rel_inv_guard BEFORE UPDATE OR DELETE ON career_relation_investigations FOR EACH ROW EXECUTE FUNCTION rel_inv_guard(); END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_task_guard' AND tgrelid = 'career_relation_role_tasks'::regclass) THEN
       CREATE TRIGGER rel_task_guard BEFORE UPDATE OR DELETE ON career_relation_role_tasks FOR EACH ROW EXECUTE FUNCTION rel_task_guard(); END IF;
-    IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'rel_ledger_guard' AND tgrelid = 'career_relation_call_ledger'::regclass) THEN
-      CREATE TRIGGER rel_ledger_guard BEFORE UPDATE OR DELETE ON career_relation_call_ledger FOR EACH ROW EXECUTE FUNCTION rel_ledger_guard(); END IF;
   END $$`,
+  ...CALL_LEDGER_GUARD_DDL,
   ...PROVIDER_CALL_GUARD_DDL
 ] as const;
 
