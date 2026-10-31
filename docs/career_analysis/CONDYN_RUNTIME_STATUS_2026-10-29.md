@@ -128,3 +128,15 @@ One run on :3017 (main 0e44cce): `docs/examples/cv.synthetic.pdf` (PERSON) → r
 **:3017:** `condyn-admin-dll-runtime` fast-forwarded to 28dc62a, server + worker restarted (stand-in, day limit 1000, no ANALYZE, no Gemini call). GET `/career/demo` 200; the earlier real run ANL_1793382839627_744 still reads PARTIAL · ROLE_FAILURES, not resumable, not continued. Rollback: `git -C /home/codi/Entwicklung/condyn-admin-dll-runtime reset --hard 5521ae7`, then `scripts/runtime/port-3017.sh switch <that dir>`.
 
 **Owner notes:** partial admission (admitted pairs stored, refused pairs never) relaxes the former all-or-nothing admission — my decision; default job call limit 12 when `GEMINI_JOB_CALL_LIMIT` is unset (the real run used 10); the call register is active only on disposable DBs; the extraction-stage call count of the earlier real run stays unprovable; no real-Gemini proof of the new paths (needs a separate release); 45 baseline-red tests unchanged.
+
+## 10. Budget boundary: no model call without a persistent register row (2026-10-31)
+
+**Owner mandate SFE::BUDGET BOUNDARY HARDLOCK** — "Ohne persistente Aufrufregistrierung darf kein Gemini-Aufruf stattfinden. Unabhängig von der verwendeten Datenbank." "NUR DAS. MEHR NICHT." Closes the gap named in §9 (register only on disposable databases, others unrecorded).
+
+**Change (main 32c63c2, branch backend/call-register-everywhere fcf1084):** the seam refuses every call with no recorder (`ERR_PROVIDER_CALL_REGISTER_FAILED`, request never sent); `withJobCallRegister` provisions the register on whatever database the job runs on (`register-schema.ts`: additive, idempotent, advisory lock, triggers re-enabled, stage list widened in place, existing rows kept) and refuses every call when it cannot; embedding, token-count/model-get diagnostics, the probe scripts (also those in the repository root) and every `list-models` pager page pass the seam. Only the test setup installs a default recorder; an architecture test scans lib, scripts, app and the repository root.
+
+**PINK:** §3.89 (67abdfe) NO-GO — F-BB-1 root scripts, F-BB-2 pager pages; §3.90 (fcf1084) **GO** — requests = register rows for all five scripts (2/1/11/11/3), 0 without a row; in-process probe 4/4.
+
+**Rollout:** :3017 fast-forwarded to 32c63c2, server + worker restarted (stand-in, no Gemini); GET /career/demo 200, earlier real run still PARTIAL · ROLE_FAILURES. Rollback: reset worktree to fe859b3, then `port-3017.sh switch`.
+
+**Owner notes:** the semantic start route still refuses outside disposable databases (separate B-ENTRY gate, unchanged); the architecture test does not see `for await` over a pager or SDK services other than `models` (none used today); the register memo is per process — dropping register tables at runtime makes the process refuse until restart (fail closed).
