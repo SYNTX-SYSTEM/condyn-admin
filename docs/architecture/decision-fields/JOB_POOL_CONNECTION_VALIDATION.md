@@ -3937,6 +3937,40 @@ Open but not blocking:
 - **§3.89 probe.** 4 of 4 green.
 - **Observation.** The architecture test does not see an async iteration over a pager or SDK services other than `models`. No tracked file uses either today.
 
+### 3.91 PERSON × JOB phase A, GELB `3b632da` on `26c59f7` (2026-10-31) — GO on points 1, 2 and 4; point 3 GO with condition F-PA-2
+
+**Request.** Independent and inverse check of phase A only (owner hardlock "NUR PHASE A. MEHR NICHT."), points 1–4:
+1. `capabilityKey`.
+2. The strict decoder.
+3. Sign and layout specification.
+4. Boundaries.
+
+**Method.**
+- **Probe.** An own analysis with six capabilities. Its relations were written by the *base* code through a mocked SDK whose verdict for each pair is a fixed hash. Base and candidate then read the same disposable database.
+- **Mutants.** 15 targeted mutants run against GELB's tests; the survivors then run against PINK's probe.
+- **Layout.** An own Python recomputation of the layout from the spec text, plus an own check of the invariants on the vectors.
+
+**Verdict** (`evidence/mapping-phase-a-3b632da/verdicts.txt`):
+- **1 — GO.**
+  - Every semantic key is the proposal id the provider was shown and judged best (43/43). Every lexical key is `lexical.proposalId` (6/6). NONE always has a null key.
+  - With the key removed, the body is byte-identical to the base over the same rows.
+  - Reads write nothing (whole-database fingerprints equal).
+  - F-PA-1 (spec precision): the proposal id is itself `PCAP_hash(normalizedName|scope)`. "Two proposals of the same name keep two keys" therefore holds only across scopes, and the CK test uses a state a real analysis cannot reach.
+  - F-PA-T1 (test gap): the mutants M02 (key = first proposal) and M11 (a key changes a PARTIAL number) survive GELB's tests. PINK's probe kills both.
+- **2 — GO.**
+  - The old body (real, from the base code) and the new body decode as the same object.
+  - All 13 refusal cases are refused.
+  - The base decoder refuses the new body, so the two ship together as the spec says.
+  - F-PA-T2 (test gap): M09 (one extra field at the old key count) survives GELB's tests. PINK's P2 kills it.
+- **3 — GO with condition F-PA-2.**
+  - The sign table equals the system lists (10 coupling states, 8 run states), and every signature is unique.
+  - All layout promises hold on all vectors.
+  - The own recomputation matches 16/16 vectors, but only after inferring the search rules (band, angular step, order, collision distance, ring capacity).
+  - The vectors do not pin the upper band edges: M12 and M13 leave all 16 vectors unchanged, so a product module could let shelf bodies leave the field and still match.
+- **4 — GO.**
+  - Product code changed only the read path, `role-ranking.ts` and the decoder. Nothing under `app/` changed, and no route, orbit, planetarium or B2 file.
+  - Regression 463/463 against base 429/429, with 0 failures. tsc 0. No network.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

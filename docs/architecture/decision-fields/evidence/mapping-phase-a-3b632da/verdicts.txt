@@ -1,0 +1,75 @@
+PINK §3.91 — PERSON × JOB phase A, independent and inverse check of GELB backend/mapping-phase-a 3b632da (base main 26c59f7) — 2026-10-31
+Scope (owner hardlock "NUR PHASE A. MEHR NICHT."): only points 1–4 of GELB's request. No other matrices, viewports or languages.
+Method:
+  * Probe pink-pa.test.ts. Own analysis with six PERSON capabilities. Relations are written by the BASE code (26c59f7) through a mocked
+    @google/genai whose verdict per (proposal, requirement) is a fixed hash, so the best proposal of each requirement is known without the
+    product code. Base and candidate then read the same disposable database.
+  * 15 targeted mutants against GELB's phase-A tests, and the survivors against PINK's probe.
+  * Own Python recomputation of the layout from the spec text, compared with all 16 golden vectors. Own invariant check on the vectors.
+  * Own parse of the state lists against the sign table.
+  * Regression of the touched areas, candidate vs base. tsc.
+Evidence class: DETERMINISTIC_FIXTURE. No model, no network (fetch stubbed, 0 calls). main and :3017 untouched.
+
+1. capabilityKey — GO
+  * Semantic: 43/43 couplings carry exactly the proposal id the mocked provider judged best (value, state order, name). The id was shown
+    to the provider (43/43) and names the projection capability of capabilityName (43/43).
+  * Lexical: 6/6 keys = lexical.proposalId and in the projection (6/6). NONE: 36/36 and 73/73 keys null. No key equals a name.
+  * Numbers: with the key removed, the candidate body is byte-identical to the base body over the same rows, for both the semantic and
+    the lexical analysis. Fit, order, coverage and gaps are unchanged.
+  * Historical data: the rows were written by the base code. Whole-database fingerprints are equal before and after every read (base and
+    candidate). A second analysis of equal content is served from the cache with 0 calls; its keys equal the ids the provider was shown.
+  F-PA-1 (spec precision, not a defect of phase A): the proposal id itself is PCAP_hash(normalizedName|scope)
+    (lib/career/capability-core/identity.ts:10). Phase A derives nothing from a name, but key identity = normalized name + scope.
+    - "Python" and "  python " give the same id. Two groups of the same name and scope in one analysis are refused upstream
+      (ERR_CAPABILITY_CONVERGENCE_ID_COLLISION).
+    - So spec §2 "two proposals of the same name keep two keys" holds only across scopes. The CK test "two proposals of the same name
+      stay two keys" uses a state a real analysis cannot reach.
+    - Consequence for later phases: equal keys across two analyses mean equal normalized name + scope, not equal evidence.
+  F-PA-T1 (test gap): the mutant "semantic key = first proposal of the projection" (M02) survives GELB's tests, because the fixture
+    analyses have one proposal. So does "a key changes a number for PARTIAL" (M11), because every mocked relation is COVERS. PINK's
+    probe kills both.
+
+2. Strict decoder — GO
+  * Accepted and handed back as the same object: the real new body; a key that is null or absent (SEMANTIC, LEXICAL); the real base
+    body (no field anywhere; the key reads null).
+  * Refused: a key that is empty, a number, true, an object or an array; a key on NONE; a key with capabilityName null (SEMANTIC and
+    LEXICAL); name and key both null on SEMANTIC; an extra field; a case variant instead of the key; the key in place of explanation (same
+    key count); explanation dropped; an extra field at the old count.
+  * The base decoder refuses the new body. As spec §2 says, backend and frontend ship together.
+  F-PA-T2 (test gap): the mutant "one extra field of any name tolerated at the old key count" (M09) survives GELB's tests. PINK's P2 kills it.
+  Observation: any non-empty text is a key (" " included). There is no PCAP pattern or projection check, unlike the role-discovery
+    decoder. The spec only asks for text.
+  M10 ("hands back a copy") is an equivalent mutant: decodeRoleRanking uses the requirement result only as a check.
+
+3. Specification — GO with condition F-PA-2 (documents and vectors only, inside phase A)
+  * Sign table equals the system lists:
+    - 10 coupling states = SEMANTIC_RELATION_STATES + the LexicalBasis type including NONE; the 8 run states = AUTO_MATCH_STATES.
+    - Each state has a unique arcLine + arcFill + beam + mark, and arcFill = the client decoder value.
+    - Lexical signs: dotted, never phase locked, fill ≤ 0.5. DIFFERENT, UNCLEAR and NONE are distinct.
+  * Layout promises are true on all 7 layout vectors (own code):
+    - overlap 0, horizon 0, field 0, sector angle 0, size band 0, 360° share ok;
+    - distance = fit formula for every undisplaced body, and fit order is never inverted.
+  * Rings and constellations: the 4 rings total 360° with fill = value, and the 5 constellations stay inside the person radius
+    (outer edge 79 < 90) without node overlap.
+  * Own recomputation: 16/16 vectors match within 1e-6.
+  F-PA-2: the spec text is not enough to recompute the vectors.
+    - What PINK had to infer: the radial search band (checked [bestFit, horizon − ρ], shelf [shelfNear, radius − ρ]); the angular step
+      (step/d rad); the offset order 0, +1, −1, …; radial before angular; collision distance ≥ ρ1 + ρ2 + gap, overflow bodies ignored; the
+      fit clamp; the constellation ring capacity floor(2πR/spacing); ring index 0-based plus the node field "overflow".
+    - The vectors do not pin the upper band edges. A checked upper edge of zeroFit, a shelf upper edge of shelfFar, or a shelf band
+      unbounded outward (bodies may leave the field) leaves all 16 vectors unchanged. GELB's tests stay green (M12, M13).
+    - Proposal: put these rules into §4 and layout-spec.json, and add vectors that displace checked fit-0 bodies and crowded shelf bodies
+      to the band edges.
+  Notes (not findings):
+    - Sector containment holds for body centres; discs reach into the 4° gap (LV05 9 bodies, at most 2.97°; LV07 1 body).
+    - x/y recomputed from the rounded angle and distance deviate by up to about 4.4e-6, so compare x/y directly.
+    - The backend emits STALLED·WORKER_LOST with resumePending = true (INTERRUPTED within the window). The table freezes it without a
+      pulse; this is consistent, but the table does not say so.
+
+4. Boundaries — GO
+  * Changed product code: only the read path of buildAnalysisRanking, role-ranking.ts and the client decoder.
+  * Unchanged: no file under app/, no route, component, orbit, planetarium or job-scope/B2 file, and the write path.
+  * Reads write nothing (fingerprints). 0 fetch calls; the SDK is mocked.
+  * Regression: 47 files, 463 tests green on 3b632da against 44 files, 429 tests on base, with 0 failures on either side (the difference is
+    the new phase-A tests).
+  * tsc 0. GELB's phase-A tests: 51/51.

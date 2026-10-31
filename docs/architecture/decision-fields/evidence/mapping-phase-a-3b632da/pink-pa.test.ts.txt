@@ -1,0 +1,256 @@
+// PINK PERSON × JOB phase A (3b632da), inverse checks 1, 2 and 4 on PostgreSQL. Relations from a mocked @google/genai whose verdict
+// per (proposal, requirement) is a fixed hash — so the best proposal of each requirement is known independently of the product code.
+// Base code (26c59f7, tree $BASE_TREE) and candidate code read the SAME disposable condyn_test_* database. No network, no model.
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+
+const STATES = ["EQUIVALENT", "COVERS", "PARTIAL", "DIFFERENT", "UNCLEAR"] as const;
+const verdict = (pid: string, rid: string, text: string) => STATES[createHash("sha256").update(`${pid}|${text}`).digest()[0] % 5];
+const P = vi.hoisted(() => ({ requests: [] as string[], constructed: 0, judged: [] as Array<{ pid: string; rid: string; text: string; name: string; state: string }> }));
+vi.mock("@google/genai", async () => {
+  const { createHash: h } = await import("node:crypto");
+  const S = ["EQUIVALENT", "COVERS", "PARTIAL", "DIFFERENT", "UNCLEAR"];
+  return { GoogleGenAI: class {
+    constructor() { P.constructed += 1; }
+    models = { generateContent: async (r: { contents: string }) => {
+      P.requests.push(r.contents);
+      const body = JSON.parse(r.contents.slice(r.contents.lastIndexOf("\n\n") + 2)) as { proposals: Array<{ id: string; name: string; evidence: Array<{ evidenceId: string }> }>; requirements: Array<{ requirementId: string; requirementText?: string; text?: string; capabilityName?: string }> };
+      const relations = body.proposals.flatMap(p => body.requirements.map(q => {
+        const text = JSON.stringify({ ...q, requirementId: undefined });
+        const state = S[h("sha256").update(`${p.id}|${text}`).digest()[0] % 5];
+        P.judged.push({ pid: p.id, rid: q.requirementId, text, name: p.name, state });
+        return { proposalId: p.id, requirementId: q.requirementId, state, citedEvidenceIds: state === "UNCLEAR" ? [] : p.evidence.slice(0, 1).map(e => e.evidenceId), relationExplanation: "PINK fixed verdict.", evidenceLimitation: "PINK fixture." };
+      }));
+      return { text: JSON.stringify({ relations }), candidates: [{ finishReason: "STOP" }] };
+    } };
+  } };
+});
+
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createSourceDocument } from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { GET as GET_RANK } from "../../app/api/career/analyses/[analysisId]/job-ranking/route";
+import { GET as GET_DISC } from "../../app/api/career/analyses/[analysisId]/role-discovery/route";
+import { decodeRoleRanking, decodeAutoMatch, AUTO_MATCH_STATES } from "../../lib/career/ui/auto-match";
+import { viewOfAutoInvestigation } from "../../lib/career/job-pool/auto-match";
+import { SEMANTIC_RELATION_STATES } from "../../lib/career/job-pool/relation-cache";
+import { uploadEngineeringJobScope } from "../support/job-scope";
+import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../career/result-inspector/fixture";
+import { computeSourceBundleHash, runCapabilityConvergence, runCapabilityDiscovery } from "../../lib/career/capability-core";
+import { createJob } from "../../lib/career/orchestration/job";
+import { loadRoleDiscoveryOperand } from "../../lib/career/job-pool/role-discovery-operand";
+import { buildProvisionalCapabilityId } from "../../lib/career/capability-core/identity";
+
+// Six PERSON capabilities: two of the SAME name with different quotes (Python), two of IDENTICAL content (Event-driven migration).
+const Q = { ts: "Built the dispatch API in TypeScript.", k8s: "Operated Kubernetes clusters for three teams.", py1: "Wrote Python data pipelines.", py2: "Taught Python to new engineers.", pg: "Tuned PostgreSQL queries." };
+const MULTI_SOURCE = `${SOURCE} ${Object.values(Q).join(" ")}`;
+const CAPS: Array<[string, string]> = [["TypeScript", Q.ts], ["Kubernetes", Q.k8s], ["Python", Q.py1], ["Python Teaching", Q.py2], ["PostgreSQL", Q.pg], ["Event-driven migration", SOURCE]];
+const audit = (count: number) => ({ source_documents_examined: 1, capability_count: count, atomic_capability_count: count, composite_capability_count: 0, attribution_pass_completed: true, target_state_ownership_pass_completed: true, atomic_extraction_pass_completed: true, method_capability_pass_completed: true, composite_reconstruction_pass_completed: true, global_convergence_pass_completed: true, inventory_reconciliation_pass_completed: true, final_reconciliation_produced_new_capabilities: false, unresolved_target_operations: 0, segments_classified_as_external_source_content: 0, segments_classified_as_target_subject_operation: 0, segments_classified_as_target_subject_designed_target_state: 0, segments_classified_as_target_organization_capability: 0, segments_excluded_due_to_attribution_ambiguity: 0 });
+const discoveryText = () => JSON.stringify({ coverage_audit: audit(CAPS.length), capabilities: CAPS.map(([name, quote]) => ({ evidence: [{ exact_quote: quote, location: "body", source_document: "CV" }], model_confidence: 0.9, evidence_mode: "EXPLICIT", structural_definition: name, primary_domain: null, demonstrated_capability_level: null, capability_scope: "ATOMIC", canonical_name: name })), kernel_version: "discovery-v1" });
+const perCandidate = { providerName: "fake", model: "m", execute: async (request: { userPrompt: string }) => {
+  const items = JSON.parse(request.userPrompt.slice(request.userPrompt.indexOf("["))) as Array<{ candidate_id: string; canonical_name: string }>;
+  return { convergenceOutput: { convergence_version: "convergence-v1", groups: items.map((it, i) => ({ group_key: `g${i}`, member_candidate_ids: [it.candidate_id], canonical_name: it.canonical_name, capability_scope: "ATOMIC" as const, structural_definition: it.canonical_name, primary_domain: null })), relations: [], reconciliation_audit: { input_candidate_count: items.length, grouped_candidate_count: items.length, group_count: items.length, same_capability_merge_count: 0, unresolved_relation_count: 0, reconciliation_pass_completed: true } } };
+} };
+async function produceMulti(world: InspectorWorld) {
+  const source = createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: MULTI_SOURCE });
+  const discovery = await runCapabilityDiscovery([source], { kernelVersion: "discovery-v1", schemaVersion: "discovery-schema-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "discovery-v1", templateId: "T", versionId: "V", checksum: "C", plainTextContent: "FAKE_DISCOVERY_KERNEL" }) }, provider: geminiProvider(fakeGeminiClient([discoveryText()])), repository: world.capabilityRepository } as never);
+  const run = (discovery as any).run; if (!run) throw new Error(`discovery ${(discovery as any).kind}`);
+  const convergence = await runCapabilityConvergence((await world.capabilityRepository.getRunById(run.runId))!, { kernelVersion: "convergence-v1", schemaVersion: "convergence-schema-v1", algorithmVersion: "algorithm-v1" }, { kernelResolver: { resolve: async () => ({ kernelVersion: "convergence-v1", templateId: "T", versionId: "V", checksum: "CC", plainTextContent: "FAKE_CONVERGENCE_KERNEL" }) }, provider: perCandidate, repository: world.capabilityRepository } as never);
+  const job = createJob("CAREER_ANALYSIS", { sourceType: "BATCH", sourceData: { documents: [{ type: "pdf", name: "cv.synthetic.pdf", content: "JVBERi0xLjQKJcfsj6IKUERGX01BUktFUg==" }], investigation: { mode: "PERSON" } } } as never);
+  await world.saveJob(job); const analysisId = job.jobId.replace("JOB_", "ANL_"); const candidateSourceBundleId = `CSB_${job.jobId}`;
+  await world.sourceBundles.persistCandidateSourceBundle({ candidateSourceBundleId, sourceBundleHash: computeSourceBundleHash([source]), documents: [source], schemaVersion: "CANDIDATE_SOURCE_BUNDLE_V1", createdAt: "2026-10-15T10:00:00.000Z" } as never);
+  await world.saveAnalysis?.(analysisId, (convergence as any).run.completedAt);
+  await world.references.save({ analysisId, jobId: job.jobId, discoveryRunId: run.runId, convergenceRunId: (convergence as any).run.convergenceRunId, candidateSourceBundleId, sourceBundleHash: run.sourceBundleHash, createdAt: (convergence as any).run.completedAt } as never);
+  return { analysisId };
+}
+
+const BASE = process.env.BASE_TREE!;
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const q = async <T>(s: string) => (await db.execute(sql.raw(s))) as unknown as T[];
+const params = (analysisId: string) => ({ params: Promise.resolve({ analysisId }) });
+async function fingerprint() {
+  const tables = (await q<{ t: string }>(`SELECT tablename AS t FROM pg_tables WHERE schemaname = current_schema() ORDER BY 1`)).map(r => r.t);
+  const out: Record<string, string> = {};
+  for (const t of tables) { const h = (await q<{ h: string; n: number }>(`SELECT md5(coalesce(string_agg(x::text, '|' ORDER BY x::text), '')) AS h, count(*)::int AS n FROM "${t}" x`))[0]; out[t] = `${h.n} ${h.h}`; }
+  return out;
+}
+const diff = (a: Record<string, string>, b: Record<string, string>) => [...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]);
+const strip = (ranking: any) => ({ ...ranking, ranks: ranking.ranks.map((r: any) => ({ ...r, requirements: r.requirements.map(({ capabilityKey, ...x }: any) => x) })) });
+const VALUE: Record<string, number> = { EQUIVALENT: 1, COVERS: 1, PARTIAL: 0.5, DIFFERENT: 0, UNCLEAR: 0 };
+const ORDER: Record<string, number> = { EQUIVALENT: 0, COVERS: 1, PARTIAL: 2, DIFFERENT: 3, UNCLEAR: 4 };
+
+describe("PINK phase A", () => {
+  const jobs = new JobRepository(db);
+  const world: InspectorWorld = {
+    capabilityRepository: new PostgresCapabilityCoreRepository(db), references: new PostgresCapabilityProposalProjectionReferenceRepository(db), sourceBundles: new PostgresCandidateSourceBundleRepository(db),
+    saveJob: async job => { await jobs.enqueueJob(job); },
+    saveAnalysis: async (analysisId, createdAt) => { await db.insert(careerAnalyses).values({ analysisId, createdAt, validationState: "VERIFIED", payload: { structured_data: {} } }); }
+  };
+  const fetchCalls: string[] = []; const realFetch = globalThis.fetch;
+  let base: { rank: any; auto: any; decode: any; decodeAuto: any };
+  let A: any; let C: any; const SRC = `${SOURCE} (pink-pa-${Date.now()})`;
+
+  beforeAll(async () => {
+    vi.stubGlobal("fetch", async (u: unknown) => { fetchCalls.push(String(u)); throw new Error("PINK: network refused"); });
+    base = { rank: await import(`${BASE}/app/api/career/analyses/[analysisId]/job-ranking/route`), auto: await import(`${BASE}/lib/career/job-pool/auto-match`), ...(await import(`${BASE}/lib/career/ui/auto-match`).then(m => ({ decode: m.decodeRoleRanking, decodeAuto: m.decodeAutoMatch }))) };
+    await initDbSchema(); await uploadEngineeringJobScope();
+    A = await produceMulti(world);
+  }, 180000);
+  afterAll(() => { vi.stubGlobal("fetch", realFetch); });
+
+  it("P1/P4: rows written by the BASE code; base and candidate read them; numbers equal, keys = the proposal judged best, reads write nothing", async () => {
+    for (const [k, v] of Object.entries({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "50", ROLE_DISCOVERY_MAX_ROLES: "5", ROLE_DISCOVERY_GEMINI_MODEL: "gemini-pink-mock", GEMINI_API_KEY: "PINK_FAKE_KEY_pa" })) process.env[k] = v;
+    const run = await base.auto.runAutoMatch(A.analysisId);
+    rec.baseRun = run; rec.requests = P.requests.length; rec.judged = P.judged.length;
+    const shown = new Map<string, string>(); for (const r of P.requests) for (const p of JSON.parse(r.slice(r.lastIndexOf("\n\n") + 2)).proposals) shown.set(p.id, p.name);
+    const before = await fingerprint();
+    const oldBody = await (await base.rank.GET(new Request("http://local/x"), params(A.analysisId))).json();
+    const newResp = await GET_RANK(new Request("http://local/x"), params(A.analysisId)); const newBody = await newResp.json();
+    const after = await fingerprint();
+    const poolIds = [...new Set<string>(newBody.ranking.ranks.map((r: any) => r.role.jobPoolUploadId))];
+    const operand = await loadRoleDiscoveryOperand(A.analysisId, poolIds) as any; if (!operand.ok) throw new Error(JSON.stringify(operand.issue));
+    const discovery = operand.discovery; const order = operand.projection.capabilities.map((c: any) => c.id);
+    const projectionIds = new Map<string, string>(operand.projection.capabilities.map((p: any) => [p.id, p.name]));
+    const contentOf = (id: string) => { const c = operand.projection.capabilities.find((x: any) => x.id === id); return JSON.stringify([c.name, c.scope, c.structuralDefinition, c.evidence.map((e: any) => e.exactQuote).sort()]); };
+    rec.projection = operand.projection.capabilities.map((c: any) => ({ id: c.id, name: c.name, quotes: c.evidence.length }));
+    const lexOf = new Map<string, any>(); for (const role of discovery.roles ?? []) for (const r of role.requirements) lexOf.set(`${r.key.jobPoolUploadId}|${r.key.poolRoleId}|${r.key.poolRequirementId}`, r);
+    // independent expectation: per requirement the best of the mock's own verdicts (value, state order, capability name)
+    const reqs: any[] = []; for (const r of newBody.ranking.ranks) for (const x of r.requirements) reqs.push({ role: r.role, x });
+    const judgedBy = new Map<string, Array<{ pid: string; name: string; state: string }>>();
+    for (const j of P.judged) { const list = judgedBy.get(j.text) ?? []; if (!list.some(l => l.pid === j.pid)) list.push(j); judgedBy.set(j.text, list); }
+    const checks = { semantic: 0, semanticKeyIsJudgedBest: 0, semanticKeyShown: 0, semanticKeyNamesCapability: 0, lexical: 0, lexicalKeyIsProposalId: 0, lexicalKeyInProjection: 0, none: 0, noneKeyNull: 0, keyEqualsName: 0, ambiguousBest: 0, bestMismatch: [] as string[], twinKey: [] as string[], keysPerName: {} as Record<string, string[]> };
+    for (const { role, x } of reqs) {
+      if (x.capabilityKey !== null && x.capabilityKey === x.capabilityName) checks.keyEqualsName += 1;
+      if (x.source === "SEMANTIC") {
+        checks.semantic += 1;
+        if (shown.has(x.capabilityKey)) checks.semanticKeyShown += 1;
+        if (projectionIds.get(x.capabilityKey) === x.capabilityName) checks.semanticKeyNamesCapability += 1;
+        const d = lexOf.get(`${role.jobPoolUploadId}|${role.poolRoleId}|${x.poolRequirementId}`);
+        const text = JSON.stringify({ text: d.requirementText, aliases: d.aliases, requiredLevel: d.requiredLevel, requirementType: d.requirementType });
+        const all = judgedBy.get(text) ?? [];
+        if (all.length === 0) { checks.ambiguousBest += 1; continue; }
+        const best = [...all].sort((a, b) => VALUE[b.state] - VALUE[a.state] || ORDER[a.state] - ORDER[b.state] || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0) || order.indexOf(a.pid) - order.indexOf(b.pid));
+        const twin = order.filter((id: string) => id !== best[0].pid && contentOf(id) === contentOf(best[0].pid));
+        if (best[0].pid === x.capabilityKey && best[0].state === x.state) checks.semanticKeyIsJudgedBest += 1;
+        else if (twin.includes(x.capabilityKey)) checks.twinKey.push(`${x.poolRequirementId}: key ${x.capabilityKey} ${x.state}; judged best ${best[0].pid} ${best[0].state}; same content`);
+        else checks.bestMismatch.push(`${x.poolRequirementId}: key ${x.capabilityKey} ${x.state} vs judged ${best[0].pid} ${best[0].state}`);
+      } else if (x.source === "LEXICAL") {
+        checks.lexical += 1; const d = lexOf.get(`${role.jobPoolUploadId}|${role.poolRoleId}|${x.poolRequirementId}`);
+        if (d && d.lexical.proposalId === x.capabilityKey) checks.lexicalKeyIsProposalId += 1;
+        if (projectionIds.get(x.capabilityKey) === x.capabilityName) checks.lexicalKeyInProjection += 1;
+      } else { checks.none += 1; if (x.capabilityKey === null) checks.noneKeyNull += 1; }
+    }
+    for (const { x } of reqs) if (x.capabilityKey) { const l = checks.keysPerName[x.capabilityName] ?? []; if (!l.includes(x.capabilityKey)) l.push(x.capabilityKey); checks.keysPerName[x.capabilityName] = l; }
+    rec.p1 = { status: newResp.status, ranks: newBody.ranking.ranks.length, tiers: newBody.ranking.ranks.reduce((m: any, r: any) => ({ ...m, [r.tier]: (m[r.tier] ?? 0) + 1 }), {}), proposals: projectionIds.size, shown: shown.size, checks,
+      sameNumbers: JSON.stringify(strip(newBody.ranking)) === JSON.stringify(oldBody.ranking), oldHasKey: JSON.stringify(oldBody).includes("capabilityKey"), readsChanged: diff(before, after), fetch: fetchCalls.length };
+    expect(JSON.stringify(strip(newBody.ranking))).toBe(JSON.stringify(oldBody.ranking));
+    expect(diff(before, after)).toEqual([]);
+    expect(checks.bestMismatch).toEqual([]);
+    expect([checks.semanticKeyShown, checks.semanticKeyNamesCapability]).toEqual([checks.semantic, checks.semantic]);
+    expect([checks.lexicalKeyIsProposalId, checks.lexicalKeyInProjection]).toEqual([checks.lexical, checks.lexical]);
+    expect(checks.noneKeyNull).toBe(checks.none);
+    expect(checks.semantic).toBeGreaterThan(0);
+
+    // P2 on the real wire bodies
+    const nd = decodeRoleRanking(newBody.ranking, A.analysisId), od = decodeRoleRanking(oldBody.ranking, A.analysisId);
+    rec.p2real = { newDecodes: nd !== null, newSameObject: nd === newBody.ranking, oldDecodes: od !== null, oldSameObject: od === oldBody.ranking, oldKeysRead: od ? [...new Set(od.ranks.flatMap(r => r.requirements.map(x => x.capabilityKey ?? null)))] : null,
+      oldKeyFieldAbsent: od ? od.ranks.every(r => r.requirements.every(x => !("capabilityKey" in x))) : null, baseDecoderOnNew: base.decode(newBody.ranking, A.analysisId) === null ? "REFUSED" : "ACCEPTED", baseDecoderOnOld: base.decode(oldBody.ranking, A.analysisId) === null ? "REFUSED" : "ACCEPTED" };
+    expect([rec.p2real]).toMatchObject([{ newDecodes: true, newSameObject: true, oldDecodes: true, oldSameObject: true, oldKeyFieldAbsent: true }]);
+    rec.wire = newBody.ranking;
+  }, 180000);
+
+  it("P1: a second analysis with the same proposal content is served from the cache — its keys are its own ids, no call", async () => {
+    const n0 = P.requests.length;
+    C = await produceMulti(world);
+    const before = await fingerprint();
+    const a = await (await GET_RANK(new Request("http://local/x"), params(A.analysisId))).json();
+    const c = await (await GET_RANK(new Request("http://local/x"), params(C.analysisId))).json();
+    const keys = (b: any) => b.ranking.ranks.flatMap((r: any) => r.requirements.filter((x: any) => x.source === "SEMANTIC").map((x: any) => `${r.role.poolRoleId}|${x.poolRequirementId}|${x.capabilityKey}|${x.capabilityName}|${x.state}`));
+    const ka = keys(a), kc = keys(c);
+    rec.p1cache = { requestsBefore: n0, requestsAfter: P.requests.length, semanticA: ka.length, semanticC: kc.length, sameNamesAndStates: JSON.stringify(ka.map((k: string) => k.split("|").filter((_, i) => i !== 2))) === JSON.stringify(kc.map((k: string) => k.split("|").filter((_, i) => i !== 2))),
+      keysDiffer: ka.filter((k: string, i: number) => k.split("|")[2] !== kc[i]?.split("|")[2]).length, cKeysShownToProvider: kc.filter((k: string) => P.requests.some(r => r.includes(`"${k.split("|")[2]}"`))).length, readsChanged: diff(before, await fingerprint()) };
+  }, 180000);
+
+  it("P1/P4: name relations only (no engine configured, no run for this analysis): key = lexical.proposalId, numbers equal, nothing written", async () => {
+    for (const k of ["ROLE_DISCOVERY_SEMANTIC_PROVIDER", "ROLE_DISCOVERY_DAY_LIMIT", "ROLE_DISCOVERY_MAX_ROLES", "ROLE_DISCOVERY_GEMINI_MODEL", "GEMINI_API_KEY"]) delete process.env[k];
+    const D = await produceMulti(world); const n0 = P.requests.length;
+    const before = await fingerprint();
+    const oldBody = await (await base.rank.GET(new Request("http://local/x"), params(D.analysisId))).json();
+    const newBody = await (await GET_RANK(new Request("http://local/x"), params(D.analysisId))).json();
+    const changed = diff(before, await fingerprint());
+    const poolIds = [...new Set<string>(newBody.ranking.ranks.map((r: any) => r.role.jobPoolUploadId))];
+    const operand = await loadRoleDiscoveryOperand(D.analysisId, poolIds) as any;
+    const names = new Map<string, string>(operand.projection.capabilities.map((c: any) => [c.id, c.name]));
+    const lex = new Map<string, any>(); for (const role of operand.discovery.roles) for (const r of role.requirements) lex.set(`${r.key.poolRoleId}|${r.key.poolRequirementId}`, r.lexical);
+    const c = { lexical: 0, keyIsLexicalProposalId: 0, keyNamesCapability: 0, none: 0, noneNull: 0, semantic: 0, bases: {} as Record<string, number> };
+    for (const r of newBody.ranking.ranks) for (const x of r.requirements) {
+      if (x.source === "LEXICAL") { c.lexical += 1; c.bases[x.state] = (c.bases[x.state] ?? 0) + 1; if (lex.get(`${r.role.poolRoleId}|${x.poolRequirementId}`)?.proposalId === x.capabilityKey) c.keyIsLexicalProposalId += 1; if (names.get(x.capabilityKey) === x.capabilityName) c.keyNamesCapability += 1; }
+      else if (x.source === "NONE") { c.none += 1; if (x.capabilityKey === null) c.noneNull += 1; } else c.semantic += 1;
+    }
+    rec.p1lexical = { ...c, sameNumbers: JSON.stringify(strip(newBody.ranking)) === JSON.stringify(oldBody.ranking), readsChanged: changed, calls: P.requests.length - n0, evidenceClass: newBody.ranking.evidenceClass };
+    rec.wireLex = newBody.ranking; rec.wireLexId = D.analysisId;
+    expect(JSON.stringify(strip(newBody.ranking))).toBe(JSON.stringify(oldBody.ranking));
+    expect(changed).toEqual([]);
+    expect(c.lexical).toBeGreaterThan(0);
+    expect([c.keyIsLexicalProposalId, c.keyNamesCapability, c.noneNull, c.semantic]).toEqual([c.lexical, c.lexical, c.none, 0]);
+  }, 180000);
+
+  it("P2: decoder inverse cases on a real body (one mutation at a time)", () => {
+    const real = rec.wire as any; const lexReal = rec.wireLex as any;
+    const clone = (src: string) => JSON.parse(JSON.stringify(src === "LEXICAL" ? lexReal : real));
+    const at = (b: any, src: string) => { for (const r of b.ranks) for (const x of r.requirements) if (x.source === src) return x; return null; };
+    const cases: Array<[string, string, (x: any, b: any) => void]> = [
+      ["unchanged", "SEMANTIC", () => {}],
+      ["key null on SEMANTIC", "SEMANTIC", x => { x.capabilityKey = null; }],
+      ["key absent on SEMANTIC", "SEMANTIC", x => { delete x.capabilityKey; }],
+      ["key null on LEXICAL", "LEXICAL", x => { x.capabilityKey = null; }],
+      ["key whitespace", "SEMANTIC", x => { x.capabilityKey = " "; }],
+      ["key other text", "SEMANTIC", x => { x.capabilityKey = "PCAP_NOT_IN_PROJECTION"; }],
+      ["key empty", "SEMANTIC", x => { x.capabilityKey = ""; }],
+      ["key number", "SEMANTIC", x => { x.capabilityKey = 7; }],
+      ["key true", "SEMANTIC", x => { x.capabilityKey = true; }],
+      ["key object", "SEMANTIC", x => { x.capabilityKey = {}; }],
+      ["key array", "SEMANTIC", x => { x.capabilityKey = ["PCAP"]; }],
+      ["key on NONE", "NONE", x => { x.capabilityKey = "PCAP_X"; }],
+      ["key text, name null (SEMANTIC)", "SEMANTIC", x => { x.capabilityName = null; }],
+      ["key null, name null (SEMANTIC)", "SEMANTIC", x => { x.capabilityName = null; x.capabilityKey = null; }],
+      ["extra field", "SEMANTIC", x => { x.capabilityKeys = "PCAP"; }],
+      ["case variant instead of key", "SEMANTIC", x => { x.capabilitykey = x.capabilityKey; delete x.capabilityKey; }],
+      ["key replaces explanation (same count)", "SEMANTIC", x => { delete x.explanation; }],
+      ["no key, explanation dropped", "SEMANTIC", x => { delete x.capabilityKey; delete x.explanation; }],
+      ["key + extra, old count", "LEXICAL", x => { delete x.capabilityKey; x.surprise = 1; }],
+      ["unchanged LEXICAL", "LEXICAL", () => {}],
+      ["key absent on LEXICAL", "LEXICAL", x => { delete x.capabilityKey; }],
+      ["key on LEXICAL with name null", "LEXICAL", x => { x.capabilityName = null; }]
+    ];
+    const out: Record<string, string> = {};
+    for (const [name, src, mutate] of cases) { const b = clone(src); const x = at(b, src); if (!x) { out[name] = "NO_SUBJECT"; continue; } mutate(x, b); const d = decodeRoleRanking(b, src === "LEXICAL" ? rec.wireLexId as string : A.analysisId); out[name] = d === null ? "REFUSED" : d === b ? "ACCEPTED_SAME_OBJECT" : "ACCEPTED_COPY"; }
+    // which requirement states can reach the client at all (decoder accepts the state with its value)
+    const states: Record<string, string> = {};
+    for (const s of [...SEMANTIC_RELATION_STATES, "NAME_EXACT", "NAME_ALIAS", "NAME_COMPOSITE_CONSTITUENT", "WEAK_TOKEN_CONTAINMENT", "NONE", "BOGUS"]) states[s] = "seen in real body: " + JSON.stringify(real).includes(`"state":"${s}"`);
+    rec.p2 = { cases: out, states };
+    expect(out).toEqual({
+      unchanged: "ACCEPTED_SAME_OBJECT", "key null on SEMANTIC": "ACCEPTED_SAME_OBJECT", "key absent on SEMANTIC": "ACCEPTED_SAME_OBJECT", "key null on LEXICAL": "ACCEPTED_SAME_OBJECT", "key whitespace": out["key whitespace"], "key other text": "ACCEPTED_SAME_OBJECT",
+      "key empty": "REFUSED", "key number": "REFUSED", "key true": "REFUSED", "key object": "REFUSED", "key array": "REFUSED", "key on NONE": "REFUSED", "key text, name null (SEMANTIC)": "REFUSED", "key null, name null (SEMANTIC)": "REFUSED",
+      "extra field": "REFUSED", "case variant instead of key": "REFUSED", "key replaces explanation (same count)": "REFUSED", "no key, explanation dropped": "REFUSED", "key + extra, old count": "REFUSED", "unchanged LEXICAL": "ACCEPTED_SAME_OBJECT", "key absent on LEXICAL": "ACCEPTED_SAME_OBJECT", "key on LEXICAL with name null": "REFUSED" });
+  });
+
+  it("P1: where the proposal id itself comes from (upstream of phase A)", () => {
+    const id = (n: string, sc: string) => buildProvisionalCapabilityId(n, sc as never);
+    rec.p1idOrigin = { samePythonAtomic: id("Python", "ATOMIC") === id("Python", "ATOMIC"), caseAndSpace: id("Python", "ATOMIC") === id("  python ", "ATOMIC"), otherScope: id("Python", "ATOMIC") === id("Python", "COMPOSITE"), otherName: id("Python", "ATOMIC") === id("Python Teaching", "ATOMIC") };
+  });
+
+  it("P3: run-state combinations the system really emits vs the sign table (INTERRUPTED within the window)", () => {
+    const now = "2099-03-03T00:10:00.000Z";
+    const mk = (status: string, tasks: Array<{ status: string; errorCode: string | null }>) => viewOfAutoInvestigation({ investigation: { investigationId: "RINV_" + "A".repeat(32), provider: "stand-in", status: status as never, createdAt: "2099-03-03T00:00:00.000Z", updatedAt: "2099-03-03T00:09:00.000Z", request: { resumable: true, uploads: [], callsNeeded: 1, auto: true }, leaseExpiresAt: null }, tasks: tasks as never, poolNames: new Map(), now });
+    const out: Record<string, string> = {};
+    for (const [n, s, t] of [["INTERRUPTED+CANCELLED", "INTERRUPTED", [{ status: "SUCCEEDED", errorCode: null }, { status: "CANCELLED", errorCode: null }]], ["INTERRUPTED+FAILED transient", "INTERRUPTED", [{ status: "FAILED", errorCode: "ERR_SEMANTIC_PROVIDER_TRANSIENT" }]], ["PARTIAL+CANCELLED", "PARTIAL", [{ status: "SUCCEEDED", errorCode: null }, { status: "CANCELLED", errorCode: null }]], ["FAILED+CANCELLED", "FAILED", [{ status: "CANCELLED", errorCode: null }]]] as const) {
+      const v = mk(s, t as never); out[n] = `${v.state}·${v.reason} resumePending=${v.resumePending} decodes=${decodeAutoMatch({ ...v }) !== null}`;
+    }
+    rec.p3runStates = { combos: out, autoMatchStates: AUTO_MATCH_STATES };
+  });
+});
