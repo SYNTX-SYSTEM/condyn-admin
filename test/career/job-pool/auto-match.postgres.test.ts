@@ -250,7 +250,7 @@ describe("pure parts of the automatic match", () => {
     expect(run("PARTIAL", {}, [{ status: "SUCCEEDED", errorCode: null }]).reason).toBe("ROLES_BEYOND_BUDGET");
     expect([run("COMPLETED", { rolesTotal: 9 }).state, run("COMPLETED", { rolesTotal: 9 }).reason]).toEqual(["PARTIAL", "ROLES_BEYOND_BUDGET"]);
     const v = run("COMPLETED", {}, [{ status: "SUCCEEDED", errorCode: null }, { status: "CACHED", errorCode: null }, { status: "FAILED", errorCode: "E" }]);
-    expect([v.budget, v.pools, v.evidenceClass]).toEqual([{ rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2 }, [{ jobPoolUploadId: "U1", poolName: "Pool One" }], "STAND_IN"]);
+    expect([v.budget, v.pools, v.evidenceClass]).toEqual([{ rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2, callsUsed: null, callsJobLimit: null }, [{ jobPoolUploadId: "U1", poolName: "Pool One" }], "STAND_IN"]);
   });
   it("the engine of a run is read back only when complete", () => {
     const e = { contractVersion: "c", promptChecksum: "p", provider: "gemini", model: "m" };

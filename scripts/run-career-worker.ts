@@ -33,7 +33,8 @@ import { isIssuedPersonInvestigation, requireActiveAnalysisBoundary } from "../l
 import { createLocalJobScopeResolver } from "../lib/career/job-scope/local-resolver";
 import { providerExchangeArchiveFromEnvironment } from "../lib/career/result-inspector/postgres-exchange-store";
 import { runWithExchangeAttempt } from "../lib/career/result-inspector/attempt";
-import { createAutoMatchHook } from "../lib/career/job-pool/auto-match-hook";
+import { withJobCallRegister } from "../lib/career/provider-calls/job-context";
+import { createAutoMatchHook, startAutoMatchSweeper } from "../lib/career/job-pool/auto-match-hook";
 
 /** The legacy pipeline names the same issued boundary as the capability sweep. */
 const pipelineBoundary = (boundary: ReturnType<typeof requireActiveAnalysisBoundary>) =>
@@ -146,9 +147,11 @@ async function main() {
   }));
 
   // Result Inspector: with the archive on, every exchange of an attempt is attributed to that job and lease.
-  const processAttempt: typeof processJob = providerExchangeArchive
+  const archivedAttempt: typeof processJob = providerExchangeArchive
     ? (job, reportOperation) => runWithExchangeAttempt({ jobId: job.jobId, leaseVersion: job.leaseVersion ?? null }, () => processJob(job, reportOperation))
     : processJob;
+  // Every model call of the extraction goes through the call register of the job (write-ahead, job budget); the automatic match shares that budget.
+  const processAttempt: typeof processJob = (job, reportOperation) => withJobCallRegister(job.jobId, () => archivedAttempt(job, reportOperation));
   const worker = new CareerJobWorker(
     workerId,
     jobRepo,
@@ -161,6 +164,8 @@ async function main() {
   );
 
   worker.start();
+  // Runs whose worker is gone are taken up again, runs that stopped early are continued (runs from before this existed are left alone).
+  startAutoMatchSweeper(workerId);
   console.log(`Career worker PID: ${process.pid}`);
   console.log(`Career worker started: ${workerId}`);
   console.log("Worker started. Polling for jobs...");

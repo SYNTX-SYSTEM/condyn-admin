@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { admitProviderOutput, containsClaim, buildProviderRequest, evaluateRole, StandInSemanticProvider, type CallLedger, type EngineProposal, type EngineRequirement, type RelationWriter } from "../../../lib/career/job-pool/semantic-relation-engine";
+import { admitProviderOutput, containsClaim, buildProviderRequest, evaluateRole, SemanticProviderError, StandInSemanticProvider, TRANSIENT_PROVIDER_CODE, type CallLedger, type EngineProposal, type EngineRequirement, type RelationWriter } from "../../../lib/career/job-pool/semantic-relation-engine";
 import type { CachedRelation, RelationEngineIdentity } from "../../../lib/career/job-pool/relation-cache";
 
 /** Stage-3 engine core, DETERMINISTIC_FIXTURE: injected stand-in provider, in-memory ledger and writer; no database, no network, no model. */
@@ -77,11 +77,38 @@ describe("role execution: ledger, one attempt, no silent retry", () => {
     expect(await evaluateRole({ engine: ENGINE, provider, ledger: l, writer: w, proposals: P, pendingRequirements: R, now: () => NOW })).toEqual({ status: "BUDGET_EXHAUSTED" });
     expect(provider.calls).toBe(0);
   });
-  it("a provider error releases the reservation, stores nothing and is NOT retried", async () => {
+  it("a provider error AFTER the request may have left stays counted (consume), stores nothing, is classified and is NOT retried here", async () => {
     let calls = 0; const provider = { identity: ENGINE_ID, evaluate: async () => { calls += 1; throw new Error("ERR_PROVIDER_DOWN: x"); } };
     const t = run({ provider });
-    expect(await t.go()).toMatchObject({ status: "FAILED", code: "ERR_PROVIDER_DOWN" });
-    expect(calls).toBe(1); expect(t.log).toEqual(["reserve", "release"]); expect(t.rows).toHaveLength(0);
+    expect(await t.go()).toMatchObject({ status: "FAILED", code: "ERR_PROVIDER_DOWN", errorClass: "UNKNOWN" });
+    expect(calls).toBe(1); expect(t.log).toEqual(["reserve", "consume"]); expect(t.rows).toHaveLength(0);
+  });
+  it("a TRANSIENT provider failure gets its own code and stays counted; a permanent one keeps ERR_SEMANTIC_PROVIDER_FAILED", async () => {
+    const transient = run({ provider: { identity: ENGINE_ID, evaluate: async () => { throw new SemanticProviderError("ERR_SEMANTIC_PROVIDER_FAILED", "TRANSIENT", 503); } } });
+    expect(await transient.go()).toMatchObject({ status: "FAILED", code: TRANSIENT_PROVIDER_CODE, errorClass: "TRANSIENT" });
+    expect(transient.log).toEqual(["reserve", "consume"]);
+    const permanent = run({ provider: { identity: ENGINE_ID, evaluate: async () => { throw new SemanticProviderError("ERR_SEMANTIC_PROVIDER_FAILED", "PERMANENT", 400); } } });
+    expect(await permanent.go()).toMatchObject({ status: "FAILED", code: "ERR_SEMANTIC_PROVIDER_FAILED", errorClass: "PERMANENT" });
+  });
+  it("a failure before anything was sent releases the unit; a spent job budget is BUDGET_EXHAUSTED and also released", async () => {
+    for (const code of ["ERR_SEMANTIC_PROVIDER_KEY_MISSING", "ERR_PROVIDER_CALL_REGISTER_FAILED"]) {
+      const t = run({ provider: { identity: ENGINE_ID, evaluate: async () => { throw new Error(code); } } });
+      expect(await t.go(), code).toMatchObject({ status: "FAILED", code });
+      expect(t.log, code).toEqual(["reserve", "release"]);
+    }
+    const spent = run({ provider: { identity: ENGINE_ID, evaluate: async () => { throw new Error("ERR_PROVIDER_CALL_BUDGET_EXHAUSTED"); } } });
+    expect(await spent.go()).toEqual({ status: "BUDGET_EXHAUSTED" });
+    expect(spent.log).toEqual(["reserve", "release"]);
+  });
+  it("some pairs refused: the admitted pairs are stored, the refused ones never are and are named; every pair refused still stores nothing", async () => {
+    let first = true;
+    const provider = { identity: ENGINE_ID, evaluate: async () => ({ rawText: valid(r => { if (first) { first = false; return { ...r, relationExplanation: "Clearly qualified." }; } return r; }) }) };
+    const t = run({ provider }); const out = await t.go();
+    expect(out).toMatchObject({ status: "SUCCEEDED" });
+    if (out.status !== "SUCCEEDED") throw new Error("unreachable");
+    expect(out.refusals).toHaveLength(1); expect(out.refusals[0].reason).toBe("CLAIM_IN_TEXT");
+    expect(out.stored).toBeGreaterThan(0); expect(t.rows.length).toBe(out.stored);
+    expect(t.rows.every(r => !/qualified/i.test(r.relationExplanation))).toBe(true);
   });
   it("a refused output stores nothing for the role, reports the refusals, consumes the call (it happened) and is not retried", async () => {
     let calls = 0; const provider = { identity: ENGINE_ID, evaluate: async () => { calls += 1; return { rawText: valid(r => ({ ...r, relationExplanation: "Clearly qualified." })) }; } };

@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import type { RelationEngineIdentity } from "./relation-cache";
-import { StandInSemanticProvider, type ProviderRequest, type SemanticProvider } from "./semantic-relation-engine";
+import { StandInSemanticProvider, SemanticProviderError, type EvaluationContext, type ProviderRequest, type SemanticProvider } from "./semantic-relation-engine";
+import { ProviderCallBlocked, classifyProviderError, guardedGenerateContent, withProviderCallMeta } from "../provider-calls/guard";
 import { GEMINI_SEMANTIC_PROMPT } from "./semantic-prompt";
 
 export { GEMINI_SEMANTIC_PROMPT };
@@ -24,23 +25,25 @@ export class GeminiSemanticProvider implements SemanticProvider {
     this.apiKey = options.apiKey?.trim() || undefined;
     this.client = options.client;
   }
-  async evaluate(request: ProviderRequest): Promise<{ rawText: string }> {
+  async evaluate(request: ProviderRequest, context?: EvaluationContext): Promise<{ rawText: string }> {
     if (!this.apiKey && !this.client) throw new Error("ERR_SEMANTIC_PROVIDER_KEY_MISSING");
     let text: unknown; let finishReason: unknown;
+    const contents = `${GEMINI_SEMANTIC_PROMPT}\n\n${JSON.stringify({ proposals: request.proposals, requirements: request.requirements })}`;
     try {
       const client = this.client ?? new GoogleGenAI({ apiKey: this.apiKey!, httpOptions: { timeout: GEMINI_SEMANTIC_TIMEOUT_MS } });
-      const response = await client.models.generateContent({
-        model: this.identity.model,
-        contents: `${GEMINI_SEMANTIC_PROMPT}\n\n${JSON.stringify({ proposals: request.proposals, requirements: request.requirements })}`,
-        config: { responseMimeType: "application/json", temperature: 0.1, maxOutputTokens: 32768 }
-      }) as { text?: unknown; candidates?: Array<{ finishReason?: unknown }> };
+      // The call passes the register seam: written down before it is sent, counted from the moment it may have left (a throw below is a call that was made).
+      const response = await withProviderCallMeta({ ...(context ?? {}) }, () => guardedGenerateContent("SEMANTIC", () => client.models.generateContent({
+        model: this.identity.model, contents, config: { responseMimeType: "application/json", temperature: 0.1, maxOutputTokens: 32768 }
+      }), { requestBytes: Buffer.byteLength(contents), responseBytes: r => { const t = (r as { text?: unknown }).text; return typeof t === "string" ? Buffer.byteLength(t) : 0; } })) as { text?: unknown; candidates?: Array<{ finishReason?: unknown }> };
       finishReason = response.candidates?.[0]?.finishReason;
       text = typeof response.text === "function" ? await (response.text as () => Promise<unknown>)() : response.text;
-    } catch {
-      throw new Error("ERR_SEMANTIC_PROVIDER_FAILED");
+    } catch (error) {
+      if (error instanceof ProviderCallBlocked) throw error;
+      const info = classifyProviderError(error);
+      throw new SemanticProviderError("ERR_SEMANTIC_PROVIDER_FAILED", info.errorClass, info.httpStatus);
     }
-    if (finishReason !== undefined && finishReason !== "STOP") throw new Error("ERR_SEMANTIC_PROVIDER_INCOMPLETE");
-    if (typeof text !== "string" || text.trim() === "") throw new Error("ERR_SEMANTIC_PROVIDER_EMPTY");
+    if (finishReason !== undefined && finishReason !== "STOP") throw new SemanticProviderError("ERR_SEMANTIC_PROVIDER_INCOMPLETE", "INCOMPLETE");
+    if (typeof text !== "string" || text.trim() === "") throw new SemanticProviderError("ERR_SEMANTIC_PROVIDER_EMPTY", "EMPTY");
     return { rawText: text };
   }
 }

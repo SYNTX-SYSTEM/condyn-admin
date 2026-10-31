@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { CapabilityConvergenceOutputSchema } from "./schema";
+import { ProviderCallBlocked, guardedGenerateContent } from "../../provider-calls/guard";
 import { getGeminiCapabilityConvergenceResponseJsonSchema } from "./gemini-schema-projector";
 import type { CapabilityConvergenceProvider, CapabilityConvergenceProviderRequest, CapabilityConvergenceProviderResult } from "./types";
 
@@ -13,8 +14,8 @@ export class GeminiCapabilityConvergenceProvider implements CapabilityConvergenc
     let response: unknown;
     try {
       const client = this.client ?? new GoogleGenAI({ apiKey: this.apiKey! });
-      response = await client.models.generateContent({ model: this.model, contents: `${request.systemPrompt}\n\n${request.userPrompt}`, config: { ...GENERATION_PROFILE, responseJsonSchema: getGeminiCapabilityConvergenceResponseJsonSchema() } });
-    } catch { throw new Error("ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE"); }
+      response = await guardedGenerateContent("EXTRACTION_CONVERGENCE", () => client.models.generateContent({ model: this.model, contents: `${request.systemPrompt}\n\n${request.userPrompt}`, config: { ...GENERATION_PROFILE, responseJsonSchema: getGeminiCapabilityConvergenceResponseJsonSchema() } }));
+    } catch (error) { if (error instanceof ProviderCallBlocked) throw error; throw new Error("ERR_CAPABILITY_CONVERGENCE_PROVIDER_FAILURE"); }
     const finishReason = (response as { candidates?: Array<{ finishReason?: unknown }> }).candidates?.[0]?.finishReason;
     if (finishReason !== undefined && finishReason !== "STOP") throw new Error("ERR_CAPABILITY_CONVERGENCE_STRUCTURED_OUTPUT_INVALID");
     let rawText: unknown;

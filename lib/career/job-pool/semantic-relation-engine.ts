@@ -32,7 +32,13 @@ export interface ProviderRequest {
   requirements: Array<{ requirementId: string; text: string; aliases: string[]; requiredLevel: string; requirementType: string }>;
 }
 /** A provider declares who it is; the engine serves only the engine identity it declares (PINK D-ENG-2). */
-export interface SemanticProvider { readonly identity: { provider: string; model: string }; evaluate(request: ProviderRequest): Promise<{ rawText: string }> }
+/** Where a role's call stands, handed to the provider only so that the register can name the call; it never reaches the model. */
+export interface EvaluationContext { investigationId?: string; jobPoolUploadId?: string; poolRoleId?: string; attempt?: number }
+export interface SemanticProvider { readonly identity: { provider: string; model: string }; evaluate(request: ProviderRequest, context?: EvaluationContext): Promise<{ rawText: string }> }
+/** A provider failure with its class (point 1): TRANSIENT may succeed when asked again, anything else is not retried automatically. The message stays a code. */
+export class SemanticProviderError extends Error {
+  constructor(code: string, readonly errorClass: "TRANSIENT" | "PERMANENT" | "INCOMPLETE" | "EMPTY" | "UNKNOWN", readonly httpStatus: number | null = null) { super(code); this.name = "SemanticProviderError"; }
+}
 export interface CallLedger { reserve(): Promise<boolean>; consume(meta: { requestBytes: number; responseBytes: number }): Promise<void>; release(): Promise<void> }
 export interface RelationWriter { saveIfAbsent(records: CachedRelation[]): Promise<{ inserted: number; duplicates: number; divergent: string[] }> }
 
@@ -144,37 +150,50 @@ export function admitProviderOutput(input: { rawText: string; engine: RelationEn
 }
 
 export type RoleOutcome =
-  | { status: "SUCCEEDED"; stored: number; duplicates: number; divergent: string[] }
+  | { status: "SUCCEEDED"; stored: number; duplicates: number; divergent: string[]; /** Pairs the strict admission refused while the others were admitted (each one alone passed every check). */ refusals: Refusal[] }
   | { status: "BUDGET_EXHAUSTED" }
-  | { status: "FAILED"; code: string; refusals: Refusal[] };
+  | { status: "FAILED"; code: string; refusals: Refusal[]; /** Only a TRANSIENT provider failure may be asked again. */ errorClass?: "TRANSIENT" | "PERMANENT" | "INCOMPLETE" | "EMPTY" | "UNKNOWN" };
 
 const codeOf = (error: unknown, fallback: string) => error instanceof Error && /^ERR_[A-Z_]+/.test(error.message) ? error.message.split(":")[0] : fallback;
+/** The provider failed before anything could have left the process: nothing was sent, the reserved unit comes back. */
+const NOT_SENT = new Set(["ERR_SEMANTIC_PROVIDER_KEY_MISSING", "ERR_SEMANTIC_PROVIDER_MODEL_NOT_CONFIGURED", "ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED", "ERR_PROVIDER_CALL_REGISTER_FAILED", "ERR_PROVIDER_CALL_BUDGET_EXHAUSTED"]);
+export const TRANSIENT_PROVIDER_CODE = "ERR_SEMANTIC_PROVIDER_TRANSIENT";
 
 /**
  * One role, one attempt; never throws (PINK O-ENG-3). The reservation happens before the provider is called. Outcomes:
- * provider failure → released; ledger consume failure → FAILED ERR_LEDGER_CONSUME_FAILED (the call happened, nothing stored);
- * refused output → FAILED, nothing stored; store failure → FAILED ERR_RELATION_WRITE_FAILED (the call is consumed, nothing stored).
+ * provider failure BEFORE anything was sent → released; provider failure AFTER the request may have left → consumed (the call was
+ * made), classified: TRANSIENT (code ERR_SEMANTIC_PROVIDER_TRANSIENT) or not (ERR_SEMANTIC_PROVIDER_FAILED / _INCOMPLETE / _EMPTY);
+ * ledger consume failure → FAILED ERR_LEDGER_CONSUME_FAILED (the call happened, nothing stored); output where EVERY pair was refused
+ * → FAILED, nothing stored; output where some pairs were refused → the admitted pairs are stored (each passed every check alone), the
+ * refused ones never are and are named in `refusals`; store failure → FAILED ERR_RELATION_WRITE_FAILED (the call is consumed).
  * An engine identity the provider does not declare is refused before anything is reserved.
  */
 export async function evaluateRole(input: {
   engine: RelationEngineIdentity; provider: SemanticProvider; ledger: CallLedger; writer: RelationWriter;
-  proposals: EngineProposal[]; pendingRequirements: EngineRequirement[]; now: () => string;
+  proposals: EngineProposal[]; pendingRequirements: EngineRequirement[]; now: () => string; context?: EvaluationContext;
 }): Promise<RoleOutcome> {
   if (input.provider.identity.provider !== input.engine.provider || input.provider.identity.model !== input.engine.model) return { status: "FAILED", code: "ERR_ENGINE_IDENTITY_MISMATCH", refusals: [] };
-  if (input.pendingRequirements.length === 0 || input.proposals.length === 0) return { status: "SUCCEEDED", stored: 0, duplicates: 0, divergent: [] };
+  if (input.pendingRequirements.length === 0 || input.proposals.length === 0) return { status: "SUCCEEDED", stored: 0, duplicates: 0, divergent: [], refusals: [] };
   let reserved: boolean;
   try { reserved = await input.ledger.reserve(); } catch (error) { return { status: "FAILED", code: codeOf(error, "ERR_LEDGER_RESERVE_FAILED"), refusals: [] }; }
   if (!reserved) return { status: "BUDGET_EXHAUSTED" };
   const { request, idOf } = buildProviderRequest(input.engine, input.proposals, input.pendingRequirements);
   let raw: { rawText: string };
-  try { raw = await input.provider.evaluate(request); } catch (error) {
-    try { await input.ledger.release(); } catch { /* the failure below is the outcome */ }
-    return { status: "FAILED", code: codeOf(error, "ERR_SEMANTIC_PROVIDER_FAILED"), refusals: [] };
+  try { raw = await input.provider.evaluate(request, input.context); } catch (error) {
+    const code = codeOf(error, "ERR_SEMANTIC_PROVIDER_FAILED");
+    if (NOT_SENT.has(code)) {
+      try { await input.ledger.release(); } catch { /* the failure below is the outcome */ }
+      return code === "ERR_PROVIDER_CALL_BUDGET_EXHAUSTED" ? { status: "BUDGET_EXHAUSTED" } : { status: "FAILED", code, refusals: [] };
+    }
+    // The request may have left the process: the unit stays spent.
+    try { await input.ledger.consume({ requestBytes: Buffer.byteLength(JSON.stringify(request)), responseBytes: 0 }); } catch { /* the failure below is the outcome */ }
+    const errorClass = error instanceof SemanticProviderError ? error.errorClass : "UNKNOWN";
+    return { status: "FAILED", code: errorClass === "TRANSIENT" ? TRANSIENT_PROVIDER_CODE : code, refusals: [], errorClass };
   }
   try { await input.ledger.consume({ requestBytes: Buffer.byteLength(JSON.stringify(request)), responseBytes: Buffer.byteLength(raw.rawText) }); } catch { return { status: "FAILED", code: "ERR_LEDGER_CONSUME_FAILED", refusals: [] }; }
   const { records, refusals } = admitProviderOutput({ rawText: raw.rawText, engine: input.engine, proposals: input.proposals, requirements: input.pendingRequirements, idOf, now: input.now() });
-  if (refusals.length > 0) return { status: "FAILED", code: "ERR_SEMANTIC_OUTPUT_REFUSED", refusals };
-  try { const saved = await input.writer.saveIfAbsent(records); return { status: "SUCCEEDED", stored: saved.inserted, duplicates: saved.duplicates, divergent: saved.divergent }; }
+  if (refusals.length > 0 && records.length === 0) return { status: "FAILED", code: "ERR_SEMANTIC_OUTPUT_REFUSED", refusals };
+  try { const saved = await input.writer.saveIfAbsent(records); return { status: "SUCCEEDED", stored: saved.inserted, duplicates: saved.duplicates, divergent: saved.divergent, refusals }; }
   catch (error) { return { status: "FAILED", code: codeOf(error, "ERR_RELATION_WRITE_FAILED") === "ERR_RELATION_CACHE_RECORD_CORRUPT" ? "ERR_RELATION_CACHE_RECORD_CORRUPT" : "ERR_RELATION_WRITE_FAILED", refusals: [] }; }
 }
 
