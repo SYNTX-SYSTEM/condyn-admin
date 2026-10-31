@@ -209,6 +209,43 @@ describe("AC-FLOW · the PERSON result goes on by itself", () => {
     view.unmount();
   });
 
+  it("REPRODUCE (resumePending): PARTIAL · ROLE_FAILURES with a due continuation is read every 15 s; taken up (RUNNING, revision 1) back to 2 s; inverse: not due — quiet", async () => {
+    vi.useFakeTimers();
+    const due: Run = ["PARTIAL", { reason: "ROLE_FAILURES", resumePending: true }];
+    runs = [due, due, ["RUNNING", { revision: 1 }]];
+    const { view, props } = start(PERSON);
+    let tree = view.settle(props);
+    const settle = async () => { await flush(); tree = view.settle(props); await flush(); tree = view.settle(props); };
+    await settle();
+    expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "PARTIAL", resumePending: true } } });
+    await vi.advanceTimersByTimeAsync(14_000); await settle();
+    expect(gets(AUTO), "not before 15 s").toBe(1);
+    await vi.advanceTimersByTimeAsync(1000); await settle();
+    expect(gets(AUTO)).toBe(2);
+    await vi.advanceTimersByTimeAsync(15_000); await settle();
+    expect(find(tree, AutoJobRankingPanel)!.props.watch).toMatchObject({ read: { autoMatch: { state: "RUNNING", revision: 1 } } });
+    expect([gets(AUTO), gets(RANKING)], "the continuation reads the ranking again").toEqual([3, 2]);
+    await vi.advanceTimersByTimeAsync(2000); await settle();
+    expect(gets(AUTO)).toBe(4);
+    view.unmount();
+    // FAILED with a due continuation: read on every 15 s, no end on this side.
+    vi.useRealTimers(); vi.useFakeTimers();
+    calls = []; runs = [["FAILED", { resumePending: true }]];
+    const failed = start(PERSON);
+    failed.view.settle(failed.props); await flush(); failed.view.settle(failed.props);
+    await vi.advanceTimersByTimeAsync(600_000); await flush(); failed.view.settle(failed.props);
+    expect(gets(AUTO)).toBe(41);
+    failed.view.unmount();
+    // Inverse: no continuation due — a settled run is read once.
+    vi.useRealTimers(); vi.useFakeTimers();
+    calls = []; runs = [["PARTIAL", { reason: "ROLE_FAILURES", resumePending: false }]];
+    const quiet = start(PERSON);
+    quiet.view.settle(quiet.props); await flush(); quiet.view.settle(quiet.props);
+    await vi.advanceTimersByTimeAsync(600_000); await flush(); quiet.view.settle(quiet.props);
+    expect(gets(AUTO)).toBe(1);
+    quiet.view.unmount();
+  });
+
   it("REPRODUCE: every state with a run reads the ranking (RUNNING and STALLED too, so it grows); NOT_STARTED does not (before the wait ends)", async () => {
     for (const state of ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED", "RUNNING", "STALLED", "NOT_STARTED"] as const) {
       vi.useFakeTimers();

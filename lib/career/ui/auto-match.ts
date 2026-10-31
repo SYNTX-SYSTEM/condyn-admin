@@ -52,6 +52,8 @@ export interface AutoMatch {
   revision: number;
   lastProgressAt: string | null;
   leaseExpiresAt: string | null;
+  /** An automatic continuation of the unfinished run is due and not yet started (server-side, at most 10 min). false in an older answer. */
+  resumePending: boolean;
 }
 
 export const NECESSITY_WEIGHT = { REQUIRED: 3, PREFERRED: 2, OPTIONAL: 1, UNKNOWN: 1 } as const;
@@ -129,7 +131,7 @@ const isEvidenceClass = (value: unknown): value is EvidenceClass => value === "S
 
 const AUTO_MATCH_KEYS = ["state", "reason", "evidenceClass", "pools", "budget", "investigationId", "startedAt", "finishedAt"] as const;
 /** The three-point fields (GELB backend/three-point), additive: an answer carries all of them or, from before them, none. */
-const SYNC_KEYS = ["revision", "lastProgressAt", "leaseExpiresAt"] as const;
+const SYNC_KEYS = ["revision", "lastProgressAt", "leaseExpiresAt", "resumePending"] as const;
 const BUDGET_KEYS = ["rolesPlanned", "rolesEvaluated", "callsLimit"] as const;
 const CALL_KEYS = ["callsUsed", "callsJobLimit"] as const;
 const isCountOrNull = (value: unknown) => value === null || isCount(value);
@@ -162,15 +164,15 @@ export function decodeAutoMatch(value: unknown): AutoMatch | null {
   if (state === "NOT_STARTED" && (value.investigationId !== null || value.startedAt !== null || value.finishedAt !== null)) return null;
   if (open && (value.startedAt === null || value.finishedAt !== null)) return null;
   if (synced) {
-    if (!isCount(value.revision) || !isTimeOrNull(value.lastProgressAt) || !isTimeOrNull(value.leaseExpiresAt)) return null;
-    // No run, no lease and no resumption.
-    if (state === "NOT_STARTED" && (value.revision !== 0 || value.lastProgressAt !== null || value.leaseExpiresAt !== null)) return null;
+    if (!isCount(value.revision) || !isTimeOrNull(value.lastProgressAt) || !isTimeOrNull(value.leaseExpiresAt) || typeof value.resumePending !== "boolean") return null;
+    // No run, no lease and no resumption (done or due).
+    if (state === "NOT_STARTED" && (value.revision !== 0 || value.lastProgressAt !== null || value.leaseExpiresAt !== null || value.resumePending)) return null;
   }
   // The server's values, with the additive fields an older answer lacks set to their defaults.
   return {
     ...(value as unknown as AutoMatch),
     budget: budget === null ? null : { ...(budget as unknown as NonNullable<AutoMatch["budget"]>), ...(called ? {} : { callsUsed: null, callsJobLimit: null }) },
-    ...(synced ? {} : { revision: 0, lastProgressAt: null, leaseExpiresAt: null })
+    ...(synced ? {} : { revision: 0, lastProgressAt: null, leaseExpiresAt: null, resumePending: false })
   };
 }
 
@@ -307,7 +309,8 @@ export async function readJobRanking(analysisId: string, fetcher: Fetcher = defa
 /**
  * How the run is read (GELB, three-point contract): every 2 s while it is RUNNING, falling back to every 10 s while it does not move,
  * without an end — a running run is read until it settles. A STALLED run (its worker lost, taken up again by itself) is read every
- * 15 s, without an end. Only NOT_STARTED (no run yet; also every older analysis's lasting state) keeps the 3-minute wait.
+ * 15 s, without an end; so is a PARTIAL or FAILED run whose automatic continuation is due (resumePending — the server ends that
+ * within 10 min). Only NOT_STARTED (no run yet; also every older analysis's lasting state) keeps the 3-minute wait.
  */
 export const AUTO_MATCH_POLL = { intervalMs: 2000, maxIntervalMs: 10_000, stalledMs: 15_000, maxMs: 180_000 } as const;
 export interface AutoMatchPoll { intervalMs: number; maxIntervalMs: number; stalledMs: number; maxMs: number }
@@ -344,7 +347,7 @@ export function useAutoMatch(analysisId: string | null, fetcher?: Fetcher, poll:
           if (run === null || waitedOut) return;
           let next: number | null = null;
           if (run.state === "NOT_STARTED") next = poll.intervalMs;
-          else if (run.state === "STALLED") next = poll.stalledMs;
+          else if (run.state === "STALLED" || ((run.state === "PARTIAL" || run.state === "FAILED") && run.resumePending)) next = poll.stalledMs;
           else if (run.state === "RUNNING") {
             const now = progressOf(run);
             // A run that moved is read again soon; one that did not falls back step by step to the longest interval.

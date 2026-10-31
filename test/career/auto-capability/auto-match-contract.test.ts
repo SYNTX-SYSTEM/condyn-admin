@@ -77,6 +77,8 @@ describe("AC-CONTRACT · three-point fields (revision, progress, lease, calls)",
     expect(decodeAutoMatch(clone(body))).toEqual(body);
     expect(decodeAutoMatch(autoMatch("PARTIAL", { budget: { rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2, callsUsed: 0, callsJobLimit: null } }))).not.toBeNull();
     for (const state of AUTO_MATCH_STATES) expect(decodeAutoMatch(autoMatch(state)), state).not.toBeNull();
+    // GELB's correction: resumePending — a continuation of the unfinished run is due.
+    for (const state of ["PARTIAL", "FAILED"] as const) expect(decodeAutoMatch(autoMatch(state, { reason: state === "PARTIAL" ? "ROLE_FAILURES" : "ERR_SEMANTIC_PROVIDER_FAILED", resumePending: true })), state).toMatchObject({ resumePending: true });
   });
 
   it("REPRODUCE: an answer from before the three-point contract stays readable — revision 0, no progress, no lease, calls null", () => {
@@ -85,14 +87,14 @@ describe("AC-CONTRACT · three-point fields (revision, progress, lease, calls)",
       const decoded = decodeAutoMatch(clone(old));
       expect(decoded, state).not.toBeNull();
       expect(decoded!.revision, state).toBe(0);
-      expect([decoded!.lastProgressAt, decoded!.leaseExpiresAt], state).toEqual([null, null]);
+      expect([decoded!.lastProgressAt, decoded!.leaseExpiresAt, decoded!.resumePending], state).toEqual([null, null, false]);
       if (old.budget !== null) expect(decoded!.budget, state).toEqual({ ...(old.budget as object), callsUsed: null, callsJobLimit: null });
       else expect(decoded!.budget, state).toBeNull();
     }
   });
 
   it("inverse: a field missing (one of three, one of two calls), of a wrong type, or a lease/resumption without a run is READ_FAILED", () => {
-    for (const key of ["revision", "lastProgressAt", "leaseExpiresAt"]) {
+    for (const key of ["revision", "lastProgressAt", "leaseExpiresAt", "resumePending"]) {
       const body = autoMatch("RUNNING"); delete body[key];
       expect(decodeAutoMatch(body), `without ${key}`).toBeNull();
     }
@@ -104,7 +106,9 @@ describe("AC-CONTRACT · three-point fields (revision, progress, lease, calls)",
       ["lastProgressAt 'soon'", autoMatch("RUNNING", { lastProgressAt: "soon" })], ["lastProgressAt 5", autoMatch("RUNNING", { lastProgressAt: 5 })], ["leaseExpiresAt ''", autoMatch("STALLED", { leaseExpiresAt: "" })],
       ["callsUsed -1", budget({ callsUsed: -1 })], ["callsUsed '3'", budget({ callsUsed: "3" })], ["callsUsed 1.5", budget({ callsUsed: 1.5 })], ["callsJobLimit '10'", budget({ callsJobLimit: "10" })],
       ["NOT_STARTED resumed", autoMatch("NOT_STARTED", { revision: 1 })], ["NOT_STARTED with a lease", autoMatch("NOT_STARTED", { leaseExpiresAt: "2026-10-30T10:01:00.000Z" })],
-      ["NOT_STARTED with progress", autoMatch("NOT_STARTED", { lastProgressAt: "2026-10-30T10:01:00.000Z" })], ["an extra key", { ...autoMatch("RUNNING"), workerId: "w1" }]
+      ["NOT_STARTED with progress", autoMatch("NOT_STARTED", { lastProgressAt: "2026-10-30T10:01:00.000Z" })],
+      ["resumePending 'true'", autoMatch("PARTIAL", { resumePending: "true" })], ["resumePending 1", autoMatch("PARTIAL", { resumePending: 1 })], ["resumePending null", autoMatch("PARTIAL", { resumePending: null })],
+      ["NOT_STARTED with a due continuation", autoMatch("NOT_STARTED", { resumePending: true })], ["an extra key", { ...autoMatch("RUNNING"), workerId: "w1" }]
     ];
     for (const [label, body] of wrong) expect(decodeAutoMatch(body), label).toBeNull();
   });

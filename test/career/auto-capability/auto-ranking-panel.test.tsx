@@ -111,6 +111,23 @@ describe("AC-PANEL · the state line", () => {
     expect(AUTO_MATCH_COPY.en.budget(1, 1, 7, 1)).toBe("1 of 1 roles checked semantically · 1 call · call limit 7");
   });
 
+  it("REPRODUCE (three-point, resumePending): PARTIAL · ROLE_FAILURES or FAILED with a due continuation says it continues by itself — EN and DE, no action", () => {
+    for (const w of [watch("PARTIAL", { reason: "ROLE_FAILURES", resumePending: true }), watch("FAILED", { resumePending: true })]) {
+      const line = autoMatchLine(w, AUTO_MATCH_COPY.en);
+      expect(line.resumePending).toBe(true);
+      expect(line.action).toBeNull();
+      expect(text(panel(w))).toContain("continues by itself");
+      expect(text(panel(w, { state: "IDLE" }, "de"))).toContain("wird automatisch fortgesetzt");
+      expect(panel(w)).not.toContain('data-testid="auto-go-to-job-field"');
+    }
+    expect(text(panel(watch("PARTIAL", { reason: "ROLE_FAILURES", resumePending: true })))).toContain("The matching is done; some roles could not be checked and are ranked by name relation.");
+  });
+
+  it("inverse (three-point, resumePending): no due continuation, or a run that is not PARTIAL/FAILED, names none", () => {
+    for (const [label, w] of LINES) expect(panel(w), label).not.toContain('data-testid="auto-line-resume-pending"');
+    for (const state of ["RUNNING", "STALLED", "COMPLETED"] as const) expect(autoMatchLine(watch(state, { resumePending: true }), AUTO_MATCH_COPY.en).resumePending, state).toBeUndefined();
+  });
+
   it("inverse (three-point): a first run is not named resumed; no line offers an action for STALLED; without registered calls none are counted", () => {
     for (const [label, w] of LINES.filter(([label]) => label !== "RUNNING resumed")) {
       expect(autoMatchLine(w, AUTO_MATCH_COPY.en).resumed, label).toBeUndefined();

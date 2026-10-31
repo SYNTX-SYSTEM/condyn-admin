@@ -28,7 +28,7 @@ const layer: React.CSSProperties = { display: "flex", flexDirection: "column", g
 const badge: React.CSSProperties = { fontFamily: MONO, fontSize: "10px", fontWeight: 700, letterSpacing: "1.1px", padding: "1px 8px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, color: "rgba(176, 226, 244, 0.95)", whiteSpace: "nowrap" };
 
 export type AutoLineKey = "READING" | "READ_FAILED" | "ANALYSIS_NOT_FOUND" | "NOT_STARTED" | "WAITED_OUT" | "RUNNING" | "STALLED" | "COMPLETED" | "PARTIAL" | "DISABLED" | "SKIPPED" | "FAILED";
-export interface AutoLine { key: AutoLineKey; cause: string; way: string; detail: string[]; action: "GO_TO_JOB_FIELD" | null; /** Taken up again by itself (revision > 0). */ resumed?: true }
+export interface AutoLine { key: AutoLineKey; cause: string; way: string; detail: string[]; action: "GO_TO_JOB_FIELD" | null; /** Taken up again by itself (revision > 0). */ resumed?: true; /** Its continuation is due (resumePending). */ resumePending?: true }
 
 /** The state line of the run: which line stands, its one sentence, its one transition, its facts (reason, budget, pools). */
 export function autoMatchLine(watch: AutoMatchWatch, c: AutoMatchCopy): AutoLine {
@@ -40,7 +40,8 @@ export function autoMatchLine(watch: AutoMatchWatch, c: AutoMatchCopy): AutoLine
   const pools = run.pools.length > 0 ? [c.pools(run.pools.map(pool => pool.poolName).join(" · "))] : [];
   const budget = run.budget === null ? [] : [c.budget(run.budget.rolesEvaluated, run.budget.rolesPlanned, run.budget.callsLimit, run.budget.callsUsed)];
   const line = autoRunLine(run, c, watch.waitedOut, budget, pools);
-  return run.revision > 0 ? { ...line, resumed: true } : line;
+  const due = run.resumePending && (run.state === "PARTIAL" || run.state === "FAILED");
+  return { ...line, ...(run.revision > 0 ? { resumed: true as const } : {}), ...(due ? { resumePending: true as const } : {}) };
 }
 
 function autoRunLine(run: AutoMatch, c: AutoMatchCopy, waitedOut: boolean, budget: string[], pools: string[]): AutoLine {
@@ -81,6 +82,7 @@ export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, ch
           <span data-testid="auto-line-cause" style={statement}>{line.cause}</span>
           <span data-testid="auto-line-way" style={{ fontFamily: SANS, fontSize: "11.5px", lineHeight: 1.4, color: "rgba(150, 214, 236, 0.9)" }}>{line.way}</span>
           {line.resumed && <span data-testid="auto-line-resumed" style={meta}>{c.resumed}</span>}
+          {line.resumePending && <span data-testid="auto-line-resume-pending" style={meta}>{c.resumePending}</span>}
           {line.detail.map(text => <span key={text} data-testid="auto-line-detail" style={meta}>{text}</span>)}
           {line.action === "GO_TO_JOB_FIELD" && onGoToJobField && <button type="button" data-testid="auto-go-to-job-field" onClick={onGoToJobField} style={action}>{c.goToJobField}</button>}
         </div>

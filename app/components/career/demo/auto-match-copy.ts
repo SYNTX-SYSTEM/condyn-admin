@@ -24,6 +24,8 @@ export interface AutoMatchCopy {
   stalled: Line;
   /** A run taken up again by itself (revision > 0) — named, no action. */
   resumed: string;
+  /** A PARTIAL or FAILED run whose automatic continuation is due (resumePending) — named, no action. */
+  resumePending: string;
   completed: (pools: number) => Line;
   partial: Record<"ROLES_BEYOND_BUDGET" | "ROLE_FAILURES" | "DAY_BUDGET_EXHAUSTED" | "PAIRS_REFUSED", Line>;
   disabled: Line;
@@ -76,6 +78,7 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     running: (evaluated, planned) => ({ cause: `The capabilities are being matched against the job pools · ${formatCount(evaluated)} of ${formatCount(planned)} roles checked.`, way: "→ the ranking below grows as the roles are checked" }),
     stalled: { cause: "Processing was interrupted; it continues by itself.", way: "→ the ranking below holds what is checked so far" },
     resumed: "resumed by itself",
+    resumePending: "continues by itself",
     completed: pools => ({ cause: `The matching is done across ${formatCount(pools)} ${pools === 1 ? "job pool" : "job pools"}.`, way: "→ the ranked jobs below, each with its reasons" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "The matching checked the roles its budget allows; the others are ranked by name relation.", way: "→ the ranked jobs below, each with its reasons" },
@@ -143,6 +146,7 @@ export const AUTO_MATCH_COPY: Readonly<Record<SilLocale, AutoMatchCopy>> = {
     running: (evaluated, planned) => ({ cause: `Die Fähigkeiten werden mit den Job-Pools abgeglichen · ${formatCount(evaluated)} von ${formatCount(planned)} Rollen geprüft.`, way: "→ die Rangfolge unten wächst mit jeder geprüften Rolle" }),
     stalled: { cause: "Die Verarbeitung wurde unterbrochen; sie wird automatisch fortgesetzt.", way: "→ die Rangfolge unten zeigt, was bisher geprüft ist" },
     resumed: "automatisch fortgesetzt",
+    resumePending: "wird automatisch fortgesetzt",
     completed: pools => ({ cause: `Der Abgleich ist über ${formatCount(pools)} ${pools === 1 ? "Job-Pool" : "Job-Pools"} fertig.`, way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" }),
     partial: {
       ROLES_BEYOND_BUDGET: { cause: "Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.", way: "→ die gereihten Jobs unten, jeder mit seinen Gründen" },
