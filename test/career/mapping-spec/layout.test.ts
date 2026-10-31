@@ -7,12 +7,14 @@ import { arcInputs, computeVectors, constellationInputs, layoutInputs, VECTORS_F
 /** MAPPING_LAYOUT_V1: the specification is executable, the golden vectors are what it produces, and its promises hold on every vector. No database, no network, no model. */
 const file = JSON.parse(readFileSync(VECTORS_FILE, "utf8")) as ReturnType<typeof computeVectors>;
 const near = (a: number, b: number) => Math.abs(a - b) <= 1e-6;
+/** The reference runs O(n²) over up to 320 bodies per vector: these tests are slow by design, not flaky. */
+const SLOW = 60_000;
 const layouts = Object.entries(layoutInputs());
 
 describe("LAYOUT · golden vectors", () => {
   it("the committed vectors are exactly what the reference produces now (no drift between spec, oracle and file)", () => {
     expect(JSON.parse(JSON.stringify(computeVectors()))).toEqual(file);
-  });
+  }, SLOW);
 
   it("DETERMINISM: the same input gives the same output, byte for byte, in any call order and with shuffled input lists", () => {
     for (const [name, input] of layouts) {
@@ -21,7 +23,7 @@ describe("LAYOUT · golden vectors", () => {
       const shuffled: LayoutInput = { pools: [...input.pools].reverse(), roles: [...input.roles].reverse() };
       expect(JSON.stringify(referenceLayout(shuffled)), `${name} shuffled`).toBe(once);
     }
-  });
+  }, SLOW);
 
   it("HAND-CHECKED: one role, fit 1, weight 24 — computed here with plain arithmetic, independent of the oracle", () => {
     const out = referenceLayout(layoutInputs()["LV01-single-role"]);
@@ -47,14 +49,14 @@ describe("LAYOUT · promises on every vector", () => {
       for (let i = 0; i < placed.length; i += 1) for (let j = i + 1; j < placed.length; j += 1)
         expect(Math.hypot(placed[i].x - placed[j].x, placed[i].y - placed[j].y), `${name} ${placed[i].roleId}/${placed[j].roleId}`).toBeGreaterThanOrEqual(placed[i].bodyRadius + placed[j].bodyRadius + SPEC.body.gap - 1e-5);
     }
-  });
+  }, SLOW);
 
   it("HORIZON: a checked role lies inside the horizon, a name-only role beyond it, none outside the field", () => {
     for (const [name, input] of layouts) for (const b of referenceLayout(input).bodies.filter(x => !x.overflow)) {
       if (b.tier === "SEMANTIC") { expect(b.distance + b.bodyRadius, name).toBeLessThanOrEqual(SPEC.rings.horizon + 1e-5); expect(b.distance, name).toBeGreaterThanOrEqual(SPEC.rings.bestFit - 1e-5); }
       else { expect(b.distance - b.bodyRadius, name).toBeGreaterThanOrEqual(SPEC.rings.horizon - 1e-5); expect(b.distance + b.bodyRadius, name).toBeLessThanOrEqual(SPEC.field.radius + 1e-5); }
     }
-  });
+  }, SLOW);
 
   it("SECTORS: each pool keeps to its own sector; sectors are ordered by pool name and never overlap; a pool without roles still has its sector", () => {
     for (const [name, input] of layouts) {
@@ -66,7 +68,7 @@ describe("LAYOUT · promises on every vector", () => {
       for (const b of out.bodies.filter(x => !x.overflow)) { const s = byPool.get(b.poolId)!; expect(b.angleDegrees, `${name} ${b.roleId}`).toBeGreaterThanOrEqual(s.startDegrees - 1e-5); expect(b.angleDegrees, `${name} ${b.roleId}`).toBeLessThanOrEqual(s.startDegrees + s.spanDegrees + 1e-5); }
       expect(out.sectors.reduce((n, s) => n + s.spanDegrees, 0) + SPEC.sectors.gapDegrees * out.sectors.length, name).toBeCloseTo(360, 4);
     }
-  });
+  }, SLOW);
 
   it("FIT IS DISTANCE: an undisplaced body sits exactly where its fit puts it; a better fit is never farther out in its tier", () => {
     for (const [name, input] of layouts) {
@@ -82,7 +84,7 @@ describe("LAYOUT · promises on every vector", () => {
         }
       }
     }
-  });
+  }, SLOW);
 
   it("BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactly (horizon - rho, field - rho) and never cross them or the inner edge", () => {
     const by = Object.fromEntries(layouts.map(([name, input]) => [name, referenceLayout(input).bodies.filter(b => !b.overflow)]));
@@ -95,11 +97,14 @@ describe("LAYOUT · promises on every vector", () => {
     expect(new Set(horizon.map(b => b.displacement[0])).has(-1)).toBe(true);
     expect(Math.max(...inner.map(b => b.displacement[0]))).toBeGreaterThanOrEqual(2);
     expect(Math.min(...inner.map(b => b.displacement[0]))).toBe(0);
+    const medium = by["LV12-shelf-medium-bodies-cannot-cross-the-field-edge"];
+    expect(Math.max(...medium.map(b => b.distance + b.bodyRadius))).toBeLessThanOrEqual(SPEC.field.radius + 1e-6);
+    expect(medium.some(b => b.displacement[0] !== 0)).toBe(true);
     const wide = by["LV11-shelf-wide-bodies-cannot-leave-the-field"];
     expect(Math.max(...wide.map(b => b.distance + b.bodyRadius))).toBeLessThanOrEqual(SPEC.field.radius + 1e-6);
     expect(Math.min(...wide.map(b => b.displacement[0]))).toBe(-1);
     expect(Math.max(...wide.map(b => b.displacement[0]))).toBe(0);
-  });
+  }, SLOW);
 
   it("CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit completely; only the stress vector overflows", () => {
     const by = Object.fromEntries(layouts.map(([name, input]) => [name, referenceLayout(input).overflowCount]));

@@ -56,13 +56,13 @@ Pure function `layout(pools, roles in rank order) → sectors + bodies`; no rand
 * **Collisions.** Bodies are placed in rank order at their fit position; if it is taken the search tries radial offsets 0, +1, −1 … ±6 steps (step = 2ρ+2)
   and, at each (radial is the outer loop), angular offsets 0, +1, −1 … ±30 steps of `step/distance` inside the sector, first free wins. Collision distance is ρ₁+ρ₂+2;
   overflow bodies take no part. **Bands (inclusive):** a checked role in `[160, 400−ρ]`, a shelf role in `[430, 500−ρ]`; a candidate outside is skipped. The full rule list is `layout-spec.json` → `search.rules`;
-  the vectors LV08–LV11 press bodies against all edges (inner, horizon, field edge, and wide bodies that must not leave the field) so a product module cannot get them wrong and still match. If none is free the body is counted as `overflow`
+  the vectors LV08–LV12 press bodies against all edges (inner, horizon, field edge, and medium and wide shelf bodies that must not leave the field) so a product module cannot get them wrong and still match. If none is free the body is counted as `overflow`
   (placed on the overflow radius 520, **not drawn**; the interface shows "+n"). `displacement` records the step taken; a displaced body is
   approximate in distance, so quantitative statements always come from the data, never from the position.
 * **Requirement ring.** Necessity order REQUIRED, PREFERRED, OPTIONAL, UNKNOWN, then weight descending, then id; arc length ∝ weight; 6° gaps (none for a single arc).
 * **Person constellation.** Capabilities by name then key; one in the centre; otherwise rings of radius 30 / 52 / 74 filled in order; the rest is counted.
-* **Golden vectors:** `layout-golden-vectors.json` — eleven layouts (single role, three pools with mixed tiers, equal-fit ties, 60 crowded, 320 roles
-  beyond capacity, four edge-pressure vectors, no roles, and the **real shape** of 73 roles in 3 pools — structure only, no text — from the real run), four requirement rings, five constellations.
+* **Golden vectors:** `layout-golden-vectors.json` — twelve layouts (single role, three pools with mixed tiers, equal-fit ties, 60 crowded, 320 roles
+  beyond capacity, five edge-pressure vectors, no roles, and the **real shape** of 73 roles in 3 pools — structure only, no text — from the real run), four requirement rings, five constellations.
   Compare `x`/`y` of the vectors directly (recomputing them from the rounded angle and distance differs by up to ~4e-6). The reference oracle is `test/support/mapping/layout-reference.ts` (not product code); a product module must match the vectors within 1e-6.
 
 Run-state note: the backend can report STALLED together with `resumePending = true` (an interrupted run inside its window); the field then stays frozen — a resume pulse is only for PARTIAL and FAILED.

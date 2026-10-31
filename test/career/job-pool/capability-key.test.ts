@@ -73,6 +73,7 @@ describe("CK · the strict client decoder", () => {
     ["a non-text key", (q: any) => { q.capabilityKey = 7; }],
     ["a key without a named capability", (q: any) => { q.capabilityName = null; q.capabilityKey = "PCAP_X"; q.source = "NONE"; q.state = "NONE"; q.value = 0; q.contribution = 0; q.quotes = []; q.explanation = null; q.evidenceLimitation = null; }],
     ["an unknown extra field", (q: any) => { q.surprise = 1; }],
+    ["an unknown field beside the old shape (13 fields, no capabilityKey)", (q: any) => { delete q.capabilityKey; q.surprise = 1; }],
     ["an unknown field in place of a known one (old field count)", (q: any) => { delete q.capabilityKey; delete q.quotes; q.surprise = []; }],
     ["an unknown field in place of a known one (new field count)", (q: any) => { delete q.explanation; q.surprise = null; }]
   ])("INVERSE: %s is refused", (_label, mutate) => {

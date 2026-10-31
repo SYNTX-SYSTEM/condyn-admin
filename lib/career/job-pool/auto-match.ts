@@ -269,7 +269,6 @@ export async function resumeAutoMatches(now: () => string = () => new Date().toI
   return result;
 }
 
-/** GET: the explainable ranking over the pools of the run (or the current ACTIVE pools) and the stored relations of the configured engine. Read only. */
 /** The cache keys to read, one per (requirement, PERSON proposal), each remembering the id of the proposal it was made for. */
 export function relationKeysOf(proposals: Array<{ id: string; hash: string }>, requirements: Array<{ requirementKey: string; requirementHash: string }>, engineHash: string): Array<{ requirementKey: string; relationKey: string; proposalId: string }> {
   const keyed: Array<{ requirementKey: string; relationKey: string; proposalId: string }> = [];
@@ -292,6 +291,7 @@ export function findingsOf(keyed: Array<{ requirementKey: string; relationKey: s
   return out;
 }
 
+/** GET: the explainable ranking over the pools of the run (or the current ACTIVE pools) and the stored relations of the configured engine. Read only. */
 export async function buildAnalysisRanking(analysisId: string): Promise<Outcome<RoleRanking>> {
   const base = await loadPersonOperandBase(analysisId);
   if (!base.ok) return base;
