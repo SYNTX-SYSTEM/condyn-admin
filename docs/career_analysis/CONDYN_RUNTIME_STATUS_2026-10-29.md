@@ -116,3 +116,15 @@ One run on :3017 (main 0e44cce): `docs/examples/cv.synthetic.pdf` (PERSON) → r
 **Call count — what is proven and what is not:** semantic stage: 7 requests reserved in the ledger (DAY:gemini:2026-10-30 reserved 7, consumed 5, released 2; the 2 provider failures probably ran into the 120 s timeout, so their requests may have left). Extraction: Legacy 1 + Discovery 1 + Convergence 1 = at least 3 by code; the number is **not recorded** (no exchange archive on :3017, analysis payload holds no attempt counts). Therefore the lower bound is 10 and "≤ 10" holds only if the legacy stage made exactly one call; the short analysis time (35.7 s, one job attempt) makes cascade or regeneration unlikely but does not prove it.
 
 **Owner notes from the run:** (a) for requirements judged DIFFERENT the panel names a capability that does not fit (e.g. "Geospatial Visualisation" → "CI/CD Pipeline Engineering"; it is the first of the zero-value candidates, shown without a quote) — a display ambiguity; (b) real Gemini needed 1–2 min per role; the UI wait of 3 min (O-AC-2) is shorter than a full run; (c) 2 of 7 role calls ended in provider failure, no automatic repetition happens; (d) the call count of the extraction stage is not observable (see above).
+
+## 9. Three-point hardening rolled out (2026-10-31)
+
+**Scope (owner mandate SFE::THREE-POINT IMPLEMENTATION GO, "NUR DIESE DREI PUNKTE. MEHR NICHT."):** (1) semantic coverage, (2) Gemini call budget, (3) temporal synchronisation. Detail: `CONDYN_AUTOMATED_CAPABILITY_TO_JOB_2026-10-30.md` §5.
+
+**Integration:** backend `88bdc05` + frontend `832d185` merged into `main` (6f482d2, 28dc62a); tsc clean; 66/66 targeted tests green on the merge. Backend and frontend ship together only (PINK D-TP-1: the old client decoder rejects `STALLED`).
+
+**Independent validation: PINK §3.88 GO for points 1, 2 and 3** on the pair (scripted mock SDK, no network, no key, no model). 12/12 frontend mutants red, 10,368 backend views decoded without rejection, F-TP-1/F-TP-2 closed. Open, non-blocking: F-TP-3 (test gaps T-M04/09/10/19/20/21/24; code correct by inspection).
+
+**:3017:** `condyn-admin-dll-runtime` fast-forwarded to 28dc62a, server + worker restarted (stand-in, day limit 1000, no ANALYZE, no Gemini call). GET `/career/demo` 200; the earlier real run ANL_1793382839627_744 still reads PARTIAL · ROLE_FAILURES, not resumable, not continued. Rollback: `git -C /home/codi/Entwicklung/condyn-admin-dll-runtime reset --hard 5521ae7`, then `scripts/runtime/port-3017.sh switch <that dir>`.
+
+**Owner notes:** partial admission (admitted pairs stored, refused pairs never) relaxes the former all-or-nothing admission — my decision; default job call limit 12 when `GEMINI_JOB_CALL_LIMIT` is unset (the real run used 10); the call register is active only on disposable DBs; the extraction-stage call count of the earlier real run stays unprovable; no real-Gemini proof of the new paths (needs a separate release); 45 baseline-red tests unchanged.
