@@ -1,0 +1,107 @@
+// PINK BUDGET BOUNDARY probe: can any Gemini API request leave without a persistent register row, on any database? The REAL @google/genai
+// SDK runs; global fetch is replaced by a recorder that answers like Gemini and, at the moment of each request, counts the register rows
+// that exist (write-ahead check). No network, dummy key. The database's disposable marker is removed for the run (restored at the end).
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { writeFileSync } from "node:fs";
+import { sql } from "drizzle-orm";
+import { db } from "../../lib/career/db/client";
+import { setDefaultProviderCallRecorder, guardedGenerateContent, ProviderCallBlocked } from "../../lib/career/provider-calls/guard";
+import { withJobCallRegister } from "../../lib/career/provider-calls/job-context";
+import { GeminiCapabilityDiscoveryProvider } from "../../lib/career/capability-core";
+import { GeminiCapabilityConvergenceProvider } from "../../lib/career/capability-core/convergence";
+import { GeminiProvider } from "../../lib/career/providers/gemini";
+import { GeminiEmbeddingProvider } from "../../lib/career/embeddings/gemini";
+import { GeminiSemanticProvider } from "../../lib/career/job-pool/gemini-semantic-provider";
+import { GoogleGenAI } from "@google/genai";
+import { registerProviderCallRegisterSchema } from "../../lib/career/provider-calls/register-schema";
+
+const rec: Record<string, unknown> = {};
+const q = async <T>(s: string) => (await db.execute(sql.raw(s))) as unknown as T[];
+const rowsNow = async () => { try { return (await q<{ n: number }>(`SELECT count(*)::int AS n FROM career_provider_calls WHERE state <> 'RESERVED'`))[0].n; } catch { return -1; } };
+const net: Array<{ url: string; rowsAtRequest: number }> = [];
+let pageCount = 0;
+const answer = (url: string) => {
+  if (url.includes(":embedContent")) return { embedding: { values: [0.1, 0.2] }, embeddings: [{ values: [0.1, 0.2] }] };
+  if (url.includes(":countTokens")) return { totalTokens: 3 };
+  if (/\/models(\?|$)/.test(url)) { pageCount += 1; return pageCount === 1 ? { models: [{ name: "models/a" }], nextPageToken: "p2" } : pageCount === 2 ? { models: [{ name: "models/b" }], nextPageToken: "p3" } : { models: [{ name: "models/c" }] }; }
+  if (/\/models\/[^/:]+$/.test(url.split("?")[0])) return { name: "models/x", inputTokenLimit: 1000, outputTokenLimit: 1000 };
+  return { candidates: [{ content: { parts: [{ text: "{\"structured_data\":{}}" }] }, finishReason: "STOP" }] };
+};
+let marker: string | null = null; let dbName = "";
+beforeAll(async () => {
+  vi.stubGlobal("fetch", async (input: unknown) => {
+    const url = typeof input === "string" ? input : (input as { url?: string }).url ?? String(input);
+    if (url.includes("googleapis.com")) { net.push({ url: url.replace(/key=[^&]+/, "key=…").split("?")[0], rowsAtRequest: await rowsNow() }); return new Response(JSON.stringify(answer(url)), { status: 200, headers: { "content-type": "application/json" } }); }
+    throw new Error(`PINK: unexpected network ${url}`);
+  });
+  const r = (await q<{ name: string; marker: string | null }>(`SELECT current_database() AS name, shobj_description(oid, 'pg_database') AS marker FROM pg_database WHERE datname = current_database()`))[0];
+  dbName = r.name; marker = r.marker;
+  await q(`COMMENT ON DATABASE "${dbName}" IS NULL`); // this database now fails verifyDisposableTestDatabase: "any database"
+});
+afterAll(async () => {
+  if (marker !== null) await q(`COMMENT ON DATABASE "${dbName}" IS '${marker.replace(/'/g, "''")}'`);
+  writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1));
+});
+const tryRun = async (f: () => Promise<unknown>) => { try { await f(); return "OK"; } catch (e) { return e instanceof ProviderCallBlocked ? e.code : String((e as Error).message).slice(0, 60); } };
+
+describe("PINK budget boundary", () => {
+  it("no recorder: the production providers send nothing (real SDK)", async () => {
+    setDefaultProviderCallRecorder(undefined); net.length = 0;
+    const out = {
+      discovery: await tryRun(() => new GeminiCapabilityDiscoveryProvider({ apiKey: "dummy-key-0000000000", model: "m" }).execute({ systemPrompt: "K", userPrompt: "S" })),
+      convergence: await tryRun(() => new GeminiCapabilityConvergenceProvider({ apiKey: "dummy-key-0000000000", model: "m" }).execute({ systemPrompt: "K", userPrompt: "S" })),
+      legacy: await tryRun(() => new GeminiProvider({ apiKey: "dummy-key-0000000000", modelCascade: ["m1", "m2"] }).execute({ systemPrompt: "S", userPrompt: "U", allowedDocIds: ["DOC_001"] } as never)),
+      embedding: await tryRun(() => new GeminiEmbeddingProvider({ apiKey: "dummy-key-0000000000", model: "e" }).generateEmbedding("hello")),
+      semantic: await tryRun(() => new GeminiSemanticProvider({ model: "m", apiKey: "dummy-key-0000000000" }).evaluate({ proposals: [], requirements: [] } as never)),
+      rawSdkInsideGuard: await tryRun(() => guardedGenerateContent("DIAGNOSTIC", () => new GoogleGenAI({ apiKey: "dummy-key-0000000000" }).models.generateContent({ model: "m", contents: "x" })))
+    };
+    rec.noRecorder = { results: out, requests: net.length };
+    expect(net.length).toBe(0);
+  });
+
+  it("an unmarked (non-disposable) database: the register is provisioned there and every request has its row first; existing rows survive", async () => {
+    setDefaultProviderCallRecorder(undefined); net.length = 0;
+    // an old-format register with a row, its trigger disabled (as a predecessor might have left it)
+    await q(`DROP TABLE IF EXISTS career_provider_calls`); await q(`DROP TABLE IF EXISTS career_relation_call_ledger`);
+    await q(`CREATE TABLE career_provider_calls (call_id text PRIMARY KEY CHECK (call_id ~ '^PCALL_[0-9A-F]{32}$'), job_id text NOT NULL, stage text NOT NULL CHECK (stage IN ('EXTRACTION_LEGACY','EXTRACTION_DISCOVERY','EXTRACTION_CONVERGENCE','SEMANTIC')), investigation_id text, job_pool_upload_id text, pool_role_id text, attempt integer, state text NOT NULL, error_class text, error_code text, http_status integer, request_bytes bigint NOT NULL DEFAULT 0, response_bytes bigint NOT NULL DEFAULT 0, created_at text NOT NULL, sent_at text, ended_at text)`);
+    await q(`INSERT INTO career_provider_calls (call_id, job_id, stage, state, created_at) VALUES ('PCALL_${"C".repeat(32)}', 'JOB_OLD', 'SEMANTIC', 'COMPLETED', '2026-10-30T00:00:00Z')`);
+    const job = `JOB_PINK_UNMARKED_${Date.now()}`;
+    const results: Record<string, string> = {};
+    await withJobCallRegister(job, async () => {
+      results.discovery = await tryRun(() => new GeminiCapabilityDiscoveryProvider({ apiKey: "dummy-key-0000000000", model: "m" }).execute({ systemPrompt: "K", userPrompt: "S" }));
+      results.convergence = await tryRun(() => new GeminiCapabilityConvergenceProvider({ apiKey: "dummy-key-0000000000", model: "m" }).execute({ systemPrompt: "K", userPrompt: "S" }));
+      results.legacy = await tryRun(() => new GeminiProvider({ apiKey: "dummy-key-0000000000", modelCascade: ["m1"] }).execute({ systemPrompt: "S", userPrompt: "U", allowedDocIds: ["DOC_001"] } as never));
+      results.embedding = await tryRun(() => new GeminiEmbeddingProvider({ apiKey: "dummy-key-0000000000", model: "e" }).generateEmbedding("hello"));
+    }, { GEMINI_JOB_CALL_LIMIT: "20" });
+    const rows = await q<{ stage: string; state: string }>(`SELECT stage, state FROM career_provider_calls WHERE job_id = '${job}' ORDER BY created_at, call_id`);
+    const old = await q(`SELECT call_id, state FROM career_provider_calls WHERE job_id = 'JOB_OLD'`);
+    const trig = await q(`SELECT tgname, tgenabled FROM pg_trigger WHERE tgname IN ('rel_call_guard','rel_ledger_guard')`);
+    const check = await q<{ d: string }>(`SELECT pg_get_constraintdef(oid) AS d FROM pg_constraint WHERE conname = 'career_provider_calls_stage_check'`);
+    rec.unmarked = { results, requests: net.map(r => ({ ...r })), rows, oldRowKept: old, triggers: trig, stageCheckHasEmbedding: check[0]?.d.includes("EMBEDDING") ?? null, everyRequestHadItsRow: net.every((r, i) => r.rowsAtRequest >= i + 1) };
+    expect(net.length).toBeGreaterThan(0); expect(net.every((r, i) => r.rowsAtRequest >= i + 1)).toBe(true); expect(old.length).toBe(1);
+  });
+
+  it("a register that cannot be provisioned: nothing is sent", async () => {
+    setDefaultProviderCallRecorder(undefined); net.length = 0;
+    await q(`DROP TABLE IF EXISTS career_provider_calls`); await q(`DROP TABLE IF EXISTS career_relation_call_ledger`);
+    await q(`CREATE VIEW career_relation_call_ledger AS SELECT 1 AS x`); // the ledger name is taken by something that is not a table
+    const r = await tryRun(() => withJobCallRegister(`JOB_PINK_BROKEN_${Date.now()}`, () => new GeminiCapabilityDiscoveryProvider({ apiKey: "dummy-key-0000000000", model: "m" }).execute({ systemPrompt: "K", userPrompt: "S" })));
+    await q(`DROP VIEW career_relation_call_ledger`);
+    rec.unprovisionable = { result: r, requests: net.length };
+    expect(net.length).toBe(0);
+  });
+
+  it("models.list() with a pager: every page request vs. its register row", async () => {
+    setDefaultProviderCallRecorder(undefined); net.length = 0; pageCount = 0;
+    await registerProviderCallRegisterSchema(db.$client as never); // the previous case dropped the tables; the process memo still says "provisioned"
+    const job = `JOB_PINK_LIST_${Date.now()}`;
+    let names: string[] = [];
+    await withJobCallRegister(job, async () => {
+      const ai = new GoogleGenAI({ apiKey: "dummy-key-0000000000" });
+      const response = await guardedGenerateContent("DIAGNOSTIC", () => ai.models.list());
+      for await (const m of response as AsyncIterable<{ name: string }>) names.push(m.name);
+    }, { GEMINI_JOB_CALL_LIMIT: "20" });
+    const rows = await q(`SELECT stage, state FROM career_provider_calls WHERE job_id = '${job}'`);
+    rec.pager = { models: names, requests: net.map(r => `${r.url} rows=${r.rowsAtRequest}`), registerRows: rows.length, requestsWithoutRow: Math.max(0, net.length - rows.length) };
+  });
+});

@@ -3903,6 +3903,23 @@ Open but not blocking:
 - **D-TP-1.** Backend and frontend must ship together, because the backend alone breaks main's client contract.
 - **Owner note.** The default job limit is 12 calls.
 
+### 3.89 Budget boundary hardlock, GELB `67abdfe` (2026-10-31) — NO-GO: two paths send without a register row
+
+**Request.** Owner mandate SFE::BUDGET BOUNDARY HARDLOCK ("Ohne persistente Aufrufregistrierung darf kein Gemini-Aufruf stattfinden. Unabhängig von der verwendeten Datenbank."). The only question: can any Gemini API request leave without a persistent register row, on any database?
+
+**Method.**
+- **Code inspection.** Every tracked file that imports the SDK or names its host.
+- **Deterministic probe.** The real `@google/genai` SDK with global fetch replaced by a recorder that counts the register rows at the moment of each request. The probe ran on a database whose disposable marker was removed.
+
+**Verdict: NO-GO** (`evidence/budget-boundary-67abdfe/verdicts.txt`).
+- **What holds.**
+  - Without a recorder no production provider sends anything.
+  - On the unmarked database the register is provisioned, and every request had its row first.
+  - Existing rows survive, and the stage list is widened in place.
+  - When the register cannot be provisioned, nothing is sent.
+- **F-BB-1.** Four tracked scripts at the repository root (`bisection.ts`, `schema-bisection.ts`, `schema-bisection-mjs.ts`, `test-schema.ts`) call `ai.models.generateContent` directly, outside the seam. The architecture test scans only `lib/`, `scripts/` and `app/`.
+- **F-BB-2.** In `scripts/list-models.ts` the pager sends its further pages without rows: 3 requests, 1 row.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
