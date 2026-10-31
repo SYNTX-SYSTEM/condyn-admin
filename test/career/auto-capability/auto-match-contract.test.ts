@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { SEMANTIC_RELATION_STATES } from "../../../lib/career/job-pool/relation-cache";
 import { AUTO_MATCH_STATES, RANKING_SEMANTIC_STATES, decodeAutoMatch, decodeRoleRanking, readAutoMatch, readJobRanking, rankingKey, autoMatchUrl, jobRankingUrl, type AutoMatchRunState } from "../../../lib/career/ui/auto-match";
-import { ANALYSIS, POOL_A, autoMatch, autoMatchBody, ranking, rankingBody, semantic, lexical } from "./fixtures";
+import { ANALYSIS, POOL_A, autoMatch, autoMatchBody, legacyAutoMatch, ranking, rankingBody, semantic, lexical } from "./fixtures";
 
 /**
  * AUTO_CAPABILITY (owner 2026-10-30), the two reads of GELB §3.5 as confirmed by GELB: strict decoders (regression per state and
@@ -13,7 +13,7 @@ const ranks = (r: Body) => r.ranks as Body[];
 const reqs = (r: Body, at: number) => ranks(r)[at].requirements as Body[];
 
 describe("AC-CONTRACT · auto-match run", () => {
-  it("REPRODUCE: every one of the seven states decodes in its own shape", () => {
+  it("REPRODUCE: every one of the eight states decodes in its own shape", () => {
     for (const state of AUTO_MATCH_STATES) expect(decodeAutoMatch(autoMatch(state)), state).toEqual(autoMatch(state));
     for (const reason of ["SEMANTIC_NOT_CONFIGURED", "PROVIDER_NOT_AUTHORIZED", "DAY_LIMIT_ZERO", "NOT_PROVISIONED"]) expect(decodeAutoMatch(autoMatch("DISABLED", { reason }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("SKIPPED", { reason: "NOT_PERSON" }))).not.toBeNull();
@@ -24,6 +24,9 @@ describe("AC-CONTRACT · auto-match run", () => {
     // PINK §3.85 F-AM-6 / GELB b972905: an analysis without capability proposals — SKIPPED, no run.
     expect(decodeAutoMatch(autoMatch("SKIPPED", { reason: "NO_PROPOSALS" }))).not.toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { evidenceClass: "REAL_GEMINI" }))).not.toBeNull();
+    // Three-point contract (GELB): STALLED · WORKER_LOST — a run whose lease ran out; PARTIAL · PAIRS_REFUSED — pairs refused by the claim guard.
+    expect(decodeAutoMatch(autoMatch("STALLED"))).toMatchObject({ state: "STALLED", reason: "WORKER_LOST" });
+    expect(decodeAutoMatch(autoMatch("PARTIAL", { reason: "PAIRS_REFUSED" }))).toMatchObject({ state: "PARTIAL", reason: "PAIRS_REFUSED" });
   });
 
   it("inverse: a reason of another state (or none where one belongs, or one where none may stand) is not the contract", () => {
@@ -31,14 +34,17 @@ describe("AC-CONTRACT · auto-match run", () => {
       ["DISABLED", "NO_ACTIVE_POOLS"], ["DISABLED", null], ["SKIPPED", "SEMANTIC_NOT_CONFIGURED"], ["PARTIAL", null], ["PARTIAL", "NOT_PERSON"],
       ["FAILED", null], ["FAILED", "SEMANTIC_FAILED"], ["COMPLETED", "ROLES_BEYOND_BUDGET"], ["RUNNING", "ROLE_FAILURES"], ["NOT_STARTED", "NOT_PERSON"],
       ["DISABLED", "DAY_BUDGET_EXHAUSTED"], ["COMPLETED", "DAY_BUDGET_EXHAUSTED"], ["SKIPPED", "DAY_BUDGET_EXHAUSTED"], ["PARTIAL", "NOT_PROVISIONED"], ["SKIPPED", "NOT_PROVISIONED"], ["PARTIAL", "BUDGET_EXHAUSTED"],
-      ["DISABLED", "NO_PROPOSALS"], ["PARTIAL", "NO_PROPOSALS"], ["NOT_STARTED", "NO_PROPOSALS"], ["SKIPPED", "NO_PROPOSAL"]
+      ["DISABLED", "NO_PROPOSALS"], ["PARTIAL", "NO_PROPOSALS"], ["NOT_STARTED", "NO_PROPOSALS"], ["SKIPPED", "NO_PROPOSAL"],
+      // Three-point: STALLED only with WORKER_LOST; WORKER_LOST and PAIRS_REFUSED nowhere else.
+      ["STALLED", null], ["STALLED", "ROLE_FAILURES"], ["STALLED", "PAIRS_REFUSED"], ["STALLED", "ERR_WORKER_LOST"], ["STALLED", "worker_lost"],
+      ["RUNNING", "WORKER_LOST"], ["PARTIAL", "WORKER_LOST"], ["FAILED", "WORKER_LOST"], ["COMPLETED", "PAIRS_REFUSED"], ["DISABLED", "PAIRS_REFUSED"], ["SKIPPED", "WORKER_LOST"], ["PARTIAL", "PAIR_REFUSED"]
     ];
     for (const [state, reason] of wrong) expect(decodeAutoMatch(autoMatch(state, { reason })), `${state} ${String(reason)}`).toBeNull();
   });
 
   it("inverse: an evidence class where no evaluation stands, none where a run stands, or an unknown one", () => {
     for (const state of ["NOT_STARTED", "DISABLED", "SKIPPED"] as const) expect(decodeAutoMatch(autoMatch(state, { evidenceClass: "STAND_IN" })), state).toBeNull();
-    for (const state of ["RUNNING", "COMPLETED", "PARTIAL", "FAILED"] as const) expect(decodeAutoMatch(autoMatch(state, { evidenceClass: null })), state).toBeNull();
+    for (const state of ["RUNNING", "STALLED", "COMPLETED", "PARTIAL", "FAILED"] as const) expect(decodeAutoMatch(autoMatch(state, { evidenceClass: null })), state).toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { evidenceClass: "GEMINI" }))).toBeNull();
   });
 
@@ -57,6 +63,54 @@ describe("AC-CONTRACT · auto-match run", () => {
     expect(decodeAutoMatch(autoMatch("RUNNING", { startedAt: "soon" }))).toBeNull();
     expect(decodeAutoMatch({ ...autoMatch("COMPLETED"), provider: "gemini" })).toBeNull();
     expect(decodeAutoMatch(autoMatch("COMPLETED", { state: "DONE" }))).toBeNull();
+    // STALLED is an open run: it has begun, has not finished, and carries its budget.
+    expect(decodeAutoMatch(autoMatch("STALLED", { budget: null }))).toBeNull();
+    expect(decodeAutoMatch(autoMatch("STALLED", { finishedAt: "2026-10-30T10:02:00.000Z" }))).toBeNull();
+    expect(decodeAutoMatch(autoMatch("STALLED", { startedAt: null }))).toBeNull();
+  });
+});
+
+describe("AC-CONTRACT · three-point fields (revision, progress, lease, calls)", () => {
+  it("REPRODUCE: the fields decode as sent — a resumed run, its progress and lease, the registered calls and the job's limit", () => {
+    const body = autoMatch("RUNNING", { revision: 2, lastProgressAt: "2026-10-30T10:00:50.000Z", leaseExpiresAt: "2026-10-30T10:01:20.000Z",
+      budget: { rolesPlanned: 7, rolesEvaluated: 4, callsLimit: 7, callsUsed: 6, callsJobLimit: 10 } });
+    expect(decodeAutoMatch(clone(body))).toEqual(body);
+    expect(decodeAutoMatch(autoMatch("PARTIAL", { budget: { rolesPlanned: 2, rolesEvaluated: 2, callsLimit: 2, callsUsed: 0, callsJobLimit: null } }))).not.toBeNull();
+    for (const state of AUTO_MATCH_STATES) expect(decodeAutoMatch(autoMatch(state)), state).not.toBeNull();
+    // GELB's correction: resumePending — a continuation of the unfinished run is due.
+    for (const state of ["PARTIAL", "FAILED"] as const) expect(decodeAutoMatch(autoMatch(state, { reason: state === "PARTIAL" ? "ROLE_FAILURES" : "ERR_SEMANTIC_PROVIDER_FAILED", resumePending: true })), state).toMatchObject({ resumePending: true });
+  });
+
+  it("REPRODUCE: an answer from before the three-point contract stays readable — revision 0, no progress, no lease, calls null", () => {
+    for (const state of AUTO_MATCH_STATES) {
+      const old = legacyAutoMatch(state);
+      const decoded = decodeAutoMatch(clone(old));
+      expect(decoded, state).not.toBeNull();
+      expect(decoded!.revision, state).toBe(0);
+      expect([decoded!.lastProgressAt, decoded!.leaseExpiresAt, decoded!.resumePending], state).toEqual([null, null, false]);
+      if (old.budget !== null) expect(decoded!.budget, state).toEqual({ ...(old.budget as object), callsUsed: null, callsJobLimit: null });
+      else expect(decoded!.budget, state).toBeNull();
+    }
+  });
+
+  it("inverse: a field missing (one of three, one of two calls), of a wrong type, or a lease/resumption without a run is READ_FAILED", () => {
+    for (const key of ["revision", "lastProgressAt", "leaseExpiresAt", "resumePending"]) {
+      const body = autoMatch("RUNNING"); delete body[key];
+      expect(decodeAutoMatch(body), `without ${key}`).toBeNull();
+    }
+    const budget = (patch: Record<string, unknown>) => autoMatch("COMPLETED", { budget: { ...(autoMatch("COMPLETED").budget as object), ...patch } });
+    const { callsJobLimit: _j, ...withoutJobLimit } = autoMatch("COMPLETED").budget as Record<string, unknown>;
+    expect(decodeAutoMatch(autoMatch("COMPLETED", { budget: withoutJobLimit })), "callsUsed without callsJobLimit").toBeNull();
+    const wrong: Array<[string, Record<string, unknown>]> = [
+      ["revision -1", autoMatch("RUNNING", { revision: -1 })], ["revision 1.5", autoMatch("RUNNING", { revision: 1.5 })], ["revision '1'", autoMatch("RUNNING", { revision: "1" })], ["revision null", autoMatch("RUNNING", { revision: null })],
+      ["lastProgressAt 'soon'", autoMatch("RUNNING", { lastProgressAt: "soon" })], ["lastProgressAt 5", autoMatch("RUNNING", { lastProgressAt: 5 })], ["leaseExpiresAt ''", autoMatch("STALLED", { leaseExpiresAt: "" })],
+      ["callsUsed -1", budget({ callsUsed: -1 })], ["callsUsed '3'", budget({ callsUsed: "3" })], ["callsUsed 1.5", budget({ callsUsed: 1.5 })], ["callsJobLimit '10'", budget({ callsJobLimit: "10" })],
+      ["NOT_STARTED resumed", autoMatch("NOT_STARTED", { revision: 1 })], ["NOT_STARTED with a lease", autoMatch("NOT_STARTED", { leaseExpiresAt: "2026-10-30T10:01:00.000Z" })],
+      ["NOT_STARTED with progress", autoMatch("NOT_STARTED", { lastProgressAt: "2026-10-30T10:01:00.000Z" })],
+      ["resumePending 'true'", autoMatch("PARTIAL", { resumePending: "true" })], ["resumePending 1", autoMatch("PARTIAL", { resumePending: 1 })], ["resumePending null", autoMatch("PARTIAL", { resumePending: null })],
+      ["NOT_STARTED with a due continuation", autoMatch("NOT_STARTED", { resumePending: true })], ["an extra key", { ...autoMatch("RUNNING"), workerId: "w1" }]
+    ];
+    for (const [label, body] of wrong) expect(decodeAutoMatch(body), label).toBeNull();
   });
 });
 
@@ -138,6 +192,7 @@ describe("AC-CONTRACT · the readers (GET only)", () => {
   it("inverse: a 200 that is not the contract, a refusal, a network failure", async () => {
     expect(await readAutoMatch(ANALYSIS, fetcher(200, { success: true, autoMatch: autoMatch("RUNNING", { budget: null }) }))).toEqual({ state: "FAILED", code: null });
     expect(await readAutoMatch(ANALYSIS, fetcher(200, { success: false, autoMatch: autoMatch("RUNNING") }))).toEqual({ state: "FAILED", code: null });
+    expect(await readAutoMatch(ANALYSIS, fetcher(200, { success: true, autoMatch: autoMatch("STALLED", { reason: null }) }))).toEqual({ state: "FAILED", code: null });
     expect(await readAutoMatch(ANALYSIS, fetcher(404, { issues: [{ code: "ERR_ROLE_DISCOVERY_ANALYSIS_NOT_FOUND" }] }))).toEqual({ state: "ANALYSIS_NOT_FOUND" });
     expect(await readAutoMatch(ANALYSIS, fetcher(500, { issues: [{ code: "ERR_X" }] }))).toEqual({ state: "FAILED", code: "ERR_X" });
     expect(await readAutoMatch(ANALYSIS, async () => { throw new Error("offline"); })).toEqual({ state: "FAILED", code: null });
@@ -152,18 +207,27 @@ describe("AC-CONTRACT · the readers (GET only)", () => {
 });
 
 describe("AC-CONTRACT · when the ranking is read", () => {
-  const watch = (state: AutoMatchRunState, waitedOut = false) => ({ read: { state: "AVAILABLE" as const, autoMatch: decodeAutoMatch(autoMatch(state))! }, waitedOut });
-  it("REPRODUCE: every settled state names a key (its state and finish time); the end of the wait names one too", () => {
-    for (const state of ["DISABLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"] as const) expect(rankingKey(watch(state)), state).toBe(`${state}:${autoMatch(state).finishedAt}`);
-    expect(rankingKey(watch("NOT_STARTED", true))).toBe("WAITED_OUT:NOT_STARTED");
-    expect(rankingKey(watch("RUNNING", true))).toBe("WAITED_OUT:RUNNING");
+  const watch = (state: AutoMatchRunState, patch: Record<string, unknown> = {}, waitedOut = false) => ({ read: { state: "AVAILABLE" as const, autoMatch: decodeAutoMatch(autoMatch(state, patch))! }, waitedOut });
+  it("REPRODUCE: every run names a key — state, revision, evaluated roles, finish time — so a moving run is read again; the end of the wait names one", () => {
+    for (const state of ["DISABLED", "FAILED", "SKIPPED"] as const) expect(rankingKey(watch(state)), state).toBe(`${state}:0:-:${autoMatch(state).finishedAt}`);
+    expect(rankingKey(watch("COMPLETED"))).toBe(`COMPLETED:0:4:${autoMatch("COMPLETED").finishedAt}`);
+    expect(rankingKey(watch("PARTIAL"))).toBe(`PARTIAL:0:2:${autoMatch("PARTIAL").finishedAt}`);
+    expect(rankingKey(watch("RUNNING"))).toBe("RUNNING:0:1:");
+    expect(rankingKey(watch("STALLED"))).toBe("STALLED:0:2:");
+    expect(rankingKey(watch("NOT_STARTED", {}, true))).toBe("WAITED_OUT:NOT_STARTED");
+    // Each change the ranking follows gives another key.
+    const running = rankingKey(watch("RUNNING"));
+    expect(rankingKey(watch("RUNNING", { budget: { ...(autoMatch("RUNNING").budget as object), rolesEvaluated: 2 } }))).not.toBe(running);
+    expect(rankingKey(watch("RUNNING", { revision: 1 }))).not.toBe(running);
+    expect(rankingKey(watch("STALLED", { budget: autoMatch("RUNNING").budget }))).not.toBe(running);
   });
-  it("inverse: an open run, a read in flight or a failed read names none — nothing is read then", () => {
+  it("inverse: no run yet, a read in flight or a failed read names none — nothing is read then; a run that does not move keeps its key", () => {
     expect(rankingKey(watch("NOT_STARTED"))).toBeNull();
-    expect(rankingKey(watch("RUNNING"))).toBeNull();
     expect(rankingKey({ read: { state: "LOADING" }, waitedOut: false })).toBeNull();
     expect(rankingKey({ read: { state: "FAILED", code: null }, waitedOut: false })).toBeNull();
     expect(rankingKey({ read: { state: "ANALYSIS_NOT_FOUND" }, waitedOut: false })).toBeNull();
+    // Progress time, lease and calls alone are no new ranking.
+    expect(rankingKey(watch("RUNNING", { lastProgressAt: "2026-10-30T10:00:55.000Z", leaseExpiresAt: "2026-10-30T10:02:00.000Z", budget: { ...(autoMatch("RUNNING").budget as object), callsUsed: 3 } }))).toBe(rankingKey(watch("RUNNING")));
   });
 });
 

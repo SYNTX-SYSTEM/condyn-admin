@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import type { SilLocale } from "../../../../lib/career/view-model/sil-language";
-import type { AutoMatchWatch, JobRankingState, RankedRole, RankedRequirement } from "../../../../lib/career/ui/auto-match";
+import type { AutoMatch, AutoMatchWatch, JobRankingState, RankedRole, RankedRequirement } from "../../../../lib/career/ui/auto-match";
 import { AUTO_MATCH_COPY, type AutoMatchCopy } from "./auto-match-copy";
 import { RD_PANEL_BOX, RD_PANEL_TIER_CSS } from "./RoleDiscoveryPanel";
 
@@ -27,8 +27,8 @@ const action: React.CSSProperties = { alignSelf: "flex-start", padding: "3px 10p
 const layer: React.CSSProperties = { display: "flex", flexDirection: "column", gap: "6px", padding: "10px 12px", borderRadius: "10px", border: "1px solid rgba(120, 214, 255, 0.14)", background: "rgba(4, 12, 21, 0.6)" };
 const badge: React.CSSProperties = { fontFamily: MONO, fontSize: "10px", fontWeight: 700, letterSpacing: "1.1px", padding: "1px 8px", borderRadius: "999px", border: `1px solid rgba(${CYAN_RGB}, 0.32)`, color: "rgba(176, 226, 244, 0.95)", whiteSpace: "nowrap" };
 
-export type AutoLineKey = "READING" | "READ_FAILED" | "ANALYSIS_NOT_FOUND" | "NOT_STARTED" | "WAITED_OUT" | "RUNNING" | "COMPLETED" | "PARTIAL" | "DISABLED" | "SKIPPED" | "FAILED";
-export interface AutoLine { key: AutoLineKey; cause: string; way: string; detail: string[]; action: "GO_TO_JOB_FIELD" | null }
+export type AutoLineKey = "READING" | "READ_FAILED" | "ANALYSIS_NOT_FOUND" | "NOT_STARTED" | "WAITED_OUT" | "RUNNING" | "STALLED" | "COMPLETED" | "PARTIAL" | "DISABLED" | "SKIPPED" | "FAILED";
+export interface AutoLine { key: AutoLineKey; cause: string; way: string; detail: string[]; action: "GO_TO_JOB_FIELD" | null; /** Taken up again by itself (revision > 0). */ resumed?: true; /** Its continuation is due (resumePending). */ resumePending?: true }
 
 /** The state line of the run: which line stands, its one sentence, its one transition, its facts (reason, budget, pools). */
 export function autoMatchLine(watch: AutoMatchWatch, c: AutoMatchCopy): AutoLine {
@@ -38,10 +38,17 @@ export function autoMatchLine(watch: AutoMatchWatch, c: AutoMatchCopy): AutoLine
   if (read.state === "FAILED") return { key: "READ_FAILED", ...c.readFailed, detail: read.code === null ? [] : [c.code(read.code)], action: null };
   const run = read.autoMatch;
   const pools = run.pools.length > 0 ? [c.pools(run.pools.map(pool => pool.poolName).join(" · "))] : [];
-  const budget = run.budget === null ? [] : [c.budget(run.budget.rolesEvaluated, run.budget.rolesPlanned, run.budget.callsLimit)];
+  const budget = run.budget === null ? [] : [c.budget(run.budget.rolesEvaluated, run.budget.rolesPlanned, run.budget.callsLimit, run.budget.callsUsed)];
+  const line = autoRunLine(run, c, watch.waitedOut, budget, pools);
+  const due = run.resumePending && (run.state === "PARTIAL" || run.state === "FAILED");
+  return { ...line, ...(run.revision > 0 ? { resumed: true as const } : {}), ...(due ? { resumePending: true as const } : {}) };
+}
+
+function autoRunLine(run: AutoMatch, c: AutoMatchCopy, waitedOut: boolean, budget: string[], pools: string[]): AutoLine {
   switch (run.state) {
-    case "NOT_STARTED": return watch.waitedOut ? { key: "WAITED_OUT", ...c.waitedOut, detail: [], action: null } : { key: "NOT_STARTED", ...c.notStarted, detail: [], action: null };
+    case "NOT_STARTED": return waitedOut ? { key: "WAITED_OUT", ...c.waitedOut, detail: [], action: null } : { key: "NOT_STARTED", ...c.notStarted, detail: [], action: null };
     case "RUNNING": return { key: "RUNNING", ...c.running(run.budget?.rolesEvaluated ?? 0, run.budget?.rolesPlanned ?? 0), detail: pools, action: null };
+    case "STALLED": return { key: "STALLED", ...c.stalled, detail: [...budget, ...pools], action: null };
     case "COMPLETED": return { key: "COMPLETED", ...c.completed(run.pools.length), detail: [...budget, ...pools], action: null };
     case "PARTIAL": return { key: "PARTIAL", ...c.partial[run.reason as keyof AutoMatchCopy["partial"]], detail: [...budget, ...pools], action: null };
     case "DISABLED": return { key: "DISABLED", ...c.disabled, detail: [c.disabledReason[run.reason as keyof AutoMatchCopy["disabledReason"]]], action: null };
@@ -74,6 +81,8 @@ export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, ch
           <span data-auto-path style={{ fontFamily: MONO, fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(150, 214, 236, 0.78)" }}>{c.path}</span>
           <span data-testid="auto-line-cause" style={statement}>{line.cause}</span>
           <span data-testid="auto-line-way" style={{ fontFamily: SANS, fontSize: "11.5px", lineHeight: 1.4, color: "rgba(150, 214, 236, 0.9)" }}>{line.way}</span>
+          {line.resumed && <span data-testid="auto-line-resumed" style={meta}>{c.resumed}</span>}
+          {line.resumePending && <span data-testid="auto-line-resume-pending" style={meta}>{c.resumePending}</span>}
           {line.detail.map(text => <span key={text} data-testid="auto-line-detail" style={meta}>{text}</span>)}
           {line.action === "GO_TO_JOB_FIELD" && onGoToJobField && <button type="button" data-testid="auto-go-to-job-field" onClick={onGoToJobField} style={action}>{c.goToJobField}</button>}
         </div>

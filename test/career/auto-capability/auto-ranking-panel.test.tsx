@@ -51,7 +51,11 @@ const LINES: Array<[string, AutoMatchWatch, string]> = [
   ["SKIPPED not person", watch("SKIPPED", { reason: "NOT_PERSON" }), "SKIPPED"],
   ["SKIPPED no proposals", watch("SKIPPED", { reason: "NO_PROPOSALS" }), "SKIPPED"],
   ["FAILED", watch("FAILED"), "FAILED"],
-  ["FAILED budget", watch("FAILED", { reason: "ERR_BUDGET_EXHAUSTED" }), "FAILED"]
+  ["FAILED budget", watch("FAILED", { reason: "ERR_BUDGET_EXHAUSTED" }), "FAILED"],
+  // Three-point contract (GELB): the lost worker's run, the claim guard's refused pairs, a run taken up again by itself.
+  ["STALLED", watch("STALLED"), "STALLED"],
+  ["PARTIAL pairs refused", watch("PARTIAL", { reason: "PAIRS_REFUSED" }), "PARTIAL"],
+  ["RUNNING resumed", watch("RUNNING", { revision: 1 }), "RUNNING"]
 ];
 
 describe("AC-PANEL · the state line", () => {
@@ -70,9 +74,10 @@ describe("AC-PANEL · the state line", () => {
         expect((line.cause.match(/[.!?](\s|$)/g) ?? []).length, `${label}: one sentence`).toBe(1);
         sentences.add(`${line.cause}|${line.way}`);
       }
-      // 18 situations, 15 distinct lines: the three DISABLED reasons share the sentence and differ in the named reason, the two FAILED
-      // runs share it and differ in the named code (both stand beside the line, auto-line-detail).
-      expect(sentences.size, locale).toBe(LINES.length - 3);
+      // 21 situations, 17 distinct lines: the three DISABLED reasons share the sentence and differ in the named reason, the two FAILED
+      // runs share it and differ in the named code (both stand beside the line, auto-line-detail); a resumed run keeps its state's
+      // line and is named beside it (auto-line-resumed).
+      expect(sentences.size, locale).toBe(LINES.length - 4);
     }
   });
 
@@ -87,6 +92,50 @@ describe("AC-PANEL · the state line", () => {
     expect(text(panel(watch("PARTIAL", { reason: "DAY_BUDGET_EXHAUSTED" }), { state: "IDLE" }, "de"))).toContain("Das heutige Aufrufbudget war während des Abgleichs aufgebraucht");
     expect(text(panel(watch("FAILED", { reason: "ERR_BUDGET_EXHAUSTED" })))).toContain("code ERR_BUDGET_EXHAUSTED");
     expect(text(panel(watch("COMPLETED"), { state: "IDLE" }, "de"))).toContain("4 von 4 Rollen semantisch geprüft · Aufruflimit 25");
+  });
+
+  it("REPRODUCE (three-point): STALLED says it continues by itself, PAIRS_REFUSED names the refused relations, a resumed run is named, the registered calls are counted — EN and DE", () => {
+    expect(autoMatchLine(watch("STALLED"), AUTO_MATCH_COPY.en)).toMatchObject({ key: "STALLED", cause: "Processing was interrupted; it continues by itself.", action: null });
+    expect(autoMatchLine(watch("STALLED"), AUTO_MATCH_COPY.de)).toMatchObject({ key: "STALLED", cause: "Die Verarbeitung wurde unterbrochen; sie wird automatisch fortgesetzt.", action: null });
+    expect(text(panel(watch("STALLED")))).toContain("2 of 4 roles checked semantically · call limit 25");
+    expect(text(panel(watch("PARTIAL", { reason: "PAIRS_REFUSED" })))).toContain("single requirement relations were refused by the evidence check");
+    expect(text(panel(watch("PARTIAL", { reason: "PAIRS_REFUSED" }), { state: "IDLE" }, "de"))).toContain("einzelne Anforderungsrelationen wurden von der Belegprüfung abgewiesen");
+    for (const state of ["RUNNING", "STALLED", "COMPLETED", "PARTIAL"] as const) {
+      expect(autoMatchLine(watch(state, { revision: 2 }), AUTO_MATCH_COPY.en).resumed, state).toBe(true);
+      expect(text(panel(watch(state, { revision: 2 }))), state).toContain("resumed by itself");
+      expect(text(panel(watch(state, { revision: 2 }), { state: "IDLE" }, "de")), state).toContain("automatisch fortgesetzt");
+    }
+    const called = { budget: { rolesPlanned: 7, rolesEvaluated: 4, callsLimit: 7, callsUsed: 6, callsJobLimit: 10 } };
+    expect(text(panel(watch("PARTIAL", { reason: "ROLE_FAILURES", ...called })))).toContain("4 of 7 roles checked semantically · 6 calls · call limit 7");
+    expect(text(panel(watch("PARTIAL", { reason: "ROLE_FAILURES", ...called }), { state: "IDLE" }, "de"))).toContain("4 von 7 Rollen semantisch geprüft · 6 Aufrufe · Aufruflimit 7");
+    expect(AUTO_MATCH_COPY.en.budget(1, 1, 7, 1)).toBe("1 of 1 roles checked semantically · 1 call · call limit 7");
+  });
+
+  it("REPRODUCE (three-point, resumePending): PARTIAL · ROLE_FAILURES or FAILED with a due continuation says it continues by itself — EN and DE, no action", () => {
+    for (const w of [watch("PARTIAL", { reason: "ROLE_FAILURES", resumePending: true }), watch("FAILED", { resumePending: true })]) {
+      const line = autoMatchLine(w, AUTO_MATCH_COPY.en);
+      expect(line.resumePending).toBe(true);
+      expect(line.action).toBeNull();
+      expect(text(panel(w))).toContain("continues by itself");
+      expect(text(panel(w, { state: "IDLE" }, "de"))).toContain("wird automatisch fortgesetzt");
+      expect(panel(w)).not.toContain('data-testid="auto-go-to-job-field"');
+    }
+    expect(text(panel(watch("PARTIAL", { reason: "ROLE_FAILURES", resumePending: true })))).toContain("The matching is done; some roles could not be checked and are ranked by name relation.");
+  });
+
+  it("inverse (three-point, resumePending): no due continuation, or a run that is not PARTIAL/FAILED, names none", () => {
+    for (const [label, w] of LINES) expect(panel(w), label).not.toContain('data-testid="auto-line-resume-pending"');
+    for (const state of ["RUNNING", "STALLED", "COMPLETED"] as const) expect(autoMatchLine(watch(state, { resumePending: true }), AUTO_MATCH_COPY.en).resumePending, state).toBeUndefined();
+  });
+
+  it("inverse (three-point): a first run is not named resumed; no line offers an action for STALLED; without registered calls none are counted", () => {
+    for (const [label, w] of LINES.filter(([label]) => label !== "RUNNING resumed")) {
+      expect(autoMatchLine(w, AUTO_MATCH_COPY.en).resumed, label).toBeUndefined();
+      expect(panel(w), label).not.toContain('data-testid="auto-line-resumed"');
+    }
+    expect(autoMatchLine(watch("STALLED"), AUTO_MATCH_COPY.en).action).toBeNull();
+    expect(text(panel(watch("COMPLETED")))).not.toMatch(/\d+ calls? ·/);
+    expect(text(panel(watch("COMPLETED"), { state: "IDLE" }, "de"))).not.toMatch(/\d+ Aufrufe? ·/);
   });
 
   it("inverse: no line carries a word of prohibition or alarm, a warm colour, or an action other than the two existing ones", () => {
@@ -130,7 +179,9 @@ describe("AC-PANEL · PINK §3.85 F-AM-6 and F-M17", () => {
     expect(de.partial.ROLES_BEYOND_BUDGET.cause).toBe("Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.");
     expect(de.partial.DAY_BUDGET_EXHAUSTED.cause).toBe("Das heutige Aufrufbudget war während des Abgleichs aufgebraucht; die nicht erreichten Rollen sind nach Namensrelation gereiht.");
     expect(de.partial.ROLE_FAILURES.cause).toBe("Der Abgleich ist fertig; einige Rollen ließen sich nicht prüfen und sind nach Namensrelation gereiht.");
-    expect(de.budget(2, 2, 2)).toBe("2 von 2 Rollen semantisch geprüft · Aufruflimit 2");
+    expect(de.budget(2, 2, 2, null)).toBe("2 von 2 Rollen semantisch geprüft · Aufruflimit 2");
+    expect(de.budget(2, 2, 2, 3)).toBe("2 von 2 Rollen semantisch geprüft · 3 Aufrufe · Aufruflimit 2");
+    expect(de.stalled.cause).toBe("Die Verarbeitung wurde unterbrochen; sie wird automatisch fortgesetzt.");
     expect(de.disabledReason.DAY_LIMIT_ZERO).toBe("kein Aufrufbudget für heute");
   });
 });
