@@ -12,6 +12,8 @@ export const ROLE_RANKING_VERSION = "ROLE_RANKING_V1" as const;
 
 export interface SemanticFinding {
   state: SemanticRelationState; capabilityName: string; explanation: string; evidenceLimitation: string;
+  /** The id of the PERSON proposal the relation rests on (PERSON × JOB mapping, phase A). Absent or null: unknown — never derived from the name. */
+  capabilityKey?: string | null;
   quotes: Array<{ sourceDocumentId: string; exactQuote: string }>;
 }
 
@@ -37,7 +39,11 @@ export function pickBestFinding(candidates: SemanticFinding[]): SemanticFinding 
 export interface RankedRequirement {
   poolRequirementId: string; requirementText: string; necessity: Necessity; weight: number;
   source: "SEMANTIC" | "LEXICAL" | "NONE"; state: string; value: number; contribution: number;
-  capabilityName: string | null; explanation: string | null; evidenceLimitation: string | null;
+  capabilityName: string | null;
+  /** Stable key of the capability the requirement is coupled to: the id of the PERSON proposal (PERSON × JOB mapping contract, additive to V1).
+   *  null = no key known (no coupling, or a relation whose proposal cannot be named by id); a key is never derived from a name. */
+  capabilityKey: string | null;
+  explanation: string | null; evidenceLimitation: string | null;
   quotes: Array<{ sourceDocumentId: string; exactQuote: string }>;
 }
 export interface RankedRole {
@@ -57,6 +63,8 @@ export interface RoleRanking {
 
 const round6 = (n: number) => Math.round(n * 1e6) / 1e6;
 const text = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+/** A key is a non-empty id exactly as the projection names it, or null. */
+const keyOf = (value: string | null | undefined): string | null => (typeof value === "string" && value.length > 0 ? value : null);
 const necessityOf = (value: string): Necessity => (value === "REQUIRED" || value === "PREFERRED" || value === "OPTIONAL" ? value : "UNKNOWN");
 
 function rankRequirement(requirement: DiscoveryRequirement, finding: SemanticFinding | null): RankedRequirement {
@@ -65,13 +73,13 @@ function rankRequirement(requirement: DiscoveryRequirement, finding: SemanticFin
   const base = { poolRequirementId: requirement.key.poolRequirementId, requirementText: requirement.requirementText, necessity, weight };
   if (finding) {
     const value = SEMANTIC_VALUE[finding.state];
-    return { ...base, source: "SEMANTIC", state: finding.state, value, contribution: weight * value, capabilityName: finding.capabilityName, explanation: finding.explanation, evidenceLimitation: finding.evidenceLimitation, quotes: finding.quotes.map(q => ({ ...q })) };
+    return { ...base, source: "SEMANTIC", state: finding.state, value, contribution: weight * value, capabilityName: finding.capabilityName, capabilityKey: keyOf(finding.capabilityKey), explanation: finding.explanation, evidenceLimitation: finding.evidenceLimitation, quotes: finding.quotes.map(q => ({ ...q })) };
   }
   if (requirement.lexical.basis !== "NONE") {
     const value = LEXICAL_VALUE[requirement.lexical.basis] ?? 0;
-    return { ...base, source: "LEXICAL", state: requirement.lexical.basis, value, contribution: weight * value, capabilityName: requirement.lexical.proposalName, explanation: null, evidenceLimitation: null, quotes: requirement.lexical.evidence.map(q => ({ ...q })) };
+    return { ...base, source: "LEXICAL", state: requirement.lexical.basis, value, contribution: weight * value, capabilityName: requirement.lexical.proposalName, capabilityKey: keyOf(requirement.lexical.proposalId), explanation: null, evidenceLimitation: null, quotes: requirement.lexical.evidence.map(q => ({ ...q })) };
   }
-  return { ...base, source: "NONE", state: "NONE", value: 0, contribution: 0, capabilityName: null, explanation: null, evidenceLimitation: null, quotes: [] };
+  return { ...base, source: "NONE", state: "NONE", value: 0, contribution: 0, capabilityName: null, capabilityKey: null, explanation: null, evidenceLimitation: null, quotes: [] };
 }
 
 function rankRole(role: DiscoveryRole, poolName: string, findingFor: (requirement: DiscoveryRequirement) => SemanticFinding | null): Omit<RankedRole, "rank"> {

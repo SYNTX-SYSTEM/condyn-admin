@@ -75,6 +75,9 @@ export interface RankedRequirement {
   contribution: number;
   /** The PERSON proposal the relation rests on (the best one when several relate); null without one. */
   capabilityName: string | null;
+  /** Stable key of the coupled capability: the id of the PERSON proposal (additive to V1). null or absent (an older payload): none known — read it as `capabilityKey ?? null`; never derived from the name.
+   *  The decoder hands back the given object unchanged, so an absent field stays absent. */
+  capabilityKey?: string | null;
   /** The model's explanation and its evidence limitation — SEMANTIC only. */
   explanation: string | null;
   evidenceLimitation: string | null;
@@ -188,10 +191,12 @@ function isFormula(value: unknown): boolean {
 const RANK_KEYS = ["rank", "tier", "role", "fit", "requiredGaps", "semanticCoverage", "requirements"] as const;
 const ROLE_KEYS = ["jobPoolUploadId", "poolRoleId", "title", "organizationName", "poolName"] as const;
 const REQUIREMENT_KEYS = ["poolRequirementId", "requirementText", "necessity", "weight", "source", "state", "value", "contribution", "capabilityName", "explanation", "evidenceLimitation", "quotes"] as const;
+/** The key an older server does not send (additive, PERSON × JOB mapping phase A): both shapes are the same contract. */
+const REQUIREMENT_KEYS_WITH_CAPABILITY_KEY = [...REQUIREMENT_KEYS, "capabilityKey"] as const;
 const LEXICAL_BASES = Object.keys(LEXICAL_VALUE) as LexicalBasis[];
 
 function decodeRequirement(value: unknown): RankedRequirement | null {
-  if (!isRecord(value) || !exactly(value, REQUIREMENT_KEYS) || !isText(value.poolRequirementId) || !isText(value.requirementText)) return null;
+  if (!isRecord(value) || !(exactly(value, REQUIREMENT_KEYS) || exactly(value, REQUIREMENT_KEYS_WITH_CAPABILITY_KEY)) || !isText(value.poolRequirementId) || !isText(value.requirementText)) return null;
   if (typeof value.necessity !== "string" || !Object.hasOwn(NECESSITY_WEIGHT, value.necessity) || value.weight !== NECESSITY_WEIGHT[value.necessity as Necessity]) return null;
   if (!Array.isArray(value.quotes) || !value.quotes.every(q => isRecord(q) && exactly(q, ["sourceDocumentId", "exactQuote"]) && isText(q.sourceDocumentId) && isText(q.exactQuote))) return null;
   const quoted = value.quotes.length > 0;
@@ -210,6 +215,8 @@ function decodeRequirement(value: unknown): RankedRequirement | null {
     if (value.state === "NONE" ? value.capabilityName !== null || quoted : !isText(value.capabilityName)) return null;
     expected = LEXICAL_VALUE[value.state as LexicalBasis];
   } else return null;
+  // The key names the PERSON proposal of a coupling: text or null, and only where a capability is named at all.
+  if ("capabilityKey" in value && value.capabilityKey !== null && (!isText(value.capabilityKey) || value.capabilityName === null)) return null;
   if (value.value !== expected || typeof value.contribution !== "number" || !near(value.contribution, (value.weight as number) * expected)) return null;
   return value as unknown as RankedRequirement;
 }

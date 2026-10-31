@@ -71,6 +71,15 @@ describe("automatic match with the Gemini provider (mocked SDK, PostgreSQL)", ()
     expect(rank.evidenceClass).toBe("REAL_GEMINI");
     expect(rank.ranks.filter((r: { tier: string }) => r.tier === "SEMANTIC")).toHaveLength(3);
     expect(rank.ranks[0].requirements.every((q: { state: string }) => q.state === "COVERS")).toBe(true);
+    // PERSON × JOB mapping, phase A: every coupling names the PERSON proposal it rests on — the id the provider was shown, never a name guess.
+    const shown = new Map<string, string>();
+    for (const r of seen.requests) { const payload = JSON.parse(r.contents.slice(r.contents.indexOf("{", GEMINI_SEMANTIC_PROMPT.length))) as { proposals: Array<{ id: string; name?: string }> }; for (const p of payload.proposals) shown.set(p.id, p.name ?? ""); }
+    expect(shown.size).toBeGreaterThan(0);
+    const semantic = rank.ranks.filter((r: { tier: string }) => r.tier === "SEMANTIC").flatMap((r: { requirements: Array<{ source: string; capabilityKey: string | null; capabilityName: string | null }> }) => r.requirements);
+    const coupled = semantic.filter((q: { source: string }) => q.source === "SEMANTIC");
+    expect(coupled.length).toBeGreaterThan(0);
+    for (const q of coupled as Array<{ capabilityKey: string | null; capabilityName: string }>) { expect(shown.has(q.capabilityKey ?? "")).toBe(true); if (shown.get(q.capabilityKey!)) expect(shown.get(q.capabilityKey!)).toBe(q.capabilityName); }
+    for (const q of semantic as Array<{ source: string; capabilityKey: string | null; capabilityName: string | null }>) { if (q.source === "NONE") expect(q.capabilityKey).toBeNull(); }
     for (const table of ["career_proposal_requirement_relations", "career_relation_investigations", "career_relation_role_tasks", "career_relation_call_ledger"]) {
       const text = JSON.stringify(await db.execute(sql.raw(`SELECT * FROM ${table}`)));
       expect(text.includes(KEY), table).toBe(false);

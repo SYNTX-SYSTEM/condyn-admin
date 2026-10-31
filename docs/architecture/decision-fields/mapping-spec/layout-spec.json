@@ -1,0 +1,12 @@
+{
+  "specVersion": "MAPPING_LAYOUT_V1",
+  "units": "field units; origin at the person, +x right, +y DOWN (screen), angles in degrees measured clockwise from +x, -90 = top",
+  "rounding": "every emitted number is rounded to 6 decimals (Math.round(v * 1e6) / 1e6, -0 emitted as 0); a conforming implementation matches the golden vectors within 1e-6",
+  "field": { "radius": 500, "personRadius": 90, "overflowRadius": 520 },
+  "rings": { "bestFit": 160, "zeroFit": 380, "horizon": 400, "shelfNear": 430, "shelfFar": 480 },
+  "body": { "min": 6, "max": 16, "base": 3, "perSqrtWeight": 2.2, "gap": 2 },
+  "sectors": { "gapDegrees": 4, "minShare": 0.06, "startDegrees": -90, "angleMargin": 0.05, "angleSpread": 0.9, "golden": 0.6180339887498949 },
+  "search": { "radialSteps": 6, "angularSteps": 30 },
+  "arcs": { "gapDegrees": 6, "startDegrees": -90, "necessityOrder": ["REQUIRED", "PREFERRED", "OPTIONAL", "UNKNOWN"] },
+  "constellation": { "nodeRadius": 5, "spacing": 14, "ringRadii": [30, 52, 74], "startDegrees": -90 }
+}

@@ -102,6 +102,9 @@ describe("automatic match (PostgreSQL, stand-in)", () => {
     expect([rank.status, rank.cache, rank.body.ranking.evidenceClass, rank.body.ranking.authority]).toEqual([200, "no-store", null, { ranking: true, decision: false, authorityState: "NONE" }]);
     expect(rank.body.ranking.ranks.length).toBeGreaterThan(0);
     expect(rank.body.ranking.ranks.every((r: { tier: string }) => r.tier === "LEXICAL_ONLY")).toBe(true);
+    // PERSON × JOB mapping, phase A: a name relation carries the id of the proposal it names; no relation, no key.
+    const reqs = rank.body.ranking.ranks.flatMap((r: { requirements: Array<{ source: string; capabilityName: string | null; capabilityKey: string | null }> }) => r.requirements);
+    for (const q of reqs as Array<{ source: string; capabilityName: string | null; capabilityKey: string | null }>) expect([q.source, q.capabilityName === null, q.capabilityKey === null]).toEqual([q.source, q.capabilityName === null, q.capabilityName === null]);
     expect(await snapshot()).toEqual(before);
   });
 

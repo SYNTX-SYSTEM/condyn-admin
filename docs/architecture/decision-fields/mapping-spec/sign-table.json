@@ -1,0 +1,51 @@
+{
+  "specVersion": "MAPPING_SIGNS_V1",
+  "principle": "One channel, one meaning. A state is told by arcLine + arcFill + beam + mark (never by colour or luminance alone); luminance and phase locking only reinforce. All ten coupling states differ in that signature. Colour never carries a state.",
+  "channels": {
+    "class": "SEMANTIC (checked by the model) | LEXICAL (name relation only) | NONE (no relation) — the only thing L0 shows",
+    "arcLine": "solid | dotted | open | broken — the line of the requirement arc",
+    "arcFill": "0 | 0.5 | 1 — the filled fraction of the arc; equals the value of the published ranking formula",
+    "luminance": "1.0 brightest … 0.25 faintest; reinforcing only",
+    "beam": "solid | thin | dotted | faint-dotted | broken | none — the coupling from capability to arc (shown on hover / focus / open job)",
+    "phaseLocked": "true: the beam pulses in phase with its capability (semantic couplings that carry value); false: no synchrony",
+    "mark": "none | double | counterTick | alias | constituent — a small glyph on the arc that separates siblings of one class"
+  },
+  "couplingStates": {
+    "EQUIVALENT":                 { "class": "SEMANTIC", "arcLine": "solid",  "arcFill": 1,   "luminance": 1.0,  "beam": "solid",        "phaseLocked": true,  "mark": "double" },
+    "COVERS":                     { "class": "SEMANTIC", "arcLine": "solid",  "arcFill": 1,   "luminance": 0.85, "beam": "solid",        "phaseLocked": true,  "mark": "none" },
+    "PARTIAL":                    { "class": "SEMANTIC", "arcLine": "solid",  "arcFill": 0.5, "luminance": 0.85, "beam": "thin",         "phaseLocked": true,  "mark": "none" },
+    "DIFFERENT":                  { "class": "SEMANTIC", "arcLine": "open",   "arcFill": 0,   "luminance": 0.7,  "beam": "none",         "phaseLocked": false, "mark": "counterTick" },
+    "UNCLEAR":                    { "class": "SEMANTIC", "arcLine": "broken", "arcFill": 0,   "luminance": 0.55, "beam": "broken",       "phaseLocked": false, "mark": "none" },
+    "NAME_EXACT":                 { "class": "LEXICAL",  "arcLine": "dotted", "arcFill": 0.5, "luminance": 0.7,  "beam": "dotted",       "phaseLocked": false, "mark": "none" },
+    "NAME_ALIAS":                 { "class": "LEXICAL",  "arcLine": "dotted", "arcFill": 0.5, "luminance": 0.7,  "beam": "dotted",       "phaseLocked": false, "mark": "alias" },
+    "NAME_COMPOSITE_CONSTITUENT": { "class": "LEXICAL",  "arcLine": "dotted", "arcFill": 0,   "luminance": 0.4,  "beam": "faint-dotted", "phaseLocked": false, "mark": "constituent" },
+    "WEAK_TOKEN_CONTAINMENT":     { "class": "LEXICAL",  "arcLine": "dotted", "arcFill": 0,   "luminance": 0.25, "beam": "none",         "phaseLocked": false, "mark": "none" },
+    "NONE":                       { "class": "NONE",     "arcLine": "open",   "arcFill": 0,   "luminance": 0.4,  "beam": "none",         "phaseLocked": false, "mark": "none" }
+  },
+  "honesty": {
+    "DIFFERENT": "judged different by the model — an explicit counter-mark; it is not 'unknown'",
+    "UNCLEAR": "the model could not tell — a broken arc and beam; it is not 'different'",
+    "NONE": "no relation was found — an open arc; it says 'not evidenced', never 'not present'",
+    "lexical": "a name relation is weaker than a checked one by construction: dotted line, no phase lock, at most half fill"
+  },
+  "runStates": {
+    "NOT_STARTED":  { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": false },
+    "DISABLED":     { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": false },
+    "RUNNING":      { "fieldMotion": "formation", "pendingBreath": true,  "frozen": false, "resumePulse": false },
+    "STALLED":      { "fieldMotion": "none",      "pendingBreath": false, "frozen": true,  "resumePulse": false },
+    "COMPLETED":    { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": false },
+    "PARTIAL":      { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": "when resumePending" },
+    "FAILED":       { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": "when resumePending" },
+    "SKIPPED":      { "fieldMotion": "none",      "pendingBreath": false, "frozen": false, "resumePulse": false }
+  },
+  "runStateRules": {
+    "pendingBreath": "While the run is RUNNING and fewer roles are evaluated than planned (budget), arcs of source LEXICAL or NONE breathe slowly: 'being worked on'. It is a field-level mark; which role is next is not in the ranking.",
+    "frozen": "STALLED freezes every breath and motion; a still sentence stands beside the field. Never an alarm.",
+    "resumePulse": "One quiet pulse at the field's edge while resumePending; no repeat faster than 6 s.",
+    "reducedMotion": "Under prefers-reduced-motion nothing breathes, pulses or travels; pending is shown by a static dashed outline."
+  },
+  "timeMovement": {
+    "rule": "A body moves only when new evidence changes its tier or fit, once per knowledge step, in under 900 ms, with a trail to its previous position; several changes of one read are one movement.",
+    "forbidden": "No movement for decoration; no movement caused by a re-read that changed nothing."
+  }
+}

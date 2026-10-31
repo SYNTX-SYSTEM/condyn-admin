@@ -1,0 +1,586 @@
+[
+{
+"rank": 1,
+"pool": "pool-b",
+"tier": "SEMANTIC",
+"fit": 0.729167,
+"weightSum": 24,
+"requirementCount": 9
+},
+{
+"rank": 2,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.535714,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 3,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.4,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 4,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.375,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 5,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.375,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 6,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.34375,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 7,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.2,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 8,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.2,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 9,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.2,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 10,
+"pool": "pool-c",
+"tier": "SEMANTIC",
+"fit": 0.1875,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 11,
+"pool": "pool-a",
+"tier": "SEMANTIC",
+"fit": 0.157895,
+"weightSum": 19,
+"requirementCount": 8
+},
+{
+"rank": 12,
+"pool": "pool-a",
+"tier": "SEMANTIC",
+"fit": 0.15,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 13,
+"pool": "pool-a",
+"tier": "SEMANTIC",
+"fit": 0.15,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 14,
+"pool": "pool-a",
+"tier": "SEMANTIC",
+"fit": 0.142857,
+"weightSum": 21,
+"requirementCount": 8
+},
+{
+"rank": 15,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 16,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 17,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 18,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 19,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 20,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 21,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 22,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 23,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 24,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 13,
+"requirementCount": 6
+},
+{
+"rank": 25,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 14,
+"requirementCount": 6
+},
+{
+"rank": 26,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 27,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 28,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 19,
+"requirementCount": 8
+},
+{
+"rank": 29,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 30,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 31,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 32,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 18,
+"requirementCount": 8
+},
+{
+"rank": 33,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 34,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 35,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 36,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 37,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 38,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 39,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 40,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 41,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 18,
+"requirementCount": 8
+},
+{
+"rank": 42,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 43,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 44,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 45,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 46,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 47,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 48,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 15,
+"requirementCount": 6
+},
+{
+"rank": 49,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 18,
+"requirementCount": 8
+},
+{
+"rank": 50,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 51,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 52,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 19,
+"requirementCount": 7
+},
+{
+"rank": 53,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 16,
+"requirementCount": 6
+},
+{
+"rank": 54,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 55,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 21,
+"requirementCount": 8
+},
+{
+"rank": 56,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 22,
+"requirementCount": 9
+},
+{
+"rank": 57,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 58,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 59,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 19,
+"requirementCount": 8
+},
+{
+"rank": 60,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 17,
+"requirementCount": 6
+},
+{
+"rank": 61,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 19,
+"requirementCount": 7
+},
+{
+"rank": 62,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 20,
+"requirementCount": 8
+},
+{
+"rank": 63,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 17,
+"requirementCount": 6
+},
+{
+"rank": 64,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 17,
+"requirementCount": 6
+},
+{
+"rank": 65,
+"pool": "pool-c",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 17,
+"requirementCount": 6
+},
+{
+"rank": 66,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 21,
+"requirementCount": 8
+},
+{
+"rank": 67,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 23,
+"requirementCount": 9
+},
+{
+"rank": 68,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 21,
+"requirementCount": 8
+},
+{
+"rank": 69,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 24,
+"requirementCount": 10
+},
+{
+"rank": 70,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 21,
+"requirementCount": 8
+},
+{
+"rank": 71,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 25,
+"requirementCount": 9
+},
+{
+"rank": 72,
+"pool": "pool-a",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 25,
+"requirementCount": 9
+},
+{
+"rank": 73,
+"pool": "pool-b",
+"tier": "LEXICAL_ONLY",
+"fit": 0,
+"weightSum": 27,
+"requirementCount": 10
+}
+]
