@@ -3920,6 +3920,23 @@ Open but not blocking:
 - **F-BB-1.** Four tracked scripts at the repository root (`bisection.ts`, `schema-bisection.ts`, `schema-bisection-mjs.ts`, `test-schema.ts`) call `ai.models.generateContent` directly, outside the seam. The architecture test scans only `lib/`, `scripts/` and `app/`.
 - **F-BB-2.** In `scripts/list-models.ts` the pager sends its further pages without rows: 3 requests, 1 row.
 
+### 3.90 Budget boundary, re-check of §3.89 on GELB `fcf1084` (2026-10-31) — GO
+
+**Request.** Re-check only F-BB-1, F-BB-2 and the question whether a Gemini request leaves without a register row.
+
+**Method.**
+- **The five scripts.** They ran as real processes in a scratch copy without any env file, with a dummy key and a preloaded fetch stub that answers locally. Afterwards the logged requests were compared with the register rows of each script's job.
+- **§3.89 probe.** Re-run on `fcf1084`.
+
+**Verdict: GO** (`evidence/budget-boundary-fcf1084/verdicts.txt`).
+- **Requests equal rows** for every script, with 0 requests without a row:
+  - `test-schema.ts`: 2.
+  - `bisection.ts`: 1.
+  - `schema-bisection.ts` and `schema-bisection-mjs.ts`: 11 each.
+  - `scripts/list-models.ts`: 3 pager pages.
+- **§3.89 probe.** 4 of 4 green.
+- **Observation.** The architecture test does not see an async iteration over a pager or SDK services other than `models`. No tracked file uses either today.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

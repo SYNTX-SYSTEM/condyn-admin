@@ -1,0 +1,13 @@
+// PINK: preloaded into each script process. Every request to a Google API host is logged and answered locally like Gemini; nothing
+// leaves the machine. Other hosts are refused. The database is reached over TCP by postgres, not through fetch.
+const fs = require("node:fs");
+const LOG = process.env.PINK_NET_LOG; let pages = 0;
+globalThis.fetch = async (input) => {
+  const url = typeof input === "string" ? input : (input && input.url) || String(input);
+  if (!/googleapis\.com/.test(url)) throw new Error("PINK net stub: refused " + url);
+  fs.appendFileSync(LOG, url.replace(/key=[^&]+/, "key=x").split("?")[0] + "\n");
+  let body;
+  if (/\/models(\?|$)/.test(url)) { pages += 1; body = pages === 1 ? { models: [{ name: "models/a", displayName: "A" }], nextPageToken: "p2" } : pages === 2 ? { models: [{ name: "models/b", displayName: "B" }], nextPageToken: "p3" } : { models: [{ name: "models/c", displayName: "C" }] }; }
+  else body = { candidates: [{ content: { parts: [{ text: "{\"ok\":true}" }] }, finishReason: "STOP" }] };
+  return new Response(JSON.stringify(body), { status: 200, headers: { "content-type": "application/json" } });
+};

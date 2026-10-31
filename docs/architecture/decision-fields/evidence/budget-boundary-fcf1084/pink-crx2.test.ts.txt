@@ -1,0 +1,30 @@
+// PINK re-check F-BB-1/F-BB-2: the root probe scripts and scripts/list-models.ts run as real processes (tsx), with a preloaded fetch stub that
+// logs every Google API request; afterwards the requests are compared with the register rows of the script's job. Dummy key, no network.
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { writeFileSync, readFileSync, existsSync, rmSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { resolve } from "node:path";
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { TEST_JOB_SCOPE, uploadEngineeringJobScope } from "../support/job-scope";
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const q = async <T>(s: string) => (await db.execute(sql.raw(s))) as unknown as T[];
+describe("PINK root scripts and list-models", () => {
+  beforeAll(async () => { await initDbSchema(); await uploadEngineeringJobScope(); }, 120000);
+  it("requests ≤ register rows for every script", async () => {
+    const out: Record<string, unknown> = {};
+    for (const script of ["test-schema.ts", "bisection.ts", "schema-bisection.ts", "schema-bisection-mjs.ts", "scripts/list-models.ts"]) {
+      const log = resolve(process.env.PINK_SCRATCH!, `net-${script.replace(/\W/g, "_")}.log`); if (existsSync(log)) rmSync(log); writeFileSync(log, "");
+      const p = spawnSync(process.execPath, [resolve("node_modules/tsx/dist/cli.mjs"), script], { cwd: process.cwd(), timeout: 120000, encoding: "utf8",
+        env: { PATH: process.env.PATH, HOME: process.env.HOME, DATABASE_URL: process.env.DATABASE_URL, CONDYN_JOB_POOL_UPLOAD_ID: TEST_JOB_SCOPE.jobPoolUploadId, CONDYN_POOL_ROLE_ID: TEST_JOB_SCOPE.poolRoleId, GEMINI_API_KEY: "pink-dummy-key-0000000000", GEMINI_JOB_CALL_LIMIT: "20", NODE_OPTIONS: `--require ${process.env.PINK_STUB}`, PINK_NET_LOG: log } as never });
+      const requests = readFileSync(log, "utf8").split("\n").filter(Boolean);
+      const job = `SCRIPT:${script.replace(/^scripts\//, "").replace(/\.ts$/, "")}`;
+      const rows = await q<{ stage: string; state: string }>(`SELECT stage, state FROM career_provider_calls WHERE job_id = '${job}' ORDER BY created_at, call_id`).catch(() => []);
+      const counted = rows.filter(r => r.state !== "RESERVED" && r.state !== "FAILED_BEFORE_SEND").length;
+      out[script] = { exit: p.status, requests: requests.length, requestPaths: [...new Set(requests.map(r => r.replace(/^https:\/\/[^/]+/, "")))], registerRows: rows.map(r => `${r.stage}:${r.state}`), requestsWithoutRow: Math.max(0, requests.length - counted), tail: (p.stdout + p.stderr).split("\n").filter(l => /✅|❌|ERR_|Error|MODELL|models\//.test(l)).slice(0, 4).map(l => l.slice(0, 120)) };
+    }
+    rec.scripts = out;
+    for (const v of Object.values(out) as Array<{ requestsWithoutRow: number }>) expect(v.requestsWithoutRow).toBe(0);
+  }, 900000);
+});
