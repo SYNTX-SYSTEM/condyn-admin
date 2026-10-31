@@ -3959,7 +3959,7 @@ Open but not blocking:
   - F-PA-T1 (test gap): the mutants M02 (key = first proposal) and M11 (a key changes a PARTIAL number) survive GELB's tests. PINK's probe kills both.
 - **2 — GO.**
   - The old body (real, from the base code) and the new body decode as the same object.
-  - All 13 refusal cases are refused.
+  - All 14 refusal cases are refused (8 cases accepted as the same object).
   - The base decoder refuses the new body, so the two ship together as the spec says.
   - F-PA-T2 (test gap): M09 (one extra field at the old key count) survives GELB's tests. PINK's P2 kills it.
 - **3 — GO with condition F-PA-2.**
