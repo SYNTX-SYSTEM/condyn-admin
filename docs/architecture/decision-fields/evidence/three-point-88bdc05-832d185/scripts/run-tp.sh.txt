@@ -1,0 +1,21 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out/tp
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS GEMINI_JOB_CALL_LIMIT
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/ttp && npx tsc --noEmit -p . > $O/tsc.log 2>&1; echo "133ff76 tsc errors $(grep -c 'error TS' $O/tsc.log)"
+PINK_OUT=$O/tp.json npm run -s test:isolated -- test/pink/pink-tp.test.ts > $O/tp.log 2>&1; echo "PINK probe $(grep -E '^\s*Tests ' $O/tp.log | tr -s ' ')"
+npm run -s test:isolated -- test/career/job-pool test/career/provider-calls --exclude 'test/pink/**' > $O/pristine.log 2>&1; fails $O/pristine.log > $O/pristine-fails.txt; echo "pristine TP $(grep -E '^\s*Tests ' $O/pristine.log | tr -s ' ') fails $(wc -l < $O/pristine-fails.txt)"
+python3 - "$S" <<'PY'
+import sys,re; s=open(sys.argv[1]+"/acp/mutate-acp.py").read(); blk=s.split('BLOCKS["TP"] = ')[1].split("\nT, M = BLOCKS[BLOCK]")[0]
+open(sys.argv[1]+"/acp/out/tp/ids.txt","w").write(" ".join(re.findall(r'\("(T-M\d+) ', blk)))
+PY
+IDS=($(cat $O/ids.txt)); H=$(( ${#IDS[@]} / 2 ))
+BASE_FAILS=$O/pristine-fails.txt PRISTINE_NAME=ttp WORK_TAG=tp1 python3 $S/acp/mutate-acp.py $S/int TP ${IDS[@]:0:$H} > $O/mut-1.log 2>&1 &
+BASE_FAILS=$O/pristine-fails.txt PRISTINE_NAME=ttp WORK_TAG=tp2 python3 $S/acp/mutate-acp.py $S/int TP ${IDS[@]:$H} > $O/mut-2.log 2>&1 &
+wait
+echo "TP mutants: $(cat $O/mut-1.log $O/mut-2.log | grep -c ' RED ') red of ${#IDS[@]}; alive:"; cat $O/mut-1.log $O/mut-2.log | grep -E 'GREEN|PATTERN|TIMEOUT' | cut -c1-90
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts test/career-worker-config-validation.test.ts"
+for n in ttp t552; do cd $S/int/$n; npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg-$n.log 2>&1; echo "$n regression $(grep -E '^\s*(Test Files|Tests) ' $O/reg-$n.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg-$n.log > $O/reg-fails-$n.txt; done
+echo "failing only on 133ff76:"; comm -23 $O/reg-fails-ttp.txt $O/reg-fails-t552.txt | sed 's/ > .*//' | sort | uniq -c
+echo "failing only on base 5521ae7:"; comm -13 $O/reg-fails-ttp.txt $O/reg-fails-t552.txt | sed 's/ > .*//' | sort | uniq -c
+echo TP-END

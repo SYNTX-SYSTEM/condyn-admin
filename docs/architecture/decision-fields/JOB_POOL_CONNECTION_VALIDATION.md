@@ -3884,6 +3884,25 @@ Open but not blocking:
   - If the two failed requests went out (8-minute run, consistent with 120 s timeouts), the lower bound is exactly 10 calls, with no margin.
   - The read APIs do not show the extraction call count. GELB's exchange archive or worker log must name it.
 
+### 3.88 Three-point hardening, pair backend `88bdc05` + frontend `832d185` (2026-10-31) — GO on all three points
+
+**Request.** Owner mandate SFE::THREE-POINT IMPLEMENTATION GO ("NUR DIESE DREI PUNKTE. MEHR NICHT."). GELB asked for an independent and inverse check with GO/NO-GO per point.
+- **Point 1, semantic coverage.** Error classes with one TRANSIENT retry, partial admission, and a continuation that asks only for what is missing.
+- **Point 2, write-ahead call register.** A job budget over extraction and matching.
+- **Point 3, synchronisation.** Lease, heartbeat, take-over and STALLED in the backend; the interface reads without a fixed 3-minute cap.
+
+**Method.**
+- **Probes and evidence.** DETERMINISTIC probes with a scripted mocked SDK on PostgreSQL (no network, no key of the owner): 16 error classes, the explicit path, a 4-role continuation case, the register, its trigger and stale settling, the job budget, a lost worker with a zombie and racing sweeps, and the GET fingerprint.
+- **Pair contract.** 10 368 generated backend views run through the client decoder.
+- **Inverse.** 29 + 1 backend mutants and 12 frontend mutants, plus tsc and regression against base `5521ae7`.
+
+**Verdict: GO for points 1, 2 and 3** (`evidence/three-point-88bdc05-832d185/verdicts.txt`).
+- **F-TP-1 closed.** On `a1687aa` the continuation also asked roles that must never be asked again: the permanent failure, the all-refused role and the refused pair. Since `133ff76` it asks only the TRANSIENT role.
+- **F-TP-2 closed.** A malformed or 0 job limit now means 0 calls.
+- **F-TP-3, open, not blocking.** Test gaps in GELB's suites: the explicit retry, the resumable marker, the revision limit, the worker binding of the register and of the sweeper, and the two lease conditions.
+- **D-TP-1.** Backend and frontend must ship together, because the backend alone breaks main's client contract.
+- **Owner note.** The default job limit is 12 calls.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

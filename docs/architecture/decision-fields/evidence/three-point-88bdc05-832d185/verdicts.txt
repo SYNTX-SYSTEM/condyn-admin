@@ -1,0 +1,23 @@
+PINK §3.88 — owner mandate SFE::THREE-POINT IMPLEMENTATION GO ("NUR DIESE DREI PUNKTE. MEHR NICHT."), pair backend 88bdc05 + frontend 832d185 — 2026-10-31
+Evidence: DETERMINISTIC (scripted mocked SDK, no network, own disposable database per run), CODE_INSPECTION. No model call, nothing on main or :3017.
+
+POINT 1 — semantic coverage                GO
+  error classes: 408/429/500/503/504, fetch failed, ECONNRESET, timeout abort → exactly 2 calls (register rows a1/a2, each its own reservation, both counted); 400/401/403/404, unclassified, MAX_TOKENS, SAFETY, EMPTY → exactly 1 call
+  explicit path: 1 call per role, also on 503
+  partial admission: 7 of 8 pairs stored, the refused pair named; all pairs refused → nothing stored, role FAILED; no claim text in the cache
+  continuation: F-TP-1 (a1687aa: the successor also asked the PERMANENT role, the all-refused role and the refused pair — 4 calls, 1 allowed) CLOSED in 133ff76: the successor asks only the TRANSIENT role (1 call); the carried roles keep the view PARTIAL · ROLE_FAILURES, rolesPlanned 4, evaluated 2; spent budget → no continuation
+POINT 2 — call budget                      GO
+  write-ahead: no row, no call; without a context unchanged; limit 3 → the 4th call blocked, also for a second attempt of the same job; failure after send counted, original error propagates; trigger refuses delete, way back, identity change; ledger never decreases; stale SENT → UNKNOWN counted, stale RESERVED → released; the key in no row; SDK timeout 120 s
+  job limit (F-TP-2 closed in 133ff76): unset → 12, "0"/"abc"/""/"1e2" → 0 calls, " 3 " → 3; budget 4 over run + continuation: 4 calls, no continuation
+POINT 3 — synchronisation                  GO
+  lost worker: GET derives STALLED · WORKER_LOST and writes nothing (whole-database fingerprint); two parallel sweeps → one interruption, one successor; the waking zombie changes neither the INTERRUPTED run nor the successor
+  pair contract: 10 368 generated backend views decode in the client unchanged (state, reason, resumePending, finishedAt, rolesEvaluated), 0 refused; every ranking answer decodes
+  frontend mutants 12/12 red: 3-min cap for a running run, STALLED / resumePending not read again, ranking not re-read while the run moves, the previous analysis's ranking shown, ranking blanked while re-read, decoder refusing STALLED / PAIRS_REFUSED, accepting a finished STALLED, dropping resumePending, back-off never returning, backend STALLED with finishedAt
+SUITES  tsc 0; pair regression vs base 5521ae7: only the base-red outcome-valence family differs (fluctuating set); worker-config-validation red only on base (order)
+
+FINDINGS (open, not blocking)
+F-TP-3  test gaps in GELB's suites (code correct by inspection; PINK's probe catches T-M04):
+        T-M04 explicit path retries too (caught by pink-tp) · T-M09 resumable marker ignored · T-M10 five revisions
+        T-M19 worker does not bind the job register (scripts/run-career-worker.ts) · T-M24 sweeper not started · T-M20 take-over without the lease condition · T-M21 lease taken from a live holder
+D-TP-1  deployment order: backend 133ff76/88bdc05 alone breaks main's client contract (backend-contract.test.ts red: STALLED refused) — backend and frontend ship together
+OWNER   GEMINI_JOB_CALL_LIMIT unset = 12 calls per job (extraction + matching); the last owner run had 10 as the ceiling — the owner sets the value

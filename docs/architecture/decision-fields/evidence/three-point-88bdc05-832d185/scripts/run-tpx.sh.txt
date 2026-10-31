@@ -1,0 +1,6 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out/tp
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GEMINI_JOB_CALL_LIMIT
+KEEP_PINK=1 PRISTINE_NAME=ttp WORK_TAG=x python3 $S/acp/mutate-acp.py $S/int TPX > $O/mut-TPX.log 2>&1; echo "PINK probe vs survivors:"; cut -c1-80 $O/mut-TPX.log
+BASE_FAILS=$O/pristine-fails.txt PRISTINE_NAME=ttp WORK_TAG=m13 python3 $S/acp/mutate-acp.py $S/int TP13 > $O/mut-TP13.log 2>&1; echo "corrected T-M13 vs GELB's suites:"; cut -c1-80 $O/mut-TP13.log
+echo TPX-END
