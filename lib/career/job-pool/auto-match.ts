@@ -99,12 +99,37 @@ export const AUTO_MATCH_RESUME_DELAY_MS = 60_000;
 export const AUTO_MATCH_RESUME_WINDOW_MS = 10 * 60_000;
 /** A run without a lease (started before leases existed) counts as abandoned after this long without any movement. */
 export const AUTO_MATCH_LEGACY_STALL_MS = 5 * 60_000;
+/** One sweep starts at most this many continuations (a burst of due runs is spread over the next sweeps). */
+export const AUTO_MATCH_SWEEP_MAX_CONTINUATIONS = 3;
 
 const revisionOf = (request: Record<string, unknown>) => (typeof request.revision === "number" && Number.isInteger(request.revision) && request.revision >= 0 ? request.revision : 0);
 /** Tasks a continuation can still do: a TRANSIENT provider failure, or work a lost worker left open. Never a refusal, a permanent failure or a spent budget. */
+export const isRetryableTask = (t: { status: TaskStatus; errorCode: string | null }): boolean => (t.status === "FAILED" && t.errorCode === TRANSIENT_PROVIDER_CODE) || t.status === "INTERRUPTED" || t.status === "CANCELLED";
 export function hasRetryableTasks(tasks: Array<{ status: TaskStatus; errorCode: string | null }>): boolean {
   if (tasks.some(t => t.status === "BUDGET_EXHAUSTED")) return false;
-  return tasks.some(t => (t.status === "FAILED" && t.errorCode === TRANSIENT_PROVIDER_CODE) || t.status === "INTERRUPTED" || t.status === "CANCELLED");
+  return tasks.some(isRetryableTask);
+}
+
+/**
+ * What the predecessors of a continuation settled for good and the continuation therefore does not ask again: roles that were evaluated
+ * (cache), roles that failed for a reason a second request will not change (refused output, permanent failure), and the flags that go
+ * with them. A continuation takes over ONLY the retryable roles; the view adds the carried numbers back so a person still sees the whole run.
+ */
+export interface CarriedRoles { planned: number; evaluated: number; failed: number; pairsRefused: boolean }
+const count = (v: unknown) => (typeof v === "number" && Number.isInteger(v) && v >= 0 ? v : 0);
+export function carriedOf(request: Record<string, unknown>): CarriedRoles {
+  const c = (request.carried ?? {}) as Record<string, unknown>;
+  return { planned: count(c.planned), evaluated: count(c.evaluated), failed: count(c.failed), pairsRefused: c.pairsRefused === true };
+}
+export function carriedAfter(request: Record<string, unknown>, tasks: Array<{ status: TaskStatus; errorCode: string | null }>): CarriedRoles {
+  const out = carriedOf(request);
+  for (const t of tasks) {
+    if (isRetryableTask(t)) continue;
+    out.planned += 1;
+    if (t.status === "SUCCEEDED" || t.status === "CACHED") { out.evaluated += 1; if (t.errorCode === PARTIAL_ADMISSION_CODE) out.pairsRefused = true; }
+    else if (t.status === "FAILED") out.failed += 1;
+  }
+  return out;
 }
 
 /** The view of a stored automatic investigation (pure). `now` decides whether a run still has a live lease and whether a continuation is due. */
@@ -117,9 +142,12 @@ export function viewOfAutoInvestigation(input: {
   const request = investigation.request;
   const now = input.now ?? new Date().toISOString();
   const uploads = Array.isArray(request.uploads) ? request.uploads.filter((u): u is string => typeof u === "string") : [];
-  const planned = Array.isArray(request.roles) ? request.roles.length : tasks.length;
+  const carried = carriedOf(request);
+  const planned = (Array.isArray(request.roles) ? request.roles.length : tasks.length) + carried.planned;
   const rolesTotal = typeof request.rolesTotal === "number" ? request.rolesTotal : planned;
-  const evaluated = tasks.filter(t => t.status === "SUCCEEDED" || t.status === "CACHED").length;
+  const evaluated = tasks.filter(t => t.status === "SUCCEEDED" || t.status === "CACHED").length + carried.evaluated;
+  const failures = carried.failed > 0 || tasks.some(t => t.status === "FAILED");
+  const refused = carried.pairsRefused || tasks.some(t => t.errorCode === PARTIAL_ADMISSION_CODE);
   const open = investigation.status === "PLANNED" || investigation.status === "RUNNING";
   const revision = revisionOf(request);
   const resumable = request.resumable === true && revision < AUTO_MATCH_MAX_REVISIONS;
@@ -131,10 +159,10 @@ export function viewOfAutoInvestigation(input: {
   else if (investigation.status === "INTERRUPTED" && resumable && recentEnough) { state = "STALLED"; reason = "WORKER_LOST"; }
   else if (investigation.status === "COMPLETED") {
     const beyond = rolesTotal > planned;
-    state = beyond || tasks.some(t => t.errorCode === PARTIAL_ADMISSION_CODE) ? "PARTIAL" : "COMPLETED";
-    reason = beyond ? "ROLES_BEYOND_BUDGET" : state === "PARTIAL" ? "PAIRS_REFUSED" : null;
+    state = beyond || failures || refused ? "PARTIAL" : "COMPLETED";
+    reason = failures ? "ROLE_FAILURES" : beyond ? "ROLES_BEYOND_BUDGET" : refused ? "PAIRS_REFUSED" : null;
   }
-  else if (investigation.status === "PARTIAL") { state = "PARTIAL"; reason = tasks.some(t => t.status === "FAILED") ? "ROLE_FAILURES" : tasks.some(t => t.status === "BUDGET_EXHAUSTED") ? "DAY_BUDGET_EXHAUSTED" : tasks.some(t => t.errorCode === PARTIAL_ADMISSION_CODE) ? "PAIRS_REFUSED" : "ROLES_BEYOND_BUDGET"; }
+  else if (investigation.status === "PARTIAL") { state = "PARTIAL"; reason = failures ? "ROLE_FAILURES" : tasks.some(t => t.status === "BUDGET_EXHAUSTED") ? "DAY_BUDGET_EXHAUSTED" : refused ? "PAIRS_REFUSED" : "ROLES_BEYOND_BUDGET"; }
   else { state = "FAILED"; reason = investigation.status === "INTERRUPTED" ? "ERR_INVESTIGATION_INTERRUPTED" : tasks.find(t => t.errorCode)?.errorCode ?? "ERR_AUTO_MATCH_FAILED"; }
   // Due: the run stopped early for a reason a continuation can do something about, it may still be continued, and the window has not passed.
   const resumePending = !open && resumable && recentEnough && hasRetryableTasks(tasks) && (investigation.status === "PARTIAL" || investigation.status === "FAILED" || investigation.status === "INTERRUPTED");
@@ -199,11 +227,15 @@ export async function continueAutoRun(run: AutomaticRunRow, now: () => string = 
   const previousEngine = engineOfRequest(run.request);
   if (previousEngine === null || engineVersionHash(previousEngine) !== engineVersionHash(config.engine)) return { outcome: "SKIPPED", reason: "ENGINE_CHANGED" };
   const uploads = Array.isArray(run.request.uploads) ? run.request.uploads.filter((u): u is string => typeof u === "string") : [];
-  const roles = Array.isArray(run.request.roles) ? run.request.roles.filter((r): r is { jobPoolUploadId: string; poolRoleId: string } => !!r && typeof (r as Record<string, unknown>).jobPoolUploadId === "string" && typeof (r as Record<string, unknown>).poolRoleId === "string") : [];
+  // Only what a second request can change is asked again: a TRANSIENT failure, or work a lost worker left open. Refused outputs, permanent failures
+  // and refused pairs of a partly admitted role are settled; the evaluated roles are in the cache. Their numbers are carried into the view.
+  const tasks = await new PostgresInvestigationStore(db.$client).tasks(run.investigationId);
+  if (!hasRetryableTasks(tasks)) return { outcome: "SKIPPED", reason: "NOTHING_TO_CONTINUE" };
+  const roles = tasks.filter(isRetryableTask).map(t => ({ jobPoolUploadId: t.jobPoolUploadId, poolRoleId: t.poolRoleId }));
   if (uploads.length === 0 || roles.length === 0) return { outcome: "SKIPPED", reason: "NOT_RESUMABLE" };
   const started = await startSemanticInvestigation({
     analysisId: run.analysisId, config, jobPoolUploadIds: uploads, roleKeys: roles, clientRequestId: `${AUTO_MATCH_REQUEST_PREFIX}${run.analysisId}:r${revision + 1}`, confirmedCalls: "AS_PLANNED", now, ...(runnerId ? { runnerId } : {}),
-    requestExtra: { auto: true, resumable: true, revision: revision + 1, previous: run.investigationId, engine: config.engine, rolesTotal: typeof run.request.rolesTotal === "number" ? run.request.rolesTotal : roles.length }
+    requestExtra: { auto: true, resumable: true, revision: revision + 1, previous: run.investigationId, engine: config.engine, rolesTotal: typeof run.request.rolesTotal === "number" ? run.request.rolesTotal : roles.length + carriedAfter(run.request, tasks).planned, carried: carriedAfter(run.request, tasks) }
   });
   if (started.kind === "ISSUE") return { outcome: "FAILED", reason: started.code };
   return { outcome: "STARTED", reason: null, investigationId: started.investigationId };
@@ -224,10 +256,11 @@ export async function resumeAutoMatches(now: () => string = () => new Date().toI
   for (const row of await store.abandonedAutomatic(at, legacyBefore)) {
     if (!(await store.interruptAbandoned(row.investigationId, at, legacyBefore))) continue;
     result.interrupted += 1;
-    if (row.request.resumable === true && (await continueAutoRun(row, now, runnerId)).outcome === "STARTED") result.continued += 1;
+    if (row.request.resumable === true && result.continued < AUTO_MATCH_SWEEP_MAX_CONTINUATIONS && (await continueAutoRun(row, now, runnerId)).outcome === "STARTED") result.continued += 1;
   }
   const due = new Date(Date.parse(at) - AUTO_MATCH_RESUME_DELAY_MS).toISOString();
   for (const row of await store.resumableAutomatic(due)) {
+    if (result.continued >= AUTO_MATCH_SWEEP_MAX_CONTINUATIONS) break;
     if (Date.parse(row.updatedAt) + AUTO_MATCH_RESUME_WINDOW_MS <= Date.parse(at)) continue;
     const latest = await store.latestAutomatic(row.analysisId);
     if (latest?.investigationId !== row.investigationId || !hasRetryableTasks(await store.tasks(row.investigationId))) continue;

@@ -104,9 +104,12 @@ describe("call register (PostgreSQL)", () => {
     expect(await ledgerRow(jobId)).toMatchObject({ reserved: 2, limit_units: 2 });
   });
 
-  it("GEMINI_JOB_CALL_LIMIT: plain digits ≥ 1, anything else is the default", () => {
+  it("GEMINI_JOB_CALL_LIMIT: not set is the default; set, it must be plain digits ≥ 1 — anything else fails closed to 0 (no call), like the day limit", async () => {
+    expect(readJobCallLimit({})).toBe(PROVIDER_CALL_DEFAULT_JOB_LIMIT);
     expect(readJobCallLimit({ GEMINI_JOB_CALL_LIMIT: "10" })).toBe(10);
-    for (const bad of [undefined, "", "0", "-3", "1e3", "ten", "12.5", "9999999"]) expect(readJobCallLimit({ GEMINI_JOB_CALL_LIMIT: bad }), String(bad)).toBe(PROVIDER_CALL_DEFAULT_JOB_LIMIT);
+    for (const bad of ["", "0", "-3", "1e3", "ten", "12.5", "9999999"]) expect(readJobCallLimit({ GEMINI_JOB_CALL_LIMIT: bad }), bad).toBe(0);
+    const jobId = job("zero"); const reg = new PostgresProviderCallRegister(db.$client, { jobId, limit: 0 });
+    await expect(reg.begin({ stage: "SEMANTIC" })).rejects.toBeInstanceOf(ProviderCallBlocked);
   });
 
   it("withJobCallRegister binds the job's register: extraction and matching share one budget, the call after the limit is not sent", async () => {

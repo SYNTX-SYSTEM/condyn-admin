@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AUTO_MATCH_LEGACY_STALL_MS, AUTO_MATCH_MAX_REVISIONS, AUTO_MATCH_RESUME_WINDOW_MS, hasRetryableTasks, viewOfAutoInvestigation } from "../../../lib/career/job-pool/auto-match";
+import { carriedAfter, carriedOf, isRetryableTask, AUTO_MATCH_LEGACY_STALL_MS, AUTO_MATCH_MAX_REVISIONS, AUTO_MATCH_RESUME_WINDOW_MS, hasRetryableTasks, viewOfAutoInvestigation } from "../../../lib/career/job-pool/auto-match";
 import { PARTIAL_ADMISSION_CODE } from "../../../lib/career/job-pool/semantic-investigation-run";
 import type { InvestigationStatus, TaskStatus } from "../../../lib/career/job-pool/semantic-investigation-store";
 
@@ -72,5 +72,27 @@ describe("refused pairs and the budget are visible", () => {
   });
   it("a malformed revision counts as 0", () => {
     for (const revision of [-1, 1.5, "1", null]) expect(view("RUNNING", [task("RUNNING")], { request: { revision } }).revision).toBe(0);
+  });
+});
+
+describe("a continuation carries what its predecessors settled for good", () => {
+  it("carriedAfter: evaluated roles, refused / permanently failed roles and the refused-pair flag are carried; retryable roles are not; earlier carries accumulate", () => {
+    const tasks = [task("SUCCEEDED"), task("CACHED"), task("SUCCEEDED", PARTIAL_ADMISSION_CODE), task("FAILED", "ERR_SEMANTIC_OUTPUT_REFUSED"), task("FAILED", "ERR_SEMANTIC_PROVIDER_FAILED"), task("FAILED", "ERR_SEMANTIC_PROVIDER_TRANSIENT"), task("INTERRUPTED"), task("CANCELLED")];
+    expect(tasks.filter(isRetryableTask)).toHaveLength(3);
+    expect(carriedAfter({}, tasks)).toEqual({ planned: 5, evaluated: 3, failed: 2, pairsRefused: true });
+    expect(carriedAfter({ carried: { planned: 2, evaluated: 1, failed: 1, pairsRefused: false } }, [task("SUCCEEDED")])).toEqual({ planned: 3, evaluated: 2, failed: 1, pairsRefused: false });
+    expect(carriedOf({ carried: { planned: -1, evaluated: 1.5, failed: "x", pairsRefused: "yes" } })).toEqual({ planned: 0, evaluated: 0, failed: 0, pairsRefused: false });
+  });
+  it("the view of a continuation adds the carried roles back: the whole run stays visible, a carried failure keeps the run PARTIAL even when the continuation completed", () => {
+    const carried = { planned: 3, evaluated: 1, failed: 2, pairsRefused: false };
+    const v = view("COMPLETED", [task("SUCCEEDED")], { request: { revision: 1, carried, rolesTotal: 4 } });
+    expect(v).toMatchObject({ state: "PARTIAL", reason: "ROLE_FAILURES", revision: 1, resumePending: false });
+    expect(v.budget).toMatchObject({ rolesPlanned: 4, rolesEvaluated: 2 });
+    const clean = view("COMPLETED", [task("SUCCEEDED")], { request: { revision: 1, carried: { planned: 1, evaluated: 1, failed: 0, pairsRefused: false }, rolesTotal: 2 } });
+    expect(clean).toMatchObject({ state: "COMPLETED", reason: null }); expect(clean.budget).toMatchObject({ rolesPlanned: 2, rolesEvaluated: 2 });
+    expect(view("COMPLETED", [task("SUCCEEDED")], { request: { carried: { planned: 1, evaluated: 1, failed: 0, pairsRefused: true }, rolesTotal: 2 } })).toMatchObject({ state: "PARTIAL", reason: "PAIRS_REFUSED" });
+  });
+  it("failures outrank an unfinished role count when both are true", () => {
+    expect(view("COMPLETED", [task("FAILED", "E")], { request: { rolesTotal: 9 } })).toMatchObject({ state: "PARTIAL", reason: "ROLE_FAILURES" });
   });
 });

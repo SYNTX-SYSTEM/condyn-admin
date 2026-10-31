@@ -17,7 +17,7 @@ import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, 
  */
 const sdk = vi.hoisted(() => ({
   calls: 0, requests: [] as Array<{ contents: string }>,
-  behave: (_index: number): "ok" | "hang" | { status: number } => "ok",
+  behave: (_index: number): "ok" | "hang" | "refuse" | "partial" | { status: number } => "ok",
   release: null as null | (() => void)
 }));
 vi.mock("@google/genai", () => ({
@@ -28,10 +28,10 @@ vi.mock("@google/genai", () => ({
         const index = ++sdk.calls; sdk.requests.push(request);
         const behaviour = sdk.behave(index);
         if (behaviour === "hang") await new Promise<void>(resolve => { sdk.release = resolve; });
-        else if (behaviour !== "ok") throw Object.assign(new Error("upstream said no"), behaviour);
+        else if (typeof behaviour === "object") throw Object.assign(new Error("upstream said no"), behaviour);
         const after = request.contents.slice(request.contents.indexOf("\n\n") + 2);
         const payload = JSON.parse(after.slice(after.indexOf("{"))) as { proposals: Array<{ id: string; evidence: Array<{ evidenceId: string }> }>; requirements: Array<{ requirementId: string }> };
-        const relations = payload.proposals.flatMap(p => payload.requirements.map(r => ({ proposalId: p.id, requirementId: r.requirementId, state: "COVERS", citedEvidenceIds: p.evidence.slice(0, 1).map(e => e.evidenceId), relationExplanation: "The quote names the same technology.", evidenceLimitation: "One sentence only." })));
+        const relations = payload.proposals.flatMap(p => payload.requirements.map(r => ({ proposalId: p.id, requirementId: r.requirementId, state: "COVERS", citedEvidenceIds: p.evidence.slice(0, 1).map(e => e.evidenceId), relationExplanation: behaviour === "refuse" || (behaviour === "partial" && p === payload.proposals[0] && r === payload.requirements[0]) ? "Clearly qualified." : "The quote names the same technology.", evidenceLimitation: "One sentence only." })));
         return { text: JSON.stringify({ relations }), candidates: [{ finishReason: "STOP" }] };
       }
     };
@@ -63,11 +63,12 @@ describe("the three points together (PostgreSQL, scripted SDK)", () => {
   };
   const saved = { ...process.env };
   const make = (label: string, group: string) => produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText(label)])), null, label, createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (${label}-${Date.now()})` }), group);
-  let retry: Awaited<ReturnType<typeof make>>, lost: Awaited<ReturnType<typeof make>>, budget: Awaited<ReturnType<typeof make>>, plain: Awaited<ReturnType<typeof make>>;
+  let mixed: Awaited<ReturnType<typeof make>>, retry: Awaited<ReturnType<typeof make>>, lost: Awaited<ReturnType<typeof make>>, budget: Awaited<ReturnType<typeof make>>, plain: Awaited<ReturnType<typeof make>>;
 
   beforeAll(async () => {
     await initDbSchema(); await uploadEngineeringJobScope();
     retry = await make("tp1", "Three Point Retry Group");
+    mixed = await make("tp5", "Three Point Mixed Group");
     lost = await make("tp2", "Three Point Lost Group");
     budget = await make("tp3", "Three Point Budget Group");
     plain = await make("tp4", "Three Point Plain Group");
@@ -105,12 +106,48 @@ describe("the three points together (PostgreSQL, scripted SDK)", () => {
     expect(second).toMatchObject({ revision: 1, resumePending: false });
     expect(second.budget).toMatchObject({ rolesEvaluated: 3, callsUsed: 5 });
     expect(second.investigationId).not.toBe(first.investigationId);
-    expect((await taskRows(second.investigationId)).map(t => t.status).sort()).toEqual(["CACHED", "CACHED", "SUCCEEDED"]);
+    expect((await taskRows(second.investigationId)).map(t => t.status)).toEqual(["SUCCEEDED"]); // only the failed role is in the successor; the others are carried
     // again: nothing more happens, no further call
     sdk.requests.length = 0;
     expect((await resumeAutoMatches(() => at(240_000), "worker-c")).continued).toBe(0);
     expect(sdk.requests).toHaveLength(0);
   }, 60_000);
+
+  it("POINT 1: a continuation asks ONLY what a second request can change — never a refused output, a permanent failure or the refused pairs of a partly admitted role", async () => {
+    gemini({ ROLE_DISCOVERY_MAX_ROLES: "4" });
+    // call order = role order: role 1 transient twice, role 2 permanent 400, role 3 every pair refused, role 4 one pair refused
+    sdk.behave = index => index <= 2 ? { status: 503 } : index === 3 ? { status: 400 } : index === 4 ? "refuse" : "partial";
+    await runAutoMatch(mixed.analysisId, () => DAY, "worker-a");
+    const first = await view(mixed.analysisId);
+    expect(first).toMatchObject({ state: "PARTIAL", reason: "ROLE_FAILURES", resumePending: true, revision: 0 });
+    expect(first.budget).toMatchObject({ rolesPlanned: 4, rolesEvaluated: 1, callsUsed: 5 });
+    const tasks = await taskRows(first.investigationId);
+    expect(tasks.map(t => `${t.status}:${t.error_code ?? ""}`).sort()).toEqual(["FAILED:ERR_SEMANTIC_OUTPUT_REFUSED", "FAILED:ERR_SEMANTIC_PROVIDER_FAILED", "FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT", "SUCCEEDED:ERR_SEMANTIC_OUTPUT_PARTIAL"]);
+    sdk.calls = 0; sdk.requests.length = 0; sdk.behave = () => "ok";
+    expect((await resumeAutoMatches(() => at(120_000), "worker-b")).continued).toBe(1);
+    expect(sdk.requests).toHaveLength(1); // the transient role only — not the permanent one, not the refused one, not the refused pair
+    const second = await view(mixed.analysisId);
+    expect(second).toMatchObject({ revision: 1, state: "PARTIAL", reason: "ROLE_FAILURES", resumePending: false });
+    expect(second.budget).toMatchObject({ rolesPlanned: 4, rolesEvaluated: 2, callsUsed: 6 }); // the whole run stays visible: 1 asked now + the carried roles
+    sdk.requests.length = 0;
+    expect((await resumeAutoMatches(() => at(300_000), "worker-c")).continued).toBe(0);
+    expect(sdk.requests).toHaveLength(0);
+  }, 60_000);
+
+  it("POINT 3: one sweep starts at most three continuations; the rest follow with the next sweep", async () => {
+    gemini({ ROLE_DISCOVERY_MAX_ROLES: "1" });
+    const many = [] as Array<Awaited<ReturnType<typeof make>>>;
+    for (let i = 0; i < 4; i += 1) many.push(await make(`tp6${i}`, `Three Point Burst Group ${i}`));
+    sdk.behave = () => ({ status: 503 });
+    for (const a of many) await runAutoMatch(a.analysisId, () => DAY, "worker-a");
+    for (const a of many) expect((await view(a.analysisId)).resumePending, a.analysisId).toBe(true);
+    sdk.behave = () => "ok"; sdk.requests.length = 0;
+    expect((await resumeAutoMatches(() => at(120_000), "worker-b")).continued).toBe(3);
+    expect(sdk.requests).toHaveLength(3);
+    expect((await resumeAutoMatches(() => at(130_000), "worker-b")).continued).toBe(1);
+    expect(sdk.requests).toHaveLength(4);
+    for (const a of many) expect((await view(a.analysisId)), a.analysisId).toMatchObject({ revision: 1, resumePending: false, state: "PARTIAL" });
+  }, 90_000);
 
   it("POINT 3: a run whose worker is gone is STALLED once its lease ran out, taken over race-free by ONE sweeper, continued from the cache, and the zombie cannot corrupt it", async () => {
     gemini();

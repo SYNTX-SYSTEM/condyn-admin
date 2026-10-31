@@ -53,11 +53,13 @@ export const PROVIDER_CALL_GUARD_DDL = [
   END $$`
 ] as const;
 
-/** The call budget of one job (extraction and matching together): GEMINI_JOB_CALL_LIMIT, plain digits ≥ 1, else the default. */
+/** The call budget of one job (extraction and matching together): GEMINI_JOB_CALL_LIMIT. Not set: the default. Set, it must be plain digits ≥ 1 —
+ *  anything else (0, "abc", "1e2", empty) fails closed to 0: no call is made (same rule as ROLE_DISCOVERY_DAY_LIMIT). */
 export function readJobCallLimit(env: Record<string, string | undefined> = process.env): number {
-  const raw = env.GEMINI_JOB_CALL_LIMIT?.trim();
-  if (raw !== undefined && /^[0-9]{1,6}$/.test(raw) && Number(raw) >= 1) return Number(raw);
-  return PROVIDER_CALL_DEFAULT_JOB_LIMIT;
+  const raw = env.GEMINI_JOB_CALL_LIMIT;
+  if (raw === undefined) return PROVIDER_CALL_DEFAULT_JOB_LIMIT;
+  const text = raw.trim();
+  return /^[0-9]{1,6}$/.test(text) && Number(text) >= 1 ? Number(text) : 0;
 }
 
 export type ProviderCallState = "RESERVED" | "SENT" | "COMPLETED" | "FAILED_BEFORE_SEND" | "FAILED_AFTER_SEND" | "UNKNOWN";
