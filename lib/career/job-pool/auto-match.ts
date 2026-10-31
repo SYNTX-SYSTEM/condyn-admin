@@ -170,7 +170,7 @@ export function viewOfAutoInvestigation(input: {
     state, reason, evidenceClass: evidenceClass(investigation.provider),
     pools: uploads.map(id => ({ jobPoolUploadId: id, poolName: input.poolNames.get(id) ?? id })),
     budget: { rolesPlanned: planned, rolesEvaluated: evaluated, callsLimit: typeof request.callsNeeded === "number" ? request.callsNeeded : 0, callsUsed: input.usage ? input.usage.used : null, callsJobLimit: input.usage ? input.usage.limit : null },
-    investigationId: investigation.investigationId, startedAt: investigation.createdAt, finishedAt: open ? null : investigation.updatedAt,
+    investigationId: investigation.investigationId, startedAt: investigation.createdAt, finishedAt: open || state === "STALLED" ? null : investigation.updatedAt,
     revision, lastProgressAt: input.lastProgressAt ?? investigation.updatedAt, leaseExpiresAt, resumePending
   };
 }

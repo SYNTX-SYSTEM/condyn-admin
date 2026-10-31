@@ -29,7 +29,7 @@ describe("a run in progress is RUNNING while its lease lives and STALLED (WORKER
     expect(view("RUNNING", [task("RUNNING")], { lease: null, updatedAt: at(1000), now: at(AUTO_MATCH_LEGACY_STALL_MS + 5000) }).state).toBe("STALLED");
   });
   it("an INTERRUPTED run that will be continued still reads as STALLED; one that cannot be (not resumable, last revision, window over) reads as the failure it is", () => {
-    expect(view("INTERRUPTED", [task("INTERRUPTED", "ERR_WORKER_LOST")], { now: at(5000) })).toMatchObject({ state: "STALLED", reason: "WORKER_LOST" });
+    expect(view("INTERRUPTED", [task("INTERRUPTED", "ERR_WORKER_LOST")], { now: at(5000) })).toMatchObject({ state: "STALLED", reason: "WORKER_LOST", finishedAt: null }); // a stalled run is not finished, whichever way it is derived
     expect(view("INTERRUPTED", [task("INTERRUPTED")], { request: { resumable: false } })).toMatchObject({ state: "FAILED", reason: "ERR_INVESTIGATION_INTERRUPTED" });
     expect(view("INTERRUPTED", [task("INTERRUPTED")], { request: { revision: AUTO_MATCH_MAX_REVISIONS } })).toMatchObject({ state: "FAILED" });
     expect(view("INTERRUPTED", [task("INTERRUPTED")], { now: at(AUTO_MATCH_RESUME_WINDOW_MS + 5000) })).toMatchObject({ state: "FAILED" });
