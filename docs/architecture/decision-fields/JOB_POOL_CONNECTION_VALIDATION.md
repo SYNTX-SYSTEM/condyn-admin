@@ -3971,6 +3971,33 @@ Open but not blocking:
   - Product code changed only the read path, `role-ranking.ts` and the decoder. Nothing under `app/` changed, and no route, orbit, planetarium or B2 file.
   - Regression 463/463 against base 429/429, with 0 failures. tsc 0. No network.
 
+### 3.92 PERSON × JOB phase A, re-check of the §3.91 conditions on GELB `ea1e29f` (2026-10-31) — NO-GO, two small remainders
+
+**Request.** Re-check only F-PA-1, F-PA-2, F-PA-T1 and F-PA-T2 (owner hardlock "NUR PHASE A. MEHR NICHT.").
+
+**Method.**
+- **Recomputation.** PINK's own layout recomputation against all 20 vectors, plus 15 variants of the search rules.
+- **Mutants.** 20 mutants, run against GELB's tests (with a 60 s timeout) and against PINK's probe.
+- **Probe.** PINK's probe on `ea1e29f`.
+
+**Verdict: NO-GO on the conditions as a whole** (`evidence/mapping-phase-a-ea1e29f/verdicts.txt`).
+- **F-PA-1: closed.** Spec §2 now says the id is a hash of name and scope.
+- **F-PA-T1: closed.**
+  - The refactored read path behaves the same: the probe is 6/6, with 43/43 judged-best keys and numbers byte-identical to the base.
+  - M02, M02L, M02R and M11 are red on GELB's tests.
+- **F-PA-2: partly closed.**
+  - The rules are in `layout-spec.json` and §4.
+  - The recomputation matches 20/20 vectors, and LV08–LV11 pin every band edge except one.
+  - Remainder: the shelf upper edge `500 − ρ` is not pinned. With `[430, 500]` (mutant M16) all vectors still match and GELB's tests stay green.
+  - Counterexample: 200 shelf roles at fit 0 with weight 6 (ρ 8.39). 90 bodies cross the field edge, up to 507.2.
+  - Fix: one vector with shelf bodies of 6 < ρ ≤ 9 pressed outward.
+- **F-PA-T2: not closed.**
+  - M09 (an old-shape body plus one unknown field) is still green on GELB's tests.
+  - Fix: add that one case.
+- **F-PA-3: new.**
+  - "NO OVERLAP" takes 3.5–4.5 s against vitest's 5 s limit, and it timed out once in PINK's run.
+  - Fix: an explicit timeout or a cheaper pair check.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

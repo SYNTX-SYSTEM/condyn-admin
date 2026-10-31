@@ -1,0 +1,41 @@
+# PINK phase A mutants against GELB's phase-A tests. argv: <scratch int dir> <ids...>. One copy per mutant, the pristine tree is never edited.
+import os, shutil, subprocess, sys
+INT = sys.argv[1]; SRC = f"{INT}/" + os.environ.get("SRC_NAME", "tpa")
+T = ["test/career/job-pool/capability-key.test.ts", "test/career/mapping-spec", "test/career/job-pool/auto-match.postgres.test.ts", "test/career/job-pool/auto-match-gemini.postgres.test.ts", "--testTimeout=60000"]
+M = {
+ "M01": ("semantic key = capability name", "lib/career/job-pool/auto-match.ts", "capabilityKey: k.proposalId,", "capabilityKey: relation.capabilityName,"),
+ "M02": ("semantic key = first proposal of the projection", "lib/career/job-pool/auto-match.ts", "proposalId: p.id });", "proposalId: proposals[0].id });"),
+ "M03": ("lexical key = proposal name", "lib/career/job-pool/role-ranking.ts", "capabilityKey: keyOf(requirement.lexical.proposalId)", "capabilityKey: keyOf(requirement.lexical.proposalName)"),
+ "M04": ("lexical key dropped (null)", "lib/career/job-pool/role-ranking.ts", "capabilityKey: keyOf(requirement.lexical.proposalId)", "capabilityKey: null"),
+ "M05": ("keyOf lets an empty key through", "lib/career/job-pool/role-ranking.ts", "typeof value === \"string\" && value.length > 0 ? value : null", "typeof value === \"string\" ? value : null"),
+ "M06": ("decoder: key allowed without a named capability", "lib/career/ui/auto-match.ts", "(!isText(value.capabilityKey) || value.capabilityName === null)", "(!isText(value.capabilityKey))"),
+ "M07": ("decoder: key of any type", "lib/career/ui/auto-match.ts", "(!isText(value.capabilityKey) || value.capabilityName === null)", "(value.capabilityName === null)"),
+ "M08": ("decoder: old shape (no key) refused", "lib/career/ui/auto-match.ts", "!(exactly(value, REQUIREMENT_KEYS) || exactly(value, REQUIREMENT_KEYS_WITH_CAPABILITY_KEY))", "!exactly(value, REQUIREMENT_KEYS_WITH_CAPABILITY_KEY)"),
+ "M09": ("decoder: one extra field of any name tolerated", "lib/career/ui/auto-match.ts", "!(exactly(value, REQUIREMENT_KEYS) || exactly(value, REQUIREMENT_KEYS_WITH_CAPABILITY_KEY))", "!(exactly(value, REQUIREMENT_KEYS) || (Object.keys(value).length === REQUIREMENT_KEYS.length + 1 && REQUIREMENT_KEYS.every(k => k in value)))"),
+ "M10": ("decoder: hands back a copy", "lib/career/ui/auto-match.ts", "  return value as unknown as RankedRequirement;\n}", "  return { ...value } as unknown as RankedRequirement;\n}"),
+ "M11": ("ranking: key changes a number (PARTIAL counted as 1 when keyed)", "lib/career/job-pool/role-ranking.ts", "const value = SEMANTIC_VALUE[finding.state];", "const value = finding.capabilityKey && finding.state === \"PARTIAL\" ? 1 : SEMANTIC_VALUE[finding.state];"),
+ "M12": ("oracle: checked band ends at zeroFit, not horizon - rho", "test/support/mapping/layout-reference.ts", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon - rho;", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.zeroFit;"),
+ "M13": ("oracle: shelf band unbounded outward (bodies may leave the field)", "test/support/mapping/layout-reference.ts", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon - rho;", "hi = shelf ? 1e9 : SPEC.rings.horizon - rho;"),
+ "M14": ("oracle: collision gap ignored", "test/support/mapping/layout-reference.ts", ">= o.bodyRadius + rho + SPEC.body.gap)", ">= o.bodyRadius + rho)"),
+ "M02L": ("semantic key = last proposal", "lib/career/job-pool/auto-match.ts", "proposalId: p.id });", "proposalId: proposals[proposals.length - 1].id });"),
+ "M02R": ("semantic key = the NEXT proposal's id (ids rotated consistently)", "lib/career/job-pool/auto-match.ts", "for (const r of requirements) for (const p of proposals) keyed.push({ requirementKey: r.requirementKey, relationKey: relationKey(p.hash, r.requirementHash, engineHash), proposalId: p.id });", "for (const r of requirements) for (const [i, p] of proposals.entries()) keyed.push({ requirementKey: r.requirementKey, relationKey: relationKey(p.hash, r.requirementHash, engineHash), proposalId: proposals[(i + 1) % proposals.length].id });"),
+ "M16": ("oracle: shelf band upper edge = field radius (disc may cross the field edge)", "test/support/mapping/layout-reference.ts", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon - rho;", "hi = shelf ? SPEC.field.radius : SPEC.rings.horizon - rho;"),
+ "M17": ("oracle: checked band upper edge = horizon (disc may cross the horizon)", "test/support/mapping/layout-reference.ts", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon - rho;", "hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon;"),
+ "M18": ("oracle: shelf lower edge = horizon", "test/support/mapping/layout-reference.ts", "const lo = shelf ? SPEC.rings.shelfNear : SPEC.rings.bestFit", "const lo = shelf ? SPEC.rings.horizon : SPEC.rings.bestFit"),
+ "M15": ("oracle: angular step halved", "test/support/mapping/layout-reference.ts", "const angleStep = (step / d) * (180 / Math.PI);", "const angleStep = (step / d) * (90 / Math.PI);"),
+}
+for mid in sys.argv[2:]:
+    label, f, old, new = M[mid]; W = f"{INT}/" + os.environ.get("SRC_NAME", "tpa") + f"-{mid}"
+    if os.path.exists(W): shutil.rmtree(W)
+    shutil.copytree(SRC, W, symlinks=True, ignore=shutil.ignore_patterns("node_modules", ".next", "test/pink"))
+    os.symlink(os.path.realpath(f"{SRC}/node_modules"), f"{W}/node_modules")
+    p = f"{W}/{f}"; s = open(p).read()
+    if s.count(old) != 1: print(f"{mid} PATTERN {s.count(old)} {label}", flush=True); shutil.rmtree(W); continue
+    open(p, "w").write(s.replace(old, new))
+    try:
+        r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *T], cwd=W, capture_output=True, text=True, timeout=900)
+        out = r.stdout + r.stderr; tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+        fails = sorted({l.split(">")[-1].strip()[:70] for l in out.splitlines() if l.strip().startswith("FAIL ")})
+        print(f"{mid} {'RED' if r.returncode != 0 else 'GREEN'} {label} | {tests[-1] if tests else 'no summary'} | {fails[:2]}", flush=True)
+    except subprocess.TimeoutExpired: print(f"{mid} TIMEOUT {label}", flush=True)
+    shutil.rmtree(W)
