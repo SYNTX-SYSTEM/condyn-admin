@@ -4030,6 +4030,39 @@ Open but not blocking:
   - GELB's targeted files: 20 files, 167/167 green, tsc 0.
 - **3. :3017: PASS.** It is unchanged on `32c63c2`: a clean worktree, started before the merge, with no capabilityKey in its code. Four GETs each returned 200, and PINK did nothing else to it.
 
+### 3.95 PERSON × JOB phase B, GRÜN `057f913` (2026-11-01) — GO, with test conditions F-PB-T1…T3
+
+**Request.** GELB asked for an independent, inverse check of only the phase-B modules `lib/career/mapping/{view,layout,signs,delta,focus}.ts` on `frontend/mapping-phase-b` (base `main` `85274dc`, not merged). The owner hardlock "NUR PHASE B. MEHR NICHT." applies. The owner's focus points: determinism, sign semantics, data identity, boundaries and agreement with the golden vectors.
+
+**Verdict: GO for the product code.** There is no product finding. Before any merge, the test gaps F-PB-T1…T3 must be closed in the tests only (`evidence/mapping-phase-b-057f913/verdicts.txt`).
+- **Golden vectors and determinism: PASS.**
+  - All 11 753 numbers of the 12 layouts, 4 rings and 5 constellations are exact.
+  - In 200 random and pressure layouts (17 394 bodies, 113 overflow), the product is byte-identical to the Phase-A oracle, also under permuted input. PINK's Python recomputation matches 200/200.
+- **Signs: PASS.**
+  - couplingSign equals the table and refuses 92 other pairs. The state lists equal the system's lists, and there are 10 distinct signatures.
+  - A name relation is never phase locked.
+  - runSign holds for 8 states × resumePending, and STALLED is frozen without a pulse.
+- **Data identity: PASS.**
+  - capabilityKey is taken 1:1 over 5 318 couplings.
+  - A key-less old body stays ABSENT, also with a PERSON capability's name (1 850 cases). NOT_IN_PERSON is kept.
+  - The reverse view works by key only. The view is order-free, deeply frozen and read-only.
+- **delta: PASS.** It equals PINK's own diff over 500 pairs. It is empty on equality, an exact mirror and order-free.
+- **focus: PASS.**
+  - All 72 reachable states keep the level invariants and carry no scope field.
+  - Every no-op and inadmissible action returns the same object.
+  - There is no B2 action.
+- **Boundaries: PASS.**
+  - Only the 12 files under the two mapping directories changed, and nothing imports the modules.
+  - There is no React, time, randomness, network or storage dependency.
+  - GRÜN's tests are 76/76, tsc 0.
+- **Test gaps.** Of PINK's 43 mutants, 9 survive GRÜN's suite. PINK's probe kills 5 of them; the other 4 are equivalent.
+  - **F-PB-T1 delta:** D2 (order without the requirement id) and D4 (fit changes below 0.01 ignored).
+  - **F-PB-T2 view:** V5 (constellation by key) and V12 (freezes the caller's ranking).
+  - **F-PB-T3 focus:** F4 (opening a pool clears the selection).
+- **Observations.** Both are shapes the backend never emits.
+  - **O-PB-1:** a duplicate requirement id passes the decoder, and then the view is order-dependent while delta refuses it.
+  - **O-PB-2:** LEXICAL/NONE passes the decoder, and couplingSign refuses it.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

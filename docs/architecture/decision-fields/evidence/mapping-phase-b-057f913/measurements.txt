@@ -1,0 +1,111 @@
+PINK §3.95 measurements — GRÜN frontend/mapping-phase-b 057f913 (base main 85274dc), 2026-11-01
+== boundaries ==
+origin/frontend/mapping-phase-b: 057f9131c498dd18884ce66cbb59ee47c602e2d4; merge-base with origin/main: 85274dc50721ff0f0967824eeaca65d9d2c133f7
+  057f913 parents=9532e67 refactor(career): mapping focus — a role or requirement is marked, not selected (GELB on 9532e67)
+  9532e67 parents=85274dc feat(career): PERSON x JOB mapping phase B — pure view, layout, sign, delta and focus modules
+files changed vs main (all under these two directories):
+  A	lib/career/mapping/delta.ts
+  A	lib/career/mapping/focus.ts
+  A	lib/career/mapping/layout.ts
+  A	lib/career/mapping/signs.ts
+  A	lib/career/mapping/view.ts
+  A	test/career/mapping/architecture.test.ts
+  A	test/career/mapping/delta.test.ts
+  A	test/career/mapping/fixtures.ts
+  A	test/career/mapping/focus.test.ts
+  A	test/career/mapping/layout-vectors.test.ts
+  A	test/career/mapping/signs.test.ts
+  A	test/career/mapping/view.test.ts
+importers of lib/career/mapping outside lib/career/mapping, test/career/mapping (git grep over the whole tree at 057f913): none
+imports of the five modules:
+  delta.ts: import type { RankedRequirement, RankedRole, RoleRanking } from "../ui/auto-match";
+  delta.ts: import type { MappingRoleId } from "./view";
+  focus.ts: import type { MappingCoupling, MappingRoleId, MappingView } from "./view";
+  layout.ts: import spec from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec.json";
+  signs.ts: import table from "../../../docs/architecture/decision-fields/mapping-spec/sign-table.json";
+  signs.ts: import type { AutoMatchRunState } from "../ui/auto-match";
+  view.ts: import type { CapabilityProposalProjection } from "../capability-core/projection";
+  view.ts: import type { AutoMatchRunState, EvidenceClass, Necessity, RankedRequirement, RoleRanking } from "../ui/auto-match";
+tokens Date, Math.random, crypto, process., globalThis, fetch, XMLHttpRequest, WebSocket, setTimeout, setInterval, queueMicrotask,
+  requestAnimationFrame, performance., localStorage, sessionStorage, indexedDB, document, window, navigator, use client, react, next
+  in the five modules (code and comments): 0
+== GRÜN's tests ==
+tsc --noEmit on the extract: 0 errors
+test/career/mapping + test/career/mapping-spec in an isolated local clone at 057f913 (origin/main ref = 85274dc), test:isolated:
+  Test Files  8 passed (8)
+       Tests  76 passed (76)
+ (in a plain extract without git history the two git-reading architecture tests cannot run: environment, not product)
+== PINK probe pink-pb.test.ts (own generators, seeded; decoder-valid bodies; no database row, no network, no model) ==
+       Tests  7 passed (7)
+ vectors: {"layouts": 12, "arcs": 4, "constellations": 5, "numbers": 11753, "exact": 11753, "maxDeviation": 0}
+ layoutRandom: {"cases": 200, "bodies": 17394, "overflow": 113, "displaced": 7354, "radialDisplaced": 3708, "permutedRuns": 400, "ringCases": 200, "arcs": 1171, "constellationNodes": 8133}
+ signs: {"couplingStates": 10, "accepted": 10, "refused": 92, "distinctSignatures": 10}
+ view: {"views": 400, "couplings": 5318, "keyStatus": {"ABSENT": 2793, "NOT_IN_PERSON": 893, "KNOWN": 1632}, "generatedKeys": {"key_FOREIGN": 893, "key_ABSENT": 1749, "key_NULL": 1044, "key_KNOWN": 1632}, "nameTrapCouplings": 1850, "reverseViews": 4375, "permutedRuns": 400}
+ delta: {"pairs": 500, "emptyChecks": 1500, "smallFitChanges": 467, "kinds": {"ROLE_TIER_CHANGED": 78, "REQUIREMENT_ADDED": 94, "REQUIREMENT_STATE_CHANGED": 95, "ROLE_REMOVED": 75, "REQUIREMENT_KEY_CHANGED": 33, "ROLE_ADDED": 56, "REQUIREMENT_REMOVED": 61, "ROLE_FIT_CHANGED": 59, "ROLE_RANK_CHANGED": 100}, "ops": {"op_tier": 91, "op_fit": 71, "op_text": 91, "op_roleDel": 80, "op_keyAbsentNull": 75, "op_reqAdd": 99, "op_source": 80, "op_roleAdd": 81, "op_key": 79, "op_state": 99, "op_reqDel": 84, "op_rankSwap": 88}}
+ focus: {"reachableStates": 72, "transitions": 1080, "sameObject": 181, "invalidSame": 1728, "levels": {"L0": 6, "L1": 12, "L2": 18, "L3": 36}}
+ runSigns: NOT_STARTED/false:none,false,false,false NOT_STARTED/true:none,false,false,false DISABLED/false:none,false,false,false DISABLED/true:none,false,false,false RUNNING/false:formation,true,false,false RUNNING/true:formation,true,false,false STALLED/false:none,false,true,false STALLED/true:none,false,true,false COMPLETED/false:none,false,false,false COMPLETED/true:none,false,false,false PARTIAL/false:none,false,false,false PARTIAL/true:none,false,false,true FAILED/false:none,false,false,false FAILED/true:none,false,false,true SKIPPED/false:none,false,false,false SKIPPED/true:none,false,false,false
+== PINK Python recomputation from the spec text (pink_layout_final.py --bounds, committed in evidence/mapping-phase-a-ea1e29f) ==
+ the 200 random and pressure layouts of the probe: 200/200 MATCH (the Python keeps unrounded coordinates for collisions)
+== edge shapes upstream never emits (pink-pb-edges.test.ts) ==
+ {
+  "lexicalNoneDecoded": true,
+  "lexicalNoneSign": "ERR_MAPPING_SIGN_SOURCE_MISMATCH:LEXICAL/NONE",
+  "duplicateRequirementDecoded": true,
+  "duplicateRequirementViewOrderFree": false,
+  "singlePoolControlDecoded": true,
+  "duplicatePoolDecoded": false
+ }== PINK's 43 mutants (mutate-pb.py) vs GRÜN's suite (architecture.test.ts excluded: it reads git) ==
+ S1 RED sign: class check dropped | Tests  1 failed | 68 passed (69) | ['INVERSE: an unknown state and a state under the wrong source throw — n']
+ S2 RED sign: STALLED pulses while resumePending | Tests  1 failed | 68 passed (69) | ['a resume pulse exactly for PARTIAL and FAILED while resumePending; STA']
+ S3 RED sign: resumePending type check dropped | Tests  1 failed | 68 passed (69) | ['INVERSE: an unknown run state throws; a pending flag that is not a boo']
+ S4 RED sign: name relation phase locked | Tests  1 failed | 68 passed (69) | ['honesty: DIFFERENT, UNCLEAR and NONE are three signs; a name relation ']
+ S5 RED sign: UNCLEAR painted as DIFFERENT | Tests  2 failed | 67 passed (69) | ['honesty: DIFFERENT, UNCLEAR and NONE are three signs; a name relation ', 'the ten signs differ pairwise in arcLine + ar
+ S6 RED sign: NONE painted as UNCLEAR | Tests  3 failed | 66 passed (69) | ['every semantic state, every lexical basis and NONE has a sign of its o', 'honesty: DIFFERENT, UNCLEAR and NONE are three sig
+ V1 RED view: absent key filled from the PERSON name | Tests  4 failed | 65 passed (69) | ['DATA IDENTITY: the key is taken 1:1 from the requirement; the name is ', 'INVERSE: an absent key (older paylo
+ V2 RED view: foreign key reported KNOWN | Tests  2 failed | 67 passed (69) | ['INVERSE: a key that is not among the PERSON capabilities is marked as ', 'REPRODUCE: pools by name, roles by rank with ra
+ V3 RED view: foreign-key coupling dropped | Tests  3 failed | 66 passed (69) | ['INVERSE: a key that is not among the PERSON capabilities is marked as ', 'REPRODUCE: pools by name, roles by rank with 
+ V4 GREEN view: ring lighter first | Tests  69 passed (69) | []
+ V5 GREEN view: constellation by key only | Tests  69 passed (69) | []
+ V6 RED view: ranks in input order | Tests  1 failed | 68 passed (69) | ['DETERMINISM: shuffled ranks, requirements, pools and capabilities give']
+ V7 RED view: requirement key falls back to the name | Tests  2 failed | 67 passed (69) | ['DATA IDENTITY: the key is taken 1:1 from the requirement; the name is ', 'INVERSE: an absent key (older paylo
+ V8 RED view: shallow freeze | Tests  1 failed | 68 passed (69) | ['READ-ONLY: frozen input is read without a write; the input is unchange']
+ V9 RED view: weightSum of coupled requirements only | Tests  1 failed | 68 passed (69) | ['REPRODUCE: pools by name, roles by rank with rank/tier/fit/weightSum, ']
+ V10 RED view: pools by id | Tests  1 failed | 68 passed (69) | ['REPRODUCE: pools by name, roles by rank with rank/tier/fit/weightSum, ']
+ V11 RED view: NO_ROLES not told | Tests  1 failed | 68 passed (69) | ["no ranking: an empty, honest view with its reason; the person's conste"]
+ V12 GREEN view: quotes shared with the input | Tests  69 passed (69) | []
+ L1 RED layout: roles in input order | Tests  1 failed | 68 passed (69) | ['DETERMINISM and READ-ONLY: frozen input, same output byte for byte, al']
+ L2 RED layout: sectors by pool id | Tests  1 failed | 68 passed (69) | ['HAND-CHECKED: sectors follow the pool NAME, not the id; a small pool g']
+ L3 RED layout: band upper edge exclusive | Tests  1 failed | 68 passed (69) | ['all twelve layouts match (band edges LV08–LV12 and the real 73-role sh']
+ L4 GREEN layout: sector end exclusive | Tests  69 passed (69) | []
+ L5 GREEN layout: overflow bodies collide | Tests  69 passed (69) | []
+ L6 RED layout: shelf fit cap 0.6 | Tests  2 failed | 67 passed (69) | ['INVERSE: the comparison has teeth — one coordinate off by 2e-6 is a di', 'all twelve layouts match (band edges LV08–LV12 and
+ L7 RED layout: a single arc gets a gap | Tests  1 failed | 68 passed (69) | ['all four requirement rings and all five constellations match']
+ L8 RED layout: a single capability not centred | Tests  1 failed | 68 passed (69) | ['all four requirement rings and all five constellations match']
+ L9 RED layout: arc tie by id descending | Tests  1 failed | 68 passed (69) | ['all four requirement rings and all five constellations match']
+ L10 GREEN layout: collision on unrounded coordinates of placed bodies | Tests  69 passed (69) | []
+ D1 RED delta: absent key differs from null | Tests  1 failed | 68 passed (69) | ['a key change alone (same state) is a KEY change; absent and null are t']
+ D2 GREEN delta: requirement id not in the sort | Tests  69 passed (69) | []
+ D3 RED delta: source change ignored | Tests  1 failed | 68 passed (69) | ['a change of the source alone is a state change (NONE/NONE → LEXICAL/NO']
+ D4 GREEN delta: small fit change ignored | Tests  69 passed (69) | []
+ D5 RED delta: removed requirement loses its key | Tests  1 failed | 68 passed (69) | ['MIRROR: Delta(b, a) is Delta(a, b) with from/to swapped and added/remo']
+ D6 RED delta: duplicate requirement not refused | Tests  1 failed | 68 passed (69) | ['INVERSE: a ranking that names one role or one requirement twice is ref']
+ D7 RED delta: tier change ignored | Tests  1 failed | 68 passed (69) | ["a semantic finding arrives: the requirement's source/state change, the"]
+ F1 RED focus: no-op returns a new equal object | Tests  1 failed | 68 passed (69) | ['INVERSE: inadmissible transitions change nothing — the very same objec']
+ F2 RED focus: requirement opens without a role | Tests  1 failed | 68 passed (69) | ['INVERSE: inadmissible transitions change nothing — the very same objec']
+ F3 RED focus: UP from L3 jumps to L1 | Tests  1 failed | 68 passed (69) | ['L0 → L1 (pool) → L2 (role) → L3 (requirement), and UP walks back one l']
+ F4 GREEN focus: opening a pool clears the selection | Tests  69 passed (69) | []
+ F5 RED focus: B-3 broken, the state carries a job scope | Tests  2 failed | 67 passed (69) | ['the module imports nothing of the job scope, the URL or navigation', 'the state has no job-scope field, a
+ F6 RED focus: marking a role opens it | Tests  1 failed | 68 passed (69) | ['selection is its own axis: opening never selects, selecting never open']
+ F7 RED focus: reverse view couples key-less couplings by PERSON name | Tests  1 failed | 68 passed (69) | ['REVERSE VIEW: a chosen capability shows the requirements and roles it ']
+ F8 RED focus: opening a role keeps the old pool | Tests  1 failed | 68 passed (69) | ['a role opens from any level and brings its own pool; another requireme']
+== the 9 survivors vs PINK's probe ==
+ V4 GREEN view: ring lighter first | Tests  7 passed (7) | []
+ V5 RED view: constellation by key only | Tests  1 failed | 6 passed (7) | ['random decoder-valid rankings: key 1:1, ABSENT never coupled by name, ']
+ V12 RED view: quotes shared with the input | Tests  1 failed | 6 passed (7) | ['random decoder-valid rankings: key 1:1, ABSENT never coupled by name, ']
+ L4 GREEN layout: sector end exclusive | Tests  7 passed (7) | []
+ L5 GREEN layout: overflow bodies collide | Tests  7 passed (7) | []
+ L10 RED layout: collision on unrounded coordinates of placed bodies | Tests  1 failed | 6 passed (7) | ['random and edge inputs: product === Phase-A oracle byte for byte, any ']
+ D2 RED delta: requirement id not in the sort | Tests  1 failed | 6 passed (7) | ["random pairs: product = PINK's own diff; empty on equality (also shuff"]
+ F4 RED focus: opening a pool clears the selection | Tests  1 failed | 6 passed (7) | ['reachable state space: level invariants, no scope field, inadmissible ']
+ D4 RED delta: small fit change ignored | Tests  1 failed | 6 passed (7) | ["random pairs: product = PINK's own diff; empty on equality (also shuff"]
+ (D4 after the probe gained the targeted small-fit case; first run D4 GREEN)

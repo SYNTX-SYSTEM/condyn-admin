@@ -1,0 +1,39 @@
+// PINK phase B edge observations (shapes upstream refuses or never emits): recorded, not asserted as faults.
+import { it } from "vitest";
+import { writeFileSync } from "node:fs";
+import { buildMappingView } from "../../lib/career/mapping/view";
+import { couplingSign } from "../../lib/career/mapping/signs";
+import { decodeRoleRanking } from "../../lib/career/ui/auto-match";
+import { formula } from "../career/auto-capability/fixtures";
+
+const A = "CAN_PINK0000000000000000000000000PE";
+const req = (id: string, extra: Record<string, unknown>) => ({ poolRequirementId: id, requirementText: `Req ${id}`, necessity: "REQUIRED", weight: 3, explanation: null, evidenceLimitation: null, quotes: [], ...extra });
+const body = (reqs: unknown[], pools = [{ jobPoolUploadId: "JP_A", poolName: "A" }]) => ({ rankingVersion: "ROLE_RANKING_V1", authority: { ranking: true, decision: false, authorityState: "NONE" }, analysisId: A, evidenceClass: null,
+  pools, poolsDropped: [], formula: formula(), counts: { pools: pools.length, roles: 1, ranked: 1 },
+  ranks: [{ rank: 1, tier: "LEXICAL_ONLY", role: { jobPoolUploadId: "JP_A", poolRoleId: "r1", title: "T", organizationName: "O", poolName: "A" }, fit: 0, requiredGaps: 0, semanticCoverage: { evaluated: 0, total: reqs.length }, requirements: reqs }] });
+it("edges", () => {
+  const out: Record<string, unknown> = {};
+  // 1. LEXICAL source with basis NONE: does the strict decoder accept it, and what does couplingSign do with it?
+  const lexNone = decodeRoleRanking(body([req("q1", { source: "LEXICAL", state: "NONE", value: 0, contribution: 0, capabilityName: null })]), A);
+  out.lexicalNoneDecoded = lexNone !== null;
+  try { couplingSign("LEXICAL", "NONE"); out.lexicalNoneSign = "SIGNED"; } catch (e) { out.lexicalNoneSign = String((e as Error).message); }
+  // 2. two requirements with one poolRequirementId in one role: decoder, and is the view order-free then?
+  const a = req("q1", { source: "LEXICAL", state: "NAME_EXACT", value: 0.5, contribution: 1.5, capabilityName: "X", capabilityKey: "PCAP_X" });
+  const b = req("q1", { source: "NONE", state: "NONE", value: 0, contribution: 0, capabilityName: null, capabilityKey: null });
+  const dup = decodeRoleRanking({ ...body([a, b]), ranks: [{ ...body([a, b]).ranks[0], fit: 0.25 }] }, A);
+  out.duplicateRequirementDecoded = dup !== null;
+  if (dup) {
+    const run = { state: "COMPLETED" as const, resumePending: false };
+    const v1 = JSON.stringify(buildMappingView({ capabilities: [], ranking: dup, run, evidenceClass: null }));
+    const v2 = JSON.stringify(buildMappingView({ capabilities: [], ranking: { ...dup, ranks: [{ ...dup.ranks[0], requirements: [...dup.ranks[0].requirements].reverse() }] }, run, evidenceClass: null }));
+    out.duplicateRequirementViewOrderFree = v1 === v2;
+  }
+  // 3. one pool id twice in pools
+  const t0 = body([], [{ jobPoolUploadId: "JP_A", poolName: "A" }, { jobPoolUploadId: "JP_A", poolName: "A" }]);
+  const twice = decodeRoleRanking({ ...t0, ranks: [{ ...t0.ranks[0], fit: null }] }, A);
+  const once = decodeRoleRanking({ ...body([]), ranks: [{ ...body([]).ranks[0], fit: null }] }, A);
+  out.singlePoolControlDecoded = once !== null;
+  if (twice) out.duplicatePoolViewPools = buildMappingView({ capabilities: [], ranking: twice, run: { state: "COMPLETED", resumePending: false }, evidenceClass: null }).pools.length;
+  out.duplicatePoolDecoded = twice !== null;
+  writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(out, null, 1));
+});
