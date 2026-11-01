@@ -78,6 +78,23 @@ describe("MAP-DELTA · what changed between two reads", () => {
     for (const c of once) expect(Object.keys(c).sort()).toEqual(["from", "kind", "poolRequirementId", "role", "to"]);
   });
 
+  it("ORDER (PINK §3.95 F-PB-T1 D2): two changes of one role and kind are sorted by requirement id, whatever order the requirements come in", () => {
+    const of = (ids: string[], changed: boolean) => rankingOf([{ pool: POOL_A, roleId: "r", title: "R", requirements: ids.map(id => changed ? sem(id, "REQUIRED", "COVERS", "PCAP_TS", "TypeScript") : lex(id, "REQUIRED", "NAME_EXACT", "PCAP_TS", "TypeScript")) }]);
+    for (const ids of [["q_b", "q_a"], ["q_a", "q_b"]]) {
+      const states = diffRankings(of(ids, false), of(ids, true)).filter(c => c.kind === "REQUIREMENT_STATE_CHANGED");
+      expect(states.map(c => c.poolRequirementId), ids.join()).toEqual(["q_a", "q_b"]);
+    }
+  });
+
+  it("FIT (PINK §3.95 F-PB-T1 D4): a fit change below 0.01 is a change — no silent tolerance", () => {
+    // 41 REQUIRED + 2 OPTIONAL = weight 125; one OPTIONAL goes from NONE to NAME_EXACT: fit 0 → 0.5 / 125 = 0.004.
+    const of = (exact: boolean) => rankingOf([{ pool: POOL_A, roleId: "r", title: "R", requirements: [
+      ...Array.from({ length: 41 }, (_, i) => lex(`q_${String(i).padStart(2, "0")}`, "REQUIRED", "NONE", null)),
+      lex("q_o1", "OPTIONAL", "NONE", null), exact ? lex("q_o2", "OPTIONAL", "NAME_EXACT", "PCAP_TS", "TypeScript") : lex("q_o2", "OPTIONAL", "NONE", null)] }]);
+    const fit = diffRankings(of(false), of(true)).filter(c => c.kind === "ROLE_FIT_CHANGED");
+    expect(fit).toEqual([{ kind: "ROLE_FIT_CHANGED", role: { jobPoolUploadId: POOL_A, poolRoleId: "r" }, poolRequirementId: null, from: 0, to: 0.004 }]);
+  });
+
   it("INVERSE: a ranking that names one role or one requirement twice is refused", () => {
     const r = standardRanking();
     expect(() => diffRankings(r, { ...r, ranks: [...r.ranks, r.ranks[0]] })).toThrow(/ERR_MAPPING_DELTA_DUPLICATE_ROLE/);

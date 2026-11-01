@@ -97,6 +97,27 @@ describe("MAP-VIEW · the view of a ranking", () => {
     expect(view.roles[0].requirements).not.toBe(given.ranking!.ranks[0].requirements);
   });
 
+  it("CONSTELLATION (PINK §3.95 F-PB-T2 V5): by name, then key — where name order and key order differ", () => {
+    const capabilities = [{ key: "K_1", name: "Zeta" }, { key: "K_2", name: "Alpha" }, { key: "K_0", name: "Alpha" }, { key: "K_9", name: "Beta" }];
+    expect(buildMappingView(input({ capabilities })).constellation.map(c => c.key)).toEqual(["K_0", "K_2", "K_9", "K_1"]);
+  });
+
+  it("CALLER'S DATA (PINK §3.95 F-PB-T2 V12): the view freezes its own copies, never the caller's ranking; its quotes are copies", () => {
+    const given = input();
+    const before = JSON.stringify(given);
+    const view = buildMappingView(given);
+    const ranking = given.ranking!;
+    const quoted = ranking.ranks[0].requirements.find(q => q.poolRequirementId === "q_ts")!;
+    for (const part of [given, ranking, ranking.ranks, ranking.ranks[0], ranking.ranks[0].requirements, quoted, quoted.quotes, quoted.quotes[0], ranking.pools, given.capabilities, given.capabilities[0], given.run])
+      expect(Object.isFrozen(part)).toBe(false);
+    expect(JSON.stringify(given)).toBe(before);
+    const coupled = couplingOf(view, POOL_A, "role_platform", "q_ts")!;
+    expect(coupled.quotes).toEqual(quoted.quotes);
+    expect(coupled.quotes).not.toBe(quoted.quotes);
+    expect(coupled.quotes[0]).not.toBe(quoted.quotes[0]);
+    expect(Object.isFrozen(coupled.quotes[0])).toBe(true);
+  });
+
   it("INVERSE: a role of an unknown pool and two PERSON capabilities under one key are refused, not guessed", () => {
     const r = standardRanking();
     expect(() => buildMappingView(input({ ranking: { ...r, pools: r.pools.filter(p => p.jobPoolUploadId === POOL_A) } }))).toThrow(/ERR_MAPPING_VIEW_UNKNOWN_POOL/);

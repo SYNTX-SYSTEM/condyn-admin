@@ -76,6 +76,17 @@ describe("MAP-FOCUS · selection and the reverse view", () => {
     expect(focusReduce(both, { type: "CLEAR_SELECTION" }).selection).toBeNull();
   });
 
+  it("OPENING (PINK §3.95 F-PB-T3 F4): no open action sets or drops the selection, at any level", () => {
+    const opens: FocusAction[] = [{ type: "OPEN_POOL", jobPoolUploadId: POOL_B }, { type: "OPEN_ROLE", role: RB }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_k8" }];
+    for (const selection of [{ type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }, { type: "MARK_ROLE", role: RA }, { type: "MARK_REQUIREMENT", role: RA, poolRequirementId: "q_ts" }] as FocusAction[]) {
+      const selected = run(selection, { type: "OPEN_ROLE", role: RA }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_ts" });
+      let state = selected;
+      for (const open of opens) { state = focusReduce(state, open); expect(state.selection, `${selection.type} then ${open.type}`).toEqual(selected.selection); }
+    }
+    let plain = FOCUS_INITIAL;
+    for (const open of opens) { plain = focusReduce(plain, open); expect(plain.selection, open.type).toBeNull(); }
+  });
+
   it("REVERSE VIEW: a chosen capability shows the requirements and roles it couples — over capabilityKey only, never over the name", () => {
     const view = buildMappingView({ capabilities: CAPS, ranking: standardRanking(), run: { state: "COMPLETED", resumePending: false }, evidenceClass: "STAND_IN" });
     const ts = reverseView(view, "PCAP_TS");
