@@ -1,0 +1,117 @@
+PINK §3.94 measurements — origin/main 85274dc (Phase-A-Integration), 2026-11-01
+== 1. main ==
+origin/main: 85274dc50721ff0f0967824eeaca65d9d2c133f7
+origin/backend/mapping-phase-a: 85274dc50721ff0f0967824eeaca65d9d2c133f7
+tree origin/main: 8447827ead5971357cde6577d2bc9c38c3fc0274  tree 85274dc (§3.93): 8447827ead5971357cde6577d2bc9c38c3fc0274
+first-parent chain:
+  85274dc parents=ea1e29f
+  ea1e29f parents=3b632da
+  3b632da parents=26c59f7
+  26c59f7 parents=32c63c2
+  32c63c2 parents=fe859b3 fcf1084
+26c59f7 ancestor: yes  32c63c2 ancestor: yes
+commits 26c59f7..origin/main: 3 (3b632da ea1e29f 85274dc), merges: 0
+files changed 26c59f7..origin/main:
+  A	docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md
+  A	docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json
+  A	docs/architecture/decision-fields/mapping-spec/layout-spec.json
+  A	docs/architecture/decision-fields/mapping-spec/real-shape-73.json
+  A	docs/architecture/decision-fields/mapping-spec/sign-table.json
+  M	lib/career/job-pool/auto-match.ts
+  M	lib/career/job-pool/role-ranking.ts
+  M	lib/career/ui/auto-match.ts
+  M	test/career/job-pool/auto-match-gemini.postgres.test.ts
+  M	test/career/job-pool/auto-match.postgres.test.ts
+  A	test/career/job-pool/capability-key.test.ts
+  A	test/career/mapping-spec/layout.test.ts
+  A	test/career/mapping-spec/sign-table.test.ts
+  A	test/support/mapping/layout-reference.ts
+  A	test/support/mapping/vectors.ts
+  A	test/support/mapping/write-vectors.ts
+byte compare of a git-archive extract of origin/main with PINK's §3.93 extract of 85274dc (node_modules, build info excluded): no difference
+== 3. :3017 (metadata + GET only) ==
+listener 127.0.0.1:3017 = next-server, started 2026-10-31 03:56 (before the Phase-A merge), cwd = worktree condyn-admin-dll-runtime
+that worktree: HEAD 32c63c2b46d87eaa9cfc82971121e5828e8fed18, branch runtime/dll-main, porcelain lines: 0
+capabilityKey occurrences in its lib/career/ui/auto-match.ts and lib/career/job-pool/role-ranking.ts: 0, 0
+GET 200: / /career/demo /api/career/analyses /api/career/job-pools
+== 2a. GELB's targeted tests on the origin/main extract, test:isolated ==
+  Test Files  20 passed (20)
+       Tests  167 passed (167)
+ tsc --noEmit: 0 errors
+ (one stderr block 'GEMINI REQUEST FAILURE' is the stubbed model m1 of provider-calls/extraction-sites, no network)
+== 2b. PINK probe pink-pa.test.ts (base 26c59f7 vs main, mocked @google/genai, no network) ==
+       Tests  6 passed (6)
+ semantic keys = judged-best proposal id shown to the provider: 43/43; NONE key null 36/36; key == name 0; one key per capability name: True
+ lexical keys = lexical.proposalId: 6/6; NONE null 73/73; model calls 0
+ numbers equal to base on the same rows: True / True; reads that changed the database: 0; fetch 0
+ cache read: keys differ 0, requests 5 -> 5
+ decoder: {'ACCEPTED_SAME_OBJECT': 8, 'REFUSED': 14}; base decoder on new payload REFUSED, on old ACCEPTED
+ run states: ['NOT_STARTED', 'DISABLED', 'RUNNING', 'STALLED', 'COMPLETED', 'PARTIAL', 'FAILED', 'SKIPPED']
+ (record counts only; no model text, no CV quotes — E-6)
+== 2c. recomputation from the spec text (pink_layout_final.py --bounds, from §3.93) ==
+ layout LV01-single-role: MATCH
+ layout LV02-three-pools-mixed-tiers: MATCH
+ layout LV03-equal-fit-ties: MATCH
+ layout LV04-crowded-60: MATCH
+ layout LV05-capacity-exceeded-overflow: MATCH
+ layout LV08-checked-fit-0-pressed-to-the-horizon: MATCH
+ layout LV09-shelf-fit-0-pressed-to-the-field-edge: MATCH
+ layout LV11-shelf-wide-bodies-cannot-leave-the-field: MATCH
+ layout LV12-shelf-medium-bodies-cannot-cross-the-field-edge: MATCH
+ layout LV10-checked-fit-1-pressed-from-the-inner-edge: MATCH
+ layout LV06-no-roles: MATCH
+ layout LV07-real-shape-73: MATCH
+ arcs AV01-seven-requirements: MATCH
+ arcs AV02-single: MATCH
+ arcs AV03-empty: MATCH
+ arcs AV04-ties-by-id: MATCH
+ constellation CV00-0-capabilities: MATCH
+ constellation CV01-1-capabilities: MATCH
+ constellation CV05-5-capabilities: MATCH
+ constellation CV40-40-capabilities: MATCH
+ constellation CV80-80-capabilities: MATCH
+ identical to the §3.93 output: yes
+== 2d. invariants on the published vectors (pink_invariants.py) ==
+ LV01-single-role: bodies 1 drawn 1 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 1) 0 fitOrderInverted 0 disp
+ LV02-three-pools-mixed-tiers: bodies 6 drawn 6 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 6) 0 fitOrderInv
+ LV03-equal-fit-ties: bodies 12 drawn 12 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 12) 0 fitOrderInverted 
+ LV04-crowded-60: bodies 60 drawn 60 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 60) 0 fitOrderInverted 0 di
+ LV05-capacity-exceeded-overflow: bodies 320 drawn 289 overflow 31/31 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 9 xy 0 fit=dist(undisplaced 34) 0 f
+ LV08-checked-fit-0-pressed-to-the-horizon: bodies 200 drawn 200 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisplaced
+ LV09-shelf-fit-0-pressed-to-the-field-edge: bodies 260 drawn 260 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 1 xy 0 fit=dist(undisplace
+ LV11-shelf-wide-bodies-cannot-leave-the-field: bodies 120 drawn 119 overflow 1/1 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undispl
+ LV12-shelf-medium-bodies-cannot-cross-the-field-edge: bodies 200 drawn 200 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(
+ LV10-checked-fit-1-pressed-from-the-inner-edge: bodies 160 drawn 160 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisp
+ LV06-no-roles: bodies 0 drawn 0 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 0) 0 fitOrderInverted 0 displac
+ LV07-real-shape-73: bodies 73 drawn 73 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 1 xy 0 fit=dist(undisplaced 67) 0 fitOrderInverted 0
+ AV01-seven-requirements: arcs 7 total 360.0 contiguous True fill=value True
+ AV02-single: arcs 1 total 360 contiguous True fill=value True
+ AV03-empty: arcs 0 total 0 contiguous True fill=value True
+ AV04-ties-by-id: arcs 3 total 360 contiguous True fill=value True
+ CV00-0-capabilities: nodes 0 overflow 0 outerEdge 5 (< person 90) nodeOverlap 0 sum 0 = input 0
+ CV01-1-capabilities: nodes 1 overflow 0 outerEdge 5.0 (< person 90) nodeOverlap 0 sum 1 = input 1
+ CV05-5-capabilities: nodes 5 overflow 0 outerEdge 35.0 (< person 90) nodeOverlap 0 sum 5 = input 5
+ CV40-40-capabilities: nodes 40 overflow 0 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 40 = input 40
+ CV80-80-capabilities: nodes 69 overflow 11 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 80 = input 80
+== 2e. mutants vs GELB's phase-A tests on the origin/main extract (mutate-pa3.py from §3.93, default timeout) ==
+ M01 RED semantic key = capability name | Tests  3 failed | 56 passed (59) | ['the key is the id of the BEST proposal — not the first, not the last; ', 'the shared start uses the configured provider:
+ M02 RED semantic key = first proposal of the projection | Tests  41 passed (41) | ['FAIL  test/career/job-pool/capability-key.test.ts [ test/career/job-po']
+ M02L RED semantic key = last proposal | Tests  41 passed (41) | ['FAIL  test/career/job-pool/capability-key.test.ts [ test/career/job-po']
+ M02R RED semantic key = the NEXT proposal's id (ids rotated consistently) | Tests  1 failed | 58 passed (59) | ['one cache key per requirement and proposal, each remembering ITS propo']
+ M03 RED lexical key = proposal name | Tests  2 failed | 57 passed (59) | ['a semantic relation carries the proposal id of its finding, a name rel', 'decodes the new shape and keeps the key']
+ M04 RED lexical key dropped (null) | Tests  2 failed | 57 passed (59) | ['a semantic relation carries the proposal id of its finding, a name rel', 'decodes the new shape and keeps the key']
+ M05 RED keyOf lets an empty key through | Tests  1 failed | 58 passed (59) | ['an older finding without a key (or an empty one) is a null key — never']
+ M06 RED decoder: key allowed without a named capability | Tests  1 failed | 58 passed (59) | ['INVERSE: a key on a requirement with no capability is refused']
+ M07 RED decoder: key of any type | Tests  2 failed | 57 passed (59) | ['INVERSE: a non-text key is refused', 'INVERSE: an empty key is refused']
+ M08 RED decoder: old shape (no key) refused | Tests  1 failed | 58 passed (59) | ['an older payload without the field (the persisted shape) still decodes']
+ M09 RED decoder: one extra field of any name tolerated | Tests  1 failed | 58 passed (59) | ['INVERSE: an unknown field beside the old shape (13 fields, no capabili']
+ M10 GREEN decoder: hands back a copy | Tests  59 passed (59) | []
+ M11 RED ranking: key changes a number (PARTIAL counted as 1 when keyed) | Tests  1 failed | 58 passed (59) | ['through the ranking the keys and the numbers stay what the formula say']
+ M12 RED oracle: checked band ends at zeroFit, not horizon - rho | Tests  2 failed | 57 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'the committed vectors a
+ M13 RED oracle: shelf band unbounded outward (bodies may leave the field) | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a ch
+ M14 RED oracle: collision gap ignored | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'NO OVERLAP: placed bodies keep their gap; bodies 
+ M15 RED oracle: angular step halved | Tests  2 failed | 57 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'the committed vectors are exactly what the referenc
+ M16 RED oracle: shelf band upper edge = field radius (disc may cross the field edge) | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HO
+ M17 RED oracle: checked band upper edge = horizon (disc may cross the horizon) | Tests  3 failed | 56 passed (59) | ['CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit ', 'HORIZON:
+ M18 RED oracle: shelf lower edge = horizon | Tests  3 failed | 56 passed (59) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a checked role lies inside the hori
+ M02/M02L: the capability-key file fails as a whole (as in §3.92); PINK's probe kills both at behaviour level (§3.91). M10 is equivalent (§3.91).

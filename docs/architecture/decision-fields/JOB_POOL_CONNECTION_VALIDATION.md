@@ -4013,6 +4013,23 @@ Open but not blocking:
   - Two unmutated runs under load were each 59/59 green. "NO OVERLAP" took 5.9 s, which would have failed with the old 5 s default.
 - **Product code.** Since `ea1e29f` it changed only a doc comment. tsc 0.
 
+### 3.94 PERSON × JOB phase A, integrated on `main` `85274dc` (2026-11-01) — GO
+
+**Request.** GELB asked PINK to confirm the integrated Phase-A state on origin/main, a fast-forward from `26c59f7`, under the owner hardlock "NUR PHASE-A-INTEGRATION. MEHR NICHT." (no rollout to :3017, no Gemini, no database or UI change, no GRÜN, no phase B). Three points to check.
+
+**Verdict: GO.** There is no integration fault inside Phase A (`evidence/integration-main-85274dc/verdicts.txt`).
+- **1. main: PASS.**
+  - origin/main is `85274dc`, with exactly the tree PINK released in §3.93. A fresh extract is byte-identical to PINK's §3.93 extract.
+  - The chain is linear with no merge commit. `26c59f7` and `32c63c2` are ancestors under their own ids.
+  - Only the 16 Phase-A files changed.
+- **2. Contracts: PASS.**
+  - capabilityKey: semantic keys are 43/43 and lexical keys 6/6. NONE keys are null. Numbers equal the base and reads write nothing.
+  - Decoder: 14 cases refused, 8 accepted as the same object.
+  - Recomputation: 21/21 vectors, and the invariants hold.
+  - Mutants: 19 of 20 are red, and M10 is the known equivalent mutant.
+  - GELB's targeted files: 20 files, 167/167 green, tsc 0.
+- **3. :3017: PASS.** It is unchanged on `32c63c2`: a clean worktree, started before the merge, with no capabilityKey in its code. Four GETs each returned 200, and PINK did nothing else to it.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
