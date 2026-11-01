@@ -49,6 +49,10 @@ describe("MAP-ARCH · pure modules", () => {
     for (const word of ["solid", "dotted", "counterTick", "faint-dotted", "formation"]) expect(signs, word).not.toContain(`"${word}"`);
     expect(signs).toMatch(/sign-table\.json/);
   });
+
+  it("B-3 naming: no module names an action that selects a role or a requirement (they are marked)", () => {
+    for (const f of MODULES) expect(code(f), f).not.toMatch(/SELECT_(ROLE|REQUIREMENT|POOL|JOB)/);
+  });
 });
 
 describe("MAP-ARCH · nothing existing is touched", () => {

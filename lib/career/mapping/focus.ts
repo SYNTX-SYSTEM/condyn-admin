@@ -4,8 +4,8 @@ import type { MappingCoupling, MappingRoleId, MappingView } from "./view";
  * PERSON × JOB mapping, phase B · the focus, a pure state machine: focusReduce(state, action) → state. No effect, no address bar,
  * no routing — and, binding B-3, no job scope: opening a job here is not choosing it for B2, so the state has no such field and the
  * machine no such action. Levels: L0 the whole field, L1 one pool, L2 one role open (body, requirement ring, coupled capabilities),
- * L3 one requirement or coupling with its evidence. Beside the level stands the selection (a capability, a role or a requirement);
- * a selected capability gives the reverse view over capabilityKey. An inadmissible action returns the very same state object.
+ * L3 one requirement or coupling with its evidence. Beside the level stands the selection: a selected capability (its reverse view
+ * over capabilityKey) or a marked role or requirement — a highlight only; "select this job" (B-4) is not an action of this machine. An inadmissible action returns the very same state object.
  */
 export type FocusLevel = "L0" | "L1" | "L2" | "L3";
 export type FocusSelection =
@@ -22,14 +22,14 @@ export interface FocusState {
   readonly requirement: string | null;
   readonly selection: FocusSelection | null;
 }
-export const FOCUS_ACTIONS = ["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "SELECT_CAPABILITY", "SELECT_ROLE", "SELECT_REQUIREMENT", "CLEAR_SELECTION", "UP", "RESET"] as const;
+export const FOCUS_ACTIONS = ["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "SELECT_CAPABILITY", "MARK_ROLE", "MARK_REQUIREMENT", "CLEAR_SELECTION", "UP", "RESET"] as const;
 export type FocusAction =
   | { type: "OPEN_POOL"; jobPoolUploadId: string }
   | { type: "OPEN_ROLE"; role: MappingRoleId }
   | { type: "OPEN_REQUIREMENT"; poolRequirementId: string }
   | { type: "SELECT_CAPABILITY"; capabilityKey: string }
-  | { type: "SELECT_ROLE"; role: MappingRoleId }
-  | { type: "SELECT_REQUIREMENT"; role: MappingRoleId; poolRequirementId: string }
+  | { type: "MARK_ROLE"; role: MappingRoleId }
+  | { type: "MARK_REQUIREMENT"; role: MappingRoleId; poolRequirementId: string }
   | { type: "CLEAR_SELECTION" }
   | { type: "UP" }
   | { type: "RESET" };
@@ -65,9 +65,9 @@ export function focusReduce(state: FocusState, action: FocusAction): FocusState 
       return state.role !== null && isText(action.poolRequirementId) ? settle(state, { level: "L3", pool: state.pool, role: state.role, requirement: action.poolRequirementId }) : state;
     case "SELECT_CAPABILITY":
       return isText(action.capabilityKey) ? settle(state, { ...state, selection: Object.freeze({ kind: "CAPABILITY", capabilityKey: action.capabilityKey }) }) : state;
-    case "SELECT_ROLE":
+    case "MARK_ROLE":
       return isRoleId(action.role) ? settle(state, { ...state, selection: Object.freeze({ kind: "ROLE", role: roleOf(action.role) }) }) : state;
-    case "SELECT_REQUIREMENT":
+    case "MARK_REQUIREMENT":
       return isRoleId(action.role) && isText(action.poolRequirementId) ? settle(state, { ...state, selection: Object.freeze({ kind: "REQUIREMENT", role: roleOf(action.role), poolRequirementId: action.poolRequirementId }) }) : state;
     case "CLEAR_SELECTION":
       return settle(state, { ...state, selection: null });

@@ -68,11 +68,11 @@ describe("MAP-FOCUS · selection and the reverse view", () => {
   it("selection is its own axis: opening never selects, selecting never opens; navigation keeps the selection, CLEAR_SELECTION drops it", () => {
     const opened = run({ type: "OPEN_ROLE", role: RA });
     expect(opened.selection).toBeNull();
-    const selected = run({ type: "SELECT_ROLE", role: RB });
-    expect([selected.level, selected.selection]).toEqual(["L0", { kind: "ROLE", role: RB }]);
+    const marked = run({ type: "MARK_ROLE", role: RB });
+    expect([marked.level, marked.selection]).toEqual(["L0", { kind: "ROLE", role: RB }]);
     const both = run({ type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }, { type: "OPEN_ROLE", role: RA }, { type: "UP" });
     expect([both.level, both.selection]).toEqual(["L1", { kind: "CAPABILITY", capabilityKey: "PCAP_TS" }]);
-    expect(run({ type: "SELECT_REQUIREMENT", role: RA, poolRequirementId: "q_ts" }).selection).toEqual({ kind: "REQUIREMENT", role: RA, poolRequirementId: "q_ts" });
+    expect(run({ type: "MARK_REQUIREMENT", role: RA, poolRequirementId: "q_ts" }).selection).toEqual({ kind: "REQUIREMENT", role: RA, poolRequirementId: "q_ts" });
     expect(focusReduce(both, { type: "CLEAR_SELECTION" }).selection).toBeNull();
   });
 
@@ -99,14 +99,16 @@ describe("MAP-FOCUS · B-3: opening is not selecting for B2", () => {
 
   it("the state has no job-scope field, at any level and with any selection", () => {
     const states = [FOCUS_INITIAL, run({ type: "OPEN_POOL", jobPoolUploadId: POOL_A }), run({ type: "OPEN_ROLE", role: RA }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_ts" }),
-      run({ type: "SELECT_ROLE", role: RA }), run({ type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }), run({ type: "SELECT_REQUIREMENT", role: RA, poolRequirementId: "q_ts" })];
+      run({ type: "MARK_ROLE", role: RA }), run({ type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }), run({ type: "MARK_REQUIREMENT", role: RA, poolRequirementId: "q_ts" })];
     const keys = (v: unknown): string[] => (v && typeof v === "object" ? Object.entries(v).flatMap(([k, x]) => [k, ...keys(x)]) : []);
     for (const s of states) { expect(Object.keys(s).sort()).toEqual(["level", "pool", "requirement", "role", "selection"]); expect(keys(s).filter(k => SCOPE.test(k))).toEqual([]); }
   });
 
   it("no action name writes a scope or names B2; the automaton knows exactly its nine actions", () => {
-    expect([...FOCUS_ACTIONS]).toEqual(["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "SELECT_CAPABILITY", "SELECT_ROLE", "SELECT_REQUIREMENT", "CLEAR_SELECTION", "UP", "RESET"]);
+    expect([...FOCUS_ACTIONS]).toEqual(["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "SELECT_CAPABILITY", "MARK_ROLE", "MARK_REQUIREMENT", "CLEAR_SELECTION", "UP", "RESET"]);
     expect(FOCUS_ACTIONS.filter(name => SCOPE.test(name) || /JOB/.test(name))).toEqual([]);
+    // A role or requirement is marked, never "selected" (B-4's word for the B2 transition); only a capability is selected.
+    expect(FOCUS_ACTIONS.filter(name => /SELECT/.test(name) && /ROLE|REQUIREMENT|POOL/.test(name))).toEqual([]);
   });
 
   it("the module imports nothing of the job scope, the URL or navigation", () => {
