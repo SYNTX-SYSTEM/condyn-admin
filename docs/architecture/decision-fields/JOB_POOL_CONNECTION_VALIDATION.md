@@ -4063,6 +4063,15 @@ Open but not blocking:
   - **O-PB-1:** a duplicate requirement id passes the decoder, and then the view is order-dependent while delta refuses it.
   - **O-PB-2:** LEXICAL/NONE passes the decoder, and couplingSign refuses it.
 
+### 3.96 PERSON × JOB phase B, re-check of the §3.95 conditions on GRÜN `5ca0f3f` (2026-11-01) — GO
+
+**Request.** Re-check only F-PB-T1…T3 (owner hardlock "NUR PHASE B. MEHR NICHT."). Since `057f913` only the three test files changed.
+
+**Verdict: GO.** All three conditions are closed (`evidence/mapping-phase-b-5ca0f3f/verdicts.txt`).
+- **F-PB-T1, F-PB-T2, F-PB-T3: closed.** The mutants D2, D4, V5, V12 and F4 are now red, each through the new test written for it.
+- **Equivalent mutants.** V4, L4, L5 and L10 stay green. The product code is byte-identical to `057f913`, so the §3.95 assessment holds.
+- **Checks.** tsc 0; GRÜN's suite 81/81.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

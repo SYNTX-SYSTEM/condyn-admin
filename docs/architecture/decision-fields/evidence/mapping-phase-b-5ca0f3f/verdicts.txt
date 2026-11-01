@@ -1,0 +1,15 @@
+PINK §3.96 — re-check of the §3.95 conditions F-PB-T1…T3 on GRÜN frontend/mapping-phase-b 5ca0f3f (owner hardlock "NUR PHASE B. MEHR
+NICHT."; nothing else checked) — 2026-11-01
+Method: PINK's §3.95 mutants, each built into its own copy of 5ca0f3f and run against GRÜN's suite; tsc; the unmutated suite.
+Evidence class: DETERMINISTIC_FIXTURE. No model, no network, no condyn row. main and :3017 untouched; no merge.
+
+VERDICT: GO — F-PB-T1, F-PB-T2 and F-PB-T3 are closed.
+F-PB-T1 CLOSED  D2 red ("ORDER … sorted by requirement id"), D4 red ("FIT … a fit change below 0.01 is a change", fit 0 → 0.004).
+F-PB-T2 CLOSED  V5 red ("CONSTELLATION … by name, then key"), V12 red ("CALLER'S DATA … never the caller's ranking").
+F-PB-T3 CLOSED  F4 red ("OPENING … no open action sets or drops the selection").
+Equivalent mutants unchanged  V4, L4, L5, L10 stay green, and the product code is byte-identical to 057f913, so the §3.95 reasoning holds:
+  * V4: the decoder binds the weight to the necessity;
+  * L5: overflow on ring 520 cannot reach a disc inside 500 − rho;
+  * L10: output precision inside the 1e-6 contract;
+  * L4: only exact float equality at a sector end separates it.
+Notes: since 057f913 only test/career/mapping/{delta,view,focus}.test.ts changed (+49 lines). tsc 0; suite 81/81 (8 files).

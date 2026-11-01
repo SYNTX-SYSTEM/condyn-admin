@@ -1,0 +1,22 @@
+PINK §3.96 measurements — GRÜN frontend/mapping-phase-b 5ca0f3f, re-check of the §3.95 conditions only, 2026-11-01
+origin/frontend/mapping-phase-b: 5ca0f3f5dd4f5e0323396c519eb31df89454449d, parent 057f9131
+changed since 057f913:
+  test/career/mapping/delta.test.ts | 17 +++++++++++++++++
+  test/career/mapping/focus.test.ts | 11 +++++++++++
+  test/career/mapping/view.test.ts  | 21 +++++++++++++++++++++
+  3 files changed, 49 insertions(+)
+lib/, docs/, app/, components/ identical to 057f913: yes; diff vs main stays in lib/career/mapping (5) and test/career/mapping (7)
+tsc --noEmit: 0 errors
+GRÜN's suite unmutated (isolated local clone, test:isolated, mapping + mapping-spec):
+  Test Files  8 passed (8)
+       Tests  81 passed (81)
+mutants of §3.95 (mutate-pb.py unchanged except a SRC_NAME switch), one copy each, pristine tree never edited; architecture.test.ts excluded:
+ D2 RED delta: requirement id not in the sort | Tests  1 failed | 73 passed (74) | ['ORDER (PINK §3.95 F-PB-T1 D2): two changes of one role and kind are so']
+ D4 RED delta: small fit change ignored | Tests  1 failed | 73 passed (74) | ['FIT (PINK §3.95 F-PB-T1 D4): a fit change below 0.01 is a change — no ']
+ V5 RED view: constellation by key only | Tests  1 failed | 73 passed (74) | ['CONSTELLATION (PINK §3.95 F-PB-T2 V5): by name, then key — where name ']
+ V12 RED view: quotes shared with the input | Tests  1 failed | 73 passed (74) | ["CALLER'S DATA (PINK §3.95 F-PB-T2 V12): the view freezes its own copie"]
+ F4 RED focus: opening a pool clears the selection | Tests  1 failed | 73 passed (74) | ['OPENING (PINK §3.95 F-PB-T3 F4): no open action sets or drops the sele']
+ V4 GREEN view: ring lighter first | Tests  74 passed (74) | []
+ L4 GREEN layout: sector end exclusive | Tests  74 passed (74) | []
+ L5 GREEN layout: overflow bodies collide | Tests  74 passed (74) | []
+ L10 GREEN layout: collision on unrounded coordinates of placed bodies | Tests  74 passed (74) | []
