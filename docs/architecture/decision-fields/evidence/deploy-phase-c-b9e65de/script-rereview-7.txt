@@ -1,0 +1,53 @@
+PINK §3.101 addendum 7 — seventh re-review, dll-revert.sh and dll-3017.sh only (2026-11-04). Read locally from GELB's evidence copy; md5
+dll-revert.sh f450c9ae…, dll-3017.sh eea171ef…, DEPLOYMENT.md 0c2acf76…, equal to GELB's values; the other scripts are unchanged. Nothing
+executed.
+
+Verdict: T-1..T-5 FIXED, and the inherited-lock defect GELB found itself is fixed at the site that matters (the runtime). The three
+questions come back without a functional defect. Q2 and Q3 are clean. Q1 is clean for the runtime, with three hardening notes (L-1..L-3).
+One further note (W-1) on serialisation of manual starts. Nothing here fires in the current state.
+
+Q1 — the lock
+* Acquisition (lines 56-61): `if ! flock -n` does not trip set -e, and the refusal is printed before exit 75. An exec redirection that
+  fails (lock directory missing) ends a non-interactive shell with bash's own message, so it is not silent.
+* eval: `eval "exec ${LOCK_FD}>\"\$LOCK\""` is safe as written. LOCK_FD is assigned a literal (line 53), so an environment value cannot
+  reach it, and $LOCK is escaped, so it expands only inside the quotes at eval time. eval is not needed, though: `exec 9>"$LOCK"` says
+  the same thing without it.
+* The runtime: dll-3017.sh appends `9>&-` to the launcher (line 59), and dll-revert.sh releases before every start (lines 250, 258, 336
+  and the further site GELB counts). So next-server cannot inherit the lock. That closes the defect GELB found.
+L-1 (fd 9 still reaches other children). `env -i` clears the environment, not descriptors. fd 9 is inherited by every child of the apply:
+    git (lines 313/320 and recover), cp, mv, ss, dll-3017.sh stop, and dll-build.sh with `next build` and its workers. The script
+    releases before the start, not before those. That is harmless only as long as none of them outlives the script. The candidates that
+    could are a git background process (fsmonitor daemon or auto-maintenance, if ever configured) and build workers that hang. A
+    survivor holds the lock and reproduces exactly the symptom GELB found (every later apply refused with 75, with the reason printed
+    this time). Fix: `9>&-` on the git calls and on the dll-build.sh call, or close inherited descriptors in a wrapper.
+L-2 (coupling). LOCK_FD is a variable in dll-revert.sh, but dll-3017.sh closes the literal 9. If LOCK_FD is ever changed, the runtime
+    inherits the new descriptor again, and nothing fails until the second apply. Fix: hard-code 9 in both places with a cross-reference,
+    or have dll-3017.sh close every inherited descriptor above 2 before launching.
+L-3 (window). release_lock comes BEFORE the final `dll-3017.sh start` (line 336), and the journal is already gone (line 334). A second
+    apply can take the lock while the first runtime is still booting: its stop may find the port free, and it then swaps .next under a
+    process that is starting. Releasing is unnecessary there, because dll-3017.sh already closes fd 9 for the launcher. Keep the lock
+    through the start; it is released when the script exits.
+
+Q2 — the inode test (state_is_as_found)
+* Saved-build branch: .next is moved out whole (line 315) and moved back whole by recover(); nothing writes into it. Rebuild branch:
+  .next is moved out BEFORE the build (line 323), the build creates a NEW directory, and recover() moves that one to DISCARD and the
+  original back. In neither branch does the script write into the original .next, so its inode and its content stay together.
+* Inode reuse: within a run, the original .next is deleted only on success (line 329, COMMITTED=1), after which the state test is no
+  longer consulted. So no reused inode can produce a false match.
+* What the inode does NOT see: an in-place change of content. During the run, nothing writes into .next once the runtime is stopped.
+  The runtime itself writes .next/cache while serving, which is benign, and an operator copying INTO .next would not be detected.
+  Clean for the script; recorded as the test's limit.
+
+Q3 — WAS_SERVING
+* The window between `listening` (line 274) and the stop (line 277) is a stat and an echo. If the runtime dies inside it, WAS_SERVING=1
+  and recover() restarts the found state, which is the state that was serving. A restart that fails is reported by dll-3017.sh's
+  early-exit detection and by the WARNING branch, so it is not silent. Negligible window; clean.
+W-1 (note, wider than the window). `listening` means "something listens on :3017", which is the DLL in practice, since stop refuses any
+    other cwd. Not covered: a runtime that is STARTING (launched by an operator but not yet bound). WAS_SERVING=0, stop finds the port
+    free, and the revert swaps .next under a process that binds moments later. Neither dll-3017.sh start nor dll-3017.sh stop takes the
+    apply lock. If that is wanted, dll-3017.sh must take the lock itself, with a pass-through for calls from dll-revert.sh (or
+    dll-revert.sh calls the internal functions under its own lock), otherwise the two deadlock. dll-rollback.sh does not take the lock
+    either.
+
+Holding: T-1 (WAS_SERVING, left stopped when it was stopped), T-2 (staged copy verified, flock), T-3 (state test instead of a flag), T-4
+(dirty tree named), T-5 (note instead of "canonical"); every earlier finding as in addenda 1-6.
