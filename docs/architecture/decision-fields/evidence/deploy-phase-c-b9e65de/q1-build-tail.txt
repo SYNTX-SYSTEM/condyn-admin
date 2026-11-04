@@ -1,0 +1,30 @@
+Unexpected token `=`. Expected yield, an identifier, [ or {
+  [90m85 |[0m
+  [90m86 |[0m [36mexport[0m [36mconst[0m pinkBroken: number = [32m"not a number"[0m;
+[31m[1m>[0m [90m87 |[0m [36mconst[0m = ;
+  [90m   |[0m       [31m[1m^[0m
+  [90m88 |[0m
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./app/components/career/demo/mapping-field-copy.ts [Client Component Browser]
+    ./app/components/career/demo/PersonJobMappingField.tsx [Client Component Browser]
+    ./app/components/career/demo/SemanticCareerIntelligenceField.tsx [Client Component Browser]
+    ./app/components/career/demo/CareerIntelligenceDashboard.tsx [Client Component Browser]
+    ./app/components/career/demo/CareerDemoHistory.tsx [Client Component Browser]
+    ./app/components/career/demo/CareerDemoHistory.tsx [Server Component]
+    ./app/career/demo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/components/career/demo/mapping-field-copy.ts [Client Component SSR]
+    ./app/components/career/demo/PersonJobMappingField.tsx [Client Component SSR]
+    ./app/components/career/demo/SemanticCareerIntelligenceField.tsx [Client Component SSR]
+    ./app/components/career/demo/CareerIntelligenceDashboard.tsx [Client Component SSR]
+    ./app/components/career/demo/CareerDemoHistory.tsx [Client Component SSR]
+    ./app/components/career/demo/CareerDemoHistory.tsx [Server Component]
+    ./app/career/demo/page.tsx [Server Component]
+
+
+    at <unknown> (./app/components/career/demo/mapping-field-copy.ts:87:7)

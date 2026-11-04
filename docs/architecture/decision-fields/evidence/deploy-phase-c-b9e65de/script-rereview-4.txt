@@ -1,0 +1,54 @@
+PINK §3.101 addendum 4 — fourth re-review of GELB's DLL ops scripts (2026-11-04). Read locally from GELB's refreshed evidence copy; md5 equal to
+GELB's values: dll-env-guard.sh dd1d09a5…, dll-launch.sh 0a0b382c…, dll-build.sh b1712807…, dll-3017.sh 72dfd8ee…, dll-revert.sh 8c7b266a…,
+dll-rollback.sh 300df5d5… (unchanged), provision-dll-runtime.ts 16a7bdd3… (unchanged), DEPLOYMENT.md fa561038…; test-p1-cases.sh dfc02dbe….
+Nothing of GELB's was executed. One local experiment in a PINK scratch clone of b9e65de1 (Q-1, below). dll.env not seen.
+
+Verdict: NOT clean. Q-1 is substantive (the trap destroys the build it set aside, in the real failure case of the rebuild branch). Q-2 and
+Q-3 are real but narrower; Q-4 and Q-5 are minor. P-1, P-3 (structure), P-4 and P-5 are fixed.
+
+Fixed
+P-1 FIXED (approach, not patch). dll_load_env_file matches each non-comment line whole against NAME=value with a value free of $ ` ; ' "
+    and whitespace, checks the name against the six, and exports with `export "$name=$value"`. Nothing is evaluated, so no value class can
+    lead to execution. `export` cannot be subverted: the name is one of six fixed identifiers. dll_check_env_file runs in a subshell, so the
+    operator's shell never holds DATABASE_URL. A by-product: no provider key can come from dll.env at all, and the allowlist holds no key,
+    so ROLE_DISCOVERY_SEMANTIC_PROVIDER=gemini could never reach READY.
+    Value class (GELB's question): wide enough. A password needs percent-encoding for $ ' " ; or space, which is valid in a URL. Quoted
+    dotenv values ("…") and trailing comments are refused (fail-safe). Not too wide, since nothing is evaluated; at most NODE_ENV and
+    NEXT_TELEMETRY_DISABLED could be pinned to their one meaningful value.
+P-3 FIXED as structure: one EXIT trap armed after the stop. Gaps in it: Q-1 and Q-3.
+P-4 FIXED: stamped at build time, and the forward save requires .next/COMMIT == HEAD. Residue: Q-5.
+P-5 FIXED: staging under $ROOT/rollback, outside the checkout.
+
+Findings (report only, not corrected)
+Q-1 (substantive: the trap deletes the moved-aside build in the real rebuild failure). Rebuild branch: mv .next → STAGE_OUT (line 146), then
+    dll-build.sh. recover() puts the build back only `if [ ! -d "$APP/.next" ]` (line 84) and then runs `rm -rf "$STAGE_IN" "$STAGE_OUT"`
+    (line 87). A really failing `next build` leaves a .next behind. Measured: in a PINK scratch clone of b9e65de1 with a deliberate compile
+    error, `next build` exited 1 and left .next present with 680 files (cache, server, static, trace, types, …). So recover() finds .next
+    present, does not restore, DELETES STAGE_OUT (CURRENT's build), finds no stamp, and declines to restart: the runtime stays down.
+    CURRENT's build survives only as rollback/next-<CURRENT8>, so recovery is a manual copy. GELB's test stubbed dll-build.sh with an
+    `exit 1` before any build, so .next never existed and the restore branch was taken. The test did not exercise this path.
+    Fix: while COMMITTED=0 and STAGE_OUT exists, always move a present .next out of the way (or delete it) and put STAGE_OUT back; never
+    delete STAGE_OUT until .next has verifiably been restored.
+Q-2 (point of no return; GELB's question about a failure between the swap and the PREVIOUS_COMMIT write). COMMITTED=1 sits right after the
+    swap or build, which is the right place for "do not roll back". But the direction file is written last (line 155) and a write failure
+    only warns. If that write fails, or the process is killed (SIGKILL or power loss: no trap), HEAD and .next are at PREV while
+    PREVIOUS_COMMIT still says PREV. A second apply then reverts PREV to PREV (FORWARD = BUILD = next-PREV8, stamp matches), writes PREV
+    into PREVIOUS_COMMIT, and the pointer to the commit it came from is gone. Nothing is damaged, and the saved build of the original
+    commit remains, but the second apply does not handle it: it silently becomes a self-revert.
+    Fix: refuse when PREV == HEAD, and/or write the direction (or a journal) before COMMITTED and take it from there on retry.
+Q-3 (the trap can fail silently; GELB's question). recover() runs under the script's set -e. An `rm -rf` failure at line 87, or a failing
+    `git rev-parse HEAD` in the assignment at line 94, ends the handler on the spot, before HEAD is restored and before the restart,
+    without any message. Also, after COMMITTED=1 a failed final start is reported only as "a later step failed", without saying the runtime
+    is down. Fix: `set +e` as the first line of recover(), and name a stopped runtime explicitly.
+Q-4 (deadlock after manual intervention; GELB's question). No hard deadlock: a refusal for a stamp mismatch always points to the rebuild,
+    and dll-build.sh can always restore a stamped .next for HEAD (both commits share package-lock). But the deployment stays DOWN until
+    someone rebuilds (several minutes; GELB measured 42 s), and after a killed run (Q-2) the next apply chooses the self-revert rather
+    than refusing. A manual `git checkout` without a rebuild always ends in this refusal, which is the intended fail-safe.
+Q-5 (minor, stamp residue). dll-build.sh writes `git rev-parse HEAD` AFTER the build and does not check that the tree is clean, nor that
+    HEAD did not move during the build, so a dirty or moved tree is stamped with HEAD's name. A failing stamp write is not an error (the
+    script then ends with the echo's status 0), which leaves an unstamped build that the forward save later refuses (safe).
+    Fix: capture HEAD and `git status --porcelain` before the build, compare after, and exit non-zero if the stamp cannot be written.
+
+Unchanged: dll-rollback.sh (addendum 2 status holds), provision-dll-runtime.ts (owner decision; pin before any rerun), O-1 (setsid).
+Scratch experiment: $SCRATCH/int397/q1-buildfail (hard-linked copy of the b9e65de1 clone, one file replaced on a new inode, pristine clone
+still 0 dirty). Build log: $SCRATCH/int397/q1-build.log.
