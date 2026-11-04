@@ -270,6 +270,34 @@ describe("MAP-C-TIME · movement on new evidence only", () => {
     expect(allByPrefix(tree, "mapping-trail-").map(t => t.props["data-testid"])).toEqual([`mapping-trail-${POOL_B}:role_y`]);
     view.unmount();
   });
+
+  it("C13: only a body marked moved carries the movement transition — every other body has none, in every reading (PINK §3.99 F-RC-T1)", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const transitions = (tree: unknown) => allByPrefix(tree, "mapping-body-").map(b => [b.props["data-testid"], b.props["data-moved"], (b.props.style as Record<string, string>).transition] as const);
+    const holds = (tree: unknown, step: string) => {
+      const all = transitions(tree);
+      expect(all.length, step).toBeGreaterThan(0);
+      for (const [id, moved, transition] of all) {
+        if (moved === "true") expect(transition, `${step} ${String(id)}`).toMatch(/^transform 0\.8s/);
+        else expect(transition, `${step} ${String(id)}`).toBe("none");
+      }
+      return all.filter(([, moved]) => moved === "true").map(([id]) => id);
+    };
+    const roles = (y: ReturnType<typeof sem>) => [
+      { pool: POOL_B, roleId: "role_x", title: "Steady", requirements: [sem("q_x", "REQUIRED", "PARTIAL", "PCAP_TS", "TypeScript")] },
+      { pool: POOL_B, roleId: "role_y", title: "Rising", requirements: [y] },
+      ...crowdedRoles(40, POOL_A)
+    ];
+    const low = sem("q_y", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL"), high = sem("q_y", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL");
+    // First reading: nothing has moved. Then role_y's fit rises past role_x (rank only for role_x, and the layout may place it anew — A3).
+    expect(holds(view.settle(props(rankingOf(roles(low)))), "first reading")).toEqual([]);
+    const tree = view.settle(props(rankingOf(roles(high))));
+    expect(holds(tree, "fit change"), "only the role with new evidence").toEqual([bodyId(POOL_B, "role_y")]);
+    expect(byTestId(tree, bodyId(POOL_B, "role_x"))!.props["data-moved"], "precondition: role_x changed rank only").toBe("false");
+    // The same content again: nothing moves, so no body has a transition.
+    expect(holds(view.settle(props(rankingOf(roles(high)))), "equal re-read")).toEqual([]);
+    view.unmount();
+  });
 });
 
 describe("MAP-C-RENDER · displaced (PINK §3.98 M8)", () => {

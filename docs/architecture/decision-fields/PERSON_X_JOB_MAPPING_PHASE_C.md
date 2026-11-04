@@ -90,7 +90,7 @@ project root, e.g. by PINK).
 ## 7. Refinement after PINK §3.98 (tests only, GELB "SFE::PHASE_C REFINEMENT")
 
 PINK accepted fa895193 (GO for the product code) with a merge condition and test gaps. This commit changes tests and this document only;
-no product file, no engine, no layout or timeMovement semantics. A2 (readability) and A3 (position jumps) stay with GELB.
+no product file, no engine, no layout or timeMovement semantics. A2 (readability) and A3 (position jumps) are the owner's (OTTAVIO) to decide.
 
 | Finding | Change | Proof (mutant applied locally, then restored) |
 |---|---|---|
@@ -104,7 +104,33 @@ no product file, no engine, no layout or timeMovement semantics. A2 (readability
 | C9 | L1 overflow is the open sector's (pool with room: none; both pools overflowing: sector ≠ total) | whole-field count on L1 → 2 red |
 | C16 | legend sample per class = `LINE_DASH[CLASS_LINE[cls]]`, three different dashes | legend all solid → 1 red |
 
-Open, reported: with the fixed base, the "only these files" and exact-diff tests compare the tree against 5ca0f3f5. They hold on the branch
-and directly after the merge. Once main moves on with other changes, those tests will flag them, so they have to be re-based (or retired)
-at the next phase boundary. The phase-B test "engine unchanged against main" still uses the merge base. It stays green after a merge but
-is vacuous on main. It was left as it is (outside F-PC-1).
+Open, reported (corrected in §8, PINK §3.99 O-RC-2): with the fixed base the "only these files" and exact-diff tests compared the whole
+tree against 5ca0f3f5. They held on the branch and on the merge commit. The **next** commit on main that touched any file outside the
+phase-C list would have turned them red (main 27 → 28), not only the next phase boundary. §8 fixes this (F-RC-1). The phase-B test
+"engine unchanged against main" used the merge base. On main that is vacuous for **committed** engine changes only; uncommitted and
+untracked changes still turned it red. §8 binds it to the fixed base (O-RC-1).
+
+## 8. Finalization after PINK §3.99 (tests and documentation only, GELB "SFE::PHASE_C FINALIZATION")
+
+PINK accepted 3cb08edf (GO) with the merge condition F-RC-1. Still no product file, no engine, layout or timeMovement change. A2 and A3 are
+the owner's.
+
+* **F-RC-1. Bound to phase C's commits, not to the running tree.** `test/career/mapping-field/architecture.test.ts` now forms the
+  *phase-C change sets*: every non-merge commit after `PHASE_C_BASE` whose files include a phase-C file (new files, `test/career/mapping-field/`,
+  the three entry points), plus the working tree as a pending set once it touches one. Each set may change only phase-C files. Together
+  they enter exactly the three entry points, and they add every new file. Commits that touch no phase-C file (README, evidence, any
+  later unrelated work on main) are not phase C and are not judged. The protected paths (engine, mapping-spec, the specification,
+  orbits, planetarium, Job Field, field selector, B2, `lib/career/ui`, job pool, capability core, `app/api`) are compared as trees against
+  the base: committed, staged, unstaged and untracked. That holds before the merge, on the merge commit and after it. The exact-diff test
+  of the two product entry points still compares them against the base.
+  **Re-statement point:** a later commit that changes a phase-C file or an entry point together with other files, or changes a protected
+  path or an entry point, turns these tests red, on purpose. That is the point at which a later phase re-states the boundary.
+* **O-RC-1.** The phase-B test "engine modules unchanged" compares against the same fixed base, so committed engine changes on main
+  stay guarded.
+* **O-RC-3.** `PHASE_C_BASE` lives in `test/career/mapping-field/phase-base.ts` and is resolved when a test asks for it, not at module
+  load. In a clone without the commit (a shallow CI checkout) every history test fails with `ERR_PHASE_C_BASE_MISSING` and a hint to
+  fetch the history. The tests that need no history still run. Nothing is skipped.
+* **F-RC-T1 (C13).** Only a body marked moved carries the movement transition. Every other body has `transition: none`: on the first
+  reading, after a fit change (also for a role that only changed rank, A3), and on an equal re-read.
+* **O-RC-2.** §7 corrected: (a) the trigger is the next commit on main; (b) A2/A3 are the owner's; (c) 5ca0f3f5 is PINK §3.97;
+  (d) the vacuity concerned committed changes only.
