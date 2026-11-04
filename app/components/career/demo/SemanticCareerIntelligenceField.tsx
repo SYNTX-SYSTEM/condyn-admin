@@ -36,6 +36,7 @@ import { useAnalysisPicker } from "../../../../lib/career/ui/analysis-picker";
 import { AnalysisPicker } from "./AnalysisPicker";
 import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
 import { AutoJobRankingPanel } from "./AutoJobRankingPanel";
+import { PersonJobMappingField } from "./PersonJobMappingField";
 import { rankingKey, useAutoMatch, useJobRanking } from "../../../../lib/career/ui/auto-match";
 import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
 import { useSemanticInvestigation, type InvestigationRoleKey } from "../../../../lib/career/ui/semantic-investigation";
@@ -1765,7 +1766,8 @@ export function SemanticCareerIntelligenceField({
           the ranked jobs with their reasons; the manual discovery's entry is its last row, unchanged (hidden during an orbit focus, as before). */}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
-          <AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}>
+          <AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}
+            field={<PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />}>
             {!isOrbitStageFocus && <RoleDiscoveryEntry locale={locale} inline onOpen={() => setDiscoveryOpen(true)} />}
           </AutoJobRankingPanel>
         </div>

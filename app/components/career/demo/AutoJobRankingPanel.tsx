@@ -65,9 +65,11 @@ export interface AutoJobRankingPanelProps {
   onGoToJobField?(): void;
   /** The manual discovery's entry (RoleDiscoveryEntry, inline) — the existing action, unchanged. */
   children?: React.ReactNode;
+  /** PERSON × JOB mapping phase C: the ranking drawn as a field (PersonJobMappingField), shown above the ranked list while a ranking is shown. */
+  field?: React.ReactNode;
 }
 
-export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, children }: AutoJobRankingPanelProps) {
+export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, children, field }: AutoJobRankingPanelProps) {
   const c = AUTO_MATCH_COPY[locale];
   const line = autoMatchLine(watch, c);
   const [open, setOpen] = useState<string | null>(null);
@@ -98,6 +100,7 @@ export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, ch
               <>
                 <span data-testid="auto-authority" data-authority-state={shown.authority.authorityState} data-decision={String(shown.authority.decision)} style={meta}>{c.authority}</span>
                 {shown.poolsDropped.length > 0 && <span data-testid="auto-pools-dropped" style={meta}>{c.ranking.poolsDropped(shown.poolsDropped.join(" · "))}</span>}
+                {field}
                 {shown.ranks.length === 0 ? <span data-testid="auto-ranking-empty" style={statement}>{c.ranking.empty}</span> : (
                   <ol data-testid="auto-ranks" style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "6px" }}>
                     {shown.ranks.map(rank => {

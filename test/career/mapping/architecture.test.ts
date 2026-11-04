@@ -7,6 +7,8 @@ import { describe, expect, it } from "vitest";
  * MAPPING_ARCHITECTURE · phase B is pure modules only (owner limit "NUR PHASE B"): lib/career/mapping imports no React, no Next, no
  * fetch, no clock and no randomness; its constants come from the specification files; nothing outside lib/career/mapping imports it;
  * and the branch touches no existing file.
+ * Phase C (GELB "SFE::PHASE_C") consumes the engine: its visible field (lib/career/view-model/mapping-field.ts and its component) is
+ * the only importer outside the mapping, and the engine itself stays byte-identical to main (test/career/mapping-field/architecture.test.ts).
  */
 const ROOT = join(__dirname, "../../..");
 const DIR = join(ROOT, "lib/career/mapping");
@@ -56,14 +58,15 @@ describe("MAP-ARCH · pure modules", () => {
 });
 
 describe("MAP-ARCH · nothing existing is touched", () => {
-  it("no file outside lib/career/mapping imports the mapping modules", () => {
-    const users = gitGrep("--untracked", "-l", "-E", "career/mapping/(view|layout|signs|delta|focus)", "--", ".", ":!lib/career/mapping", ":!test/career/mapping");
-    expect(users).toEqual([]);
+  it("outside lib/career/mapping only the phase C field imports the mapping modules (its model, its component, its copy, its tests)", () => {
+    // Both import spellings: through the path (…/career/mapping/x) and relative from a sibling of lib/career (../mapping/x).
+    const users = gitGrep("--untracked", "-l", "-E", "(career/|\\.\\./)mapping/(view|layout|signs|delta|focus)[\"']", "--", ".", ":!lib/career/mapping", ":!test/career/mapping", ":!test/career/mapping-field", ":!docs");
+    expect(users).toEqual(["app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/mapping-field-copy.ts", "lib/career/view-model/mapping-field.ts"]);
   });
 
-  it("against main, the branch changes only files under lib/career/mapping and test/career/mapping (committed, staged, unstaged and new)", () => {
+  it("against main, the engine modules are unchanged (committed, staged, unstaged and new) — phase C's boundary is its own test", () => {
     const base = git("merge-base", "HEAD", "origin/main")[0];
     const changed = [...git("diff", "--name-only", base), ...git("ls-files", "--others", "--exclude-standard")];
-    expect(changed.filter(p => !p.startsWith("lib/career/mapping/") && !p.startsWith("test/career/mapping/"))).toEqual([]);
+    expect(changed.filter(p => p.startsWith("lib/career/mapping/"))).toEqual([]);
   });
 });
