@@ -4161,6 +4161,56 @@ Open but not blocking:
 - **A4:** low risk (13 % of SEMANTIC bodies are solid with only value-0 findings).
 - **A5:** low risk (the absence of L2/L3 is proven).
 
+### 3.99 PERSON × JOB phase C refinement, GRÜN `3cb08ed` (2026-11-04) — GO, merge condition F-RC-1
+
+**Request.** GELB asked for an inverse re-check of GRÜN's test-only refinement to §3.98 (SFE::PHASE_C RE-VALIDATION, authorized by OTTAVIO). The commit sits on `fa89519`, is local only and was not amended. Hardlock: nothing pushed, no merge, no product change, no Gemini, no :3017, no Phase D, real `node_modules`. A2 and A3 are not part of this check (`evidence/mapping-phase-c-refine-3cb08ed/`).
+
+**Verdict: GO for `3cb08ed`.** Every claim of GRÜN reproduces, the product is unchanged and nothing regresses. F-PC-T1, F-PC-T2 and O-PC-1 are closed. F-PC-1 is closed for the merge itself but moves to main's next commit (F-RC-1).
+
+**(1) Integrity**
+- 5 files (+243/−10): 4 tests and the phase C document.
+- `lib/` and `app/` are tree-identical to `fa89519`.
+- Engine, spec, orbits, planetarium, selector, B2, `lib/career/ui`, job-pool, job-scope, capability-core and `app/api` are tree-identical to `5ca0f3f`.
+
+**(2) F-PC-1 and controls** (quiet runs)
+- After a simulated merge, both architecture files are green (14/14), and the full suite shows 27 red, not 29.
+- `fa89519`'s old test in the same state gives exactly the 2 F-PC-1 reds.
+- Engine, orbit, unlisted-file, importer (`./mapping/view`) and GRÜN's selector/panel probe are red before and after the merge.
+- Main moving on after the merge:
+  - An unrelated committed change turns "only these files" red.
+  - A committed engine change is caught only by the fixed-base tests; the phase-B merge-base test stays green.
+
+**(3) Mutants**
+- 44/49 are red against GRÜN's suite.
+- GRÜN's counts hold: T1 2, T2 1, T3 2, M8 2, C1 1, C9 2, C16 1. The old T2 test is green under the mutant (17/17), so it was vacuous.
+- Not red:
+  - M7, M11, C19 and T5 are equivalent by construction.
+  - C13 is a real survivor (F-RC-T1).
+- A position-only shift turns the same single pre-existing test red on `fa89519` and `3cb08ed`, so the refinement asserts no drawn position (A3 untouched).
+
+**(4) Regression**
+- `3cb08ed`: 3482 passed, 27 failed, 20 skipped, unmerged and merged. Base: 3432 / 27 / 20.
+- +10 tests over `fa89519`, all green.
+- The 27 test-level failures are identical to §3.98 in all 7 runs.
+- The only extras are on both sides: load timeouts while overlapping the first mutant run, and the O-ENV-DROP teardown error.
+- The 3 files GRÜN skipped are green here.
+- tsc 0, eslint 0; GRÜN's suites 197/197.
+
+**Findings**
+- **F-RC-1 (merge condition).** The fixed base `5ca0f3f` makes "phase C changes only its new files and the three entry points" compare main's whole tree.
+  - It holds on the merge commit.
+  - The first later commit on main that touches a file outside phase C's list turns it red (27 → 28). PINK's evidence commits count too, as do later legitimate changes to an entry point or a protected path.
+  - GRÜN's §7 names the mechanism but places the trigger "at the next phase boundary". It is the next commit on main.
+  - OTTAVIO/GELB must decide before the merge who re-bases or retires the check, and when.
+- **F-RC-T1 (minor, and an erratum to §3.98).** Mutant C13 gives every drawn body the movement transition, not only bodies marked moved, and no test turns red. §3.98 counted C13 as red because of a non-zero exit with 99/99 passed. The true §3.98 count is 37/49.
+- **O-RC-1.** O-PB-3 is confirmed and bounded. The phase-B merge-base test is vacuous on main only for committed engine changes; today the fixed-base phase C test covers that case.
+- **O-RC-2.** §7 matches PINK's measurements row for row. Inaccuracies:
+  - the timing of the open point (F-RC-1);
+  - "A2/A3 stay with GELB", whereas they are with OTTAVIO;
+  - "PINK §3.95" for `5ca0f3f`, which should be §3.97.
+- **O-RC-3.** `PHASE_C_BASE` must be present as an object: in a shallow clone the whole file is red. Derived from the code, not run.
+- **O-RC-4.** O-ENV-DROP leaves disposable databases behind: 17 `condyn_test_*` (14 marked), 0 connections. Not dropped (no database change allowed).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

@@ -1,0 +1,181 @@
+PINK §3.99 measurements — PERSON x JOB phase C refinement, GRÜN frontend/mapping-phase-c 3cb08edf (local only, not pushed), parent fa895193, base origin/main 5ca0f3f, 2026-11-04
+== 1. integrity ==
+commit 3cb08edfa3fa6c8e552739380bdc52499076f3f4, parent fa895193c08fabbd75785363fb865bd5d326859d, parents=1, signature G, on a remote branch: 0
+origin/main = 5ca0f3f5dd4f5e0323396c519eb31df89454449d (5ca0f3f is an ancestor of 3cb08edf: yes)
+diff fa895193..3cb08edf:
+  M	docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_C.md
+  M	test/career/mapping-field/architecture.test.ts
+  M	test/career/mapping-field/field-interaction.test.tsx
+  M	test/career/mapping-field/model.test.ts
+  M	test/career/mapping/architecture.test.ts
+ 5 files changed, 243 insertions(+), 10 deletions(-)
+files under lib/ or app/ changed fa895193..3cb08edf: 0
+tree ids fa895193 vs 3cb08edf: lib 961e30f4982c81876254c9c16f9ea682de33e1ef / 961e30f4982c81876254c9c16f9ea682de33e1ef; app a6f33fbe0a900218fdda7360e7306b8442d6fbef / a6f33fbe0a900218fdda7360e7306b8442d6fbef; scripts, package.json, package-lock.json identical: yes
+tree identity 5ca0f3f vs 3cb08edf (git rev-parse <commit>:<path>):
+  SAME 64df6347982a5917f334c1ac426cc0619c7f2aee lib/career/mapping
+  SAME 1ff0f3daf89eb08fcec455d5d3fb61ca4120dd2d docs/architecture/decision-fields/mapping-spec
+  SAME 0d4bf3a9ed15eda713629ed178a1c87d0d99eff4 docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md
+  SAME e2bc2a2ec5f19b9057c36e832a74328f332f7e19 app/components/career/demo/ResonanceOrbits.tsx
+  SAME 1342a9b19c9cb021cbbb299176b36a6b31358d74 app/components/career/demo/OrbitalCosmosView.tsx
+  SAME 64358d0bf41fbc5fdd4b2abe6541bd0b65a4f225 app/components/career/demo/CapabilityField.tsx
+  SAME b4d8562c46ea84603822b36770706bde8a9593dd app/components/career/demo/manifestation
+  SAME b9cc9a10fd41caaa8b977558d9fdee5ad93972be app/components/career/demo/SyntxField.tsx
+  SAME 581a08ec281026ac88e0d08b2b931b0c788b6151 app/components/career/demo/SyntxFieldSelector.tsx
+  SAME a6c27089160c153ed03807af4a4fed6bf3fa0c74 app/components/career/demo/PxjFirstScreen.tsx
+  SAME 1d9c27f20b4f5134a4281562fa469c7c6962748a lib/career/view-model/pxj-first-screen.ts
+  SAME f720cbf1b4e2afae25590b68206ab9dcc919a06a lib/career/ui
+  SAME f96e1382be9ad3bae8335f5ae6449f87a4465bdb lib/career/job-pool
+  SAME bd9e767646444d48b1a02fc6d92f23a2f74eebac lib/career/job-scope
+  SAME 04a2db660e9aad6cfca32d51df58e5feb896bb53 lib/career/capability-core
+  SAME 9c1c6a764806704ec24909fcf9ee67208cb41494 app/api
+  (db/ does not exist in either commit)
+diff 5ca0f3f..3cb08edf: 13 files (the same 13 paths as 5ca0f3f..fa895193: yes)
+position assertions among the added test lines (grep for .x/.y/cx/cy/transform/angle/radius): only 'moves.get(key) toEqual {moved:true, from:{x: was.x, y: was.y}}' (the trail origin = the model's own previous place)
+
+== 2. scratch clones (git clone --no-checkout of the worktree, detached, node_modules = real hard-linked copy, not a symlink) ==
+  tpb HEAD=5ca0f3f5 origin/main=5ca0f3f5 node_modules=directory status=0
+  trc HEAD=3cb08edf origin/main=5ca0f3f5 node_modules=directory status=0
+  trm HEAD=3cb08edf origin/main=3cb08edf node_modules=directory status=0
+  msrc2 HEAD=3cb08edf origin/main=5ca0f3f5 node_modules=directory status=0
+  msrc HEAD=fa895193 origin/main=5ca0f3f5 node_modules=symbolic link status=0
+  (msrc = §3.98's fa895193 source, used only for the A3p-pc extra mutant: vitest unit/render tests, no Turbopack/HTTP file; every full suite, control, GRÜN suite and the 49 mutants ran on real node_modules)
+  after all runs: msrc2 3cb08edfa3fa6c8e552739380bdc52499076f3f4 5ca0f3f5dd4f5e0323396c519eb31df89454449d status=0; msrc fa895193c08fabbd75785363fb865bd5d326859d status=0
+
+== 3. tsc / eslint (trm) ==
+tsc exit 0
+eslint on the 4 changed tests + 3 phase-C product files: eslint exit 0, output lines 0
+
+== 4. GRÜN's suites (test/career/mapping-field test/career/mapping test/career/mapping-spec test/career/auto-capability), quiet run ==
+ Test Files  21 passed (21)
+      Tests  197 passed (197)
+ ✓ test/career/mapping-field/architecture.test.ts (7 tests)
+ ✓ test/career/mapping-field/field-interaction.test.tsx (10 tests)
+ ✓ test/career/mapping-field/field-render.test.tsx (10 tests)
+ ✓ test/career/mapping-field/model.test.ts (21 tests)
+ ✓ test/career/mapping-field/field-wiring.test.tsx (2 tests)
+  (a first run concurrent with the full suite and the mutants: 196/197, the one red = 'MAP-ARCH … engine modules are unchanged' Test timed out in 5000ms — load, gone in the quiet run)
+
+== 5. positive controls on the two architecture tests (controls-rc.py, quiet run; failing test names) ==
+K0 GREEN [3cb08edf main=5ca0f3f5] unchanged, before merge (must be green) | Tests  14 passed (14)
+K1 RED [3cb08edf main=5ca0f3f5] before merge: new lib/career file imports the engine as ./mapping/view | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping/MAP-ARCH · nothing existing is touched > outside lib/career/mapping only the phase C field imports the mapping modules (its model, 
+K2 RED [3cb08edf main=5ca0f3f5] before merge: engine file changed | Tests  3 failed | 11 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identical to the phase-B base
+      mapping/MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, unstaged and new) — p
+K3 RED [3cb08edf main=5ca0f3f5] before merge: protected orbit changed | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, B2, first screen, the automat
+K4 RED [3cb08edf main=5ca0f3f5] before merge: unlisted existing file changed | Tests  1 failed | 13 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+K0m GREEN [3cb08edf main=3cb08edf] after merge, unchanged (F-PC-1: must be green) | Tests  14 passed (14)
+K7m RED [3cb08edf main=3cb08edf] after merge, fa895193's old mapping-field architecture test (expect exactly the 2 F-PC-1 reds) | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against main, the branch changes only its new files and the three named entry
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the two product entry points: one line removed each (the line extended), and 
+K1m RED [3cb08edf main=3cb08edf] after merge: ./mapping/view importer | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping/MAP-ARCH · nothing existing is touched > outside lib/career/mapping only the phase C field imports the mapping modules (its model, 
+K2m RED [3cb08edf main=3cb08edf] after merge: engine file changed | Tests  3 failed | 11 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identical to the phase-B base
+      mapping/MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, unstaged and new) — p
+K3m RED [3cb08edf main=3cb08edf] after merge: protected orbit changed | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, B2, first screen, the automat
+K4m RED [3cb08edf main=3cb08edf] after merge: unlisted existing file changed | Tests  1 failed | 13 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+K8m RED [3cb08edf main=3cb08edf] after merge: SyntxFieldSelector + AutoJobRankingPanel changed (GRÜN's probe) | Tests  3 failed | 11 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, B2, first screen, the automat
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the two product entry points: one line removed each (the line extended), and 
+K9c RED [7d9d91d3 main=7d9d91d3] main moves on: unrelated committed change (README) after the merge (phase boundary) | Tests  1 failed | 13 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+K10c RED [34e27188 main=34e27188] main moves on: committed engine change after the merge (O-PB-3) | Tests  2 failed | 12 passed (14)
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > against the phase-B base, phase C changes only its new files and the three na
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identical to the phase-B base
+  (a first run concurrent with the full suite: the same plus load timeouts of 'MAP-ARCH … engine modules are unchanged' in 10 of 14 — discarded, repeated quietly above)
+
+== 6. mutants (mutate-pc.py, unchanged from §3.98, 49 mutants vs GRÜN's suite model/field-render/field-interaction/field-wiring/auto-capability) ==
+baseline: Tests  109 passed (109)
+baseline: baseline exit 0
+M1 RED class: any requirement of a LEXICAL_ONLY role makes it LEXICAL | Tests  1 failed | 108 passed (109) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name relation onl']
+M2 RED class from fit instead of tier | Tests  2 failed | 107 passed (109) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name relation onl', 'the class is told by the line, never by colour: the three classes shar']
+M3 RED SEMANTIC line from UNCLEAR (broken) | Tests  2 failed | 107 passed (109) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name relation onl', 'the legend draws each class with its own line from the sign table: SEM']
+M4 RED overflow bodies drawn | Tests  1 failed | 108 passed (109) | ['crowded: bodies without room are counted (per pool and in all), not dr']
+M5 RED sector drawn ignores overflow | Tests  1 failed | 108 passed (109) | ['crowded: bodies without room are counted (per pool and in all), not dr']
+M6 RED breath ignores the budget | Tests  1 failed | 108 passed (109) | ["REPRODUCE: the run's sign is the engine's for every state; the breath "]
+M7 GREEN breath only with a budget | Tests  109 passed (109) | []
+M8 RED displaced only by x | Tests  2 failed | 107 passed (109) | ['a body pushed only along its sector (radial 0, angular ≠ 0) is drawn a', 'a body the layout pushed only along its sector (radial 0, angular ≠ 0)']
+M9 RED constellation name = key | Tests  1 failed | 108 passed (109) | ["the person constellation is the engine's, keyed by the projection's pr"]
+M10 RED evidence class dropped | Tests  2 failed | 107 passed (109) | ['the authority and the evidence class stand with the field (B-6)', 'the evidence class and the authority stand with the field (B-6), EN an']
+M11 GREEN field without an available run | Tests  109 passed (109) | []
+M12 RED sector pool name = id | Tests  2 failed | 107 passed (109) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u', 'inverse: on L1 a click on a receded body of another pool changes nothi']
+F1 RED all engine actions admitted | Tests  1 failed | 108 passed (109) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+F2 RED OPEN_ROLE admitted | Tests  1 failed | 108 passed (109) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+F3 RED refused action returns a new equal object | Tests  1 failed | 108 passed (109) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+F4 RED L1 kept for a pool no longer in the field | Tests  1 failed | 108 passed (109) | ['a pool that is no longer in the field reads as L0; a marked role outsi']
+F5 RED marked body shown outside the open pool | Tests  1 failed | 108 passed (109) | ['a pool that is no longer in the field reads as L0; a marked role outsi']
+F6 RED UP not admitted | Tests  5 failed | 104 passed (109) | ['REPRODUCE: OPEN_POOL → L1, UP → L0, RESET → the initial state; a mark ', 'REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+T1 RED a rank change moves a body | Tests  2 failed | 107 passed (109) | ['T1 inverse: a rank-only change (tier and fit equal) is not a movement ', 'T3: a tier-only change marks the body moved, its trail from where it w']
+T2 RED movement across analyses | Tests  1 failed | 108 passed (109) | ["T2 inverse: across analyses nothing moves — even when the same role's "]
+T3 RED tier change does not move | Tests  2 failed | 107 passed (109) | ['T3: a tier-only change (fit and rank equal) moves the body, with its t', 'T3: a tier-only change marks the body moved, its trail from where it w']
+T4 RED trail lost | Tests  4 failed | 105 passed (109) | ['REPRODUCE: a changed fit moves that body once, with a trail from its p', 'REPRODUCE: a new reading with one changed fit moves that body with a t']
+T5 GREEN undrawn body moves | Tests  109 passed (109) | []
+B1 RED L1 view box misses the quarter points | Tests  1 failed | 108 passed (109) | ["L1's view box holds every drawn body of its pool; L0's the whole field"]
+B2 RED L1 view box from the horizon, not the field edge | Tests  1 failed | 108 passed (109) | ["L1's view box holds every drawn body of its pool; L0's the whole field"]
+C1 RED click on L1 opens a pool too | Tests  1 failed | 108 passed (109) | ['inverse: on L1 a click on a receded body of another pool changes nothi']
+C2 RED hover opens the pool instead of marking | Tests  1 failed | 108 passed (109) | ['REPRODUCE: a body marks on hover and focus (its line beneath the field']
+C3 RED leave does not clear the mark | Tests  1 failed | 108 passed (109) | ['REPRODUCE: a body marks on hover and focus (its line beneath the field']
+C4 RED Escape does nothing | Tests  1 failed | 108 passed (109) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+C5 RED no still sentence for STALLED | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+C6 RED still sentence ignores resumePending | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+C7 RED SEMANTIC bodies breathe too | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+C8 RED line dash dropped (class by nothing) | Tests  1 failed | 108 passed (109) | ['the class is told by the line, never by colour: the three classes shar']
+C9 RED L1 shows the whole field's overflow | Tests  2 failed | 107 passed (109) | ['the overflow count follows the level: on L0 all roles not drawn, on L1', "the overflow count on L1 is the open pool's own, also when both pools "]
+C10 RED empty view draws a field | Tests  1 failed | 108 passed (109) | ['inverse: nothing is drawn without an available ranking or for an empty']
+C11 RED DE shows EN copy | Tests  1 failed | 108 passed (109) | ['the evidence class and the authority stand with the field (B-6), EN an']
+C12 RED bodies outside the open pool focusable | Tests  2 failed | 107 passed (109) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u', 'inverse: on L1 a click on a receded body of another pool changes nothi']
+C13 GREEN decorative transition on every body | Tests  109 passed (109) | []
+C14 RED readings never advance (no movement after the first) | Tests  2 failed | 107 passed (109) | ['REPRODUCE: a new reading with one changed fit moves that body with a t', 'T3: a tier-only change marks the body moved, its trail from where it w']
+C15 RED pulse while frozen with resumePending | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+C16 RED legend lines all solid | Tests  1 failed | 108 passed (109) | ['the legend draws each class with its own line from the sign table: SEM']
+C17 RED authority sentence emptied | Tests  1 failed | 108 passed (109) | ['the evidence class and the authority stand with the field (B-6), EN an']
+C18 RED evidence badge always NONE | Tests  1 failed | 108 passed (109) | ['the evidence class and the authority stand with the field (B-6), EN an']
+C19 GREEN trail without a movement | Tests  109 passed (109) | []
+C20 RED pool buttons on L1 too | Tests  1 failed | 108 passed (109) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+P1 RED panel: field below the list | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the field stands after the authority line and above the ran']
+P2 RED panel: field dropped | Tests  1 failed | 108 passed (109) | ['REPRODUCE: the field stands after the authority line and above the ran']
+W1 RED wiring: projection never passed | Tests  1 failed | 108 passed (109) | ['REPRODUCE: PERSON result on view → the panel carries the field with th']
+W2 RED wiring: field without the run | Tests  1 failed | 108 passed (109) | ['REPRODUCE: PERSON result on view → the panel carries the field with th']
+mutants exit 0
+red 44/49; red without a failed test: 0
+erratum §3.98 (mutants-pc.txt): C13 was recorded RED with 'Tests 99 passed (99)' — a non-zero exit with no failed test; in fact a survivor. Only such line: C13 RED decorative transition on every body | Tests  99 passed (99) | []
+
+== 7. extra mutants (extra-rc.py) ==
+A3p-rc RED | Tests  1 failed | 108 passed (109) | ["MAP-C-MODEL · consumes the engine, adds no rule > REPRODUCE: the drawn bodies are exactly the layout's non-overflow bodies of the view, in rank order 20ms"]
+T2old-rc GREEN | Tests  17 passed (17) | []
+A3p-pc RED | Tests  1 failed | 98 passed (99) | ["MAP-C-MODEL · consumes the engine, adds no rule > REPRODUCE: the drawn bodies are exactly the layout's non-overflow bodies of the view, in rank order 16ms"]
+extra exit 0
+
+== 8. full suite npm run test:isolated (disposable condyn_test_* DB, least-privilege role) ==
+base1 5ca0f3f5dd4f5e0323396c519eb31df89454449d origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_ | Tests  37 failed | 3422 passed | 20 skipped (3479) | Test Files  7 failed | 493 passed | 11 skipped (511) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=20 terminate-superuser=0
+     extras: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-fee;test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-con;test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-;
+rc1 3cb08edfa3fa6c8e552739380bdc52499076f3f4 origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_mo | Tests  28 failed | 3481 passed | 20 skipped (3529) | Test Files  5 failed | 500 passed | 11 skipped (516) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=2 terminate-superuser=0
+     extras: test/career/relation/tension-state/tension-state.test.ts > T8 TensionState > preserves complete dimensional, u;
+base2 5ca0f3f5dd4f5e0323396c519eb31df89454449d origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_ | Tests  27 failed | 3432 passed | 20 skipped (3479) | Test Files  5 failed | 495 passed | 11 skipped (511) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=0 terminate-superuser=1
+     extras: test/decision-integration/g3-decision-context-binding-vertical.test.ts [ test/decision-integration/g3-decision;
+rc2 3cb08edfa3fa6c8e552739380bdc52499076f3f4 origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_mo | Tests  27 failed | 3482 passed | 20 skipped (3529) | Test Files  5 failed | 500 passed | 11 skipped (516) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=0 terminate-superuser=1
+     extras: test/career/hr-decision-loop/local-composition.postgres.test.ts [ test/career/hr-decision-loop/local-compositi;
+rcm 3cb08edfa3fa6c8e552739380bdc52499076f3f4 origin/main=3cb08edfa3fa6c8e552739380bdc52499076f3f4 real-node_mo | Tests  27 failed | 3482 passed | 20 skipped (3529) | Test Files  4 failed | 501 passed | 11 skipped (516) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=0 terminate-superuser=0
+     extras: none
+base3 5ca0f3f5dd4f5e0323396c519eb31df89454449d origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_ | Tests  27 failed | 3432 passed | 20 skipped (3479) | Test Files  5 failed | 495 passed | 11 skipped (511) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=0 terminate-superuser=1
+     extras: test/career/hr-decision-loop/read-service.postgres.test.ts [ test/career/hr-decision-loop/read-service.postgre;
+rc3 3cb08edfa3fa6c8e552739380bdc52499076f3f4 origin/main=5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_mo | Tests  27 failed | 3482 passed | 20 skipped (3529) | Test Files  4 failed | 501 passed | 11 skipped (516) | 27 legacy = §3.98 list | 42703=21 23502=1 timed-out=0 terminate-superuser=0
+     extras: none
+legacy failures per file (every run): career-lifecycle-concurrency-idempotency.test.ts:6 career-lifecycle-postgres-persistence.test.ts:6 career-lifecycle-recovery.test.ts:5 career-policy-activation-atomicity.test.ts:10 
+the 3 files GRÜN had to skip (symlinked node_modules): green in every run here — test/decision-integration/hr-decision-loop-p7.test.ts (7 tests);test/decision-integration/g2-g3-vertical-proof.test.ts (63 tests);test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts (1 test);
+base1/rc1 overlapped with the first controls/mutant/tsc runs (stopped, repeated quietly); rcm and rc3 ran alone: no extra at all.
+
+== 9. disposable databases (read-only count, nothing dropped: no change to databases) ==
+condyn_test_* present / marked: 17 / 14; connections: 0

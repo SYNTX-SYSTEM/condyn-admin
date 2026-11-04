@@ -1,0 +1,96 @@
+PINK §3.99 — PERSON × JOB phase C refinement, GRÜN frontend/mapping-phase-c 3cb08edf (parent fa895193, no amend; local only, not pushed),
+GELB request SFE::PHASE_C RE-VALIDATION, authorized by OTTAVIO; hardlock "nichts pushen, nichts mergen, keine Produktänderung, keine Delegation,
+keine Gemini-Aufrufe, kein :3017, keine Phase D, echtes node_modules … NUR PHASE-C-REVALIDIERUNG. MEHR NICHT." A2/A3 are not part of this check
+(with OTTAVIO). — 2026-11-04
+Method:
+  * git metadata, diff and tree identities of 3cb08edf against fa895193 and 5ca0f3f; a grep of the added test lines for position assertions.
+  * Scratch clones with a REAL (hard-linked) node_modules; npm run test:isolated (disposable condyn_test_* DB, least-privilege role):
+    14 positive controls on the two architecture tests before and after a simulated merge (origin/main := 3cb08edf, only in the scratch clone)
+    and with main moving on (scratch commits in a hard-linked copy, never pushed); PINK's 49 mutants of §3.98 unchanged against GRÜN's suite;
+    2 extra mutants (a position-only shift on fa895193 and 3cb08edf; the T2 mutant against fa895193's old model test); tsc; eslint;
+    GRÜN's suites; full suite alternating 5ca0f3f / 3cb08edf (3 + 3 runs) and once in the merged state.
+  * The first pass of controls, GRÜN's suites and the full suite overlapped with the mutant run and showed 5000 ms load timeouts. The mutant
+    run was stopped; everything was repeated sequentially, and the quiet runs are the evidence.
+Evidence class: DETERMINISTIC_FIXTURE. No model call, no network, no condyn row; product code, main and :3017 untouched; nothing pushed, merged
+or deleted; no database dropped or changed.
+
+VERDICT: GO for 3cb08edf. Every claim of GRÜN reproduces, the product is unchanged and nothing regresses.
+F-PC-T1, F-PC-T2 and O-PC-1 are closed. F-PC-1 is closed for the merge itself but moves to main's next commit: merge condition F-RC-1.
+
+(1) INTEGRITY      Parent fa895193 (1 parent, no amend), signature G, on no remote branch. The diff is exactly the 5 files (+243/−10): 4 tests,
+                   PERSON_X_JOB_MAPPING_PHASE_C.md.
+                   * lib/ and app/ have tree ids identical to fa895193 (0 files changed); scripts, package.json and package-lock.json are identical.
+                   * Against 5ca0f3f, these are tree-identical: the engine, mapping-spec, the spec, the orbits, manifestation (planetarium),
+                     SyntxField, SyntxFieldSelector, PxjFirstScreen, pxj-first-screen.ts, lib/career/ui, job-pool, job-scope,
+                     capability-core and app/api.
+                   * 5ca0f3f..3cb08edf touches the same 13 paths as 5ca0f3f..fa895193.
+(2) F-PC-1 / CONTROLS (quiet)
+                   * Before merge:
+                     - K0 green 14/14.
+                     - The ./mapping/view importer (K1) is now also red in the phase-B importer test (O-PC-1 closed).
+                     - An engine change (K2), an orbit change (K3) and an unlisted file (K4) are red.
+                   * After the simulated merge:
+                     - K0m green 14/14 (F-PC-1 closed at the merge).
+                     - fa895193's old test in the same state (K7m) gives exactly the 2 F-PC-1 reds.
+                     - K1m, K2m, K3m and K4m are red.
+                     - GRÜN's probe (SyntxFieldSelector + AutoJobRankingPanel, K8m) gives 3 red, as claimed.
+                   * Merged full suite (rcm): 27 red, not 29.
+                   * Main moving on after the merge (scratch commit, origin/main := HEAD):
+                     - an unrelated README commit (K9c) → 1 red ("only these files");
+                     - a committed engine change (K10c) → the 2 fixed-base tests are red, the phase-B "engine unchanged against main" test
+                       is green.
+(3) MUTANTS        44/49 red against GRÜN's suite (baseline 109/109 green; red = at least one failed test, 0 red without a failed test).
+                   * GRÜN's per-mutant claims all hold: T1 2, T2 1, T3 2, M8 2, C1 1, C9 2, C16 1.
+                   * fa895193's model.test.ts under the T2 mutant: 17/17 green, so the old test was vacuous, as GRÜN said.
+                   * Not red:
+                     - M7, M11, C19 and T5 are equivalent or invalid by construction (as in §3.98).
+                     - C13 is a real survivor (F-RC-T1).
+                   * A3 left untouched:
+                     - A position-only shift of every drawn body turns exactly the same single pre-existing test red on fa895193 and on
+                       3cb08edf. The refinement adds no assertion on the drawn position and none against the released layout.
+                     - The only coordinate in the added lines is the trail origin, which is the model's own previous place (movement
+                       marking). The rank-only render test uses data-rank as its precondition, not the place.
+(4) REGRESSION     * 5ca0f3f: 3432 passed / 27 failed / 20 skipped (3479).
+                   * 3cb08edf: 3482 / 27 / 20 (3529), unmerged and merged.
+                   * Against fa895193 (3472 / 27 / 20, 3519): +10 tests, +10 green.
+                   * The 27 test-level failures are identical to §3.98's list in all 7 runs (4 files 6/6/5/10; 21× 42703, 1× 23502 = F-JP-5).
+                   * Extras, all environment and on both sides:
+                     - base1 10 and rc1 1 load timeouts (5000 ms) while overlapping the first mutant run;
+                     - base2, rc2 and base3 each 1 file-level teardown error "must be a superuser to terminate superuser process" in
+                       dropDisposableTestDatabase (O-ENV-DROP); the counted tests are unaffected.
+                   * rcm and rc3 ran alone with no extra failure at all.
+                   * The 3 files GRÜN had to skip (symlinked node_modules) are green in every run here.
+                   * tsc 0; eslint 0; GRÜN's suites 21 files 197/197 (mapping-field 50).
+
+FINDINGS
+F-RC-1  (merge condition; F-PC-1 moved, not removed) With the fixed base PHASE_C_BASE = 5ca0f3f, the "against the phase-B base, phase C changes
+        only its new files and the three named entry points" test compares main's whole tree against 5ca0f3f. It holds on the branch and on
+        the merge commit (K0m, rcm). The first later commit on main that touches any file outside phase C's list (K9c: README) turns it red,
+        so main goes 27 → 28 at the next commit of anyone, PINK's evidence commits included. Any later legitimate change to the two entry
+        points or to a protected path (orbits, selector, B2 …) is red as well (K8m).
+        GRÜN's §7 says the tests "have to be re-based (or retired) at the next phase boundary". The mechanism is right, but the trigger is the
+        next commit on main, not a phase boundary. Decision before the merge (OTTAVIO/GELB): who re-bases or retires the check and when — e.g.
+        in the same merge window, or a check bounded to phase C's own commit range. PINK reports only; nothing corrected.
+F-RC-T1 (test condition, minor; new survivor + erratum §3.98) The mutant C13 gives every drawn body the movement transition (transform
+        0.8s), not only the bodies marked moved; no test of GRÜN's suite turns red, on fa895193 or on 3cb08edf. A test must turn red if a body
+        without a movement mark (data-moved="false") carries a transition other than none. This matters next to A3: with C13 the rank-index
+        jumps would animate like evidence movement.
+        Erratum: §3.98 recorded C13 as red ("Tests 99 passed (99)", a non-zero exit with no failed test — PINK's runner counted the exit code).
+        The true §3.98 count is 37/49, and C13 belongs to the survivors there too. No other line of §3.98 or §3.99 is red without a failed test.
+O-RC-1  O-PB-3 confirmed and bounded. On main the phase-B test "engine unchanged against main" (merge base) is green for a committed engine
+        change (K10c, vacuous) but still red for an uncommitted or untracked one (K2m). Today the phase-C fixed-base engine test covers the
+        committed case (K10c red). When that test is re-based or retired (F-RC-1), main loses protection against committed engine changes,
+        unless the phase-B test gets a fixed base of its own.
+O-RC-2  §7 of PERSON_X_JOB_MAPPING_PHASE_C.md matches PINK's measurements in every row of its table: each red count, the vacuous old T2 test,
+        the O-PC-1 probe and the simulated merge. Inaccuracies:
+        (a) the timing of the open point (F-RC-1);
+        (b) "A2 and A3 stay with GELB" — per GELB's request they are with OTTAVIO;
+        (c) the test comment calls 5ca0f3f "phase B closed, PINK §3.95" — §3.95 validated the branch 057f913, and 5ca0f3f as integrated main
+            is §3.97;
+        (d) "vacuous on main" holds only for committed changes (O-RC-1).
+O-RC-3  PHASE_C_BASE is resolved with rev-parse --verify when the module loads. In a clone without the 5ca0f3f object (e.g. a shallow CI
+        clone) the whole file throws, so all 7 tests are red. Derived from the code, not run (no CI here).
+O-RC-4  Environment: O-ENV-DROP (above) leaves disposable databases behind. 17 condyn_test_* databases are present (14 marked), 0 connections.
+        Not dropped: no database change is allowed in this run, so this is for the owner. Under load, the git-heavy phase-B test "engine
+        modules are unchanged" is the first to hit vitest's 5000 ms limit.
+Boundaries: no product change, no push, no merge, no delegation, no Gemini, no :3017, no Phase D, no L2/L3; scratch clones only; nothing deleted.

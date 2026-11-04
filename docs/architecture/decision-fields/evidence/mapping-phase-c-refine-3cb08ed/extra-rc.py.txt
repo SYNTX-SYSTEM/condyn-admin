@@ -1,0 +1,34 @@
+# PINK §3.99 extra mutants. argv: <pristine tree> <work root> <tag>
+# A3p: every drawn body shifted by (+0.5, -0.5) — a position-only change; which tests of GRÜN's suite notice it? Run on fa895193 and on
+#      3cb08edf: if the red sets are identical, the refinement added no assertion on the drawn position (A3 left untouched).
+# T2old: the T2 mutant (analysis check removed) with fa895193's model.test.ts — GRÜN's claim that the old test was vacuous (17/17 green).
+# Hard-linked copies, mutated files on NEW inodes (os.replace); the pristine tree is never edited; nothing is removed.
+import os, subprocess, sys
+SRC, ROOT, TAG = sys.argv[1], sys.argv[2], sys.argv[3]
+MF = "lib/career/view-model/mapping-field.ts"
+SUITE = ["test/career/mapping-field/model.test.ts", "test/career/mapping-field/field-render.test.tsx", "test/career/mapping-field/field-interaction.test.tsx",
+         "test/career/mapping-field/field-wiring.test.tsx", "test/career/auto-capability"]
+A3P = (MF, "x: placed.x, y: placed.y, radius", "x: placed.x + 0.5, y: placed.y - 0.5, radius")
+T2 = (MF, "if (previous === null || previous.analysisId !== next.analysisId) return out;", "if (previous === null) return out;")
+def write_new(path, text):
+    tmp = f"{path}.pink-mutant"
+    with open(tmp, "w") as f: f.write(text)
+    os.replace(tmp, path)
+def mutate(W, spec):
+    f, old, new = spec; src = open(f"{SRC}/{f}").read(); assert src.count(old) == 1, f"pattern {old!r}"
+    write_new(f"{W}/{f}", src.replace(old, new))
+def old_model(W):
+    write_new(f"{W}/test/career/mapping-field/model.test.ts", subprocess.run(["git", "show", "fa895193:test/career/mapping-field/model.test.ts"], cwd=W, capture_output=True, text=True, check=True).stdout)
+RUNS = {"A3p": (lambda W: mutate(W, A3P), SUITE)}
+if TAG == "rc": RUNS["T2old"] = (lambda W: (mutate(W, T2), old_model(W)), ["test/career/mapping-field/model.test.ts"])
+for mid, (apply, suite) in RUNS.items():
+    W = f"{ROOT}/x-{mid}-{TAG}"
+    if os.path.exists(W): print(f"{mid} EXISTS {W} (not reused)", flush=True); continue
+    subprocess.run(["cp", "-al", SRC, W], check=True)
+    apply(W)
+    r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *suite], cwd=W, capture_output=True, text=True, timeout=900)
+    out = r.stdout + r.stderr
+    with open(f"{W}.out.txt", "w") as f: f.write(out)
+    tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+    fails = sorted({l.strip()[2:].strip()[:160] for l in out.splitlines() if l.strip().startswith("× ")})
+    print(f"{mid}-{TAG} {'RED' if r.returncode != 0 else 'GREEN'} | {tests[-1] if tests else 'no summary'} | {fails}", flush=True)

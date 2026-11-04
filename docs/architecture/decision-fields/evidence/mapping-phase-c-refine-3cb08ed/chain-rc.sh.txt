@@ -1,0 +1,17 @@
+#!/bin/bash
+# PINK §3.99 sequential runs after the full suite (no concurrency, so no load-induced timeouts): controls, GRÜN's suites, 49 mutants, extras.
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+S=/tmp/claude-1000/-home-codi-Entwicklung/a060e5e1-d3f6-49b1-ab41-8710c6e835d7/scratchpad; I=$S/int397
+mkdir $I/ctl-rc2 $I/mut-rc2 $I/xtra-rc
+cd $I && python3 $S/py/controls-rc.py $I/msrc2 $I/ctl-rc2 > $I/controls-rc2.txt 2>&1; echo "controls exit $?" >> $I/controls-rc2.txt
+cp -al $I/msrc2 $I/grun-rc2 && cd $I/grun-rc2 && timeout 900 npm run -s test:isolated -- test/career/mapping-field test/career/mapping test/career/mapping-spec test/career/auto-capability > $I/grun-rc2.txt 2>&1; echo "exit $?" >> $I/grun-rc2.txt
+cp -al $I/msrc2 $I/mut-rc2/base && cd $I/mut-rc2/base && npm run -s test:isolated -- test/career/mapping-field/model.test.ts test/career/mapping-field/field-render.test.tsx test/career/mapping-field/field-interaction.test.tsx test/career/mapping-field/field-wiring.test.tsx test/career/auto-capability > $I/mut-rc2-baseline.txt 2>&1; echo "baseline exit $?" >> $I/mut-rc2-baseline.txt
+cd $I && python3 $S/py/mutate-pc.py $I/msrc2 $I/mut-rc2 > $I/mutants-rc2.txt 2>&1; echo "mutants exit $?" >> $I/mutants-rc2.txt
+cd $I && python3 $S/py/extra-rc.py $I/msrc2 $I/xtra-rc rc > $I/extra-rc.txt 2>&1; python3 $S/py/extra-rc.py $I/msrc $I/xtra-rc pc >> $I/extra-rc.txt 2>&1; echo "extra exit $?" >> $I/extra-rc.txt
+echo "msrc2 $(git -C $I/msrc2 rev-parse HEAD) $(git -C $I/msrc2 rev-parse origin/main) status=$(git -C $I/msrc2 status --short | wc -l); msrc $(git -C $I/msrc rev-parse HEAD) status=$(git -C $I/msrc status --short | wc -l)" > $I/pristine-rc.txt
+# two more quiet full runs (the first pair overlapped with the controls/mutants/tsc and shows load timeouts)
+for run in base3 rc3; do
+  case $run in base*) d=$I/tpb;; *) d=$I/trc;; esac
+  cd $d; echo "$run $(git rev-parse HEAD) origin/main=$(git rev-parse origin/main) real-node_modules start $(date -Is)" > $I/fullr-$run.txt
+  timeout 3000 npm run -s test:isolated >> $I/fullr-$run.txt 2>&1; echo "exit $? end $(date -Is)" >> $I/fullr-$run.txt
+done
