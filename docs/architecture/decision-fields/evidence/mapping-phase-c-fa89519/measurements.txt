@@ -1,0 +1,201 @@
+PINK §3.98 measurements — PERSON x JOB phase C, GRÜN frontend/mapping-phase-c fa895193 (local only, not pushed), base origin/main 5ca0f3f, 2026-11-04
+== 1. integrity ==
+commit fa895193c08fabbd75785363fb865bd5d326859d, parent 5ca0f3f5dd4f5e0323396c519eb31df89454449d, commits base..C 1, merges 0, on a remote branch: 0, signature G
+origin/main = 5ca0f3f5dd4f5e0323396c519eb31df89454449d
+  M	app/components/career/demo/AutoJobRankingPanel.tsx
+  A	app/components/career/demo/PersonJobMappingField.tsx
+  M	app/components/career/demo/SemanticCareerIntelligenceField.tsx
+  A	app/components/career/demo/mapping-field-copy.ts
+  A	docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_C.md
+  A	lib/career/view-model/mapping-field.ts
+  A	test/career/mapping-field/architecture.test.ts
+  A	test/career/mapping-field/field-interaction.test.tsx
+  A	test/career/mapping-field/field-render.test.tsx
+  A	test/career/mapping-field/field-wiring.test.tsx
+  A	test/career/mapping-field/model.test.ts
+  A	test/career/mapping-field/support.ts
+  M	test/career/mapping/architecture.test.ts
+  13 files changed, 1412 insertions(+), 7 deletions(-)
+files outside the hand-over list: 0 (git diff --name-only minus the 13 listed paths)
+tree identity 5ca0f3f vs fa89519 (git rev-parse <commit>:<path>):
+  SAME 64df6347982a lib/career/mapping
+  SAME 1ff0f3daf89e docs/architecture/decision-fields/mapping-spec
+  SAME 0d4bf3a9ed15 docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md
+  SAME b4d8562c46ea app/components/career/demo/manifestation
+  SAME b9cc9a10fd41 app/components/career/demo/SyntxField.tsx
+  SAME 581a08ec2810 app/components/career/demo/SyntxFieldSelector.tsx
+  SAME a6c27089160c app/components/career/demo/PxjFirstScreen.tsx
+  SAME 1d9c27f20b4f lib/career/view-model/pxj-first-screen.ts
+  SAME f720cbf1b4e2 lib/career/ui
+  SAME f96e1382be9a lib/career/job-pool
+  SAME bd9e76764644 lib/career/job-scope
+  SAME 04a2db660e9a lib/career/capability-core
+  SAME 9c1c6a764806 app/api
+  SAME 35ff36e1e7ba lib/career/db
+  SAME e2bc2a2ec5f1 app/components/career/demo/ResonanceOrbits.tsx
+  SAME 1342a9b19c9c app/components/career/demo/OrbitalCosmosView.tsx
+  SAME 64358d0bf41f app/components/career/demo/CapabilityField.tsx
+engine importers outside lib/career/mapping (PINK grep, any spelling, docs excluded):
+  app/components/career/demo/PersonJobMappingField.tsx
+  app/components/career/demo/mapping-field-copy.ts
+  lib/career/view-model/mapping-field.ts
+  test/career/mapping-field/model.test.ts
+  test/career/mapping/delta.test.ts
+  test/career/mapping/focus.test.ts
+  test/career/mapping/layout-vectors.test.ts
+  test/career/mapping/signs.test.ts
+  test/career/mapping/view.test.ts
+positive controls (controls-pc.py; hard-linked copies of a dedicated clone, change on a new inode; both architecture tests, 14):
+  K0 GREEN unchanged (must be green) | Tests  14 passed (14) | []
+  K1 RED new lib/career file imports the engine as ./mapping/view | Tests  1 failed | 13 passed (14) | ['MAP-C-ARCH · nothing existing changes meaning > against main, the branch changes only its new files and the th']
+  K2 RED engine file changed (comment appended to lib/career/mapping/view.ts) | Tests  3 failed | 11 passed (14) | ['MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, un', 'MAP-C-ARCH · nothing existing
+  K3 RED protected orbit changed (ResonanceOrbits.tsx) | Tests  2 failed | 12 passed (14) | ['MAP-C-ARCH · nothing existing changes meaning > against main, the branch changes only its new files and the th', 'MAP-C-ARCH · nothing existing changes meaning > orbi
+  K4 RED unlisted existing file changed (RoleDiscoveryPanel.tsx) | Tests  2 failed | 12 passed (14) | ['MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, un', 'MAP-C-ARCH · nothing existing changes mean
+  K5 RED engine changed AFTER a merge (origin/main = fa895193) | Tests  4 failed | 10 passed (14) | ['MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, un', 'MAP-C-ARCH · nothing existing changes meanin
+  K6 RED protected orbit changed AFTER a merge (origin/main = fa895193) | Tests  4 failed | 10 passed (14) | ['MAP-ARCH · nothing existing is touched > against main, the engine modules are unchanged (committed, staged, un', 'MAP-C-ARCH · nothing existing chang
+  K4 repeated: Tests 1 failed | 13 passed (14), only 'changes only its new files…' (the extra red of the first K4 run was transient in the hard-linked copy)
+  K7 merged, unchanged (origin/main = fa895193): mapping/architecture 7/7 green; mapping-field/architecture 2 failed | 5 passed:
+     × against main, the branch changes only its new files and the three named entry points (committed, staged, unstaged and new)
+     × the two product entry points: one line removed each (the line extended), and only the field added
+== 2. contract engine → field (pink-pc.test.ts, 6/6; seeded, decoder-valid, Phase-A reference layout as oracle) ==
+  model: {"models": 400, "bodies": 10359, "overflow": 0, "displaced": 1, "classes": {"SEMANTIC": 7421, "LEXICAL": 1099, "NONE": 1839}, "keyVariants": 1600, "permuted": 400, "semanticAllZero": 990, "lexicalAllZero": 427, "noneWithRequirements": 393, "noneWithoutRequirements": 1446, "rankInversionsUndisplaced": 0, "rankInversionsAll": 0, "pairsUndisplaced": 478161, "pairsAll": 478336, "stats": {"key_KNOWN": 6981, "key_ABSENT": 8340, "key_NULL": 5372, "key_FOREIGN": 4252}}
+  lines: {"SEMANTIC": "solid", "LEXICAL": "dotted", "NONE": "open"}
+  focus: {"states": 20, "transitions": 560, "refused": 340, "admitted": 220, "marks": 100, "l1States": 10, "markedShown": 9, "markedHidden": 7}
+  movement: {"pairs": 300, "moved": 220, "movedWithTrail": 220, "movedWithoutPrev": 0, "rankOnly": 1937, "unchangedDrawn": 1658, "pushedNotMoved": 2870, "equalReread": 300, "otherAnalysis": 300}
+  nulls: 8
+  runs (decoder-valid combinations):
+    NOT_STARTED/false/noBudget:breath=false,frozen=false,pulse=false
+    DISABLED/false/noBudget:breath=false,frozen=false,pulse=false
+    DISABLED/true/noBudget:breath=false,frozen=false,pulse=false
+    RUNNING/false/4:1:breath=true,frozen=false,pulse=false
+    RUNNING/false/4:4:breath=false,frozen=false,pulse=false
+    RUNNING/false/2:2:breath=false,frozen=false,pulse=false
+    RUNNING/true/4:1:breath=true,frozen=false,pulse=false
+    RUNNING/true/4:4:breath=false,frozen=false,pulse=false
+    RUNNING/true/2:2:breath=false,frozen=false,pulse=false
+    STALLED/false/4:1:breath=false,frozen=true,pulse=false
+    STALLED/false/4:4:breath=false,frozen=true,pulse=false
+    STALLED/false/2:2:breath=false,frozen=true,pulse=false
+    STALLED/true/4:1:breath=false,frozen=true,pulse=false
+    STALLED/true/4:4:breath=false,frozen=true,pulse=false
+    STALLED/true/2:2:breath=false,frozen=true,pulse=false
+    COMPLETED/false/4:1:breath=false,frozen=false,pulse=false
+    COMPLETED/false/4:4:breath=false,frozen=false,pulse=false
+    COMPLETED/false/2:2:breath=false,frozen=false,pulse=false
+    COMPLETED/true/4:1:breath=false,frozen=false,pulse=false
+    COMPLETED/true/4:4:breath=false,frozen=false,pulse=false
+    COMPLETED/true/2:2:breath=false,frozen=false,pulse=false
+    PARTIAL/false/4:1:breath=false,frozen=false,pulse=false
+    PARTIAL/false/4:4:breath=false,frozen=false,pulse=false
+    PARTIAL/false/2:2:breath=false,frozen=false,pulse=false
+    PARTIAL/true/4:1:breath=false,frozen=false,pulse=true
+    PARTIAL/true/4:4:breath=false,frozen=false,pulse=true
+    PARTIAL/true/2:2:breath=false,frozen=false,pulse=true
+    FAILED/false/noBudget:breath=false,frozen=false,pulse=false
+    FAILED/false/4:1:breath=false,frozen=false,pulse=false
+    FAILED/false/4:4:breath=false,frozen=false,pulse=false
+    FAILED/false/2:2:breath=false,frozen=false,pulse=false
+    FAILED/true/noBudget:breath=false,frozen=false,pulse=true
+    FAILED/true/4:1:breath=false,frozen=false,pulse=true
+    FAILED/true/4:4:breath=false,frozen=false,pulse=true
+    FAILED/true/2:2:breath=false,frozen=false,pulse=true
+    SKIPPED/false/noBudget:breath=false,frozen=false,pulse=false
+    SKIPPED/false/4:1:breath=false,frozen=false,pulse=false
+    SKIPPED/false/4:4:breath=false,frozen=false,pulse=false
+    SKIPPED/false/2:2:breath=false,frozen=false,pulse=false
+    SKIPPED/true/noBudget:breath=false,frozen=false,pulse=false
+    SKIPPED/true/4:1:breath=false,frozen=false,pulse=false
+    SKIPPED/true/4:4:breath=false,frozen=false,pulse=false
+    SKIPPED/true/2:2:breath=false,frozen=false,pulse=false
+  refused by the strict decoder: 21
+  Phase-B probe pink-pb.test.ts on fa89519: Tests 7 passed (7) (engine byte-identical)
+== 3. rendering / interaction ==
+  panel (pink-pc-panel.test.tsx, 2 locales x 15 runs x 12 rankings = 360 cases):
+    without field, fa89519 == 5ca0f3f byte for byte: 360 / 360
+    with field, field section removed == field-less markup: 360 / 360 ; field drawn in 40 cases, always after auto-authority/pools-dropped and before auto-ranks/auto-ranking-empty
+  field (pink-pc-render.test.tsx, 3/3):
+    {"renders": 216, "nothing": 72, "bodies": 6744, "still": 24, "stillResume": 12, "pulse": 24, "breathRuns": 12, "breathingBodies": 18, "enInDe": [], "claimHits": [], "runs": ["NOT_STARTED", "DISABLED", "RUNNING", "STALLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED", "RUNNING_DONE", "STALLED_RESUME", "PARTIAL_RESUME", "FAILED_RESUME"], "refusedFixtures": ["RUNNING:{\"budget\":null}"]}
+    testids drawn: mapping-body-*, mapping-capability-*, mapping-field, mapping-field-authority, mapping-field-evidence, mapping-field-svg, mapping-horizon, mapping-legend, mapping-legend-LEXICAL, mapping-legend-NONE, mapping-legend-SEMANTIC, mapping-marked, mapping-overflow, mapping-pending, mapping-pending-outline, mapping-person, mapping-pool-*, mapping-pools, mapping-position, mapping-resume-pending, mapping-resume-pulse, mapping-ring-best, mapping-ring-field, mapping-ring-horizon, mapping-ring-shelf, mapping-sector-*, mapping-still
+    static scan of the 3 new product files (code without comments): []
+  tsc --noEmit fa89519: 0 errors; eslint on the new files + panel + test/career/mapping-field: exit 0
+  GRÜN's phase-C suites (mapping-field, mapping, mapping-spec, auto-capability): Test Files 21 passed (21) Tests 187 passed (187); architecture 7 + 7 green
+== 4. mutants (mutate-pc.py, 49) vs GRÜN's suite (mapping-field without architecture + auto-capability: 12 files, 99 tests; baseline 99/99) ==
+  M1 RED class: any requirement of a LEXICAL_ONLY role makes it LEXICAL | Tests  1 failed | 98 passed (99) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name r
+  M2 RED class from fit instead of tier | Tests  2 failed | 97 passed (99) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name relation onl', 'the class is told
+  M3 RED SEMANTIC line from UNCLEAR (broken) | Tests  1 failed | 98 passed (99) | ['REPRODUCE: class per role — checked (SEMANTIC tier), name relation onl']
+  M4 RED overflow bodies drawn | Tests  1 failed | 98 passed (99) | ['crowded: bodies without room are counted (per pool and in all), not dr']
+  M5 RED sector drawn ignores overflow | Tests  1 failed | 98 passed (99) | ['crowded: bodies without room are counted (per pool and in all), not dr']
+  M6 RED breath ignores the budget | Tests  1 failed | 98 passed (99) | ["REPRODUCE: the run's sign is the engine's for every state; the breath "]
+  M7 GREEN breath only with a budget | Tests  99 passed (99) | []
+  M8 GREEN displaced only by x | Tests  99 passed (99) | []
+  M9 RED constellation name = key | Tests  1 failed | 98 passed (99) | ["the person constellation is the engine's, keyed by the projection's pr"]
+  M10 RED evidence class dropped | Tests  2 failed | 97 passed (99) | ['the authority and the evidence class stand with the field (B-6)', 'the evidence class and the author
+  M11 GREEN field without an available run | Tests  99 passed (99) | []
+  M12 RED sector pool name = id | Tests  1 failed | 98 passed (99) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+  F1 RED all engine actions admitted | Tests  1 failed | 98 passed (99) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+  F2 RED OPEN_ROLE admitted | Tests  1 failed | 98 passed (99) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+  F3 RED refused action returns a new equal object | Tests  1 failed | 98 passed (99) | ['inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_C']
+  F4 RED L1 kept for a pool no longer in the field | Tests  1 failed | 98 passed (99) | ['a pool that is no longer in the field reads as L0; a marked role outsi']
+  F5 RED marked body shown outside the open pool | Tests  1 failed | 98 passed (99) | ['a pool that is no longer in the field reads as L0; a marked role outsi']
+  F6 RED UP not admitted | Tests  3 failed | 96 passed (99) | ['REPRODUCE: OPEN_POOL → L1, UP → L0, RESET → the initial state; a mark ', 'REPRODUCE: pool button → L
+  T1 GREEN a rank change moves a body | Tests  99 passed (99) | []
+  T2 GREEN movement across analyses | Tests  99 passed (99) | []
+  T3 GREEN tier change does not move | Tests  99 passed (99) | []
+  T4 RED trail lost | Tests  2 failed | 97 passed (99) | ['REPRODUCE: a changed fit moves that body once, with a trail from its p', 'REPRODUCE: a new reading with one chang
+  T5 GREEN undrawn body moves | Tests  99 passed (99) | []
+  B1 RED L1 view box misses the quarter points | Tests  1 failed | 98 passed (99) | ["L1's view box holds every drawn body of its pool; L0's the whole field"]
+  B2 RED L1 view box from the horizon, not the field edge | Tests  1 failed | 98 passed (99) | ["L1's view box holds every drawn body of its pool; L0's the whole field"]
+  C1 GREEN click on L1 opens a pool too | Tests  99 passed (99) | []
+  C2 RED hover opens the pool instead of marking | Tests  1 failed | 98 passed (99) | ['REPRODUCE: a body marks on hover and focus (its line beneath the field']
+  C3 RED leave does not clear the mark | Tests  1 failed | 98 passed (99) | ['REPRODUCE: a body marks on hover and focus (its line beneath the field']
+  C4 RED Escape does nothing | Tests  1 failed | 98 passed (99) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+  C5 RED no still sentence for STALLED | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+  C6 RED still sentence ignores resumePending | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+  C7 RED SEMANTIC bodies breathe too | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+  C8 RED line dash dropped (class by nothing) | Tests  1 failed | 98 passed (99) | ['the class is told by the line, never by colour: the three classes shar']
+  C9 GREEN L1 shows the whole field's overflow | Tests  99 passed (99) | []
+  C10 RED empty view draws a field | Tests  1 failed | 98 passed (99) | ['inverse: nothing is drawn without an available ranking or for an empty']
+  C11 RED DE shows EN copy | Tests  1 failed | 98 passed (99) | ['the evidence class and the authority stand with the field (B-6), EN an']
+  C12 RED bodies outside the open pool focusable | Tests  1 failed | 98 passed (99) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+  C13 RED decorative transition on every body | Tests  99 passed (99) | []
+  C14 RED readings never advance (no movement after the first) | Tests  1 failed | 98 passed (99) | ['REPRODUCE: a new reading with one changed fit moves that body with a t
+  C15 RED pulse while frozen with resumePending | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodi']
+  C16 GREEN legend lines all solid | Tests  99 passed (99) | []
+  C17 RED authority sentence emptied | Tests  1 failed | 98 passed (99) | ['the evidence class and the authority stand with the field (B-6), EN an']
+  C18 RED evidence badge always NONE | Tests  1 failed | 98 passed (99) | ['the evidence class and the authority stand with the field (B-6), EN an']
+  C19 GREEN trail without a movement | Tests  99 passed (99) | []
+  C20 RED pool buttons on L1 too | Tests  1 failed | 98 passed (99) | ['REPRODUCE: pool button → L1 (its view box, its title, an up button); u']
+  P1 RED panel: field below the list | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the field stands after the authority line and above the ran']
+  P2 RED panel: field dropped | Tests  1 failed | 98 passed (99) | ['REPRODUCE: the field stands after the authority line and above the ran']
+  W1 RED wiring: projection never passed | Tests  1 failed | 98 passed (99) | ['REPRODUCE: PERSON result on view → the panel carries the field with th']
+  W2 RED wiring: field without the run | Tests  1 failed | 98 passed (99) | ['REPRODUCE: PERSON result on view → the panel carries the field with th']
+  => 38 RED, 11 GREEN
+  the 11 survivors vs PINK's probes (pink-pc + pink-pc-render, baseline 9/9):
+  M7 GREEN breath only with a budget | Tests  9 passed (9) | []
+  M8 RED displaced only by x | Tests  1 failed | 8 passed (9) | ['random decoder-valid rankings: bodies = Phase-A reference layout, clas']
+  M11 GREEN field without an available run | Tests  9 passed (9) | []
+  T1 RED a rank change moves a body | Tests  1 failed | 8 passed (9) | ['random reading pairs: moved = drawn roles whose own tier or fit change']
+  T2 RED movement across analyses | Tests  1 failed | 8 passed (9) | ['random reading pairs: moved = drawn roles whose own tier or fit change']
+  T3 RED tier change does not move | Tests  1 failed | 8 passed (9) | ['random reading pairs: moved = drawn roles whose own tier or fit change']
+  T5 GREEN undrawn body moves | Tests  9 passed (9) | []
+  C1 GREEN click on L1 opens a pool too | Tests  9 passed (9) | []
+  C9 GREEN L1 shows the whole field's overflow | Tests  9 passed (9) | []
+  C16 GREEN legend lines all solid | Tests  9 passed (9) | []
+  C19 GREEN trail without a movement | Tests  9 passed (9) | []
+== 5. regression guard (full test:isolated, real node_modules, least-privilege role, alternating) ==
+  base1 5ca0f3f5 :: Test Files 4 failed | 496 passed | 11 skipped (511) :: Tests 27 failed | 3432 passed | 20 skipped (3479)
+  pc1 fa895193 :: Test Files 4 failed | 501 passed | 11 skipped (516) :: Tests 27 failed | 3472 passed | 20 skipped (3519)
+  base2 5ca0f3f5 :: Test Files 4 failed | 496 passed | 11 skipped (511) :: Tests 27 failed | 3432 passed | 20 skipped (3479)
+  pc2 fa895193 :: Test Files 4 failed | 501 passed | 11 skipped (516) :: Tests 27 failed | 3472 passed | 20 skipped (3519)
+  FAIL lists identical in all pairs (base1=pc1, base2=pc2, base1=base2, pc1=pc2):
+         6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+         6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+         5  FAIL  test/career-lifecycle-recovery.test.ts
+        10  FAIL  test/career-policy-activation-atomicity.test.ts
+  causes, counted in each of the 4 runs: 21x 42703 career_policy_versions.version, 1x 23502 career_commitments.actor, 5 follow-ups (= F-JP-5, as in §3.97)
+  fa89519 - 5ca0f3f = +5 files, +40 tests, all green: mapping-field architecture 7, field-interaction 4, field-render 10, field-wiring 2, model 17
+  g2-g3-vertical-proof, hr-decision-loop-p7, local-decision-context-http, hr-decision-loop-postgres: green in every run (real node_modules)
+== 6. assumptions, measured ==
+  A3: of the bodies drawn in both readings without own new tier/fit, 2870 changed position and 1658 did not (63.4 % jump, no trail) over 300 random pairs
+  A2: L0 view box 1048 units drawn at DRAWN_PX 360 => scale 0.344; body radius 6…16 units => 2.1…5.5 px; a dotted line on a 2 px body has ~3 dots
+  A4: SEMANTIC bodies whose requirements are all value 0 (DIFFERENT/UNCLEAR): 990 of 7421 drawn solid; LEXICAL all value 0: 427 of 1099; NONE: 1446 without requirements + 393 with only source NONE

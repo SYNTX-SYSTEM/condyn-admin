@@ -1,0 +1,32 @@
+# PINK §3.98 positive controls for GRÜN's two architecture tests. argv: <pristine msrc> <work root>
+# Each control: hard-linked copy of msrc (cp -al), one change written to a NEW inode (os.replace), the two architecture tests run.
+# Nothing is removed; msrc is checked unchanged afterwards by the caller (git status).
+import os, subprocess, sys
+SRC, ROOT = sys.argv[1], sys.argv[2]
+TESTS = ["test/career/mapping/architecture.test.ts", "test/career/mapping-field/architecture.test.ts"]
+def write_new(path, text):
+    tmp = f"{path}.pink-control"
+    with open(tmp, "w") as f: f.write(text)
+    os.replace(tmp, path)
+def append(rel, line): return lambda W: write_new(f"{W}/{rel}", open(f"{W}/{rel}").read() + line)
+def create(rel, text): return lambda W: write_new(f"{W}/{rel}", text)
+def move_main(W): subprocess.run(["git", "update-ref", "refs/remotes/origin/main", "fa895193c08fabbd75785363fb865bd5d326859d"], cwd=W, check=True)
+K = {
+ "K0": ("unchanged (must be green)", lambda W: None),
+ "K1": ("new lib/career file imports the engine as ./mapping/view", create("lib/career/pink-importer.ts", 'import { buildMappingView } from "./mapping/view";\nexport const pinkImporter = buildMappingView;\n')),
+ "K2": ("engine file changed (comment appended to lib/career/mapping/view.ts)", append("lib/career/mapping/view.ts", "\n// pink control\n")),
+ "K3": ("protected orbit changed (ResonanceOrbits.tsx)", append("app/components/career/demo/ResonanceOrbits.tsx", "\n// pink control\n")),
+ "K4": ("unlisted existing file changed (RoleDiscoveryPanel.tsx)", append("app/components/career/demo/RoleDiscoveryPanel.tsx", "\n// pink control\n")),
+ "K5": ("engine changed AFTER a merge (origin/main = fa895193)", lambda W: (move_main(W), append("lib/career/mapping/view.ts", "\n// pink control\n")(W))),
+ "K6": ("protected orbit changed AFTER a merge (origin/main = fa895193)", lambda W: (move_main(W), append("app/components/career/demo/ResonanceOrbits.tsx", "\n// pink control\n")(W))),
+}
+for kid, (label, apply) in K.items():
+    W = f"{ROOT}/k-{kid}"
+    if os.path.exists(W): print(f"{kid} EXISTS {W} (not reused)", flush=True); continue
+    subprocess.run(["cp", "-al", SRC, W], check=True)
+    apply(W)
+    r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *TESTS], cwd=W, capture_output=True, text=True, timeout=600)
+    out = r.stdout + r.stderr
+    tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+    fails = sorted({l.split(">", 1)[-1].strip()[:110] for l in out.splitlines() if l.strip().startswith("FAIL ")})
+    print(f"{kid} {'RED' if r.returncode != 0 else 'GREEN'} {label} | {tests[-1] if tests else 'no summary'} | {fails}", flush=True)

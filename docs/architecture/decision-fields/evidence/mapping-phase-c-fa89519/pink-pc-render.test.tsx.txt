@@ -1,0 +1,97 @@
+// PINK §3.98 field render probe (fa895193 only): the field over run states × rankings × locales. Static markup only (no effects exist in
+// the component). Checks: drawn bodies = model, still/pulse/breath marks = sign table, empty → nothing, no L2/L3 element, no figure or
+// claim word, DE carries no EN sentence, no link/form/fetch. Records counts only.
+import React from "react";
+import { describe, expect, it } from "vitest";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { renderToStaticMarkup } from "react-dom/server";
+import { PersonJobMappingField } from "../../app/components/career/demo/PersonJobMappingField";
+import { MAPPING_FIELD_COPY } from "../../app/components/career/demo/mapping-field-copy";
+import { mappingFieldModel } from "../../lib/career/view-model/mapping-field";
+import { AUTO_MATCH_STATES, decodeAutoMatch, type AutoMatchWatch, type JobRankingState } from "../../lib/career/ui/auto-match";
+import { autoMatch } from "../career/auto-capability/fixtures";
+import { CAPS, POOL_A, POOL_B, lex, rankingOf, sem, standardRanking } from "../career/mapping/fixtures";
+import { classRoles, crowdedRoles, projectionOf } from "../career/mapping-field/support";
+
+const ROOT = join(__dirname, "../..");
+const TABLE = JSON.parse(readFileSync(join(ROOT, "docs/architecture/decision-fields/mapping-spec/sign-table.json"), "utf8"));
+const OUT = process.env.PINK_OUT ?? "/dev/null";
+/** Run fixtures the strict decoder refuses are recorded and left out (never passed to the field with a null run). */
+const refused: string[] = [];
+const watchOf = (state: (typeof AUTO_MATCH_STATES)[number], patch: Record<string, unknown> = {}): AutoMatchWatch | null => {
+  const decoded = decodeAutoMatch(autoMatch(state, patch));
+  if (decoded === null) { refused.push(`${state}:${JSON.stringify(patch)}`); return null; }
+  return { read: { state: "AVAILABLE", autoMatch: decoded }, waitedOut: false };
+};
+const B = (p: number, e: number) => ({ budget: { rolesPlanned: p, rolesEvaluated: e, callsLimit: 25, callsUsed: null, callsJobLimit: null } });
+const RUN_CANDIDATES: Array<[string, AutoMatchWatch | null]> = [
+  ...AUTO_MATCH_STATES.map(s => [s, watchOf(s)] as [string, AutoMatchWatch | null]), ["RUNNING_DONE", watchOf("RUNNING", B(4, 4))], ["RUNNING_NOBUDGET", watchOf("RUNNING", { budget: null })],
+  ["STALLED_RESUME", watchOf("STALLED", { resumePending: true })], ["PARTIAL_RESUME", watchOf("PARTIAL", { resumePending: true })], ["FAILED_RESUME", watchOf("FAILED", { resumePending: true })]
+];
+const RUNS = RUN_CANDIDATES.filter((entry): entry is [string, AutoMatchWatch] => entry[1] !== null);
+const allLexical = rankingOf([{ pool: POOL_A, roleId: "role_l1", title: "Lex one", requirements: [lex("q1", "REQUIRED", "NAME_EXACT", "PCAP_TS", "TypeScript")] }, { pool: POOL_B, roleId: "role_l2", title: "Lex two", requirements: [lex("q2", "OPTIONAL", "WEAK_TOKEN_CONTAINMENT", undefined, "Go")] }]);
+const allBare = rankingOf([{ pool: POOL_A, roleId: "role_b1", title: "Bare one", requirements: [] }, { pool: POOL_A, roleId: "role_b2", title: "Bare two", requirements: [] }]);
+const onePoolOneRole = rankingOf([{ pool: POOL_B, roleId: "role_s", title: "Single", requirements: [sem("q_s", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL")] }]);
+const RANKINGS: Array<[string, JobRankingState]> = [
+  ["standard", { state: "AVAILABLE", ranking: standardRanking() }], ["classes", { state: "AVAILABLE", ranking: rankingOf(classRoles()) }],
+  ["crowded320", { state: "AVAILABLE", ranking: rankingOf(crowdedRoles(320)) }], ["allLexical", { state: "AVAILABLE", ranking: allLexical }], ["allBare", { state: "AVAILABLE", ranking: allBare }],
+  ["single", { state: "AVAILABLE", ranking: onePoolOneRole }], ["empty", { state: "AVAILABLE", ranking: rankingOf([]) }], ["loading", { state: "LOADING" }], ["failed", { state: "FAILED", code: "ERR_Y" }]
+];
+const textOf = (html: string) => html.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<title>/g, " ").replace(/<[^>]+>/g, " ").replace(/&#x27;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ");
+const attrsOf = (html: string, name: string) => [...html.matchAll(new RegExp(`${name}="([^"]*)"`, "g"))].map(m => m[1]);
+
+describe("PINK C · field render", () => {
+  it("run × ranking × locale: marks = sign table, bodies = model, empty → nothing, no L2/L3, no figure, DE without EN", () => {
+    const s = { renders: 0, nothing: 0, bodies: 0, still: 0, stillResume: 0, pulse: 0, breathRuns: 0, breathingBodies: 0, enInDe: [] as string[], testids: new Set<string>(), claimHits: [] as string[] };
+    const enSentences = Object.entries(MAPPING_FIELD_COPY.en).filter(([, v]) => typeof v === "string" && (MAPPING_FIELD_COPY.de as Record<string, unknown>)[v as never] === undefined).map(([k, v]) => [k, v as string]);
+    for (const locale of ["en", "de"] as const) for (const [rn, w] of RUNS) for (const [kn, rk] of RANKINGS) {
+      const full = renderToStaticMarkup(<PersonJobMappingField locale={locale} projection={projectionOf(CAPS)} ranking={rk} watch={w} />);
+      const html = full.replace(/<style>[\s\S]*?<\/style>/g, "");
+      s.renders += 1;
+      const model = mappingFieldModel({ projection: projectionOf(CAPS), ranking: rk, watch: w });
+      if (model === null || model.view.empty !== null) { expect(html, `${rn}/${kn}`).toBe(""); s.nothing += 1; continue; }
+      const run = (w.read as { autoMatch: { state: string; resumePending: boolean; budget: { rolesPlanned: number; rolesEvaluated: number } | null } }).autoMatch;
+      const rule = TABLE.runStates[run.state];
+      const bodies = attrsOf(html, "data-testid").filter(t => t.startsWith("mapping-body-"));
+      expect(bodies.length).toBe(model.bodies.length); s.bodies += bodies.length;
+      for (const t of attrsOf(html, "data-testid")) s.testids.add(t.replace(/-(JPOOL|PCAP)_.*$/, "-*"));
+      // STALLED: still sentence, frozen, no pulse; resumePulse only PARTIAL/FAILED while pending; breath only RUNNING with roles pending
+      expect(html.includes('data-testid="mapping-still"')).toBe(rule.frozen === true);
+      if (rule.frozen) { s.still += 1; const t = textOf(html); expect(t).toContain(run.resumePending ? MAPPING_FIELD_COPY[locale].stillResume : MAPPING_FIELD_COPY[locale].still); if (run.resumePending) s.stillResume += 1; }
+      const pulse = rule.resumePulse === true || (rule.resumePulse === "when resumePending" && run.resumePending);
+      expect(html.includes('data-testid="mapping-resume-pulse"')).toBe(pulse); if (pulse) s.pulse += 1;
+      const breath = rule.pendingBreath === true && (run.budget === null || run.budget.rolesEvaluated < run.budget.rolesPlanned);
+      expect(html.includes('data-pending-breath="true"')).toBe(breath); expect(html.includes('data-testid="mapping-pending"')).toBe(breath);
+      if (breath) { s.breathRuns += 1; s.breathingBodies += (html.match(/data-breath="true"/g) ?? []).length; }
+      expect((html.match(/data-breath="true"/g) ?? []).length).toBe(breath ? model.bodies.filter(b => b.class !== "SEMANTIC").length : 0);
+      // no L2/L3: no requirement arc, beam, coupling mark, role/requirement level; no link, no form, no input
+      expect(html).not.toMatch(/data-level="L[23]"|mapping-(arc|beam|requirement|coupling|l2|l3|role-open)|<a\s|<form|<input|href=/);
+      // no figure or claim word in the visible text (ranks are figures of the ranking itself and allowed; percent, fit, score are not)
+      const t = textOf(html);
+      for (const re of [/%/, /\b0[.,]\d/, /\bfit\b/i, /\bscore\b/i, /recommend|empfehl|qualifi|suitable|geeignet|passend|match(?!ing)/i]) if (re.test(t)) s.claimHits.push(`${locale}/${rn}/${kn}:${re}`);
+      if (locale === "de") for (const [k, v] of Object.entries(MAPPING_FIELD_COPY.en)) if (typeof v === "string" && v !== (MAPPING_FIELD_COPY.de as Record<string, unknown>)[k] && t.includes(v)) s.enInDe.push(k);
+    }
+    rec({ ...s, testids: [...s.testids].sort(), runs: RUNS.map(([n]) => n), refusedFixtures: refused });
+    expect(s.claimHits).toEqual([]); expect(s.enInDe).toEqual([]);
+    void enSentences;
+  }, 120_000);
+
+  it("DE and EN copy have the same keys and every function answers in both", () => {
+    expect(Object.keys(MAPPING_FIELD_COPY.de).sort()).toEqual(Object.keys(MAPPING_FIELD_COPY.en).sort());
+    for (const [k, v] of Object.entries(MAPPING_FIELD_COPY.en)) if (typeof v === "function") expect(typeof (MAPPING_FIELD_COPY.de as Record<string, unknown>)[k]).toBe("function");
+  });
+
+  it("the new product files name no network, model, storage or navigation path (static scan, comments included)", () => {
+    const hits: string[] = [];
+    for (const f of ["lib/career/view-model/mapping-field.ts", "app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/mapping-field-copy.ts"]) {
+      const c = readFileSync(join(ROOT, f), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'])\/\/.*$/gm, "$1");
+      for (const re of [/\bfetch\b/, /XMLHttpRequest|EventSource|WebSocket|sendBeacon/, /\/api\//, /gemini|genai/i, /import\s*\(/, /useEffect|useLayoutEffect/, /localStorage|sessionStorage|indexedDB/, /router|useRouter|next\/|location\.|history\./, /jobScope|JobScope/])
+        if (re.test(c.replace(/GEMINI · |Gemini · |"REAL_GEMINI"|REAL_GEMINI/g, ""))) hits.push(`${f}:${re}`);
+    }
+    if (OUT !== "/dev/null") writeFileSync(`${OUT}.scan.json`, JSON.stringify(hits));
+    expect(hits).toEqual([]);
+  });
+});
+let acc: Record<string, unknown> = {};
+function rec(v: Record<string, unknown>) { acc = { ...acc, ...v }; writeFileSync(OUT, JSON.stringify(acc, null, 1)); }

@@ -4107,6 +4107,60 @@ Open but not blocking:
 - **O-PB-3.** On main, MAP-ARCH "only the two dirs" is vacuous because HEAD and origin/main are the same commit; (1) proves the scope directly.
 - **O-PB-4.** PINK environment only: with a symlinked node_modules, Turbopack refuses to start Next, and 3 HTTP files fail on main and base alike. With a real copy they pass 77/77.
 
+### 3.98 PERSON × JOB phase C, GRÜN `fa89519` (2026-11-04) — GO for the product code, merge condition F-PC-1
+
+**Request.** GELB asked for an inverse check of GRÜN's visible L0/L1 field (SFE::PHASE_C, authorized by OTTAVIO). The commit exists only locally. Hardlock: nothing pushed, no merge, no product change, no L2/L3, no Gemini, no :3017 (`evidence/mapping-phase-c-fa89519/`).
+
+**Verdict: GO for the product code.** The field is correct in every contract PINK can derive. One of GRÜN's tests breaks at integration.
+
+**(1) Integrity**
+- 1 commit on `5ca0f3f`; the diff is exactly the 13 listed files.
+- Engine, spec, orbits, planetarium, field selector, B2, `lib/career/ui`, job-pool, job-scope, capability-core, `app/api` and `db` are tree-identical to `5ca0f3f`.
+- Only the three Phase C files import the engine.
+- Positive controls: engine, orbit and unlisted changes turn GRÜN's tests red, also after a merge.
+
+**(2) Contract (PINK's probe, 6/6)**
+- Bodies equal the Phase A reference layout (10 359 bodies).
+- Class equals the A4 reading and the line equals the sign table on every body.
+- Nothing depends on capabilityKey or name (1 600 variants), so ABSENT is never coupled by a name.
+- Order-free and read-only.
+- "Nearer = higher in the ranking": 0 inversions in 478 161 pairs.
+- The run sign equals the sign table for every decoder-valid state.
+- Focus: only L0/L1; every non-admitted action returns the same object; a mark never changes level or pool.
+- Movement equals PINK's own rule.
+
+**(3) Rendering**
+- Panel without field: byte-identical to `5ca0f3f` in 360/360 cases.
+- With the field section removed, the panel equals that markup again in 360/360 cases, and the field always stands between the authority line and the list.
+- Empty, STALLED and PENDING behave as the sign table says.
+- No L2/L3, no figure, no claim word; EN/DE are clean; no network path.
+- tsc 0, eslint 0; GRÜN's suites 187/187.
+
+**(4) Mutants**
+- 38/49 are red against GRÜN's suite.
+- Four survivors are equivalent or invalid by PINK's construction: M7, M11, C19 and T5.
+- PINK's probe kills T1, T2, T3 and M8.
+- Nobody kills C1, C9 and C16.
+
+**(5) Regression**
+- `fa89519`: 3472 passed, 27 failed, 20 skipped. Base: 3432 / 27 / 20.
+- The FAIL lists are identical in every pair (F-JP-5).
+- +40 tests, all green; no flake.
+
+**Findings**
+- **F-PC-1 (merge condition).** `test/career/mapping-field/architecture.test.ts` is branch-relative. After a merge, on an unchanged tree, 2 of its tests fail ("changes only its new files and the three entry points" and "one line removed each"). Main would go from 27 to 29 red.
+- **F-PC-T1.** timeMovement lacks tests for "a rank change moves nothing" (T1), "a tier-only change moves" (T3) and "across analyses with a real change" (T2 — the existing inverse test is vacuous).
+- **F-PC-T2 (minor).** No tests for the L1 click on another pool (C1), the L1 overflow count (C9) or the legend line (C16).
+- **O-PC-1.** The Phase B importer grep misses `./mapping/view`.
+- **O-PC-2.** The model's comment over-claims an analysis check that only the wiring guarantees.
+
+**Assumptions (risk only; the decision is OTTAVIO's/GELB's)**
+- **A1:** low technical risk.
+- **A2:** medium risk. At 360 px bodies are 2.1–5.5 px, so the line class is at the edge of legibility; visual acceptance is open.
+- **A3:** high risk. 63.4 % of bodies without new evidence of their own change position between readings and jump without a trail. The released layout does not meet the letter of timeMovement.rule, so this is a spec decision.
+- **A4:** low risk (13 % of SEMANTIC bodies are solid with only value-0 findings).
+- **A5:** low risk (the absence of L2/L3 is proven).
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
