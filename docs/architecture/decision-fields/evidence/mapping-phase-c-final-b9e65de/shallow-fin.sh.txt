@@ -1,0 +1,16 @@
+#!/bin/bash
+# PINK §3.100 O-RC-3: shallow clones of frontend/mapping-phase-c (b9e65de1) — depth 1 (no base) and depth 4 (base is the shallow boundary).
+# Real hard-linked node_modules; the two architecture files only. Nothing removed.
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+I=/tmp/claude-1000/-home-codi-Entwicklung/a060e5e1-d3f6-49b1-ab41-8710c6e835d7/scratchpad/int397
+for depth in 1 4; do
+  d=$I/shallow$depth; [ -e $d ] && { echo "shallow$depth EXISTS (not reused)"; continue; }
+  git clone -q --depth $depth --branch frontend/mapping-phase-c file:///home/codi/Entwicklung/condyn-admin/.git $d
+  cp -al $I/tpc/node_modules $d/node_modules
+  cd $d; echo "shallow$depth HEAD=$(git rev-parse HEAD) shallow=$(git rev-parse --is-shallow-repository) commits=$(git rev-list --count HEAD) base-present=$(git cat-file -e 5ca0f3f5dd4f5e0323396c519eb31df89454449d^{commit} 2>/dev/null && echo yes || echo no)"
+  npm run -s test:isolated -- test/career/mapping/architecture.test.ts test/career/mapping-field/architecture.test.ts > $I/shallow$depth.out.txt 2>&1; echo "  exit $?"
+  grep -E "^ +Tests |^ +Test Files " $I/shallow$depth.out.txt
+  grep -E "^ +(✓|×|↓) " $I/shallow$depth.out.txt | sed -E 's/ [0-9]+ms$//' | cut -c1-150
+  echo "  ERR_PHASE_C_BASE_MISSING lines: $(grep -c ERR_PHASE_C_BASE_MISSING $I/shallow$depth.out.txt); skipped/todo: $(grep -cE '^ +↓ ' $I/shallow$depth.out.txt)"
+  grep -m1 -o "ERR_PHASE_C_BASE_MISSING[^\"]*run again\." $I/shallow$depth.out.txt
+done

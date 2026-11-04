@@ -1,0 +1,16 @@
+#!/bin/bash
+# PINK §3.100 sequential runs after the first quiet full-suite pair: controls/attacks, shallow clones, GRÜN's suites, tsc/eslint,
+# 49 mutants, the position-only extra, then a third full-suite pair. No two loads at once.
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+S=/tmp/claude-1000/-home-codi-Entwicklung/a060e5e1-d3f6-49b1-ab41-8710c6e835d7/scratchpad; I=$S/int397
+mkdir $I/ctl-fin $I/mut-fin $I/xtra-fin
+cd $I && python3 $S/py/controls-fin.py $I/msrc3 $I/ctl-fin > $I/controls-fin.txt 2>&1; echo "controls exit $?" >> $I/controls-fin.txt
+bash $S/py/shallow-fin.sh > $I/shallow-fin.txt 2>&1
+cp -al $I/msrc3 $I/grun-fin && cd $I/grun-fin && timeout 900 npm run -s test:isolated -- test/career/mapping-field test/career/mapping test/career/mapping-spec test/career/auto-capability > $I/grun-fin.txt 2>&1; echo "exit $?" >> $I/grun-fin.txt
+cd $I/frc && (timeout 900 npx tsc --noEmit -p . > $I/tsc-fin.txt 2>&1; echo "tsc exit $?" >> $I/tsc-fin.txt)
+cd $I/frc && (timeout 900 npx eslint test/career/mapping-field test/career/mapping/architecture.test.ts lib/career/view-model/mapping-field.ts app/components/career/demo/PersonJobMappingField.tsx app/components/career/demo/mapping-field-copy.ts > $I/eslint-fin.txt 2>&1; echo "eslint exit $?" >> $I/eslint-fin.txt)
+cp -al $I/msrc3 $I/mut-fin/base && cd $I/mut-fin/base && npm run -s test:isolated -- test/career/mapping-field/model.test.ts test/career/mapping-field/field-render.test.tsx test/career/mapping-field/field-interaction.test.tsx test/career/mapping-field/field-wiring.test.tsx test/career/auto-capability > $I/mut-fin-baseline.txt 2>&1; echo "baseline exit $?" >> $I/mut-fin-baseline.txt
+cd $I && python3 $S/py/mutate-pc.py $I/msrc3 $I/mut-fin > $I/mutants-fin.txt 2>&1; echo "mutants exit $?" >> $I/mutants-fin.txt
+cd $I && python3 $S/py/extra-rc.py $I/msrc3 $I/xtra-fin fin > $I/extra-fin.txt 2>&1; echo "extra exit $?" >> $I/extra-fin.txt
+echo "msrc3 $(git -C $I/msrc3 rev-parse HEAD) $(git -C $I/msrc3 rev-parse origin/main) status=$(git -C $I/msrc3 status --short | wc -l) branches=$(git -C $I/msrc3 branch --list | wc -l)" > $I/pristine-fin.txt
+bash $S/py/full-fin.sh base3 fin3

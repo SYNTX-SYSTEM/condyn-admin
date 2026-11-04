@@ -1,0 +1,214 @@
+PINK §3.100 — measurements for GRÜN b9e65de14474938146abe7fd4cbe9f3e8469c283 (parent 3cb08edf), base 5ca0f3f5. 2026-11-04T19:35:45+01:00
+
+== (2) F-RC-1 reproductions and attacks (controls-fin.py; architecture files, 7 + 7 tests)
+Ra GREEN branch b9e65de1, unchanged | HEAD b9e65de1 3cb08edf test(career): mapping phase C — close PINK | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+Rb1 GREEN --no-ff merge with a parallel README commit on main | HEAD d546c5f7 540fc837 b9e65de1 pink: merge phase C | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+Rb2 GREEN fast-forward merge | HEAD b9e65de1 3cb08edf test(career): mapping phase C — close PINK | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+Rc GREEN after the merge: a README commit and an evidence commit | HEAD edbc9c24 45fe9f56 pink: evidence commit | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+Rd1 RED Rc + committed engine change (view.ts) [O-RC-1] | HEAD d1ba621b 3ddafd3f pink: engine | status 0 staged 0 | Tests  2 failed | 12 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identi
+      mapping/MAP-ARCH · nothing existing is touched > against the released engine (phase-B base 5ca0f3f5), the engi
+Rd2 RED Rc + committed layout-spec.json change | HEAD f6ab0509 6b34f360 pink: spec | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identi
+Rd3 RED Rc + committed ResonanceOrbits change | HEAD 6d9dfdc0 9d44e9b7 pink: orbit | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+Rd4 RED Rc + committed manifestation/ change | HEAD 7861a605 3825a40e pink: planetarium | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+Rd5 RED Rc + committed PxjFirstScreen change | HEAD 4a79d3a6 a43de6d3 pink: B2 | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+Rd6 RED Rc + committed SyntxFieldSelector change | HEAD f963229f 021a2e9a pink: selector | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+Rd7 RED Rc + phase-C commit with an unlisted existing file | HEAD 81bfdfe9 571ef798 pink: pc+unlisted | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the 
+Rd8 RED Rc + phase-C commit with an unlisted new file | HEAD c6f677aa 0f452b54 pink: pc+new | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the 
+Rd9 RED Rc + committed entry-point change (AutoJobRankingPanel) | HEAD 27714a4d e72d8801 pink: panel | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the two product entry points: one line removed e
+Rd10 RED Rc + uncommitted engine change | HEAD f8423846 904644f9 pink: evidence commit | status 1 staged 0 | Tests  2 failed | 12 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identi
+      mapping/MAP-ARCH · nothing existing is touched > against the released engine (phase-B base 5ca0f3f5), the engi
+Rd11 RED Rc + untracked new engine file | HEAD ae25d031 e25ced74 pink: evidence commit | status 1 staged 0 | Tests  3 failed | 11 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identi
+      mapping/MAP-ARCH · nothing existing is touched > against the released engine (phase-B base 5ca0f3f5), the engi
+      mapping/MAP-ARCH · pure modules > the five modules exist and nothing else
+X1 GREEN protected file changed only in the index (staged; working tree = HEAD) | HEAD 413b2a9f 0fc62ee0 pink: evidence commit | status 1 staged 1 | Tests  14 passed (14) | timeouts 0
+X2 GREEN engine changed only in the index | HEAD 93c041c2 28069eed pink: evidence commit | status 1 staged 1 | Tests  14 passed (14) | timeouts 0
+X3 GREEN index-only orbit change committed; working tree keeps the old content (HEAD changed, tree on disk not) | HEAD 14de477b 9500a464 pink: commit the staged change; working tr | status 1 staged 0 | Tests  14 passed (14) | timeouts 0
+X4 GREEN branch: unlisted existing file in its own commit (no phase-C file) | HEAD ddf38b6b b9e65de1 pink: unlisted alone | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+X5 GREEN branch: new lib file in its own commit (no phase-C file) | HEAD 6363affe b9e65de1 pink: new lib alone | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+X6 GREEN evil merge: the merge commit itself changes an unlisted file | HEAD ae7dfb2e 19ea0395 b9e65de1 pink: merge phase C (with an extr | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+X7 RED evil merge: the merge commit itself changes a protected file | HEAD 1a7cbdd1 a677d22b b9e65de1 pink: merge phase C (with an extr | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+X8 RED rename of a phase-C file to an unlisted name (git mv) | HEAD e457ce2d 114f0600 pink: rename pc | status 0 staged 0 | Tests  3 failed | 11 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the 
+      mapping-field/MAP-C-ARCH · the new modules read only > the component and its copy: no fetch, no POST, no URL o
+      mapping/MAP-ARCH · nothing existing is touched > outside lib/career/mapping only the phase C field imports the
+X9 RED rename of a protected file (git mv) | HEAD 9505ad24 dc8cf1cd pink: rename orbit | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, 
+X10 RED phase-C + unlisted change, then reverted (net zero) | HEAD 664774ec c0b092f4 Revert "pink: phase-C file + unlisted file | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the 
+X11 GREEN squash merge of phase C after a parallel README commit | HEAD b3c03d1a 64194e27 pink: phase C squashed | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+X12 RED squash merge of phase C carrying an unlisted change | HEAD bbe58e8c 3c97fe24 pink: phase C squashed | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping-field/MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the 
+X13 GREEN gitignored new file in a protected path (manifestation/.env.pink.ts) | HEAD c461d4a2 edd7b351 pink: evidence commit | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+X14 RED gitignored new file in the engine directory (lib/career/mapping/.env.pink.ts) | HEAD d3f6c860 f61fce58 pink: evidence commit | status 0 staged 0 | Tests  1 failed | 13 passed (14) | timeouts 0
+      mapping/MAP-ARCH · pure modules > the five modules exist and nothing else
+X15 GREEN branch: phase-C commit adds product code (fetch POST) in test/career/mapping-field/ and the component imports it | HEAD 1d9240e3 b9e65de1 pink: phase C helper in the test dir | status 0 staged 0 | Tests  14 passed (14) | timeouts 0
+controls exit 0
+
+== (4) O-RC-3 shallow clones (shallow-fin.sh)
+shallow1 HEAD=b9e65de14474938146abe7fd4cbe9f3e8469c283 shallow=true commits=1 base-present=no
+  exit 1
+ Test Files  2 failed (2)
+      Tests  5 failed | 9 passed (14)
+   ✓ MAP-ARCH · pure modules > the five modules exist and nothing else
+   ✓ MAP-ARCH · pure modules > no React, no Next, no fetch, no clock, no randomness, no timer, no storage, no node module
+   ✓ MAP-ARCH · pure modules > imports from outside the mapping are type-only, except the specification JSON
+   ✓ MAP-ARCH · pure modules > the layout and sign constants are read from layout-spec.json / sign-table.json, not written a second time
+   ✓ MAP-ARCH · pure modules > B-3 naming: no module names an action that selects a role or a requirement (they are marked)
+   ✓ MAP-ARCH · nothing existing is touched > outside lib/career/mapping only the phase C field imports the mapping modules (its model, its compone
+   × MAP-ARCH · nothing existing is touched > against the released engine (phase-B base 5ca0f3f5), the engine modules are unchanged (committed, stag
+   × MAP-C-ARCH · nothing existing changes meaning > the engine and its specification are byte-identical to the phase-B base (committed, staged, uns
+   × MAP-C-ARCH · nothing existing changes meaning > orbits, planetarium, Job Field, field selector, B2, first screen, the automatic reads and the b
+   × MAP-C-ARCH · nothing existing changes meaning > every phase-C change set (its commits after the base, and the working tree once it touches phas
+   × MAP-C-ARCH · nothing existing changes meaning > the two product entry points: one line removed each (the line extended), and only the field add
+   ✓ MAP-C-ARCH · the new modules read only > the model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no window; engi
+   ✓ MAP-C-ARCH · the new modules read only > the component and its copy: no fetch, no POST, no URL or history write, no storage, no job scope, no 
+   ✓ MAP-C-ARCH · the new modules read only > phase C names no action that opens a role or a requirement, or selects anything (B-3; L2/L3 are later
+  ERR_PHASE_C_BASE_MISSING lines: 15; skipped/todo: 0
+ERR_PHASE_C_BASE_MISSING: the phase-C architecture tests compare against commit 5ca0f3f5dd4f5e0323396c519eb31df89454449d (origin/main when phase C began, PINK §3.97), and this clone does not have it. A shallow clone? Fetch the history (e.g. git fetch --unshallow) and run again.
+shallow4 HEAD=b9e65de14474938146abe7fd4cbe9f3e8469c283 shallow=true commits=4 base-present=yes
+  exit 0
+ Test Files  2 passed (2)
+      Tests  14 passed (14)
+ ✓ test/career/mapping/architecture.test.ts (7 tests)
+ ✓ test/career/mapping-field/architecture.test.ts (7 tests)
+  ERR_PHASE_C_BASE_MISSING lines: 0; skipped/todo: 0
+
+== GRÜN's suites (mapping-field, mapping, mapping-spec, auto-capability)
+ Test Files  21 passed (21)
+      Tests  198 passed (198)
+exit 0
+
+== tsc / eslint (frc = b9e65de1)
+tsc exit 0
+eslint exit 0
+
+== (6) mutants: baseline
+ Test Files  12 passed (12)
+      Tests  110 passed (110)
+baseline exit 0
+== mutants (49)
+M1 RED class: any requirement of a LEXICAL_ONLY role makes it LEXICAL | Tests  1 failed | 109 passed (110)
+M2 RED class from fit instead of tier | Tests  2 failed | 108 passed (110)
+M3 RED SEMANTIC line from UNCLEAR (broken) | Tests  2 failed | 108 passed (110)
+M4 RED overflow bodies drawn | Tests  1 failed | 109 passed (110)
+M5 RED sector drawn ignores overflow | Tests  1 failed | 109 passed (110)
+M6 RED breath ignores the budget | Tests  1 failed | 109 passed (110)
+M7 GREEN breath only with a budget | Tests  110 passed (110)
+M8 RED displaced only by x | Tests  2 failed | 108 passed (110)
+M9 RED constellation name = key | Tests  1 failed | 109 passed (110)
+M10 RED evidence class dropped | Tests  2 failed | 108 passed (110)
+M11 GREEN field without an available run | Tests  110 passed (110)
+M12 RED sector pool name = id | Tests  2 failed | 108 passed (110)
+F1 RED all engine actions admitted | Tests  1 failed | 109 passed (110)
+F2 RED OPEN_ROLE admitted | Tests  1 failed | 109 passed (110)
+F3 RED refused action returns a new equal object | Tests  1 failed | 109 passed (110)
+F4 RED L1 kept for a pool no longer in the field | Tests  1 failed | 109 passed (110)
+F5 RED marked body shown outside the open pool | Tests  1 failed | 109 passed (110)
+F6 RED UP not admitted | Tests  5 failed | 105 passed (110)
+T1 RED a rank change moves a body | Tests  3 failed | 107 passed (110)
+T2 RED movement across analyses | Tests  1 failed | 109 passed (110)
+T3 RED tier change does not move | Tests  2 failed | 108 passed (110)
+T4 RED trail lost | Tests  4 failed | 106 passed (110)
+T5 GREEN undrawn body moves | Tests  110 passed (110)
+B1 RED L1 view box misses the quarter points | Tests  1 failed | 109 passed (110)
+B2 RED L1 view box from the horizon, not the field edge | Tests  1 failed | 109 passed (110)
+C1 RED click on L1 opens a pool too | Tests  1 failed | 109 passed (110)
+C2 RED hover opens the pool instead of marking | Tests  1 failed | 109 passed (110)
+C3 RED leave does not clear the mark | Tests  1 failed | 109 passed (110)
+C4 RED Escape does nothing | Tests  1 failed | 109 passed (110)
+C5 RED no still sentence for STALLED | Tests  1 failed | 109 passed (110)
+C6 RED still sentence ignores resumePending | Tests  1 failed | 109 passed (110)
+C7 RED SEMANTIC bodies breathe too | Tests  1 failed | 109 passed (110)
+C8 RED line dash dropped (class by nothing) | Tests  1 failed | 109 passed (110)
+C9 RED L1 shows the whole field's overflow | Tests  2 failed | 108 passed (110)
+C10 RED empty view draws a field | Tests  1 failed | 109 passed (110)
+C11 RED DE shows EN copy | Tests  1 failed | 109 passed (110)
+C12 RED bodies outside the open pool focusable | Tests  2 failed | 108 passed (110)
+C13 RED decorative transition on every body | Tests  1 failed | 109 passed (110)
+C14 RED readings never advance (no movement after the first) | Tests  3 failed | 107 passed (110)
+C15 RED pulse while frozen with resumePending | Tests  1 failed | 109 passed (110)
+C16 RED legend lines all solid | Tests  1 failed | 109 passed (110)
+C17 RED authority sentence emptied | Tests  1 failed | 109 passed (110)
+C18 RED evidence badge always NONE | Tests  1 failed | 109 passed (110)
+C19 GREEN trail without a movement | Tests  110 passed (110)
+C20 RED pool buttons on L1 too | Tests  1 failed | 109 passed (110)
+P1 RED panel: field below the list | Tests  1 failed | 109 passed (110)
+P2 RED panel: field dropped | Tests  1 failed | 109 passed (110)
+W1 RED wiring: projection never passed | Tests  1 failed | 109 passed (110)
+W2 RED wiring: field without the run | Tests  1 failed | 109 passed (110)
+
+== (7) full suite test:isolated, alternating (full-fin.sh)
+base1 5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_modules start 2026-11-04T17:54:54+01:00 load-at-start 1.77 2.98 3.68 waited 0s
+ Test Files  11 failed | 489 passed | 11 skipped (511)
+      Tests  39 failed | 3420 passed | 20 skipped (3479)
+exit 1 end 2026-11-04T18:12:44+01:00
+  load (1-min) during run: samples 72 min 1.77 median 4.47 max 6.06
+  test-level FAIL 39; in the 27 legacy (§3.98 pc1) 27; extra 12 (all 'Test timed out'); superuser teardown errors 0
+    extra: test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts > T49 COVFCR deterministic lifecycle integration > preserves every va
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts > T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmiss
+    extra: test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts > CareerOutcome
+    extra: test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts > CareerOutcomeValenceFee
+    extra: test/decision-core/structural-consequences/reconstruct.test.ts > Structural consequence propagation > propagates sealed source-gap errors and exposes only the 
+    extra: test/decision-core/validation/authority.test.ts > Decision Context authority gate > resolves forbidden direct, type-only, aliased, wildcard, and namespace expo
+fin1 b9e65de14474938146abe7fd4cbe9f3e8469c283 real-node_modules start 2026-11-04T18:17:44+01:00 load-at-start 2.99 3.65 3.97 waited 300s
+ Test Files  9 failed | 496 passed | 11 skipped (516)
+      Tests  36 failed | 3474 passed | 20 skipped (3530)
+exit 1 end 2026-11-04T18:34:22+01:00
+  load (1-min) during run: samples 67 min 2.99 median 3.65 max 4.75
+  test-level FAIL 36; in the 27 legacy (§3.98 pc1) 27; extra 9 (all 'Test timed out'); superuser teardown errors 0
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts > CareerOutcome
+    extra: test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts > CareerOutcomeValenceFee
+    extra: test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts > CareerOutcomeValenceFee
+    extra: test/decision-core/structural-consequences/reconstruct.test.ts > Structural consequence propagation > propagates sealed source-gap errors and exposes only the 
+    extra: test/decision-core/validation/authority.test.ts > Decision Context authority gate > resolves forbidden direct, type-only, aliased, wildcard, and namespace expo
+base2 5ca0f3f5dd4f5e0323396c519eb31df89454449d real-node_modules start 2026-11-04T18:34:52+01:00 load-at-start 2.81 3.37 3.69 waited 30s
+ Test Files  6 failed | 494 passed | 11 skipped (511)
+      Tests  30 failed | 3429 passed | 20 skipped (3479)
+exit 1 end 2026-11-04T18:50:43+01:00
+  load (1-min) during run: samples 64 min 2.64 median 3.30 max 4.58
+  test-level FAIL 30; in the 27 legacy (§3.98 pc1) 27; extra 3 (all 'Test timed out'); superuser teardown errors 0
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/decision-core/structural-consequences/reconstruct.test.ts > Structural consequence propagation > propagates sealed source-gap errors and exposes only the 
+fin2 b9e65de14474938146abe7fd4cbe9f3e8469c283 real-node_modules start 2026-11-04T18:51:58+01:00 load-at-start 2.96 3.40 3.51 waited 75s
+ Test Files  9 failed | 496 passed | 11 skipped (516)
+      Tests  34 failed | 3476 passed | 20 skipped (3530)
+exit 1 end 2026-11-04T19:08:02+01:00
+  load (1-min) during run: samples 65 min 2.67 median 3.26 max 4.20
+  test-level FAIL 34; in the 27 legacy (§3.98 pc1) 27; extra 7 (all 'Test timed out'); superuser teardown errors 0
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts > CareerO
+    extra: test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts > CareerOutcome
+    extra: test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts > CareerOutcomeValenceFee
+    extra: test/decision-core/context/contract.test.ts > Decision Context Draft structural contract > resolves direct, type-only, wildcard, and namespace exports through 
+    extra: test/decision-core/structural-consequences/reconstruct.test.ts > Structural consequence propagation > propagates sealed source-gap errors and exposes only the 
+
+== 3cb08edf totals (§3.99 quiet runs): 3529 = 3482 passed + 27 failed + 20 skipped; b9e65de1: 3530 (+1 = C13)
+== not run (stopped on GELB SFE::EXECUTION STATUS): A3p position extra on b9e65de1, third pair base3/fin3
+== A3: lines added by b9e65de1 under test/ naming cx/cy/x/y/transform()/translate/position/toBeCloseTo: none (only ls-tree and fixture names)
+
+== pristine msrc3
+HEAD b9e65de14474938146abe7fd4cbe9f3e8469c283 origin/main 5ca0f3f5dd4f5e0323396c519eb31df89454449d status 0

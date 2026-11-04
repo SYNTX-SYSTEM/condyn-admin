@@ -1,0 +1,13 @@
+#!/bin/bash
+# PINK §3.100 full suite on a quiet machine, alternating 5ca0f3f (tpb) / b9e65de1 (frc). argv: run names (base*/fin*).
+# Before each run: wait (up to 15 min) until the 1-min load is < 3 (acceptance plan §197); the load is sampled every 15 s during the run.
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+I=/tmp/claude-1000/-home-codi-Entwicklung/a060e5e1-d3f6-49b1-ab41-8710c6e835d7/scratchpad/int397
+for run in "$@"; do
+  case $run in base*) d=$I/tpb;; *) d=$I/frc;; esac
+  waited=0; while [ $waited -lt 900 ] && awk '{exit !($1 >= 3.0)}' /proc/loadavg; do sleep 15; waited=$((waited+15)); done
+  cd $d; echo "$run $(git rev-parse HEAD) real-node_modules start $(date -Is) load-at-start $(cut -d' ' -f1-3 /proc/loadavg) waited ${waited}s" > $I/fullf-$run.txt
+  ( while true; do echo "$(date +%T) $(cut -d' ' -f1-3 /proc/loadavg)"; sleep 15; done ) > $I/load-$run.txt & SAMPLER=$!
+  timeout 3000 npm run -s test:isolated >> $I/fullf-$run.txt 2>&1; echo "exit $? end $(date -Is)" >> $I/fullf-$run.txt
+  kill $SAMPLER
+done

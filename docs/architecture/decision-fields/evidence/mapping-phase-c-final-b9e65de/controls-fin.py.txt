@@ -1,0 +1,114 @@
+# PINK §3.100 controls and attacks on the phase-C change-set mechanism of b9e65de1. argv: <pristine msrc3> <work root> [ids...]
+# Each case: hard-linked copy of msrc3 (cp -al); file changes on NEW inodes (os.replace); git writes objects/refs/index by lock+rename and
+# checkout unlinks before writing, so msrc3 is never touched (checked by the caller with git status). Scratch commits use a scratch
+# identity, are unsigned and never leave the copy. Nothing is removed. Runs the two architecture test files (7 + 7 tests).
+import os, subprocess, sys
+SRC, ROOT = sys.argv[1], sys.argv[2]
+ONLY = sys.argv[3:]
+BASE, FIN = "5ca0f3f5dd4f5e0323396c519eb31df89454449d", "b9e65de14474938146abe7fd4cbe9f3e8469c283"
+TESTS = ["test/career/mapping/architecture.test.ts", "test/career/mapping-field/architecture.test.ts"]
+ENV = {**os.environ, "GIT_AUTHOR_NAME": "PINK scratch", "GIT_AUTHOR_EMAIL": "pink@scratch.invalid", "GIT_COMMITTER_NAME": "PINK scratch", "GIT_COMMITTER_EMAIL": "pink@scratch.invalid"}
+DEMO = "app/components/career/demo"
+ORBIT, SELECTOR, PXJ, PANEL, COMPONENT, COPY = f"{DEMO}/ResonanceOrbits.tsx", f"{DEMO}/SyntxFieldSelector.tsx", f"{DEMO}/PxjFirstScreen.tsx", f"{DEMO}/AutoJobRankingPanel.tsx", f"{DEMO}/PersonJobMappingField.tsx", f"{DEMO}/mapping-field-copy.ts"
+UNLISTED, ENGINE, LAYOUT_SPEC = f"{DEMO}/RoleDiscoveryPanel.tsx", "lib/career/mapping/view.ts", "docs/architecture/decision-fields/mapping-spec/layout-spec.json"
+MARK = "\n// pink control\n"
+
+def g(W, *args): return subprocess.run(["git", "-c", "commit.gpgsign=false", *args], cwd=W, env=ENV, capture_output=True, text=True, check=True).stdout
+def write_new(W, rel, text):
+    path = f"{W}/{rel}"; os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = f"{path}.pink-control"
+    with open(tmp, "w") as f: f.write(text)
+    os.replace(tmp, path)
+def read(W, rel): return open(f"{W}/{rel}").read()
+def touch(W, rel, mark=MARK): write_new(W, rel, read(W, rel) + mark)
+def commit(W, msg): g(W, "add", "-A"); g(W, "commit", "-q", "-m", msg)
+def main_at(W, rev): g(W, "checkout", "-q", "-B", "pinkmain", rev)
+def set_main(W): g(W, "update-ref", "refs/remotes/origin/main", "HEAD")
+def first_manifestation(W): return sorted(p for p in g(W, "ls-files", f"{DEMO}/manifestation").split() if p.endswith(".tsx") or p.endswith(".ts"))[0]
+
+# --- states
+def merged_noff(W):  # main moved on in parallel (README), then phase C merged with --no-ff
+    main_at(W, BASE); touch(W, "README.md", "\n<!-- pink: parallel main commit -->\n"); commit(W, "pink: parallel README on main")
+    g(W, "merge", "--no-ff", "-q", "-m", "pink: merge phase C", FIN); set_main(W)
+def merged_ff(W): main_at(W, FIN); set_main(W)
+def after_merge(W):  # Rc: after the --no-ff merge, a README commit and an evidence commit on main
+    merged_noff(W)
+    touch(W, "README.md", "\n<!-- pink: later README -->\n"); commit(W, "pink: later README")
+    touch(W, "docs/architecture/decision-fields/JOB_POOL_CONNECTION_VALIDATION.md", "\n<!-- pink: evidence -->\n")
+    write_new(W, "docs/architecture/decision-fields/evidence/pink-scratch/verdicts.txt", "pink scratch evidence\n"); commit(W, "pink: evidence commit"); set_main(W)
+def on(state, *steps): return lambda W: [state(W), *[s(W) for s in steps]]
+def c(fn, msg): return lambda W: (fn(W), commit(W, msg))
+def index_only(rel):  # stage a change, then put the original back into the working tree only
+    def run(W):
+        orig = read(W, rel); write_new(W, rel, orig + MARK); g(W, "add", rel); write_new(W, rel, orig)
+    return run
+def index_only_then_commit(rel): return lambda W: (index_only(rel)(W), g(W, "commit", "-q", "-m", "pink: commit the staged change; working tree keeps the old content"))
+def evil_merge(rel):
+    def run(W):
+        main_at(W, BASE); touch(W, "README.md", "\n<!-- pink: parallel main commit -->\n"); commit(W, "pink: parallel README on main")
+        g(W, "merge", "--no-ff", "--no-commit", "-q", FIN); touch(W, rel); g(W, "add", rel); g(W, "commit", "-q", "-m", "pink: merge phase C (with an extra change)"); set_main(W)
+    return run
+def squash(extra=None):
+    def run(W):
+        main_at(W, BASE); touch(W, "README.md", "\n<!-- pink: parallel main commit -->\n"); commit(W, "pink: parallel README on main")
+        g(W, "merge", "--squash", "-q", FIN)
+        if extra: touch(W, extra)
+        commit(W, "pink: phase C squashed"); set_main(W)
+    return run
+def revert_pair(W):
+    after_merge(W); touch(W, COMPONENT); touch(W, UNLISTED); commit(W, "pink: phase-C file + unlisted file"); g(W, "revert", "--no-edit", "HEAD")
+def own_dir_product(W):
+    write_new(W, "test/career/mapping-field/pink-net.ts", 'export const pinkNet = () => fetch("/api/career/job-pools", { method: "POST" });\n')
+    touch(W, COMPONENT, '\nimport { pinkNet } from "../../../../test/career/mapping-field/pink-net";\nvoid pinkNet;\n'); commit(W, "pink: phase C helper in the test dir")
+
+CASES = {
+ # reproductions of GRÜN's (a)–(d)
+ "Ra":   ("branch b9e65de1, unchanged", lambda W: None),
+ "Rb1":  ("--no-ff merge with a parallel README commit on main", merged_noff),
+ "Rb2":  ("fast-forward merge", merged_ff),
+ "Rc":   ("after the merge: a README commit and an evidence commit", after_merge),
+ "Rd1":  ("Rc + committed engine change (view.ts) [O-RC-1]", on(after_merge, c(lambda W: touch(W, ENGINE), "pink: engine"))),
+ "Rd2":  ("Rc + committed layout-spec.json change", on(after_merge, c(lambda W: touch(W, LAYOUT_SPEC, "\n"), "pink: spec"))),
+ "Rd3":  ("Rc + committed ResonanceOrbits change", on(after_merge, c(lambda W: touch(W, ORBIT), "pink: orbit"))),
+ "Rd4":  ("Rc + committed manifestation/ change", on(after_merge, c(lambda W: touch(W, first_manifestation(W)), "pink: planetarium"))),
+ "Rd5":  ("Rc + committed PxjFirstScreen change", on(after_merge, c(lambda W: touch(W, PXJ), "pink: B2"))),
+ "Rd6":  ("Rc + committed SyntxFieldSelector change", on(after_merge, c(lambda W: touch(W, SELECTOR), "pink: selector"))),
+ "Rd7":  ("Rc + phase-C commit with an unlisted existing file", on(after_merge, c(lambda W: (touch(W, COMPONENT), touch(W, UNLISTED)), "pink: pc+unlisted"))),
+ "Rd8":  ("Rc + phase-C commit with an unlisted new file", on(after_merge, c(lambda W: (touch(W, COMPONENT), write_new(W, "lib/career/pink-new.ts", "export const pinkNew = 1;\n")), "pink: pc+new"))),
+ "Rd9":  ("Rc + committed entry-point change (AutoJobRankingPanel)", on(after_merge, c(lambda W: touch(W, PANEL), "pink: panel"))),
+ "Rd10": ("Rc + uncommitted engine change", on(after_merge, lambda W: touch(W, ENGINE))),
+ "Rd11": ("Rc + untracked new engine file", on(after_merge, lambda W: write_new(W, "lib/career/mapping/pink.ts", "export const pink = 1;\n"))),
+ # attacks
+ "X1":   ("protected file changed only in the index (staged; working tree = HEAD)", on(after_merge, index_only(ORBIT))),
+ "X2":   ("engine changed only in the index", on(after_merge, index_only(ENGINE))),
+ "X3":   ("index-only orbit change committed; working tree keeps the old content (HEAD changed, tree on disk not)", on(after_merge, index_only_then_commit(ORBIT))),
+ "X4":   ("branch: unlisted existing file in its own commit (no phase-C file)", c(lambda W: touch(W, UNLISTED), "pink: unlisted alone")),
+ "X5":   ("branch: new lib file in its own commit (no phase-C file)", c(lambda W: write_new(W, "lib/career/pink-new.ts", "export const pinkNew = 1;\n"), "pink: new lib alone")),
+ "X6":   ("evil merge: the merge commit itself changes an unlisted file", evil_merge(UNLISTED)),
+ "X7":   ("evil merge: the merge commit itself changes a protected file", evil_merge(ORBIT)),
+ "X8":   ("rename of a phase-C file to an unlisted name (git mv)", on(after_merge, lambda W: (g(W, "mv", COPY, f"{DEMO}/mapping-copy-pink.ts"), commit(W, "pink: rename pc")))),
+ "X9":   ("rename of a protected file (git mv)", on(after_merge, lambda W: (g(W, "mv", ORBIT, f"{DEMO}/ResonanceOrbitsPink.tsx"), commit(W, "pink: rename orbit")))),
+ "X10":  ("phase-C + unlisted change, then reverted (net zero)", revert_pair),
+ "X11":  ("squash merge of phase C after a parallel README commit", squash()),
+ "X12":  ("squash merge of phase C carrying an unlisted change", squash(UNLISTED)),
+ "X13":  ("gitignored new file in a protected path (manifestation/.env.pink.ts)", on(after_merge, lambda W: write_new(W, f"{DEMO}/manifestation/.env.pink.ts", "export const pink = 1;\n"))),
+ "X14":  ("gitignored new file in the engine directory (lib/career/mapping/.env.pink.ts)", on(after_merge, lambda W: write_new(W, "lib/career/mapping/.env.pink.ts", "export const pink = 1;\n"))),
+ "X15":  ("branch: phase-C commit adds product code (fetch POST) in test/career/mapping-field/ and the component imports it", own_dir_product),
+}
+for cid, (label, apply) in CASES.items():
+    if ONLY and cid not in ONLY: continue
+    W = f"{ROOT}/k-{cid}"
+    if os.path.exists(W): print(f"{cid} EXISTS {W} (not reused)", flush=True); continue
+    subprocess.run(["cp", "-al", SRC, W], check=True)
+    try: apply(W)
+    except subprocess.CalledProcessError as e: print(f"{cid} SETUP-FAILED {label} | {e.cmd} | {e.stderr.strip()[:200]}", flush=True); continue
+    head = g(W, "log", "-1", "--format=%h %p %s").strip()
+    st = len(g(W, "status", "--short").splitlines()); staged = len(g(W, "diff", "--cached", "--name-only").splitlines())
+    r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *TESTS], cwd=W, capture_output=True, text=True, timeout=600)
+    out = r.stdout + r.stderr
+    with open(f"{ROOT}/k-{cid}.out.txt", "w") as f: f.write(out)
+    tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+    fails = sorted({l.strip()[6:].replace("test/career/", "").replace("architecture.test.ts > ", "")[:110] for l in out.splitlines() if l.strip().startswith("FAIL ") and " > " in l})
+    timeouts = out.count("timed out")
+    print(f"{cid} {'RED' if r.returncode != 0 else 'GREEN'} {label} | HEAD {head[:60]} | status {st} staged {staged} | {tests[-1] if tests else 'no summary'} | timeouts {timeouts}", flush=True)
+    for name in fails: print(f"      {name}", flush=True)

@@ -1,0 +1,46 @@
+PINK §3.100 — GRÜN b9e65de1 (PHASE_C FINALIZATION, parent 3cb08edf, local, not amended) — verdict GO
+
+(1) Integrity: b9e65de1, parent 3cb08edf, good signature, only on frontend/mapping-phase-c (local). 5 files +137/−39 (2 architecture tests,
+    phase-base.ts, field-interaction.test.tsx, phase C doc). lib/ and app/ tree-identical to 3cb08edf. All protected paths, scripts and
+    package files identical to 5ca0f3f5. Cumulative 14 files against 5ca0f3f5; existing files modified: AutoJobRankingPanel,
+    SemanticCareerIntelligenceField, test/career/mapping/architecture.test.ts only.
+(2) F-RC-1 closed. GRÜN's (a)–(d) reproduce exactly: Ra/Rb1/Rb2/Rc 14/14 green; Rd1–Rd11 red counts 2/1/1/1/1/1/1/1/1/2/3 = GRÜN's.
+    Attacks caught: evil merge on a protected file (X7), rename of a phase-C file (X8, 3 red), rename of a protected file (X9),
+    squash with an unlisted change (X12), gitignored file in the engine dir (X14); clean squash green (X11).
+    Gaps (green although outside phase C's statement) — see F-FIN-1/2, O-FIN-1: X1, X2, X3, X4, X5, X6, X13, X15. False positive: X10.
+(3) O-RC-1 closed: committed engine change after the merge red in both the phase-C and the phase-B test (Rd1, 2 red).
+(4) O-RC-3 closed (now run, not only derived): depth 1 → 5 red with ERR_PHASE_C_BASE_MISSING and the fetch hint, 9 green, 0 skipped;
+    depth 4 (base = shallow boundary) 14/14 green.
+(5) O-RC-2: §7 now matches PINK's measurements. §8 matches except the "staged" claim (F-FIN-1) and the reach of the change sets (F-FIN-2).
+(6) Mutants 45/49 red (baseline 110/110). GRÜN's counts hold: T1 3, T2 1, T3 2, M8 2, C1 1, C9 2, C13 1, C16 1. C13 killed (F-RC-T1 closed).
+    Survivors M7, M11, T5, C19 = the known equivalent ones; no new survivor. No added test line asserts a drawn position (A3 untouched;
+    the A3p extra was not re-run on b9e65de1, see below).
+(7) Regression: 4 runs alternating 5ca0f3f/b9e65de1, start load < 3 each time (1.77 / 2.99 / 2.81 / 2.96), but the median load during
+    the runs was 3.3–4.5 (the suite itself plus the user's browsers). The 27 legacy test-level failures are identical in all 4 runs.
+    Every other failure is "Test timed out", and they occur on both sides in the same files: base 12 and 3, b9e65de1 9 and 7.
+    GRÜN's 11 timeouts therefore do not vanish but appear equally on base. No failure in mapping, mapping-field or auto-capability.
+    Totals: base 3479, b9e65de1 3530 = 3cb08edf 3529 + 1 (C13). tsc 0, eslint 0, GRÜN's suites 21 files 198/198.
+    No superuser teardown error (O-ENV-DROP) in these 4 runs.
+    Not run: the third pair base3/fin3 and the A3p extra — stopped on GELB "SFE::EXECUTION STATUS" (no new tests). The mutant step
+    already running was completed.
+
+Findings
+F-FIN-1 (minor, tests/doc wording). §8 and two test titles say the protected paths/engine are compared "committed, staged, unstaged and
+    untracked/new". An index-only change is not seen: X1 (orbit staged, working tree = HEAD) and X2 (engine staged) are green.
+    X3: the staged orbit change committed while the working tree keeps the old content is green too (HEAD changed, disk not).
+    The checks compare the working tree with the base, so a committed and checked-out change is caught (Rd1–Rd11). Recommendation:
+    either drop "staged" from §8 and the titles or add `git diff --cached` / a HEAD tree comparison. Not blocking.
+F-FIN-2 (limit of reach, partly stated in §8). Commits that touch no phase-C file and merge commits are not judged, so on the branch
+    an unlisted existing file (X4) or a new lib file (X5) in its own commit, or an unlisted file changed inside a merge commit (X6),
+    stays green. Product code placed in test/career/mapping-field/ and imported by the component (X15: fetch POST) is green, because the
+    directory counts as phase C and the read-only scan covers only the model, component and copy. b9e65de1 itself has none of these
+    (checked directly in (1)). The protected paths stay covered in every case.
+F-FIN-3 (minor, false positive). A phase-C commit with an unlisted file, then reverted (net zero), stays red for good (X10): the history
+    test judges the reverted commit. Only a test change or a history rewrite heals it.
+O-FIN-1. A gitignored new file in a protected directory (manifestation/.env.pink.ts, X13) is green; it cannot enter a commit without
+    `git add -f`, and then it is caught as committed. Local only; in the engine dir the module list catches it (X14).
+O-FIN-2. The machine was not quiet in the sense of load < 3 throughout (median 3.3–4.5 during runs); the regression verdict rests on the
+    same 27 legacy failures and on timeouts that occur in the same files on both sides.
+O-FIN-3. O-RC-4 (leftover condyn_test_* databases) not re-checked; nothing dropped.
+
+Task (2) server deployment: not done. PINK's user did not confirm SSH access; no connection was made.

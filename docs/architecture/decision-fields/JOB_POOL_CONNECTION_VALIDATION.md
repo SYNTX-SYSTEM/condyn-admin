@@ -4211,6 +4211,61 @@ Open but not blocking:
 - **O-RC-3.** `PHASE_C_BASE` must be present as an object: in a shallow clone the whole file is red. Derived from the code, not run.
 - **O-RC-4.** O-ENV-DROP leaves disposable databases behind: 17 `condyn_test_*` (14 marked), 0 connections. Not dropped (no database change allowed).
 
+### 3.100 PERSON × JOB phase C finalization, GRÜN `b9e65de` (2026-11-04) — GO
+
+**Request.** GELB asked for the merge-gate re-check of GRÜN's test-and-doc commit on `3cb08ed` (SFE::PHASE_C FINALIZATION RE-VALIDATION, authorized by OTTAVIO). The commit is local and not amended. Scratch clones with real `node_modules`, `update-ref` only there; nothing pushed, no merge, no product change, no Gemini, no server access. A2 and A3 are not part of this check (`evidence/mapping-phase-c-final-b9e65de/`).
+
+**Verdict: GO for `b9e65de`.** F-RC-1, F-RC-T1, O-RC-1 and O-RC-3 are closed. The product is unchanged and nothing regresses. The change-set mechanism has wording and reach limits (F-FIN-1 to F-FIN-3); `b9e65de` itself is not affected by any of them.
+
+**(1) Integrity**
+- 5 files (+137/−39): two architecture tests, `phase-base.ts`, `field-interaction.test.tsx` and the phase C document.
+- `lib/` and `app/` are tree-identical to `3cb08ed`; protected paths, scripts and package files are identical to `5ca0f3f`.
+- Cumulative against `5ca0f3f`: 14 files. The only existing files modified are the three entry points.
+
+**(2) F-RC-1 reproduced and attacked**
+- GRÜN's (a)–(d) reproduce exactly:
+  - green 14/14 on the branch, after a `--no-ff` merge with a parallel README, after a fast-forward, and with later README and evidence commits;
+  - all eleven red cases give GRÜN's counts (2/1/1/1/1/1/1/1/1/2/3).
+- Caught: an evil merge on a protected file, renames of a phase-C file and of a protected file, a squash carrying an unlisted change, and a gitignored file in the engine directory. A clean squash is green.
+- Not caught: see F-FIN-1 to F-FIN-3 and O-FIN-1.
+
+**(3) O-RC-1 and O-RC-3**
+- A committed engine change after the merge is red in both the phase-C test and the phase-B test.
+- Shallow clone, depth 1: 5 red with `ERR_PHASE_C_BASE_MISSING` and the fetch hint, 9 green, 0 skipped.
+- Depth 4, where the base is the shallow boundary: 14/14 green.
+
+**(4) Mutants**
+- 45/49 are red. GRÜN's counts hold: T1 3, T2 1, T3 2, M8 2, C1 1, C9 2, C13 1, C16 1.
+- C13 is now killed. M7, M11, T5 and C19 remain equivalent; there is no new survivor.
+- No added test line asserts a drawn position (A3 untouched).
+
+**(5) Regression** (4 runs alternating `5ca0f3f` / `b9e65de`)
+- Start load was below 3 each time. The median load during the runs was 3.3–4.5.
+- The 27 legacy failures are identical in all 4 runs.
+- Every other failure is a timeout, in the same files on both sides: base 12 and 3, `b9e65de` 9 and 7. GRÜN's 11 timeouts therefore do not vanish, but they are not caused by `b9e65de`.
+- Totals: 3530 tests, which is `3cb08ed` + 1 (C13).
+- tsc 0, eslint 0; GRÜN's suites 198/198.
+- Not run, stopped on GELB's "SFE::EXECUTION STATUS": a third pair of runs and the A3p extra.
+
+**Findings**
+- **F-FIN-1 (minor, wording).** §8 and two test titles claim the protected paths and the engine are compared even when only staged. They are not:
+  - An index-only change is green.
+  - A staged change committed while the working tree keeps the old content is green too.
+  - A committed and checked-out change is caught.
+  - Fix: drop "staged", or add `git diff --cached` / a HEAD tree comparison.
+- **F-FIN-2 (limit of reach).** These stay green:
+  - on the branch, a commit that touches no phase-C file but changes an unlisted file or adds a new lib file;
+  - an unlisted file changed inside a merge commit;
+  - product code in `test/career/mapping-field/` imported by the component (fetch POST), because the read-only scan covers only the model, component and copy.
+
+  `b9e65de` has none of these. The protected paths stay covered in every case.
+- **F-FIN-3 (minor, false positive).** A phase-C commit carrying an unlisted file stays red for good even after a revert.
+- **O-FIN-1.** A gitignored new file in a protected directory is green. It is local only: it cannot be committed without `git add -f`, and once committed it is caught.
+- **O-FIN-2.** The machine was not below load 3 throughout the runs (see (5)).
+- **O-FIN-3.** O-RC-4 not re-checked. No superuser teardown error occurred in the 4 runs.
+
+**Task (2), server deployment: not done.** PINK's user has not confirmed SSH access, so no connection was made.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
