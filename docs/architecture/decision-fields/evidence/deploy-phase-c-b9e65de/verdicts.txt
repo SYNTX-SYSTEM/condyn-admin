@@ -1,0 +1,47 @@
+PINK §3.101 — deployed Phase C artifact on dev.syntx-system.com (GELB, main = b9e65de1) — verdict GO
+
+Access: read-only HTTP GET through GELB's tunnel 127.0.0.1:3018 (verified: ssh -L 3018:127.0.0.1:3017 root@dev.syntx-system.com) and
+the public TLS check, authorized by PINK's user. No SSH of PINK, no POST, no write, no Gemini. Local :3017 is a different runtime.
+Not observable this way (stay GELB's own evidence): server tree hash and dirty state, process command lines, pm2/systemd/nginx config,
+databases, rollback script contents.
+
+(1) Identity. Locally b9e65de1^{tree} = abf2cb8e290e93ad25696f72e803cd1b9dccbe35 (GELB's server value); origin/main = b9e65de1 (ls-remote);
+    linear fast-forward from 5ca0f3f5, 3 signed commits, 0 merges; 14 files, the three entry points the only existing ones modified;
+    lib/career/mapping, mapping-spec, SyntxFieldSelector, package*.json, scripts tree-identical to 5ca0f3f5.
+    Server: the served build carries phase C (28/28 copy strings of mapping-field-copy.ts in the client chunk reachable from
+    /career/demo; 'Open pool' is absent from 5ca0f3f5). It is a different build from local :3017 (0 shared chunks). Over HTTP
+    b9e65de1 cannot be told from fa895193/3cb08edf (identical product code); the tree hash on the server is GELB's measurement only.
+(2) Isolation. Port 3017 refused from outside by name and by IP. dev.syntx-system.com serves only a docs site (/career/demo 404,
+    /api 404). admin/entry.syntx-system.com and condyn.eu: no career API (404), no phase C. The default HTTPS server (by IP) is
+    condyn-admin (certificate admin.condyn.eu, "ConDyn Admin"), a different build without phase C; its 5 chunks shared with :3018 are
+    byte-identical common chunks, not a route to the DLL. No public route to the DLL found. pm2/systemd/nginx not observable.
+(3) Gemini off. Code: all 8 @google/genai call sites go through guardedGenerateContent (no recorder → refused before send); OpenAI and
+    Anthropic providers have no importer; the website/GitHub loaders (outbound fetch) are reached only from scripts/run-career-worker.ts;
+    the auto-match sweeper runs only in the worker. Server: 0 analyses, 0 job pools — every provider-capable route needs an analysis
+    (404 otherwise), and analyses come from jobs the worker executes. No GET path reaches a provider.
+    Gaps in the evidence (G-1, G-2 below).
+(4) Phase C surface: confirmed as a boundary consequence, not a defect. The panel mounts only with CAPABILITY focus and a discovery
+    analysis id (client state); the field renders only for an AVAILABLE ranking and returns null for an empty view. With no analysis and
+    no pool on the server the field does not exist at all (not an "empty state"). Absent from the SSR HTML for that reason ("use client",
+    client-state mount); the one SSR match is a pre-existing CSS selector.
+(5) Rollback: not verifiable by PINK (scripts only on the server). The executed round trip is plausible evidence for the forward state,
+    which PINK sees served now; whether the scripts can harm anything existing is not reviewed independently (G-3).
+F-DEP-1: confirmed in the repo — "start": "next start --port 3003" (the production port). Indirectly confirmed on the server:
+    condyn-admin serves on the default server with its own build without phase C, so the DLL does not hold condyn-admin's port.
+    The DLL's command line itself is not observable.
+F-DEP-2: confirmed and independent of the deployment. CN=dev.syntx-system.com, Let's Encrypt E8, notBefore 2026-02-19 16:14:27 GMT,
+    notAfter 2026-05-20 16:14:26 GMT, expired 168 days before this deployment. Wording: the TLS handshake completes; the certificate check
+    fails (verify return code 10, certificate has expired). The host serves no DLL route.
+
+Findings
+G-1 (evidence gap, Gemini off). "Zero provider variables in the running process" covers the process environment. next start also loads
+    .env, .env.production and .env.local from the app directory into process.env, and /proc/<pid>/environ does not show those.
+    Close it: list /opt/condyn-dll/app/.env* and check them for ROLE_DISCOVERY_SEMANTIC_PROVIDER, ROLE_DISCOVERY_DAY_LIMIT, GEMINI_API_KEY,
+    USE_*_PROVIDER, OPENAI_API_KEY, ANTHROPIC_API_KEY (names only, no values).
+G-2 (correction to the barrier). The explicit POST /api/career/analyses/[id]/role-discovery/investigations runs the semantic investigation
+    in the web process (semantic-investigation-start.ts binds the register itself). "No DLL worker process" is no barrier for that path.
+    The barriers are the env gate (provider=gemini AND key AND day limit ≥ 1, fail closed), the register's job budget, and today the
+    absence of any analysis (which only the worker produces).
+G-3 (rollback review). dll-revert.sh and dll-rollback.sh are not in the repository or the evidence; PINK could not read them. Put both
+    into the evidence so that "can harm nothing existing" can be checked independently.
+O-1. The served build can be bound to phase C but not to the exact commit over HTTP; the tree hash stays GELB's measurement.

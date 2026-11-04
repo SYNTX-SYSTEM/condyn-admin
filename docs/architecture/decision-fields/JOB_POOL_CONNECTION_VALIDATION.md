@@ -4266,6 +4266,51 @@ Open but not blocking:
 
 **Task (2), server deployment: not done.** PINK's user has not confirmed SSH access, so no connection was made.
 
+### 3.101 Deployed phase C artifact on dev.syntx-system.com, main `b9e65de` (2026-11-04) — GO
+
+**Request.** GELB merged on PINK's GO (fast-forward, main = `b9e65de`), deployed to `/opt/condyn-dll` (127.0.0.1:3017) and asked for an inverse check of the deployment. PINK's user authorized only read-only HTTP GET through GELB's tunnel `127.0.0.1:3018` plus the TLS check: no SSH of PINK, no POST, no write, no Gemini. Local `:3017` is a different runtime and is kept apart in every measurement (`evidence/deploy-phase-c-b9e65de/`).
+
+**Verdict: GO.** The served build carries phase C. It is not reachable from outside, condyn-admin is serving its own build untouched, and no GET path reaches a provider. Server internals stay GELB's measurement because they cannot be observed this way: tree hash, process lines, pm2/systemd/nginx, databases, script contents.
+
+**(1) Identity**
+- Locally, `b9e65de`'s tree is `abf2cb8e…`, GELB's server value.
+- origin/main = `b9e65de`, a linear fast-forward with 3 signed commits and 0 merges.
+- The tunnel is verified: `ssh -L 3018:127.0.0.1:3017 root@dev.syntx-system.com`.
+- The served client chunk contains all 28 phase C copy strings; "Open pool" does not exist in `5ca0f3f`. The build shares 0 chunks with local `:3017`.
+- Over HTTP, `b9e65de` cannot be told from `fa89519`/`3cb08ed`, since the product code is identical.
+
+**(2) Isolation**
+- Port 3017 is refused from outside, by name and by IP.
+- The dev host serves only a docs site (`/career/demo` and `/api` 404). No other vhost carries the career API or phase C.
+- The default HTTPS server is condyn-admin (certificate `admin.condyn.eu`), a different build without phase C. Its 5 chunks shared with `:3018` are byte-identical common chunks, not a route to the DLL.
+
+**(3) Gemini off**
+- In the code:
+  - all 8 `@google/genai` call sites go through `guardedGenerateContent`;
+  - OpenAI and Anthropic have no importer;
+  - the outbound website/GitHub loaders and the auto-match sweeper live only in the worker.
+- On the server: 0 analyses and 0 job pools, and every provider-capable route needs an analysis.
+
+**(4) Phase C surface: a boundary consequence, not a defect**
+- The panel mounts only after a discovery analysis, in client state.
+- The field returns `null` for an empty view, so on the server it does not exist at all, rather than standing in an empty state.
+- Its absence from the SSR HTML follows from that client-state mount. The only SSR match is a pre-existing CSS selector.
+
+**(5) Rollback.** Not verifiable by PINK, because the scripts exist only on the server. The forward state is served now.
+
+**F-DEP-1 and F-DEP-2**
+- **F-DEP-1:** `next start --port 3003` is confirmed in `package.json`. On the server it is confirmed indirectly: condyn-admin keeps its port with its own build.
+- **F-DEP-2:** confirmed and independent of the deployment. The certificate's notAfter is 2026-05-20 16:14:26 GMT, 168 days before the deploy. The handshake completes and verification fails (code 10).
+
+**Findings**
+- **G-1 (evidence gap).** `next start` also loads `.env`, `.env.production` and `.env.local` from the app directory. The process environment does not show them. GELB should list `/opt/condyn-dll/app/.env*` for the provider variable names (names only).
+- **G-2 (correction).** The explicit POST `…/role-discovery/investigations` runs the investigation in the web process, so "no worker" is no barrier there. The barriers are:
+  - the fail-closed env gate (provider `gemini`, key and day limit ≥ 1);
+  - the register's job budget;
+  - today, the absence of any analysis.
+- **G-3.** `dll-revert.sh` and `dll-rollback.sh` belong in the evidence, so that their harmlessness can be checked independently.
+- **O-1.** The exact commit is bound by GELB's tree hash only.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
