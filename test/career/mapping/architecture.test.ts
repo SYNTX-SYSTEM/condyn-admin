@@ -59,8 +59,9 @@ describe("MAP-ARCH · pure modules", () => {
 
 describe("MAP-ARCH · nothing existing is touched", () => {
   it("outside lib/career/mapping only the phase C field imports the mapping modules (its model, its component, its copy, its tests)", () => {
-    // Both import spellings: through the path (…/career/mapping/x) and relative from a sibling of lib/career (../mapping/x).
-    const users = gitGrep("--untracked", "-l", "-E", "(career/|\\.\\./)mapping/(view|layout|signs|delta|focus)[\"']", "--", ".", ":!lib/career/mapping", ":!test/career/mapping", ":!test/career/mapping-field", ":!docs");
+    // Every import spelling: through the path (…/career/mapping/x), relative from a sibling directory of lib/career (../mapping/x) and
+    // relative from a module in lib/career itself (./mapping/x; PINK §3.98 O-PC-1).
+    const users = gitGrep("--untracked", "-l", "-E", "(career/|\\.\\.?/)mapping/(view|layout|signs|delta|focus)[\"']", "--", ".", ":!lib/career/mapping", ":!test/career/mapping", ":!test/career/mapping-field", ":!docs");
     expect(users).toEqual(["app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/mapping-field-copy.ts", "lib/career/view-model/mapping-field.ts"]);
   });
 

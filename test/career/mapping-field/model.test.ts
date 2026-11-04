@@ -4,6 +4,7 @@ import signTable from "../../../docs/architecture/decision-fields/mapping-spec/s
 import { buildMappingView, capabilitiesOfProjection } from "../../../lib/career/mapping/view";
 import { layoutConstellation, layoutRoles } from "../../../lib/career/mapping/layout";
 import { runSign } from "../../../lib/career/mapping/signs";
+import { diffRankings } from "../../../lib/career/mapping/delta";
 import { FOCUS_ACTIONS, FOCUS_INITIAL, type FocusAction, type FocusState } from "../../../lib/career/mapping/focus";
 import { AUTO_MATCH_STATES } from "../../../lib/career/ui/auto-match";
 import {
@@ -205,11 +206,81 @@ describe("MAP-C-DELTA · a body moves only on its own new evidence", () => {
     expect([...moves.values()].every(v => v.moved)).toBe(true);
   });
 
-  it("inverse: a re-read that changed nothing moves nothing; nothing moves across analyses or from no previous reading", () => {
+  it("inverse: a re-read that changed nothing moves nothing; nothing moves from no previous reading", () => {
     const a = model(standardRanking()), b = model(standardRanking());
     expect(a.ranking).not.toBe(b.ranking);
     expect(bodyMovements(snap(a), snap(b)).size).toBe(0);
     expect(bodyMovements(null, snap(b)).size).toBe(0);
-    expect(bodyMovements({ ...snap(a), analysisId: "CAN_OTHER" }, snap(b)).size).toBe(0);
+  });
+
+  // PINK §3.98 F-PC-T1 (T1–T3): timeMovement.rule — "A body moves only when new evidence changes its tier or fit".
+  const changeKinds = (before: MappingFieldModel, after: MappingFieldModel, key: string) =>
+    diffRankings(before.ranking, after.ranking).filter(c => roleKey(c.role) === key).map(c => c.kind).sort();
+
+  it("T2 inverse: across analyses nothing moves — even when the same role's fit really changed between the two readings", () => {
+    const before = model(standardRanking());
+    const roles = standardRoles();
+    roles[0].requirements[1] = sem("q_pg", "PREFERRED", "COVERS", "PCAP_PG", "PostgreSQL");
+    const sameAnalysis = model(rankingOf(roles));
+    const otherAnalysis = mappingFieldModel({ projection: projectionOf(), ranking: available({ ...rankingOf(roles), analysisId: "CAN_00000000000000000000000000000009" }), watch: watchOf("COMPLETED") })!;
+    const key = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_platform" });
+    // Preconditions: the change is there (the engine's delta names it) and within one analysis it does move the body.
+    expect(otherAnalysis.analysisId).not.toBe(before.analysisId);
+    expect(changeKinds(before, otherAnalysis, key)).toContain("ROLE_FIT_CHANGED");
+    expect([...bodyMovements(snap(before), snap(sameAnalysis)).keys()]).toEqual([key]);
+    // The rule: a reading of another analysis is not new evidence about these bodies.
+    expect(bodyMovements(snap(before), snap(otherAnalysis)).size).toBe(0);
+    expect(bodyMovements(snap(otherAnalysis), snap(before)).size).toBe(0);
+  });
+
+  it("T3: a tier-only change (fit and rank equal) moves the body, with its trail starting at its previous drawn place", () => {
+    const roleOf = (requirement: ReturnType<typeof sem>) => [
+      { pool: POOL_A, roleId: "role_r", title: "Tiered", requirements: [requirement] },
+      { pool: POOL_B, roleId: "role_x", title: "Other", requirements: [lex("q_x", "REQUIRED", "NONE", null)] }
+    ];
+    const before = model(rankingOf(roleOf(lex("q_r", "REQUIRED", "NAME_EXACT", "PCAP_K8", "Kubernetes"))));
+    const after = model(rankingOf(roleOf(sem("q_r", "REQUIRED", "PARTIAL", "PCAP_K8", "Kubernetes"))));
+    const key = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_r" });
+    const was = before.bodies.find(b => b.key === key)!, now = after.bodies.find(b => b.key === key)!;
+    // Preconditions: only the tier changed — same fit, same rank; the other role did not change at all.
+    expect([was.tier, now.tier]).toEqual(["LEXICAL_ONLY", "SEMANTIC"]);
+    expect(changeKinds(before, after, key).filter(k => k.startsWith("ROLE_"))).toEqual(["ROLE_TIER_CHANGED"]);
+    expect(diffRankings(before.ranking, after.ranking).filter(c => c.kind.startsWith("ROLE_")).map(c => c.kind)).toEqual(["ROLE_TIER_CHANGED"]);
+    const moves = bodyMovements(snap(before), snap(after));
+    expect([...moves.keys()]).toEqual([key]);
+    expect(moves.get(key)).toEqual({ moved: true, from: { x: was.x, y: was.y } });
+  });
+
+  it("T1 inverse: a rank-only change (tier and fit equal) is not a movement — the role that changed its fit moves, the one it passed does not", () => {
+    const roleOf = (y: ReturnType<typeof sem>) => [
+      { pool: POOL_A, roleId: "role_x", title: "Steady", requirements: [sem("q_x", "REQUIRED", "PARTIAL", "PCAP_TS", "TypeScript")] },
+      { pool: POOL_A, roleId: "role_y", title: "Rising", requirements: [y] }
+    ];
+    const before = model(rankingOf(roleOf(sem("q_y", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL"))));
+    const after = model(rankingOf(roleOf(sem("q_y", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL"))));
+    const steady = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_x" }), rising = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_y" });
+    // Preconditions: the steady role changed its rank and nothing else; the rising one changed its fit.
+    expect(changeKinds(before, after, steady)).toEqual(["ROLE_RANK_CHANGED"]);  // no requirement of it changed either
+    expect(changeKinds(before, after, rising)).toContain("ROLE_FIT_CHANGED");
+    // Only the movement mark is held here — where the layout now draws the steady body is the layout's (A3), not asserted.
+    expect([...bodyMovements(snap(before), snap(after)).keys()]).toEqual([rising]);
+  });
+});
+
+describe("MAP-C-MODEL · displaced is either displacement (PINK §3.98 M8)", () => {
+  it("a body the layout pushed only along its sector (radial 0, angular ≠ 0) is displaced, as is one pushed only outward", () => {
+    const ranking = rankingOf([...crowdedRoles(40, POOL_A), ...standardRoles()]);
+    const m = model(ranking);
+    const layout = layoutRoles(m.view.pools.map(p => ({ id: p.id, name: p.name })), m.view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
+    const kind = (d: [number, number]) => (d[0] === 0 && d[1] === 0 ? "none" : d[0] === 0 ? "angular" : d[1] === 0 ? "radial" : "both");
+    const byKey = new Map(m.bodies.map(b => [b.key, b] as const));
+    const seen = new Set<string>();
+    for (const placed of layout.bodies.filter(b => !b.overflow)) {
+      const body = byKey.get(roleKey({ jobPoolUploadId: placed.poolId, poolRoleId: placed.roleId }))!;
+      seen.add(kind(placed.displacement));
+      expect(body.displaced, `${placed.roleId} ${kind(placed.displacement)}`).toBe(kind(placed.displacement) !== "none");
+    }
+    // Precondition: the fixture has angular-only, radial-only and undisplaced bodies.
+    expect([...seen].sort()).toEqual(expect.arrayContaining(["angular", "none", "radial"]));
   });
 });

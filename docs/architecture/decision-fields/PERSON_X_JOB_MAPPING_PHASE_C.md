@@ -86,3 +86,25 @@ The 27 failed tests are exactly the four known legacy suites (`career-lifecycle-
 [project]/node_modules is invalid, it points out of the filesystem root` — this worktree's `node_modules` is a symlink to
 `../condyn-admin/node_modules`. Environment, independent of the phase C delta; not changed here (to be run where `node_modules` is inside the
 project root, e.g. by PINK).
+
+## 7. Refinement after PINK §3.98 (tests only, GELB "SFE::PHASE_C REFINEMENT")
+
+PINK accepted fa895193 (GO for the product code) with a merge condition and test gaps. This commit changes tests and this document only;
+no product file, no engine, no layout or timeMovement semantics. A2 (readability) and A3 (position jumps) stay with GELB.
+
+| Finding | Change | Proof (mutant applied locally, then restored) |
+|---|---|---|
+| F-PC-1 merge condition | `mapping-field/architecture.test.ts` compares against the fixed phase-B base `PHASE_C_BASE` = 5ca0f3f5 (verified as a commit) instead of the merge base with origin/main | simulated merge in a scratch clone (origin/main := the refinement commit): architecture tests green |
+| O-PC-1 | phase-B importer grep also catches `./mapping/x` from a module in `lib/career` | probe `lib/career/zz-probe-importer.ts` importing `./mapping/view`: old pattern misses it, new test red |
+| T1 | a rank-only change (tier, fit equal) is no movement mark (model + render); the drawn position is not asserted (A3) | `bodyMovements` also accepting `ROLE_RANK_CHANGED` → 2 red |
+| T2 | across analyses nothing moves, with a real fit change between the readings and a same-analysis control (replaces the vacuous line; the old test stays green under the mutant, 17/17) | analysis check removed → 1 red |
+| T3 | a tier-only change (fit, rank equal) moves the body, trail from its previous place (model + render) | only `ROLE_FIT_CHANGED` accepted → 2 red |
+| M8 | `displaced` is radial or angular displacement (model + `data-displaced`), fixture with angular-only bodies | radial only → 2 red |
+| C1 | on L1 a click on a receded body of another pool keeps level and pool | `OPEN_POOL` on body click at L1 too → 1 red |
+| C9 | L1 overflow is the open sector's (pool with room: none; both pools overflowing: sector ≠ total) | whole-field count on L1 → 2 red |
+| C16 | legend sample per class = `LINE_DASH[CLASS_LINE[cls]]`, three different dashes | legend all solid → 1 red |
+
+Open, reported: with the fixed base, the "only these files" and exact-diff tests compare the tree against 5ca0f3f5. They hold on the branch
+and directly after the merge. Once main moves on with other changes, those tests will flag them, so they have to be re-based (or retired)
+at the next phase boundary. The phase-B test "engine unchanged against main" still uses the merge base. It stays green after a merge but
+is vacuous on main. It was left as it is (outside F-PC-1).

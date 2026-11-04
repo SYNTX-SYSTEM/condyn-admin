@@ -5,7 +5,8 @@ import { describe, expect, it } from "vitest";
 
 /**
  * MAP-C-ARCH · phase C boundary (GELB "SFE::PHASE_C", owner limit "NUR PHASE C"): the visible field is added, nothing existing
- * changes meaning. Against main (the merge base with origin/main):
+ * changes meaning. Against the fixed phase-B base PHASE_C_BASE (not against origin/main, so the guarantees read the same before and
+ * after the merge — PINK §3.98 F-PC-1):
  *  - the released engine (lib/career/mapping) and its specification files are byte-identical — consumed, not changed;
  *  - the six PERSON orbits, the JOB planetarium, the Job Field, the field selector (two fields), B2 and the backend are untouched;
  *  - the branch changes only its own new files and three named entry points, and in the two product entry points it removes
@@ -15,7 +16,13 @@ import { describe, expect, it } from "vitest";
  */
 const ROOT = join(__dirname, "../../..");
 const git = (...args: string[]) => execFileSync("git", args, { cwd: ROOT, encoding: "utf8" }).split("\n").filter(Boolean);
-const BASE = git("merge-base", "HEAD", "origin/main")[0];
+/**
+ * The commit phase C was built on: origin/main 5ca0f3f5 (phase B closed, PINK §3.95). A fixed tree, not the merge base with origin/main:
+ * once phase C is merged the merge base is phase C itself and a diff against it is empty, so the tests would either pass vacuously or
+ * (for the exact-diff tests) fail. Against this tree they check the same delta on the branch and on main after the merge.
+ */
+const PHASE_C_BASE = "5ca0f3f5dd4f5e0323396c519eb31df89454449d";
+const BASE = git("rev-parse", "--verify", `${PHASE_C_BASE}^{commit}`)[0];
 /** Committed, staged and unstaged changes against the base, and new files not yet added. */
 const changed = () => [...new Set([...git("diff", "--name-only", BASE), ...git("ls-files", "--others", "--exclude-standard")])].sort();
 const diffLines = (file: string, sign: "+" | "-") => execFileSync("git", ["diff", "-U0", BASE, "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
@@ -33,7 +40,7 @@ const NEW_FILES = [MODEL, COMPONENT, COPY, "docs/architecture/decision-fields/PE
 const NEW_DIRS = ["test/career/mapping-field/"];
 
 describe("MAP-C-ARCH · nothing existing changes meaning", () => {
-  it("the engine and its specification are byte-identical to main", () => {
+  it("the engine and its specification are byte-identical to the phase-B base", () => {
     expect(git("diff", "--name-only", BASE, "--", "lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
     expect(git("ls-files", "--others", "--exclude-standard", "--", "lib/career/mapping")).toEqual([]);
   });
@@ -59,7 +66,7 @@ describe("MAP-C-ARCH · nothing existing changes meaning", () => {
     expect(git("diff", "--name-only", BASE, "--", ...protectedPaths)).toEqual([]);
   });
 
-  it("against main, the branch changes only its new files and the three named entry points (committed, staged, unstaged and new)", () => {
+  it("against the phase-B base, phase C changes only its new files and the three named entry points (committed, staged, unstaged and new)", () => {
     const own = (p: string) => NEW_FILES.includes(p) || NEW_DIRS.some(d => p.startsWith(d));
     const files = changed();
     expect(files.filter(p => !own(p) && !ENTRY_POINTS.includes(p))).toEqual([]);
