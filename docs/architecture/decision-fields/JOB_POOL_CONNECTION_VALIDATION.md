@@ -4072,6 +4072,41 @@ Open but not blocking:
 - **Equivalent mutants.** V4, L4, L5 and L10 stay green. The product code is byte-identical to `057f913`, so the §3.95 assessment holds.
 - **Checks.** tsc 0; GRÜN's suite 81/81.
 
+### 3.97 PERSON × JOB phase B, integrated on `main` `5ca0f3f` (2026-11-04) — GO
+
+**Request.** GELB asked for an inverse integration check of origin/main against §3.96 (SFE::PHASE_B_INTEGRATION_VALIDATION, authorized by OTTAVIO). Owner hardlock: "NUR INTEGRATIONSVALIDIERUNG. MEHR NICHT." There was no product change, no merge, no :3017 and no Phase C.
+
+**Verdict: GO.** There is no integration fault (`evidence/integration-main-5ca0f3f/verdicts.txt`).
+
+**(1) Integrity**
+- origin/main is `5ca0f3f`, the very commit released in §3.96, with tree `a471f22b`.
+- The history is a linear fast-forward from `85274dc` with 0 merges.
+- The diff adds 12 files (+1218), all inside `lib/career/mapping` and `test/career/mapping`.
+- `lib/` is byte-identical to `057f913`, and `docs/` is identical to `85274dc`.
+- Nothing outside the two directories imports the mapping modules.
+
+**(2) Contracts**
+- PINK's probe passes 7/7, and every count is identical to §3.95.
+- PINK's Python matches the oracle: 200/200 random layouts and 21/21 golden vectors.
+- 39 of 43 mutants are red. The 4 green ones are the known equivalents V4, L4, L5 and L10, and the probe kills L10.
+
+**(3) Targeted checks**
+- tsc 0.
+- GRÜN's suite 81/81.
+- Positive control: PINK's untracked probe files turn both MAP-ARCH "nothing existing is touched" tests red, so those tests catch what they should.
+
+**(4) Regression**
+- main: 3432 passed, 27 failed, 20 skipped. These are GELB's numbers.
+- base `85274dc`: 3375 passed, 27 failed, 20 skipped.
+- The FAIL lists of main and base are identical in all three run pairs.
+- The cause is the same on both: legacy DDL drift F-JP-5 (21× 42703 `career_policy_versions.version`, 1× 23502 `career_commitments.actor`, plus 5 follow-on failures).
+- main minus base is +57 tests, all green: the six Phase-B test files.
+- The flaky `hr-decision-loop-postgres` is green in 6/6 full runs and is unreachable from Phase B.
+
+**Observations (not blocking)**
+- **O-PB-3.** On main, MAP-ARCH "only the two dirs" is vacuous because HEAD and origin/main are the same commit; (1) proves the scope directly.
+- **O-PB-4.** PINK environment only: with a symlinked node_modules, Turbopack refuses to start Next, and 3 HTTP files fail on main and base alike. With a real copy they pass 77/77.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
