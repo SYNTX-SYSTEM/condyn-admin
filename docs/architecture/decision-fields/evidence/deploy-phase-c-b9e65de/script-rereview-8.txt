@@ -1,0 +1,39 @@
+PINK §3.101 addendum 8 — final pass on L-1, L-2, L-3 and W-1 (2026-11-04). Read locally from GELB's evidence copy; md5 dll-revert.sh
+312acfad…, dll-3017.sh d4b4d5d7…, DEPLOYMENT.md 2e0de31c…, equal to GELB's values; the rest is unchanged. Nothing executed.
+
+Verdict: L-1, L-2, L-3 FIXED as stated (verified: 0 release_lock, 0 LOCK_FD, 0 eval, `exec 9>"$LOCK"` once, the literal 9 in both files,
+`9>&-` and `-c core.fsmonitor=false -c maintenance.auto=false` on the three checkouts, `9>&-` on dll-build.sh). Holding the lock through
+the final start is correct. No new path that damages anything, loses a build or fails silently. But the W-1 check adds two LOCKOUT modes,
+both fail-safe (nothing is changed): V-1, and V-2, whose prescribed remedy does not work. Plus one consistency note (V-3).
+
+GELB's questions
+* Lock held through a start that hangs for 180 s: no problem. A concurrent apply is refused with 75 and a reason, which is the right
+  direction, since it would otherwise swap under a booting process. The lock ends when the script exits after the timeout. The launcher
+  carries `9>&-`, so a hung runtime does not hold the lock. But see V-2 for what the hung process does to the NEXT apply.
+* A stray shell or an editor with its cwd under /opt/condyn-dll/: yes, the W-1 check refuses (V-1). Direction: fail-safe. It is a
+  lockout only while that process lives, but the message misattributes it ("probably still starting … stop it with dll-3017.sh stop").
+
+Findings (report only, not corrected)
+V-1 (self-match and stray processes). dll_process_pids() takes EVERY process whose cwd is under /opt/condyn-dll/ (lines 73-79),
+    without excluding the revert itself. Run as `cd /opt/condyn-dll && ops/dll-revert.sh apply` (or from ops/), the script's own pid, its
+    command-substitution subshell and the operator's login shell all match. Whenever the runtime is not serving, every apply refuses
+    itself and names its own pids. The same goes for an editor or a shell left in the tree. Fail-safe, but the advice
+    "dll-3017.sh stop" cannot help, because those processes listen on nothing.
+    Fix: exclude $$, $BASHPID and the script's ancestors, restrict the match to the runtime's own processes (exe under $NODE_BIN, or
+    cmdline containing next), and print each pid's command line in the refusal.
+V-2 (lockout whose remedy cannot work). If `dll-3017.sh start` hangs (alive, never binding), it returns 1 after 180 s and leaves the
+    launcher process running. It has no early-exit, and the start does not kill it. Its cwd is $APP. From then on, every apply sees
+    WAS_SERVING=0 and a deployment pid, so it refuses with "stop it with dll-3017.sh stop". But cmd_stop identifies the runtime ONLY by
+    the :3017 listener (listener_pid), finds the port free, prints "port 3017: free" and returns 0 without touching the hung process. The
+    apply refuses again. The only way out is a manual kill that no message names. The same holds for any DLL process that never binds.
+    Fix: let dll-3017.sh stop also stop unbound processes found by cwd under $APP (with the same cwd guard), or let the refusal name the
+    pids with their command lines and the exact kill; and/or let cmd_start kill its own launcher when it gives up after 180 s.
+V-3 (consistency, minor). The background-process guard is applied to the checkouts only. `git status --porcelain` in recover() (T-4)
+    and the rev-parse/merge-base calls still run with fd 9 open and without `-c core.fsmonitor=false`. With a builtin fsmonitor
+    configured, `git status` starts the fsmonitor daemon, which would inherit fd 9 and hold the lock: the same "rather than relying on
+    it not being configured" argument GELB applied to the checkouts. (dll-build.sh's own git status runs under `9>&-`.)
+    Fix: the same -c flags and `9>&-` on recover()'s git status, or set them once through GIT_CONFIG_COUNT/KEY/VALUE.
+
+Assessment: none of V-1..V-3 can damage anything or serve something unidentified. V-2 is the one with a functional effect: after a hung
+start, the rollback tool is locked out and its own advice does not unlock it. V-1 is a usability lockout tied to the invocation style.
+V-3 only matters if fsmonitor is ever configured.
