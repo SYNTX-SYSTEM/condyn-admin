@@ -7,7 +7,9 @@ Base: `origin/main` **e360caf9**. Branch of this document: `architecture/mapping
 
 Phase B stays the semantic foundation and is consumed byte-identical. Phase C is the starting point and is carried over, not rebuilt.
 
-**State: CONTRACTED.** PINK holds C-1 … C-11 and D-1 … D-7 (2026-11-05, evidence commits e814e841 and 2ec50d79). D-5's exact
+**State: DELIVERED, awaiting PINK.** GRÜN delivered `86e36924` (§11); PINK runs the independent §8 pass.
+
+**Contract:** PINK holds C-1 … C-11 and D-1 … D-7 (2026-11-05, evidence commits e814e841 and 2ec50d79). D-5's exact
 host-file pin is prospective and lands at GRÜN's delivery. GRÜN is released for §7.
 
 §5.1 and §5.2 carry PINK's two corrections; §10 carries GRÜN's nine. Not implemented, not reviewed.
@@ -820,7 +822,91 @@ clears **both**).
 
 ---
 
-## 11. Hand-over
+## 11. Delivery — `86e36924` (GRÜN, 2026-11-05)
+
+Branch `frontend/mapping-phase-d`, parent `e360caf9`, 26 files, +2095/−433. Not pushed, not merged, not rolled out. Evidence in the
+session scratchpad, reported by path (D-Q9).
+
+### 11.1 D-Q16 was unsatisfiable — my binding, GRÜN's correction
+
+I bound (b) as "the existing `INTAKE_BELOW_ENTRY` stays **byte-identical**, `mapping-gate` gets its **own new rule**". That cannot
+be built, and GRÜN found it. Verified here at `e360caf9`:
+
+* `field-entry-state.test.tsx:234` defines `INTAKE` as the selector tail **plus its declaration block**
+  `[data-sx-field="job"] > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`.
+* `:276` asserts that string occurs **exactly twice** in the whole CSS — once per fixed tier. A second rule makes four, and that
+  file is not a phase-D file.
+
+**The delivered solution is right and is now the binding.** One rule, two selectors, `mapping-gate` **first** and `gate-reason`
+**last**, so the declaration block follows `gate-reason` directly and `:256`'s contiguous substring
+`:has(> [data-sx-shell="gate-reason"]) ${INTAKE}` still matches, while `:276` still counts two. The existing line is therefore
+**changed, not byte-identical** — and that is accepted, because the stricter form I asked for does not exist.
+
+GRÜN also names the case that makes the second condition necessary rather than decorative: **PERSON × JOB with a valid job has no
+capability line, but MAPPING is gated `NOT_PERSON`**, so the MAPPING line stands alone and without its own condition would lie on
+the intake panel.
+
+Note that this is the reverse of D-Q16: GRÜN's *first* cut was a selector list, PINK and I "corrected" it to two rules, and the
+correction was wrong. The one-variable requirement of `fb7010aa` survives intact and is what the delivered rule does.
+
+### 11.2 The D-5 pins, as delivered and as I now fix them
+
+| Surface | Pinned to |
+|---|---|
+| `CareerIntelligenceDashboard.tsx` | exactly two type widenings; `:82` untouched |
+| `career-demo-layout.ts` | three hunks: clearance as `max(bottom)` over both markers with both-null handling; the one intake rule with two conditions on **one** variable; the `mapping-gate` narrow-tier rule at `order: 4`, a `FIELD >` direct child, source-after `gate-reason`. No other line |
+| `SemanticCareerIntelligenceField.tsx` | six categories, below |
+| T-07 | held by PINK's independent re-derivation and mutants, not by a diff pin |
+
+**The host's six categories**, read against the delivered diff: (1) the focus union widened to `"CAPABILITY" \| "MAPPING" \| "FIELD"`
+at the prop, the callback, the state and `switchFieldFocus`; (2) the `mappingGate` derivation with D-Q12's bound precedence and the
+gated-switch refusal; (3) the extraction of `capabilityActive`, which must be **behaviour-identical** at the three pre-existing call
+sites — `jobPoolWorkflow` (`activeFieldFocus === "FIELD"` → `!capabilityActive`), the telemetry `focus` field (kept two-valued on
+purpose, which is what keeps D-Q12(c) true) and `coverageRequest`; (4) the brand effect moved **after** `activeFieldFocus`, which is
+forced by the temporal dead zone now that it depends on `mappingGate` — a required move, not a tidy-up; (5) the `field` prop removed
+and the MAPPING stage mounted; (6) the selector's new `mappingLabel` and `mappingGate` props. The pin test's line list must be
+exactly these and nothing else.
+
+### 11.3 Gaps, stated as gaps
+
+1. **`syntx-walk` Q-01 … Q-11 is red on the base.** GRÜN measured it at `e360caf9` in a separate clone: same line `:440:143`, same
+   message (`focus-transition-stage-shell-*` count 0). The case aborts before reaching `:911`, so **C-3 at that site is changed
+   without ever executing**. That is a gap, not a proof. C-3 is covered twice over elsewhere — `job-scope-ssr` (SSR) and the new
+   G-12 (e2e) — so the contract is not unproven, but this site is. **PINK confirms the base-red independently**: a gap claim that
+   excuses a contract site from execution must not rest on the measurement of the lane that benefits from it.
+2. **`syntx-readonly-walk.mjs` was changed (`=== 3`) and not executed.** It needs a standing environment with persisted analyses.
+   A gap.
+3. **`live-browser-workflow.e2e` not run**, as bound (D-Q9, no switch).
+4. **Three new timeouts** in the two `outcome-valence-feedback-context-revision` files (postgres 2, replay 1), the environment class
+   PINK confirmed on both sides in §3.100; those files fail 5/13 standalone and phase D does not touch them. Not phase D's.
+
+### 11.4 Accepted without change
+
+* **Step 3 re-tightened.** With (a) + (b) + step 4 the measured EN clearance was 8.48 px, under the bound 12. GRÜN went **back** to
+  step 3 — padding 10/12 → 8/10 — rather than forward to step 5. That is spacing, not type, and is exactly the bound order honoured
+  rather than deviated from. Final: EN 461.05 px / 14.48 px clear, DE 444.25 px / 22.88 px. `fontSize` stayed 12.
+* **The B2 portal on L2 was not built.** §5.3 says the field *may* offer it; §7 excludes additional functions. GRÜN left it out
+  instead of inventing it. Correct.
+* **The T-07 fixture** carries `reference`, `excluded`, `note`, the re-derived `digests` and `atReference` presence counts
+  (strip 1, `mapping-gate-reason` 0 at the reference). All four conditions of D-Q15 are met in form; PINK's re-derivation decides
+  them in substance.
+* **T-07's derivation subtlety, reported rather than hidden:** the test file did not exist at `49e2bc6`; its own comment records
+  that it was applied to `49e2bc6`'s code. GRÜN therefore rendered the `e360caf9` version of the test file against `49e2bc6`, and
+  controlled it by checking that the **unchanged** base file still reproduces its old digests there.
+
+### 11.5 Measured
+
+`tsc` 0 errors. No new eslint finding. Phase-D suites 653/653 in 82 files, `mapping-field` 95/95 in 9. MAP-D-ARCH D-1 … D-7 11/11 on
+the surgically cleaned tree. Full isolated suite 3553/3603 green, 30 red = 27 known legacy + the 3 of §11.3.4. Eighteen mutants
+applied and restored with a byte check, **all red**. `job-scope-gate` 1/1 green on the tip with the module resolved (Playwright
+1.63.0), 355 530 ms, including the new G-12 across three viewports × two locales × two modes.
+
+Three previously unrunnable files now pass with a real `node_modules`: `g2-g3-vertical-proof` 63/63, `hr-decision-loop-p7` 7/7,
+`local-decision-context-http` 1/1.
+
+---
+
+## 12. Hand-over
 
 * **GRÜN** implements §7 against the contract of §5.1 and the proofs of §8, on `PHASE_D_BASE`. Architecture questions come back here
   before a workaround is built.
