@@ -415,3 +415,78 @@ CORRECTION TO THE (c) MEASUREMENT — the conclusion is right, the stated measur
 HOLD UNCHANGED: C-1…C-11 (corrected C-8), D-1…D-7 with three D-2 carve-outs, D-3 entry set as
   enumerated, D-5 pins three files at delivery. The (c) scoping is a refinement to the delivery check,
   not a change to the hold. Read-only; document-only; nothing executed.
+
+
+=================================================================================
+ADDENDUM 6 (2026-11-05) — D-3 third expansion: NARROWING A BYTE SEAL (T-07); re-stated, bounded.
+=================================================================================
+GELB re-stated D-3's entry set to admit test/career/pxj-first-screen/person-markup.test.tsx and
+fixtures/person-markup-49e2bc6.sha256.json (commit f4f9ee58, document-only; §5.1 untouched, no
+C-clause moved). This is a DIFFERENT and MORE CONSEQUENTIAL class than the first two D-3 expansions:
+a leaf (career-demo-url) and a type-only file (dashboard) are bounded one-time diffs; narrowing T-07
+PERMANENTLY REDUCES a standing byte seal's coverage. I accept it — it is necessary — but hold it the
+tightest of all, and add the inverse checks that make the narrowed seal mean something.
+
+NECESSARY — CONFIRMED at e360caf9. person-markup.test.tsx renders SemanticCareerIntelligenceField at
+  fieldFocus="CAPABILITY", investigationMode="PERSON" across 7 variants (l0, s01-s04, s06, de) and
+  hashes the FULL markup (createHash("sha256").update(markup), :28) against 7 digests "rendered from
+  this same file on 49e2bc6". Phase D changes that markup at CAPABILITY/PERSON: the strip gains a
+  third button + D-Q14 geometry (C-3/C-4), and mapping-gate-reason stands in the shell when MAPPING is
+  gated (C-10/C-11). So the full-markup digests cannot match — T-07 is red for the right reason; phase
+  C held it only because the strip was untouched. person-markup.test.tsx is a test file, not in D-2
+  protectedPaths and not yet in any phase-D set, so editing it to narrow the seal requires admitting
+  it as a phase-D entry point. Necessary reach of the already-held C-3/C-4 and C-10/C-11.
+
+THE FOUR CONDITIONS — each sound, each closes a real failure mode of narrowing a seal:
+  (i) exclude EXACTLY [data-testid="field-focus-strip"] and mapping-gate-reason; the capability-gate /
+      entry line stays INSIDE the hash. Minimal exclusion — right.
+  (ii) depth-matched element extraction as job-scope-ssr.test.tsx:34 does it, never a regex that can
+      over-match. Right.
+  (iii) vacuity guard: assert PRESENCE as well as equality. Right — without it, a render that DROPPED
+      an excluded element would still pass (exclude-nothing-still-matches).
+  (iv) the fixture keeps the 49e2bc6 name AND carries an "excluded" field naming the two selectors.
+      Self-documenting provenance — right.
+  THE LOAD-BEARING ONE is GELB's derivation-path point: the 7 digests must be RE-DERIVED from a render
+  AT 49e2bc6 with the same two elements removed by the same extraction — NEVER from the phase-D output.
+  Taken from the phase-D render, (2) silently becomes (1) (re-base), the file still names 49e2bc6, the
+  test passes and asserts NOTHING. GELB refuses both the open re-base and the disguised one. Correct
+  and the crux.
+
+MY INVERSE COMPLEMENT — held at delivery as part of D-5/§8.15, the checks that make the narrowed seal
+  real (I verify the seal; I do not take GRÜN's digests):
+  1. INDEPENDENT RE-DERIVATION. In an isolated worktree I check out 49e2bc6, render the 7 variants,
+     apply the SAME extraction (remove field-focus-strip; mapping-gate-reason absent there), hash, and
+     confirm the fixture's 7 digests equal MY computation. The inverse proof that the digests come from
+     49e2bc6 and not from phase-D output — it catches the "silent (1)" disguised re-base, which would
+     otherwise look green. (The one place I may RUN code — an isolated test render; no server, no DB,
+     no product-code or existing-DB change.)
+  2. OUT-OF-EXCLUSION MUTANT. Change one byte OUTSIDE the two excluded subtrees (the capability gate
+     line, or an orbit) and confirm T-07 goes RED — the narrowed seal still covers all it did not exclude.
+  3. VACUITY MUTANT. A phase-D render missing field-focus-strip, or missing mapping-gate-reason when
+     MAPPING is gated, must go RED — the exclusion masks no dropped element.
+  4. EXCLUSION EXACTNESS. The extraction removes EXACTLY the two subtrees, depth-matched, nothing else.
+  5. ASYMMETRY. Removing mapping-gate-reason from the phase-D render yields byte-identical surroundings
+     vs the 49e2bc6 render minus strip (falls out of check 1; the delicate whitespace/sibling case).
+
+D-Q16 — accepted, STRICTER than I conditioned (b) on. GRÜN caught that its first (b) widened the
+  existing INTAKE_BELOW_ENTRY selector into a list, which would break field-entry-state.test.tsx:255
+  (that rule expected verbatim), and fixed it so the existing rule stays BYTE-IDENTICAL and mapping-gate
+  gets its own new rule beside it. (b) is now two additions, zero edits; career-demo-layout.ts's D-5
+  pin is FOUR additive changes, no existing line altered — stronger than my condition. GRÜN found and
+  fixed it before reporting. One §8 behavioural check I add: with BOTH gate-reason and mapping-gate
+  present, the intake top must clear BOTH lines (two independent :has rules must compose to the max,
+  not let one win — D-Q11 constraint 2 applied to the intake clearance).
+
+D-Q14 — resolved, mine to check at §8.17 (min 12px clearance, both locales). Note: GELB reached
+  letterSpacing 1.6→1.2 on the two EXISTING buttons (refused fontSize) — a visible change to existing
+  navigation, within GELB's lane as doc owner and the right call. At §8.17/§8.14 I verify 12px in both
+  locales and that the concession stopped at letterSpacing; the existing-button change is held in
+  SyntxFieldSelector's D-5 pin.
+
+UPDATED HOLD (supersedes addendum 5's): C-1..C-11 (corrected C-8); D-1..D-7 with three D-2 carve-outs;
+  D-3 entry set = {phase-C artifacts, the four contract files, CareerIntelligenceDashboard.tsx,
+  career-demo-layout.ts, person-markup.test.tsx (+ fixture)}. D-5 pins at delivery now FOUR surfaces:
+  SemanticCareerIntelligenceField.tsx, CareerIntelligenceDashboard.tsx (two type widenings),
+  career-demo-layout.ts (four additive changes, no existing line altered), and the T-07 narrowed seal
+  (verified by my independent re-derivation from 49e2bc6 + mutants 2-5). Read-only; document-only;
+  nothing executed now — the isolated 49e2bc6 render happens only at the §8 delivery pass.
