@@ -490,3 +490,84 @@ UPDATED HOLD (supersedes addendum 5's): C-1..C-11 (corrected C-8); D-1..D-7 with
   career-demo-layout.ts (four additive changes, no existing line altered), and the T-07 narrowed seal
   (verified by my independent re-derivation from 49e2bc6 + mutants 2-5). Read-only; document-only;
   nothing executed now — the isolated 49e2bc6 render happens only at the §8 delivery pass.
+
+================================================================================
+§8 — INDEPENDENT DELIVERY FALSIFICATION PASS (PINK, delivery 86e36924, parent e360caf9)
+    GELB delivery record d75ed58c (§11). 26 files, +2095/-433 (verified exact).
+    All measurements below are PINK's own code, run in three isolated detached worktrees
+    (86e36924 / e360caf9 / 49e2bc6; shared node_modules — package-lock byte-identical across
+    all three), against disposable test databases (npm run test:isolated: unique DB per run,
+    auto-dropped; loopback /postgres admin, least-privilege role). Playwright 1.63.0.
+    Nothing pushed, nothing merged, no server or shared DB touched. VERDICT: GO.
+--------------------------------------------------------------------------------
+
+D-Q16 — MY PRIOR CONDITION WAS SUPERSEDED, and the delivered form is correct.
+  Addendum 6 recorded GRÜN's then-fix as "the existing INTAKE_BELOW_ENTRY rule stays BYTE-IDENTICAL,
+  mapping-gate gets its own new rule beside it." The delivery proved THAT unsatisfiable, GELB
+  corrected it (d75ed58c), and I confirm the correction by deriving why independently:
+  field-entry-state.test.tsx (NOT a phase-D file — verified absent from the diff) binds, at :234/:256/
+  :275, the string INTAKE = `[data-sx-field="job"] > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear,150px)) !important; }`
+  to occur EXACTLY TWICE (:275 all.split(INTAKE).length-1 === 2, once per fixed tier). A SEPARATE
+  mapping-gate rule necessarily ends in `...[data-sx-panel="intake"] { top... }` = INTAKE, once per
+  tier → count 4 → :275 fails in a file phase D may not edit. The ONLY satisfiable form is one rule,
+  two selectors, sharing one declaration block. Delivered (career-demo-layout.ts:27): mapping-gate
+  FIRST, gate-reason LAST; the gate-reason selector is immediately followed by the decl block so
+  :256's contiguous `:has(> [data-sx-shell="gate-reason"]) ${INTAKE}` still matches, and the shared
+  block keeps :275 at 2. The existing line IS textually changed (gains the mapping-gate prefix selector);
+  byte-identity was impossible. My one-variable requirement survives intact: clearance JS (:14-16) is
+  one var --sx-entry-clear = Math.max over [line, mappingLine], both-null → removeProperty.
+  - UNCHANGED seal field-entry-state.test.tsx GREEN on delivery: 19/19 (my run).
+  - mapping-gate-ALONE + both-present(max) covered and non-vacuous: selector-d.test.tsx:89 (D-Q13(b))
+    asserts mapping-alone → its bottom; both → max, tested in BOTH orderings (symmetry). My run: green.
+
+T-07 narrowed seal — fully re-derived by me from 49e2bc6 (the one place I run code). My checks 1-5:
+  1. REDERIVE: rendering 49e2bc6's own SemanticCareerIntelligenceField (7 variants, same props/mocks)
+     and applying the DELIVERED extraction (withoutElement/sealed, copied verbatim) reproduces the
+     DELIVERED narrowed digests (person-markup-49e2bc6.sha256.json), with found={strip:1,mgr:0} at the
+     reference. The digests are provably re-derived from reference+exclusion, NOT phase-D output.
+  2. OUT-OF-EXCLUSION mutant: a byte changed outside both excluded subtrees flips the sealed hash — the
+     narrowed seal still bites.
+  3. VACUITY mutant: with the strip removed, found→0 — the guard fires.
+  4. EXCLUSION EXACTNESS: a byte changed INSIDE field-focus-strip does NOT change the sealed hash — the
+     documented, accepted coverage cost of narrowing (strip-internal changes are no longer sealed).
+  5. CONTROL + ASYMMETRY: full-markup(49e2bc6) reproduces the ORIGINAL pre-narrowing digests (e360caf9
+     fixture) — renderer faithful, PERSON×CAPABILITY markup stable 49e2bc6→e360caf9; narrowed ≠ full.
+  DELIVERY seal person-markup.test.tsx GREEN on 86e36924 (my run): sealed(86e36924)==delivered digests.
+  Chain: sealed(49e2bc6)==delivered==sealed(86e36924) ⇒ phase D changed ONLY the two excluded subtrees.
+
+Gap item 2 — base-red CONFIRMED BY MY OWN RUN (not GRÜN's; a gap claim must not rest on the lane that
+  benefits). syntx-walk.e2e.test.ts Q-01…Q-11 on e360caf9: RED at :440:143 (focus-transition-stage-shell
+  count 0), aborts Q-01 before :911. So C-3 at syntx-walk:911 (2→3) is changed-without-executing — an
+  honest gap. Second gap: syntx-readonly-walk.mjs:193 (===3) standalone, not executed. C-3 is PROVEN at
+  an EXECUTING site: job-scope-ssr.test.tsx (toHaveLength(3), both focuses) GREEN 12/12 (my run), and in
+  the real browser by G-12 (below). C-3 does not depend on either gap.
+
+MAP-D-ARCH (architecture.test.ts) — re-stated (PHASE_C_BASE→PHASE_D_BASE, phaseCBase→phaseDBase), index
+  counts added (F-FIN-1, --cached), three D-2 carve-outs asserted exactly (SELECTOR, career-demo-url.ts
+  via :! pathspec, LAYOUT), D-5 exact-line pins (DASHBOARD 2 widenings, LAYOUT, HOST incl. toHaveLength(32)),
+  D-5(c) order scoped to `${FIELD} >` direct children, D-7 full action set (FIELD_ACTIONS===FOCUS_ACTIONS,
+  FOCUS_INITIAL no scope key — MARK_REQUIREMENT admitted). 11/11 GREEN (my run, inherently-clean worktree).
+  Falsification (clean→perturb→RED→restore→clean, isolated): D-2 protected-file change → RED; D-5 pinned
+  DASHBOARD line → RED; baseline re-check 11/11. OBSERVATION (boundary, NOT a hold): D-3 filters
+  `sets.filter(set => set.files.some(phaseD))` (:55), so a change set touching ZERO phase-D files (a lone
+  foreign file; a hypothetical separate commit of only non-phase-D files) is dropped and not checked. D-3
+  catches foreign files riding ALONGSIDE phase-D files (as in the delivered commit). Moot for the single
+  clean delivered commit; identical to phase C's accepted shape. Stated per the scope-of-measurement habit.
+
+§8.17 / D-Q14 — remediation is SPACING not TYPE (GELB's claim, confirmed in source SyntxFieldSelector.tsx
+  :934→:935): fontSize "12px" UNCHANGED both; letterSpacing 1.6→1.2, gap 9→6, padding 10/20/10/15→10/10/10/8,
+  width 214px→auto. G-12 (job-scope-gate.e2e) real-browser, MY run: 158/158 checks ok, zero deviations,
+  3 viewports × 2 locales × 2 modes. Measured §8.17 clearance (membrane.left − strip.right): EN 14.4766 px,
+  DE 22.875 px — both ≥ MIN_CLEARANCE 12, every viewport. (Strip widths EN 461.05 / DE 444.25 = GELB's
+  figures; the narrower DE strip leaves more clearance.) C-3 ids exactly [capability, mapping,
+  job-pool-panel-toggle]; C-10 disabled+NOT_PERSON+describedBy=mapping-gate-reason; C-11 reason+way EN
+  "choose PERSON" / DE "PERSON wählen"; D-Q13 mapping line below capability line; D-Q13(b) intake below both.
+
+Cross-checks (my runs): tsc --noEmit exit 0; mapping-field suite 9 files/95 passed; job-scope-ssr 12/12.
+
+VERDICT: GO. The §5.1 contract (C-1…C-11, C-8 corrected) and §5.2 base (D-1…D-7, MAP-D-ARCH) are met by
+  86e36924 as delivered; the three items GELB escalated (D-Q16 unsatisfiability, the base-red gap, the
+  T-07 re-derivation) are resolved by PINK's own measurement. Not a GO to merge/rollout — document- and
+  branch-local; the single code execution PINK committed to (the 49e2bc6 render) happened only here, in
+  isolation. Residual to the OWNER, not blocking: the D-1 P8-seal conflict GELB escalated earlier; the
+  B2 portal offer deliberately not built (§5.3 "may", §7 excludes extra functions).
