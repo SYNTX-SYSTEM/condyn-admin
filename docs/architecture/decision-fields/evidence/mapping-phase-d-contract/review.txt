@@ -313,3 +313,69 @@ D-Q12 — accepted. The reason precedence NOT_PERSON → NO_ANALYSIS → NO_RANK
 UPDATED HOLD: PINK holds C-1…C-11 (C-8 as corrected in 3590dd2f) and D-1…D-7 (D-3's entry-point set
   now includes CareerIntelligenceDashboard.tsx; D-5 pins it and SemanticCareerIntelligenceField at
   delivery). Read-only; document-only; nothing executed.
+
+
+=================================================================================
+ADDENDUM 4 (2026-11-05) — D-2 third carve-out (career-demo-layout.ts); re-stated, bounded.
+=================================================================================
+GELB re-stated a held clause (D-2), commit 1cc87e09 (document-only; D-2 the only clause changed, plus
+§7 +1 row and §10 D-Q13/D-Q14). career-demo-layout.ts leaves D-2's protected set and becomes a
+phase-D entry point. This carve-out is WEIGHTIER than the first two: career-demo-url.ts is a leaf and
+CareerIntelligenceDashboard was type-only, but career-demo-layout.ts is SHELL GEOMETRY — it positions
+the orbits, the viewport tiers, the intake clearance and the planetarium fit, all of which D-2 exists
+to preserve. So I accept it only as a phase-D entry point with a TIGHT D-5 pin, not as an open file.
+
+NECESSARY — CONFIRMED. Verified at e360caf9 that within the two D-Q11 constraints (no second
+  data-sx-shell="gate-reason"; the two lines never overlap) there is NO placement without editing this
+  file: :87 querySelector('[data-sx-shell="gate-reason"]') (first in DOM order), :90 sets
+  --sx-entry-clear from its bottom+12, :125 INTAKE_BELOW_ENTRY starts the intake panel there — so any
+  second line below the first in that column covers the intake; and :169-177 lays the narrow tier out
+  by marker+order, so a new fixed element with no rule overlaps. career-demo-layout.ts IS in
+  protectedPaths (architecture.test.ts:67). The carve-out is real and unavoidable, and it is the
+  necessary reach of the held C-10/C-11, not scope creep.
+
+(b) clearance generalised to max(bottom) over {gate-reason, mapping-gate} — WIDENING, not a new
+  mechanism, ACCEPTED on a condition. Same algorithm (measure the line's bottom, clear the intake
+  below it), singleton → set. Condition for the pin: every PRE-EXISTING state stays byte-identical in
+  effect — gate-reason present, mapping-gate absent → identical --sx-entry-clear as today; both absent
+  → removeProperty/default 150px as today. The only new behaviour is for mapping-gate-present states,
+  which are new to phase D, so no existing state regresses. Verified those reductions hold.
+
+(c) narrow-tier order rule — WIDENING ONLY IF ADDITIVE, and here is the one condition I attach.
+  Existing orders: controls/guide 1, selector 2, job-scope/investigation 3, gate-reason 4, banners 5,
+  hud 5, panel 6 (:166-181). CSS `order` is an integer; "directly after gate-reason, before the
+  banners" is additive ONLY if mapping-gate shares gate-reason's order value (4) and sits DOM-after it
+  (same-order elements fall back to DOM order, so gate-reason then mapping-gate, both before the
+  order:5 banners). That adds ONE rule and touches no existing integer. If instead GRÜN RENUMBERS the
+  banners/hud/panel (5/5/6) to open a slot, that edits existing rules, is NOT additive, risks the
+  existing layout, and I REFUSE it. So (c) is accepted as a widening conditional on the shared-order-4
+  + DOM-after implementation; the renumbering implementation is refused.
+
+BOUNDED HOLD on the carve-out: career-demo-layout.ts is a phase-D entry point whose D-5 pin at
+  delivery I hold to EXACTLY the three additive changes — (a) the new data-sx-shell="mapping-gate"
+  marker, (b) the max() clearance preserving all pre-existing states, (c) the shared-order-4 narrow-
+  tier rule — and NOTHING touching the orbit grid, the other viewport-tier rules, the planetarium
+  fit, or the capability-gate single-line clearance. The existing gate line keeps its content, ids and
+  positional style (field-entry-state.test.tsx:247 stays green). M2 (reason/way inside the disabled
+  button) was refused by GELB — I agree: it breaks the gate pattern's register, hides the way in a
+  control AT may skip, and grows the capsule in the gated state.
+
+D-Q14 (geometry; not a clause — mine to check at §8, not to hold) — endorsed, with a falsifiability
+  note. The binding constraint is the investigation membrane fixed at left: calc(50% + 245px)
+  (SyntxInvestigationSelector.tsx:57, protected), so the centred capsule's half-width must clear it;
+  236 is binding (today exactly 236), the job-scope indicator's calc(50% - 283px) permits 255 and is
+  not binding. GELB's concession order — auto width, connectors, padding, letterSpacing, fontSize,
+  stopping at the first that fits, typography LAST — is right: shrinking the shell's primary nav to
+  make room for the field that argues for readability (A2) would be the wrong instinct, and a visible
+  change to the two existing buttons is GELB/owner's to accept, not GRÜN's to assume. §8.17 must PROVE
+  by getBoundingClientRect at the tested viewports (not paper math) that the three-button strip's
+  right edge is left of the membrane's left edge and the indicator's right edge is left of the strip's
+  — and if no concession short of covering the membrane fits three buttons, that comes back to GELB,
+  not a silent typography shrink. Consistent with my D-Q8 "measured, not computed" stance.
+
+UPDATED HOLD (supersedes addendum 3's): PINK holds C-1…C-11 (corrected C-8) and D-1…D-7, with D-2 now
+  carrying THREE carve-outs (SyntxFieldSelector.tsx, lib/career/ui/career-demo-url.ts,
+  career-demo-layout.ts) and the D-3 entry-point set including CareerIntelligenceDashboard.tsx and
+  career-demo-layout.ts. D-5 pins at delivery, now THREE files: SemanticCareerIntelligenceField.tsx,
+  CareerIntelligenceDashboard.tsx (two type widenings), and career-demo-layout.ts (the three additive
+  rules above, with the order-4 condition). Read-only; document-only; nothing executed.
