@@ -1,0 +1,167 @@
+PINK — contract and base acceptance for PERSON × JOB mapping phase D (2026-11-05)
+=================================================================================
+
+Scope: GELB gates GRÜN's build on PINK's acceptance of TWO things only — the re-stated
+field-selector contract (§5.1, clauses C-1…C-11) and the phase base (§5.2). The §8 proofs are a
+LATER, post-build validation and are not decided here. Read from the local object store:
+  - architecture doc  bc339aae (parent e360caf9, sig G, +331, document-only — confirmed clean)
+  - bindings addendum f0ef15a7 (parent bc339aae, sig G, +86/-1, §10 only — the doc is still the
+    single changed file; D-Q1…D-Q7 add §8 surface, and the gating §5.1/§5.2 are unchanged by it)
+Verified against the ACTUAL contract-bearing files at the base e360caf9, not against the prose.
+
+BOTTOM LINE
+  - The DESIGN of both §5.1 and §5.2 is sound and I accept it.
+  - §5.1 is REFUSED AS WORDED: "exactly one assertion changes" is false. THREE button-count
+    assertions change, in three files. Correct C-3 and I hold C-1…C-11.
+  - §5.2 base VALUE (PHASE_D_BASE = e360caf9) is CONFIRMED. The framing "phase-C change-set logic
+    carried over unchanged (only the base moves)" is REFUSED: the guard MAP-C-ARCH must be
+    RE-STATED (MAP-D-ARCH), because phase D's own §7 DELTA edits files the phase-C guard freezes and
+    expands the model action set the phase-C guard forbids. The ALGORITHM carries; the SETS and the
+    content assertions do not.
+  - §5 weak point (evidence class): GELB's reasoning is CONFIRMED by the data.
+
+
+=================================================================================
+§5.1 — the field-selector contract. DESIGN ACCEPTED; "exactly one assertion" REFUTED.
+=================================================================================
+
+The eleven clauses are internally right and I accept the design: three buttons, order
+CAPABILITY·MAPPING·FIELD, new id field-focus-mapping-btn, the two existing ids not renamed,
+endpoints Home→CAPABILITY / End→FIELD unchanged, gate reuse of capabilityGated/UX-04. I checked for
+a HIDDEN existing assertion that the design would break beyond C-3 and found:
+
+  NO hidden ORDER assertion breaks — job-scope-ssr's strip() helper counts <button> but does not
+    assert the two buttons' relative order; syntx-field-ssr matches each id by its own regex, not
+    adjacency. Inserting MAPPING in the middle breaks no existing order assertion. C-5 "new" is safe.
+  NO hidden KEYBOARD assertion breaks — the only ←/→/Home/End stepping test is
+    test/career/pxj-first-screen/mode-keyboard.test.tsx, which drives the INVESTIGATION-MODE selector
+    (PERSON / PERSON_X_JOB / JOB), NOT the field-focus strip. So C-8's changed stepping (→ from
+    CAPABILITY now lands on MAPPING, not FIELD) breaks no existing assertion. C-8 is safe.
+
+BUT C-3 is wrong. The claim "Exactly one assertion changes … everything else is carried over
+unchanged", with C-3 naming only job-scope-ssr.test.tsx toHaveLength(2)→3, is REFUTED. THREE existing
+assertions hardcode the two-button strip, all three in files GELB itself lists as "reached":
+
+  1. test/career/job-pool/job-scope-ssr.test.tsx:60
+       expect(strip(html).match(/<button/g)).toHaveLength(2)      ← the one GELB named
+  2. test/job-pool-validation/syntx-walk.e2e.test.ts:911
+       expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2)
+  3. test/job-pool-validation/support/syntx-readonly-walk.mjs:193
+       check(`[${tag}] strip has two buttons`, (... button').count()) === 2)
+
+Each must become 3. Plus two stale ARTIFACTS (not assertions, but they become false):
+  - test/job-pool-validation/syntx-walk.e2e.test.ts:925 writes evidence
+      "strip buttons: field-focus-capability-btn, job-pool-panel-toggle"  — missing the new id.
+  - test/career/job-pool/job-scope-ssr.test.tsx:51 test title "...outside the two-button strip".
+And the component's own doc comment states the old contract:
+  - app/components/career/demo/SyntxFieldSelector.tsx:15-16 "holding exactly two buttons,
+    field-focus-capability-btn and job-pool-panel-toggle" (updated anyway as part of C-4).
+
+Why this matters, not pedantry: §5.1 says "PINK holds C-1…C-11 from the moment they are accepted"
+and the table must "stand in one place". If I hold a table that says one assertion changes, GRÜN
+updating only job-scope-ssr will leave sites 2 and 3 red and read it as a contract violation — or,
+worse, treat the surviving two-button assertion as still binding and NOT add the third button.
+
+REQUIRED FIX (then I hold C-1…C-11): re-state C-3 as "every strip button-count assertion goes 2→3",
+enumerating job-scope-ssr.test.tsx:60, syntx-walk.e2e.test.ts:911 and syntx-readonly-walk.mjs:193,
+and correct the two artifacts. The design does not change; only the accounting.
+
+
+=================================================================================
+§5.2 — the base. VALUE e360caf9 CONFIRMED; "logic carried over unchanged" REFUSED.
+=================================================================================
+
+PHASE_D_BASE = e360caf9 is the RIGHT value, confirmed:
+  - e360caf9 is origin/main and is PINK-validated (§3.105 GO).
+  - bc339aae and f0ef15a7 are document-only children of it — they comply with any change-set rule.
+  - MAP-C-ARCH is red for a legitimate reason I verified: between PHASE_C_BASE 5ca0f3f5 and e360caf9
+    the authorized FINAL INTEGRATION touched phase-C protected paths —
+      app/api/admin/session/route.ts, lib/career/job-pool/{auto-match,local-composition,
+      relation-cache-registration}.ts, lib/career/result-inspector/postgres-exchange-store.ts —
+    so changedSinceBase(protectedPaths) is non-empty against 5ca0f3f5. Re-pinning to e360caf9 accepts
+    those validated changes as the new baseline. That is the designed re-statement point, correct.
+
+BUT "the phase-C change-set logic carried over unchanged (only the base moves)" is REFUSED. The guard
+test/career/mapping-field/architecture.test.ts is specific to phase C in ways the base-move does NOT
+fix, and phase D's own §7 DELTA trips them. The ALGORITHM (non-merge commits touching a phase file may
+change only phase files; protected paths compared as trees incl. untracked) carries. The SETS and the
+content assertions must be re-stated as MAP-D-ARCH:
+
+  (a) protectedPaths (2nd `it`, must equal [] vs base) currently FREEZES, byte-identical:
+        - "app/components/career/demo/SyntxFieldSelector.tsx"  — but §7/C-1…C-11 CHANGE it.
+        - "lib/career/ui" (whole tree)                          — but §7/C-9 change lib/career/ui/
+          career-demo-url.ts.
+      Fix: drop SyntxFieldSelector.tsx from protection (it becomes a phase-D entry point); carve
+      career-demo-url.ts out of lib/career/ui (protect lib/career/ui EXCEPT that one file). The base
+      move does nothing here — these are hardcoded path lists, not base-relative.
+
+  (b) The phase-file / entry-point classification must be rebuilt, because the phase-C artifacts are
+      now BASELINE at e360caf9 (verified present: lib/career/view-model/mapping-field.ts,
+      PersonJobMappingField.tsx, mapping-field-copy.ts, the phase-C doc). So:
+        - mapping-field.ts, PersonJobMappingField.tsx, mapping-field-copy.ts move from NEW_FILES to
+          phase-D ENTRY POINTS (existing files phase D enters and changes).
+        - add the contract-test files as phase-D-editable (job-scope-ssr.test.tsx,
+          syntx-walk.e2e.test.ts, syntx-readonly-walk.mjs, job-scope-gate.e2e.test.ts) so the
+          "change set changes only phase files + entry points" rule (3rd `it`) admits them;
+          otherwise a commit bundling a contract-test edit with a phase file is flagged.
+        - add test/career/mapping-spec/ to NEW_DIRS (§7 adds proofs there); the phase-D doc replaces
+          the phase-C doc in NEW_FILES.
+
+  (c) The exact-diff pin on the two product entry points (4th `it`) must be re-stated. GELB's D-Q4
+      already concedes this for the host file: SemanticCareerIntelligenceField stops passing `field`
+      and mounts the full stage, so the pinned +/- lines change. Note also: since D-Q4 keeps
+      AutoJobRankingPanel UNTOUCHED, PANEL now equals the base and should move OUT of the pinned entry
+      set INTO protectedPaths (byte-identical), not keep a stale +/- pin.
+
+  (d) The model/component action assertion (3rd describe, last `it`) INVERTS. It asserts MODEL and
+      COMPONENT name NO OPEN_ROLE / OPEN_REQUIREMENT / SELECT_CAPABILITY / MARK_REQUIREMENT ("B-3;
+      L2/L3 are later"). §7 EXPLICITLY lifts FIELD_ACTIONS to admit OPEN_ROLE, OPEN_REQUIREMENT,
+      SELECT_CAPABILITY, and §2.2 drives the reverse view through SELECT_CAPABILITY. So this assertion
+      must move those names from forbidden to allowed for phase D.
+      KEEP, do not loosen: the model-purity envelope (no react/fetch/clock/random/storage/window) and
+      the component's forbiddance of fetch/POST/URL/history/storage/jobScope/gemini/Date/random — §8
+      items 8 and 11 still demand them. Only the action-name whitelist and the SELECT_CAPABILITY beam
+      allowance open.
+
+  (e) UNCHANGED, correctly: the 1st `it` (engine + spec byte-identical — lib/career/mapping,
+      mapping-spec, SPEC.md). Phase D consumes the engine byte-identical (§5.3, §7 "engine not
+      touched"); lib/career/view-model/mapping-field.ts is a DIFFERENT dir from lib/career/mapping, so
+      no collision. This assertion carries verbatim.
+
+So §5.2 needs the same explicit re-statement treatment §5.1 got — an enumerated MAP-D-ARCH — not a
+one-line base swap. With the base VALUE e360caf9 and that re-statement, I accept the boundary.
+
+
+=================================================================================
+§5 weak point (evidence class per reading, not per role) — GELB CONFIRMED by the data.
+=================================================================================
+EvidenceClass is "STAND_IN" | "REAL_GEMINI" (lib/career/ui/auto-match.ts:24) and lives ONCE per
+reading: RoleRanking.evidenceClass / the ranking view's evidenceClass (lib/career/mapping/view.ts:57,
+lib/career/job-pool/role-ranking.ts:57,99,109). There is NO per-role evidence-class field in the data.
+So GELB is right: drawing a per-body evidence class would invent a distinction the data does not
+carry. The field-level class (§6) plus the per-requirement collar (§1.2) honestly meet "L0 shows
+visibly different relations" without inventing it. The owner's sentence "L0 show evidence classes" is
+the owner's to read; the data-honest reading is GELB's, and I would refuse any per-role evidence class
+that is not backed by a new backend field + a new mandate. No change demanded.
+
+
+=================================================================================
+NOTES ON §10 (f0ef15a7) — not gating, recorded for the later §8 pass
+=================================================================================
+D-Q1 provenance line keyed on reading content (a requirement exists AND none carries source SEMANTIC),
+  NOT on autoMatch.budget.callsJobLimit (null cannot distinguish "limit 0" from "no call yet") — the
+  honest guard; the empty-reading and partial-run exclusions are correct and are §8-11 / §8-13 targets.
+D-Q2 three no-start-point beam cases (overflow ≥70th node, NOT_IN_PERSON, ABSENT null key) draw no
+  beam and never weaken the arc — §8-2 / §8-7 targets; the ABSENT-key case strengthens §8-7.
+D-Q3 one layoutRequirementArcs output for collar and ring (§8-6); the new L0 ring-order "+n" overflow
+  is a §8 target (drop-by-index or merge must go red).
+D-Q4 one field only; corroborates §5.2(c) above.
+D-Q5 LAYOUT only for a body drawn in both readings with no own TIER/FIT change; into-overflow is an
+  absence, not a movement — §8-9 target.
+D-Q6/Q7 environment: a real node_modules in a fresh worktree is ordinary local engineering and GELB
+  correctly says GRÜN's own permission frame is GRÜN's to surface to the owner, not to route around —
+  consistent with the no-permission-laundering rule. Not my concern to validate.
+
+Read-only throughout: nothing executed; no product code or database touched. Evidence local, signed,
+unpushed. This acceptance is CONDITIONAL — C-3 corrected (three sites) and MAP-D-ARCH re-stated per
+(a)-(d); on those two corrections I hold C-1…C-11 and the base e360caf9.

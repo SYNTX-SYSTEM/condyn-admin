@@ -4351,6 +4351,17 @@ Open but not blocking:
 
 **Two items for OTTAVIO (owner decisions):** A — external reachability of `:3003`/`:8002`; B — the old `BACKEND_TOKEN`, shipped in a client bundle at `91d06c3`, is a stateless JWT valid until 2027-05-03 and un-revocable without rotating `JWT_SECRET_KEY` (which logs out all 6 foreign users); rotation protects only future use. (Plus the D-1 / P8-seal conflict, already with GELB.)
 
+### 3.106 PERSON × JOB mapping phase D — contract and base acceptance (2026-11-05) — CONDITIONAL
+
+**Request.** GELB gates GRÜN's build on PINK's acceptance of two things only: the re-stated field-selector contract (§5.1, C-1…C-11) and the phase base (§5.2) of `docs/.../PERSON_X_JOB_MAPPING_PHASE_D.md` (commits `bc339aae` + `f0ef15a7`, document-only). The §8 proofs are a later, post-build validation. Verified against the actual contract-bearing files at the base `e360caf9` (`evidence/mapping-phase-d-contract/review.txt`).
+
+**Verdict.** Design of both is sound; two wordings are refuted.
+- **§5.1 contract: design accepted, "exactly one assertion changes" REFUTED.** Three button-count assertions hardcode the two-button strip, all in files GELB lists as reached: `job-scope-ssr.test.tsx:60` (the one named), `syntx-walk.e2e.test.ts:911`, `syntx-readonly-walk.mjs:193`; plus two stale artifacts (`syntx-walk.e2e.test.ts:925` id string, the `job-scope-ssr.test.tsx:51` title). No hidden order or keyboard assertion breaks (mode-keyboard tests the investigation-mode selector, not the strip). Correct C-3 to enumerate all three sites and I hold C-1…C-11.
+- **§5.2 base: value `e360caf9` CONFIRMED, "logic carried over unchanged" REFUSED.** The base value is right (main, PINK-validated §3.105; MAP-C-ARCH is red because the authorized FINAL INTEGRATION touched phase-C protected paths `app/api`, `lib/career/job-pool`, `lib/career/result-inspector` against `5ca0f3f5`). But the guard `architecture.test.ts` must be re-stated (MAP-D-ARCH), not just re-based: (a) `protectedPaths` freezes `SyntxFieldSelector.tsx` and `lib/career/ui` byte-identical, yet §7/C-4/C-9 change them; (b) the phase-C artifacts (`mapping-field.ts`, `PersonJobMappingField.tsx`, `mapping-field-copy.ts`) are now baseline, so NEW_FILES/ENTRY_POINTS rebuild and the contract-test files must be admitted; (c) the exact-diff entry-point pin changes (GELB's D-Q4 concedes the host file; `AutoJobRankingPanel` now equals base and should move to protected); (d) the "model names no OPEN_ROLE/OPEN_REQUIREMENT/SELECT_CAPABILITY" assertion inverts, since §7/§2.2 require exactly those (while scope/URL/fetch writes stay forbidden). The algorithm carries; the sets and content assertions do not.
+- **§5 weak point CONFIRMED by the data.** `EvidenceClass` lives once per reading (`RoleRanking.evidenceClass`), never per role; a per-body evidence class would be invented. Field-level class + per-requirement collar honestly meet the owner's L0 sentence; anything per-role needs a backend field and a new mandate.
+
+On the two corrections (C-3 → three sites; MAP-D-ARCH re-stated) PINK holds C-1…C-11 and the base `e360caf9`. Read-only; nothing executed.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
