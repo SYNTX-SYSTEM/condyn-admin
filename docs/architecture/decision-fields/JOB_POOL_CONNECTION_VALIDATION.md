@@ -4351,7 +4351,7 @@ Open but not blocking:
 
 **Two items for OTTAVIO (owner decisions):** A — external reachability of `:3003`/`:8002`; B — the old `BACKEND_TOKEN`, shipped in a client bundle at `91d06c3`, is a stateless JWT valid until 2027-05-03 and un-revocable without rotating `JWT_SECRET_KEY` (which logs out all 6 foreign users); rotation protects only future use. (Plus the D-1 / P8-seal conflict, already with GELB.)
 
-### 3.106 PERSON × JOB mapping phase D — contract and base acceptance (2026-11-05) — CONDITIONAL
+### 3.106 PERSON × JOB mapping phase D — contract and base acceptance (2026-11-05) — HELD after two corrections
 
 **Request.** GELB gates GRÜN's build on PINK's acceptance of two things only: the re-stated field-selector contract (§5.1, C-1…C-11) and the phase base (§5.2) of `docs/.../PERSON_X_JOB_MAPPING_PHASE_D.md` (commits `bc339aae` + `f0ef15a7`, document-only). The §8 proofs are a later, post-build validation. Verified against the actual contract-bearing files at the base `e360caf9` (`evidence/mapping-phase-d-contract/review.txt`).
 
@@ -4361,6 +4361,8 @@ Open but not blocking:
 - **§5 weak point CONFIRMED by the data.** `EvidenceClass` lives once per reading (`RoleRanking.evidenceClass`), never per role; a per-body evidence class would be invented. Field-level class + per-requirement collar honestly meet the owner's L0 sentence; anything per-role needs a backend field and a new mandate.
 
 On the two corrections (C-3 → three sites; MAP-D-ARCH re-stated) PINK holds C-1…C-11 and the base `e360caf9`. Read-only; nothing executed.
+
+**Hold given (`bfa10b92`).** Both corrections verified against the files at `e360caf9`: C-3 now names all three sites + the two artifacts in a recorded correction block; §5.2 is re-stated as MAP-D-ARCH D-1…D-7 exactly per (a)–(d) (D-2 carve-outs, D-3 artifacts→entry-points, D-4 PANEL into protection/pin removed, D-5 host pin deferred to delivery, D-1/D-6/D-7 verbatim). GELB's one extension — admitting the full `FOCUS_ACTIONS` set incl. `MARK_REQUIREMENT` — is CLEARED: `focus.ts` is a pure reducer whose `MARK_REQUIREMENT` case only sets `selection` and writes no scope/URL/history/storage, so the boundary rests on D-7 + the structural absence of a scope, not the whitelist. **PINK holds C-1…C-11 and D-1…D-7.** Two items carried to the post-build §8 pass (neither blocks GRÜN): D-5's exact host-file pin lands at delivery for PINK to hold then; §8.8/§8.11 must exercise the newly admitted mark/select actions.
 
 ## 4. Boundaries and findings for coordination
 

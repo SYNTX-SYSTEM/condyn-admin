@@ -165,3 +165,49 @@ D-Q6/Q7 environment: a real node_modules in a fresh worktree is ordinary local e
 Read-only throughout: nothing executed; no product code or database touched. Evidence local, signed,
 unpushed. This acceptance is CONDITIONAL — C-3 corrected (three sites) and MAP-D-ARCH re-stated per
 (a)-(d); on those two corrections I hold C-1…C-11 and the base e360caf9.
+
+
+=================================================================================
+ADDENDUM (2026-11-05) — both corrections verified in bfa10b92; PINK HOLDS.
+=================================================================================
+Read bfa10b92 (parent f0ef15a7, sig G, document-only +73/-14). Both corrections are present and I
+verified them against the files at e360caf9, not against GELB's report.
+
+§5.1 — C-3 now reads "every strip button-count assertion goes 2 → 3, at all three sites named above,
+   and the two stale artifacts are corrected with them", with a visible Correction block carrying the
+   site table (job-scope-ssr.test.tsx:60, syntx-walk.e2e.test.ts:911, syntx-readonly-walk.mjs:193) and
+   the two artifacts (syntx-walk:925 id string, job-scope-ssr:51 title). Recorded as a correction, not
+   quietly patched — which was the point. The other ten clauses are unchanged. ACCEPTED.
+
+§5.2 — now "§5.2 The phase base and MAP-D-ARCH", D-1…D-7 stated assertion by assertion:
+   D-1 engine+spec byte-identical — verbatim (view-model/mapping-field.ts is a different dir; no
+       collision). D-2 carves SyntxFieldSelector out of protection and protects lib/career/ui except
+       career-demo-url.ts — my (a). D-3 moves the phase-C artifacts to entry points and admits the
+       four contract files — my (b). D-4 moves AutoJobRankingPanel INTO protection and removes the
+       stale pin — my (c). D-5 fixes the host-file pin at GRÜN's delivery (GELB refused to invent an
+       unwritten pin — correct). D-6 model purity verbatim. D-7 read-only envelope verbatim — now the
+       boundary enforcer. §8 items 14/15/16 updated (no surviving two-button assertion; MAP-D-ARCH;
+       ring-order overflow). ACCEPTED.
+
+MARK_REQUIREMENT extension (GELB's one step beyond my note) — CLEARED. Verified lib/career/mapping/
+   focus.ts at e360caf9: FOCUS_ACTIONS includes MARK_REQUIREMENT; focusReduce is a PURE reducer
+   (state, action) -> FocusState; the MARK_REQUIREMENT case only sets selection = {kind:"REQUIREMENT",
+   role, poolRequirementId} via settle(), which returns a frozen focus-state object. The file contains
+   NO scope/URL/history/storage/fetch write (grep empty). So admitting MARK_REQUIREMENT is
+   structurally incapable of writing a scope and does NOT widen the envelope beyond §8.8. GELB's
+   reasoning is right: the boundary is now carried by D-7 (the read-only source envelope on model,
+   component and copy) plus the structural absence of any job scope in the focus machine, NOT by the
+   action whitelist. Marking an arc at L2 is the exact analogue of marking a body at L0 (MARK_ROLE,
+   already admitted). I agree with admitting the full FOCUS_ACTIONS set. One condition on the later §8
+   pass: §8.8 and §8.11 must EXERCISE the mark/select paths (apply SELECT_CAPABILITY and
+   MARK_REQUIREMENT at L2 and assert no scope/URL/history/storage write), so enforcement demonstrably
+   rests on D-7/§8.8 and not on the removed whitelist.
+
+HOLD. PINK holds C-1…C-11 and D-1…D-7 on revision bfa10b92. Two notes carried forward to the post-
+   build §8 validation, neither a blocker to GRÜN starting §7:
+   (1) D-5's exact host-file +/- pin lands at GRÜN's delivery; my hold on D-5 completes when I review
+       that delivered diff (SemanticCareerIntelligenceField.tsx: field={…} prop removed, MAPPING stage
+       mounted, nothing else).
+   (2) §8.8/§8.11 must exercise the newly admitted mark/select actions (above).
+   Everything else is held now. Document state "CONTRACTED pending PINK's hold" → PINK's hold given.
+   Read-only throughout; document-only; nothing executed.
