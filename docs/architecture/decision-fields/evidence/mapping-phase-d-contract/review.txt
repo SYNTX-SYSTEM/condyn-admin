@@ -254,3 +254,62 @@ D-Q9 — sound, and I verified the untracked trap it rests on: architecture.test
 
 Still read-only; document-only; nothing executed. The hold is unchanged; these are bindings for the
 later §8 validation and one refinement to keep D-3 meaningful.
+
+
+=================================================================================
+ADDENDUM 3 (2026-11-05) — C-8 (a HELD clause) changed in 3590dd2f; re-read + re-held.
+=================================================================================
+GELB changed a held clause (C-8) and added D-Q10…D-Q12. 3590dd2f is document-only. The doc diff
+confirms only C-8 changed in §5.1 (C-1…C-7, C-9…C-11 unchanged); D-1…D-7 clause text unchanged; the
+rest is §7 (+1 row) and §10 (D-Q10…D-Q12). Verified every load-bearing claim at e360caf9.
+
+C-8 — RE-READ and RE-HELD. The original C-8 ended "Enter/Space choose. Focus ≠ selection", which is
+  SyntxInvestigationSelector's manual-activation model (V-12), not the field strip's. Verified
+  SyntxFieldSelector.tsx:129-134 at e360caf9: onKeyDown computes next from Arrow/Home/End, then calls
+  select(next) — which calls onSelect(next), actually changing the field — and ONLY THEN
+  buttons.current[next]?.focus(). So the strip SELECTS ON ARROW today, and select() already carries
+  the gated-skip (if next===CAPABILITY && capabilityGated return). The original C-8 would therefore
+  have silently changed the activation model of the two EXISTING options (select-on-arrow →
+  focus≠selection), untested (mode-keyboard.test.tsx drives the investigation selector, not the
+  strip) and for no contract purpose. GRÜN caught it; GELB corrected it. The corrected C-8 (←/→ move
+  one position AND select, skipping gated; Home→CAPABILITY, End→FIELD selecting; select-on-arrow
+  preserved) accurately describes existing behaviour extended to three positions. The one genuine
+  change — one-position stepping instead of end-to-end — is unavoidable with a middle and breaks no
+  existing test, so my earlier clearance holds on the corrected text too. This is the third time a
+  guard/contract was nearly satisfied-not-honoured (whitelist, clean, now an activation model imported
+  from the wrong selector); the catch was GRÜN's this time, which is the review surface working.
+
+D-Q10 — CONFIRMED, and it EXPANDS the entry-point set (named precisely; the D-3 clause TEXT is
+  untouched but the set it enumerates grows by one). Verified CareerIntelligenceDashboard.tsx at
+  e360caf9: :17 fieldFocus?: "CAPABILITY" | "FIELD"; :41 useState<"CAPABILITY" | "FIELD">("FIELD");
+  :82 the else branch gives the non-FIELD case the person mark (FIELD → DLL mark, else → person). So
+  widening CareerDemoUrlProps.fieldFocus (C-9) breaks the type at page → dashboard, and MAPPING, not
+  being FIELD, lands in the existing else → person mark with NO logic change. The change is exactly
+  two type widenings (:17, :41 unions gain MAPPING). It is not in D-2's protectedPaths (verified: not
+  individually listed, no wholesale app/components/career/demo protection), so admitting it as an
+  entry point needs no carve-out. It is a necessary consequence of the already-held C-9, not scope
+  creep: C-9 is un-buildable without it. I RE-HOLD D-3 with the entry-point set expanded by this one
+  file, and at delivery I hold its D-5 pin to be EXACTLY the two widenings with :82 untouched
+  (MAPPING → person mark), nothing else.
+
+D-Q11 — CONFIRMED, boundary-correct. Verified field-entry-state.test.tsx:247 asserts
+  "position:fixed;right:28px;top:128px" exactly and is a non-phase-D file (test/career/pxj-first-
+  screen/), so D-3 forbids editing it — moving the positional style into a shared container would
+  break it; refusal is right. Constraint (1) verified necessary: career-demo-layout.ts:87 does
+  root.querySelector('[data-sx-shell="gate-reason"]') and :90 sets --sx-entry-clear from its box, and
+  SyntxFieldSelector.tsx:200 is the existing line carrying that marker — a SECOND element with the
+  same marker would make querySelector measure the wrong box (first in DOM order) and silently move
+  the intake panel. So the new mapping-gate-reason must NOT carry data-sx-shell="gate-reason". Accept.
+  At delivery I verify: no second data-sx-shell="gate-reason" element, and the two gate lines never
+  overlap at any viewport (constraint 2).
+
+D-Q12 — accepted. The reason precedence NOT_PERSON → NO_ANALYSIS → NO_RANKING → NO_POOL (first match
+  wins) is deterministic and consistent with C-10's four-reason set; NO_ROLES correctly excluded (gate
+  open, own sentence per §3). (c) mapping MAPPING onto the non-phase-D field-entry-state's "FIELD" so
+  the entry line reads PERSON_OPEN is a true statement (MAPPING is not the Capability Field), accepted
+  without editing that non-phase-D file. At the §8 pass I verify the implementation applies exactly
+  this order in the C-10 gate-reason test.
+
+UPDATED HOLD: PINK holds C-1…C-11 (C-8 as corrected in 3590dd2f) and D-1…D-7 (D-3's entry-point set
+  now includes CareerIntelligenceDashboard.tsx; D-5 pins it and SemanticCareerIntelligenceField at
+  delivery). Read-only; document-only; nothing executed.
