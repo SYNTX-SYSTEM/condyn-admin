@@ -269,7 +269,7 @@ re-stated.**
 | **D-2** | Protected paths unchanged against the base — the phase-C list **minus three carve-outs**: `SyntxFieldSelector.tsx` leaves protection (it is now a phase-D entry point, C-4), `lib/career/ui` is protected **except** `lib/career/ui/career-demo-url.ts` (C-9), and `app/components/career/demo/career-demo-layout.ts` leaves protection (D-Q13, additive only). Everything else carries, `lib/career/job-pool`, `app/api` and `lib/career/result-inspector` included — now at their `e360caf9` state | **re-stated (a)**, third carve-out added 2026-11-05 |
 | **D-3** | Phase-D change sets: every non-merge commit after the base whose files include a phase-D file may change only phase-D files, and the working tree joins as a pending set once it touches one. **The phase-C artifacts are baseline at `e360caf9`**, so `mapping-field.ts`, `PersonJobMappingField.tsx` and `mapping-field-copy.ts` move from *new files* to **entry points**. The four contract files of §5.1 are phase-D-editable, or a commit bundling a contract fix with a field change would trip the "only phase files" rule | **re-stated (b)** |
 | **D-4** | `AutoJobRankingPanel.tsx` is **not** an entry point. D-Q4 keeps it untouched, so it equals the base and moves **into** D-2's protected set. The stale `+`/`−` pin on it is removed, not updated | **re-stated (c)** |
-| **D-5** | The entry-point diff pins — **three files at delivery**: `SemanticCareerIntelligenceField.tsx`, `CareerIntelligenceDashboard.tsx` (exactly two type widenings, `:82` untouched) and `career-demo-layout.ts` (exactly the three additive changes of D-Q13). `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
+| **D-5** | The entry-point diff pins — **four surfaces at delivery**: `SemanticCareerIntelligenceField.tsx`, `CareerIntelligenceDashboard.tsx` (exactly two type widenings, `:82` untouched) and `career-demo-layout.ts` (four additive changes, **no existing line altered**, D-Q13/D-Q16) and the **narrowed T-07 seal**, which is held by PINK's independent re-derivation and mutants rather than by a diff pin (D-Q15). `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
 | **D-6** | The model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no `window`; engine and spec only | **verbatim** |
 | **D-7** | The read-only envelope: no fetch, no POST, no URL or history write, no storage, **no job scope**, no model call — in the model, the component and the copy | **verbatim.** This is what carries B-3/B-4, and §8.8 and §8.11 rest on it |
 
@@ -376,7 +376,9 @@ Not "does it look right". The questions that can falsify this field:
     `NOT_PROVISIONED`, `ANALYSIS_NOT_FOUND` states its own reason and is not drawn as an empty field.
 14. **Contract C-1 … C-11**, including the gated MAPPING option's reason and way, that the two pre-existing button ids did not move,
     and that **no** two-button assertion survives at any of the three sites of §5.1.
-15. **Preservation, MAP-D-ARCH D-1 … D-7.** Orbits, planetarium, B2, job scope, job pool, capability core, `app/api` and
+15. **Preservation, MAP-D-ARCH D-1 … D-7, and the narrowed seal (D-Q15).** PINK's five inverse checks on T-07 — independent
+    re-derivation at `49e2bc6`, out-of-exclusion mutant, vacuity mutant, exclusion exactness, asymmetry — are part of this item.
+    The intake clearance is checked in all three line states (D-Q16). Orbits, planetarium, B2, job scope, job pool, capability core, `app/api` and
     `lib/career/ui` (except `career-demo-url.ts`) byte-identical against `PHASE_D_BASE`; `AutoJobRankingPanel.tsx` byte-identical
     (D-4); the engine and spec byte-identical (D-1); the read-only envelope intact (D-7).
 16. **Execution, not exit code (D-Q8).** Every e2e result claimed for §8.14 records that the suite executed — the resolved
@@ -772,8 +774,25 @@ variants and **absent** at `49e2bc6`, which is itself the asymmetry to assert ra
 **The fixture must say what it hashed.** The file keeps naming `49e2bc6` — the reference is unchanged — and carries an `excluded`
 field listing the two selectors, so no later reader can mistake a narrowed seal for the original one.
 
-T-07 therefore joins §7 and D-3's entry set. **That expands a clause PINK holds, so PINK re-states D-3** — the third such expansion,
-and the same reasoning each time: it is the necessary reach of an already-held clause, here C-3/C-4 and C-10/C-11, not scope creep.
+T-07 therefore joins §7 and D-3's entry set. **PINK re-stated D-3 with it and HELD, the tightest of the four expansions** — and
+answered the question I put to it: narrowing a seal **is** a different class of change. A carve-out or an entry-set expansion admits
+a file as editable with a bounded diff pinned at delivery; narrowing T-07 **permanently reduces a standing seal's coverage**. After
+phase D it no longer catches changes in the strip or `mapping-gate-reason` regions, and not only during this phase. That is why it
+gets an inverse check rather than a pin.
+
+**PINK's inverse complement, part of §8.15 at delivery** — and the first item is the one that makes the whole thing real, because
+GRÜN's digests are not taken on their face:
+
+1. **Independent re-derivation.** PINK checks out `49e2bc6` in an isolated worktree, renders the seven variants itself, applies the
+   same extraction, hashes, and requires the fixture's digests to equal **its own** computation. A disguised re-base from the
+   phase-D render passes GRÜN's test and fails this one. This is the direct catch for the silent (1).
+2. **Out-of-exclusion mutant.** One byte changed outside the two excluded subtrees — the capability gate line, or an orbit — must
+   turn T-07 **red**. The narrowed seal still covers everything it did not exclude.
+3. **Vacuity mutant.** A render missing `field-focus-strip`, or missing `mapping-gate-reason` while MAPPING is gated, must turn it
+   **red**. The exclusion masks no dropped element.
+4. **Exclusion exactness.** The extraction removes exactly the two subtrees and nothing else.
+5. **Asymmetry.** The phase-D render minus `mapping-gate-reason` has byte-identical surroundings against `49e2bc6` minus the strip —
+   the delicate whitespace and sibling case, which falls out of 1.
 
 ### D-Q16 · (b) is additive in the stricter sense GRÜN found
 
@@ -786,6 +805,18 @@ one new rule — two additions, zero edits — rather than one generalised rule.
 shape: four additive changes, no existing line altered.
 
 GRÜN found this itself and fixed it before reporting. That is the right order.
+
+**One thing neither GRÜN nor I had said, and it decides whether (b) works** (PINK's behavioural check). Two `:has()` rules both
+setting `top` do **not** compose: in CSS the later match wins, it does not take a maximum. So with both lines present the intake
+could clear one and sit under the other.
+
+**Bound:** there is **one** variable. `applyCareerDemoEntryClearance` computes `--sx-entry-clear` as the **max** over both markers,
+and **both** CSS rules reference that same variable. The second rule exists only so the `:has()` condition also matches when
+`mapping-gate` is present without `gate-reason`; since both rules resolve to the same value, their source order cannot change the
+result. Two variables, one per rule, would be the defect — the composition must live in the measurement, not in the cascade.
+
+Checked at delivery in all three states: `gate-reason` alone (today's value), `mapping-gate` alone, and both present (the intake
+clears **both**).
 
 ---
 
