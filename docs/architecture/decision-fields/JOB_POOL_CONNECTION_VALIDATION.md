@@ -4330,6 +4330,27 @@ Open but not blocking:
 - **Two required variables are missing on the server**, going by GELB's list of names: the canonical-SIL policy versions.
 - **The remaining risk is understated.** No API route authenticates. The proxy hands the backend token's authority to anonymous clients. The running worker turns anonymous `analyze` requests into Gemini calls.
 
+### 3.104 Basic Auth on admin.condyn.eu (2026-11-05) — CONDITIONAL GO, bypass is below nginx
+
+**Request.** OTTAVIO, via GELB: HTTP Basic Auth for the whole admin app including all API routes, no public bypass, internals intact, credentials server-side only, nothing in Git/logs/bundle. nginx config and all figures are GELB's measurement (`evidence/admin-access-control-e360caf9/review.txt`). I check the logic.
+
+**Verdict.** Clean at the nginx layer: with auth in all 9 location blocks and `/` as catch-all, I found no URI between the blocks and none answered before the access phase (static alias is content-phase, URI is normalised before matching, no HTTP/3 listener, no error_page/X-Accel/named-location/try_files, Next internals route through `/` under auth). **The GO is conditional on one server measurement: `:3003` (app) and `:8002` (backend) must not be reachable from outside the host** — Basic Auth lives only on the proxy, so an open port is a full bypass, and that is also where the §3.103 proxy-token exposure is or is not closed. Point 2: per-location auth works and keeps renewal alive, but it is fail-open; server-wide auth + a permanent webroot ACME exception would be fail-closed and equally renewal-safe (dissent, not a blocker). Point 3: renewal CONFIRMED empirically (`--dry-run` exit 0; certbot inserts an exact-match acme location that inherits nothing). Point 4: `Authorization ""` is correct and necessary (Auflage 4); nothing internal breaks (the app uses `localhost:8002` and `/api/admin/proxy` injects its own Bearer). Point 5: default_server already this block means unknown-Host now 401s (improvement), foreign vhosts unaffected; confirm `default_server` was pre-existing. Point 6: bundle-behind-auth is a real EDGE improvement, but it is not application auth — see §3.105 6a.
+
+### 3.105 Final integration `e360caf9` (2026-11-05) — GO on the code; two items for OTTAVIO
+
+**Request.** GELB implemented PINK's §3.103 findings and the server-side admin gate on OTTAVIO's GO, and asked for an inverse GO/NO-GO with three cross-checks. PINK read `e360caf9` (parent `dc674ee`) against `dc674ee`. Nothing executed. Server figures are GELB's (`evidence/admin-access-control-e360caf9/review.txt`).
+
+**Verdict.**
+- **1a CONFIRMED FIXED.** The four gates memoise only success; a refusal throws `DatabaseNotProvisionedError` (own module, so the gate tests' mock cannot make it `undefined`) and is translated back to the refusal value. **CC3: no caller's exception-vs-value contract changes** — only the memo lifetime (refusals re-verify). D-2 keeps its memo reset, so it is not a 1a regression.
+- **1b CONFIRMED FIXED for the provisioning gates.** **CC1: `database=<name>` is robust** — I found no value authorising a forbidden name (whitespace, maintenance case-fold, disposable pattern, non-identifier all fail closed; the name is compared, never interpolated). Asymmetry recorded: `resolveApplicationDatabaseUrl` still returns any non-protected name unchanged, so the pin bounds provisioning (the 114-table catastrophe is prevented) but not the application client pointed at a non-protected neighbour.
+- **1c CONFIRMED FIXED.** The probe is a parameter; a new test drives the connection path, including "reaches a different database than named".
+- **D-2 CONFIRMED FIXED.** `ensureProviderCallRegister` now passes B-ENTRY before the registration client; no basis, no registration, no model call.
+- **D-1 two-thirds.** DDL moved to a once-per-process registration client (one table, sealed hash), but ungated: the e2e `condyn_r5_…` satisfies no basis and `test/decision-runtime` is sealed by P8, so GELB did not break the seal, documented the exception truthfully, and escalated to OTTAVIO — correct. Residual: it uses the RAW `DATABASE_URL`, so a protected misconfig (`…/postgres`) writes the table into a maintenance DB that the app client itself refuses. Non-seal-breaking fix recommended: resolve through `resolveApplicationDatabaseUrl`.
+- **Admin gate well-built.** Opaque CSPRNG token, timing-safe compare, fail-closed, correct cookie flags, no credential in the bundle; the client gate is replaced, not merely hidden. **CC2: process-local sessions are acceptable and here preferable** (nothing to forge or leak; a signed cookie only buys restart-survival); standing assumption: a single serving process. **Scope limit (= §3.104 6a):** the only consumer of the session is ConDynPanel's UI-reveal GET; no privileged route checks it, so `/api/admin/proxy` is still authorised by nothing but nginx Basic Auth.
+- **Canonical-SIL versions correctly deferred** to OTTAVIO (no value exists in code; it enters the record ID hash).
+
+**Two items for OTTAVIO (owner decisions):** A — external reachability of `:3003`/`:8002`; B — the old `BACKEND_TOKEN`, shipped in a client bundle at `91d06c3`, is a stateless JWT valid until 2027-05-03 and un-revocable without rotating `JWT_SECRET_KEY` (which logs out all 6 foreign users); rotation protects only future use. (Plus the D-1 / P8-seal conflict, already with GELB.)
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
