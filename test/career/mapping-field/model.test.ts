@@ -8,7 +8,8 @@ import { diffRankings } from "../../../lib/career/mapping/delta";
 import { FOCUS_ACTIONS, FOCUS_INITIAL, type FocusAction, type FocusState } from "../../../lib/career/mapping/focus";
 import { AUTO_MATCH_STATES } from "../../../lib/career/ui/auto-match";
 import {
-  CLASS_LINE, FIELD_ACTIONS, bodyMovements, fieldFocusReduce, fieldLevel, fieldViewBox, mappingFieldModel, markedBody, roleKey, sectorViewBox, type MappingFieldModel
+  CLASS_LINE, FIELD_ACTIONS, bodyMovements, fieldFocusReduce, fieldLevel, fieldViewBox, mappingFieldModel, markedArc, markedBody, ringRadius, roleKey, roleViewBox, sectorViewBox,
+  selectedCapability, type MappingFieldModel
 } from "../../../lib/career/view-model/mapping-field";
 import { deepFreeze, isDeepFrozen } from "../mapping/fixtures";
 import { POOL_A, POOL_B, available, classRoles, crowdedRoles, lex, projectionOf, rankingOf, sem, standardRanking, standardRoles, watchOf } from "./support";
@@ -114,56 +115,62 @@ describe("MAP-C-SIGNS · L0 shows the class, the run its time sign", () => {
   });
 });
 
-describe("MAP-C-FOCUS · L0 and L1 only; a look, never a choice", () => {
+describe("MAP-D-FOCUS · L0 to L3; a look, never a choice", () => {
   const m = model();
-  it("REPRODUCE: OPEN_POOL → L1, UP → L0, RESET → the initial state; a mark is a highlight beside the level", () => {
+  const platformA = { jobPoolUploadId: POOL_A, poolRoleId: "role_platform" };
+  it("REPRODUCE (§8.12): L0 → L1 → L2 → L3 → UP × 3 returns the identical initial state object; each level is the field's", () => {
     let s: FocusState = FOCUS_INITIAL;
-    s = fieldFocusReduce(s, { type: "OPEN_POOL", jobPoolUploadId: POOL_B });
-    expect(fieldLevel(s, m)).toEqual({ level: "L1", pool: POOL_B });
-    const role = m.bodies.find(b => b.id.jobPoolUploadId === POOL_B)!.id;
-    s = fieldFocusReduce(s, { type: "MARK_ROLE", role });
-    expect(markedBody(s, m)?.key).toBe(roleKey(role));
-    s = fieldFocusReduce(s, { type: "UP" });
-    expect(fieldLevel(s, m)).toEqual({ level: "L0", pool: null });
-    expect(markedBody(s, m)?.key, "the mark stays on L0").toBe(roleKey(role));
-    s = fieldFocusReduce(s, { type: "RESET" });
+    s = fieldFocusReduce(s, { type: "OPEN_POOL", jobPoolUploadId: POOL_A });
+    expect(fieldLevel(s, m)).toMatchObject({ level: "L1", pool: POOL_A, body: null, arc: null });
+    s = fieldFocusReduce(s, { type: "OPEN_ROLE", role: platformA });
+    const l2 = fieldLevel(s, m);
+    expect([l2.level, l2.pool, l2.body?.key, l2.arc]).toEqual(["L2", POOL_A, roleKey(platformA), null]);
+    s = fieldFocusReduce(s, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_pg" });
+    const l3 = fieldLevel(s, m);
+    expect([l3.level, l3.body?.key, l3.arc?.poolRequirementId]).toEqual(["L3", roleKey(platformA), "q_pg"]);
+    expect(l3.arc, "the open arc is the very arc of the body's ring").toBe(l3.body!.arcs.find(a => a.poolRequirementId === "q_pg"));
+    s = fieldFocusReduce(fieldFocusReduce(fieldFocusReduce(s, { type: "UP" }), { type: "UP" }), { type: "UP" });
     expect(s).toBe(FOCUS_INITIAL);
   });
 
-  it("inverse: L2/L3 are not phase C — OPEN_ROLE, OPEN_REQUIREMENT, SELECT_CAPABILITY, MARK_REQUIREMENT return the very same state", () => {
-    const role = m.bodies[0].id;
-    const refused: FocusAction[] = [
-      { type: "OPEN_ROLE", role }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_ts" },
-      { type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }, { type: "MARK_REQUIREMENT", role, poolRequirementId: "q_ts" }
-    ];
-    for (const start of [FOCUS_INITIAL, fieldFocusReduce(FOCUS_INITIAL, { type: "OPEN_POOL", jobPoolUploadId: POOL_A })]) {
-      for (const action of refused) expect(fieldFocusReduce(start, action), action.type).toBe(start);
-    }
-    expect([...FIELD_ACTIONS].sort()).toEqual(["CLEAR_SELECTION", "MARK_ROLE", "OPEN_POOL", "RESET", "UP"]);
-    expect(FOCUS_ACTIONS.filter(a => !(FIELD_ACTIONS as readonly string[]).includes(a)).sort()).toEqual(["MARK_REQUIREMENT", "OPEN_REQUIREMENT", "OPEN_ROLE", "SELECT_CAPABILITY"]);
+  it("phase D admits the machine's full action set, MARK_REQUIREMENT included; a mark is a highlight beside the level", () => {
+    expect(FIELD_ACTIONS).toBe(FOCUS_ACTIONS);
+    let s = fieldFocusReduce(fieldFocusReduce(FOCUS_INITIAL, { type: "OPEN_POOL", jobPoolUploadId: POOL_B }), { type: "MARK_ROLE", role: m.bodies.find(b => b.id.jobPoolUploadId === POOL_B)!.id });
+    expect(markedBody(s, m)?.id.jobPoolUploadId).toBe(POOL_B);
+    s = fieldFocusReduce(s, { type: "OPEN_ROLE", role: platformA });
+    expect(markedBody(s, m), "a role mark is an L0/L1 highlight").toBeNull();
+    s = fieldFocusReduce(s, { type: "MARK_REQUIREMENT", role: platformA, poolRequirementId: "q_ts" });
+    expect([fieldLevel(s, m).level, markedArc(s, m)?.poolRequirementId]).toEqual(["L2", "q_ts"]);
+    expect(markedArc(fieldFocusReduce(s, { type: "MARK_REQUIREMENT", role: { jobPoolUploadId: POOL_B, poolRoleId: "role_platform" }, poolRequirementId: "q_k8" }), m), "an arc of another role is not marked here").toBeNull();
+    s = fieldFocusReduce(s, { type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" });
+    expect([fieldLevel(s, m).level, selectedCapability(s, m)?.key, markedArc(s, m)]).toEqual(["L2", "PCAP_TS", null]);
   });
 
-  it("every sequence of admitted actions stays on L0/L1, and the state never names a job scope (B-3)", () => {
+  it("every sequence of the full action set keeps the state's five fields — it never names a job scope (B-3, D-7)", () => {
     const role = m.bodies[0].id;
-    const actions = [{ type: "OPEN_POOL", jobPoolUploadId: POOL_A }, { type: "OPEN_POOL", jobPoolUploadId: POOL_B }, { type: "UP" }, { type: "RESET" }, { type: "MARK_ROLE", role }, { type: "CLEAR_SELECTION" }] as const;
+    const actions: FocusAction[] = [{ type: "OPEN_POOL", jobPoolUploadId: POOL_A }, { type: "OPEN_ROLE", role }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_ts" },
+      { type: "SELECT_CAPABILITY", capabilityKey: "PCAP_TS" }, { type: "MARK_ROLE", role }, { type: "MARK_REQUIREMENT", role, poolRequirementId: "q_ts" }, { type: "CLEAR_SELECTION" }, { type: "UP" }, { type: "RESET" }];
+    expect(actions.map(a => a.type).sort()).toEqual([...FOCUS_ACTIONS].sort());
     let states: FocusState[] = [FOCUS_INITIAL];
-    for (let depth = 0; depth < 4; depth += 1) states = states.flatMap(s => actions.map(a => fieldFocusReduce(s, a)));
-    for (const s of states) {
-      expect(["L0", "L1"]).toContain(s.level);
-      expect(Object.keys(s).sort()).toEqual(["level", "pool", "requirement", "role", "selection"]);
-      expect([s.role, s.requirement]).toEqual([null, null]);
-    }
+    for (let depth = 0; depth < 3; depth += 1) states = states.flatMap(s => actions.map(a => fieldFocusReduce(s, a)));
+    for (const s of states) expect(Object.keys(s).sort()).toEqual(["level", "pool", "requirement", "role", "selection"]);
+    expect(new Set(states.map(s => s.level))).toEqual(new Set(["L0", "L1", "L2", "L3"]));
   });
 
-  it("a pool that is no longer in the field reads as L0; a marked role outside the open pool is not marked", () => {
+  it("what is no longer drawn reads one level up: a gone requirement → L2, an undrawn role → L1, a gone pool → L0; the state itself is kept", () => {
+    const l3 = [{ type: "OPEN_POOL", jobPoolUploadId: POOL_A }, { type: "OPEN_ROLE", role: platformA }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q_pg" }].reduce<FocusState>((s, a) => fieldFocusReduce(s, a as FocusAction), FOCUS_INITIAL);
+    const roles = standardRoles();
+    roles[0].requirements.splice(1, 1);
+    expect(fieldLevel(l3, model(rankingOf(roles))).level).toBe("L2");
+    expect(fieldLevel(l3, model(rankingOf(standardRoles().slice(1)))), "the role is gone, its pool stays in the field").toMatchObject({ level: "L1", pool: POOL_A, body: null });
+    expect(l3.level).toBe("L3");
     const gone = fieldFocusReduce(FOCUS_INITIAL, { type: "OPEN_POOL", jobPoolUploadId: "JPOOL_GONE" });
-    expect(fieldLevel(gone, m)).toEqual({ level: "L0", pool: null });
+    expect(fieldLevel(gone, m)).toMatchObject({ level: "L0", pool: null });
     const inA = m.bodies.find(b => b.id.jobPoolUploadId === POOL_A)!.id;
-    const s = fieldFocusReduce(fieldFocusReduce(FOCUS_INITIAL, { type: "MARK_ROLE", role: inA }), { type: "OPEN_POOL", jobPoolUploadId: POOL_B });
-    expect(markedBody(s, m)).toBeNull();
+    expect(markedBody(fieldFocusReduce(fieldFocusReduce(FOCUS_INITIAL, { type: "MARK_ROLE", role: inA }), { type: "OPEN_POOL", jobPoolUploadId: POOL_B }), m)).toBeNull();
   });
 
-  it("L1's view box holds every drawn body of its pool; L0's the whole field", () => {
+  it("the cameras: L0 the whole field; L1 holds every drawn body of its pool; L2 holds the open ring and the person's constellation", () => {
     const crowded = model(rankingOf([...crowdedRoles(40, POOL_A), ...standardRoles()]));
     for (const sector of crowded.sectors) {
       const box = sectorViewBox(sector);
@@ -175,35 +182,41 @@ describe("MAP-C-FOCUS · L0 and L1 only; a look, never a choice", () => {
       }
       expect(box.width).toBe(box.height);
     }
-    const all = fieldViewBox();
-    expect(all.width / 2).toBeGreaterThan(layoutSpec.field.radius);
+    expect(fieldViewBox().width / 2).toBeGreaterThan(layoutSpec.field.radius);
+    for (const b of crowded.bodies) {
+      const box = roleViewBox(b), r = ringRadius(b);
+      expect(box.width).toBe(box.height);
+      expect([b.x - r >= box.x, b.x + r <= box.x + box.width, b.y - r >= box.y, b.y + r <= box.y + box.height], b.key).toEqual([true, true, true, true]);
+      for (const n of crowded.constellation.nodes) expect(n.x >= box.x && n.x <= box.x + box.width && n.y >= box.y && n.y <= box.y + box.height, n.key).toBe(true);
+      expect(r, "the ring is a magnification of the body (rounded to 1e-3)").toBeGreaterThanOrEqual(3 * b.radius - 0.001);
+    }
   });
 });
 
-describe("MAP-C-DELTA · a body moves only on its own new evidence", () => {
+describe("MAP-D-DELTA · movement means evidence, always and only (A3, D-Q5)", () => {
   const snap = (m: MappingFieldModel) => ({ analysisId: m.analysisId, ranking: m.ranking, bodies: m.bodies });
-  it("REPRODUCE: a changed fit moves that body once, with a trail from its previous drawn place; the others do not move", () => {
+  const evidenceKeys = (moves: ReturnType<typeof bodyMovements>) => [...moves].filter(([, v]) => v.kind === "EVIDENCE").map(([k]) => k);
+  it("REPRODUCE: a changed fit moves that body once (EVIDENCE), with a trail from its previous drawn place", () => {
     const before = model(standardRanking());
     const roles = standardRoles();
     roles[0].requirements[1] = sem("q_pg", "PREFERRED", "COVERS", "PCAP_PG", "PostgreSQL");
     const after = model(rankingOf(roles));
     const moves = bodyMovements(snap(before), snap(after));
     const key = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_platform" });
-    expect([...moves.keys()]).toEqual([key]);
+    expect(evidenceKeys(moves)).toEqual([key]);
     const was = before.bodies.find(b => b.key === key)!;
-    expect(moves.get(key)).toEqual({ moved: true, from: { x: was.x, y: was.y } });
+    expect(moves.get(key)).toEqual({ kind: "EVIDENCE", moved: true, from: { x: was.x, y: was.y } });
   });
 
-  it("a changed tier moves the body (fit and tier of one read are one movement); a new role appears without a trail", () => {
+  it("a changed tier moves the body (fit and tier of one read are one movement); a new role appears with no movement at all", () => {
     const roles = standardRoles();
     const before = model(rankingOf(roles));
     roles[1].requirements[0] = sem("q_k8", "REQUIRED", "COVERS", "PCAP_K8", "Kubernetes");
     roles.push({ pool: POOL_A, roleId: "role_new", title: "New", requirements: [lex("q_new", "OPTIONAL", "NAME_ALIAS", "PCAP_TS", "TypeScript")] });
     const after = model(rankingOf(roles));
     const moves = bodyMovements(snap(before), snap(after));
-    expect([...moves.keys()]).toContain(roleKey({ jobPoolUploadId: POOL_B, poolRoleId: "role_platform" }));
-    expect(moves.has(roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_new" }))).toBe(false);
-    expect([...moves.values()].every(v => v.moved)).toBe(true);
+    expect(evidenceKeys(moves)).toContain(roleKey({ jobPoolUploadId: POOL_B, poolRoleId: "role_platform" }));
+    expect(moves.has(roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_new" })), "appearing is NONE (D-Q5)").toBe(false);
   });
 
   it("inverse: a re-read that changed nothing moves nothing; nothing moves from no previous reading", () => {
@@ -224,11 +237,9 @@ describe("MAP-C-DELTA · a body moves only on its own new evidence", () => {
     const sameAnalysis = model(rankingOf(roles));
     const otherAnalysis = mappingFieldModel({ projection: projectionOf(), ranking: available({ ...rankingOf(roles), analysisId: "CAN_00000000000000000000000000000009" }), watch: watchOf("COMPLETED") })!;
     const key = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_platform" });
-    // Preconditions: the change is there (the engine's delta names it) and within one analysis it does move the body.
     expect(otherAnalysis.analysisId).not.toBe(before.analysisId);
     expect(changeKinds(before, otherAnalysis, key)).toContain("ROLE_FIT_CHANGED");
-    expect([...bodyMovements(snap(before), snap(sameAnalysis)).keys()]).toEqual([key]);
-    // The rule: a reading of another analysis is not new evidence about these bodies.
+    expect(evidenceKeys(bodyMovements(snap(before), snap(sameAnalysis)))).toEqual([key]);
     expect(bodyMovements(snap(before), snap(otherAnalysis)).size).toBe(0);
     expect(bodyMovements(snap(otherAnalysis), snap(before)).size).toBe(0);
   });
@@ -242,16 +253,14 @@ describe("MAP-C-DELTA · a body moves only on its own new evidence", () => {
     const after = model(rankingOf(roleOf(sem("q_r", "REQUIRED", "PARTIAL", "PCAP_K8", "Kubernetes"))));
     const key = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_r" });
     const was = before.bodies.find(b => b.key === key)!, now = after.bodies.find(b => b.key === key)!;
-    // Preconditions: only the tier changed — same fit, same rank; the other role did not change at all.
     expect([was.tier, now.tier]).toEqual(["LEXICAL_ONLY", "SEMANTIC"]);
-    expect(changeKinds(before, after, key).filter(k => k.startsWith("ROLE_"))).toEqual(["ROLE_TIER_CHANGED"]);
     expect(diffRankings(before.ranking, after.ranking).filter(c => c.kind.startsWith("ROLE_")).map(c => c.kind)).toEqual(["ROLE_TIER_CHANGED"]);
     const moves = bodyMovements(snap(before), snap(after));
-    expect([...moves.keys()]).toEqual([key]);
-    expect(moves.get(key)).toEqual({ moved: true, from: { x: was.x, y: was.y } });
+    expect(evidenceKeys(moves)).toEqual([key]);
+    expect(moves.get(key)).toEqual({ kind: "EVIDENCE", moved: true, from: { x: was.x, y: was.y } });
   });
 
-  it("T1 inverse: a rank-only change (tier and fit equal) is not a movement — the role that changed its fit moves, the one it passed does not", () => {
+  it("T1 inverse and §8.9: a rank-only change is never EVIDENCE; the body that only shifted is LAYOUT — told, not animated", () => {
     const roleOf = (y: ReturnType<typeof sem>) => [
       { pool: POOL_A, roleId: "role_x", title: "Steady", requirements: [sem("q_x", "REQUIRED", "PARTIAL", "PCAP_TS", "TypeScript")] },
       { pool: POOL_A, roleId: "role_y", title: "Rising", requirements: [y] }
@@ -259,15 +268,29 @@ describe("MAP-C-DELTA · a body moves only on its own new evidence", () => {
     const before = model(rankingOf(roleOf(sem("q_y", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL"))));
     const after = model(rankingOf(roleOf(sem("q_y", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL"))));
     const steady = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_x" }), rising = roleKey({ jobPoolUploadId: POOL_A, poolRoleId: "role_y" });
-    // Preconditions: the steady role changed its rank and nothing else; the rising one changed its fit.
-    expect(changeKinds(before, after, steady)).toEqual(["ROLE_RANK_CHANGED"]);  // no requirement of it changed either
+    expect(changeKinds(before, after, steady)).toEqual(["ROLE_RANK_CHANGED"]);
     expect(changeKinds(before, after, rising)).toContain("ROLE_FIT_CHANGED");
-    // Only the movement mark is held here — where the layout now draws the steady body is the layout's (A3), not asserted.
-    expect([...bodyMovements(snap(before), snap(after)).keys()]).toEqual([rising]);
+    const was = before.bodies.find(b => b.key === steady)!, now = after.bodies.find(b => b.key === steady)!;
+    expect([was.x, was.y], "precondition: the steady body took a new place (the rank index in its sector, A3)").not.toEqual([now.x, now.y]);
+    const moves = bodyMovements(snap(before), snap(after));
+    expect(evidenceKeys(moves)).toEqual([rising]);
+    expect(moves.get(steady)).toEqual({ kind: "LAYOUT", moved: false, from: { x: was.x, y: was.y } });
+  });
+
+  it("D-Q5: a body that goes into overflow is not a movement (an absence, told by the count); one that comes out of it is NONE", () => {
+    const base = [...crowdedRoles(40, POOL_A), ...standardRoles()];
+    // 300 roles of the same fit whose titles sort first: they take the field's room ahead of the 40 (ranking ties break by title).
+    const ahead = crowdedRoles(300, POOL_A).map((r, i) => ({ ...r, roleId: `role_ahead_${i}`, title: `Ahead ${String(i).padStart(3, "0")}` }));
+    const many = model(rankingOf([...ahead, ...base])), few = model(rankingOf(base));
+    const gone = few.bodies.filter(b => !many.bodies.some(x => x.key === b.key)).map(b => b.key);
+    expect(gone.length, "precondition: some drawn bodies are overflow in the crowded reading").toBeGreaterThan(0);
+    const into = bodyMovements(snap(few), snap(many)), outOf = bodyMovements(snap(many), snap(few));
+    for (const key of gone) { expect(into.has(key), key).toBe(false); expect(outOf.has(key), key).toBe(false); }
+    expect(many.overflowCount).toBeGreaterThan(few.overflowCount);
   });
 });
 
-describe("MAP-C-MODEL · displaced is either displacement (PINK §3.98 M8)", () => {
+describe("MAP-D-MODEL · displaced is either displacement (PINK §3.98 M8)", () => {
   it("a body the layout pushed only along its sector (radial 0, angular ≠ 0) is displaced, as is one pushed only outward", () => {
     const ranking = rankingOf([...crowdedRoles(40, POOL_A), ...standardRoles()]);
     const m = model(ranking);

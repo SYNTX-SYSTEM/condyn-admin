@@ -85,9 +85,12 @@ export function applyCareerDemoHudClearance(root: HTMLElement) {
  */
 export function applyCareerDemoEntryClearance(root: HTMLElement) {
   const line = root.querySelector<HTMLElement>('[data-sx-shell="gate-reason"]');
+  // Phase D (PERSON_X_JOB_MAPPING_PHASE_D.md D-2, M1): the MAPPING gate's own line stands under it; the panel starts below the lower one.
+  const mappingLine = root.querySelector<HTMLElement>('[data-sx-shell="mapping-gate"]');
   const job = root.querySelector<HTMLElement>(JOB);
-  if (line === null || job === null) { root.style.removeProperty("--sx-entry-clear"); return; }
-  root.style.setProperty("--sx-entry-clear", `${Math.ceil(line.getBoundingClientRect().bottom - (job.getBoundingClientRect().top + window.scrollY) + 12)}px`);
+  if ((line === null && mappingLine === null) || job === null) { root.style.removeProperty("--sx-entry-clear"); return; }
+  const bottom = Math.max(...[line, mappingLine].filter((element): element is HTMLElement => element !== null).map(element => element.getBoundingClientRect().bottom));
+  root.style.setProperty("--sx-entry-clear", `${Math.ceil(bottom - (job.getBoundingClientRect().top + window.scrollY) + 12)}px`);
 }
 
 /** Writes the tier's variables on the dashboard root (no re-render; the field's markup is not touched). */
@@ -122,7 +125,9 @@ const STACK = `(max-width: ${LAYOUT_FIT.width - 1}px), (max-height: ${LAYOUT_FIT
  * in; while the line is there the intake panel starts below it (--sx-entry-clear, applyCareerDemoEntryClearance) instead of under
  * it — in the full and the fit tier, where the shell stays fixed. The stack tier sets both into the page's column.
  */
-const INTAKE_BELOW_ENTRY = `${FIELD}:has(> [data-sx-shell="gate-reason"]) ${JOB} > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`;
+// Phase D (D-Q13 (b)): the MAPPING gate's own line stands in the same column — also alone (PERSON × JOB with a valid job has no
+// capability line). One rule, two conditions, one variable: --sx-entry-clear is the lower edge of whichever lines stand there.
+const INTAKE_BELOW_ENTRY = `${FIELD}:has(> [data-sx-shell="mapping-gate"]) ${JOB} > [data-sx-panel="intake"], ${FIELD}:has(> [data-sx-shell="gate-reason"]) ${JOB} > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`;
 
 export const CAREER_DEMO_LAYOUT_CSS = `
 ${HUD} { top: ${HUD_TOP_FULL - 61}px !important; max-width: none !important; }
@@ -174,6 +179,7 @@ ${HUD} > span { color: rgba(130, 200, 224, 0.85) !important; }
   ${FIELD} > [data-sx-shell="job-scope"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 3; grid-column: 1 !important; max-width: 100% !important; justify-self: stretch; }
   ${FIELD} > [data-sx-shell="investigation"] { position: relative !important; left: auto !important; top: auto !important; transform: none !important; order: 3; grid-column: 2 !important; justify-self: end; align-self: center; }
   ${FIELD} > [data-sx-shell="gate-reason"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
+  ${FIELD} > [data-sx-shell="mapping-gate"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }
   ${FIELD} > [data-testid="intake-telemetry-banner"], ${FIELD} > [data-testid="intake-error-banner"], ${FIELD} > [data-testid="intake-success-banner"] { position: relative !important; left: auto !important; top: auto !important; bottom: auto !important; transform: none !important; order: 5; max-width: 100% !important; width: auto !important; }
   ${PANEL_WRAP} { order: 6; }
   ${FIELD} > div:has(> ${HUD_BOX}) { order: 5; }

@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { phaseCBase } from "../mapping-field/phase-base";
+import { phaseDBase } from "../mapping-field/phase-base";
 
 /**
  * MAPPING_ARCHITECTURE · phase B is pure modules only (owner limit "NUR PHASE B"): lib/career/mapping imports no React, no Next, no
@@ -11,6 +11,7 @@ import { phaseCBase } from "../mapping-field/phase-base";
  * Phase C (GELB "SFE::PHASE_C") consumes the engine: its visible field (lib/career/view-model/mapping-field.ts and its component) is
  * the only importer outside the mapping, and the engine itself stays byte-identical to the released engine: the fixed phase-B base
  * 5ca0f3f5 (PINK §3.97), not the merge base with origin/main, so committed changes on main stay guarded too (PINK §3.99 O-RC-1).
+ * Phase D (PERSON_X_JOB_MAPPING_PHASE_D.md §7) re-binds it to PHASE_D_BASE e360caf9, where the engine is the same released engine.
  */
 const ROOT = join(__dirname, "../../..");
 const DIR = join(ROOT, "lib/career/mapping");
@@ -67,8 +68,9 @@ describe("MAP-ARCH · nothing existing is touched", () => {
     expect(users).toEqual(["app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/mapping-field-copy.ts", "lib/career/view-model/mapping-field.ts"]);
   });
 
-  it("against the released engine (phase-B base 5ca0f3f5), the engine modules are unchanged (committed, staged, unstaged and new) — phase C's boundary is its own test", () => {
-    const changed = [...git("diff", "--name-only", "--no-renames", phaseCBase(), "--", "lib/career/mapping"), ...git("ls-files", "--others", "--exclude-standard", "--", "lib/career/mapping")];
+  it("against the released engine (phase-D base e360caf9), the engine modules are unchanged (committed, staged, unstaged and new) — phase D's boundary is its own test", () => {
+    const changed = [...git("diff", "--name-only", "--no-renames", "--cached", phaseDBase(), "--", "lib/career/mapping"), ...git("diff", "--name-only", "--no-renames", phaseDBase(), "--", "lib/career/mapping"),
+      ...git("ls-files", "--others", "--exclude-standard", "--", "lib/career/mapping")];
     expect(changed).toEqual([]);
   });
 });

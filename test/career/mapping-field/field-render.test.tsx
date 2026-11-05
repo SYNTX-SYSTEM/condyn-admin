@@ -125,9 +125,26 @@ describe("MAP-C-RENDER · the field", () => {
     }
   });
 
-  it("inverse: nothing is drawn without an available ranking or for an empty one (the panel says why)", () => {
-    for (const ranking of [{ state: "IDLE" }, { state: "LOADING" }, { state: "NOT_PERSON" }, { state: "FAILED", code: null }] as const) expect(html(ranking)).toBe("");
-    expect(html(available(rankingOf([])))).toBe("");
+  it("§8.13 inverse: no empty or error reading is drawn as an empty field — each states its own reason, EN and DE, never a body", () => {
+    const readings: Array<[JobRankingState, string]> = [
+      [{ state: "IDLE" }, "NO_RANKING"], [{ state: "LOADING" }, "NO_RANKING"], [{ state: "FAILED", code: null }, "NO_RANKING"], [available(rankingOf([])), "NO_ROLES"],
+      [{ state: "NOT_PERSON" }, "NOT_PERSON"], [{ state: "PROJECTION_ABSENT" }, "PROJECTION_ABSENT"], [{ state: "BOUNDARY_UNRESOLVED", reason: null }, "BOUNDARY_UNRESOLVED"],
+      [{ state: "NOT_PROVISIONED" }, "NOT_PROVISIONED"], [{ state: "ANALYSIS_NOT_FOUND" }, "ANALYSIS_NOT_FOUND"]
+    ];
+    for (const locale of ["en", "de"] as const) {
+      const sentences = new Map<string, string>();
+      for (const [ranking, reason] of readings) {
+        const markup = html(ranking, watchOf("COMPLETED"), locale);
+        expect(attr(markup, "mapping-empty", "data-reason"), `${locale} ${ranking.state}`).toBe(reason);
+        expect(text(markup), `${locale} ${ranking.state}`).toContain(MAPPING_FIELD_COPY[locale].empty[reason as keyof typeof MAPPING_FIELD_COPY["en"]["empty"]]);
+        expect(markup, ranking.state).not.toContain('data-testid="mapping-body-');
+        expect(markup, ranking.state).not.toContain('data-testid="mapping-field-svg"');
+        sentences.set(reason, MAPPING_FIELD_COPY[locale].empty[reason as keyof typeof MAPPING_FIELD_COPY["en"]["empty"]]);
+      }
+      expect(new Set(sentences.values()).size, "seven readings, seven sentences").toBe(7);
+    }
+    // A ranking whose run is not read yet is no field either.
+    expect(attr(html(available(standardRanking()), { read: { state: "LOADING" }, waitedOut: false }), "mapping-empty", "data-reason")).toBe("NO_RANKING");
   });
 });
 

@@ -9,6 +9,8 @@
  *   G-05 job selection removed or invalid → Capability OFF
  *   G-06 direct analysis call without a valid selection → backend REJECT, nothing enqueued
  *   G-08 the selected scope (or its absence) is visible in both fields, at every depth, at 1600 and 1280 px
+ *   G-12 phase D: the strip holds three options; MAPPING is gated NOT_PERSON outside PERSON with its reason and way; the capsule
+ *        fits between the job-scope indicator and the investigation membrane (§8.17); the two gate lines and the intake panel stack
  *   G-09 semiotic grammar: no closure glyph introduced by the scope selection
  *   G-10 one rule for "valid": the frontend's VALID and the backend's acceptance agree on the same stored role id
  *        (owner decision 2026-10-14, variant A: the role id is taken exactly as stored, only "" is refused)
@@ -518,6 +520,51 @@ describe.skipIf(playwrightModule === null)("PINK G: job-scope gate — Job Pool 
     await legacy("role not in the pool", `?jobScopePoolUploadId=${uploadId}&jobScopeRoleId=role_pink_does_not_exist`, "INVALID", "");
     await legacy("pool not ACTIVE (DRAFT)", `?jobScopePoolUploadId=${draftId}&jobScopeRoleId=${ROLE_ID}`, "INVALID", "");
     await legacy("valid scope in the URL", `?jobScopePoolUploadId=${uploadId}&jobScopeRoleId=${ROLE_ID}`, "VALID", ROLE_ID);
+
+    // ---- G-12 phase D (PERSON_X_JOB_MAPPING_PHASE_D.md §5.1 C-2/C-10, §8.17): the third field, gated, and the capsule's room -------
+    type Box = { left: number; right: number; top: number; bottom: number };
+    type Geometry = { ids: (string | null)[]; strip: Box | null; membrane: Box | null; indicator: Box | null; capabilityLine: Box | null; mappingLine: Box | null; intake: Box | null; mappingButton: { disabled: boolean; gate: string | null; describedBy: string | null } | null; mappingText: string; mappingVisible: boolean };
+    const geometry = (page: { evaluate(fn: () => Geometry): Promise<Geometry> }): Promise<Geometry> => page.evaluate(() => {
+      const box = (selector: string) => { const element = document.querySelector(selector) as HTMLElement | null; if (element === null) return null; const b = element.getBoundingClientRect(); return { left: b.left, right: b.right, top: b.top, bottom: b.bottom }; };
+      const strip = document.querySelector('[data-testid="field-focus-strip"]');
+      return {
+        ids: strip === null ? [] : [...strip.querySelectorAll("button")].map(button => button.getAttribute("data-testid")),
+        strip: box('[data-testid="field-focus-strip"]'), membrane: box('[data-sx-shell="investigation"]'), indicator: box('[data-testid="job-scope-indicator"]'),
+        capabilityLine: box('[data-sx-shell="gate-reason"]'), mappingLine: box('[data-sx-shell="mapping-gate"]'), intake: box('[data-sx-field="job"] > [data-sx-panel="intake"]'),
+        mappingButton: (() => { const b = document.querySelector('[data-testid="field-focus-mapping-btn"]') as HTMLButtonElement | null; return b === null ? null : { disabled: b.disabled, gate: b.getAttribute("data-field-gate"), describedBy: b.getAttribute("aria-describedby") }; })(),
+        mappingText: (document.querySelector('[data-testid="mapping-gate-reason"]')?.textContent ?? "").replace(/\s+/g, " ").trim(),
+        mappingVisible: (() => { const element = document.querySelector('[data-testid="mapping-gate-reason"]') as HTMLElement | null; return element !== null && getComputedStyle(element).visibility === "visible"; })()
+      };
+    });
+    /** §8.17 (GELB 5f6a11cf): the capsule clears the membrane by at least 12 px — asserted as a margin, not a bare inequality — in both locales. */
+    const MIN_CLEARANCE = 12;
+    const GATE_TEXT = { en: [/PERSON analysis against all pools/, /choose PERSON/], de: [/PERSON-Analyse gegen alle Pools/, /PERSON wählen/] } as const;
+    for (const viewport of [{ width: 1920, height: 1080 }, { width: 1600, height: 1000 }, { width: 1280, height: 720 }]) for (const locale of ["en", "de"] as const) {
+      for (const mode of ["JOB", "PERSON_X_JOB"]) {
+        const label = `${viewport.width} × ${viewport.height} ${locale.toUpperCase()} ${mode}`;
+        const page = await open(`/career/demo?focus=MAPPING&investigationMode=${mode}`, viewport);
+        await page.locator('[data-testid="mapping-gate-reason"]').waitFor({ timeout: 60_000 }).catch(() => {});
+        if (locale === "de") {
+          await page.getByTestId("open-system-codex-btn").click();
+          await page.getByTestId("switch-lang-de").click();
+          await page.getByTestId("system-codex-close").click();
+          await page.locator('[data-testid="system-codex-modal"]').waitFor({ state: "detached", timeout: 10_000 }).catch(() => {});
+        }
+        await delay(500);
+        const g = await geometry(page);
+        check("G-12", `${label}: the strip holds three options in order, the two existing ids unmoved (C-3, C-4, C-5)`, JSON.stringify(g.ids) === JSON.stringify(["field-focus-capability-btn", "field-focus-mapping-btn", "job-pool-panel-toggle"]), g.ids);
+        check("G-12", `${label}: focus=MAPPING under ${mode} is gated NOT_PERSON and the Job Field stands (C-10)`, (await focusOf(page)) === "FIELD" && g.mappingButton?.disabled === true && g.mappingButton.gate === "NOT_PERSON" && g.mappingButton.describedBy === "mapping-gate-reason", { focus: await focusOf(page), ...g.mappingButton });
+        check("G-12", `${label}: the gated option states its reason and its way, visibly (C-11)`, g.mappingVisible && GATE_TEXT[locale].every(pattern => pattern.test(g.mappingText)), g.mappingText);
+        check("G-12", `${label}: §8.17 the strip's right edge lies at least ${MIN_CLEARANCE} px left of the membrane's left edge`, g.strip !== null && g.membrane !== null && g.membrane.left - g.strip.right >= MIN_CLEARANCE, { strip: g.strip, membrane: g.membrane, clearance: g.strip !== null && g.membrane !== null ? g.membrane.left - g.strip.right : null });
+        check("G-12", `${label}: §8.17 the indicator's right edge lies left of the strip's left edge`, g.strip !== null && g.indicator !== null && g.indicator.right < g.strip.left, { indicator: g.indicator, strip: g.strip });
+        check("G-12", `${label}: the MAPPING line stands below the capability line, never on it (D-Q13)`, g.capabilityLine !== null && g.mappingLine !== null && g.mappingLine.top >= g.capabilityLine.bottom, { capability: g.capabilityLine, mapping: g.mappingLine });
+        const intakeShown = g.intake !== null && g.intake.bottom > g.intake.top && g.intake.right > g.intake.left;
+        check("G-12", `${label}: the intake panel, where shown, starts below both lines (D-Q13 (b))`, !intakeShown || (g.mappingLine !== null && g.intake!.top >= g.mappingLine.bottom), { intake: g.intake, mapping: g.mappingLine });
+        await page.screenshot({ path: resolve(EVIDENCE_DIR, `G-12-${viewport.width}-${locale}-${mode}.png`) });
+        writeFileSync(resolve(EVIDENCE_DIR, `G-12-${viewport.width}-${locale}-${mode}.json`), `${JSON.stringify(g, null, 2)}\n`);
+        await page.close();
+      }
+    }
 
     check("G-00", "no page error in any step", pageErrors.length === 0, pageErrors.slice(0, 5));
     const failed = checks.filter((entry) => !entry.ok).map((entry) => `${entry.id} ${entry.name} · ${entry.detail}`);

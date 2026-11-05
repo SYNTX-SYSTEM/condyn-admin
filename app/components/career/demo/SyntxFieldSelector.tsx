@@ -1,27 +1,30 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { SIL_TOKENS } from "./SILTokens";
 import type { FieldEntryState } from "../../../../lib/career/view-model/field-entry-state";
 
 /**
  * SYNTX field selector (application shell, not field logic).
  *
- * One system, two fields: the CAPABILITY FIELD and the JOB FIELD as two equal options on one membrane, centred in the upper
- * application area. Exactly one field is active; selecting the active one changes nothing. Each option is lit in its own field's
- * tone (the Capability cyan, the Job Field azure). Keyboard: Tab reaches the options, Enter / Space selects, ←/→ (and Home / End)
- * move the selection between the two fields. Reduced motion: no transition.
+ * One system, three fields: the CAPABILITY FIELD, the PERSON × JOB MAPPING field and the JOB FIELD as three equal options on one
+ * membrane, centred in the upper application area, in this order — MAPPING in the middle, because it is the relation between the
+ * two it separates. Exactly one field is active; selecting the active one changes nothing. Each option is lit in its own field's
+ * tone. Keyboard: Tab reaches the options, Enter / Space selects, ←/→ move the selection by one position (a gated option is
+ * stepped over), Home selects CAPABILITY and End the JOB FIELD. Reduced motion: no transition.
  *
- * Contract kept from the field-state strip it replaces: `field-focus-strip` (`data-field-focus`) holding exactly two buttons,
- * `field-focus-capability-btn` and `job-pool-panel-toggle`, each with `data-field-focus-active` and `aria-pressed`.
+ * Contract (PERSON_X_JOB_MAPPING_PHASE_D.md §5.1, C-1 … C-11): `field-focus-strip` (`data-field-focus` ∈ CAPABILITY | MAPPING |
+ * FIELD) holding exactly three buttons, `field-focus-capability-btn`, `field-focus-mapping-btn` and `job-pool-panel-toggle`, each with
+ * `data-field-focus-active` and `aria-pressed`. A gated option cannot be selected and states its reason and its way.
  *
  * Job scope (SFE invariant): the selected job — or its absence — rides on the same shell row, left of the capsule in the
  * column of the left surfaces (`job-scope-indicator`, `data-sx-shell="job-scope"`), so it stays visible in both fields and
- * at every depth. It is outside the strip (the strip keeps exactly two buttons). Static; activating it opens the job.
+ * at every depth. It is outside the strip (the strip keeps exactly its three buttons). Static; activating it opens the job.
  */
-export type SyntxFieldFocus = "CAPABILITY" | "FIELD";
+export type SyntxFieldFocus = "CAPABILITY" | "MAPPING" | "FIELD";
+const ORDER: readonly SyntxFieldFocus[] = ["CAPABILITY", "MAPPING", "FIELD"];
 
-const TONE: Record<SyntxFieldFocus, string> = { CAPABILITY: "56, 229, 255", FIELD: "92, 200, 255" };
+const TONE: Record<SyntxFieldFocus, string> = { CAPABILITY: "56, 229, 255", MAPPING: "110, 214, 250", FIELD: "92, 200, 255" };
 
 export const SYNTX_FIELD_SELECTOR_CSS = `
 @keyframes syntxFieldVeil { from { opacity: .9; } to { opacity: 0; } }
@@ -78,6 +81,12 @@ export interface SyntxCapabilityGatePresentation {
 }
 
 export const CAPABILITY_GATE_REASON_ID = "capability-gate-reason";
+/** Phase D (C-10, C-11): the MAPPING gate's own line. It is its own element with its own marker (`data-sx-shell="mapping-gate"`, never
+ *  "gate-reason": the entry clearance finds the capability line by that marker), and it is rendered after the capability line. */
+export const MAPPING_GATE_REASON_ID = "mapping-gate-reason";
+/** The air between the capability line's lower edge and the MAPPING line, and the MAPPING line's top when it stands alone. */
+const MAPPING_GATE_GAP = 8;
+const MAPPING_GATE_TOP = 128;
 /**
  * PINK §3.82 F-SEM-1: the entry line stands in the Job Field's right column, under the mode selector — never over the cosmos. The
  * cosmos (the planetarium box, at most 800 × 1.04 = 832 px) is centred in the viewport, so the column right of it is
@@ -117,17 +126,60 @@ function SyntxJobScopeIndicator({ scope, onActivate }: { scope: SyntxJobScopePre
   );
 }
 
-export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabel, onSelect, jobScope, onJobScopeActivate, capabilityGated = false, capabilityGatedHint, capabilityGate = null }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void; /** Capability gate closed (no VALID job scope): the Capability option cannot be selected. */ capabilityGated?: boolean; capabilityGatedHint?: string; /** UX-04: the closed gate's reason and way, shown as text below the capsule. */ capabilityGate?: SyntxCapabilityGatePresentation | null }) {
-  const buttons = useRef<Record<SyntxFieldFocus, HTMLButtonElement | null>>({ CAPABILITY: null, FIELD: null });
+/** Phase D (C-10, C-11): the MAPPING option's closed gate — its reason and its way. */
+export interface SyntxMappingGatePresentation {
+  state: "NOT_PERSON" | "NO_ANALYSIS" | "NO_RANKING" | "NO_POOL";
+  /** The node path, e.g. "PERSON × JOB ⟶ ◇ MAPPING". */
+  label: string;
+  reason: string;
+  way: string;
+}
+
+export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, mappingLabel, jobLabel, onSelect, jobScope, onJobScopeActivate, capabilityGated = false, capabilityGatedHint, capabilityGate = null, mappingGate = null }: { focus: SyntxFieldFocus; groupLabel: string; capabilityLabel: string; mappingLabel: string; jobLabel: string; onSelect(next: SyntxFieldFocus): void; jobScope?: SyntxJobScopePresentation; onJobScopeActivate?(): void; /** Capability gate closed (no VALID job scope): the Capability option cannot be selected. */ capabilityGated?: boolean; capabilityGatedHint?: string; /** UX-04: the closed gate's reason and way, shown as text below the capsule. */ capabilityGate?: SyntxCapabilityGatePresentation | null; /** Phase D: the MAPPING gate, closed while not null. */ mappingGate?: SyntxMappingGatePresentation | null }) {
+  const buttons = useRef<Record<SyntxFieldFocus, HTMLButtonElement | null>>({ CAPABILITY: null, MAPPING: null, FIELD: null });
   const options: Array<{ id: string; focus: SyntxFieldFocus; label: string }> = [
     { id: "field-focus-capability-btn", focus: "CAPABILITY", label: capabilityLabel },
+    { id: "field-focus-mapping-btn", focus: "MAPPING", label: mappingLabel },
     { id: "job-pool-panel-toggle", focus: "FIELD", label: jobLabel }
   ];
-  /** The sweep belongs to a field change, never to the first paint. */
+  const isGated = (option: SyntxFieldFocus) => (option === "CAPABILITY" && capabilityGated) || (option === "MAPPING" && mappingGate !== null);
+  /** The sweep belongs to a field change, never to the first paint; it runs towards the field now active. */
   const switched = useRef(false);
-  const select = (next: SyntxFieldFocus) => { if (next === "CAPABILITY" && capabilityGated) return; if (next !== focus) { switched.current = true; onSelect(next); } };
+  const [sweepRight, setSweepRight] = useState(true);
+  const select = (next: SyntxFieldFocus) => {
+    if (isGated(next)) return;
+    if (next !== focus) { switched.current = true; setSweepRight(ORDER.indexOf(next) > ORDER.indexOf(focus)); onSelect(next); }
+  };
+  /** The capability line (when shown) and the MAPPING line stand in one column and never overlap: the MAPPING line's top follows the
+   *  capability line's lower edge, measured, and again whenever that line changes size or the viewport does. Until it is measured
+   *  the MAPPING line is not shown under a capability line (no first paint on top of it). */
+  const capabilityLineShown = capabilityGate !== null && (capabilityGated || capabilityGate.state === null);
+  const capabilityLine = useRef<HTMLDivElement | null>(null);
+  const [mappingTop, setMappingTop] = useState<number | null>(null);
+  const mappingShown = mappingGate !== null;
+  useLayoutEffect(() => {
+    if (!mappingShown) return;
+    const measure = () => {
+      const line = capabilityLineShown ? capabilityLine.current : null;
+      setMappingTop(line === null ? MAPPING_GATE_TOP : Math.ceil(line.getBoundingClientRect().bottom) + MAPPING_GATE_GAP);
+    };
+    measure();
+    const line = capabilityLineShown ? capabilityLine.current : null;
+    const observer = line !== null && typeof ResizeObserver === "function" ? new ResizeObserver(measure) : null;
+    if (observer !== null && line !== null) observer.observe(line);
+    window.addEventListener("resize", measure);
+    return () => { observer?.disconnect(); window.removeEventListener("resize", measure); };
+  }, [mappingShown, capabilityLineShown, capabilityGate?.reason, capabilityGate?.way, capabilityGate?.label]);
+  /** C-8: ←/→ move the selection by one position, stepping over a gated option; Home → CAPABILITY, End → FIELD. */
   const onKeyDown = (event: React.KeyboardEvent) => {
-    const next: SyntxFieldFocus | null = event.key === "ArrowLeft" || event.key === "Home" ? "CAPABILITY" : event.key === "ArrowRight" || event.key === "End" ? "FIELD" : null;
+    let next: SyntxFieldFocus | null = null;
+    if (event.key === "Home") next = "CAPABILITY";
+    else if (event.key === "End") next = "FIELD";
+    else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      const step = event.key === "ArrowLeft" ? -1 : 1;
+      for (let index = ORDER.indexOf(focus) + step; index >= 0 && index < ORDER.length; index += step) if (!isGated(ORDER[index])) { next = ORDER[index]; break; }
+      if (next === null) { event.preventDefault(); return; }
+    }
     if (next === null) return;
     event.preventDefault();
     select(next);
@@ -151,20 +203,21 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
       <span aria-hidden="true" style={{ position: "absolute", left: "34%", right: "34%", bottom: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(92, 200, 255, 0.35), transparent)", pointerEvents: "none" }} />
       {/* Field change: one light passes through the capsule towards the field now active (finite, .9 s; none in REDUCED). */}
       <span aria-hidden="true" style={{ position: "absolute", inset: 0, borderRadius: "999px", overflow: "hidden", pointerEvents: "none" }}>
-        {switched.current && <span key={focus} data-sx-field-sweep style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "40%", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.16), transparent)", animation: `${focus === "FIELD" ? "syntxFieldSweepRight" : "syntxFieldSweepLeft"} 0.9s cubic-bezier(0.16, 1, 0.3, 1) both` }} />}
+        {switched.current && <span key={focus} data-sx-field-sweep style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "40%", background: "linear-gradient(90deg, transparent, rgba(170, 240, 255, 0.16), transparent)", animation: `${sweepRight ? "syntxFieldSweepRight" : "syntxFieldSweepLeft"} 0.9s cubic-bezier(0.16, 1, 0.3, 1) both` }} />}
       </span>
       {options.map((option, index) => {
         const active = focus === option.focus;
         const tone = TONE[option.focus];
-        const gated = option.focus === "CAPABILITY" && capabilityGated;
+        const gated = isGated(option.focus);
+        const left = ORDER[index - 1];
         return (
           <React.Fragment key={option.id}>
             {index > 0 && (
-              <span aria-hidden="true" data-sx-selector-link style={{ position: "relative", display: "flex", alignItems: "center", width: "34px", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="34" height="14" viewBox="0 0 34 14" style={{ overflow: "visible" }}>
-                  <path d="M17 7 C 13 1.5, 4 1.5, 4 7 C 4 12.5, 13 12.5, 17 7" fill="none" stroke={`rgba(56, 229, 255, ${focus === "CAPABILITY" ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: focus === "CAPABILITY" ? "drop-shadow(0 0 2px rgba(56, 229, 255, 0.8))" : "none" }} />
-                  <path d="M17 7 C 21 1.5, 30 1.5, 30 7 C 30 12.5, 21 12.5, 17 7" fill="none" stroke={`rgba(92, 200, 255, ${focus === "FIELD" ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: focus === "FIELD" ? "drop-shadow(0 0 2px rgba(92, 200, 255, 0.8))" : "none" }} />
-                  <circle cx="17" cy="7" r="1.6" fill="#d8f7ff" style={{ filter: "drop-shadow(0 0 3px rgba(150, 230, 255, 0.9))" }} />
+              <span aria-hidden="true" data-sx-selector-link style={{ position: "relative", display: "flex", alignItems: "center", width: "14px", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="14" height="14" viewBox="0 0 14 14" style={{ overflow: "visible" }}>
+                  <path d="M7 7 C 5.5 2, 1.5 2, 1.5 7 C 1.5 12, 5.5 12, 7 7" fill="none" stroke={`rgba(${TONE[left]}, ${focus === left ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: focus === left ? `drop-shadow(0 0 2px rgba(${TONE[left]}, 0.8))` : "none" }} />
+                  <path d="M7 7 C 8.5 2, 12.5 2, 12.5 7 C 12.5 12, 8.5 12, 7 7" fill="none" stroke={`rgba(${tone}, ${active ? 0.85 : 0.22})`} strokeWidth="1" style={{ transition: "stroke 0.45s ease", filter: active ? `drop-shadow(0 0 2px rgba(${tone}, 0.8))` : "none" }} />
+                  <circle cx="7" cy="7" r="1.6" fill="#d8f7ff" style={{ filter: "drop-shadow(0 0 3px rgba(150, 230, 255, 0.9))" }} />
                 </svg>
               </span>
             )}
@@ -173,15 +226,15 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
               ref={element => { buttons.current[option.focus] = element; }}
               data-testid={option.id}
               data-field-focus-active={active ? "true" : "false"}
-              data-field-gate={option.focus === "CAPABILITY" ? (capabilityGated ? "AWAITING_JOB" : "OPEN") : undefined}
+              data-field-gate={option.focus === "CAPABILITY" ? (capabilityGated ? "AWAITING_JOB" : "OPEN") : option.focus === "MAPPING" ? (mappingGate?.state ?? "OPEN") : undefined}
               aria-pressed={active}
               disabled={gated || undefined}
               aria-disabled={gated || undefined}
-              aria-describedby={gated && capabilityGate !== null ? CAPABILITY_GATE_REASON_ID : undefined}
-              title={gated ? capabilityGatedHint : undefined}
+              aria-describedby={option.focus === "CAPABILITY" ? (gated && capabilityGate !== null ? CAPABILITY_GATE_REASON_ID : undefined) : option.focus === "MAPPING" && gated ? MAPPING_GATE_REASON_ID : undefined}
+              title={!gated ? undefined : option.focus === "MAPPING" ? `${mappingGate!.reason} ${mappingGate!.way}` : capabilityGatedHint}
               onClick={() => select(option.focus)}
               onKeyDown={onKeyDown}
-              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "9px", padding: "10px 20px 10px 15px", width: "214px", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(170, 204, 222, 0.78)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "12px", fontWeight: 700, letterSpacing: "1.6px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : gated ? "not-allowed" : "pointer", opacity: gated ? 0.42 : 1, transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease, opacity 0.45s ease" } as React.CSSProperties}
+              style={{ "--sx-tone": tone, position: "relative", display: "inline-flex", alignItems: "center", gap: "6px", padding: "10px 10px 10px 8px", width: "auto", justifyContent: "center", borderRadius: "999px", border: `1px solid ${active ? `rgba(${tone}, 0.8)` : "transparent"}`, background: active ? `radial-gradient(120% 170% at 50% 0%, rgba(${tone}, 0.32), rgba(${tone}, 0.1) 62%, rgba(${tone}, 0.04))` : "transparent", boxShadow: active ? `0 0 22px rgba(${tone}, 0.3), 0 0 46px rgba(${tone}, 0.1), inset 0 1px 0 rgba(220, 250, 255, 0.28), inset 0 0 16px rgba(${tone}, 0.14)` : "none", color: active ? "#f2fdff" : "rgba(170, 204, 222, 0.78)", textShadow: active ? `0 0 12px rgba(${tone}, 0.6)` : "none", fontFamily: SIL_TOKENS.typography.mono, fontSize: "12px", fontWeight: 700, letterSpacing: "1.2px", textTransform: "uppercase", whiteSpace: "nowrap", cursor: active ? "default" : gated ? "not-allowed" : "pointer", opacity: gated ? 0.42 : 1, transition: "background 0.45s ease, color 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, text-shadow 0.45s ease, opacity 0.45s ease" } as React.CSSProperties}
             >
               <span data-sx-lamp aria-hidden="true" style={{ width: "7px", height: "7px", boxSizing: "border-box", borderRadius: "50%", flexShrink: 0, border: `1px solid rgba(${tone}, ${active ? 1 : 0.38})`, background: active ? `rgb(${tone})` : "transparent", boxShadow: active ? `0 0 8px rgba(${tone}, 0.95), 0 0 2px #ffffff` : "none", transition: "background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease" }} />
               {option.label}
@@ -195,6 +248,7 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
       const open = capabilityGate.state === null;
       return (
         <div
+          ref={capabilityLine}
           id={open ? undefined : CAPABILITY_GATE_REASON_ID}
           data-testid={open ? "field-entry-state" : "capability-gate-reason"}
           data-sx-shell="gate-reason"
@@ -215,6 +269,23 @@ export function SyntxFieldSelector({ focus, groupLabel, capabilityLabel, jobLabe
         </div>
       );
     })()}
+    {mappingGate !== null && (
+      <div
+        id={MAPPING_GATE_REASON_ID}
+        data-testid="mapping-gate-reason"
+        data-sx-shell="mapping-gate"
+        data-gate={mappingGate.state}
+        role="status"
+        aria-live="polite"
+        style={{ position: "fixed", right: "28px", top: `${mappingTop ?? MAPPING_GATE_TOP}px`, visibility: capabilityLineShown && mappingTop === null ? "hidden" : "visible", zIndex: 60, boxSizing: "border-box", width: "max-content", maxWidth: ENTRY_LINE_MAX_WIDTH, margin: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "5px 14px 6px", borderRadius: "14px", border: "1px solid rgba(110, 214, 250, 0.24)", background: "linear-gradient(180deg, rgba(8, 21, 34, 0.9), rgba(3, 8, 15, 0.93))", boxShadow: "0 0 0 1px rgba(3, 8, 16, 0.5), 0 8px 22px rgba(0, 0, 0, 0.4), 0 0 18px rgba(110, 214, 250, 0.07)", backdropFilter: "blur(10px)", textAlign: "center", fontFamily: SIL_TOKENS.typography.mono, pointerEvents: "none" }}
+      >
+        <span data-sx-entry-path style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "1.6px", color: "rgba(150, 214, 236, 0.78)", textWrap: "balance" }}>{mappingGate.label}</span>
+        <span style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", justifyContent: "center", columnGap: "10px", rowGap: "2px" }}>
+          <span data-testid="mapping-gate-cause" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "12px", lineHeight: 1.4, color: "#e6f1f8" }}>{mappingGate.reason}</span>
+          <span data-testid="mapping-gate-way" style={{ fontFamily: SIL_TOKENS.typography.sans, fontSize: "11.5px", lineHeight: 1.4, color: "rgba(150, 214, 236, 0.9)" }}>{mappingGate.way}</span>
+        </span>
+      </div>
+    )}
     </>
   );
 }

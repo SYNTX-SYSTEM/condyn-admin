@@ -49,7 +49,7 @@ beforeEach(() => {
 });
 
 describe("job scope at the application shell (server-rendered)", () => {
-  it("shows that no job is selected, in both fields, as a shell element outside the two-button strip", () => {
+  it("shows that no job is selected, in both fields, as a shell element outside the three-button strip (phase D C-3)", () => {
     for (const fieldFocus of ["CAPABILITY", "FIELD"] as const) {
       const html = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} fieldFocus={fieldFocus} />);
       const chip = indicator(html);
@@ -57,7 +57,7 @@ describe("job scope at the application shell (server-rendered)", () => {
       expect(chip).toContain('data-job-scope-state="NONE"');
       expect(chip).toContain("NO JOB SELECTED");
       expect(strip(html)).not.toContain("job-scope-indicator");
-      expect(strip(html).match(/<button/g)).toHaveLength(2);
+      expect(strip(html).match(/<button/g)).toHaveLength(3);
     }
     const de = renderToString(<SemanticCareerIntelligenceField data={EMPTY_CAREER_INTELLIGENCE_DATA} initialLocale="de" />);
     expect(indicator(de)).toContain("KEIN JOB GEWÄHLT");

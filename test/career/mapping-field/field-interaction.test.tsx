@@ -114,17 +114,15 @@ describe("MAP-C-FOCUS-UI · L0 ⇄ L1", () => {
     view.unmount();
   });
 
-  it("inverse: on L1 a click on a body opens nothing deeper (L2 is a later phase) and chooses nothing", () => {
+  it("phase D: on L1 a click on a body of the open pool opens its role (L2) — a look, and it chooses nothing", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     let tree = view.settle(p);
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick");
     tree = view.settle(p);
-    const before = JSON.stringify(byTestId(tree, "mapping-field")!.props["data-level"]);
     fire(byTestId(tree, bodyId(POOL_A, "role_platform")), "onClick");
     tree = view.settle(p);
-    expect(JSON.stringify(byTestId(tree, "mapping-field")!.props["data-level"])).toBe(before);
-    expect(byTestId(tree, "mapping-field")!.props["data-level"]).toBe("L1");
+    expect(byTestId(tree, "mapping-field")!.props).toMatchObject({ "data-level": "L2", "data-pool": POOL_A, "data-role": `${POOL_A}:role_platform` });
     // The field takes no job-scope callback and offers no "select this job" (B-3, B-4 stays the Job Field's).
     expect(Object.keys(p).sort()).toEqual(["locale", "projection", "ranking", "watch"]);
     expect(allByPrefix(tree, "mapping-select")).toEqual([]);
