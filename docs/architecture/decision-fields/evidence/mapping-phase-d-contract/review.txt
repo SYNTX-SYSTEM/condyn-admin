@@ -211,3 +211,46 @@ HOLD. PINK holds C-1…C-11 and D-1…D-7 on revision bfa10b92. Two notes carrie
    (2) §8.8/§8.11 must exercise the newly admitted mark/select actions (above).
    Everything else is held now. Document state "CONTRACTED pending PINK's hold" → PINK's hold given.
    Read-only throughout; document-only; nothing executed.
+
+
+=================================================================================
+ADDENDUM 2 (2026-11-05) — hold carries to CONTRACTED 95bd0129; bindings registered.
+=================================================================================
+The document moved past bfa10b92 to 95bd0129 (state CONTRACTED). Verified the hold still stands:
+the three intervening commits (7419c429, 2f081807, 95bd0129) are each document-only, and §5 (which
+holds §5.1, §5.2, §5.3) is BYTE-IDENTICAL between bfa10b92 and 95bd0129 (extracted and diffed). So
+the hold on C-1…C-11 and D-1…D-7 carries unchanged to 95bd0129.
+
+My MARK_REQUIREMENT condition is now bound, not informal:
+  §8.8 "No scope write — driven, not grepped": must EXERCISE OPEN_ROLE, OPEN_REQUIREMENT,
+     SELECT_CAPABILITY and MARK_REQUIREMENT (the last two at L2) and assert nothing was written; a
+     grep for absent write calls is explicitly not enough. Correct — phase D removed the whitelist
+     that used to carry B-3, so the proof must rest demonstrably on D-7 and the structural absence of
+     a scope.
+  §8.11: the provenance line must survive those driven actions (no reachable state loses it).
+Accepted as the binding of my condition.
+
+§8 numbering checked — no collision: §8.16 is D-Q8 (Execution, not exit code), §8.17 is the
+  ring-order overflow (D-Q3). GELB's reference to D-Q8 as §8.16 matches the document.
+
+D-Q8 binds PINK as validator: a skipped e2e suite is a GAP, never a pass. When I validate §8.14/§8.16
+  I require the resolved Playwright module path and per-case results (and the module version, e.g.
+  1.63.0 from nquiry, recorded per run) in the evidence; a green exit code without execution proof is
+  not accepted. The baseline form (job-scope-gate 1/1, 306127 ms, executed) is the model. Accepted.
+
+D-Q9 — sound, and I verified the untracked trap it rests on: architecture.test.ts:49 builds the
+  working-tree set with `git ls-files --others --exclude-standard`, so an untracked evidence directory
+  trips D-3 with no commit. Four writers enumerated; three are non-phase-D files so phase D works
+  around them (correct — editing them would itself violate D-3), and live-browser-workflow (hardcoded)
+  is honestly declared out of phase D's proof surface. ONE INVERSE REFINEMENT for the §8 pass:
+    The pre-MAP-D-ARCH clean MUST BE SURGICAL — move/remove only the enumerated evidence paths by
+    exact path (job-scope-gate-<tip>, syntx-walk-<tip>, the readonly-walk output path, and
+    job-pool-validation if ever produced). NEVER a blanket `git clean -fdx` or a wildcard: D-3 exists
+    to catch stray untracked files, and a broad clean would blind it to exactly that. Any other
+    untracked file in the tree is a real finding and must NOT be swept away to make MAP-D-ARCH green.
+    Run order I will follow: e2e run -> capture execution proof (§8.16) -> move evidence to the
+    scratchpad -> MAP-D-ARCH on the surgically cleaned tree. Cleaning too early loses the execution
+    proof; cleaning too late (or too broadly) produces a false D-3 result either way.
+
+Still read-only; document-only; nothing executed. The hold is unchanged; these are bindings for the
+later §8 validation and one refinement to keep D-3 meaningful.
