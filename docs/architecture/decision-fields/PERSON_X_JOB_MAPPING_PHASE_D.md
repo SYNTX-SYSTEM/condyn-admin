@@ -933,6 +933,11 @@ viewports × two locales × two modes, G-12 158/158.
 
 **The GO is for the §5.1 / §5.2 contract as delivered, document- and branch-local. It is not a merge or rollout authorisation.**
 
+**The GO is pinned to `86e36924` and does not carry over.** Anything that re-delivers — a fix, a reword, even a zero-logic change
+to a `describe` string — breaks the pin, and PINK re-runs the §8 pass against the new tip before the GO applies again. A GO must
+not ride a commit nobody measured. PINK holds the four §8 artefacts (findings, its own base-walk and G-12 runs, `review.txt` §8 at
+`20e059e9`) and the D-5 pins against that re-run.
+
 ### 11.7 A stated limit of D-3, not a defect
 
 PINK's one contradiction, raised under the scope habit and left to me: D-3 filters change sets with
