@@ -325,7 +325,8 @@ the per-requirement relation signs of §1.2; if a per-role evidence class is wan
 | `app/components/career/demo/SemanticCareerIntelligenceField.tsx` | change | MAPPING stage mount; the ranking panel keeps its `field` prop and its list |
 | `lib/career/ui/career-demo-url.ts` | change | `focus=MAPPING` (C-9) |
 | `app/components/career/demo/CareerIntelligenceDashboard.tsx` | change | two type widenings only, no logic change (D-Q10) |
-| `app/components/career/demo/career-demo-layout.ts` | change | three additive rules: the `mapping-gate` marker, clearance over both lines, the narrow-tier order (D-Q13) |
+| `app/components/career/demo/career-demo-layout.ts` | change | four additive changes: the `mapping-gate` marker, clearance over both lines, a **new** intake rule beside the byte-identical existing one, the narrow-tier order (D-Q13, D-Q16) |
+| `test/career/pxj-first-screen/person-markup.test.tsx` + its fixture | change | T-07: narrow the hash by two elements, digests re-derived from a render at `49e2bc6` (D-Q15) |
 | `app/components/career/demo/mapping-field-copy.ts` | change | EN/DE for L2/L3, open positions, evidence limitation, the budget sentence, the layout-shift line |
 | `test/career/mapping-field/phase-base.ts` | change | `PHASE_D_BASE = e360caf9` (§5.2) |
 | `test/career/mapping-field/architecture.test.ts` | change | MAP-D-ARCH: D-1 … D-7 of §5.2, replacing the phase-C guard |
@@ -735,6 +736,56 @@ to the two existing options is mine to accept, not GRÜN's to assume. **And if n
 three buttons, that comes back here — never a silent typography shrink** (PINK's falsifiability note on §8.17).
 
 Geometry is not named in C-1 … C-11, so none of this changes the contract.
+
+### D-Q15 · T-07, the PERSON markup seal: narrow the hash, never re-base it
+
+GRÜN found a third file that phase D must reach and that neither §7 nor D-3 named.
+`test/career/pxj-first-screen/person-markup.test.tsx` hashes the **whole** SSR markup of the host at PERSON ×
+`fieldFocus=CAPABILITY` — L0, each focused orbit, and DE — with `createHash("sha256").update(markup)` (`:28`) against
+`fixtures/person-markup-49e2bc6.sha256.json`, seven digests, and the file's own comment records that they "were rendered from this
+same file on 49e2bc6".
+
+Phase D necessarily changes that markup: the strip gains its third button and the geometry of D-Q14 (C-3, C-4), and a MAPPING gate
+line stands in it whenever MAPPING is gated, which without an analysis is `NO_ANALYSIS` (C-10, C-11). T-07 is red, for the right
+reason. Phase C only held it because the strip stayed untouched.
+
+**Bound: GRÜN's option (2), narrowing the hash — with the derivation path made explicit, because its wording hid the thing that
+matters.**
+
+Option (1), re-basing the digests on the phase-D render, is refused: it would keep the reassuring filename while destroying the
+only thing the test asserts, that PERSON is unchanged against `49e2bc6`.
+
+But (2) is **not** "the digests stay the same". They cannot: the old digests were taken over the full markup, so a stripped render
+can never match them. (2) means the seven digests are **re-derived from a render at `49e2bc6`** with the same two elements removed
+by the same extraction — not from today's output. If they are instead taken from the phase-D render, (2) silently becomes (1) and
+nobody can tell from the file. The test's own comment already documents the reproducible procedure, so this is a re-derivation of
+the same reference, not a new one.
+
+**The exclusion is exactly two elements:** `[data-testid="field-focus-strip"]` and the new `mapping-gate-reason`. The existing
+capability-gate / entry line is **not** excluded — phase D does not change it, so it stays inside the hash and keeps its coverage.
+Removal is by depth-matched element extraction, as `job-scope-ssr.test.tsx:34` already does, never by a regex that can over-match.
+
+**Vacuity guard, because a stripper that matches nothing passes for the wrong reason.** The test asserts presence as well as
+equality: `field-focus-strip` is present in **both** renders; `mapping-gate-reason` is present in the phase-D render for the gated
+variants and **absent** at `49e2bc6`, which is itself the asymmetry to assert rather than to paper over.
+
+**The fixture must say what it hashed.** The file keeps naming `49e2bc6` — the reference is unchanged — and carries an `excluded`
+field listing the two selectors, so no later reader can mistake a narrowed seal for the original one.
+
+T-07 therefore joins §7 and D-3's entry set. **That expands a clause PINK holds, so PINK re-states D-3** — the third such expansion,
+and the same reasoning each time: it is the necessary reach of an already-held clause, here C-3/C-4 and C-10/C-11, not scope creep.
+
+### D-Q16 · (b) is additive in the stricter sense GRÜN found
+
+`field-entry-state.test.tsx:255` expects the existing clearance rule verbatim — `:has(> [data-sx-shell="gate-reason"]) ${INTAKE}` —
+and that file is not a phase-D file. GRÜN's first cut of (b) widened that rule into a selector list, which would have broken it.
+
+**Corrected and bound, and it is stricter than what I had bound:** the existing `INTAKE_BELOW_ENTRY` rule stays **byte-identical**,
+and `mapping-gate` gets its **own new rule** beside it in the same media block. So (b) is now the measurement over both markers plus
+one new rule — two additions, zero edits — rather than one generalised rule. The D-5 pin for `career-demo-layout.ts` follows that
+shape: four additive changes, no existing line altered.
+
+GRÜN found this itself and fixed it before reporting. That is the right order.
 
 ---
 
