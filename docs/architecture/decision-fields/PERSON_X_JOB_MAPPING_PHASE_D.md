@@ -356,7 +356,9 @@ Not "does it look right". The questions that can falsify this field:
 15. **Preservation, MAP-D-ARCH D-1 … D-7.** Orbits, planetarium, B2, job scope, job pool, capability core, `app/api` and
     `lib/career/ui` (except `career-demo-url.ts`) byte-identical against `PHASE_D_BASE`; `AutoJobRankingPanel.tsx` byte-identical
     (D-4); the engine and spec byte-identical (D-1); the read-only envelope intact (D-7).
-16. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
+16. **Execution, not exit code (D-Q8).** Every e2e result claimed for §8.14 records that the suite executed — the resolved
+    Playwright module and the per-case results. A skipped suite is reported as a gap, never counted as a pass.
+17. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
     one tick, must turn a test red. What is counted away is always the lightest and least necessary, never an arbitrary pick.
 
 PINK's mutant method from phase C §7 is the right instrument for 1, 2, 4, 7 and 9: apply the mutant, show the test red, restore.
@@ -462,6 +464,34 @@ fallback, reported as a gap rather than passed off as covered.
 
 Approved. Branch `frontend/mapping-phase-d` from `origin/main` `e360caf9`, in a new worktree
 `/home/codi/Entwicklung/condyn-admin-mapping-d` with a **real** `node_modules` (see D-Q6). `condyn-admin-mapping-b` stays untouched.
+### D-Q8 · A skipped e2e suite is a gap, never a pass
+
+Found by GRÜN while preparing the environment, and it bears directly on proof §8.14. **Playwright is not a project dependency.** The
+e2e files resolve it through `CONDYN_PLAYWRIGHT_MODULE`; without that variable they **skip** rather than fail. A run reported as
+green without it therefore proves nothing at all.
+
+**Bound:** every e2e result claimed for phase D must record that the suite *executed* — the resolved module path and the per-case
+results — not merely that the run exited 0. A suite that skipped is reported as a **gap**, in those words, and never counted toward
+§8.14. This applies to whoever runs it, GRÜN or PINK.
+
+The one installation on this machine lives in another project (`nquiry`, playwright 1.63.0). Referencing it read-only and
+process-locally is acceptable; nothing in that project is changed and nothing is set globally.
+
+### D-Q9 · Phase-D runs write their evidence to their own directory
+
+The e2e suite writes screenshots and JSON under `docs/architecture/decision-fields/evidence/job-scope-gate-<TIP>`, and `TIP` defaults
+to `cb3d33f` — a **past phase's checked-in evidence**. A phase-D run with the default overwrites it. GRÜN observed exactly that (14
+files overwritten, 5 added) and restored them.
+
+Two reasons this must not happen again, and the second is the harder one:
+
+1. Another phase's evidence is that phase's proof. Overwriting it destroys the record a later reconstruction depends on.
+2. **D-3 trips on it.** Files under `docs/.../evidence/` are not phase-D files, so a change set carrying them violates "every
+   phase-D change set changes only phase-D files". The boundary forbids it independently of the hygiene argument.
+
+**Bound:** phase-D e2e runs set `JOB_SCOPE_TIP` to the phase-D tip, which the suite already supports
+(`job-scope-gate.e2e.test.ts:45`) — no change to the e2e file is needed. Evidence from phase-D runs is **not committed**; it is
+reported by path. `job-scope-gate-cb3d33f` stays exactly as it is checked in.
 
 ---
 
