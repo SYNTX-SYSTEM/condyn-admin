@@ -7,8 +7,10 @@ Base: `origin/main` **e360caf9**. Branch of this document: `architecture/mapping
 
 Phase B stays the semantic foundation and is consumed byte-identical. Phase C is the starting point and is carried over, not rebuilt.
 
-**State: CONTRACTED pending PINK's hold.** §5.1 and §5.2 carry PINK's two corrections (2026-11-05, evidence commit e814e841); PINK holds
-C-1 … C-11 and D-1 … D-7 on acceptance of this revision. Not implemented, not reviewed.
+**State: CONTRACTED.** PINK holds C-1 … C-11 and D-1 … D-7 (2026-11-05, evidence commits e814e841 and 2ec50d79). D-5's exact
+host-file pin is prospective and lands at GRÜN's delivery. GRÜN is released for §7.
+
+§5.1 and §5.2 carry PINK's two corrections; §10 carries GRÜN's nine. Not implemented, not reviewed.
 
 ---
 
@@ -342,12 +344,18 @@ Not "does it look right". The questions that can falsify this field:
    `couplingSign` call. A magnification may not change a meaning.
 7. **Reverse view purity.** `SELECT_CAPABILITY` must collect only couplings whose `capabilityKey` equals the selected key — never one
    that merely shares the capability's name, and never one with a null key.
-8. **No scope write.** No path of the field, at any level, including the offered B2 portal, writes the job scope, the URL or history.
+8. **No scope write — driven, not grepped.** No path of the field, at any level, including the offered B2 portal, writes the job
+   scope, the URL or history. **This proof must EXERCISE the actions phase D newly admits** — `OPEN_ROLE`, `OPEN_REQUIREMENT`,
+   `SELECT_CAPABILITY` and `MARK_REQUIREMENT`, the last two at L2 — and assert that nothing was written. A grep for absent write
+   calls is not enough (PINK's condition on the hold, 2026-11-05): phase D removed the action whitelist that used to carry B-3, so
+   the proof has to rest demonstrably on D-7 and on the structural absence of a scope in the focus machine. A claim that rests on a
+   guard that no longer exists is weaker than it reads.
 9. **A3.** A reading in which role X's fit changes and role Y only shifts position: X animates with a trail, Y does not, Y carries
    `data-layout-shift`, and the field states the count. The inverse mutant (Y animating) must turn it red.
 10. **Golden vectors.** All twelve layout vectors still match to 1e-6 after phase D; the drawn positions are the layout's output 1:1.
 11. **Budget honesty.** With `GEMINI_JOB_CALL_LIMIT=0`, nothing anywhere in the field asserts or implies a semantic check, and the
-    provenance line is present at every level.
+    provenance line is present at every level — including while the newly admitted actions are driven (§8.8), so that opening a role,
+    opening a requirement or selecting a capability cannot reach a state in which the line is lost.
 12. **Level round trip.** L0 → L1 → L2 → L3 → UP ×3 returns the identical focus state object.
 13. **Empty and error readings.** Each of `NO_RANKING`, `NO_ROLES`, `NOT_PERSON`, `PROJECTION_ABSENT`, `BOUNDARY_UNRESOLVED`,
     `NOT_PROVISIONED`, `ANALYSIS_NOT_FOUND` states its own reason and is not drawn as an empty field.
