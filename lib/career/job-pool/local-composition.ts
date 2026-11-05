@@ -2,7 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../db/client";
 import { getCareerAnalysisRepository } from "../repositories";
 import { createCapabilityProposalProjectionReader, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository } from "../capability-core";
-import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
+import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import { createJobPoolApplication, type JobPoolApplication } from "./application";
@@ -14,16 +14,24 @@ import { PostgresJobPoolRepository } from "./repository";
 import { registerJobPoolPersistenceSchema } from "./persistence-schema";
 
 /**
- * Same gate as the HR Decision Loop routes (database isolation mandate): DDL runs only after the bound
- * DATABASE_URL is positively verified as a disposable test database, on a dedicated single-connection client
- * with notices silenced. On any other database the job pool routes issue no DDL and answer
- * 503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED (boundary B-ENTRY). The verdict is taken once per process.
+ * Same gate as the HR Decision Loop routes (database isolation mandate). DDL runs only after the bound
+ * DATABASE_URL is positively verified, on a dedicated single-connection client with notices silenced, as
+ * EITHER of exactly two bases:
+ *
+ *   1. a disposable test database (`condyn_test_<16 hex>` plus marker) — the only basis a test run or an
+ *      agent operation can ever reach, unchanged;
+ *   2. the application database of a REAL SERVER OR WORKER PROCESS that explicitly declared it with
+ *      CONDYN_ALLOW_SHARED_DATABASE=1 (owner authorisation of 2026-11-05) — refused under any test runner,
+ *      refused without the opt-in, and refused for maintenance and template databases.
+ *
+ * Without either basis the job pool routes issue no DDL and answer 503
+ * ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED (boundary B-ENTRY). The verdict is taken once per process.
  */
 let registration: Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> | undefined;
 
 export function ensureJobPoolPersistenceRegistration(): Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> {
   registration ??= (async () => {
-    const verified = await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(result => result, () => null);
+    const verified = await verifyProvisionableDatabase(process.env.DATABASE_URL);
     if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
     const client = createRegistrationClient(verified.url);
     try {

@@ -85,9 +85,55 @@ export function resolveApplicationDatabaseUrl(raw: string | undefined, underTest
   } catch {
     return UNCONFIGURED_DATABASE_URL;
   }
-  if (underTestRunner && name === "") return UNCONFIGURED_DATABASE_URL;
+  // An empty name is refused in every process, not only under a test runner (PINK P-1): postgres-js
+  // would otherwise fall back to PGDATABASE or the connecting user's name and reach a real database.
+  if (name === "") return UNCONFIGURED_DATABASE_URL;
   if (isProtectedDatabaseName(name) && (underTestRunner || sharedDatabaseOptIn !== "1")) return UNCONFIGURED_DATABASE_URL;
   return raw;
+}
+
+export type ApplicationDatabaseRefusal =
+  | "UNDER_TEST_RUNNER" | "NOT_AUTHORIZED" | "MISSING" | "MALFORMED" | "AMBIGUOUS"
+  | "MAINTENANCE_DATABASE" | "DISPOSABLE_DATABASE";
+
+export type ApplicationDatabaseVerdict =
+  | { ok: true; url: string; databaseName: string }
+  | { ok: false; code: ApplicationDatabaseRefusal; detail: string };
+
+/** Maintenance and template databases are never an application database, with or without the opt-in. */
+export const MAINTENANCE_DATABASE_NAMES = Object.freeze(["postgres", "template0", "template1"] as const);
+
+/**
+ * Classifies a URL that a REAL SERVER OR WORKER PROCESS declares as its own application database
+ * (owner authorisation of 2026-11-05, boundary B-ENTRY second basis). This is not a relaxation of the
+ * isolation mandate: it is refused under any test runner and without the explicit opt-in, so a test
+ * run or an agent operation can never reach this verdict. Maintenance and template databases, and
+ * names in the disposable pattern, are refused here as well — the disposable pattern belongs to
+ * `classifyTestDatabaseUrl`, which remains the only basis available to tests.
+ */
+export function classifyAuthorizedApplicationDatabaseUrl(
+  raw: string | undefined | null,
+  underTestRunner: boolean,
+  sharedDatabaseOptIn: string | undefined
+): ApplicationDatabaseVerdict {
+  const no = (code: ApplicationDatabaseRefusal, detail: string): ApplicationDatabaseVerdict => ({ ok: false, code, detail });
+  if (underTestRunner) return no("UNDER_TEST_RUNNER", "an application database is never provisioned from a test runner");
+  if (sharedDatabaseOptIn !== "1") return no("NOT_AUTHORIZED", `${SHARED_DATABASE_OPT_IN_VARIABLE} is not set to 1`);
+  if (raw === undefined || raw === null || raw.trim() === "") return no("MISSING", "DATABASE_URL is not set");
+  if (raw !== raw.trim()) return no("AMBIGUOUS", "DATABASE_URL has surrounding whitespace");
+  let url: URL;
+  try { url = new URL(raw); } catch { return no("MALFORMED", "DATABASE_URL is not a URL"); }
+  if (url.protocol !== "postgres:" && url.protocol !== "postgresql:") return no("MALFORMED", `protocol ${url.protocol} is not postgres`);
+  if (url.hostname === "" || url.hostname.includes(",")) return no("AMBIGUOUS", "an explicit single host is required");
+  if (url.search !== "" || url.hash !== "") return no("AMBIGUOUS", "query parameters and fragments could redirect the database and are refused");
+  const match = /^\/([^/]+)$/.exec(url.pathname);
+  if (!match) return no("AMBIGUOUS", "exactly one explicit database name is required (an empty name falls back to PGDATABASE)");
+  const databaseName = match[1];
+  if (databaseName.includes("%")) return no("AMBIGUOUS", "percent-encoded database names are refused");
+  const lower = databaseName.toLowerCase();
+  if (MAINTENANCE_DATABASE_NAMES.some(name => name === lower)) return no("MAINTENANCE_DATABASE", `database ${databaseName} is a maintenance database`);
+  if (DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)) return no("DISPOSABLE_DATABASE", `database ${databaseName} is a disposable test database, not an application database`);
+  return { ok: true, url: raw, databaseName };
 }
 
 /** Returns DATABASE_URL only if it is a policy-valid disposable test database URL; never a default. */

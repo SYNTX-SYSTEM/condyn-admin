@@ -1,4 +1,4 @@
-import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
+import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import { db } from "../db/client";
 import type { RelationCacheReader } from "./relation-cache";
@@ -21,7 +21,7 @@ let registration: Promise<"REGISTERED" | "NOT_PROVISIONED"> | undefined;
 
 export function ensureRelationCacheRegistration(): Promise<"REGISTERED" | "NOT_PROVISIONED"> {
   registration ??= (async () => {
-    const verified = await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(result => result, () => null);
+    const verified = await verifyProvisionableDatabase(process.env.DATABASE_URL);
     if (verified === null) return "NOT_PROVISIONED" as const;
     const client = createRegistrationClient(verified.url);
     try { await registerRelationCacheSchema(client); } finally { await client.end({ timeout: 5 }); }

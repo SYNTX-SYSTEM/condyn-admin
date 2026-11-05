@@ -10,7 +10,7 @@ vi.mock("../../../lib/career/db/client", () => ({
   db: { execute: async (q: { queryChunks?: Array<{ value?: unknown }> }) => { h.statements.push(JSON.stringify(q)); return [{ e: h.tablesExist }]; }, $client: {} }
 }));
 vi.mock("../../../lib/database-isolation/verification", () => ({
-  verifyDisposableTestDatabase: async () => { if (!h.disposable) throw new Error("not disposable"); return { url: "x" }; }
+  verifyProvisionableDatabase: async () => (h.disposable ? { url: "x", databaseName: "condyn_test_0123456789abcdef", basis: "DISPOSABLE_TEST_DATABASE" } : null)
 }));
 vi.mock("../../../lib/career/job-pool/local-composition", () => ({
   createLocalJobPoolApplication: async () => ({ list: async () => h.pools }),

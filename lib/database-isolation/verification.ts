@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import postgres from "postgres";
 import {
+  classifyAuthorizedApplicationDatabaseUrl,
   classifyTestDatabaseUrl,
   DISPOSABLE_TEST_DATABASE_PATTERN,
   disposableTestDatabaseMarker,
@@ -29,6 +30,52 @@ export async function verifyDisposableTestDatabase(url: string | undefined): Pro
   } finally {
     await sql.end({ timeout: 5 });
   }
+}
+
+/**
+ * Positive identification of the application database a real server or worker process declares as its
+ * own (boundary B-ENTRY second basis). Same rigour as the disposable path: the URL is classified before
+ * any connection, then a read-only connection must report exactly this database. It carries NO disposable
+ * marker requirement — that is the whole difference — and it is unreachable from a test runner or without
+ * the explicit opt-in, so test isolation is unchanged.
+ */
+export async function verifyAuthorizedApplicationDatabase(
+  url: string | undefined,
+  underTestRunner: boolean = process.env.VITEST !== undefined || process.env.VITEST_WORKER_ID !== undefined,
+  sharedDatabaseOptIn: string | undefined = process.env.CONDYN_ALLOW_SHARED_DATABASE
+): Promise<{ url: string; databaseName: string }> {
+  const verdict = classifyAuthorizedApplicationDatabaseUrl(url, underTestRunner, sharedDatabaseOptIn);
+  if (!verdict.ok) return fail(`ERR_APPLICATION_DATABASE_${verdict.code}`, verdict.detail);
+  const sql = postgres(verdict.url, { ...options, connection: { default_transaction_read_only: true } });
+  try {
+    const rows = await sql`SELECT current_database() AS name` as unknown as Array<{ name: string }>;
+    if (rows.length !== 1 || rows[0].name !== verdict.databaseName) {
+      fail("ERR_APPLICATION_DATABASE_IDENTITY_MISMATCH", `connected to ${rows[0]?.name ?? "nothing"}, expected ${verdict.databaseName}`);
+    }
+    return { url: verdict.url, databaseName: verdict.databaseName };
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
+}
+
+export type ProvisionableDatabaseBasis = "DISPOSABLE_TEST_DATABASE" | "AUTHORIZED_APPLICATION_DATABASE";
+
+/**
+ * The ONE place where both bases of boundary B-ENTRY are resolved: a disposable test database, else the
+ * application database that a real server or worker process explicitly authorised. Returns null when
+ * neither holds, so every gate refuses the same way for the same reasons.
+ *
+ * Development scripts and diagnostics deliberately do NOT come through here: `resolveScriptJobScope`
+ * stays bound to the disposable basis alone, so an agent operation can still never reach a real database.
+ */
+export async function verifyProvisionableDatabase(
+  url: string | undefined = process.env.DATABASE_URL
+): Promise<{ url: string; databaseName: string; basis: ProvisionableDatabaseBasis } | null> {
+  const disposable = await verifyDisposableTestDatabase(url).then(result => result, () => null);
+  if (disposable !== null) return { ...disposable, basis: "DISPOSABLE_TEST_DATABASE" };
+  const application = await verifyAuthorizedApplicationDatabase(url).then(result => result, () => null);
+  if (application !== null) return { ...application, basis: "AUTHORIZED_APPLICATION_DATABASE" };
+  return null;
 }
 
 /** A fresh name in the disposable pattern; unique per call. */

@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { db } from "../db/client";
-import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
+import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import type { CapabilityProviderExchangeRecord, CapabilityProviderRequestIdentity, CapabilityProviderResponseRecord } from "../capability-core";
 import { currentExchangeAttempt } from "./attempt";
@@ -54,7 +54,7 @@ export function ensureProviderExchangeArchive(url: string | undefined = process.
   let registration = registrations.get(key);
   if (!registration) {
     registration = (async (): Promise<Registration> => {
-      const verified = await verifyDisposableTestDatabase(url).then(result => result, () => null);
+      const verified = await verifyProvisionableDatabase(url);
       if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
       const client = createRegistrationClient(verified.url);
       try { for (const statement of DDL) await client.unsafe(statement); } finally { await client.end({ timeout: 5 }); }

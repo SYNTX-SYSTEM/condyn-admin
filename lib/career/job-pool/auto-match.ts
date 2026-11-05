@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { verifyDisposableTestDatabase } from "../../database-isolation/verification";
+import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { db } from "../db/client";
 import { createLocalJobPoolApplication } from "./local-composition";
 import { POOL_ROLE_DISCOVERY_MAX_POOLS, ROLE_LEXICAL_STATUSES, buildPoolRoleDiscovery, type PoolRoleDiscovery } from "./pool-role-discovery";
@@ -206,7 +206,7 @@ export async function readAutoMatch(analysisId: string): Promise<Outcome<AutoMat
   const reason = disabledReason(readSemanticConfig());
   if (reason !== null) return { ok: true, value: { state: "DISABLED", reason, ...EMPTY } };
   // The run needs the investigation tables, which exist only on a verified disposable database (same gate as the relation cache).
-  if (!(await tableExists("career_relation_investigations")) && (await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(() => true, () => false)) === false) return { ok: true, value: { state: "DISABLED", reason: "NOT_PROVISIONED", ...EMPTY } };
+  if (!(await tableExists("career_relation_investigations")) && (await verifyProvisionableDatabase(process.env.DATABASE_URL).then(basis => basis !== null, () => false)) === false) return { ok: true, value: { state: "DISABLED", reason: "NOT_PROVISIONED", ...EMPTY } };
   if (!base.ok) return { ok: true, value: { state: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "SKIPPED" : "NOT_STARTED", reason: base.issue.code === "ERR_ROLE_DISCOVERY_OPERAND_NOT_PERSON" ? "NOT_PERSON" : null, ...EMPTY } };
   if (activePoolSnapshot(summaries).length === 0) return { ok: true, value: { state: "SKIPPED", reason: "NO_ACTIVE_POOLS", ...EMPTY } };
   if (!hasCapabilityProposals(base.projection)) return { ok: true, value: { state: "SKIPPED", reason: "NO_PROPOSALS", ...EMPTY } };

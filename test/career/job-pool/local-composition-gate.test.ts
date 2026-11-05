@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ verify: vi.fn(), unified: vi.fn(), jobPool: vi.fn(), createClient: vi.fn(), end: vi.fn() }));
-vi.mock("../../../lib/database-isolation/verification", () => ({ verifyDisposableTestDatabase: mocks.verify }));
+vi.mock("../../../lib/database-isolation/verification", () => ({ verifyProvisionableDatabase: mocks.verify }));
 vi.mock("../../../lib/persistence/unified-schema-registration", () => ({ registerUnifiedPersistenceSchema: mocks.unified }));
 vi.mock("../../../lib/career/job-pool/persistence-schema", () => ({ registerJobPoolPersistenceSchema: mocks.jobPool }));
 vi.mock("../../../lib/persistence/registration-client", () => ({ createRegistrationClient: mocks.createClient }));
@@ -10,7 +10,7 @@ vi.mock("../../../lib/persistence/registration-client", () => ({ createRegistrat
 describe("Job Pool persistence registration gate", () => {
   it("registers unified and job pool schemas once, on the verified URL's dedicated client, and ends it", async () => {
     const client = { end: mocks.end };
-    mocks.verify.mockResolvedValue({ url: "postgresql://x/condyn_test_0123456789abcdef", databaseName: "condyn_test_0123456789abcdef" });
+    mocks.verify.mockResolvedValue({ url: "postgresql://x/condyn_test_0123456789abcdef", databaseName: "condyn_test_0123456789abcdef", basis: "DISPOSABLE_TEST_DATABASE" });
     mocks.createClient.mockReturnValue(client);
     mocks.end.mockResolvedValue(undefined);
     const { ensureJobPoolPersistenceRegistration } = await import("../../../lib/career/job-pool/local-composition");
@@ -27,7 +27,7 @@ describe("Job Pool persistence registration gate", () => {
   it("performs no DDL and answers 503 when the bound database is not positively disposable", async () => {
     vi.resetModules();
     for (const mock of Object.values(mocks)) mock.mockReset();
-    mocks.verify.mockRejectedValue(new Error("ERR_TEST_DATABASE_ISOLATION_PROTECTED"));
+    mocks.verify.mockResolvedValue(null);
     const { ensureJobPoolPersistenceRegistration, createLocalJobPoolApplication } = await import("../../../lib/career/job-pool/local-composition");
     await expect(ensureJobPoolPersistenceRegistration()).resolves.toBe("NO_DDL_ON_NON_DISPOSABLE_DATABASE");
     await expect(createLocalJobPoolApplication()).rejects.toMatchObject({ code: "ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED", status: 503 });
