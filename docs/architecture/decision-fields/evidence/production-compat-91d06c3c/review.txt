@@ -1,0 +1,137 @@
+PINK §3.102 — inverse check of GELB's production-compatibility finding for admin.condyn.eu (:3003), 2026-11-05.
+Production checkout 91d06c3cc3cb3fa31af2ca9a2c9edc3e4f58789a vs main b9e65de14474938146abe7fd4cbe9f3e8469c283.
+Scope: local repository only (git show / git grep / git diff on the two commits, postgres-js 3.4.9 source in node_modules).
+No SSH, no server contact, no build, no database contact, nothing executed. Every server number below is GELB's measurement
+and is only used as a premise; where the verdict depends on one, it is named.
+
+VERDICT ON GELB'S CONCLUSION: CONFIRMED, and understated. GELB's mechanism is right, but the decisive line is a different one
+(see B1). Three further blockers are independent of it (B2, B3, B4), and one of them (B4) does not involve the database at all.
+Within the boundaries (no new port, no new database, no new configuration) PINK finds NO integration path that yields
+"newest DLL state on :3003 with existing data and functions". Each of B1..B4 is sufficient on its own.
+
+RECOMPUTED (equal to GELB unless noted)
+  ancestry 91d06c3c -> b9e65de1: ancestor, 831 forward, 0 lost.  3941 files, +581401/-1689; docs/ 2656; app/+lib/ 718;
+  test/ 526 (GELB 527, counted as paths under test/; immaterial).  package.json is the only package file in the diff (+11/-2,
+  scripts block only); package-lock.json unchanged.  Only .sql: scripts/db-hardening/condyn-public-connect-hardening.PREPARED.sql.
+  app/api/career: 4 routes -> 22.
+  Dirty production files (for GELB to compare via `git hash-object`, read-only):
+    app/components/ConDynPanel.tsx   91d06c3c 2864a712…  8677ffa8 = b9e65de1 481db9427cd746b17dcc2ba33180c690a4a3856a
+    lib/career/embeddings/gemini.ts  91d06c3c 2c026d84…  8677ffa8 7ee2a325f5b1eb2d3c736459369a144cd17e7d3b
+                                     b9e65de1 a52af672e2a9223be776595bd8ead7b4ef80dcf4
+  Both files are part of 8677ffa8, the FIRST commit after production. "Identical in b9e65de1" can only be true for gemini.ts if
+  the server copy hashes to a52af672; if it hashes to 7ee2a325, it is the 8677ffa8 version, which was later changed again.
+  Either way, nothing is lost.
+
+Q1 — policy.ts, line by line (b9e65de1:lib/database-isolation/policy.ts)
+  :11  SHARED_PROTECTED_DATABASE_NAMES = condyn, postgres, template0, template1.
+  :32-35 isProtectedDatabaseName: toLowerCase, then EXACT equality with one of the four. "condyn" is protected; so are
+       "CONDYN" and "Condyn". "condyn_x", "condyn/" and " condyn" are not.
+  :80-91 resolveApplicationDatabaseUrl (called by lib/career/db/client.ts:24-28 with process.env.DATABASE_URL, a test-runner
+       flag from VITEST/VITEST_WORKER_ID, and process.env.CONDYN_ALLOW_SHARED_DATABASE):
+       :81 undefined or blank URL -> UNCONFIGURED (.invalid)          <- THIS is the line production hits (no DATABASE_URL).
+       :84 name = decodeURIComponent(pathname minus the leading "/") -> "%63ondyn" is caught as condyn.
+       :88 empty name -> UNCONFIGURED only under a test runner.
+       :89 protected name -> UNCONFIGURED unless (not under a test runner AND opt-in === "1").
+  B1 (correction of GELB's emphasis): the production process has NO DATABASE_URL. At 91d06c3c that silently meant
+       postgres:postgres@localhost:5432/condyn (91d06c3c:lib/career/db/client.ts:13), which matches GELB's pg_stat_activity
+       (user postgres, db condyn). At b9e65de1 it is :81, not :89. So CONDYN_ALLOW_SHARED_DATABASE=1 on its own changes
+       NOTHING. Reaching condyn takes TWO new environment entries: an explicit DATABASE_URL naming /condyn, which carries a
+       credential, and the opt-in.
+  Paths around the policy that GELB missed (reported as defects, NOT as integration routes):
+  P-1 empty database name outside a test runner: `postgresql://postgres:…@localhost:5432` or `…:5432/` gives name "", so :88
+       does not refuse and :89 does not match. postgres-js then takes database = pathname.slice(1) || PGDATABASE || user
+       (node_modules/postgres/cjs/src/index.js:469). With user postgres this lands on the protected `postgres` database
+       without the opt-in, and with PGDATABASE=condyn it lands on condyn. The fix is to treat an empty name as UNCONFIGURED
+       everywhere, or to resolve the name the way postgres-js does before classifying it.
+       No other bypass found: query parameters only feed postgres-js option defaults (index.js:437/474), never the database.
+       postgres-js does NOT percent-decode the path, so the policy's decoding is stricter, not looser. Case folding is
+       likewise stricter.
+  P-2 (latent) lib/career/provider-calls/register-schema.ts:30-36 provisions the call register on the RAW process.env.DATABASE_URL
+       through createRegistrationClient. That client's own contract (lib/persistence/registration-client.ts:8) is "bound
+       only to a URL that verifyDisposableTestDatabase has positively identified". This is DDL outside the policy. In practice
+       it is reached only after a worker has claimed a job, which needs a reachable application client, i.e. B1 resolved.
+
+Q2 — which of the 4 routes really reach the DB (taken path, not the import graph)
+  At 91d06c3c (production), all four reach the DB on their main path:
+    analyses (GET)             repositories/index.ts: Postgres unless NODE_ENV=test or CAREER_REPOSITORY=inmemory -> list() SELECT
+    analyses/[analysisId] (GET) repository.load() SELECT career_analyses; the rest (perception, matching vs DEMO_COMPANY_POOL) is pure
+    analyze (POST)             validation, then JobRepository.enqueueJob INSERT career_analysis_jobs (route.ts:65-70)
+    jobs/[jobId] (GET)         JobRepository.getJob SELECT (route.ts:15-16)
+  Only the 400 validation branches avoid the DB. GELB's main argument stands.
+  B2 (new, not in GELB's finding): even with B1 resolved, the b9e65de1 code does not fit condyn's schema. GELB measured 14
+       tables, which is exactly the 14-table DDL of 91d06c3c:lib/career/db/client.ts:26-139.
+       - schema.ts: careerAnalysisJobs gains currentOperation (column current_operation). drizzle `select()` names every
+         schema column, so getJob (b9e65de1 job-repository.ts:87), getJobByIdempotencyKey (:93), enqueueJob (INSERT with
+         current_operation) and claimNextJob (raw SQL `current_operation = NULL`) all fail with "column does not exist".
+         Result: jobs/[jobId] -> 500 and analyze -> 500 (the worker cannot claim either).
+       - analyses/[analysisId] now always reads career_capability_proposal_projection_references (route.ts +6 lines ->
+         capability-core/projection/reader.ts:72 -> reference-repository.ts getByAnalysisId SELECT). That table does not exist
+         on condyn, so the route returns 500 for EVERY existing analysis, including the 6 present ones. A "null for historical
+         analyses" result needs the table to exist.
+       - analyses (list) is the only route whose table is unchanged. It would work.
+       Fixing this takes DDL on condyn: applyCareerDbSchema (b9e65de1 client.ts:39-220), which nothing at request time runs
+       on condyn. It is additive: the only statement on one of the 14 existing tables is client.ts:183 ADD COLUMN IF NOT EXISTS
+       current_operation TEXT (nullable, no default, so no rewrite). No trigger, index or rule on the old tables was found.
+       Data-safe, but a modification of the shared database. policy.ts:4 states the mandate that agent operations must never
+       modify it, so this would be the owner's own act after a dump, not an agent step.
+  B3 (by design, decisive for "newest state"): the content that defines the newest state is gated on a VERIFIED DISPOSABLE
+       database and therefore can never run on condyn, with or without the opt-in:
+       - job pool / phase C: lib/career/job-pool/local-composition.ts:26 and :41-43 -> 503 ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED
+       - analyze with PERSON_X_JOB, which is the default when no investigation is declared: job-scope/local-resolver.ts:16-17
+         -> 422 ERR_JOB_SCOPE_INVALID ("nothing is enqueued", analyze/route.ts +24)
+       - HR decision loop: hr-decision-loop/local-composition.ts:31-32 -> no DDL, NOT_PROVISIONED reads
+       Only analyze with investigation {mode:"PERSON"} could get through, after B1 and B2 are resolved.
+  B4 (independent of the database; depends on GELB's nginx measurement): from 8677ffa8, commit 1 of 831,
+       app/components/AnalyzePanel.tsx:5 and PromptsPanel.tsx:4 call `/api/admin/proxy/...` (a new Next route,
+       app/api/admin/proxy/[...path]/route.ts). Before, they called NEXT_PUBLIC_CONDYN_API_URL directly with a client-side
+       bearer token. Per GELB, nginx sends /api/ (except = /api/pdf and ^~ /api/career/) to 127.0.0.1:8002. With prefix
+       matching, /api/admin/proxy/... goes to 8002, NOT to :3003. next.config.ts has no rewrites, and there is no middleware.
+       So the existing ConDyn functions "analyze text" and "manage prompts" break as soon as the new build serves, unless
+       nginx gets a location for /api/admin/proxy/ (a configuration change). The proxy itself would work: CONDYN_API_URL and
+       BACKEND_TOKEN are among GELB's .env.local names. The new /api/decision-contexts routes have the same nginx problem
+       (HR loop UI). /api/topology goes to 8002 in BOTH versions, so nothing changes there.
+
+Q3 — "every provider call is refused"
+  Correct in effect, imprecise in mechanism and in place.
+  - guard.ts:67-69: with no bound context and no default recorder (production never sets one, :34-36), guardedGenerateContent
+    refuses with ERR_PROVIDER_CALL_REGISTER_FAILED BEFORE any DB contact. withJobCallRegister/ensureProviderCallRegister do
+    not even take part in that case.
+  - withJobCallRegister (job-context.ts:17-23) is used only in the worker (scripts/run-career-worker.ts:154) and in
+    scripts/probe-gemini.ts and list-models.ts. The scripts are additionally gated on a disposable DB
+    (job-scope/script-scope.ts:23). Inside it: no DATABASE_URL -> register-schema.ts:31 rejects -> unavailableRecorder ->
+    every call refused. The one in-process context is semantic-investigation-start.ts:82 (job pool), which B3 blocks anyway.
+  - Place: the :3003 server makes NO provider call on any of the 4 existing routes, in either commit. At 91d06c3c the
+    Gemini provider is used only by scripts/run-career-worker.ts and the live-test scripts. "Provider calls refused" is
+    therefore a statement about the career WORKER, a separate process (`npm run worker:career`), not about :3003. GELB did not
+    report whether a worker runs in production. The 8 job rows only say that jobs were enqueued.
+
+Q4 — inside the boundaries?
+  (a) CONDYN_ALLOW_SHARED_DATABASE is a switch the code provides for exactly this case (policy.ts:71-72: "only a real server
+      or worker process may set"). But it is useless alone (B1, :81), needs DATABASE_URL with a credential next to it, and
+      fixes none of B2..B4. PINK's reading: two new environment entries are a new configuration. Whether the boundary meant
+      that is OTTAVIO's call; it does not change the outcome, because B2..B4 remain.
+  (b) "DB parts off" is exactly what b9e65de1 does by default (.invalid). The pages render and /api/pdf works, but all four
+      career routes return 500 and the 6 analyses become unreadable. That is not "with existing data". CAREER_REPOSITORY=inmemory
+      would be a new configuration and also loses the data.
+  (c) Staging: the natural cuts are 8677ffa8 (#1: proxy, B4), f73cb6b5 (#91: current_operation, B2), 48d52c2b (#203:
+      isolation policy, fallback removed, B1), b7827938 (#222: job pool + B-ENTRY gate, B3), b9e65de1 (#831). Because B4
+      arrives with commit #1, every intermediate stage already breaks analyze/prompts behind the unchanged nginx. The only
+      stage free of B1..B4 is 91d06c3c itself. Staging buys nothing inside the boundaries.
+  (d) Not seen by GELB: B2, B3, B4, P-1, P-2, and that the decisive line is :81, not :89.
+  RESULT: inside the boundaries there is no path. The boundaries contradict the goal itself. "Newest state" includes the
+  isolation mandate and the B-ENTRY gate, which keep the shared database off-limits to exactly the new functions.
+
+For OTTAVIO's decision, the smallest path OUTSIDE the boundaries, as a list of what each step costs. Not a recommendation to act:
+  1. nginx: `location ^~ /api/admin/proxy/` (and `/api/decision-contexts`) -> :3003            [config; fixes B4]
+  2. .env.local: DATABASE_URL=…/condyn (explicit path) + CONDYN_ALLOW_SHARED_DATABASE=1          [config; fixes B1]
+  3. pg_dump of condyn, then an owner-run applyCareerDbSchema on condyn (additive)               [DB change; fixes B2]
+  4. phase C / job pool / HR loop still refuse on condyn (B3). They run where they already run, on :3017 with the
+     disposable DB. Lifting B-ENTRY for condyn would be a product-code change against the isolation mandate.
+  So even outside the boundaries, :3003 would get the newest CODE with the old FUNCTIONS, not the newest functions.
+
+Open measurements only GELB can take (read-only): whether a career worker process runs; SELECT status, count(*) FROM
+career_analysis_jobs GROUP BY status; the exact proxy_pass of the nginx "/api/" location; the blob hashes of the two dirty
+files. A security note outside the question: 91d06c3c:app/components/ConDynPanel.tsx:8-9 inlines NEXT_PUBLIC_ADMIN_PASSWORD
+(default 'condyn') and NEXT_PUBLIC_BACKEND_TOKEN into the client bundle at build time. GELB looked for the admin password
+literal, not the backend token. Whether the token value appears in .next/static is worth a count, without printing it. The
+proxy of 8677ffa8 was introduced for exactly this reason.

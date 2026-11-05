@@ -4311,6 +4311,12 @@ Open but not blocking:
 - **G-3.** `dll-revert.sh` and `dll-rollback.sh` belong in the evidence, so that their harmlessness can be checked independently.
 - **O-1.** The exact commit is bound by GELB's tree hash only.
 
+### 3.102 Production compatibility of admin.condyn.eu (:3003), `91d06c3` -> `b9e65de` (2026-11-05) — GELB's finding CONFIRMED, no path inside the boundaries
+
+**Request.** OTTAVIO, via GELB: check inversely whether the newest DLL state can run on the existing port 3003 with the existing data and functions, without a new port, a new database or new configuration. Repository only. Server figures are GELB's measurement (`evidence/production-compat-91d06c3c/review.txt`).
+
+**Verdict.** GELB's conclusion (incompatible) is confirmed and understated. B1: production has no `DATABASE_URL`, so the decisive line is `policy.ts:81`, not `:89`, and the opt-in alone changes nothing. B2: `condyn` carries the 14-table schema of `91d06c3`, which lacks `current_operation` and the projection-reference table, so three of the four existing career routes return 500 even with the opt-in. B3: job pool, phase C and the HR loop are gated on a verified disposable database (B-ENTRY) by design. B4, independent of the database: from `8677ffa` (commit 1 of 831), AnalyzePanel and PromptsPanel call `/api/admin/proxy`, which the current nginx sends to :8002. A staged integration buys nothing, because B4 arrives with the first commit. Policy defects reported: P-1, an empty database name outside a test runner bypasses the protection; P-2, the call-register DDL runs on the raw `DATABASE_URL`.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
