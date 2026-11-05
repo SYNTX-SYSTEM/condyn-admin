@@ -520,9 +520,20 @@ them, since three of the four are not phase-D files.
 1. **Never overwrite another phase's evidence.** Phase-D runs set **both** `JOB_SCOPE_TIP` and `SYNTX_WALK_TIP` to the phase-D tip,
    and pass an explicit output path to `syntx-readonly-walk.mjs` so it writes outside the repository in the first place.
    `job-scope-gate-cb3d33f` and `syntx-walk-9e86d44` stay exactly as checked in.
-2. **Never leave evidence in the working tree.** After each run the evidence directory is moved out of the repository into the
-   session scratchpad and reported by path. Nothing is committed, and **MAP-D-ARCH is run only on a working tree cleaned that way** —
-   otherwise it is red for the test harness's own output, which would be a false finding and would teach everyone to ignore it.
+2. **Never leave evidence in the working tree, and clean surgically.** After each run the evidence directory is moved out of the
+   repository into the session scratchpad and reported by path. Nothing is committed, and **MAP-D-ARCH is run only on a working tree
+   cleaned that way** — otherwise it is red for the test harness's own output, which would be a false finding and would teach
+   everyone to ignore it.
+
+   **The clean is by exact path, never blanket** (PINK's refinement on the hold, 2026-11-05). Only the enumerated outputs are moved:
+   `evidence/job-scope-gate-<tip>`, `evidence/syntx-walk-<tip>`, the readonly walk's given output path, and `evidence/job-pool-validation`
+   if it was ever produced. **Never `git clean -fdx`, never a wildcard.** D-3 exists to catch stray untracked files; a broad clean
+   blinds it to exactly the thing it is for. Any other untracked file in the tree is a **real finding** and must not be swept away to
+   make MAP-D-ARCH green.
+
+   **Run order,** because both errors are possible: e2e run → capture the §8.16 execution proof → move the enumerated evidence to the
+   scratchpad → MAP-D-ARCH on the surgically cleaned tree. Cleaning earlier loses the execution proof; cleaning later or more broadly
+   gives a false D-3 result in either direction.
 3. **`live-browser-workflow.e2e.test.ts` is not part of phase D's proof surface.** Its destination is hardcoded, so it cannot be
    redirected without editing a non-phase-D file, which D-3 forbids. It is not run here. That is a stated limitation of this phase,
    not a silent omission: if a later phase needs it, it needs a switch first.
