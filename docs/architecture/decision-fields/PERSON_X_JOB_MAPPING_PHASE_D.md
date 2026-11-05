@@ -213,6 +213,18 @@ one place.
 > Had the table stood as written, GRÜN would have fixed one site and left two red — or, worse, read the surviving two-button
 > assertions as still binding.
 
+> **Correction to C-8 (GRÜN, 2026-11-05).** An earlier revision ended C-8 with *"Enter/Space choose. Focus ≠ selection"*. That
+> sentence belongs to `SyntxInvestigationSelector` — the investigation membrane, whose manual-activation model is a documented
+> decision (V-12) — and I imported it into the field strip by mistake. `SyntxFieldSelector.tsx:129-134` does the opposite: an arrow
+> key calls `select(next)` and then moves the DOM focus, so **the strip selects on arrow today**, and no test covers it.
+>
+> Implementing C-8 literally would therefore have changed the behaviour of the two existing options, untested and unnoticed, while
+> the contract's purpose is only to admit a third field. C-8 now preserves select-on-arrow. The one genuine change is that stepping
+> runs over three positions instead of jumping between two ends, which is unavoidable once there is a middle.
+>
+> PINK cleared C-8 on the question it was asked — that the new stepping breaks no existing test, which holds either way. This
+> correction changes what C-8 *says the strip does*, so PINK re-reads it.
+
 | # | Clause | Status |
 |---|---|---|
 | C-1 | One element `[data-testid="field-focus-strip"]` carries `data-field-focus` with the current focus | **unchanged** |
@@ -222,7 +234,7 @@ one place.
 | C-5 | Order on the membrane: CAPABILITY, MAPPING, FIELD | **new** |
 | C-6 | Each button carries `data-field-focus-active` and `aria-pressed` | **unchanged** |
 | C-7 | The job-scope indicator stays a shell element **outside** the strip | **unchanged** |
-| C-8 | Keyboard: ←/→ move the focus along the three; `Home` → CAPABILITY, `End` → FIELD; Enter/Space choose. Focus ≠ selection | **extended**, endpoints unchanged |
+| C-8 | Keyboard: ←/→ move **by one position and select**, skipping a gated option; `Home` → CAPABILITY, `End` → FIELD, both selecting. Select-on-arrow is the strip's existing behaviour and is **preserved** | **extended** (stepping over three), endpoints and activation model unchanged |
 | C-9 | URL `focus=MAPPING` opens the mapping field; `FIELD`/`JOB`/`POOL` stay aliases of FIELD; anything unknown stays CAPABILITY | **extended** (`career-demo-url.ts`) |
 | C-10 | MAPPING is **gated** when no PERSON ranking can be shown, using the existing closed-gate pattern (`capabilityGated` / UX-04 reason-and-way), with reasons `NO_ANALYSIS`, `NOT_PERSON`, `NO_RANKING`, `NO_POOL` | **new** |
 | C-11 | A gated option cannot be selected, states its reason and its way, and is not merely disabled in silence | **unchanged pattern** |
@@ -312,6 +324,7 @@ the per-requirement relation signs of §1.2; if a per-role evidence class is wan
 | `app/components/career/demo/SyntxFieldSelector.tsx` | change | third option, gate, keyboard over three (contract C-1…C-11) |
 | `app/components/career/demo/SemanticCareerIntelligenceField.tsx` | change | MAPPING stage mount; the ranking panel keeps its `field` prop and its list |
 | `lib/career/ui/career-demo-url.ts` | change | `focus=MAPPING` (C-9) |
+| `app/components/career/demo/CareerIntelligenceDashboard.tsx` | change | two type widenings only, no logic change (D-Q10) |
 | `app/components/career/demo/mapping-field-copy.ts` | change | EN/DE for L2/L3, open positions, evidence limitation, the budget sentence, the layout-shift line |
 | `test/career/mapping-field/phase-base.ts` | change | `PHASE_D_BASE = e360caf9` (§5.2) |
 | `test/career/mapping-field/architecture.test.ts` | change | MAP-D-ARCH: D-1 … D-7 of §5.2, replacing the phase-C guard |
@@ -537,6 +550,57 @@ them, since three of the four are not phase-D files.
 3. **`live-browser-workflow.e2e.test.ts` is not part of phase D's proof surface.** Its destination is hardcoded, so it cannot be
    redirected without editing a non-phase-D file, which D-3 forbids. It is not run here. That is a stated limitation of this phase,
    not a silent omission: if a later phase needs it, it needs a switch first.
+
+### D-Q10 · `CareerIntelligenceDashboard.tsx` is a phase-D entry point (a file §7 was missing)
+
+GRÜN found a gap in §7 and D-3, not a question: `focus=MAPPING` cannot reach the host at all without it. The dashboard types
+`fieldFocus?: "CAPABILITY" | "FIELD"` (`:17`) and holds `activeField` as `useState<"CAPABILITY" | "FIELD">` (`:41`), so widening
+`CareerDemoUrlProps.fieldFocus` (C-9) breaks the type at page → dashboard. Verified at `e360caf9`.
+
+**Bound:** `app/components/career/demo/CareerIntelligenceDashboard.tsx` is a phase-D entry point under D-3 and D-5. It is **not** in
+D-2's protected set, so no further carve-out is needed. Its change is **two type widenings to `"CAPABILITY" | "MAPPING" | "FIELD"`
+and nothing else** — no logic change.
+
+**The shell mark stays the person mark for MAPPING** — the existing `else` branch at `:82`, untouched. GRÜN's alternative (giving
+MAPPING the DLL mark like FIELD) is refused: it is a logic change the contract does not ask for, and it would be wrong anyway. The
+MAPPING field *is* the PERSON investigation seen against all pools (§0); the person belongs on it.
+
+### D-Q11 · Where the gated MAPPING states its reason
+
+**The shared fixed-column container is refused, and by measurement rather than taste.**
+`test/career/pxj-first-screen/field-entry-state.test.tsx:247` asserts the existing line's style contains
+`"position:fixed;right:28px;top:128px"` — exactly. That file is **not** a phase-D file, so D-3 forbids editing it, and moving the
+positional style into a container would break it. The boundary decides this one.
+
+**Bound:** a separate element with its own id `mapping-gate-reason` (`role="status"`,
+`data-gate="NO_ANALYSIS|NOT_PERSON|NO_RANKING|NO_POOL"`, cause + way), with the MAPPING button carrying `disabled`/`aria-disabled`,
+`aria-describedby="mapping-gate-reason"` and a `title` of the same text — the existing pattern, as GRÜN proposed. The existing line
+keeps its content, its ids **and its positional style**, untouched.
+
+Two constraints on the placement, both measured:
+
+1. **The new line must not carry `data-sx-shell="gate-reason"`.** `applyCareerDemoEntryClearance` finds *the* line by that selector
+   (`entry-clearance-wiring.test.tsx:32`) and measures its box to set `--sx-entry-clear`; a second element with the same marker would
+   change which element is measured and silently move the intake panel.
+2. **The two lines must never overlap, at any viewport.** They can be shown together — the capability gate and the MAPPING gate are
+   derived from different conditions. A hardcoded top that collides when the first line wraps to two lines is not acceptable.
+
+The mechanism inside those two constraints is GRÜN's to choose. If the only workable one needs a non-phase-D file, it comes back
+here before it is built. Not under the capsule centre, per PINK §3.82 F-SEM-1.
+
+### D-Q12 · Gate semantics
+
+(a), (b) and (c) approved as GRÜN derived them, with one gap closed.
+
+* **(a)** A requested but gated MAPPING behaves exactly like `capabilityGated`: the Job Field is active, the request is remembered,
+  and the field returns to MAPPING when the gate opens. Reusing the existing pattern is right; inventing a second one would not be.
+* **(b) The reasons need a deterministic order, which the derivation did not state.** Several can hold at once. **First match wins,
+  in this order: `NOT_PERSON` → `NO_ANALYSIS` → `NO_RANKING` → `NO_POOL`.** The boundary is named before the absence, and the
+  absence before the detail. `NO_ROLES` is **not** a gate reason: the gate is open and the field says its own sentence (§3).
+* **(c)** `field-entry-state.ts` is not a phase-D file, so `fieldEntryState` receives `"FIELD"` for MAPPING and the entry line reads
+  `PERSON_OPEN`. GRÜN's reasoning is accepted: one is indeed not in the Capability Field, so the line is true as it stands.
+* **(d)** See the C-8 correction in §5.1. Select-on-arrow is preserved; the sentence GRÜN queried was imported from the wrong
+  selector and is withdrawn.
 
 ---
 
