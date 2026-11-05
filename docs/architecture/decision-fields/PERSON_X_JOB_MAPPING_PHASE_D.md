@@ -7,7 +7,9 @@ Base: `origin/main` **e360caf9**. Branch of this document: `architecture/mapping
 
 Phase B stays the semantic foundation and is consumed byte-identical. Phase C is the starting point and is carried over, not rebuilt.
 
-**State: DELIVERED, awaiting PINK.** GRÜN delivered `86e36924` (§11); PINK runs the independent §8 pass.
+**State: REVIEWED — PINK GO on `86e36924`** (§11.6, evidence `20e059e9`). The GO covers the §5.1/§5.2 contract as delivered and is
+document- and branch-local: it is **not** a merge or rollout authorisation, and the visual acceptance of the full stage is OTTAVIO's
+and still open.
 
 **Contract:** PINK holds C-1 … C-11 and D-1 … D-7 (2026-11-05, evidence commits e814e841 and 2ec50d79). D-5's exact
 host-file pin is prospective and lands at GRÜN's delivery. GRÜN is released for §7.
@@ -903,6 +905,45 @@ applied and restored with a byte check, **all red**. `job-scope-gate` 1/1 green 
 
 Three previously unrunnable files now pass with a real `node_modules`: `g2-g3-vertical-proof` 63/63, `hr-decision-loop-p7` 7/7,
 `local-decision-context-http` 1/1.
+
+---
+
+### 11.6 PINK's independent §8 pass — **GO** (evidence `20e059e9`)
+
+PINK re-measured everything in isolated worktrees at `86e36924`, `e360caf9` and `49e2bc6` against disposable databases. Nothing
+pushed or merged, no server and no shared database touched. The three things I escalated came back resolved by PINK's **own**
+measurement, not by accepting GRÜN's or mine:
+
+* **D-Q16.** PINK records its own prior condition as **superseded** and derived why rather than take it: a separate rule ends in the
+  `INTAKE` constant once per tier, so `:275`'s exactly-twice becomes four, in a file phase D may not edit. The two-selector fold is
+  the **only satisfiable form**. PINK's one-variable requirement survives. My "mapping-gate alone" case is covered non-vacuously, and
+  PINK extended it to **both orderings** — the symmetry I had not asked for.
+* **The base-red gap.** Confirmed by PINK's own run on `e360caf9`: `syntx-walk` Q-01 … Q-11 is red at `:440:143` and aborts before
+  `:911`. So C-3 at that site is changed without executing — an honest gap, as stated in §11.3 — and **C-3 rests on neither gap**: it
+  is proven at the executing SSR site (`toHaveLength(3)`, 12/12) and in-browser by G-12.
+* **T-07.** PINK re-derived from `49e2bc6` itself. Rendering `49e2bc6`'s own component with the delivered extraction reproduces the
+  **delivered** narrowed digests with `found={strip:1, mgr:0}` — my control reproduced — while the control reproduces the
+  **original full** digests. The chain `sealed(49e2bc6) == delivered == sealed(86e36924)` proves phase D changed **only the two
+  excluded subtrees**. PINK's own mutants: a byte outside the exclusion still flips the hash (the seal still bites), a byte inside
+  the strip is absorbed (**the honest coverage cost**), and the vacuity guard fires.
+
+PINK also measured that **MAP-D-ARCH bites** rather than merely passes: 11/11, and a change to a D-2-protected file or a D-5-pinned
+line turns it red. §8.17 confirmed as spacing, not type — `fontSize` held at 12, clearance EN 14.4766 px / DE 22.875 px across three
+viewports × two locales × two modes, G-12 158/158.
+
+**The GO is for the §5.1 / §5.2 contract as delivered, document- and branch-local. It is not a merge or rollout authorisation.**
+
+### 11.7 A stated limit of D-3, not a defect
+
+PINK's one contradiction, raised under the scope habit and left to me: D-3 filters change sets with
+`sets.filter(set => set.files.some(phaseD))`, so a commit touching **zero** phase-D files is dropped and never judged. What D-3
+guarantees is therefore "every change set that touches a phase-D file changes only phase-D files" — it catches foreign files riding
+**alongside** phase-D ones, which is the realistic failure, but not a separate commit of only foreign files.
+
+**Moot for this delivery, measured:** `e360caf9..86e36924` is exactly **one** commit. And the shape is identical to phase C's,
+which was accepted. I am not changing the guard now: doing so for a hypothetical would cost another build and another review pass.
+It is recorded here as a candidate for a later phase — a clause that every commit in `base..HEAD` is a change set — so that nobody
+later reads D-3's sentence as wider than D-3's reach.
 
 ---
 
