@@ -4317,6 +4317,19 @@ Open but not blocking:
 
 **Verdict.** GELB's conclusion (incompatible) is confirmed and understated. B1: production has no `DATABASE_URL`, so the decisive line is `policy.ts:81`, not `:89`, and the opt-in alone changes nothing. B2: `condyn` carries the 14-table schema of `91d06c3`, which lacks `current_operation` and the projection-reference table, so three of the four existing career routes return 500 even with the opt-in. B3: job pool, phase C and the HR loop are gated on a verified disposable database (B-ENTRY) by design. B4, independent of the database: from `8677ffa` (commit 1 of 831), AnalyzePanel and PromptsPanel call `/api/admin/proxy`, which the current nginx sends to :8002. A staged integration buys nothing, because B4 arrives with the first commit. Policy defects reported: P-1, an empty database name outside a test runner bypasses the protection; P-2, the call-register DDL runs on the raw `DATABASE_URL`.
 
+### 3.103 Production upgrade of admin.condyn.eu to `dc674ee` (2026-11-05) — additivity CONFIRMED, two claims too favourable
+
+**Request.** GELB executed the upgrade on OTTAVIO's GO, covering B1–B4 plus the second B-ENTRY basis, and asked for an inverse validation. PINK covered the code of `dc674ee` and a stub-client DDL probe (no database contact). Server figures are GELB's (`evidence/production-upgrade-dc674ee1/review.txt`).
+
+**Verdict.**
+- **Confirmed: the schema change is additive.** 128 tables (14 old + 114 new) are reproduced exactly. Exactly one statement touches an old table: the nullable `ADD COLUMN`.
+- **GELB's explanation of the 114 is wrong.** The decision runtime creates one table. The bulk is 54 generated T11 tables plus 37 post-decision tables.
+- **Error handling at the five gates is unchanged.**
+- **Refuted: "a test run or an agent operation can never reach the second basis".** Only `VITEST` is detected. On the server, `.env.local` carries the opt-in, which Next and the worker load automatically. `scripts/write-live-lifecycle.ts` has no gate.
+- **More DDL paths than gates.** There is per-request DDL on the application client via `/api/decision-contexts`, now public. The call register is provisioned on the raw URL and is now live in the worker.
+- **Two required variables are missing on the server**, going by GELB's list of names: the canonical-SIL policy versions.
+- **The remaining risk is understated.** No API route authenticates. The proxy hands the backend token's authority to anonymous clients. The running worker turns anonymous `analyze` requests into Gemini calls.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;
