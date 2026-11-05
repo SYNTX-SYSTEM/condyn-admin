@@ -321,7 +321,92 @@ The three measurements of §0 are reproducible on the server: a count of `career
 
 ---
 
-## 10. Hand-over
+## 10. Decided bindings (GRÜN's questions, 2026-11-05)
+
+GRÜN asked seven architecture questions before building. The answers are bindings and therefore stand here, not only in the
+hand-over. Each is numbered as GRÜN numbered it.
+
+### D-Q1 · The provenance line hangs on the reading, never on the configuration
+
+**Bound: source (a) — the content of the reading.** The line appears when the reading holds at least one requirement and **no**
+requirement in it has `source: "SEMANTIC"`. It then stands at every level, and it speaks about the reading:
+
+> *"In dieser Lesung fand keine semantische Prüfung statt; jede gezeigte Beziehung beruht nur auf Namen."*
+
+Under `GEMINI_JOB_CALL_LIMIT=0` the condition is always true, so the line is in practice permanent — but it is permanent **because
+the reading says so**, not because a server value was asserted from the browser. On a fixture with SEMANTIC couplings it falls away
+by itself, which is exactly right.
+
+The requirement-count guard matters: a reading with no requirements at all would otherwise carry the line vacuously. An empty reading
+speaks with its own sentence (`NO_RANKING`, `NO_ROLES`, §3), never with this one.
+
+**`autoMatch.budget.callsJobLimit` must NOT be used for this.** It is `null` before any call is registered, so it cannot tell "limit
+is 0" from "no call has happened yet". A sentence built on it would be a guess dressed as a fact. Forbidden here.
+
+Note on a partial run: while a run is `RUNNING`, some requirements may already carry SEMANTIC and others not. The line then correctly
+disappears, and the not-yet-evaluated relations are told by their own signs plus the pending breath. That is the honest reading.
+
+### D-Q2 · A beam needs a drawn start point; three cases have none
+
+Approved as proposed, extended by the third case GRÜN did not name.
+
+| Case | Beam | What the field says instead |
+|---|---|---|
+| The capability is in the **constellation overflow** (counted, not drawn — capacity is 13 + 23 + 33 = **69** nodes over the rings 30/52/74 at spacing 14) | **none** | the arc keeps its own sign unchanged; a quiet count names the undrawn sources |
+| `keyStatus: NOT_IN_PERSON` — a key no PERSON capability carries | **none** | at L2/L3 the arc names the coupling's capability name with *"not in the person"* |
+| `keyStatus: ABSENT` — `capabilityKey` is null (an older payload) | **none** | at L3 the arc says the **key** is absent — never that the relation is absent |
+
+The governing rule behind all three: **a missing beam says "this cannot be drawn", never "this does not exist".** The arc's own sign
+is never weakened to compensate for a start point the field could not place.
+
+### D-Q3 · The collar and the ring are one output
+
+Confirmed exactly as proposed. `layoutRequirementArcs` is called **once** per role; L0/L1 draw its output at the body's radius, L2
+draws the same output at the ring's radius. Order, gap (6°) and start (−90°) come from `layout-spec.json` → `arcs`; there is no second
+ordering and no second tick algorithm anywhere. One `couplingSign` call per requirement, and proof §8.6 checks that identity.
+
+**One rule phase D must add, because L0 bodies are small.** When a body's circumference cannot carry all its arcs at the legible
+minimum, L0 draws the arcs it can **in ring order** and counts the rest as `+n`, exactly like the existing body-overflow convention.
+Because ring order begins at REQUIRED and then descends by weight, what goes uncounted is always the lightest and least necessary —
+never an arbitrary pick, never a merge, never an average. With the measured data (290 requirements over 48 roles, 79 over 9) this is
+about 6–9 arcs per body and will rarely trigger; it must still be specified, or a product module will invent its own answer.
+
+### D-Q4 · One field, not two
+
+Confirmed as proposed. `AutoJobRankingPanel` stays **unchanged** — it keeps its optional `field` prop and its ranked list, and the
+phase-C proof that it renders byte-equal without `field` keeps holding. `SemanticCareerIntelligenceField` no longer passes `field`,
+so the small panel field disappears and the full stage is the only mapping field. Two fields side by side would be two answers to one
+question.
+
+This changes the exact-diff-tested phase-C line in the host file. That is expected and is precisely what §5.2's re-pin covers: the
+phase-C tests were built to go red at this moment and to force the boundary to be said again.
+
+### D-Q5 · The three-valued movement, settled
+
+Approved as proposed, with two additions:
+
+* `LAYOUT` applies only to a body **drawn in both readings** whose position differs while the delta names no `ROLE_TIER_CHANGED` or
+  `ROLE_FIT_CHANGED` of its own. A `displaced` change (the collision search moved it) is a position difference and therefore `LAYOUT`.
+* A body that appears, or comes out of overflow, is `NONE` and carries no trail. A body that goes **into** overflow between readings
+  is not a movement at all — it is an absence, told by the overflow count, never by a body sliding out of the field.
+* Equal position in the same analysis is `NONE`; across analyses everything is `NONE` (phase C's T2 stands unchanged).
+
+### D-Q6 · The e2e environment
+
+(a) is the right answer and is approved **as architecture**: a real `node_modules` in a fresh worktree, because Turbopack refuses the
+symlink and the contract files of §5.1 need a running Next server. It touches no production path, no foreign application and no
+boundary of the hardlock — it is ordinary local engineering. If GRÜN's own permission frame blocks the install, that is GRÜN's to
+surface to the owner; it is not to be routed around, and (b) — adapting the e2e files without ever running them — is then the stated
+fallback, reported as a gap rather than passed off as covered.
+
+### D-Q7 · Workplace
+
+Approved. Branch `frontend/mapping-phase-d` from `origin/main` `e360caf9`, in a new worktree
+`/home/codi/Entwicklung/condyn-admin-mapping-d` with a **real** `node_modules` (see D-Q6). `condyn-admin-mapping-b` stays untouched.
+
+---
+
+## 11. Hand-over
 
 * **GRÜN** implements §7 against the contract of §5.1 and the proofs of §8, on `PHASE_D_BASE`. Architecture questions come back here
   before a workaround is built.
