@@ -380,8 +380,9 @@ Not "does it look right". The questions that can falsify this field:
     (D-4); the engine and spec byte-identical (D-1); the read-only envelope intact (D-7).
 16. **Execution, not exit code (D-Q8).** Every e2e result claimed for §8.14 records that the suite executed — the resolved
     Playwright module and the per-case results. A skipped suite is reported as a gap, never counted as a pass.
-17. **The capsule ceiling (D-Q14), measured not computed.** At the tested viewports the strip's right edge lies left of the
-    investigation membrane's left edge, and the job-scope indicator's right edge lies left of the strip's left edge.
+17. **The capsule ceiling (D-Q14), measured not computed.** At the tested viewports **and in both locales** the strip's right edge
+    lies left of the investigation membrane's left edge **by at least 12 px**, and the job-scope indicator's right edge lies left of
+    the strip's left edge. A bare `<` is not the assertion: a 2 px pass is inside rendering variance.
 18. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
     one tick, must turn a test red. What is counted away is always the lightest and least necessary, never an arbitrary pick.
 
@@ -677,10 +678,46 @@ One measurement GRÜN did not name, checked here: the job-scope indicator (`Synt
 `maxWidth: calc(50% - 283px)`, so its right edge sits at `50% − 255px`. It permits a half-width up to 255 px and is therefore **not**
 the binding constraint; 236 is.
 
+**Resolved by measurement, 2026-11-05 (GRÜN, e2e G-12, Playwright 1.63.0, `getBoundingClientRect` at 1920×1080, 1600×1000 and
+1280×720 × {JOB, PERSON_X_JOB}).** My estimate was wrong: steps 1–3 do **not** fit.
+
+| Built | Capsule width | Verdict |
+|---|---|---|
+| steps 1 + 2 (width → auto, connectors 34 → 22), type unchanged | 552.25 px | 62 px over |
+| + step 3 (padding 15/20 → 10/12) | 513.25 px | **23.25 px over** — right edge 11.6 px past the membrane |
+
+The condition `strip.right < membrane.left` requires a capsule below **490 px**. The indicator check is green throughout (it ends at
+309.4, the capsule starts at ≥ 383.4), so 236 remains the only binding side.
+
+GRÜN stopped before touching type, as bound, and offered two levers that are **not** in my list and leave type untouched:
+(a) connectors 22 → 14 px (≈ −16 px), (b) the lamp↔label gap 9 → 6 px (≈ −9 px).
+
+**Decision.** (a) and (b) are spacing, not type, so by this section's own principle they belong **before** letterSpacing. They are
+accepted and inserted as steps 2b and 2c. But (a) + (b) alone land at ≈ 488 px — **a 2 px clearance is not a clearance.** It is
+inside the variance of font fallback, platform rasterisation and locale, and shipping on it would mean the guard passes today and
+fails on someone else's machine. Refused as a stopping point.
+
+**Therefore step 4 is accepted: `letterSpacing` 1.6 → 1.2**, reaching ≈ 473 px with ≈ 17 px of room. This is a visible change to the
+two existing buttons and it is mine to accept, which I do: 1.2 px on 12 px uppercase mono is still generous, and the shell already
+runs the investigation membrane at 0.3 px below 1366 px, so it is well inside the existing design language.
+
+**Step 5 is refused. `fontSize` stays 12 px.** Font size is the readability-critical dimension; letter-spacing is not. A2 argues for
+readable bodies, and shrinking the type of the shell's primary navigation to make room for the field that argues for readability
+would contradict it.
+
+**Minimum clearance is bound at ≥ 12 px**, not merely `<`. And the acceptance is the **measurement**, never the estimate: if the
+built combination does not reach 12 px, it comes back here before any font-size change. Both locales are measured — EN is expected
+to bind (DE reads `◈ CAPABILITY-FELD` and `⬡ JOB-FELD`, both shorter), but that is asserted, not assumed, and the DE MAPPING label
+is measured rather than presumed equal.
+
+---
+
 **Bound:** the ceiling is a hard constraint, and the concessions are made **in this order, stopping at the first that fits**:
 
 1. the fixed `width: "214px"` becomes `auto` (the labels are of very different lengths; a fixed width wastes the most);
 2. the connectors 34 px → 22 px;
+2b. the connectors 22 px → 14 px;
+2c. the lamp ↔ label gap 9 px → 6 px;
 3. horizontal padding;
 4. `letterSpacing` 1.6 → 1.2;
 5. `fontSize` 12 → 11.5.
