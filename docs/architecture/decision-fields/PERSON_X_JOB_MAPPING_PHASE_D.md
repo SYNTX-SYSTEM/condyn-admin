@@ -945,6 +945,20 @@ which was accepted. I am not changing the guard now: doing so for a hypothetical
 It is recorded here as a candidate for a later phase — a clause that every commit in `base..HEAD` is a change set — so that nobody
 later reads D-3's sentence as wider than D-3's reach.
 
+**A second reason not to reword now, PINK's and better than mine:** the GO is pinned to `86e36924`. Even a change to a `describe`
+string, with zero logic in it, makes a new commit on the frontend branch, unpins the GO and strictly obliges a re-confirmation that
+nothing else moved — all for a sentence.
+
+**The trigger, carried here so it is not lost.** A later phase will open `architecture.test.ts` anyway to re-state the base
+(`phaseDBase` → `phaseEBase`), exactly as D re-stated C. **Fold the narrower sentence into D-3's own `describe` string in that
+edit** — *"every change set that **touches** a phase-E file changes only phase-E files"* — so the precise wording lands where the
+mechanism lives, at the moment the file is open for other reasons, at no extra build and no extra review pass. Pair it there with
+the companion clause *"every commit in `base..HEAD` is a change set"* **only if that phase delivers as more than one commit**; at a
+single commit the gap is unreachable and the clause stays dormant at no cost.
+
+So: the note is the instrument for D. The narrower sentence and its companion become live when **both** hold — the file is being
+edited regardless, and a multi-commit delivery actually makes the gap reachable.
+
 ---
 
 ## 12. Hand-over
