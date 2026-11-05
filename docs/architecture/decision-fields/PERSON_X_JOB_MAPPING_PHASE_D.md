@@ -7,7 +7,8 @@ Base: `origin/main` **e360caf9**. Branch of this document: `architecture/mapping
 
 Phase B stays the semantic foundation and is consumed byte-identical. Phase C is the starting point and is carried over, not rebuilt.
 
-**State: PROPOSED.** Not CONTRACTED (PINK has not yet re-stated the selector contract), not implemented, not reviewed.
+**State: CONTRACTED pending PINK's hold.** §5.1 and §5.2 carry PINK's two corrections (2026-11-05, evidence commit e814e841); PINK holds
+C-1 … C-11 and D-1 … D-7 on acceptance of this revision. Not implemented, not reviewed.
 
 ---
 
@@ -190,14 +191,31 @@ asking anyone. That is the whole of A3.
 
 ### 5.1 The field-selector contract, re-stated (GELB ↔ PINK)
 
-The contract of `field-focus-strip` was two buttons. It becomes three. **Exactly one assertion changes.** Everything else below is
-carried over unchanged and is restated here so the whole contract stands in one place.
+The contract of `field-focus-strip` was two buttons. It becomes three. Everything below is restated so the whole contract stands in
+one place.
+
+> **Correction (PINK, 2026-11-05).** An earlier revision of this section claimed "exactly one assertion changes". That was **false**,
+> and I verified PINK's finding against the files at `e360caf9` rather than against my own prose. **Three** existing assertions
+> hardcode the two-button strip, all three in files this section already listed as reached:
+>
+> | Site | Assertion |
+> |---|---|
+> | `test/career/job-pool/job-scope-ssr.test.tsx:60` | `expect(strip(html).match(/<button/g)).toHaveLength(2)` |
+> | `test/job-pool-validation/syntx-walk.e2e.test.ts:911` | `expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2)` |
+> | `test/job-pool-validation/support/syntx-readonly-walk.mjs:193` | `check("strip has two buttons", … === 2)` |
+>
+> Plus two stale artifacts that are not assertions but would outlive the change and mislead a later reader:
+> `syntx-walk.e2e.test.ts:925` writes the evidence string `"strip buttons: field-focus-capability-btn, job-pool-panel-toggle"`
+> (missing the new id), and the `describe` title at `job-scope-ssr.test.tsx:51` names the "two-button strip".
+>
+> Had the table stood as written, GRÜN would have fixed one site and left two red — or, worse, read the surviving two-button
+> assertions as still binding.
 
 | # | Clause | Status |
 |---|---|---|
 | C-1 | One element `[data-testid="field-focus-strip"]` carries `data-field-focus` with the current focus | **unchanged** |
 | C-2 | `data-field-focus` ∈ `CAPABILITY` \| `MAPPING` \| `FIELD` | **extended** (was two values) |
-| C-3 | The strip holds **exactly three** buttons | **changed** — `job-scope-ssr.test.tsx` `toHaveLength(2)` → `3` |
+| C-3 | The strip holds **exactly three** buttons. **Every** strip button-count assertion goes 2 → 3, at all three sites named above, and the two stale artifacts are corrected with them | **changed** |
 | C-4 | Button ids: `field-focus-capability-btn`, **`field-focus-mapping-btn`** (new), `job-pool-panel-toggle` | **extended**; the two existing ids are **not renamed** |
 | C-5 | Order on the membrane: CAPABILITY, MAPPING, FIELD | **new** |
 | C-6 | Each button carries `data-field-focus-active` and `aria-pressed` | **unchanged** |
@@ -213,14 +231,46 @@ Files the re-statement reaches: `SyntxFieldSelector.tsx`, `SemanticCareerIntelli
 
 **PINK holds C-1 … C-11 from the moment they are accepted.** Until then this table is a proposal.
 
-### 5.2 The phase base
+### 5.2 The phase base and MAP-D-ARCH
 
 `PHASE_C_BASE` is `5ca0f3f5`; `main` is `e360caf9`; `test/career/mapping-field/architecture.test.ts` (MAP-C-ARCH) is consequently red.
-That is the designed re-statement point, not a defect — the test exists to force exactly this moment.
+That is the designed re-statement point, not a defect — the test exists to force exactly this moment. It is red for the right reason:
+the FINAL INTEGRATION round touched `app/api`, `lib/career/job-pool` and `lib/career/result-inspector`, all protected against
+`5ca0f3f5`, and re-pinning is how those authorised changes are accepted.
 
-**Proposed: `PHASE_D_BASE = e360caf9`**, with the phase-C change-set logic carried over unchanged (every non-merge commit after the
-base whose files include a phase-D file may change only phase-D files; protected paths are compared as trees — committed, staged,
-unstaged and untracked). PINK confirms or refuses the base; it is a boundary statement, not a convenience.
+**`PHASE_D_BASE = e360caf9`.**
+
+> **Correction (PINK, 2026-11-05).** An earlier revision said the phase-C logic was "carried over unchanged, only the base moves".
+> That was **false**, and I verified it in `architecture.test.ts` at `e360caf9`. The change-set *algorithm* carries; the guard's
+> path sets and content assertions do **not**, and moving the base does not fix them because they are hardcoded, not base-relative.
+> Four of the seven assertions invert or contradict phase D outright. A one-line base swap would have produced a guard that forbids
+> precisely what phase D is mandated to build.
+
+MAP-D-ARCH is therefore stated explicitly, assertion by assertion. **D-1, D-6 and D-7 carry verbatim from phase C; D-2 … D-5 are
+re-stated.**
+
+| # | Assertion | Status vs. phase C |
+|---|---|---|
+| **D-1** | The engine and its specification are byte-identical to the base: `lib/career/mapping`, `mapping-spec/`, `PERSON_X_JOB_MAPPING_SPEC.md` — committed, staged, unstaged and untracked | **verbatim.** `lib/career/view-model/mapping-field.ts` is a different directory from `lib/career/mapping`; there is no collision |
+| **D-2** | Protected paths unchanged against the base — the phase-C list **minus two carve-outs**: `SyntxFieldSelector.tsx` leaves protection (it is now a phase-D entry point, C-4), and `lib/career/ui` is protected **except** `lib/career/ui/career-demo-url.ts` (C-9). Everything else carries, `lib/career/job-pool`, `app/api` and `lib/career/result-inspector` included — now at their `e360caf9` state | **re-stated (a)** |
+| **D-3** | Phase-D change sets: every non-merge commit after the base whose files include a phase-D file may change only phase-D files, and the working tree joins as a pending set once it touches one. **The phase-C artifacts are baseline at `e360caf9`**, so `mapping-field.ts`, `PersonJobMappingField.tsx` and `mapping-field-copy.ts` move from *new files* to **entry points**. The four contract files of §5.1 are phase-D-editable, or a commit bundling a contract fix with a field change would trip the "only phase files" rule | **re-stated (b)** |
+| **D-4** | `AutoJobRankingPanel.tsx` is **not** an entry point. D-Q4 keeps it untouched, so it equals the base and moves **into** D-2's protected set. The stale `+`/`−` pin on it is removed, not updated | **re-stated (c)** |
+| **D-5** | The entry-point diff pin: `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
+| **D-6** | The model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no `window`; engine and spec only | **verbatim** |
+| **D-7** | The read-only envelope: no fetch, no POST, no URL or history write, no storage, **no job scope**, no model call — in the model, the component and the copy | **verbatim.** This is what carries B-3/B-4, and §8.8 and §8.11 rest on it |
+
+**The inverted assertion, stated plainly.** Phase C's last assertion — *"phase C names no action that opens a role or a requirement,
+or selects anything"* — is the exact negation of phase D. §7 lifts `FIELD_ACTIONS`, §2.2 drives `reverseView` through
+`SELECT_CAPABILITY`, and L2/L3 exist only through `OPEN_ROLE` and `OPEN_REQUIREMENT`. Phase D therefore **admits the full
+`FOCUS_ACTIONS` set of the phase-B machine**, `MARK_REQUIREMENT` included — marking an arc at L2 is the exact analogue of marking a
+body at L0, and withholding it would be an arbitrary stop.
+
+That makes the action whitelist no longer the thing that enforces the boundary. **D-7 is.** B-3 is kept by the absence of a job
+scope anywhere in the field — not by withholding an action from a focus machine that never had a scope to write. The explicitly
+forbidden names stay forbidden: no `SELECT_ROLE`, `SELECT_JOB`, `SELECT_POOL` or any `jobScope` in the model, the component or the
+copy.
+
+PINK holds D-1 … D-7 together with C-1 … C-11.
 
 ### 5.3 Unchanged, and tested as unchanged
 
@@ -261,9 +311,14 @@ the per-requirement relation signs of §1.2; if a per-role evidence class is wan
 | `app/components/career/demo/SemanticCareerIntelligenceField.tsx` | change | MAPPING stage mount; the ranking panel keeps its `field` prop and its list |
 | `lib/career/ui/career-demo-url.ts` | change | `focus=MAPPING` (C-9) |
 | `app/components/career/demo/mapping-field-copy.ts` | change | EN/DE for L2/L3, open positions, evidence limitation, the budget sentence, the layout-shift line |
-| `test/career/mapping-field/phase-base.ts` | change | `PHASE_D_BASE` (§5.2) |
+| `test/career/mapping-field/phase-base.ts` | change | `PHASE_D_BASE = e360caf9` (§5.2) |
+| `test/career/mapping-field/architecture.test.ts` | change | MAP-D-ARCH: D-1 … D-7 of §5.2, replacing the phase-C guard |
+| `test/career/mapping/architecture.test.ts` | change | the phase-B "engine unchanged" test binds to `PHASE_D_BASE` |
 | `test/career/mapping-field/*`, `test/career/mapping-spec/*` | add | the proofs of §8 |
-| contract test files of §5.1 | change | the one assertion and the new id |
+| `test/career/job-pool/job-scope-ssr.test.tsx` | change | C-3 (`toHaveLength(2)` → `3`), the `describe` title at :51 |
+| `test/job-pool-validation/syntx-walk.e2e.test.ts` | change | C-3 (`.toBe(2)` → `3` at :911), the evidence id string at :925 |
+| `test/job-pool-validation/support/syntx-readonly-walk.mjs` | change | C-3 (`=== 2` → `3` at :193) |
+| `test/job-pool-validation/job-scope-gate.e2e.test.ts` | change | the third focus value and the gated MAPPING option (C-2, C-10) |
 
 The phase-B engine is not touched in any of it. Everything new is composition and drawing.
 
@@ -296,9 +351,13 @@ Not "does it look right". The questions that can falsify this field:
 12. **Level round trip.** L0 → L1 → L2 → L3 → UP ×3 returns the identical focus state object.
 13. **Empty and error readings.** Each of `NO_RANKING`, `NO_ROLES`, `NOT_PERSON`, `PROJECTION_ABSENT`, `BOUNDARY_UNRESOLVED`,
     `NOT_PROVISIONED`, `ANALYSIS_NOT_FOUND` states its own reason and is not drawn as an empty field.
-14. **Contract C-1 … C-11**, including the gated MAPPING option's reason and way, and that the two pre-existing button ids did not move.
-15. **Preservation.** Orbits, planetarium, B2, job scope, `lib/career/ui`, job pool, capability core and `app/api` byte-identical
-    against `PHASE_D_BASE`.
+14. **Contract C-1 … C-11**, including the gated MAPPING option's reason and way, that the two pre-existing button ids did not move,
+    and that **no** two-button assertion survives at any of the three sites of §5.1.
+15. **Preservation, MAP-D-ARCH D-1 … D-7.** Orbits, planetarium, B2, job scope, job pool, capability core, `app/api` and
+    `lib/career/ui` (except `career-demo-url.ts`) byte-identical against `PHASE_D_BASE`; `AutoJobRankingPanel.tsx` byte-identical
+    (D-4); the engine and spec byte-identical (D-1); the read-only envelope intact (D-7).
+16. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
+    one tick, must turn a test red. What is counted away is always the lightest and least necessary, never an arbitrary pick.
 
 PINK's mutant method from phase C §7 is the right instrument for 1, 2, 4, 7 and 9: apply the mutant, show the test red, restore.
 
