@@ -269,7 +269,7 @@ re-stated.**
 | **D-2** | Protected paths unchanged against the base — the phase-C list **minus three carve-outs**: `SyntxFieldSelector.tsx` leaves protection (it is now a phase-D entry point, C-4), `lib/career/ui` is protected **except** `lib/career/ui/career-demo-url.ts` (C-9), and `app/components/career/demo/career-demo-layout.ts` leaves protection (D-Q13, additive only). Everything else carries, `lib/career/job-pool`, `app/api` and `lib/career/result-inspector` included — now at their `e360caf9` state | **re-stated (a)**, third carve-out added 2026-11-05 |
 | **D-3** | Phase-D change sets: every non-merge commit after the base whose files include a phase-D file may change only phase-D files, and the working tree joins as a pending set once it touches one. **The phase-C artifacts are baseline at `e360caf9`**, so `mapping-field.ts`, `PersonJobMappingField.tsx` and `mapping-field-copy.ts` move from *new files* to **entry points**. The four contract files of §5.1 are phase-D-editable, or a commit bundling a contract fix with a field change would trip the "only phase files" rule | **re-stated (b)** |
 | **D-4** | `AutoJobRankingPanel.tsx` is **not** an entry point. D-Q4 keeps it untouched, so it equals the base and moves **into** D-2's protected set. The stale `+`/`−` pin on it is removed, not updated | **re-stated (c)** |
-| **D-5** | The entry-point diff pin: `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
+| **D-5** | The entry-point diff pins — **three files at delivery**: `SemanticCareerIntelligenceField.tsx`, `CareerIntelligenceDashboard.tsx` (exactly two type widenings, `:82` untouched) and `career-demo-layout.ts` (exactly the three additive changes of D-Q13). `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
 | **D-6** | The model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no `window`; engine and spec only | **verbatim** |
 | **D-7** | The read-only envelope: no fetch, no POST, no URL or history write, no storage, **no job scope**, no model call — in the model, the component and the copy | **verbatim.** This is what carries B-3/B-4, and §8.8 and §8.11 rest on it |
 
@@ -623,10 +623,32 @@ clearance measures `max(bottom)` over both markers, so the intake panel starts b
 `order` rule placing `mapping-gate` directly after `gate-reason`. The existing line keeps its content, its ids and its positional
 style, and `field-entry-state.test.tsx:247` stays green.
 
-**This changes a clause PINK holds, so PINK re-states D-2.** The reasoning is the one PINK already accepted for
-`CareerIntelligenceDashboard.tsx`: this is the necessary reach of the held C-10/C-11, not scope creep. (b) and (c) are not new
-mechanisms — they are the existing rules generalised from one fixed line to the set of them, and without either one the result is a
-real defect (a covered intake panel, an overlapping line), not a cosmetic one.
+**This changes a clause PINK holds. PINK re-stated D-2 with the carve-out and HELD it, bounded, with one condition on (c) — the
+refusal I invited.** The reasoning is the one PINK already accepted for `CareerIntelligenceDashboard.tsx`: this is the necessary
+reach of the held C-10/C-11, not scope creep. (b) and (c) are not new mechanisms — they are the existing rules generalised from one
+fixed line to the set of them, and without either one the result is a real defect (a covered intake panel, an overlapping line),
+not a cosmetic one.
+
+**This carve-out is held tighter than the other two, and rightly.** `career-demo-url.ts` is a leaf; `CareerIntelligenceDashboard.tsx`
+was type-only. `career-demo-layout.ts` is shell geometry — the orbit grid, the viewport tiers, the intake clearance, the planetarium
+fit, all of which D-2 exists to preserve. Its D-5 pin at delivery is **exactly the three additive changes**: nothing touching the
+orbit grid, the other tier rules, the planetarium fit, or the single-line clearance of the capability gate.
+
+**Condition on (b) — every pre-existing state identical in effect.** `gate-reason` present and `mapping-gate` absent must yield the
+same `--sx-entry-clear` as today; both absent must still `removeProperty`. The only new behaviour is for states where
+`mapping-gate` is present, and those are new to phase D, so nothing existing can regress.
+
+**Condition on (c) — shared order 4 and DOM-after, never a renumbering.** Measured at `e360caf9`: the narrow tier's orders are fixed
+integers — `gate-reason` **4** (`:176`), the three intake banners **5** (`:177`), the panel wrap **6** (`:178`), the HUD **5**
+(`:179`), `rd-entry` **5** (`:201`). Order 4 belongs to `gate-reason` alone.
+
+So "directly after `gate-reason`, before the banners" is additive **only** when `mapping-gate` carries the **same** `order: 4` and
+sits **after `gate-reason` in DOM order** — equal order values fall back to DOM order, which puts `gate-reason` first, `mapping-gate`
+second, and both before the `order: 5` group. One new rule, no existing integer touched.
+
+**Renumbering the banners, HUD or panel to open a slot is refused.** It edits existing rules, is not additive, and risks a layout
+that has nothing to do with this phase. The DOM order of the two lines is therefore a build requirement, not an accident, and is
+checked at delivery.
 
 **M2 is refused.** Reason and way inside the disabled button would put them in a different register from the capability gate, inside
 a control that assistive technology may skip, with the capsule growing taller in the gated state, and GRÜN measures the way as
@@ -659,7 +681,8 @@ field that argues for readability would be the wrong instinct.
 viewports that the strip's right edge lies left of the investigation membrane's left edge, and that the indicator's right edge lies
 left of the strip's left edge. `job-scope-gate.e2e.test.ts` already measures with `getBoundingClientRect` (`:123`) and is a phase-D
 file. This is proof §8.17. If steps 1–3 do not fit, GRÜN reports the measured width before changing type, because a visible change
-to the two existing options is mine to accept, not GRÜN's to assume.
+to the two existing options is mine to accept, not GRÜN's to assume. **And if no concession short of covering the membrane fits
+three buttons, that comes back here — never a silent typography shrink** (PINK's falsifiability note on §8.17).
 
 Geometry is not named in C-1 … C-11, so none of this changes the contract.
 
