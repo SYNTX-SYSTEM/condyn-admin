@@ -638,9 +638,22 @@ orbit grid, the other tier rules, the planetarium fit, or the single-line cleara
 same `--sx-entry-clear` as today; both absent must still `removeProperty`. The only new behaviour is for states where
 `mapping-gate` is present, and those are new to phase D, so nothing existing can regress.
 
-**Condition on (c) — shared order 4 and DOM-after, never a renumbering.** Measured at `e360caf9`: the narrow tier's orders are fixed
-integers — `gate-reason` **4** (`:176`), the three intake banners **5** (`:177`), the panel wrap **6** (`:178`), the HUD **5**
-(`:179`), `rd-entry` **5** (`:201`). Order 4 belongs to `gate-reason` alone.
+**Condition on (c) — shared order 4 and DOM-after, never a renumbering.** Measured at `e360caf9`: among the **direct children of
+`FIELD`** the narrow tier's orders are fixed integers — `controls`/`guide` **1**, `selector` **2**, `job-scope`/`investigation` **3**,
+`gate-reason` **4** (`:176`), the three intake banners **5** (`:177`), the panel wrap **6** (`:178`), the HUD **5** (`:179`),
+`rd-entry` **5** (`:201`). Among those siblings, order 4 is `gate-reason`'s alone.
+
+> **Correction to the measurement (PINK, 2026-11-05).** An earlier revision stated flatly that "order 4 belongs to `gate-reason`
+> alone". Scoped to `FIELD`'s direct children that is true, but **unscoped it is false**, and I had the counter-evidence in my own
+> output without reading it. `order: 4` occurs **three** times in the file: `:176` (`FIELD >` `gate-reason`), `:187`
+> (`FIELD [data-pxj-panel] [data-pxj-section=proposals]`, a descendant inside the pxj panel) and `:210`
+> (`JOB > [data-testid="job-pool-non-claims"]`, a different box). They do not collide because `order` sorts only among siblings of
+> one flex or grid container, so the additive property stands exactly as bound — but the sentence that justified it did not.
+>
+> **The delivery check is therefore scoped, not file-wide.** After the change the file holds **four** `order: 4` rules. A file-wide
+> count would either fail the additivity check wrongly or, worse, pass it for the wrong reason. What is asserted at delivery:
+> *among the `FIELD > [data-sx-shell=…]` rules, `mapping-gate` is the only addition, at order 4; no existing `FIELD`-direct-child
+> order integer changed* — together with the DOM-order build requirement below.
 
 So "directly after `gate-reason`, before the banners" is additive **only** when `mapping-gate` carries the **same** `order: 4` and
 sits **after `gate-reason` in DOM order** — equal order values fall back to DOM order, which puts `gate-reason` first, `mapping-gate`
