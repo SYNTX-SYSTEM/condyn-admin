@@ -285,3 +285,67 @@ TWO ITEMS FOR OTTAVIO (owner decisions, not GELB's to make):
 
 Read-only throughout: nothing executed against any server or database; no product code or existing
 database changed; evidence is local and signed, not pushed.
+
+
+========================================================================
+ADDENDUM (2026-11-05) — point 1 resolved: the bypass was live, :3003 is now closed
+========================================================================
+GELB supplied the measurements item A required. They confirm the finding and then close it for :3003.
+
+BINDING (server): 127.0.0.1:3017 (DLL, loopback — tight); 0.0.0.0:8002 (uvicorn, FOREIGN app);
+   *:3003 (condyn-admin — ALL interfaces, v4+v6). No host firewall at all: ufw inactive, iptables
+   INPUT policy ACCEPT with no rule for 3003/8002, nftables only Docker NAT/forward. Also public:
+   3000/3001/3002/8000/8001/8040/8090 (all foreign apps). 5432 and 3017 are loopback.
+
+EXPLOIT CONFIRMED FROM OFF-HOST (GELB, against 49.13.3.21, no auth — which also rules out an
+   invisible cloud firewall):
+     http://49.13.3.21:3003/api/admin/proxy/health   -> 200 {"status":"healthy",...}
+     http://49.13.3.21:3003/api/admin/proxy/prompts   -> 200 JSON (form+count only, no content read)
+     same proxy path via the vhost                    -> 401
+   So §3.104 point 1's last paragraph was exact: over the port, ANYONE who knew IP+port wielded
+   BACKEND_TOKEN with full authority, because route.ts injects it server-side; Basic Auth was
+   wirkungslos for them. This was a LIVE exposure, not a hypothesis.
+
+CLOSED FOR :3003: pm2 ran `bash -c 'node_modules/.bin/next start --port 3003'` (not npm start, so a
+   package.json change would have done nothing); HOSTNAME=127.0.0.1 did not bind on this Next version;
+   effective fix was `--hostname 127.0.0.1` via pm2 delete+start (same name) + pm2 save, with a backup
+   (pm2.before-bind.json, dump.pm2.before-bind) and an automatic fallback (not needed). AFTER, off-host:
+   :3003 TCP closed on all four paths; vhost unchanged (no-auth 401, auth 200 incl. /api/admin/proxy/
+   prompts); foreign hosts 200/302; data unchanged 6/8/0, 128 tables; worker polling; binding now
+   127.0.0.1:3003 persisted.
+
+CORRECTIONS GELB volunteered, accepted:
+   - default_server: NOT an explicit directive on admin's listen line. The 401-by-IP is because nginx
+     picks the FIRST server block for the address on an absent/unknown Host, and admin.condyn.eu loads
+     first alphabetically from sites-enabled. Pre-existing, unchanged by the edit. Point 5's conclusion
+     is unchanged (no foreign vhost affected); only the mechanism is corrected.
+   - $scheme: my non-merging mechanism does not explain GELB's case, because the X-Forwarded-Proto line
+     was present in the SAME block in both tests (only the value differed). I withdraw it for this
+     specific case. GELB's stale-worker-after-reload hypothesis is plausible (a reload keeps old
+     workers serving drained keepalive connections). The literal "https" is correct regardless in a
+     TLS-only block. Unresolved, not load-bearing.
+
+POINT 1 VERDICT, now decidable: GO for the admin access-control mandate. :3003 is loopback and
+   measured closed from outside, so the admin app and its token-injecting proxy are reachable ONLY
+   through Basic Auth. The bypass is closed.
+
+   BUT closing :3003 does NOT close item B, and this is the answer to GELB's direct question ("is
+   closing :3003 alone enough while :8002 is open?"):
+     - For gating the ADMIN APP: yes. Clean GO.
+     - For CONTAINING the token: no. :8002 is bound 0.0.0.0 with no firewall; its protected endpoints
+       accept a bearer token (403 without one). The OLD backend token was public in the client bundle
+       for ~10h, is a stateless JWT valid until 2027-05-03, and cannot be revoked. So anyone who
+       scraped it in that window can call :8002 PROTECTED endpoints directly from the internet
+       (`curl http://49.13.3.21:8002/prompts -H 'Authorization: Bearer <old>'`), bypassing nginx,
+       Basic Auth and the :3003 closure entirely, for ~18 months. Rotating BACKEND_TOKEN and closing
+       :3003 protect FUTURE proxy use; neither touches the already-leaked token against a directly
+       reachable :8002.
+   This is NOT a defect in GELB's admin-app work and NOT GELB's to fix: :8002 is /opt/condyn-analyzer,
+   a foreign app under OTTAVIO's hardlock; GELB correctly did not touch it and laid it before OTTAVIO.
+   The real remedies are cross-application owner decisions: rotate JWT_SECRET_KEY on :8002 (invalidates
+   the old token, logs out all 6 foreign users) and/or restrict :8002's network exposure (which may
+   break the foreign app's own direct-login clients — multi_user:true, 6 users). OTTAVIO's call.
+
+SO: §3.104 is GO (admin access control met). Item B stays open and is now LIVE, not latent, because
+   :8002 is public. The six other public foreign ports are outside this mandate and outside my scope.
+   Still read-only; all measurements are GELB's; nothing executed by PINK.
