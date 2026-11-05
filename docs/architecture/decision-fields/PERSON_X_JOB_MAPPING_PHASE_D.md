@@ -266,7 +266,7 @@ re-stated.**
 | # | Assertion | Status vs. phase C |
 |---|---|---|
 | **D-1** | The engine and its specification are byte-identical to the base: `lib/career/mapping`, `mapping-spec/`, `PERSON_X_JOB_MAPPING_SPEC.md` — committed, staged, unstaged and untracked | **verbatim.** `lib/career/view-model/mapping-field.ts` is a different directory from `lib/career/mapping`; there is no collision |
-| **D-2** | Protected paths unchanged against the base — the phase-C list **minus two carve-outs**: `SyntxFieldSelector.tsx` leaves protection (it is now a phase-D entry point, C-4), and `lib/career/ui` is protected **except** `lib/career/ui/career-demo-url.ts` (C-9). Everything else carries, `lib/career/job-pool`, `app/api` and `lib/career/result-inspector` included — now at their `e360caf9` state | **re-stated (a)** |
+| **D-2** | Protected paths unchanged against the base — the phase-C list **minus three carve-outs**: `SyntxFieldSelector.tsx` leaves protection (it is now a phase-D entry point, C-4), `lib/career/ui` is protected **except** `lib/career/ui/career-demo-url.ts` (C-9), and `app/components/career/demo/career-demo-layout.ts` leaves protection (D-Q13, additive only). Everything else carries, `lib/career/job-pool`, `app/api` and `lib/career/result-inspector` included — now at their `e360caf9` state | **re-stated (a)**, third carve-out added 2026-11-05 |
 | **D-3** | Phase-D change sets: every non-merge commit after the base whose files include a phase-D file may change only phase-D files, and the working tree joins as a pending set once it touches one. **The phase-C artifacts are baseline at `e360caf9`**, so `mapping-field.ts`, `PersonJobMappingField.tsx` and `mapping-field-copy.ts` move from *new files* to **entry points**. The four contract files of §5.1 are phase-D-editable, or a commit bundling a contract fix with a field change would trip the "only phase files" rule | **re-stated (b)** |
 | **D-4** | `AutoJobRankingPanel.tsx` is **not** an entry point. D-Q4 keeps it untouched, so it equals the base and moves **into** D-2's protected set. The stale `+`/`−` pin on it is removed, not updated | **re-stated (c)** |
 | **D-5** | The entry-point diff pin: `SemanticCareerIntelligenceField.tsx` is pinned to the removal of the `field={…}` prop (D-Q4) and the mount of the MAPPING stage, and nothing else. **The exact lines are fixed when GRÜN delivers, by GELB, and then held by PINK** — they are not invented here, because inventing them would pin a shape nobody has written yet | **re-stated (c)** |
@@ -325,6 +325,7 @@ the per-requirement relation signs of §1.2; if a per-role evidence class is wan
 | `app/components/career/demo/SemanticCareerIntelligenceField.tsx` | change | MAPPING stage mount; the ranking panel keeps its `field` prop and its list |
 | `lib/career/ui/career-demo-url.ts` | change | `focus=MAPPING` (C-9) |
 | `app/components/career/demo/CareerIntelligenceDashboard.tsx` | change | two type widenings only, no logic change (D-Q10) |
+| `app/components/career/demo/career-demo-layout.ts` | change | three additive rules: the `mapping-gate` marker, clearance over both lines, the narrow-tier order (D-Q13) |
 | `app/components/career/demo/mapping-field-copy.ts` | change | EN/DE for L2/L3, open positions, evidence limitation, the budget sentence, the layout-shift line |
 | `test/career/mapping-field/phase-base.ts` | change | `PHASE_D_BASE = e360caf9` (§5.2) |
 | `test/career/mapping-field/architecture.test.ts` | change | MAP-D-ARCH: D-1 … D-7 of §5.2, replacing the phase-C guard |
@@ -379,7 +380,9 @@ Not "does it look right". The questions that can falsify this field:
     (D-4); the engine and spec byte-identical (D-1); the read-only envelope intact (D-7).
 16. **Execution, not exit code (D-Q8).** Every e2e result claimed for §8.14 records that the suite executed — the resolved
     Playwright module and the per-case results. A skipped suite is reported as a gap, never counted as a pass.
-17. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
+17. **The capsule ceiling (D-Q14), measured not computed.** At the tested viewports the strip's right edge lies left of the
+    investigation membrane's left edge, and the job-scope indicator's right edge lies left of the strip's left edge.
+18. **The ring-order overflow (D-Q3).** An implementation that drops collar arcs by index, or merges several light requirements into
     one tick, must turn a test red. What is counted away is always the lightest and least necessary, never an arbitrary pick.
 
 PINK's mutant method from phase C §7 is the right instrument for 1, 2, 4, 7 and 9: apply the mutant, show the test red, restore.
@@ -601,6 +604,64 @@ here before it is built. Not under the capsule centre, per PINK §3.82 F-SEM-1.
   `PERSON_OPEN`. GRÜN's reasoning is accepted: one is indeed not in the Capability Field, so the line is true as it stands.
 * **(d)** See the C-8 correction in §5.1. Select-on-arrow is preserved; the sentence GRÜN queried was imported from the wrong
   selector and is withdrawn.
+
+### D-Q13 · M1: `career-demo-layout.ts` becomes a phase-D entry point (a carve-out from the held D-2)
+
+GRÜN brought back the finding I asked for: inside the two constraints of D-Q11 **there is no placement at all**. Verified at
+`e360caf9`:
+
+* `career-demo-layout.ts:87` finds the line with `querySelector('[data-sx-shell="gate-reason"]')` — first match in DOM order — and
+  `:90` sets `--sx-entry-clear` from its bottom edge plus 12 px. `:125` `INTAKE_BELOW_ENTRY` starts the intake panel there. **Any**
+  second line below the first in that column therefore lies on top of the intake panel in the Job Field — including GRÜN's
+  measurement-free placeholder, which is collision-free against the gate line and still wrong.
+* `:169-177` the narrow tier moves the shell elements into a grid by `[data-sx-shell=…]` with `order`. A new fixed element with no
+  rule of its own stays fixed there and overlaps.
+
+**Bound: M1.** `app/components/career/demo/career-demo-layout.ts` leaves D-2's protected set and becomes a phase-D entry point, with
+three **additive** changes: (a) the new line carries its own marker `data-sx-shell="mapping-gate"`, never `gate-reason`; (b) the
+clearance measures `max(bottom)` over both markers, so the intake panel starts below **both** lines; (c) the narrow tier gets an
+`order` rule placing `mapping-gate` directly after `gate-reason`. The existing line keeps its content, its ids and its positional
+style, and `field-entry-state.test.tsx:247` stays green.
+
+**This changes a clause PINK holds, so PINK re-states D-2.** The reasoning is the one PINK already accepted for
+`CareerIntelligenceDashboard.tsx`: this is the necessary reach of the held C-10/C-11, not scope creep. (b) and (c) are not new
+mechanisms — they are the existing rules generalised from one fixed line to the set of them, and without either one the result is a
+real defect (a covered intake panel, an overlapping line), not a cosmetic one.
+
+**M2 is refused.** Reason and way inside the disabled button would put them in a different register from the capability gate, inside
+a control that assistive technology may skip, with the capsule growing taller in the gated state, and GRÜN measures the way as
+barely fitting. Consistency of the gate pattern is worth more than avoiding one carve-out.
+
+### D-Q14 · The capsule ceiling, and typography is the last concession
+
+`SyntxInvestigationSelector.tsx:57` is fixed at `left: calc(50% + 245px)` and is protected, so the capsule's **half-width may not
+exceed 236 px**. Today: 2 × 214 px buttons + 2 × 34 px connectors + 10 px padding = 472 px, half 236 — it is already exactly at the
+ceiling. Three buttons at 214 px would be 720 px and would cover the investigation membrane.
+
+One measurement GRÜN did not name, checked here: the job-scope indicator (`SyntxFieldSelector.tsx:107`) carries
+`maxWidth: calc(50% - 283px)`, so its right edge sits at `50% − 255px`. It permits a half-width up to 255 px and is therefore **not**
+the binding constraint; 236 is.
+
+**Bound:** the ceiling is a hard constraint, and the concessions are made **in this order, stopping at the first that fits**:
+
+1. the fixed `width: "214px"` becomes `auto` (the labels are of very different lengths; a fixed width wastes the most);
+2. the connectors 34 px → 22 px;
+3. horizontal padding;
+4. `letterSpacing` 1.6 → 1.2;
+5. `fontSize` 12 → 11.5.
+
+GRÜN's estimate reaches the ceiling by changing typography. **Typography is last, not first.** Steps 1 and 2 alone plausibly suffice
+— three auto-width labels at the unchanged 12 px / 1.6 come out near 468 px — and if they do, the two existing options keep their
+legibility untouched. A2 in this very phase is about readable bodies; shrinking the shell's primary navigation to make room for the
+field that argues for readability would be the wrong instinct.
+
+**Measured, not estimated.** Whatever is built, the result is proven, not computed on paper: an e2e assertion at the tested
+viewports that the strip's right edge lies left of the investigation membrane's left edge, and that the indicator's right edge lies
+left of the strip's left edge. `job-scope-gate.e2e.test.ts` already measures with `getBoundingClientRect` (`:123`) and is a phase-D
+file. This is proof §8.17. If steps 1–3 do not fit, GRÜN reports the measured width before changing type, because a visible change
+to the two existing options is mine to accept, not GRÜN's to assume.
+
+Geometry is not named in C-1 … C-11, so none of this changes the contract.
 
 ---
 
