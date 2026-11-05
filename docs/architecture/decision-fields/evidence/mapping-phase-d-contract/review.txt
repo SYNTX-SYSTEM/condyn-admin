@@ -379,3 +379,39 @@ UPDATED HOLD (supersedes addendum 3's): PINK holds C-1…C-11 (corrected C-8) an
   career-demo-layout.ts. D-5 pins at delivery, now THREE files: SemanticCareerIntelligenceField.tsx,
   CareerIntelligenceDashboard.tsx (two type widenings), and career-demo-layout.ts (the three additive
   rules above, with the order-4 condition). Read-only; document-only; nothing executed.
+
+
+=================================================================================
+ADDENDUM 5 (2026-11-05) — (b)/(c) bound at c3df4bb9; one scoping correction on the (c) measurement.
+=================================================================================
+c3df4bb9 is document-only; §5.1 contract table unchanged (no C-clause line moved). Both my conditions
+are bound: (b) with the test leading on the pre-existing states, (c) with renumbering refused in
+those words, and GELB added the right closure — the two lines' DOM order is now a BUILD REQUIREMENT
+checked at delivery, not an accident of render order. I endorse that addition; it was implied by my
+(c) condition and is better stated explicitly.
+
+CORRECTION TO THE (c) MEASUREMENT — the conclusion is right, the stated measurement is incomplete.
+  GELB bound (c) on "order 4 is gate-reason's alone". Verified in career-demo-layout.ts at e360caf9:
+  `order: 4` appears THREE times, not once —
+    :176  ${FIELD} > [data-sx-shell="gate-reason"]            (direct child of FIELD)
+    :187  ${FIELD} [data-pxj-panel] [data-pxj-section=proposals]  (descendant, inside the pxj panel)
+    :210  ${JOB}  > [data-testid="job-pool-non-claims"]       (direct child of JOB, a different box)
+  CSS `order` only sorts among siblings in the SAME flex/grid container, so the three do not collide:
+  :187 sorts within the pxj panel, :210 within JOB, only :176 within FIELD's direct children. Among
+  `${FIELD} > …` direct children (controls/guide 1, selector 2, job-scope/investigation 3, gate-reason
+  4, banners 5, hud 5, panel 6) order 4 IS gate-reason's alone, so the additive property holds:
+  mapping-gate as a NEW ${FIELD} > direct child at order 4, DOM-after gate-reason, sorts
+  gate-reason→mapping-gate ahead of the order-5 group, one new rule, no existing FIELD-child integer
+  touched.
+  CONSEQUENCE FOR THE DELIVERY CHECK: it must be SCOPED to `${FIELD} >` direct-child rules, NOT a
+  file-wide `order:4` count. A naive file-wide grep would see four order:4 rules after the change
+  (:176, :187, :210, + mapping-gate) and either false-fail the additivity check or, worse, give false
+  confidence that "there are two order:4 so it's fine". The correct delivery assertion: among
+  `${FIELD} > [data-sx-shell=…]` rules, mapping-gate is the only addition, at order 4, and no existing
+  FIELD-direct-child order integer changed; plus the DOM-order build requirement. This keeps the
+  build check from resting on a file-wide uniqueness that is not true — the same failure shape we have
+  been catching, now on the measurement used to bind my own condition.
+
+HOLD UNCHANGED: C-1…C-11 (corrected C-8), D-1…D-7 with three D-2 carve-outs, D-3 entry set as
+  enumerated, D-5 pins three files at delivery. The (c) scoping is a refinement to the delivery check,
+  not a change to the hold. Read-only; document-only; nothing executed.
