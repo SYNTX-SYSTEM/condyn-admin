@@ -1,3 +1,4 @@
+import { DatabaseNotProvisionedError } from "../../database-isolation/not-provisioned";
 import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import { db } from "../db/client";
@@ -17,17 +18,21 @@ export type RelationCacheAccess =
   | { state: "NOT_PROVISIONED" }
   | { state: "UNAVAILABLE"; code: string };
 
-let registration: Promise<"REGISTERED" | "NOT_PROVISIONED"> | undefined;
+/** ONLY success is memoised; a refusal is verified again on the next request (PINK 1a). */
+let registration: Promise<"REGISTERED"> | undefined;
 
 export function ensureRelationCacheRegistration(): Promise<"REGISTERED" | "NOT_PROVISIONED"> {
   registration ??= (async () => {
     const verified = await verifyProvisionableDatabase(process.env.DATABASE_URL);
-    if (verified === null) return "NOT_PROVISIONED" as const;
+    if (verified === null) throw new DatabaseNotProvisionedError();
     const client = createRegistrationClient(verified.url);
     try { await registerRelationCacheSchema(client); } finally { await client.end({ timeout: 5 }); }
     return "REGISTERED" as const;
   })().catch(error => { registration = undefined; throw error; });
-  return registration;
+  return registration.catch(error => {
+    if (error instanceof DatabaseNotProvisionedError) return "NOT_PROVISIONED" as const;
+    throw error;
+  });
 }
 
 export async function openRelationCache(): Promise<RelationCacheAccess> {

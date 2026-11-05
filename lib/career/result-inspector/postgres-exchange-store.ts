@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { db } from "../db/client";
+import { DatabaseNotProvisionedError } from "../../database-isolation/not-provisioned";
 import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import type { CapabilityProviderExchangeRecord, CapabilityProviderRequestIdentity, CapabilityProviderResponseRecord } from "../capability-core";
@@ -48,21 +49,24 @@ const DDL = [
 type Registration = "REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
 const registrations = new Map<string, Promise<Registration>>();
 
-/** Creates the archive table on a verified disposable database only; the verdict is cached per database URL. */
+/** Creates the archive table on a provisionable database only; ONLY success is cached per database URL (PINK 1a). */
 export function ensureProviderExchangeArchive(url: string | undefined = process.env.DATABASE_URL): Promise<Registration> {
   const key = url ?? "";
   let registration = registrations.get(key);
   if (!registration) {
-    registration = (async (): Promise<Registration> => {
+    registration = (async (): Promise<"REGISTERED"> => {
       const verified = await verifyProvisionableDatabase(url);
-      if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
+      if (verified === null) throw new DatabaseNotProvisionedError();
       const client = createRegistrationClient(verified.url);
       try { for (const statement of DDL) await client.unsafe(statement); } finally { await client.end({ timeout: 5 }); }
       return "REGISTERED";
     })().catch(error => { registrations.delete(key); throw error; });
     registrations.set(key, registration);
   }
-  return registration;
+  return registration.catch(error => {
+    if (error instanceof DatabaseNotProvisionedError) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE" as const;
+    throw error;
+  });
 }
 
 /** The archive for this process, or null when switched off or not provisioned (no DDL outside disposable databases). */

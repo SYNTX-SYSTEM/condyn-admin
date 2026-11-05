@@ -14,22 +14,37 @@ const quote = (identifier: string) => `"${identifier.replaceAll('"', '""')}"`;
 const options = { max: 1, onnotice: () => undefined, connect_timeout: 10 } as const;
 
 /**
+ * The one read-only probe both bases use: which database did this URL actually reach? It is a
+ * parameter so the connection path itself can be proven by a test without a database (PINK 1c);
+ * production always uses `probeCurrentDatabase`, which really connects.
+ */
+export type CurrentDatabaseProbe = (url: string) => Promise<{ name: string; marker: string | null } | null>;
+
+export const probeCurrentDatabase: CurrentDatabaseProbe = async url => {
+  const sql = postgres(url, { ...options, connection: { default_transaction_read_only: true } });
+  try {
+    const rows = await sql`SELECT current_database() AS name, shobj_description(oid, 'pg_database') AS marker FROM pg_database WHERE datname = current_database()` as unknown as Array<{ name: string; marker: string | null }>;
+    return rows.length === 1 ? { name: rows[0].name, marker: rows[0].marker } : null;
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
+};
+
+/**
  * Positive identification of a disposable test database: URL policy, then a read-only
  * connection that must report exactly this database and carry the disposable marker.
  * Refusals by policy happen before any connection is attempted.
  */
-export async function verifyDisposableTestDatabase(url: string | undefined): Promise<{ url: string; databaseName: string }> {
+export async function verifyDisposableTestDatabase(
+  url: string | undefined,
+  probe: CurrentDatabaseProbe = probeCurrentDatabase
+): Promise<{ url: string; databaseName: string }> {
   const verdict = classifyTestDatabaseUrl(url);
   if (!verdict.ok) return fail(`ERR_TEST_DATABASE_ISOLATION_${verdict.code}`, verdict.detail);
-  const sql = postgres(verdict.url, { ...options, connection: { default_transaction_read_only: true } });
-  try {
-    const rows = await sql`SELECT current_database() AS name, shobj_description(oid, 'pg_database') AS marker FROM pg_database WHERE datname = current_database()` as unknown as Array<{ name: string; marker: string | null }>;
-    if (rows.length !== 1 || rows[0].name !== verdict.databaseName) fail("ERR_TEST_DATABASE_ISOLATION_IDENTITY_MISMATCH", `connected to ${rows[0]?.name ?? "nothing"}, expected ${verdict.databaseName}`);
-    if (rows[0].marker !== disposableTestDatabaseMarker(verdict.databaseName)) fail("ERR_TEST_DATABASE_ISOLATION_NOT_MARKED", `database ${verdict.databaseName} carries no disposable marker`);
-    return { url: verdict.url, databaseName: verdict.databaseName };
-  } finally {
-    await sql.end({ timeout: 5 });
-  }
+  const reached = await probe(verdict.url);
+  if (reached === null || reached.name !== verdict.databaseName) fail("ERR_TEST_DATABASE_ISOLATION_IDENTITY_MISMATCH", `connected to ${reached?.name ?? "nothing"}, expected ${verdict.databaseName}`);
+  if (reached!.marker !== disposableTestDatabaseMarker(verdict.databaseName)) fail("ERR_TEST_DATABASE_ISOLATION_NOT_MARKED", `database ${verdict.databaseName} carries no disposable marker`);
+  return { url: verdict.url, databaseName: verdict.databaseName };
 }
 
 /**
@@ -42,20 +57,16 @@ export async function verifyDisposableTestDatabase(url: string | undefined): Pro
 export async function verifyAuthorizedApplicationDatabase(
   url: string | undefined,
   underTestRunner: boolean = process.env.VITEST !== undefined || process.env.VITEST_WORKER_ID !== undefined,
-  sharedDatabaseOptIn: string | undefined = process.env.CONDYN_ALLOW_SHARED_DATABASE
+  sharedDatabaseOptIn: string | undefined = process.env.CONDYN_ALLOW_SHARED_DATABASE,
+  probe: CurrentDatabaseProbe = probeCurrentDatabase
 ): Promise<{ url: string; databaseName: string }> {
   const verdict = classifyAuthorizedApplicationDatabaseUrl(url, underTestRunner, sharedDatabaseOptIn);
   if (!verdict.ok) return fail(`ERR_APPLICATION_DATABASE_${verdict.code}`, verdict.detail);
-  const sql = postgres(verdict.url, { ...options, connection: { default_transaction_read_only: true } });
-  try {
-    const rows = await sql`SELECT current_database() AS name` as unknown as Array<{ name: string }>;
-    if (rows.length !== 1 || rows[0].name !== verdict.databaseName) {
-      fail("ERR_APPLICATION_DATABASE_IDENTITY_MISMATCH", `connected to ${rows[0]?.name ?? "nothing"}, expected ${verdict.databaseName}`);
-    }
-    return { url: verdict.url, databaseName: verdict.databaseName };
-  } finally {
-    await sql.end({ timeout: 5 });
+  const reached = await probe(verdict.url);
+  if (reached === null || reached.name !== verdict.databaseName) {
+    fail("ERR_APPLICATION_DATABASE_IDENTITY_MISMATCH", `connected to ${reached?.name ?? "nothing"}, expected ${verdict.databaseName}`);
   }
+  return { url: verdict.url, databaseName: verdict.databaseName };
 }
 
 export type ProvisionableDatabaseBasis = "DISPOSABLE_TEST_DATABASE" | "AUTHORIZED_APPLICATION_DATABASE";
@@ -68,14 +79,29 @@ export type ProvisionableDatabaseBasis = "DISPOSABLE_TEST_DATABASE" | "AUTHORIZE
  * Development scripts and diagnostics deliberately do NOT come through here: `resolveScriptJobScope`
  * stays bound to the disposable basis alone, so an agent operation can still never reach a real database.
  */
+/** A refusal used to be silent (PINK 1a): the same reason is logged once, not on every request. */
+let lastRefusal: string | undefined;
+
+export function resetProvisionableDatabaseRefusalLog(): void {
+  lastRefusal = undefined;
+}
+
 export async function verifyProvisionableDatabase(
-  url: string | undefined = process.env.DATABASE_URL
+  url: string | undefined = process.env.DATABASE_URL,
+  log: (message: string) => void = message => console.warn(message)
 ): Promise<{ url: string; databaseName: string; basis: ProvisionableDatabaseBasis } | null> {
-  const disposable = await verifyDisposableTestDatabase(url).then(result => result, () => null);
-  if (disposable !== null) return { ...disposable, basis: "DISPOSABLE_TEST_DATABASE" };
-  const application = await verifyAuthorizedApplicationDatabase(url).then(result => result, () => null);
-  if (application !== null) return { ...application, basis: "AUTHORIZED_APPLICATION_DATABASE" };
+  const disposable = await verifyDisposableTestDatabase(url).then(result => ({ result }), (error: unknown) => ({ error }));
+  if ("result" in disposable) { lastRefusal = undefined; return { ...disposable.result, basis: "DISPOSABLE_TEST_DATABASE" }; }
+  const application = await verifyAuthorizedApplicationDatabase(url).then(result => ({ result }), (error: unknown) => ({ error }));
+  if ("result" in application) { lastRefusal = undefined; return { ...application.result, basis: "AUTHORIZED_APPLICATION_DATABASE" }; }
+  const reason = `ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED: neither basis of boundary B-ENTRY holds.`
+    + ` disposable: ${message(disposable.error)}. application: ${message(application.error)}`;
+  if (reason !== lastRefusal) { lastRefusal = reason; log(reason); }
   return null;
+}
+
+function message(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
 }
 
 /** A fresh name in the disposable pattern; unique per call. */

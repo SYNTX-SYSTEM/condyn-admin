@@ -75,7 +75,8 @@ export const SHARED_DATABASE_OPT_IN_VARIABLE = "CONDYN_ALLOW_SHARED_DATABASE";
  * Connection string for the application client. There is no fallback to any real database:
  * a missing URL resolves to an unroutable host. A protected database name (condyn, postgres,
  * template*) also resolves to the unroutable host unless the process explicitly opted in with
- * CONDYN_ALLOW_SHARED_DATABASE=1 AND is not running under a test runner.
+ * CONDYN_ALLOW_SHARED_DATABASE AND is not running under a test runner. When the opt-in pins an
+ * expected name, a protected name that is not that name resolves to the unroutable host too.
  */
 export function resolveApplicationDatabaseUrl(raw: string | undefined, underTestRunner: boolean, sharedDatabaseOptIn: string | undefined = undefined): string {
   if (raw === undefined || raw.trim() === "") return UNCONFIGURED_DATABASE_URL;
@@ -88,13 +89,17 @@ export function resolveApplicationDatabaseUrl(raw: string | undefined, underTest
   // An empty name is refused in every process, not only under a test runner (PINK P-1): postgres-js
   // would otherwise fall back to PGDATABASE or the connecting user's name and reach a real database.
   if (name === "") return UNCONFIGURED_DATABASE_URL;
-  if (isProtectedDatabaseName(name) && (underTestRunner || sharedDatabaseOptIn !== "1")) return UNCONFIGURED_DATABASE_URL;
+  if (!isProtectedDatabaseName(name)) return raw;
+  if (underTestRunner) return UNCONFIGURED_DATABASE_URL;
+  const authorization = readSharedDatabaseAuthorization(sharedDatabaseOptIn);
+  if (!authorization.authorized) return UNCONFIGURED_DATABASE_URL;
+  if (authorization.expectedDatabaseName !== null && name !== authorization.expectedDatabaseName) return UNCONFIGURED_DATABASE_URL;
   return raw;
 }
 
 export type ApplicationDatabaseRefusal =
   | "UNDER_TEST_RUNNER" | "NOT_AUTHORIZED" | "MISSING" | "MALFORMED" | "AMBIGUOUS"
-  | "MAINTENANCE_DATABASE" | "DISPOSABLE_DATABASE";
+  | "MAINTENANCE_DATABASE" | "DISPOSABLE_DATABASE" | "NAME_NOT_AUTHORIZED";
 
 export type ApplicationDatabaseVerdict =
   | { ok: true; url: string; databaseName: string }
@@ -104,12 +109,39 @@ export type ApplicationDatabaseVerdict =
 export const MAINTENANCE_DATABASE_NAMES = Object.freeze(["postgres", "template0", "template1"] as const);
 
 /**
+ * The strict form of the opt-in pins the ONE database that may be provisioned, which turns the
+ * denylist into an allowlist of exactly one entry (PINK 1b): `database=<name>`. The prefix is
+ * deliberate — without it a mistyped truthy value such as `true` would silently be read as a
+ * database name, and every value that used to be a refusal must stay a refusal.
+ */
+export const SHARED_DATABASE_NAME_PREFIX = "database=";
+
+/**
+ * The opt-in carries the authorisation and, in its strict form, the pinned name. `1` keeps its
+ * original meaning — any name that is not forbidden — and everything else is refused unless it is
+ * `database=<name>` naming a database that is not itself forbidden.
+ */
+export function readSharedDatabaseAuthorization(sharedDatabaseOptIn: string | undefined): { authorized: boolean; expectedDatabaseName: string | null } {
+  const refused = { authorized: false, expectedDatabaseName: null };
+  if (sharedDatabaseOptIn === undefined || sharedDatabaseOptIn !== sharedDatabaseOptIn.trim() || sharedDatabaseOptIn === "") return refused;
+  if (sharedDatabaseOptIn === "1") return { authorized: true, expectedDatabaseName: null };
+  if (!sharedDatabaseOptIn.startsWith(SHARED_DATABASE_NAME_PREFIX)) return refused;
+  const name = sharedDatabaseOptIn.slice(SHARED_DATABASE_NAME_PREFIX.length);
+  // A pinned name that is itself forbidden authorises nothing: it could only ever refuse.
+  if (MAINTENANCE_DATABASE_NAMES.some(maintenance => maintenance === name.toLowerCase())) return refused;
+  if (DISPOSABLE_TEST_DATABASE_PATTERN.test(name)) return refused;
+  if (!/^[A-Za-z_][A-Za-z0-9_$]{0,62}$/.test(name)) return refused;
+  return { authorized: true, expectedDatabaseName: name };
+}
+
+/**
  * Classifies a URL that a REAL SERVER OR WORKER PROCESS declares as its own application database
  * (owner authorisation of 2026-11-05, boundary B-ENTRY second basis). This is not a relaxation of the
- * isolation mandate: it is refused under any test runner and without the explicit opt-in, so a test
- * run or an agent operation can never reach this verdict. Maintenance and template databases, and
- * names in the disposable pattern, are refused here as well — the disposable pattern belongs to
- * `classifyTestDatabaseUrl`, which remains the only basis available to tests.
+ * isolation mandate: it is refused under any test runner and without the explicit opt-in, so this
+ * verdict is unreachable for any process WITHOUT the opt-in — the code cannot tell a server from an
+ * agent, only the environment can (PINK's correction of my earlier, too strong wording). Maintenance
+ * and template databases, and names in the disposable pattern, are refused here as well — the
+ * disposable pattern belongs to `classifyTestDatabaseUrl`, which remains the only basis for tests.
  */
 export function classifyAuthorizedApplicationDatabaseUrl(
   raw: string | undefined | null,
@@ -118,7 +150,8 @@ export function classifyAuthorizedApplicationDatabaseUrl(
 ): ApplicationDatabaseVerdict {
   const no = (code: ApplicationDatabaseRefusal, detail: string): ApplicationDatabaseVerdict => ({ ok: false, code, detail });
   if (underTestRunner) return no("UNDER_TEST_RUNNER", "an application database is never provisioned from a test runner");
-  if (sharedDatabaseOptIn !== "1") return no("NOT_AUTHORIZED", `${SHARED_DATABASE_OPT_IN_VARIABLE} is not set to 1`);
+  const authorization = readSharedDatabaseAuthorization(sharedDatabaseOptIn);
+  if (!authorization.authorized) return no("NOT_AUTHORIZED", `${SHARED_DATABASE_OPT_IN_VARIABLE} is not set to 1 or to an explicit database name`);
   if (raw === undefined || raw === null || raw.trim() === "") return no("MISSING", "DATABASE_URL is not set");
   if (raw !== raw.trim()) return no("AMBIGUOUS", "DATABASE_URL has surrounding whitespace");
   let url: URL;
@@ -133,6 +166,9 @@ export function classifyAuthorizedApplicationDatabaseUrl(
   const lower = databaseName.toLowerCase();
   if (MAINTENANCE_DATABASE_NAMES.some(name => name === lower)) return no("MAINTENANCE_DATABASE", `database ${databaseName} is a maintenance database`);
   if (DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)) return no("DISPOSABLE_DATABASE", `database ${databaseName} is a disposable test database, not an application database`);
+  if (authorization.expectedDatabaseName !== null && databaseName !== authorization.expectedDatabaseName) {
+    return no("NAME_NOT_AUTHORIZED", `database ${databaseName} is not the authorised database ${authorization.expectedDatabaseName}`);
+  }
   return { ok: true, url: raw, databaseName };
 }
 

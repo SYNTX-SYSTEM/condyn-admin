@@ -9,9 +9,10 @@ const CONDYN = "postgresql://postgres:pw@localhost:5432/condyn";
 const accept = (url: string | undefined) => classifyAuthorizedApplicationDatabaseUrl(url, false, "1");
 
 /**
- * Boundary B-ENTRY, second basis (owner authorisation of 2026-11-05). The application database of a
- * real server or worker process is provisionable; a test run or an agent operation can never reach
- * this verdict. These tests are the proof of the second half of that sentence.
+ * Boundary B-ENTRY, second basis (owner authorisation of 2026-11-05). The application database a
+ * process declares is provisionable; the verdict is unreachable for any process WITHOUT the opt-in.
+ * The code cannot tell a server from an agent — only the environment can (PINK's correction of the
+ * earlier, too strong wording). These tests are the proof of that sentence.
  */
 describe("authorised application database", () => {
   it("accepts the declared application database of an opted-in, non-test process", () => {
@@ -24,9 +25,31 @@ describe("authorised application database", () => {
   });
 
   it("is unreachable without the explicit opt-in", () => {
-    for (const optIn of [undefined, "", "0", "true", "yes", "1 ", " 1"]) {
+    for (const optIn of [undefined, "", "0", "true", "yes", "1 ", " 1", "condyn", "database=", "database=condyn ", "DATABASE=condyn"]) {
       expect(classifyAuthorizedApplicationDatabaseUrl(CONDYN, false, optIn)).toMatchObject({ ok: false, code: "NOT_AUTHORIZED" });
     }
+  });
+
+  /** PINK 1b: with the bare opt-in the second basis was a denylist, so a mistyped URL could reach a neighbour. */
+  it("database=<name> pins exactly one database and refuses every other name", () => {
+    expect(classifyAuthorizedApplicationDatabaseUrl(CONDYN, false, "database=condyn")).toMatchObject({ ok: true, databaseName: "condyn" });
+    expect(classifyAuthorizedApplicationDatabaseUrl("postgresql://u:p@localhost:5432/neighbour", false, "database=condyn"))
+      .toMatchObject({ ok: false, code: "NAME_NOT_AUTHORIZED" });
+    // The bare opt-in still accepts any name that is not forbidden - that is what the pin improves on.
+    expect(classifyAuthorizedApplicationDatabaseUrl("postgresql://u:p@localhost:5432/neighbour", false, "1"))
+      .toMatchObject({ ok: true, databaseName: "neighbour" });
+  });
+
+  it("refuses a pin that names a forbidden database, and a pin that is not a plain identifier", () => {
+    for (const optIn of ["database=postgres", "database=template1", "database=condyn_test_0123456789abcdef", "database=a-b", "database=1x", "database=\"x\""]) {
+      expect(classifyAuthorizedApplicationDatabaseUrl(CONDYN, false, optIn)).toMatchObject({ ok: false, code: "NOT_AUTHORIZED" });
+    }
+  });
+
+  it("the pin also governs the application client, not only provisioning", () => {
+    expect(resolveApplicationDatabaseUrl(CONDYN, false, "database=condyn")).toBe(CONDYN);
+    expect(resolveApplicationDatabaseUrl(CONDYN, false, "database=neighbour")).toBe(UNCONFIGURED_DATABASE_URL);
+    expect(resolveApplicationDatabaseUrl(CONDYN, true, "database=condyn")).toBe(UNCONFIGURED_DATABASE_URL);
   });
 
   it("refuses maintenance and template databases even with the opt-in", () => {

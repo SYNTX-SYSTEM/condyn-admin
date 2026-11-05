@@ -1,10 +1,11 @@
 import type { Sql } from "postgres";
+import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { createRegistrationClient } from "../../persistence/registration-client";
 import { CALL_LEDGER_DDL, CALL_LEDGER_GUARD_DDL, PROVIDER_CALL_DDL, PROVIDER_CALL_GUARD_DDL, PROVIDER_CALL_TABLE } from "./register";
 
 /**
- * Registration of the call register on ANY database (owner BUDGET BOUNDARY: no model call without persistent registration,
- * independent of the database). Purely additive and idempotent — CREATE ... IF NOT EXISTS, the stage list widened in place — so
+ * Registration of the call register on a database that passes boundary B-ENTRY (owner BUDGET BOUNDARY: no model call without
+ * persistent registration — on a database without a basis there is no registration and therefore no call). Purely additive and idempotent — CREATE ... IF NOT EXISTS, the stage list widened in place — so
  * existing data is never touched; one transaction under an advisory lock (two processes starting together cannot collide); the
  * guarantees (both tables, both triggers enabled) are verified before the register counts as available. Lazy, on first use; a
  * failure resets the memo so the next use tries again.
@@ -26,13 +27,21 @@ export async function registerProviderCallRegisterSchema(sql: Sql): Promise<void
 
 const registrations = new Map<string, Promise<void>>();
 
-/** Resolves when the register is provisioned on the database of the URL (default DATABASE_URL); rejects when it cannot be (the caller then refuses every call). */
+/**
+ * Resolves when the register is provisioned on the database of the URL (default DATABASE_URL); rejects
+ * when it cannot be — the caller then refuses every call, so the budget boundary holds either way.
+ *
+ * The URL used to go to the registration client unverified (PINK D-2). It now passes the same
+ * boundary B-ENTRY as every other DDL path: no basis, no registration, and therefore no model call.
+ */
 export function ensureProviderCallRegister(url: string | undefined = process.env.DATABASE_URL): Promise<void> {
   if (!url) return Promise.reject(new Error("ERR_PROVIDER_CALL_REGISTER_NO_DATABASE"));
   let registration = registrations.get(url);
   if (!registration) {
     registration = (async () => {
-      const client = createRegistrationClient(url);
+      const verified = await verifyProvisionableDatabase(url);
+      if (verified === null) throw new Error("ERR_PROVIDER_CALL_REGISTER_NOT_PROVISIONED");
+      const client = createRegistrationClient(verified.url);
       try { await registerProviderCallRegisterSchema(client); } finally { await client.end({ timeout: 5 }); }
     })();
     registrations.set(url, registration);

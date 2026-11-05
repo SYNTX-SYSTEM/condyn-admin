@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../db/client";
 import { createRegistrationClient } from "./registration-client";
+import { DatabaseNotProvisionedError } from "../../database-isolation/not-provisioned";
 import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
 import { createProductionHumanDecisionRecordDependencies } from "../human-decision-admission/application";
@@ -22,23 +23,27 @@ import {
  * DATABASE_URL is a positively verified disposable database. On any other
  * database the HR routes perform no DDL at all: absent tables are represented
  * as NOT_PROVISIONED by the read service or rejected reads, never created.
- * The verdict is taken once per process. REGISTRATION != DATA.
+ * ONLY success is memoised: a refusal is verified again on the next request
+ * instead of surviving until a restart (PINK 1a). REGISTRATION != DATA.
  */
-let registration: Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> | undefined;
+let registration: Promise<"REGISTERED"> | undefined;
 
 export function ensureHrDecisionLoopPersistenceRegistration(): Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> {
   registration ??= (async () => {
     const verified = await verifyProvisionableDatabase(process.env.DATABASE_URL);
-    if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
+    if (verified === null) throw new DatabaseNotProvisionedError();
     const client = createRegistrationClient(verified.url);
     try {
       await registerUnifiedPersistenceSchema(client);
     } finally {
       await client.end({ timeout: 5 });
     }
-    return "REGISTERED";
+    return "REGISTERED" as const;
   })().catch(error => { registration = undefined; throw error; });
-  return registration;
+  return registration.catch(error => {
+    if (error instanceof DatabaseNotProvisionedError) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE" as const;
+    throw error;
+  });
 }
 
 /**

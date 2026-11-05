@@ -2,6 +2,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { db } from "../db/client";
 import { getCareerAnalysisRepository } from "../repositories";
 import { createCapabilityProposalProjectionReader, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository } from "../capability-core";
+import { DatabaseNotProvisionedError } from "../../database-isolation/not-provisioned";
 import { verifyProvisionableDatabase } from "../../database-isolation/verification";
 import { registerUnifiedPersistenceSchema } from "../../persistence/unified-schema-registration";
 import { createRegistrationClient } from "../../persistence/registration-client";
@@ -25,14 +26,15 @@ import { registerJobPoolPersistenceSchema } from "./persistence-schema";
  *      refused without the opt-in, and refused for maintenance and template databases.
  *
  * Without either basis the job pool routes issue no DDL and answer 503
- * ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED (boundary B-ENTRY). The verdict is taken once per process.
+ * ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED (boundary B-ENTRY). ONLY success is memoised: a refusal is
+ * verified again on the next request instead of surviving until a restart (PINK 1a).
  */
-let registration: Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> | undefined;
+let registration: Promise<"REGISTERED"> | undefined;
 
 export function ensureJobPoolPersistenceRegistration(): Promise<"REGISTERED" | "NO_DDL_ON_NON_DISPOSABLE_DATABASE"> {
   registration ??= (async () => {
     const verified = await verifyProvisionableDatabase(process.env.DATABASE_URL);
-    if (verified === null) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE";
+    if (verified === null) throw new DatabaseNotProvisionedError();
     const client = createRegistrationClient(verified.url);
     try {
       await registerUnifiedPersistenceSchema(client);
@@ -40,9 +42,12 @@ export function ensureJobPoolPersistenceRegistration(): Promise<"REGISTERED" | "
     } finally {
       await client.end({ timeout: 5 });
     }
-    return "REGISTERED";
+    return "REGISTERED" as const;
   })().catch(error => { registration = undefined; throw error; });
-  return registration;
+  return registration.catch(error => {
+    if (error instanceof DatabaseNotProvisionedError) return "NO_DDL_ON_NON_DISPOSABLE_DATABASE" as const;
+    throw error;
+  });
 }
 
 export async function createLocalJobPoolApplication(): Promise<JobPoolApplication> {

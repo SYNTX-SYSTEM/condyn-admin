@@ -4,11 +4,18 @@ import PromptsPanel from './PromptsPanel';
 import AnalyzePanel from './AnalyzePanel';
 import MarkdownPDF from './MarkdownPDF';
 
-const ADMIN_USER = process.env.NEXT_PUBLIC_ADMIN_USERNAME || 'condyn';
-const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'condyn';
+/**
+ * The gate is verified SERVER-SIDE (/api/admin/session). It used to compare against
+ * NEXT_PUBLIC_ADMIN_USERNAME / NEXT_PUBLIC_ADMIN_PASSWORD here in the browser, which published both
+ * credentials as literals in the client bundle and made the check trivially bypassable; it also fell
+ * back to 'condyn'/'condyn' when they were unset. No credential is part of this component any more.
+ */
+const SESSION_URL = '/api/admin/session';
 
 export default function ConDynPanel() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState<'prompts' | 'analyze' | 'pdf'>('prompts');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,21 +23,45 @@ export default function ConDynPanel() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log('ConDyn Admin - Auth Ready');
+    let cancelled = false;
+    fetch(SESSION_URL, { credentials: 'same-origin' })
+      .then(response => response.json())
+      .then(body => { if (!cancelled) setAuthenticated(body?.authenticated === true); })
+      .catch(() => undefined)
+      .finally(() => { if (!cancelled) setChecking(false); });
+    return () => { cancelled = true; };
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (username === ADMIN_USER && password === ADMIN_PASS) {
-      console.log('✓ Login successful');
-      setAuthenticated(true);
-      setError('');
-    } else {
-      console.log('✗ Login failed');
-      setError('Invalid credentials');
+    setSubmitting(true);
+    setError('');
+    try {
+      const response = await fetch(SESSION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ username, password })
+      });
+      const body = await response.json().catch(() => ({}));
+      if (response.ok && body?.authenticated === true) {
+        setAuthenticated(true);
+        setPassword('');
+      } else if (response.status === 503) {
+        setError('Admin gate is not configured on the server');
+      } else {
+        setError('Invalid credentials');
+      }
+    } catch {
+      setError('Login failed: server unreachable');
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  if (checking) {
+    return <div style={{ minHeight: '100vh', background: '#F8FAFF' }} />;
+  }
 
   if (!authenticated) {
     return (
@@ -153,6 +184,7 @@ export default function ConDynPanel() {
 
             <button
               type="submit"
+              disabled={submitting}
               style={{
                 width: '100%',
                 padding: '14px',
@@ -162,7 +194,8 @@ export default function ConDynPanel() {
                 background: '#1565C0',
                 border: 'none',
                 borderRadius: '8px',
-                cursor: 'pointer',
+                cursor: submitting ? 'wait' : 'pointer',
+                opacity: submitting ? 0.7 : 1,
                 transition: 'all 0.15s ease'
               }}
               onMouseEnter={(e) => e.currentTarget.style.background = '#0D47A1'}
