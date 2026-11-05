@@ -489,9 +489,35 @@ Two reasons this must not happen again, and the second is the harder one:
 2. **D-3 trips on it.** Files under `docs/.../evidence/` are not phase-D files, so a change set carrying them violates "every
    phase-D change set changes only phase-D files". The boundary forbids it independently of the hygiene argument.
 
-**Bound:** phase-D e2e runs set `JOB_SCOPE_TIP` to the phase-D tip, which the suite already supports
-(`job-scope-gate.e2e.test.ts:45`) — no change to the e2e file is needed. Evidence from phase-D runs is **not committed**; it is
-reported by path. `job-scope-gate-cb3d33f` stays exactly as it is checked in.
+> **Correction (GRÜN, 2026-11-05).** An earlier revision of D-Q9 bound only `JOB_SCOPE_TIP` and said the evidence is "not
+> committed". Both halves were insufficient, and I verified GRÜN's finding in the code rather than accepting it.
+>
+> First, a tip variable only changes the directory **name**; the directory still lands under `docs/…/evidence/`. D-3's working-tree
+> set is built with `git ls-files --others --exclude-standard` (`architecture.test.ts:49`), so **untracked** files count. An
+> untracked evidence directory therefore trips D-3 in that working tree the moment it also holds a phase-D file — *without any
+> commit at all*. Not committing is not enough. Second, there is more than one writer.
+
+**Four writers, and only two have a switch.** This is a property of the existing suites; phase D works around it and changes none of
+them, since three of the four are not phase-D files.
+
+| Writer | Destination | Switch |
+|---|---|---|
+| `job-scope-gate.e2e.test.ts:46` | `evidence/job-scope-gate-<tip>` | `JOB_SCOPE_TIP`, default `cb3d33f` |
+| `syntx-walk.e2e.test.ts:46` | `evidence/syntx-walk-<tip>` | `SYNTX_WALK_TIP`, default `9e86d44` |
+| `syntx-readonly-walk.mjs:13` | `argv[2]`, default `./evidence` | the path is an **argument** |
+| `live-browser-workflow.e2e.test.ts:34` | `evidence/job-pool-validation` | **none — hardcoded** |
+
+**Bound, in three parts:**
+
+1. **Never overwrite another phase's evidence.** Phase-D runs set **both** `JOB_SCOPE_TIP` and `SYNTX_WALK_TIP` to the phase-D tip,
+   and pass an explicit output path to `syntx-readonly-walk.mjs` so it writes outside the repository in the first place.
+   `job-scope-gate-cb3d33f` and `syntx-walk-9e86d44` stay exactly as checked in.
+2. **Never leave evidence in the working tree.** After each run the evidence directory is moved out of the repository into the
+   session scratchpad and reported by path. Nothing is committed, and **MAP-D-ARCH is run only on a working tree cleaned that way** —
+   otherwise it is red for the test harness's own output, which would be a false finding and would teach everyone to ignore it.
+3. **`live-browser-workflow.e2e.test.ts` is not part of phase D's proof surface.** Its destination is hardcoded, so it cannot be
+   redirected without editing a non-phase-D file, which D-3 forbids. It is not run here. That is a stated limitation of this phase,
+   not a silent omission: if a later phase needs it, it needs a switch first.
 
 ---
 
