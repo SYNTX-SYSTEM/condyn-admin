@@ -1,10 +1,12 @@
 ae799cf6ddae0b1d7921d87c52d4f4f2d5e57cb138e4d3ab22e77bd1168690a6  ./outputs/9cc06f84-baseline/breath-vs-floor.json
+781c9905e7fb6ab3704065d60c33a604645fe85174655eb36656708094b63a9f  ./outputs/9cc06f84-baseline/floor-regions.json
 b4ef72974de38071e2252792accbe1c54df97f9fed7d5c338dcc8e401f5c540e  ./outputs/9cc06f84-baseline/noise-floor.json
 fb61823a70ea7faf3c157f0d257026d601042d37b6cf550907c0e523ff7befe0  ./outputs/9cc06f84-baseline/QF-1280x800.json
 cb847201d3797e78e5ed431ac0f642b0667907efb819e1953c9dd1bac8320486  ./outputs/9cc06f84-baseline/QF-1920x1080.json
-d1d3d0db17ee3c88c6013599f0a291be139b829e9c4ba11e0f809058431aa5ae  ./prep.txt
+c8983d9268e3bc4f51a0445b07faa102010108c3d3e516fbc79744d40ac808bb  ./prep.txt
 f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02  ./scripts/pink-breath-vs-floor.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
+900b8510db22df867e9ae82a364b0a6fe27b00ef7ed385ab93c80656afe21dee  ./scripts/pink-floor-regions.mjs
 82a810cd6032c92e2b1da8a96e4a5b34e288d7e00946558c7bed8a1fe887c678  ./scripts/pink-pixels-floor.mjs
 44caa40ea60fced636f16842b060611282626ad086109ca370179fda5139a26f  ./scripts/pink-pixels.mjs
 5e667c8d877feb7bdc05cd6a66ac6708ecda5b329f2e36d6d54cf6c1c8ddaa56  ./scripts/pink-probe-dom.mjs

@@ -106,3 +106,50 @@ SCRIPTS: scripts/{pink-pixels.mjs (the instrument), pink-pixels-floor.mjs, pink-
 STATUS: baseline delivered to GELB as PINK's independent six readings. §0 (GELB's readings) and §7/§8 (the 14
 phase-F obligations on tip f31605cf) to be taken up next — a fresh render worktree at f31605cf, each obligation
 red-first with a recorded mutant, with the AA-tolerant instrument correction above carried in from the start.
+
+
+§2  §0 CROSS-CHECK + TESTABILITY FINDING FOR PF-6 / PF-8 / PF-11  (read §0 only AFTER §1 was committed)
+-------------------------------------------------------------------------------------------------------
+PINK's six independent readings (§1, committed at 5a3a7847 BEFORE §0 was read) vs GELB's §0 (M-F1..M-F6):
+
+  M-F1 ≡ Q-F1  stage square: mean 0.00325, p50 0.00145, p90 0.00496, max 0.635, above-0.05 0.31%  — IDENTICAL.
+  M-F2 ≡ Q-F4/Q-F6  disc p50 0.00167, suppressed-ground p50 0.00145  — IDENTICAL.
+  M-F3 ≡ Q-F6  suppressed-disc max 0.0089, 0 above the threshold  — IDENTICAL (no host STATIC bleed).
+  M-F6 ≡ Q-F3  motion at rest 0.00016 vs 0.000152  — IDENTICAL.
+  M-F4 vs Q-F5  body peaks: GELB 0.307–0.547, PINK 0.48–0.635 — DEFINITIONAL only: GELB uses p98-inside, PINK
+                uses max. Same conclusion (binary image, bright points on black, no mid-tone). Not a fault.
+  M-F5 vs Q-F2  breath: GELB peak 0.0427/p999 0.0205/rim-concentrated; PINK 0.0339/0.0195/rim-concentrated. The
+                p999 and rim concentration agree; the per-pixel MAX differs because it is NOISE-DOMINATED (below).
+Two independent instruments, same render, agree on every robust statistic. Both are sound on static luminance.
+
+THE ONE THING §0 DOES NOT CARRY — a raster/antialiasing jitter floor, and what it means for §7/§8/§11:
+Under reducedMotion:reduce at 9cc06f84 the FIELD has 0 animations (phase-E P-6 green) yet the IMAGE is not
+frame-identical. Whole-square swing floor: max 0.032, 11,302 px >0.002, mean|Δ| 3.6e-5. Bucketed by source
+(scripts/pink-floor-regions.mjs, outputs/9cc06f84-baseline/floor-regions.json):
+  - MARK edges (bodies/arcs/nodes boxes +2px): max 0.0275; 7.7% of mark px swing >0.002; 2.27% >0.006.
+  - QUIET mid-disc r/R 0.30–0.60 (host-through-translucent-ground): max 0.0059; 0.34% >0.002; 0% >0.006.
+  - OUTSIDE disc (host): max 0.0094; 0.08% >0.002.
+  - the whole-square max 0.032 is the RING stroke edge at r/R~1.0 (a bright 1.2px stroke, not in the buckets).
+INTERPRETATION, reconciled with §11:
+  1. The BROAD low-amplitude disc change under reduce is host motion through the 8% STAGE_GROUND_ALPHA — this
+     INDEPENDENTLY CORROBORATES A-F4 (GRÜN's 101,868 changing disc px, max Δ 0.032) with a second instrument, and
+     my quiet-mid-disc max 0.0059 confirms it is low-amplitude and will be removed by DISC_GROUND_OPAQUE. Good.
+  2. The HIGH single-pixel maxima (0.027 marks / 0.032 ring) are raster/antialiasing jitter on the field's OWN
+     bright thin edges. An opaque ground does NOT remove these — they are present on any build, phase E or F.
+CONSEQUENCE for the obligations (semantics right, MEASUREMENT must change — this is PINK's main feedback):
+  - PF-8 (A-F5: p99 of mark px ≤ 0.002 AND max ≤ 0.006): BOTH limbs are already RED from AA alone at this
+    geometry (mark px: 7.7% >0.002 ⇒ p99 ≫ 0.002; max 0.0275 ≫ 0.006), with the firewall working and nothing
+    breathing. A-F5 foresaw the STATIC fringe; the TEMPORAL jitter of that fringe across screenshots is the part
+    that bites. PF-8 must be measured AA/raster-tolerant: co-registered frames, an area/blur luminance, or
+    amplitude-at-the-breath-frequency — not raw per-pixel max-min.
+  - PF-11 ("every pixel identical across ≥2s", even scoped to the disc per A-F4): unachievable at pixel-exact
+    strictness — the field's own ring/mark edges jitter ~0.027–0.032 under reduce. Needs a per-pixel epsilon
+    (≈0.01) or an area/blur basis. A-F4 removed the host CAUSE; the field's own AA remains.
+  - PF-6 ceiling ("no pixel swings > 0.030"): BORDERLINE — ring-edge raster jitter reached 0.032 under reduce.
+    Safer as a high percentile (p999.9) or on co-registered/blurred frames.
+  - PF-6 floor / PF-5 (area, low-frequency) are UNAFFECTED: a 2px blur keeps the breath (>0.002 count
+    52,292) while collapsing the floor (2,225) — 23:1. Area metrics are robust; per-pixel extremes are not.
+These are build-independent instrument findings (SwiftShader software raster, dsf=1). They do not change any
+F-rule; they change how PF-6/PF-8/PF-11 must be instrumented so a CORRECT phase-F build does not read red. PINK
+will carry the AA/raster-tolerant instrument into the PF-1..PF-15 red/green pass when GRÜN commits a phase-F
+IMPLEMENTATION (the architecture tip f31605cf/fdf54b39 is the contract; there is no phase-F build to measure yet).
