@@ -572,3 +572,40 @@ be re-run at the four sizes after any geometry change, not inherited.
   scrolled.
 
 **Still browser-unproven, and still stated:** the LAYOUT direction of P-4.
+
+---
+
+## §18 E-4b DELIVERED — MEASURED AT `9cc06f84`, AND A THIRD DEFECT IN MY OWN INSTRUMENT
+
+**The tip is `9cc06f84`** (`7815746a` carries E-4b, `9cc06f84` the P-4 proof; `716a1941` below them).
+
+**GRÜN found my P-4 probe vacuous.** `p4-fast.mjs` read body position from the transform **attribute**; the bodies
+are placed by `style.transform`, so that attribute is always empty and my "0 of 5 moved" held **by construction**.
+It was the same class of defect PINK reported twice and I reported once: an instrument that cannot fail. Corrected
+to read the computed transform — and the conclusion survives the correction, which is the only reason the earlier
+P-13 finding still stands.
+
+**My own measurements at the tip, with the corrected probe:**
+
+| | measured |
+|---|---|
+| **P-13** | the changed arc carries `data-change="EVIDENCE"`, animation `mappingFieldTransient`, brightness decaying 1.26 → 1.08 → none; **exactly 1 mark**, never more; `0 of 5` body positions changed, read from the **computed** transform |
+| **P-13 provenance** | "1 requirement's own evidence changed since …" — E-9 states it, it is not left to be noticed |
+| **P-13 inverse** | identical content, a **freshly built ranking object** on every read, a genuine re-read (RUNNING → COMPLETED): **peak marks 0, peak brightened elements 0, 0 of 5 moved**. The comparison is on content; the cheap identity fix would have lit everything |
+| **the eleven** | all hold at the tip: P-2 edges **1.814 / 1.940**, P-7 **0 outside the box** at four sizes with the stage 520/840/756/1100, P-8 1.2 / 1.57 / 11.02 with four bodies at the floor, P-10 five GET reads and zero external |
+| **P-6 control** | with motion on, exactly **one** element moves at idle — `mapping-ring-field`, opacity 0.9998 → 0.9604, which is the ±0.04 breath and nothing else. Under `reduce`: 0 animating, 0 moved |
+
+**GRÜN closed the LAYOUT direction in the browser**, which §16 left stated and open: a "Rising" role changes its
+own evidence and is **cut** between exactly two places with a brightness peak of 1.77; a byte-identical "Steady"
+role, displaced only by it, carries `data-change="LAYOUT"`, crosses **11 distinct places over ~850 ms** and has
+`filter: none` in every frame. Both directions of A3, observed rather than argued.
+
+**One mutant survived, and GRÜN was right that it should.** "Evidence eases" — putting a transition on any
+`data-change` — did not turn P-4 red in the browser, because a body whose own evidence changed is **remounted**
+(its key carries the reading) and a new element cannot transition. The cut is therefore **structural**, not a
+property of the stylesheet. Dropping the remount too makes the rising body glide over 10 places and turns it red.
+GRÜN made that guarantee its own unit proof. A surviving mutant that is explained and then converted into a
+stronger proof is worth more than one that simply dies.
+
+**Still browser-unproven:** nothing. **Still outside phase E:** the host's page scroll (E-8a), and the two
+reversible constants that belong to the acceptance.
