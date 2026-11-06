@@ -277,3 +277,26 @@ the uniform-Nyquist bound. This is A-F11's "a bound the instrument cannot reach 
 FREQUENCY axis — each PF-8 run must confirm its decoy floor actually resolved (the 10x floor drop is the check).
 Scripts: scripts/pink-pf8-lockin.mjs (v1, kept as the demonstrated trap), pink-pf8-lockin2.mjs (v2, correct),
 pink-shot-timing.mjs (the ~608-822ms/screenshot profile). Output: outputs/9cc06f84-baseline/pf8-lockin.json.
+
+
+§6  A-F20 ADOPTED — decoys relocated to 0.15/0.25/0.35Hz; floors CONVERGE independently (GELB §21/059e1dcf)
+---------------------------------------------------------------------------------------------------------
+GELB's harness, corrected for the same aliasing class (it fitted each frequency separately AND placed a decoy at
+0.59Hz above its own ~1s-cadence Nyquist), now reports tier A floor 0.00001, tier B 3.45x, tier C 2.27/21.11/
+236.45/inf. A-F20 (binding both lanes): the lock-in is ONE simultaneous LSQ of DC + every frequency, over a long
+naturally-jittered window; decoys 0.15/0.25/0.35Hz placed BETWEEN the harmonics and below cadence Nyquist; every
+run reports its own window and decoy floor; an unresolved floor INVALIDATES the run (no verdict).
+PINK adopted A-F20 (scripts/pink-pf8-lockin3.mjs decoys; pink-pf8-lockin3b.mjs = +47s window) and re-ran at base:
+  26s window (2.6 periods):  tier A floor 3.6e-5  · tier B 2.30x · tier C 2.10/6.77/53.34/24      all verdicts = GELB
+  47s window (4.7 periods):  tier A floor 1.8e-5  · tier B 2.45x · tier C 1.85/8.35/116.89/inf     all verdicts = GELB
+CONVERGENCE: PINK's tier A floor at the aligned 47s window (1.8e-5) lands on GELB's converged 1e-5 — two
+instruments corrected from DIFFERENT starting errors meet at the same floor (worth more than either number alone).
+PINK's ADDITIVE refinement to A-F20: the floor is WINDOW-LENGTH dependent and keeps dropping until ~4.7 periods —
+PINK measured floor 3.6e-5 at 26s falling to 1.8e-5 at 47s, and tier C at 0.004 sharpening 53x->117x over the same
+change. So A-F20's "long jittered window" has a FLOOR: >= ~4.7 periods (47s), below which the decoy floor has not
+settled and (by A-F20's own rule) the run should be inconclusive. Confirmed GELB's 47s/4.7-period choice is not
+arbitrary — it is where the floor stabilises. PINK's instrument is now aligned (3b) for the PF-1..PF-15 pass.
+GRÜN PF-3 note (halo/core must be measured DIFFERENTIALLY, with-halo minus without-halo, because rank-4's halo
+window at r=430 reads the lit ground inside the shelf and false-reads 0.31 vs 0.25) — accepted as sound (same
+class as M-F4: a window reporting what is in it, not what put it there) and TO BE VERIFIED by PINK on GRÜN's tip
+(no halo exists at base). Per-element sign-hide (not stage-minus-svg) confirmed in the doc for the lit-ground tip.
