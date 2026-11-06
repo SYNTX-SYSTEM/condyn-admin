@@ -165,3 +165,72 @@ semantics must carry the light), and F-6's corridor is measured on the bodies (P
 New: **PG-1** (semantic share of light), **PG-3/4/5** (body presence), **PG-6/7** (relation presence and travel),
 **PG-8/9** (hue as exactly one channel, bands unchanged). Each red-first with a recorded mutant, per the rules
 A-F11, A-F20, A-F21 and A-F29 established in phase F.
+
+---
+
+## §5 ADJUDICATIONS — THE SIZE OF A BODY
+
+### A-G1 · PG-3 takes option (A): the collision search uses the **drawn** radius *(V1 → V1.1)*
+
+GRÜN measured that PG-3's 56 px collides with V1's collision guarantee wherever a **small pool holds the strong
+roles**: its sector is narrow and the golden spread compresses into it — 7 of 20 roles gives 6 overlapping pairs,
+3 of 63 gives 3. A realistic shape, not a corner case.
+
+**Decided: option (A).** V1's collision search uses each body's **drawn** radius rather than its mass radius.
+
+- **(B) is the error I have named four times this phase**: a bound the geometry refuses. Shrinking the body to fit
+  the old spacing means PG-3 fails in exactly the dense cases where legibility matters most. I will not ship a
+  bound that cannot be met.
+- **(C) is worse than failing**: a relaxation V1 does not know about makes `displaced` *lie* — a body deviates
+  from its fit position and the flag says it did not — and makes the radius false as fit.
+- **(D) changes a semantic** (sector width would carry the share of *drawn* roles rather than of all roles).
+
+(A) changes **no definition**: fit is still radius, pool is still angle, `displaced` still means "the search had
+to deviate", overflow still means "no room in band and sector". Only the numbers move, and they move because the
+bodies are genuinely larger — which is a true statement about the picture. `body.gap` exists in the spec
+precisely to say "bodies must not touch"; feeding it the real drawn size is **using the spec as designed**, not
+subverting it.
+
+**This is a version bump, not a new engine**: `MAPPING_LAYOUT_V1.1`, same algorithm, same four meanings, one
+constant redefined, new golden vectors for the dense cases, the reference implementation adjusted, and B-1's
+`MAP-*-ARCH` retargeted. V1 stays as phase B's record.
+
+**Accepted consequence:** more V1-overflow in narrow bands. That is exactly what overflow means, and it is the
+honest outcome — if a narrow pool cannot hold its strong roles at legible size, **saying so beats drawing them on
+top of each other.**
+
+### A-G2 · Size keeps carrying requirement mass, mapped above the floor
+
+GRÜN is right that mass would otherwise vanish from the picture without anyone deciding it. Today the radius
+carries `weightSum` over ρ ∈ [6, 16] units.
+
+**Decided: size stays the carrier**, mapped monotonically **above** the floor — **56 px at ρ_min, 92 px at
+ρ_max** at 1920 × 1080, a ratio of 1.64 and comfortably discriminable. Moving mass into the measure text would
+lose it at a glance, and size is a strong pre-attentive channel that is otherwise unused.
+
+The channel assignment is then complete and collision-free, which is E-1 satisfied rather than asserted:
+
+| channel | question |
+|---|---|
+| **radius** | fit |
+| **angle** | pool |
+| **size** | requirement mass |
+| **luminance** | evidence class (E-1/A-3's bands) |
+| **hue** | the unmet REQUIRED requirement (G-4) |
+
+**PG-3 amended:** drawn diameter **∈ [56, 92] px** at 1920 × 1080, monotone in `weightSum`.
+
+### A-G3 · The budget statement is its own statement *(B-5)*
+
+GRÜN is right that "not drawn because of the budget" and V1's overflow are two different facts, and one
+statement must not carry two meanings — E-1 applied to copy.
+
+**Named:** `data-testid="mapping-beyond-budget"`, `data-count`, its own sentence: *this level draws the strongest
+N; the others stand in the list*. V1's `mapping-overflow` keeps its own meaning — *no room in band and sector* —
+unchanged in wording and in count.
+
+### A-G4 · The cap per level
+
+**L0 ≤ 7** (the overview: few, large, legible). **L1 ≤ 12** — the stage zooms to the sector there, so the same
+screen space holds more bodies at the same drawn size, and the purpose of L1 is to examine one pool. **L2/L3 are
+one role** and unaffected. Both caps are stated, not left open; both use the budget statement above.
