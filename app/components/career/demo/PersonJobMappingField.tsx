@@ -128,8 +128,14 @@ export const WAVE = Object.freeze({ periodMs: 10000, riseMs: 4000, edgeLagMs: 12
  * times its radius. Depth by rank: one gain, from 1 at rank 1 down to 1 / depthRatio at the last rank, on core and halo ONLY.
  */
 export const VOLUME = Object.freeze({ coreAlpha: 0.5, haloAlpha: 0.14, haloNear: 2.2, haloFar: 2.8, depthRatio: 1.45 });
-/** F-4: every second pool's wedge darkens the ground by this black alpha (two levels, ±8 % about their mean: 1 − 0.852 = 0.148). */
-export const WEDGE_SHADE = 0.148;
+/**
+ * F-4 / PF-16: every second pool's wedge darkens the ground by this black alpha. The blend is in sRGB, so the step is derived in
+ * RELATIVE LUMINANCE over the whole ground (centre to shelf, wave trough to peak): ratio ≈ 0.95–0.96 by the formula. Rendered, the
+ * step is quantized to whole 8-bit codes, and near black one code is ~5 % luminance: measured 1.056 … 1.087 between the pools at
+ * 150 … 415 units (PF-16: ratio ∈ [0.92, 1.09], step ≤ 0.004). Not 1 − 0.852: an sRGB factor of 0.852 is a luminance ratio of 0.70
+ * (PHASE_F §28).
+ */
+export const WEDGE_SHADE = 0.022;
 /** F-5: a beam's luminance along its length, a mask: `from` at the capability end, `to` at the requirement end (multiplies). */
 export const BEAM_GRADIENT = Object.freeze({ from: 0.45, to: 1 });
 /** The depth gain of a rank (F-3): monotone non-increasing, 1 at rank 1, 1 / depthRatio at the last rank. */
@@ -177,7 +183,7 @@ const groundAlphaAt = (u: number) => {
   return a;
 };
 /** The medium at rest at u (ground + the wave at its mean), times `shade` (a dark wedge), as opaque sRGB; beyond the ground, black. */
-function restingColor(u: number, shade = 1): string {
+export function restingColor(u: number, shade = 1): string {
   if (u > 1) return SEAT;
   const cyan = CYAN.split(",").map(Number);
   const alpha = 1 - (1 - groundAlphaAt(u)) * (1 - WAVE.peakAlpha / 2);
@@ -732,6 +738,13 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
               {waveBand(i).map(st => <stop key={st.offset} offset={st.offset} stopColor={`rgb(${CYAN})`} stopOpacity={st.opacity} />)}
             </radialGradient>
           ))}
+          {/* The medium at rest (ground + the wave's mean), opaque, and black beyond the ground: the seat of a structure that lies IN the
+              medium (the sector edges), so it is still and, at the mean phase, invisible — never a dark seam (PF-17). */}
+          <radialGradient id="mf-rest" gradientUnits="userSpaceOnUse" cx={0} cy={0} r={g.fieldRadius}>
+            {Array.from({ length: 11 }, (_, i) => <stop key={i} offset={fixed(((i / 10) * g.shelfNear) / g.fieldRadius)} stopColor={restingColor(i / 10)} />)}
+            <stop offset={fixed(g.shelfNear / g.fieldRadius + 0.001)} stopColor={SEAT} />
+            <stop offset={1} stopColor={SEAT} />
+          </radialGradient>
           <radialGradient id="mf-person-seat" gradientUnits="userSpaceOnUse" cx={0} cy={0} r={g.personRadius}>
             {restingStops(g.personRadius / g.shelfNear).map(st => <stop key={st.offset} offset={st.offset} stopColor={st.color} stopOpacity={1} />)}
           </radialGradient>
@@ -767,7 +780,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           const pathR = g.fieldRadius + LABEL_GAP;
           return (
             <g key={s.poolId}>
-              <path aria-hidden="true" pointerEvents="none" d={wedge(g.personRadius, g.fieldRadius, s.startDegrees, s.spanDegrees)} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
+              <path aria-hidden="true" pointerEvents="none" d={wedge(g.personRadius, g.fieldRadius, s.startDegrees, s.spanDegrees)} fill="none" stroke="url(#mf-rest)" strokeWidth={structure + SEAT_PAD_PX * k} />
               <path
                 data-testid={`mapping-sector-${s.poolId}`} data-mapping-sector data-pool={s.poolId} data-open={String(openSector?.poolId === s.poolId)}
                 d={wedge(g.personRadius, g.fieldRadius, s.startDegrees, s.spanDegrees)}

@@ -11,7 +11,7 @@ import { allStates, keyCases } from "./support-d";
  * core and halo only, the halo follows exactly a LAYOUT body (A-F15), and the breath is CSS keyed on LIVE.
  */
 vi.mock("react", async (importOriginal) => (await import("../pxj-first-screen/harness")).mockReact(await importOriginal<object>()));
-import { MAPPING_FIELD_CSS, PersonJobMappingField, SEAT, VOLUME, WAVE, depthGain, waveAt, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
+import { MAPPING_FIELD_CSS, PersonJobMappingField, SEAT, VOLUME, WAVE, WEDGE_SHADE, depthGain, restingColor, waveAt, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
 
 type Tree = ReactElement<Record<string, unknown>>;
 function byTestId(node: unknown, id: string): Tree | null {
@@ -180,5 +180,37 @@ describe("MAP-F-NEURO · F-6 / F-7 — the wave's form", () => {
     expect(WAVE.periodMs).toBe(10000);
     expect(WAVE.selectedGain).toBeLessThanOrEqual(0.45);
     expect(MAPPING_FIELD_CSS).toContain(`[data-testid="mapping-field"][data-selection="CAPABILITY"] { --mf-wave-gain: ${WAVE.selectedGain}; }`);
+  });
+});
+
+describe("MAP-F-FIELD · F-4 / PF-16 / PF-17 — territories without seams", () => {
+  const lum = (rgb: string) => {
+    const [r, g, b] = /rgb\((\d+), (\d+), (\d+)\)/.exec(rgb)!.slice(1).map(Number);
+    const lin = (v: number) => { const c = v / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  };
+  it("REPRODUCE: the pool shade is a step in RELATIVE LUMINANCE inside [0.92, 1.09] and ≤ 0.004 over the whole ground — never an sRGB alpha read as a ratio", () => {
+    for (let i = 2; i <= 10; i++) {
+      const u = i / 10, lit = lum(restingColor(u)), shaded = lum(restingColor(u, 1 - WEDGE_SHADE));
+      expect(lit / shaded, `u = ${u}`).toBeGreaterThanOrEqual(1 / 1.09); // the formula, before 8-bit quantization (measured: GRÜN's instrument)
+      expect(lit / shaded, `u = ${u}`).toBeLessThanOrEqual(1.09);
+      expect(lit - shaded, `u = ${u}`).toBeLessThanOrEqual(0.004);
+      expect(lit - shaded, `u = ${u}: the pools are told apart`).toBeGreaterThan(0);
+    }
+  });
+
+  it("REPRODUCE: no black seat lies in the medium — a structure inside the medium (the sector edges) rests on the medium itself", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const tree = view.settle(props());
+    const svg = byTestId(tree, "mapping-field-svg")!;
+    const sectors = all(svg, e => e.props?.["data-mapping-sector"] === true);
+    expect(sectors.length).toBeGreaterThan(1);
+    const kids = all(svg, e => typeof e.type === "string");
+    for (const sector of sectors) {
+      const seat = kids[kids.indexOf(sector) - 1];
+      expect([seat.type, seat.props.d, seat.props["aria-hidden"]], String(sector.props["data-testid"])).toEqual(["path", sector.props.d, "true"]);
+      expect(seat.props.stroke, "the sector edge's seat is the resting medium, not black (PF-17: no seam)").toBe("url(#mf-rest)");
+    }
+    view.unmount();
   });
 });
