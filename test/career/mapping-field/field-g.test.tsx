@@ -205,3 +205,33 @@ describe("MAP-G-FIELD · PG-14 / PG-15 — framed whole, rings behind", () => {
     view.unmount();
   });
 });
+
+describe("MAP-G-FIELD · PG-20 — the mark glyphs gain an icon for their own question", () => {
+  it("REPRODUCE: DIFFERENT's two open ends splay outward (they point apart); NONE's open ends stay radial; CONSTITUENT nests a shorter arc; ALIAS echoes the arc", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const p = props();
+    let tree = view.settle(p);
+    fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
+    fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onClick"); tree = view.settle(p);
+    const ring = byTestId(tree, "mapping-ring")!;
+    const angleOf = (x: number, y: number, ox: number, oy: number) => Math.atan2(y - oy, x - ox);
+    const body = bodies(tree)[0];
+    const [bx, by] = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(String((body.props.style as Record<string, string>).transform))!.slice(1).map(Number);
+    const tilt = (state: string) => all(ring, e => e.props?.["data-mapping-arc"] === true && e.props["data-state"] === state).flatMap(arc =>
+      all(arc, e => e.props?.["data-arc-end"] === true).map(e => {
+        const [x1, y1, x2, y2] = ["x1", "y1", "x2", "y2"].map(k => Number(e.props[k]));
+        return angleOf(x2, y2, bx, by) - angleOf(x1, y1, bx, by);
+      }));
+    const different = tilt("DIFFERENT"), none = tilt("NONE");
+    expect([different.length, none.length], "precondition: both open states drawn with their two ends").toEqual([2, 2]);
+    for (const t of none) expect(Math.abs(t), "NONE: radial (to the coordinates' rounding)").toBeLessThan(1e-4);
+    for (const t of different) expect(Math.abs(t), "DIFFERENT: a visible splay, far above rounding").toBeGreaterThan(0.01);
+    expect(Math.sign(different[0]) * Math.sign(different[1]), "DIFFERENT: the two ends lean opposite ways").toBe(-1);
+    expect(different[0], "DIFFERENT: the start end leans back, away from the end").toBeLessThan(0);
+    expect(different[1], "DIFFERENT: the end end leans forward, away from the start").toBeGreaterThan(0);
+    const parts = (state: string) => all(ring, e => e.props?.["data-mapping-arc"] === true && e.props["data-state"] === state).flatMap(arc => all(arc, e => e.type === "path" && e.props["data-mapping-hit"] === undefined));
+    expect(parts("NAME_COMPOSITE_CONSTITUENT").length, "CONSTITUENT: the arc line and its nested arc").toBeGreaterThan(parts("WEAK_TOKEN_CONTAINMENT").length);
+    expect(parts("NAME_ALIAS").length, "ALIAS: the arc, its fill and its echo").toBeGreaterThan(parts("NAME_EXACT").length);
+    view.unmount();
+  });
+});

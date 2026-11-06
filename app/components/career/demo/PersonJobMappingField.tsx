@@ -134,7 +134,7 @@ export const GLOW_RAMP: ReadonlyArray<readonly [number, number]> = Object.freeze
  *  more peripheral one; where the budget and the spacing disagree, the spacing wins and the budget shrinks. */
 export const CROWDING = 0.3;
 /** PG-20: the mark glyphs' iconic reinforcements, in screen px and shares of the arc's span (each answers the glyph's own question). */
-export const MARK_ICON = Object.freeze({ aliasOffsetPx: 5.2, aliasShift: 0.08, constituentInsetPx: 4.6, constituentShare: 0.4 });
+export const MARK_ICON = Object.freeze({ aliasOffsetPx: 5.2, aliasShift: 0.08, constituentInsetPx: 4.6, constituentShare: 0.4, differentSplay: 0.6 });
 /**
  * PG-21 (PHASE_G §12, A-G17): the disc OCCLUDES what lies beneath it — opaque in the stage's own ground colour, so it adds no light of
  * its own and no light in the field belongs to anyone else (the host's views no longer shine through). Occlusion, not light: this is
@@ -343,7 +343,10 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
             strokeDasharray={dashOf(s.arcLine, k, 0)} strokeLinecap={s.arcLine === "dotted" ? "round" : "butt"} />
         )}
         {ends && [arc.startDegrees, arc.endDegrees].map((d, i) => {
-          const [ax, ay] = at(cx, cy, r - tick / 2, d), [bx, by] = at(cx, cy, r + tick / 2, d);
+          // PG-20 (PHASE_G §13): DIFFERENT's two ends SPLAY outward — they point apart (we looked, and these two do not meet); the other
+          // open line (NONE, no relation found) keeps its ends radial. The cross tick stays the glyph.
+          const splay = s.mark === "counterTick" ? (i === 0 ? -1 : 1) * ((tick * MARK_ICON.differentSplay) / Math.max(r, 1)) * (180 / Math.PI) : 0;
+          const [ax, ay] = at(cx, cy, r - tick / 2, d), [bx, by] = at(cx, cy, r + tick / 2, d + splay);
           return <line key={i} {...tag("data-arc-end")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.9)} strokeWidth={w(width)} />;
         })}
         {s.arcFill > 0 && <path {...tag("data-arc-fill")} d={arcPath(cx, cy, r - 2.2 * k, arc.startDegrees, fillEnd)} fill="none" stroke={ink(0.7)} strokeWidth={w(2.2 * k)} />}
