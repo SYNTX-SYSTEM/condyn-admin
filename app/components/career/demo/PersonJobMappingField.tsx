@@ -84,6 +84,110 @@ export const MOTION = Object.freeze({
  * field ring is at opacityMean − opacityAmplitude of its value.
  */
 export const RING_LUMINANCE = Object.freeze({ shelf: 0.05, best: 0.085, field: 0.15, horizon: 0.25 });
+/**
+ * PF-15 / M-F7: the rings' rendered luminance is width × dash × alpha, not alpha. On their black seats each ring is drawn solid and
+ * wide enough that its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance (0.0036 · 0.0069 ·
+ * 0.0169 · 0.0431 at 0.05 · 0.085 · 0.15 · 0.25 ink). Screen px; the shelf is a band and keeps its width.
+ */
+export const RING_WIDTH_PX = Object.freeze({ best: 2.4, field: 2.0, horizon: 2.0 });
+/**
+ * PHASE F (PERSON_X_JOB_MAPPING_PHASE_F.md, "the living organism"): the medium. Everything that means something is still; only the
+ * medium breathes (A-F8). Every number of the medium in one place; none of them carries state.
+ *
+ * DISC_GROUND_OPAQUE (A-F4): the field disc is painted opaque, so every pixel inside it is the field's own — the host's motion does not
+ * shine through it. Reversible by this one constant (false: the disc lets STAGE_GROUND_ALPHA's host ghost through again). OTTAVIO's.
+ */
+export const DISC_GROUND_OPAQUE = true;
+/** The stage's own dark, the colour the opaque disc is painted in (the section's ground at alpha 1). */
+const DISC_BASE = "rgb(3, 5, 8)";
+/** F-6 / A-F5 / A-F9: the backing under every sign and structure — opaque black, the same geometry. */
+export const SEAT = "rgba(0, 0, 0, 1)";
+/**
+ * A seat's extra width over its mark, in screen px (0.8 px each side): the antialiasing fringe of a 1.2–1.3 px mark at an oblique
+ * angle is only partly covered by a seat of its own width, and the medium breathes through by (1 − coverage). Measured per sign class
+ * (PF-8 tier A at 0.1 Hz, arcs/ticks): 0.5 px → 0.00065, 1.0 → 0.00028, 1.6 → 0.00008. 0 = exactly the mark's geometry.
+ */
+export const SEAT_PAD_PX = 1.6;
+/** Text's seat: the black outline painted under the fill (paint-order), in screen px — the same measurement (text p99 0.0025 → 0.0004). */
+export const TEXT_SEAT_PX = 1.6;
+/**
+ * F-1: the ground — CYAN at these alphas over the opaque disc, radially from the person (u = r / shelfNear) to the shelf, where the
+ * ground ends: the shelf is a ring (E-7), static and backed (A-F8), so the living field is the disc inside it.
+ */
+export const GROUND = Object.freeze({ stops: Object.freeze([[0, 0.29], [0.25, 0.275], [0.5, 0.25], [0.72, 0.22], [0.86, 0.18], [1, 0.155]] as const) });
+/**
+ * F-6: the breath — a radial wave in the ground and the halos, from the person outward. `layers` raised-cosine bands over the ground
+ * (a partition of unity, so the swing is even across the disc), each at its own phase lag ∝ radius (`edgeLagMs` at the field edge);
+ * 4 s rise : 6 s fall; `peakAlpha` the band's CYAN at full swing (A-F1's quarter-nominal). The halo breathes `haloDepth` about its
+ * mean. While a capability is selected the amplitude is `selectedGain` of itself (F-7).
+ */
+export const WAVE = Object.freeze({ periodMs: 10000, riseMs: 4000, edgeLagMs: 1200, layers: 7, peakAlpha: 0.06, haloDepth: 0.3, selectedGain: 0.35 });
+/**
+ * F-2 / F-3: a body is a volume — an INK core (radial falloff) under its unchanged outline, and a CYAN halo to `haloNear`…`haloFar`
+ * times its radius. Depth by rank: one gain, from 1 at rank 1 down to 1 / depthRatio at the last rank, on core and halo ONLY.
+ */
+export const VOLUME = Object.freeze({ coreAlpha: 0.5, haloAlpha: 0.14, haloNear: 2.2, haloFar: 2.8, depthRatio: 1.45 });
+/** F-4: every second pool's wedge darkens the ground by this black alpha (two levels, ±8 % about their mean: 1 − 0.852 = 0.148). */
+export const WEDGE_SHADE = 0.148;
+/** F-5: a beam's luminance along its length, a mask: `from` at the capability end, `to` at the requirement end (multiplies). */
+export const BEAM_GRADIENT = Object.freeze({ from: 0.45, to: 1 });
+/** The depth gain of a rank (F-3): monotone non-increasing, 1 at rank 1, 1 / depthRatio at the last rank. */
+export function depthGain(rank: number, lastRank: number): number {
+  const t = lastRank <= 1 ? 0 : Math.min(1, Math.max(0, (rank - 1) / (lastRank - 1)));
+  return Math.round(VOLUME.depthRatio ** -t * 1e6) / 1e6;
+}
+/** F-6: the 4 : 6 waveform in [-1, 1] at phase f ∈ [0, 1]: a half-cosine rise over riseMs, a half-cosine fall over the rest. */
+export function waveAt(f: number): number {
+  const rise = WAVE.riseMs / WAVE.periodMs;
+  return f <= rise ? -Math.cos((Math.PI * f) / rise) : Math.cos((Math.PI * (f - rise)) / (1 - rise));
+}
+const WAVE_STEPS = 40;
+const waveKeyframes = () => Array.from({ length: WAVE_STEPS + 1 }, (_, i) => {
+  const w = Math.round(waveAt(i / WAVE_STEPS) * 1e6) / 1e6;
+  return `${Math.round((i / WAVE_STEPS) * 100000) / 1000}% { opacity: calc(var(--mf-wave-mean) + var(--mf-wave-depth) * var(--mf-wave-gain, 1) * ${w}); }`;
+}).join(" ");
+/**
+ * F-6: the phase lag of a point at distance d from the person (ms), as a negative animation delay (the wave is already running). The
+ * wave reaches the edge of the living field — the shelf, where the medium ends (A-F8) — edgeLagMs after the centre.
+ */
+const waveDelay = (d: number, edge: number) => `${Math.round(-(WAVE.periodMs - (WAVE.edgeLagMs * Math.min(1, d / edge))))}ms`;
+/** F-1 / F-6: the ground's gradient stops, and the raised-cosine band of layer i (offsets on the ground's radius). */
+const groundStops = () => GROUND.stops.map(([u, a]) => ({ offset: u, opacity: a }));
+function waveBand(i: number): Array<{ offset: number; opacity: number }> {
+  const n = WAVE.layers - 1, c = i / n, h = 1 / n, out: Array<{ offset: number; opacity: number }> = [];
+  if (c - h > 0) out.push({ offset: 0, opacity: 0 });
+  for (let j = 0; j <= 8; j++) {
+    const x = c - h + (2 * h * j) / 8;
+    if (x < 0 || x > 1) continue;
+    out.push({ offset: Math.round(x * 1e6) / 1e6, opacity: Math.round(WAVE.peakAlpha * (0.5 + 0.5 * Math.cos((Math.PI * (x - c)) / h)) * 1e6) / 1e6 });
+  }
+  if (c + h < 1) out.push({ offset: 1, opacity: 0 });
+  return out;
+}
+/**
+ * The person is the still source the wave leaves from (A-F8: a structure): its disc rests on the ground's resting composite — the
+ * ground plus the wave at its mean, opaque — so at the mean phase it is the ground, and while the medium breathes around it, it does not.
+ * Returned as opaque sRGB stops along u = r / shelfNear (the ground's own parameter).
+ */
+const DISC_BASE_RGB = [3, 5, 8] as const;
+const groundAlphaAt = (u: number) => {
+  const st = GROUND.stops; let a = st[st.length - 1][1];
+  for (let i = 1; i < st.length; i++) if (u <= st[i][0]) { const [u0, a0] = st[i - 1], [u1, a1] = st[i]; a = a0 + ((a1 - a0) * (u - u0)) / (u1 - u0); break; }
+  return a;
+};
+/** The medium at rest at u (ground + the wave at its mean), times `shade` (a dark wedge), as opaque sRGB; beyond the ground, black. */
+function restingColor(u: number, shade = 1): string {
+  if (u > 1) return SEAT;
+  const cyan = CYAN.split(",").map(Number);
+  const alpha = 1 - (1 - groundAlphaAt(u)) * (1 - WAVE.peakAlpha / 2);
+  return `rgb(${DISC_BASE_RGB.map((b, c) => Math.round((b + (cyan[c] - b) * alpha) * shade)).join(", ")})`;
+}
+function restingStops(uMax: number): Array<{ offset: number; color: string }> {
+  return Array.from({ length: 5 }, (_, i) => ({ offset: i / 4, color: restingColor((uMax * i) / 4) }));
+}
+/** Text keeps its glyphs on a black seat (the firewall for text): the outline is painted first, black, under the fill. */
+const textSeat = (k: number) => ({ paintOrder: "stroke", stroke: SEAT, strokeWidth: fixed(TEXT_SEAT_PX * k), strokeLinejoin: "round" as const });
+
 /** The sign table's line words, drawn (in multiples of one screen pixel `k`; `c` the circumference of a body for an open line). */
 export const LINE_DASH: Readonly<Record<string, (k: number, c: number) => string | undefined>> = Object.freeze({
   solid: () => undefined,
@@ -121,7 +225,7 @@ const transientTotal = MOTION.transient.riseMs + MOTION.transient.decayMs;
 const transientPeakAt = Math.round((MOTION.transient.riseMs / transientTotal) * 100000) / 1000;
 
 export const MAPPING_FIELD_CSS = `
-@keyframes mappingFieldRingBreath { ${sineKeyframes(v => `transform: scale(${Math.round((1 + MOTION.breath.radiusAmplitude * v) * 1e6) / 1e6}); opacity: ${Math.round((MOTION.breath.opacityMean + MOTION.breath.opacityAmplitude * v) * 1e6) / 1e6};`)} }
+@keyframes mappingFieldWave { ${waveKeyframes()} }
 @keyframes mappingFieldQuery { ${sineKeyframes(v => `transform: translate(calc(var(--mf-query-amp, 1.5px) * ${v}), 0px);`)} }
 @keyframes mappingFieldTransient { 0% { filter: brightness(1); } ${transientPeakAt}% { filter: brightness(${MOTION.transient.peak}); } 100% { filter: brightness(1); } }
 @keyframes mappingFieldEvidence { from { opacity: 0; } to { opacity: 1; } }
@@ -130,8 +234,12 @@ export const MAPPING_FIELD_CSS = `
 [data-testid="mapping-field"] [data-mapping-body]:focus-visible circle[data-mapping-body-shape] { stroke-width: 2.4px; }
 [data-testid="mapping-field"] [data-mapping-arc]:focus-visible, [data-testid="mapping-field"] [data-mapping-node]:focus-visible { filter: drop-shadow(0 0 3px rgba(${CYAN}, 0.95)); }
 [data-testid="mapping-field"] button:focus-visible { outline: 1px solid rgba(${CYAN}, 0.85); outline-offset: 2px; }
-[data-testid="mapping-field"] [data-testid="mapping-ring-field"] { transform-box: fill-box; transform-origin: 50% 50%; opacity: ${MOTION.breath.opacityMean}; }
-[data-testid="mapping-field"] [data-testid="mapping-ring-field"][data-breath="LIVE"] { animation: mappingFieldRingBreath ${MOTION.breath.periodMs}ms linear infinite; }
+[data-testid="mapping-field"] .mf-wave { opacity: var(--mf-wave-mean); }
+[data-testid="mapping-field"] .mf-wave-ground { --mf-wave-mean: 0.5; --mf-wave-depth: 0.5; }
+[data-testid="mapping-field"] .mf-wave-halo { --mf-wave-mean: ${1 - WAVE.haloDepth / 2}; --mf-wave-depth: ${WAVE.haloDepth / 2}; }
+[data-testid="mapping-field"][data-selection="CAPABILITY"] { --mf-wave-gain: ${WAVE.selectedGain}; }
+[data-testid="mapping-field"][data-breath="LIVE"] .mf-wave { animation: mappingFieldWave ${WAVE.periodMs}ms linear infinite; }
+[data-testid="mapping-field"] .mf-layout { transition: transform ${MOTION.layout.durationMs}ms ${MOTION.layout.easing}; }
 [data-testid="mapping-field"] [data-motion="QUERY"] { animation: mappingFieldQuery ${MOTION.query.periodMs}ms linear infinite; }
 [data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"] { animation: mappingFieldTransient ${transientTotal}ms linear 1; }
 [data-testid="mapping-field"] [data-mapping-arc][data-change="EVIDENCE"] { animation: mappingFieldTransient ${transientTotal}ms linear 1; }
@@ -183,9 +291,35 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
   const tick = Math.max(2.4 * k, r * 0.18);
   const ends = s.arcLine === "open";
   const fillEnd = arc.startDegrees + arc.spanDegrees * s.arcFill;
+  const key = change === null ? arc.poolRequirementId : `${arc.poolRequirementId}#${change}`;
+  /** The arc's drawn parts. As the seat (F-6 firewall): the same geometry in opaque black, a seat-pad wider, no data, no hit. */
+  const parts = (seat: boolean) => {
+    const ink = (alpha: number) => (seat ? SEAT : `rgba(${INK}, ${alpha})`);
+    const w = (width: number) => (seat ? width + SEAT_PAD_PX * k : width);
+    const tag = (attr: string, value: string | true = true) => (seat ? {} : { [attr]: value });
+    return (
+      <>
+        {!ends && (
+          <path {...tag("data-arc-line")} d={arcPath(cx, cy, r, arc.startDegrees, arc.endDegrees)} fill="none" stroke={ink(0.9)} strokeWidth={w(width)}
+            strokeDasharray={dashOf(s.arcLine, k, 0)} strokeLinecap={s.arcLine === "dotted" ? "round" : "butt"} />
+        )}
+        {ends && [arc.startDegrees, arc.endDegrees].map((d, i) => {
+          const [ax, ay] = at(cx, cy, r - tick / 2, d), [bx, by] = at(cx, cy, r + tick / 2, d);
+          return <line key={i} {...tag("data-arc-end")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.9)} strokeWidth={w(width)} />;
+        })}
+        {s.arcFill > 0 && <path {...tag("data-arc-fill")} d={arcPath(cx, cy, r - 2.2 * k, arc.startDegrees, fillEnd)} fill="none" stroke={ink(0.7)} strokeWidth={w(2.2 * k)} />}
+        {s.mark === "double" && <path {...tag("data-arc-mark", "double")} d={arcPath(cx, cy, r + 2.4 * k, arc.startDegrees, arc.endDegrees)} fill="none" stroke={ink(0.9)} strokeWidth={w(mark)} />}
+        {s.mark === "counterTick" && (() => { const [ax, ay] = at(cx, cy, r - tick, arc.midDegrees), [bx, by] = at(cx, cy, r + tick, arc.midDegrees); return <line {...tag("data-arc-mark", "counterTick")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.95)} strokeWidth={w(1.4 * k)} />; })()}
+        {s.mark === "alias" && (() => { const [mx, my] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <circle {...tag("data-arc-mark", "alias")} cx={mx} cy={my} r={1.6 * k} fill="none" stroke={ink(0.9)} strokeWidth={w(mark)} />; })()}
+        {s.mark === "constituent" && (() => { const [ax, ay] = at(cx, cy, r + 0.6 * k, arc.midDegrees), [bx, by] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <line {...tag("data-arc-mark", "constituent")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.9)} strokeWidth={w(mark)} />; })()}
+      </>
+    );
+  };
   return (
+    <React.Fragment key={key}>
+    <g className="mf-seat" aria-hidden="true" pointerEvents="none">{parts(true)}</g>
     <g
-      key={change === null ? arc.poolRequirementId : `${arc.poolRequirementId}#${change}`} data-testid={testId} data-mapping-arc data-change={change === null ? undefined : "EVIDENCE"} data-requirement={arc.poolRequirementId} data-state={arc.state} data-class={arc.class} data-line={s.arcLine} data-fill={s.arcFill}
+      key={key} data-testid={testId} data-mapping-arc data-change={change === null ? undefined : "EVIDENCE"} data-requirement={arc.poolRequirementId} data-state={arc.state} data-class={arc.class} data-line={s.arcLine} data-fill={s.arcFill}
       data-beam={s.beam} data-phase-locked={String(s.phaseLocked)} data-mark={s.mark} data-luminance={s.luminance} data-evidence-step={EVIDENCE_STEP[s.class]} data-evidence-luminance={luminanceOf(s)}
       data-open={String(interactive?.open === true)} data-marked={String(interactive?.marked === true)} data-emphasis={String(emphasis)}
       opacity={luminanceOf(s)}
@@ -196,20 +330,9 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
       style={interactive ? { cursor: "pointer" } : undefined}
     >
       {interactive && <path d={arcPath(cx, cy, r, arc.startDegrees, arc.endDegrees)} fill="none" stroke="rgba(0, 0, 0, 0)" strokeWidth={10 * k} data-mapping-hit />}
-      {!ends && (
-        <path data-arc-line d={arcPath(cx, cy, r, arc.startDegrees, arc.endDegrees)} fill="none" stroke={`rgba(${INK}, 0.9)`} strokeWidth={width}
-          strokeDasharray={dashOf(s.arcLine, k, 0)} strokeLinecap={s.arcLine === "dotted" ? "round" : "butt"} />
-      )}
-      {ends && [arc.startDegrees, arc.endDegrees].map((d, i) => {
-        const [ax, ay] = at(cx, cy, r - tick / 2, d), [bx, by] = at(cx, cy, r + tick / 2, d);
-        return <line key={i} data-arc-end x1={ax} y1={ay} x2={bx} y2={by} stroke={`rgba(${INK}, 0.9)`} strokeWidth={width} />;
-      })}
-      {s.arcFill > 0 && <path data-arc-fill d={arcPath(cx, cy, r - 2.2 * k, arc.startDegrees, fillEnd)} fill="none" stroke={`rgba(${INK}, 0.7)`} strokeWidth={2.2 * k} />}
-      {s.mark === "double" && <path data-arc-mark="double" d={arcPath(cx, cy, r + 2.4 * k, arc.startDegrees, arc.endDegrees)} fill="none" stroke={`rgba(${INK}, 0.9)`} strokeWidth={mark} />}
-      {s.mark === "counterTick" && (() => { const [ax, ay] = at(cx, cy, r - tick, arc.midDegrees), [bx, by] = at(cx, cy, r + tick, arc.midDegrees); return <line data-arc-mark="counterTick" x1={ax} y1={ay} x2={bx} y2={by} stroke={`rgba(${INK}, 0.95)`} strokeWidth={1.4 * k} />; })()}
-      {s.mark === "alias" && (() => { const [mx, my] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <circle data-arc-mark="alias" cx={mx} cy={my} r={1.6 * k} fill="none" stroke={`rgba(${INK}, 0.9)`} strokeWidth={mark} />; })()}
-      {s.mark === "constituent" && (() => { const [ax, ay] = at(cx, cy, r + 0.6 * k, arc.midDegrees), [bx, by] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <line data-arc-mark="constituent" x1={ax} y1={ay} x2={bx} y2={by} stroke={`rgba(${INK}, 0.9)`} strokeWidth={mark} />; })()}
+      {parts(false)}
     </g>
+    </React.Fragment>
   );
 }
 
@@ -408,6 +531,8 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     else if (level === "L1" && inPool(b.id.jobPoolUploadId)) act({ type: "OPEN_ROLE", role: b.id });
   };
 
+  const lastRank = Math.max(1, ...model.bodies.map(b => b.rank));
+  const fieldHalos: React.ReactElement[] = [], shelfHalos: React.ReactElement[] = [];
   const bodyElements = shown.map(b => {
     const move = movements.get(b.key);
     const queried = selected !== null && selected.roles.has(b.key) && (level === "L0" || level === "L1");
@@ -431,6 +556,16 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     const collar = collars.get(b.key) ?? null;
     const focusable = openBody === null && inPoolNow;
     const named = level === "L0" ? BODY_NAMES_AT_L0 || isMarked || (selected !== null && selected.roles.has(b.key)) : inPoolNow;
+    // F-2 / F-3 / F-6: the halo — medium, not sign: the same form on every body, its depth gain and radius only; it breathes with the
+    // ground at the body's own phase lag, except on the shelf, which is a still ring (A-F8): there it rests.
+    const t = lastRank <= 1 ? 0 : (b.rank - 1) / (lastRank - 1);
+    (b.shelf ? shelfHalos : fieldHalos).push(
+      <g key={change === "EVIDENCE" ? `halo|${b.key}#${pair.seq}` : `halo|${b.key}`} className={layoutShift ? "mf-halo mf-layout" : "mf-halo"}
+        opacity={fixed(opacity * depthGain(b.rank, lastRank))} style={{ transform: `translate(${b.x}px, ${b.y}px)` }}>
+        <circle className={b.shelf ? undefined : "mf-wave mf-wave-halo"} r={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))} fill="url(#mf-halo)"
+          style={b.shelf ? undefined : { animationDelay: waveDelay(Math.hypot(b.x, b.y), g.shelfNear) }} />
+      </g>
+    );
     return (
       <g
         key={change === "EVIDENCE" ? `${b.key}#${pair.seq}` : b.key}
@@ -452,6 +587,10 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
             <line data-testid={`mapping-trail-${testKey(b)}`} data-mapping-trail x1={fixed(move.from.x - b.x)} y1={fixed(move.from.y - b.y)} x2={0} y2={0}
               stroke={`rgba(${INK}, 0.45)`} strokeWidth={structure} strokeDasharray={`${2 * k} ${2 * k}`} />
           )}
+          {/* F-2 / F-3: the volume's core — the same form on every body, its depth gain only; no state. */}
+          <circle className="mf-seat" aria-hidden="true" pointerEvents="none" r={r} fill={SEAT} />
+          <circle className="mf-core" aria-hidden="true" pointerEvents="none" r={r} fill="url(#mf-core)" opacity={depthGain(b.rank, lastRank)} />
+          <circle className="mf-seat" aria-hidden="true" pointerEvents="none" r={r} fill="none" stroke={SEAT} strokeWidth={(isMarked ? 2 * k : structure) + SEAT_PAD_PX * k} strokeDasharray={dashOf(b.line, k, circumference)} strokeLinecap={b.line === "dotted" ? "round" : "butt"} />
           <circle
             data-mapping-body-shape r={r} fill={`rgba(${CYAN}, ${isMarked ? 0.32 : 0.14})`} stroke={`rgba(${INK}, ${isMarked ? 1 : 0.82})`}
             strokeWidth={isMarked ? 2 * k : structure} strokeDasharray={dashOf(b.line, k, circumference)} strokeLinecap={b.line === "dotted" ? "round" : "butt"}
@@ -465,10 +604,10 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           {layoutShift && <rect data-testid={`mapping-layout-shift-${testKey(b)}`} x={-r - 5 * k} y={-r - 5 * k} width={2.6 * k} height={2.6 * k} fill="none" stroke={`rgba(${INK}, 0.8)`} strokeWidth={structure} />}
           {b.displaced && <path data-testid={`mapping-displaced-${testKey(b)}`} d={`M ${fixed(r + 3 * k)} ${fixed(-r - 3 * k)} l ${fixed(1.6 * k)} ${fixed(-1.6 * k)} l ${fixed(1.6 * k)} ${fixed(1.6 * k)} l ${fixed(-1.6 * k)} ${fixed(1.6 * k)} Z`} fill="none" stroke={`rgba(${INK}, 0.7)`} strokeWidth={structure} />}
           {level === "L1" && collar !== null && collar.hidden > 0 && inPoolNow && (
-            <text data-testid={`mapping-collar-more-${testKey(b)}`} x={collarR(b) + 3 * k} y={collarR(b) + 3 * k + fontSize / 2} fontSize={fontSize} fill={`rgba(${INK}, 0.8)`} fontFamily={MONO}>{c.more(collar.hidden)}</text>
+            <text data-testid={`mapping-collar-more-${testKey(b)}`} x={collarR(b) + 3 * k} y={collarR(b) + 3 * k + fontSize / 2} fontSize={fontSize} {...textSeat(k)} fill={`rgba(${INK}, 0.8)`} fontFamily={MONO}>{c.more(collar.hidden)}</text>
           )}
           {named && (
-            <text data-testid={`mapping-name-${testKey(b)}`} x={0} y={-(collar !== null ? collarR(b) : r) - 4 * k} textAnchor="middle" fontSize={fontSize} fill={`rgba(${INK}, 0.88)`} fontFamily={SANS}>{b.title}</text>
+            <text data-testid={`mapping-name-${testKey(b)}`} x={0} y={-(collar !== null ? collarR(b) : r) - 4 * k} textAnchor="middle" fontSize={fontSize} {...textSeat(k)} fill={`rgba(${INK}, 0.88)`} fontFamily={SANS}>{b.title}</text>
           )}
         </g>
       </g>
@@ -582,20 +721,52 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           minWidth: "420px", height: "auto", aspectRatio: "1 / 1", display: "block", transition: "none"
         }}
       >
-        {/* The rings (E-7: one ink, told apart by luminance): the shelf band, the best-fit ring, the horizon, the field's edge — the
-            edge is the field's one ambient rhythm (E-6), still while anything is pending. */}
-        <circle data-testid="mapping-ring-shelf" data-ring-luminance={RING_LUMINANCE.shelf} r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.shelf})`} strokeWidth={g.fieldRadius - g.shelfNear} />
-        <circle data-testid="mapping-ring-best" data-ring-luminance={RING_LUMINANCE.best} r={g.bestFit} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.best})`} strokeWidth={structure} strokeDasharray={`${2 * k} ${4 * k}`} />
-        <circle data-testid="mapping-ring-horizon" data-ring-luminance={RING_LUMINANCE.horizon} r={g.horizon} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.horizon})`} strokeWidth={structure} />
-        <circle data-testid="mapping-ring-field" data-ring-luminance={RING_LUMINANCE.field} data-breath={breathLive ? "LIVE" : "STILL"} r={g.fieldRadius} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.field})`} strokeWidth={structure} />
-        <circle data-testid="mapping-pending-outline" r={g.fieldRadius + 6 * k} fill="none" stroke={`rgba(${CYAN}, 0.5)`} strokeWidth={structure} strokeDasharray={`${4 * k} ${4 * k}`} />
-        {/* A-5: a due continuation keeps its sign as a still outline — dotted, outside the pending one, never a pulse. */}
-        {run.sign.resumePulse && <circle data-testid="mapping-resume-outline" r={g.fieldRadius + 10 * k} fill="none" stroke={`rgba(${INK}, 0.6)`} strokeWidth={structure} strokeDasharray={`${0.01 * k} ${3.4 * k}`} strokeLinecap="round" />}
+        {/* PHASE F · the medium (F-1 … F-6): the disc's own light, under everything. Nothing in it is a sign; nothing in it is interactive. */}
+        <defs aria-hidden="true">
+          <radialGradient id="mf-ground" gradientUnits="userSpaceOnUse" cx={0} cy={0} r={g.shelfNear}>
+            {groundStops().map(st => <stop key={st.offset} offset={st.offset} stopColor={`rgb(${CYAN})`} stopOpacity={st.opacity} />)}
+          </radialGradient>
+          {Array.from({ length: WAVE.layers }, (_, i) => (
+            <radialGradient key={i} id={`mf-wave-${i}`} gradientUnits="userSpaceOnUse" cx={0} cy={0} r={g.shelfNear}>
+              {waveBand(i).map(st => <stop key={st.offset} offset={st.offset} stopColor={`rgb(${CYAN})`} stopOpacity={st.opacity} />)}
+            </radialGradient>
+          ))}
+          <radialGradient id="mf-person-seat" gradientUnits="userSpaceOnUse" cx={0} cy={0} r={g.personRadius}>
+            {restingStops(g.personRadius / g.shelfNear).map(st => <stop key={st.offset} offset={st.offset} stopColor={st.color} stopOpacity={1} />)}
+          </radialGradient>
+          <radialGradient id="mf-core">
+            <stop offset={0} stopColor={`rgb(${INK})`} stopOpacity={VOLUME.coreAlpha} />
+            <stop offset={0.4} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.78)} />
+            <stop offset={0.75} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.55)} />
+            <stop offset={1} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.42)} />
+          </radialGradient>
+          <radialGradient id="mf-halo">
+            <stop offset={0} stopColor={`rgb(${CYAN})`} stopOpacity={VOLUME.haloAlpha} />
+            <stop offset={0.3} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.7)} />
+            <stop offset={0.6} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.3)} />
+            <stop offset={0.85} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.08)} />
+            <stop offset={1} stopColor={`rgb(${CYAN})`} stopOpacity={0} />
+          </radialGradient>
+        </defs>
+        <g data-testid="mapping-medium" aria-hidden="true" pointerEvents="none">
+          {DISC_GROUND_OPAQUE && <circle r={g.fieldRadius} fill={DISC_BASE} />}
+          <circle r={g.shelfNear} fill="url(#mf-ground)" />
+          {Array.from({ length: WAVE.layers }, (_, i) => (
+            <circle key={i} className="mf-wave mf-wave-ground" r={g.shelfNear} fill={`url(#mf-wave-${i})`} style={{ animationDelay: waveDelay((i / (WAVE.layers - 1)) * g.shelfNear, g.shelfNear) }} />
+          ))}
+          {model.sectors.map((sec, i) => i % 2 === 1 && <path key={sec.poolId} d={wedge(g.personRadius, g.shelfNear, sec.startDegrees, sec.spanDegrees)} fill={`rgba(0, 0, 0, ${WEDGE_SHADE})`} />)}
+          {fieldHalos}
+        </g>
 
+        {/* E-7 shelf band, on its black seat: a still ring (A-F8) under the sectors, so the sectors stay its hit targets. */}
+        <circle aria-hidden="true" pointerEvents="none" r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={SEAT} strokeWidth={g.fieldRadius - g.shelfNear} />
+        <circle data-testid="mapping-ring-shelf" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.shelf} r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.shelf})`} strokeWidth={g.fieldRadius - g.shelfNear} />
+        <g aria-hidden="true" pointerEvents="none">{shelfHalos}</g>
         {openBody === null && model.sectors.map((s: FieldSector) => {
           const pathR = g.fieldRadius + LABEL_GAP;
           return (
             <g key={s.poolId}>
+              <path aria-hidden="true" pointerEvents="none" d={wedge(g.personRadius, g.fieldRadius, s.startDegrees, s.spanDegrees)} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
               <path
                 data-testid={`mapping-sector-${s.poolId}`} data-mapping-sector data-pool={s.poolId} data-open={String(openSector?.poolId === s.poolId)}
                 d={wedge(g.personRadius, g.fieldRadius, s.startDegrees, s.spanDegrees)}
@@ -605,7 +776,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
                 <title>{c.openPool(s.poolName)}</title>
               </path>
               <path id={`mapping-sector-path-${s.poolId}`} d={labelPath(pathR, s.startDegrees, s.spanDegrees, fontSize)} fill="none" stroke="none" />
-              <text data-testid={`mapping-sector-name-${s.poolId}`} fontSize={fontSize} fill={`rgba(${INK}, 0.78)`} fontFamily={MONO}>
+              <text data-testid={`mapping-sector-name-${s.poolId}`} fontSize={fontSize} {...textSeat(k)} fill={`rgba(${INK}, 0.78)`} fontFamily={MONO}>
                 <textPath href={`#mapping-sector-path-${s.poolId}`} startOffset="50%" textAnchor="middle">{sectorLabel(s.poolName, s.spanDegrees, pathR, fontSize)}</textPath>
                 <title>{s.poolName}</title>
               </text>
@@ -613,9 +784,24 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           );
         })}
 
+        {/* The rings (E-7: one ink, told apart by luminance), each on its black seat (A-F6/A-F8: structure is still), drawn over the
+            sectors so no sector edge lies on a ring (PF-15): the shelf band, the
+            best-fit ring, the horizon, the field's edge. The edge carries E-6's state (data-breath); the breath itself is the medium's. */}
+        <circle aria-hidden="true" pointerEvents="none" r={g.bestFit} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.best + SEAT_PAD_PX) * k)} />
+        <circle data-testid="mapping-ring-best" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.best} r={g.bestFit} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.best})`} strokeWidth={fixed(RING_WIDTH_PX.best * k)} />
+        <circle aria-hidden="true" pointerEvents="none" r={g.horizon} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.horizon + SEAT_PAD_PX) * k)} />
+        <circle data-testid="mapping-ring-horizon" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.horizon} r={g.horizon} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.horizon})`} strokeWidth={fixed(RING_WIDTH_PX.horizon * k)} />
+        <circle aria-hidden="true" pointerEvents="none" r={g.fieldRadius} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.field + SEAT_PAD_PX) * k)} />
+        <circle data-testid="mapping-ring-field" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.field} data-breath={breathLive ? "LIVE" : "STILL"} r={g.fieldRadius} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.field})`} strokeWidth={fixed(RING_WIDTH_PX.field * k)} />
+        <circle data-testid="mapping-pending-outline" r={g.fieldRadius + 6 * k} fill="none" stroke={`rgba(${CYAN}, 0.5)`} strokeWidth={structure} strokeDasharray={`${4 * k} ${4 * k}`} />
+        {/* A-5: a due continuation keeps its sign as a still outline — dotted, outside the pending one, never a pulse. */}
+        {run.sign.resumePulse && <circle data-testid="mapping-resume-outline" r={g.fieldRadius + 10 * k} fill="none" stroke={`rgba(${INK}, 0.6)`} strokeWidth={structure} strokeDasharray={`${0.01 * k} ${3.4 * k}`} strokeLinecap="round" />}
+
         {/* The person: its capability proposals in the centre (constellation), each named at every level (E-7). Selecting one shows
             every role it couples (reverse view) and sets them into the query motion (E-3). */}
         <g data-testid="mapping-person" data-capabilities={model.view.constellation.length} data-overflow={model.constellation.overflowCount}>
+          <circle aria-hidden="true" pointerEvents="none" r={g.personRadius} fill="url(#mf-person-seat)" />
+          <circle aria-hidden="true" pointerEvents="none" r={g.personRadius} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
           <circle r={g.personRadius} fill={`rgba(${CYAN}, 0.04)`} stroke={`rgba(${INK}, 0.28)`} strokeWidth={structure}><title>{c.person}</title></circle>
           {model.constellation.nodes.map(n => {
             const isSelected = selected?.key === n.key;
@@ -631,9 +817,10 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
                 style={{ cursor: "pointer" }}
               >
                 <circle cx={n.x} cy={n.y} r={g.nodeRadius + 3} fill="rgba(0, 0, 0, 0)" />
+                <circle aria-hidden="true" pointerEvents="none" cx={n.x} cy={n.y} r={fixed(g.nodeRadius + (isSelected ? structure / 2 : 0) + SEAT_PAD_PX * k / 2)} fill={SEAT} />
                 <circle cx={n.x} cy={n.y} r={g.nodeRadius} fill={`rgba(${INK}, ${isSelected ? 0.95 : 0.55})`} stroke={isSelected ? `rgba(${INK}, 1)` : "none"} strokeWidth={isSelected ? structure : 0} />
                 <text data-testid={`mapping-capability-name-${n.key}`} x={fixed(lx)} y={fixed(ly)} textAnchor={anchor} dominantBaseline={Math.sin(radial) > 0.35 ? "hanging" : Math.sin(radial) < -0.35 ? "auto" : "middle"}
-                  fontSize={fontSize} fill={`rgba(${INK}, ${isSelected ? 1 : 0.85})`} fontFamily={SANS}>{n.name}</text>
+                  fontSize={fontSize} fill={`rgba(${INK}, ${isSelected ? 1 : 0.85})`} fontFamily={SANS} {...textSeat(k)}>{n.name}</text>
                 <title>{n.name}</title>
               </g>
             );
@@ -646,11 +833,36 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           {drawnBeams.map(({ beam: b, rank }) => {
             const stroke = beamStroke(b.beam, k);
             const [tx, ty] = target(b);
+            const width = Math.ceil(stroke.width * BEAM_WIDTH_GAIN * FLOOR_HEADROOM * 1000) / 1000;
+            const id = `mf-beam-${b.id.replace(/[^A-Za-z0-9_-]/g, "_")}`;
+            const [fx, fy] = [b.from!.x, b.from!.y];
             return (
-              <line key={b.id} data-testid={`mapping-beam-${testKey(b.body)}:${b.arc.poolRequirementId}`} data-beam={b.beam} data-beam-rank={rank} data-phase-locked={String(b.phaseLocked)} data-state={b.arc.state}
-                data-capability={b.arc.coupling?.capabilityKey ?? ""} x1={b.from!.x} y1={b.from!.y} x2={tx} y2={ty}
-                stroke={`rgba(${INK}, ${rank === "PRIMARY" ? PRIMARY_BEAM_LUMINANCE : stroke.opacity})`} strokeWidth={Math.ceil(stroke.width * BEAM_WIDTH_GAIN * FLOOR_HEADROOM * 1000) / 1000} strokeDasharray={stroke.dash}
+              <React.Fragment key={b.id}>
+              {/* F-5: the beam's light runs toward its requirement (a mask: the stroke and its alpha stay the sign's) on a black seat. */}
+              <defs aria-hidden="true">
+                <linearGradient id={`${id}-g`} gradientUnits="userSpaceOnUse" x1={fx} y1={fy} x2={tx} y2={ty}>
+                  <stop offset={0} stopColor="#fff" stopOpacity={BEAM_GRADIENT.from} />
+                  <stop offset={1} stopColor="#fff" stopOpacity={BEAM_GRADIENT.to} />
+                </linearGradient>
+                <linearGradient id={`${id}-s`} gradientUnits="userSpaceOnUse" x1={fx} y1={fy} x2={tx} y2={ty}>
+                  {Array.from({ length: 11 }, (_, i) => {
+                    const x = fx + ((tx - fx) * i) / 10, y = fy + ((ty - fy) * i) / 10, rr = Math.hypot(x, y);
+                    const deg = ((((Math.atan2(y, x) * 180) / Math.PI) % 360) + 360) % 360;
+                    const sector = rr > g.personRadius ? model.sectors.findIndex(sec => ((((deg - sec.startDegrees) % 360) + 360) % 360) <= sec.spanDegrees) : -1;
+                    return <stop key={i} offset={i / 10} stopColor={restingColor(rr / g.shelfNear, sector >= 0 && sector % 2 === 1 ? 1 - WEDGE_SHADE : 1)} />;
+                  })}
+                </linearGradient>
+                <mask id={`${id}-m`} maskUnits="userSpaceOnUse" x={-2 * g.fieldRadius} y={-2 * g.fieldRadius} width={4 * g.fieldRadius} height={4 * g.fieldRadius}>
+                  <line x1={fx} y1={fy} x2={tx} y2={ty} stroke={`url(#${id}-g)`} strokeWidth={fixed(width + 4 * k)} />
+                </mask>
+              </defs>
+              <line aria-hidden="true" pointerEvents="none" x1={fx} y1={fy} x2={tx} y2={ty} stroke={`url(#${id}-s)`} strokeWidth={fixed(Math.max(width, STROKE_MIN_PX * k * FLOOR_HEADROOM) + SEAT_PAD_PX * k)} strokeDasharray={stroke.dash}
                 strokeLinecap={b.beam === "dotted" || b.beam === "faint-dotted" ? "round" : "butt"} />
+              <line mask={`url(#${id}-m)`} data-testid={`mapping-beam-${testKey(b.body)}:${b.arc.poolRequirementId}`} data-beam={b.beam} data-beam-rank={rank} data-phase-locked={String(b.phaseLocked)} data-state={b.arc.state}
+                data-capability={b.arc.coupling?.capabilityKey ?? ""} x1={b.from!.x} y1={b.from!.y} x2={tx} y2={ty}
+                stroke={`rgba(${INK}, ${rank === "PRIMARY" ? PRIMARY_BEAM_LUMINANCE : stroke.opacity})`} strokeWidth={width} strokeDasharray={stroke.dash}
+                strokeLinecap={b.beam === "dotted" || b.beam === "faint-dotted" ? "round" : "butt"} />
+              </React.Fragment>
             );
           })}
         </g>
@@ -660,6 +872,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         {/* L2/L3: the open role's ring — the very arcs of its collar, at the ring's radius. */}
         {openBody !== null && (
           <g key={`ring|${stageKey}`} data-testid="mapping-ring" data-role={testKey(openBody)} data-arcs={openBody.arcs.length} data-radius={ringR} data-stage-part="EVIDENCE">
+            <circle aria-hidden="true" pointerEvents="none" cx={openBody.x} cy={openBody.y} r={ringR} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
             <circle cx={openBody.x} cy={openBody.y} r={ringR} fill="none" stroke={`rgba(${INK}, 0.14)`} strokeWidth={structure} />
             {openBody.arcs.map(arc => {
               const isOpen = view.arc?.poolRequirementId === arc.poolRequirementId;
@@ -680,7 +893,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
               const [lx, ly] = at(openBody.x, openBody.y, ringR + 9 * k, arc.midDegrees);
               return (
                 <text key={`label-${arc.poolRequirementId}`} data-testid={`mapping-arc-key-${arc.poolRequirementId}`} data-key-status={arc.coupling.keyStatus} x={lx} y={ly}
-                  textAnchor={lx < openBody.x ? "end" : "start"} dominantBaseline="middle" fontSize={fontSize} fill={`rgba(${INK}, 0.8)`} fontFamily={SANS}>
+                  textAnchor={lx < openBody.x ? "end" : "start"} dominantBaseline="middle" fontSize={fontSize} fill={`rgba(${INK}, 0.8)`} fontFamily={SANS} {...textSeat(k)}>
                   {arc.coupling.keyStatus === "NOT_IN_PERSON" ? c.notInPerson(arc.coupling.capabilityName) : c.keyAbsent}
                 </text>
               );

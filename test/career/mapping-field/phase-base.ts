@@ -39,3 +39,24 @@ export function phaseEBase(): string {
   if (sha === undefined) throw new Error(`ERR_PHASE_E_BASE_MISSING: MAP-E-ARCH compares against commit ${PHASE_E_BASE} (PERSON_X_JOB_MAPPING_PHASE_E.md, Base), and this clone does not have it.`);
   return sha;
 }
+
+/**
+ * PHASE_F_BASE is 9cc06f84, GRÜN's phase-E delivery with PINK's GO (PERSON_X_JOB_MAPPING_PHASE_F.md, "Base"). MAP-F-ARCH compares
+ * against it, and MAP-E-ARCH's B-8 closes phase E's own range at it (§20); resolved when asked, failing loudly in a clone without it.
+ */
+export const PHASE_F_BASE = "9cc06f848bb90ccb2c54af1eae69f17f30853da7";
+export function phaseFBase(): string {
+  let sha: string | undefined;
+  try { sha = git("rev-parse", "--verify", "--quiet", `${PHASE_F_BASE}^{commit}`)[0]; } catch { sha = undefined; }
+  if (sha === undefined) throw new Error(`ERR_PHASE_F_BASE_MISSING: MAP-F-ARCH compares against commit ${PHASE_F_BASE} (PERSON_X_JOB_MAPPING_PHASE_F.md, Base), and this clone does not have it.`);
+  return sha;
+}
+/** A-F18: a range test that examined nothing would pass as compliance. `older` must be an ancestor of `newer`, and the range non-empty. */
+export function assertRange(older: string, newer: string): number {
+  try { execFileSync("git", ["merge-base", "--is-ancestor", older, newer], { cwd: ROOT, stdio: "ignore" }); } catch {
+    throw new Error(`ERR_PHASE_RANGE_ORDER: ${older} is not an ancestor of ${newer} — the range would be inverted or disjoint.`);
+  }
+  const commits = git("rev-list", "--count", `${older}..${newer}`)[0];
+  if (!(Number(commits) > 0)) throw new Error(`ERR_PHASE_RANGE_EMPTY: ${older}..${newer} contains no commit — a range test over it would examine nothing.`);
+  return Number(commits);
+}

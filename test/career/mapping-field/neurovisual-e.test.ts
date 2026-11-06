@@ -130,14 +130,22 @@ describe("MAP-E-NEURO · P-4 / E-4 — the capture boundary", () => {
     expect(layout[0].body, "no animation, no filter, no opacity").not.toMatch(/animation|filter|opacity|brightness/);
   });
 
-  it("inverse: no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE", () => {
+  it("inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign", () => {
     const transient = keyframes(MAPPING_FIELD_CSS, "mappingFieldTransient").length > 0 ? "mappingFieldTransient" : "";
     const users = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && transient !== "" && r.body.includes(transient));
     // E-4b: the same transient on the body whose own evidence moved it, and on the requirement whose own evidence changed in place.
     expect(users.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"]', '[data-testid="mapping-field"] [data-mapping-arc][data-change="EVIDENCE"]']);
     for (const r of users) expect(r.body, r.selector).toBe(users[0].body);
-    const positional = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /transition:\s*transform/.test(r.body));
-    expect(positional.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-mapping-body][data-change="LAYOUT"]']);
+    // PHASE F §12 / A-F15 (adjudicated before the change): the position-transition half pinned one selector — a MECHANISM. Restated to
+    // its meaning: a position transition applies only to LAYOUT bodies and to the medium of exactly those bodies (the halo, class
+    // mf-layout — field-f.test.tsx holds the class to the body's LAYOUT state and the EVIDENCE halo to its remount); never to EVIDENCE,
+    // never to a sign or a structure.
+    const positional = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /transition:[^;]*transform/.test(r.body));
+    expect(positional.map(r => r.selector).sort()).toEqual(['[data-testid="mapping-field"] .mf-layout', '[data-testid="mapping-field"] [data-mapping-body][data-change="LAYOUT"]'].sort());
+    for (const r of positional) expect(r.body, r.selector).toBe(positional[0].body);
+    // (4) by category: no rule that could reach a sign or a structure carries any transition but the LAYOUT body's
+    const signs = /data-mapping-(arc|node|sector|hit)|data-testid="mapping-(ring|beam|arc|tick|capability|collar|sector|person)|data-change="EVIDENCE"|data-stage-part/;
+    for (const r of rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /transition:\s*(?!none)/.test(r.body))) expect(signs.test(r.selector), r.selector).toBe(false);
   });
 });
 
@@ -153,27 +161,36 @@ describe("MAP-E-NEURO · E-5 — staged recursion", () => {
 });
 
 describe("MAP-E-NEURO · P-5 / E-6 — the breath", () => {
-  it("REPRODUCE: on the outer ring only, while LIVE: 0.1 Hz exactly, radius amplitude ≤ 1.5 %, opacity ± 0.04 about its mean; ≥ 30× under 3 Hz", () => {
-    const live = ruleFor('[data-breath="LIVE"]');
-    expect(live.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-testid="mapping-ring-field"][data-breath="LIVE"]']);
-    const a = animation(live[0].body)!;
-    expect(1 / a.duration, "0.1 Hz ± 0").toBe(CONTRACT.breath.hz);
-    expect([a.iterations, a.timing]).toEqual(["infinite", "linear"]);
-    expect(1 / a.duration).toBeLessThanOrEqual(CONTRACT.flashHz / 30);
-    const frames = keyframes(MAPPING_FIELD_CSS, a.name);
-    const scales = frames.map(f => Number(numbersOf(f.body, "scale")[0])), opacities = frames.map(f => Number(/opacity:\s*([\d.]+)/.exec(f.body)?.[1]));
-    expect(Math.max(...scales.map(s => Math.abs(s - 1))), "radius amplitude").toBeLessThanOrEqual(CONTRACT.breath.radius + 1e-9);
-    expect(Math.max(...scales.map(s => Math.abs(s - 1))), "it does breathe").toBeGreaterThan(0);
-    const mean = (Math.max(...opacities) + Math.min(...opacities)) / 2;
-    expect((Math.max(...opacities) - Math.min(...opacities)) / 2).toBeCloseTo(CONTRACT.breath.opacity, 6);
-    const [base] = ruleFor('[data-testid="mapping-ring-field"]').filter(r => !r.selector.includes("data-breath"));
-    expect(Number(/opacity:\s*([\d.]+)/.exec(base.body)?.[1]), "still, the ring rests at its mean").toBeCloseTo(mean, 6);
-    for (const f of frames) expect(Number(/opacity:\s*([\d.]+)/.exec(f.body)?.[1]) - mean).toBeCloseTo(CONTRACT.breath.opacity * Math.sin((2 * Math.PI * f.at) / 100), 5);
+  // PHASE F §12 (PERSON_X_JOB_MAPPING_PHASE_F.md, adjudicated before the change): this test pinned phase E's MECHANISM — one ring,
+  // a ±1.5 % scale, a symmetric sine — which F-6 replaces (M-F5: that mechanism is the defect OTTAVIO rejected). Restated to its
+  // meaning: the breath is 0.1 Hz, ≥ 30× under the flash threshold, 4 s rise : 6 s fall, CSS inside the field, and only while LIVE.
+  it("REPRODUCE (restated, phase F §12): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz", () => {
+    const live = ruleFor('[data-breath="LIVE"]').filter(r => /animation:/.test(r.body));
+    expect(live.length, "the breath exists").toBeGreaterThan(0);
+    for (const r of live) {
+      expect(r.selector.startsWith('[data-testid="mapping-field"]'), r.selector).toBe(true);
+      const a = animation(r.body)!;
+      expect(1 / a.duration, "0.1 Hz ± 0").toBe(CONTRACT.breath.hz);
+      expect([a.iterations, a.timing]).toEqual(["infinite", "linear"]);
+      expect(1 / a.duration).toBeLessThanOrEqual(CONTRACT.flashHz / 30);
+      // the waveform: the keyframes' modulation term w ∈ [-1, 1], at its trough at 0 % and 100 %, at its peak at 40 % (4 s of 10 s)
+      const w = keyframes(MAPPING_FIELD_CSS, a.name).map(f => ({ at: f.at, w: Number(/\*\s*(-?[\d.]+)\);\s*$/.exec(f.body.trim())?.[1]) }));
+      expect(w.every(f => Number.isFinite(f.w)), "every keyframe states its phase").toBe(true);
+      const peak = w.reduce((m, f) => (f.w > m.w ? f : m)), trough = w.reduce((m, f) => (f.w < m.w ? f : m));
+      expect([peak.at, peak.w, trough.w]).toEqual([40, 1, -1]);
+      expect([w[0].w, w[w.length - 1].w]).toEqual([-1, -1]);
+      for (let i = 1; i < w.length; i++) expect(Math.sign(w[i].w - w[i - 1].w) || 0, `monotone limbs at ${w[i].at}%`).toBe(w[i].at <= 40 ? 1 : -1);
+    }
+    // STILL ⇒ no breath: nothing outside a LIVE-keyed rule runs the breath's keyframes
+    const name = animation(live[0].body)!.name;
+    for (const r of rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && r.body.includes(name))) expect(r.selector, "the breath only while LIVE").toContain('[data-breath="LIVE"]');
   });
 
-  it("no other ambient motion: nothing animates infinitely but the breath (LIVE) and the user's own query", () => {
+  // PHASE F §12, restated: the calm guard keeps its full force; only the count of permitted layers changes.
+  it("no other ambient motion (restated, phase F §12): nothing animates infinitely but rules keyed on LIVE and the user's own query", () => {
     const infinite = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /animation:[^;]*infinite/.test(r.body)).map(r => r.selector);
-    expect(infinite.sort()).toEqual(['[data-testid="mapping-field"] [data-motion="QUERY"]', '[data-testid="mapping-field"] [data-testid="mapping-ring-field"][data-breath="LIVE"]'].sort());
+    expect(infinite.length).toBeGreaterThan(0);
+    for (const selector of infinite) expect(selector === '[data-testid="mapping-field"] [data-motion="QUERY"]' || selector.includes('[data-breath="LIVE"]'), selector).toBe(true);
     expect(MAPPING_FIELD_CSS, "the phase-lock pulse is gone (A-4)").not.toMatch(/\[data-phase-locked="true"\]\s*\{[^}]*animation/);
     expect(MAPPING_FIELD_CSS, "the resume pulse is gone (A-5)").not.toMatch(/mappingFieldPulse/);
   });
