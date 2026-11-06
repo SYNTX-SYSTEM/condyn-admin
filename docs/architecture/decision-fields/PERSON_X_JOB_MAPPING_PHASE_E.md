@@ -24,6 +24,7 @@ sizes. Not inferred, not remembered.
 | **M-2** | The stage **overflows the window at every size**: stage bottom 945 vs. viewport 912; 973/940; 1033/1000; 1303/1300. The lowest body (`role_empty`) sits in the overflow; the page scrolls. | `getBoundingClientRect` on `mapping-field-svg` and every `[data-mapping-body]` |
 | **M-3** | Capability nodes are **11 × 11 px**, the smallest body **8 × 8 px**, and **no `text` node exists inside any body or capability node at L0**. | same, plus `querySelectorAll("[data-mapping-body] text")` → 0 |
 | **M-4** | The ten coupling states are separated by a **conjunction** of three channels — `data-line` × `data-mark` × `data-beam` — never by one channel alone. | the ten `[data-mapping-arc]` attribute triples at L2 |
+| **M-4a** | On the one channel R1 demands, the classes are **not separated at all**: measured arc luminance SEMANTIC **0.704**, LEXICAL **0.700**, NONE 0.400 — a ratio of **1.01** between the two that matter most. | `getComputedStyle(arc).opacity` on the ten arcs of the all-states role |
 | **M-5** | The stage is sized `min(calc(100vh - 170px), calc(100vw - 760px), 1100px)` at `top: 142px` inside a section that is **not** at viewport top. | `PersonJobMappingField.tsx:371` |
 
 M-5 is the cause of M-2: `100vh` measures the window, the stage sits in a box inset below it, and the difference —
@@ -134,8 +135,16 @@ general flash threshold. Under `prefers-reduced-motion` the ring is static at it
 ### E-8 The full stage (A2, M-2, M-5)
 
 The stage is sized against **its own box**, not the window: the `100vh` term becomes `100%` of the section, and the
-bottom gutter is stated explicitly. **Bound: the outermost drawn element lies inside the stage box at every window
-size ≥ 1280 × 800, and the page does not scroll.** This is a measurement, not an opinion — PINK re-measures it.
+bottom gutter is stated explicitly. **Bound: at 1280 × 800, 1600 × 1000, 1829 × 912 and 2560 × 1300 the outermost
+drawn element lies inside the stage box, and the stage box lies inside the section's box.** PINK re-measures it.
+
+**E-8a — the bound I had to narrow, and why.** My first wording also demanded "and the page does not scroll". It is
+unmeetable inside phase E, and I measured why before GRÜN reached it: at 1280 × 800 the host
+`semantic-career-intelligence-field` is **960 px tall** and `career-intelligence-dashboard` **1021 px**, in an
+800 px window; at 2560 × 1300 the dashboard is 1361 px. The mapping section is `inset: 0` of that host, so it
+inherits the host's height whatever the stage does. **The page scroll is the host's, not the stage's**, and the host
+is B-2 territory. Phase E therefore owns the stage box only. The host overflow is recorded here as a measured,
+unresolved property of the host and belongs to OTTAVIO's decision, not to this phase's silence.
 
 ### E-9 A delta is stated (R12)
 
@@ -201,8 +210,8 @@ Each must be **red before** it is green; a test that was never red proves nothin
 | **P-3** | Selecting a capability sets exactly its coupled bodies in motion, **all at one phase**, and exactly one group exists at a time (R4). |
 | **P-4** | An EVIDENCE change produces a luminance transient and **no** position change; a LAYOUT change produces a position transition and **no** luminance change. Both directions asserted (R5, A3). |
 | **P-5** | The breath is 0.1 Hz ± 0, amplitude ≤ 1.5 %, and **stops** while pending; 0.1 Hz ≤ 3 Hz / 30 (R9). |
-| **P-6** | Under `prefers-reduced-motion: reduce` **no** element carries a non-zero animation or transition duration — breath, query motion and staging all collapse (WCAG 2.3.3). |
-| **P-7** | At 1280 × 800, 1600 × 1000, 1829 × 912 and 2560 × 1300 the outermost drawn element is inside the stage box and `scrollHeight ≤ innerHeight` (kills M-2). |
+| **P-6** | Under `prefers-reduced-motion: reduce` **no** element carries a non-zero animation or transition duration — breath, query motion and staging all collapse (WCAG 2.3.3). **P-6 needs a positive control**: measured on `86e36924` it passes vacuously, because nothing animates there at all. It only proves something once E-3/E-5/E-6 exist, and it must be shown red by a mutant that omits the reduced-motion branch. |
+| **P-7** | At 1280 × 800, 1600 × 1000, 1829 × 912 and 2560 × 1300 the outermost drawn element is inside the stage box and the stage box is inside the section's box (kills M-2, within the limit stated in E-8a). |
 | **P-8** | No text below 11 px; every structure stroke ≥ 1.2 px (E-7). |
 | **P-9** | **Golden vectors byte-identical**; `lib/career/mapping/` and the spec unchanged (B-1). |
 | **P-10** | Model purity: fixture render performs 0 fetches, 0 storage reads, 0 navigations (B-4). |
