@@ -11,9 +11,11 @@ cb847201d3797e78e5ed431ac0f642b0667907efb819e1953c9dd1bac8320486  ./outputs/9cc0
 49ac56ecf729797f467fb2437b72b3cad9fb09f6ac17f751487305bad0ac4abc  ./outputs/9cc06f84-baseline/rings-pixels.json
 691d59520ef13542fcbb39c23cadcf345fcadbd15915e3e88e7d940ab7b5d755  ./outputs/ef466ca8-tip/PF8-TIP-L0.json
 72eedd78886913220d793fba65302182584eb1bd8c8a3dcb5de4ee6f03548da3  ./outputs/ef466ca8-tip/PF8-TIP-L2.json
-ce34a508b4a5aa461400921d8d00f146dbe2a73af54959c541afe9a92d11789f  ./prep.txt
+f7944542d5eaa97a55c0c17dbd0c490eab55e0492c53ceb2f3a3e4099aa7838e  ./prep.txt
 f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02  ./scripts/pink-breath-vs-floor.mjs
 b134c7b559ab4168eb5b657474c9f282eebb5604dfba0248cb75030be37f1065  ./scripts/pink-class-probe.mjs
+8c07e007f897d6d1796a715f08f2c6a1948a708ef164b9432db32f59f705e602  ./scripts/pink-continuity2.mjs
+d13dd5cd3132b58409f6978a54b386d3095c315172a55f6283abb354ae275454  ./scripts/pink-continuity.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 900b8510db22df867e9ae82a364b0a6fe27b00ef7ed385ab93c80656afe21dee  ./scripts/pink-floor-regions.mjs
 c77c70f02fc1244372a22b49d26994cf26b2f60ad6b412371e4db00f247ec556  ./scripts/pink-pf8-lockin2.mjs

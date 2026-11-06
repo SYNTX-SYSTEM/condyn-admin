@@ -430,3 +430,28 @@ CIRCLES (angular) and so catches RADIAL gashes; its DUAL — continuity along RA
 catch ANNULAR/tangential holes. The ground is seven STACKED concentric layers (A-F1); a compositing gap between two
 layers is ring-shaped, runs ALONG a circle-scan (invisible) and ACROSS a radial-scan (caught). PF-17 should scan
 both directions (or add PF-18 radial continuity).
+
+
+§11  PF-17/PF-18 CONTINUITY (re-delivery 93c47e03) + STAGE REJECTED → PHASE F ARCHITECTURE PIVOT
+------------------------------------------------------------------------------------------------
+PF-17/PF-18 built MASK-BASED (GELB defect #19: a sign's seat IS medium, so never suppress signs — exclude sign
+pixels by mask, keep signs drawn). RED-FIRST on old tip ef466ca8 (gashes present): PF-17 angular dark holes at
+radii 0.4-0.9 (7/4/8/5...), PF-18 radial 32 across 12 spokes. On re-delivery 93c47e03 (sector-edge seats changed
+from flat black SEAT to the resting-medium gradient url(#mf-rest); WEDGE_SHADE 0.148->0.022): PF-17 angular near
+zero -> RADIAL GASHES FIXED (confirms GELB; cuts 0.0033->0.038 light lines). PF-18 radial still ~33 holes, but
+classification vs ring radii {0.316,0.789,0.917,1.0} shows 38 AT-RING vs only 3 OFF-RING (all at 0.86R): the holes
+are the INTENDED ENGRAVED RINGS (A-F12: rings are dark grooves below 0.6x median), which a radial scan crosses.
+INSTRUMENT LESSON (carries forward): PF-18 must EXCLUDE intended engraved structure (ring radii); otherwise it
+false-fails on the design's own rings. GELB confirms PF-18 proven red-first by GRÜN's mutant (3px ring gap at
+r=300 -> PF-18 red 15/16 spokes, PF-17 blind) — the angular/radial dual is necessary by experiment as well as
+construction.
+STAGE REJECTED BY OTTAVIO (visual architecture, not execution): "wie eine große blaue Zielscheibe" — the ground's
+concentric-circle coordinate system became the subject; the relations (bodies, couplings) lost presence. "Keine
+kosmetische Reparatur dieser Kreise. Rekonstruiere die visuelle Architektur grundlegend aus den tatsächlichen
+Relationen." Phase F inherited phase D's geometry (radius=rank, angle=pool, concentric rings) = a coordinate
+system for a derived scalar, not a structure from relations. GELB halted the 93c47e03 pass (its numbers are correct
+but measure a design that is going away) and is reconstructing a RELATIONAL (bipartite) layout. INSTRUMENT LESSONS
+ALL SURVIVE (bracketed null, joint LSQ, window/adequacy rule, per-class masks, two-limb checklist, PF-17+PF-18) —
+they govern how light and time behave, not where things sit. PINK's design-input (thinking, not measuring) sent to
+GELB: see §12 for the overlap/occlusion risk to the firewall+bands, the solved-position determinism risk, and a
+proposed presence/salience obligation.
