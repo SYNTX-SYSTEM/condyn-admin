@@ -1195,3 +1195,84 @@ measure.
 
 Both harnesses now carry: joint LSQ, decoys at 0.15 / 0.25 / 0.35 Hz, ≥ 40 s window with a settling self-check,
 per-element sign-hide, differential PF-3, and A-F11's own-floor check on every temporal obligation.
+
+---
+
+## §24 A-F22 · THE FIREWALL MUST BE MEASURED PER CLASS — GRÜN'S MUTANT SURVIVED BOTH TIERS
+
+GRÜN ran browser mutants against its own build. Six turned their obligation red as intended. **One survived:
+`F8` — the arc seat removed — passed tier A (2e-6) and tier B (0).**
+
+**Why.** The sign mask is a pool of wildly unequal populations. The shelf band alone is about half of ~173 k
+sign pixels; the rings ~10 k; **arcs and ticks at L0 are 807 pixels.** A leak confined to the ticks therefore
+carries **0.47 %** of tier A's mean — and tier B's p99 over 173 k pixels is the 1 730th-highest value, so **807
+leaking pixels fit entirely underneath the tail.** The statistic cannot see a leak smaller than its own
+percentile. This is PINK's low-count class (§19 a) in its worst form, because the pool is dominated by a
+population nobody is asking about.
+
+**Adopted: tiers A, B and C are measured PER CLASS** — arcs/ticks, beams, nodes, text, rings, outlines — each
+against its own bound and its own null. §17's PF-8 row is amended.
+
+GRÜN also withdrew its own earlier "PF-8 exactly 0", correctly identifying it as the same dilution artefact in
+its instrument. Measured per class, its tip at a 0.5 px seat pad showed a **real leak**: ticks tier A 0.00065
+(over the 0.0005 bound), text p99 0.0025, outlines p99 0.0020.
+
+**The cause is antialiasing coverage, not logic.** A seat only 0.5 px wider than a 1.3 px tick does not fully
+cover that tick's edge pixels at an oblique angle, so the medium shows through by (1 − coverage). The firewall
+leaked through geometry.
+
+### My own eleventh defect, found by GRÜN's pixel count
+
+My first per-class run returned ~20 000 pixels for *every* class — 25× GRÜN's 807 for arcs, and nodes, text and
+outlines all landing implausibly within 400 pixels of one another. Cause: each class mask was diffed against
+`frames[0]`, captured **~60 s earlier**, so the breath's own movement across that interval landed in every mask.
+Masks are now built on a page under `prefers-reduced-motion`, where nothing moves at all and element positions
+are identical, and the live clip is asserted to match. Corrected counts: arcs 5 802, beams 7 019, nodes 5 537,
+text 6 400, outlines 8 004, **rings 164 896** — which confirms GRÜN's point directly: the rings class alone is
+92 % of the pool.
+
+**Per class at base, the instrument now localises the leak instead of merely reporting one:**
+
+| class | px | tier A | tier C ratios | |
+|---|---|---|---|---|
+| rings | 164 896 | 0.00020 | 3.17 / **236.26** / ∞ / ∞ | **red** |
+| outlines | 8 004 | 0.00003 | 0.69 / 1.36 / 3.43 | red |
+| beams | 7 019 | 0.00003 | 0.74 / 1.23 / 1.54 | red (marginal) |
+| arcs | 5 802 | 0.00007 | 0.69 / 0.92 / 1.50 | green |
+| nodes | 5 537 | 0.00012 | 0.99 / 0.82 / 1.40 | green |
+| text | 6 400 | 0.00008 | 0.48 / 0.59 / 0.71 | green |
+
+At base the one breathing thing is the field **ring**, and the ring class is red by 236× while the rest are near
+clean. The pooled form said only "red"; the per-class form says *where*.
+
+## §25 A-F23 · THE SELF-CHECK WAS CONFOUNDED BY ITS OWN SUB-WINDOW *(PINK — adopted)*
+
+PINK measured the tier A floor against window length directly, from one 62 s capture with nested offline fits:
+
+| window | cells | floor |
+|---|---|---|
+| 20 s | 1.00 | 3.28e-5 |
+| 26 s | 1.30 | 3.12e-5 |
+| 33 s | 1.65 | 3.03e-5 |
+| **40 s** | **2.00** | **2.64e-5** |
+| 47 s | 2.35 | 2.76e-5 |
+| 54 s | 2.70 | 2.53e-5 |
+| 62 s | 3.10 | 2.65e-5 |
+
+**The floor falls until two cells and then flattens** — A-F21's `2/Δf` measured directly rather than derived.
+4.7 periods was never special.
+
+And PINK found the flaw in my self-check: **re-fitting the first 70 % makes a shorter window**, so when the full
+window sits near `2/Δf` the sub-window falls *below* it and reads a high floor from **its own resolution**, not
+from a still-falling floor. At my 49.5 s window the sub-window was 34.6 s = 1.73 cells, and PINK's curve puts a
+33 s window ~1.16× above the plateau on resolution alone — most of my observed 1.47. **My self-check passed
+partly for the wrong reason.**
+
+**A-F21 amended:** the full window must be long enough that the **sub-window** also clears two cells —
+`2/(0.7·Δf)` ≈ **57 s** for these frequencies — rather than a flat ratio bound. Re-measured on my harness at a
+65.6 s window: sub-window **2.29 cells**, floor-settled ratio **0.99** against the previous 1.47. PINK's
+diagnosis confirmed exactly.
+
+PINK's absolute plateau (~2.6e-5) against my converged 1e-5 is a mask-inclusiveness difference (its
+stage-minus-svg 200 k against my 178 k); per-element sign-hide on the tip should close it. **The reproducible
+result is the shape — it settles at two cells — not the absolute number.**
