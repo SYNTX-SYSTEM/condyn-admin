@@ -609,3 +609,48 @@ stronger proof is worth more than one that simply dies.
 
 **Still browser-unproven:** nothing. **Still outside phase E:** the host's page scroll (E-8a), and the two
 reversible constants that belong to the acceptance.
+
+---
+
+## §19 DELIVERY RECORD — PINK'S GO ON `9cc06f84`
+
+**PINK: GO, pinned to `9cc06f84`.** P-1 … P-13 plus E-8b and A-8 reproduced on PINK's own render, each red-first
+where §7 requires, in its own worktree with its own instrument. Evidence `cf44e349`, local.
+
+**PINK corrected a prediction it had sent me, and the correction is the better outcome.** It expected the
+JS-branch mutant of P-6 to **survive**, on the reasoning that the `requestAnimationFrame` loop only toggles
+`data-stage`, which guarded CSS consumes. It does not survive: **it turns P-6 red.** The stage re-frame tweens the
+**SVG viewBox per frame** (component `:338`) — real geometry motion that the CSS blanket cannot touch — and only
+half **(b)**, *nothing moves*, catches it: 7 interpolated viewBoxes and 8 body positions under `reduce`.
+
+So the JS `reducedMotion()` gate at `:334` is **load-bearing**, and half (b) is doing real work rather than
+standing beside (a). That closes the loop opened by PINK's own N-3: the hole it found in P-6 was real, the
+restatement that followed was necessary, and the mutant that proves it only fails against the restated half. Had
+P-6 stayed as I first wrote it, this would have passed while the field moved under reduced motion.
+
+**PINK's own addition to the P-13 inverse (A3):** a reading whose `requirementText` is reworded while state and
+key are unchanged. `diffRankings` emits nothing, so a "mark on any field change" implementation would have lit it
+— and did not. Two independent inverse cases, both marking nothing, each with a genuine second fetch in the façade
+log.
+
+**Declared limitation, PINK's own:** it could not sample the arc transient's brightness **value** through
+`getComputedStyle` during the animation. It establishes the transient from the animation name on the arc plus an
+rAF capture of the same keyframe at 1.75. The CSS peak is 1.8; GRÜN's 1.795 and my 1.26 are samples along that
+curve. Three instruments, one curve, no contradiction.
+
+**Confirmed against my numbers:** P-11's three mutants red (luminance collapse → 1.0; LAYOUT given the transient →
+the steady body brightens to 1.773; breath at 3.1 Hz → 323 ms). P-2 edges 1.814 / 1.940. P-7 contain-not-clip,
+stage 520/840/756/1100 at top 128. P-8 rendered 1.202 / 1.575 / 11.022, four bodies at the floor. P-5 10 s,
+amplitude 1.492 %, and at idle **only the ring moves**. P-9 / P-12 byte-identical — `lib/career/mapping`,
+`signs.ts` and `sign-table.json` untouched; only the component, the view model, the copy and tests changed, so §4
+holds. P-10 five GET reads, zero external. E-8b scroll-invariant and resize-convergent in one pass. A-8
+deterministic across reloads.
+
+**The pin, as in phase D.** This GO is pinned to `9cc06f84` and does not travel. Any re-delivery — a fix, a
+reword, a zero-logic change — breaks the pin and PINK re-runs from scratch before the GO applies again. The phase-D
+GO stays on `86e36924`, separate and unaffected.
+
+**Open, and OTTAVIO's alone:** the visual acceptance; the two reversible constants (`BODY_NAMES_AT_L0 = false`,
+`STAGE_GROUND_ALPHA = 0.92`) and the stage's top gap; the host's page scroll (E-8a); the 1100 px cap and the
+760 px width reservation that bind at the largest and narrowest windows; and everything phase D left with him.
+Nothing is merged, pushed or deployed.
