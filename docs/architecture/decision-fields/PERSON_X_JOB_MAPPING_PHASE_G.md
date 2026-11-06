@@ -422,3 +422,63 @@ level, **PF-16 is restated in codes, not ratios**:
 
 > **PF-16 (dark ground):** the wedge wash is **≥ 1 and ≤ 3 sRGB codes** above the base ground, strictly below
 > every mark, and contained by PG-12 (no hue on the medium). Measured as a trimmed mean per pool.
+
+---
+
+## §9 THE TRAVEL IS THE BREATH — AND THREE MORE GREEN-BY-COINCIDENCE FINDS
+
+### A-G13 · PG-7 final: the travel's period **is** the breath's *(option a)*
+
+GRÜN found the contradiction in its own proposal: 5 s is 0.2 Hz, only **15×** under the 3 Hz threshold, where
+the restatement demanded 30×.
+
+**Decided: the travel period equals the breath period — 10 s, divisor 1.** Option (b)'s reasoning is technically
+sound (a small travelling point is not a "flash" under WCAG 2.3.1, which is defined over an area), but it buys
+a sub-beat we do not want, and the margin was never really about WCAG — it is E-6's **calm** margin.
+
+The real reason is better than either: at divisor 1 the light completes **one circuit per breath**, so the
+relation's travel and the medium's breath become **one event rather than two**. The field inhales and the light
+moves; it exhales and the light resets. That is *"Alles ein Feld, bewegt sich, atmet"* — one organism with one
+gesture, and the relations are what moves inside it. A sub-beat would have made the relations an *accompaniment*
+to the breath instead of a part of it.
+
+**Risk recorded rather than assumed:** motion energy scales with frequency, so halving it halves the travel's
+contribution to **PG-11** (relations ≥ 1.5× the medium's motion energy). A bright point crossing a dark field
+should still dominate a gentle area swing, but that is a **measurement, not a prediction**. If PG-11 fails at
+divisor 1, it comes back with the render and we revisit — we do not pre-emptively weaken it.
+
+### A-G14 · V1.1 accepted as built
+
+V1 golden vectors **33/33 green and byte-identical**, V1.1's own suite 7/7 — including determinism under
+shuffled input, drawn radius monotone in mass and inside [32.2, 52.6], no two bodies touching **as drawn**, the
+band by the **mass** radius, undisplaced bodies at their fit, and **the shelf surviving in every vector**. The
+V1 spec and vectors are untouched beside the new ones. That is the bump done honestly.
+
+### A-G15 · A widened proxy is a weakened proxy — name the family, not the alphabet
+
+The import rule admitted only `[a-z-]+.json` as a spec JSON and refused `layout-spec-v1.1.json` for its dot and
+digits. GRÜN widened the pattern to `[a-z0-9.-]+.json`.
+
+**That is correct in intent and too loose in form.** The rule means *"only a specification JSON may be
+imported"*, and the pattern is a proxy for it; widening the alphabet admits any lowercase JSON at all. The same
+error as every withdrawn proxy this phase.
+
+**Required instead:** the pattern names the **family** — `layout-spec(-v[0-9]+(\.[0-9]+)*)?\.json` — which
+admits V1 and V1.1 and nothing else. Stricter than before the change, not looser.
+
+### A-G16 · Three more green-by-coincidence, and the count now matters
+
+- **`model.test.ts`** — *"the drawn bodies are exactly the layout's"* was green **by coincidence**: the five
+  fixture bodies lie identically under V1 and V1.1, so the test pinned V1 as the model's engine without being
+  able to tell. Repointed at V1.1 with the drawn radius asserted. Strictly stronger. Same for model M8.
+- **C13** under V1.1 would have seen **nothing**: pool B's 40 roles leave pool A a ~25° sector, `role_y` has no
+  room, and that is honest V1.1 overflow. GRÜN changed the input to `crowdedRoles(10)` **and asserts the
+  precondition**, so the test fails if its condition ever stops occurring. **Adjusting an input to make a
+  test's condition occur is legitimate exactly when the precondition is asserted** — otherwise it is the
+  vacuous-precondition defect of A-F16 wearing a new coat.
+- GRÜN's first placement of the V1.1 test tripped the rule *"outside `lib/career/mapping` only the field imports
+  the engine"*, found and moved by the rule itself.
+
+**Count across phases F and G: twenty-two instrument or proof defects, of which nine could not change their
+verdict in either direction.** The surface now finds them faster than we create them, which is the only
+measure of the discipline that matters.
