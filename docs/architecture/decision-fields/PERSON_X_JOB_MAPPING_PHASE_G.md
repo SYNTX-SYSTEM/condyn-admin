@@ -596,3 +596,84 @@ R23 — [The Bouma law of crowding, revised](https://jov.arvojournals.org/articl
 R24 — [Chromostereopsis: a multicomponent depth effect?](https://www.sciencedirect.com/science/article/abs/pii/014193829390093K) · [Neural correlates of chromostereopsis](https://www.sciencedirect.com/science/article/abs/pii/S0028393209002024)
 R25 — [Motion-induced blindness and Troxler fading: common and different mechanisms](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0092894) · [Troxler effect (Illusions Index)](https://www.illusionsindex.org/i/troxler-effect) · [Induced visual fading of complex images](https://jov.arvojournals.org/article.aspx?articleid=2121987)
 R26 — [Peirce's theory of signs (Stanford Encyclopedia)](https://plato.stanford.edu/entries/peirce-semiotics/) · [Rethinking the Peircean trichotomy of icon, index, and symbol](https://www.degruyterbrill.com/document/doi/10.1515/sem-2015-0134/html) · [Data by proxy: material traces as autographic visualizations](https://arxiv.org/pdf/1907.05454)
+
+---
+
+## §12 THE GHOST, THE RAMP, AND PG-20's FORM
+
+### A-G17 · The disc occludes the host — opacity is not light *(decision 1)*
+
+GRÜN measured the host's ghost inside the disc at median 0.0015, p99 0.005, max 0.0089 — **21 % of all the
+light in the disc at 1920**, and its labels are **readable inside the field**: *IDENTITY CORE*, *TENSION FIELD*,
+*RESONANCE ORBITS*.
+
+My M-F3 said the ghost was negligible, and it was — **on a lit plate**. On a dark ground **the same ghost is
+the medium's strongest structure.** Nothing about the host changed; the field moved out from under it. That is
+the third time this phase a statistic written for one ground has been read on another.
+
+**Decided: (a).** The disc is **opaque in the stage's own ground colour at alpha 1** — `rgb(3, 5, 8)`, which
+adds **no light of its own** and only removes what is beneath.
+
+§3 retired `DISC_GROUND_OPAQUE` because it was a **lit plate**. This is a different thing and must be named as
+one: **opacity is occlusion, not light.** The constant expresses occlusion only, and its value is the stage's
+ground, so the light budget is untouched and the field keeps the dark space it shares with every other view.
+
+*"Alles ein Feld"* is satisfied by sharing the dark space and the visual language — **not** by letting a view
+the user has navigated away from bleed through the one they chose. Two fields overlapping is not unity, it is
+interference.
+
+**(b) goes to OTTAVIO, not into the code.** `STAGE_GROUND_ALPHA` is his constant (PHASE_E §5); raising it to 1.0
+would remove the ghost everywhere rather than only inside the disc. I have already taken one of his two levers
+this phase and will not take the second.
+
+**New obligation, the one that would have caught this:**
+
+| # | obligation |
+|---|---|
+| **PG-21** | **No light in the field belongs to anyone else.** With every field element suppressed, the light remaining inside the disc is ≤ the stage's own ground. Measured exactly as the ghost was found. |
+
+### A-G18 · PG-17 is measured on the medium — the ramp is ground, the ticks are figure *(decision 2)*
+
+GRÜN is right. The glare effect is a property of the **surround gradient**; the collar ticks sitting on it are
+**figure, not ground**, and a ramp interrupted by figure is still a ramp. PG-17 is measured on **medium pixels,
+with signs and their seats masked**, exactly as PF-17/18 are.
+
+This is A-F13 in the other direction: that rule said PF-8 bounds a sign's own luminance and not its contrast
+against the medium; this one says PG-17 bounds the medium's gradient and not the figures standing on it. The
+alternative — a bright seat under the collar — would break PF-2's absolute bands, which is not a trade.
+
+**One guard added**, because a ramp cut to pieces stops being read as a ramp even if each surviving pixel is
+monotone:
+
+| # | obligation |
+|---|---|
+| **PG-22** | Seats and signs occupy ≤ **15 %** of the area of a body's ramp annulus. If this binds wrongly in a real render, bring it back with the render. |
+
+### A-G19 · PG-20's form — and a correction to my own audit
+
+**R26's audit was wrong on one row.** I classified the **dash word** as a pure symbol. It is not: *solid /
+dotted / open* is **degree of line continuity standing for degree of connection** — a resemblance, therefore an
+**icon**, and already as immediate as PG-20 asks for. The one pure symbol is the **mark glyph**.
+
+That halves PG-20 and makes it precise. **The reinforcements, each an icon or index for the same question:**
+
+| state | mark today (symbol) | reinforcement | type |
+|---|---|---|---|
+| DIFFERENT | `counterTick` — a cross stroke | **the arc is broken at the mark** | **index** — the connection is severed, and the gap *is* the severance |
+| NAME_COMPOSITE_CONSTITUENT | `constituent` — a short tick | **a shorter arc nested inside the full one** | **icon** — part-of as literal containment |
+| NAME_ALIAS | `alias` — a small circle | **an offset echo of the arc** | **icon** — the same thing twice, under two names |
+| EQUIVALENT | `double` — a second line | kept; doubling already resembles sameness | **icon** |
+
+GRÜN's `counterTick` → break is adopted as proposed. Its other candidate — class on the **body glow's ramp
+steepness** — is declined for two reasons: the class belongs to a **coupling**, not a body (a body carries
+couplings of several classes at once), and **blur is Troxler-vulnerable** (R25), which PG-19 forbids.
+
+**No new question is introduced.** Each reinforcement answers the question its mark already answers, so E-1
+holds.
+
+### The four reds GRÜN measured, and what they mean
+
+PG-1 0.42 (needs 0.55) — of which **~21 % of the disc's light is the ghost**, so A-G17 alone recovers most of
+the gap. PG-6 0.025 (needs 0.15) and the inverted PF-15 at 0.23 (needs 0.08, dominated by the shelf band's
+sheer area) are both real and both in GRÜN's build list. PG-3 at 54 px is the PG-14 frame shrinking the field
+by ~4 %; raising V1.1's `drawn.min/max` is the right fix and takes new vectors.
