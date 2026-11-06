@@ -735,3 +735,56 @@ reinforcement must carry *that*:
 > and these two do not meet. The counterTick stays.
 
 CONSTITUENT (nested shorter arc) and ALIAS (offset echo) are accepted as built.
+
+---
+
+## §14 THREE CORRECTIONS ON `3ec8457d`
+
+### A-G21 · §13's wording was wrong: UNCLEAR → NONE *(GRÜN)*
+
+UNCLEAR's `arcLine` is **`broken`**, not `open`; it has no free ends. The two `open` states are **DIFFERENT**
+and **NONE**. So the counterTick distinguishes **"judged different"** from **"no relation found"**, not from
+"unclear". The meaning I specified is unchanged — *we looked and they do not meet* against *nothing was found* —
+and only my naming of the contrast was wrong. §13 is corrected here: **DIFFERENT's ends splay, NONE's stay
+radial.**
+
+### A-G22 · PG-10 re-derived on the carrier, and bounded on both sides
+
+GRÜN is right that the whole 1.05…2.6 r annulus measures **the ramp's dark tail**, not the breath. The carrier
+is the **visible glow** (mean luminance ≥ 2 × local ground), and measured there: 35.3 % / 33.0 % swing ≥ 0.004,
+Weber p50 **20.6 % / 22.6 %**, max swing 0.0297 ≤ 0.030.
+
+**PG-10 restated:** on the visible glow, **≥ 25 %** of pixels swing ≥ 0.004, **and** the median Weber fraction
+lies in **[10 %, 35 %]**, with max swing ≤ 0.030.
+
+GRÜN proposed only a floor on the Weber limb. **A-F1's lesson applies: the corridor is bounded on both sides**,
+because R17's ceiling is what keeps this calm and phase F's whole failure was a floor without a ceiling — and
+then a ceiling without a nominal. The measured 20.6 % sits in the middle of the corridor, and the max swing at
+0.0297 against 0.030 is a **1 % margin** — tight enough that I want it re-measured on any change to the glow,
+not assumed to hold.
+
+### A-G23 · PG-22 scales with the drawn radius — option (b)
+
+At 1280 the bodies are 30…47 px while ticks and seats keep **pixel** floors (E-7's ≥ 1.2 px strokes, the 1.6 px
+seat pad). Their share of the ramp therefore grows as the body shrinks — **k/r, derivable, not arbitrary**:
+
+| | mean drawn radius | pixel-floored share |
+|---|---|---|
+| 1920 | 34.9 px | baseline |
+| 1280 | 18.8 px | **1.86 ×** |
+
+**Decided: (b).** PG-22's bound scales with the drawn radius — 20 % at the 1920 reference, ≈ 37 % at 1280.
+GRÜN's worst measurement there (25.5 % on the 1.1 r annulus) sits inside with margin.
+
+- **(a) — exempting 1280 — is declined.** It is within a hair of "a bound that applies only where it passes",
+  the error class named four times this phase. The geometry is the reason the share grows, so **the geometry
+  belongs in the bound**, not in an exemption.
+- **(c) — a thinner collar on small stages — is declined** for the same reason A2 was: it changes D-Q3's collar
+  rule, a semantic, to fix a presence problem.
+
+**And the annulus is 1.1 … 2.6 r**, as GRÜN measured it: a body's own outline band and its seat are **figure on
+the rim**, not interruptions of the ramp.
+
+**Stated limitation, deliberately not hidden by the scaling:** presence genuinely degrades on a smaller stage —
+30…47 px bodies carry less than 57…88 px ones, and PG-3 is defined at 1920. The bound now says so honestly
+instead of exempting the size.
