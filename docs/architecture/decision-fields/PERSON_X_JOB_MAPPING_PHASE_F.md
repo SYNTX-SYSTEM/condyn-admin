@@ -1310,3 +1310,56 @@ A firewall certified at one level is not a firewall. §17's PF-8 row is amended:
 This is the twelfth defect of the phase and the eighth of the "a measurement that cannot fail" family, in a new
 disguise: not a statistic that could not see the leak, but a *view* in which the leaking element was not on
 screen.
+
+---
+
+## §27 A-F25 · THE NULL WAS SPECTRALLY ASYMMETRIC — A SYSTEMATIC FALSE-RED *(PINK — adopted and confirmed)*
+
+PINK built the per-class firewall independently and matched me on rings, outlines and arcs. It diverged on
+nodes and text — mild tier C red (~2–2.5×) where I read clean — chased it, and found the cause in **my** frequency
+choice.
+
+**The decoys 0.15 / 0.25 / 0.35 Hz each sit +0.05 Hz ABOVE a harmonic 0.1 / 0.2 / 0.3.** The null therefore
+samples a systematically *higher* part of the spectrum than the signal. Raster and compositor noise is not
+guaranteed white, and if its spectrum falls with frequency, **the signal band carries more noise power than the
+null band and signal/null exceeds 1 with no leak present.** A systematic false-red built into the instrument's
+design, affecting both harnesses — PINK was right that I might look clean only because my element-coverage mask
+excludes the fringe carrying it.
+
+**Adopted: the null brackets each harmonic instead of sitting above it.** Decoys at **0.05 / 0.15 / 0.25 /
+0.35 Hz**, and for each harmonic `f_k` the null component is the **RMS of its two brackets** at `f_k ± 0.05`. The
+null is then spectrally *centred* on the signal and keeps the same three degrees of freedom, so A-F17's variance
+matching survives.
+
+**Measured, and the spurious reds disappear:**
+
+| class (L0) | px | tier A / its floor | tier C | |
+|---|---|---|---|---|
+| rings | 165 204 | 0.00020 / 0.00001 | — / — / **125.54** / ∞ | **red** |
+| arcs | 3 443 | 0.00017 / 0.00010 | — | green |
+| beams | 6 207 | 0.00011 / 0.00008 | — | green |
+| nodes | 5 618 | 0.00007 / **0.00020** | — | green |
+| text | 5 326 | 0.00013 / 0.00027 | — | green |
+| outlines | 4 255 | 0.00006 / 0.00016 | — | green |
+
+At L0 only the rings class is red, which is correct — the ring is the one thing that breathes at base. **At L2
+every class is green**, also correct: nothing there moves at all yet. The previous run's `nodes` reading of ∞ was
+the asymmetry, not a leak.
+
+### Two further guards, from the same exchange
+
+**PINK (erosion):** eroding each mask 1 px to an interior collapses the thin classes — arcs 9 462 → 1 143 px,
+nodes → 1 789 — and the null counts go to nothing, blowing ratios to ∞. **Thin marks are almost entirely
+antialiasing fringe**, which confirms GRÜN's coverage diagnosis from a third direction. The firewall mask must be
+the **full seat footprint**, so the fringe is unavoidably inside it, and **tier C needs a minimum class
+population** — below 1 000 px it is not evaluated.
+
+**GELB (low rungs):** tier C's rungs at 0.001 and 0.002 sit *inside* the per-pixel noise, where signal and null
+are two different random draws and their ratio floats freely. They produced red on text and nodes at base L2
+where no ground exists to leak. **A rung below 2× the measured per-pixel floor is not evaluated** — A-F11 applied
+to the ladder itself.
+
+**Defects thirteen and fourteen, both mine**: a ladder whose low rungs could not discriminate, and a null that
+could not be symmetric. Fourteen total this phase, thirteen mine. Nine of the fourteen were a measurement that
+could not do its job — and this pair adds a direction nobody had watched: not *failing to fail*, but **failing
+when nothing is wrong.**
