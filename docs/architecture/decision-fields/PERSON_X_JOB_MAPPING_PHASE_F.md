@@ -1363,3 +1363,24 @@ to the ladder itself.
 could not be symmetric. Fourteen total this phase, thirteen mine. Nine of the fourteen were a measurement that
 could not do its job — and this pair adds a direction nobody had watched: not *failing to fail*, but **failing
 when nothing is wrong.**
+
+### A-F25 confirmed independently
+
+PINK took the dof-matched bracketed form and re-ran base L0 on its own instrument (112 frames / 58.5 s):
+rings tier A **0.000195 / floor 1.96e-5** against my 0.00020 / 1e-5; rings red (B 4.01×, C 5.67 / 37.75 / 74.91 /
+∞) and **every other class green**.
+
+The confirming detail is not the agreement but the **signature**: PINK's quiet classes moved from ~2–2.5× to
+**below 1.0**. A non-leaking class should sit *at or under* its null once the null is spectrally centred, and that
+is what both instruments now show. The mild red PINK first reported was the shared asymmetric null — present in
+both harnesses because both took my frequencies — diagnosed on PINK's instrument and removed on both.
+
+**Second false-red direction closed on both lanes.** The instruments are aligned on every method: joint LSQ;
+bracketed dof-matched null; ≥ 57 s window with the resolution-valid self-check; per-class masks built under
+reduced motion; per level L0 + L2; minimum 1 000 px per class; live-rung guard; differential PF-3; PF-9 NOT-RUN;
+PF-10 amplitude guard; and the two-limb checklist — *can this measurement fail*, and *is the thing it must fail
+on even in the frame*.
+
+**PF-9's path validated by GELB before the tip**, so it is not discovered at the moment of measurement: the
+façade's `running` variant serves `RUNNING`, and the stage answers `data-breath="STILL"`, `pendingBreath=true`,
+ring `STILL`, pending outline displayed. The façade was restored to `default` immediately afterwards.
