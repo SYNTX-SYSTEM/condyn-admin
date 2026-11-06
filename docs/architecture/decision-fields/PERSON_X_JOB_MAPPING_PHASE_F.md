@@ -827,3 +827,59 @@ phase E's GO: P-13's precondition was weaker than §19 recorded. **PINK is asked
 independent P-13 reproduction used the same accessor.** If PINK's instrument read `r.role.poolRoleId`, P-13's
 conclusion stands on PINK's measurement and only the in-repo precondition was weak; if it inherited the same
 mistake, P-13 is unproven and returns to the open list.
+
+---
+
+## §16 A-F11 CORRECTED — I BUILT THE OPPOSITE FAILURE WITHIN THE HOUR
+
+§14 adopted PINK's finding and wrote A-F11 to stop proofs being red by construction. I then implemented A-F11 in
+my own harness exactly as written, ran it at base, and **PF-11 came back GREEN** — on a build where three
+instruments agree the host is moving under the field. It passed by 1 %: max delta 0.00842 against a limit of
+0.00852. **PF-8 went green too** (coherent p99 0.00161 ≤ 0.002) on a base whose ring demonstrably breathes.
+
+One section after writing that a proof whose verdict does not depend on the build carries no information, I
+shipped two of them in the other direction. Recorded in full, because the rule that follows is worth more than
+the embarrassment.
+
+**Two causes, both in A-F11 as written, neither in PINK's finding:**
+
+1. **The 2 px blur destroys exactly what PF-8 exists to catch.** Blurring suppresses the amplitude of a *thin
+   structure moving geometrically* — which is what a breath leak onto a mark looks like. PINK's 23 : 1 result was
+   for an *area* statistic on the broad ground; I over-applied it to a per-pixel edge statistic. **PF-8 is measured
+   unblurred.** The coherent fit alone does the rejection, and it does it without destroying the signal.
+2. **A max-against-max bound is a coin flip when the floor is the same order as the signal.** Comparing one
+   extreme to twice another extreme has no statistical content.
+
+### A-F11 (corrected)
+
+> Every temporal obligation measures its own floor in the same run — back-to-back frames for broadband bounds, a
+> fit at a **decoy frequency** incommensurate with the breath for coherent ones. Thresholds compare
+> **distributions, not maxima**. Blurring is used for **area** statistics and never for a statistic whose signal
+> is a moving edge. And the admissibility rule is **asymmetric**: a **GREEN** needs the floor well under the
+> bound, because a high floor can hide a leak; a **RED** needs the signal clearly above the floor, because a
+> fluctuating floor can invent one.
+
+**PF-11, restated.** At four thresholds (0.001 / 0.002 / 0.004 / 0.008) on blurred frames, the count of disc
+pixels changing between two samples ≥ 2 s apart must be **≤ 1.5× the back-to-back count** at every threshold. Real
+motion moves many pixels; raster jitter moves the same few. At base this reads **6.43 / 4.48 / 13.7 / ∞** — red at
+every threshold, decisively, where the max-based form passed by 1 %.
+
+**PF-8, restated in two tiers**, because one statistic cannot do both jobs:
+
+| tier | what it catches | statistic | bound | floor at base |
+|---|---|---|---|---|
+| **A** systematic | the ground's breath modulating marks | coherent amplitude at 0.1 Hz of the **mean over all sign pixels** | ≤ 0.0005 absolute | **0.00001** |
+| **B** localised | a leak on a few pixels, or a sign moving geometrically | per-pixel **p99** of the coherent amplitude, unblurred | ≤ **2× the run's own decoy floor** | 0.00231 |
+
+Tier A pools 178 k pixels before the fit, so its floor is 50× under its bound — the sensitive limb, and the one a
+green verdict rests on. **Tier A reads green at base**, correctly: the phase-E ring *moves* rather than brightens,
+and a geometric movement roughly conserves total light. Tier B catches precisely that (p99 0.00484 against a floor
+of 0.00231) and is **red at base**. Neither tier alone is the firewall; both are.
+
+Tier B's bound is stated **against the run's own floor** rather than as an absolute, because 26 frames cannot
+resolve 0.002 (the floor sits at 0.0023) and a bound the instrument cannot reach is not a bound — the same error
+in a third disguise.
+
+**Standing consequence.** Five of the six instrument defects this phase were mine, and four of the six were a
+proof that could not change its verdict. That is now the first thing every obligation is checked for, before it
+is checked against the build.
