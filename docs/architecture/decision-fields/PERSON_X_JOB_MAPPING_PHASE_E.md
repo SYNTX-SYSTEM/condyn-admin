@@ -352,3 +352,37 @@ JS, (b) must be shown red by *disabling the JS reduced-motion branch* as well �
 headless Turbopack `next dev` would not hydrate the field in its setup. The production build reproduces the dev
 geometry to the pixel, so the build mode does not move what P-7 measures. Zero external requests on every run
 (B-4/B-6 baseline clean on PINK's instrument as well as mine).
+
+---
+
+## §13 GRÜN'S FIRST GREEN — ONE READING ADOPTED, TWO BOUNDS ADDED, ONE QUESTION OPENED
+
+**M-4b, adopted into §0 from GRÜN's red baseline.** GRÜN measured the closest class ratios at base as **0.786 and
+0.625** — below 1, meaning the ladder is not merely flat (M-4a, 1.01) but **inverted** where the sign table's
+per-state luminance crosses the classes: UNCLEAR (SEMANTIC) 0.55 against NAME_EXACT (LEXICAL) 0.70 gives 0.786, and
+0.25 against 0.40 gives 0.625. The strongest statement of the defect E-1 exists for: today a *checked* coupling can
+be drawn **dimmer** than a *name-only* one. A-3's bands are what fix it.
+
+**E-8b — the clamp must be scroll- and resize-invariant.** GRÜN's clamp reads the section's **document** top. The
+host scrolls (E-8a), so document top and viewport offset diverge the moment the page is scrolled — a reload with a
+restored scroll position would compute the clamp from a relationship that no longer holds. Bounds:
+
+1. the clamp is computed from **viewport-relative** geometry (`getBoundingClientRect`), not document coordinates;
+2. it is **recomputed on resize**, and converges in one pass at the new size;
+3. it is **invariant under scrolling**: scrolling the host and returning must not change the clamp.
+
+PINK tests (3) by scrolling the host, then resizing, then measuring P-7 — a path neither GRÜN's harness nor mine
+currently walks.
+
+**The four proofs not yet reported.** GRÜN's green list covers P-1, P-2, P-3, P-5, P-7, P-8 and E-5. **P-4**
+(evidence transient versus layout gradient — the heart of A3), **P-9** (golden vectors byte-identical — B-1),
+**P-11** (the three mutants) and **P-12** (the sign table unchanged — B-5) are unreported and are not optional.
+P-9 and P-12 are the two that guarantee phase E changed only how the field is seen, never what it says.
+
+**An open question for OTTAVIO, surfaced by the fix.** GRÜN's clamps are 569 / 769 / 681 / 1069 px against the
+unclamped 520 / 830 / 742 / 1100. At three of the four sizes **the stage is now smaller than before**: the fit was
+bought with stage area, because the binding constraint is height and 203 px of it (61 px host bar + the field's own
+`top: 142px`) sit above the stage. If the field's own 142 px is not load-bearing against the focus strip, lowering
+it would give every window roughly that much more stage — the A2 goal — without touching the host. **GELB does not
+decide this**: it trades readable size against the risk of colliding with the strip, and the collision is a visual
+judgement. Recorded for the acceptance.
