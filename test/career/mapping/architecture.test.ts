@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { phaseDBase } from "../mapping-field/phase-base";
+import { changedInRange, phaseDBase, phaseGBase } from "../mapping-field/phase-base";
 
 /**
  * MAPPING_ARCHITECTURE · phase B is pure modules only (owner limit "NUR PHASE B"): lib/career/mapping imports no React, no Next, no
@@ -42,7 +42,9 @@ describe("MAP-ARCH · pure modules", () => {
     for (const f of MODULES) for (const line of code(f).split("\n").filter(l => /^\s*import\b/.test(l))) {
       const from = /from\s+["']([^"']+)["']/.exec(line)?.[1] ?? "";
       if (from.startsWith("./")) continue;
-      if (/\/docs\/architecture\/decision-fields\/mapping-spec\/[a-z-]+\.json$/.test(from)) continue;
+      // Phase G (PHASE_G §9, A-G15): the specification JSONs by name — the sign table and the layout spec in any version (V1, V1.1);
+      // stricter than the earlier [a-z-]+ alphabet, which admitted any lowercase JSON in the directory.
+      if (/\/docs\/architecture\/decision-fields\/mapping-spec\/(sign-table|layout-spec(-v[0-9]+(\.[0-9]+)*)?)\.json$/.test(from)) continue;
       expect(line, f).toMatch(/^\s*import\s+type\s/);
     }
   });
@@ -68,9 +70,8 @@ describe("MAP-ARCH · nothing existing is touched", () => {
     expect(users).toEqual(["app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/mapping-field-copy.ts", "lib/career/view-model/mapping-field.ts"]);
   });
 
-  it("against the released engine (phase-D base e360caf9), the engine modules are unchanged (committed, staged, unstaged and new) — phase D's boundary is its own test", () => {
-    const changed = [...git("diff", "--name-only", "--no-renames", "--cached", phaseDBase(), "--", "lib/career/mapping"), ...git("diff", "--name-only", "--no-renames", phaseDBase(), "--", "lib/career/mapping"),
-      ...git("ls-files", "--others", "--exclude-standard", "--", "lib/career/mapping")];
-    expect(changed).toEqual([]);
+  // PHASE_G §8 (6): closed at PHASE_G_BASE — phase G's MAPPING_LAYOUT_V1.1 (layout.ts) is bounded by MAP-G-ARCH.
+  it("against the released engine (phase-D base e360caf9), the engine modules are unchanged through phase F (range closed at PHASE_G_BASE) — phase G's bump is its own test", () => {
+    expect(changedInRange(phaseDBase(), phaseGBase(), "lib/career/mapping")).toEqual([]);
   });
 });

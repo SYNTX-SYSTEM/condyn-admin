@@ -164,8 +164,20 @@ describe("MAP-E-NEURO · P-5 / E-6 — the breath", () => {
   // PHASE F §12 (PERSON_X_JOB_MAPPING_PHASE_F.md, adjudicated before the change): this test pinned phase E's MECHANISM — one ring,
   // a ±1.5 % scale, a symmetric sine — which F-6 replaces (M-F5: that mechanism is the defect OTTAVIO rejected). Restated to its
   // meaning: the breath is 0.1 Hz, ≥ 30× under the flash threshold, 4 s rise : 6 s fall, CSS inside the field, and only while LIVE.
-  it("REPRODUCE (restated, phase F §12): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz", () => {
-    const live = ruleFor('[data-breath="LIVE"]').filter(r => /animation:/.test(r.body));
+  // PHASE G §8 (5): the relations' travelling light (G-3 / PG-7) is keyed on LIVE too, at its own sub-period. Restated: every BREATH
+  // rule (the wave's keyframes) is 0.1 Hz and 4 : 6; the one travel rule is keyed on LIVE, its period an exact integer divisor of the
+  // breath's (one rhythm with a sub-beat, phase-locked), ≥ 30× under 3 Hz; nothing else runs on LIVE.
+  it("REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's", () => {
+    const allLive = ruleFor('[data-breath="LIVE"]').filter(r => /animation:/.test(r.body));
+    const travel = allLive.filter(r => animation(r.body)!.name === "mappingFieldTravel");
+    expect(travel.length, "one travel rule").toBe(1);
+    const t = animation(travel[0].body)!, breathPeriod = 1 / CONTRACT.breath.hz;
+    expect(travel[0].selector.startsWith('[data-testid="mapping-field"]')).toBe(true);
+    expect([t.iterations, t.timing]).toEqual(["infinite", "linear"]);
+    expect(Number.isInteger(breathPeriod / t.duration) && breathPeriod / t.duration >= 1, `travel ${t.duration} s divides the breath's ${breathPeriod} s`).toBe(true);
+    expect(1 / t.duration).toBeLessThanOrEqual(CONTRACT.flashHz / 30);
+    const live = allLive.filter(r => animation(r.body)!.name !== "mappingFieldTravel");
+    expect(live.every(r => animation(r.body)!.name === "mappingFieldWave"), "nothing else runs on LIVE").toBe(true);
     expect(live.length, "the breath exists").toBeGreaterThan(0);
     for (const r of live) {
       expect(r.selector.startsWith('[data-testid="mapping-field"]'), r.selector).toBe(true);

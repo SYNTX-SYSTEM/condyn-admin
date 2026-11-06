@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import layoutSpec from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec.json";
 import signTable from "../../../docs/architecture/decision-fields/mapping-spec/sign-table.json";
 import { buildMappingView, capabilitiesOfProjection } from "../../../lib/career/mapping/view";
-import { layoutConstellation, layoutRoles } from "../../../lib/career/mapping/layout";
+import { layoutConstellation, layoutRolesV11 } from "../../../lib/career/mapping/layout";
 import { runSign } from "../../../lib/career/mapping/signs";
 import { diffRankings } from "../../../lib/career/mapping/delta";
 import { FOCUS_ACTIONS, FOCUS_INITIAL, type FocusAction, type FocusState } from "../../../lib/career/mapping/focus";
@@ -26,10 +26,11 @@ describe("MAP-C-MODEL · consumes the engine, adds no rule", () => {
     const ranking = standardRanking();
     const m = model(ranking);
     const view = buildMappingView({ capabilities: capabilitiesOfProjection(projectionOf()), ranking, run: { state: "COMPLETED", resumePending: false }, evidenceClass: ranking.evidenceClass });
-    const layout = layoutRoles(view.pools.map(p => ({ id: p.id, name: p.name })), view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
+    // Phase G: the engine the model consumes is MAPPING_LAYOUT_V1.1 (PHASE_G §5/§7); V1 stays phase B's record (layout-vectors.test.ts).
+    const layout = layoutRolesV11(view.pools.map(p => ({ id: p.id, name: p.name })), view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
     expect(m.view).toEqual(view);
-    expect(m.bodies.map(b => [b.id.jobPoolUploadId, b.id.poolRoleId, b.rank, b.x, b.y, b.radius, b.shelf])).toEqual(
-      layout.bodies.filter(b => !b.overflow).map(b => [b.poolId, b.roleId, b.rank, b.x, b.y, b.bodyRadius, b.shelf]));
+    expect(m.bodies.map(b => [b.id.jobPoolUploadId, b.id.poolRoleId, b.rank, b.x, b.y, b.radius, b.drawnRadius, b.shelf])).toEqual(
+      layout.bodies.filter(b => !b.overflow).map(b => [b.poolId, b.roleId, b.rank, b.x, b.y, b.bodyRadius, b.drawnRadius, b.shelf]));
     expect(m.sectors.map(s => [s.poolId, s.startDegrees, s.spanDegrees, s.roles])).toEqual(layout.sectors.map(s => [s.poolId, s.startDegrees, s.spanDegrees, s.roles]));
     expect(m.overflowCount).toBe(layout.overflowCount);
     const ranks = m.bodies.map(b => b.rank);
@@ -291,10 +292,12 @@ describe("MAP-D-DELTA · movement means evidence, always and only (A3, D-Q5)", (
 });
 
 describe("MAP-D-MODEL · displaced is either displacement (PINK §3.98 M8)", () => {
-  it("a body the layout pushed only along its sector (radial 0, angular ≠ 0) is displaced, as is one pushed only outward", () => {
+  // Phase G (PHASE_G §5/§7/§8): the model places by MAPPING_LAYOUT_V1.1, so its displacement is read from V1.1 — the definition
+  // ("the search deviated from the fit position") is unchanged; only the layout version the model uses is.
+  it("a body the layout pushed only along its sector (radial 0, angular ≠ 0) is displaced, as is one pushed only outward (V1.1, phase G)", () => {
     const ranking = rankingOf([...crowdedRoles(40, POOL_A), ...standardRoles()]);
     const m = model(ranking);
-    const layout = layoutRoles(m.view.pools.map(p => ({ id: p.id, name: p.name })), m.view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
+    const layout = layoutRolesV11(m.view.pools.map(p => ({ id: p.id, name: p.name })), m.view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
     const kind = (d: [number, number]) => (d[0] === 0 && d[1] === 0 ? "none" : d[0] === 0 ? "angular" : d[1] === 0 ? "radial" : "both");
     const byKey = new Map(m.bodies.map(b => [b.key, b] as const));
     const seen = new Set<string>();

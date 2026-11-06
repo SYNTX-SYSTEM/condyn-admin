@@ -15,7 +15,7 @@ import type { CouplingClass } from "../../../lib/career/mapping/signs";
  * beams with and without a start point (D-Q2); the reverse view (§2.2); the collar's count (D-Q3).
  */
 vi.mock("react", async (importOriginal) => (await import("../pxj-first-screen/harness")).mockReact(await importOriginal<object>()));
-import { BEAM_STROKE, LINE_DASH, PersonJobMappingField, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
+import { BEAM_STROKE, BODY_NAMES_AT_L0, LINE_DASH, PersonJobMappingField, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
 
 type Tree = ReactElement<Record<string, unknown>>;
 function byTestId(node: unknown, id: string): Tree | null {
@@ -100,9 +100,9 @@ describe("MAP-D-FIELD · L0 → L3 by the field's own controls", () => {
     view.unmount();
   });
 
-  // Phase E (E-7) supersedes "no text but the pool names": capability nodes carry their name at every level; body names stay
-  // off at L0 unless marked or selected (BODY_NAMES_AT_L0 = false, OTTAVIO's question).
-  it("L0 carries the pool names at the sectors and the capability names (phase E · E-7), no body name; titles appear from L1", () => {
+  // Phase E (E-7) supersedes "no text but the pool names": capability nodes carry their name at every level. Phase G (PHASE_G §8 (1),
+  // PG-4): body names at L0 follow BODY_NAMES_AT_L0 — OTTAVIO's constant, set true by PG-4 and reported to him; the test reads it.
+  it("L0 carries the pool names at the sectors and the capability names (phase E · E-7); body names at L0 exactly as BODY_NAMES_AT_L0 says (phase G); titles from L1", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     let tree = view.settle(p);
@@ -111,7 +111,8 @@ describe("MAP-D-FIELD · L0 → L3 by the field's own controls", () => {
     expect(names.sort()).toEqual(["Pool Alpha", "Pool Beta"]);
     expect(all(byTestId(tree, "mapping-field-svg"), e => e.type === "text" && String(e.props["data-testid"] ?? "").startsWith("mapping-capability-name-")).map(e => textOf(e)).sort())
       .toEqual(["Kubernetes", "PostgreSQL", "TypeScript"]);
-    expect(svgText(tree).filter(t => ["All States", "Platform Engineer", "Named"].some(name => t.includes(name))), "no body name at L0").toEqual([]);
+    const atL0 = svgText(tree).filter(t => ["All States", "Platform Engineer", "Named"].some(name => t.includes(name)));
+    if (BODY_NAMES_AT_L0) expect(atL0.length, "every drawn body named at L0 (PG-4)").toBeGreaterThan(0); else expect(atL0, "no body name at L0").toEqual([]);
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick");
     tree = view.settle(p);
     expect(svgText(tree)).toContain("All States");

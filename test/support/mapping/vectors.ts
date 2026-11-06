@@ -1,10 +1,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { referenceArcs, referenceConstellation, referenceLayout, type LayoutInput, type LayoutRole } from "./layout-reference";
+import { referenceArcs, referenceConstellation, referenceLayout, referenceLayoutV11, type LayoutInput, type LayoutRole } from "./layout-reference";
 
 /** The inputs of the golden vectors. Every input is a plain function of its index — no randomness, no clock. */
 const DIR = join(__dirname, "../../../docs/architecture/decision-fields/mapping-spec");
 export const VECTORS_FILE = join(DIR, "layout-golden-vectors.json");
+/** MAPPING_LAYOUT_V1.1 (phase G, A1): the same twelve layout inputs; arcs and constellation are V1's and are not repeated here. */
+export const VECTORS_FILE_V11 = join(DIR, "layout-golden-vectors-v1.1.json");
 const pool = (n: number) => ({ id: `pool-${"abcdefgh"[n]}`, name: `pool-${"abcdefgh"[n]}` });
 const role = (poolId: string, at: number, rank: number, tier: LayoutRole["tier"], fit: number | null, weightSum: number): LayoutRole => ({ poolId, roleId: `role-${String(at).padStart(3, "0")}`, rank, tier, fit, weightSum });
 
@@ -57,3 +59,12 @@ export function computeVectors() {
 }
 /** Pretty, but every innermost object on one line (a body per line keeps the file reviewable). */
 export const writeVectors = () => writeFileSync(VECTORS_FILE, `${JSON.stringify(computeVectors(), null, 1).replace(/\{[^{}]*\}/g, m => m.replace(/\s*\n\s*/g, " "))}\n`);
+
+export function computeVectorsV11() {
+  return {
+    specVersion: "MAPPING_LAYOUT_V1.1",
+    note: "Produced by test/support/mapping/layout-reference.ts (referenceLayoutV11) from layout-spec-v1.1.json over V1's twelve layout inputs; test/career/mapping-spec checks the file against a fresh run and the invariants. Compare within 1e-6.",
+    layouts: Object.fromEntries(Object.entries(layoutInputs()).map(([name, input]) => [name, { input, expected: referenceLayoutV11(input) }]))
+  };
+}
+export const writeVectorsV11 = () => writeFileSync(VECTORS_FILE_V11, `${JSON.stringify(computeVectorsV11(), null, 1).replace(/\{[^{}]*\}/g, m => m.replace(/\s*\n\s*/g, " "))}\n`);

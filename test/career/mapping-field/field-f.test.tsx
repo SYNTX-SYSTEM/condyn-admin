@@ -11,7 +11,7 @@ import { allStates, keyCases } from "./support-d";
  * core and halo only, the halo follows exactly a LAYOUT body (A-F15), and the breath is CSS keyed on LIVE.
  */
 vi.mock("react", async (importOriginal) => (await import("../pxj-first-screen/harness")).mockReact(await importOriginal<object>()));
-import { MAPPING_FIELD_CSS, PersonJobMappingField, SEAT, VOLUME, WAVE, WEDGE_SHADE, depthGain, restingColor, waveAt, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
+import { MAPPING_FIELD_CSS, PersonJobMappingField, SEAT, VOLUME, WAVE, WEDGE_WASH, depthGain, restingColor, waveAt, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
 
 type Tree = ReactElement<Record<string, unknown>>;
 function byTestId(node: unknown, id: string): Tree | null {
@@ -153,7 +153,8 @@ describe("MAP-F-FIELD · A-F15 — the medium follows exactly a LAYOUT body", ()
     ];
     view.settle(props(rs(sem("q_x", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL"))));
     const tree = view.settle(props(rs(sem("q_x", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL"))));
-    const halos = all(byTestId(tree, "mapping-medium"), e => /\bmf-halo\b/.test(cls(e)));
+    // Phase G (PHASE_G §8 (7), G-1): the glows are the bodies' light and live in their own group, no longer inside the medium.
+    const halos = all(byTestId(tree, "mapping-glows"), e => /\bmf-halo\b/.test(cls(e)));
     const bodies = all(tree, e => e.props?.["data-mapping-body"] === true);
     expect(halos.length).toBe(bodies.length);
     for (const b of bodies) {
@@ -189,13 +190,17 @@ describe("MAP-F-FIELD · F-4 / PF-16 / PF-17 — territories without seams", () 
     const lin = (v: number) => { const c = v / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
     return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
   };
-  it("REPRODUCE: the pool shade is a step in RELATIVE LUMINANCE inside [0.92, 1.09] and ≤ 0.004 over the whole ground — never an sRGB alpha read as a ratio", () => {
+  // Phase G (PHASE_G §8 (7)): on a dark ground a shade has no light to take away, so the territory is an additive WASH, and PF-16 is
+  // stated in sRGB CODES: every second pool 1 … 3 codes above the base ground, over the whole ground (measured in the render as well).
+  it("REPRODUCE (restated, phase G): the pool wash lifts the ground by 1 … 3 sRGB codes in every channel over the whole ground — and never darkens it", () => {
+    const codes = (rgb: string) => /rgb\((\d+), (\d+), (\d+)\)/.exec(rgb)!.slice(1).map(Number);
     for (let i = 2; i <= 10; i++) {
-      const u = i / 10, lit = lum(restingColor(u)), shaded = lum(restingColor(u, 1 - WEDGE_SHADE));
-      expect(lit / shaded, `u = ${u}`).toBeGreaterThanOrEqual(1 / 1.09); // the formula, before 8-bit quantization (measured: GRÜN's instrument)
-      expect(lit / shaded, `u = ${u}`).toBeLessThanOrEqual(1.09);
-      expect(lit - shaded, `u = ${u}`).toBeLessThanOrEqual(0.004);
-      expect(lit - shaded, `u = ${u}: the pools are told apart`).toBeGreaterThan(0);
+      const u = i / 10, base = codes(restingColor(u)), washed = codes(restingColor(u, WEDGE_WASH));
+      const lift = washed.map((v, c) => v - base[c]);
+      expect(Math.max(...lift), `u = ${u}: the pools are told apart`).toBeGreaterThanOrEqual(1);
+      expect(Math.max(...lift), `u = ${u}: a faint wash, ≤ 3 codes`).toBeLessThanOrEqual(3);
+      expect(Math.min(...lift), `u = ${u}: additive, never a shade`).toBeGreaterThanOrEqual(0);
+      expect(lum(restingColor(u, WEDGE_WASH)), `u = ${u}: lighter, never darker`).toBeGreaterThan(lum(restingColor(u)));
     }
   });
 

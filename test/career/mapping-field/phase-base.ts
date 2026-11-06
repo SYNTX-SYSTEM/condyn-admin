@@ -60,3 +60,20 @@ export function assertRange(older: string, newer: string): number {
   if (!(Number(commits) > 0)) throw new Error(`ERR_PHASE_RANGE_EMPTY: ${older}..${newer} contains no commit — a range test over it would examine nothing.`);
   return Number(commits);
 }
+
+/**
+ * PHASE_G_BASE is 93c47e03, GRÜN's phase-F re-delivery (PERSON_X_JOB_MAPPING_PHASE_G.md, "Base"). MAP-G-ARCH compares against it,
+ * and every predecessor's open range is closed at it (PHASE_G §8 (6): closing the predecessor's range is part of opening a phase).
+ */
+export const PHASE_G_BASE = "93c47e03bc01f06f34f7b9f9411ca9a1460b561d";
+export function phaseGBase(): string {
+  let sha: string | undefined;
+  try { sha = git("rev-parse", "--verify", "--quiet", `${PHASE_G_BASE}^{commit}`)[0]; } catch { sha = undefined; }
+  if (sha === undefined) throw new Error(`ERR_PHASE_G_BASE_MISSING: MAP-G-ARCH compares against commit ${PHASE_G_BASE} (PERSON_X_JOB_MAPPING_PHASE_G.md, Base), and this clone does not have it.`);
+  return sha;
+}
+/** Paths changed between two commits (committed changes only — a closed range has no working tree). A-F18: the range is asserted first. */
+export function changedInRange(older: string, newer: string, ...paths: string[]): string[] {
+  assertRange(older, newer);
+  return git("diff", "--name-only", "--no-renames", older, newer, "--", ...paths).sort();
+}

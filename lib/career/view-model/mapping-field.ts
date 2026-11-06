@@ -3,7 +3,7 @@ import signTable from "../../../docs/architecture/decision-fields/mapping-spec/s
 import type { CapabilityProposalProjection } from "../capability-core/projection";
 import type { AutoMatchRunState, AutoMatchWatch, EvidenceClass, JobRankingState, RoleRanking } from "../ui/auto-match";
 import { buildMappingView, capabilitiesOfProjection, type MappingCoupling, type MappingRequirement, type MappingRoleId, type MappingView } from "../mapping/view";
-import { layoutConstellation, layoutRequirementArcs, layoutRoles } from "../mapping/layout";
+import { layoutConstellation, layoutRequirementArcs, layoutRolesV11 } from "../mapping/layout";
 import { COUPLING_STATES, couplingSign, runSign, type CouplingClass, type CouplingSign, type RunSign } from "../mapping/signs";
 import { diffRankings } from "../mapping/delta";
 import { FOCUS_ACTIONS, focusReduce, reverseView, type FocusAction, type FocusLevel, type FocusState, type ReverseView } from "../mapping/focus";
@@ -65,6 +65,8 @@ export interface FieldBody {
   readonly x: number;
   readonly y: number;
   readonly radius: number;
+  /** MAPPING_LAYOUT_V1.1: the drawn radius (requirement mass mapped onto the presence range; the collision radius). */
+  readonly drawnRadius: number;
   readonly shelf: boolean;
   /** Moved off its fit position to find room: its distance is then approximate (quantities come from the data). */
   readonly displaced: boolean;
@@ -154,7 +156,8 @@ export function mappingFieldModel(input: MappingFieldInput): MappingFieldModel |
   if (input.ranking.state !== "AVAILABLE" || input.watch.read.state !== "AVAILABLE") return null;
   const ranking = input.ranking.ranking, run = input.watch.read.autoMatch;
   const view = buildMappingView({ capabilities: capabilitiesOfProjection(input.projection), ranking, run: { state: run.state, resumePending: run.resumePending }, evidenceClass: ranking.evidenceClass });
-  const layout = layoutRoles(view.pools.map(p => ({ id: p.id, name: p.name })),
+  // MAPPING_LAYOUT_V1.1 (PHASE_G §5/§7, A1): V1's algorithm, the drawn radius taking collision and step — bodies never touch as drawn.
+  const layout = layoutRolesV11(view.pools.map(p => ({ id: p.id, name: p.name })),
     view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
   const couplings = new Map(view.couplings.map(c => [`${roleKey(c.role)}\u0000${c.poolRequirementId}`, c] as const));
   const rings: FieldRing[] = view.roles.map(r => Object.freeze({ key: roleKey(r.id), id: r.id, arcs: Object.freeze(ringOf(r, couplings)) }));
@@ -169,7 +172,7 @@ export function mappingFieldModel(input: MappingFieldInput): MappingFieldModel |
     const role = roleOf.get(key)!;
     const cls: CouplingClass = role.tier === "SEMANTIC" ? "SEMANTIC" : role.requirements.some(q => q.source === "LEXICAL") ? "LEXICAL" : "NONE";
     bodies.push(Object.freeze({ key, id: role.id, rank: role.rank, title: role.title, organizationName: role.organizationName, poolName: poolName.get(placed.poolId) ?? placed.poolId,
-      tier: role.tier, class: cls, line: CLASS_LINE[cls], x: placed.x, y: placed.y, radius: placed.bodyRadius, shelf: placed.shelf,
+      tier: role.tier, class: cls, line: CLASS_LINE[cls], x: placed.x, y: placed.y, radius: placed.bodyRadius, drawnRadius: placed.drawnRadius ?? placed.bodyRadius, shelf: placed.shelf,
       displaced: placed.displacement[0] !== 0 || placed.displacement[1] !== 0, arcs: ringByKey.get(key)!.arcs }));
   }
   const sectors = layout.sectors.map(s => Object.freeze({ poolId: s.poolId, poolName: poolName.get(s.poolId) ?? s.poolId, startDegrees: s.startDegrees, spanDegrees: s.spanDegrees, roles: s.roles,

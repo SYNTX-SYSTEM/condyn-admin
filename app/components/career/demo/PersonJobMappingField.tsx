@@ -9,7 +9,7 @@ import { FOCUS_INITIAL, type FocusState } from "../../../../lib/career/mapping/f
 import type { CouplingClass } from "../../../../lib/career/mapping/signs";
 import {
   CLASS_LINE, PRIMARY_BEAM_LUMINANCE, arcChanges, bodyMovements, collarSplit, fieldFocusReduce, fieldLevel, fieldViewBox, levelBeams, luminanceOf, mappingFieldModel, markedArc, markedBody,
-  motionKind, primaryBeams, ringRadius, roleViewBox, sectorViewBox, selectedCapability, sizeFloor, EVIDENCE_STEP,
+  motionKind, primaryBeams, ringRadius, roleViewBox, sectorViewBox, selectedCapability, sizeFloor, EVIDENCE_STEP, SIZE_FLOOR_PX,
   type BodyMovement, type FieldAction, type FieldArc, type FieldBeam, type FieldBody, type FieldSector, type FieldSnapshot, type MappingFieldModel, type ViewBox
 } from "../../../../lib/career/view-model/mapping-field";
 import { MAPPING_FIELD_COPY, type MappingEmptyReason } from "./mapping-field-copy";
@@ -54,7 +54,7 @@ const panel: React.CSSProperties = { display: "flex", flexDirection: "column", g
 const DRAWN_PX = 960;
 
 /** OTTAVIO's two questions (§5), each reversible by this one constant: body names at L0 always (true) or on mark/selection (false). */
-export const BODY_NAMES_AT_L0 = false;
+export const BODY_NAMES_AT_L0 = true;
 /** …and how much of the host's six orbits shows through the stage: 0.92 as in phase D; 1 damps them fully. */
 export const STAGE_GROUND_ALPHA = 0.92;
 /** E-7: the legibility floors, in screen pixels. */
@@ -83,7 +83,9 @@ export const MOTION = Object.freeze({
  * E-7: the four rings, told apart by luminance alone (one ink, no hue), each step ≥ 1.6× — also at the breath's trough, where the
  * field ring is at opacityMean − opacityAmplitude of its value.
  */
-export const RING_LUMINANCE = Object.freeze({ shelf: 0.05, best: 0.085, field: 0.15, horizon: 0.25 });
+// Phase G (§3 "the four rings re-derived", PF-15 inverted): the shelf band is an area, so its alpha is most of the rings' light;
+// 0.05 → 0.02 keeps it a step below best-fit (≥ 1.6×, the ladder) while the scaffold stops out-lighting the content.
+export const RING_LUMINANCE = Object.freeze({ shelf: 0.02, best: 0.085, field: 0.15, horizon: 0.25 });
 /**
  * PF-15 / M-F7: the rings' rendered luminance is width × dash × alpha, not alpha. On their black seats each ring is drawn solid and
  * wide enough that its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance (0.0036 · 0.0069 ·
@@ -91,15 +93,10 @@ export const RING_LUMINANCE = Object.freeze({ shelf: 0.05, best: 0.085, field: 0
  */
 export const RING_WIDTH_PX = Object.freeze({ best: 2.4, field: 2.0, horizon: 2.0 });
 /**
- * PHASE F (PERSON_X_JOB_MAPPING_PHASE_F.md, "the living organism"): the medium. Everything that means something is still; only the
- * medium breathes (A-F8). Every number of the medium in one place; none of them carries state.
- *
- * DISC_GROUND_OPAQUE (A-F4): the field disc is painted opaque, so every pixel inside it is the field's own — the host's motion does not
- * shine through it. Reversible by this one constant (false: the disc lets STAGE_GROUND_ALPHA's host ghost through again). OTTAVIO's.
+ * PHASE F (PERSON_X_JOB_MAPPING_PHASE_F.md) and PHASE G (…_PHASE_G.md, "one field, living bodies"): the medium and the bodies.
+ * Everything that means something is still; only the medium breathes (A-F8). Phase G inverts the light budget: the space is the
+ * system's own dark (G-1, the lit plate and DISC_GROUND_OPAQUE retired), and the bodies and relations carry the light (PG-1).
  */
-export const DISC_GROUND_OPAQUE = true;
-/** The stage's own dark, the colour the opaque disc is painted in (the section's ground at alpha 1). */
-const DISC_BASE = "rgb(3, 5, 8)";
 /** F-6 / A-F5 / A-F9: the backing under every sign and structure — opaque black, the same geometry. */
 export const SEAT = "rgba(0, 0, 0, 1)";
 /**
@@ -115,27 +112,58 @@ export const TEXT_SEAT_PX = 1.6;
  * F-1: the ground — CYAN at these alphas over the opaque disc, radially from the person (u = r / shelfNear) to the shelf, where the
  * ground ends: the shelf is a ring (E-7), static and backed (A-F8), so the living field is the disc inside it.
  */
-export const GROUND = Object.freeze({ stops: Object.freeze([[0, 0.29], [0.25, 0.275], [0.5, 0.25], [0.72, 0.22], [0.86, 0.18], [1, 0.155]] as const) });
+export const GROUND = Object.freeze({ stops: Object.freeze([[0, 0.075], [0.3, 0.06], [0.6, 0.042], [0.85, 0.026], [1, 0.018]] as const) });
 /**
  * F-6: the breath — a radial wave in the ground and the halos, from the person outward. `layers` raised-cosine bands over the ground
  * (a partition of unity, so the swing is even across the disc), each at its own phase lag ∝ radius (`edgeLagMs` at the field edge);
  * 4 s rise : 6 s fall; `peakAlpha` the band's CYAN at full swing (A-F1's quarter-nominal). The halo breathes `haloDepth` about its
  * mean. While a capability is selected the amplitude is `selectedGain` of itself (F-7).
  */
-export const WAVE = Object.freeze({ periodMs: 10000, riseMs: 4000, edgeLagMs: 1200, layers: 7, peakAlpha: 0.06, haloDepth: 0.3, selectedGain: 0.35 });
+export const WAVE = Object.freeze({ periodMs: 10000, riseMs: 4000, edgeLagMs: 1200, layers: 7, peakAlpha: 0.015, haloDepth: 0.235, selectedGain: 0.35 });
 /**
  * F-2 / F-3: a body is a volume — an INK core (radial falloff) under its unchanged outline, and a CYAN halo to `haloNear`…`haloFar`
  * times its radius. Depth by rank: one gain, from 1 at rank 1 down to 1 / depthRatio at the last rank, on core and halo ONLY.
  */
-export const VOLUME = Object.freeze({ coreAlpha: 0.5, haloAlpha: 0.14, haloNear: 2.2, haloFar: 2.8, depthRatio: 1.45 });
+export const VOLUME = Object.freeze({ coreAlpha: 0.16, haloAlpha: 0.5, haloNear: 2.6, haloFar: 3.0, depthRatio: 1.45 });
 /**
- * F-4 / PF-16: every second pool's wedge darkens the ground by this black alpha. The blend is in sRGB, so the step is derived in
- * RELATIVE LUMINANCE over the whole ground (centre to shelf, wave trough to peak): ratio ≈ 0.95–0.96 by the formula. Rendered, the
- * step is quantized to whole 8-bit codes, and near black one code is ~5 % luminance: measured 1.056 … 1.087 between the pools at
- * 150 … 415 units (PF-16: ratio ∈ [0.92, 1.09], step ≤ 0.004). Not 1 − 0.852: an sRGB factor of 0.852 is a luminance ratio of 0.70
- * (PHASE_F §28).
+ * PG-17: the glow's ramp, [offset on the glow's radius, share of the peak]: flat to the rim of the largest glow (1 / haloFar), then a
+ * monotone, roughly quadratic darkening to 0 at the glow's edge — a ramp over (haloNear … haloFar) − 1 ≥ 1.6 × the body radius.
  */
-export const WEDGE_SHADE = 0.022;
+export const GLOW_RAMP: ReadonlyArray<readonly [number, number]> = Object.freeze([[0, 1], [0.33, 1], [0.45, 0.72], [0.58, 0.46], [0.72, 0.24], [0.86, 0.08], [1, 0]] as const);
+/** PG-16 (R23, Bouma): free rim-to-rim space between two drawn bodies ≥ this × the eccentricity (distance from the person) of the
+ *  more peripheral one; where the budget and the spacing disagree, the spacing wins and the budget shrinks. */
+export const CROWDING = 0.3;
+/** PG-20: the mark glyphs' iconic reinforcements, in screen px and shares of the arc's span (each answers the glyph's own question). */
+export const MARK_ICON = Object.freeze({ aliasOffsetPx: 5.2, aliasShift: 0.08, constituentInsetPx: 4.6, constituentShare: 0.4 });
+/**
+ * PG-21 (PHASE_G §12, A-G17): the disc OCCLUDES what lies beneath it — opaque in the stage's own ground colour, so it adds no light of
+ * its own and no light in the field belongs to anyone else (the host's views no longer shine through). Occlusion, not light: this is
+ * not phase F's lit plate (DISC_GROUND_OPAQUE, retired).
+ */
+export const DISC_OCCLUSION = true;
+const STAGE_GROUND_RGB = "rgb(3, 5, 8)";
+/** PG-5: presence is a budget — the bodies a level draws (L2/L3 draw one role). */
+export const BODY_BUDGET = Object.freeze({ L0: 7, L1: 12 });
+/** G-4: the one hue — the system's own tension accent (SIL tensionAmber, "Capability Gap"), on the glow of a role with an unmet
+ *  REQUIRED requirement; its alpha scaled so the glow's luminance stays the cyan glow's (hue carries one question, luminance none). */
+export const GAP_HUE = "245, 166, 35";
+export const GAP_ALPHA_GAIN = 1.08;
+/**
+ * G-3: a relation's travelling light — keyed on the breath (PG-7) at the breath's own period (PHASE_G §9, option (a)): one circuit per
+ * breath, so the relation's travel and the medium's breath are one event, not two rhythms. And its glow's width.
+ */
+export const TRAVEL = Object.freeze({
+  periodMs: 10000, dash: 7, glowPx: 40, glowGain: 2.6, glowMax: 0.6,
+  // PG-18 (R22, animacy): the light rests at the person, DEPARTS with the breath's rise (from rest), accelerates and decelerates into
+  // its ARRIVAL at the requirement, rests there and fades — a journey with a beginning and an end, not a point sliding on a loop.
+  departPct: 4, arrivePct: 56, restPct: 70, easing: "cubic-bezier(0.5, 0, 0.3, 1)"
+});
+/**
+ * F-4 / PF-16 as restated in PHASE_G §8: on a dark ground a shade has no light to take away (0.022 rounded to zero codes), so the
+ * territory is an additive WASH — every second pool's wedge lifted by this CYAN alpha, 1 … 3 sRGB codes above the base ground in
+ * every channel over the whole ground (by the formula: +1/+1…2/+2 in R/G/B), strictly below every mark.
+ */
+export const WEDGE_WASH = 0.009;
 /** F-5: a beam's luminance along its length, a mask: `from` at the capability end, `to` at the requirement end (multiplies). */
 export const BEAM_GRADIENT = Object.freeze({ from: 0.45, to: 1 });
 /** The depth gain of a rank (F-3): monotone non-increasing, 1 at rank 1, 1 / depthRatio at the last rank. */
@@ -182,12 +210,12 @@ const groundAlphaAt = (u: number) => {
   for (let i = 1; i < st.length; i++) if (u <= st[i][0]) { const [u0, a0] = st[i - 1], [u1, a1] = st[i]; a = a0 + ((a1 - a0) * (u - u0)) / (u1 - u0); break; }
   return a;
 };
-/** The medium at rest at u (ground + the wave at its mean), times `shade` (a dark wedge), as opaque sRGB; beyond the ground, black. */
-export function restingColor(u: number, shade = 1): string {
+/** The medium at rest at u (ground + the wave at its mean, plus `wash` on a washed pool), as opaque sRGB; beyond the ground, black. */
+export function restingColor(u: number, wash = 0): string {
   if (u > 1) return SEAT;
   const cyan = CYAN.split(",").map(Number);
-  const alpha = 1 - (1 - groundAlphaAt(u)) * (1 - WAVE.peakAlpha / 2);
-  return `rgb(${DISC_BASE_RGB.map((b, c) => Math.round((b + (cyan[c] - b) * alpha) * shade)).join(", ")})`;
+  const alpha = 1 - (1 - groundAlphaAt(u)) * (1 - WAVE.peakAlpha / 2) * (1 - wash);
+  return `rgb(${DISC_BASE_RGB.map((b, c) => Math.round(b + (cyan[c] - b) * alpha)).join(", ")})`;
 }
 function restingStops(uMax: number): Array<{ offset: number; color: string }> {
   return Array.from({ length: 5 }, (_, i) => ({ offset: i / 4, color: restingColor((uMax * i) / 4) }));
@@ -246,6 +274,9 @@ export const MAPPING_FIELD_CSS = `
 [data-testid="mapping-field"] .mf-wave-halo { --mf-wave-mean: ${1 - WAVE.haloDepth / 2}; --mf-wave-depth: ${WAVE.haloDepth / 2}; }
 [data-testid="mapping-field"][data-selection="CAPABILITY"] { --mf-wave-gain: ${WAVE.selectedGain}; }
 [data-testid="mapping-field"][data-breath="LIVE"] .mf-wave { animation: mappingFieldWave ${WAVE.periodMs}ms linear infinite; }
+@keyframes mappingFieldTravel { 0% { stroke-dashoffset: 100; opacity: 0; } ${TRAVEL.departPct}% { stroke-dashoffset: 100; opacity: 1; animation-timing-function: ${TRAVEL.easing}; } ${TRAVEL.arrivePct}% { stroke-dashoffset: ${TRAVEL.dash}; opacity: 1; } ${TRAVEL.restPct}% { stroke-dashoffset: ${TRAVEL.dash}; opacity: 0; } 100% { stroke-dashoffset: ${TRAVEL.dash}; opacity: 0; } }
+[data-testid="mapping-field"] .mf-travel { opacity: 0; }
+[data-testid="mapping-field"][data-breath="LIVE"] .mf-travel { opacity: 1; animation: mappingFieldTravel ${TRAVEL.periodMs}ms linear infinite; }
 [data-testid="mapping-field"] .mf-layout { transition: transform ${MOTION.layout.durationMs}ms ${MOTION.layout.easing}; }
 [data-testid="mapping-field"] [data-motion="QUERY"] { animation: mappingFieldQuery ${MOTION.query.periodMs}ms linear infinite; }
 [data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"] { animation: mappingFieldTransient ${transientTotal}ms linear 1; }
@@ -257,6 +288,7 @@ export const MAPPING_FIELD_CSS = `
 [data-testid="mapping-field"][data-pending-breath="true"] [data-testid="mapping-pending-outline"] { display: inline; }
 @media (prefers-reduced-motion: reduce) {
   [data-testid="mapping-field"], [data-testid="mapping-field"] * { animation: none !important; transition: none !important; }
+  [data-testid="mapping-field"] .mf-travel { visibility: hidden; }
   [data-testid="mapping-field"] [data-mapping-body][data-lit="false"][data-in-pool="true"] { opacity: 0.32; }
 }`;
 /** P-6: the geometry stage is a script tween, not a CSS animation — it asks the same media query and cuts under it. */
@@ -318,7 +350,12 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
         {s.mark === "double" && <path {...tag("data-arc-mark", "double")} d={arcPath(cx, cy, r + 2.4 * k, arc.startDegrees, arc.endDegrees)} fill="none" stroke={ink(0.9)} strokeWidth={w(mark)} />}
         {s.mark === "counterTick" && (() => { const [ax, ay] = at(cx, cy, r - tick, arc.midDegrees), [bx, by] = at(cx, cy, r + tick, arc.midDegrees); return <line {...tag("data-arc-mark", "counterTick")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.95)} strokeWidth={w(1.4 * k)} />; })()}
         {s.mark === "alias" && (() => { const [mx, my] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <circle {...tag("data-arc-mark", "alias")} cx={mx} cy={my} r={1.6 * k} fill="none" stroke={ink(0.9)} strokeWidth={w(mark)} />; })()}
+        {/* PG-20 (R26): ALIAS — an offset ECHO of the arc, outside it and shifted along it (the same thing under two names; an icon). */}
+        {s.mark === "alias" && (() => { const shift = arc.spanDegrees * MARK_ICON.aliasShift; return <path d={arcPath(cx, cy, r + MARK_ICON.aliasOffsetPx * k, arc.startDegrees + shift, arc.endDegrees + shift)} fill="none" stroke={ink(0.55)} strokeWidth={w(mark)} strokeDasharray={dashOf(s.arcLine, k, 0)} strokeLinecap="round" />; })()}
         {s.mark === "constituent" && (() => { const [ax, ay] = at(cx, cy, r + 0.6 * k, arc.midDegrees), [bx, by] = at(cx, cy, r + 3.6 * k, arc.midDegrees); return <line {...tag("data-arc-mark", "constituent")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.9)} strokeWidth={w(mark)} />; })()}
+        {/* PG-20 (R26): CONSTITUENT — a shorter arc NESTED inside the full one, centred on it (part-of as containment; an icon). Centred,
+            so it can never read as a fill band, which always starts at the arc's start. */}
+        {s.mark === "constituent" && (() => { const half = (arc.spanDegrees * MARK_ICON.constituentShare) / 2; return <path d={arcPath(cx, cy, r - MARK_ICON.constituentInsetPx * k, arc.midDegrees - half, arc.midDegrees + half)} fill="none" stroke={ink(0.9)} strokeWidth={w(mark)} />; })()}
       </>
     );
   };
@@ -370,7 +407,7 @@ const LABEL_GAP = 12;
 const LABEL_BAND_PX = TEXT_MIN_PX + 4;
 const CHAR_EM = 0.62;
 /** The L0 margin m that holds the label band: m = gap + band·k, k = 2(R + m)/drawnPx — solved for m. */
-function l0Margin(drawnPx: number, fieldRadius: number): number {
+export function l0Margin(drawnPx: number, fieldRadius: number): number {
   const c = (2 * LABEL_BAND_PX) / drawnPx;
   return Math.ceil(((LABEL_GAP + c * fieldRadius) / (1 - c)) * 1000) / 1000;
 }
@@ -384,6 +421,42 @@ function labelPath(radius: number, start: number, span: number, fontSize: number
   const r = below ? radius + 0.78 * fontSize : radius;
   const [ax, ay] = at(0, 0, r, start), [bx, by] = at(0, 0, r, start + span), large = span > 180 ? 1 : 0;
   return below ? `M ${bx} ${by} A ${r} ${r} 0 ${large} 0 ${ax} ${ay}` : `M ${ax} ${ay} A ${r} ${r} 0 ${large} 1 ${bx} ${by}`;
+}
+
+/**
+ * PG-5 / PG-16: the bodies a level draws — by rank, at most `budget`, and only while every drawn pair keeps free rim-to-rim space of
+ * CROWDING × the eccentricity of the more peripheral body (field units, eccentricity = distance from the person). A body that would
+ * crowd one already drawn is left to the list, like the ones beyond the budget: the spacing wins, the budget shrinks.
+ */
+function spaced<T extends { x: number; y: number; drawnRadius: number }>(byRank: readonly T[], budget: number): T[] {
+  const out: T[] = [];
+  for (const b of byRank) {
+    if (out.length >= budget) break;
+    const clear = out.every(o => Math.hypot(o.x - b.x, o.y - b.y) - o.drawnRadius - b.drawnRadius >= CROWDING * Math.max(Math.hypot(o.x, o.y), Math.hypot(b.x, b.y)));
+    if (clear) out.push(b);
+  }
+  return out;
+}
+
+/**
+ * PG-14 (PHASE_G §7): the frame holds every drawn body whole — its rim, its collar, its name above and its measure below. The level's
+ * own frame is widened, symmetrically about its centre, to the union with every drawn body's extent; the extent is in screen px (k),
+ * so it is solved twice against the frame it widens.
+ */
+function frameWithBodies(base: ViewBox, bodies: ReadonlyArray<{ x: number; y: number; r: number; title: string }>, drawnPx: number): ViewBox {
+  if (bodies.length === 0) return base;
+  const cx = base.x + base.width / 2, cy = base.y + base.height / 2;
+  let half = base.width / 2;
+  for (let pass = 0; pass < 2; pass += 1) {
+    const k = (2 * half) / drawnPx, font = TEXT_MIN_PX * k * FLOOR_HEADROOM;
+    for (const b of bodies) {
+      const r = Math.max(b.r, (SIZE_FLOOR_PX / 2) * k), collar = r + 2.6 * k + Math.max(2.4 * k, r * 0.18) + 3.6 * k;
+      const above = collar + 4 * k + font, below = collar + 4 * k + 1.8 * font, side = Math.max(collar, (b.title.length * 0.62 * font) / 2);
+      half = Math.max(half, Math.abs(b.x - side - cx), Math.abs(b.x + side - cx), Math.abs(b.y - above - cy), Math.abs(b.y + below - cy));
+    }
+  }
+  half = Math.ceil(half * 1000) / 1000;
+  return { x: fixed(cx - half), y: fixed(cy - half), width: fixed(2 * half), height: fixed(2 * half) };
 }
 
 /** Whether an element or one of its ancestors is position: fixed — its viewport rectangle then does not move with the page's scroll. */
@@ -450,7 +523,13 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
   const { level, pool } = view;
   const openSector = pool === null || model === null ? null : model.sectors.find(s => s.poolId === pool) ?? null;
   const openBody = view.body;
-  const box: ViewBox = openBody !== null ? roleViewBox(openBody) : openSector !== null ? sectorViewBox(openSector) : fieldViewBox(l0Margin(drawnPx, model?.geometry.fieldRadius ?? 500));
+  // V1.1 / PG-15: the open role's ring lies outside its DRAWN disc (ringRadius and roleViewBox read the radius they are given).
+  const asDrawn = (b: FieldBody) => ({ x: b.x, y: b.y, radius: b.drawnRadius });
+  // PG-14: L0 and L1 frame the bodies they draw whole (the budget's bodies of the level; L1's context bodies are not framed).
+  const ranked = model === null ? [] : [...model.bodies].sort((a, b) => a.rank - b.rank);
+  const framed = openBody !== null ? [] : openSector !== null ? spaced(ranked.filter(b => b.id.jobPoolUploadId === openSector.poolId), BODY_BUDGET.L1) : spaced(ranked, BODY_BUDGET.L0);
+  const baseBox: ViewBox = openBody !== null ? roleViewBox(asDrawn(openBody)) : openSector !== null ? sectorViewBox(openSector) : fieldViewBox(l0Margin(drawnPx, model?.geometry.fieldRadius ?? 500));
+  const box: ViewBox = frameWithBodies(baseBox, framed.map(b => ({ x: b.x, y: b.y, r: b.drawnRadius, title: b.title })), drawnPx);
   const boxKey = `${box.x} ${box.y} ${box.width} ${box.height}`;
   const stageKey = `${level}|${pool ?? ""}|${openBody?.key ?? ""}|${view.arc?.poolRequirementId ?? ""}`;
   // E-5 · staged recursion: the geometry re-frames first (a script tween of the viewBox, MOTION.stage.geometryMs); the evidence of
@@ -485,7 +564,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     );
   }
 
-  const ringR = openBody === null ? 0 : ringRadius(openBody);
+  const ringR = openBody === null ? 0 : ringRadius(asDrawn(openBody));
   const k = box.width / drawnPx;
   // The floors are held with a 0.2 % headroom, so a sub-pixel rounding of the measured width never lands a floor just under itself.
   const fontSize = TEXT_MIN_PX * k * FLOOR_HEADROOM;
@@ -493,17 +572,6 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
   const marked = markedBody(focus, model);
   const markedReq = markedArc(focus, model);
   const selected = selectedCapability(focus, model);
-  // E-2: at L0 every body's own strongest coupling (PRIMARY, faint); everything beyond it only on selection (SELECTION).
-  const selectionBeams = levelBeams(focus, model);
-  const selectionIds = new Set(selectionBeams.map(b => b.id));
-  const beams: Array<{ beam: FieldBeam; rank: "PRIMARY" | "SELECTION" }> = [
-    ...(level === "L0" ? primaryBeams(model) : []).filter(b => !selectionIds.has(b.id)).map(beam => ({ beam, rank: "PRIMARY" as const })),
-    ...selectionBeams.map(beam => ({ beam, rank: "SELECTION" as const }))
-  ];
-  const drawnBeams = beams.filter(b => b.beam.from !== null);
-  const missing = { CONSTELLATION_OVERFLOW: 0, NOT_IN_PERSON: 0, KEY_ABSENT: 0 };
-  for (const { beam } of beams) if (beam.missing !== null) missing[beam.missing] += 1;
-  const primaryUndrawn = beams.filter(b => b.rank === "PRIMARY" && (b.beam.missing === "NOT_IN_PERSON" || b.beam.missing === "KEY_ABSENT")).length;
   const g = model.geometry;
   const run = model.run;
   // E-6 / A-5: the breath means exactly "live and nothing pending"; pending, a due continuation and a resting run are still.
@@ -512,8 +580,32 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
   const classWord = (cls: CouplingClass) => c.legend[cls];
   const inPool = (poolId: string) => openSector === null || openSector.poolId === poolId;
   const overflowShown = openSector === null ? model.overflowCount : openSector.overflow;
-  const shown = openBody !== null ? [openBody] : model.bodies;
-  const drawnRadius = new Map(shown.map(b => [b.key, sizeFloor(b.radius, k)] as const));
+  // PG-5: presence is a budget. L0 draws the strongest BODY_BUDGET.L0; L1 the strongest BODY_BUDGET.L1 of the open pool (and, as
+  // context, the other pools' bodies L0 draws); L2/L3 one role. The rest is stated (mapping-beyond-budget), never folded into overflow.
+  const byRank = [...model.bodies].sort((a, b) => a.rank - b.rank);
+  const l0Shown = spaced(byRank, BODY_BUDGET.L0);
+  const l1Pool = spaced(byRank.filter(b => inPool(b.id.jobPoolUploadId)), BODY_BUDGET.L1);
+  const shown = openBody !== null ? [openBody]
+    : level === "L1" ? [...l1Pool, ...l0Shown.filter(b => !inPool(b.id.jobPoolUploadId))]
+    : l0Shown;
+  const beyondBudget = openBody !== null ? 0 : level === "L1" ? byRank.filter(b => inPool(b.id.jobPoolUploadId)).length - l1Pool.length : byRank.length - l0Shown.length;
+  const shownKeys = new Set(shown.map(b => b.key));
+  // G-2 / PG-3: the drawn radius is MAPPING_LAYOUT_V1.1's (requirement mass on the presence range, the radius the layout kept clear);
+  // E-7's legibility floor still applies beneath it.
+  const drawnRadius = new Map(shown.map(b => [b.key, sizeFloor(b.drawnRadius, k)] as const));
+  const rankingRole = new Map(model.ranking.ranks.map(r => [`${r.role.jobPoolUploadId}\u0000${r.role.poolRoleId}`, r] as const));
+  const roleOfBody = (b: FieldBody) => rankingRole.get(`${b.id.jobPoolUploadId}\u0000${b.id.poolRoleId}`);
+  // E-2: at L0 every body's own strongest coupling (PRIMARY, faint); everything beyond it only on selection (SELECTION).
+  const selectionBeams = levelBeams(focus, model);
+  const selectionIds = new Set(selectionBeams.map(b => b.id));
+  const beams: Array<{ beam: FieldBeam; rank: "PRIMARY" | "SELECTION" }> = [
+    ...(level === "L0" ? primaryBeams(model) : []).filter(b => !selectionIds.has(b.id)).map(beam => ({ beam, rank: "PRIMARY" as const })),
+    ...selectionBeams.map(beam => ({ beam, rank: "SELECTION" as const }))
+  ];
+  const drawnBeams = beams.filter(b => b.beam.from !== null && shownKeys.has(b.beam.body.key));
+  const missing = { CONSTELLATION_OVERFLOW: 0, NOT_IN_PERSON: 0, KEY_ABSENT: 0 };
+  for (const { beam } of beams) if (beam.missing !== null) missing[beam.missing] += 1;
+  const primaryUndrawn = beams.filter(b => b.rank === "PRIMARY" && (b.beam.missing === "NOT_IN_PERSON" || b.beam.missing === "KEY_ABSENT")).length;
   const radiusOf = (b: FieldBody) => drawnRadius.get(b.key)?.radius ?? b.radius;
   const collarR = (b: FieldBody) => radiusOf(b) + 2.6 * k;
   const layoutShifts = [...movements.values()].filter(m => m.kind === "LAYOUT").length;
@@ -566,10 +658,13 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     // F-2 / F-3 / F-6: the halo — medium, not sign: the same form on every body, its depth gain and radius only; it breathes with the
     // ground at the body's own phase lag, except on the shelf, which is a still ring (A-F8): there it rests.
     const t = lastRank <= 1 ? 0 : (b.rank - 1) / (lastRank - 1);
+    // G-4: the one hue's one question — an unmet REQUIRED requirement (the ranking's own count).
+    const ranked = roleOfBody(b);
+    const requiredGaps = ranked?.requiredGaps ?? 0;
     (b.shelf ? shelfHalos : fieldHalos).push(
       <g key={change === "EVIDENCE" ? `halo|${b.key}#${pair.seq}` : `halo|${b.key}`} className={layoutShift ? "mf-halo mf-layout" : "mf-halo"}
         opacity={fixed(opacity * depthGain(b.rank, lastRank))} style={{ transform: `translate(${b.x}px, ${b.y}px)` }}>
-        <circle className={b.shelf ? undefined : "mf-wave mf-wave-halo"} r={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))} fill="url(#mf-halo)"
+        <circle className={b.shelf ? undefined : "mf-wave mf-wave-halo"} r={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))} fill={requiredGaps > 0 ? "url(#mf-halo-gap)" : "url(#mf-halo)"}
           style={b.shelf ? undefined : { animationDelay: waveDelay(Math.hypot(b.x, b.y), g.shelfNear) }} />
       </g>
     );
@@ -579,7 +674,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         data-testid={`mapping-body-${testKey(b)}`} data-mapping-body data-rank={b.rank} data-tier={b.tier} data-class={b.class} data-line={b.line} data-shelf={String(b.shelf)}
         data-displaced={String(b.displaced)} data-moved={String(evidenceMove)} data-movement={move?.kind ?? "NONE"} data-layout-shift={String(layoutShift)} data-change={change ?? undefined}
         data-marked={String(isMarked)} data-lit={String(lit)} data-in-pool={String(inPoolNow)} data-requirements={b.arcs.length} data-collar-hidden={collar?.hidden ?? 0}
-        data-size-floor={String(floor.floor)} data-drawn-radius={fixed(r)} data-named={String(named)}
+        data-size-floor={String(floor.floor)} data-drawn-radius={fixed(r)} data-named={String(named)} data-required-gaps={requiredGaps}
         tabIndex={focusable ? 0 : -1} role="button" aria-label={c.bodyLabel(b.rank, b.title, b.organizationName, classWord(b.class), b.arcs.length)}
         opacity={opacity}
         onMouseEnter={() => { if (focusable) markRole(b); }} onFocus={() => { if (focusable) markRole(b); }} onMouseLeave={clearMark} onBlur={clearMark}
@@ -615,6 +710,12 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           )}
           {named && (
             <text data-testid={`mapping-name-${testKey(b)}`} x={0} y={-(collar !== null ? collarR(b) : r) - 4 * k} textAnchor="middle" fontSize={fontSize} {...textSeat(k)} fill={`rgba(${INK}, 0.88)`} fontFamily={SANS}>{b.title}</text>
+          )}
+          {/* G-2: its measure — rank and tier in words; fit stays in its own channel, the radius (no figure, no claim: phase C, P-07). */}
+          {named && openBody === null && (
+            <text data-testid={`mapping-measure-${testKey(b)}`} x={0} y={(collar !== null ? collarR(b) : r) + 4 * k + fontSize * 0.8} textAnchor="middle" fontSize={fontSize} {...textSeat(k)} fill={`rgba(${INK}, 0.72)`} fontFamily={MONO}>
+              {c.measure(b.rank, b.tier === "SEMANTIC")}
+            </text>
           )}
         </g>
       </g>
@@ -673,6 +774,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         {run.sign.frozen && <span data-testid="mapping-still" role="status" aria-live="polite" style={statement}>{run.resumePending ? c.stillResume : c.still}</span>}
         {!run.sign.frozen && run.sign.resumePulse && <span data-testid="mapping-resume-pending" style={meta}>{c.resumePending}</span>}
         {run.pendingBreath && <span data-testid="mapping-pending" style={meta}>{c.pending}</span>}
+        {beyondBudget > 0 && <span data-testid="mapping-beyond-budget" data-count={beyondBudget} style={meta}>{c.beyondBudget(level === "L1" ? BODY_BUDGET.L1 : BODY_BUDGET.L0, beyondBudget)}</span>}
         {openBody === null && overflowShown > 0 && <span data-testid="mapping-overflow" data-count={overflowShown} style={meta}>{c.notDrawn(overflowShown)}</span>}
         {model.constellation.overflowCount > 0 && <span data-testid="mapping-person-overflow" data-count={model.constellation.overflowCount} style={meta}>{c.personMore(model.constellation.overflowCount)}</span>}
         {collarHidden > 0 && <span data-testid="mapping-collar-hidden" data-count={collarHidden} style={meta}>{c.collarHidden(collarHidden)}</span>}
@@ -713,6 +815,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           <li data-testid="mapping-legend-arcs" style={meta}>{c.legendArcs}</li>
           <li data-testid="mapping-horizon" style={meta}>{c.horizon}</li>
           <li data-testid="mapping-breath-legend" style={meta}>{c.breath}</li>
+          <li data-testid="mapping-gap-legend" style={{ ...meta, color: `rgba(${GAP_HUE}, 0.95)` }}>{c.gapLegend}</li>
         </ul>
         <span data-testid="mapping-position" style={meta}>{c.position}</span>
       </div>
@@ -754,22 +857,22 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
             <stop offset={0.75} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.55)} />
             <stop offset={1} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.42)} />
           </radialGradient>
-          <radialGradient id="mf-halo">
-            <stop offset={0} stopColor={`rgb(${CYAN})`} stopOpacity={VOLUME.haloAlpha} />
-            <stop offset={0.3} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.7)} />
-            <stop offset={0.6} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.3)} />
-            <stop offset={0.85} stopColor={`rgb(${CYAN})`} stopOpacity={fixed(VOLUME.haloAlpha * 0.08)} />
-            <stop offset={1} stopColor={`rgb(${CYAN})`} stopOpacity={0} />
-          </radialGradient>
+          {/* G-2 / PG-17 (R21, the glare effect): the glow is a LIGHT SOURCE — full at the body's rim (offset 1 / haloNear …
+              1 / haloFar, hidden inside by the body's seat) and a monotone ramp darkening outward over ≥ 1.5 × the radius, the profile that
+              is seen as self-luminous. The gap glow (G-4) is the same form in the one hue, its alpha scaled to the cyan glow's luminance. */}
+          {([["mf-halo", CYAN, 1], ["mf-halo-gap", GAP_HUE, GAP_ALPHA_GAIN]] as const).map(([gid, hue, gain]) => (
+            <radialGradient key={gid} id={gid}>
+              {GLOW_RAMP.map(([offset, share]) => <stop key={offset} offset={offset} stopColor={`rgb(${hue})`} stopOpacity={fixed(VOLUME.haloAlpha * gain * share)} />)}
+            </radialGradient>
+          ))}
         </defs>
         <g data-testid="mapping-medium" aria-hidden="true" pointerEvents="none">
-          {DISC_GROUND_OPAQUE && <circle r={g.fieldRadius} fill={DISC_BASE} />}
+          {DISC_OCCLUSION && <circle r={g.fieldRadius} fill={STAGE_GROUND_RGB} />}
           <circle r={g.shelfNear} fill="url(#mf-ground)" />
           {Array.from({ length: WAVE.layers }, (_, i) => (
             <circle key={i} className="mf-wave mf-wave-ground" r={g.shelfNear} fill={`url(#mf-wave-${i})`} style={{ animationDelay: waveDelay((i / (WAVE.layers - 1)) * g.shelfNear, g.shelfNear) }} />
           ))}
-          {model.sectors.map((sec, i) => i % 2 === 1 && <path key={sec.poolId} d={wedge(g.personRadius, g.shelfNear, sec.startDegrees, sec.spanDegrees)} fill={`rgba(0, 0, 0, ${WEDGE_SHADE})`} />)}
-          {fieldHalos}
+          {model.sectors.map((sec, i) => i % 2 === 1 && <path key={sec.poolId} d={wedge(g.personRadius, g.shelfNear, sec.startDegrees, sec.spanDegrees)} fill={`rgba(${CYAN}, ${WEDGE_WASH})`} />)}
         </g>
 
         {/* E-7 shelf band, on its black seat: a still ring (A-F8) under the sectors, so the sectors stay its hit targets. */}
@@ -811,6 +914,10 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         {/* A-5: a due continuation keeps its sign as a still outline — dotted, outside the pending one, never a pulse. */}
         {run.sign.resumePulse && <circle data-testid="mapping-resume-outline" r={g.fieldRadius + 10 * k} fill="none" stroke={`rgba(${INK}, 0.6)`} strokeWidth={structure} strokeDasharray={`${0.01 * k} ${3.4 * k}`} strokeLinecap="round" />}
 
+        {/* G-2: the bodies' glows — part of each body's light (PG-1). Over the medium, the sector edges and the rings (the rings lie
+            behind every body, and the glow is the body's light — PHASE_G §7; a glow is cut by no edge or ring seat: PF-17/18, PG-17/22),
+            under the person, the relations and the bodies' own signs; on the shelf they rest (A-F8). */}
+        <g data-testid="mapping-glows" aria-hidden="true" pointerEvents="none">{fieldHalos}</g>
         {/* The person: its capability proposals in the centre (constellation), each named at every level (E-7). Selecting one shows
             every role it couples (reverse view) and sets them into the query motion (E-3). */}
         <g data-testid="mapping-person" data-capabilities={model.view.constellation.length} data-overflow={model.constellation.overflowCount}>
@@ -863,7 +970,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
                     const x = fx + ((tx - fx) * i) / 10, y = fy + ((ty - fy) * i) / 10, rr = Math.hypot(x, y);
                     const deg = ((((Math.atan2(y, x) * 180) / Math.PI) % 360) + 360) % 360;
                     const sector = rr > g.personRadius ? model.sectors.findIndex(sec => ((((deg - sec.startDegrees) % 360) + 360) % 360) <= sec.spanDegrees) : -1;
-                    return <stop key={i} offset={i / 10} stopColor={restingColor(rr / g.shelfNear, sector >= 0 && sector % 2 === 1 ? 1 - WEDGE_SHADE : 1)} />;
+                    return <stop key={i} offset={i / 10} stopColor={restingColor(rr / g.shelfNear, sector >= 0 && sector % 2 === 1 ? WEDGE_WASH : 0)} />;
                   })}
                 </linearGradient>
                 <mask id={`${id}-m`} maskUnits="userSpaceOnUse" x={-2 * g.fieldRadius} y={-2 * g.fieldRadius} width={4 * g.fieldRadius} height={4 * g.fieldRadius}>
@@ -872,10 +979,17 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
               </defs>
               <line aria-hidden="true" pointerEvents="none" x1={fx} y1={fy} x2={tx} y2={ty} stroke={`url(#${id}-s)`} strokeWidth={fixed(Math.max(width, STROKE_MIN_PX * k * FLOOR_HEADROOM) + SEAT_PAD_PX * k)} strokeDasharray={stroke.dash}
                 strokeLinecap={b.beam === "dotted" || b.beam === "faint-dotted" ? "round" : "butt"} />
+              {/* G-3: the relation's glow — its own stroke word and dash, wider and fainter (relation light, PG-6); still. */}
+              <line className="mf-beam-glow" aria-hidden="true" pointerEvents="none" x1={fx} y1={fy} x2={tx} y2={ty} mask={`url(#${id}-m)`}
+                stroke={`rgba(${INK}, ${fixed(Math.min(TRAVEL.glowMax, (rank === "PRIMARY" ? PRIMARY_BEAM_LUMINANCE : stroke.opacity) * TRAVEL.glowGain))})`} strokeWidth={fixed(width + TRAVEL.glowPx * k)} strokeDasharray={stroke.dash} strokeLinecap="round" />
               <line mask={`url(#${id}-m)`} data-testid={`mapping-beam-${testKey(b.body)}:${b.arc.poolRequirementId}`} data-beam={b.beam} data-beam-rank={rank} data-phase-locked={String(b.phaseLocked)} data-state={b.arc.state}
                 data-capability={b.arc.coupling?.capabilityKey ?? ""} x1={b.from!.x} y1={b.from!.y} x2={tx} y2={ty}
                 stroke={`rgba(${INK}, ${rank === "PRIMARY" ? PRIMARY_BEAM_LUMINANCE : stroke.opacity})`} strokeWidth={width} strokeDasharray={stroke.dash}
                 strokeLinecap={b.beam === "dotted" || b.beam === "faint-dotted" ? "round" : "butt"} />
+              {/* G-3 / PG-7: one light travelling from the capability to the requirement — one shared period on every relation, encoding
+                  nothing; it runs only while the field breathes (CSS keyed on LIVE) and never under reduced motion. */}
+              <line className="mf-travel" aria-hidden="true" pointerEvents="none" x1={fx} y1={fy} x2={tx} y2={ty} pathLength={100}
+                stroke={`rgba(${INK}, 0.95)`} strokeWidth={fixed(width + 1.2 * k)} strokeDasharray={`${TRAVEL.dash} ${100 - TRAVEL.dash}`} strokeLinecap="round" />
               </React.Fragment>
             );
           })}

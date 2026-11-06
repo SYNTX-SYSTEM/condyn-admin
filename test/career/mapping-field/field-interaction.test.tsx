@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactElement } from "react";
 import { browser, instance } from "../pxj-first-screen/harness";
 import { POOL_A, POOL_B, available, crowdedRoles, lex, projectionOf, rankingOf, sem, standardRanking, standardRoles, watchOf } from "./support";
-import { layoutRoles } from "../../../lib/career/mapping/layout";
+import { layoutRolesV11 } from "../../../lib/career/mapping/layout";
 import { CLASS_LINE, mappingFieldModel } from "../../../lib/career/view-model/mapping-field";
 
 /**
@@ -287,12 +287,22 @@ describe("MAP-C-TIME · movement on new evidence only", () => {
     const roles = (y: ReturnType<typeof sem>) => [
       { pool: POOL_B, roleId: "role_x", title: "Steady", requirements: [sem("q_x", "REQUIRED", "PARTIAL", "PCAP_TS", "TypeScript")] },
       { pool: POOL_B, roleId: "role_y", title: "Rising", requirements: [y] },
-      ...crowdedRoles(40, POOL_A)
+      // Phase G: 4, not 40 — under MAPPING_LAYOUT_V1.1 forty roles in pool A leave pool B a sector too narrow to hold two bodies at
+      // drawn size (role_y is honest overflow), and from eight on PG-16's spacing leaves one of the two to the list; four still crowd
+      // pool A and re-place it (free rim-to-rim 0.40 … 0.46 × eccentricity here). The precondition below fails if that ever changes.
+      ...crowdedRoles(4, POOL_A)
     ];
     const low = sem("q_y", "REQUIRED", "DIFFERENT", "PCAP_PG", "PostgreSQL"), high = sem("q_y", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL");
+    // Phase G (PHASE_G §8 (3)): L0 draws the strongest seven (PG-5), so the two roles are read where they are drawn — at L1 of their own
+    // pool. The meaning is word for word phase C's: the EVIDENCE form only on a body with its own new evidence.
+    let first = view.settle(props(rankingOf(roles(low))));
+    fire(byTestId(first, `mapping-pool-${POOL_B}`), "onClick"); first = view.settle(props(rankingOf(roles(low))));
+    expect(byTestId(first, "mapping-field")!.props["data-level"], "precondition: L1 of pool B").toBe("L1");
+    expect([byTestId(first, bodyId(POOL_B, "role_x")) !== null, byTestId(first, bodyId(POOL_B, "role_y")) !== null], "precondition: both drawn").toEqual([true, true]);
     // First reading: nothing has moved. Then role_y's fit rises past role_x (rank only for role_x, and the layout may place it anew — A3).
-    expect(holds(view.settle(props(rankingOf(roles(low)))), "first reading")).toEqual([]);
+    expect(holds(first, "first reading")).toEqual([]);
     const tree = view.settle(props(rankingOf(roles(high))));
+    expect(byTestId(tree, "mapping-field")!.props["data-level"], "still L1 on the new reading").toBe("L1");
     expect(holds(tree, "fit change"), "only the role with new evidence").toEqual([bodyId(POOL_B, "role_y")]);
     expect(byTestId(tree, bodyId(POOL_B, "role_x"))!.props["data-moved"], "precondition: role_x changed rank only").toBe("false");
     // The same content again: nothing moves, so no body has a transition.
@@ -302,17 +312,35 @@ describe("MAP-C-TIME · movement on new evidence only", () => {
 });
 
 describe("MAP-C-RENDER · displaced (PINK §3.98 M8)", () => {
-  it("a body pushed only along its sector (radial 0, angular ≠ 0) is drawn as displaced", () => {
+  // Phase G (PHASE_G §8 (3)): the model places by MAPPING_LAYOUT_V1.1 and draws a budget per level (PG-5), so displaced is checked
+  // on every body actually DRAWN — at L0 and at L1 of each pool — against V1.1's own displacement, with the precondition that an
+  // angular-only displaced body is among the drawn ones (otherwise this would pass over nothing).
+  it("a body pushed only along its sector (radial 0, angular ≠ 0) is drawn as displaced — on every drawn body, at L0 and at each pool's L1 (phase G)", () => {
     const ranking = rankingOf([...crowdedRoles(40, POOL_A), ...standardRoles()]);
     const m = mappingFieldModel({ projection: projectionOf(), ranking: available(ranking), watch: watchOf("COMPLETED") })!;
-    const layout = layoutRoles(m.view.pools.map(p => ({ id: p.id, name: p.name })), m.view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
-    const angularOnly = layout.bodies.filter(b => !b.overflow && b.displacement[0] === 0 && b.displacement[1] !== 0);
-    const still = layout.bodies.filter(b => !b.overflow && b.displacement[0] === 0 && b.displacement[1] === 0);
-    expect(angularOnly.length, "precondition: the fixture has angular-only bodies").toBeGreaterThan(0);
+    const layout = layoutRolesV11(m.view.pools.map(p => ({ id: p.id, name: p.name })), m.view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
+    const kindOf = new Map(layout.bodies.filter(b => !b.overflow).map(b => [bodyId(b.poolId, b.roleId), b.displacement] as const));
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
-    const tree = view.settle(props(ranking));
-    for (const b of angularOnly) expect(byTestId(tree, bodyId(b.poolId, b.roleId))!.props["data-displaced"], b.roleId).toBe("true");
-    for (const b of still) expect(byTestId(tree, bodyId(b.poolId, b.roleId))!.props["data-displaced"], b.roleId).toBe("false");
+    const p = props(ranking);
+    let angularDrawn = 0, checked = 0;
+    const check = (tree: unknown) => {
+      for (const b of allByPrefix(tree, "mapping-body-")) {
+        const d = kindOf.get(String(b.props["data-testid"]));
+        expect(d, String(b.props["data-testid"])).toBeDefined();
+        expect(b.props["data-displaced"], String(b.props["data-testid"])).toBe(String(d![0] !== 0 || d![1] !== 0));
+        if (d![0] === 0 && d![1] !== 0) angularDrawn += 1;
+        checked += 1;
+      }
+    };
+    let tree = view.settle(p);
+    check(tree);
+    for (const pool of m.sectors.map(s => s.poolId)) {
+      fire(byTestId(tree, `mapping-pool-${pool}`), "onClick"); tree = view.settle(p);
+      check(tree);
+      fire(byTestId(tree, "mapping-up"), "onClick"); tree = view.settle(p);
+    }
+    expect(checked).toBeGreaterThan(0);
+    expect(angularDrawn, "precondition: an angular-only displaced body is among the drawn ones").toBeGreaterThan(0);
     view.unmount();
   });
 });

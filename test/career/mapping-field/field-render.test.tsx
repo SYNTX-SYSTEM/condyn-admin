@@ -2,7 +2,7 @@ import React from "react";
 import { describe, expect, it } from "vitest";
 import { renderToString } from "react-dom/server";
 import signTable from "../../../docs/architecture/decision-fields/mapping-spec/sign-table.json";
-import { LINE_DASH, MAPPING_FIELD_CSS, PersonJobMappingField } from "../../../app/components/career/demo/PersonJobMappingField";
+import { BODY_BUDGET, LINE_DASH, MAPPING_FIELD_CSS, PersonJobMappingField } from "../../../app/components/career/demo/PersonJobMappingField";
 import { MAPPING_FIELD_COPY } from "../../../app/components/career/demo/mapping-field-copy";
 import { AutoJobRankingPanel } from "../../../app/components/career/demo/AutoJobRankingPanel";
 import { mappingFieldModel } from "../../../lib/career/view-model/mapping-field";
@@ -114,12 +114,18 @@ describe("MAP-C-RENDER · the field", () => {
     expect(MAPPING_FIELD_CSS).toMatch(/\[data-frozen="true"\] \*[^{]*\{ animation: none !important; transition: none !important; \}/);
   });
 
-  it("what has no room is counted, not drawn — and says where it stands", () => {
+  // Phase G (PHASE_G §8 (4)): presence is a budget (PG-5) — L0 draws the strongest BODY_BUDGET.L0 of the bodies that have room. What
+  // has no room is still counted and said exactly as before (mapping-overflow, its count, its sentence); what the budget leaves out is
+  // its own statement (mapping-beyond-budget), never folded into the overflow.
+  it("what has no room is counted, not drawn — and says where it stands; what the budget leaves out is its own statement (phase G)", () => {
     const markup = html(available(rankingOf(crowdedRoles(320))));
     const m = mappingFieldModel({ projection: projectionOf(), ranking: available(rankingOf(crowdedRoles(320))), watch: watchOf("COMPLETED") })!;
     expect(attr(markup, "mapping-overflow", "data-count")).toBe(String(m.overflowCount));
-    expect(tags(markup, "mapping-body-").length).toBe(m.bodies.length);
     expect(text(markup)).toContain(MAPPING_FIELD_COPY.en.notDrawn(m.overflowCount));
+    expect(tags(markup, "mapping-body-").length).toBe(Math.min(BODY_BUDGET.L0, m.bodies.length));
+    expect(m.bodies.length, "precondition: more bodies have room than the budget draws").toBeGreaterThan(BODY_BUDGET.L0);
+    expect(attr(markup, "mapping-beyond-budget", "data-count")).toBe(String(m.bodies.length - BODY_BUDGET.L0));
+    expect(text(markup)).toContain(MAPPING_FIELD_COPY.en.beyondBudget(BODY_BUDGET.L0, m.bodies.length - BODY_BUDGET.L0));
   });
 
   it("no new figure, no claim word, EN and DE: no percent, no fit, no score; the words say ranking, not decision", () => {

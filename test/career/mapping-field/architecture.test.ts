@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ROOT, assertRange, git, phaseDBase, phaseEBase, phaseFBase } from "./phase-base";
+import { ROOT, assertRange, changedInRange, git, phaseDBase, phaseEBase, phaseFBase, phaseGBase } from "./phase-base";
 
 /**
  * MAP-D-ARCH · the phase-D boundary (PERSON_X_JOB_MAPPING_PHASE_D.md §5.2, D-1 … D-7, held by PINK). The guarantees are bound to
@@ -48,10 +48,11 @@ const phaseD = (p: string) => ENTRY_POINTS.includes(p) || PHASE_DIRS.some(d => p
 function phaseDChangeSets(): Array<{ commit: string; files: string[] }> {
   const sets: Array<{ commit: string; files: string[] }> = [];
   let current: { commit: string; files: string[] } | null = null;
-  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", `${phaseDBase()}..HEAD`)) {
+  // PHASE_G §8 (6): phase D's own range, PHASE_D_BASE..PHASE_E_BASE (the open-ended form measured every later phase as phase D).
+  assertRange(phaseDBase(), phaseEBase());
+  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", `${phaseDBase()}..${phaseEBase()}`)) {
     if (line.startsWith("@")) { current = { commit: line.slice(1), files: [] }; sets.push(current); } else current!.files.push(line);
   }
-  sets.push({ commit: "WORKING_TREE", files: [...new Set([...git("diff", "--name-only", "--no-renames", "--cached", "HEAD"), ...git("diff", "--name-only", "--no-renames", "HEAD"), ...git("ls-files", "--others", "--exclude-standard")])] });
   return sets.filter(set => set.files.some(phaseD));
 }
 /** Changed against the base — committed, in the index, in the working tree — and untracked: for the paths that must stay as they were. */
@@ -80,8 +81,9 @@ export const PROTECTED_PATHS = [
 ];
 
 describe("MAP-D-ARCH · D-1, D-2, D-4 — nothing protected changes", () => {
-  it("D-1: the engine and its specification are byte-identical to the base (committed, staged, unstaged and new)", () => {
-    expect(changedSinceBase("lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+  // PHASE_G §8 (6): closed at PHASE_G_BASE — phase G's MAPPING_LAYOUT_V1.1 is bounded by MAP-G-ARCH, not measured here as phase D.
+  it("D-1 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical from the base through phase F", () => {
+    expect(changedInRange(phaseDBase(), phaseGBase(), "lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
   });
 
   it("D-2 / D-4: orbits, planetarium, Job Field, investigation boundary, B2, the automatic reads, the ranking panel and the backend are as in the base", () => {
@@ -248,8 +250,9 @@ const addedSinceE = (file: string) => execFileSync("git", ["diff", "-U0", phaseE
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes", () => {
-  it("B-1 / P-9: the engine and its specification are byte-identical to the phase-E base; the twelve golden vectors with them", () => {
-    expect(changedSinceE("lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+  // PHASE_G §8 (6): closed at PHASE_G_BASE.
+  it("B-1 / P-9 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical through phase F; the twelve golden vectors with them", () => {
+    expect(changedInRange(phaseEBase(), phaseGBase(), "lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
     const vectors = "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json";
     expect(git("hash-object", vectors)[0], "golden vectors, blob for blob").toBe(git("rev-parse", `${phaseEBase()}:${vectors}`)[0]);
     expect(Object.keys((JSON.parse(readFileSync(join(ROOT, vectors), "utf8")) as { layouts: Record<string, unknown> }).layouts).length, "the twelve layout vectors").toBe(12);
@@ -318,8 +321,9 @@ const addedSinceF = (file: string) => execFileSync("git", ["diff", "-U0", phaseF
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes", () => {
-  it("§6: nothing in lib/career/** changes; the engine's specification and the twelve golden vectors are byte-identical; the copy too", () => {
-    expect(changedSinceF("lib/career", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md", COPY)).toEqual([]);
+  // PHASE_G §8 (6): closed at PHASE_G_BASE.
+  it("§6 (range closed at PHASE_G_BASE): nothing in lib/career/** changed in phase F; the engine's specification and the twelve golden vectors are byte-identical; the copy too", () => {
+    expect(changedInRange(phaseFBase(), phaseGBase(), "lib/career", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md", COPY)).toEqual([]);
     const vectors = "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json";
     expect(git("hash-object", vectors)[0], "golden vectors, blob for blob").toBe(git("rev-parse", `${phaseFBase()}:${vectors}`)[0]);
   });
@@ -337,13 +341,75 @@ describe("MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting change
 
 describe("MAP-F-ARCH · B-F5 / B-F8 — the change set, and no script motion", () => {
   it("B-F8 / §20: every phase-F change set touches only the phase-F entry set; no merge commit after the base (A-F18: the base is HEAD's ancestor)", () => {
-    expect(assertRange(phaseFBase(), "HEAD"), "A-F18: phase F has at least one commit").toBeGreaterThan(0);
-    for (const set of [...commitSets(`${phaseFBase()}..HEAD`), workingTreeSet()]) expect(set.files.filter(p => !F_ENTRY.includes(p)), set.commit).toEqual([]);
-    expect(git("log", "--merges", "--format=%H", `${phaseFBase()}..HEAD`)).toEqual([]);
+    // PHASE_G §8 (6): phase F's own range, PHASE_F_BASE..PHASE_G_BASE.
+    expect(assertRange(phaseFBase(), phaseGBase()), "A-F18: phase F has at least one commit").toBeGreaterThan(0);
+    for (const set of commitSets(`${phaseFBase()}..${phaseGBase()}`)) expect(set.files.filter(p => !F_ENTRY.includes(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseFBase()}..${phaseGBase()}`)).toEqual([]);
   });
 
   it("B-F5 / PF-14: phase F adds no script motion and no reach — no frame clock, timer, Web Animation, SMIL, window or document member", () => {
-    const added = addedSinceF(COMPONENT).join("\n");
+    const added = execFileSync("git", ["diff", "-U0", phaseFBase(), phaseGBase(), "--", COMPONENT], { cwd: ROOT, encoding: "utf8" }).split("\n").filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1)).join("\n");
+    expect(added.length).toBeGreaterThan(0);
+    expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
+  });
+});
+
+/**
+ * MAP-G-ARCH · the phase-G boundary (PERSON_X_JOB_MAPPING_PHASE_G.md §3, §5, §7, §8), bound to PHASE_G_BASE = 93c47e03. Phase G
+ * inverts the light budget and bumps the layout to MAPPING_LAYOUT_V1.1 (A1): the engine changes in layout.ts only, V1 stays phase B's
+ * record byte for byte, and the view model changes only at its layout call and the body's drawn radius.
+ */
+const SPEC_DIR = "docs/architecture/decision-fields/mapping-spec";
+const G_ENTRY = [COMPONENT, COPY, MODEL, "lib/career/mapping/layout.ts",
+  `${SPEC_DIR}/layout-spec-v1.1.json`, `${SPEC_DIR}/layout-golden-vectors-v1.1.json`,
+  "test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts", "test/career/mapping/layout-v1_1.test.ts", "test/career/mapping/architecture.test.ts",
+  "test/career/mapping-field/architecture.test.ts", "test/career/mapping-field/phase-base.ts", "test/career/mapping-field/field-g.test.tsx",
+  // phase-C/D/E/F assertions restated in PHASE_G §8 (each marked "Phase G" where it stands)
+  "test/career/mapping-field/field-d.test.tsx", "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/field-f.test.tsx", "test/career/mapping-field/field-interaction.test.tsx",
+  "test/career/mapping-field/field-render.test.tsx", "test/career/mapping-field/model.test.ts", "test/career/mapping-field/neurovisual-e.test.ts"].sort();
+const changedSinceG = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseGBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseGBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
+const addedSinceG = (file: string) => execFileSync("git", ["diff", "-U0", phaseGBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+
+describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
+  it("V1 stays phase B's record: layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical to the base", () => {
+    expect(changedSinceG(`${SPEC_DIR}/layout-spec.json`, `${SPEC_DIR}/layout-golden-vectors.json`, `${SPEC_DIR}/real-shape-73.json`, `${SPEC_DIR}/sign-table.json`, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+  });
+
+  it("in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change; signs, view, delta and focus are untouched", () => {
+    expect(changedSinceG("lib/career")).toEqual(["lib/career/mapping/layout.ts", MODEL].sort());
+    // Exactly: every line the view model adds is, once its V1.1 tokens are taken out, a line it removed — or a comment, or the one
+    // new field declaration. Nothing else in the model may move.
+    const diff = execFileSync("git", ["diff", "-U0", phaseGBase(), "--", MODEL], { cwd: ROOT, encoding: "utf8" }).split("\n");
+    const removed = new Set(diff.filter(l => l.startsWith("-") && !l.startsWith("--- ")).map(l => l.slice(1).trim()));
+    const added = diff.filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1).trim());
+    expect(added.length).toBeGreaterThan(0);
+    const v11 = (line: string) => line.replace("drawnRadius: placed.drawnRadius ?? placed.bodyRadius, ", "").replace(/layoutRolesV11/g, "layoutRoles");
+    for (const line of added) expect(removed.has(v11(line)) || /^(\/\/|\/\*\*|\*)/.test(line) || line === "readonly drawnRadius: number;", line).toBe(true);
+  });
+
+  it("B-F6 holds: the host is not touched — orbits, planetarium, Job Field, scope, selector, host, dashboard, layout, URL, API routes", () => {
+    expect(changedSinceG(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
+  });
+
+  it("existing fixtures only; no provider and no API in anything phase G added", () => {
+    expect(changedSinceG("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+    for (const file of G_ENTRY.filter(f => !f.endsWith("architecture.test.ts") && !f.endsWith(".json"))) for (const line of addedSinceG(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
+  });
+});
+
+describe("MAP-G-ARCH · the change set, and no script motion", () => {
+  it("every phase-G change set touches only the phase-G entry set; no merge commit after the base", () => {
+    const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeSet()];
+    for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..HEAD`)).toEqual([]);
+  });
+
+  it("PF-14 / PG-7: phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member", () => {
+    const added = addedSinceG(COMPONENT).join("\n");
     expect(added.length).toBeGreaterThan(0);
     expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
   });

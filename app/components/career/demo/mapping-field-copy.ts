@@ -73,6 +73,12 @@ export interface MappingFieldCopy {
   pending: string;
   /** Phase E · E-6: what the outer ring's slow breath means, and that its stillness means pending. */
   breath: string;
+  /** Phase G · G-2: a body's measure under its name — its rank and its tier in words (no figure, no claim: phase C, P-07). */
+  measure: (rank: number, checked: boolean) => string;
+  /** Phase G · PG-5: the level draws the strongest N; the others stand in the list (its own statement, not the overflow's). */
+  beyondBudget: (drawn: number, more: number) => string;
+  /** Phase G · G-4: the one hue — an amber glow is an unmet REQUIRED requirement. */
+  gapLegend: string;
   /** Phase E · E-7: bodies drawn at the legible minimum, where size stops being proportional. */
   sizeFloor: (n: number) => string;
   /** Phase E · E-9: the roles whose own evidence changed since the previous reading (each lit briefly, where it now stands). */
@@ -153,7 +159,10 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     stillResume: "The run rests; it is taken up again by itself.",
     resumePending: "Its continuation is due; the field waits for it.",
     pending: "Being worked on: jobs beyond the horizon may still move.",
-    breath: "The outer ring breathes slowly while the field is live and nothing is pending; while something is pending, it stands still.",
+    breath: "The field breathes slowly, outward from the person, while it is live and nothing is pending; while something is pending, it stands still.",
+    measure: (rank, checked) => `#${rank} · ${checked ? "checked" : "names only"}`,
+    beyondBudget: (drawn, more) => `This level draws the strongest ${drawn}; ${more} more ${more === 1 ? "stands" : "stand"} in the list.`,
+    gapLegend: "Amber glow: an unmet required requirement.",
     sizeFloor: n => `${n} ${n === 1 ? "body is" : "bodies are"} drawn at the legible minimum ◦ — smaller in the data than drawn.`,
     evidenceChanged: n => `${n} ${n === 1 ? "role's own evidence changed" : "roles' own evidence changed"} since the previous reading; each lit up once where it now stands.`,
     requirementsChanged: n => `${n} ${n === 1 ? "requirement's own evidence changed" : "requirements' own evidence changed"} since the previous reading; each lit up once on its arc, nothing moved for it.`,
@@ -227,7 +236,10 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     stillResume: "Der Lauf ruht; er wird von selbst wieder aufgenommen.",
     resumePending: "Seine Fortsetzung steht an; das Feld wartet darauf.",
     pending: "In Arbeit: Jobs jenseits des Horizonts können sich noch bewegen.",
-    breath: "Der äußere Ring atmet langsam, solange das Feld lebt und nichts aussteht; steht etwas aus, steht er still.",
+    breath: "Das Feld atmet langsam, von der Person nach außen, solange es lebt und nichts aussteht; steht etwas aus, steht es still.",
+    measure: (rank, checked) => `#${rank} · ${checked ? "geprüft" : "nur Namen"}`,
+    beyondBudget: (drawn, more) => `Diese Ebene zeichnet die stärksten ${drawn}; ${more} weitere ${more === 1 ? "steht" : "stehen"} in der Liste.`,
+    gapLegend: "Bernsteinfarbenes Leuchten: eine offene Pflichtanforderung.",
     sizeFloor: n => `${n} ${n === 1 ? "Körper ist" : "Körper sind"} in der lesbaren Mindestgröße gezeichnet ◦ — in den Daten kleiner als gezeichnet.`,
     evidenceChanged: n => `Bei ${n} ${n === 1 ? "Rolle hat" : "Rollen hat"} sich seit der vorigen Lesung die eigene Evidenz geändert; ${n === 1 ? "sie leuchtete" : "jede leuchtete"} einmal dort auf, wo sie jetzt steht.`,
     requirementsChanged: n => `Bei ${n} ${n === 1 ? "Anforderung hat" : "Anforderungen hat"} sich seit der vorigen Lesung die eigene Evidenz geändert; ${n === 1 ? "sie leuchtete" : "jede leuchtete"} einmal auf ihrem Bogen auf, bewegt hat sich dafür nichts.`,

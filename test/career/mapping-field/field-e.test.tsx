@@ -4,7 +4,7 @@ import signTable from "../../../docs/architecture/decision-fields/mapping-spec/s
 import { browser, instance } from "../pxj-first-screen/harness";
 import { CAPS, POOL_A, POOL_B, available, classRoles, lex, projectionOf, rankingOf, sem, standardRoles, watchOf } from "./support";
 import { STATES, allStates, keyCases, manyCapabilities, reqOf } from "./support-d";
-import { mappingFieldModel, type MappingFieldModel } from "../../../lib/career/view-model/mapping-field";
+import { SIZE_FLOOR_PX, mappingFieldModel, sizeFloor, type MappingFieldModel } from "../../../lib/career/view-model/mapping-field";
 
 /**
  * MAP-E-FIELD · PERSON_X_JOB_MAPPING_PHASE_E.md §7 at the drawing (GRÜN), read from what the component renders — attributes, styles,
@@ -12,7 +12,7 @@ import { mappingFieldModel, type MappingFieldModel } from "../../../lib/career/v
  * P-3/P-6 are taken in a real browser (GRÜN's measurement record); here are the parts a render can decide.
  */
 vi.mock("react", async (importOriginal) => (await import("../pxj-first-screen/harness")).mockReact(await importOriginal<object>()));
-import { PersonJobMappingField, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
+import { BODY_NAMES_AT_L0, PersonJobMappingField, type PersonJobMappingFieldProps } from "../../../app/components/career/demo/PersonJobMappingField";
 
 const CONTRACT = Object.freeze({ primaryLuminance: 0.22, bandStep: 1.6, strokePx: 1.2, beamPx: 1.0, textPx: 11, floorPx: 12, queryPx: 1.5, contextGain: 0.18 });
 
@@ -349,41 +349,56 @@ describe("MAP-E-FIELD · P-8 / E-7 — legible at every level", () => {
     view.unmount();
   });
 
-  it("REPRODUCE: a body below the 12 px floor is drawn AT the floor and says so; one above keeps its own size and says nothing", () => {
+  // Phase G (PHASE_G §8 (2)): the drawn radius is MAPPING_LAYOUT_V1.1's presence radius (≥ 56 px at L0, 1920), so on a normal stage
+  // the 12 px floor no longer binds. Restated: every drawn body is at least max(floor, its drawn radius), size is monotone in mass,
+  // data-size-floor is set exactly where the floor binds — and the floor itself is proven on a stage narrow enough to make it bind.
+  it("REPRODUCE (restated, phase G): every drawn body ≥ max(12 px floor, its V1.1 drawn radius); size monotone in mass; the floor binds, and says so, on a narrow stage", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     const tree = view.settle(p);
     const k = kOf(tree);
     const model = modelOf(p);
-    let floored = 0;
-    for (const body of model.bodies) {
+    const drawnBodies = model.bodies.filter(body => byTestId(tree, `mapping-body-${body.id.jobPoolUploadId}:${body.id.poolRoleId}`) !== null);
+    expect(drawnBodies.length).toBeGreaterThan(0);
+    for (const body of drawnBodies) {
       const b = byTestId(tree, `mapping-body-${body.id.jobPoolUploadId}:${body.id.poolRoleId}`)!;
-      const below = (2 * body.radius) / k < CONTRACT.floorPx;
+      const below = (2 * body.drawnRadius) / k < CONTRACT.floorPx;
       const drawn = all(b, e => e.props?.["data-mapping-body-shape"] === true)[0].props.r as number;
       expect(b.props["data-size-floor"], body.title).toBe(String(below));
-      if (below) { expect((2 * drawn) / k, body.title).toBeGreaterThanOrEqual(CONTRACT.floorPx); expect((2 * drawn) / k, body.title).toBeLessThan(CONTRACT.floorPx + 0.01); }
-      else expect(drawn, `${body.title}: its own size`).toBe(body.radius);
-      if (below) floored += 1;
+      expect((2 * drawn) / k, body.title).toBeGreaterThanOrEqual(CONTRACT.floorPx);
+      expect(drawn, `${body.title}: its drawn size`).toBe(below ? sizeFloor(body.drawnRadius, k).radius : body.drawnRadius);
     }
-    expect(floored, "the standard reading has bodies at the floor (M-3)").toBeGreaterThan(0);
-    expect(byTestId(tree, "mapping-size-floor")!.props["data-count"]).toBe(floored);
+    const byMass = [...model.bodies].sort((a, b) => a.radius - b.radius);
+    for (let i = 1; i < byMass.length; i++) expect(byMass[i].drawnRadius, "size monotone in requirement mass").toBeGreaterThanOrEqual(byMass[i - 1].drawnRadius);
+    // the floor itself: a stage so narrow (160 px for the whole field) that a presence radius falls under 12 px
+    const narrowK = (2 * 529) / 160;
+    const smallest = Math.min(...model.bodies.map(b => b.drawnRadius));
+    expect((2 * smallest) / narrowK, "precondition: the narrow stage puts a body under the floor").toBeLessThan(SIZE_FLOOR_PX);
+    const floored = sizeFloor(smallest, narrowK);
+    expect([floored.floor, (2 * floored.radius) / narrowK >= SIZE_FLOOR_PX]).toEqual([true, true]);
     view.unmount();
   });
 
-  it("REPRODUCE: capability nodes carry their name at every level; body names at L1+ and on mark or selection at L0", () => {
+  // Phase G (PHASE_G §8 (1), PG-4): body names at L0 follow BODY_NAMES_AT_L0 (OTTAVIO's constant; true by PG-4); the test reads it.
+  it("REPRODUCE: capability nodes carry their name at every level; body names at L1+, and at L0 as BODY_NAMES_AT_L0 says (else on mark or selection)", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     const names = (tree: unknown) => byPrefix(tree, "mapping-capability-name-").map(t => textOf(t)).sort();
     const bodyNames = (tree: unknown) => byPrefix(tree, "mapping-name-").map(t => textOf(t)).sort();
     let tree = view.settle(p);
     expect(names(tree)).toEqual(CAPS.map(c => c.name).sort());
-    expect(bodyNames(tree), "L0: none by default").toEqual([]);
-    fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onMouseEnter"); tree = view.settle(p);
-    expect(bodyNames(tree), "L0: the marked one").toEqual(["All States"]);
-    fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onMouseLeave"); tree = view.settle(p);
-    fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
-    expect(bodyNames(tree).length, "L0: the selected capability's roles").toBe(2);
-    fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
+    const drawnAtL0 = byPrefix(tree, "mapping-body-").length;
+    if (BODY_NAMES_AT_L0) expect(bodyNames(tree).length, "L0: every drawn body named (PG-4)").toBe(drawnAtL0);
+    else {
+      expect(bodyNames(tree), "L0: none by default").toEqual([]);
+      fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onMouseEnter"); tree = view.settle(p);
+      expect(bodyNames(tree), "L0: the marked one").toEqual(["All States"]);
+      fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onMouseLeave"); tree = view.settle(p);
+      fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
+      expect(bodyNames(tree).length, "L0: the selected capability's roles").toBe(2);
+      fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
+    }
+    expect(byTestId(tree, "mapping-field")!.props["data-selection"], "nothing selected before L1").toBe("");
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
     expect(names(tree)).toEqual(CAPS.map(c => c.name).sort());
     expect(bodyNames(tree).length, "L1: the open pool's").toBe(modelOf(p).bodies.filter(b => b.id.jobPoolUploadId === POOL_A).length);
