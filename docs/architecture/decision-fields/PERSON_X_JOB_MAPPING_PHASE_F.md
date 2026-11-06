@@ -999,3 +999,59 @@ PF-10 read `data-capability` in the same tick as it dispatched the click, before
 returned `""` — an unselected field reported as a selected one, and a meaningless ratio with it. The probe now
 reads the attribute after the re-render and **throws** if nothing is selected, rather than measuring an
 unselected field and calling it PF-10.
+
+---
+
+## §20 B-8 · AN OPEN-ENDED RANGE MEASURES LATER PHASES *(GRÜN — accepted, with one guard added)*
+
+`architecture.test.ts:255` (MAP-E-ARCH / B-8) asserts that every phase-E change set touches only `E_ENTRY`, built
+over `${PHASE_E_BASE}..HEAD` **plus the working tree**. Every phase-F commit falls inside that range and is
+counted as a phase-E change set, so phase F's one legitimately new file — `field-f.test.tsx` — turns it red.
+
+GRÜN again brought it rather than taking either evasion (appending the phase-F proofs to `field-e.test.tsx`,
+which would leave B-8 saying nothing about phases; or extending `E_ENTRY` retroactively, which would make it
+say something false).
+
+**This is the defect PINK already found in phase D** (F-PC-1 / O-RC-1): an open-ended range measures later
+phases. It is a *mechanism* pin under §12's amended B-F2, and closing the range makes the test say what it always
+meant, over exactly the commits that are phase E.
+
+### Accepted as proposed
+
+- **B-8** evaluates phase-E change sets in **`${PHASE_E_BASE}..${PHASE_F_BASE}`** (`9cc06f84`), no working tree.
+  Meaning unchanged — *phase E touched only its entry set* — and in fact sharper, because the open-ended form
+  conflated two phases.
+- **New MAP-F-ARCH** against `PHASE_F_BASE`, same pattern, with `F_ENTRY` = `PersonJobMappingField.tsx`,
+  `neurovisual-e.test.ts`, `field-e.test.tsx`, `field-f.test.tsx`, `architecture.test.ts`, `phase-base.ts`.
+- **Byte-identity guards**, which are stronger than an entry list and are what actually protect the boundary:
+  `lib/career/**` byte-identical since `9cc06f84` (§6), golden vectors byte-identical, the protected host paths
+  unchanged (B-F6), the copy unchanged, no merge after the base, no provider string in the added lines (B-F7).
+- `PHASE_F_BASE` into `phase-base.ts` beside `PHASE_E_BASE`, resolved on demand, failing loudly in a shallow clone.
+
+The literal file list is kept over phase D's directory bounding: `PHASE_DIRS` is what let phase E's new test files
+through unnoticed in the first place, and a list plus byte-identity is strictly tighter.
+
+### A-F18 · A range test must prove its range is not empty *(GELB — the guard)*
+
+Closing a range creates a new way to be green by construction, and it is the eighth instance of that class this
+phase. If `PHASE_E_BASE..PHASE_F_BASE` were ever empty or inverted — a rebase, a mistyped constant, a shallow
+clone resolving to the same commit — **B-8 would pass over nothing at all** and report it as compliance.
+
+**Binding on both range tests:** each must assert that its range contains **at least one commit**, and that its
+endpoints are in the expected ancestry (`PHASE_E_BASE` an ancestor of `PHASE_F_BASE`, `PHASE_F_BASE` an ancestor
+of `HEAD`). A range test that cannot fail because it examined nothing is the same defect as a proof that cannot
+fail because it measured the wrong thing.
+
+### A-F19 · PF-3's halo is measured differentially *(GRÜN — accepted)*
+
+GRÜN measured that `halo peak ÷ core peak` taken from a **raw** window is confounded at the shelf edge: rank 4
+sits exactly at r = 430, so its halo window reads 0.028 — which is the **lit ground inside the shelf**, not the
+halo — and returns 0.31 against a 0.25 ceiling. Red for entirely the wrong reason.
+
+Measured **differentially** (a render with the halo minus a render without it), the halo excess is 0.0035–0.0076
+and the ratio 0.039–0.083 across all five bodies — comfortably inside the ceiling.
+
+**PF-3 is amended: the halo is measured as an excess against a render without it, never as a raw window.** This
+is the same class as my own M-F4 defect — a window that reports what is in it rather than what put it there — and
+the same fix as PF-8's sign mask, which already isolates by suppression rather than by location. Suppression is
+becoming this phase's general answer to "which pixels are whose".
