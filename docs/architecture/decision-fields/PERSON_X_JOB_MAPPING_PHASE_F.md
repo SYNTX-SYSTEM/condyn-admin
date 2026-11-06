@@ -1276,3 +1276,37 @@ diagnosis confirmed exactly.
 PINK's absolute plateau (~2.6e-5) against my converged 1e-5 is a mask-inclusiveness difference (its
 stage-minus-svg 200 k against my 178 k); per-element sign-hide on the tip should close it. **The reproducible
 result is the shape — it settles at two cells — not the absolute number.**
+
+---
+
+## §26 A-F24 · THICKER TICKS vs A-6's EMPHASIS CHANNEL — AND A COVERAGE GAP IN MY OWN PROOF
+
+I suggested thicker collar ticks to buy the same firewall tightness for half the dark rim (§24). That collides
+with **A-6**, where emphasis rides the stroke width: `width = (open || marked || emphasis ? 2 : 1.3) * k`
+(`PersonJobMappingField.tsx:181`). A 2.0 px base tick is exactly the emphasised width.
+
+**Verified in the source, and GRÜN's resolution is correct.** The L0/L1 collar ticks are drawn at `:462` with
+**neither `interactive` nor `emphasis`** — they are always `1.3 * k` and can never be emphasised. The L2/L3 ring
+arcs are drawn at `:669` **with both**. So thickening *only the non-interactive collar ticks* cannot disturb the
+emphasis channel, because emphasis does not exist where they are drawn.
+
+**D-Q3 checked, not assumed.** "The collar at L0/L1 and the ring at L2 are one output drawn at two radii; going
+deeper magnifies and never changes what a mark means." A width difference between the two does not breach it:
+D-Q3 binds **meaning**, and width carries only emphasis, which is absent at L0/L1. Nothing a reader can decode
+changes. Adjudicated rather than left implicit.
+
+### The gap this exposes, which is mine
+
+**The L2 ring arcs cannot be thickened** — 2.0 px is taken by emphasis — so at L2 the firewall must be carried by
+the seat pad alone, and the dark rim will appear there regardless of what happens at L0. Which means:
+
+> **PF-8 must be measured at L2, not only at L0.** My harness measures the default view, which is L0. GRÜN's
+> per-class leak was found on ticks at L0 — the arcs that are *interactive and emphasisable* live one level down
+> and were never in anyone's mask.
+
+A firewall certified at one level is not a firewall. §17's PF-8 row is amended: **every level that draws evidence
+— L0, L2 — is measured, per class, separately.** L1 and L3 follow if they draw marks the other two do not.
+
+This is the twelfth defect of the phase and the eighth of the "a measurement that cannot fail" family, in a new
+disguise: not a statistic that could not see the leak, but a *view* in which the leaking element was not on
+screen.
