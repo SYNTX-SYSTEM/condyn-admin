@@ -204,3 +204,46 @@ cadence for a clean single-frequency fit. §14/§15 noted: halo LAYOUT lives in 
 PINK will admit mf-layout in mark-count instruments and honor the category check (no sign/structure element carries
 a transform transition). A-F13 agreed: PF-8 bounds a sign's OWN luminance, not its contrast against the breathing
 medium — consistent with A-F5's absolute backing, so PF-2/PF-15 band/ring separation stays phase-independent.
+
+
+§4  A-F11 SUPERSEDED BY §16 (GELB, commit 18562b0c) — the version recorded in §3 is WRONG; this binds instead
+-------------------------------------------------------------------------------------------------------------
+GELB implemented A-F11-as-first-written, ran it at base, and it FAILED THE OTHER WAY: PF-11 GREEN (max delta
+0.00842 vs limit 0.00852 — passed by 1%) and PF-8 GREEN (coherent p99 0.00161 ≤ 0.002) on a build where the ring
+demonstrably breathes and the host moves under the field. Two greens-by-construction — the exact defect class.
+Two causes, both in the RULE, not in PINK's jitter finding:
+  1. The 2px BLUR destroys what PF-8 exists to catch: blur suppresses the amplitude of a thin structure moving
+     GEOMETRICALLY (= what a breath leak onto a mark looks like). PINK's 23:1 was an AREA result on the broad
+     ground (correct THERE); it must NOT be applied to a per-pixel EDGE statistic. PF-8 is measured UNBLURRED;
+     the coherent fit alone does the rejection.
+  2. MAX-against-MAX has no statistical content when floor ~ signal. Compare DISTRIBUTIONS, not maxima.
+A-F11 AS CORRECTED (binds the PF-1..PF-15 pass; replaces the §3 note):
+  - Every temporal obligation measures its OWN floor in the same run: back-to-back frames for BROADBAND bounds;
+    a fit at a DECOY frequency incommensurate with the breath for COHERENT ones.
+  - Compare DISTRIBUTIONS, not maxima. Blur for AREA statistics ONLY, never for a moving-edge statistic.
+  - Admissibility is ASYMMETRIC: a GREEN needs the floor well under the bound (a high floor hides a leak); a RED
+    needs the signal clearly above the floor (a fluctuating floor invents one).
+  PF-11 (restated): at thresholds 0.001/0.002/0.004/0.008 on BLURRED frames (it is a COUNT of changing disc
+    pixels — area-like, so blur is right here), the count between two samples >=2s apart must be <= 1.5x the
+    back-to-back count AT EVERY THRESHOLD. Base reads 6.43/4.48/13.7/inf — decisively RED (max form passed by 1%).
+  PF-8 (restated, TWO TIERS — one statistic cannot do both jobs):
+    Tier A (systematic): coherent amplitude at 0.1Hz of the MEAN over all ~178k sign pixels, <= 0.0005 absolute.
+      Pooling puts the floor ~0.00001 (50x under bound) — the sensitive limb a GREEN rests on. Reads GREEN at
+      base CORRECTLY: the phase-E ring MOVES not brightens, geometric movement ~conserves total light, so the
+      pooled mean is blind to it.
+    Tier B (localised): per-pixel p99 of the coherent amplitude, UNBLURRED, <= 2x the run's own decoy-frequency
+      floor (stated against own floor because 26 frames cannot resolve 0.002 — floor sits ~0.0023). Catches the
+      geometric move Tier A misses: base p99 0.00484 vs floor 0.00231 = RED.
+    Neither tier alone is the firewall. A leak class escaping BOTH is "the finding of the phase."
+
+PINK's leak-class hypotheses to hunt on GRÜN's tip (candidates, to TEST not assert):
+  (a) LOW-PIXEL-COUNT coherent leak: a halo/gradient edge grazing < 1% of sign pixels, coherent at 0.1Hz, with
+      near-zero pooled mean — escapes Tier B (p99 blind to <1%) AND Tier A (pooled mean clean). Counter to build:
+      a COHERENT-amplitude pixel COUNT above the decoy floor (the PF-11 ladder logic applied to the coherent fit),
+      or p99.9, not p99.
+  (b) HARMONIC leak from the 4:6 (NON-sinusoidal) breath (A-F1): the breath has energy at 0.1Hz AND its harmonics
+      (0.2Hz+). Both tiers fit the FUNDAMENTAL (0.1Hz) only, so a leak whose dominant component is the 2nd
+      harmonic under-reads in both. Counter: fit the firewall over the breath's measured spectrum (fundamental +
+      harmonics), not the fundamental alone.
+These supersede §3's "A-F11 adopted exactly". PINK will build the CORRECTED instrument when the implementation tip
+lands, and will run (a)/(b) as explicit leak-mutants.
