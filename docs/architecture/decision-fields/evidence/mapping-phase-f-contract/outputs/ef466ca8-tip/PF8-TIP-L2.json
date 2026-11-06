@@ -1,0 +1,175 @@
+{
+ "commit": "ef466ca8",
+ "level": "L2",
+ "levelInfo": {
+  "level": "L2",
+  "breath": "LIVE",
+  "arcs": 4
+ },
+ "waveAnims": 10,
+ "clipMatch": true,
+ "frames": 102,
+ "spanS": 95,
+ "medCadenceMs": 908,
+ "nyquistHz": 0.551,
+ "maxFreqHz": 0.35,
+ "samplingAdequate": true,
+ "perClass": {
+  "rings": {
+   "els": 5,
+   "px": 7868,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.00000735,
+    "floor": 1.57e-7,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.000128,
+    "nullFloor": 0.00000917,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:inf",
+     "0.002:inf",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": true
+   }
+  },
+  "arcs": {
+   "els": 4,
+   "px": 2493,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.0000344,
+    "floor": 5.74e-7,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.000972,
+    "nullFloor": 0.0000663,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:inf",
+     "0.002:inf",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": true
+   }
+  },
+  "beams": {
+   "els": 6,
+   "px": 5570,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.000147,
+    "floor": 0.00000163,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00165,
+    "nullFloor": 0.000156,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:inf",
+     "0.002:inf",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": true
+   }
+  },
+  "nodes": {
+   "els": 3,
+   "px": 1479,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 4.42e-32,
+    "floor": 2.3e-32,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0,
+    "nullFloor": 0,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:1",
+     "0.002:1",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "text": {
+   "els": 0,
+   "px": 23,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 2.72e-32,
+    "floor": 1.91e-32,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0,
+    "nullFloor": 0,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:n/e",
+     "0.002:n/e",
+     "0.004:n/e",
+     "0.008:n/e"
+    ],
+    "red": false
+   }
+  },
+  "outlines": {
+   "els": 1,
+   "px": 1338,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.00000682,
+    "floor": 1.69e-7,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.000278,
+    "nullFloor": 0.0000187,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:1",
+     "0.002:1",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  }
+ }
+}

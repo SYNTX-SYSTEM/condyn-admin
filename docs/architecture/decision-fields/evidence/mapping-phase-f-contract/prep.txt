@@ -391,3 +391,42 @@ built under reduced-motion; per-level L0+L2; min class population 1000px; live-r
 PF-9 NOT-RUN on LIVE-only default; PF-10 >=0.0002 amplitude guard; GELB-checklist two limbs (statistic can fail
 AND the thing it must fail on is in the frame). L2 navigation (click a body twice, rebuild masks under reduce at
 L2) is in GELB's harness and confirmed; PINK will validate its own L2 navigation against GRÜN's tip content.
+
+
+§10  TIP ef466ca8 — PF-8 FIREWALL Tier B/C, L0 AND L2 (the limbs GRÜN cannot measure; §26 never-run config)
+----------------------------------------------------------------------------------------------------------
+Render rebuilt at tip ef466ca8 (3 commits off base: field-e:260 fix, phase F, SEAT_PAD_PX 1.6). Own prod 3121 +
+façade 3120, variant default, 1920x1080. Tip: breath LIVE, 15 mappingFieldWave animations, lit opaque ground;
+L2 reached by clicking a body twice (L0->L1->L2), 4 ring arcs at L2. Per-class masks built UNDER reduced-motion
+(ground breathes now, so whole-svg-hide invalid). Bracketed dof-matched null. GUARDS added & FIRED: dead-field
+(abort unless breath=LIVE + wave anims) and SAMPLING-ADEQUACY (A-F20 on the frequency axis: maxFreq 0.35 < 0.9*Nyquist).
+INSTRUMENT FINDING (critical): the tip's lit animated ground costs ~1.25s/screenshot at L0 and ~1.4s at L2
+(SwiftShader). My first L0 run decoded inline -> 1.45s cadence -> 0.35Hz ABOVE Nyquist (0.345) -> aliased -> false
+RED everywhere (arcs tierA 0.000307, 3.5x GRUN). The adequacy guard flagged it. FIX: defer decode (loop = screenshot
+only) -> 1.23s/Nyquist 0.406 (L0, adequate); add CDP optimizeForSpeed:true PNG -> 0.91s/Nyquist 0.551 (L2, adequate).
+L2 without optimizeForSpeed was 1.40s/Nyquist 0.358 = INCONCLUSIVE (guard caught it). A-F20 carried to the freq axis.
+BOUND adopted (GELB §29/c719a98d): Tier B is ABSOLUTE p99<=0.002 (floor<=0.0004 to resolve), NOT 2x-own-floor
+(floor-relative was 4x too strict once the instrument improved). Tier C: the 0.001/0.002 rungs sit INSIDE the
+physical AA fringe (~0.002, A-F5), so only 0.004/0.008 are meaningful (GELB: "discrimination lives at 0.004+").
+FINAL per-class (absolute Tier B; Tier C meaningful rungs; floor 2.7e-4 = GELB 0.00027, aligned):
+  L0  rings    A 2.2e-6 green  B 1.6e-5 pass   C pass      | arcs    A 2.9e-4 green  B 3.0e-3 FAIL  C 0.004:inf FAIL
+      beams    A 1.2e-4 green  B 2.2e-3 FAIL   C 0.004:inf | nodes   pass(<1000px C n/e) | text pass | outlines B 1.2e-3 pass
+  L2  rings/arcs/beams/nodes/outlines ALL PASS  (arcs B 9.7e-4, beams 1.7e-3, all <0.002; C 0.004/0.008 ratio 1)
+VERDICT: the firewall LEAKS at L0 on the thinnest collar TICKS (arcs class, 1.3px) — p99 ~0.0030, CONFIRMS GRÜN's
+prediction (p99~0.002) and GELB (0.0033) INDEPENDENTLY. The under-mark test (scripts/pink-pf8-under.mjs: ground
+breath at the mark footprint with signs hidden) shows the ground DOES breathe under the thin arc (under-p99 1.6e-3)
+-> real seat-coverage leak at 1.6px pad on the thinnest ticks, NOT a mask artifact. At L2 the interactive/
+emphasisable ring arcs (§26's never-measured config) are CLEAN (p99 0.00097) — larger arcs, proportionally less
+fringe. DIVERGENCE: my beams FAIL (0.0022) vs GELB pass (0.00072) — 3x gap = my per-element-hide diff>0.001 mask is
+broader than GELB's element-coverage mask (more fringe). Arcs fail on BOTH masks (decisive); beams is mask-sensitive
+at the margin. RESOLUTION: match GELB's element-coverage mask for beams on the re-delivery.
+ADOPTED from §27/§29: absolute Tier B; PF-3 footprint by SUPPRESSION (lit ground makes a threshold-denominator
+collapse to ~1); PF-7 bands restricted to the WAVE region (person disc + shelf carry no wave -> phase noise ->
+false non-monotone); PF-15 rings are ENGRAVED MINIMA (use min() in the ring band, not max() which reads the ground
+beside). PF-16 (wedge step in luminance <=0.004, ratio[0.92,1.09], not sRGB alpha) and PF-17 (ground continuity:
+no sub-0.6x-median run <12px along circles, >=8 radii) adopted for the re-delivery.
+PINK's SPATIAL-DUAL proposal (answering GELB's "a second spatial property with no obligation"): PF-17 scans along
+CIRCLES (angular) and so catches RADIAL gashes; its DUAL — continuity along RADII (spokes) — is untested and would
+catch ANNULAR/tangential holes. The ground is seven STACKED concentric layers (A-F1); a compositing gap between two
+layers is ring-shaped, runs ALONG a circle-scan (invisible) and ACROSS a radial-scan (caught). PF-17 should scan
+both directions (or add PF-18 radial continuity).

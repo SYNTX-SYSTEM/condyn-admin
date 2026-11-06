@@ -9,7 +9,9 @@ ed2d0533755becca498858a46d5eb2b8850b2ca52c5bbb90cc006cea3b99a717  ./outputs/9cc0
 fb61823a70ea7faf3c157f0d257026d601042d37b6cf550907c0e523ff7befe0  ./outputs/9cc06f84-baseline/QF-1280x800.json
 cb847201d3797e78e5ed431ac0f642b0667907efb819e1953c9dd1bac8320486  ./outputs/9cc06f84-baseline/QF-1920x1080.json
 49ac56ecf729797f467fb2437b72b3cad9fb09f6ac17f751487305bad0ac4abc  ./outputs/9cc06f84-baseline/rings-pixels.json
-285379b2c557db1d82fd9a2a614fc48119cbf972e16e7e11e6484dc84bbbc9f4  ./prep.txt
+691d59520ef13542fcbb39c23cadcf345fcadbd15915e3e88e7d940ab7b5d755  ./outputs/ef466ca8-tip/PF8-TIP-L0.json
+72eedd78886913220d793fba65302182584eb1bd8c8a3dcb5de4ee6f03548da3  ./outputs/ef466ca8-tip/PF8-TIP-L2.json
+ce34a508b4a5aa461400921d8d00f146dbe2a73af54959c541afe9a92d11789f  ./prep.txt
 f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02  ./scripts/pink-breath-vs-floor.mjs
 b134c7b559ab4168eb5b657474c9f282eebb5604dfba0248cb75030be37f1065  ./scripts/pink-class-probe.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
@@ -20,6 +22,8 @@ b55c1d2cc69c6833777879277b8f6d389cdf1e7b67cb2dd7d70359a83cc3acda  ./scripts/pink
 611af804462e99522230515fad87852197d5a505c3fce7519aa4c9d84f94390b  ./scripts/pink-pf8-lockin.mjs
 2f79541f31d1dccd370706a4ed724820bb2970fca773e11c134f8cb6ede3a365  ./scripts/pink-pf8-perclass2.mjs
 11d77e279f035f19067298519b69d00f55a556f15f5a1825faeaedb8532c0df3  ./scripts/pink-pf8-perclass.mjs
+507a0575e7e895d3abd1364a1adb81e70883eeea08f254f5bb2bc8dc7a200937  ./scripts/pink-pf8-tip.mjs
+a4b7ffa3197c6b58c336ab77a2b9f01826e229c9adb25a7fff5a34966988480e  ./scripts/pink-pf8-under.mjs
 3c501fbf8dce51e92b1ef05df7fd95ffacdce774c878e29b819a9e86dbf158c9  ./scripts/pink-pf8-window.mjs
 82a810cd6032c92e2b1da8a96e4a5b34e288d7e00946558c7bed8a1fe887c678  ./scripts/pink-pixels-floor.mjs
 44caa40ea60fced636f16842b060611282626ad086109ca370179fda5139a26f  ./scripts/pink-pixels.mjs
@@ -27,6 +31,8 @@ b55c1d2cc69c6833777879277b8f6d389cdf1e7b67cb2dd7d70359a83cc3acda  ./scripts/pink
 cd00e8292ea5f03df05f886c5dbc721a24e41fc0fddd5339e822fa642a1912d0  ./scripts/pink-probe-rings.mjs
 246b935dc910e2626808f00498623c38a2119ce4bbd98bae2f4b084fd8c26b9b  ./scripts/pink-rings-pixels.mjs
 576903e32419e629d4be8a455425ff437beebeff91845b7b506d6435707f777a  ./scripts/pink-shot-timing.mjs
+0d1be70dda9d76cd920a84bb9b717291e214f164add369c15947e68ecf65a068  ./scripts/pink-tip-probe.mjs
+9a73d062c9c5f73f99a8089f8b32b3abace4dd344ba0a8e79095375c0a9faf09  ./scripts/pink-tip-timing.mjs
 f346b8eb3852729efbd4e44b4858d556c8c814d5c7090abed12af70cf49417ed  ./shots/ground-1280x800.png
 bad3c02c83e86ce80832bcba70b908a6c346ec056b8e4777ee1af5f06837ba40  ./shots/ground-1920x1080.png
 8d07e5031ef37acf92142cb51c0f690757132f376ab076c25145fe31c2843a18  ./shots/stage-1280x800.png
