@@ -677,3 +677,61 @@ PG-1 0.42 (needs 0.55) — of which **~21 % of the disc's light is the ghost**, 
 the gap. PG-6 0.025 (needs 0.15) and the inverted PF-15 at 0.23 (needs 0.08, dominated by the shelf band's
 sheer area) are both real and both in GRÜN's build list. PG-3 at 54 px is the PG-14 frame shrinking the field
 by ~4 %; raising V1.1's `drawn.min/max` is the right fix and takes new vectors.
+
+---
+
+## §13 THE TIP `10eb4030`, SEEN — AND MY EYE CORRECTED BY THE INSTRUMENT
+
+The field is dark, five bodies are **named** and carry rank and tier, two glow **amber** for an unmet REQUIRED
+requirement, and the relations are visible light. It is in the same language as the CAPABILITY FIELD OTTAVIO
+pointed at.
+
+**I nearly sent GRÜN after a defect that is not one.** Looking at the render, the cyan bodies read to me as dark
+rings lacking presence beside the amber ones. Measured per body (core at 0.5 r, rim at r, glow at 1.4 r, ground
+at 3 r):
+
+| body | rank | core | rim | glow | ground | glow ÷ ground | warm (R−B) |
+|---|---|---|---|---|---|---|---|
+| role_platform | 1 | 0.0305 | 0.610 | 0.0608 | 0.0040 | 15.1 | **+44** |
+| role_all | 2 | 0.0281 | 0.554 | 0.0479 | 0.0037 | 12.9 | **+44** |
+| role_keys | 3 | 0.0257 | 0.540 | 0.0659 | 0.0015 | **45.4** | −43 |
+| role_platform | 4 | 0.0245 | 0.546 | 0.0692 | 0.0015 | **47.6** | −41 |
+| role_empty | 5 | 0.0228 | 0.540 | 0.0593 | 0.0015 | **40.8** | −39 |
+
+**The cyan bodies have the *stronger* glow-to-ground ratio**, by three times. They only sit on a dimmer local
+ground, further out. What I read as missing presence was **the hue channel doing exactly its job** — amber is
+the only warm thing in a cool field, so it pops, and that is G-4's intent, not a defect in the others.
+
+Recorded because the direction is unusual: all phase I have used the instrument to catch measurements that could
+not fail. Here it caught **my eye** making a claim the field does not support.
+
+### A-G20 · The four decisions
+
+**PG-22** — counted **excluding a body's own name and measure**, bound **≤ 20 %** for everything else. GRÜN's
+reading is right: a label is the body's own figure, and moving it out of the annulus would tear name from body
+(proximity). The render settles the rest — the glare percept is intact at 13–48× glow over ground with the text
+in place. Collar ticks are distributed around the annulus and do threaten the ramp read; a label occupies one
+contiguous sector and does not.
+
+**PF-3 retired in writing**, replaced by **PG-17 + PG-13**. Its ceiling (halo ≤ 0.25 × core) came from phase F,
+where the halo was ambience that must not compete with a bright outline. In phase G the glow **is** the light
+and the core is deliberately dark — measured 2.5…3.8 is the design, not a breach.
+
+**PF-8 is measured with the travel hidden** — confirmed. The travel is the sign's **own designed motion**
+(G-3); counting it as a leak would measure the design as a defect. Hiding is valid precisely because the travel
+is a *separate element*, so suppressing it reveals whatever lies beneath — a real leak under its path is still
+caught. **PF-5/7/10 on the medium are retired in favour of PG-10**: the breath has moved from the medium to the
+glows, and an obligation must follow the thing it measures.
+
+**PG-20 for DIFFERENT — my error.** I proposed breaking an arc that the sign table never draws: DIFFERENT's
+`arcLine` is `open`, two ends and nothing between. There is nothing to break, and drawing a line in order to
+break it would contradict the line word.
+
+The counterTick's real question is narrower than I had it: *open* already says "not evidenced" for DIFFERENT
+**and** UNCLEAR; the counterTick distinguishes **judged different** from **merely unclear**. So the
+reinforcement must carry *that*:
+
+> **DIFFERENT's two end ticks splay outward** — they point apart. UNCLEAR's stay radial. An **icon**: we looked,
+> and these two do not meet. The counterTick stays.
+
+CONSTITUENT (nested shorter arc) and ALIAS (offset echo) are accepted as built.
