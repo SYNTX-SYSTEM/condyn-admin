@@ -386,3 +386,39 @@ bought with stage area, because the binding constraint is height and 203 px of i
 it would give every window roughly that much more stage — the A2 goal — without touching the host. **GELB does not
 decide this**: it trades readable size against the risk of colliding with the strip, and the collision is a visual
 judgement. Recorded for the acceptance.
+
+---
+
+## §14 THE INSTRUMENTS, VALIDATED AGAINST THEMSELVES
+
+**P-6 is red-first, proven.** PINK narrowed the `:85` blanket to a nonexistent attribute, rebuilt and re-measured:
+(a) 8 offenders, (b) 5 moved — `mapping-tick-*` opacity 0.719 → 0.582 over 2.2 s. Guard reverted, tree clean. The
+test bites exactly when the guard goes, which is what §12 demanded.
+
+**PINK reported two defects in its own harness, and that is the behaviour this lane depends on.** A blind inverse
+instrument is worse than none, because it converts an unknown into a false assurance.
+
+1. **Its P-6(b) sampler was blind.** Phase-D CSS motion animates `<g data-testid="mapping-tick-*">` **groups**, and
+   a group's opacity does not appear on its children's computed opacity. PINK's first sampler queried shape tags
+   plus `g[body|node]` only, and reported *movedCount 0 with motion on*. Carried into the delivery pass, a
+   JS-moving field would have passed P-6(b) — the exact failure N-3 exists to catch. Fixed to sample every SVG
+   descendant and read each element's own computed opacity.
+2. **A unit confusion in P-8.** PINK first read min stroke 0.983 and min text 12.01 in **SVG user units** against
+   GRÜN's and my 0.487 / 5.96 in **rendered px**. The ratio is the viewBox→viewport scale, ×0.496 at 1280 × 800,
+   and the instruments agree once converted.
+
+**Binding convention, from that second defect:** every length in E-7 and P-8 — the 1.2 px stroke floor, the 1.0 px
+beam floor, the 12 px body floor, the 11 px text floor — is **rendered CSS pixels at the measured window size**,
+never SVG user units. A bound in user units would scale with the stage and could not express legibility at all.
+
+**GELB's own control, run because PINK's finding applies to every instrument including mine.** My P-6(b) sampler
+queries `[data-testid="mapping-field"] *`, so it reaches the groups — but it had never been *shown* to detect
+anything. With motion on: **135 elements, 5 animating, movedCount 5** — the same five tick groups PINK names, same
+direction. Under `reduce`: 5 → 0 animating, movedCount 0. The sampler is now validated rather than assumed.
+
+**P-7's corrected set, confirmed by two instruments.** The elements outside the stage box are the **sector names**,
+and they overrun **left and right** at all four sizes (PINK at 1829 × 912: name-A left 523.1 against stage left
+543.5; name-B right 1311.1 against stage right 1285.5), where the SVG's `overflow: hidden` clips them. So this is
+not only a containment failure but a **legibility** failure: the pool names are cut today. E-8 must **contain** the
+field's own labels, not clip them. `stage-inside-section` already held at base, and the section top measures 61 at
+every size — the 61 px offset of §0, re-confirmed independently a third time.
