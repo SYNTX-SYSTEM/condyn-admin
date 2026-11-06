@@ -883,3 +883,44 @@ in a third disguise.
 **Standing consequence.** Five of the six instrument defects this phase were mine, and four of the six were a
 proof that could not change its verdict. That is now the first thing every obligation is checked for, before it
 is checked against the build.
+
+---
+
+## §17 THE OBLIGATIONS AS THEY NOW STAND
+
+§7 has been amended by §11, §14, §15 and §16. This table is the **current** contract; where it differs from §7,
+this wins. It exists because four amendment sections are how a lane ends up building against a stale bound — a
+failure I have now caused twice in one phase.
+
+| # | Obligation (current) | Amended by |
+|---|---|---|
+| **PF-1** | disc median ∈ **[0.006, 0.030]**, frac above 0.005 ≥ 0.55. Spatial, read **unblurred**. The third row (peak ÷ median ≥ 20) is **withdrawn**. | A-F7 |
+| **PF-2** | E-1/A-3's band separation ≥ **1.6** at the bands' closest points, on rendered pixels. Marks are black-seated, so the values are **absolute** and should reproduce phase E's 1.814 / 1.940. | A-F5, A-F9 |
+| **PF-3** | body footprint ≥ 6× outline footprint; halo peak ≤ 0.25× core peak. | — |
+| **PF-4** | depth monotone in rank, ratio first : last ∈ [1.5, 3.0]; same-class marks on different bodies differ ≤ 2 %. | — |
+| **PF-5** | ≥ **25 %** of disc pixels swing ≥ 0.004 over one period, blurred (area statistic). Nominal target: swing p50 ≈ **0.005** on a disc median ≈ 0.026 — build toward the nominal, not the floor. | A-F1 |
+| **PF-6** | blurred: no disc pixel swings > **0.030**; mean \|ΔL\| per **500 ms** ≤ 0.0025. | A-F2, A-F10 |
+| **PF-7** | the swing's phase is monotone in radius; total spread **1 200 ± 300 ms**. | — |
+| **PF-8** | **Tier A** — coherent amplitude at 0.1 Hz of the **mean over all sign/structure pixels** ≤ **0.0005** absolute, unblurred. **Tier B** — per-pixel **p99** of the coherent amplitude ≤ **2× the run's own decoy-frequency floor**, unblurred. Both must pass. Covers marks, arcs, ticks, beams, nodes, text **and the four rings**. | A-F8, A-F10, A-F11 |
+| **PF-9** | with `data-breath="STILL"`: every pixel's swing over a full period within the run's floor. | — |
+| **PF-10** | with a capability selected, breath amplitude ≤ **45 %** of its unselected value. | — |
+| **PF-11** | blurred, disc-scoped: at thresholds 0.001 / 0.002 / 0.004 / 0.008, the count changing between samples ≥ 2 s apart ≤ **1.5×** the back-to-back count **at every threshold**; plus no element with a non-zero computed animation or transition duration. | A-F4, A-F10, A-F11 |
+| **PF-12** | nothing phase F adds is interactive: not in the a11y tree, not focusable, not hit-testable; tab order unchanged. | — |
+| **PF-13** | every phase-D and phase-E test passes, except the three restated in writing: `neurovisual-e :156`, `:174`, `:140`. | §12, A-F15 |
+| **PF-14** | no per-frame script write to SVG geometry outside the E-5 stage tween; the breath is **CSS animation rules** the reduced-motion blanket can stop (never WAAPI or SMIL). | §12 |
+| **PF-15** | the four rings separated by ≥ **1.6×** in measured pixel luminance at their closest points, **and** each ring separated from **its own local ground** by ≥ 1.6× in either direction. Both viewport sizes. The horizon/field step is **marginal and instrument-sensitive** (GELB 1.316, PINK 1.636) and needs margin, not a pass. | A-F6, A-F12, A-F14 |
+
+**The admissibility rule applies to all of them (A-F11 corrected):** every temporal obligation measures its own
+floor in the same run; distributions are compared, not maxima; blur is for area statistics only, never for a
+signal that is a moving edge; a **GREEN** requires the floor well under the bound, a **RED** requires the signal
+clearly above it, and anything between is **INCONCLUSIVE**.
+
+### Red-first at base, as measured by GELB's harness on `9cc06f84`
+
+PF-1 red (0.00181 / 0.150) · PF-5 red (0.0134) · PF-6 red on the ceiling · PF-7 red (no wave; spread 8 657 ms,
+not monotone) · PF-8 red via tier B (p99 0.00484 vs floor 0.00231; **tier A green, correctly** — a moving ring
+conserves total light) · PF-11 red at every threshold (6.43 / 4.48 / 13.7 / ∞) · PF-15 red (1.316 / 0.895 /
+0.573, two inverted).
+
+**Open and unmeasured until the tip exists:** PF-2, PF-3, PF-4 (need GRÜN's element names), PF-9 (needs the
+façade's `running` variant), PF-10 (needs a selection), PF-12, PF-13, PF-14.
