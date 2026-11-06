@@ -1,0 +1,138 @@
+PINK · PHASE E "THE QUIET PLANETARIUM" · INVERSE-CHECK PREPARATION PASS
+=======================================================================
+Role: PINK, independent inverse validator (authorized by OTTAVIO). GELB owns the contract
+(docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_E.md, architecture/mapping-phase-e @ 5782b955).
+GRUEN implements on frontend/mapping-phase-e. This file is the PREPARATION pass PINK can do BEFORE
+GRUEN delivers: (1) re-derive GELB's start-state readings M-1..M-5 on 86e36924 in PINK's own worktree and
+own render, and (2) stand up PINK's own P-6/P-7 harness and capture the phase-D baseline.
+
+STANDING RULE (carried from PHASE_D §11.6): PINK's phase-D GO is pinned to 86e36924 and DOES NOT travel to
+any phase-E commit. PHASE_E_BASE = 86e36924. When GRUEN delivers, PINK measures the new tip from scratch.
+
+This is NOT a GO. No phase-E commit exists to measure yet. This records the independent start-state only.
+
+-----------------------------------------------------------------------
+0. ENVIRONMENT — PINK's own, not attached to GELB's instance
+-----------------------------------------------------------------------
+Worktree:   /home/codi/Entwicklung/condyn-admin-pink-visual-e  (detached @ 86e36924)
+node_modules: full copy of the main checkout's tree (lock byte-identical to 86e36924:package-lock.json,
+            sha abea16d8...; installed next@16.2.4 react@19.2.4 react-dom@19.2.4 — verified equal to GELB's
+            known-good tree condyn-admin-mapping-d). A symlinked node_modules is rejected by Turbopack
+            ("points out of the filesystem root"), so a real tree was copied in.
+Fixtures:   the SAME builders test/career/mapping-field/field-d.test.tsx uses (B-7 shared ground truth):
+            rankingOf([allStates(), keyCases(), ...standardRoles()]) -> 5 ranks, evidenceClass STAND_IN;
+            projectionOf(CAPS) -> 3 capabilities; pxj.resultBody()/boundary() retargeted to analysis
+            CAN_...0002. Wiring mirrors GELB's facade; the RENDER and every MEASUREMENT are PINK's own.
+Facade:     PINK's own read-only fixture facade on 127.0.0.1:3120, proxying non-/api to PINK's own app
+            server on 3121, serving the 6 fixture routes and 404+logging any unscripted /api read.
+Render:     a PRODUCTION build (`next build` @ 86e36924, dummy DATABASE_URL; /career/demo is dynamic) served
+            by `next start -p 3121`. Reason: under headless Turbopack `next dev` the field never hydrates
+            (no React fiber, 0 /api fetches, SSR-only "JOB FIELD UNBOUND" view) — independent of origin,
+            package versions and browser (Chromium 153). The prod build hydrates deterministically (593 ms,
+            all 5 fixture /api calls, mapping-field present). CROSS-CHECK: the prod geometry reproduces
+            GELB's dev M-2 numbers to the pixel (945/912, 1303/1300), so dev vs prod does not move the
+            measurement — the switch only removed the dev HMR fragility.
+Browser:    Playwright 1.63.0 via /home/codi/Entwicklung/nquiry/node_modules/playwright, Chromium 153.
+No provider: across every run, page requests to non-127.0.0.1 hosts = [] (B-4/B-6 baseline clean);
+            console errors = [] apart from the benign dev-HMR websocket (absent under prod).
+
+Scripts (scratchpad, not committed):
+  phase-e/pink-facade.mts      the fixture facade
+  phase-e/pink-measure-m.mjs   M-1..M-4 re-derivation + overflow forensics
+  phase-e/pink-p6-p7.mjs       P-6 reduced-motion scan + P-7 overflow at the four sizes
+  phase-e/M.json, P67.json     raw outputs
+
+-----------------------------------------------------------------------
+1. RE-DERIVATION OF M-1..M-5  (GELB's reading -> PINK's own render)
+-----------------------------------------------------------------------
+M-1  "zero beams at L0; 5 bodies, 2 sectors, 3 capability nodes, 19 collar ticks, 4 rings"
+     PINK @1600x1000: beams 0; bodies 5; sectors 2; capability nodes 3; collar ticks 19;
+     rings shelf1+best1+horizon1+field1 = 4.  -> CONFIRMED exactly.
+
+M-2  "stage overflows at every size; the lowest body (role_empty) sits in the overflow; the page scrolls"
+     (GELB: 945/912, 973/940, 1033/1000, 1303/1300)
+     PINK (svgBox.bottom vs innerHeight), own render:
+        1280x800  : svg bottom 723  vp 800  (stage fits)   pageScrolls TRUE (scrollH 1021)
+        1600x1000 : svg bottom 1033 vp 1000 overflow +33    pageScrolls TRUE  lowest body +1.4 below vp
+        1829x912  : svg bottom 945  vp 912  overflow +33    pageScrolls TRUE  lowest body +4.8 below vp
+        2560x1300 : svg bottom 1303 vp 1300 overflow +3     pageScrolls TRUE
+     945/912 and 1303/1300 reproduce GELB's numbers to the pixel.  -> CONFIRMED.
+     MECHANISM (PINK, more precise than the contract's one line — see note N-2):
+        rendered stage top = 203 = 61 (top controls bar) + 142 (css top). height = min(100vh-170, 100vw-760,
+        1100). When the 100vh term dominates: bottom = 61 + 142 + (100vh-170) = 100vh + 33  -> constant +33
+        overflow at EVERY 100vh-dominated size. At 2560x1300 the 1100 cap dominates: bottom = 61+142+1100 =
+        1303 -> +3. That is exactly the 33/33/33/3 pattern GELB saw.
+        Second, independent scroll source: at 1280x800 the stage FITS (723<800) yet the page still scrolls
+        (scrollH 1021) — flowed content below the absolute stage sets scrollHeight on its own. E-8/P-7 must
+        remove BOTH the stage overflow and the flowed-content scroll to reach scrollHeight <= innerHeight.
+
+M-3  "capability nodes 11x11 px, smallest body 8x8 px, no text node in any body/node at L0"
+     PINK @1600x1000: capability nodes 12.67x12.67; smallest body (role_empty) 9.5x9.5; text in bodies 0;
+     text in nodes 0.  -> substance CONFIRMED (sub-legible unlabeled bodies, zero text). The ABSOLUTE px
+     differ (9.5/12.67 vs 8/11) because node/body px scale with the stage factor k, which scales with the
+     stage size: GELB's 8/11 are a smaller-window reading, not a fixed figure. See note N-1.
+
+M-4  "the ten coupling states separated only by the conjunction data-line x data-mark x data-beam, never one
+     channel alone"
+     PINK at L2 (role_all), 10 arcs / 10 states. Distinct values per single channel:
+        line 4, mark 5, beam 6, fill 3, class 3  — every single channel < 10.
+        conjunction(line|mark|beam) = 10 distinct.  -> CONFIRMED: no single channel separates the ten; only
+        the 3-way conjunction does (R1 pre-attentive defect). Each arc already carries data-class in
+        {SEMANTIC, LEXICAL, NONE} — the class E-1's luminance ladder must DERIVE from (B-5 check later).
+
+M-5  "stage sized min(calc(100vh-170px), calc(100vw-760px), 1100px) at top:142px inside a box not at the
+     viewport top"
+     SOURCE @86e36924 app/components/career/demo/PersonJobMappingField.tsx (the stage <svg> style):
+        top:"142px", width:"min(calc(100vh - 170px), calc(100vw - 760px), 1100px)", aspectRatio:"1/1",
+        height:"auto", minWidth:"420px".  -> CONFIRMED verbatim. The height equals the width (aspectRatio
+        1/1), so the height is that min() expression. Mechanism verified by M-2 geometry above.
+
+-----------------------------------------------------------------------
+2. P-6 / P-7 PHASE-D BASELINE  (both are phase-E obligations; expected to be unmet on phase D)
+-----------------------------------------------------------------------
+P-6 (reduced-motion: NO element carries a non-zero animation/transition duration):
+     PINK under prefers-reduced-motion:reduce, 142 elements scanned (incl. a capability selected to exercise
+     query motion): offenderCount 0.  -> already GREEN on phase-D code. CAUSE: a pre-existing blanket guard
+        PersonJobMappingField.tsx:84-85
+        @media (prefers-reduced-motion: reduce){ [data-testid="mapping-field"],
+            [data-testid="mapping-field"] * { animation:none !important; transition:none !important; } }
+     with !important (overrides the inline animations at :247,:264,:380 and the transition at :258).
+     CONCERN C-P6 (see note N-3): because this guard already zeroes everything in the field subtree, a P-6
+     test written against phase E will pass without ever having been red -> it would violate §7
+     ("red before green; a test that was never red proves nothing") unless the red state is demonstrated
+     against a build with the guard removed/narrowed. PINK will require that red demonstration and will
+     independently mutate the guard to confirm the P-6 test bites.
+
+P-7 (at the four sizes: outermost drawn element inside the stage box AND scrollHeight <= innerHeight):
+     PINK baseline: pass=false at all four sizes (pageScrolls TRUE everywhere; outermost drawn content
+     +14 / +16 px below the viewport at 1600x1000 / 1829x912). NOTE the outermost DRAWN element is already
+     inside the SVG box at every size (the svg is overflow:hidden and clips), so E-8's real work is the
+     stage-box sizing and the flowed-content scroll, not clipping. This is the M-2 "before" state.
+
+-----------------------------------------------------------------------
+3. NOTES RAISED TO GELB  (refinements/concerns — reported directly, NOT resolved into the contract by PINK)
+-----------------------------------------------------------------------
+N-1 M-3 absolute px are viewport-dependent. PINK reads 9.5 px (smallest body) / 12.67 px (nodes) at
+    1600x1000; GELB's 8 / 11 are a smaller-window reading. The architecture claim (sub-legible, unlabeled at
+    L0) holds either way, but "8 px / 11 px" should be stated as window-specific, not absolute. E-7's 12 px
+    diameter floor and "no text below 11 px" are the right fixed bounds to measure against instead.
+N-2 M-5's one-line cause is correct but incomplete: the offset that turns the gutter into overflow is 61 px
+    (the top controls bar above the top:142 box), and the overflow has two regimes (+33 when the 100vh term
+    dominates, +3 when the 1100 cap dominates). E-8 must zero the 61 px offset AND the 100vh-vs-box mismatch
+    AND the independent flowed-content scroll, or P-7 will still fail. PINK re-measures E-8 at all four sizes.
+N-3 P-6 red-first (C-P6 above): the pre-existing blanket reduced-motion guard makes P-6 green before phase E
+    writes a line. A P-6 test must be shown red against a guard-removed build to satisfy §7. PINK will verify
+    the bite by its own mutation.
+
+-----------------------------------------------------------------------
+4. WHAT IS PREPARED FOR THE DELIVERY PASS
+-----------------------------------------------------------------------
+On GRUEN's first phase-E commit, PINK will, in this same worktree/render path:
+ - re-run M-1..M-5 on the new tip (expect M-1 beams>0 per E-2, M-4 luminance-separable per P-2, M-2 gone);
+ - P-11 mutants, each must bite: (a) evidence luminance collapsed to one value -> P-2 red; (b) a LAYOUT change
+   given a luminance transient -> P-4 red; (c) breath raised to 3.1 Hz -> P-5 red;
+ - P-7 at the four sizes by PINK's own render; P-6 under reduced motion incl. the guard-mutation bite check;
+ - P-5 numerically (0.1 Hz, amplitude <= 1.5%, and the breath STOPS while pending — verify the stop);
+ - B-1 byte-identity of lib/career/mapping/* and docs/.../mapping-spec/* and the twelve golden vectors;
+ - B-5 no invented semantics (luminance DERIVED from data-class {SEMANTIC,LEXICAL,NONE}); B-4/B-6 zero provider.
+ PINK's phase-D artefacts stay valid for B-1/B-3.
