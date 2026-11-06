@@ -66,7 +66,13 @@ capture boundary that matches its kind; everything else must be quiet.*
 | How well does it fit? | **radial distance** | unchanged, golden-vector-pinned |
 | How much is required? | **size** | unchanged, golden-vector-pinned |
 | Which pool? | **angle / sector** | unchanged, golden-vector-pinned |
-| **Is it evidenced?** | **luminance** — a three-step ladder, steps ≥ 1.6× apart: `CHECKED` bright, `NAME_ONLY` middle, `NONE` outline | **new**; today this rides on the line × mark × beam conjunction (M-4) |
+| **Is it evidenced?** | **luminance** — three disjoint **bands**: `CHECKED` [0.93, 1.00], `NAME_ONLY` [0.45, 0.58], `NONE` [0.22, 0.28]. Adjacent bands are ≥ 1.6× apart at their closest points (0.93/0.58 = 1.60; 0.45/0.28 = 1.61). | **new**; today this rides on the line × mark × beam conjunction (M-4) and is separated by 1 % (M-4a) |
+
+**Bands, not steps (ruling A-3).** The sign table carries a per-state luminance column (1.00 … 0.25) that *crosses*
+the classes — UNCLEAR (SEMANTIC) sits at 0.55, NAME_EXACT (LEXICAL) at 0.70 — which is precisely why the class is
+not readable today. The column is **not discarded**: the state's table value maps monotonically to a position
+**inside its class band**. The class stays recoverable from luminance alone; the state gradation survives inside
+the band; the table stays byte-identical and `data-luminance` keeps carrying the table's own value.
 
 Line style, mark and beam **stay exactly as they are**. They stop being the *only* carrier and become the second,
 closer reading at L2/L3. Nothing in `MAPPING_SIGNS_V1` changes; the sign table keeps its ten rows and its honesty
@@ -99,8 +105,15 @@ is replaced by the static luminance highlight, which R3's follow-up measured as 
 
 | Kind | Form | Witness |
 |---|---|---|
-| **EVIDENCE** change | luminance **transient**: rise 180 ms, decay 600 ms, peak ×1.8, on the changed element only. It captures — that is its purpose. | `data-change="EVIDENCE"` |
+| **EVIDENCE** change | luminance **transient**: rise 180 ms, decay 600 ms, peak ×1.8, on the changed element only. Any position change it causes is **cut, never eased**. It captures — that is its purpose. | `data-change="EVIDENCE"` |
 | **LAYOUT** change | position **gradient**: 900 ms, slow-in/slow-out, **no luminance change at all**. It does not capture — that is its purpose. | `data-change="LAYOUT"` |
+
+**Why "no position change" was wrong (ruling A-2).** A body's radial distance *is* its fit (B-1), so a body whose
+own evidence changed has a new pinned position by construction; the bound as first written was unsatisfiable.
+What the A3 promise actually protects is narrower and survives intact: a body moved by **somebody else's** change —
+the collision search displacing it — must never be mistakable for new evidence about itself. Hence: own evidence ⇒
+cut plus transient (it captures, correctly); displaced by others ⇒ eased, no luminance (it does not capture,
+correctly). The two remain on opposite sides of the capture boundary (R5).
 | **QUERY** motion | §E-3 oscillation, user-driven, reverting | `data-motion="QUERY"` |
 
 Phase D's three-valued `EVIDENCE | LAYOUT | NONE` stays the model. Phase E gives each value a form that the visual
@@ -206,13 +219,13 @@ Each must be **red before** it is green; a test that was never red proves nothin
 | # | Proof |
 |---|---|
 | **P-1** | At L0 the number of drawn beams equals the number of bodies with a drawable strongest coupling — and is **> 0** for the standard reading (kills M-1). |
-| **P-2** | Every arc's evidence class is recoverable from **luminance alone**: the three luminance values are distinct, ordered, and ≥ 1.6× apart (kills M-4). |
+| **P-2** | Every arc's evidence class is recoverable from **luminance alone, within the focused group**: the three bands are disjoint, ordered, and ≥ 1.6× apart at their closest points (kills M-4, M-4a). A context group dimmed by a common gain keeps its internal ratios by construction, so the proof is stated per group, never across groups. |
 | **P-3** | Selecting a capability sets exactly its coupled bodies in motion, **all at one phase**, and exactly one group exists at a time (R4). |
 | **P-4** | An EVIDENCE change produces a luminance transient and **no** position change; a LAYOUT change produces a position transition and **no** luminance change. Both directions asserted (R5, A3). |
 | **P-5** | The breath is 0.1 Hz ± 0, amplitude ≤ 1.5 %, and **stops** while pending; 0.1 Hz ≤ 3 Hz / 30 (R9). |
 | **P-6** | Under `prefers-reduced-motion: reduce` **no** element carries a non-zero animation or transition duration — breath, query motion and staging all collapse (WCAG 2.3.3). **P-6 needs a positive control**: measured on `86e36924` it passes vacuously, because nothing animates there at all. It only proves something once E-3/E-5/E-6 exist, and it must be shown red by a mutant that omits the reduced-motion branch. |
 | **P-7** | At 1280 × 800, 1600 × 1000, 1829 × 912 and 2560 × 1300 the outermost drawn element is inside the stage box and the stage box is inside the section's box (kills M-2, within the limit stated in E-8a). |
-| **P-8** | No text below 11 px; every structure stroke ≥ 1.2 px (E-7). |
+| **P-8** | No text below 11 px; every structure stroke ≥ 1.2 px; every **beam** ≥ 1.0 px (E-7, ruling A-7). Measured at **1280 × 800**, where GRÜN's baseline is worst: min stroke 0.49 px, min SVG text 5.96 px. |
 | **P-9** | **Golden vectors byte-identical**; `lib/career/mapping/` and the spec unchanged (B-1). |
 | **P-10** | Model purity: fixture render performs 0 fetches, 0 storage reads, 0 navigations (B-4). |
 | **P-11** | **INVERSE:** a mutant that puts the evidence luminance back onto one shared value turns P-2 red; a mutant that gives a LAYOUT change a luminance transient turns P-4 red; a mutant that raises the breath to 3.1 Hz turns P-5 red. |
@@ -256,3 +269,31 @@ reproduces the stage from the existing fixtures without a database and without a
   `prefers-reduced-motion`.
 - NASA Color Usage — blue on dark; Green, M. — chromatic aberration and thin strokes.
 - Lehrer/Vaschillo resonance-frequency line, with Steffen et al. 2021 as the counter-finding on pacers.
+
+---
+
+## §11 ADJUDICATIONS — THE EIGHT CONFLICTS GRÜN MEASURED
+
+GRÜN took its own red baseline on `86e36924` (ports 3030/3031, its own instrument) and found eight places where
+this document contradicts itself or the code. Every ruling below is GELB's. Where GRÜN measured better than I did,
+that is said plainly.
+
+| # | Conflict | Ruling |
+|---|---|---|
+| **A-1** | **E-8 would have made it worse.** The svg already sits inside the section at all four sizes; sizing against 100 % of the section would push its bottom from 945 to ~993, because the section is 960 px tall at 1829 × 912. | **GRÜN is right and my M-5 diagnosis was wrong in direction.** The section is *taller* than the window, not offset below it. Ruling: size by container units against the section **and** clamp, in a layout effect, to `min(section bottom, innerHeight) − gutter`. Bounds on the clamp: it is stage-owned, the host is untouched, it must converge in one pass (no measure → resize → measure loop), and it carries `data-stage-clamp` with the px it applied so PINK can measure the decision and not only the result. |
+| **A-2** | **"EVIDENCE: no position change" is unsatisfiable**, because distance *is* fit. | Accepted; wording replaced in §3. Own evidence ⇒ **cut** plus transient. Displaced by others ⇒ eased, no luminance. The protected promise was always the second one. |
+| **A-3** | **The sign table's per-state luminance crosses the classes** (UNCLEAR 0.55 < NAME_EXACT 0.70). | GRÜN proposed dropping the per-state luminance from the drawing. **Overruled, in GRÜN's favour but further:** map the table value monotonically **inside** the class band. Class recoverable from luminance alone, state gradation kept, table byte-identical. Bands in §2. |
+| **A-4** | **The phase-lock pulse** (3.2 s, luminance 0.55 ↔ 1.0, always on) breaks E-1, R4 and R6 at once. | Removing the animation: **accepted**. But the attribute alone is not a drawing. The phase-lock must keep a **static form that does not use luminance** — a mark — or, if the table defines none, its absence is stated in the provenance line. A sign that is carried only by a data attribute is not carried. |
+| **A-5** | **The pending breath** (4.8 s while RUNNING) is motion while pending. Removal accepted. GRÜN asked to keep the **resume pulse** (6 s) because E-6 does not name it. | **Overruled: the resume pulse becomes static too.** E-6's signal is "while something is pending, the field is still". One exception destroys it — if the ring stops and a pulse starts, stillness no longer means pending. The resumePending *state* keeps its sign as a static outline, distinct from the pending outline. No semantics are lost; only the form changes, which B-5 permits and E-6 requires. |
+| **A-6** | **Static dims multiply luminance** and mix the classes across groups. | **Accepted, with the reason GRÜN did not give:** a multiplicative gain **preserves ratios**, so a dimmed context group keeps its internal ladder exactly. The contract is therefore *per group*, and P-2 is restated that way. Bound: the focused group is never dimmed, and a context group is distinguishable from the focused one. Query highlight is motion (E-3); the static luminance highlight exists **only** under reduced motion. |
+| **A-7** | **Beams are 0.7 / 0.8 px**, below E-7's 1.2 px floor; GRÜN argues they are sign, not structure. | **Partly overruled.** E-2 has just made beams the L0 grouping instrument, so they must be legible (R11). But the table's *relative* weights are sign and stay: scale all beam widths by a **common factor** — ratios preserved, as in A-6 — so the thinnest beam reaches **≥ 1.0 px**. The floor is 1.0 px rather than 1.2 px because a long collinear line is detected more easily than a short mark of the same width; every other stroke keeps 1.2 px. `k` from the measured on-screen width: **accepted**. |
+| **A-8** | **"Strongest coupling"** needed a definition. | Accepted: highest requirement value among the beam-bearing couplings, ties broken by ring order, then by `poolRequirementId` — a **total** order, so GRÜN's and PINK's renders pick the same beam. |
+
+**Two readings of GRÜN's that correct mine and are adopted into §0:** the elements outside the stage box are the
+**sector names** (2 at every size), not bodies — so P-7 is about the field's own labels, and my harness, which
+counted only bodies, nodes and the field ring, was measuring the wrong set and has been widened. And at
+**1280 × 800** the baseline is far worse than at the size I measured: min stroke 0.49 px, min SVG text 5.96 px.
+P-8 is therefore measured at 1280 × 800.
+
+**Standing instruction to GRÜN, unchanged:** where a bound and a measurement disagree, the measurement wins and I
+rewrite the bound. A-1, A-2 and A-3 are exactly that, and finding them before delivery is the point of the lane.
