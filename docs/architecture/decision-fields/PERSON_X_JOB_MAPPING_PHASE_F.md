@@ -1110,3 +1110,41 @@ count the medium's own breath as a firewall leak. On the tip the mask must be **
 harness already hides by element selector; PINK is switching to the same.
 
 **Eighth and ninth instrument defects**, both mine, both in the estimator rather than the capture.
+
+---
+
+## §22 THE HARNESS IS COMPLETE AND HONEST AT BASE
+
+All fourteen measurable obligations now run. At `9cc06f84`, with the corrected estimator (§21) and the full
+48-frame / 4.7-period window:
+
+| # | at base | verdict |
+|---|---|---|
+| PF-1 | disc median 0.00181, frac above 0.005 = 0.150 | red |
+| PF-3 | **0 halo elements present** | red — phase-F body volume not built at this tip |
+| PF-5 | 0.0134 swinging ≥ 0.004 | red |
+| PF-6 | swing max 0.0421 | red on the ceiling |
+| PF-7 | amplitudes ≈ 0, lag spread 8 657 ms, not monotone | red |
+| PF-8 | A green (0.00014 / floor 0.00001) · B red (3.45×) · C red (**236×** at 0.004) | red |
+| PF-9 | `data-breath="LIVE"` | **NOT RUN** — needs `FACADE_VARIANT=running` |
+| PF-10 | unselected amplitude 0.00002 | **INCONCLUSIVE** — see below |
+| PF-11 | ratios 6.65 / 21.09 / ∞ / ∞ | red |
+| PF-15 | 1.316 / 0.895 / 0.573 | red |
+
+**PF-9 reports NOT RUN rather than passing.** An obligation that cannot be reached in the variant under test says
+so. The `running` variant will be served for the tip measurement.
+
+**PF-10 reports INCONCLUSIVE, and this is the tenth application of A-F11.** The probe correctly selects
+`PCAP_K8` now (its earlier `""` was defect seven), and the ratio comes out at 0.47 — apparently just outside the
+0.45 bound. But the two amplitudes it divides are **0.00002 and 0.00001**, both at the noise floor. At base there
+is no field-wide breath to halve, so **a ratio of two floor values is not a measurement**. PF-10 now requires the
+unselected amplitude to be ≥ 0.0002 in its own right before the ratio means anything, and says INCONCLUSIVE
+otherwise rather than reporting a number that looks like a near-miss.
+
+That is the same error in its tenth disguise, and the first time this phase it was caught by the rule rather than
+by a lane. The discipline is working: the instrument now refuses to produce a verdict it has not earned.
+
+**Standing count: ten instrument defects, nine mine.** Seven of the ten were a measurement whose verdict could
+not depend on the build — green by construction, red by construction, a range that examined nothing, or a ratio
+of two noise values. **That class is now the first thing checked on every obligation, before it is checked
+against the build**, and §17's table is read with that check applied.
