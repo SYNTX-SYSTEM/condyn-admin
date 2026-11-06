@@ -201,3 +201,19 @@ GELB adjudicated the three notes (§12, commit 604ba3e3), the eight GRÜN confli
 
 STATE: still no phase-E commit exists (GRÜN's green is on an uncommitted tree). GO stays pinned to 86e36924.
 Instruments validated and ready; PINK re-measures the phase-E tip the moment it is committed.
+
+7. §14 BINDING REFINEMENTS (commit d60a5cd6) — adopted into PINK's delivery-pass criteria
+   7.1 UNITS BINDING. Every length in E-7/P-8 is RENDERED CSS px at the measured window, never SVG user units:
+       stroke floor 1.2 px, beam floor 1.0 px, body floor 12 px, text floor 11 px. PINK measures all four in
+       rendered px (×screen-CTM / text bbox), worst size 1280x800. A bound in user units cannot express
+       legibility and GRÜN cannot satisfy it in user units either.
+   7.2 P-7 SECOND EDGE — contain, not clip. The sector-name overrun is also a LEGIBILITY failure (pool names cut
+       by overflow:hidden at every size today). E-8 must CONTAIN the field's own labels, not clip them. On delivery
+       PINK verifies (a) every sector name's rect is inside the stage box AND (b) the name is not visually clipped,
+       and FLAGS if containment was bought by shrinking the stage — cross-check the clamp sizes GRÜN reported
+       (569/769/681/1069 px vs unclamped 520/830/742/1100) so "names happen to fit because the stage got smaller"
+       is caught, not passed.
+   7.3 Cross-instrument: GELB re-ran PINK's P-6 control on its own instrument (135 elements, 5 animating,
+       movedCount 5 motion-on / 0,0 under reduce) — its sampler queried [mapping-field] * so it was not blind, but
+       had never been SHOWN to detect motion until PINK's control. Validated, not assumed. A-8 total order: PINK's
+       render must pick the same PRIMARY beam as GRÜN's; a mismatch is a finding, not a tolerance.
