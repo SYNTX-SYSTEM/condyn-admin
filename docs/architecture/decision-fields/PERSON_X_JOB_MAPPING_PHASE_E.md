@@ -525,3 +525,50 @@ and discards the requirement-level ones. The information is computed and thrown 
 Still open and declared: the **LAYOUT** direction is browser-unproven (unit and CSS only), because a displacement
 caused by *another* role is hard to provoke through a fixture pair without changing the displaced role too.
 Stated, not hidden.
+
+---
+
+## §17 PINK ON THE TIP — P-13 REPRODUCED, AND TWO PLACES WHERE MY READING WAS THE LOOSER ONE
+
+PINK drove the same path on its own render and reproduced **P-13 red**: the arc's state changes on both the L0
+beam and `mapping-arc-q_covers`, while peak `data-change="EVIDENCE"` is 0 and nothing moves. Derived, not accepted.
+
+**PINK's code reading adds a constraint E-4b needs.** The transient rule is
+`[data-mapping-body][data-change="EVIDENCE"]` — **body-scoped, with no arc selector**. So E-4b requires *both* the
+attribute on the arc *and* a CSS rule that reaches arcs. The attribute alone will not light anything.
+
+### The two corrections, both mine
+
+**P-2 — my instrument was looser than my own contract.** §2 already binds the separation "at their closest
+points". My harness compared band **representatives** (max against max) and reported 1.89 / 2.28. The binding
+quantity is the **edge** ratio — floor of the upper band against ceiling of the lower:
+
+| adjacent pair | closest points | ratio |
+|---|---|---|
+| CHECKED ⟷ NAME_ONLY | 0.958 against 0.528 | **1.814** |
+| NAME_ONLY ⟷ NONE | 0.450 against 0.232 | **1.940** |
+
+Both clear 1.6, so P-2 holds — but the true worst-case margin is **1.81, not 1.89**. My harness now measures edges
+and reports PINK's numbers exactly. The contract was right; the instrument was not.
+
+**P-8 — PINK re-tripped its own user-unit defect and fixed it.** Both instruments now read 1.202 / 1.575 / 11.022
+at 1280 × 800 with four bodies at the floor. PINK's observation stands as a warning: the stroke sits essentially
+**at** 1.2 and the text **at** 11.02. GRÜN's stated 0.2 % headroom is all there is. The bound holds at the four
+measured sizes; it would not survive a change to the stage scale that nobody re-measured, and P-8 must therefore
+be re-run at the four sizes after any geometry change, not inherited.
+
+### Adopted
+
+- **The inverse of P-13 is vacuous at this tip** — PINK's own flag, and correct: with the mark mechanism absent,
+  "A → A₂ marks nothing" proves only the baseline. On the E-4b tip it must be red against a mark-everything-on-
+  identity-change implementation. PINK's façade already serves the A₂ case with a fresh fetch, so the ranking
+  object identity changes while the content does not.
+- **The JS reduced-motion branch is live** — `reducedMotion()` at `:147` gates a `requestAnimationFrame` stage
+  loop at `:329`. The second (JS-branch) mutant of P-6 is therefore owed and not optional. Here the loop only
+  toggles `data-stage`, which guarded CSS consumes, so the blanket is a backstop rather than the only defence —
+  re-checked on the next tip.
+- **E-8b bound 3 is green** on PINK's own harness: the clamp is scroll-invariant and resize-convergent in one
+  pass, the stage byte-identical across scroll-to-bottom, return and resize, and the names stay contained while
+  scrolled.
+
+**Still browser-unproven, and still stated:** the LAYOUT direction of P-4.
