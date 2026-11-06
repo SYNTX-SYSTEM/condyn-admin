@@ -257,7 +257,7 @@ describe("MAP-E-FIELD · P-13 / E-4b — evidence that changed while nothing mov
 
   it("precondition: the flip is a pure evidence change — the same fit, rank, tier and order for every role", () => {
     const a = rankingOf(roles()), b = rankingOf(flipped());
-    expect(b.ranks.map(r => [r.poolRoleId, r.rank, r.tier, r.fit])).toEqual(a.ranks.map(r => [r.poolRoleId, r.rank, r.tier, r.fit]));
+    expect(b.ranks.map(r => [r.role.poolRoleId, r.rank, r.tier, r.fit])).toEqual(a.ranks.map(r => [r.role.poolRoleId, r.rank, r.tier, r.fit]));
   });
 
   it("REPRODUCE at L0: exactly the changed requirement is marked EVIDENCE (on its tick, or on its body where the collar cannot draw it); nothing moves; it is stated", () => {
