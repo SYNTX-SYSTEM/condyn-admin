@@ -232,6 +232,9 @@ describe("MAP-E-FIELD · P-4 / E-4 — evidence is cut and lit; layout eases", (
     const x = byTestId(tree, `mapping-body-${POOL_A}:role_x`)!, y = byTestId(tree, `mapping-body-${POOL_A}:role_y`)!;
     expect([x.props["data-change"], y.props["data-change"]]).toEqual(["EVIDENCE", "LAYOUT"]);
     expect((x.props.style as Record<string, string>).transform, "own evidence: the place is the new one at once (cut)").not.toBe(before[`mapping-body-${POOL_A}:role_x`]);
+    // The cut is structural: a body whose own evidence changed is a NEW element (its key carries the reading), so no transition can
+    // ever carry it from its old place; a displaced one keeps its element, so its place can ease.
+    expect([String(x.key).includes("#"), String(y.key).includes("#")], "EVIDENCE remounts, LAYOUT keeps its element").toEqual([true, false]);
     for (const b of [x, y]) expect(Object.keys(b.props.style as object).filter(k => /transition|animation|filter|opacity/i.test(k)), "no inline motion: the forms are the stylesheet's").toEqual([]);
     expect([x.props.opacity, y.props.opacity], "a LAYOUT change has no luminance change").toEqual([1, 1]);
     expect(byTestId(tree, "mapping-delta-evidence")!.props["data-count"]).toBe(1);
