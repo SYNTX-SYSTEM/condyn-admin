@@ -455,3 +455,44 @@ ALL SURVIVE (bracketed null, joint LSQ, window/adequacy rule, per-class masks, t
 they govern how light and time behave, not where things sit. PINK's design-input (thinking, not measuring) sent to
 GELB: see §12 for the overlap/occlusion risk to the firewall+bands, the solved-position determinism risk, and a
 proposed presence/salience obligation.
+
+
+§12  PINK DESIGN-INPUT FOR THE RELATIONAL LAYOUT (thinking, not measuring; GELB's two questions)
+------------------------------------------------------------------------------------------------
+Q1 — what makes the firewall (PF-8) and the evidence bands (PF-2/A-3) meaningless under a relational layout:
+  Both rest on ONE premise — every mark's seat is the STATIC resting MEDIUM at its location, so the mark's
+  luminance is absolute and ground-independent. The relational layout's new power (bodies anywhere, overlap,
+  occlude) is exactly what voids that premise:
+  - OVERLAP/OCCLUSION is the killer. A mark drawn over a breathing body core/halo (F-3 depth breathes) or over
+    another mark has a backdrop that is neither static nor medium. Then PF-8 goes red for a correct build (the
+    mark breathes because its backdrop does) and PF-2/A-3 stop being absolute (rendered luminance depends on what
+    is behind). Both silently become unmeasurable wherever marks can overlap breathing elements.
+  - The per-class MASK technique (hide-a-class, diff under reduced-motion) silently fails under overlap: hiding a
+    sign then reveals ANOTHER sign, not medium, so neither the mask nor "what's behind" is well defined.
+  - PF-15 dies with the rings (it IS the polar coordinate system). PF-7 ("phase monotone in RADIUS") and PF-3/PF-4
+    ("depth = rank on radius") lose their spatial anchor. PF-5/PF-6/PF-17/PF-18 need "disc/medium" redefined
+    wherever the medium now lives (the concepts survive; the polar domain does not).
+  FIX OPTIONS: (a) a LAYOUT CONSTRAINT — sign-bearing marks never overlap a breathing element (protects the
+  firewall and the bands by construction); or (b) redefine the firewall DIFFERENTIALLY — a mark vs its OWN static
+  backdrop, computed per-mark from whatever is actually behind it, with z-order-aware isolation instead of
+  hide-and-diff. (a) is cleaner and testable; (b) is more general but needs the backdrop made static per mark.
+Q2 — solved (not closed-form) position: determinism stops being BY CONSTRUCTION and must be MEASURED.
+  Every obligation we own assumes same input -> same picture. A solver breaks that in named ways:
+   1 seed/init dependence; 2 iteration-order + float non-associativity (platform/run variance); 3 convergence-
+   tolerance drift (stops at "good enough", lands at different near-optima); 4 SENSITIVITY / non-Lipschitz — a one-
+   datum change moves the WHOLE layout, which kills every delta proof (P-13, previous->next, "a mutant moves
+   exactly one thing"); 5 non-unique optima / symmetry needing a deterministic tie-break; 6 data-dependent OVERLAP
+   (ties back to Q1 — the solver can produce the very occlusion that voids the firewall).
+  For determinism to be PROVABLE not asserted, phase G needs, BEFORE any pixel obligation:
+   - GEOMETRY-DETERMINISM: positions byte-identical across N runs, a SHUFFLED input order, and platforms; red-first
+     by reseeding / loosening tolerance. (A-8's total order extended from beam-pick to POSITION — every tie broken
+     by a documented total order on stable ids.)
+   - GEOMETRY-STABILITY: a bounded single-datum perturbation yields a bounded and LOCAL displacement (a Lipschitz
+     bound, and only the affected region moves); red-first by a global/ill-conditioned solve. Without it no delta
+     proof is interpretable.
+  Meta: today's proof surface is deterministic-by-construction; a solved layout makes it deterministic-that-must-be-
+  measured. Those two obligations are the new foundation; every light/time obligation sits on top of them.
+Q3 (unasked, but it is the rejection): there is no obligation for how much PRESENCE the relations are entitled to.
+  Propose a SALIENCE/PRESENCE BUDGET: the relations (bodies + couplings) must carry at least the scaffold/medium's
+  share of the field's contrast-energy (or above-threshold luminance-variance / a salience measure). A field where
+  the medium carries most of the energy is a "target"; this is the measurable whose absence let 93c47e03 pass.
