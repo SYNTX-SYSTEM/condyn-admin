@@ -646,3 +646,86 @@ outer edge rather than the band. The radius now comes from the SVG geometry thro
 sampling window follows each element's own stroke width. The uncorrected run reported 1.212 · 1.267 · 0.573; the
 corrected one 1.316 · 0.895 · 0.573. Both are red, but the uncorrected one was red for partly the wrong reason,
 and I would have sent GRÜN a wrong ring to chase.
+
+---
+
+## §14 PINK'S BASELINE, AND THE NOISE FLOOR THAT MAKES THREE PROOFS RED BY CONSTRUCTION
+
+PINK delivered its Q-F1…Q-F6 baseline on `9cc06f84` from its own instrument and its own render — a production
+build on its own ports, 5 server-side fixture GETs per load, 0 unscripted — and **committed it (`5a3a7847`)
+before reading §0**, so the independence is provable in git rather than asserted. The §0 cross-check is in
+`7d33129f`; evidence under `docs/architecture/decision-fields/evidence/mapping-phase-f-contract/`.
+
+**Agreement.** M-F1 ≡ Q-F1, M-F2 ≡ Q-F4/Q-F6, M-F3 ≡ Q-F6 (0.0089 from both), M-F6 ≡ Q-F3 (0.00016 vs 0.000152),
+at both viewport sizes. Two divergences, both explained and neither an instrument fault: M-F4's body peaks
+(0.307–0.547 vs 0.48–0.635) is p98-inside against max; M-F5's peak swing (0.0427 vs 0.0339) is the per-pixel
+maximum — which is exactly the statistic the next paragraph disqualifies. PINK also reproduced my onboarding
+warning: the overlay was present on a fresh profile.
+
+### A-F10 · Three of my proofs are red by construction, and the cause is the instrument *(PINK — accepted)*
+
+Under `reduce`, with **zero** field animations running, the rendered image is still not frame-identical. PINK
+bucketed the residual by source:
+
+| source | max swing | share |
+|---|---|---|
+| mark edges (bodies, arcs, nodes) | **0.0275** | 7.7 % of mark px > 0.002; 2.27 % > 0.006 |
+| ring stroke edge | **0.032** | the whole-square maximum sits here |
+| quiet mid-disc (host through the ground) | 0.0059 | low-amplitude, removed by `DISC_GROUND_OPAQUE` |
+
+The mid-disc component independently corroborates A-F4 with a third instrument. **The high maxima do not: they
+are antialiasing jitter on the field's own bright edges, and an opaque ground does not remove them.** This is
+software raster (SwiftShader, dsf = 1) and is build-independent.
+
+Consequence, and it is serious:
+
+- **PF-8** (p99 of mark pixels ≤ 0.002, max ≤ 0.006): **both limbs already red at base from AA alone**, with the
+  firewall working and nothing breathing at all.
+- **PF-11** ("every pixel identical", even disc-scoped): **unachievable**, because the field's own edges jitter by
+  0.027–0.032 with nothing moving.
+- **PF-6**'s ceiling ("no pixel > 0.030"): borderline — the ring edge reaches 0.032.
+
+**This is phase E's failure mode inverted.** P-6 was *green* by construction and so carried no information. These
+three are *red* by construction and carry exactly as little. A proof whose verdict does not depend on the build is
+not a proof, in either direction. That I wrote three of them while explicitly hunting for the first kind is the
+thing worth recording.
+
+PF-5 and PF-6's **floor** are unaffected: PINK measured that a 2 px blur keeps the breath (52 292 px > 0.002) and
+collapses the jitter (2 225) — a **23 : 1** separation. Area statistics are robust; per-pixel extremes are not.
+
+### A-F11 · Every temporal bound carries its own measured noise floor *(GELB — the rule this forces)*
+
+The fix is not to loosen three numbers. It is that **a temporal bound stated without the instrument's noise floor
+is not a bound**, and phase F had six of them. The rule, binding on all three lanes:
+
+> Every temporal obligation is measured on **2 px-blurred frames**, and every run measures its own **jitter
+> floor** in the same pass: the same statistic computed on two screenshots taken back to back, as fast as the
+> renderer allows, where nothing can have changed. A bound is only admissible if the measured signal separates
+> from that floor by **≥ 5×**. A run whose floor comes within 5× of its bound reports **inconclusive**, not green
+> and not red.
+
+The back-to-back pair is the key: it is a reference in which we *know* nothing moved, taken on the same build,
+the same page and the same renderer, so no assumption about the machine enters the proof.
+
+The blur is not a concession. **R15 says the eye is low-pass at these luminances**, so a one-pixel antialiasing
+extreme is not a percept at all; measuring at the spatial scale the visual system integrates over is the more
+correct measurement, and it happens also to be the robust one.
+
+**Amended:**
+- **PF-6** — ceiling on 2 px-blurred frames: no blurred disc pixel swings > 0.030; mean |ΔL| per 500 ms ≤ 0.0025.
+- **PF-8** — the firewall is measured as the **coherent amplitude at 0.1 Hz** over sign and structure pixels,
+  fitted by least squares against one period (the same fit PF-7 already uses), on 2 px-blurred frames: ≤ 0.002.
+  Antialiasing jitter is incoherent and contributes almost nothing to a fitted amplitude; a real leak from the
+  breath is coherent at exactly that frequency by definition. This discriminates leak from raster directly
+  rather than tolerating the raster.
+- **PF-11** — on 2 px-blurred frames, no disc pixel differs by more than **2× the measured jitter floor** between
+  two samples ≥ 2 s apart, and the count exceeding it is 0; plus phase E's half (a), no element with a non-zero
+  computed animation or transition duration. Deliberately broadband, not frequency-fitted: PF-11 must catch
+  *any* motion, including a rAF tween at no particular frequency — which is the mutant PINK proved live in phase E.
+
+### M-F5 corrected
+
+M-F5 reported the rim ring's breath as a 0.0427 per-pixel swing. PINK's finding says part of that is raster
+jitter on the ring's own edge, not breath; PINK's own figure is 0.0339 and is subject to the same caveat. **The
+conclusion is unchanged and if anything strengthened** — the breath's *coherent* component is smaller than either
+raw number suggested, so phase E's ring was even less visible than §0 claimed.
