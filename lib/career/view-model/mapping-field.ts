@@ -451,3 +451,18 @@ export interface BodyMotion { readonly change: ChangeKind | null; readonly query
 export function motionKind(movement: BodyMovement | undefined, queried: boolean): BodyMotion {
   return { change: movement?.kind ?? null, query: queried };
 }
+
+/**
+ * E-4b · evidence that changed without anything moving. The delta already names it at the requirement — REQUIREMENT_STATE_CHANGED
+ * (its source or its state) and REQUIREMENT_KEY_CHANGED (the capability it couples) — and bodyMovements, reading only the role
+ * kinds, let it pass in silence. Here it is kept: the set of `${roleKey}\u0000${poolRequirementId}` whose own evidence changed
+ * since the previous reading of the same analysis. No new delta kind, no new rule: the engine's own diff, read once more.
+ */
+export function arcChanges(previous: FieldSnapshot | null, next: FieldSnapshot): ReadonlySet<string> {
+  const out = new Set<string>();
+  if (previous === null || previous.analysisId !== next.analysisId) return out;
+  for (const change of diffRankings(previous.ranking, next.ranking)) {
+    if ((change.kind === "REQUIREMENT_STATE_CHANGED" || change.kind === "REQUIREMENT_KEY_CHANGED") && change.poolRequirementId !== null) out.add(`${roleKey(change.role)}\u0000${change.poolRequirementId}`);
+  }
+  return out;
+}

@@ -279,7 +279,10 @@ describe("MAP-E-ARCH · B-4 … B-8 — the change set", () => {
 
   it("B-5: no invented semantics — the model's additions name only the table's classes, the delta's two movement kinds and their forms", () => {
     const literals = addedSinceE(MODEL).flatMap(line => [...line.matchAll(/"([A-Z][A-Z_]+)"/g)].map(m => m[1]));
-    const allowed = new Set(["SEMANTIC", "LEXICAL", "NONE", "CHECKED", "NAME_ONLY"]);
+    // The engine's own vocabulary (its classes, states and delta kinds) may be read; anything else would be invented here.
+    const engine = git("ls-files", "lib/career/mapping").map(f => readFileSync(join(ROOT, f), "utf8")).join("\n");
+    const vocabulary = new Set([...engine.matchAll(/"([A-Z][A-Z_]+)"/g)].map(m => m[1]));
+    const allowed = new Set(["CHECKED", "NAME_ONLY", ...vocabulary]);
     expect([...new Set(literals)].filter(l => !allowed.has(l)), "a new state or class would be a new literal").toEqual([]);
     const data = addedSinceE(COMPONENT).flatMap(line => [...line.matchAll(/data-(?:change|motion|beam-rank|breath|stage|evidence-step)=\{?"?([^"}\s]*)/g)].map(m => m[1]));
     expect(data.length).toBeGreaterThan(0);

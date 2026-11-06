@@ -8,7 +8,7 @@ import type { AutoMatchWatch, JobRankingState } from "../../../../lib/career/ui/
 import { FOCUS_INITIAL, type FocusState } from "../../../../lib/career/mapping/focus";
 import type { CouplingClass } from "../../../../lib/career/mapping/signs";
 import {
-  CLASS_LINE, PRIMARY_BEAM_LUMINANCE, bodyMovements, collarSplit, fieldFocusReduce, fieldLevel, fieldViewBox, levelBeams, luminanceOf, mappingFieldModel, markedArc, markedBody,
+  CLASS_LINE, PRIMARY_BEAM_LUMINANCE, arcChanges, bodyMovements, collarSplit, fieldFocusReduce, fieldLevel, fieldViewBox, levelBeams, luminanceOf, mappingFieldModel, markedArc, markedBody,
   motionKind, primaryBeams, ringRadius, roleViewBox, sectorViewBox, selectedCapability, sizeFloor, EVIDENCE_STEP,
   type BodyMovement, type FieldAction, type FieldArc, type FieldBeam, type FieldBody, type FieldSector, type FieldSnapshot, type MappingFieldModel, type ViewBox
 } from "../../../../lib/career/view-model/mapping-field";
@@ -134,6 +134,7 @@ export const MAPPING_FIELD_CSS = `
 [data-testid="mapping-field"] [data-testid="mapping-ring-field"][data-breath="LIVE"] { animation: mappingFieldRingBreath ${MOTION.breath.periodMs}ms linear infinite; }
 [data-testid="mapping-field"] [data-motion="QUERY"] { animation: mappingFieldQuery ${MOTION.query.periodMs}ms linear infinite; }
 [data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"] { animation: mappingFieldTransient ${transientTotal}ms linear 1; }
+[data-testid="mapping-field"] [data-mapping-arc][data-change="EVIDENCE"] { animation: mappingFieldTransient ${transientTotal}ms linear 1; }
 [data-testid="mapping-field"] [data-mapping-body][data-change="LAYOUT"] { transition: transform ${MOTION.layout.durationMs}ms ${MOTION.layout.easing}; }
 [data-testid="mapping-field"] [data-stage-part="EVIDENCE"] { animation: mappingFieldEvidence ${MOTION.stage.evidenceMs}ms linear ${MOTION.stage.evidenceFromMs}ms both; }
 [data-testid="mapping-field"][data-frozen="true"] *, [data-testid="mapping-field"][data-frozen="true"] { animation: none !important; transition: none !important; }
@@ -162,13 +163,16 @@ function arcPath(cx: number, cy: number, r: number, start: number, end: number):
 }
 const testKey = (b: Pick<FieldBody, "id">) => `${b.id.jobPoolUploadId}:${b.id.poolRoleId}`;
 const NO_MOVES: ReadonlyMap<string, BodyMovement> = new Map();
+const NO_ARC_CHANGES: ReadonlySet<string> = new Set();
 
 /**
  * One requirement arc, drawn from its sign only: the line (solid · dotted · broken · open = its two ends and nothing between), the
  * filled fraction as an inner band, the mark, the luminance. The same function draws a collar tick at L0/L1 and a ring arc at L2/L3.
  */
-function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, interactive }: {
+function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, interactive }: {
   arc: FieldArc; cx: number; cy: number; r: number; k: number; testId: string; emphasis?: boolean;
+  /** E-4b: the reading in which this requirement's own evidence changed (its arc lights once; a new reading replays it), or null. */
+  change?: number | null;
   interactive?: { onOpen(): void; onMark(): void; onClear(): void; label: string; open: boolean; marked: boolean };
 }): React.ReactElement {
   const s = arc.sign;
@@ -181,7 +185,7 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, interactive }: {
   const fillEnd = arc.startDegrees + arc.spanDegrees * s.arcFill;
   return (
     <g
-      key={arc.poolRequirementId} data-testid={testId} data-mapping-arc data-requirement={arc.poolRequirementId} data-state={arc.state} data-class={arc.class} data-line={s.arcLine} data-fill={s.arcFill}
+      key={change === null ? arc.poolRequirementId : `${arc.poolRequirementId}#${change}`} data-testid={testId} data-mapping-arc data-change={change === null ? undefined : "EVIDENCE"} data-requirement={arc.poolRequirementId} data-state={arc.state} data-class={arc.class} data-line={s.arcLine} data-fill={s.arcFill}
       data-beam={s.beam} data-phase-locked={String(s.phaseLocked)} data-mark={s.mark} data-luminance={s.luminance} data-evidence-step={EVIDENCE_STEP[s.class]} data-evidence-luminance={luminanceOf(s)}
       data-open={String(interactive?.open === true)} data-marked={String(interactive?.marked === true)} data-emphasis={String(emphasis)}
       opacity={luminanceOf(s)}
@@ -273,6 +277,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     setReadings(pair);
   }
   const movements = useMemo(() => (pair.now === null ? NO_MOVES : bodyMovements(pair.before, pair.now)), [pair]);
+  const changedArcs = useMemo(() => (pair.now === null ? NO_ARC_CHANGES : arcChanges(pair.before, pair.now)), [pair]);
 
   // E-8 / A-1 / E-8b / E-8c · the stage measures itself once per size: its section's box, the part of it inside the first window
   // height, the focus strip's bottom edge, and its own drawn width (k, A-7). The clamp and the top read only the section, the strip
@@ -383,6 +388,9 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
   const collarR = (b: FieldBody) => radiusOf(b) + 2.6 * k;
   const layoutShifts = [...movements.values()].filter(m => m.kind === "LAYOUT").length;
   const evidenceChanges = [...movements.values()].filter(m => m.kind === "EVIDENCE").length;
+  // E-4b: a requirement whose own evidence changed lights on its own arc, moved or not; the reading's count is stated (E-9).
+  const requirementChanges = changedArcs.size;
+  const arcChange = (b: Pick<FieldBody, "key">, arc: FieldArc) => (changedArcs.has(`${b.key}\u0000${arc.poolRequirementId}`) ? pair.seq : null);
   const displacedDrawn = shown.some(b => b.displaced);
   const floored = shown.filter(b => drawnRadius.get(b.key)?.floor === true).length;
   /** D-Q3: each small body's collar, in ring order; what it cannot carry is counted (L0/L1 only — L2/L3 draw the full ring). */
@@ -405,6 +413,11 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     const queried = selected !== null && selected.roles.has(b.key) && (level === "L0" || level === "L1");
     const motion = motionKind(move, queried);
     const evidenceMove = motion.change === "EVIDENCE";
+    // E-4b: a changed requirement this body cannot draw at this level (beyond its collar) lights the body itself, in place.
+    const collarNow = collars.get(b.key) ?? null;
+    const drawnHere = new Set((collarNow === null ? b.arcs : collarNow.drawn).map(a => a.poolRequirementId));
+    const hiddenChange = !evidenceMove && b.arcs.some(a => arcChange(b, a) !== null && !drawnHere.has(a.poolRequirementId));
+    const change = motion.change ?? (hiddenChange ? "EVIDENCE" : null);
     const layoutShift = motion.change === "LAYOUT";
     const isMarked = marked?.key === b.key;
     const lit = selected === null || selected.roles.has(b.key);
@@ -420,9 +433,9 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     const named = level === "L0" ? BODY_NAMES_AT_L0 || isMarked || (selected !== null && selected.roles.has(b.key)) : inPoolNow;
     return (
       <g
-        key={evidenceMove ? `${b.key}#${pair.seq}` : b.key}
+        key={change === "EVIDENCE" ? `${b.key}#${pair.seq}` : b.key}
         data-testid={`mapping-body-${testKey(b)}`} data-mapping-body data-rank={b.rank} data-tier={b.tier} data-class={b.class} data-line={b.line} data-shelf={String(b.shelf)}
-        data-displaced={String(b.displaced)} data-moved={String(evidenceMove)} data-movement={move?.kind ?? "NONE"} data-layout-shift={String(layoutShift)} data-change={motion.change ?? undefined}
+        data-displaced={String(b.displaced)} data-moved={String(evidenceMove)} data-movement={move?.kind ?? "NONE"} data-layout-shift={String(layoutShift)} data-change={change ?? undefined}
         data-marked={String(isMarked)} data-lit={String(lit)} data-in-pool={String(inPoolNow)} data-requirements={b.arcs.length} data-collar-hidden={collar?.hidden ?? 0}
         data-size-floor={String(floor.floor)} data-drawn-radius={fixed(r)} data-named={String(named)}
         tabIndex={focusable ? 0 : -1} role="button" aria-label={c.bodyLabel(b.rank, b.title, b.organizationName, classWord(b.class), b.arcs.length)}
@@ -446,7 +459,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
           {floor.floor && <circle data-testid={`mapping-floor-mark-${testKey(b)}`} r={1.8 * k} fill="none" stroke={`rgba(${INK}, 0.7)`} strokeWidth={structure} />}
           {collar !== null && (
             <g key={`collar|${stageKey}`} data-testid={`mapping-collar-${testKey(b)}`} data-stage-part="EVIDENCE" data-drawn={collar.drawn.length} data-hidden={collar.hidden}>
-              {collar.drawn.map(arc => arcSign({ arc, cx: 0, cy: 0, r: collarR(b), k, testId: `mapping-tick-${testKey(b)}:${arc.poolRequirementId}` }))}
+              {collar.drawn.map(arc => arcSign({ arc, cx: 0, cy: 0, r: collarR(b), k, testId: `mapping-tick-${testKey(b)}:${arc.poolRequirementId}`, change: arcChange(b, arc) }))}
             </g>
           )}
           {layoutShift && <rect data-testid={`mapping-layout-shift-${testKey(b)}`} x={-r - 5 * k} y={-r - 5 * k} width={2.6 * k} height={2.6 * k} fill="none" stroke={`rgba(${INK}, 0.8)`} strokeWidth={structure} />}
@@ -470,7 +483,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
       data-run-state={run.state} data-field-motion={run.sign.fieldMotion} data-frozen={String(run.sign.frozen)} data-pending-breath={String(run.pendingBreath)}
       data-resume-pulse={String(run.sign.resumePulse)} data-evidence-class={evidence} data-authority-state={model.authority.authorityState} data-decision={String(model.authority.decision)}
       data-names-only={String(model.namesOnly)} data-bodies={model.bodies.length} data-overflow={model.overflowCount} data-beams={drawnBeams.length} data-layout-shifts={layoutShifts}
-      data-evidence-changes={evidenceChanges} data-breath={breathLive ? "LIVE" : "STILL"} data-stage="SETTLED" data-size-floors={floored}
+      data-evidence-changes={evidenceChanges} data-requirement-changes={requirementChanges} data-breath={breathLive ? "LIVE" : "STILL"} data-stage="SETTLED" data-size-floors={floored}
       onKeyDown={event => {
         if (event.key !== "Escape") return;
         if (level !== "L0") { event.stopPropagation(); act({ type: "UP" }); } else if (focus.selection !== null) { event.stopPropagation(); act({ type: "CLEAR_SELECTION" }); }
@@ -491,6 +504,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         <span data-testid="mapping-field-authority" data-authority-state={model.authority.authorityState} data-decision={String(model.authority.decision)} style={meta}>{c.authority}</span>
         {model.namesOnly && <span data-testid="mapping-provenance" style={{ ...statement, fontSize: "12px", color: "rgba(214, 236, 248, 0.94)" }}>{c.namesOnly}</span>}
         {evidenceChanges > 0 && <span data-testid="mapping-delta-evidence" data-count={evidenceChanges} style={{ ...meta, color: "rgba(214, 240, 252, 0.95)" }}>{c.evidenceChanged(evidenceChanges)}</span>}
+        {requirementChanges > 0 && <span data-testid="mapping-delta-requirements" data-count={requirementChanges} style={{ ...meta, color: "rgba(214, 240, 252, 0.95)" }}>{c.requirementsChanged(requirementChanges)}</span>}
         {layoutShifts > 0 && <span data-testid="mapping-layout-shifts" data-count={layoutShifts} style={meta}>{c.layoutShifts(layoutShifts)}</span>}
         {phaseLockOnView && <span data-testid="mapping-phase-lock-still" style={meta}>{c.phaseLockStill}</span>}
 
@@ -652,7 +666,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
               const isMarkedArc = markedReq?.poolRequirementId === arc.poolRequirementId;
               return arcSign({
                 arc, cx: openBody.x, cy: openBody.y, r: ringR, k, testId: `mapping-arc-${arc.poolRequirementId}`,
-                emphasis: selected !== null && arc.coupling?.capabilityKey === selected.key,
+                emphasis: selected !== null && arc.coupling?.capabilityKey === selected.key, change: arcChange(openBody, arc),
                 interactive: {
                   open: isOpen, marked: isMarkedArc, label: c.arcLabel(arc.requirementText, c.state[arc.state], arc.coupling?.capabilityName ?? null),
                   onOpen: () => act({ type: "OPEN_REQUIREMENT", poolRequirementId: arc.poolRequirementId }),

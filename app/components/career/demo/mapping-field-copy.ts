@@ -77,6 +77,8 @@ export interface MappingFieldCopy {
   sizeFloor: (n: number) => string;
   /** Phase E · E-9: the roles whose own evidence changed since the previous reading (each lit briefly, where it now stands). */
   evidenceChanged: (n: number) => string;
+  /** Phase E · E-4b / E-9: requirements whose own evidence changed while nothing moved; each lit once on its arc. */
+  requirementsChanged: (n: number) => string;
   /** Phase E · A-4: the phase lock has no static form in the sign table; its absence is stated, never left to an attribute. */
   phaseLockStill: string;
   /** Phase E · E-2: bodies whose strongest relation starts at no capability of the person (not in it, or no key) draw no line. */
@@ -154,6 +156,7 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     breath: "The outer ring breathes slowly while the field is live and nothing is pending; while something is pending, it stands still.",
     sizeFloor: n => `${n} ${n === 1 ? "body is" : "bodies are"} drawn at the legible minimum ◦ — smaller in the data than drawn.`,
     evidenceChanged: n => `${n} ${n === 1 ? "role's own evidence changed" : "roles' own evidence changed"} since the previous reading; each lit up once where it now stands.`,
+    requirementsChanged: n => `${n} ${n === 1 ? "requirement's own evidence changed" : "requirements' own evidence changed"} since the previous reading; each lit up once on its arc, nothing moved for it.`,
     phaseLockStill: "The phase lock of checked couplings to their capability has no still sign in the sign table; it is not drawn here.",
     primaryUndrawn: n => `${n} ${n === 1 ? "job's strongest relation starts" : "jobs' strongest relations start"} at no capability of the person; no line is drawn for ${n === 1 ? "it" : "them"}.`
   },
@@ -227,6 +230,7 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     breath: "Der äußere Ring atmet langsam, solange das Feld lebt und nichts aussteht; steht etwas aus, steht er still.",
     sizeFloor: n => `${n} ${n === 1 ? "Körper ist" : "Körper sind"} in der lesbaren Mindestgröße gezeichnet ◦ — in den Daten kleiner als gezeichnet.`,
     evidenceChanged: n => `Bei ${n} ${n === 1 ? "Rolle hat" : "Rollen hat"} sich seit der vorigen Lesung die eigene Evidenz geändert; ${n === 1 ? "sie leuchtete" : "jede leuchtete"} einmal dort auf, wo sie jetzt steht.`,
+    requirementsChanged: n => `Bei ${n} ${n === 1 ? "Anforderung hat" : "Anforderungen hat"} sich seit der vorigen Lesung die eigene Evidenz geändert; ${n === 1 ? "sie leuchtete" : "jede leuchtete"} einmal auf ihrem Bogen auf, bewegt hat sich dafür nichts.`,
     phaseLockStill: "Die Phasenbindung geprüfter Kopplungen an ihre Fähigkeit hat in der Zeichentabelle kein stilles Zeichen; sie wird hier nicht gezeichnet.",
     primaryUndrawn: n => `Bei ${n} ${n === 1 ? "Job beginnt die stärkste Beziehung" : "Jobs beginnt die stärkste Beziehung"} an keiner Fähigkeit der Person; dafür wird keine Linie gezeichnet.`
   }

@@ -111,7 +111,7 @@ describe("MAP-E-NEURO · P-3 / E-3 — the query motion", () => {
 describe("MAP-E-NEURO · P-4 / E-4 — the capture boundary", () => {
   it("REPRODUCE: EVIDENCE is a luminance transient (rise 180 ms, decay 600 ms, peak ×1.8) with no position change", () => {
     const evidence = ruleFor('[data-change="EVIDENCE"]');
-    expect(evidence.length).toBe(1);
+    expect(evidence.length, "body and requirement (E-4b)").toBe(2);
     expect(evidence[0].body, "no position transition on own evidence").not.toMatch(/transition/);
     const a = animation(evidence[0].body)!;
     expect([a.duration * 1000, a.iterations]).toEqual([CONTRACT.transient.riseMs + CONTRACT.transient.decayMs, "1"]);
@@ -133,7 +133,9 @@ describe("MAP-E-NEURO · P-4 / E-4 — the capture boundary", () => {
   it("inverse: no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE", () => {
     const transient = keyframes(MAPPING_FIELD_CSS, "mappingFieldTransient").length > 0 ? "mappingFieldTransient" : "";
     const users = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && transient !== "" && r.body.includes(transient));
-    expect(users.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"]']);
+    // E-4b: the same transient on the body whose own evidence moved it, and on the requirement whose own evidence changed in place.
+    expect(users.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-mapping-body][data-change="EVIDENCE"]', '[data-testid="mapping-field"] [data-mapping-arc][data-change="EVIDENCE"]']);
+    for (const r of users) expect(r.body, r.selector).toBe(users[0].body);
     const positional = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /transition:\s*transform/.test(r.body));
     expect(positional.map(r => r.selector)).toEqual(['[data-testid="mapping-field"] [data-mapping-body][data-change="LAYOUT"]']);
   });

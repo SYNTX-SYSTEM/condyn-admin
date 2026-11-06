@@ -245,6 +245,54 @@ describe("MAP-E-FIELD · P-4 / E-4 — evidence is cut and lit; layout eases", (
   });
 });
 
+describe("MAP-E-FIELD · P-13 / E-4b — evidence that changed while nothing moved is lit, not silent", () => {
+  /** The all-states role with exactly one requirement COVERS → EQUIVALENT: both carry the same value, so fit, rank, tier and order hold. */
+  const flipped = () => roles().map(r => r.roleId !== "role_all" ? r : { ...r, requirements: r.requirements.map(q =>
+    (q as { poolRequirementId: string }).poolRequirementId === reqOf("COVERS") ? sem(reqOf("COVERS"), "REQUIRED", "EQUIVALENT", "PCAP_TS", "TypeScript") : q) });
+  const marked = (tree: unknown) => all(tree, e => e.props?.["data-change"] === "EVIDENCE" || e.props?.["data-change"] === "LAYOUT");
+  const places = (tree: unknown) => Object.fromEntries(bodies(tree).map(b => [b.props["data-testid"], (b.props.style as Record<string, string>).transform]));
+
+  it("precondition: the flip is a pure evidence change — the same fit, rank, tier and order for every role", () => {
+    const a = rankingOf(roles()), b = rankingOf(flipped());
+    expect(b.ranks.map(r => [r.poolRoleId, r.rank, r.tier, r.fit])).toEqual(a.ranks.map(r => [r.poolRoleId, r.rank, r.tier, r.fit]));
+  });
+
+  it("REPRODUCE at L0: exactly the changed requirement is marked EVIDENCE (on its tick, or on its body where the collar cannot draw it); nothing moves; it is stated", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    let tree = view.settle(props());
+    const before = places(tree);
+    tree = view.settle(props(flipped()));
+    expect(places(tree), "nothing moved").toEqual(before);
+    expect(bodies(tree).map(b => b.props["data-movement"]), "no movement of any kind").toEqual(bodies(tree).map(() => "NONE"));
+    const tick = byTestId(tree, `mapping-tick-${POOL_A}:role_all:${reqOf("COVERS")}`);
+    const body = byTestId(tree, `mapping-body-${POOL_A}:role_all`)!;
+    const carrier = tick ?? body;
+    expect(marked(tree).map(e => e.props["data-testid"]), "one mark, on the changed requirement").toEqual([carrier.props["data-testid"]]);
+    expect(carrier.props["data-change"]).toBe("EVIDENCE");
+    if (tick !== null) expect([tick.props["data-state"], body.props["data-change"]], "the tick shows the new state; the body stays unmarked").toEqual(["EQUIVALENT", undefined]);
+    expect(byTestId(tree, "mapping-delta-requirements")!.props["data-count"]).toBe(1);
+    expect([byTestId(tree, "mapping-delta-evidence"), byTestId(tree, "mapping-layout-shifts")]).toEqual([null, null]);
+    // Inverse: the same content read again marks nothing and states nothing.
+    tree = view.settle(props(flipped()));
+    expect(marked(tree)).toEqual([]);
+    expect(byTestId(tree, "mapping-delta-requirements")).toBeNull();
+    view.unmount();
+  });
+
+  it("REPRODUCE at L2: the open role's ring lights exactly the changed arc; the body is not marked and does not move", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const p = props();
+    let tree = open(view, p, POOL_A, "role_all");
+    const before = places(tree);
+    tree = view.settle(props(flipped()));
+    expect(field(tree).props["data-level"]).toBe("L2");
+    expect(places(tree)).toEqual(before);
+    expect(marked(tree).map(e => e.props["data-testid"])).toEqual([`mapping-arc-${reqOf("COVERS")}`]);
+    expect(byTestId(tree, `mapping-arc-${reqOf("COVERS")}`)!.props["data-state"]).toBe("EQUIVALENT");
+    view.unmount();
+  });
+});
+
 describe("MAP-E-FIELD · P-5 / E-6 — the breath stops while anything is pending", () => {
   it("REPRODUCE: LIVE only when the run is settled and nothing is due; RUNNING, STALLED and a due continuation are STILL — with a still outline each", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
