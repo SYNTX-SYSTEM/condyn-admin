@@ -1,0 +1,8 @@
+{ "commit": "716a1941",
+  "sizes": [
+    { "size": {"w":1829,"h":912}, "baseline": {"stageDoc":{"top":128,"left":536.5,"w":756,"h":756},"w":756,"h":756,"allInside":true,"scrollY":0},
+      "whileScrolled_W_H":"756x756","afterScroll_W_H":"756x756","afterResize_W_H":"756x756",
+      "scrollInvariant":true,"resizeConvergent":true,"containedWhileScrolled":true,"pass":true },
+    { "size": {"w":1280,"h":800}, "baseline": {"stageDoc":{"top":128,"left":380,"w":520,"h":520},"w":520,"h":520,"allInside":true,"scrollY":0},
+      "whileScrolled_W_H":"520x520","afterScroll_W_H":"520x520","afterResize_W_H":"520x520",
+      "scrollInvariant":true,"resizeConvergent":true,"containedWhileScrolled":true,"pass":true } ] }

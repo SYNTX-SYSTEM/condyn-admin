@@ -217,3 +217,99 @@ Instruments validated and ready; PINK re-measures the phase-E tip the moment it 
        movedCount 5 motion-on / 0,0 under reduce) — its sampler queried [mapping-field] * so it was not blind, but
        had never been SHOWN to detect motion until PINK's control. Validated, not assumed. A-8 total order: PINK's
        render must pick the same PRIMARY beam as GRÜN's; a mismatch is a finding, not a tolerance.
+
+================================================================================
+8. FIRST COMMITTED TIP — INDEPENDENT PASS ON 716a1941  (NOT A GO: P-13 is red here)
+================================================================================
+GRÜN committed 716a1941 (parent 86e36924; 10 files, +1177/-135; local, unpushed). GELB measured 11/11 on its own
+instrument and recorded one defect in its OWN spec (§16/eb6e32b1): P-13, the evidence-change-blindness case, red
+at this tip. PINK rebuilt its worktree at 716a1941 (lock byte-identical to base, node_modules copy still valid;
+prod build + next start; own façade+ports; own Playwright) and re-measured everything from the ACTUAL render.
+No number below is taken from GELB's report; each is PINK's own. GELB said GO pins to GRÜN's NEXT tip (with E-4b),
+not this one — PINK agrees: P-13 is red at 716a1941, so no GO is possible here.
+
+CODE-LEVEL CONFIRMATION OF THE P-13 HOLE (read independently, not from the report):
+  - lib/career/mapping/ is BYTE-IDENTICAL to base (B-1 holds); delta.ts emits REQUIREMENT_STATE_CHANGED /
+    REQUIREMENT_KEY_CHANGED (lines 12/24/30/69-70).
+  - view-model/mapping-field.ts bodyMovements (:365) calls diffRankings but consumes ONLY ROLE_TIER_CHANGED /
+    ROLE_FIT_CHANGED; the requirement-level kinds are computed and discarded.
+  - data-change is set on [data-mapping-body] only (component :425); the arc carries data-state only (:184/636/680).
+  - The transient CSS rule is `[data-mapping-body][data-change="EVIDENCE"]` (component :136) — bodies ONLY. No arc
+    selector exists, so even the stylesheet cannot transient an arc. E-4b's fix needs BOTH the arc attribute AND a
+    new CSS selector.
+
+P-13 — RED, REPRODUCED ON PINK'S OWN RENDER (pink-facade-p13.mts + pink-p13.mjs):
+  Drove the app's OWN polling path to a previous→next pair: auto-match RUNNING (keeps useAutoMatch polling) + job-
+  ranking reading A, then auto-match COMPLETED (rankingKey advances state:revision:rolesEvaluated:finishedAt →
+  useJobRanking re-reads) + reading B. Reading B = reading A with exactly ONE requirement (q_covers of role_all,
+  the "all-states" role) flipped COVERS→EQUIVALENT. SEMANTIC_VALUE[COVERS]==[EQUIVALENT]==1 (role-ranking.ts:20),
+  so value/contribution/fit/rank/tier/order are unchanged and the strict decoder accepts B — a PURE evidence change
+  that moves nothing. Sampled every 120 ms through the transition:
+    - the arc's data-state COVERS→EQUIVALENT, seen on BOTH the L0 beam (mapping-beam-...:q_covers) AND
+      mapping-arc-q_covers, first at +1.19 s — THE CHANGE ARRIVES.
+    - peak elements ever marked data-change="EVIDENCE": 0.   mapping-delta-evidence count peak: 0.
+    - the changed arc's computed filter / animation-name: none / none at every sample — NO transient.
+    - body group transforms: 0 of 5 changed — nothing moved.
+  ⇒ an evidence change reached the screen with no transient, no mark, no statement. The R12 change-blindness case
+    E-9 forbids. Matches GELB's §16 (peak marks 0), derived independently, not accepted.
+  INVERSE (A→A2, byte-identical content, new object identity via a fresh fetch): marked nothing (peak 0 on every
+    signal). BUT this is VACUOUS at 716a1941 — the whole mark mechanism is absent, so "nothing marked" proves only
+    the baseline, NOT that the eventual fix resists the cheap wrong fix. The inverse becomes discriminating ONLY on
+    the E-4b tip, where PINK will attack hardest: a no-change re-read that still changes the ranking object identity
+    must mark NOTHING (the cheap fix — mark-everything-when-identity-changes — must turn the inverse red). Harness
+    pink-facade-p13.mts already serves that A2 case and is ready for the delivery tip.
+
+THE ELEVEN, RE-MEASURED (own render, 716a1941):
+  P-1  L0 beams = 3, every data-beam-rank PRIMARY, data-beams="3", 5 bodies, 1 primary-undrawn. (= GELB)
+  P-2  bands PER FOCUSED GROUP (role_all), from data-evidence-luminance bucketed by data-evidence-step:
+         CHECKED [0.958 … 1.000]  NAME_ONLY [0.45 … 0.528]  NONE {0.232}.
+       GELB reported band REPRESENTATIVES 1.000/0.528/0.232 → ratios 1.89 and 2.28. PINK measured the BAND EDGES:
+       the CLOSEST cross-band points are CHECKED-floor 0.958 vs NAME_ONLY-ceil 0.528 (= 1.814×) and NAME_ONLY-floor
+       0.45 vs NONE 0.232 (= 1.940×). Both still ≥ 1.6× so P-2 HOLDS — but the true worst-case margin at the
+       CHECKED/NAME_ONLY boundary is 1.81, not 1.89. Reported to GELB as a sharpening (edges, not representatives,
+       are the binding test of "tell the bands apart at their closest"). Within-band ratios (≈1.01–1.11) are NOT a
+       separation test (A-6: separation is between classes, within one focused group).
+  P-3  select a capability → 2 bodies into one shared-phase mappingFieldQuery, duration 1.4 s, delay 0 s, iteration
+       infinite, linear. (= GELB "one phase, 0 s, 1.4 s")
+  P-5  ring-field data-breath="LIVE", mappingFieldRingBreath, 10 s, infinite, linear. (= GELB 10 s)
+  P-6  reduced motion: 164 scanned, 0 duration offenders, 0 moved — provably still. Control (motion on): 12
+       duration offenders (RingBreath/Evidence/Query), 28 moved — the (b) sampler DETECTS motion at this tip (not
+       blind). §12 refinement ADOPTED: (a) over-reports finite one-shot animations that have finished, so (a) alone
+       is not a stillness test; (b) "nothing moves" is binding. Under reduced motion PINK keeps (a) only as a GUARD-
+       COVERAGE assertion (the blanket guard must zero it), with (b) binding. JS BRANCH IS LIVE: component :147
+       reducedMotion() gates a requestAnimationFrame stage-reveal loop (:329-337). So the delivery P-6 owes a SECOND
+       mutant (force reducedMotion()→false) in addition to the guard mutant; here the rAF only toggles data-stage
+       consumed by guarded CSS, so the :143 blanket guard is a backstop — to be re-checked on the delivery tip.
+  P-7  ALL FOUR sizes contain-not-clip PASS: every drawn element incl. sector NAMES inside the stage box, stage
+       inside section, at 1280/1600/1829/2560. Stage 520 / 840 / 756 / 1100 (= GELB). stageTop = 128 (E-8c; was 203
+       on phase D). Phase-D clipping of the sector names (L/R overrun) is GONE. Containment NOT bought by shrinking:
+       the stage is BIGGER than phase D (756>742 @1829, 840>830 @1600); width-bound 1280→520 and cap-bound 2560→1100
+       unchanged — exactly E-8c's per-window prediction.
+  P-8  RENDERED CSS px at 1280×800 (§14 binding; scale 0.4785 = 520 / viewBox 1086.69): min stroke 1.202 (floor
+       1.2), min beam 1.575 (floor 1.0), min text 11.022 (floor 11), body dot 12.0 with FOUR bodies at the 12 px
+       floor. All ≥ floor, tight (stroke essentially AT the floor). (= GELB 1.2 / 1.57 / 11.02 / four at floor)
+       NOTE — PINK's own defect re-tripped: prep2's P-8 still read getComputedStyle USER UNITS (2.513 / 23.03 /
+       3.291). ×0.4785 reconciles to the rendered px above. Fixed in pink-p8-rendered.mjs (scale = svg clientW /
+       viewBox width). This is the SAME class of defect §14 was written against; caught again by cross-checking
+       GELB's rendered-px numbers — the inverse lane doing its job on PINK's own instrument.
+  P-10 façade log: 0 UNSCRIPTED / 0 REFUSED; exactly 5 GET routes (analyses, auto-match, investigation,
+       job-ranking, job-pools); zero external, zero writes. (= GELB "five GET reads, zero external")
+
+E-8b BOUND 3 (scroll-invariance — PINK owns; harness pink-e8b.mjs, previously owed, now built):
+  At 1829×912 (stage 756) and 1280×800 (stage 520): scroll host to bottom, return, resize away and back, and
+  measure WHILE scrolled. Stage box byte-identical at every step (document-coord stageDoc unchanged), sector names
+  contained even while scrolled. Clamp is viewport-relative, resize-convergent one-pass, AND scroll-invariant. PASS.
+
+STILL OWED ON THE DELIVERY (GREEN) TIP, pinned there not here:
+  - P-13 GREEN: arc carries data-change="EVIDENCE" + the transient whether or not anything moved, raised from
+    REQUIREMENT_STATE_CHANGED / REQUIREMENT_KEY_CHANGED; lib/career/mapping/ still byte-identical (re-verify).
+  - P-13 INVERSE as the real guard (A→A2 must mark nothing though object identity changed) — attack the cheap
+    mark-everything-on-identity-change fix.
+  - P-11 three red-first mutants (luminance→one value ⇒ P-2 red; LAYOUT given a luminance transient ⇒ P-4 red;
+    breath 3.1 Hz ⇒ P-5 red); P-6 guard mutant AND the JS-branch mutant; P-4 both directions in-browser (the LAYOUT
+    direction is GELB-declared browser-unproven); independent P-9/P-11/P-12; A-8 same-PRIMARY-beam.
+  - Re-run the full §8 pass above at the new tip (every number re-derived; nothing carried from 716a1941).
+
+Worktree left at 716a1941 (where PINK measured); phase-D GO stays pinned to 86e36924; no phase-E GO exists.
+Scripts: pink-facade-p13.mts, pink-p13.mjs, pink-p1235.mjs, pink-p8-rendered.mjs, pink-e8b.mjs (+ prep2). Raw
+outputs: P13.json, P1235.json, PREP2-tip.json, P8 rendered inline, E8B inline.

@@ -1,0 +1,141 @@
+{
+ "commit": "716a1941",
+ "base": "http://127.0.0.1:3120",
+ "P1": {
+  "beamCount": 3,
+  "ranks": [
+   "PRIMARY"
+  ],
+  "allPrimary": true,
+  "fieldBeamsAttr": "3",
+  "undrawn": "1",
+  "bodies": 5
+ },
+ "P5": {
+  "dataBreath": "LIVE",
+  "animationName": "mappingFieldRingBreath",
+  "durationMs": "10s",
+  "iteration": "infinite",
+  "timing": "linear"
+ },
+ "P2": {
+  "arcCount": 10,
+  "bands": {
+   "CHECKED": [
+    1,
+    0.986,
+    0.972,
+    0.958
+   ],
+   "NAME_ONLY": [
+    0.528,
+    0.476,
+    0.45
+   ],
+   "NONE": [
+    0.232
+   ]
+  },
+  "distinctLums": [
+   1,
+   0.986,
+   0.972,
+   0.958,
+   0.528,
+   0.476,
+   0.45,
+   0.232
+  ],
+  "adjacentRatios": [
+   1.014,
+   1.014,
+   1.015,
+   1.814,
+   1.109,
+   1.058,
+   1.94
+  ],
+  "minRatio": 1.014,
+  "sample": [
+   {
+    "id": "arc-line",
+    "step": "CHECKED",
+    "lum": 0.986,
+    "stateLum": "0.85",
+    "opacity": 0.986
+   },
+   {
+    "id": "arc-line",
+    "step": "CHECKED",
+    "lum": 0.972,
+    "stateLum": "0.7",
+    "opacity": 0.972
+   },
+   {
+    "id": "arc-line",
+    "step": "CHECKED",
+    "lum": 1,
+    "stateLum": "1",
+    "opacity": 1
+   },
+   {
+    "id": "arc-line",
+    "step": "NAME_ONLY",
+    "lum": 0.528,
+    "stateLum": "0.7",
+    "opacity": 0.528
+   },
+   {
+    "id": "arc-line",
+    "step": "NAME_ONLY",
+    "lum": 0.476,
+    "stateLum": "0.4",
+    "opacity": 0.476
+   },
+   {
+    "id": "arc-line",
+    "step": "NAME_ONLY",
+    "lum": 0.528,
+    "stateLum": "0.7",
+    "opacity": 0.528
+   },
+   {
+    "id": "arc-line",
+    "step": "NONE",
+    "lum": 0.232,
+    "stateLum": "0.4",
+    "opacity": 0.232
+   },
+   {
+    "id": "arc-line",
+    "step": "CHECKED",
+    "lum": 0.986,
+    "stateLum": "0.85",
+    "opacity": 0.986
+   },
+   {
+    "id": "arc-line",
+    "step": "CHECKED",
+    "lum": 0.958,
+    "stateLum": "0.55",
+    "opacity": 0.958
+   },
+   {
+    "id": "arc-line",
+    "step": "NAME_ONLY",
+    "lum": 0.45,
+    "stateLum": "0.25",
+    "opacity": 0.45
+   }
+  ]
+ },
+ "P3": {
+  "queryCount": 2,
+  "animationName": "mappingFieldQuery",
+  "durationMs": "1.4s",
+  "delay": "0s",
+  "iteration": "infinite",
+  "timing": "linear",
+  "queryAmp": null
+ }
+}
