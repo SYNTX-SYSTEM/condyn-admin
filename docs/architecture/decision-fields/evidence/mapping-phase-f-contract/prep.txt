@@ -496,3 +496,34 @@ Q3 (unasked, but it is the rejection): there is no obligation for how much PRESE
   Propose a SALIENCE/PRESENCE BUDGET: the relations (bodies + couplings) must carry at least the scaffold/medium's
   share of the field's contrast-energy (or above-threshold luminance-variance / a salience measure). A field where
   the medium carries most of the energy is a "target"; this is the measurable whose absence let 93c47e03 pass.
+
+
+§13  PHASE G · PG-1 CONFIRMED (semantic light fraction) + META-AUDIT "which obligation is about the instrument"
+---------------------------------------------------------------------------------------------------------------
+Phase G (72fa5459): layout STAYS radial (OTTAVIO's own pointer — the capability field he praised is itself radial
+— so radiality was never the defect; PINK's Q1/Q2 on a solved layout are moot, but asking them made GELB check).
+The founding defect = PINK's Q3 presence idea, now PG-1: semantic elements must contribute >=55% of the field's
+light, measured by SUPPRESSION. GELB measured 4.78%. PINK CONFIRMS (scripts/pink-pg1.mjs, 93c47e03):
+  1920x1080: semantic fraction 2.82% (excl scaffold rings) / 8.09% (incl rings); disc mean lum 0.0240, ground-only
+             0.0221.  1280x800: 6.72% / 12.88%.  GELB's 4.78% sits inside PINK's bracket.
+  PER-GROUP (1920, fraction of disc light each removes): bodies 1.38% · arcs 0.87% · beams 1.26% · nodes 0.81% ·
+  text 0.23% (semantic sum ~4.55%, jointly 2.82%) · RINGS 5.25%.
+  SHARPENING: the coordinate RINGS alone (5.25%) out-light ALL the relations combined (4.55%). The scaffold is
+  literally brighter than the subject — the quantified "blaue Zielscheibe". PG-1 must EXCLUDE the rings from
+  "semantic" (they are the rejected coordinate target, not content); the true semantic presence is 2.82%, failing
+  the >=55% bound by ~20x. PG-1 is the right founding obligation and the current stage fails it 7-20x by size.
+META-AUDIT (GELB's 2nd ask — which other obligation measures the INSTRUMENT/scaffold, not the field's meaning):
+  - SHARPEST SINGLE: PF-15. It devotes a whole obligation to making the four coordinate rings mutually LEGIBLE —
+    i.e. to making the scaffold (the rejected target) a well-formed distinct structure. PG-1 shows the rings
+    out-light the relations; PF-15 actively certifies that over-presence. An obligation that ensures the
+    coordinate frame is legible optimises the thing that should RECEDE. Phase G should RETIRE or INVERT PF-15
+    (rings subordinate, not merely distinct).
+  - THE CLASS: the proof surface bounds the MEDIUM on both sides — PF-1 (light), PF-5/6 (motion), PF-16 (wedge),
+    PF-17/18 (continuity) — and had NO presence bound on the SEMANTICS until PG-1. Every medium channel phase G
+    re-lights needs a "relations get >= their share" counterpart: PG-1 (light) now; a MOTION-presence bound (the
+    paths' travelling light must out-salience the breath, else the medium is again the only ALIVE thing — the
+    exact phase-F failure, reborn in motion); a HUE-containment bound (hue lives on semantics, never leaked to the
+    ground). Without these, phase G recreates the defect in the new channels.
+  - CAUTION ON PG-1 ITSELF: presence is multi-channel (light, size, motion, hue, local contrast). PG-1 is the
+    LIGHT limb only; a body could hold 55% of the light and still lack presence (a dim large blob). Name the other
+    limbs so PG-1 does not become a single-channel bound something slips past — the exact class we keep finding.
