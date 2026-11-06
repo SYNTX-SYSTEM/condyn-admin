@@ -360,3 +360,65 @@ has been checked.
 
 `MAPPING_LAYOUT_V1.1` therefore carries **two radii in the spec**, new golden vectors for both, and the
 reference implementation computing both. One algorithm, one set of meanings, two numbers where there was one.
+
+---
+
+## §8 G-2's "MEASURE" WAS A CLAIM — AND SEVEN MECHANISM PINS
+
+### A-G9 · The field may not state a fit. Phase C wins *(GRÜN — my error)*
+
+G-2 said a body carries "its measure (fit, tier)". `field-render.test.tsx:125` is **right to be red**: P-07's
+product rule says the field states a **ranking, not a suitability** — no percent, no fit, no score, no claim
+word. The authority model says the same thing (`ranking: true, decision: false`).
+
+I imported "fit 44 %" from the **right-hand ranking panel**, which is a different surface with different
+authority, into the field, which may not claim it. A body reading "#1 · 82 %" would have made the field assert a
+judgement the whole system is built to withhold.
+
+**G-2 corrected: the measure is `rank` + `tier`, in words** — *"#1 · checked"*, *"#4 · names only"* (DE
+*"geprüft"* / *"nur Namen"*). **Fit stays in its own channel, the radius.** That is sufficient and it is
+better: the tier word answers exactly the question radius and dash do not answer directly, and it adds no
+figure. This is a **meaning** pin and it stands; nothing about it is restated.
+
+### A-G10 · The seven mechanism pins, adjudicated
+
+All seven are mechanism under §12's amended B-F2, and all seven restatements are adopted as GRÜN proposed them,
+with three additions.
+
+| # | pin | restated |
+|---|---|---|
+| 1 | `field-d:114`, `field-e:380` — no body name at L0 | names at L0 **exactly when `BODY_NAMES_AT_L0`**; at L1+ in-pool always. The test reads the constant, not its old value. |
+| 2 | `field-e:365` — the 12 px floor binds | every drawn body ≥ **max(12 px floor, presence(ρ_mass))**, size monotone in mass, `data-size-floor` **only where the floor binds** — plus a test of the floor itself on a stage narrow enough to make it bind. Strictly stronger. |
+| 3 | `field-interaction:297` (C13), `:314` (M8) — rank > 7 drawn at L0 | C13 at **L1**, where those roles are drawn. M8 on **every drawn body** (L0 and each pool's L1), **with a precondition that the fixture contains an angular-only displaced body among them.** Meanings unchanged word for word. |
+| 4 | `field-render:121` — drawn count = model bodies | drawn = **min(budget, model bodies)**; `mapping-overflow` unchanged in count and wording; `mapping-beyond-budget` its own count and sentence (A-G3). |
+| 5 | `neurovisual-e:156` — every LIVE rule is 0.1 Hz / 4 : 6 | every **breath** rule 0.1 Hz / 4 : 6; the **travel** rule keyed on LIVE with its own period; nothing else infinite. `:174` stays green. |
+| 6 | `MAP-F-ARCH` §6 and `B-F8` open-ended since `PHASE_F_BASE` | closed at **`PHASE_G_BASE = 93c47e03`** with A-F18's guard, plus **`MAP-G-ARCH`** with `G_ENTRY` and byte-identity guards on the V1 spec and vectors, signs/view/delta/focus, host and fixtures. |
+| 7 | `field-f` — halos in `mapping-medium`; PF-16's shade | halos move to **`mapping-glows`** (a glow is *body* light, not medium — G-1). PF-16 re-derived, see A-G12. |
+
+**Addition to 1, and it is not GRÜN's to make:** `BODY_NAMES_AT_L0` is one of the two reversible constants
+PHASE_E §5 hands to **OTTAVIO**. PG-4 requires it true. I am taking that decision and **reporting it to him as a
+decision taken on his lever**, not flipping it silently. It stays reversible.
+
+**Addition to 5 — the travel must not become a second rhythm.** R4 permits one motion group at a time, and two
+free periods would be two rhythms competing.
+
+> **PG-7 amended:** the travel's period is an **exact integer divisor of the breath's period** (travel 5 s =
+> breath 10 s ÷ 2), so the two are **phase-locked and never drift**. The field keeps one rhythm with a sub-beat
+> instead of acquiring a second one. The travel still stops when the breath stops.
+
+**Addition to 6 — this is the third time an open-ended range has measured a later phase** (phase D's F-PC-1,
+phase F's §20, now phase F's own guards measuring phase G). **Standing rule: closing the predecessor's range is
+part of opening a phase**, not something discovered when its tests go red.
+
+### A-G12 · Near black you cannot darken — F-4's pool shade inverts
+
+GRÜN measured that the 0.022 shade rounds to **zero 8-bit codes** on the dark ground. The cause is structural,
+not a tuning miss: **a shade subtracts light, and near black there is none to subtract.** F-4's "darken every
+second wedge" is impossible on a dark ground.
+
+**Decided: the pool territory becomes an additive wash** — one pool's wedge carries a faint *lift* above the
+base ground, the next does not, alternating. And because A-F31 established that ratios are meaningless at this
+level, **PF-16 is restated in codes, not ratios**:
+
+> **PF-16 (dark ground):** the wedge wash is **≥ 1 and ≤ 3 sRGB codes** above the base ground, strictly below
+> every mark, and contained by PG-12 (no hue on the medium). Measured as a trimmed mean per pool.
