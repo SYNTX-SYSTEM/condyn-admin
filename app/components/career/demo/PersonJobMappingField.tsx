@@ -105,7 +105,8 @@ export const SEAT = "rgba(0, 0, 0, 1)";
 /**
  * A seat's extra width over its mark, in screen px (0.8 px each side): the antialiasing fringe of a 1.2–1.3 px mark at an oblique
  * angle is only partly covered by a seat of its own width, and the medium breathes through by (1 − coverage). Measured per sign class
- * (PF-8 tier A at 0.1 Hz, arcs/ticks): 0.5 px → 0.00065, 1.0 → 0.00028, 1.6 → 0.00008. 0 = exactly the mark's geometry.
+ * and per level (PF-8 tier A at 0.1 Hz; PHASE_F §24–§26): at 1.6 px arcs/ticks 0.000086 at L0 and 0.000013 at L2, beams 0.000026 at
+ * L2 — at 1.0 px 0.00026 / 0.00010 / 0.00018. A 2.0 px collar tick at 1.0 px reaches 0.00016 at L0 only. 0 = the mark's own geometry.
  */
 export const SEAT_PAD_PX = 1.6;
 /** Text's seat: the black outline painted under the fill (paint-order), in screen px — the same measurement (text p99 0.0025 → 0.0004). */
