@@ -924,3 +924,31 @@ conserves total light) · PF-11 red at every threshold (6.43 / 4.48 / 13.7 / ∞
 
 **Open and unmeasured until the tip exists:** PF-2, PF-3, PF-4 (need GRÜN's element names), PF-9 (needs the
 façade's `running` variant), PF-10 (needs a selection), PF-12, PF-13, PF-14.
+
+---
+
+## §18 HELD FOR THE NEXT CYCLE — NOT IN THIS TIP
+
+The mandate asks for a field that *umhaut beim ersten Blick*. §2/§3 make it a luminous, breathing, layered
+space, which is the structural precondition. These three would go further, and are **deliberately not** in the
+first tip: GRÜN is nearly finished, and adding scope now would destabilise a build whose bounds have already
+moved twice. They are recorded so they survive, and they are decided **after** the first phase-F render is
+measured and looked at.
+
+- **F-10 · The person becomes the light source in fact, not only in geometry.** F-6 already makes the breath
+  originate at the person. Taking the next step — the ground's luminance maximum sitting *on* the person rather
+  than merely near it, and the constellation nodes as the brightest bodies in the field — is semantically exact
+  (the person is the origin of every relation here) and is the single strongest candidate for the first-glance
+  effect. Cost: a change to the ground's radial profile and the node radii. Risk: the constellation competing
+  with the evidence marks, which PF-2 would catch.
+- **F-11 · The medium recedes while a query runs.** F-7 already drops the breath to 40 % on selection so the
+  query owns the motion. Dimming the *ground* in the same gesture would make a query read as "the field holds its
+  breath and the answer stands out of it". A-6 already establishes context dimming as legitimate (other pools at
+  0.18), so this is an extension of an accepted mechanism, not a new channel — but it must be argued against
+  E-1 explicitly before it is built, not after.
+- **F-12 · Occlusion as rank.** F-5 puts beams under bodies. Letting nearer bodies occlude farther ones would add
+  the one depth cue R16 names that phase F does not yet use. Cheap in SVG (paint order by rank), and it makes the
+  ranking a depth percept rather than a radius to read.
+
+None of these touches semantics. All three are reversible. **The decision gate is OTTAVIO's eye on the first
+phase-F render**, not this document.
