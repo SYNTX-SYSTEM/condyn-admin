@@ -300,3 +300,28 @@ GRÜN PF-3 note (halo/core must be measured DIFFERENTIALLY, with-halo minus with
 window at r=430 reads the lit ground inside the shelf and false-reads 0.31 vs 0.25) — accepted as sound (same
 class as M-F4: a window reporting what is in it, not what put it there) and TO BE VERIFIED by PINK on GRÜN's tip
 (no halo exists at base). Per-element sign-hide (not stage-minus-svg) confirmed in the doc for the lit-ground tip.
+
+
+§7  A-F21 CONFIRMED + REFINED — the floor settles at 2/df; the 70% self-check needs its OWN sub-window resolved
+---------------------------------------------------------------------------------------------------------------
+GELB's A-F21 (74b62cdb/§23): window >= 2/df (df = smallest signal-to-decoy spacing = 0.05Hz -> 40s), plus a
+self-check that re-fits the first 70% and reports INCONCLUSIVE if the floor is still falling. GELB's reframing of
+PINK's window finding as FREQUENCY RESOLUTION (not period count) is correct and better. PINK tested it directly
+(scripts/pink-pf8-window.mjs: one 62s pooled-mean capture, offline nested-window LSQ fits):
+  Tier-A floor vs window:  20s/1.0cell 3.28e-5 · 26s/1.3 3.12e-5 · 33s/1.65 3.03e-5 · 40s/2.0 2.64e-5 ·
+                           47s/2.35 2.76e-5 · 54s/2.7 2.53e-5 · 62s/3.1 2.65e-5.
+  => the floor falls until ~2 cells (40s) then FLATTENS. A-F21's 2/df minimum is confirmed by the measured curve:
+     below 2 cells signal leaks into the null and biases the floor high; at 2 cells it stops.
+PINK'S REFINEMENT (measured, additive to A-F21): the 70% self-check is itself confounded by the SUB-window's
+resolution. With a 62s full window the 70% sub-window is 43.6s = 2.18 cells (>=2) and the self-check ratio is 0.94
+(clean ~1.0). At GELB's 49.5s full window the 70% sub-window is 34.6s = 1.73 cells (<2), so its floor is inflated
+by its OWN under-resolution (PINK's curve: floor at 33s is 3.03e-5 vs plateau 2.6e-5 ~= 1.16x from resolution
+alone) -> GELB's observed 1.47 ratio is substantially sub-window resolution, NOT a falling true floor. So the
+self-check is only clean when the sub-window also clears 2/df: FULL WINDOW >= 2/(0.7*df) ~= 57s for the current
+frequencies. PINK will run the PF-8 pass at >=57s so both the window and its 70% self-check are resolution-valid.
+(Absolute floor: PINK plateau ~2.6e-5 vs GELB converged 1e-5 — same order, both 19-50x under the 0.0005 bound; the
+gap is plausibly PINK's more-inclusive stage-minus-svg mask, which per-element sign-hide on the tip will tighten.
+The reproducible, build-independent result is the SHAPE: settles at 2 cells.)
+ALSO ADOPTED from §23: PF-9 reports NOT RUN on the default variant (data-breath=LIVE, no STILL state) — needs the
+`running` variant; PF-10 reports INCONCLUSIVE unless the UNSELECTED breath amplitude is >= 0.0002 in its own right
+(a ratio of two floor values is not a measurement — at base both amps ~1-2e-5 are pure noise). Both carried in.

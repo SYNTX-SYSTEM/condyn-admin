@@ -3,10 +3,11 @@ ae799cf6ddae0b1d7921d87c52d4f4f2d5e57cb138e4d3ab22e77bd1168690a6  ./outputs/9cc0
 b4ef72974de38071e2252792accbe1c54df97f9fed7d5c338dcc8e401f5c540e  ./outputs/9cc06f84-baseline/noise-floor.json
 c9b6660b1ab4a41277fcd1ada327a776abef2b0fc5805de9ae9309e59a6ef110  ./outputs/9cc06f84-baseline/pf8-lockin-aF20.json
 ea6b74801743d37deeae6b19b08b486ec9a4ba25c989da46402cbe205eadeabb  ./outputs/9cc06f84-baseline/pf8-lockin.json
+0a7bafc9922a18feac3d5d7596c1567685bac7754482c09569780a457b1a2953  ./outputs/9cc06f84-baseline/pf8-window-settling.json
 fb61823a70ea7faf3c157f0d257026d601042d37b6cf550907c0e523ff7befe0  ./outputs/9cc06f84-baseline/QF-1280x800.json
 cb847201d3797e78e5ed431ac0f642b0667907efb819e1953c9dd1bac8320486  ./outputs/9cc06f84-baseline/QF-1920x1080.json
 49ac56ecf729797f467fb2437b72b3cad9fb09f6ac17f751487305bad0ac4abc  ./outputs/9cc06f84-baseline/rings-pixels.json
-22f3603b587caf3d8a82ee90412f2298ad7b29d32ed2c50f9b3e6d124a1fd3dd  ./prep.txt
+00cf5f18578d798a9895332644d412b5f58eb26e0867bdf22940c84e47ca786b  ./prep.txt
 f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02  ./scripts/pink-breath-vs-floor.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 900b8510db22df867e9ae82a364b0a6fe27b00ef7ed385ab93c80656afe21dee  ./scripts/pink-floor-regions.mjs
@@ -14,6 +15,7 @@ c77c70f02fc1244372a22b49d26994cf26b2f60ad6b412371e4db00f247ec556  ./scripts/pink
 a708875a17e378b3724feb59038caba1e581bbbd1d60309e93492d9c3cc574a3  ./scripts/pink-pf8-lockin3b.mjs
 b55c1d2cc69c6833777879277b8f6d389cdf1e7b67cb2dd7d70359a83cc3acda  ./scripts/pink-pf8-lockin3.mjs
 611af804462e99522230515fad87852197d5a505c3fce7519aa4c9d84f94390b  ./scripts/pink-pf8-lockin.mjs
+3c501fbf8dce51e92b1ef05df7fd95ffacdce774c878e29b819a9e86dbf158c9  ./scripts/pink-pf8-window.mjs
 82a810cd6032c92e2b1da8a96e4a5b34e288d7e00946558c7bed8a1fe887c678  ./scripts/pink-pixels-floor.mjs
 44caa40ea60fced636f16842b060611282626ad086109ca370179fda5139a26f  ./scripts/pink-pixels.mjs
 5e667c8d877feb7bdc05cd6a66ac6708ecda5b329f2e36d6d54cf6c1c8ddaa56  ./scripts/pink-probe-dom.mjs
