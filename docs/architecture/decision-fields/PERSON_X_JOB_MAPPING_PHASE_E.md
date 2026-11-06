@@ -22,14 +22,21 @@ sizes. Not inferred, not remembered.
 |---|---|---|
 | **M-1** | At **L0 the field draws zero beams**. 5 bodies, 2 sectors, 3 capability nodes, 19 collar ticks, 4 rings. | `document.querySelectorAll` counts on the live page |
 | **M-2** | The stage **overflows the window at every size**: stage bottom 945 vs. viewport 912; 973/940; 1033/1000; 1303/1300. The lowest body (`role_empty`) sits in the overflow; the page scrolls. | `getBoundingClientRect` on `mapping-field-svg` and every `[data-mapping-body]` |
-| **M-3** | Capability nodes are **11 × 11 px**, the smallest body **8 × 8 px**, and **no `text` node exists inside any body or capability node at L0**. | same, plus `querySelectorAll("[data-mapping-body] text")` → 0 |
+| **M-3** | **At 1829 × 912**: capability nodes 11 × 11 px, smallest body 8 × 8 px. The absolute figures are **window-dependent** — PINK read 12.67 / 9.5 px at 1600 × 1000, because node and body px scale with the stage factor `k`. What holds at every size: sub-legible, and **no `text` node inside any body or capability node at L0**. E-7 is therefore measured against its **fixed** bounds (12 px floor, no text < 11 px) at the worst size, never against these two numbers. | same, plus `querySelectorAll("[data-mapping-body] text")` → 0; window-dependence from PINK's independent render |
 | **M-4** | The ten coupling states are separated by a **conjunction** of three channels — `data-line` × `data-mark` × `data-beam` — never by one channel alone. | the ten `[data-mapping-arc]` attribute triples at L2 |
 | **M-4a** | On the one channel R1 demands, the classes are **not separated at all**: measured arc luminance SEMANTIC **0.704**, LEXICAL **0.700**, NONE 0.400 — a ratio of **1.01** between the two that matter most. | `getComputedStyle(arc).opacity` on the ten arcs of the all-states role |
 | **M-5** | The stage is sized `min(calc(100vh - 170px), calc(100vw - 760px), 1100px)` at `top: 142px` inside a section that is **not** at viewport top. | `PersonJobMappingField.tsx:371` |
 
-M-5 is the cause of M-2: `100vh` measures the window, the stage sits in a box inset below it, and the difference —
-~33 px at every size — is exactly the overflow. The section is `position: absolute; inset: 0`, so its own box is
-the correct reference.
+**The mechanism, as PINK derived it independently and completely.** A 61 px top-controls bar sits above the
+`top: 142px` box, so the stage renders at y = 203. Therefore
+
+    overflow = 61 + 142 + (100vh − 170) − 100vh = +33   whenever the 100vh term dominates
+    overflow = 61 + 142 + 1100 − 100vh        = +3     at 2560 × 1300, where the 1100 cap dominates
+
+which is exactly the 33 / 33 / 33 / 3 measured at the four sizes. There are **three independent sources**, and E-8
+must name all three: the 61 px offset, the `100vh`-versus-own-box mismatch, and — at 1280 × 800, where the stage
+*does* fit (723 < 800) and the page still scrolls to 1021 — flowed content below the absolutely positioned stage.
+The third belongs to the host (E-8a) and is out of phase E's reach; PINK measures and reports it regardless.
 
 ---
 
@@ -297,3 +304,51 @@ P-8 is therefore measured at 1280 × 800.
 
 **Standing instruction to GRÜN, unchanged:** where a bound and a measurement disagree, the measurement wins and I
 rewrite the bound. A-1, A-2 and A-3 are exactly that, and finding them before delivery is the point of the lane.
+
+---
+
+## §12 PINK'S INDEPENDENT RE-DERIVATION, AND THE HOLE IT FOUND IN P-6
+
+PINK re-derived §0 on `86e36924` in its own worktree, on a **production build** (`next build` + `next start`)
+rather than a dev server, and reproduced the geometry to the pixel. **M-1, M-2, M-4 and M-5 confirmed
+independently.** Three notes, each ruled here.
+
+**N-1 — M-3 is window-dependent (accepted).** PINK read 12.67 px nodes and 9.5 px bodies at 1600 × 1000 against my
+11 px and 8 px at 1829 × 912; both are right, because the drawn size scales with the stage factor `k` and PINK's
+window gives the larger stage. §0 now carries the window with the numbers, and E-7 is measured against its fixed
+bounds at the worst size — never against those two figures.
+
+**N-2 — the mechanism (accepted, and it corrects my correction).** PINK's arithmetic is now §0. It also settles
+A-1 more precisely than A-1 did: my M-5 was **incomplete, not wrong in direction**. There really is a 61 px bar
+above the `top: 142px` box — my original reading — *and* the section is 960 px tall at a 912 px window — GRÜN's
+reading. Both are true and E-8 must defeat both, plus the third source PINK isolated at 1280 × 800. A-1's sentence
+"wrong in direction" overstated it and is corrected here rather than quietly edited there.
+
+**N-3 — P-6 could never have gone red, and my strengthening of it.** PINK found the cause: a pre-existing blanket
+guard at `PersonJobMappingField.tsx:85` —
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-testid="mapping-field"], [data-testid="mapping-field"] * { animation: none !important; transition: none !important; }
+    }
+
+— already neutralises every CSS animation and transition in the field, which is why my harness measured 0 offenders
+over 142 elements. **P-6 as I wrote it is therefore not merely vacuous today; it would stay vacuous after delivery.**
+
+Worse, and this is the part neither lane had reached: that guard is **CSS-only**. It cannot stop a
+`requestAnimationFrame` loop or any JS that writes transforms, attributes or opacity directly. If E-3's query
+oscillation or E-6's breath is implemented in JS, every computed `animation-duration` stays `0s` **while the field
+keeps moving**, and P-6 passes while failing. P-6 is therefore restated:
+
+> **P-6 (restated).** Under `prefers-reduced-motion: reduce`, (a) no element in the field carries a non-zero
+> computed animation or transition duration, **and (b) the field does not move**: sample every drawn element's
+> geometry and opacity twice, at least 2 s apart, with no interaction between the samples — every value identical.
+> (b) is the binding half; (a) alone cannot fail while a JS loop runs.
+
+**Red-first for P-6** is consequently a **guard mutant**: narrow or remove the blanket at `:85` and the new motions
+must turn P-6 red. PINK mutates the guard independently to confirm the test bites. If GRÜN implements any motion in
+JS, (b) must be shown red by *disabling the JS reduced-motion branch* as well — two mutants, not one.
+
+**Environment note, recorded so the lanes' numbers reconcile:** PINK measures on a production build because
+headless Turbopack `next dev` would not hydrate the field in its setup. The production build reproduces the dev
+geometry to the pixel, so the build mode does not move what P-7 measures. Zero external requests on every run
+(B-4/B-6 baseline clean on PINK's instrument as well as mine).
