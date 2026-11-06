@@ -153,3 +153,54 @@ These are build-independent instrument findings (SwiftShader software raster, ds
 F-rule; they change how PF-6/PF-8/PF-11 must be instrumented so a CORRECT phase-F build does not read red. PINK
 will carry the AA/raster-tolerant instrument into the PF-1..PF-15 red/green pass when GRÜN commits a phase-F
 IMPLEMENTATION (the architecture tip f31605cf/fdf54b39 is the contract; there is no phase-F build to measure yet).
+
+
+§3  ATTACK ON A-F6 — E-7's FOUR RINGS ON RENDERED PIXELS (GELB asked PINK to BREAK this, not confirm it)
+-------------------------------------------------------------------------------------------------------
+GELB's A-F6 claim: E-7's "four rings told apart by luminance alone, each step >=1.6x" does NOT hold on pixels and
+never did — rendered luminance is dominated by stroke WIDTH and DASH, not ink alpha. Edge ratios (GELB) 1.316 /
+0.895 / 0.573; best-fit (ink 0.085) renders dimmer than shelf (ink 0.05). PINK tried to falsify it, with a
+deliberately DIFFERENT method (scripts/pink-rings-pixels.mjs): geometry via getScreenCTM (circles have NO cx/cy
+attrs — default 0, positioned by transform; parseFloat(null) bug caught and fixed, else all-zero), 720 angles,
+per-angle STROKE PEAK across the stroke width, and TWO readings — all-angles (incl. dash gaps, like GELB) AND
+ink-only (lit angles, peak>0.004) to test whether separation exists in the ink and GELB's method merely includes
+gaps. The four rings at base (9cc06f84, 1920x1080):
+  horizon  ink0.25 sw1.2  solid       allP10 0.0229 p50 0.0367 p90 0.0473  litFrac 1
+  field    ink0.15 sw1.2  solid       allP10 0.0078 p50 0.0098 p90 0.0130  litFrac 1
+  shelf    ink0.05 sw61   solid band  allP10 0.0082 p50 0.0119 p90 0.0140  litFrac 1   (max 0.58 = contamination)
+  best     ink0.086 sw1.2 dash 2.3/4.6 allP10 0.0017 p50 0.0030 p90 0.0091 litFrac 0.41 litP50 0.0071
+RESULT — A-F6 CONFIRMED, independently and doubly:
+  - horizon and best-fit match GELB to ~5% on independent geometry + sampling (horizon p50 0.0367 vs 0.0364,
+    p90 0.0473 vs 0.0474; best p10/p50/p90 0.0017/0.0030/0.0091 vs 0.0017/0.0025/0.0087).
+  - closest-point ratios all-angles 1.636 / 0.630 / 0.861; INK-ONLY 1.636 / 0.630 / 0.796. BOTH fail >=1.6 at the
+    lower two steps DECISIVELY (<1.0). So it is NOT merely the dash: even restricting to lit ink, best-fit (0.086)
+    renders at field's level and the shelf band sits below field. The alpha order 0.25>0.15>0.086>0.05 does NOT
+    map to rendered-luminance order. best-fit's dash puts 59% of its circumference in ground (litFrac 0.41),
+    dragging its percentiles to the ground; the shelf's width makes it a wide faint band.
+  - ONE honest method divergence, which REINFORCES the verdict: PINK's "max across the 61px shelf band" is
+    contaminated by bodies/arcs/beams crossing that wide annulus (shelf max 0.58 = a body), so PINK's shelf p50
+    0.0119 is inflated and reorders the marginal middle (PINK horizon>shelf>field; GELB horizon>field>shelf). The
+    shelf's OWN band value is ~0.005-0.008, consistent with GELB's flat 0.00496 — once de-contaminated the shelf
+    sits BELOW field, exactly as GELB has it. For a wide band, max-across-width is the wrong statistic; GELB's
+    representative-within-stroke is correct. The verdict is unchanged either way: the rings do not separate >=1.6x.
+  - The TOP step (horizon/field) is marginal and instrument-sensitive (PINK 1.75 if de-contaminated, GELB 1.316);
+    the LOWER steps fail in both measurements regardless of method. So the claim is robust at the steps that matter.
+CONCLUSION: PF-15 surfaces an OLD defect (E-7 never held on pixels — it was specified/verified in ink alphas),
+not a new burden. GRÜN re-deriving four ring constants against the phase-F ground is justified and necessary.
+
+ACCESSOR CHECK (GELB: field-e.test.tsx:260 read r.poolRoleId — nonexistent; r.role.poolRoleId exists — so the
+in-repo P-13 precondition compared [undefined,rank,tier,fit] and left role order/identity unchecked):
+PINK's P-13 instrument used the CORRECT accessor rank.role.poolRoleId (pink-facade-p13.mts:53), and PINK's P-13
+conclusion rests on a RENDER measurement (exactly one data-change=EVIDENCE arc = mapping-arc-q_covers, never more;
+0 bodies moved by COMPUTED transform; mappingFieldTransient; provenance mapping-delta-requirements=1), not on the
+in-repo precondition. So P-13 STANDS on PINK's measurement; only the in-repo test was weak and should be fixed.
+PHASE_E §19 need not be amended on the strength of PINK's evidence.
+
+A-F11 adopted for the PF-1..PF-15 pass: every temporal obligation on 2px-blurred frames, each run measures its own
+back-to-back jitter floor in the same pass, bound admissible only at >=5x floor else INCONCLUSIVE. PF-8 as the
+coherent amplitude at 0.1 Hz (least-squares over one period) on sign/structure pixels; PF-11 broadband at 2x floor.
+PINK's baseline blur already showed 23:1 (clears 5x). Note: PINK will sample finer than the baseline's 865ms
+cadence for a clean single-frequency fit. §14/§15 noted: halo LAYOUT lives in classList (mf-layout), not data-* —
+PINK will admit mf-layout in mark-count instruments and honor the category check (no sign/structure element carries
+a transform transition). A-F13 agreed: PF-8 bounds a sign's OWN luminance, not its contrast against the breathing
+medium — consistent with A-F5's absolute backing, so PF-2/PF-15 band/ring separation stays phase-independent.
