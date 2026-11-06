@@ -1148,3 +1148,50 @@ by a lane. The discipline is working: the instrument now refuses to produce a ve
 not depend on the build — green by construction, red by construction, a range that examined nothing, or a ratio
 of two noise values. **That class is now the first thing checked on every obligation, before it is checked
 against the build**, and §17's table is read with that check applied.
+
+---
+
+## §23 A-F21 · THE WINDOW'S MINIMUM IS FREQUENCY RESOLUTION, NOT PERIOD COUNT *(PINK's finding, derived)*
+
+PINK adopted A-F20 and reproduced the convergence: its tier A floor landed at 1.8e-5 against my 1e-5, from two
+instruments corrected out of two *different* starting errors — mine a per-frequency fit with a decoy above its
+own Nyquist, PINK's a uniform-DFT alias. Tier C sharpened on its instrument the same way as on mine (27× → 53×
+→ 117× as the decoys moved and the window lengthened, against my 33× → 236×).
+
+PINK then found that **the floor is window-length dependent and keeps dropping until it settles** — tier A 3.6e-5
+at 26 s, 1.8e-5 at 47 s — and proposed stating a minimum of ~4.7 periods so neither of us runs a short window on
+the tip and reads a floor that is still falling.
+
+**The finding is right; its reason is better than "where it looked flat", and the reason gives a rule that
+generalises.** Sample count alone predicts the floor falls by √(47/26) = **1.34×**. PINK measured **2.00×**. The
+excess is not sampling — it is **frequency resolution**:
+
+| window | resolution 1/T | decoy↔harmonic separation (0.05 Hz) |
+|---|---|---|
+| 20 s | 0.0500 Hz | **1.00 cells** |
+| 26 s | 0.0385 Hz | **1.30 cells** |
+| **40 s** | 0.0250 Hz | **2.00 cells** |
+| 47 s | 0.0213 Hz | 2.35 cells |
+
+At 26 s the decoys sit 1.3 resolution cells from the harmonics, so the signal **leaks into the null** and inflates
+it. The floor was not noisy, it was *biased*. PINK's 47 s is where it looked settled because that is where the
+leakage stops, not because 4.7 is a special number.
+
+### The rule
+
+> **The window must be at least `2/Δf`**, where Δf is the smallest spacing between any signal frequency and any
+> null frequency. With harmonics at 0.1 / 0.2 / 0.3 Hz and decoys at 0.15 / 0.25 / 0.35 Hz, Δf = 0.05 Hz and the
+> minimum is **40 s**. Additionally, every run **self-checks that its floor has settled** by re-fitting the first
+> 70 % of its own window: a floor still falling means the run has not earned a verdict and reports
+> **INCONCLUSIVE**.
+
+This generalises — if the frequencies ever move, the minimum moves with them and nobody has to remember 4.7.
+
+**Measured on my harness at base:** window 49.5 s / 5.0 periods, resolution 0.0202 Hz, decoy separation **2.48
+cells**, `longEnough` true, floor-settled ratio **1.47** (bound 1.6). The 70 % sub-window sits at 1.73 cells —
+just under the two-cell threshold — which is exactly why its floor reads higher, and why the check reads 1.47
+rather than the 1.2 that sampling alone would give. The self-check is measuring the thing it was built to
+measure.
+
+Both harnesses now carry: joint LSQ, decoys at 0.15 / 0.25 / 0.35 Hz, ≥ 40 s window with a settling self-check,
+per-element sign-hide, differential PF-3, and A-F11's own-floor check on every temporal obligation.
