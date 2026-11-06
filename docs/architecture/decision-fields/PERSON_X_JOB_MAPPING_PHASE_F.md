@@ -1454,3 +1454,66 @@ thin lines move neither statistic.
 **This is what the mandate meant.** *"Prüfe die tatsächliche visuelle Wirkung im laufenden Browser, nicht nur
 technische Eigenschaften oder Testwerte."* 232 green tests, 18 red mutants and fifteen green obligations did not
 see the first thing a human eye lands on. The tip goes back.
+
+---
+
+## §29 GELB'S MEASUREMENT OF `ef466ca8` — WHAT IS THE BUILD, AND WHAT IS MY INSTRUMENT
+
+64 frames over 101 s (10.1 periods, cadence 1603 ms — the phase-F stage is ~1.5× heavier to render than base),
+decoy separation 5.05 cells, sub-window 3.53 cells, floor settled.
+
+### Confirmed green, independently, and close to GRÜN's numbers
+
+| # | GELB | GRÜN | |
+|---|---|---|---|
+| **PF-1** | median **0.02186**, frac above 0.005 **0.736** | 0.0226 / 73.5 % | green |
+| **PF-5** | **0.647** swinging ≥ 0.004 | 62.7 % | green |
+| **PF-6** | max **0.01124**, mean/500 ms **0.00040** | 0.0108 / 0.00044 | green |
+| **PF-10** | **0.39** (0.00214 → 0.00084, both far above the noise guard) | 0.388 | green |
+| **PF-11** | **ratios 1 / 1 / 1 / 1**, no element with a duration | 0 pixels | green |
+
+**PF-11 is the one to notice.** At base it read 6.65 / 21.09 / ∞ / ∞ — the host moving under the field through
+the 8 % ground. On the tip it is exactly 1 at every threshold. **`DISC_GROUND_OPAQUE` does what A-F4 claimed it
+would**, measured on a different instrument from the one that proposed it.
+
+### Three reds that are my instrument, not the build
+
+**PF-3 — my footprint denominator is the body's whole disc.** `outlineFootprint` counts every pixel above 0.004
+inside the body radius. With a lit ground at 0.0219 *every* such pixel qualifies, so the denominator is the disc
+area rather than the outline, and the ratio collapses to **1.08 by construction**. The halo limb is fine
+(halo/core **0.015** ≤ 0.25). GRÜN's differential method is right and mine is not; the outline must be isolated by
+suppression, like everything else in this phase.
+
+**PF-7 — I measured phase where there is no wave.** My bands span 0…1 of the **field ring**, but the ground ends
+at `shelfNear`. Band 0 is the person's disc, which A-F8 makes *static*; bands 8–9 are the shelf, which is a ring.
+Neither carries a wave, so their phase is noise, and the "not monotone" verdict comes entirely from them.
+**Bands 1→6 read −2736 → −1945 ms: monotone, span 791 ms** — which *confirms* GRÜN's wave rather than refuting
+it. My verdict was wrong while my data was right.
+
+**PF-15 — my sampler takes the maximum, and the rings are now dark.** A-F12 made the faint rings *engraved*:
+shelf 0.0036, field 0.0058, best-fit 0.0123 against a ground median of **0.0219**. A dark ring is a **minimum**,
+so `max()` within the band reads the surrounding ground and not the ring. My p50s invert GRÜN's ordering for
+exactly this reason. The sampler must take the extremum **away from** the local ground, or measure the ring
+differentially.
+
+**Defects fifteen, sixteen and seventeen, all mine** — and all three are the same shape: **a statistic written
+for a black field, run on a lit one.** Phase F changed the ground out from under my own instrument and I did not
+revisit the statistics that assumed the old one.
+
+### A-F29 · A self-calibrating bound tightens as the instrument improves
+
+PF-8's tier B is `p99 ≤ 2× the run's own decoy floor`. I chose that in §16 because 26 frames could not resolve
+A-F5's physical 0.002. With 64 frames over 101 s the floor is now **0.00027**, so the bound has silently become
+**0.00054** — four times *stricter* than the physical limit it was standing in for.
+
+That is wrong in a way worth naming: **the antialiasing fringe is physical, not instrumental.** A bound tied to
+the instrument's floor will eventually reject any real system as the instrument gets better. GRÜN predicted the
+fringe would land at p99 ≈ 0.002 (max 0.0045); I measure arcs at **0.0033**.
+
+**Tier B amended: `p99 ≤ 0.002` absolute** — A-F5's original physical bound — **with the run required to resolve
+it** (floor ≤ 0.0004, which this run meets at 0.00027). The floor-relative form stays only as the *admissibility*
+check, never as the bound itself.
+
+Under the corrected bound, at L0: beams 0.00072, outlines 0.00132, nodes 0.00167, text 0.00177 all pass; **arcs
+at 0.0033 do not.** That is the one firewall question that survives my own errors, and it is the one GRÜN
+flagged in advance as the AA fringe of the thinnest ticks.
