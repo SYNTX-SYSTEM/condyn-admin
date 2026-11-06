@@ -234,3 +234,74 @@ unchanged in wording and in count.
 **L0 ≤ 7** (the overview: few, large, legible). **L1 ≤ 12** — the stage zooms to the sector there, so the same
 screen space holds more bodies at the same drawn size, and the purpose of L1 is to examine one pool. **L2/L3 are
 one role** and unaffected. Both caps are stated, not left open; both use the budget statement above.
+
+---
+
+## §6 PINK'S ATTRIBUTION — THE SCAFFOLD OUT-LIGHTS THE CONTENT
+
+PG-1 confirmed independently on `93c47e03`: semantic fraction **2.82 %** excluding the coordinate rings,
+**8.09 %** including them, at 1920 × 1080 (6.72 % / 12.88 % at 1280 × 800). My 4.78 % sits inside PINK's
+bracket; its per-group sum is 4.55 %. **The founding number holds: 93–97 % of the disc is ground.**
+
+**The attribution is worth more than the headline.** Per group, share of disc light removed at 1920:
+
+| bodies | arcs | beams | nodes | text | **all relations** | **the coordinate rings** |
+|---|---|---|---|---|---|---|
+| 1.38 % | 0.87 % | 1.26 % | 0.81 % | 0.23 % | **4.55 %** | **5.25 %** |
+
+**The scaffold out-lights every relation combined.** The coordinate frame is literally the brightest
+semantic-ish thing in the field. That is "eine große blaue Zielscheibe" at its exact source, and it is sharper
+than "95 % is ground": the ground is *supposed* to be dim and large; the rings are supposed to be a **scale**,
+and they became the subject.
+
+**PG-1 therefore excludes the rings from "semantic".** True semantic presence is **2.82 %** and the bound fails
+by **≈ 20×**, not 11×.
+
+### A-G5 · PF-15 is inverted — I had an obligation certifying the over-presence
+
+PINK's answer to "which obligation is about the instrument rather than the field" is **PF-15**, and it is
+correct. PF-15 spends a whole obligation ensuring the four coordinate rings are **mutually legible** — making
+the scaffold a well-formed, distinct structure. PG-1 shows those rings out-light every relation. **PF-15
+actively certifies the over-presence that got the stage rejected.**
+
+It was my obligation, added in A-F6, and I was pleased with it. An obligation that makes the coordinate frame
+legible is optimising the thing that should recede.
+
+**PF-15 inverted, in two limbs:**
+
+| | |
+|---|---|
+| **(a) subordination** | the four rings' **total** share of disc light ≤ **8 %** of the semantic share |
+| **(b) legibility within subordination** | the rings remain mutually distinguishable at ≥ 1.6 **inside** that budget |
+
+E-7's reading — four rings told apart by luminance alone — survives. What is removed is the licence to reach
+any brightness in order to achieve it.
+
+### A-G6 · Every channel phase G re-lights needs its own presence bound *(PINK)*
+
+PINK names the class exactly: **the proof surface bounds the medium on both sides** — PF-1 light, PF-5/6 motion,
+PF-16 wedge, PF-17/18 continuity — **and had no presence bound on the semantics at all until PG-1.** Phase G
+re-lights two further channels, and each needs its counterpart or the defect returns in that channel.
+
+| # | obligation |
+|---|---|
+| **PG-11** | **Motion presence.** The relations' travelling light must out-salience the breath: the coherent motion energy on relation pixels ≥ **1.5×** that on medium pixels. Without it the medium is again the only living thing — *the phase-F failure reborn in motion*, which is PINK's phrase and the right one. |
+| **PG-12** | **Hue containment.** Hue lives on the semantics and never leaks to the ground: on medium pixels, chroma ≤ **2 %** of the chroma on the hue-carrying class. |
+
+### A-G7 · Presence is multi-channel — PG-1 is only its light limb *(PINK)*
+
+PINK's caution on PG-1 itself is the same class one level up again, and it is right: **a body can hold 55 % of
+the light and still lack presence** — a large dim blob. PG-1 is the light limb only. The limbs are therefore
+named, so no single-channel bound stands in for the whole:
+
+| limb | obligation |
+|---|---|
+| light | **PG-1** ≥ 55 % semantic share |
+| size | **PG-3** 56–92 px, **PG-5** at most 7 bodies |
+| motion | **PG-11** relations out-salience the medium |
+| hue | **PG-12** contained on the semantics |
+| **local contrast** | **PG-13** — each drawn body's peak luminance ÷ its own local surround median ≥ **8**. This is the limb that catches the dim large blob: a body must stand against *its own* surround, not merely contribute light to a global total. |
+
+**Presence is not a number; it is a vector, and every limb is bounded.** That is the lesson of this phase
+applied to itself: I bounded the medium from both sides and called it rigour, while the thing the field is
+*for* had no bound at all.
