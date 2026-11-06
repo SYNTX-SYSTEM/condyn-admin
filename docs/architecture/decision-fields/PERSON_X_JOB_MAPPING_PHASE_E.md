@@ -422,3 +422,37 @@ and they overrun **left and right** at all four sizes (PINK at 1829 × 912: name
 not only a containment failure but a **legibility** failure: the pool names are cut today. E-8 must **contain** the
 field's own labels, not clip them. `stage-inside-section` already held at base, and the section top measures 61 at
 every size — the 61 px offset of §0, re-confirmed independently a third time.
+
+---
+
+## §15 E-8c — THE 142 px IS NOT LOAD-BEARING, AND THE STAGE GETS THE SPACE BACK
+
+§13 left open whether the field's own `top: 142px` is forced by the focus strip, and said GELB would not decide a
+visual collision. Measured, it is not a judgement: **there is no collision to risk.**
+
+| window | focus strip | stage box top | first **drawn** pixel | empty band between strip and drawing |
+|---|---|---|---|---|
+| 1280 × 800 | ends at y = **120** | 203 | 215 | **95 px** |
+| 1829 × 912 | ends at y = **120** | 203 | 220 | **100 px** |
+| 2560 × 1300 | ends at y = **120** | 203 | 228 | **108 px** |
+
+The strip's bottom edge is **120 at every size** — it does not move. The stage box begins 83 px below it, and the
+first drawn pixel a further 12–25 px below that, because the field is a circle inscribed in a square and its top
+corners are empty. So between the strip and anything visible there are **95 to 108 px of nothing**.
+
+**E-8c.** The stage's own top offset becomes a named constant, bound to **≥ 8 px below the focus strip's measured
+bottom** rather than a hardcoded 142. The left neighbour is checked too: the reading panel ends at x ≈ 335 against
+a stage left edge of 380 at the narrowest window, so the panel is not in the way either.
+
+**What it is worth, measured per window — and it is not uniform:**
+
+- **1829 × 912** height binds (budget 742, clamped 681). Moving the top to ~128 gives ~756 → **about +75 px**, which
+  more than returns what A-1's clamp cost.
+- **2560 × 1300** the **1100 px cap** binds, so the gain is only ~31 px. The cap, not the gutter, is the limit at
+  large windows, and raising it is a separate decision nobody has asked for.
+- **1280 × 800** the **width** budget binds (`100vw − 760` = 520 = the current stage). Height is already slack, so
+  E-8c gains **nothing** there. The narrowest window needs width, not height.
+
+**Still OTTAVIO's, and still one constant.** The measurement removes the collision risk, not the taste: a stage
+that begins 8 px under the strip may read as crowded even though nothing overlaps. E-8c is implemented and
+reversible by that one constant, and the acceptance decides whether the regained space is worth the tighter top.
