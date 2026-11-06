@@ -1,0 +1,154 @@
+{
+ "commit": "9cc06f84",
+ "level": "L0",
+ "nullForm": "bracketed dof-matched (0.05/0.15/0.25/0.35)",
+ "frames": 112,
+ "spanS": 58.5,
+ "clipMatch": true,
+ "perClass": {
+  "rings": {
+   "px": 167958,
+   "perPixelFloor": 0,
+   "tierA": {
+    "sig": 0.000195,
+    "floor": 0.0000196,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00526,
+    "floor": 0.00131,
+    "ratio": 4.01,
+    "red": true
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:5.67",
+     "0.002:37.75",
+     "0.004:74.91",
+     "0.008:Infinity"
+    ],
+    "red": true
+   }
+  },
+  "arcs": {
+   "px": 12164,
+   "perPixelFloor": 0.000415,
+   "tierA": {
+    "sig": 0.000118,
+    "floor": 0.000196,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00246,
+    "floor": 0.00258,
+    "ratio": 0.95,
+    "red": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:0.37",
+     "0.002:0.57",
+     "0.004:0.66",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "beams": {
+   "px": 17356,
+   "perPixelFloor": 0.000329,
+   "tierA": {
+    "sig": 0.0000964,
+    "floor": 0.000156,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00234,
+    "floor": 0.00239,
+    "ratio": 0.98,
+    "red": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:0.39",
+     "0.002:0.63",
+     "0.004:0.68",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "nodes": {
+   "px": 16214,
+   "perPixelFloor": 0.000355,
+   "tierA": {
+    "sig": 0.000105,
+    "floor": 0.000177,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00231,
+    "floor": 0.00234,
+    "ratio": 0.99,
+    "red": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:0.39",
+     "0.002:0.64",
+     "0.004:0.79",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "text": {
+   "px": 17301,
+   "perPixelFloor": 0.000206,
+   "tierA": {
+    "sig": 0.000144,
+    "floor": 0.000106,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00222,
+    "floor": 0.00192,
+    "ratio": 1.16,
+    "red": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:0.52",
+     "0.002:1.38",
+     "0.004:1.24",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "outlines": {
+   "px": 20561,
+   "perPixelFloor": 0.000244,
+   "tierA": {
+    "sig": 0.000125,
+    "floor": 0.000109,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00237,
+    "floor": 0.00212,
+    "ratio": 1.12,
+    "red": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:0.48",
+     "0.002:1.27",
+     "0.004:0.69",
+     "0.008:0"
+    ],
+    "red": false
+   }
+  }
+ }
+}

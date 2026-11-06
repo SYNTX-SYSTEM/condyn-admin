@@ -362,3 +362,32 @@ C red (~2-2.5x) where GELB is clean, and beams a touch high. Two findings from c
 Field.tsx:669, drawn 1.3*k over a larger ground) were never in any sign mask. PINK's full pass runs the per-class
 firewall at L0 AND L2 (open a pool, then a role), per level. GELB's checklist second limb adopted: "can this
 measurement fail" now also asks "is the thing it must fail on even in the frame" (coverage/view, not just stat).
+
+
+§9  BRACKETED dof-MATCHED NULL (§27/89af05f2) — PINK's false-red finding confirmed as a SHARED flaw, now fixed
+---------------------------------------------------------------------------------------------------------------
+GELB confirmed PINK's §8 finding: GELB's harness did NOT bracket; the asymmetric null (decoys all +0.05 above the
+harmonics) was a systematic false-red designed into BOTH instruments, and GELB looked clean only because its
+tighter element-coverage mask excluded the fringe carrying it. FIX (matched by PINK): raw null freqs
+{0.05,0.15,0.25,0.35}; for each harmonic f_k the null component = RMS of its two brackets f_k±0.05 -> THREE
+dof-matched components (not a flat 4-RSS), so the null is spectrally CENTRED on the signal and A-F17 variance
+matching survives. Guards also adopted: Tier C not evaluated below 1000 px/class; no rung below 2x the per-pixel
+null floor (A-F11 applied to the ladder — the 0.001/0.002 rungs otherwise float inside per-pixel noise).
+PINK re-ran at base L0 with the bracketed null (scripts/pink-pf8-perclass2.mjs; 112 frames / 58.5s; output
+PF8-PERCLASS2.json):
+  rings    167958px  tierA 0.000195 / floor 1.96e-5   B 4.01x  C 5.67/37.75/74.91/inf   RED  (correct; breathes)
+  arcs      12164px  B 0.95  C all <1                                                     GREEN
+  beams     17356px  B 0.98  C all <1                                                     GREEN
+  nodes     16214px  B 0.99  C 0.39/0.64/0.79                                             GREEN
+  text      17301px  B 1.16  C 0.52/1.38/1.24                                             GREEN
+  outlines  20561px  B 1.12  C 0.48/1.27/0.69                                             GREEN
+DIVERGENCE RESOLVED: nodes/text/arcs/beams/outlines all GREEN, rings RED — matches GELB's §27 post-fix base result
+exactly. PINK tierA rings 0.000195/1.96e-5 converges on GELB's 0.00020/1e-5. The mild quiet-class red of §8 was the
+asymmetric null, confirmed on PINK's instrument independently; the centred null removes it on both. This is the
+phase's second false-red direction (a measurement failing when nothing is wrong), now closed on both lanes.
+BOTH INSTRUMENTS NOW ALIGNED on: joint LSQ; bracketed dof-matched null (0.05/0.15/0.25/0.35, RMS-of-two per
+harmonic); window >=57s with resolution-valid self-check (A-F21 + PINK's sub-window refinement); per-class masks
+built under reduced-motion; per-level L0+L2; min class population 1000px; live-rung guard; differential PF-3;
+PF-9 NOT-RUN on LIVE-only default; PF-10 >=0.0002 amplitude guard; GELB-checklist two limbs (statistic can fail
+AND the thing it must fail on is in the frame). L2 navigation (click a body twice, rebuild masks under reduce at
+L2) is in GELB's harness and confirmed; PINK will validate its own L2 navigation against GRÜN's tip content.
