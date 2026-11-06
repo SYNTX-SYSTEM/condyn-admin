@@ -58,8 +58,12 @@ for (const rank of readingB.ranks) {
 }
 // reading A2 — identical content to A, fresh object (inverse: a re-read that changes nothing)
 const readingA2 = clone(readingA);
+// reading A3 — ATTACK: q_covers.requirementText changed, but source/state/key UNCHANGED. diffRankings emits no
+// REQUIREMENT_STATE_CHANGED / REQUIREMENT_KEY_CHANGED, so E-4b must mark NOTHING. A shallow/identity fix would mark it.
+const readingA3 = clone(readingA);
+for (const rank of readingA3.ranks) for (const r of rank.requirements) if (r.poolRequirementId === (target?.reqId)) r.requirementText = `${r.requirementText} (reworded, same evidence)`;
 
-type Phase = "A" | "B" | "A2";
+type Phase = "A" | "B" | "A2" | "A3";
 let phase: Phase = "A";
 
 const A = encodeURIComponent(ANALYSIS);
@@ -74,7 +78,7 @@ function runningBody() {
   return body;
 }
 const autoMatchFor = () => (phase === "A" ? runningBody() : autoMatchBody("COMPLETED"));
-const rankingFor = () => (phase === "A" ? readingA : phase === "B" ? readingB : readingA2);
+const rankingFor = () => (phase === "A" ? readingA : phase === "B" ? readingB : phase === "A3" ? readingA3 : readingA2);
 const ROUTES: Record<string, () => unknown> = {
   [`/api/career/analyses`]: () => ({ success: true, analyses: [{ analysisId: ANALYSIS, createdAt: "2026-10-22T08:00:00.000Z", validationState: "VERIFIED" }] }),
   [`/api/career/analyses/${A}`]: () => result,
@@ -87,7 +91,7 @@ const ROUTES: Record<string, () => unknown> = {
 const log = (line: string) => { try { appendFileSync(LOG, `${new Date().toISOString()} ${line}\n`); } catch { /* convenience */ } };
 
 function control(request: IncomingMessage, response: ServerResponse, path: string, query: string): boolean {
-  if (path === "/__pink/flip") { const to = new URLSearchParams(query).get("to") as Phase | null; if (to === "B" || to === "A2") { phase = to; log(`FLIP -> ${phase}`); } }
+  if (path === "/__pink/flip") { const to = new URLSearchParams(query).get("to") as Phase | null; if (to === "B" || to === "A2" || to === "A3") { phase = to; log(`FLIP -> ${phase}`); } }
   else if (path === "/__pink/reset") { phase = "A"; log("RESET -> A"); }
   else if (path !== "/__pink/state") return false;
   response.writeHead(200, { "content-type": "application/json", "cache-control": "no-store" });

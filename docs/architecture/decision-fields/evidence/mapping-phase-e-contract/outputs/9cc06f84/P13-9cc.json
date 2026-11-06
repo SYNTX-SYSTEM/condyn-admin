@@ -1,0 +1,79 @@
+{
+ "commit": "9cc06f84",
+ "target": {
+  "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "roleId": "role_all",
+  "reqId": "q_covers"
+ },
+ "flippedOk": true,
+ "verdict": {
+  "P13_GREEN": true,
+  "INVERSE_A2_identical_marksNothing": true,
+  "INVERSE_A3_reworded_marksNothing": true
+ },
+ "main": {
+  "to": "B",
+  "baseState": "COVERS",
+  "sawStates": [
+   "COVERS",
+   "EQUIVALENT"
+  ],
+  "changeArrived": true,
+  "firstChangeAt": 113,
+  "peakEvidence": 1,
+  "everMoreThanOne": false,
+  "peakBrightened": 1,
+  "transientSeen": true,
+  "transientNames": [
+   "mappingFieldTransient"
+  ],
+  "provSeen": true,
+  "provCountPeak": 1,
+  "provText": "1 requirement's own evidence changed since the previous reading; each lit up onc",
+  "bodiesMovedCount": 0,
+  "bodiesMoved": [],
+  "markedIds": [
+   "mapping-arc-q_covers"
+  ]
+ },
+ "invA2": {
+  "to": "A2",
+  "baseState": "COVERS",
+  "sawStates": [
+   "COVERS"
+  ],
+  "changeArrived": false,
+  "firstChangeAt": null,
+  "peakEvidence": 0,
+  "everMoreThanOne": false,
+  "peakBrightened": 0,
+  "transientSeen": false,
+  "transientNames": [],
+  "provSeen": false,
+  "provCountPeak": 0,
+  "provText": null,
+  "bodiesMovedCount": 0,
+  "bodiesMoved": [],
+  "markedIds": []
+ },
+ "invA3": {
+  "to": "A3",
+  "baseState": "COVERS",
+  "sawStates": [
+   "COVERS"
+  ],
+  "changeArrived": false,
+  "firstChangeAt": null,
+  "peakEvidence": 0,
+  "everMoreThanOne": false,
+  "peakBrightened": 0,
+  "transientSeen": false,
+  "transientNames": [],
+  "provSeen": false,
+  "provCountPeak": 0,
+  "provText": null,
+  "bodiesMovedCount": 0,
+  "bodiesMoved": [],
+  "markedIds": []
+ }
+}

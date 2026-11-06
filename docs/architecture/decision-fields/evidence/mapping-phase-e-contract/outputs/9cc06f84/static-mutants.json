@@ -1,0 +1,64 @@
+=== MUT P2 ===
+{
+ "commit": "9cc06f84",
+ "mutant": "P2",
+ "before": {
+  "byStep": {
+   "CHECKED": [
+    0.986,
+    0.972,
+    1,
+    0.958
+   ],
+   "NAME_ONLY": [
+    0.528,
+    0.476,
+    0.45
+   ],
+   "NONE": [
+    0.232
+   ]
+  },
+  "minRatio": 1.014
+ },
+ "after": {
+  "perStepRenderedOpacity": {
+   "CHECKED": 0.8,
+   "NAME_ONLY": 0.8,
+   "NONE": 0.8
+  },
+  "minCrossBandRatio": 1
+ },
+ "P2_turnedRed": true
+}
+=== MUT P5 ===
+{
+ "commit": "9cc06f84",
+ "mutant": "P5",
+ "beforeDur": "10s",
+ "afterDur": "0.323s",
+ "approxHz": 3095.98,
+ "P5_turnedRed": true
+}
+=== MUT P6 ===
+{
+ "commit": "9cc06f84",
+ "mutant": "P6",
+ "guardIntactOffenders": 0,
+ "afterInject": {
+  "ringDur": "10s",
+  "movedOver2_2s": true,
+  "s1": {
+   "dur": "10s",
+   "m": "1.00000",
+   "op": "0.9600"
+  },
+  "s2": {
+   "dur": "10s",
+   "m": "1.01449",
+   "op": "0.9986"
+  }
+ },
+ "P6_turnedRed": true
+}
+

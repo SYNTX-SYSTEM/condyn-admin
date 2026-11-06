@@ -313,3 +313,93 @@ STILL OWED ON THE DELIVERY (GREEN) TIP, pinned there not here:
 Worktree left at 716a1941 (where PINK measured); phase-D GO stays pinned to 86e36924; no phase-E GO exists.
 Scripts: pink-facade-p13.mts, pink-p13.mjs, pink-p1235.mjs, pink-p8-rendered.mjs, pink-e8b.mjs (+ prep2). Raw
 outputs: P13.json, P1235.json, PREP2-tip.json, P8 rendered inline, E8B inline.
+
+================================================================================
+9. DELIVERY PASS — GO EARNED AT 9cc06f84  (E-4b + the P-4 proof)
+================================================================================
+Tip 9cc06f84 on frontend/mapping-phase-e (chain: 716a1941 → 7815746a E-4b → 9cc06f84 P-4 proof; parent 86e36924).
+Lock byte-identical to base (node_modules copy valid). Rebuilt PINK's own render (prod build + next start, own
+façade+ports, own Playwright) and ran the FULL pass from scratch — nothing carried from 716a1941. Every number is
+PINK's own, derived not accepted. GELB measured 11/11 + P-13 green (§18/b6614cba); PINK reproduces it independently
+and adds two sharpenings and one corrected assumption.
+
+E-4b implementation, read independently: a NEW CSS rule `[data-mapping-arc][data-change="EVIDENCE"]` gives the arc
+the same mappingFieldTransient (so the transient reaches arcs — the §17 constraint PINK supplied, adopted);
+view-model arcChanges() keeps the previously-discarded REQUIREMENT_STATE_CHANGED/REQUIREMENT_KEY_CHANGED from
+diffRankings (no new delta kind — B-1 preserved); the arc REMOUNTS (key `${reqId}#${seq}`) so the one-shot replays;
+a hiddenChange path lights the BODY when the changed arc is beyond its collar; a mapping-delta-requirements
+provenance line states the count. Only the component, view-model, copy and tests changed base→tip — nothing else
+(the §4 boundary holds).
+
+THE TWELVE + P-13 + E-8b + A-8, measured on PINK's own render:
+  P-1  L0 beams = 3, all data-beam-rank PRIMARY, data-beams="3", 5 bodies, 1 undrawn. (= GELB)
+  P-2  bands per focused group (role_all), rendered luminance CHECKED [0.958..1.000] / NAME_ONLY [0.45..0.528] /
+       NONE {0.232}; the binding separation is the CLOSEST (edge) pair: CHECKED-floor 0.958 vs NAME_ONLY-ceil 0.528
+       = 1.814×, NAME_ONLY-floor 0.45 vs NONE 0.232 = 1.940×. Both ≥ 1.6×. (GELB now measures edges too; PINK's
+       sharpening from §17 stands — worst margin 1.81, not the representative 1.89.)
+       RED-FIRST (P-11): collapse every arc's rendered luminance to one value → bands coincide, cross-band ratio
+       1.000 < 1.6 → P-2 RED. (faithful runtime injection; opacity forced to 0.8)
+  P-3  select a capability → exactly 2 coupled bodies into one shared-phase mappingFieldQuery, 1.4 s, delay 0 s,
+       infinite. (= GELB)
+  P-4  BOTH DIRECTIONS (the half no instrument had observed until GRÜN closed it; verified here):
+         EVIDENCE (Rising, own fit DIFFERENT→COVERS): data-change=EVIDENCE, brightness peak 1.751 (keyframe 1.8;
+           GELB 1.77), a CUT — 1 distinct position during motion, no transition, the body REMOUNTS.
+         LAYOUT (Steady, displaced only): data-change=LAYOUT, filter none every frame (NO luminance), an EASE —
+           10 distinct positions over the transition (GELB 11), keeps its element.
+         directions disjoint. (in-page rAF recorder; the Node 50 ms loop missed the brief data-change window — a
+         sampling limitation, not an implementation gap.)
+       RED-FIRST (P-11): give LAYOUT a luminance transient → Steady brightens to 1.773 → P-4 RED.
+       SURVIVING MUTANT (GELB's, verified): put a transform transition on data-change="EVIDENCE" → the Rising body
+         STILL cuts (1 position, brightness 1.729) → the mutant SURVIVES. The cut is STRUCTURAL — the remount makes
+         a new element that cannot transition — not a property of the stylesheet. Confirmed independently; dropping
+         the remount is a JS change GRÜN made its own unit proof.
+  P-5  breath 10 s, scale amplitude 1.492% (≤ 1.5%), and at idle EXACTLY ONE element moves — mapping-ring-field
+       (opacity trough 0.9202, scale 0.985↔1.015) — nothing else drifts; STOPS while pending (RUNNING ⇒ data-breath
+       STILL, animation-name none, 0 moved over 2.6 s). (= GELB)
+       RED-FIRST (P-11): force the breath to 323 ms (3.096 Hz) → P-5 RED.
+  P-6  under prefers-reduced-motion: 164 scanned, 0 duration offenders, 0 moved. Control (motion on): 28 moved,
+       12 offenders — the (b) sampler DETECTS motion (not blind).
+       RED-FIRST, TWO mutants, BOTH RED:
+         (i) GUARD mutant — re-enable animation under reduce (omitted :143 blanket) → the ring animates and moves
+             under reduce → P-6 RED.
+         (ii) JS-BRANCH mutant — reducedMotion()→false (source build, reverted) → opening a body runs the rAF
+             viewBox TWEEN under reduce: data-stage GEOMETRY→EVIDENCE, 7 interpolated viewBoxes, 8 body positions →
+             the field MOVES → P-6 RED. CORRECTS PINK's earlier guess that it would survive: the stage re-frame is
+             real JS geometry motion (a per-frame viewBox tween, component :338-340) that the CSS guard cannot
+             touch, so ONLY half (b) catches it. The JS reducedMotion() gate (:334) is load-bearing, and (b) is
+             doing real work. Unmutated under reduce: data-stage SETTLED, the re-frame CUTS (a discrete viewBox
+             change is not motion) → green.
+  P-7  all four sizes contain-not-clip: every drawn element incl. sector names inside the stage box, stage inside
+       section. Stage 520 / 840 / 756 / 1100, stageTop 128 (E-8c), bigger than phase D so NOT bought by shrinking.
+  P-8  RENDERED CSS px @1280×800 (scale 0.4785): stroke 1.202 (floor 1.2), beam 1.575 (1.0), text 11.022 (11),
+       body 12.0 with FOUR at the 12 px floor. All ≥ floor, tight. (= GELB)
+  P-9  lib/career/mapping/, signs.ts, mapping-spec/ (incl. sign-table.json) and all golden/spec files BYTE-IDENTICAL
+       to base (B-1). Only component/view-model/copy/tests changed base→tip.
+  P-10 façade log: 0 UNSCRIPTED / 0 REFUSED; the five fixture GETs only; 0 external, 0 writes (B-4).
+  P-11 the three inverse mutants above each turn their proof red (P-2, P-4, P-5). Satisfied.
+  P-12 sign-table.json byte-identical → the ten coupling states' signs are unchanged (B-5).
+  P-13 GREEN, on PINK's own render through the app's own polling path: one requirement q_covers COVERS→EQUIVALENT
+       (value unchanged). The arc carries data-change="EVIDENCE" + mappingFieldTransient (keyframe brightness
+       1→1.8→1, same as the body cut), EXACTLY ONE mark across the field (markedId mapping-arc-q_covers, never
+       more), nothing moved (0/5, computed transform), and the provenance line stated ("1 requirement's own
+       evidence changed since the previous reading …", data-requirement-changes 1). First change arrived +0.11 s.
+       INVERSE, now NON-VACUOUS and attacked two ways (façade log confirms a genuine second fetch each time):
+         A2 — identical content, freshly built object each read → peak marks 0, no transient, 0 moved, no
+              provenance. The comparison is on CONTENT; the cheap mark-on-identity-change fix is absent.
+         A3 — q_covers requirementText reworded, state/key unchanged → diffRankings emits nothing → 0 marks. The
+              "mark on any field change" fix is absent too.
+       (The animated brightness VALUE of the arc transient was not captured by getComputedStyle sampling — a known
+        animation-sampling limitation; the animation NAME on the arc and the P-4 rAF capture of the same keyframe
+        at 1.75 establish the transient is applied and peaks at the CSS-defined 1.8.)
+  E-8b scroll-invariant + resize-convergent one-pass: stage 756/520 byte-identical across scroll-to-bottom, return,
+       resize-away-and-back; names contained while scrolled. (PINK owns bound 3.)
+  A-8  deterministic across 3 reloads (identical beam requirement per body), and each beamed body's requirement is
+       the max-value beam-bearing arc by the total order (role_all→q_covers v1, role_platform×2→q_ts/q_k8). PINK's
+       render picks the same PRIMARY beam as GRÜN's, by the same total order.
+
+VERDICT: ★ GO ★ — pinned to 9cc06f84. Every obligation P-1..P-13 passes on PINK's own independent render, each
+red-first where §7 requires, with the P-4 LAYOUT direction, the P-13 inverse (non-vacuous, two attacks), the P-6
+JS-branch mutant and E-8b bound 3 all discharged. The phase-D GO stays on 86e36924 (separate and unaffected).
+Scripts added: pink-facade-p13.mts (A2/A3), pink-p13.mjs, pink-facade-p4.mts, pink-p4.mjs, pink-p4-mutants.mjs,
+pink-static-mutants.mjs, pink-p6-jsbranch.mjs, pink-a8.mjs, pink-breath.mjs, pink-pending-breath.mjs, pink-p1235.mjs,
+pink-p8-rendered.mjs, pink-e8b.mjs, pink-prep2.mjs, pink-facade.mts. Render worktree left clean at 9cc06f84.

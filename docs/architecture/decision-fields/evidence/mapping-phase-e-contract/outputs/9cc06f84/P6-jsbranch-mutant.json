@@ -1,0 +1,16 @@
+=== JS-BRANCH MUTANT (reducedMotion()->false) ===
+{
+ "commit": "9cc06f84",
+ "build": "JS-BRANCH-MUTANT",
+ "reducedMotion": true,
+ "distinctViewBoxes": 7,
+ "stagesSeen": [
+  "EVIDENCE",
+  "GEOMETRY"
+ ],
+ "distinctBodyRects": 8,
+ "frames": 11,
+ "tweenRanUnderReduce": true,
+ "P6_b_verdict": "RED (viewBox tweened under reduce — JS motion the CSS guard cannot catch)"
+}
+
