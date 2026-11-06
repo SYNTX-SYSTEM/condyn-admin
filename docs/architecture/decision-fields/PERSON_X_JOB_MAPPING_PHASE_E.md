@@ -456,3 +456,72 @@ a stage left edge of 380 at the narrowest window, so the panel is not in the way
 **Still OTTAVIO's, and still one constant.** The measurement removes the collision risk, not the taste: a stage
 that begins 8 px under the strip may read as crowded even though nothing overlaps. E-8c is implemented and
 reversible by that one constant, and the acceptance decides whether the regained space is worth the tighter top.
+
+---
+
+## §16 GELB'S MEASUREMENT OF THE TIP — ELEVEN OF ELEVEN, ONE DEFECT IN MY OWN SPEC
+
+GRÜN delivered **`716a1941`** (parent `86e36924`, 10 files, +1177/−135, clean tree, local only). The entry set
+holds: only `PersonJobMappingField.tsx`, `mapping-field-copy.ts`, `lib/career/view-model/mapping-field.ts` and
+tests. Selector, host, layout and URL files untouched.
+
+**My instrument, on my own worktree at the tip: 11 of 11.** P-1 three PRIMARY beams for five bodies · P-2 bands
+SEMANTIC 1.000, LEXICAL 0.528, NONE 0.232, closest ratios **1.89 and 2.28** · P-3 two members, one phase (`0s`),
+period 1.4 s · P-5 `mappingFieldRingBreath` 10 s · P-6 both halves · P-7 **0 elements outside the stage box at all
+four sizes**, stage 520/840/756/1100 against the phase-D 520/830/742/1100 — containment was **not** bought with
+area · P-8 at 1280 × 800 stroke 1.2, beams 1.57, text 11.02, four bodies at the floor · P-10 five GET reads, zero
+external.
+
+**One disagreement, and my instrument was the wrong one.** I measured min stroke 0.48 px against GRÜN's 1.202. The
+two elements were `<path stroke="none">`: my filter tested the *attribute* for null, so it counted strokes that
+paint nothing. Corrected — a stroke that paints nothing is not a stroke — and my figure is now 1.2 px, GRÜN's.
+
+**Two browser gaps GRÜN declared, which my façade could close and its could not:**
+
+- **The breath while pending.** Serving `autoMatchBody("RUNNING")`: `data-pending-breath="true"`, the ring carries
+  `data-breath="STILL"`, `animation-name: none`, and **0 of 158 elements moved over 2.6 s**. E-6's inversion holds
+  end to end, not only in unit tests. (Six elements reported a non-zero `animation-duration` — one-shot staged
+  reveals, iteration 1, already finished. A finite animation keeps reporting its duration after it ends, so §12's
+  half (a) over-reports; only half (b), *nothing moves*, is sound. Recorded as a refinement of §12.)
+- **A crowded constellation** and **P-4 end to end** — the second found a defect.
+
+### The defect: an evidence change arrives silently
+
+I served a second reading in which exactly one requirement of the all-states role goes **COVERS → EQUIVALENT**.
+Both carry value 1, so fit (0.35), rank (2), tier and the whole rank order are **identical**: a pure evidence
+change that moves nothing. Sampled in the browser every **120 ms**, 127 samples, through the app's own polling
+path:
+
+| | measured |
+|---|---|
+| the arc's `data-state` | COVERS → EQUIVALENT at sample 96 (+12.06 s) — **the change arrives** |
+| elements ever marked `data-change="EVIDENCE"` | **0**, peak across all 127 samples |
+| the changed arc's `filter` / `animation-name` | `none` / `none`, at every sample |
+| body positions (group transform) | **0 of 5 changed** |
+
+**An evidence change reached the screen with no transient, no mark and no statement.** This is precisely the
+change-blindness case R12 names and E-9 was written to forbid.
+
+**It is my hole, not GRÜN's.** `data-change` is set on `[data-mapping-body]` alone, and `bodyMovements` raises
+EVIDENCE only from `ROLE_TIER_CHANGED` / `ROLE_FIT_CHANGED` — that is, only when the body **moves**. E-4's table
+binds EVIDENCE and LAYOUT as kinds of *movement*, inherited from phase D's A3, and I never bound the case
+*evidence changed, nothing moved*. GRÜN implemented E-4 as written. P-4 passes at unit and CSS level for exactly
+the cases the spec names.
+
+**The fix crosses no boundary.** The phase-B delta already emits `REQUIREMENT_STATE_CHANGED` and
+`REQUIREMENT_KEY_CHANGED` (`lib/career/mapping/delta.ts`, B-1, byte-identical since phase B), and
+`lib/career/view-model/mapping-field.ts:365` **already calls `diffRankings`** — it consumes the role-level kinds
+and discards the requirement-level ones. The information is computed and thrown away.
+
+> **E-4b.** A requirement whose own evidence changed carries `data-change="EVIDENCE"` and the same luminance
+> transient as a body, **whether or not anything moved**. It is raised from the existing
+> `REQUIREMENT_STATE_CHANGED` / `REQUIREMENT_KEY_CHANGED`; no new delta, no new semantics, `lib/career/mapping/`
+> still byte-identical. E-9's statement names it in the provenance line.
+>
+> **P-13.** A reading in which exactly one requirement's state changes and no fit, rank, tier or order changes
+> must mark that arc EVIDENCE, give it the transient, and move nothing. **Red-first**: on `716a1941` it is red —
+> measured above, peak marks 0. **Inverse**: a reading in which nothing changes must mark nothing.
+
+Still open and declared: the **LAYOUT** direction is browser-unproven (unit and CSS only), because a displacement
+caused by *another* role is hard to provoke through a fixture pair without changing the displaced role too.
+Stated, not hidden.
