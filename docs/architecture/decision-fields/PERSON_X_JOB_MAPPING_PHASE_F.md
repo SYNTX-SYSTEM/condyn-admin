@@ -729,3 +729,101 @@ M-F5 reported the rim ring's breath as a 0.0427 per-pixel swing. PINK's finding 
 jitter on the ring's own edge, not breath; PINK's own figure is 0.0339 and is subject to the same caveat. **The
 conclusion is unchanged and if anything strengthened** — the breath's *coherent* component is smaller than either
 raw number suggested, so phase E's ring was even less visible than §0 claimed.
+
+---
+
+## §15 THE RINGS, THE HALO, AND A GAMMA ERROR OF MINE
+
+### A-F12 · A-F9's arithmetic was wrong by 11.5× *(GRÜN, found in my adjudication)*
+
+A-F9 claimed the shelf ring at 0.05 ink composites to "≈ 0.04 against a ground of 0.026 — still the brighter of
+the two". It does not. Verified:
+
+| ink alpha | 0.05 | 0.085 | 0.15 | 0.25 |
+|---|---|---|---|---|
+| rendered relative luminance on black | **0.00358** | **0.00694** | **0.01691** | **0.04309** |
+
+My shortcut multiplied alpha by INK's *linear* luminance (0.05 × 0.826 = 0.041). **Alpha compositing happens in
+gamma-encoded sRGB**: the blend comes first, the linearisation after. The two differ by 11.5× at this alpha.
+
+The part worth recording is not the gamma slip. It is that **M-F7 had already measured the shelf at p50 0.00496**
+— within a factor of 1.4 of the correct value and an order of magnitude from my derived one — and I published
+both numbers in the same document two sections apart without ever putting them side by side. The measurement was
+right and the derivation was wrong, and I had both in hand.
+
+**Consequence.** With a lit ground near 0.026, the shelf band (0.0036) and the best-fit ring (0.0069) are
+**darker** than the medium they sit in: engraved lines, not lit ones. That polarity inversion is forced — keeping
+them brighter than the ground would require the ground to fall below 0.0069 across the whole outer field, which
+would undo F-1. Accepted.
+
+The luminance ladder survives it intact and monotone: shelf 0.0036 < best-fit 0.0069 < field 0.0169 < **ground
+0.026** < horizon 0.0431. Only the ground now sits inside the ladder, so two rings read as grooves and two as
+ridges. R20 supports it — a dark line at 0.0036 on a ground of 0.026 is a Weber contrast of −0.86, and dark
+targets gain visibility as contrast rises.
+
+**PF-15 gains a second limb:** each ring must separate from **its own local ground** by ≥ 1.6× in one direction
+or the other. The first limb (ring against adjacent ring) cannot catch a ring that lands exactly on the ground's
+level and disappears into it; this one can.
+
+### A-F13 · A still sign in a breathing medium — PF-8 bounds luminance, not contrast *(GELB, an ambiguity closed before it is exploited)*
+
+A-F12 surfaces a question that applies to **every** mark, not only the rings: a mark is black-seated and static,
+but the ground around it breathes, so the mark's *contrast against its surround* varies by roughly ±19 % at the
+nominal amplitude. Does a still sign in a breathing medium violate A-F8?
+
+**No, and this is intended.** PF-8 bounds **a sign's own rendered luminance**, not its contrast against the
+medium. A luminous medium brightening and dimming around still objects in it is exactly what F-6 means — it is
+how a real nebula behaves around real stars. The invariant that carries meaning is the mark's **absolute**
+luminance, which is what E-1/A-3's bands are measured on and what A-F5's black seating makes ground-independent.
+What is forbidden is the sign's own luminance moving. Stated here so it is a decision rather than a loophole
+someone finds later.
+
+### A-F14 · GRÜN's ring derivation — accepted *(GRÜN)*
+
+GRÜN's own computation on black seats at full pixel coverage reproduces the table above (0.0036 / 0.0069 /
+0.0169 / 0.0431 → steps **1.92 / 2.45 / 2.55**), and draws the right conclusion: **the alphas were never the
+problem.** They clear 1.6× comfortably. What destroyed the separation in M-F7 is width and dash, exactly as
+measured. So the alphas stay, and `:83`'s alpha ladder stays green and unchanged — no restatement needed.
+
+Adopted: the best-fit ring loses its dash and becomes a solid 2.4 px line; horizon and field ring 2.0 px; the
+shelf band unchanged; all four black-seated and static. E-7 assigns the rings **no** meaning through dash — they
+are told apart "by luminance alone, one ink, no hue" — so removing the dash costs no semantics. GRÜN to confirm
+no test pins that dash.
+
+### A-F15 · `:140` restated — the halo glides with its body *(GRÜN — accepted, with a fourth check)*
+
+`neurovisual-e.test.ts:140` pins the set of rules carrying `transition: transform` to **exactly**
+`[data-mapping-body][data-change="LAYOUT"]`. Phase F must add one: the halo is medium, F-5 puts beams under
+bodies, and a halo above a beam would breathe over beam pixels and fail PF-8 — so the halo cannot be a child of
+the body `<g>` and needs its own transform. Without its own rule, a LAYOUT body glides for 900 ms while its glow
+stays behind. A body sliding out of its own light would be visibly wrong.
+
+This is a **mechanism** pin under §12's amended B-F2. Its *meaning* — E-4/A-2's distinction, own evidence cuts and
+displacement glides — is preserved exactly, and extended to say the medium follows its body rather than tearing
+off it.
+
+**Restated `:140`:** a position transition applies only to LAYOUT bodies and to the medium of exactly those
+bodies; never to EVIDENCE, never to a sign. Checked as:
+1. the rule set is **closed**: exactly `{ [data-mapping-body][data-change="LAYOUT"], .mf-halo.mf-layout }`;
+2. the component invariant: a halo carries `mf-layout` **iff** its body carries `data-change="LAYOUT"`;
+3. the EVIDENCE halo cuts — remounted on the same `seq` key as its body;
+4. **(added by GELB)** **no element in the sign/structure set carries a transform transition at all.** (1) closes
+   the set by name; (4) closes it by category, so a future sign cannot acquire one through a selector nobody
+   thought to enumerate.
+
+GRÜN's choice to carry the halo's state in a **class** rather than a `data-*` attribute is right and is kept: a
+`data-change` on the halo would inflate PINK's mark counts in P-13. PINK: the halo's LAYOUT state is in
+`classList`, not in `data-*`, deliberately.
+
+### A-F16 · A phase-E proof was partly vacuous *(GRÜN, found in its own lane by `tsc`)*
+
+`field-e.test.tsx:260` — P-13's precondition — read `r.poolRoleId`, which does not exist on `RankedRole`
+(`r.role.poolRoleId` does). At runtime it compared `[undefined, rank, tier, fit]`, so **the order and identity of
+the roles went unchecked**. GRÜN is fixing it in its own commit, strictly stronger, and reports plainly that its
+earlier "tsc clean at `9cc06f84`" was wrong.
+
+That is the **fifth** broken instrument of this effort and the second that was green by construction. It touches
+phase E's GO: P-13's precondition was weaker than §19 recorded. **PINK is asked to state whether its own
+independent P-13 reproduction used the same accessor.** If PINK's instrument read `r.role.poolRoleId`, P-13's
+conclusion stands on PINK's measurement and only the in-repo precondition was weak; if it inherited the same
+mistake, P-13 is unproven and returns to the open list.
