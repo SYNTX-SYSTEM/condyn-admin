@@ -136,3 +136,68 @@ On GRUEN's first phase-E commit, PINK will, in this same worktree/render path:
  - B-1 byte-identity of lib/career/mapping/* and docs/.../mapping-spec/* and the twelve golden vectors;
  - B-5 no invented semantics (luminance DERIVED from data-class {SEMANTIC,LEXICAL,NONE}); B-4/B-6 zero provider.
  PINK's phase-D artefacts stay valid for B-1/B-3.
+
+=======================================================================
+PREP-2 · INSTRUMENT SHARPENING PER §11/§12/§13 RULINGS (still on 86e36924; not a GO)
+=======================================================================
+GELB adjudicated the three notes (§12, commit 604ba3e3), the eight GRÜN conflicts (§11, 0bd7258d) and added
+§13 (df7dc5ff). The rulings change what PINK measures. PINK re-derived the affected instruments on the baseline.
+
+5.1 P-6 RESTATED (§12 N-3) — the binding half validated, and TWO instrument defects PINK found in its own harness.
+    P-6 restated: under reduced motion (a) no element carries a non-zero computed animation/transition duration
+    AND (b) the field does not move — sample every drawn element's geometry+opacity twice >= 2 s apart, all equal.
+    (b) is binding: a JS rAF loop leaves (a) at 0s while the field moves.
+    DEFECT-1 (PINK's harness): the first sampler queried only circle/path/line/rect/text + g[body|node]; the
+    phase-D CSS motion is mappingFieldPhase on <g data-testid="mapping-tick-*"> GROUPS, and group opacity does
+    NOT appear on children's computed opacity — so the sampler reported movedCount 0 WITH MOTION ON (blind). Fix:
+    sample [svg, ...svg.querySelectorAll("*")] and read each element's OWN computed opacity + rect + transform.
+    After the fix, the three states of the instrument on the baseline:
+      - reduced motion (guard intact):   (a) 0 offenders / 142 scanned, (b) movedCount 0  -> P-6 GREEN (correct).
+      - motion ON (control):             (b) movedCount 5 — sampler detects the tick opacity transient
+                                         0.572->0.743 with geometry unchanged -> the sampler BITES on opacity.
+      - GUARD MUTANT (PINK narrowed :85 to a nonexistent attribute, rebuilt, reduced motion):
+                                         (a) 8 offenders, (b) movedCount 5 (opacity 0.719->0.582) -> P-6 RED.
+    => red-first for P-6 is a guard mutant, and the test bites. Mutant reverted (git checkout); worktree clean.
+    STILL OWED on delivery: if GRÜN implements any motion in JS, a SECOND mutant disabling the JS reduced-motion
+    branch (the guard mutant alone will not reach a rAF loop) — (b) must be shown red there too.
+
+5.2 P-7 CORRECTED SET (§11 two-readings) — PINK's phase-D harness measured the WRONG set (bodies/nodes/ring) and
+    missed the elements A-1 says fall outside: the SECTOR NAMES. Corrected harness, phase-D baseline:
+      size        stage box          outermost drawn (horizontal)                    inside stage?  stage in section?
+      1280x800    L380 R900          sector-name-A L365.8 / sector-name-B R918.2      NO (both)      YES (sec top61 bot1021)
+      1600x1000   L385 R1215         L362.2 / R1243.5                                  NO            YES
+      1829x912    L543.5 R1285.5     L523.1 / R1311.1                                  NO            YES
+      2560x1300   L730 R1830         L699.7 / R1867.8                                  NO            YES
+    The sector (pool) names overrun the stage box left/right at every size and are clipped by the svg's
+    overflow:hidden. The vertical outermost (mapping-ring-field) IS inside the stage box (clipped). The
+    "stage box inside section box" half already holds; the failing half is "outermost drawn inside stage box".
+    Section top = 61 at every size — independently re-confirms N-2's 61 px offset. P-7 now = both halves; baseline
+    fails the first. The host page scroll is E-8a (B-2), does not block P-7.
+
+5.3 E-8a HOST SCROLL — independently confirmed on PINK's render:
+      1280x800: dashboard 1021 / host 960 / window 800 ; 1600x1000: 1061/1000/1000 ; 1829x912: 1021/960/912 ;
+      2560x1300: 1361/1300/1300. Matches GRÜN's §11/E-8a figures. Belongs to OTTAVIO; PINK reports, does not gate.
+
+5.4 P-8 @1280x800 — a SECOND PINK instrument defect, and a cross-instrument reconciliation. PINK first read min
+    structure stroke 0.983 and min SVG text 12.01 via getComputedStyle — these are SVG USER UNITS. GRÜN reported
+    0.49 / 5.96 (RENDERED px, the legibility quantity R11 cares about). The ratio is a constant x0.496 = the
+    viewBox->viewport render scale at 1280x800: 0.983x0.496=0.49, 12.01x0.496=5.96. The instruments AGREE once
+    converted. Fix for delivery: P-8 measures rendered px (strokeWidth x screen-CTM scale, or text bbox height),
+    not user units. Either way the baseline is below the floor (<1.2 px structure), confirming P-8's red baseline.
+
+6. NEW BOUNDS ADOPTED FOR THE DELIVERY PASS (§13)
+   E-8b — the clamp must be scroll- and resize-invariant. Three bounds; PINK owns (3): scroll the host down,
+     return, resize, then re-measure P-7 at the four sizes. If GRÜN's clamp was computed in DOCUMENT coordinates
+     (it reads the section's document top), the stage will no longer fit after the round trip. Neither GRÜN's nor
+     GELB's harness walks this path (both at scroll 0). PINK will build the scroll-round-trip harness.
+   M-4b — the base evidence ladder is INVERTED, not merely flat: closest class ratios 0.786 and 0.625 (<1), because
+     UNCLEAR(SEMANTIC) 0.55 < NAME_EXACT(LEXICAL) 0.70 and 0.25 < 0.40. A checked coupling can be drawn DIMMER than
+     a name-only one today. P-2's bands (CHECKED[0.93,1.00]/NAME_ONLY[0.45,0.58]/NONE[0.22,0.28], >=1.6x at closest
+     points, per focused group) must fix this; PINK tests band separation per drawn group, never across groups.
+   Unreported proofs PINK will independently check on the committed tip: P-4 (A-2: own EVIDENCE => cut + transient;
+     displaced-by-others => eased, no luminance — both directions), P-9 (golden vectors byte-identical, B-1),
+     P-11 (the three mutants each bite), P-12 (sign table unchanged, B-5). A-8 total order => PINK's render must
+     pick the same PRIMARY beam as GRÜN's.
+
+STATE: still no phase-E commit exists (GRÜN's green is on an uncommitted tree). GO stays pinned to 86e36924.
+Instruments validated and ready; PINK re-measures the phase-E tip the moment it is committed.
