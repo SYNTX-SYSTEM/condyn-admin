@@ -1,0 +1,297 @@
+{
+ "commit": "9cc06f84",
+ "level": "L0",
+ "frames": 65,
+ "spanS": 58.3,
+ "clipMatch": true,
+ "perClass": {
+  "rings": {
+   "fringe": {
+    "px": 166510,
+    "tierA": {
+     "sig": 0.000202,
+     "floor": 0.0000159,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00535,
+     "floor": 0.00168,
+     "ratio": 3.18,
+     "red": true
+    },
+    "tierC": {
+     "ratios": [
+      2.18,
+      34.74,
+      361.73,
+      null
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 154524,
+    "tierA": {
+     "sig": 0.000213,
+     "floor": 0.0000115,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00544,
+     "floor": 0.00167,
+     "ratio": 3.25,
+     "red": true
+    },
+    "tierC": {
+     "ratios": [
+      2.34,
+      38.27,
+      1987,
+      null
+     ],
+     "red": true
+    }
+   }
+  },
+  "arcs": {
+   "fringe": {
+    "px": 9462,
+    "tierA": {
+     "sig": 0.000209,
+     "floor": 0.000178,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00232,
+     "floor": 0.00208,
+     "ratio": 1.11,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      0.74,
+      1.41,
+      1.56,
+      1
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 1143,
+    "tierA": {
+     "sig": 0.000165,
+     "floor": 0.000172,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.0033,
+     "floor": 0.00243,
+     "ratio": 1.36,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      0.63,
+      2.06,
+      null,
+      1
+     ],
+     "red": true
+    }
+   }
+  },
+  "beams": {
+   "fringe": {
+    "px": 15718,
+    "tierA": {
+     "sig": 0.000169,
+     "floor": 0.00013,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00225,
+     "floor": 0.00183,
+     "ratio": 1.23,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      0.93,
+      1.79,
+      2.11,
+      1
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 2246,
+    "tierA": {
+     "sig": 0.000169,
+     "floor": 0.000149,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.0029,
+     "floor": 0.00228,
+     "ratio": 1.27,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      0.83,
+      1.36,
+      11,
+      1
+     ],
+     "red": true
+    }
+   }
+  },
+  "nodes": {
+   "fringe": {
+    "px": 16750,
+    "tierA": {
+     "sig": 0.00018,
+     "floor": 0.000114,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00235,
+     "floor": 0.00164,
+     "ratio": 1.43,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.04,
+      2.4,
+      2,
+      1
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 1789,
+    "tierA": {
+     "sig": 0.000257,
+     "floor": 0.000259,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00298,
+     "floor": 0.00274,
+     "ratio": 1.09,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.05,
+      1.57,
+      4.5,
+      1
+     ],
+     "red": true
+    }
+   }
+  },
+  "text": {
+   "fringe": {
+    "px": 17804,
+    "tierA": {
+     "sig": 0.000182,
+     "floor": 0.0000882,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00241,
+     "floor": 0.00164,
+     "ratio": 1.47,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.03,
+      2.52,
+      2.19,
+      1
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 1862,
+    "tierA": {
+     "sig": 0.000269,
+     "floor": 0.000227,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00313,
+     "floor": 0.00231,
+     "ratio": 1.36,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.27,
+      2.46,
+      10,
+      1
+     ],
+     "red": true
+    }
+   }
+  },
+  "outlines": {
+   "fringe": {
+    "px": 17335,
+    "tierA": {
+     "sig": 0.000177,
+     "floor": 0.0000757,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00255,
+     "floor": 0.00172,
+     "ratio": 1.49,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.04,
+      2.52,
+      3.08,
+      1
+     ],
+     "red": true
+    }
+   },
+   "interior": {
+    "px": 3027,
+    "tierA": {
+     "sig": 0.000177,
+     "floor": 0.000133,
+     "red": false
+    },
+    "tierB": {
+     "p99": 0.00282,
+     "floor": 0.00213,
+     "ratio": 1.32,
+     "red": false
+    },
+    "tierC": {
+     "ratios": [
+      1.15,
+      2.15,
+      12,
+      1
+     ],
+     "red": true
+    }
+   }
+  }
+ }
+}

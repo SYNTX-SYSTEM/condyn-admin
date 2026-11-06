@@ -325,3 +325,40 @@ The reproducible, build-independent result is the SHAPE: settles at 2 cells.)
 ALSO ADOPTED from §23: PF-9 reports NOT RUN on the default variant (data-breath=LIVE, no STILL state) — needs the
 `running` variant; PF-10 reports INCONCLUSIVE unless the UNSELECTED breath amplitude is >= 0.0002 in its own right
 (a ratio of two floor values is not a measurement — at base both amps ~1-2e-5 are pure noise). Both carried in.
+
+
+§8  PF-8 PER-CLASS (§24/§25) + §26 MULTI-LEVEL — per-class instrument built; mostly matches GELB; two findings
+---------------------------------------------------------------------------------------------------------------
+GRÜN's arc-seat-removed mutant SURVIVED pooled tiers A/B because pooling 173k unequal pixels hides an ~807-px
+class under a p99 (the 1730th value) — PINK's §19(a) low-count class, worst form. Fix (§25): tiers A/B/C PER
+CLASS, each own null; masks built under reduced-motion (GELB's 11th defect — a live mask sweeps the breath in).
+PINK built the per-class instrument (scripts/pink-pf8-perclass.mjs; masks under reduce via per-selector hide; live
+58s capture; joint LSQ; decoys 0.15/0.25/0.35) and ran at base L0. Classes: rings [data-testid^=mapping-ring],
+arcs [data-mapping-arc], beams [data-beam], nodes [data-mapping-node], text <text>, outlines [data-mapping-body-
+shape]. Result (fringe mask diff>0.001; Tier C ratios at 0.001/0.002/0.004/0.008; output PF8-PERCLASS.json):
+  rings    166510px  A green  B 3.18x RED  C 2.18/34.74/361.73/inf RED   (GELB rings 236x) — ring is the breather;
+                     Tier A green is CORRECT (geometric move conserves pooled light), B/C catch it.
+  outlines  17335px  A green  B 1.49     C 1.04/2.52/3.08/1 (3.08x)      (GELB outlines 3.43x) — MATCH.
+  arcs       9462px  A green  B 1.11     C 0.74/1.41/1.56/1              (GELB arcs clean) — ~clean, MATCH.
+  beams     15718px  A green  B 1.23     C 0.93/1.79/2.11/1              (GELB beams 1.54x) — mild, ~consistent.
+  nodes     16750px  A green  B 1.43     C 1.04/2.40/2.00/1              (GELB nodes CLEAN) — DIVERGENCE (mild red).
+  text      17804px  A green  B 1.47     C 1.03/2.52/2.19/1             (GELB text CLEAN) — DIVERGENCE (mild red).
+MATCHES: rings (massive), outlines (~3x), arcs (clean) all agree with GELB. DIVERGENCE: nodes/text show mild Tier
+C red (~2-2.5x) where GELB is clean, and beams a touch high. Two findings from chasing it, NOT papered over:
+ (1) EROSION DOES NOT FIX IT, and reveals a Tier-C constraint. Interior masks (1px erosion) left thin classes too
+     sparse for a stable null (arcs interior 1143px, nodes 1789px -> null counts ~0 -> ratios blow to 4.5/10/inf),
+     so Tier C needs a MINIMUM class POPULATION; and thin marks are nearly ALL fringe (GRÜN's coverage point),
+     so they cannot be measured on an eroded interior at all. The firewall mask must be the full seat footprint.
+ (2) THE NULL IS ASYMMETRIC and can bias quiet classes toward FALSE-RED. Decoys {0.15,0.25,0.35} each sit +0.05
+     ABOVE a harmonic {0.1,0.2,0.3}; the null therefore samples a systematically higher part of the spectrum than
+     the signal. Under ANY non-flat temporal-noise spectrum (e.g. low-frequency-weighted raster/compositor noise)
+     the signal band then carries more noise power than the null -> signal/null > 1 with no real leak. This is a
+     candidate cause of PINK's mild quiet-class red (and PINK's broader masks, ~3x GELB's px, include more breath-
+     adjacent fringe, compounding it). It is a "can this measurement FALSE-RED" risk in the GELB-checklist family,
+     and it would affect BOTH instruments. PROPOSED: a spectrally SYMMETRIC/bracketing null (decoys both below and
+     above each harmonic), and matching GELB's tighter element-coverage mask. PINK will resolve both before/at the
+     tip (where the element taxonomy is final) rather than assert a cause now.
+§26 ADOPTED: PF-8 has only ever been measured at L0; the interactive/emphasisable L2 ring arcs (PersonJobMapping
+Field.tsx:669, drawn 1.3*k over a larger ground) were never in any sign mask. PINK's full pass runs the per-class
+firewall at L0 AND L2 (open a pool, then a role), per level. GELB's checklist second limb adopted: "can this
+measurement fail" now also asks "is the thing it must fail on even in the frame" (coverage/view, not just stat).
