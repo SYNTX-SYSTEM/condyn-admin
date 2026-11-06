@@ -583,3 +583,66 @@ correction this phase.
 GRÜN's four compatibility pins are accepted as measured: the beam stroke attribute stays and the F-5 gradient goes
 in as a mask (`field-e :100`); beam backings take `max(beam, 1.2 px)` for the stroke floor (`field-e :326`); depth
 never sits on the body `<g>`, only on core and halo (`field-interaction :71`).
+
+---
+
+## §13 THE HARNESS AT BASE — RED WHERE IT MUST BE, AND A SEVENTH READING
+
+GELB's §7 harness, run against `9cc06f84` before GRÜN's tip exists. An instrument that cannot show the baseline
+red is not an instrument, so this run is validation, not acceptance.
+
+| # | At base | Bound | |
+|---|---|---|---|
+| PF-1 | disc median **0.00181**, frac above 0.005 **0.150** | ≥ 0.006 / ≥ 0.55 | **red** |
+| PF-5 | frac swinging ≥ 0.004: **0.0895** | ≥ 0.25 | **red** |
+| PF-6 | swing max **0.0421**; mean \|ΔL\|/500 ms 0.0001 | ≤ 0.030 / ≤ 0.0025 | **red on the ceiling** |
+| PF-7 | band amplitudes ≈ 0, lag spread **8 657 ms**, not monotone | spread 1 200 ± 300 ms | **red** |
+| PF-8 | sign/structure pixels p99 **0.0187**, max **0.0421** | p99 ≤ 0.002 | **red** |
+| PF-11 | **33 595** of 598 681 disc pixels change over 2.4 s under `reduce`, max Δ **0.0339**; **0** elements carry a duration | 0 changed | **red** |
+| PF-15 | ring edge ratios **1.316 · 0.895 · 0.573** | each ≥ 1.6 | **red** |
+
+Three of these are worth more than their red.
+
+**PF-6 is red at base on the ceiling alone.** The rim ring's 0.0421 swing exceeds PF-6's ceiling without phase F
+touching anything — independent confirmation of §12's claim that the ring's scale breath had to be retired on its
+own merits, not only because F-6 replaces it.
+
+**PF-8 is red at base because the one breathing thing *is* a structure.** The base violates A-F8 — *the signs are
+still, only the medium breathes* — before phase F exists. The principle was not invented to permit the wave; the
+base was already on the wrong side of it.
+
+**PF-11 independently reproduces GRÜN's host finding** from a different instrument, a different threshold and a
+different sampling: 33 595 of 598 681 disc pixels moving under `reduce` with **zero** field elements carrying a
+duration (GRÜN measured 101 868 of 670 489, max Δ 0.032; I measure max Δ 0.0339). Two instruments, same
+phenomenon, same magnitude. The host is moving underneath a field that is correctly frozen.
+
+### M-F7 · E-7's four rings are **already** indistinguishable on pixels *(GELB — a seventh base reading)*
+
+A-F6 predicted that a lit ground would delete two of E-7's four rings. The measurement says something worse and
+more useful: **the separation does not hold at base either.**
+
+| ring | ink alpha | p10 | p50 | p90 |
+|---|---|---|---|---|
+| horizon | 0.25 | 0.02014 | 0.03639 | 0.04742 |
+| field | 0.15 | 0.00580 | 0.01117 | 0.01531 |
+| shelf | 0.05 | 0.00496 | 0.00496 | 0.00648 |
+| best-fit | 0.085 | 0.00169 | 0.00254 | 0.00866 |
+
+Edge ratios at the closest points: **1.316 · 0.895 · 0.573** — none reaches 1.6 and **two are inverted**. Note the
+order: the best-fit ring, at a *higher* ink alpha than the shelf, renders *dimmer* than it.
+
+The cause is that E-7 specified luminance as **ink alpha** and never measured the image. Rendered luminance is
+dominated by stroke width and dash, not by alpha: the shelf is a ~100 px band at 0.05 that renders as a solid
+0.005 region, while the best-fit ring is a *dashed 1.2 px hairline* at 0.085 whose pixels are mostly antialiasing
+fringe. A thick faint band and a thin brighter dashed line land on top of each other.
+
+**Consequence for the phase:** PF-15 is not a new burden phase F creates. It is an existing defect phase F
+surfaces, and the ring luminances must be **derived from measured pixels** rather than adjusted from the current
+alphas — there is no correct baseline to preserve.
+
+**Instrument defect, my third this phase.** PF-15 first read each ring at `boundingClientRect.width / 2`. A
+circle's bounding box **includes its stroke**, and the shelf ring is a band ~100 px wide, so that sampled its
+outer edge rather than the band. The radius now comes from the SVG geometry through `getScreenCTM()` and the
+sampling window follows each element's own stroke width. The uncorrected run reported 1.212 · 1.267 · 0.573; the
+corrected one 1.316 · 0.895 · 0.573. Both are red, but the uncorrected one was red for partly the wrong reason,
+and I would have sent GRÜN a wrong ring to chase.
