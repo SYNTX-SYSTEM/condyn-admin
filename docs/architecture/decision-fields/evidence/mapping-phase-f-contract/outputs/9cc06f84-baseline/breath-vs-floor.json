@@ -1,0 +1,10 @@
+{
+ "probe": "breath signal vs noise floor, RAW vs 2px-blur @9cc06f84. signal=reducedMotion off (11s ≥ one 10s breath period); floor=reduce (static).",
+ "signal": { "reduce": false, "frames": 14, "spanMs": 11000, "N": 853776,
+   "raw":  { "swing_max": 0.033863, "pixSwingGt004": 51894, "fracSwingGt004": 0.0608, "pixSwingGt002": 74259, "meanAbsStep": 0.0001329,   "pixPerStepGt002": 11501 },
+   "blur": { "swing_max": 0.011056, "pixSwingGt004": 4373,  "fracSwingGt004": 0.0051, "pixSwingGt002": 52292, "meanAbsStep": 0.000061647, "pixPerStepGt002": 4245 } },
+ "floor":  { "reduce": true, "frames": 7, "spanMs": 3554, "N": 853776,
+   "raw":  { "swing_max": 0.030012, "pixSwingGt004": 4810,  "fracSwingGt004": 0.0056, "pixSwingGt002": 13456, "meanAbsStep": 0.000028456, "pixPerStepGt002": 1430 },
+   "blur": { "swing_max": 0.0092424,"pixSwingGt004": 1001,  "fracSwingGt004": 0.0012, "pixSwingGt002": 2225,  "meanAbsStep": 0.000015332, "pixPerStepGt002": 281 } },
+ "reading": "RAW per-pixel MAX is noise-dominated (signal 0.0339 ≈ floor 0.0300). 2px blur collapses the floor (>0.002 count 13456→2225) while the breath survives (74259→52292): signal:floor >0.002 count goes 5.5:1 (raw) → 23:1 (blur). The breath is real but small — blurred mean|Δframe| ~6e-5, blurred swing_max ~0.011. Area/blur luminance is the correct instrument for PF-8 firewall and F-6 corridor; raw single-pixel thresholds false-trip on antialiasing."
+}

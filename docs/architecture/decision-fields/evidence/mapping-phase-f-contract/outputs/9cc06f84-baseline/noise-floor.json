@@ -1,0 +1,8 @@
+{
+ "probe": "instrument noise-floor / PF-11 preview @9cc06f84 reducedMotion:reduce (nothing animates ⇒ swing is pure screenshot/antialias nondeterminism)",
+ "region": "924x924", "frames": 5, "spanMs": 3133,
+ "swing_max": 0.031872, "pixSwingGt002": 11302, "fracSwingGt002": 0.01324, "pixSwingGt0005": 56102,
+ "meanAbsStep": 0.000036224, "pixPerStepGt002_mean": 2016.8,
+ "PF11_preview_identical_le_0.002": false,
+ "note": "At 9cc06f84 under reduce the field is motionless by DOM measures (phase-E P-6 green), yet the IMAGE is not pixel-identical: a sub-pixel AA shift on a bright-mark edge produces a single-pixel swing up to 0.032. PF-11 'every pixel identical across ≥2s' therefore cannot be tested at single-pixel strictness; needs an AA-tolerant (area/blur) comparison or a small per-pixel epsilon."
+}

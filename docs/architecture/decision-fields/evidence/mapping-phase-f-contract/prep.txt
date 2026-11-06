@@ -1,0 +1,108 @@
+PINK · SFE PHASE F · PERSON × JOB MAPPING — INDEPENDENT PIXEL-LEVEL EVIDENCE
+============================================================================
+Role: PINK is the independent inverse validator. OTTAVIO rejected phase E on VISUAL grounds (too dark, too
+static, too little alive; breath imperceptible; bodies/couplings develop no spatial effect). The phase-E GO on
+9cc06f84 stands as an ENGINEERING fact (DOM/geometry proofs P-1..P-13) and is NOT withdrawn; it was never a
+design acceptance. GELB's lesson, which PINK shares: every phase-E proof read the DOM — attributes, computed
+styles, geometry. NOT ONE read a pixel. The defect OTTAVIO saw lives entirely in the rasterised image, and the
+whole phase-E proof surface was blind to it by construction. Phase F's proof surface must read pixels.
+
+PHASE_F_BASE = 9cc06f84 (phase-E delivery tip). This file §1 is PINK's OWN red-first pixel baseline on 9cc06f84,
+built on PINK's OWN instrument and OWN render — a SECOND measurement, deliberately not a re-run of GELB's harness
+and NOT read against GELB's §0 readings until PINK's own were committed (independence condition, GELB's own ask).
+
+
+§1  RED-FIRST PIXEL BASELINE ON 9cc06f84  (own render, own code; committed before reading GELB §0)
+-----------------------------------------------------------------------------------------------------
+RENDER (PINK's own, isolated, read-only; no provider reachable):
+  - Worktree /home/codi/Entwicklung/condyn-admin-pink-visual-e at 9cc06f84 (clean). PRODUCTION build
+    (next build, dummy DATABASE_URL) served by `next start -p 3121`; fixture façade on 3120 proxies non-/api to
+    3121 and serves the 6 fixture routes from test/career/** (shared ground truth, B-7). NOT GELB's :3020 façade.
+  - PROVENANCE confirmed from façade log: each page load drives exactly 5 server-side FIXTURE GETs (investigation,
+    job-pools, analyses, auto-match, job-ranking), 0 UNSCRIPTED, 0 REFUSED. The render's data is entirely PINK's
+    fixtures. (Client-side /api XHR count is 0 because the data is fetched SSR; the 5 server GETs are the path.)
+  - Variant default; URL /career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=CAN_…0002.
+  - Measured at 1920×1080 (the size OTTAVIO judged), deviceScaleFactor 1 so 1 screenshot px == 1 CSS px; 1280×800
+    as a cross-check second size.
+
+INSTRUMENT (scripts/pink-pixels.mjs): Playwright screenshot of the REGION the field's svg occupies (NOT sampled
+points) → sharp raw RGBA → WCAG relative luminance per pixel (sRGB linearised: c'≤0.03928 ? c'/12.92 :
+((c'+0.055)/1.055)^2.4 ; L = 0.2126R'+0.7152G'+0.0722B'). Disc mask = pixels within the ring circle (centre and
+radius taken from [data-testid=mapping-ring-field] getBoundingClientRect). Region 924×924 @1920 (disc 616,149 px);
+520×520 @1280 (disc 183,785 px).
+
+GELB's two self-found phase-F defects, both AVOIDED here and asserted, not assumed:
+  (1) ONBOARDING OVERLAY: present on a fresh profile (overlay count = 1 at first paint — reproduced). The harness
+      DISMISSES it and ASSERTS absence before any measurement: overlay count must be 0 AND the element under the
+      field centre must belong to the svg (elementFromPoint walks to a <svg> ancestor, no overlay/scrim/backdrop
+      above it). A non-zero/scrim state ABORTS the run (exit 2). Every reading below was taken with overlay = 0.
+  (2) SAMPLE-NOT-REGION: Q-F1/F4/F6 iterate EVERY pixel of the square / disc; Q-F5 scans each node's full box and a
+      surrounding band. No hand-chosen sample points.
+
+THE SIX READINGS  (primary 1920×1080; raw per-pixel WCAG luminance unless noted)
+
+Q-F1  STAGE SQUARE (924×924, whole svg):
+      mean 3.25e-3 · p50 1.45e-3 · p90 4.96e-3 · p99 1.39e-2 · p999 2.57e-1 · max 6.35e-1
+      fraction above 0.005 = 6.03% · above 0.02 = 0.78% · above 0.05 = 0.31%
+Q-F4  DISC INTERIOR (616,149 px, every pixel inside the ring):
+      mean 3.78e-3 · p50 1.67e-3 · p90 4.99e-3 · p99 2.03e-2 · p999 2.80e-1 · max 6.35e-1
+      above 0.005 = 7.94% · above 0.02 = 1.01% · above 0.05 = 0.37%
+      READ: the field is BLACK. The median disc pixel is 1.7e-3; 90% of the disc is below 5e-3; only ~1% exceeds
+      0.02. The field is near-black everywhere except the ~6-8% of pixels that are the marks. This is OTTAVIO's
+      "too dark" quantified, and the red-first floor for PF-1 (ground luminance) / the plan to raise ground ~10×.
+      (1280×800 agrees, slightly higher mark density on the smaller square: mean 4.5e-3/5.3e-3, above-0.02
+       1.66%/2.20%, p50 identical 1.45e-3 — the same near-black ground value at both sizes.)
+
+Q-F5  EACH BODY & CAPABILITY NODE vs ITS LOCAL SURROUND (peak inside box vs median of a 10px band; Weber):
+      bodies (5): peak 0.48–0.63, surround median 1.5e-3–5.0e-3, Weber ratio 97–398 (contrast 96–397).
+      capability nodes (3): peak 0.53–0.63, surround median ~3.4e-3, Weber ratio 158–185.
+      READ: marks are bright points sitting on a near-black ground with essentially ZERO falloff — the surround
+      is black right up to the mark edge. No halo, no gradient, no depth. This is OTTAVIO's "bodies and couplings
+      develop no spatial effect" quantified, and the red-first floor for PF-3/PF-4 (depth on core+halo).
+
+Q-F2  BREATH, TEMPORAL (14 frames over 11.24s ≥ one 10s period; per-pixel temporal max−min):
+      RAW: swing p999 1.95e-2 · swing max 3.39e-2 · pixels swing>0.002 = 74,015 (8.67%).
+      WHERE (radius r/R from field centre): swinging pixels concentrate in the RIM annulus r/R 0.9–1.04
+      (18,713 + 25,290 = 44,003 of 74,015) and a small central cluster r/R 0.05–0.16 (1,313 + 5,727). The mid
+      disc (r/R 0.3–0.7) barely moves. The breath at 9cc06f84 is a thin RING modulation — consistent with the
+      phase-E DOM finding "idle = only the ring moves", now confirmed at the pixel. Red-first floor for PF-5/F-6.
+
+Q-F3  MOTION AT REST (mean |frame−prev| over the stage; pixels changing >0.002 per step):
+      RAW: mean |Δframe| 1.52e-4 · pixels/step >0.002 mean 12,894, max 16,308 (over 865ms steps).
+      This includes the breath (intended slow motion). See the instrument caveat below for signal vs noise.
+
+Q-F6  GROUND PURITY (field drawing SUPPRESSED via svg visibility:hidden; re-measure the disc):
+      disc with field suppressed: mean 1.67e-3 · p90 1.93e-3 · p99 4.71e-3 · max 8.92e-3 · above 0.02 = 0% ·
+      bright (>0.02) pixels inside disc = 0, no bbox.
+      READ: there is NO host bleed in the disc — the only light inside the disc is the field's own. (This directly
+      refutes the phase-E sampling defect that claimed/denied panels inside the field: measuring the REGION, there
+      are zero ground pixels above 0.02.) The ground under the field is near-black (max 8.9e-3), so Q-F1/Q-F4
+      darkness is genuine field darkness, not a measurement through a scrim or a bright backdrop. Red-first floor
+      for PF-6 (ground purity) — phase F raises the ground deliberately; this is what it starts from.
+
+INSTRUMENT SELF-AUDIT — the decisive caveat (scripts/pink-pixels-floor.mjs, pink-breath-vs-floor.mjs):
+  Under reducedMotion:reduce at 9cc06f84 NOTHING animates (phase-E P-6 is green: 0 durations, 0 moved), yet the
+  IMAGE is NOT pixel-identical frame to frame. A sub-pixel antialiasing shift on a bright-mark edge flips one
+  pixel from ~0.6 to ~0.001 — a huge SINGLE-PIXEL delta. Measured static noise floor: swing_max 0.0319, 11,302
+  pixels swing>0.002, mean|Δ| 3.6e-5. CONSEQUENCES, stated plainly because phase F depends on them:
+    - Q-F2 raw swing_max (0.0339) is NOT distinguishable from the static floor's max (0.0319). The per-pixel MAX
+      and any raw single-pixel threshold are NOISE-DOMINATED. The robust signal is the COUNT of swinging pixels
+      and mean|Δ|: signal 74k vs floor 13k pixels>0.002; signal 1.5e-4 vs floor 3.6e-5 mean — the breath is ~5×
+      above the floor on both, so it IS real, but small.
+    - A 2px blur separates them cleanly: >0.002 count signal 74,259→52,292 (survives) vs floor 13,456→2,225
+      (collapses); signal:floor ratio 5.5:1 raw → 23:1 blurred. Blurred breath mean|Δ| ~6e-5, swing_max ~0.011.
+    - FOR PHASE F: PF-8's "every mark pixel swing ≤ 0.002" and F-6's ceiling "no pixel over 0.030" CANNOT be
+      tested at raw single-pixel strictness — the antialiasing floor alone reaches 0.030–0.032 and 11k pixels
+      >0.002 with NOTHING moving. These obligations need an AA-tolerant instrument (area/blur luminance, or a
+      per-pixel epsilon / neighbourhood-persistence). A naive raw test false-fails on every build, phase E or F.
+      PF-11 ("every pixel identical across ≥2s") has the same problem: it is already false at 9cc06f84 under
+      reduce by 11k pixels, none of them moving. This is PINK's first concrete feedback on the §7/§8 corridors.
+
+OUTPUTS: outputs/9cc06f84-baseline/{QF-1920x1080.json, QF-1280x800.json, noise-floor.json, breath-vs-floor.json}.
+SHOTS:   shots/{stage,ground}-{1920x1080,1280x800}.png (stage = as rendered; ground = field drawing suppressed).
+SCRIPTS: scripts/{pink-pixels.mjs (the instrument), pink-pixels-floor.mjs, pink-breath-vs-floor.mjs,
+         pink-probe-dom.mjs, pink-facade.mts}.
+
+STATUS: baseline delivered to GELB as PINK's independent six readings. §0 (GELB's readings) and §7/§8 (the 14
+phase-F obligations on tip f31605cf) to be taken up next — a fresh render worktree at f31605cf, each obligation
+red-first with a recorded mutant, with the AA-tolerant instrument correction above carried in from the start.
