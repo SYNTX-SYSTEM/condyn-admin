@@ -1055,3 +1055,58 @@ and the ratio 0.039–0.083 across all five bodies — comfortably inside the ce
 is the same class as my own M-F4 defect — a window that reports what is in it rather than what put it there — and
 the same fix as PF-8's sign mask, which already isolates by suppression rather than by location. Suppression is
 becoming this phase's general answer to "which pixels are whose".
+
+---
+
+## §21 A-F20 · THE INSTRUMENT RUNS OUT OF RESOLUTION ON THE FREQUENCY AXIS *(PINK — adopted, and it applied to me too)*
+
+PINK built the three-tier firewall independently and **confirmed all three verdicts at base** — tier A green
+(0.000155 against 0.0005), tier B red (2.79×), tier C red (27× at 0.004), and tier C the sharpest limb on its
+instrument as on mine. Two independent builds, same verdicts, same ordering.
+
+The valuable half is what PINK found in its own hands first. Its first build used a **uniform DFT** over 14 frames
+at 849 ms and **falsely near-passed**: tier B 1.04×, tier C mid-rung 1.39×. A sampling-induced green by
+construction — produced one message after we agreed the rule that exists to stop it.
+
+**Cause.** This machine renders a screenshot in 600–1100 ms (SwiftShader software raster of the host's 17
+backdrop-filters and 800 px core — A-F2's cost). A uniform DFT at that cadence **aliases the decoy frequencies**,
+inflating the null until floor ≈ signal and the separation collapses. PINK's tell was the tier A floor: 1e-4 under
+the bad estimator, 1.6e-5 under the good one. A tenfold floor drop is the signature of a decoy that finally
+resolved.
+
+**A-F11 carried onto the frequency axis.** *A bound the instrument cannot reach is not a bound* — and on this
+host the frequency axis is exactly where the instrument runs out of resolution.
+
+### Adopted, and my harness was wrong in the same way
+
+**The lock-in is one SIMULTANEOUS least-squares fit of DC plus every frequency of interest, over a long,
+naturally jittered window** — never a short uniform DFT, and never one frequency at a time. Jittered sampling
+with a joint LSQ has no uniform-Nyquist bound and the aliasing does not form. **Every run reports its own window
+and its own decoy floor**, and a floor that has not resolved invalidates the run.
+
+My harness was not using a DFT — it fit against recorded timestamps — but it was wrong twice over:
+
+1. it fitted **each frequency separately**, letting them leak into one another;
+2. its decoys sat at 0.27 / 0.43 / **0.59 Hz**, and **0.59 Hz is above the Nyquist of a ~1 s cadence**.
+
+The decoys are now placed at **0.15 / 0.25 / 0.35 Hz** — exactly between the harmonics (0.1 / 0.2 / 0.3), so
+maximally separated from them, and all below the cadence's Nyquist. The window is **48 frames over 47 s — 4.7
+periods** — and the fit is joint across all thirteen parameters, with the normal matrix built and inverted once
+for every pixel.
+
+| | separate fits, decoys to 0.59 Hz | joint fit, decoys 0.15/0.25/0.35 Hz |
+|---|---|---|
+| tier A floor | 0.00007 | **0.00001** |
+| tier B signal ÷ floor | 2.2× | **3.45×** |
+| tier C ratios | 1.07 / 2.09 / 32.77 / ∞ | **2.27 / 21.11 / 236.45 / ∞** |
+
+The tier A floor fell by exactly the sevenfold PINK's tell predicts, and **landed on PINK's independently measured
+1.6e-5**. Two instruments, corrected separately, converging on the same floor. Every limb got sharper; tier C now
+separates by 236× where it managed 32.8×.
+
+**PINK's note for the tip is accepted in advance:** at base a sign mask taken as *stage minus svg-hidden* is clean
+because there is no lit ground, but on GRÜN's build it would sweep the breathing ground into the sign set and
+count the medium's own breath as a firewall leak. On the tip the mask must be **per-element sign-hide**. My
+harness already hides by element selector; PINK is switching to the same.
+
+**Eighth and ninth instrument defects**, both mine, both in the estimator rather than the capture.
