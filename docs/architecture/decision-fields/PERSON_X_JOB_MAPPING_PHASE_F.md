@@ -501,3 +501,85 @@ F-1's disc-median ceiling of 0.020 is raised to **0.030**: the bench's 0.0259 is
 luminous volume, and the ceiling's real job is done by PF-2 and PF-15.
 
 **Amended F-1:** disc median ∈ **[0.006, 0.030]**; disc fraction above 0.005 ≥ 0.55; third row withdrawn.
+
+---
+
+## §12 B-F2 MEETS F-6 — THE RULE WAS TOO BLUNT
+
+GRÜN brought this instead of building around it, and named the three evasions it refused: a second stylesheet the
+test does not read, WAAPI/SMIL instead of CSS, and an iteration count of `1e9` in place of `infinite`. All three
+would have produced a green suite over a field that no longer does what the suite says. Refusing them is correct,
+and bringing the conflict here is the procedure B-F2 itself prescribes.
+
+**The conflict.** `test/career/mapping-field/neurovisual-e.test.ts` pins phase E's *mechanism*, not its meaning:
+
+- `:156` — the `[data-breath="LIVE"]` rule set must be **exactly** the one ring selector; the keyframes must contain
+  `scale(1 ± ≤ 0.015)` with amplitude > 0; the opacity must equal `mean + 0.04·sin(2π t)` at every keyframe — a
+  **symmetric sine**.
+- `:174` — the set of all infinite rules must be **exactly** `{QUERY, ring-field[data-breath="LIVE"]}`.
+
+F-6 requires precisely what these forbid: not a ring, not a scale, a 4 : 6 waveform, several layers, infinite.
+
+**The defect is mine.** B-F2 says *"every phase-D and phase-E test passes unchanged; if one goes red, phase F is
+wrong, not the test."* That is right for a test that encodes **meaning** and wrong for a test that encodes
+**mechanism** — and here the pinned mechanism is the exact thing M-F5 measured as the defect OTTAVIO rejected: a
+±1.5 % scale of one hairline at the rim, 48 % of all moving pixels in the outermost tenth of the radius, peak
+swing 0.0427 — itself already over PF-6's ceiling. B-F2 as written would have made phase F preserve the
+imperceptible breath in order to keep its own proof green. That is phase E's failure mode exactly, one level up.
+
+**B-F2 is amended.** A phase-D or phase-E test may be restated **only** where it pins a mechanism this phase
+replaces, and only in writing, here, before the change. Where it pins meaning it stands. **A test kept green by
+pretending is worse than a test retired in writing.** Everything else in B-F2 holds unchanged.
+
+### The restatements, adopted as GRÜN proposed them
+
+- **`:156`** → every `[data-breath="LIVE"]` rule selects **inside the field**; period exactly 0.1 Hz; ≥ 30× under
+  the 3 Hz flash threshold; waveform **4 s rise : 6 s fall**; amplitude within F-6's corridor; and `STILL` ⇒ no
+  breath rule applies at all.
+- **`:174`** → nothing animates infinitely except rules keyed on `[data-breath="LIVE"]` and the user's own QUERY.
+  This is R17's calm guard and it keeps its full force; only the count of permitted layers changes.
+- **The ring's scale breath is retired** (F-6, and PF-6's ceiling independently). `mapping-ring-field` **keeps
+  `data-breath` LIVE/STILL as E-6's state carrier**, so `field-render :84/:99/:102` and `field-e :302–312` stay
+  unchanged and green and PINK's instruments still bind. GRÜN's judgement here is the right one: the carrier is the
+  meaning, the scale was only the mechanism.
+
+**One addition of mine.** The breath must be expressible as **CSS animation rules** that the reduced-motion
+blanket can stop. GRÜN's own note is the reason: WAAPI and SMIL are *not* stopped by `reduce`. Binding the breath
+to CSS makes PF-11's mechanism structural instead of incidental, and closes the evasion permanently rather than by
+good conduct.
+
+### A-F8 · The signs are still; the field breathes *(GELB — the principle §3 was missing)*
+
+The conflict exposed something F-6 never stated cleanly. F-6 listed what the breath may not modulate — marks,
+arcs, ticks, beams, nodes, text — and **omitted the four rings**, which is why the ring could be both structure and
+the sole breathing thing at the same time. The rule that resolves it, and that should have been in §3 from the
+start:
+
+> **Everything that means something is still. Only the medium breathes.**
+
+The breath lives in the **ground** and the **halos** — the medium — and nowhere else. Every sign *and every
+structure* — marks, arcs, ticks, beams, nodes, text, and the four rings — is static and backed. A halo is medium,
+not sign, because F-2 already forbids it to carry any state.
+
+**Amended — PF-8:** every drawn **sign and structure** pixel swings ≤ 0.002 (p99; max ≤ 0.006 for the
+antialiasing fringe). The four rings are now inside this bound, where they belong.
+
+### A-F9 · My A-F5 refinement is withdrawn; GRÜN's flat black is better *(GELB)*
+
+A-F5 refined the firewall backing to "the ground's resting composite at its own location". GRÜN's implementation
+uses `rgba(0, 0, 0, 1)` — forced for the rings by `field-d :152` (mapping-ring paints only INK/CYAN/BLACK), and
+better on its own merits, which I missed:
+
+- the backing is the **same geometry** as the mark, never dilated, so neither version produces a visible fringe —
+  my stated worry was unfounded;
+- compositing on black makes each mark's rendered luminance **exactly what phase E measured**, so PF-2 inherits
+  the measured edge ratios 1.814 / 1.940 directly instead of shifting them to new values that would then have to
+  be re-derived.
+
+Checked against the faintest case: the shelf ring at 0.05 ink composites to ≈ 0.04 against a ground of 0.026 —
+still the brighter of the two, and the 1.6× margin PF-15 demands. **A-F5's refinement is withdrawn.** My third
+correction this phase.
+
+GRÜN's four compatibility pins are accepted as measured: the beam stroke attribute stays and the F-5 gradient goes
+in as a mask (`field-e :100`); beam backings take `max(beam, 1.2 px)` for the stroke floor (`field-e :326`); depth
+never sits on the body `<g>`, only on core and halo (`field-interaction :71`).
