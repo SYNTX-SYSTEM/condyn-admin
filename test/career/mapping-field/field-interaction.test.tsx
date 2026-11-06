@@ -230,7 +230,8 @@ describe("MAP-C-TIME · movement on new evidence only", () => {
     tree = view.settle(changed);
     const id = bodyId(POOL_A, "role_platform");
     expect(byTestId(tree, id)!.props["data-moved"]).toBe("true");
-    expect((byTestId(tree, id)!.props.style as Record<string, string>).transition).toMatch(/^transform 0\.8s/);
+    // Phase E (E-4, A-2): own evidence is cut and lit once — data-change="EVIDENCE", no transition of its place.
+    expect([byTestId(tree, id)!.props["data-change"], (byTestId(tree, id)!.props.style as Record<string, string>).transition]).toEqual(["EVIDENCE", undefined]);
     expect(allByPrefix(tree, "mapping-trail-").map(t => t.props["data-testid"])).toEqual([`mapping-trail-${POOL_A}:role_platform`]);
     for (const b of allByPrefix(tree, "mapping-body-")) if (b.props["data-testid"] !== id) expect(b.props["data-moved"], String(b.props["data-testid"])).toBe("false");
 
@@ -269,15 +270,17 @@ describe("MAP-C-TIME · movement on new evidence only", () => {
     view.unmount();
   });
 
-  it("C13: only a body marked moved carries the movement transition — every other body has none, in every reading (PINK §3.99 F-RC-T1)", () => {
+  // Phase E (E-4, A-2): the forms moved into MAPPING_FIELD_CSS, keyed by data-change; no body carries an inline transition any more.
+  it("C13: only a body marked moved carries the EVIDENCE form — every other body carries LAYOUT or none, in every reading (PINK §3.99 F-RC-T1)", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
-    const transitions = (tree: unknown) => allByPrefix(tree, "mapping-body-").map(b => [b.props["data-testid"], b.props["data-moved"], (b.props.style as Record<string, string>).transition] as const);
+    const transitions = (tree: unknown) => allByPrefix(tree, "mapping-body-").map(b => [b.props["data-testid"], b.props["data-moved"], b.props["data-change"], (b.props.style as Record<string, string>).transition] as const);
     const holds = (tree: unknown, step: string) => {
       const all = transitions(tree);
       expect(all.length, step).toBeGreaterThan(0);
-      for (const [id, moved, transition] of all) {
-        if (moved === "true") expect(transition, `${step} ${String(id)}`).toMatch(/^transform 0\.8s/);
-        else expect(transition, `${step} ${String(id)}`).toBe("none");
+      for (const [id, moved, change, transition] of all) {
+        expect(transition, `${step} ${String(id)}: no inline transition`).toBeUndefined();
+        if (moved === "true") expect(change, `${step} ${String(id)}`).toBe("EVIDENCE");
+        else expect(change, `${step} ${String(id)}`).not.toBe("EVIDENCE");
       }
       return all.filter(([, moved]) => moved === "true").map(([id]) => id);
     };

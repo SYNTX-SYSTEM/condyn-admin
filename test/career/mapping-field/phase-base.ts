@@ -27,3 +27,15 @@ export function phaseDBase(): string {
   }
   return sha;
 }
+
+/**
+ * PHASE_E_BASE is 86e36924, GRÜN's phase-D delivery with PINK's GO (PERSON_X_JOB_MAPPING_PHASE_E.md, "Base"). MAP-E-ARCH compares
+ * against it; like phaseDBase() it is resolved when asked and fails loudly in a clone without it.
+ */
+export const PHASE_E_BASE = "86e36924282ae46e9f22a15a1446a3d7822440d4";
+export function phaseEBase(): string {
+  let sha: string | undefined;
+  try { sha = git("rev-parse", "--verify", "--quiet", `${PHASE_E_BASE}^{commit}`)[0]; } catch { sha = undefined; }
+  if (sha === undefined) throw new Error(`ERR_PHASE_E_BASE_MISSING: MAP-E-ARCH compares against commit ${PHASE_E_BASE} (PERSON_X_JOB_MAPPING_PHASE_E.md, Base), and this clone does not have it.`);
+  return sha;
+}

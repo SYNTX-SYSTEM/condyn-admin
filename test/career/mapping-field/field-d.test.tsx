@@ -5,6 +5,8 @@ import { browser, instance } from "../pxj-first-screen/harness";
 import { CAPS, POOL_A, POOL_B, available, lex, projectionOf, rankingOf, sem, standardRoles, watchOf } from "./support";
 import { STATES, allStates, keyCases, manyCapabilities, reqOf } from "./support-d";
 import { MAPPING_FIELD_COPY } from "../../../app/components/career/demo/mapping-field-copy";
+import { luminanceOf } from "../../../lib/career/view-model/mapping-field";
+import type { CouplingClass } from "../../../lib/career/mapping/signs";
 
 /**
  * MAP-D-FIELD · the phase-D field across renders (harness ../pxj-first-screen/harness.ts): L0 → L1 → L2 → L3 by its own controls;
@@ -98,12 +100,18 @@ describe("MAP-D-FIELD · L0 → L3 by the field's own controls", () => {
     view.unmount();
   });
 
-  it("L0 carries no text but the pool names at the sectors; titles appear from L1", () => {
+  // Phase E (E-7) supersedes "no text but the pool names": capability nodes carry their name at every level; body names stay
+  // off at L0 unless marked or selected (BODY_NAMES_AT_L0 = false, OTTAVIO's question).
+  it("L0 carries the pool names at the sectors and the capability names (phase E · E-7), no body name; titles appear from L1", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     let tree = view.settle(p);
     const svgText = (t: unknown) => all(byTestId(t, "mapping-field-svg"), e => e.type === "text").map(e => textOf(e));
-    expect(svgText(tree).sort()).toEqual(["Pool Alpha", "Pool Beta"]);
+    const names = all(byTestId(tree, "mapping-field-svg"), e => e.type === "textPath").map(e => textOf(e));
+    expect(names.sort()).toEqual(["Pool Alpha", "Pool Beta"]);
+    expect(all(byTestId(tree, "mapping-field-svg"), e => e.type === "text" && String(e.props["data-testid"] ?? "").startsWith("mapping-capability-name-")).map(e => textOf(e)).sort())
+      .toEqual(["Kubernetes", "PostgreSQL", "TypeScript"]);
+    expect(svgText(tree).filter(t => ["All States", "Platform Engineer", "Named"].some(name => t.includes(name))), "no body name at L0").toEqual([]);
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick");
     tree = view.settle(p);
     expect(svgText(tree)).toContain("All States");
@@ -131,7 +139,8 @@ describe("MAP-D-FIELD · §8.1 every arc drawn from its sign, §8.5 in one ink",
       }
       expect(fill.length, `${state}: a fill band only where the table fills`).toBe(s.arcFill > 0 ? 1 : 0);
       expect(marks.map(m => m.props["data-arc-mark"]), state).toEqual(s.mark === "none" ? [] : [s.mark]);
-      expect(arc.props.opacity, `${state}: luminance reinforces only`).toBe(s.luminance);
+      // Phase E (E-1, A-3): the drawn luminance is the class band's, the table's own value placed inside it; the table value stays on the element.
+      expect([arc.props.opacity, arc.props["data-luminance"]], `${state}: luminance is the evidence band`).toEqual([luminanceOf({ class: arc.props["data-class"] as CouplingClass, luminance: s.luminance }), s.luminance]);
     }
     view.unmount();
   });
@@ -212,7 +221,9 @@ describe("MAP-D-FIELD · §8.11 budget honesty — the provenance line on every 
 });
 
 describe("MAP-D-FIELD · §8.9 A3 — movement means evidence, always and only", () => {
-  it("REPRODUCE: X's fit changes, Y only shifts: X animates with a trail; Y takes its place with no transition, no trail, data-layout-shift, a still mark; the field states the count", () => {
+  // Phase E (E-4, A-2) changed the FORM, not the model: own evidence is cut and lit once (data-change="EVIDENCE"), a body displaced
+  // by others eases to its place without any luminance change (data-change="LAYOUT"); the forms live in MAPPING_FIELD_CSS.
+  it("REPRODUCE: X's fit changes, Y only shifts: X is cut and lit, with a trail; Y eases, no trail, data-layout-shift, a still mark; the field states the count", () => {
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const rs = (y: ReturnType<typeof sem>) => [
       { pool: POOL_A, roleId: "role_y", title: "Steady", requirements: [sem("q_y", "REQUIRED", "PARTIAL", "PCAP_TS", "TypeScript")] },
@@ -223,8 +234,8 @@ describe("MAP-D-FIELD · §8.9 A3 — movement means evidence, always and only",
     tree = view.settle(props(rs(sem("q_x", "REQUIRED", "COVERS", "PCAP_PG", "PostgreSQL"))));
     const x = byTestId(tree, `mapping-body-${POOL_A}:role_x`)!, y = byTestId(tree, `mapping-body-${POOL_A}:role_y`)!;
     expect((y.props.style as Record<string, string>).transform, "precondition: Y took a new place").not.toBe(before.transform);
-    expect([x.props["data-movement"], x.props["data-moved"], (x.props.style as Record<string, string>).transition]).toEqual(["EVIDENCE", "true", "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)"]);
-    expect([y.props["data-movement"], y.props["data-moved"], y.props["data-layout-shift"], (y.props.style as Record<string, string>).transition]).toEqual(["LAYOUT", "false", "true", "none"]);
+    expect([x.props["data-movement"], x.props["data-moved"], x.props["data-change"], (x.props.style as Record<string, string>).transition]).toEqual(["EVIDENCE", "true", "EVIDENCE", undefined]);
+    expect([y.props["data-movement"], y.props["data-moved"], y.props["data-layout-shift"], y.props["data-change"], (y.props.style as Record<string, string>).transition]).toEqual(["LAYOUT", "false", "true", "LAYOUT", undefined]);
     expect(byPrefix(tree, "mapping-trail-").map(t => t.props["data-testid"])).toEqual([`mapping-trail-${POOL_A}:role_x`]);
     expect(byTestId(tree, `mapping-layout-shift-${POOL_A}:role_y`)).not.toBeNull();
     expect(byTestId(tree, `mapping-layout-shift-${POOL_A}:role_x`)).toBeNull();
@@ -239,7 +250,8 @@ describe("MAP-D-FIELD · beams (§2.1), the cases without a start point (D-Q2), 
     const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
     const p = props();
     let tree = view.settle(p);
-    expect(byPrefix(tree, "mapping-beam-")).toEqual([]);
+    // Phase E (E-2): L0 draws each body's primary beam, nothing else; L1 draws none until a role is marked.
+    expect(byPrefix(tree, "mapping-beam-").every(b => b.props["data-beam-rank"] === "PRIMARY")).toBe(true);
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
     expect(byPrefix(tree, "mapping-beam-")).toEqual([]);
     fire(byTestId(tree, `mapping-body-${POOL_A}:role_all`), "onMouseEnter"); tree = view.settle(p);
@@ -297,11 +309,13 @@ describe("MAP-D-FIELD · beams (§2.1), the cases without a start point (D-Q2), 
     fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
     const lit = byPrefix(tree, "mapping-body-").filter(b => b.props["data-lit"] === "true").map(b => b.props["data-testid"]).sort();
     expect(lit).toEqual([`mapping-body-${POOL_B}:role_keys`, `mapping-body-${POOL_B}:role_platform`].sort());
-    expect(byPrefix(tree, "mapping-beam-").every(b => b.props["data-capability"] === "PCAP_K8")).toBe(true);
-    expect(byPrefix(tree, "mapping-beam-").length).toBe(2);
+    // Phase E (E-2): the L0 primary beams stand beside the selection's; the selection's are exactly the capability's.
+    const selection = (t: unknown) => byPrefix(t, "mapping-beam-").filter(b => b.props["data-beam-rank"] === "SELECTION");
+    expect(selection(tree).every(b => b.props["data-capability"] === "PCAP_K8")).toBe(true);
+    expect(selection(tree).length).toBe(2);
     expect(byTestId(tree, "mapping-reverse")!.props).toMatchObject({ "data-capability": "PCAP_K8", "data-roles": 2 });
     fire(byTestId(tree, "mapping-capability-PCAP_K8"), "onClick"); tree = view.settle(p);
-    expect([byTestId(tree, "mapping-reverse"), byPrefix(tree, "mapping-beam-").length]).toEqual([null, 0]);
+    expect([byTestId(tree, "mapping-reverse"), selection(tree).length]).toEqual([null, 0]);
     quiet();
     view.unmount();
   });

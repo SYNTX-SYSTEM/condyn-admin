@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ROOT, git, phaseDBase } from "./phase-base";
+import { ROOT, git, phaseDBase, phaseEBase } from "./phase-base";
 
 /**
  * MAP-D-ARCH · the phase-D boundary (PERSON_X_JOB_MAPPING_PHASE_D.md §5.2, D-1 … D-7, held by PINK). The guarantees are bound to
@@ -205,5 +205,83 @@ describe("MAP-D-ARCH · D-6, D-7 — the model is pure, the field reads only", (
     const { FOCUS_ACTIONS, FOCUS_INITIAL } = await import("../../../lib/career/mapping/focus");
     expect(FIELD_ACTIONS).toBe(FOCUS_ACTIONS);
     expect(Object.keys(FOCUS_INITIAL).sort(), "the focus state has no field for a scope").toEqual(["level", "pool", "requirement", "role", "selection"]);
+  });
+});
+
+/**
+ * MAP-E-ARCH · the phase-E boundary (PERSON_X_JOB_MAPPING_PHASE_E.md §4 B-1 … B-8, §6), bound to PHASE_E_BASE = 86e36924 (GRÜN's
+ * phase-D delivery). Phase E changes how the same semantics reach the eye: the stage, its copy, an additive model, and the proofs.
+ * The four phase-D test files below are in the set because E-4/A-2, E-6/A-5 and E-7 change forms that phase D asserted; each of their
+ * changed assertions is marked "Phase E" where it stands.
+ */
+const E_ENTRY = [COMPONENT, COPY, MODEL,
+  "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/neurovisual-e.test.ts", "test/career/mapping-field/architecture.test.ts",
+  "test/career/mapping-field/phase-base.ts",
+  // phase-D assertions superseded by phase E (form only; the model's three-valued movement and the sign table are unchanged)
+  "test/career/mapping-field/field-d.test.tsx", "test/career/mapping-field/field-interaction.test.tsx", "test/career/mapping-field/field-render.test.tsx"].sort();
+const changedSinceE = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseEBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseEBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
+/** Every phase-E change set: each non-merge commit after the base, and the working tree (index, unstaged, untracked) as one more. */
+function phaseEChangeSets(): Array<{ commit: string; files: string[] }> {
+  const sets: Array<{ commit: string; files: string[] }> = [];
+  let current: { commit: string; files: string[] } | null = null;
+  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", `${phaseEBase()}..HEAD`)) {
+    if (line.startsWith("@")) { current = { commit: line.slice(1), files: [] }; sets.push(current); } else current!.files.push(line);
+  }
+  sets.push({ commit: "WORKING_TREE", files: [...new Set([...git("diff", "--name-only", "--no-renames", "--cached", "HEAD"), ...git("diff", "--name-only", "--no-renames", "HEAD"), ...git("ls-files", "--others", "--exclude-standard")])] });
+  return sets;
+}
+/** The lines phase E added to a file, against the base (committed, staged and unstaged together). */
+const addedSinceE = (file: string) => execFileSync("git", ["diff", "-U0", phaseEBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+
+describe("MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes", () => {
+  it("B-1 / P-9: the engine and its specification are byte-identical to the phase-E base; the twelve golden vectors with them", () => {
+    expect(changedSinceE("lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+    const vectors = "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json";
+    expect(git("hash-object", vectors)[0], "golden vectors, blob for blob").toBe(git("rev-parse", `${phaseEBase()}:${vectors}`)[0]);
+    expect(Object.keys((JSON.parse(readFileSync(join(ROOT, vectors), "utf8")) as { layouts: Record<string, unknown> }).layouts).length, "the twelve layout vectors").toBe(12);
+  });
+
+  it("B-2 / B-3: orbits, planetarium, Job Field, job scope, Capability Field, the selector (C-1 … C-11), host, dashboard, layout, URL, every API route and job-pool module are as at the base", () => {
+    expect(changedSinceE(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
+    expect(changedSinceE("test/career/mapping-field/selector-d.test.tsx", "test/career/mapping-field/selector-keys-d.test.tsx"), "the selector contract's own proofs unchanged").toEqual([]);
+  });
+});
+
+describe("MAP-E-ARCH · B-4 … B-8 — the change set", () => {
+  it("B-8 / §6: every phase-E change set touches only the phase-E entry set; no merge commit after the base", () => {
+    for (const set of phaseEChangeSets()) expect(set.files.filter(p => !E_ENTRY.includes(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseEBase()}..HEAD`)).toEqual([]);
+  });
+
+  it("B-7: existing test data only — no fixture or support module added or changed", () => {
+    expect(changedSinceE("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+  });
+
+  it("B-6: no provider and no API in anything phase E added", () => {
+    // This file is left out only because it spells the forbidden names in order to forbid them.
+    for (const file of E_ENTRY.filter(f => f !== "test/career/mapping-field/architecture.test.ts")) for (const line of addedSinceE(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
+  });
+
+  it("B-4: the stage's new runtime reach is its own box (and the focus strip's edge, E-8c) — measure, observe, resize, the motion preference, a frame clock; nothing that reads or writes outside", () => {
+    const added = addedSinceE(COMPONENT).join("\n");
+    expect(added).not.toMatch(/\bfetch\s*\(|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.|location\.|history\.|window\.open|postMessage|sendBeacon|WebSocket|EventSource/);
+    const globals = [...added.matchAll(/\bwindow\.(\w+)/g)].map(m => m[1]);
+    expect([...new Set(globals)].sort(), "the window members phase E reads").toEqual(["addEventListener", "innerHeight", "matchMedia", "removeEventListener", "scrollY"]);
+    // E-8c: the one element outside its own box the stage reads is the focus strip — its bottom edge, to stand below it.
+    expect([...new Set([...added.matchAll(/\bdocument\.(\w+)/g)].map(m => m[1]))], "the document members phase E reads").toEqual(["querySelector"]);
+    expect([...new Set([...added.matchAll(/querySelector<\w+>\('([^']+)'\)/g)].map(m => m[1]))]).toEqual(['[data-testid="field-focus-strip"]']);
+    expect(code(MODEL), "the model stays pure (D-6 holds for the additions)").not.toMatch(/\bwindow\b|\bdocument\b|performance\.|requestAnimationFrame/);
+  });
+
+  it("B-5: no invented semantics — the model's additions name only the table's classes, the delta's two movement kinds and their forms", () => {
+    const literals = addedSinceE(MODEL).flatMap(line => [...line.matchAll(/"([A-Z][A-Z_]+)"/g)].map(m => m[1]));
+    const allowed = new Set(["SEMANTIC", "LEXICAL", "NONE", "CHECKED", "NAME_ONLY"]);
+    expect([...new Set(literals)].filter(l => !allowed.has(l)), "a new state or class would be a new literal").toEqual([]);
+    const data = addedSinceE(COMPONENT).flatMap(line => [...line.matchAll(/data-(?:change|motion|beam-rank|breath|stage|evidence-step)=\{?"?([^"}\s]*)/g)].map(m => m[1]));
+    expect(data.length).toBeGreaterThan(0);
   });
 });

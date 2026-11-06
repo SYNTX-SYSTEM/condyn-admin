@@ -20,6 +20,8 @@ const html = (ranking: JobRankingState, watch: AutoMatchWatch = watchOf("COMPLET
 const text = (markup: string) => markup.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<title>[\s\S]*?<\/title>/g, " ").replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ")
   .replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
 const attr = (markup: string, testId: string, name: string) => new RegExp(`data-testid="${testId}"[^>]*?${name}="([^"]*)"`).exec(markup)?.[1] ?? null;
+/** Phase E: the outer ring's breath as drawn — read from the element, never from the stylesheet that names the same attribute. */
+const ringBreath = (markup: string) => attr(markup.replace(/<style>[\s\S]*?<\/style>/g, ""), "mapping-ring-field", "data-breath");
 const tags = (markup: string, prefix: string) => [...markup.matchAll(new RegExp(`<[a-z]+[^>]*data-testid="${prefix}[^"]*"[^>]*>`, "g"))].map(m => m[0]);
 /** Words that would claim more than a ranking of unverified relations (P-07 vocabulary, auto-match-copy's rule). */
 const CLAIM = /\b(match(es|ed)?|fit|fits|qualified|recommend(ed|ation)?|suitable|verified skill|best candidate)\b|eignung|geeignet|passt|empfohlen|empfehlung|qualifiziert/i;
@@ -71,12 +73,15 @@ describe("MAP-C-RENDER · the field", () => {
     }
   });
 
-  it("REPRODUCE: the time sign — RUNNING breathes (name and no-relation bodies only), STALLED stands still, a due continuation pulses", () => {
+  // Phase E (E-6, A-5) inverts the pending form: while anything is pending the field is STILL — no body breathes, the outer ring
+  // stops, the pending outline stands; a due continuation is a still dotted outline, never a pulse. The table's signs are unchanged.
+  it("REPRODUCE: the time sign — RUNNING is still with its pending outline, STALLED stands still, a due continuation has its still outline", () => {
     const ranking = available(rankingOf(classRoles()));
     const running = html(ranking, watchOf("RUNNING"));
     expect(attr(running, "mapping-field", "data-pending-breath")).toBe("true");
     expect(running).toContain('data-testid="mapping-pending"');
-    for (const tag of tags(running, "mapping-body-")) expect(tag.includes('data-breath="true"'), tag).toBe(!tag.includes('data-class="SEMANTIC"'));
+    for (const tag of tags(running, "mapping-body-")) expect(tag.includes("data-breath"), tag).toBe(false);
+    expect(ringBreath(running)).toBe("STILL");
     expect(running).not.toContain('data-testid="mapping-still"');
 
     const stalled = html(ranking, watchOf("STALLED"));
@@ -86,13 +91,15 @@ describe("MAP-C-RENDER · the field", () => {
     expect(stalled).not.toContain('data-breath="true"');
     const stalledResume = html(ranking, watchOf("STALLED", { resumePending: true }));
     expect(text(stalledResume)).toContain(MAPPING_FIELD_COPY.en.stillResume);
-    expect(stalledResume, "STALLED stays frozen even while resumePending: no pulse").not.toContain('data-testid="mapping-resume-pulse"');
+    expect(stalledResume, "STALLED stays frozen even while resumePending: no outline of a due continuation").not.toContain('data-testid="mapping-resume-outline"');
 
     const due = html(ranking, watchOf("PARTIAL", { resumePending: true }));
-    expect(due).toContain('data-testid="mapping-resume-pulse"');
-    expect(due).toMatch(/mappingFieldPulse 6s/);
+    expect(due).toContain('data-testid="mapping-resume-outline"');
+    expect(due).not.toMatch(/mappingFieldPulse/);
+    expect(ringBreath(due)).toBe("STILL");
     for (const quiet of [html(ranking, watchOf("COMPLETED")), html(ranking, watchOf("PARTIAL"))]) {
-      expect(quiet).not.toContain('data-testid="mapping-resume-pulse"');
+      expect(quiet).not.toContain('data-testid="mapping-resume-outline"');
+      expect(ringBreath(quiet)).toBe("LIVE");
       expect(quiet).not.toContain('data-breath="true"');
       expect(quiet).not.toContain('data-testid="mapping-still"');
     }
@@ -101,7 +108,8 @@ describe("MAP-C-RENDER · the field", () => {
   it("under prefers-reduced-motion nothing breathes, pulses or travels; pending is a static dashed outline", () => {
     const reduce = /@media \(prefers-reduced-motion: reduce\) \{([\s\S]*)\}\s*$/.exec(MAPPING_FIELD_CSS)?.[1] ?? "";
     expect(reduce).toMatch(/animation: none !important; transition: none !important;/);
-    expect(reduce).toMatch(/\[data-pending-breath="true"\] \[data-testid="mapping-pending-outline"\] \{ display: inline; \}/);
+    // Phase E (A-5): the pending outline stands whenever something is pending, not only under reduced motion.
+    expect(MAPPING_FIELD_CSS).toMatch(/\[data-pending-breath="true"\] \[data-testid="mapping-pending-outline"\] \{ display: inline; \}/);
     expect(MAPPING_FIELD_CSS).toMatch(/\[data-testid="mapping-pending-outline"\] \{ display: none; \}/);
     expect(MAPPING_FIELD_CSS).toMatch(/\[data-frozen="true"\] \*[^{]*\{ animation: none !important; transition: none !important; \}/);
   });

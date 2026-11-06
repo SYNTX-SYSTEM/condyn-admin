@@ -1,9 +1,10 @@
 import spec from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec.json";
+import signTable from "../../../docs/architecture/decision-fields/mapping-spec/sign-table.json";
 import type { CapabilityProposalProjection } from "../capability-core/projection";
 import type { AutoMatchRunState, AutoMatchWatch, EvidenceClass, JobRankingState, RoleRanking } from "../ui/auto-match";
 import { buildMappingView, capabilitiesOfProjection, type MappingCoupling, type MappingRequirement, type MappingRoleId, type MappingView } from "../mapping/view";
 import { layoutConstellation, layoutRequirementArcs, layoutRoles } from "../mapping/layout";
-import { couplingSign, runSign, type CouplingClass, type CouplingSign, type RunSign } from "../mapping/signs";
+import { COUPLING_STATES, couplingSign, runSign, type CouplingClass, type CouplingSign, type RunSign } from "../mapping/signs";
 import { diffRankings } from "../mapping/delta";
 import { FOCUS_ACTIONS, focusReduce, reverseView, type FocusAction, type FocusLevel, type FocusState, type ReverseView } from "../mapping/focus";
 
@@ -372,4 +373,81 @@ export function bodyMovements(previous: FieldSnapshot | null, next: FieldSnapsho
     else if (was.x !== body.x || was.y !== body.y) out.set(body.key, Object.freeze({ kind: "LAYOUT" as const, moved: false, from }));
   }
   return out;
+}
+
+/*
+ * ── Phase E (docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_E.md, GRÜN) · additive only ──────────────────────────
+ * How the same semantics reach the eye. Nothing above changes meaning; nothing here adds a coupling, a state or an evidence class
+ * (B-5). Every value below is derived from what the sign table, the layout and the delta already carry.
+ */
+
+/**
+ * E-1 / A-3 · the evidence bands: the one channel that answers "is it evidenced?". Each coupling class owns a disjoint luminance
+ * band; the sign table's own per-state luminance is mapped monotonically INSIDE its class's band, so the class is recoverable from
+ * luminance alone and the state gradation survives. The table is read, never rewritten: data-luminance keeps the table's value.
+ */
+export type EvidenceStep = "CHECKED" | "NAME_ONLY" | "NONE";
+export const EVIDENCE_STEP: Readonly<Record<CouplingClass, EvidenceStep>> = Object.freeze({ SEMANTIC: "CHECKED", LEXICAL: "NAME_ONLY", NONE: "NONE" });
+export const EVIDENCE_BAND: Readonly<Record<EvidenceStep, readonly [number, number]>> = Object.freeze({
+  CHECKED: Object.freeze([0.93, 1.0] as const), NAME_ONLY: Object.freeze([0.45, 0.58] as const), NONE: Object.freeze([0.22, 0.28] as const)
+});
+/** Adjacent bands at their closest points are at least this far apart. */
+export const LUMINANCE_STEP_MIN = 1.6;
+/** The table's own luminance domain (its faintest and brightest state), read from the table — the source of the monotone map. */
+const TABLE_LUMINANCE = (() => {
+  const values = COUPLING_STATES.map(state => (signTable.couplingStates as Record<string, { luminance: number }>)[state].luminance);
+  return Object.freeze({ min: Math.min(...values), max: Math.max(...values) });
+})();
+/** E-1: an arc's drawn luminance — its class picks the band, the table's per-state luminance its place inside the band. */
+export function luminanceOf(sign: Pick<CouplingSign, "class" | "luminance">): number {
+  const step = EVIDENCE_STEP[sign.class];
+  if (step === undefined) throw new Error(`ERR_MAPPING_FIELD_UNKNOWN_CLASS:${String(sign.class)}`);
+  const [lo, hi] = EVIDENCE_BAND[step];
+  const t = (sign.luminance - TABLE_LUMINANCE.min) / (TABLE_LUMINANCE.max - TABLE_LUMINANCE.min);
+  return round3(lo + Math.min(1, Math.max(0, t)) * (hi - lo));
+}
+
+/**
+ * E-2 / A-8 · the relation ink at L0: each drawn body's own strongest coupling — among its couplings whose sign has a beam, the
+ * highest requirement value, then ring order (the ring begins at REQUIRED and the heavier), then poolRequirementId: a total order.
+ * The beam is returned with its start point or with the reason it has none (D-Q2): a body whose strongest coupling starts nowhere
+ * in the person draws no beam, and the undrawn counter counts it.
+ */
+export const PRIMARY_BEAM_LUMINANCE = 0.22;
+export function primaryBeamOf(model: MappingFieldModel, body: FieldBody): FieldBeam | null {
+  let best: { beam: FieldBeam; index: number } | null = null;
+  body.arcs.forEach((arc, index) => {
+    const beam = beamOf(model, body, arc);
+    if (beam === null) return;
+    const better = best === null || arc.value > best.beam.arc.value
+      || (arc.value === best.beam.arc.value && (index < best.index || (index === best.index && arc.poolRequirementId < best.beam.arc.poolRequirementId)));
+    if (better) best = { beam, index };
+  });
+  return best === null ? null : (best as { beam: FieldBeam }).beam;
+}
+/** One per drawn body that has a beam-bearing coupling, by rank. */
+export function primaryBeams(model: MappingFieldModel | null): readonly FieldBeam[] {
+  if (model === null) return [];
+  return model.bodies.map(b => primaryBeamOf(model, b)).filter((b): b is FieldBeam => b !== null);
+}
+
+/**
+ * E-7 · the size floor. A body is drawn at least SIZE_FLOOR_PX across on screen; where the floor takes over, the size channel has
+ * stopped being proportional and the body says so (data-size-floor). `k` is the user units per screen pixel of the drawing.
+ */
+export const SIZE_FLOOR_PX = 12;
+export function sizeFloor(radius: number, k: number): { readonly radius: number; readonly floor: boolean } {
+  const floorRadius = (SIZE_FLOOR_PX / 2) * k;
+  return radius < floorRadius ? { radius: Math.ceil(floorRadius * 1000) / 1000, floor: true } : { radius, floor: false };
+}
+
+/**
+ * E-3 / E-4 · the three motion kinds, on opposite sides of the capture boundary. A body's change is the delta's (bodyMovements):
+ * EVIDENCE arrives as a luminance transient (its place is cut, never travelled), LAYOUT as a position gradient (no luminance change);
+ * QUERY is the user's own selection, a shared-phase oscillation of the selected capability's coupled bodies.
+ */
+export type ChangeKind = MovementKind;
+export interface BodyMotion { readonly change: ChangeKind | null; readonly query: boolean }
+export function motionKind(movement: BodyMovement | undefined, queried: boolean): BodyMotion {
+  return { change: movement?.kind ?? null, query: queried };
 }

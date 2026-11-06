@@ -71,6 +71,16 @@ export interface MappingFieldCopy {
   stillResume: string;
   resumePending: string;
   pending: string;
+  /** Phase E · E-6: what the outer ring's slow breath means, and that its stillness means pending. */
+  breath: string;
+  /** Phase E · E-7: bodies drawn at the legible minimum, where size stops being proportional. */
+  sizeFloor: (n: number) => string;
+  /** Phase E · E-9: the roles whose own evidence changed since the previous reading (each lit briefly, where it now stands). */
+  evidenceChanged: (n: number) => string;
+  /** Phase E · A-4: the phase lock has no static form in the sign table; its absence is stated, never left to an attribute. */
+  phaseLockStill: string;
+  /** Phase E · E-2: bodies whose strongest relation starts at no capability of the person (not in it, or no key) draw no line. */
+  primaryUndrawn: (n: number) => string;
 }
 
 export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> = {
@@ -140,7 +150,12 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     still: "The run rests; the field holds still.",
     stillResume: "The run rests; it is taken up again by itself.",
     resumePending: "Its continuation is due; the field waits for it.",
-    pending: "Being worked on: jobs beyond the horizon may still move."
+    pending: "Being worked on: jobs beyond the horizon may still move.",
+    breath: "The outer ring breathes slowly while the field is live and nothing is pending; while something is pending, it stands still.",
+    sizeFloor: n => `${n} ${n === 1 ? "body is" : "bodies are"} drawn at the legible minimum ◦ — smaller in the data than drawn.`,
+    evidenceChanged: n => `${n} ${n === 1 ? "role's own evidence changed" : "roles' own evidence changed"} since the previous reading; each lit up once where it now stands.`,
+    phaseLockStill: "The phase lock of checked couplings to their capability has no still sign in the sign table; it is not drawn here.",
+    primaryUndrawn: n => `${n} ${n === 1 ? "job's strongest relation starts" : "jobs' strongest relations start"} at no capability of the person; no line is drawn for ${n === 1 ? "it" : "them"}.`
   },
   de: {
     title: "PERSON × JOB · MAPPING",
@@ -208,6 +223,11 @@ export const MAPPING_FIELD_COPY: Readonly<Record<SilLocale, MappingFieldCopy>> =
     still: "Der Lauf ruht; das Feld steht still.",
     stillResume: "Der Lauf ruht; er wird von selbst wieder aufgenommen.",
     resumePending: "Seine Fortsetzung steht an; das Feld wartet darauf.",
-    pending: "In Arbeit: Jobs jenseits des Horizonts können sich noch bewegen."
+    pending: "In Arbeit: Jobs jenseits des Horizonts können sich noch bewegen.",
+    breath: "Der äußere Ring atmet langsam, solange das Feld lebt und nichts aussteht; steht etwas aus, steht er still.",
+    sizeFloor: n => `${n} ${n === 1 ? "Körper ist" : "Körper sind"} in der lesbaren Mindestgröße gezeichnet ◦ — in den Daten kleiner als gezeichnet.`,
+    evidenceChanged: n => `Bei ${n} ${n === 1 ? "Rolle hat" : "Rollen hat"} sich seit der vorigen Lesung die eigene Evidenz geändert; ${n === 1 ? "sie leuchtete" : "jede leuchtete"} einmal dort auf, wo sie jetzt steht.`,
+    phaseLockStill: "Die Phasenbindung geprüfter Kopplungen an ihre Fähigkeit hat in der Zeichentabelle kein stilles Zeichen; sie wird hier nicht gezeichnet.",
+    primaryUndrawn: n => `Bei ${n} ${n === 1 ? "Job beginnt die stärkste Beziehung" : "Jobs beginnt die stärkste Beziehung"} an keiner Fähigkeit der Person; dafür wird keine Linie gezeichnet.`
   }
 };
