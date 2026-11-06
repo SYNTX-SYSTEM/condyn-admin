@@ -305,3 +305,58 @@ named, so no single-channel bound stands in for the whole:
 **Presence is not a number; it is a vector, and every limb is bounded.** That is the lesson of this phase
 applied to itself: I bounded the medium from both sides and called it rigour, while the thing the field is
 *for* had no bound at all.
+
+---
+
+## §7 A-G8 · (A) DELETES THE SHELF — A1 IS TAKEN INSTEAD
+
+GRÜN measured A-G1 against the twelve golden-vector inputs before building on it. **Under V1.1 not one name-only
+role is drawn in any vector**: LV07 goes 59 → 0, LV09 260 → 0, LV11 119 → 0, LV12 200 → 0. **The fixture would
+lose three of its five bodies.**
+
+The cause is geometric, not tuning: the shelf band is 430…500 = **70 units wide**, and a drawn body is
+**64…105 units in diameter**. V1's band rule with the drawn ρ shrinks the band to 430…447–468, and the radial
+steps step straight out of it.
+
+**"Overflow = no room" would then be formally true and substantively false.** It would not say "a narrow pool
+cannot hold its strong roles" — the honest outcome I accepted in A-G1 — it would say **"the entire LEXICAL_ONLY
+tier has no room"**. That is an evidence tier deleted from the picture by a layout constant, which is exactly
+the semantic loss the whole phase exists to avoid. **A-G1's reasoning was right and its consequence was not,
+and GRÜN found that by measuring rather than by building.**
+
+### Decided: variant A1 — two radii, each with exactly one role
+
+| radius | role |
+|---|---|
+| **ρ_mass** = V1's `bodyRadius` (6…16, from `weightSum`) | the **band** rule, unchanged |
+| **ρ_drawn** = linear map of ρ_mass onto [32.2, 52.6] units | the **collision** rule and the drawn size (PG-3, monotone in `weightSum`) |
+
+Every definition survives: fit = radius of the **centre**, pool = angle, `displaced` = "the search deviated",
+overflow = "no room in band and sector", size = mass. Measured: the shelf keeps 22 of 59 in the real-shape
+vector and 23–37 in the pure shelf vectors; the semantic side is identical to or better than V1 (LV04 34
+against 28). All of that is far above what L0 ≤ 7 and L1 ≤ 12 can show, so the budget — not the geometry —
+decides what is drawn, which is the right place for that decision.
+
+**A2 is declined** for GRÜN's reason: widening the shelf band changes the **scale of fit → radius** on the
+shelf, and that is a semantic change to buy a cosmetic one.
+
+### The price, and it is turned into a reading
+
+A shelf body's centre may sit at up to 500 − ρ_mass, so its drawn rim reaches ≈ 546 — **past the field ring at
+500**. Shelf bodies straddle the rim.
+
+**Accepted, and not merely tolerated.** A-G5 already demotes the rings to a subordinate scale. A faint field
+ring passing **behind** a bright body, occluded by it, is a depth cue (R16's occlusion, the one monocular cue
+phase F never used) and it makes the ring's subordination structural rather than a matter of alpha. A body
+resting across the field's edge is also a true statement about a name-only role: it sits at the boundary of what
+has been checked.
+
+**Two bounds this adds:**
+
+| # | obligation |
+|---|---|
+| **PG-14** | Every drawn body's **rim** lies inside the viewBox at every level — `l0Margin` is re-derived from ρ_drawn, not from ρ_mass. No body is clipped by the stage frame. |
+| **PG-15** | The field ring and the horizon are drawn **behind** every body and are occluded by it; no ring stroke crosses a body's drawn disc. |
+
+`MAPPING_LAYOUT_V1.1` therefore carries **two radii in the spec**, new golden vectors for both, and the
+reference implementation computing both. One algorithm, one set of meanings, two numbers where there was one.
