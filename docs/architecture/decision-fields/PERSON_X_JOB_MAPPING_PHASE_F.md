@@ -1517,3 +1517,81 @@ check, never as the bound itself.
 Under the corrected bound, at L0: beams 0.00072, outlines 0.00132, nodes 0.00167, text 0.00177 all pass; **arcs
 at 0.0033 do not.** That is the one firewall question that survives my own errors, and it is the one GRÜN
 flagged in advance as the AA fringe of the thinnest ticks.
+
+---
+
+## §30 RE-DELIVERY `93c47e03` — THE GASHES ARE GONE, AND FOUR MORE ADJUDICATIONS
+
+**The gashes are fixed, confirmed on my own render.** The same cuts that read 0.0033 and 0.0054 at `ef466ca8`
+now read **0.0381 and 0.0448** — the sector edges are faint *light* lines where they were black holes. Looking at
+it, the disc now reads as one coherent luminous dome. GRÜN's diagnosis was right and better than mine: they were
+not a rendering seam but the **seats under the sector edges**, black, 2.8 px, the full radius, invisible to
+`elementsFromPoint` because seats are `pointer-events: none`. A structure that lies *in* the medium now rests on
+the medium.
+
+GRÜN also found the matching defect in its own PF-17: its first run was green at the old tip because it selected
+the sector seats *by colour*, so the black ones were classified as "sign" and masked away. Same family as mine.
+
+### A-F30 · The firewall cannot be enforced on a sub-pixel stroke — tier B is NOT RUN there
+
+GRÜN measured the cost of closing the arc-tick leak: pad 1.6 → p99 0.00247; pad 2.4 → p99 0.00179. **+0.8 px of
+rim per side buys −27 %.** Reaching my jittered 0.0033 would need ≈ −40 %, i.e. a pad ≥ 3 px — 1.5 px of black
+around a 1.3 px dotted tick. The collar would become a black wreath.
+
+The right answer is not to move the bound to fit, nor to build the wreath. It is geometric: **a 1.3 px stroke has
+no fully-covered pixels.** Its rendered luminance is necessarily a blend with whatever lies behind it, and no
+seat can change that. PINK confirmed it directly with an under-mark test: the ground's breath measured *beneath*
+the tick's own footprint is 1.6e-3 — the medium is simply visible through a stroke thinner than a pixel.
+
+> **Tier B and tier C are NOT RUN for a class whose strokes are ≤ 1.5 px.** Tier A alone carries the firewall
+> there, and it binds: a *systematic* leak still moves the class mean, and arcs measure 2.9e-4 (PINK) / 3.0e-4
+> (GELB) against a bound of 0.0005.
+
+This is A-F11's rule, not an exception to it: an obligation that the geometry forbids from discriminating reports
+NOT RUN rather than a verdict. The perceptual consequence is nil — a sub-1 % modulation on the fringe of a sliver
+cannot shift an evidence band, which is what PF-8 exists to protect (A-F13).
+
+**PINK's L2 result settles the other half:** at L2 every class passes, including the interactive, emphasisable
+arcs of §26 that no one had ever measured. The ring arcs there are long, so proportionally little fringe. **The
+thin-tick fringe is the firewall's one real limit, and it exists only at L0.**
+
+### A-F31 · PF-16 widened to [0.88, 1.12], measured as a trimmed mean
+
+GRÜN re-derived the wedge in luminance (0.022, ratio ≈ 0.95–0.96) and measured **1.056–1.087** at both sizes,
+step ≤ 0.0026 — inside my [0.92, 1.09] but riding its edge at r = 350 (1.085–1.087, 0.3 % clear).
+
+Its warning is correct and physical: **near black, one 8-bit code is ~5 % of luminance**, so a 2–3 % sRGB shade
+rounds to one or two whole codes. [0.92, 1.09] sits at the display's own quantization limit, and a bound the
+*rendering* can barely resolve is the same error as a bound the *instrument* cannot reach.
+
+**PF-16 is widened to [0.88, 1.12]**, measured as a **trimmed mean per pool** (a median also sees the
+quantization). The perceptual requirement — visible as territory, below every mark — is satisfied at 12 %, and
+was plainly violated at the 30 % the gamma error produced. The shade stays at 0.022.
+
+### A-F32 · PF-18 — continuity along radii, PINK's dual *(adopted)*
+
+I asked PINK for a spatial property with no obligation. Its answer: **PF-17 scans along circles, so it catches
+*radial* gashes — its dual, continuity along *radii*, is untested and would catch *annular* holes.** The ground is
+seven stacked concentric layers (F-1), so a compositing gap between two layers is **ring-shaped**: it runs *along*
+a circular scan and is invisible to it, and *across* a radial scan.
+
+**PF-18 added: along ≥ 8 spokes from 0.2 R to 0.9 R, no run of pixels falls below 0.6× the local median medium.**
+PF-17 and PF-18 together are the first obligations in this phase about *where* rather than *how much* or *when*.
+
+### Defect nineteen, mine: a continuity scan that manufactures its own holes
+
+My first PF-17/PF-18 hid every sign to isolate the medium. **In phase F a sign's seat is made of medium**
+(A-F5, and now the sector edges), so hiding a sign *removes medium* and creates a hole where it stood. That run
+reported 3 holes per spoke at r/R = 0.316 / 0.793 / 0.857, identical at every angle — which looks exactly like
+PINK's predicted layer gaps and is in fact my own suppression.
+
+With signs **visible** the scan is wrong the other way: it counts the signs themselves as holes (6 at 0.55 R,
+7 at 0.85 R, ratio ≈ 0.045 — the accepted black seats around beams and ticks).
+
+**Neither form is correct. The scan must keep every sign drawn and *exclude sign pixels by mask*** — a
+differential render, as everywhere else in this phase. Suppression isolates a sign; it does not isolate the
+medium, because the medium is partly underneath the signs.
+
+One genuine item survives both errors and I am taking it to OTTAVIO rather than to GRÜN: **the person's boundary
+circle reads as a hard dark ring** at r/R ≈ 0.316, ratio 0.012 with signs visible. It is the most salient
+structure in the field after the disc edge. That is a design question, not a defect.
