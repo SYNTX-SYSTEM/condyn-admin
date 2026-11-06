@@ -482,3 +482,117 @@ admits V1 and V1.1 and nothing else. Stricter than before the change, not looser
 **Count across phases F and G: twenty-two instrument or proof defects, of which nine could not change their
 verdict in either direction.** The surface now finds them faster than we create them, which is the only
 measure of the discipline that matters.
+
+---
+
+## §10 FIELD — SIX FINDINGS THAT CHANGE THE ARCHITECTURE (R21 … R26)
+
+R1 … R20 stand. These are new, and two of them explain **physiologically** why the rejected stage felt dead.
+
+### R21 · The glare effect: a luminance ramp makes a surface *emit* *(firm, and the phase's strongest lever)*
+
+A bright region surrounded by a **gradient that darkens with distance** is perceived as **self-luminous** — and
+**brighter than its measured luminance**. It works even when the central region is *darker* than a white
+surround. The effect depends on a **critical band of surrounding gradients** that is explained by **neither
+local contrast nor total luminance energy**, and it is **cortical, not retinal** (no longer-lasting afterimage;
+figure-ground reversal switches it off).
+
+→ This is not "add a glow". It is a **specific ramp profile** that converts a bright disc into a *light source*,
+and it buys perceived brightness **beyond what the display can emit** — on a dark field, the difference between
+a pale dot and a star. Phase F's halo was a soft falloff chosen by eye; it was never aimed at the critical band.
+
+### R22 · Animacy comes from specific motion cues, not from motion *(firm — and it explains the dead breath)*
+
+What makes a moving thing read as **alive**: **self-propulsion** (starting or changing motion with no apparent
+external cause — the strongest cue, present in newborns), **starting from rest**, **speed and direction changes
+of its own accord**, **upward** motion over downward, and above all **contingency** — motion contingent on
+*another object's* position or movement. People judge animacy by **feature matching**, so **one strong cue can
+trigger the percept** rather than evidence accumulating.
+
+→ **This is why phase F's breath felt mechanical even where it was visible.** A sinusoidal area pulse has **no
+animacy cue at all**: it is not self-propelled, it never starts from rest, it changes nothing of its own accord,
+and it is contingent on nothing. It is an oscillation, and the nervous system reads oscillations as machinery.
+
+→ And it tells us where animacy is **earned by the semantics rather than decorated on**: a light that leaves the
+person **because a coupling exists** is self-propelled, starts from rest, and is **contingent on another
+object** — the strongest cue in the list, arising from the relation itself.
+
+### R23 · Bouma's law: crowding sets the spacing, and it grows with eccentricity *(firm)*
+
+Crowding is the failure to **recognise** an object because of nearby clutter. Critical spacing is roughly
+**half the target's eccentricity** (as free space, in Bouma's original form), it is far stronger in the
+periphery, and the revised law puts critical spacing **across parts, not objects** — so a body *and its collar
+of ticks* crowd each other internally.
+
+→ At 1920 × 1080 the disc's rim sits at roughly **16° eccentricity** at a normal viewing distance. Bouma then
+asks for **several degrees of free space** between bodies at the rim. **This derives PG-5's budget instead of
+asserting it**: twenty small bodies at the rim are not merely cluttered, they are **unrecognisable** before the
+eye moves.
+
+### R24 · Chromostereopsis — reinforcement only, never a carrier *(moderate, with a hard caveat)*
+
+Red appears **nearer** than blue in the same plane, from chromatic aberration. **But**: a substantial minority
+see it reversed or not at all, and part of the effect is plain luminance.
+
+→ Usable as a **free reinforcement** — G-4's tension accent is warm and the field's ink is cool, so a role with
+an unmet REQUIRED requirement floats slightly forward, which is congruent with urgency. **It may never carry a
+question**, because a channel a minority cannot see is not a channel.
+
+### R25 · Troxler fading: the rejected field was being actively erased *(firm — the hardest finding here)*
+
+A **low-contrast** stimulus in the **periphery** **disappears spontaneously** under stable gaze and is **filled
+in by its surround**. The effect is **enhanced when the stimulus is small, low-contrast or blurred**, and
+**enhanced further from fixation**. Raising target contrast **halves** the disappearance rate.
+
+→ That is a literal description of phase F's stage: **small, dim marks, far from fixation, on a large uniform
+surround that fills in**. The marks were not merely hard to see — **the visual system was deleting them**, and
+the lit ground was the thing it replaced them with. OTTAVIO's *"verlieren ihre Präsenz"* is this effect by name.
+
+→ **PG-1 is therefore physiological, not aesthetic.** Bright marks on a dark field do not just look better; they
+**resist erasure**. And the breath earns a second justification: motion defeats fading.
+
+### R26 · Peirce — the field leans on symbols where icons and indices were available *(the semiotic audit)*
+
+Signs stand for their object by **resemblance (icon)**, **existential connection (index)**, or **convention
+(symbol)**. A symbol must be *learned*; an icon and an index are *read*. (No processing-cost literature was
+found, so the ranking below is architectural reasoning, not a measured claim.)
+
+**Audit of the field's channels:**
+
+| channel | question | sign type | |
+|---|---|---|---|
+| radius | fit | **icon** — nearer is better | immediate |
+| size | requirement mass | **icon** — bigger is more | immediate |
+| the beam reaching a requirement | which capability answers it | **index** — it points at its object | immediate |
+| the *open* line (two ends, nothing between) | no relation found | **index** — the gap *is* the absence | immediate |
+| luminance band | evidence class | symbol, but **ordinal** — more light is more checked | near-iconic |
+| **dash word** (solid / dotted / broken) | coupling class | **symbol** — pure convention, needs the legend | **learned** |
+| **mark glyph** (double, counterTick, alias, constituent) | the coupling's state | **symbol** — pure convention | **learned** |
+| hue | unmet REQUIRED requirement | symbol, but the **system's own** convention | learned once, shared |
+
+→ *"Volle Semiotik wo es geht"* means: **where a question can ride an icon or an index, it must not ride only a
+symbol.** The two rows in bold are the field's learned vocabulary, and they carry the two questions a reader
+most needs at a glance. They are not removed — the sign table is semantics and stays — but **each gains an
+iconic or indexical reinforcement** so the picture can be read before the legend is.
+
+---
+
+## §11 WHAT R21 … R26 ADD TO THE ARCHITECTURE
+
+| # | obligation |
+|---|---|
+| **PG-16** | **Spacing by Bouma.** Free space between drawn body rims ≥ **0.3 × the eccentricity** from the field centre, at both sizes. This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks. |
+| **PG-17** | **Bodies are glare sources.** Each body's surrounding ramp lies inside the critical band: a monotone falloff over ≥ 1.5 × the body radius, with the core at ≥ **1.45 ×** the local ground, measured on the render. A soft blur that is not a ramp does not satisfy it. |
+| **PG-18** | **Motion carries animacy.** At least one of the field's motions is **self-propelled from rest and contingent on another object** — the travelling light departing on a coupling. The breath alone does not satisfy PG-18; an oscillation has no animacy cue. |
+| **PG-19** | **Nothing drawn is Troxler-vulnerable.** No semantic mark is simultaneously small, low-contrast and peripheral: every drawn mark is above the local ground by ≥ **0.02** relative luminance, or larger than its own critical spacing. |
+| **PG-20** | **Every symbol has an iconic or indexical reinforcement.** The dash word and the mark glyph each gain a second, non-conventional carrier for the same question. No new question is introduced — E-1 is satisfied because the reinforcement answers the *same* question, not another one. |
+
+**Chromostereopsis is recorded and deliberately unbounded**: it reinforces G-4's warm accent and carries
+nothing, because a channel a minority cannot see is not a channel.
+
+**Sources.** R21 — [The glare effect and the perception of luminosity](https://www.researchgate.net/publication/12036684_The_Glare_Effect_and_the_Perception_of_Luminosity) · [A critical band of luminance gradients for the perception of self-luminosity](https://www.sciencedirect.com/science/article/abs/pii/S0141938218301835) · [The switching glare illusion](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10262631/) · [Robust brightness enhancement across a luminance range](https://jov.arvojournals.org/article.aspx?articleid=2483002)
+R22 — [Perceiving animacy purely from visual motion cues involves intraparietal sulcus](https://www.sciencedirect.com/science/article/abs/pii/S1053811919303441) · [Newborns' sensitivity to speed changes as a building block for animacy perception](https://www.nature.com/articles/s41598-020-79451-3) · [Perceptual cues that trigger perception of animacy at birth: self-propulsion](https://www.researchgate.net/publication/298740191_Perceptual_Cues_that_trigger_Perception_of_Animacy_at_Birth_The_case_of_Self-propulsion) · [Perception of animacy from the motion of a single object](https://www.researchgate.net/publication/12184353_Perception_of_Animacy_from_the_Motion_of_a_Single_Object)
+R23 — [The Bouma law of crowding, revised](https://jov.arvojournals.org/article.aspx?articleid=2212997) · [The Bouma law accounts for crowding in 50 observers](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10408772/) · [Seven myths on crowding and peripheral vision](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7238452/)
+R24 — [Chromostereopsis: a multicomponent depth effect?](https://www.sciencedirect.com/science/article/abs/pii/014193829390093K) · [Neural correlates of chromostereopsis](https://www.sciencedirect.com/science/article/abs/pii/S0028393209002024)
+R25 — [Motion-induced blindness and Troxler fading: common and different mechanisms](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0092894) · [Troxler effect (Illusions Index)](https://www.illusionsindex.org/i/troxler-effect) · [Induced visual fading of complex images](https://jov.arvojournals.org/article.aspx?articleid=2121987)
+R26 — [Peirce's theory of signs (Stanford Encyclopedia)](https://plato.stanford.edu/entries/peirce-semiotics/) · [Rethinking the Peircean trichotomy of icon, index, and symbol](https://www.degruyterbrill.com/document/doi/10.1515/sem-2015-0134/html) · [Data by proxy: material traces as autographic visualizations](https://arxiv.org/pdf/1907.05454)
