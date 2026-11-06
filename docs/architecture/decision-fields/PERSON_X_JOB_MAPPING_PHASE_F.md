@@ -952,3 +952,50 @@ measured and looked at.
 
 None of these touches semantics. All three are reversible. **The decision gate is OTTAVIO's eye on the first
 phase-F render**, not this document.
+
+---
+
+## §19 A-F17 · TWO LEAK CLASSES THAT ESCAPE BOTH FIREWALL TIERS *(PINK — adopted)*
+
+I invited a leak class that escapes both tiers of PF-8 as the finding of the phase. PINK brought two, as
+reasoning rather than assertion, and both are right.
+
+**(a) The low-count leak.** A halo or gradient edge grazing **under 1 %** of sign pixels, coherent at the breath
+frequency. Tier A is blind: the pooled mean over 178 k pixels barely moves. **Tier B is blind by definition**: a
+p99 is the 99th percentile, so fewer than 1 % of pixels can leak arbitrarily hard and stay underneath it.
+
+**(b) The harmonic leak.** A-F1's waveform is **4 s : 6 s — deliberately not sinusoidal**, so its energy sits at
+0.1 Hz *and its harmonics*. Both tiers fit the fundamental alone, so a leak whose dominant component is the
+second harmonic under-reads in both. The asymmetric waveform I chose for R18's sake is exactly what opens this.
+
+### Adopted
+
+**Tier C — population, not percentile.** PF-11's ladder logic applied to the lock-in: the **count** of sign
+pixels whose coherent amplitude exceeds each of 0.001 / 0.002 / 0.004 / 0.008 must be ≤ **1.5×** the count at the
+decoy frequencies. A population comparison has no percentile for a small leak to hide under.
+
+**Harmonics in both the signal and the null.** The firewall amplitude is the root-sum-square over the breath's
+first three harmonics (`T`, `T/2`, `T/3`); the null is the RSS over three frequencies incommensurate with all of
+them (`T/2.7`, `T/4.3`, `T/5.9`), so the null carries the **same degrees of freedom** as the signal and the floor
+stays comparable. Measured cost: tier A's floor rose from 0.00001 to 0.00007 — still 7× under its bound.
+
+### Measured at base, and tier C is the sharpest instrument of the three
+
+| tier | at `9cc06f84` | verdict |
+|---|---|---|
+| A — pooled RSS | 0.00014 against a bound of 0.0005 (floor 0.00007) | **green, correctly** — a moving ring conserves pooled light |
+| B — per-pixel p99 | 0.00629 against a floor of 0.00287 | **red**, by 2.2× |
+| C — population ladder | signal 24 210 / 18 218 / 10 584 / 163 vs null 22 586 / 8 703 / 323 / 4 → ratios **1.07 / 2.09 / 32.77 / ∞** | **red**, by 32.8× at 0.004 |
+
+Tier C separates by more than an order of magnitude where tier B separates by 2.2×. **PINK's addition is the
+strongest limb of the firewall**, and it was derived from the structure of the statistic rather than from a
+render.
+
+**PF-8 is now three tiers, all of which must pass.** §17's row is amended accordingly.
+
+### A seventh instrument defect, mine
+
+PF-10 read `data-capability` in the same tick as it dispatched the click, before React had re-rendered. It
+returned `""` — an unselected field reported as a selected one, and a meaningless ratio with it. The probe now
+reads the attribute after the re-render and **throws** if nothing is selected, rather than measuring an
+unselected field and calling it PF-10.
