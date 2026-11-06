@@ -1384,3 +1384,73 @@ on even in the frame*.
 **PF-9's path validated by GELB before the tip**, so it is not discovered at the moment of measurement: the
 façade's `running` variant serves `RUNNING`, and the stage answers `data-breath="STILL"`, `pendingBreath=true`,
 ring `STILL`, pending outline displayed. The façade was restored to `default` immediately afterwards.
+
+---
+
+## §28 THE TIP, SEEN — TWO DEFECTS THE WHOLE PROOF SURFACE WAS BLIND TO
+
+Tip `ef466ca8`, served on GELB's own render (3020/3021), 1920 × 1080. GRÜN reports 232/232 mapping suites, 18/18
+unit mutants red, every PF obligation green on its instrument. **I looked at it, and the loudest thing in the
+field is a defect.**
+
+The disc now genuinely carries light — the host is gone inside it, there is depth, the bodies are luminous beads
+with halos. That part works. But four **black radial gashes** run from the person circle to the disc edge, and
+they are more visible than any evidence mark on the stage.
+
+**M-F8 · measured across the gashes** (horizontal cuts, relative luminance):
+
+| cut | ground left | seam | ground right |
+|---|---|---|---|
+| y = 300 | 0.0206 | **0.0063 → 0.0033** | 0.0293 |
+| y = 300 (second) | 0.0293 | **0.0150 → 0.0054** | 0.0283 |
+| y = 840 | 0.0145 | **0.0022** (and a 0.0431 spike) | 0.0158 |
+| y = 840 (second) | 0.0189 | **0.0020 → 0.0043** | 0.0271 |
+
+`elementsFromPoint` returns **no element** on the gashes — only the svg. They are not something drawn. They are
+places where the ground is **absent** and the opaque black stage shows through.
+
+### A-F26 · The wedge step is 30 %, not 8 % — the gamma error again, in the other lane
+
+F-4 bounds the pool wedge at **± 8 %** of the local ground and at **≤ 0.004** above it. GRÜN implemented it as a
+black alpha of 0.148, reasoning `1 − 0.852 = 0.148` → 8 % about the mean. Measured:
+
+> sRGB factor 0.852 → luminance ratio **0.699**, a drop of **30.1 %**. The measured ground pair 0.0206 / 0.0293
+> gives **0.703**. Exact agreement. The step is **0.0087** against a bound of 0.004 — over by 2.2×.
+
+**An sRGB alpha is not a luminance ratio**, because the blend happens in gamma space. This is precisely the error
+I made in A-F9 and that GRÜN corrected in me — now made by GRÜN, in the same phase, in the other direction. The
+lesson is evidently not transferable by being written down once: **any rule stated as a percentage must say
+whether the percentage is of sRGB or of luminance.** F-4 did not, and that omission is mine.
+
+### A-F27 · The sector seam encodes nothing and is louder than the evidence
+
+At every sector boundary the ground drops to **0.002 – 0.006** against a local ground of 0.015 – 0.029 — a 5–10×
+dark line, 2–4 px wide, running the full radius. It is in no specification, carries no meaning, and is the
+highest-contrast feature in the entire field. A reader's eye goes to it first, and it says nothing.
+
+Against the phase's own principle it is the worst possible mark: E-1 gives every question one channel, and this
+is a maximum-contrast line assigned to **no question at all**.
+
+### A-F28 · The real defect is mine: F-4 has no proof obligation
+
+Why did a surface of fifteen obligations, two independent instruments and eighteen unit mutants not catch the
+loudest feature on the stage? Because **I never wrote a proof for F-4.**
+
+Every other F-rule has one — F-1 → PF-1, F-2 → PF-3, F-3 → PF-4, F-6 → PF-5/6/7, the firewall → PF-8, and so on.
+F-4 (pools are regions) states a bound and **no obligation was ever attached to it.** GRÜN's instrument reported
+green honestly: nothing it was asked to measure was wrong. The gap was in what it was asked.
+
+Nor does any obligation measure the ground's **spatial continuity**. PF-1 bounds the disc's median and the
+fraction above a threshold — both of which a field with black gashes through it passes comfortably, because four
+thin lines move neither statistic.
+
+**Two obligations added:**
+
+| # | Obligation |
+|---|---|
+| **PF-16** | The pool wedge step, measured in **relative luminance**: adjacent wedges differ by ≤ 0.004 and by a ratio within [0.92, 1.09]. Stated in luminance explicitly, never as an sRGB alpha. |
+| **PF-17** | **Ground continuity.** Along any circle inside the disc, no run of pixels falls below **0.6×** the local median ground for fewer than 12 px — i.e. no thin dark seam. Sampled at ≥ 8 radii, both viewport sizes. A mark may be dark; the *medium* may not have holes in it. |
+
+**This is what the mandate meant.** *"Prüfe die tatsächliche visuelle Wirkung im laufenden Browser, nicht nur
+technische Eigenschaften oder Testwerte."* 232 green tests, 18 red mutants and fifteen green obligations did not
+see the first thing a human eye lands on. The tip goes back.
