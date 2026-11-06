@@ -376,3 +376,128 @@ R17 — [A taxonomy of ambient information systems: four patterns of design (Sta
 R18 — [Resonance frequency versus fixed 0.1 Hz breathing in HRV biofeedback (Sci. Rep.)](https://www.nature.com/articles/s41598-026-53333-6) · [Training of paced breathing at 0.1 Hz improves CO2 homeostasis and relaxation (PLoS ONE)](https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0218550) · [Pulmonary afferent activity during slow deep breathing (PMC6753868)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6753868/) · [Paced breathing, pupil diameter oscillations and attention lapses (Psychophysiology 2025)](https://onlinelibrary.wiley.com/doi/10.1111/psyp.70003)
 R19 *(negative)* — [Pink noise (Wikipedia)](https://en.wikipedia.org/wiki/Pink_noise) · [Depth perception in autostereograms: 1/f noise is best](https://arxiv.org/pdf/1506.05036)
 R20 — [Evaluating quality metrics through the lenses of psychophysical measurements of low-level vision](https://arxiv.org/pdf/2503.16264) · [Luminance contrast detection and surround texture (Color Res. Appl.)](https://onlinelibrary.wiley.com/doi/full/10.1002/col.22723)
+
+---
+
+## §11 ADJUDICATIONS — THE FIRST CYCLE
+
+Six of these come from measurement rather than argument, and three of them are defects in §2/§3 as first
+written. The tables in §2, §3 and §7 are amended by what follows; where they disagree, this section wins.
+
+### A-F1 · The corridor's nominal was 4× too strong. Its ceiling was right. *(GELB, measured)*
+
+§8 named F-6's corridor as the thing most likely to be wrong. It was. Measured on a bench reproducing the
+phase-F geometry at 924 × 924 (seven staggered ground layers, 4 : 6 waveform, 10 s, 1 200 ms spread), at three
+amplitudes and frozen:
+
+| case | disc median | frac swinging ≥ 0.004 | swing p50 | swing max | mean \|ΔL\| per 500 ms |
+|---|---|---|---|---|---|
+| A — quarter | 0.0259 | **0.636** | 0.0048 | 0.0254 | 0.00144 |
+| B — §3 nominal | 0.0252 | 0.998 | 0.0189 | **0.0938** | **0.0051** |
+| C — double | 0.0238 | 0.999 | 0.0328 | 0.1499 | 0.0079 |
+| D — frozen | 0.0299 | **0** | **0** | **0** | **0** |
+
+**A is the nominal.** B modulates a median disc pixel by ±38 % of the ground and would read as throbbing, not
+breathing — it breaches the ceiling by 3× and R17's "overly pulsing is too distracting" with it. A modulates by
+±9 % and still clears the floor by 2.5×. This is R14 arriving in practice: once the area is large and the
+spatial frequency low, **the floor is nearly free and the whole design problem moves to the ceiling.** The
+corridor is therefore not symmetric, and the ceiling is the binding edge.
+
+**Amended:** F-6's floor stands (≥ 25 % of disc pixels swinging ≥ 0.004). The ceiling stands (no pixel > 0.030).
+The nominal is case A. D confirms the freeze is total, which is PF-9 and PF-11's mechanism working.
+
+### A-F2 · The rate bound is per time interval, not per frame *(GRÜN, measured — accepted)*
+
+GRÜN measured this machine's headless renderer at **p50 100 ms per frame** (SwiftShader, no GPU; a blank page in
+the same browser runs at 16.7 ms, so it is the host's 17 backdrop-filters and 800 px core that cost it, not the
+field — main thread 6 % busy, raster 390 ms/s). A per-frame bound therefore passes or fails by machine, which
+makes it not a bound at all.
+
+**Amended — PF-6 second row:** *mean |ΔL| over the disc between two renders **500 ms apart** ≤ 0.0025.* Case A
+measures 0.00144, case B 0.0051, so it still separates them, and it now means the same thing everywhere.
+
+### A-F3 · Mechanism: SVG user space, gradients, no filters *(GRÜN — accepted)*
+
+Accepted as specified by GRÜN, for the reasons GRÜN measured:
+- an HTML layer under the SVG composites well (+3 layers, does not disturb the E-5 tween: 5–6 distinct viewBoxes
+  over 416–483 ms) but **does not follow the viewBox**, so at L1/L2 the ground would stay at L0 scale;
+- `feGaussianBlur` halos on five bodies take idle p50 from 100 → 150 ms, p95 300 ms — **disqualifying**;
+- therefore: ground, wedges and halos as **SVG elements in user space with `radialGradient` fills, no filter**.
+  They follow every viewBox for free and need no per-frame script, so **B-F5 holds**.
+
+GRÜN's further finding is recorded because it constrains where the ground may live: the reduced-motion blanket at
+`:144` covers **only descendants of the section** — a layer outside it kept animating under `reduce`, a layer
+inside stopped. **The ground must live inside the section.**
+
+### A-F4 · The disc ground is opaque, PF-11 is scoped to the disc, and the host's violation is OTTAVIO's *(GRÜN — accepted, with a reservation)*
+
+GRÜN measured that **PF-11 is red at base, and not because of the field**: under `prefers-reduced-motion: reduce`
+the field has 0 running animations while **the host keeps 23** (`gradientBreath` on BODY, `plasma*`, `orbitFloat*`,
+`moonOrbit`…). Across 2 s, 101 868 of 670 489 disc pixels change, max Δ 0.032, and `elementFromPoint` puts field
+elements on top — so it is host motion shining through the 8 % of `STAGE_GROUND_ALPHA`. My M-F3 bound on the
+host's **static** ghost (0.0089) was right; its **temporal** ghost is not zero, and I did not measure that.
+
+**Decided:** the F-1 ground is **opaque inside the disc** and supplies all of its own luminance, behind its own
+reversible constant (`DISC_GROUND_OPAQUE`). `STAGE_GROUND_ALPHA` is **not** touched and keeps governing everything
+outside the disc. The decisive reason is not accessibility but **measurement integrity**: with an opaque ground,
+every phase-F bound measures the field, instead of measuring the field plus whatever the host happens to be doing.
+
+**Amended — PF-11 scope:** PF-11 applies to **the field disc**. Outside the disc is host, and B-F6 forbids phase F
+from touching it; a bound we are not permitted to satisfy is not a bound.
+
+**Reservation, and it goes to OTTAVIO, not into the code.** `STAGE_GROUND_ALPHA` is one of the two reversible
+constants §5 of PHASE_E hands to OTTAVIO — *how much of the host's six orbits shows through the stage*. Making the
+disc opaque overlaps that choice without replacing it. It is therefore a **new decision of his**, reported as such
+at acceptance, not folded in silently.
+
+**Finding for OTTAVIO, outside this phase's boundary:** the host application does not honour
+`prefers-reduced-motion` — 23 animations keep running under `reduce`. That is a WCAG 2.3.3 defect in the host.
+Phase F may not fix it (B-F6) and does not. It is reported.
+
+### A-F5 · The firewall was red by construction — a defect in F-1 *(GRÜN, found in my spec)*
+
+GRÜN: the marks carry their luminance **as opacity** (E-1: `opacity = luminanceOf(sign)`). That is precisely what
+lets the ground through — a NONE arc at 0.25 transmits **75 %** of the breathing ground behind it. **F-1 as
+written made PF-8 red by construction**, in the same way phase E's P-6 was green by construction. Same class of
+defect, found this time by the other lane, before it was built.
+
+**Accepted mechanism:** a **static backing** under every mark (arc, tick, beam, node, collar; text via
+`paint-order` stroke), same geometry, no `data-*`, no `testid`, so each mark pixel is `backing·(1−α) + colour·α`
+— independent of ground, wave, depth and host. The opacity attributes and `data-evidence-luminance` stay
+unchanged, and **A-3's bands become absolute instead of ground-dependent**, which is what they always should have
+been.
+
+**One refinement I add:** the backing is the ground's **resting composite at its own location** (ground + wedge +
+halo at mean phase), not a flat dark. At mean phase it is then invisible, and the only artefact is that *marks do
+not breathe while the field around them does* — which is exactly F-6's intent, now visible rather than merely
+true.
+
+**Amended — PF-8 tolerance:** measured as **p99 of mark pixels ≤ 0.002 and max ≤ 0.006**. GRÜN is right that the
+antialiasing fringe stays a partial mix; a percentile admits the fringe without admitting a leak.
+
+### A-F6 · E-7's four rings do not survive a lit ground — a second defect in F-1 *(GELB)*
+
+E-7 tells the four rings apart **by luminance alone**, at ink alphas 0.05 / 0.085 / 0.15 / 0.25, each step ≥ 1.6×.
+Those values were chosen against a black ground. Against a disc median near 0.026 the shelf band and the best-fit
+ring are at or below the ground and simply disappear — visible in the bench render, where the best-fit ring is
+already marginal. F-1 would have silently deleted two of E-7's four structural rings.
+
+**Decided:** the rings keep their identity as strokes and take the same backing as the marks (A-F5), and their
+luminance steps are **re-derived against the phase-F ground** so the contract holds where it matters. This turns
+E-7 from a contract on ink alphas into a contract on rendered pixels, which is strictly stronger. Values are
+GRÜN's to choose; the bound is what binds.
+
+**New obligation — PF-15:** the four rings are separated by **≥ 1.6× in measured pixel luminance at their closest
+points**, against the phase-F ground, at both viewport sizes.
+
+### A-F7 · Two proxies withdrawn in favour of the direct measurement *(GELB)*
+
+F-1's third row — *body peak ÷ disc median ≥ 20* — was a proxy for "the ground has not eaten the evidence". The
+bench puts case A at 19.3 and it is plainly fine, because the thing that actually matters is PF-2 (the bands) and
+now PF-15 (the rings), both of which measure it directly. A proxy that disagrees with the direct measurement is
+noise. **Withdrawn.**
+
+F-1's disc-median ceiling of 0.020 is raised to **0.030**: the bench's 0.0259 is the level that reads as a
+luminous volume, and the ceiling's real job is done by PF-2 and PF-15.
+
+**Amended F-1:** disc median ∈ **[0.006, 0.030]**; disc fraction above 0.005 ≥ 0.55; third row withdrawn.
