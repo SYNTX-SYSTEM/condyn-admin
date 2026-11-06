@@ -247,3 +247,33 @@ PINK's leak-class hypotheses to hunt on GRÜN's tip (candidates, to TEST not ass
       harmonics), not the fundamental alone.
 These supersede §3's "A-F11 adopted exactly". PINK will build the CORRECTED instrument when the implementation tip
 lands, and will run (a)/(b) as explicit leak-mutants.
+
+
+§5  PF-8 THREE-TIER FIREWALL LOCK-IN — independent build, run at base 9cc06f84 (confirms GELB §19 + an A-F11 trap)
+----------------------------------------------------------------------------------------------------------------
+Built PINK's own three-tier PF-8 (§17 Tier A/B + §19 Tier C), signal RSS over {T,T/2,T/3}=0.1/0.2/0.3Hz, null RSS
+over decoys {T/2.7,T/4.3,T/5.9}=0.270/0.233/0.169Hz, UNBLURRED. Sign mask = stage minus svg-hidden >0.001 (at base
+no lit ground, so = marks+arcs+ticks+beams+nodes+text+4 rings; the 61px shelf band dominates the count). 200,689
+sign px (GELB ~178k — same order; PINK's whole-svg-hide>0.001 is slightly more inclusive).
+RESULT (v2, LSQ) CONFIRMS GELB §19:
+  Tier A pooled  0.000155 vs bound 0.0005 (floor 1.6e-5)                 GREEN  (GELB 0.00014/7e-5 GREEN)
+  Tier B p99     0.00514 vs floor 0.00184 = 2.79x                        RED    (GELB 0.00629/0.00287=2.2x RED)
+  Tier C ladder  signal 35895/22326/3814/30 null 11763/1444/139/6
+                 ratios 3.05/15.46/27.44/5.0                             RED    (GELB 1.07/2.09/32.77/inf RED)
+All three tiers match GELB's verdicts; Tier C is the sharpest limb (PINK 27x at 0.004 vs Tier B 2.79x) — GELB's
+"Tier C is the strongest" confirmed. Tier A green is CORRECT: the phase-E ring moves (geometric), conserving
+pooled light, so the pooled-mean fit is blind to it; B and C catch it.
+
+THE A-F11 TRAP, REPRODUCED IN PINK'S OWN HANDS (and the operational fix for the real pass):
+PINK's FIRST build (v1) used a simple DFT projection (uniform-sampling assumption) over 14 frames at 849ms cadence
+and FALSELY read Tier B 1.04x and Tier C mid-rung 1.39x — a sampling-induced near-green-by-construction. Cause:
+this machine renders ~600-820ms/screenshot (SwiftShader software raster of the host's 17 backdrop-filters + 800px
+core = GELB's A-F2 cost), so a uniform DFT at that spacing under-samples the 0.43/0.59Hz decoys; they ALIAS and
+inflate the null until floor~signal and the separation collapses. Tell-tale: the Tier A FLOOR dropped 10x between
+methods (v1 0.0001 -> v2 1.6e-5) once the estimator was correct. FIX, binding for the PF-8 pass on GRÜN's tip
+(same machine): the lock-in MUST use a least-squares multi-sinusoid fit over a LONG, naturally-JITTERED window
+(~26s, 63 frames here), never a short uniform DFT; jittered sampling + LSQ estimates all six frequencies without
+the uniform-Nyquist bound. This is A-F11's "a bound the instrument cannot reach is not a bound" applied to the
+FREQUENCY axis — each PF-8 run must confirm its decoy floor actually resolved (the 10x floor drop is the check).
+Scripts: scripts/pink-pf8-lockin.mjs (v1, kept as the demonstrated trap), pink-pf8-lockin2.mjs (v2, correct),
+pink-shot-timing.mjs (the ~608-822ms/screenshot profile). Output: outputs/9cc06f84-baseline/pf8-lockin.json.
