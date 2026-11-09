@@ -1145,3 +1145,160 @@ holds `chromium-1243` plus two headless shells — no download is needed. The de
 integrity risk (I-2): unversioned, outside the repository, inside a boundary PINK may not touch, and one
 `node_modules` deletion in an unrelated project away from rendering the whole proof stand unrunnable.
 `CONDYN_PLAYWRIGHT_MODULE` is this project's established override and is the right place to fix it.
+
+---
+
+## §18 PINK'S SECOND PASS — THE FOUR REDS ARE ATTACHED TO NO ARTIFACT
+
+PINK audited against `90ac32cb` (it crossed §16/§17 in flight) and independently reached A-G24's drift before
+reading §15. It also confirmed the integrity picture more thoroughly than I did: **19 dangling commits exist,
+the newest `6330dd01` at 2026-10-31 01:46 — every one predates the 2026-11-06 work and the 2026-11-07 boot.**
+Nothing from the interruption sequence is orphaned. I verified the dangling set myself.
+
+It then found something that changes what "open" means for four pins.
+
+### A-G41 · The four §12 reds are void as measurements, not merely unreproducible *(defect 28)*
+
+I verified PINK's claim against the commits:
+
+| commit | time | `DISC_OCCLUSION` | `BODY_BUDGET` |
+|---|---|---|---|
+| `93c47e03` (`PHASE_G_BASE`) | 10:10 | **absent** | **absent** |
+| `10eb4030` | 11:30 | present | present |
+| `3ec8457d` | 11:43 | present | present |
+
+`git rev-list --count 93c47e03..10eb4030` = **1**. There is no commit between them.
+
+**§12 is `39d50bae`, 10:59.** So GRÜN's PG-1 0.42, PG-6 0.025, PF-15-inverted 0.23 and PG-3 54 px were measured
+on a working tree that **held V1.1's drawn radius and the budget but not A-G17's occlusion, and that tree was
+never committed.** It no longer exists; the reboot took it.
+
+**The consequence I must not let stand is my own sentence.** §12 reads: *"PG-1 0.42 — of which ~21 % of the
+disc's light is the ghost, so A-G17 alone recovers most of the gap."* That is a **prediction**, and it is
+unfalsifiable on the artifact it was made about, because the artifact is gone and the remedy was already built
+in the next commit without the gap ever being re-read.
+
+**Decided: PG-1, PG-6, PF-15-inverted and PG-3's §12 readings are VOID as measurements.** They are not open
+pending verification — there is nothing to verify. They are re-opened as **unmeasured**, to be measured for the
+first time on a commit. A-G35 said such numbers are unreproducible; this is the stronger case, and it sharpens
+the rule: **a measurement taken on an uncommitted tree is not a measurement of anything.** A-G35's binding
+instruction is amended accordingly — the commit, not just the script and the output.
+
+PINK adds the reason PG-3 cannot be derived at all, only measured, and it is correct: the unit→px factor depends
+on the PG-14-widened viewBox, and that frame is itself derived from ρ_drawn. Frame widens → px scale changes →
+whether 34.2 units clears 56 px changes. **It is circular.** The spec's rule text asserting *"≥ 56 … ≤ 92 px"*
+is an assertion about an output of its own input. A-G24's refusal to treat PG-3 as closed is upheld on this
+better ground.
+
+### A-G42 · PF-8 and PG-11 require mutually exclusive renders — A-G13 put them in frequency collision *(defect 29)*
+
+PINK's finding, and it is the best piece of engineering reasoning in this phase: **A-G13 made the travel's period
+exactly the breath's.** PINK's PF-8 firewall separates signal from null **by frequency**, with the decoy
+harmonics bracketing {0.1, 0.2, 0.3}. If travel and breath share a period, the travel's coherent energy lands on
+**the identical harmonics as the breath's**, and the firewall can no longer attribute energy between them.
+
+A-G20 "solved" this by hiding the travel — which is why PF-8 passed. But **PG-11 must compare relation motion
+energy against medium motion energy with the travel visible, at exactly the frequencies the breath occupies.**
+The two obligations therefore demand mutually exclusive render configurations, and no attribution rule exists.
+
+**Decided: the collision is real and A-G13 is not reopened for it.** The travel/breath phase lock is a semantic
+decision (G-3: the travel *is* the breath) and I will not trade a meaning for an instrument's convenience.
+Instead:
+1. **PF-8 is measured with the travel masked** (A-G32's mask-based form, not hidden), so the breath's harmonics
+   are attributed to the medium alone.
+2. **PG-11 is measured with the travel drawn, on relation pixels only**, against the medium's energy at the
+   same harmonics — and it reports the **attribution rule** it used, explicitly, in its record.
+3. **The two runs are separate passes over the same build**, and neither may reuse the other's frames.
+4. If the harmonics cannot be separated even per-mask, **PG-11 returns INCONCLUSIVE** rather than a ratio. That
+   is A-G30's guard doing its work, and it is the honest outcome.
+
+### A-G43 · PG-20's splay is not redundancy — it must key on the state, not the mark *(defect 30)*
+
+I wrote in A-G38(b) that A-G21's meaning holds without further change. **PINK shows that is wrong, and the
+argument is unanswerable.** The splay keys on `s.mark === "counterTick"` — *the same predicate as the glyph it
+reinforces*. Remove the counterTick and **both carriers vanish together**, while a test asserting
+"counterTick ⟹ splay" still passes.
+
+**PG-20 exists to give a second, non-symbolic carrier for a question whose symbol might be missed.** A
+reinforcement that cannot survive its symbol's removal is not redundancy against that symbol — it is a second
+rendering of it. The whole point of R26's semiotic audit is defeated by the predicate.
+
+**Decided: the splay keys on the state.** DIFFERENT splays because it *is* DIFFERENT, not because it carries a
+counterTick. GRÜN to re-key it on the relation state, and the test must assert the splay **survives the mark's
+removal** — a mutant that deletes the counterTick and expects the splay to remain. A-G38(b) is corrected.
+
+PINK's second limb stands too: **the splay's magnitude in rendered pixels is unmeasured at either size.**
+Lateral end displacement ≈ 0.6 × tick, tick = max(2.4 k, 0.18 r). At 1280, where A-G23 already concedes presence
+degrades and pixel floors dominate, this is the prime suspect for a sub-perceptual reinforcement. It goes on
+PINK's list (its V6) and it is a **blocking** limb of PG-20, not a nicety.
+
+### A-G44 · A-G23's scaling inherits a fixture — restated per body *(defect 31)*
+
+The 1.86 × came from mean drawn radius 34.9 px → 18.8 px. PINK is right that **the mean over drawn bodies
+depends on the fixture's `weightSum` distribution**, while ρ_drawn spans 34.2…54.6 units: a different pool
+composition moves the mean and therefore moves a factor I called *"derivable, not arbitrary."* It also notes
+1.86 ≠ the viewport ratio 1.5, which should have told me the factor was not geometric.
+
+**Decided: PG-22's bound is stated per body, share ∝ 1/r_drawn**, evaluated against each body's own drawn
+radius, with the 20 % anchored at the 1920 reference body. The fixture-mean form in A-G23 is withdrawn. The
+annulus stays 1.1 … 2.6 r and the exclusion of a body's own name and measure stands.
+
+### A-G45 · PF-15's red is instrument-suspect — re-measure with min(), not max()
+
+PINK's phase-F §3 finding: its shelf max read 0.58, **and that was a body** crossing the 61 px annulus. If the
+inverted PF-15 is computed with a max or an area statistic over that band, **its 0.23 is plausibly partly
+instrument**, exactly as PINK's first shelf reading was — and the remedy is the **engraved-minima statistic I
+myself adopted at §29: `min()` in the ring band, not `max()`.**
+
+**Decided: PF-15-inverted's red is not accepted as a product fact until re-measured with `min()`.** Combined
+with A-G41, this means GRÜN must not yet treat the shelf band's geometry as the proven cause. A-G34's joint
+satisfiability question is asked **after** the statistic is corrected, not before.
+
+### A-G46 · PG-21 gains an absolute limb
+
+PINK: *"the light remaining inside the disc is ≤ the stage's own ground"* passes trivially if the stage ground is
+itself lit. Its phase-F Q-F6 gives the anchor — suppressed-disc max **8.92e-3**, 0 px above 0.02, on the
+**translucent** ground; an occluding plate in `rgb(3,5,8)` should beat that outright. Accepted: PG-21 carries an
+absolute limb at Q-F6's value as well as A-G28's pre-and-post mutant.
+
+### B3 — I cannot commit my mask, and that resolves the divergence the other way
+
+PINK asks for my element-coverage mask definition, because it cannot match a mask that exists only as prose.
+**It is gone with the scratch, and A-G35 forbids me to produce another.** The PF-8 beams divergence — PINK FAIL
+0.0022 against my 0.00072 passing, 3 × — therefore does **not** resolve by PINK matching me.
+
+**Decided: PINK's mask becomes canonical and is committed in `mapping-phase-g-contract`. My 0.00072 beams
+reading is retired as unreproducible, and the PASS it carried is withdrawn.** Where two instruments disagreed
+and only one can still be run, the runnable one is the instrument. PINK's earlier concession to match my mask is
+released — it was offered to a mask that no longer exists.
+
+PINK also notes **PF-18's three off-ring holes at 0.86 R were never explained.** Recorded as OPEN; the ring
+exclusion lesson stands separately.
+
+### B1 — escalated to the owner, not decided here
+
+PINK's one blocking write: moving `condyn-admin-pink-visual-e` from `93c47e03` to `3ec8457d` and running
+`next build`, because **no production build exists for either phase-G tip** — `condyn-admin-visual-d/.next` and
+`condyn-admin-mapping-d/.next` hold dev artifacts only, no `BUILD_ID`, and Turbopack dev does not hydrate
+headless. The only prod build on the machine is PINK's at `93c47e03` (`BUILD_ID YUIyV6i0VG5cALibnbi58`).
+
+**I decline to authorise it, and the reason is the owner's own instruction.** The mandate says *preserve all
+existing independent proof states*. That prod build **is** an existing independent proof state — the one
+artifact PINK's entire phase-F surface was measured on. Checking it out to `3ec8457d` destroys it to create its
+successor. PINK states lockfiles are identical and `next build` is cheap, so the loss is recoverable, but
+"recoverable" is not "preserved" and the trade is not mine to make.
+
+**Put to the owner as the phase's single blocking decision.** Until it returns, PINK holds at document-level
+findings and GRÜN builds its development instrument — neither lane is idle.
+
+### Two dirt sites I missed, now recorded
+
+PINK found what my own integrity pass did not: besides `condyn-admin/{RUNNING, currentOperation, exact,
+rejected}`, the worktree `condyn-admin-sil-integration` carries seven untracked zero-byte files named `=`, `DAR`,
+`DCR`, `DCTXREV`, `RCP`, `repository`, `returned`. Both sets read as shell-redirect debris, neither is touched,
+and their owners confirm before anyone sweeps. They matter only because they break any "working tree clean"
+assertion, which several of these proofs make.
+
+And one correction to my own §4 reading of the runtime: `runtime/dll-main` is 0 ahead but **12 behind**
+`origin/main`. The DLL line is indeed all in `main`; it does **not** follow that restarting `:3017` is a no-op —
+`condyn-admin-dll-runtime` @ `32c63c2b` would serve code twelve commits behind `main`.
