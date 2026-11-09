@@ -839,3 +839,181 @@ Documentation only. No product source, no spec, no test, no fixture and no const
 boundary (§3) and proof surface (§4) are untouched. It carries no GO and grants none — in particular A-G24 moves
 PG-3 from "plausibly closed" to **OPEN**, which is a tightening, and it is **PINK's** to confirm or reject on its
 own instrument, not mine to certify.
+
+---
+
+## §16 PINK'S INVERSE RECONSTRUCTION — FOUR OF MY NEW PINS CANNOT BITE
+
+PINK delivered a full inverse reconstruction on 2026-11-09 against `3ec8457d`, without running a render, by
+reading phase G's new pins against **its own committed phase-F evidence** (`evidence/mapping-phase-f-contract/`,
+`manifest.sha256` 43/43). It is the heaviest finding of the phase and it is directed at me.
+
+**The charge, in PINK's words:** phase G's founding move was *"I bounded the medium from both sides and called it
+rigour, while the thing the field is for had no bound at all."* PINK's inverse reading is that I have **repeated
+that move in the new channels** — twelve new pins written in 75 minutes, none measured by a second instrument,
+and at least four that cannot change their verdict in either direction.
+
+I have re-derived every number below myself from PINK's committed outputs before adjudicating. **I accept the
+charge.** The defect count moves from twenty-two to **twenty-seven**.
+
+### A-G26 · PG-10's max-swing limb is withdrawn — the ceiling is below the instrument's floor *(defect 23)*
+
+`outputs/9cc06f84-baseline/noise-floor.json`: under `reducedMotion:reduce`, with the field motionless by every
+DOM measure (phase-E P-6 green) and **nothing animating at all**, the image is still not pixel-identical —
+`swing_max = 0.031872`, and `floor-regions.json` attributes the whole-square maximum to the **ring stroke edge**,
+with mark AA edges at 0.02751. The jitter is sub-pixel antialiasing on the field's own bright thin edges, and
+`DISC_GROUND_OPAQUE`'s retirement does not remove it.
+
+**A-G22's third limb set the ceiling at 0.030 and reported 0.0297 against it. Both numbers sit inside a floor of
+0.031872.** I wrote, two sections earlier, that the 1 % margin was *"tight enough that I want it re-measured on
+any change to the glow."* It was never a margin. **A-F11 — my own corrected rule — forbids exactly this: a bound
+the instrument cannot reach is not a bound, and max-against-max has no statistical content when floor ≈ signal.**
+I reintroduced a bare maximum four sections after adopting the rule that forbids it.
+
+**Decided: the max-swing limb of PG-10 is withdrawn.** PG-10 keeps its two measurable limbs — on the visible
+glow, ≥ 25 % of pixels swing ≥ 0.004, and the median Weber fraction in [10 %, 35 %]. The ceiling that R17's calm
+requires is **re-specified as a distribution**: the p999.9 of per-pixel swing on co-registered frames, with the
+threshold set from the run's **own** measured static floor and never below it. The co-registration step does not
+exist in either lane's instrument; it is a prerequisite, not an assumption.
+
+**GRÜN must not build to the withdrawn limb.** The two surviving limbs stand and still need re-measurement on
+`3ec8457d`.
+
+### A-G27 · PG-2 is satisfied by the stage's ground colour alone *(defect 24)*
+
+PG-2: with the semantics suppressed, the disc's median luminance ≤ 0.006. A-G17 then made the disc paint
+`STAGE_GROUND_RGB = rgb(3, 5, 8)` at alpha 1. The WCAG relative luminance of that colour is **0.0014543** —
+I recomputed it — so the bound is cleared by **4.13 ×** by the constant alone, and PINK's own measured ground
+p50 at base was 0.00145, the same number.
+
+**An obligation whose verdict is fixed by a constant in the remedy is not an obligation.** Decided: **PG-2 is
+restated as a bound on what the remedy does not control** — the suppressed disc's median must not exceed the
+**stage ground measured outside the disc in the same frame**, by more than the run's own static floor. That can
+fail: it fails exactly when host light bleeds through, which is the thing PG-2 was invented to catch.
+
+### A-G28 · PG-21 is satisfied by its own remedy *(defect 25)*
+
+Same structure, and worse, because PG-21 is the obligation that would have caught the host ghost. It asks that
+with every field element suppressed, the light inside the disc be no greater than the stage's own ground. A-G17
+answers it by **painting the stage's own ground over the disc**. After the fix the two sides of the comparison
+are the same pixels by construction.
+
+This violates the second limb of my own two-limb checklist — *is the thing it must fail on even in the frame*.
+Decided: **PG-21 is restated as a pre-and-post obligation on the same build** — the suppressed disc must match
+the stage ground **and** a build with `DISC_OCCLUSION` disabled must fail it. The mutant is the proof; without a
+recorded mutant PG-21 returns INCONCLUSIVE, not GREEN.
+
+### A-G29 · PG-13 was already passed by 12–50× on the stage OTTAVIO rejected *(defect 26)*
+
+PG-13 asks each body's peak luminance ÷ its own local surround median ≥ **8**. PINK's Q-F5 at base `9cc06f84`
+measured bodies at **97–398**. My own §13 table on `10eb4030` gives rim 0.54–0.61 over ground 0.0015–0.0040,
+i.e. **135–400**. **The bound is between twelve and fifty times looser than the rejected stage already was.**
+
+PG-13 was invented to answer PINK's caveat that *"a body could hold 55 % of the light and still lack presence."*
+It cannot answer it: it is green-by-coincidence at birth, on the very build whose lack of presence is the reason
+this phase exists. Decided: **PG-13's ratio limb is retired as non-discriminating.** What A-G7 actually needs is
+the **critical-band** form of R21 — the gradient profile, which is PG-17's monotone-falloff limb — plus an
+**absolute** floor on body light, not a ratio against a near-black surround. The replacement is specified with
+PG-17 below, and until it exists **A-G7's multi-channel presence obligation is unmet, not met by PG-13.**
+
+### A-G30 · PG-11 is a ratio of two floor values, and I removed the guard myself *(defect 27)*
+
+PG-11 asks relation motion energy ≥ 1.5 × medium motion energy. PINK established the counter-rule in its §7 and
+**I adopted it for PF-10**: *"reports INCONCLUSIVE unless the unselected breath amplitude is ≥ 0.0002 in its own
+right — a ratio of two floor values is not a measurement."* On a correctly calm field the medium's motion energy
+sits near the floor, so 1.5 × is a ratio of two noise values. **I took PINK's finding and dropped PINK's guard.**
+
+Decided: **PG-11 carries the guard explicitly.** It returns INCONCLUSIVE unless the medium's coherent motion
+energy is ≥ 0.0002 in its own right. This compounds with A-G13's flagged risk — at divisor 1 the travel's motion
+energy halves — so the two must be measured in one pass.
+
+### A-G31 · PG-17's measurement domain contradicts A-G10 pin 7 — pin 7 wins
+
+A-G18 specifies PG-17 on **medium** pixels with signs and seats masked. A-G10 pin 7 moved the glow **out of the
+medium** into `mapping-glows`, because a glow is body light. PG-17's subject **is** the glow's ramp. As written,
+PG-17 measures a domain that by the same document excludes the thing it measures.
+
+**Decided: pin 7 stands, A-G18's domain is corrected.** PG-17 is measured on the **union of `mapping-glows` and
+the medium beneath them**, with signs and seats masked — the ramp is a body's light falling across ground, and
+both are the carrier. A-G18's reading that *"the ramp is ground, the ticks are figure"* survives as the
+figure/ground distinction; its domain assignment does not.
+
+### A-G32 · A-G20's "PF-8 with the travel hidden" contradicts defect nineteen — withdrawn
+
+Phase F §30, defect nineteen, in my own words: *"Suppression isolates a sign; it does not isolate the medium,
+because the medium is partly underneath the signs."* That is why PF-17 and PF-18 were rebuilt **mask-based with
+every sign drawn**. A-G20 then reintroduced hide-and-reveal for PF-8 on the argument that the travel is a
+separate element. It is — but G-3 puts the arc's **own glow** under the travel, so suppressing the travel reveals
+glow, not ground, and a leak under the path is measured against the wrong backdrop.
+
+**Decided: A-G20's hiding instruction is withdrawn.** PF-8 is measured **mask-based**, the travel drawn, its
+pixels excluded by its own mask — the method defect nineteen produced, applied to the element A-G20 exempted
+from it. The *intent* of A-G20 stands: the travel's designed motion must not be counted as a leak.
+
+### A-G33 · A-G20 certified the glare percept with the statistic R21 excludes
+
+A-G20 closed PG-22 on the grounds that *"the glare percept is intact at 13–48 × glow over ground."* R21, as I
+stated it in §10, says the effect *"depends on a critical band of surrounding gradients that is explained by
+**neither local contrast nor total luminance energy**, and it is cortical, not retinal."* A glow ÷ ground ratio
+**is** local contrast. I certified the critical-band requirement with the statistic my own finding excludes.
+
+**Decided: PG-22's adjudication in A-G20 is reopened on this point only.** Its 20 %/≈37 % occupancy bound
+(A-G23) stands as written — occupancy is a geometric claim and the algebra was independently rechecked. What is
+withdrawn is the *certification* that the glare percept survives: that requires PG-17's gradient-profile limb,
+which has never been measured. **PG-22 occupancy: adjudicated. The glare percept: OPEN.**
+
+### A-G34 · PF-15's inverted form may be unsatisfiable, and PINK has never seen it
+
+A-G5 demands (a) the rings' total ≤ 8 % of the semantic share **and** (b) ≥ 1.6 ring-to-ring separation inside
+that budget. PINK proved independently, on two methods, that the four rings do **not** separate ≥ 1.6 at the
+lower two steps **even when free to reach any brightness** — all-angles 1.636 / 0.630 / 0.861, ink-only
+1.636 / 0.630 / 0.796, the lower two decisively below 1.0. I then removed the licence to reach any brightness.
+
+**I may have bounded a separation that already fails by constraining the resource it would need.** That is the
+"bound the geometry refuses" class, named in A-G1. Decided: **joint satisfiability is a prerequisite, not an
+expectation.** PINK measures (a) and (b) together on `3ec8457d` at both sizes and is **authorised to declare them
+mutually unsatisfiable**, in which case the ring ladder's step count — not its budget — is what gives way, and
+that returns to me as a semantic decision about how many rings the field needs.
+
+### A-G35 · My own harness is not in the repository — and that is a boundary defect, not an oversight
+
+PINK's I-7: `condyn-admin-hr-integration` @ `4c1dbb87` contains **no** `evidence/mapping-phase-*` directory and
+no PF/PG script. **Every number in PHASE_F.md and PHASE_G.md that I measured — M-F1…M-F7, M-G1, M-G2, §13's
+per-body table — is unreproducible from this repository.** GRÜN's four reds and A-G22/A-G23's numbers are in the
+same state (PINK's I-8): they exist only as prose in this document. The 2026-11-07 reboot destroyed GRÜN's
+scripts and PINK's scratch paths; PINK's *measurements* survived because PINK commits its instruments.
+
+A proof surface whose two of three lanes cannot re-run their own measurements is not a proof surface. **Decided,
+binding on GELB and GRÜN from here: a number may not enter an architecture record unless the script that
+produced it and its raw output are committed in the same lane.** Prose citing a measurement is now an
+unsupported claim. §0's M-G1 (4.78 %) and §13's table are hereby marked **CORROBORATED BUT UNREPRODUCIBLE** —
+PINK's independent base readings agree with M-F1/2/3/6, which is why they are not withdrawn; §13's table has no
+such corroboration and is downgraded to **CLAIMED**.
+
+### Retirement by attrition — refused
+
+PINK's count, which I verify against PHASE_F §17: **PF-3 was retired in A-G20 having never been measured**
+(its cited 2.5…3.8 reading has no recorded provenance); **PF-5 and PF-7 were retired while RED**; **PF-10 was
+retired having never run**. Their replacements are PG-17 (contradictory domain, now fixed by A-G31) and PG-13
+(non-discriminating, now retired by A-G29).
+
+**Decided: a proof surface may not shrink by attrition.** PF-3, PF-5, PF-7 and PF-10 are returned to the surface
+as **OPEN**, not retired, until their replacements have produced a measurement that can fail. A retirement is
+valid only when the replacement has returned a verdict.
+
+### PINK's Q1 — reopened, as PINK asks
+
+Q1 (overlap voids the per-mark firewall) was declared moot in §1 because the layout stays radial. PINK is right
+that the *substance* survived the mootness: PG-15 puts rings behind bodies, A-G8 lets shelf rims reach ≈ 546
+past a field ring at 500, and PG-17's annulus runs 1.1…2.6 r. **The overlap arrived without the layout solver.**
+Decided: PINK's option **(a) — a layout constraint that a sign-bearing mark never overlaps a breathing element —
+is the preferred form**, because it is testable at the engine level where V1.1's vectors already live, rather
+than at the pixel level where every instrument is already stretched. GRÜN to state its cost; if it is not
+affordable, (b) returns to PINK.
+
+### What this section does NOT do
+
+It grants no GO and withdraws none. It is documentation: no product source, spec, test, fixture or constant is
+changed. Four pins lose their teeth, one loses a limb, two have their domain corrected, four return from
+retirement, and one obligation (A-G7) is declared **unmet** rather than met. **Every restated bound is itself
+unmeasured and is PINK's to confirm or refuse on its own instrument.** I have certified nothing here.
