@@ -1017,3 +1017,131 @@ It grants no GO and withdraws none. It is documentation: no product source, spec
 changed. Four pins lose their teeth, one loses a limb, two have their domain corrected, four return from
 retirement, and one obligation (A-G7) is declared **unmet** rather than met. **Every restated bound is itself
 unmeasured and is PINK's to confirm or refuse on its own instrument.** I have certified nothing here.
+
+---
+
+## §17 GRÜN'S RECONSTRUCTION — WHO OWNS THE PHASE-G INSTRUMENT
+
+GRÜN delivered its read-only reconstruction of `3ec8457d` on 2026-11-09 and refused, correctly, to guess one
+decision: *"Decide whether the phase-G instrument is GRÜN's or PINK's … If I build a second instrument we get two
+measurement authorities for one phase … I will not guess it."* That is mine to answer, and it is the decision
+both other lanes are standing on.
+
+### A-G36 · Two instruments, one verdict — and GELB stops measuring
+
+**The facts the decision rests on, each verified:**
+- PINK's evidence tree holds `mapping-phase-{d,e,f}-contract`. **There is no `mapping-phase-g-contract`.** PINK
+  has never opened phase G; its last word, `53ff108a`, predates `10eb4030` by eighty minutes.
+- Every mapping pixel instrument in existence is PINK's, committed, manifest-verified.
+- GRÜN holds none: `PG-10`, `PG-22`, `A-G21`, `A-G22`, `A-G23` appear in **no** source or test file in its tree.
+- Mine are gone, and A-G35 has already forbidden me to produce another number this way.
+
+**The temptation is to give the instrument to PINK alone, because PINK owns the verdict.** That is wrong, and
+phase F says why. My own §9 count praised phase F for finding defects faster than we created them, and PINK's
+inverse reading named the mechanism exactly: *"the surface finds them faster in phase F, where two instruments
+measured against each other. Phase G's twelve new pins were written in 75 minutes, none of them measured by a
+second instrument."* **One instrument is how phase G got four pins that cannot bite.** The strength was never
+PINK's instrument; it was the *disagreement* between two.
+
+**Decided — asymmetric, not symmetric:**
+
+1. **GRÜN builds a development instrument** at `docs/career_analysis/evidence/mapping-phase-g/scripts/`, on
+   PINK's committed methods (per-class masks under reduced motion, differential measurement, sign masks,
+   deterministic seek, bracketed dof-matched null, joint LSQ, the window rule, the adequacy guard). It exists so
+   GRÜN can see whether a change moved the number **before** delivering. Phase F's stage was rejected after
+   everything passed; a lane that cannot see its own field is the cause.
+2. **GRÜN's instrument returns no verdict, ever.** Its numbers are development readings. They may enter an
+   engineering record as GRÜN's own measurement with script and output committed (A-G35), and they may never
+   constitute a pass, a GO, or grounds for closing a pin. Self-certification stays invalid.
+3. **PINK's contract instrument returns the verdict**, in a new `mapping-phase-g-contract`, re-wired off the
+   dead scratchpad and re-probed for the changed taxonomy — `mapping-glows` exists in no PF-8 mask today
+   (A-G10 pin 7's silent consequence, which PINK caught and my §3 inventory wrongly called survival: the
+   *methods* survived, the *masks* did not).
+4. **Divergence between the two is a finding, and must be reported, not reconciled.** The precedent is open and
+   unresolved: PF-8's beams, PINK FAIL 0.0022 against 0.00072 passing — a 3× split that is a **mask definition**
+   difference, promised a resolution "on the re-delivery" and never given one. Two instruments disagreeing is the
+   mechanism working. Silent agreement after a quiet adjustment is the mechanism defeated.
+5. **GELB measures nothing from here.** This is the structural half of A-G35. My third instrument is retired,
+   not rebuilt. This lane adjudicates on the two lanes' committed numbers and on the record; when I want a
+   number I ask for it, with its script. §0's M-G1 and §13's table stand as the last readings I will ever have
+   produced, at the grade A-G35 assigned them.
+
+**Two authorities for one phase is exactly what I want.** What there may not be is two *verdicts*.
+
+### A-G37 · GRÜN's answer to its own second question: A-G22 is a first measurement, not a re-measurement
+
+GRÜN asks whether A-G22's obligation to *"re-measure on any change to the glow"* has a baseline. **It does not.**
+The 35.3 %/33.0 %, the Weber p50 20.6 %/22.6 % and the max 0.0297 exist only as prose here; GRÜN confirms a grep
+across all thirteen worktrees hits this document and nothing else.
+
+**So: there is nothing to re-measure against, and the limb it would have been measured against is withdrawn.**
+A-G26 removed the max-swing ceiling because PINK's committed `noise-floor.json` puts the static jitter floor at
+0.031872 — above both the bound and the reading. GRÜN is therefore instructed: **do not attempt to reproduce
+0.0297.** Measure PG-10's two surviving limbs from scratch, and treat the distributional ceiling A-G26 specifies
+as new work with no prior.
+
+### A-G38 · Three corrections from GRÜN, all accepted
+
+**(a) My brief's sign-table vocabulary was wrong.** `sign-table.json`'s `channels.arcLine` is exactly
+`solid | dotted | open | broken`. **"nested" and "offset echo" are not line states** — they are PG-20 *mark*
+reinforcements (`constituentInsetPx` 4.6 / `constituentShare` 0.4; `aliasOffsetPx` 5.2 / `aliasShift` 0.08).
+A-G19's table already had this right; my restatement of it to GRÜN did not. Corrected here.
+
+**(b) A-G21 is satisfied, and the mechanism is better than my wording.** I verified it: the splay keys on
+`s.mark === "counterTick"` (`PersonJobMappingField.tsx:348`), not on the line word. Since `counterTick` belongs
+to DIFFERENT alone, NONE gets `splay = 0` and keeps its ends radial **by construction**, and UNCLEAR (`broken`)
+draws no ends at all, so it is structurally outside the contrast. A-G21's meaning holds without a further
+change. Proven in the element tree only — **no pixel proof of the splay exists**, and it is now in PINK's scope.
+
+**(c) PG-14's letter names a function that does not do the work.** The obligation says `l0Margin` is re-derived
+from ρ_drawn. In the build `l0Margin` still solves only the sector-label band and knows neither radius; the
+body-whole guarantee is delivered by `frameWithBodies()`, which widens the frame to the union of every drawn
+body's rim, collar, name and measure, solved twice against the frame it widens. **Same guarantee, different
+mechanism.** Decided: **the obligation follows the implementation.** PG-14 is restated against
+`frameWithBodies()`. A bound must name the thing it measures — the same rule that retired PF-5/7/10 in A-G20 and
+that A-G31 applied to PG-17's domain.
+
+### A-G39 · Two documentation defects, neither cosmetic
+
+**(a) `RING_LUMINANCE`'s derivation comment contradicts its own constant.** `PersonJobMappingField.tsx:96–100`
+still records the ladder as *"0.0036 · 0.0069 · 0.0169 · 0.0431 at 0.05 · 0.085 · 0.15 · 0.25 ink"* while the
+constant two lines above now reads `shelf: 0.02`. Verified. This is the file's own derivation record for PF-15,
+**the obligation that is measured RED at 0.23 against 0.08** — the next lane to re-derive the ladder would read
+the pre-inversion numbers as current. GRÜN to correct the comment with the shelf's new rendered luminance when
+the measurement produces it, not before: an invented number would be worse than a stale one.
+
+**(b) The specification authority is single-homed on this branch.** GRÜN's §0: `PHASE_{D,E,F,G}.md` exist **only**
+in `condyn-admin-hr-integration`; GRÜN's tree carries `PHASE_C` and the `SPEC` only, and no `A-G*` identifier
+appears anywhere in it. GRÜN builds against four documents it does not hold, on a branch 60 ahead of
+`origin/main` and unmerged. **This is not lane separation working; it is a single point of failure that the
+2026-11-07 reboot came close to proving.** It is the owner's call, and I am recording it as an open item rather
+than resolving it: no merge and no push are authorised.
+
+### A-G40 · My own relay of the typography worktree was wrong — corrected
+
+I reported the untracked `docs/career_analysis/evidence/ui-typography/scripts/` in `condyn-admin-typography-base`
+as *the only copy on disk, worth preserving*. **That is false.** GRÜN byte-compared all eight files against
+their tracked counterparts and I reproduced the comparison: **8 of 8 identical**, against 14 tracked scripts plus
+`README.md`, `values.md`, 15 `measures/` and 14 `pairs/` committed at `38ebc313`. The worktree holds a **stale
+working copy on a detached HEAD**, superseded, with no unique content and nothing at risk.
+
+Recorded because a reconstruction that invents a preservation risk is as defective as one that misses a real
+one, and because the correction came from the lane with the artifacts rather than from the lane with the claim.
+The genuinely unfinished work outside phase G remains **one** item: `condyn-admin-role-discovery`'s RD-5 T-07
+re-set — and GRÜN sharpens it: the delta names base `ccc0cc1` while HEAD is `175c4816`, with no record that the
+dump was re-run there, no recorded PASS of `t07-delta.py`, and `O-RD5-VM` still open. Its path is
+`docs/career_analysis/evidence/role-discovery/scripts/`, not the repository root's tracked `scripts/`.
+
+### Standing instruction to both lanes
+
+**GRÜN is blocked on nothing and is told so explicitly**, as PINK asked. The four reds are its to pursue:
+PG-1 (A-G17's remedy is built, the ghost removed, the share unmeasured), PG-6, PF-15 inverted, PG-3 (the spec
+raise is built, the pixel unverified per A-G24). It must **not** build against PG-2, PG-10's withdrawn max limb,
+PG-13 or PG-21 — A-G26…A-G29 restated all four, and three of them could not have failed.
+
+**PINK opens `mapping-phase-g-contract`** and holds the verdict. Its answer to the one thing it could not check
+is: `/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs` **exists**, and `~/.cache/ms-playwright`
+holds `chromium-1243` plus two headless shells — no download is needed. The dependency itself stays a HIGH
+integrity risk (I-2): unversioned, outside the repository, inside a boundary PINK may not touch, and one
+`node_modules` deletion in an unrelated project away from rendering the whole proof stand unrunnable.
+`CONDYN_PLAYWRIGHT_MODULE` is this project's established override and is the right place to fix it.
