@@ -788,3 +788,54 @@ the rim**, not interruptions of the ramp.
 **Stated limitation, deliberately not hidden by the scaling:** presence genuinely degrades on a smaller stage —
 30…47 px bodies carry less than 57…88 px ones, and PG-3 is defined at 1920. The bound now says so honestly
 instead of exempting the size.
+
+---
+
+## §15 TWO CORRECTIONS TO THIS RECORD ITSELF (post-reboot reconstruction, 2026-11-09)
+
+Found during the owner-mandated full SFE reconstruction after the machine restart, by GRÜN's read of this
+document against the shipped artifacts. Neither is a product defect; both are defects **in my own record**, and
+an architecture record that misstates the constant it governs is a defect worth its own adjudication.
+
+### A-G24 · The drawn range in §7 and §9 is superseded, not wrong
+
+`§7`'s constant table and `§9`'s A-G14 promise list both state **ρ_drawn ∈ [32.2, 52.6] units**. The shipped
+spec states **[34.2, 54.6]**:
+
+> `layout-spec-v1.1.json:24–26` — `"drawn": { "min": 34.2, "max": 54.6, "rule": "… 34.2 … 54.6 field units:
+> ≥ 56 … ≤ 92 px diameter at L0, 1920 × 1080, with the frame widened to hold every drawn body whole (PG-14)." }`
+> Introduced at `10eb4030`, with `layout-golden-vectors-v1.1.json` regenerated against it.
+
+**Both numbers were correct when written.** §7 (`a401592c`, 10:35) and §9 (`74fd43b8`, 10:51) recorded the range
+as it then stood; **§12** (`39d50bae`, 10:59) then ordered the raise — *"PG-3 at 54 px is the PG-14 frame
+shrinking the field by ~4 %; raising V1.1's `drawn.min/max` is the right fix and takes new vectors"* — and GRÜN
+applied it at `10eb4030` (11:30). So this is a **supersession**, and I am recording it as one rather than
+overwriting two dated adjudications. §7 and §9 are to be read with this amendment attached.
+
+**The binding value is the spec's, not this document's.** `test/career/mapping/layout-v1_1.test.ts:63–69` reads
+`SPEC_V11.body.drawn.min/max` rather than literals, so the test is spec-relative and correctly did **not** fail
+on my stale prose. That is the right dependency direction and stays.
+
+**What is still open and must not be read as closed by this correction:** the raise was made *in order to* clear
+PG-3's ≥ 56 px floor, and the spec's rule text asserts it does. **That assertion is unmeasured.** The 54 px
+reading predates the raise; no pixel measurement exists on `10eb4030` or `3ec8457d`. PG-3 therefore stays
+**OPEN**, not "plausibly closed" — the spec claiming a pixel result is not a pixel result. This is exactly the
+error class named four times this phase, and I decline to let my own correction commit it.
+
+### A-G25 · There is no A-G11 — a numbering gap, not a lost adjudication
+
+§8 runs **A-G10 → A-G12**. Reconstructed against the commit sequence: `899ef9b3` ("the field may not state a
+fit, and seven mechanism pins") introduced A-G9 and A-G10, and A-G12 arrived in the same section as the pool
+shade inversion. No commit in this branch's history adds, removes or renames an A-G11, and no other section,
+test or evidence file in either track references one.
+
+**Conclusion: a numbering slip of mine, nothing lost.** The identifier **A-G11 is retired unused** — it is not
+to be assigned later, because a reader finding a fresh A-G11 after this record would reasonably take it for a
+recovered one. Phase G's adjudications therefore run A-G1 … A-G10, A-G12 … A-G25, with A-G11 void.
+
+### Boundary of this section
+
+Documentation only. No product source, no spec, no test, no fixture and no constant is changed by it; phase G's
+boundary (§3) and proof surface (§4) are untouched. It carries no GO and grants none — in particular A-G24 moves
+PG-3 from "plausibly closed" to **OPEN**, which is a tightening, and it is **PINK's** to confirm or reject on its
+own instrument, not mine to certify.
