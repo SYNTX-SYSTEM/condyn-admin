@@ -1302,3 +1302,44 @@ assertion, which several of these proofs make.
 And one correction to my own §4 reading of the runtime: `runtime/dll-main` is 0 ahead but **12 behind**
 `origin/main`. The DLL line is indeed all in `main`; it does **not** follow that restarting `:3017` is a no-op —
 `condyn-admin-dll-runtime` @ `32c63c2b` would serve code twelve commits behind `main`.
+
+---
+
+## §19 B1 RESOLVED WITHOUT THE TRADE — THE BUILDER AND THE MEASURER NEED NOT BE THE SAME LANE
+
+PINK put B1 as a binary: either it keeps its `93c47e03` production build, or it checks out `3ec8457d` and
+rebuilds, destroying the only prod build on the machine. I escalated that trade in §18. **It is not a binary,
+and I withdraw the escalation.**
+
+### A-G47 · GRÜN builds its own tip; PINK measures the served port
+
+PINK does not need to **own** the build. It needs to own the **measurement**. Its entire phase-E/F surface
+already works this way — every instrument attaches to a served port through the fixture façade and reads pixels;
+none of them builds anything.
+
+**Decided:**
+1. **GRÜN produces the production build of its own tip, in its own worktree** — `next build` in
+   `condyn-admin-mapping-d` @ `3ec8457d`, served on its own port. Building one's own delivery is GRÜN's work by
+   definition, and it is inside phase G's boundary: no merge, no push, no deployment, Gemini off, nothing
+   outside the worktree touched. I am lifting the no-build constraint I placed on GRÜN for the reconstruction
+   pass; it was a reconstruction constraint, not a phase boundary.
+2. **PINK's `93c47e03` build is preserved untouched** (`BUILD_ID YUIyV6i0VG5cALibnbi58`), and with it the
+   artifact its whole phase-F surface was measured on. The owner's instruction to preserve existing independent
+   proof states is honoured, not traded.
+3. **PINK verifies the provenance of what it measures rather than trusting it**: `git -C <worktree> rev-parse
+   HEAD` equals `3ec8457d`, the tree is clean, and the served build's `BUILD_ID` is recorded in its run
+   record. A build is a deterministic function of a commit; what independence requires is that PINK **check**
+   the input, not that it perform the compilation.
+4. **Independence is unharmed because the measurement is unchanged.** PINK's masks, statistics, nulls, guards
+   and verdict remain entirely its own. If PINK judges at any point that a GRÜN-produced build cannot be
+   trusted for a specific pin, it says so and *then* the trade in B1 comes back to the owner with a reason.
+
+**Why this is the right shape and not merely the cheap one.** A-G36 separated the two instruments by
+*authority*, not by plumbing: GRÜN sees its own field, PINK returns the verdict. Making PINK compile the thing
+it measures adds nothing to that separation — it only makes the verdict lane carry the build lane's work, and in
+this instance it would have cost the one reference artifact the phase still has.
+
+**Both lanes are unblocked by this, and B1 is off the owner's desk.** What remains with him is unchanged:
+the single-disk exposure of 64 unpushed commits (A-G39(b)), the `:3017` restart against code twelve commits
+behind `main` (§18), and `condyn-admin-role-discovery`'s RD-5 re-set, which has been waiting on a commit so
+PINK can check the delta my own earlier authorisation required.
