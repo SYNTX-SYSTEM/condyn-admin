@@ -1,0 +1,194 @@
+{
+ "reading": "GRÜN · verification of A-G137's core-limb straddle — arithmetic on constants plus one disclosed scalar",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "PG-17's sealed reading is NOT opened and NOT re-run (§39). The only sealed-file datum used is the local ground scalar already disclosed under A-G132.",
+ "constants": {
+  "ink": [
+   205,
+   240,
+   255
+  ],
+  "coreAlpha": 0.16,
+  "gradientShares": {
+   "0": 1,
+   "1": 0.42,
+   "0.4": 0.78,
+   "0.75": 0.55
+  },
+  "depthRatio": 1.45,
+  "bound": 1.45,
+  "groundScalar": 0.0044378
+ },
+ "gelbStated": {
+  "rank 1 centre": 4.36,
+  "rank 1 @0.75": 1.63,
+  "last rank centre": 2.26,
+  "last rank @0.75": 0.96
+ },
+ "cases": [
+  {
+   "rank": "rank 1",
+   "gradientOffset": 0,
+   "stopAlpha": 0.16,
+   "depthGain": 1,
+   "combinedQuantisation": {
+    "rgb": "rgb(33, 39, 41)",
+    "luminance": 0.019345,
+    "overGround": 4.36,
+    "meetsBound": true
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(33, 39, 41)",
+    "luminance": 0.019345,
+    "overGround": 4.36,
+    "meetsBound": true
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "rank 1",
+   "gradientOffset": 0.4,
+   "stopAlpha": 0.1248,
+   "depthGain": 1,
+   "combinedQuantisation": {
+    "rgb": "rgb(26, 30, 32)",
+    "luminance": 0.012524,
+    "overGround": 2.82,
+    "meetsBound": true
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(26, 30, 32)",
+    "luminance": 0.012524,
+    "overGround": 2.82,
+    "meetsBound": true
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "rank 1",
+   "gradientOffset": 0.75,
+   "stopAlpha": 0.088,
+   "depthGain": 1,
+   "combinedQuantisation": {
+    "rgb": "rgb(18, 21, 22)",
+    "luminance": 0.0072286,
+    "overGround": 1.63,
+    "meetsBound": true
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(18, 21, 22)",
+    "luminance": 0.0072286,
+    "overGround": 1.63,
+    "meetsBound": true
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "rank 1",
+   "gradientOffset": 1,
+   "stopAlpha": 0.0672,
+   "depthGain": 1,
+   "combinedQuantisation": {
+    "rgb": "rgb(14, 16, 17)",
+    "luminance": 0.0050442,
+    "overGround": 1.14,
+    "meetsBound": false
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(14, 16, 17)",
+    "luminance": 0.0050442,
+    "overGround": 1.14,
+    "meetsBound": false
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "last rank",
+   "gradientOffset": 0,
+   "stopAlpha": 0.16,
+   "depthGain": 0.68966,
+   "combinedQuantisation": {
+    "rgb": "rgb(23, 26, 28)",
+    "luminance": 0.010048,
+    "overGround": 2.26,
+    "meetsBound": true
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(23, 27, 28)",
+    "luminance": 0.010499,
+    "overGround": 2.37,
+    "meetsBound": true
+   },
+   "quantisationOrderSpreadPct": 4.49
+  },
+  {
+   "rank": "last rank",
+   "gradientOffset": 0.4,
+   "stopAlpha": 0.1248,
+   "depthGain": 0.68966,
+   "combinedQuantisation": {
+    "rgb": "rgb(18, 21, 22)",
+    "luminance": 0.0072286,
+    "overGround": 1.63,
+    "meetsBound": true
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(18, 21, 22)",
+    "luminance": 0.0072286,
+    "overGround": 1.63,
+    "meetsBound": true
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "last rank",
+   "gradientOffset": 0.75,
+   "stopAlpha": 0.088,
+   "depthGain": 0.68966,
+   "combinedQuantisation": {
+    "rgb": "rgb(12, 14, 15)",
+    "luminance": 0.0042673,
+    "overGround": 0.96,
+    "meetsBound": false
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(12, 14, 15)",
+    "luminance": 0.0042673,
+    "overGround": 0.96,
+    "meetsBound": false
+   },
+   "quantisationOrderSpreadPct": 0
+  },
+  {
+   "rank": "last rank",
+   "gradientOffset": 1,
+   "stopAlpha": 0.0672,
+   "depthGain": 0.68966,
+   "combinedQuantisation": {
+    "rgb": "rgb(10, 11, 12)",
+    "luminance": 0.0033042,
+    "overGround": 0.74,
+    "meetsBound": false
+   },
+   "twoStageQuantisation": {
+    "rgb": "rgb(10, 11, 12)",
+    "luminance": 0.0033042,
+    "overGround": 0.74,
+    "meetsBound": false
+   },
+   "quantisationOrderSpreadPct": 0
+  }
+ ],
+ "agreement": "EXACT on all four of A-G137's cases under combined-alpha quantisation: 4.36 / 1.63 / 2.26 / 0.96. The straddle is confirmed — the achievable range crosses the 1.45 bound, so the core limb's verdict is selected by which statistic the word 'core' names.",
+ "robustnessToQuantisationOrder": {
+  "maxSpreadPct": 4.49,
+  "note": "whether the browser quantises the stop alpha and the element opacity separately or as one product changes a case by at most 4.49% (it differs only for last-rank centre, 2.26x against 2.37x). Both orders give the same verdict in every case here.",
+  "nearestCaseToBound": {
+   "rank": "rank 1",
+   "offset": 0.75,
+   "ratio": 1.63,
+   "marginFactor": 1.124
+  },
+  "reading": "no case sits within the quantisation-order spread of the bound — the nearest is 1.63x at , 1.12x the bound, against a 4.49% spread. So A-G137's straddle does NOT depend on the quantisation order, which it could have. A statistic named in future should keep that property: a case landing within ~5% of the bound would have a verdict decided by the browser's compositing order rather than by the field."
+ }
+}
