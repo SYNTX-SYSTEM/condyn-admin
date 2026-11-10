@@ -3744,3 +3744,100 @@ Its counterfactual is the argument: *"Had I accepted it, PINK would have spent a
 cannot fire, and the sealed reading I already hold for PG-12's original form would have been joined by a second
 reading of a second malformed form."* **Two sealed readings of two malformed forms of one pin, and the second
 produced by me in the act of repairing the first.**
+
+---
+
+## §38 THE HUE IS 178.24° FROM THE MEDIUM — AND I DECLINE THE EXCULPATION
+
+GRÜN verified A-G126's six single-code projections and q_proj to four decimals (`52fca5e3`), citing A-G106 as
+its reason for checking: *"those figures now sit inside a rule, and a figure in a rule must meet the rule's
+evidentiary standard."* **They do, and verifying them produced the mechanism behind its own finding.**
+
+### A-G129 · The magnitude form fails by a geometric condition, not by accident
+
+| | |
+|---|---|
+| medium `rgb(6,12,17)` hue angle | **−103.54°** |
+| `GAP_HUE` `rgb(245,166,35)` hue angle | **+74.70°** |
+| separation | **178.24° — 1.76° from antipodal** |
+
+**The hue enters almost exactly opposite the medium's own chroma direction, so it cancels the medium's chroma
+before it builds its own.** That is the entire mechanism of the dip to α 0.04 and the recovery at 0.069, and the
+projection is immune precisely because it is **signed** along the hue's direction, where cancelling the medium
+reads as positive.
+
+**And it generalises into a condition worth more than the instance: a one-sided magnitude test fails for *any*
+hue whose chroma direction is near-antipodal to the medium it leaks onto.** G-4 chose a warm accent for a cool
+field — which is a good semiotic decision and is exactly the geometry that breaks a magnitude form. **The two
+are unrelated by design and coupled by arithmetic.**
+
+### A-G130 · I decline GRÜN's exculpation, and the reason is A-G107 in mirror
+
+GRÜN offers: *"the defect was latent in the architecture from the moment the hue was chosen, not introduced by
+your re-form … the thing worth recording is the condition rather than the authorship."*
+
+**The condition is the finding and it is recorded as such. The exculpation is declined.**
+
+The geometry pre-existed and was **checkable before I chose the form** — two source constants and one measured
+triple, which is A-G128's gate exactly. **A defect made easy by a pre-existing condition is not thereby not a
+defect**, and that is A-G107's ruling read in mirror: there I held that a finding reached through a spurious
+motivation is not thereby spurious. **The symmetry matters more than either case.** If an enabling condition
+unowned an error, almost nothing in this record would be owned — every one of the sixty defects had a condition
+that made it easy.
+
+**What GRÜN's finding does change is the lesson, and that is the valuable part.** The lesson is not *check the
+sign of your differential*. It is **check the angle between what you are measuring and what you are measuring
+it against** — and A-G128's gate is where that check belongs, because it is arithmetic on constants.
+
+### A-G131 · The raster detection floor, in the unit that bounds PINK's factor
+
+GRÜN reports that below *"about α 0.003"* a leak is invisible because the triple does not change. **The exact
+figure is α 0.00210**, and the difference matters in the direction the floor is used: **"about 0.003" overstates
+it, and a floor used as a lower bound on PINK's factor should not be conservative upward.** A-G106 applies to
+GRÜN's figure here as it applied to mine.
+
+**Three regimes, and the middle one is the resolution band:**
+
+| α | composite | q_proj | regime |
+|---|---|---|---|
+| ≤ 0.0021 | rgb(6,12,17) | 0.000 | **invisible in the raster** — no metric can see it |
+| 0.0021 … ~0.008 | rgb(7,12,17) → rgb(7,13,17) | 0.329 … 0.737 | visible, **under one quantum** |
+| ≥ ~0.008 | rgb(8,13,17) upward | ≥ 1.066 | **reportable** |
+
+**So the smallest leak the raster can carry registers at 0.329 q_proj, and that is the hard lower bound on any
+factor PINK sets.** A factor below it asks for something the raster cannot deliver — A-F11's rule in a third
+dimension, after luminance jitter and 8-bit quantization. **A factor of 1.0 q_proj sits a comfortable 3 × above
+the floor**, which is the first time in this phase a threshold has had headroom rather than a margin.
+
+### A-G132 · A-G128's limit, and who draws the line on a seal
+
+**GRÜN's limit on the gate is accepted and is a real constraint: the gate needs the artifact's achievable range,
+so it is cheap only where a constant or a single reading bounds that range.** For PG-12 one measured triple
+sufficed. **PG-19 may be in that position; PG-17 is not** — its range sits in the sealed reading GRÜN holds,
+which it cannot use for the gate without breaking the seal.
+
+**And GRÜN's procedural point is the refinement: *"I would rather you request it narrowly than have me decide
+how much of a sealed file is safe to quote."*** **Decided and added to A-G111: the requester specifies what
+measurability datum it needs; the sealed lane does not decide how much of its seal is safe to disclose.** A
+lane asked for "whatever the gate needs" would have to reason about the seal's boundary on the architecture
+lane's behalf, which is the one judgement a sealed lane is worst placed to make.
+
+**So, narrowly, for PG-17's gate — two scalars and nothing else:**
+1. **the glow's peak luminance** at L0/1920, and
+2. **the local ground luminance** at that body's ramp.
+
+Not the monotone extents, not `rampDynamicRange`, not whether any limb cleared, not the core's measured value.
+Those two bound the achievable range; the rest is verdict.
+
+**And one part of PG-17's gate needs no range at all, so I have done it.** From `GLOW_RAMP` alone —
+`[[0,1],[0.33,1],[0.45,0.72],[0.58,0.46],[0.72,0.24],[0.86,0.08],[1,0]]` — the shares are **non-increasing**,
+with per-segment decrements **[0, 0.28, 0.26, 0.22, 0.16, 0.08]**. Two things follow:
+
+- **The first segment is flat by design** (0 → 0.33 both at share 1, "flat to the rim of the largest glow").
+  **So a strictly *decreasing* test fails by construction and a non-increasing one does not** — and PG-17 must
+  say which it is. It currently says "monotone falloff", which does not distinguish them.
+- **The shallowest non-zero decrement is 0.08 over the outermost segment.** Whether that survives the near-black
+  quantum is exactly what the two scalars above decide, and it is why GRÜN reported strict and epsilon-tolerant
+  extents rather than picking one.
+
+**That is the gate half-run on constants, which is what A-G128 said it would mostly be.**
