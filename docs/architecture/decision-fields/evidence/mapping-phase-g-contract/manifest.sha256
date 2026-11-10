@@ -5,7 +5,8 @@ d52e576fcc76a0a73680af9e9c3820af319650aae9e61ec4e8782bfed0e7f33c  ./outputs/3ec8
 9be20fded7bed878979e28afbafb258c87eb47a85915b1c74588035927087684  ./outputs/3ec8457d-tip/SHELF.json
 813de366297e0319e9401473fd7fea13a864b14e30c3d56862d4e80bda1bf32d  ./outputs/3ec8457d-tip/TAXONOMY.json
 9fd668db1f8b8670177a9b8d32af7a0152c4c256783b4f469f97ae0bf2c68dbc  ./outputs/3ec8457d-tip/TIMING-ADEQUACY.json
-45ac1e13bbae852444e3e9916380b39af6f42557dcfaf0f2720f97d60313ea9b  ./prep.txt
+0c2f7f2d2d28ad3e45d5c024b79d6e54bf6baa763f86ca460016562c69981aaa  ./outputs/3ec8457d-tip/V11-REFERENCE.json
+29fc99032c108dc631e547e042b96b6e4af1d7987cbf55ede18c3c2fed9e03bc  ./prep.txt
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs
 ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink-glow-travel.mjs
@@ -14,3 +15,4 @@ cacff1121d9afb02e16a14b1d8433b3e637cf9c0ac2c0c3b6b8d4cc8f9b2dd82  ./scripts/pink
 f10253648efc588ac0fecede3c311d5cb4df9ad914aba5d4450f9bb542232d4e  ./scripts/pink-shelf-g.mjs
 b74ef75e6ba48c44bd8673d9035af1a4c340a313e533737e3781e767e0e4a1b8  ./scripts/pink-taxonomy-g.mjs
 d90963f6d1a3da29e5a10b95159e6e77eb7ab32fed8d9609923b0a70c3713fac  ./scripts/pink-tip-timing-g.mjs
+e766ac834b3f48b1e321a662559d6181bb894e5decc8b5a08a151454a456aff9  ./scripts/pink-v11-reference.py

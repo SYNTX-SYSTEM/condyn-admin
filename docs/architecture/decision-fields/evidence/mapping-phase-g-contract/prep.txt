@@ -392,3 +392,70 @@ phase D, which is itself the finding: the structure was inherited, not re-derive
 STATUS: D-5 HELD. MAP-G-ARCH HELD with findings (1)(2)(3) recorded against GELB and GRÜN, no GO implied either
 way — MAP-G-ARCH is a boundary, not an obligation, and holding it is not a verdict on any PG pin.
 STILL OPEN AND MINE: A-G14's missing second instrument, and the A-G16 second pass on the counting argument.
+
+
+§7  A-G14's MISSING SECOND INSTRUMENT — BUILT. V1.1 CONFIRMED 1412/1412, WITH TWO FINDINGS
+-------------------------------------------------------------------------------------------
+A-G14 accepted MAPPING_LAYOUT_V1.1 "as built" on GRÜN's own reference implementation checked against golden
+vectors that same implementation produced. That is one implementation checking itself. PINK's §3.95 precedent is
+why it should not stand: 9 of 43 PINK mutants survived GRÜN's suite there, 5 of them real gaps.
+PINK's second instrument (scripts/pink-v11-reference.py, outputs/3ec8457d-tip/V11-REFERENCE.json) is written
+from the SPEC TEXT ONLY — layout-spec-v1.1.json — in a different language (Python), and never imports, reads or
+executes layout.ts or layout-reference.ts. It re-derives in closed form what the spec determines:
+    rho_mass  = clamp(body.base + body.perSqrtWeight * sqrt(weightSum), body.min, body.max)
+    rho_drawn = drawn.min + (rho_mass - body.min)/(body.max - body.min) * (drawn.max - drawn.min)
+The SEARCH is iterative and order-dependent, so positions are NOT re-derived; they are checked against the
+spec's stated invariants instead, which is the part a second instrument can actually falsify.
+
+RESULT — A-G14's SUBSTANCE IS INDEPENDENTLY CONFIRMED. 1412 bodies across all twelve vectors:
+  mass radius re-derived          1412 / 1412 exact (within 1e-6)
+  drawn radius re-derived         1412 / 1412 exact (within 1e-6)
+  drawn radius in the SPEC range  PASS all 12        [34.2, 54.6]
+  drawn monotone in mass          PASS all 12
+  no two drawn bodies touch       PASS all 12        (but see finding 2)
+  band stated by the MASS radius  PASS all 12
+  undisplaced body at its fit     PASS all 12
+  the shelf survives              PASS all 12
+  angle inside its own sector     PASS all 12
+  every number rounded to 6 dp    PASS all 12
+Ten invariants, twelve vectors, one independent derivation: the bump is what the spec says it is.
+
+FINDING 1 · A-G14's WRITTEN RANGE IS FALSIFIED BY THE RECORD, AND NOT MARGINALLY.
+A-G14 states the drawn radius is "monotone in mass and inside [32.2, 52.6]". Measured against the shipped
+vectors: in LV11-shelf-wide-bodies-cannot-leave-the-field, **120 of 120 bodies lie outside [32.2, 52.6]** — every
+single one — while all 120 lie inside the spec's [34.2, 54.6]. LV11's roles all carry maximum mass, so
+rho_mass = 16 and rho_drawn = 54.6, which exceeds 52.6 by 2.0.
+A-G24 recorded the range as a SUPERSESSION and PINK accepts that framing, but this sharpens it: the stale prose
+is not merely out of date, it makes a FALSE CLAIM ABOUT THE ARTIFACT, and the falsification is total in the one
+vector built to stress drawn size. A-G24's remedy (the spec binds, the test reads the spec) is correct and
+already in place; what §7/§9/A-G14's text asserts is simply wrong and should be struck rather than annotated,
+because a reader checking A-G14 against the vectors finds 120 counterexamples.
+
+FINDING 2 · THE RECORD CANNOT WITNESS ITS OWN NO-TOUCH INVARIANT AT ITS TIGHTEST POINT.
+Ranked tightest pairs (slack = centre distance − (rho_drawn(a) + rho_drawn(b) + gap)):
+  LV10  role-008 / role-022   dist 70.399999689235   need 70.400000000000   slack **-3.108e-07**
+  LV08  role-039 / role-081   slack +4.773e-03
+  LV09  role-019 / role-023   slack +3.302e-02
+Both LV10 bodies sit at drawnRadius exactly 34.2 (= drawn.min), so the requirement is exactly 70.4. From the
+record the pair reads as a **3.1e-7 VIOLATION** of `dist >= rho_drawn(a) + rho_drawn(b) + gap`.
+It is not a product defect: 3e-7 field units is ~2.6e-7 px, nothing perceptual, and it is almost certainly exact
+tangency plus rounding. It IS a proof-surface defect, and a clean one:
+  - the vector file states its own comparison tolerance as "Compare within 1e-6";
+  - the coordinates are rounded to 6 dp, so a distance recomputed from them carries up to ~1.4e-6 of rounding
+    error (5e-7 per axis);
+  - the margin under test is 3.1e-7 — SMALLER THAN BOTH.
+So from the record alone this pair can be shown neither to satisfy nor to violate the invariant. A-G14's "no two
+bodies touching as drawn" is, at LV10, an assertion the golden vectors are too coarse to witness; it can only be
+checked inside the implementation's own float arithmetic — i.e. by the very thing a second instrument exists to
+check independently. This is A-F11's rule ("a bound the instrument cannot reach is not a bound") applied for the
+first time to the VECTOR RECORD rather than to a pixel instrument.
+REMEDY (any one suffices): record tangency-critical pairs at full double precision; or state the invariant with a
+declared epsilon (`dist >= need - eps`, eps >= 1.4e-6, so the bound is reachable at the record's precision); or
+have the suite assert the invariant in-implementation at full precision and record THAT it did so, which keeps
+the claim honest about where it was checked.
+
+VERDICT ON A-G14: the acceptance STANDS on the evidence — a second, independent, differently-written instrument
+reproduces every radius exactly and confirms every invariant the record can witness. Two corrections ride with
+it: the written range is false and should be struck (finding 1), and the no-touch claim must say where it is
+checked (finding 2). Neither reopens the bump.
+STILL OPEN AND MINE: the A-G16 second pass on the green-by-coincidence counting argument.
