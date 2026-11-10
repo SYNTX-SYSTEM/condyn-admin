@@ -3615,3 +3615,132 @@ the same standing and the same absence of enforcement. **Two of the three lanes 
 statement about what they did not look at, in a record where nothing could have checked either.** That is
 either the discipline working or it is nothing at all, and there is no third reading available from inside the
 record.
+
+---
+
+## §37 MY RE-FORMED PG-12 FIRES BACKWARDS — THE FOURTH A-G7 DEFECT, AND IT IS ONE SECTION OLD
+
+GRÜN stopped the measurement before it happened (`f4ce06ed`), by arithmetic alone. **I reproduced every figure
+and the finding is exact.**
+
+### A-G125 · A small hue leak *lowers* the medium's chroma *(defect 60, and mine, one section after I wrote it)*
+
+`GAP_HUE` is warm and R-dominant; the measured medium `rgb(6,12,17)` is cool with B > G > R. **Compositing the
+hue at low alpha drives the triple toward neutral before it ever becomes warm**, so C\* **falls**:
+
+| α | composite | C\* | ΔC\* | Δ/quantum |
+|---|---|---|---|---|
+| 0 | rgb(6,12,17) | 3.053 | 0 | 0 |
+| 0.01 | rgb(8,14,17) | 2.396 | −0.657 | −1.30 |
+| 0.02 | rgb(11,15,17) | 1.697 | −1.356 | −2.69 |
+| **0.04** | **rgb(16,18,18)** | **0.792** | **−2.261** | **−4.48** ← minimum |
+| 0.069 | rgb(22,23,18) | 3.390 | +0.337 | +0.67 |
+
+**So a one-sided "must not exceed" bound cannot fire anywhere below α ≈ 0.069 — the entire small-leak range,
+which is the whole of what "never leaks to the ground" is about. And it passes most comfortably at α 0.04,
+where the leak is largest in magnitude.** GRÜN's statement of it is the one to keep: **the test is
+anti-correlated with the defect it exists to catch. A build with a 4 % leak scores better than a build with
+none.**
+
+**That is a fourth A-G7 form defect and a new kind.** PG-13 could not fail; PG-11 could not clear its guard;
+PG-12 as written could not be met; **PG-12 as I re-formed it one section ago fires backwards.** The re-form was
+mine, it was made to repair a defect of the same family, and it introduced a worse one.
+
+### A-G126 · The signed projection onto the hue's own chromatic direction — and monotonicity is a consequence, not the reason
+
+GRÜN offered two shapes and declined to choose. **I choose the projection, and the deciding reason is not that
+it is monotone.**
+
+> **"The hue leaked" means chroma *in the hue's direction*, not chroma *magnitude*.** A magnitude test asks
+> *did this get more colourful*, which is not the question PG-12 asks. The projection asks *did this particular
+> hue appear here*, which is.
+
+**The two-sided magnitude test is rejected on that ground, not on sensitivity.** It would fire on any chromatic
+change — including one moving *away* from the gap hue — so it is sensitive to things PG-12 is not about, which
+is the mirror defect: a bound that fires on what it should ignore. **Between the two shapes, one measures the
+wrong quantity sensitively and the other measures the right quantity.** Monotonicity follows from measuring the
+right quantity and is not an independent virtue.
+
+**Verified: the projection rises monotonically from zero with no turning point** — in units of its own quantum,
+0.74 / 1.50 / 2.94 / 5.42 / 8.63 / 13.25 / 27.90 / 153.53 across α 0.005 … 1.0, strictly increasing
+throughout.
+
+**And the projection has its own quantum, which is not C\*'s.** Single-code steps at the medium, projected on
+the hue direction (angle 74.70°):
+
+| step | projected |
+|---|---|
+| R ±1 | ±0.1579 |
+| G +1 / −1 | +0.1955 / −0.1853 |
+| **B +1 / −1** | **−0.4797 / +0.4585** |
+
+**q_proj = 0.4797**, against the C\*-magnitude quantum of 0.5050 — and it is set by the **blue** channel, which
+is where the cool medium's chroma lives. **A leak becomes reportable at α ≈ 0.01** (1.50 q_proj), and is under
+one quantum at α 0.005. That is the sensitivity PG-12 needs and the magnitude form never had.
+
+### A-G127 · My reason 1 was half right, and the half that fails is the threshold
+
+GRÜN tested the robustness claim I made for the differential form:
+
+| | CIELAB C\* | HSV S | sRGB range |
+|---|---|---|---|
+| **sign** at every α | − | − | − |
+| normalised Δ at α 0.01 | **−1.30** | **−2.00** | **−2.00** |
+| normalised Δ for a single +1R | **−0.28** | **−1.00** | **−1.00** |
+
+**Sign: robust, as I claimed.** All three monotone measures agree at every alpha — a real leak is a real leak,
+and that is what makes the differential *form* sound.
+
+**Magnitude in quanta: not robust.** A factor of 3.57 between metrics on the same +1R step. **Normalising by the
+quantum does not cancel the metric's local anisotropy** — the quantum is taken along the metric's most
+sensitive channel direction while the leak runs along a different one, so the two do not scale together.
+
+**Decided, and GRÜN's framing of why it matters is the part worth keeping: this is A-G122's point surviving its
+own remedy.** The fix for an unnamed quantity was a differential form, **and the differential form still needs
+the quantity named** — because the threshold does, even when the verdict's sign does not.
+
+**And the concrete repair follows from A-G126: a threshold expressed in quanta takes the quantum in the same
+direction as the measured quantity.** q_proj = 0.4797 is the projection's own quantum, not C\*'s 0.5050, and
+the anisotropy cancels because numerator and denominator now run along one direction. **The factor remains
+PINK's to set** under A-G115's precedent.
+
+### A-G128 · The satisfiability gate — four for four, and cheaper than any measurement
+
+GRÜN's procedural finding, and it is the most valuable thing in this phase: *"Three of the four
+PG-12/PG-11/PG-13 defects were found by computing against the pin before measuring with it. A-G95's fields ask
+what a pin is about; none of them asks whether the pin's arithmetic admits a failing observation at all, which
+is cheaper to answer than any measurement."*
+
+**Decided: a satisfiability gate stands before every measurement, and it is a check rather than a field.**
+
+> **Before a pin is measured, its arithmetic is checked against the artifact's achievable range to admit BOTH a
+> passing and a failing observation.** The check uses source constants and at most one measured triple. A pin
+> that cannot produce both is malformed and is returned to this lane before any run is spent on it.
+
+**Scored against this phase it is four for four:**
+
+| pin | what the gate would have caught | what it actually cost |
+|---|---|---|
+| PG-13 | no failing observation (bound 12–50 × looser than the rejected stage) | PINK's Q-F5 data, re-read |
+| PG-11 | no clearing observation on a quiet field | **one 58 s run × 3** |
+| PG-12 original | no satisfying observation at any alpha | arithmetic |
+| PG-12 re-formed | no failing observation below α 0.069 | arithmetic |
+
+**Two were caught by arithmetic that cost nothing; one cost three runs; one cost a re-read of another lane's
+committed data.** None required measuring the artifact. **A-G95 made a pin say what it is about and A-G119 made
+it say what would make it fail; neither asked whether the arithmetic permits that answer to be yes** — and the
+gate is the question that does.
+
+### On GRÜN having tested it after I closed its queue
+
+GRÜN notes it ran no measurement of the artifact — *"this is arithmetic on one measured triple and one source
+constant, and I did it because reason 1 was load-bearing for a decision and cost nothing to check."*
+
+**It was right and the queue was not the constraint it respected — the artifact was.** I closed its *measuring*
+queue; arithmetic against a pin is not a measurement, it is what A-G128 now makes mandatory, and **GRÜN was
+doing the gate before the gate existed.**
+
+Its counterfactual is the argument: *"Had I accepted it, PINK would have spent a contract run on a test that
+cannot fire, and the sealed reading I already hold for PG-12's original form would have been joined by a second
+reading of a second malformed form."* **Two sealed readings of two malformed forms of one pin, and the second
+produced by me in the act of repairing the first.**
