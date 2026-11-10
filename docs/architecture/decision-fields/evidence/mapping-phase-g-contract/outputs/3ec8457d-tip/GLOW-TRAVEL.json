@@ -1,0 +1,224 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "runs": [
+  {
+   "motion": "reduce",
+   "L0": {
+    "level": "L0",
+    "bodies": [
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty"
+    ],
+    "glowChildren": [
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     },
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     }
+    ],
+    "travel": [
+     {
+      "tag": "line",
+      "vis": "hidden",
+      "disp": "inline",
+      "anim": "none",
+      "dur": "0s"
+     },
+     {
+      "tag": "line",
+      "vis": "hidden",
+      "disp": "inline",
+      "anim": "none",
+      "dur": "0s"
+     },
+     {
+      "tag": "line",
+      "vis": "hidden",
+      "disp": "inline",
+      "anim": "none",
+      "dur": "0s"
+     }
+    ],
+    "beamGlow": 3,
+    "beams": 22
+   },
+   "L1": {
+    "level": "L1",
+    "bodies": [
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all"
+    ],
+    "glowChildren": [
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     },
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     }
+    ],
+    "travel": [],
+    "beamGlow": 0,
+    "beams": 19
+   },
+   "L2": {
+    "level": "L2",
+    "bodies": [
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys"
+    ],
+    "glowChildren": [],
+    "travel": [
+     {
+      "tag": "line",
+      "vis": "hidden",
+      "disp": "inline",
+      "anim": "none",
+      "dur": "0s"
+     }
+    ],
+    "beamGlow": 1,
+    "beams": 4
+   }
+  },
+  {
+   "motion": "no-preference",
+   "L0": {
+    "level": "L0",
+    "bodies": [
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty"
+    ],
+    "glowChildren": [
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     },
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     }
+    ],
+    "travel": [
+     {
+      "tag": "line",
+      "vis": "visible",
+      "disp": "inline",
+      "anim": "mappingFieldTravel",
+      "dur": "10s"
+     },
+     {
+      "tag": "line",
+      "vis": "visible",
+      "disp": "inline",
+      "anim": "mappingFieldTravel",
+      "dur": "10s"
+     },
+     {
+      "tag": "line",
+      "vis": "visible",
+      "disp": "inline",
+      "anim": "mappingFieldTravel",
+      "dur": "10s"
+     }
+    ],
+    "beamGlow": 3,
+    "beams": 22
+   },
+   "L1": {
+    "level": "L1",
+    "bodies": [
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+     "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all"
+    ],
+    "glowChildren": [
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     },
+     {
+      "tag": "g",
+      "fill": null,
+      "r": null,
+      "cls": "mf-halo",
+      "tid": null,
+      "cx": null,
+      "cy": null
+     }
+    ],
+    "travel": [],
+    "beamGlow": 0,
+    "beams": 19
+   },
+   "L2": {
+    "level": "L2",
+    "bodies": [
+     "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys"
+    ],
+    "glowChildren": [],
+    "travel": [
+     {
+      "tag": "line",
+      "vis": "visible",
+      "disp": "inline",
+      "anim": "mappingFieldTravel",
+      "dur": "10s"
+     }
+    ],
+    "beamGlow": 1,
+    "beams": 4
+   }
+  }
+ ]
+}

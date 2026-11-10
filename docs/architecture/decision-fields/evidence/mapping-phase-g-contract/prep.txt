@@ -1,0 +1,110 @@
+PINK · SFE PHASE G · PERSON × JOB MAPPING — INDEPENDENT PIXEL-LEVEL EVIDENCE
+============================================================================
+Role: PINK is the independent inverse validator and, per GELB A-G36, holds the phase-G VERDICT alone. GELB's
+instrument is retired (A-G36); GRÜN builds a development stand that returns no verdict. PINK's instruments are
+the only ones that survived the 2026-11-07 reboot, which is why everything here is committed, not kept in scratch.
+
+PHASE_G_TIP = 3ec8457d (frontend/mapping-phase-g). Predecessor 10eb4030. Last PINK-measured artifact before this
+file: 93c47e03 (phase-F re-delivery, PG-1 at evidence commit 53ff108a).
+
+THE STAND (PINK's own, read-only, no provider reachable; owner-authorised 2026-11-09):
+  - NEW worktree /home/codi/Entwicklung/condyn-admin-pink-visual-g, `git worktree add --detach` at 3ec8457d.
+    Chosen over moving condyn-admin-pink-visual-e because that worktree's PRODUCTION build at 93c47e03
+    (BUILD_ID YUIyV6i0VG5cALibnbi58) is itself an independent proof state the owner mandate says to preserve —
+    it is the artifact the whole phase-F surface was measured on. Verified AFTER this build: still 93c47e03,
+    clean, BUILD_ID unchanged. Nothing existing was modified.
+  - PROVENANCE verified, not trusted (GELB A-G47's own check, applied to PINK's own build):
+    `git rev-parse HEAD` = 3ec8457dca5c5a128301f071c16dfd3bd1936550, tree clean (0 porcelain lines),
+    package-lock.json md5 09ad7445c680a8fba1f00d3e3d31102a — identical to pink-visual-e, so node_modules is the
+    same dependency set. node_modules COPIED (cp -a, 823M), deliberately NOT hardlinked or symlinked: a symlink
+    out of the project root is rejected by Turbopack (reproduced: TurbopackInternalError "Symlink
+    [project]/node_modules is invalid, it points out of the filesystem root"), and hardlinks would let a build
+    write back into pink-visual-e's tree and corrupt the preserved phase-F state.
+  - PRODUCTION build: `next build` with a dummy DATABASE_URL (never connected), NEXT_TELEMETRY_DISABLED=1.
+    Exit 0. BUILD_ID xCD8LBxdjnP97-2Gjs5yr. Next.js 16.2.4. Served by `next start -p 3123`.
+  - Fixture façade on 3122 (scripts/pink-facade.mts, PINK_WT=the new worktree), proxying non-/api to 3123 and
+    serving the 6 fixture routes from test/career/** — the SHARED ground truth (B-7). 5 ranks, evidenceClass
+    STAND_IN, 3 capabilities. NOT GELB's façade; GELB no longer measures at all.
+  - 1920×1080, deviceScaleFactor 1 so 1 screenshot px == 1 CSS px. Onboarding overlay ASSERTED 0 before every
+    reading (GELB's and PINK's shared phase-F defect).
+
+
+§1  TAXONOMY RE-PROBE ON 3ec8457d — THE METHODS SURVIVED PHASE F, THE MASKS DID NOT
+-----------------------------------------------------------------------------------
+GELB's §3 inventory claimed every instrument method survives phase F. PINK's reading, which GELB accepted: the
+METHODS survived and the MASKS did not, and the document did not say so. GELB's ordered first step was to
+re-probe the taxonomy "including `mapping-glows`, which exists in no PF-8 mask". Done, and GELB's instruction is
+itself only half the carrier.
+
+STATIC DELTA, drawn carriers 93c47e03 -> 3ec8457d (nothing removed; five added):
+  + mapping-glows (testid, <g> wrapping fieldHalos)   + mf-travel        + mf-beam-glow
+  + mf-halo-gap (fill url)                            + mapping-measure-*, mapping-beyond-budget, data-required-gaps
+Every phase-F mask selector still RESOLVES at the tip; the gap is coverage, not breakage.
+
+MEASURED, per level (outputs/3ec8457d-tip/TAXONOMY.json, HALO-MASK.json; re-run reproduces identically):
+                        L0      L1      L2
+  bodies                5       5       1      (shelf 3/3/1 · field 2/2/0)
+  PF8 rings             4       4       5
+  PF8 arcs             19      19       3
+  PF8 beams            22      19       4
+  PF8 nodes             3       3       3
+  PF8 text             15      11       5
+  PF8 outlines          5       5       1
+  PG1 SEM (committed)  32      29       8
+  .mf-halo  (ALL glows) 5       5       1
+  mapping-glows halos   2       2       0
+  .mf-wave-halo         2       2       0
+  mf-travel             3       0       1
+  mf-beam-glow          3       0       1
+
+F-G1 · THE GLOW MASK IS `.mf-halo`, NOT `mapping-glows` — GELB'S INSTRUCTION REACHES 2 OF 5 GLOWS.
+  PersonJobMappingField.tsx:667 splits the halos: `(b.shelf ? shelfHalos : fieldHalos).push(...)`. Only
+  fieldHalos is rendered inside <g data-testid="mapping-glows"> (:923). shelfHalos is rendered at :884 inside an
+  ANONYMOUS <g aria-hidden pointerEvents=none> with NO testid, NO data-* and NO class of its own.
+  So a mask built on `[data-testid="mapping-glows"]` as GELB specified covers 2 of 5 glows at L0 and L1 and
+  **0 of 1 at L2**. The only selector reaching every glow is the className `.mf-halo`.
+  This is the A-F15 class RECURRED: in phase F the halo LAYOUT marker lived in classList (`mf-layout`), not in
+  data-*, and we adjudicated it once. The glow carrier has done the same thing. CONSEQUENCE: PG-1 (semantic
+  light), PG-13 (local contrast), PG-17 (the glare ramp) and PF-8's glow coverage must all mask on `.mf-halo`.
+  PINK's own committed pink-pg1.mjs SEM selector — [data-mapping-body],[data-mapping-arc],[data-beam],
+  [data-mapping-node],[data-mapping-sector] — contains NO glow term at all. It was correct at 93c47e03, where no
+  glow existed; re-run unchanged on 3ec8457d it would UNDER-count semantic light by the whole glow channel, which
+  G-2/:920 calls "part of each body's light (PG-1)". That is PINK's own instrument's defect and it is fixed before
+  PG-1 is measured here, not after.
+
+F-G2 · PG-10'S DOMAIN IS UNSTATED AND ITS CARRIER IS SPLIT BY DESIGN — AND AT L2 IT CANNOT RUN.
+  `className={b.shelf ? undefined : "mf-wave mf-wave-halo"}` (:670): only FIELD glows breathe. Shelf glows rest
+  deliberately (A-F8, "on the shelf they rest"). Measured: 2 of 5 glows carry the wave at L0/L1, **0 of 1 at L2**.
+  A-G22 restated PG-10 as "on the visible glow, >=25% of pixels swing >=0.004" without saying WHICH glows. Taken
+  literally over all visible glow, 3 of 5 glows cannot swing by construction, so the >=25% limb is diluted by
+  non-breathing area and reads low for a correct build — a false-RED of exactly the class this phase keeps
+  finding. And at L2 there is NO breathing glow, so PG-10 is NOT RUN at L2 (A-F11), not failed.
+  NEEDED FROM GELB: scope PG-10 to `.mf-wave-halo` (the field glows), or PG-10 inherits the shelf.
+
+F-G3 · PG-11 AND PG-18 HAVE NO CARRIER AT L1, AND L1 IS NOT THE DENSEST LEVEL.
+  mf-travel and mf-beam-glow are 0 at L1, under reducedMotion `reduce` AND `no-preference` (so it is not a
+  reduce artifact; outputs/3ec8457d-tip/GLOW-TRAVEL.json). They are present at L0 (3) and L2 (1).
+  PG-11 bounds the relations' travelling light against the medium's breath; PG-18 requires "at least one of the
+  field's motions is self-propelled from rest and contingent on another object — the travelling light departing
+  on a coupling", and states the breath alone does not satisfy it. At L1 the travelling light does not exist, so
+  PG-11 returns INCONCLUSIVE at L1 by A-G30's own guard and PG-18 has NO satisfier at L1 whatsoever.
+  Separately: GELB ordered L1 measured on the premise that "A-G4 just made L1 the densest level". Measured, L1 is
+  denser than L0 on NO mask — beams 19 vs 22, text 11 vs 15, arcs 19 = 19, travel 0 vs 3, glows 5 = 5. The
+  premise does not hold at this fixture; L1 is worth measuring for F-G3, not for density.
+
+F-G4 · A-G13 IS BUILT, SO THE A-G42 FREQUENCY COLLISION IS REAL IN THE ARTIFACT, NOT ONLY IN THE SPEC.
+  mf-travel computed animation: `mappingFieldTravel`, duration 10s = TRAVEL.periodMs 10000 = the breath's period.
+  Under reduce: visibility hidden, animationName none, duration 0s — F-9/PF-14 behaviour is correct.
+  So the travel's coherent energy lands on the breath's own harmonics {0.1, 0.2, 0.3} Hz in the real render.
+  A-G42's two-pass remedy (PF-8 travel-masked, PG-11 travel-drawn, separate passes over one build, neither
+  reusing the other's frames) is therefore a prerequisite of both pins and not a precaution.
+
+ALSO READ, not yet verdicts: PG-5 (<=7 bodies at L0) holds at 5 on this fixture, mapping-beyond-budget absent
+(no overflow to state at 5). Rings go 4 -> 5 at L2 (the §26 interactive ring arcs). data-breath = LIVE at L0.
+
+STATUS: stand built and provenance-verified; taxonomy settled; the glow mask corrected before any luminance was
+read. NEXT, per the adopted order: scripts/pink-tip-timing.mjs for the A-F20/A-G20 sampling-adequacy guard on
+this build (the tip's lit animated ground cost ~1.25s/screenshot at ef466ca8; it must be re-measured here before
+ANY temporal verdict), then PG-1 and the PF-15 inversion with the engraved-minima min() (A-G45) at both sizes
+with per-group attribution, then PF-8 per class at L0, L1 and L2 on the corrected masks.
+NO VERDICT IS ISSUED IN THIS FILE. Nothing here is a GO.

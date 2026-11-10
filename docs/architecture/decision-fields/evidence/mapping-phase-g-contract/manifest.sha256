@@ -1,0 +1,8 @@
+26bcc74d579065763094ee8673f8e06dd80d94bdb3449a9c07c2a8bff9d6d587  ./outputs/3ec8457d-tip/GLOW-TRAVEL.json
+86e963f677ab7ebb13281c349e2dde052557c5105d31b52dba1c880614302aee  ./outputs/3ec8457d-tip/HALO-MASK.json
+813de366297e0319e9401473fd7fea13a864b14e30c3d56862d4e80bda1bf32d  ./outputs/3ec8457d-tip/TAXONOMY.json
+60162c0f61acf3bea1ee3152bd9d2e220be171d3b8d31241006923a21117775a  ./prep.txt
+15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
+ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink-glow-travel.mjs
+80b933bc1d410501a6694409f5315bb4f6b7cea7389eb5f77dfb9815cd7f1887  ./scripts/pink-halo-mask.mjs
+b74ef75e6ba48c44bd8673d9035af1a4c340a313e533737e3781e767e0e4a1b8  ./scripts/pink-taxonomy-g.mjs
