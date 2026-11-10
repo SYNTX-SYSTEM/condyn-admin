@@ -614,3 +614,54 @@ export async function zeroByConstruction(cdp, clip, N, disc) {
     pixels: n, mustBe: 0, measured: e4(maxAbs), valid: maxAbs === 0
   };
 }
+
+/* ── A chroma channel, because no lane had one (A-G119 on PG-12) ───────────────────────────────────── */
+/**
+ * PG-12: "on medium pixels, chroma ≤ 2 % of the chroma on the hue-carrying class." GELB (§35 A-G119) records
+ * that it wrote that bound before anyone asked what a chroma instrument would RESOLVE — which is a
+ * measurability question, and A-G111 makes it publishable.
+ *
+ * CIELAB C* = hypot(a*, b*), D65, from linearised sRGB. C* is the right quantity for the word "chroma": it is
+ * perceptual and it is zero on any neutral grey, so the field's own ink (a near-neutral cyan at low alpha over
+ * near-black) and the gap hue are separated by it rather than by a hue angle that is undefined at zero chroma.
+ *
+ * THE POINT OF THE FLOOR: near black the sRGB quantum dominates. At rgb(3, 5, 8) a one-code change in a single
+ * channel moves C* by an amount comparable to the whole chroma being measured, so a 2 % bound on medium pixels
+ * may be asking for a distinction the raster cannot express. `chromaQuantumFloor` reports exactly that — the
+ * C* produced by ±1 code at a given triple — so a PG-12 reading can be compared against what is resolvable
+ * instead of being believed.
+ */
+const LAB_D65 = Object.freeze({ xn: 0.95047, yn: 1.0, zn: 1.08883 });
+const labF = t => (t > 216 / 24389 ? Math.cbrt(t) : (841 / 108) * t + 4 / 29);
+/** One sRGB triple (0…255) → {L*, a*, b*, C*}. */
+export function labOf(r, g, b) {
+  const lin = v => { const c = v / 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const R = lin(r), G = lin(g), B = lin(b);
+  const X = (0.4124564 * R + 0.3575761 * G + 0.1804375 * B) / LAB_D65.xn;
+  const Y = (0.2126729 * R + 0.7151522 * G + 0.0721750 * B) / LAB_D65.yn;
+  const Z = (0.0193339 * R + 0.1191920 * G + 0.9503041 * B) / LAB_D65.zn;
+  const fx = labF(X), fy = labF(Y), fz = labF(Z);
+  const a = 500 * (fx - fy), bb = 200 * (fy - fz);
+  return { L: 116 * fy - 16, a, b: bb, C: Math.hypot(a, bb) };
+}
+/** The C* a ±1 code step produces at a triple — the raster's own chroma resolution there. */
+export function chromaQuantumFloor(r, g, b) {
+  const base = labOf(r, g, b);
+  const steps = [];
+  for (const [dr, dg, db] of [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]]) {
+    const p = labOf(Math.max(0, Math.min(255, r + dr)), Math.max(0, Math.min(255, g + dg)), Math.max(0, Math.min(255, b + db)));
+    steps.push(Math.abs(p.C - base.C));
+  }
+  return { atTriple: [r, g, b], baseC: +base.C.toFixed(4), maxOneCodeDeltaC: +Math.max(...steps).toFixed(4), meanOneCodeDeltaC: +(steps.reduce((x, y) => x + y, 0) / steps.length).toFixed(4) };
+}
+/** Per-pixel C* over a region, from the raw RGBA rather than the luminance array. */
+export async function captureChroma(cdp, clip, N) {
+  const s = await sharp(Buffer.from(await captureRaw(cdp, clip), "base64")).raw().toBuffer({ resolveWithObject: true });
+  const ch = s.info.channels, d = s.data;
+  const C = new Float32Array(N), rgb = new Uint8Array(N * 3);
+  for (let p = 0, q = 0; p < N; p += 1, q += ch) {
+    rgb[p * 3] = d[q]; rgb[p * 3 + 1] = d[q + 1]; rgb[p * 3 + 2] = d[q + 2];
+    C[p] = labOf(d[q], d[q + 1], d[q + 2]).C;
+  }
+  return { C, rgb };
+}

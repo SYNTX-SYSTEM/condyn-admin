@@ -1,0 +1,99 @@
+{
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
+  "headShort": "5c3ca5d9",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T19:02:17.789Z",
+  "instrumentCommit": "5c3ca5d9"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "level": "L0",
+ "motion": "resting (reducedMotion:reduce)",
+ "chromaDefinition": "CIELAB C* = hypot(a*, b*), D65, from linearised sRGB. C* is zero on any neutral grey, so the field's near-neutral ink and the one hue separate on it, where a hue ANGLE is undefined at zero chroma.",
+ "reading": "GRÜN · PG-12 MEASURABILITY — the chroma channel's resolution at the levels in play",
+ "scope": "PUBLISHABLE per A-G111. The hue-carrying class's C* and the medium/hue ratio are SEALED in the companion file — by A-G117 a seal covers any set from which the sealed quantity is derivable, so publishing the medium's C* requires sealing the hue class's.",
+ "whyThisExists": "§35 A-G119: PG-12's bound was written before anyone asked what a chroma instrument would resolve, and GELB owes PG-12 the fifth A-G95 field — what observation would make it fail on an otherwise compliant build. That field cannot be written without the channel's resolution.",
+ "definitions": {
+  "medium": "disc pixels that are not glow, not any sign, and not a relation carrier — the same comparator PG-11 uses",
+  "chromaQuantum": "the C* produced by a +/-1 sRGB code step at a given triple: the raster's own chroma resolution there. Near black it is LARGE relative to the chroma being measured.",
+  "bound": "PG-12: medium chroma <= 0.02 x the hue-carrying class's chroma"
+ },
+ "mediumChroma": {
+  "n": 119483,
+  "p50": 2.8209,
+  "p90": 4.9141,
+  "p99": 8.0262,
+  "max": 8.8476,
+  "mean": 2.7219
+ },
+ "mediumModalTriple": [
+  6,
+  12,
+  17
+ ],
+ "chromaQuantumFloorAtMedium": {
+  "atTriple": [
+   6,
+   12,
+   17
+  ],
+  "baseC": 3.0531,
+  "maxOneCodeDeltaC": 0.505,
+  "meanOneCodeDeltaC": 0.2762
+ },
+ "mediumC50_overQuantum": 5.59,
+ "referenceChromas": {
+  "gapHueAtFullStrength_rgb245_166_35": 74.49,
+  "fieldInkAtFullStrength_rgb205_240_255": 13.73,
+  "stagePlate_rgb3_5_8": 1.32
+ },
+ "resolutionReading": "the medium's median C* is 2.8209 and one sRGB code step at its own modal triple [6,12,17] moves C* by up to 0.505. So the medium's chroma is 5.59 x the raster's chroma quantum there. A bound of 0.02 x another class's chroma is expressible only if that target sits well ABOVE this quantum; whether it does is in the sealed file, and the comparison is the fifth field's to make.",
+ "satisfiability": {
+  "mediumChromaP50": 2.8209,
+  "hueClassChromaRequiredByBound": 141.04,
+  "hueChromaAtFullStrength": 74.49,
+  "headroomFactor": 0.528,
+  "satisfiableAtAnyAlpha": false,
+  "reading": "the bound demands the hue-carrying class reach C* 141.04 while GAP_HUE at FULL strength (alpha 1, rgb 245,166,35) has C* only 74.49. No alpha can exceed the hue's own chroma, and the glow is a low-alpha gradient over near-black, so NO rendering of this hue can satisfy the bound. PG-12 as written cannot be satisfied by any build — the mirror of PG-11, which cannot return a verdict on a compliant one.",
+  "metricCaveat": "CONDITIONAL ON THE METRIC. PG-12 says 'chroma' without naming a colour space or a reference white. This is CIELAB C* (D65). A different definition — relative saturation, chroma in a cone-opponent space, a ratio against each pixel's own lightness — could change the conclusion, and some would make it satisfiable. That the pin's verdict depends on an unnamed metric is itself an A-G95 gap: the carrier is named (hue, on medium pixels) and the QUANTITY is not.",
+  "notAnOpinionOnCompliance": "this says the pin cannot be met by any artifact, which A-G116 places outside the seal. It says nothing about this build's reading, which is in the sealed file."
+ },
+ "nonNeutralityNote": "the stage plate rgb(3, 5, 8) is NOT neutral — its own C* is 1.32, because the three codes differ. So the medium carries a non-zero chroma FLOOR from the plate colour alone, independent of any hue leak, and PG-12's 'never leaks to the ground' cannot mean C* = 0."
+}
