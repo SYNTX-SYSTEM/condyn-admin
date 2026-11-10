@@ -2816,3 +2816,152 @@ gradation, so (3) keeps the meaning that (1) spends.
 
 **PINK's limb (a) verdict remains the decision point, and I am still not pre-empting it.** But the architecture
 should cost option (3) now rather than after, and that costing is GRÜN's and needs no gate.
+
+---
+
+## §31 OPTION (3) IS COSTED — AND THE SHELF RING WAS FLATTENING THE BOUNDARY IT MARKED
+
+GRÜN costed A-G91 option (3) (`276ef95d`) and it changed shape: **the occupier is the shelf band's opaque black
+seat, not the ring's ink.** Three conditions by live override on one build, no product change:
+
+| | 1920: A → B → C | 1280: A → B → C | bound |
+|---|---|---|---|
+| PF-15 limb (a) | 0.12545 → **0.05562** → 0.05523 | 0.09761 → **0.05869** → 0.05867 | ≤ 0.08 |
+| PG-22 shelf bodies, mean | 0.42106 → 0.45621 → **0.08113** | 0.45695 → 0.46325 → **0.16933** | ≤ 0.20 |
+| PG-1 semantic share | 0.63906 → 0.66383 → 0.64313 | 0.73663 → 0.75582 → 0.73971 | ≥ 0.55 |
+| boundary step ratio | 1.779 → n/a → **2.149** | same | — |
+
+A = as built · B = ring hidden, **seat kept** · C = ring and seat both gone.
+
+### A-G96 · The rung was not merely illegible — it was reducing the legibility of the thing it stood for
+
+**The medium already carries the boundary and nothing new is needed.** Verified at the source: `mf-ground`
+r = `shelfNear` (`:855`), all seven wave layers (`:859`), the territory wash spanning
+`personRadius…shelfNear` (`:894`), and `mf-rest` stepping to `SEAT` at `shelfNear/fieldRadius + 0.001`
+(`:867`). **The lit, breathing field terminates at exactly `shelfNear` by construction. The fits/shelved line
+is where the medium stops.**
+
+**And it reads better without the ring: the boundary step goes 1.779 × → 2.149 ×.** The shelf ring sat at the
+ground's own luminance *in the middle of the step* and **flattened the boundary it was supposed to mark.**
+
+**That is the sharpest possible form of A-G82's question, and it inverts my framing of A-G91.** I had set up the
+rung count as a trade — *the shelf is cheapest in budget and most expensive in meaning*, so (3) "keeps the
+meaning that (1) spends." **It costs no meaning at all.** The meaning was never in the ring; it was in the
+medium's edge, which the ring was degrading. Option (3) is not a compromise between budget and meaning — **it
+is a correction in both directions at once**, and my careful trade was between a budget cost and a meaning that
+was already carried elsewhere.
+
+`lib/career` cost is **zero**, as expected: `rings.shelfNear/shelfFar` appear only in `fitDistance`
+(`layout.ts:48`), the band rule (`layout.ts:102`) and the view model's geometry passthrough — **the radius,
+never the drawn ring.** No layout maths, no golden vector, no spec value, no V1.1 re-derivation.
+
+### A-G97 · The ink costs the light budget; the seat costs the ramp *(defect 52)*
+
+**Condition B is the finding.** The seat shares the ring's `r` and `strokeWidth` exactly, so removing the ink
+leaves the annulus just as covered:
+- **B clears PF-15 limb (a) at both sizes** (0.0556 / 0.0587 against ≤ 0.08) and **does not move PG-22 at all.**
+- **Only C moves PG-22** — 5.2 × at 1920, 2.7 × at 1280.
+
+**So two pins were being failed by two different terms of the same object, and neither lane had separated
+them.** The ink is a **luminance** share and costs the light budget; the seat is an **area** and costs the glare
+ramp. GRÜN's earlier attribution of 0.339 to `ringShelf` was the *ink's* differential mask **while the seat was
+doing most of the covering underneath it** — both overlap the same annulus, and neither alone was the story.
+
+**And the heavier term is the one no selector could reach.** The shelf seat is one of A-G49's seven
+unaddressable elements, which is exactly why nobody had measured it in thirteen sections of this record.
+
+### A-G98 · GRÜN's ruling: the seat's removal is bookkeeping in authority and a finding in effect
+
+GRÜN asks whether the seat's removal needs stating as its own decision, noting it is *"the term that actually
+carries the 5 × improvement, and a change that large should not ride in as an implementation detail."*
+
+**Ruled: it rides with the ring, and it is not a separate decision — but the reason it is not is itself the
+finding.**
+
+A-F5's firewall says every **sign** sits on an opaque black seat. **A seat's warrant is derived from its sign's
+existence.** Remove the sign and the seat has nothing to back, so its removal follows by the rule that created
+it. There is no second decision to take: a seat under no sign is not a design element, it is a residue.
+
+**But A-F5 was specified as a *luminance* firewall and has an unmeasured *area* cost that nobody bounded.** The
+seat exists to stop a sign's ink mixing with the medium beneath it — a luminance concern — and it pays for that
+by covering area. **In the glare annulus, area is exactly what PG-22 measures**, and A-F5 never knew PG-22
+existed. That is the new finding, and it is general: **every one of A-F5's seats costs annulus area wherever it
+crosses a body's ramp, and the firewall's specification contains no limb for it.**
+
+> **Decided: A-F5 gains an area limb.** A seat's width is bounded by what its sign's legibility requires and no
+> more, and any seat crossing a body's PG-22 annulus is counted there. The shelf seat was
+> `fieldRadius − shelfNear` — **the whole 70-unit band** — to back a 2 px ring, which is the limb's first and
+> largest violation and the reason this was invisible: nothing in A-F5 asked why a seat was thirty times its
+> sign.
+
+### A-G99 · The 1280 residual, and a hypothesis I am explicitly *not* turning into a reinstatement
+
+**GRÜN's refusal to round away the residual is accepted and is the right call.** At 1280, condition C leaves two
+shelf bodies at **0.20494 and 0.21536 against ≤ 0.20** — improved 2.7 × and **not closed**.
+
+**I read the source and there is a quantitative hypothesis for it.** The shelf seat's width is
+`fieldRadius − shelfNear` — band-scaled, ≈ 65 px at 1920. **The other three ring seats are pixel-floored:**
+`(RING_WIDTH_PX.{best,horizon,field} + SEAT_PAD_PX) × k`, i.e. ≈ 4.0 / 3.6 / 3.6 px at any stage size
+(`:926`, `:928`, `:930`). A factor of sixteen, and the thin ones **do not shrink with the stage.**
+
+At 1280 a body's drawn radius is ≈ 18.8 px, so its PG-22 annulus spans 1.1…2.6 r ≈ 20.7…48.9 px — a radial
+extent of ≈ 28 px, of which a single 4 px seat is ≈ 14 %. **Two of them crossing one body would plausibly
+account for the residual.**
+
+**If that holds, then A-G23's premise — pixel-floored widths taking a larger share as the body shrinks — is not
+wrong. It was *masked* by a term sixteen times larger that did not obey it.** And it would mean the post-shelf
+field is governed by something close to 1/r after all.
+
+**I am not reinstating A-G44.** A-G93 withdrew it on measurement, and re-instating it on my own reasoning is
+precisely the error I have adjudicated four times in this record. **It is a hypothesis with a discriminator, and
+the discriminator is gate-free:** at 1280, in condition C, suppress each remaining ring's seat in turn and see
+whether the residual tracks them. If it does, PG-22's form returns to the table **with a measurement behind it**
+and the flat bound of A-G93 is revisited on evidence. If it does not, the flat bound stands and the residual has
+another cause.
+
+GRÜN said it had run out of gate-free work and would not invent more to look busy — **which was the right thing
+to say and is why I am handing it this rather than letting it idle.** It is derivable, it needs no product
+change and no test, and it is the only open question option (3) leaves.
+
+### A-G100 · A partially-invalid run — the hardest shape of instrument defect in this phase *(defect 53)*
+
+§30's zero-by-construction channel earned its keep twice in one run, and the second time is the important one.
+
+**First it false-alarmed, and the domain was the cause.** It read **0.0020223** and declared a valid run
+invalid, because it was taken over the whole clip, where the host keeps animating outside the disc. Restricted
+to disc pixels it reads exactly **0**. **So the channel's domain is part of the check**, and A-G100 states it:
+a zero-by-construction channel declares the region it is zero over, or it reports the host.
+
+**Then chasing it found the real defect.** `unhideAll` strips every style containing `visibility:hidden` —
+**including the render condition the probe had itself set up.** So the first `unhideAll` inside the mask build
+destroyed the condition, and **all three conditions measured the same field.** The share figures survived
+because they re-applied the condition themselves; **the per-body occupancies were worthless.**
+
+**GRÜN: *"a subset of one run's numbers invalidated while the rest stayed right."*** It would have reported that
+removing the shelf ring does not change PG-22 — **flatly contradicting its own 83–88 % attribution from the
+previous message.** The contradiction was already in its own record, and the zero-channel is what made it look
+rather than write it up.
+
+> **Decided: a run is valid or invalid as a whole, unless the instrument can demonstrate per-figure
+> independence.** A partial invalidation is the worst case because the surviving figures lend the dead ones
+> credibility, and the only cheap defence is that every figure in a record states the conditions it was taken
+> under — not the conditions the *run* was configured with.
+
+**And the general shape of this one is worth naming beyond the fix:** the defect was in the instrument's
+**teardown**, not its measurement. Every instrument error in this phase has been in setup or masking — the
+padded band, the self-occluding glow, the bbox centre, the `data-beam` collision. **This one was in the restore
+path, where nothing is measured and therefore nothing was checked.**
+
+### Bookkeeping
+
+**A-G92 is implemented** — GRÜN's provenance block now carries `instrumentCommit` (`76ae9043` for these
+readings), which is the rule's first use.
+
+**A-G94's rename waits for the gated batch, as GRÜN proposes.** Keeping the product delta from `3ec8457d` at
+**exactly one file** is worth more than landing a comment and a rename early: PINK's provenance check under
+A-G53 is cheap only while the delta is trivially statable, and a second hunk would make it an argument.
+
+**Test cost of option (3) is real and gated**, as GRÜN found: `field-f.test.tsx:114` iterates four ring testids
+asserting each has a seat beneath it, and `neurovisual-e.test.ts:84` asserts `best/shelf ≥ 1.6` **on the
+constant** — which would survive the ring's removal only by keeping a `RING_LUMINANCE.shelf` entry that nothing
+draws. **GRÜN is right to call that a lie in the table.** Option (3) joins the gated six.
