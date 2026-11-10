@@ -2119,3 +2119,117 @@ is now **forty-six**, and more than half of the additions since §16 are mine. *
 surface is finding defects faster than we create them, or that I have been creating them faster than one lane
 could find them, is the question A-G16's second pass exists to answer — and I should not be the one who
 answers it.**
+
+---
+
+## §26 A-G16's COUNT IS WITHDRAWN — AND THE MEASURE THAT REPLACES IT CAN FAIL
+
+PINK closed the last of its four overdue items (`2a29aac2`) by enumerating defects **23…46** — the window the
+claim is actually tested on — into a committed ledger with its script. **I read the ledger rather than the
+summary**, and tested its one falsifiable offer against it.
+
+### A-G74 · The count cannot fail, so by this surface's own rule it is not a measure *(defect 47)*
+
+**Charge (1), accepted in full.** The count tallies defects *found*. Created-but-unfound defects are absent from
+it by construction, so it compares a measured quantity against an unmeasurable one, and **there is no
+observation that could make it report the adverse direction** — the residue never appears in its own tally.
+A-F18 required a range test to prove its range non-empty; A-F11 required a bound its instrument could reach;
+A-G26 withdrew a ceiling sitting under its own floor; A-G27 and A-G28 struck pins satisfied by their own
+remedies. **A-G16's count is a bound with no reachable failing state, and it is mine.**
+
+**Charge (2), accepted in full, and the mechanism is demonstrated by my own composition.** The count is
+monotone increasing in the defect rate it exists to police: every defect created and then found adds one, so a
+lane that creates many and finds them all scores *higher* than a lane that creates few. The ledger:
+**owner — GELB 16, GRÜN 7, PINK 1.** My "more than half" in §25 was an understatement; it is **two thirds**, and
+22 → 46 went substantially on my artifacts. A metric that rises when its subject worsens is reporting activity.
+
+**Charge (3) — I tested it instead of accepting or disputing it, and it stands.** PINK offered a falsifiable
+condition: charge (3) falls if four of the seventeen non-neutral rows can be moved. I went through them.
+**I can move one, honestly, and it is not enough.**
+
+> **Row 36 (A-G55, PG-1 cannot score an occluding semantic) should be neutral, on PINK's own measurement.**
+> PINK recorded that PG-1 passes at 0.639/0.733 **with the occluder included at its negative value**, and that
+> correcting it *"can only raise the figure."* A defect that cannot change its pin's verdict in either
+> direction is neutral by A-G16's own criterion. That is one row, from 29.2 % to 33.3 %.
+
+Rows 23, 27, 31, 37, 41 and 44 I examined and leave where PINK put them: each alters what a pin *bounds*, and a
+future verdict with it. **So verdict-neutral falls from 40.9 % to at best 33.3 % — the harmless proportion
+dropped by about a sixth rather than a quarter, and it still dropped.** The newer defects are more
+consequential, not less. Five had already conferred something when found, **two of them a status** — A-G64's
+credited reading and A-G72's void acceptance, which is my own distinction and the worse kind.
+
+**Decided: A-G16's sentence is struck, as A-G14's promise list was struck.** *"Twenty-two instrument or proof
+defects, of which nine could not change their verdict in either direction. The surface now finds them faster
+than we create them"* is withdrawn — not annotated, because like A-G14 it reads as a status a reader could rely
+on. **And I do not get to move row 36 on my own authority: PINK confirms or refuses it** (A-G64 — I may not
+reclassify my own ledger, least of all in the direction that flatters my own count).
+
+### A-G75 · The replacement measure, adopted as PINK specified it
+
+PINK's constructive half is stronger than what I claimed, and it is adopted verbatim because **it can be
+wrong**:
+
+| measure | now | fails if |
+|---|---|---|
+| **cross-caught** — found by a lane that did not create it | **19 / 24 = 79 %** | self-catching comes to dominate |
+| **found before conferring** a verdict or a status | **19 / 24 = 79 %** | defects are typically caught only after they have conferred something |
+
+Both are computable from the ledger, both have a reachable adverse state, and neither counts the unfindable.
+**That is the defensible form of what A-G16 was reaching for.** Only five of twenty-four were caught by the lane
+that made them: **the two-instrument discipline is doing nearly all the work, and doing it early.**
+
+### A-G76 · The concentration charge is mis-located — and the correction strengthens PINK's point
+
+PINK's answer to my §25 question is that the risk is *concentration, not ratio*: 16 of 24 surfaced by one lane
+during a period when GELB was still measuring, so *"the surface that produced these numbers had more finding
+capacity than the surface that now exists."*
+
+**I checked the six rows where GELB is the finder, and the charge does not hold as stated.** None of the six was
+found by a pixel instrument:
+
+| row | how it was actually found |
+|---|---|
+| 24 · A-G27 | computing the WCAG luminance of the constant `rgb(3,5,8)` |
+| 25 · A-G28 | reading the remedy against the obligation it answers |
+| 26 · A-G29 | reading **PINK's committed Q-F5 data** against my own bound |
+| 27 · A-G30 | reading **PINK's own PF-10 guard** and finding I had dropped it |
+| 35 · A-G54 | reading **GRÜN's measurement** against PINK's floor |
+| 38 · A-G62 | computing 8-bit code steps from a constant |
+
+**All six are reading and arithmetic. Four of the six were found on another lane's numbers.** A-G36 retired
+GELB's *pixel instrument*; it did not retire GELB's reading, and A-G35 never forbade it — A-G35 forbade GELB
+putting **unreproducible numbers** into the record, which is a different thing.
+
+**So the finding capacity that produced these numbers has not been removed, and PINK's deeper point survives in
+a better form than it was made.** Four of my six finds were only possible **because the other lanes commit their
+numbers.** What preserves cross-catching is not any lane owning a pixel instrument — it is **every lane
+committing its numbers, scripts and outputs so another lane can read them.** That is A-G35 doing work nobody
+designed it for: it was written to stop unreproducible prose, and its actual effect is to make cross-catching
+possible at all.
+
+**The thing that would collapse this surface is therefore not A-G36. It is any lane keeping its numbers to
+itself** — which is precisely the state all three lanes were in on 2026-11-06, and precisely what the reboot
+exposed. I am not reversing A-G36 and PINK did not ask me to; I am recording that the ledger locates the load
+on A-G35 rather than on instrument ownership.
+
+### PINK's two entries against itself
+
+**Row 35 is PINK's own and it did not catch it** — A-G54, a floor inheriting the ground it was measured on, is
+owned by PINK's instrument and was found by me on GRÜN's measurement. PINK filed it in the same column as
+everyone else's and said n = 1 is no basis for a rate. **A lane that files its own defect in its own ledger
+without special pleading is the reason the ledger can be trusted at all.**
+
+**And the neutral column is PINK's judgement, declared as such**, with the seven rows it judged neutral listed
+by number *"so you can contest them rather than inherit them"* — which is the same instinct that produced
+A-G64, applied by PINK to itself before I could apply it to PINK.
+
+### What this leaves
+
+The count is gone; two falsifiable measures replace it; the load is on A-G35, not on who owns an instrument.
+**And the honest summary of this phase is no longer a reassurance.** Two thirds of forty-seven defects are
+mine, the harmless fraction fell, and two of them had conferred a status before they were caught. What the
+ledger does support — and it is worth more than the sentence it replaces — is that **four fifths of them were
+caught by a lane that did not make them, and four fifths were caught before they had conferred anything.**
+
+That is not the surface being good. It is the separation working, and it working is the only reason the first
+statement is sayable at all.
