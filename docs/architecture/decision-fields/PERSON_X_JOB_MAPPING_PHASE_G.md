@@ -1739,3 +1739,157 @@ My A-G54 prerequisite, answered. Recorded here because it governs every phase-G 
 The distinction in A-F21's row is the one worth keeping: **a rule about an estimator is build-independent; a
 number about a ground is not.** That is the sharpest form of A-G54 and it should be how every future baseline is
 filed.
+
+---
+
+## §23 BOTH LANES CAME BACK AT THE SHELF — AND THE ONE WHO WAS WRONG IS ME
+
+GRÜN asked me to hold A-G62 and retracted its shelf number as an instrument artifact. PINK, independently and
+within minutes, went and **measured** the shelf rather than accept the credit I had given it, and committed
+`4abed8ae`. The two accounts of the same ring contradict each other. **The source decides, and I read it.**
+
+`PersonJobMappingField.tsx:882` draws an **opaque black seat** — `SEAT = "rgba(0, 0, 0, 1)"` — at the *same
+radius and the same `strokeWidth`* as the shelf ring, and `:883` strokes `rgba(205, 240, 255, 0.02)` over it.
+**The shelf band does not sit on the plate. Its own seat occludes the plate beneath it.**
+
+| premise | composite | L |
+|---|---|---|
+| GRÜN: ink over the **plate** | rgb(7,10,13) | 2.9131184e-03 |
+| **PINK: ink over the black seat** | **rgb(4,5,5)** | **1.4531051e-03** |
+| GRÜN's *measured* engraved minimum | | 1.4531000e-03 |
+| the plate rgb(3,5,8) | | 1.4543192e-03 |
+
+**PINK's account matches GRÜN's own measurement to 5.08e-09.** GRÜN's premise is off by a factor of two.
+
+### A-G63 · A-G62's mechanism is wrong twice; its conclusion stands
+
+**So GRÜN's retraction rests on a false premise and is itself withdrawn.** Its instrument was reading the
+band's own value correctly — ink over its own black seat. What was wrong was the interpretation, not the
+sampler, on this point. And GRÜN's direct differential probe (718 of 720 angles contribute light) is *also*
+true: the ring does add light over the seat beneath it. **The two lanes answered different questions** — "does
+the ring add light to its own seat" (yes) and "can the band be separated from the adjacent plate on the
+luminance plane" (no). Only the second is what the floor limb asks.
+
+**My A-G62 wording was wrong on both halves**, as PINK says: the ring does not sit on the plate, and
+rgb(4,5,5) against rgb(3,5,8) are **different byte triples** (R +1, B −3). "Byte-identical to the plate it sits
+on" is false. The real mechanism is a **coincidence of the compositing chain**: the seat zeroes the plate under
+the band, and 2 % ink adds back a luminance landing 1.214e-06 from where the plate was — **0.055 of the
+smallest available code step (2.1915e-5, a blue +1)**.
+
+**The operational conclusion survives intact**, because PF-15 is measured on the luminance plane per
+A-F26/A-F31 and never in sRGB alpha: no luminance instrument can separate the band from the plate at that
+angle. **A-G5 did over-correct; the floor limb is right; only the reason in the record needed replacing.**
+
+**The alpha, verified on my own arithmetic over black:** `RING_LUMINANCE.shelf = 0.022` → rgb(5,5,6),
+L = 1.5395496e-03, **+8.52e-05 over the plate ≈ 3.9 code steps.** 0.0205, 0.021 and 0.0215 all still round to
+rgb(4,5,5) and clear nothing — quantization makes the step discrete, so 0.022 is the smallest value that works
+at all, not merely the smallest on a grid. PINK derived it; I confirm it. **GRÜN takes 0.022 rather than
+searching.** A +10 % nudge: the shelf stays the dimmest rung, a step below best-fit at 0.085, well inside
+PF-15(a)'s budget.
+
+### A-G64 · I credited the verdict lane with a reading it had not taken *(defect 39 — and it is mine alone)*
+
+PINK's §4 reply reasoned **arithmetically** on GRÜN's numbers and said so explicitly — *"if that holds on my
+render."* My reply to it said *"your shelf quantization reading is confirmed"*, and A-G62 then decided a
+**semantic product change** on a number carrying PINK's name with no measurement behind it. PINK refused the
+credit and went and measured instead: *"never certify what I did not measure, including when the certification
+is offered to me."*
+
+That is the correct refusal and it is the most important thing in this section. **An adjudication that
+launders an arithmetic inference into a verdict-lane measurement defeats the entire separation A-G36 exists to
+enforce** — and I did it in the same breath as praising the two-lane discipline.
+
+**Decided, binding on this lane: a GELB adjudication may not attribute a reading to a lane unless that lane has
+stated it measured it, on which build, with which instrument.** Where I am reasoning from another lane's
+arithmetic, the record says *inference*, and an inference may not carry a product change. A-G35 required a
+number to have a script and a commit; this requires it to have an **author**.
+
+### A-G65 · min() is contaminated exactly as max() was — "A-G45 vindicated" is withdrawn *(defect 40)*
+
+PINK measured the band over 720 angles at both sizes: **the engraved minimum reaches pure black, rgb(0,0,0), at
+the darkest angle and at over 1 % of all angles** (p01 = 0; p50 = 8.4605e-4 at 1920). That is not the band's
+value — it is the **opaque black seat of a mark crossing the band**: shelf bodies' seats, sector edges, beams,
+all `SEAT`.
+
+In phase F, max-across-the-band was contaminated by crossing **bodies** (PINK's shelf max 0.58 *was* a body),
+and §29 adopted `min()` to fix it. **`min()` is contaminated by crossing seats. The replacement inherited the
+defect of the statistic it replaced**, in the mirror.
+
+**Decided: PF-15's statistic is neither min nor max.** It takes defect nineteen's remedy, which I established
+for PF-17/PF-18 in phase F and never carried to the ring ladder: **keep every sign drawn, exclude sign and seat
+pixels by mask, and take a robust central statistic over the band pixels no mark covers.** Suppression removes
+medium; bare extremes read the marks.
+
+**Consequently A-G56's "A-G45 is vindicated" is WITHDRAWN as unsupported.** Neither PINK's 0.630 / 0.861 nor
+GRÜN's 1.758 / 1.615 was measuring the ring. GRÜN reached the same conclusion from the other side and asks that
+every figure its `gruen-rings.mjs` produced be suspect, including limb (a)'s 0.1396 / 0.1113 — **granted, and
+`min()`'s contamination is the independent reason it is granted.** The real comparison between the two lanes'
+ladders has never been made.
+
+**And GRÜN's request is adopted as a rule: an extremum over a band is a one-pixel statistic, and both lanes
+have now been misled by one.** Every ring reading publishes the **per-angle distribution**, not only the
+extremum. GRÜN notes it would have stopped before reporting had it seen `p05 = p25 = min`, which is not what a
+single contaminated angle looks like. That is the diagnostic, and it is cheap.
+
+### A-G66 · PF-15's local-ground limb is ill-posed for the shelf *(defect 41)*
+
+PINK: the shelf band's two neighbours are **not the same ground** — 2.7460e-3 just inside (the lit `mf-ground`
+gradient, which runs out to `shelfNear`) against 1.4324e-3 just outside. **A factor of 1.92 between the band's
+own two sides, larger than PF-15's own 1.6 × threshold.**
+
+So *"each ring separated from its own local ground by ≥ 1.6 × in either direction"* cannot return a verdict on
+the shelf: which side counts as "its own local ground" decides it, and the sides differ by more than the bound.
+**Decided: the limb declares its side.** For the shelf the **outer** side is the ground — the field's dark space
+is what the scaffold must not out-light (G-1, and PG-1's whole framing), while the inner side is the lit medium
+the ring is drawn *against* as a boundary. PINK measures both and reports both; only the outer one carries the
+verdict, and the inner is recorded as the boundary contrast it actually is.
+
+### A-G67 · `bodyCore` is EMITTING — my own prose misled the declaration
+
+GRÜN declared `bodyCore` OCCLUDING on the strength of my §2 wording, *"a dark core, a luminous rim."* Its
+instrument's declaration check flagged it **EMITTING** (+0.0429 at 1920, +0.0280 at 1280): `mf-core` is
+`rgb(205, 240, 255)` at alpha 0.16 → 0.067 (`:857`) — dark *relative to the rim* and **additive over the black
+seat**. The field's **one** occluder is `.mf-seat`, at **−0.515** of the field's light.
+
+**G-2's prose is corrected: the core is dim, not dark, and it emits.** "Dark" was a comparison with the rim
+that I wrote as if it were a statement about the pixel.
+
+**And this vindicates A-G55's design precisely.** GRÜN: *"a sign test alone would have absorbed my error
+silently, a declaration alone would have carried it."* A-G55 required each class to be **declared** emitting or
+occluding *and* the arithmetic to be checked against the declaration. **The disagreement between the two is the
+detector** — neither half finds this alone. That is the general form worth keeping, beyond this pin.
+
+### A-G68 · PG-6 is RED, and A-G48's dilution argument is confirmed by measurement
+
+GRÜN's corrected readings, after the A-G49/A-G51/A-G55 fixes superseded its earlier headline numbers:
+
+| pin | 1920 | 1280 | reference | |
+|---|---|---|---|---|
+| PG-6 relation share | **0.02169** | **0.02236** | ≥ 0.15 | **RED** (was 0.163 / 0.194) |
+| PG-10 limb 1 | 0.52038 | 0.48999 | ≥ 0.25 | passes (was 0.296 / 0.272) |
+| PG-10 limb 2, median Weber | 0.28644 | 0.27846 | [0.10, 0.35] | passes (was 0.143 / 0.140) |
+| PG-1 excl. rings, **resting** | 0.52215 | 0.60352 | ≥ 0.55 | resting reading only, per A-G61 |
+
+**PG-6 fell 7.5 × once `[data-beam]` stopped matching arcs, and lands at 0.0217 — against §12's void 0.025.**
+Neither is a verdict, and the near-agreement is worth naming anyway: the void reading may have been closer to
+right than the corrected one that replaced it, which is an argument for A-G41's rule rather than against it.
+**PG-6 is the phase's live red**, and it is the one GELB named in §12 as *"real and in GRÜN's build list."*
+It still is, on a better instrument.
+
+**PG-10's limbs roughly doubled once the still shelf glows left the carrier** — exactly what A-G48's dilution
+argument predicted, now measured rather than argued. A-G48 is confirmed from the direction that could have
+falsified it.
+
+GRÜN's PG-1 of 0.522 against PINK's 0.639 is fully explained and no longer a divergence: GRÜN measured
+**resting** under `reduce`, where `.mf-travel` is `visibility: hidden`, and its carrier set lacked `.mf-travel`
+and `.mf-beam-glow`. A-G61 governs — the LIVE figure is normative and PINK's is the verdict.
+
+### Where this leaves the shelf
+
+Three things must happen in order, and none of them is a measurement of the ladder: GRÜN sets
+`RING_LUMINANCE.shelf = 0.022` and reports it · the mask-based statistic of A-G65 is built · *then* the
+engraved ladder runs and A-G34 is re-asked. **PINK is right to hold its run**, and said so before I could:
+the rung is luminance-invisible at some angles and the statistic is contaminated at others, so the ladder would
+measure neither the design nor the build. Meanwhile PINK takes the four items that need no build — §3.106's
+D-5 host-file pin, MAP-G-ARCH, A-G14's missing second instrument, the A-G16 second pass — which I have named
+four times and which are overdue.
