@@ -17,7 +17,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureLuminance, hide, unhideAll,
-  servedProvenance, PROVENANCE, CLASS_SELECTOR, SEMANTIC_CLASSES, RELATION_CLASSES, RING_CLASSES, luminanceOfRgb, e4
+  servedProvenance, PROVENANCE, CLASS_SELECTOR, EMITTING_CLASSES, OCCLUDING_CLASSES, RELATION_CLASSES, RING_CLASSES, luminanceOfRgb, e4
 } from "./gruen-instrument.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -25,7 +25,7 @@ const WT = resolve(here, "../../../../..");
 const VW = Number(process.env.VW ?? 1920), VH = Number(process.env.VH ?? 1080);
 
 const sel = classes => classes.map(c => CLASS_SELECTOR[c]).join(",");
-const SEM = sel(SEMANTIC_CLASSES), RINGS = sel(RING_CLASSES), REL = sel(RELATION_CLASSES);
+const SEM = sel(EMITTING_CLASSES), RINGS = sel(RING_CLASSES), REL = sel(RELATION_CLASSES);
 
 const browser = await chromium.launch();
 const { ctx, page, guard } = await openField(browser, { reduce: true, vw: VW, vh: VH });
@@ -47,9 +47,16 @@ const hiddenRel = await removedBy(REL);
 
 /** Per-class attribution — each class suppressed alone. The parts do NOT sum to the joint removal (overlap). */
 const perClass = {};
-for (const cls of [...SEMANTIC_CLASSES, ...RING_CLASSES]) {
+const declaredOf = cls => (EMITTING_CLASSES.includes(cls) ? "EMITTING" : OCCLUDING_CLASSES.includes(cls) ? "OCCLUDING" : "SCAFFOLD");
+const signMismatch = [];
+for (const cls of [...EMITTING_CLASSES, ...OCCLUDING_CLASSES, ...RING_CLASSES]) {
   const h = await removedBy(CLASS_SELECTOR[cls]);
-  perClass[cls] = { removedShareOfField: +((full - h) / full).toFixed(5), removedSum: e4(full - h) };
+  const removed = full - h, share = +(removed / full).toFixed(5);
+  const declared = declaredOf(cls);
+  /** A-G55: the declaration is the contract; the measured sign is the check. A mismatch is a FINDING, not a fix. */
+  const measured = removed > 0 ? "EMITTING" : removed < 0 ? "OCCLUDING" : "NEUTRAL";
+  if (declared !== "SCAFFOLD" && measured !== "NEUTRAL" && declared !== measured) signMismatch.push({ cls, declared, measured, share });
+  perClass[cls] = { declared, measured, removedShareOfField: share, removedSum: e4(removed) };
 }
 await ctx.close(); await browser.close();
 
@@ -62,7 +69,9 @@ const out = {
   viewport: `${VW}x${VH}`, region: `${clip.width}x${clip.height}`, discPixels,
   definitions: {
     domain: "the field disc (inside mapping-ring-field), the medium's own boundary",
-    semanticClasses: SEMANTIC_CLASSES, relationClasses: RELATION_CLASSES, ringClasses: RING_CLASSES,
+    emittingClasses: EMITTING_CLASSES, occludingClasses: OCCLUDING_CLASSES, relationClasses: RELATION_CLASSES, ringClasses: RING_CLASSES,
+    A_G55: "PG-1 is defined over the field's EMITTING classes. The occluders (bodySeat, bodyCore) are excluded from numerator and denominator and the exclusion is recorded here. `[data-mapping-body-content]` is no longer used as a class: it is a MIXED group whose share read -0.084 at 1920 and +0.119 at 1280 because it wraps occluders and emitters together. Decomposed into bodyOutlines + bodyNames + arcs (emitting) and bodySeat + bodyCore (occluding).",
+    beamSelectorCorrection: "RELATION_CLASSES uses [data-testid^=\"mapping-beam-\"]. The earlier reading used [data-beam], which ALSO matches every arc (arcSign emits data-beam={s.beam}), so PG-6 was overstated by the arcs' light. Measured live: L0 22 [data-beam] of which 3 are drawn beams; L1 19 of which 0 are.",
     selectors: Object.fromEntries(Object.entries(CLASS_SELECTOR)),
     PG1: "(ΣL_full − ΣL_semanticsSuppressed) / ΣL_full over disc pixels; the excl-rings form is PG-1's subject (rings are scaffold, PINK's finding)",
     PG6: "(ΣL_full − ΣL_beamsSuppressed) / (ΣL_full − ΣL_semanticsSuppressed) — relations' share OF THE SEMANTIC LIGHT, not of the field's",
@@ -78,6 +87,7 @@ const out = {
   PG6_relationShareOfSemanticLight: +(relationLight / Math.max(1e-12, semanticLight)).toFixed(5),
   PG6_boundForReference: ">= 0.15",
   perClassShareOfField: perClass,
+  occluderSignCheck: { mismatches: signMismatch, note: "empty = every class behaved as declared (A-G55)" },
   sums: { full: e4(full), semanticsSuppressed: e4(hiddenSem), semanticsAndRingsSuppressed: e4(hiddenAll), ringsSuppressed: e4(hiddenRings), beamsSuppressed: e4(hiddenRel) },
   pinkComparison: { source: "pink-pg1.mjs at 93c47e03", pink_semanticFraction_exclRings: 0.0282, pink_inclRings: 0.0809, note: "a different commit AND a different taxonomy (no glows class); divergence is a finding, not to be reconciled (A-G36 point 4)" }
 };

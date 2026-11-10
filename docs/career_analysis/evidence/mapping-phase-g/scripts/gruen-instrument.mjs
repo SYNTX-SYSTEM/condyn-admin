@@ -197,22 +197,50 @@ export async function captureWindow(cdp, clip, N, { seconds, maxFreqHz }) {
 /* ── per-class masks, built UNDER REDUCED MOTION, differentially ──────────────────────────────────── */
 /** Phase-G taxonomy. `glows` is new here: A-G10 pin 7 moved the glow out of the medium, and no PF-8 mask had it. */
 export const CLASS_SELECTOR = Object.freeze({
-  glows: ".mf-halo",
+  /** All five glows. NOTE (A-G49): keyed on the CLASSNAME, which is the channel A-G49 deprecates — and it is
+   *  nonetheless the only complete hook today. `[data-testid="mapping-glows"]` holds `fieldHalos` ONLY (:923);
+   *  `shelfHalos` render in an anonymous <g> at :884. Measured live at L0: `.mf-halo` 5, inside the container 2,
+   *  outside it 3 — so a container-keyed probe reaches 2 of 5. Replace with the data-* hook A-G49 requires. */
+  glowsAll: ".mf-halo",
+  glowsField: '[data-testid="mapping-glows"] .mf-halo',
+  /** The glows that BREATHE: only non-shelf halo circles carry mf-wave-halo (:670) — the shelf is a still ring
+   *  (A-F8), so its glow cannot swing by design. This, not `glowsAll`, is PG-10's carrier. */
+  glowsBreathing: ".mf-wave-halo",
   bodyOutlines: "[data-mapping-body-shape]",
-  bodyContent: "[data-mapping-body-content]",
+  bodyNames: '[data-testid^="mapping-name-"],[data-testid^="mapping-measure-"]',
   arcs: "[data-mapping-arc]",
-  beams: "[data-beam]",
+  /** TRUE drawn beams. `[data-beam]` is NOT a beam count: every ARC carries the sign table's `beam` word as an
+   *  attribute (arcSign emits data-beam={s.beam}), so `[data-beam]` matches arcs too. Measured live: L0 22
+   *  `[data-beam]` of which 3 are drawn beams, L1 19 of which 0 are drawn beams. */
+  beams: '[data-testid^="mapping-beam-"]',
   nodes: "[data-mapping-node]",
   sectorText: "[data-mapping-sector]",
+  /** OCCLUDERS — these REMOVE light. Suppressing one raises the field's luminance, so a share computed as
+   *  (full − suppressed)/full books them negative (A-G55). The body's opaque black seat and its deliberately
+   *  dark core (G-1: dark core, luminous rim). Both are classNames today; A-G49 applies to them too. */
+  bodySeat: ".mf-seat",
+  bodyCore: ".mf-core",
   ringBest: '[data-testid="mapping-ring-best"]',
   ringField: '[data-testid="mapping-ring-field"]',
   ringHorizon: '[data-testid="mapping-ring-horizon"]',
   ringShelf: '[data-testid="mapping-ring-shelf"]'
 });
 export const RING_CLASSES = Object.freeze(["ringShelf", "ringBest", "ringField", "ringHorizon"]);
-/** The semantic classes — what the field is FOR. Scaffold rings are deliberately NOT semantic (PINK's PG-1 finding). */
-export const SEMANTIC_CLASSES = Object.freeze(["glows", "bodyOutlines", "bodyContent", "arcs", "beams", "nodes", "sectorText"]);
-/** G-3's relations: the coupling beams. PG-6 asks for their share OF THE SEMANTIC LIGHT. */
+/**
+ * A-G55: PG-1's ≥ 55 % is defined over the field's EMITTING classes. Each class is declared, and an occluder is
+ * excluded from numerator and denominator with the exclusion recorded per run.
+ *
+ * `[data-mapping-body-content]` is NOT in either list and is no longer used as a class: it is a MIXED group
+ * (:689) wrapping the opaque black seat and the dark core TOGETHER WITH the body shape, the collar and the
+ * text. It cannot be declared emitting or occluding, which is why its measured share was −0.084 at 1920 and
+ * +0.119 at 1280 — the sign flipped with which pixels the core happened to cover. It is decomposed here into
+ * `bodyOutlines` + `bodyNames` + `arcs` (emitting) and `bodySeat` + `bodyCore` (occluding).
+ */
+export const EMITTING_CLASSES = Object.freeze(["glowsAll", "bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]);
+export const OCCLUDING_CLASSES = Object.freeze(["bodySeat", "bodyCore"]);
+/** Kept as the name the earlier readings used, now meaning the emitting set (A-G55). */
+export const SEMANTIC_CLASSES = EMITTING_CLASSES;
+/** G-3's relations: the coupling beams, by their own testid — see the `beams` note above. */
 export const RELATION_CLASSES = Object.freeze(["beams"]);
 
 const clearStyles = async page => {

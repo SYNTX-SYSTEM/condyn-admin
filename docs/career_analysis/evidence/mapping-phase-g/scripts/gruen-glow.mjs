@@ -44,26 +44,36 @@ const geom = discMask(clip, geo);
 const { disc, N, W, H, discPixels } = geom;
 const cdp1 = await cdpSession(R1.page);
 const base = await captureLuminance(cdp1, clip, N);
-const { masks } = await classMasks(R1.page, cdp1, clip, N, ["glows", "bodyOutlines", "bodyContent", "arcs", "beams", "nodes", "sectorText"]);
+const { masks } = await classMasks(R1.page, cdp1, clip, N, ["glowsAll", "glowsBreathing", "bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]);
 const travel = await travelMask(R1.page, cdp1, clip, N);
 await R1.ctx.close();
 
-const isGlow = new Uint8Array(N); for (const i of masks.glows) isGlow[i] = 1;
+/**
+ * PG-10's carrier is the BREATHING glow, not every glow. Only non-shelf halo circles carry `mf-wave-halo`
+ * (PersonJobMappingField.tsx:670) — the shelf is a still ring (A-F8), so a shelf glow cannot swing by design.
+ * Measured live at L0: 5 glows, of which 3 belong to shelf bodies. Including them dilutes BOTH limbs, because
+ * a pixel that cannot swing is counted in the denominator of "fraction of pixels that swing". The still glows
+ * are therefore measured SEPARATELY and reported beside the carrier rather than mixed into it.
+ */
+const isGlow = new Uint8Array(N); for (const i of masks.glowsBreathing) isGlow[i] = 1;
+const isStillGlow = new Uint8Array(N);
+{ const breathing = new Set(masks.glowsBreathing); for (const i of masks.glowsAll) if (!breathing.has(i)) isStillGlow[i] = 1; }
 const isMark = new Uint8Array(N);
-for (const cls of ["bodyOutlines", "bodyContent", "arcs", "beams", "nodes", "sectorText"]) for (const i of masks[cls]) isMark[i] = 1;
+for (const cls of ["bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]) for (const i of masks[cls]) isMark[i] = 1;
 const isTravel = new Uint8Array(N); for (const i of travel) isTravel[i] = 1;
 
 /** Per body: the local ground just OUTSIDE its glow — annulus [3.2 r, 4.0 r], no glow, no mark, inside the disc. */
 const k = geo.unitsToPx;
 const perBody = [];
 for (const b of geo.bodies.filter(x => x.inPool)) {
+  // a shelf body's glow is still by design (A-F8) and is not part of PG-10's carrier
   const bcx = b.cx - clip.x, bcy = b.cy - clip.y, rPx = b.drawnRadiusUnits * k;
   const lo = 3.2 * rPx, hi = 4.0 * rPx, ground = [];
   const x0 = Math.max(0, Math.floor(bcx - hi)), x1 = Math.min(W - 1, Math.ceil(bcx + hi));
   const y0 = Math.max(0, Math.floor(bcy - hi)), y1 = Math.min(H - 1, Math.ceil(bcy + hi));
   for (let y = y0; y <= y1; y += 1) for (let x = x0; x <= x1; x += 1) {
     const i = y * W + x, d = Math.hypot(x - bcx, y - bcy);
-    if (d < lo || d > hi || !disc[i] || isGlow[i] || isMark[i] || isTravel[i]) continue;
+    if (d < lo || d > hi || !disc[i] || isGlow[i] || isStillGlow[i] || isMark[i] || isTravel[i]) continue;
     ground.push(base[i]);
   }
   const localGround = ground.length >= 200 ? median(ground) : null;
@@ -84,13 +94,15 @@ const carrierSet = new Set();
 for (const b of perBody) for (const i of b._carrier) carrierSet.add(i);
 /** The medium: disc pixels that are neither glow, mark nor travel — PG-10's comparison ground. */
 const mediumIx = [];
-for (let i = 0; i < N; i += 1) if (disc[i] && !isGlow[i] && !isMark[i] && !isTravel[i]) mediumIx.push(i);
+for (let i = 0; i < N; i += 1) if (disc[i] && !isGlow[i] && !isStillGlow[i] && !isMark[i] && !isTravel[i]) mediumIx.push(i);
+const stillGlowIx = []; for (let i = 0; i < N; i += 1) if (isStillGlow[i]) stillGlowIx.push(i);
 const carrierIx = [...carrierSet];
 /** Subsample the medium so the union stays tractable; deterministic stride, no randomness. */
 const MEDIUM_CAP = 120000;
 const stride = Math.max(1, Math.ceil(mediumIx.length / MEDIUM_CAP));
 const mediumSample = mediumIx.filter((_, n) => n % stride === 0);
-const union = [...new Set([...carrierIx, ...mediumSample])];
+const stillSample = stillGlowIx.filter((_, n) => n % Math.max(1, Math.ceil(stillGlowIx.length / 40000)) === 0);
+const union = [...new Set([...carrierIx, ...mediumSample, ...stillSample])];
 const posOf = new Map(union.map((v, n) => [v, n]));
 const U = union.length;
 
@@ -128,7 +140,7 @@ function swingOn(ix) {
   const sS = Float64Array.from(swing); sS.sort();
   return { px: m, swing: stats(swing), weber: stats(weber), fracSwingGe0004: fracAbove(swing, 0.004), swing_p9999_uncoregistered: e4(pct(sS, 0.9999)), weberMedian: +median(weber).toFixed(5) };
 }
-const carrier = swingOn(carrierIx), medium = swingOn(mediumSample);
+const carrier = swingOn(carrierIx), medium = swingOn(mediumSample), stillGlow = swingOn(stillSample);
 
 /** Coherent energy at the breath's harmonics, each against its bracketed dof-matched null. */
 function coherent(ix) {
@@ -160,6 +172,7 @@ const out = {
   viewport: `${VW}x${VH}`, region: `${W}x${H}`, discPixels, clipMatch, frames: F, spanS: +spanS.toFixed(1),
   adequacyGuard: adequacy, windowRule,
   definitions: {
+    carrierIsBreathingGlowOnly: "the carrier is the BREATHING glow (.mf-wave-halo). Shelf glows are still by design (A-F8) and are excluded; at L0 three of five glows are shelf glows, so including them diluted both limbs in this instrument's first reading.",
     carrier: "A-G22's carrier: a body's own glow-mask pixels (inside haloFar) whose base luminance ≥ 2 × that body's LOCAL ground; local ground = median of disc pixels in the annulus [3.2 r, 4.0 r] that are neither glow, mark nor travel",
     localGroundCaveat: "per body, not a single disc-wide ground — the §13 lesson was that a statistic written for one ground reads differently on another",
     medium: "disc pixels that are neither glow, mark nor travel; deterministically subsampled by stride for tractability",
@@ -175,6 +188,7 @@ const out = {
   PG10_limb2_medianWeber: carrier.weberMedian,
   PG10_limb2_boundForReference: "[0.10, 0.35]",
   carrier, medium,
+  stillGlow_shelfBodies: { ...stillGlow, note: "a shelf body's glow is STILL by design (A-F8); reported beside the carrier, never inside it. An earlier reading of this instrument mixed these in and diluted both limbs." },
   coherentEnergy: { carrier: coherent(carrierIx), medium: coherent(mediumSample), harmonics: HARMONICS, nullFreqs: NULL_FREQS },
   perBody: perBody.map(({ _carrier, ...rest }) => rest),
   stageGroundNote: "the glow lives OUTSIDE the medium group (mapping-glows) since A-G10 pin 7; PG-17's domain is glows + the medium beneath them (A-G31), which this carrier definition follows"
