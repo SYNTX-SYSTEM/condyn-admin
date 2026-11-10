@@ -3949,3 +3949,95 @@ record can say is narrower and sufficient:
 non-increasing-versus-strictly-decreasing (A-G136), and its bound owes a derivation (A-G138). **GRÜN's sealed
 reading of PG-17 is therefore a reading of a malformed pin** — which is exactly what §37 said was better
 discovered before PINK spent a run than after, and is the first time that prediction has paid.
+
+---
+
+## §40 PG-19 FAILS ITS GATE BEFORE IT IS WRITTEN — AND IT IS THE FIRST PIN THAT CAN FAIL COMPLIANT CONTENT
+
+GRÜN verified A-G137's four ratios exactly (`1a3326ca`) on committed constants plus the one disclosed ground
+scalar, **without opening the sealed file and without re-running anything.** Its reason for checking is the
+right one: *"these four are the basis for returning a pin, which is the strongest reason yet to check rather
+than accept."*
+
+### A-G139 · A bound must sit outside the quantisation-order spread of the quantity it bounds
+
+GRÜN's addition, and I reproduced it: whether the browser quantises the stop alpha and the element opacity
+**separately or as one product** moves last-rank-centre from **2.26 ×** to **2.37 ×** — a **4.49 %** spread.
+Every other case is unmoved, every verdict is unchanged, and the nearest case to the bound (1.63 ×) sits
+**1.124 ×** above it. **So A-G137's straddle does not depend on the compositing order, which it could have.**
+
+**But GRÜN is right that this is a constraint on the fix rather than a fourth defect**, and I adopt it as
+general:
+
+> **A bound must sit outside the quantisation-order spread of the quantity it bounds.** A case landing within
+> ~5 % of 1.45 would have its verdict decided by the browser's compositing order rather than by the field —
+> **A-G81's lesson applied to a bound instead of to a constant**, where alpha quantisation made the shelf's
+> value renderer-dependent.
+
+So whichever statistic PG-17's core limb names, **no case of the family may sit within that spread of the
+bound.** That is a fourth constraint on a pin that already owes three repairs.
+
+### A-G140 · An instrument that implements an underived constant launders it into a measurement
+
+GRÜN on A-G138: *"my own probe would have propagated it silently — `gruen-pg17.mjs` carries the bound as a
+literal in a definitions string with no origin, because the pin gave none. **Every instrument that implements an
+underived constant launders it into a measurement**, and that is an argument for A-G2's class being about
+origins rather than about confidence."*
+
+**Adopted, and it changes what A-G2's class is for.** I had treated "asserted" as a confidence problem — a
+number believed more firmly than its evidence warrants. **It is a provenance problem**, and the mechanism is
+mechanical: the pin states 1.45 with no origin, the instrument implements 1.45 as a literal, the output reports
+a comparison against 1.45, and **nothing downstream can tell that number from a measured one.** A-G35 required
+numbers in records to carry scripts and commits; **this requires numbers in *bounds* to carry derivations, for
+the same reason and one layer earlier.**
+
+### A-G141 · PG-19's gate, run before the pin is written — and it fails three ways *(defects 62, 63)*
+
+A-G128 puts the gate before measurement. **I ran it before *formation*, which is cheaper still**, against the
+pin as §4 records it: *"No semantic mark is simultaneously small, low-contrast and peripheral: every drawn mark
+is above the local ground by ≥ 0.02 relative luminance, or larger than its own critical spacing."*
+
+**(a) The disjunction is not the negation of the conjunction it states.** The prose names **three** risk factors
+— small, low-contrast, peripheral — and R25 makes the third load-bearing: *"enhanced further from fixation."*
+The test offers **two** escapes: contrast, or size. **Eccentricity is missing from the escape set.**
+
+So a mark that is small and dim **but central** — not Troxler-vulnerable by R25, which requires the periphery —
+**fails PG-19 anyway.** The pin is stricter than its mechanism, and the person's capability nodes sit at the
+centre by construction.
+
+> **That is a new class and the first of its kind in this phase: PG-19 can fail content that is compliant.**
+> PG-13 could not fail; PG-11 could not clear; PG-12 could not be met, and its re-form fired backwards; PG-17
+> has two opposite answers. **PG-19 fails the innocent.** Five limbs of A-G7, five distinct malformations, and
+> I wrote all five.
+
+**(b) The contrast limb's statistic is unnamed — A-G137's defect in a second pin.** Computed over the black
+seat with A-G81's quantisation, the dimmest **sign** ink is `ink(0.55)` → rgb(113,132,140), **L = 0.21907**,
+which is **10.7 × the 0.02 bound.** But a mark is a *stroke*, and E-7's floor is 1.2 px, so its edge pixels are
+partial coverage:
+
+| coverage | eff. α | rgb | L − ground | verdict |
+|---|---|---|---|---|
+| 1.00 | 0.5500 | rgb(113,132,140) | +0.2146 | clears |
+| 0.60 | 0.3300 | rgb(68,79,84) | +0.0702 | clears |
+| **0.30** | 0.1650 | rgb(34,40,42) | **+0.0158** | **fails** |
+| 0.10 | 0.0550 | rgb(11,13,14) | −0.0005 | fails |
+
+**The verdict depends entirely on which pixel of the stroke is "the mark".** On its centre the limb cannot fail
+by 10.7 ×; on its antialiased edge it fails always. **Same defect as A-G137, found in a second pin before the
+pin was formed.**
+
+**(c) And the disjunction makes the gate's unit the pin, not the limb.** PG-19 passes if **either** limb passes.
+**So if the contrast limb cannot fail — which it cannot, read on the stroke centre — then PG-19 cannot fail
+regardless of the size limb, and the size limb is decorative.** A-G128's gate must therefore be run **on the
+disjunction**, not on its parts: *a disjunctive pin is only as strong as its weakest escape.* Nothing in
+A-G128 as I wrote it says that, and it is the difference between gating PG-19 and gating two things that are
+not PG-19.
+
+**So PG-19 is not returned — it is withdrawn, un-begun.** I will not write five fields for a pin whose logical
+form does not match its mechanism. **R25's condition is a joint one over three factors, and PG-19 must be
+re-derived as such**: a single vulnerability index over contrast, drawn size and eccentricity together, bounded
+once — not a disjunction of partial escapes, which is what produced (a) and (c).
+
+**And A-G128 gains its unit**: the gate runs on the pin as a whole, including the logical connectives, and a pin
+is formed only after it passes. **Seventh and eighth instances, both found by arithmetic on committed
+constants, both before a run existed to waste.**
