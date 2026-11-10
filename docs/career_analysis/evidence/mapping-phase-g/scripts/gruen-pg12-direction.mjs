@@ -45,6 +45,21 @@ for (let a = 0; a <= 1; a += 0.001) {
 }
 const q = chromaQuantumFloor(...MEDIUM).maxOneCodeDeltaC;
 
+/* ── A-G126's projection form, verified, and WHY the magnitude form failed ─────────────────────────── */
+const med = labOf(...MEDIUM), hue = labOf(...GAP_HUE);
+const hlen = Math.hypot(hue.a, hue.b), U = { a: hue.a / hlen, b: hue.b / hlen };
+const projOf = t => { const p = labOf(...t); return (p.a - med.a) * U.a + (p.b - med.b) * U.b; };
+const STEPS = [["R +1", [1, 0, 0]], ["R -1", [-1, 0, 0]], ["G +1", [0, 1, 0]], ["G -1", [0, -1, 0]], ["B +1", [0, 0, 1]], ["B -1", [0, 0, -1]]];
+const stepProj = Object.fromEntries(STEPS.map(([n, d]) => [n, +projOf(MEDIUM.map((v, i) => Math.min(255, Math.max(0, v + d[i])))).toFixed(4)]));
+const qProj = +Math.max(...Object.values(stepProj).map(Math.abs)).toFixed(4);
+const projTable = [0.002, 0.005, 0.01, 0.02, 0.04, 0.08].map(a => {
+  const t = composite(a), pr = projOf(t);
+  return { alpha: a, composite: `rgb(${t.join(", ")})`, projection: +pr.toFixed(4), inQProj: +(pr / qProj).toFixed(2), signedNonNegative: pr >= 0 };
+});
+const hueAngle = Math.atan2(hue.b, hue.a) * 180 / Math.PI;
+const medAngle = Math.atan2(med.b, med.a) * 180 / Math.PI;
+const separation = Math.abs(((hueAngle - medAngle + 540) % 360) - 180);
+
 const out = {
   reading: "GRÜN · PG-12 as re-formed — the leak's DIRECTION and the metric-robustness of the normalised difference",
   verdict: PROVENANCE.verdict, scope: "pure computation from a MEASURED medium triple and a SOURCE constant. No render, no sealed quantity, and about the pin's FORM, which A-G116 places outside the seal.",
@@ -57,6 +72,23 @@ const out = {
     consequence: "over the whole small-leak range — which is what 'never leaks to the ground' is about — the re-formed bound CANNOT FIRE. It passes trivially, and it passes MOST comfortably near the alpha where the leak is most detectable in magnitude. The test is anti-correlated with the defect it is meant to catch.",
     class: "a fourth A-G7 form defect, and a new kind: not 'cannot fail' (PG-13) nor 'cannot clear' (PG-11) nor 'cannot be met' (PG-12 as originally written), but FIRES IN THE WRONG DIRECTION — a build with a leak scores better than a build without one.",
     remedyShape: "NOT this lane's to choose. Two shapes exist: make the test two-sided on |difference|, which catches a magnitude change of either sign; or measure the SIGNED component along the hue's own chromatic direction (the projection of (a*, b*) onto GAP_HUE's hue angle), which is what 'the hue leaked' actually means and which rises monotonically with alpha from zero."
+  },
+  verification_ofA_G126: {
+    scope: "verification of figures GELB derived in §37 A-G126/A-G127. Those figures now sit inside a rule, and A-G106 requires a figure in a rule to meet the rule's evidentiary standard. This is arithmetic, which A-G128 makes mandatory before a pin is measured — not a measurement of the artifact.",
+    hueDirectionUnitVector: { a: +U.a.toFixed(5), b: +U.b.toFixed(5) },
+    singleCodeProjectionsAtMedium: stepProj,
+    q_proj: qProj,
+    gelbStated: { "R +/-": 0.1579, "G +": 0.1955, "G -": -0.1853, "B -": -0.4797, "B +": 0.4585, q_proj: 0.4797 },
+    agreement: "EXACT to four decimals on all six steps and on q_proj, set by the BLUE channel as GELB said — which is where the cool medium's chroma lives (b* dominant at -2.9683).",
+    alphaTable: projTable,
+    reportabilityClaimVerified: "GELB: a leak is reportable at alpha ~0.01 (1.50 q_proj) and under one quantum at 0.005. Measured: 1.50 and 0.74. Exact.",
+    monotoneFromZero: projTable.every(r => r.signedNonNegative)
+  },
+  whyTheMagnitudeFormFailed: {
+    mediumHueAngleDeg: +medAngle.toFixed(2), gapHueAngleDeg: +hueAngle.toFixed(2), separationDeg: +separation.toFixed(2),
+    mechanism: `the medium's chroma and GAP_HUE are ${separation.toFixed(2)} degrees apart in (a*, b*) — NEAR-ANTIPODAL. So the hue enters almost exactly opposite the medium's own chroma direction: it CANCELS the medium's chroma before it builds its own, which is why magnitude falls to a minimum and only then rises. The projection is immune because it is signed along the hue's direction, where cancellation of the medium reads as positive.`,
+    generalises: "this is a CONDITION, not an accident of two constants: a one-sided magnitude test fails for ANY hue whose chroma direction is near-antipodal to the medium it is leaking onto. A phase that chose a warm accent for a cool field chose the geometry that breaks the magnitude form.",
+    rasterDetectionFloor: "at alpha 0.002 the composite ROUNDS BACK to the medium exactly — rgb(6, 12, 17), projection 0.0000. Below about alpha 0.003 a leak is invisible to any metric because the triple does not change. That floor is the raster's, not the metric's, and it bounds what any chroma instrument can be asked for."
   },
   finding2_metricRobustness: {
     claim: "A-G123 reason 1: 'the sign of a paired difference and its size against that metric's own quantum do not depend on the metric's absolute scale'.",

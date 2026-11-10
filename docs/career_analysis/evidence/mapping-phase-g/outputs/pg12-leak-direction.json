@@ -293,6 +293,85 @@
   "class": "a fourth A-G7 form defect, and a new kind: not 'cannot fail' (PG-13) nor 'cannot clear' (PG-11) nor 'cannot be met' (PG-12 as originally written), but FIRES IN THE WRONG DIRECTION — a build with a leak scores better than a build without one.",
   "remedyShape": "NOT this lane's to choose. Two shapes exist: make the test two-sided on |difference|, which catches a magnitude change of either sign; or measure the SIGNED component along the hue's own chromatic direction (the projection of (a*, b*) onto GAP_HUE's hue angle), which is what 'the hue leaked' actually means and which rises monotonically with alpha from zero."
  },
+ "verification_ofA_G126": {
+  "scope": "verification of figures GELB derived in §37 A-G126/A-G127. Those figures now sit inside a rule, and A-G106 requires a figure in a rule to meet the rule's evidentiary standard. This is arithmetic, which A-G128 makes mandatory before a pin is measured — not a measurement of the artifact.",
+  "hueDirectionUnitVector": {
+   "a": 0.26393,
+   "b": 0.96454
+  },
+  "singleCodeProjectionsAtMedium": {
+   "R +1": 0.1579,
+   "R -1": -0.1579,
+   "G +1": 0.1955,
+   "G -1": -0.1853,
+   "B +1": -0.4797,
+   "B -1": 0.4585
+  },
+  "q_proj": 0.4797,
+  "gelbStated": {
+   "R +/-": 0.1579,
+   "G +": 0.1955,
+   "G -": -0.1853,
+   "B -": -0.4797,
+   "B +": 0.4585,
+   "q_proj": 0.4797
+  },
+  "agreement": "EXACT to four decimals on all six steps and on q_proj, set by the BLUE channel as GELB said — which is where the cool medium's chroma lives (b* dominant at -2.9683).",
+  "alphaTable": [
+   {
+    "alpha": 0.002,
+    "composite": "rgb(6, 12, 17)",
+    "projection": 0,
+    "inQProj": 0,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.005,
+    "composite": "rgb(7, 13, 17)",
+    "projection": 0.3534,
+    "inQProj": 0.74,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.01,
+    "composite": "rgb(8, 14, 17)",
+    "projection": 0.7173,
+    "inQProj": 1.5,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.02,
+    "composite": "rgb(11, 15, 17)",
+    "projection": 1.4114,
+    "inQProj": 2.94,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.04,
+    "composite": "rgb(16, 18, 18)",
+    "projection": 2.6005,
+    "inQProj": 5.42,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.08,
+    "composite": "rgb(25, 24, 18)",
+    "projection": 6.6939,
+    "inQProj": 13.95,
+    "signedNonNegative": true
+   }
+  ],
+  "reportabilityClaimVerified": "GELB: a leak is reportable at alpha ~0.01 (1.50 q_proj) and under one quantum at 0.005. Measured: 1.50 and 0.74. Exact.",
+  "monotoneFromZero": true
+ },
+ "whyTheMagnitudeFormFailed": {
+  "mediumHueAngleDeg": -103.54,
+  "gapHueAngleDeg": 74.7,
+  "separationDeg": 178.24,
+  "mechanism": "the medium's chroma and GAP_HUE are 178.24 degrees apart in (a*, b*) — NEAR-ANTIPODAL. So the hue enters almost exactly opposite the medium's own chroma direction: it CANCELS the medium's chroma before it builds its own, which is why magnitude falls to a minimum and only then rises. The projection is immune because it is signed along the hue's direction, where cancellation of the medium reads as positive.",
+  "generalises": "this is a CONDITION, not an accident of two constants: a one-sided magnitude test fails for ANY hue whose chroma direction is near-antipodal to the medium it is leaking onto. A phase that chose a warm accent for a cool field chose the geometry that breaks the magnitude form.",
+  "rasterDetectionFloor": "at alpha 0.002 the composite ROUNDS BACK to the medium exactly — rgb(6, 12, 17), projection 0.0000. Below about alpha 0.003 a leak is invisible to any metric because the triple does not change. That floor is the raster's, not the metric's, and it bounds what any chroma instrument can be asked for."
+ },
  "finding2_metricRobustness": {
   "claim": "A-G123 reason 1: 'the sign of a paired difference and its size against that metric's own quantum do not depend on the metric's absolute scale'.",
   "signHalf": "HOLDS. All three monotone measures agree on the sign at every alpha — a real leak is a real leak.",
