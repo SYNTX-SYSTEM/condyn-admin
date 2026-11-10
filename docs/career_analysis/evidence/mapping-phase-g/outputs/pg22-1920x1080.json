@@ -3,8 +3,8 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "02a1b58590c1906c262240887fb8ffc2f91cbac2",
-  "headShort": "02a1b585",
+  "head": "da498216518c5e87ad923a9c4ea67386528be61c",
+  "headShort": "da498216",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
   "productTreeClean": true,
@@ -16,7 +16,7 @@
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T18:04:57.867Z"
+  "measuredAt": "2026-11-10T18:36:57.532Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -59,6 +59,44 @@
   1.1,
   2.6
  ],
+ "runToRunVariation": {
+  "perBody": [
+   {
+    "rank": 1,
+    "passA": 0.03195,
+    "passB": 0.03195,
+    "delta": 0
+   },
+   {
+    "rank": 2,
+    "passA": 0.12148,
+    "passB": 0.10274,
+    "delta": 0.01874
+   },
+   {
+    "rank": 3,
+    "passA": 0.4264,
+    "passB": 0.41984,
+    "delta": 0.00656
+   },
+   {
+    "rank": 4,
+    "passA": 0.44595,
+    "passB": 0.45448,
+    "delta": 0.00852
+   },
+   {
+    "rank": 5,
+    "passA": 0.4547,
+    "passB": 0.45514,
+    "delta": 0.00044
+   }
+  ],
+  "maxDelta": 0.01874,
+  "reportableFailureThreshold": 0.03748,
+  "rule": "A-G103: no overage under 2 × this is reported as a failure by either lane. Two independent passes over identical conditions, each rebuilding the mask.",
+  "priorCrossRunEvidence": "C_base 0.19426 / 0.21596 against option (3)'s C 0.20494 / 0.21536 for identical conditions — the observation the rule came from"
+ },
  "perBody": [
   {
    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
@@ -100,20 +138,18 @@
    "pixelsOutsideRegion": 0,
    "annulusTruncated": false,
    "truncatedFraction": 0,
-   "ownNameAndMeasurePixelsExcluded": 2837,
-   "occupiedBySignsAndSeats": 2397,
-   "occupancy": 0.0714,
-   "occupancyTimesRadiusPx": 3.1335,
+   "ownNameAndMeasurePixelsExcluded": 957,
+   "occupiedBySignsAndSeats": 3437,
+   "occupancy": 0.10238,
+   "occupancyTimesRadiusPx": 4.493,
    "occupancyByClass_notSummands": {
-    "beamGlow": 0.0174,
+    "beamGlow": 0.0182,
+    "bodyNames": 0.01698,
+    "ringHorizon": 0.01579,
     "ringShelf": 0.01361,
-    "ringHorizon": 0.01102,
-    "beams": 0.00789,
-    "arcs": 0.00688,
-    "bodyNames": 0.00596,
-    "bodyOutlines": 0.00197,
-    "ringField": 0.00027,
-    "bodySeat": 0.00009,
+    "bodyOutlines": 0.01138,
+    "beams": 0.00795,
+    "arcs": 0.00736,
     "ringBest": 0.00006
    }
   },
@@ -131,17 +167,17 @@
    "pixelsOutsideRegion": 0,
    "annulusTruncated": false,
    "truncatedFraction": 0,
-   "ownNameAndMeasurePixelsExcluded": 1128,
-   "occupiedBySignsAndSeats": 8285,
-   "occupancy": 0.4116,
-   "occupancyTimesRadiusPx": 13.9851,
+   "ownNameAndMeasurePixelsExcluded": 1074,
+   "occupiedBySignsAndSeats": 8254,
+   "occupancy": 0.41006,
+   "occupancyTimesRadiusPx": 13.9327,
    "occupancyByClass_notSummands": {
     "ringShelf": 0.33862,
     "ringField": 0.01813,
-    "ringHorizon": 0.01431,
-    "arcs": 0.01287,
-    "bodyOutlines": 0.00204,
-    "bodyNames": 0.00129,
+    "ringHorizon": 0.01376,
+    "arcs": 0.01073,
+    "bodyOutlines": 0.00184,
+    "bodyNames": 0.00055,
     "beams": 0.00005,
     "beamGlow": 0.00005,
     "travel": 0.00005,
@@ -165,12 +201,12 @@
    "pixelsOutsideRegion": 0,
    "annulusTruncated": false,
    "truncatedFraction": 0,
-   "ownNameAndMeasurePixelsExcluded": 1466,
-   "occupiedBySignsAndSeats": 7674,
-   "occupancy": 0.43612,
-   "occupancyTimesRadiusPx": 13.8521,
+   "ownNameAndMeasurePixelsExcluded": 1401,
+   "occupiedBySignsAndSeats": 7679,
+   "occupancy": 0.43641,
+   "occupancyTimesRadiusPx": 13.8611,
    "occupancyByClass_notSummands": {
-    "ringShelf": 0.34104,
+    "ringShelf": 0.34099,
     "arcs": 0.02461,
     "ringField": 0.01802,
     "beamGlow": 0.01614,
@@ -194,33 +230,30 @@
    "pixelsOutsideRegion": 654,
    "annulusTruncated": true,
    "truncatedFraction": 0.0462,
-   "ownNameAndMeasurePixelsExcluded": 1676,
-   "occupiedBySignsAndSeats": 5526,
-   "occupancy": 0.40903,
-   "occupancyTimesRadiusPx": 11.6572,
+   "ownNameAndMeasurePixelsExcluded": 1527,
+   "occupiedBySignsAndSeats": 5590,
+   "occupancy": 0.41377,
+   "occupancyTimesRadiusPx": 11.7922,
    "occupancyByClass_notSummands": {
-    "ringShelf": 0.36129,
-    "ringField": 0.01902,
-    "ringHorizon": 0.01155,
-    "bodySeat": 0.00074,
-    "sectorText": 0.00059,
-    "ringBest": 0.00059,
-    "travel": 0.00052,
-    "nodes": 0.00052,
-    "beamGlow": 0.0003,
-    "bodyNames": 0.00022,
-    "bodyCore": 0.00007,
-    "bodyOutlines": 0.00007,
-    "arcs": 0.00007,
-    "beams": 0.00007
+    "ringShelf": 0.36462,
+    "ringField": 0.02235,
+    "ringHorizon": 0.01488,
+    "sectorText": 0.00392,
+    "bodySeat": 0.00392,
+    "ringBest": 0.00392,
+    "travel": 0.00385,
+    "nodes": 0.00385,
+    "beamGlow": 0.00318,
+    "beams": 0.00163,
+    "arcs": 0.00022
    }
   }
  ],
  "invariantCheck": {
   "n": 4,
   "min": 1.1061,
-  "max": 13.9851,
-  "spread": 11.644,
+  "max": 13.9327,
+  "spread": 11.596,
   "reading": "a small spread supports share ∝ 1/r; a large spread says occupancy is not simply inverse in the drawn radius and A-G44's form would be fitting a law the pixels do not show"
  },
  "candidateAnchorRadiiPx": {
@@ -242,25 +275,25 @@
     "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
     "drawnRadiusPx": 43.88,
     "bound": 0.2,
-    "occupancy": 0.0714
+    "occupancy": 0.10238
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
     "drawnRadiusPx": 33.98,
     "bound": 0.25827,
-    "occupancy": 0.4116
+    "occupancy": 0.41006
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
     "drawnRadiusPx": 31.76,
     "bound": 0.27632,
-    "occupancy": 0.43612
+    "occupancy": 0.43641
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
     "drawnRadiusPx": 28.5,
     "bound": 0.30793,
-    "occupancy": 0.40903
+    "occupancy": 0.41377
    }
   ],
   "rank1Body": [
@@ -274,25 +307,25 @@
     "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
     "drawnRadiusPx": 43.88,
     "bound": 0.15779,
-    "occupancy": 0.0714
+    "occupancy": 0.10238
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
     "drawnRadiusPx": 33.98,
     "bound": 0.20377,
-    "occupancy": 0.4116
+    "occupancy": 0.41006
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
     "drawnRadiusPx": 31.76,
     "bound": 0.21801,
-    "occupancy": 0.43612
+    "occupancy": 0.43641
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
     "drawnRadiusPx": 28.5,
     "bound": 0.24295,
-    "occupancy": 0.40903
+    "occupancy": 0.41377
    }
   ],
   "specDrawnMaxUnits54_6": [
@@ -306,25 +339,25 @@
     "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
     "drawnRadiusPx": 43.88,
     "bound": 0.20738,
-    "occupancy": 0.0714
+    "occupancy": 0.10238
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
     "drawnRadiusPx": 33.98,
     "bound": 0.2678,
-    "occupancy": 0.4116
+    "occupancy": 0.41006
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
     "drawnRadiusPx": 31.76,
     "bound": 0.28652,
-    "occupancy": 0.43612
+    "occupancy": 0.43641
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
     "drawnRadiusPx": 28.5,
     "bound": 0.3193,
-    "occupancy": 0.40903
+    "occupancy": 0.41377
    }
   ],
   "specDrawnMinUnits34_2": [
@@ -338,25 +371,25 @@
     "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
     "drawnRadiusPx": 43.88,
     "bound": 0.1299,
-    "occupancy": 0.0714
+    "occupancy": 0.10238
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
     "drawnRadiusPx": 33.98,
     "bound": 0.16775,
-    "occupancy": 0.4116
+    "occupancy": 0.41006
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
     "drawnRadiusPx": 31.76,
     "bound": 0.17947,
-    "occupancy": 0.43612
+    "occupancy": 0.43641
    },
    {
     "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
     "drawnRadiusPx": 28.5,
     "bound": 0.2,
-    "occupancy": 0.40903
+    "occupancy": 0.41377
    }
   ]
  }

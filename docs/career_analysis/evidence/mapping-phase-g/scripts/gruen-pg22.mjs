@@ -55,6 +55,43 @@ for (const c of occupierClasses) { const f = new Uint8Array(N); for (const i of 
 const k = geo.unitsToPx;
 
 const drawn = geo.bodies.filter(b => b.inPool);
+
+/**
+ * A-G103, binding on both lanes: a PG-22 record states its own run-to-run variation, and no overage under
+ * 2 × it is reported as a failure. The figure came from this instrument reading the SAME conditions twice —
+ * C_base 0.19426 / 0.21596 against option (3)'s C 0.20494 / 0.21536 — so the resolution is ≈ ±0.01 and it
+ * belongs in the record rather than in a message about the record. The second pass rebuilds the mask from
+ * scratch, because the mask is where the variation comes from: the differential threshold sits at 0.001 and
+ * an opaque seat brightening what lies beneath it moves which pixels clear it.
+ */
+const occupancyPass = async () => {
+  const { covered: cov } = await signAndSeatMask(page, cdp, clip, N, { exclude: ["glowsAll"] });
+  const b0 = await captureLuminance(cdp, clip, N);
+  const rows = [];
+  for (const b of drawn) {
+    await hide(page, `[data-testid="mapping-name-${b.id}"],[data-testid="mapping-measure-${b.id}"]`);
+    const woOwn = await captureLuminance(cdp, clip, N);
+    await unhideAll(page);
+    const rPx = b.drawnRadiusUnits * k, inner = 1.1 * rPx, outer = 2.6 * rPx;
+    const bcx = b.cx - clip.x, bcy = b.cy - clip.y;
+    let ann = 0, occ = 0;
+    for (let y = Math.floor(bcy - outer); y <= Math.ceil(bcy + outer); y += 1) for (let x = Math.floor(bcx - outer); x <= Math.ceil(bcx + outer); x += 1) {
+      const d = Math.hypot(x - bcx, y - bcy);
+      if (d < inner || d > outer || x < 0 || y < 0 || x >= W || y >= H) continue;
+      ann += 1;
+      const i = y * W + x;
+      if (Math.abs(b0[i] - woOwn[i]) > 0.001) continue;
+      if (cov[i]) occ += 1;
+    }
+    rows.push({ rank: b.rank, occupancy: ann ? occ / ann : null });
+  }
+  return rows;
+};
+const passA = await occupancyPass();
+const passB = await occupancyPass();
+const variation = passA.map((r, i) => ({ rank: r.rank, passA: +r.occupancy.toFixed(5), passB: +passB[i].occupancy.toFixed(5), delta: +Math.abs(r.occupancy - passB[i].occupancy).toFixed(5) }));
+const maxVariation = Math.max(...variation.map(v => v.delta));
+
 const perBody = [];
 for (const b of drawn) {
   /** This body's OWN name and measure, by differential suppression — excluded from its own annulus (A-G23). */
@@ -121,6 +158,12 @@ const out = {
     invariant: "occupancy × r_drawn is constant across bodies iff the share really goes as 1/r — this is the testable content of A-G44's form, independent of the anchor"
   },
   ANCHOR_SHARE, annulusFactors: ANNULUS,
+  runToRunVariation: {
+    perBody: variation, maxDelta: +maxVariation.toFixed(5),
+    reportableFailureThreshold: +(2 * maxVariation).toFixed(5),
+    rule: "A-G103: no overage under 2 × this is reported as a failure by either lane. Two independent passes over identical conditions, each rebuilding the mask.",
+    priorCrossRunEvidence: "C_base 0.19426 / 0.21596 against option (3)'s C 0.20494 / 0.21536 for identical conditions — the observation the rule came from"
+  },
   perBody,
   invariantCheck: inv.length > 1
     ? { n: inv.length, min: Math.min(...inv), max: Math.max(...inv), spread: +((Math.max(...inv) - Math.min(...inv)) / Math.max(1e-12, Math.min(...inv))).toFixed(3),
