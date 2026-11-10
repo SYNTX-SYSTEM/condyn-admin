@@ -1,0 +1,363 @@
+{
+ "reading": "GRÜN development reading · PG-22 occupancy per body, annulus 1.1…2.6 r, own name and measure excluded",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "02a1b58590c1906c262240887fb8ffc2f91cbac2",
+  "headShort": "02a1b585",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T18:04:57.867Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "unitsToPx": 0.83332,
+ "drawnBodies": 5,
+ "definitions": {
+  "annulus": "1.1 … 2.6 × the body's DRAWN radius (A-G23: a body's own outline band and its seat are figure on the rim, not interruptions of the ramp)",
+  "occupancy": "pixels covered by any sign or seat ÷ annulus pixels, with THIS body's own name and measure removed first (A-G23's exclusion; a label is the body's own figure and moving it out would tear name from body)",
+  "coveredMask": "the sign AND seat mask, built differentially under reducedMotion:reduce with every sign kept drawn (A-G65 / defect nineteen), EXCLUDING glowsAll — the glow IS the ramp (its circle's radius is 2.6…3.0 r, so as a filled disc it covers the whole annulus) and cannot occupy itself. Relation carriers stay in: they cross the ramp as figure.",
+  "boundForm": "A-G44: per body, share ∝ 1/r_drawn, 20 % anchored at the 1920 reference. The fixture-mean 1.86 × form is withdrawn.",
+  "anchorNotChosenHere": "A-G44's phrase does not determine WHICH radius is the 1920 reference, and a fixture-dependent anchor is what A-G44 withdrew. Candidates are reported; the anchor is GELB's to name (A-G64).",
+  "invariant": "occupancy × r_drawn is constant across bodies iff the share really goes as 1/r — this is the testable content of A-G44's form, independent of the anchor"
+ },
+ "ANCHOR_SHARE": 0.2,
+ "annulusFactors": [
+  1.1,
+  2.6
+ ],
+ "perBody": [
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "rank": 1,
+   "shelf": false,
+   "sizeFloorApplied": false,
+   "drawnRadiusPx": 34.62,
+   "annulusPx": [
+    38.1,
+    90
+   ],
+   "annulusPixels": 20876,
+   "pixelsOutsideRegion": 0,
+   "annulusTruncated": false,
+   "truncatedFraction": 0,
+   "ownNameAndMeasurePixelsExcluded": 1305,
+   "occupiedBySignsAndSeats": 667,
+   "occupancy": 0.03195,
+   "occupancyTimesRadiusPx": 1.1061,
+   "occupancyByClass_notSummands": {
+    "beamGlow": 0.01547,
+    "arcs": 0.00977,
+    "beams": 0.00642,
+    "bodyOutlines": 0.00158,
+    "bodyNames": 0.00034
+   }
+  },
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+   "rank": 2,
+   "shelf": false,
+   "sizeFloorApplied": false,
+   "drawnRadiusPx": 43.88,
+   "annulusPx": [
+    48.3,
+    114.1
+   ],
+   "annulusPixels": 33570,
+   "pixelsOutsideRegion": 0,
+   "annulusTruncated": false,
+   "truncatedFraction": 0,
+   "ownNameAndMeasurePixelsExcluded": 2837,
+   "occupiedBySignsAndSeats": 2397,
+   "occupancy": 0.0714,
+   "occupancyTimesRadiusPx": 3.1335,
+   "occupancyByClass_notSummands": {
+    "beamGlow": 0.0174,
+    "ringShelf": 0.01361,
+    "ringHorizon": 0.01102,
+    "beams": 0.00789,
+    "arcs": 0.00688,
+    "bodyNames": 0.00596,
+    "bodyOutlines": 0.00197,
+    "ringField": 0.00027,
+    "bodySeat": 0.00009,
+    "ringBest": 0.00006
+   }
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+   "rank": 3,
+   "shelf": true,
+   "sizeFloorApplied": false,
+   "drawnRadiusPx": 33.98,
+   "annulusPx": [
+    37.4,
+    88.3
+   ],
+   "annulusPixels": 20129,
+   "pixelsOutsideRegion": 0,
+   "annulusTruncated": false,
+   "truncatedFraction": 0,
+   "ownNameAndMeasurePixelsExcluded": 1128,
+   "occupiedBySignsAndSeats": 8285,
+   "occupancy": 0.4116,
+   "occupancyTimesRadiusPx": 13.9851,
+   "occupancyByClass_notSummands": {
+    "ringShelf": 0.33862,
+    "ringField": 0.01813,
+    "ringHorizon": 0.01431,
+    "arcs": 0.01287,
+    "bodyOutlines": 0.00204,
+    "bodyNames": 0.00129,
+    "beams": 0.00005,
+    "beamGlow": 0.00005,
+    "travel": 0.00005,
+    "nodes": 0.00005,
+    "sectorText": 0.00005,
+    "bodySeat": 0.00005,
+    "ringBest": 0.00005
+   }
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+   "rank": 4,
+   "shelf": true,
+   "sizeFloorApplied": false,
+   "drawnRadiusPx": 31.76,
+   "annulusPx": [
+    34.9,
+    82.6
+   ],
+   "annulusPixels": 17596,
+   "pixelsOutsideRegion": 0,
+   "annulusTruncated": false,
+   "truncatedFraction": 0,
+   "ownNameAndMeasurePixelsExcluded": 1466,
+   "occupiedBySignsAndSeats": 7674,
+   "occupancy": 0.43612,
+   "occupancyTimesRadiusPx": 13.8521,
+   "occupancyByClass_notSummands": {
+    "ringShelf": 0.34104,
+    "arcs": 0.02461,
+    "ringField": 0.01802,
+    "beamGlow": 0.01614,
+    "ringHorizon": 0.01461,
+    "bodyNames": 0.00762,
+    "bodyOutlines": 0.00716,
+    "beams": 0.00455
+   }
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+   "rank": 5,
+   "shelf": true,
+   "sizeFloorApplied": false,
+   "drawnRadiusPx": 28.5,
+   "annulusPx": [
+    31.3,
+    74.1
+   ],
+   "annulusPixels": 13510,
+   "pixelsOutsideRegion": 654,
+   "annulusTruncated": true,
+   "truncatedFraction": 0.0462,
+   "ownNameAndMeasurePixelsExcluded": 1676,
+   "occupiedBySignsAndSeats": 5526,
+   "occupancy": 0.40903,
+   "occupancyTimesRadiusPx": 11.6572,
+   "occupancyByClass_notSummands": {
+    "ringShelf": 0.36129,
+    "ringField": 0.01902,
+    "ringHorizon": 0.01155,
+    "bodySeat": 0.00074,
+    "sectorText": 0.00059,
+    "ringBest": 0.00059,
+    "travel": 0.00052,
+    "nodes": 0.00052,
+    "beamGlow": 0.0003,
+    "bodyNames": 0.00022,
+    "bodyCore": 0.00007,
+    "bodyOutlines": 0.00007,
+    "arcs": 0.00007,
+    "beams": 0.00007
+   }
+  }
+ ],
+ "invariantCheck": {
+  "n": 4,
+  "min": 1.1061,
+  "max": 13.9851,
+  "spread": 11.644,
+  "reading": "a small spread supports share ∝ 1/r; a large spread says occupancy is not simply inverse in the drawn radius and A-G44's form would be fitting a law the pixels do not show"
+ },
+ "candidateAnchorRadiiPx": {
+  "largestDrawnBody": 43.88,
+  "smallestDrawnBody": 0,
+  "rank1Body": 34.62,
+  "specDrawnMaxUnits54_6": 45.5,
+  "specDrawnMinUnits34_2": 28.5
+ },
+ "impliedBoundsPerBody": {
+  "largestDrawnBody": [
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "drawnRadiusPx": 34.62,
+    "bound": 0.2535,
+    "occupancy": 0.03195
+   },
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+    "drawnRadiusPx": 43.88,
+    "bound": 0.2,
+    "occupancy": 0.0714
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+    "drawnRadiusPx": 33.98,
+    "bound": 0.25827,
+    "occupancy": 0.4116
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+    "drawnRadiusPx": 31.76,
+    "bound": 0.27632,
+    "occupancy": 0.43612
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+    "drawnRadiusPx": 28.5,
+    "bound": 0.30793,
+    "occupancy": 0.40903
+   }
+  ],
+  "rank1Body": [
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "drawnRadiusPx": 34.62,
+    "bound": 0.2,
+    "occupancy": 0.03195
+   },
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+    "drawnRadiusPx": 43.88,
+    "bound": 0.15779,
+    "occupancy": 0.0714
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+    "drawnRadiusPx": 33.98,
+    "bound": 0.20377,
+    "occupancy": 0.4116
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+    "drawnRadiusPx": 31.76,
+    "bound": 0.21801,
+    "occupancy": 0.43612
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+    "drawnRadiusPx": 28.5,
+    "bound": 0.24295,
+    "occupancy": 0.40903
+   }
+  ],
+  "specDrawnMaxUnits54_6": [
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "drawnRadiusPx": 34.62,
+    "bound": 0.26285,
+    "occupancy": 0.03195
+   },
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+    "drawnRadiusPx": 43.88,
+    "bound": 0.20738,
+    "occupancy": 0.0714
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+    "drawnRadiusPx": 33.98,
+    "bound": 0.2678,
+    "occupancy": 0.4116
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+    "drawnRadiusPx": 31.76,
+    "bound": 0.28652,
+    "occupancy": 0.43612
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+    "drawnRadiusPx": 28.5,
+    "bound": 0.3193,
+    "occupancy": 0.40903
+   }
+  ],
+  "specDrawnMinUnits34_2": [
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "drawnRadiusPx": 34.62,
+    "bound": 0.16464,
+    "occupancy": 0.03195
+   },
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+    "drawnRadiusPx": 43.88,
+    "bound": 0.1299,
+    "occupancy": 0.0714
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+    "drawnRadiusPx": 33.98,
+    "bound": 0.16775,
+    "occupancy": 0.4116
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+    "drawnRadiusPx": 31.76,
+    "bound": 0.17947,
+    "occupancy": 0.43612
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+    "drawnRadiusPx": 28.5,
+    "bound": 0.2,
+    "occupancy": 0.40903
+   }
+  ]
+ }
+}

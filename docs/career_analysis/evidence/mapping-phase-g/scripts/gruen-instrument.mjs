@@ -547,10 +547,10 @@ export function ringBandMasked(L, geom, innerPx, outerPx, covered, { angles = 72
 
 /** The union mask of every sign AND every seat — what A-G65 excludes. Seats are found by |Δ|, since suppressing
  *  an opaque black seat RAISES the luminance beneath it (it is the field's one occluder, at −0.515). */
-export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001 } = {}) {
+export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001, exclude = [] } = {}) {
   const base = await captureLuminance(cdp, clip, N);
   const covered = new Uint8Array(N);
-  const classes = [...EMITTING_CLASSES, ...OCCLUDING_CLASSES];
+  const classes = [...EMITTING_CLASSES, ...OCCLUDING_CLASSES].filter(c => !exclude.includes(c));
   const per = {};
   for (const cls of classes) {
     await hide(page, CLASS_SELECTOR[cls]);

@@ -1,0 +1,319 @@
+{
+ "reading": "GRÜN development reading · PG-20's splay magnitude in rendered screen px, at every level it is drawn",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "02a1b58590c1906c262240887fb8ffc2f91cbac2",
+  "headShort": "02a1b585",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T18:09:49.758Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "openedBody": {
+  "body": "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+  "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+  "pool": "mapping-pool-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "requirements": 10
+ },
+ "unitsToPxAtL0": 0.44398,
+ "definitions": {
+  "lateralPx": "the perpendicular (non-radial) component of each arc-end tick, in SCREEN pixels, via the element's own getScreenCTM()",
+  "centreFit": "arc centre fitted algebraically (Kåsa) from every inner endpoint; the body's bounding box is NOT the centre (it holds the name above and measure below) and using it put a spurious 1.05 px lateral on NONE",
+  "lateralOverTick": "lateral ÷ tick, against MARK_ICON.differentSplay = 0.6 as the intended factor",
+  "bothLevels": "L0/L1 draw these arcs as COLLAR ticks where tick = max(2.4 k, 0.18 r) collapses onto the 2.4 k pixel floor; L2 draws the full ring where the tick is large",
+  "keyedOnMarkInThisBuild": "this build keys the splay on s.mark === 'counterTick'; A-G43's re-keying is held with the test-database gate and changes WHICH arcs splay, not by how much",
+  "perceptualQuestion": "whether a given lateral displacement is PERCEIVABLE is not answered here — this is a geometry reading and the threshold is PINK's to set"
+ },
+ "perLevel": {
+  "L0_collar": {
+   "centreFit": {
+    "points": 4,
+    "innerRadiusPxMean": 23.642,
+    "residualRmsPx": 0
+   },
+   "states": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 3.0525,
+      "p50": 3.052,
+      "p90": 3.052,
+      "p99": 3.052,
+      "p999": 3.052,
+      "p9999": 3.052,
+      "max": 3.053,
+      "min": 3.052
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 5.447,
+      "p50": 5.447,
+      "p90": 5.447,
+      "p99": 5.447,
+      "p999": 5.447,
+      "p9999": 5.447,
+      "max": 5.447,
+      "min": 5.447
+     },
+     "meanLateralOverTick": 0.5604
+    },
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 0,
+      "p50": 0,
+      "p90": 0,
+      "p99": 0,
+      "p999": 0,
+      "p9999": 0,
+      "max": 0,
+      "min": 0
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 4.677,
+      "p50": 4.677,
+      "p90": 4.677,
+      "p99": 4.677,
+      "p999": 4.677,
+      "p9999": 4.677,
+      "max": 4.677,
+      "min": 4.677
+     },
+     "meanLateralOverTick": 0.0001
+    }
+   ],
+   "splaying": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "lateralPxMean": 3.0525,
+     "lateralPxMin": 3.052,
+     "tickPxMean": 5.447,
+     "ratio": 0.5604
+    }
+   ],
+   "radial": [
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "lateralPxMax": 0
+    }
+   ]
+  },
+  "L1_collar": {
+   "centreFit": {
+    "points": 4,
+    "innerRadiusPxMean": 28.709,
+    "residualRmsPx": 0
+   },
+   "states": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 3.7065,
+      "p50": 3.706,
+      "p90": 3.706,
+      "p99": 3.706,
+      "p999": 3.706,
+      "p9999": 3.706,
+      "max": 3.707,
+      "min": 3.706
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 6.615,
+      "p50": 6.615,
+      "p90": 6.615,
+      "p99": 6.615,
+      "p999": 6.615,
+      "p9999": 6.615,
+      "max": 6.615,
+      "min": 6.615
+     },
+     "meanLateralOverTick": 0.5604
+    },
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 0,
+      "p50": 0,
+      "p90": 0,
+      "p99": 0,
+      "p999": 0,
+      "p9999": 0,
+      "max": 0,
+      "min": 0
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 5.679,
+      "p50": 5.679,
+      "p90": 5.679,
+      "p99": 5.679,
+      "p999": 5.679,
+      "p9999": 5.679,
+      "max": 5.679,
+      "min": 5.679
+     },
+     "meanLateralOverTick": 0.0001
+    }
+   ],
+   "splaying": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "lateralPxMean": 3.7065,
+     "lateralPxMin": 3.706,
+     "tickPxMean": 6.615,
+     "ratio": 0.5604
+    }
+   ],
+   "radial": [
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "lateralPxMax": 0
+    }
+   ]
+  },
+  "L2_ring": {
+   "centreFit": {
+    "points": 4,
+    "innerRadiusPxMean": 122.26,
+    "residualRmsPx": 0.0001
+   },
+   "states": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 15.786,
+      "p50": 15.786,
+      "p90": 15.786,
+      "p99": 15.786,
+      "p999": 15.786,
+      "p9999": 15.786,
+      "max": 15.786,
+      "min": 15.786
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 28.169,
+      "p50": 28.169,
+      "p90": 28.169,
+      "p99": 28.169,
+      "p999": 28.169,
+      "p9999": 28.169,
+      "max": 28.169,
+      "min": 28.169
+     },
+     "meanLateralOverTick": 0.5604
+    },
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "ends": 2,
+     "lateralPx": {
+      "n": 2,
+      "mean": 0.0005,
+      "p50": 0,
+      "p90": 0,
+      "p99": 0,
+      "p999": 0,
+      "p9999": 0,
+      "max": 0.001,
+      "min": 0
+     },
+     "tickPx": {
+      "n": 2,
+      "mean": 24.183,
+      "p50": 24.183,
+      "p90": 24.183,
+      "p99": 24.183,
+      "p999": 24.183,
+      "p9999": 24.183,
+      "max": 24.183,
+      "min": 24.183
+     },
+     "meanLateralOverTick": 0
+    }
+   ],
+   "splaying": [
+    {
+     "state": "DIFFERENT",
+     "mark": "counterTick",
+     "lateralPxMean": 15.786,
+     "lateralPxMin": 15.786,
+     "tickPxMean": 28.169,
+     "ratio": 0.5604
+    }
+   ],
+   "radial": [
+    {
+     "state": "NONE",
+     "mark": "none",
+     "line": "open",
+     "lateralPxMax": 0.001
+    }
+   ]
+  }
+ }
+}
