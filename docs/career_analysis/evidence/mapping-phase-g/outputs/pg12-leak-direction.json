@@ -370,6 +370,19 @@
   "separationDeg": 178.24,
   "mechanism": "the medium's chroma and GAP_HUE are 178.24 degrees apart in (a*, b*) — NEAR-ANTIPODAL. So the hue enters almost exactly opposite the medium's own chroma direction: it CANCELS the medium's chroma before it builds its own, which is why magnitude falls to a minimum and only then rises. The projection is immune because it is signed along the hue's direction, where cancellation of the medium reads as positive.",
   "generalises": "this is a CONDITION, not an accident of two constants: a one-sided magnitude test fails for ANY hue whose chroma direction is near-antipodal to the medium it is leaking onto. A phase that chose a warm accent for a cool field chose the geometry that breaks the magnitude form.",
+  "exactCrossings": {
+   "firstVisibleInRaster": {
+    "alpha": 0.0021,
+    "triple": "rgb(7, 12, 17)",
+    "projection": 0.1579,
+    "inQProj": 0.329
+   },
+   "firstReportableAtOneQProj": {
+    "alpha": 0.00628,
+    "inQProj": 1.066
+   },
+   "note": "EXACT, replacing two approximations that both erred CONSERVATIVE-UPWARD on a lower bound: this lane said the raster floor was 'about alpha 0.003' where it is 0.00210 (GELB's correction, A-G131), and GELB's table puts reportability at '~0.008' where one q_proj is first reached at 0.00628. A-G106 applies to both — a figure inside a rule must meet the rule's standard, and a floor overstated upward licenses a factor that is too permissive."
+  },
   "rasterDetectionFloor": "at alpha 0.002 the composite ROUNDS BACK to the medium exactly — rgb(6, 12, 17), projection 0.0000. Below about alpha 0.003 a leak is invisible to any metric because the triple does not change. That floor is the raster's, not the metric's, and it bounds what any chroma instrument can be asked for."
  },
  "finding2_metricRobustness": {
