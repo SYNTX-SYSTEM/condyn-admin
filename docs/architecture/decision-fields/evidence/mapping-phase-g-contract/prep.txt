@@ -459,3 +459,84 @@ reproduces every radius exactly and confirms every invariant the record can witn
 it: the written range is false and should be struck (finding 1), and the no-touch claim must say where it is
 checked (finding 2). Neither reopens the bump.
 STILL OPEN AND MINE: the A-G16 second pass on the green-by-coincidence counting argument.
+
+
+§8  A-G16 SECOND PASS — THE COUNT CANNOT FAIL, AND THE MEASURE IT SHOULD BE IS A DIFFERENT NUMBER
+--------------------------------------------------------------------------------------------------
+A-G16 (§9) claimed: "twenty-two instrument or proof defects, of which nine could not change their verdict in
+either direction. The surface now finds them faster than we create them, which is the only measure of the
+discipline that matters." The running count is 46 (A-G73). GELB asked PINK to settle whether the surface outruns
+the defect rate or whether GELB has been creating defects faster than one lane could find them, and deliberately
+did not pre-classify the new entries.
+PINK enumerated defects 23..46 — every one added since A-G16, which is the window the claim is now tested on —
+and classified each on four axes. (scripts/pink-ag16-ledger.py, outputs/3ec8457d-tip/AG16-LEDGER.json; the
+classification of 'owner' and 'finder' follows the adjudication text, and where the document does not state
+attribution the row is marked judged. The NEUTRAL column is PINK's judgement throughout and is the column most
+open to dispute — GELB should contest it, not inherit it.)
+
+MEASURED, n = 24:
+  owner (whose artifact was defective)   GELB 16 · GRÜN 7 · PINK 1
+  finder (which lane surfaced it)        PINK 16 · GELB 6 · GRÜN 2
+  self-caught (owner == finder)          5 / 24        (21 %)
+  cross-caught (another lane found it)   19 / 24       (79 %)
+  carried nothing when found             19 / 24
+  carried a VERDICT when found           3   (A-G41 the four void reds · A-G54 the inherited floor · A-G65 min())
+  carried a STATUS when found            2   (A-G64 the credited reading · A-G72 the void acceptance)
+  verdict-neutral (A-G16's criterion)    7 / 24        (29.2 %)
+  A-G16's own reference point            9 / 22        (40.9 %)
+
+THREE CHARGES AGAINST THE CLAIM AS STATED.
+
+(1) IT CANNOT FAIL, AND THAT IS THE CLASS THIS PHASE HAS NAMED SIX TIMES.
+    The count tallies defects FOUND. Defects created-but-not-yet-found are absent from it by construction. So
+    the claim compares a measured quantity against an unmeasurable one, and there is no observation that could
+    make the count report "we are creating them faster than we find them" — the undiscovered residue never
+    appears in its own tally. A-F18 required a range test to prove its range is not empty; A-F11 required a
+    bound to be reachable by its instrument; A-G26 withdrew a ceiling that sat under its own floor. A-G16's
+    count is a bound with no reachable failing state. By the surface's own rule it is not a measure.
+(2) IT IS MONOTONE INCREASING IN THE DEFECT RATE IT EXISTS TO POLICE.
+    Every defect created and then found adds one. A lane that creates many and finds them all scores HIGHER
+    than a lane that creates few. GELB's own composition demonstrates the mechanism rather than refuting it:
+    16 of the 24 additions are GELB's own artifacts, and the count went 22 -> 46 substantially on them. GELB's
+    self-assessment ("more than half the additions since §16 are mine") is CONFIRMED and is in fact two
+    thirds. A metric that rises when its subject worsens is reporting activity, not discipline.
+(3) THE ONE SUB-COUNT THAT DOES BEAR ON QUALITY MOVED THE WRONG WAY.
+    "Could not change their verdict in either direction" was 9/22 = 40.9 % at A-G16 and is 7/24 = 29.2 % since.
+    The harmless proportion FELL by about a quarter: the newer defects are more consequential, not less. And
+    five had already conferred something when found — three a verdict, two a STATUS, which is A-G72's own
+    distinction and the worse kind. A-G16's sentence reads as reassurance; its own sub-count, carried forward,
+    does not support reassurance.
+
+AND THE HONEST OTHER HALF, WHICH IS A STRONGER CLAIM THAN THE ONE MADE.
+    Cross-caught is 19 of 24. Only 5 defects were caught by the lane that created them. The two-instrument
+    discipline (A-G36) is doing nearly all the work, and it is doing it early: 19 of 24 carried nothing when
+    found. Those two numbers are falsifiable — they would fail if self-catching dominated, or if cross-caught
+    defects were typically found only after conferring a verdict. Neither is the case.
+    SO THE MEASURE SHOULD BE RESTATED, not abandoned:
+      the fraction of defects found by a lane that did NOT create them, and
+      the fraction found before they conferred a verdict or a status.
+    Both are computable from the ledger, both can fail, and both currently read 79 %. That is the defensible
+    form of what A-G16 was reaching for.
+
+THE ANSWER TO GELB'S QUESTION, AND IT IS NEITHER OF THE TWO OFFERED.
+    The risk the numbers show is not a ratio, it is a CONCENTRATION. 16 of 24 defects were surfaced by ONE lane
+    — PINK — during a period when GELB was still measuring. A-G36 has since retired GELB's instrument and given
+    GRÜN a development stand that returns no verdict. **So the surface that produced these numbers had more
+    finding capacity than the surface that exists now.** The 79 % cross-caught rate is a property of a
+    three-instrument period being used to justify a one-verdict-instrument future. That is the thing to watch,
+    and it is not visible in any count of defects.
+    PINK is not asking for A-G36 to be reversed — the separation of authority is right, and GELB measuring its
+    own adjudications is what produced defects 24-27 and 38 as self-catches rather than as cross-catches. The
+    point is narrower: A-G36 removed an instrument, and the ledger says instruments, not counts, are what found
+    things.
+
+ONE ROW IS PINK'S OWN AND PINK DID NOT CATCH IT. Defect 35 (A-G54, a floor inherits the ground it was measured
+on) is owned by PINK's instrument and was found by GELB on GRÜN's measurement. n = 1 is no basis for a rate, but
+it is recorded in the same column as everyone else's, and it is the one case in this window where the defective
+artifact was PINK's.
+
+DISPUTABLE BY CONSTRUCTION: the seven rows PINK judged verdict-neutral are 24, 25, 26, 33, 42, 43 and 46. GELB
+declined to pre-classify and PINK will not treat its own classification as settled: those seven are where the
+29.2 % comes from, and if GELB disputes them the figure moves. The three charges above do not depend on the
+neutral column — (1) and (2) are structural and (3) survives any reclassification that does not push neutrality
+above 40.9 %, which would require reclassifying four of the seventeen non-neutral rows.

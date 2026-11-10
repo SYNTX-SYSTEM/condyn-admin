@@ -1,3 +1,4 @@
+16cc7e87f95bf50f255433dc311db7b75da19a5679b20a3255da575d053ed2fd  ./outputs/3ec8457d-tip/AG16-LEDGER.json
 73b6ee37858e717e471edc2856c403910e52fb497c39c46a97376b41b7b0cb81  ./outputs/3ec8457d-tip/FLOOR.json
 26bcc74d579065763094ee8673f8e06dd80d94bdb3449a9c07c2a8bff9d6d587  ./outputs/3ec8457d-tip/GLOW-TRAVEL.json
 86e963f677ab7ebb13281c349e2dde052557c5105d31b52dba1c880614302aee  ./outputs/3ec8457d-tip/HALO-MASK.json
@@ -6,7 +7,8 @@ d52e576fcc76a0a73680af9e9c3820af319650aae9e61ec4e8782bfed0e7f33c  ./outputs/3ec8
 813de366297e0319e9401473fd7fea13a864b14e30c3d56862d4e80bda1bf32d  ./outputs/3ec8457d-tip/TAXONOMY.json
 9fd668db1f8b8670177a9b8d32af7a0152c4c256783b4f469f97ae0bf2c68dbc  ./outputs/3ec8457d-tip/TIMING-ADEQUACY.json
 0c2f7f2d2d28ad3e45d5c024b79d6e54bf6baa763f86ca460016562c69981aaa  ./outputs/3ec8457d-tip/V11-REFERENCE.json
-29fc99032c108dc631e547e042b96b6e4af1d7987cbf55ede18c3c2fed9e03bc  ./prep.txt
+c36b7bcc3011ca47cca5dd9bd7887dd31b0624ffb735c0a97a77643f6b91a1be  ./prep.txt
+db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs
 ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink-glow-travel.mjs
