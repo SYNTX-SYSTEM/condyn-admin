@@ -696,9 +696,11 @@ export async function captureChroma(cdp, clip, N) {
  * 0.15, so even the most generous reconstruction fails to produce the number.
  */
 export const BOUNDS = Object.freeze({
-  "PG-1.semanticShare":      { value: 0.55,   origin: "PARTLY DERIVED — A-G143: G-1's own title, 'The space is dark and the bodies carry the light', yields >= 0.50 directly (if the bodies CARRY the light they carry most of it). The remaining 0.05 appears nowhere in the record. The only costless repair in the registry, and the derivation was in the obligation's own title all along." },
-  "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24" },
-  "PG-5.bodiesAtL0":         { value: 7,      origin: "ARGUED — PHASE_G §2 G-2: 'the existing CAPABILITY FIELD draws six'; a comparison, not a derivation" },
+  "PG-1.semanticShare":      { value: 0.55,   parents: [{ node: "G-1", quote: "G-1 · The space is dark and the bodies carry the light (inverts F-1)" }], origin: "PARTLY DERIVED — A-G143: G-1's own title, 'The space is dark and the bodies carry the light', yields >= 0.50 directly (if the bodies CARRY the light they carry most of it). The remaining 0.05 appears nowhere in the record. The only costless repair in the registry, and the derivation was in the obligation's own title all along." },
+  "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24",
+                                                  parents: [{ node: "layout-spec-v1.1.json", quote: "rho_drawn = drawn.min + (rho - body.min) / (body.max - body.min) * (drawn.max - drawn.min) … 34.2 … 54.6 field units: ≥ 56 … ≤ 92 px diameter at L0, 1920 × 1080, with the frame widened to hold every drawn body whole (PG-14)." }] },
+  "PG-5.bodiesAtL0":         { value: 7,      origin: "ARGUED — PHASE_G §2 G-2: 'the existing CAPABILITY FIELD draws six'; a comparison, not a derivation. SUSPENDED by A-G150: it stands in the code and carries the status 'set from a contradicted constant'.",
+                                                  parents: [{ node: "PG-16.crowding", quote: "This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks." }] },
   "PG-6.relationShare":      { value: 0.15,   origin: "UNDERIVED — PHASE_G §2 G-3 states >= 15 % with no derivation recorded" },
   "PG-10.swingFraction":     { value: 0.25,   origin: "CITED — A-G22 rests it on 'R17's ceiling is what keeps this calm' while the record never states R17's own numbers; it also restates a measurement of a tree A-G41 later voided. A mechanism is named and no quantity is taken from it." },
   "PG-10.weberCorridor":     { value: [0.10, 0.35], origin: "CITED — A-G22, same: R17's corridor is invoked, R17's numbers are not in the record" },
@@ -714,14 +716,96 @@ export const BOUNDS = Object.freeze({
    * reclassified, because reclassifying on a guess about a paper this lane has not read would be the mirror of
    * the post-hoc derivation A-G143 forbids.
    */
-  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED — R23 (the Bouma law of crowding, revised), PHASE_G §11. QUESTION: canonical Bouma is ~0.5; the record does not state where in R23's range 0.3 sits or why it rather than 0.5." },
+  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED-AND-CONTRADICTED — A-G145: a quantity IS taken from R23 and it is not the quantity the record states R23 gives. §10 says 'Critical spacing is roughly half the target\'s eccentricity (as free space, in Bouma\'s original form)'; §11 bounds at 0.3. A 40 % relaxation of the cited law, written eight minutes apart in one document. No reading of the paper was required — and A-G153 records that this lane missed it by going to the literature instead of to the record's own statement.",
+                                                  parents: [{ node: "R23", quote: "Critical spacing is roughly **half the target's eccentricity** (as free space, in Bouma's original form), it is far stronger in the periphery, and the revised law puts critical spacing **across parts, not objects** — so a body *and its collar of ticks* crowd each other internally." }] },
   "PG-17.coreOverGround":    { value: 1.45,   origin: "UNDERIVED, AND IT COLLIDES — A-G138: PHASE_G §11 states 1.45 x local ground with no derivation, and VOLUME.depthRatio is also 1.45 in an unrelated role. GELB does not claim the bound was taken from the constant and cannot establish it was not. A reader will assume a relation that may not exist." },
   "PG-17.monotoneExtentInR":  { value: 1.5,   origin: "CITED — PHASE_G §11 names R21's critical band of luminance gradients as the mechanism and takes no quantity from it. GELB's own guess (§41) and consistent with the §11 text." },
   "PG-19.markAboveGround":   { value: null,   origin: "WITHDRAWN UN-BEGUN — A-G141: the disjunction is not the negation of its conjunction, the contrast statistic is unnamed, and the connective makes the weakest escape decide" },
-  "PG-22.occupancy":         { value: 0.20,   origin: "FLAT, UNDERIVED SCALE — A-G93 made it flat per body after this lane falsified A-G44's 1/r three ways; the 20 % itself has no recorded derivation" },
+  "PG-22.occupancy":         { value: 0.20,   origin: "UNDERIVED — flat per body, A-G93 made it flat per body after this lane falsified A-G44's 1/r three ways; the 20 % itself has no recorded derivation" },
   "PF-15.ringBudget":        { value: 0.08,   origin: "UNDERIVED — A-G5" },
   "PF-15.ladderStep":        { value: 1.6,    origin: "ASSERTED — A-G2 called 1.64 asserted; the ladder's 1.6 inherits that status" }
 });
+/* ── A-G151: the dependency graph, so a status is INHERITED rather than recorded locally ───────────── */
+/**
+ * §43 A-G151, built to its six points. A-G140 stopped an INSTRUMENT laundering a bound; this stops a
+ * DOCUMENT laundering one through a chain, which is the same defect one level up.
+ *
+ * Ordering, strongest to weakest, and point 4 is the choice that needs its reason:
+ * DERIVED > CITED > ARGUED > ASSERTED > UNDERIVED > DERIVED-AND-CONTRADICTED.
+ * **DERIVED-AND-CONTRADICTED sits BELOW UNDERIVED** because "no origin" is better than "an origin that
+ * disagrees": the second carries a warrant it does not have. That is A-G138's ruling and the ordering agrees
+ * with it.
+ *
+ * An edge requires a VERBATIM quote of the sentence that creates the dependency (point 2) — an inherited
+ * status with no quoted claim is asserted, not inherited. Only CLAIMED derivations are edges: R17 and R21 are
+ * cited by PG-10 and PG-17 as mechanisms with no quantity taken, which is what CITED already encodes, so they
+ * are motivations rather than parents. Modelling them as parents would double-count the same fact.
+ */
+/**
+ * A-G151 point 3 gives six statuses; the registry uses two more and both needed placing, which this lane's
+ * first implementation did not do — and the failure mode was silent, which is the part worth recording.
+ *   PARTLY DERIVED sits between DERIVED and CITED: part of the value has a derivation and the rest has none,
+ *   which is stronger than a mechanism with no quantity and weaker than a full derivation.
+ *   INACTIVE is for a bound that is withdrawn, retired or re-formed: it has no value, so it has no provenance
+ *   to inherit and takes no part in the ordering.
+ * Unknown statuses are NOT silently ranked: the first version returned STATUS_ORDER.length for anything it did
+ * not recognise, which ranked PARTLY DERIVED and "FLAT, UNDERIVED SCALE" as WEAKER THAN EVERYTHING — a
+ * fail-weak default that looked like a conservative choice and was actually an unnoticed misclassification.
+ */
+export const STATUS_ORDER = Object.freeze(["DERIVED", "PARTLY DERIVED", "CITED", "ARGUED", "ASSERTED", "UNDERIVED", "DERIVED-AND-CONTRADICTED"]);
+export const INACTIVE_STATUSES = Object.freeze(["WITHDRAWN", "WITHDRAWN UN-BEGUN", "RETIRED", "RE-FORMED"]);
+/** Source nodes: whether the record states a quantity for them at all. */
+export const SOURCE_NODES = Object.freeze({
+  "R23": { status: "DERIVED-AND-CONTRADICTED", quantityInRecord: 0.5, note: "the record states 0.5 for the ORIGINAL form as free space, and says the REVISED law measures across parts rather than objects. A-G150 holds that no constant is therefore available for what PG-16 measures; this lane's reading of the same sentence is recorded in the phase-G README and differs." },
+  "G-1": { status: "DERIVED", quantityInRecord: 0.50, note: "the obligation's own title yields >= 0.50; the remaining 0.05 of PG-1's 0.55 appears nowhere" },
+  "layout-spec-v1.1.json": { status: "DERIVED", quantityInRecord: [56, 92], note: "the spec states the px range directly" }
+});
+/** Unrecognised statuses are reported, never silently ranked. */
+export const UNRECOGNISED_STATUSES = [];
+const statusRank = st => {
+  if (INACTIVE_STATUSES.includes(st)) return -1;                  // takes no part in the ordering
+  const i = STATUS_ORDER.indexOf(st);
+  if (i === -1 && !UNRECOGNISED_STATUSES.includes(st)) UNRECOGNISED_STATUSES.push(st);
+  return i === -1 ? STATUS_ORDER.length : i;
+};
+const localStatusOf = key => {
+  const raw = BOUNDS[key]?.origin ?? SOURCE_NODES[key]?.status;
+  if (raw === undefined) throw new Error(`ERR_INSTRUMENT_UNKNOWN_NODE:${key}`);
+  const head = raw.split(" — ")[0].trim();
+  const inactive = INACTIVE_STATUSES.find(x => head.startsWith(x));
+  return inactive ?? head.split(",")[0].trim();
+};
+/** Effective status = the weakest of the bound's own and ALL its ancestors' (point 5). */
+export function effectiveStatus(key, seen = new Set()) {
+  if (seen.has(key)) return { status: localStatusOf(key), chain: [key], cycle: true };
+  seen.add(key);
+  const own = localStatusOf(key);
+  const parents = BOUNDS[key]?.parents ?? [];
+  if (INACTIVE_STATUSES.includes(own)) return { status: own, chain: [key], inactive: true };
+  let worst = own, chain = [key];
+  for (const p of parents) {
+    const up = effectiveStatus(p.node, seen);
+    if (statusRank(up.status) > statusRank(worst)) { worst = up.status; chain = [key, ...up.chain]; }
+  }
+  return { status: worst, chain, cycle: false };
+}
+/**
+ * Point 6, the laundering check: a bound whose LOCAL status is stronger than its EFFECTIVE status must emit
+ * BOTH — or the graph has moved the laundering out of the document and into the instrument, which is where
+ * A-G140 started.
+ */
+export function statusOf(key) {
+  const local = localStatusOf(key), eff = effectiveStatus(key);
+  const laundered = statusRank(local) < statusRank(eff.status);
+  return {
+    bound: key, localStatus: local, effectiveStatus: eff.status, derivationChain: eff.chain,
+    parents: (BOUNDS[key]?.parents ?? []).map(p => ({ node: p.node, quotedClaim: p.quote })),
+    launderingDetected: laundered,
+    launderingNote: laundered
+      ? `LOCAL status ${local} is STRONGER than EFFECTIVE ${eff.status}, inherited through ${eff.chain.join(" <- ")}. Both are emitted (A-G151 point 6): reporting only the local one would move the document's laundering into this instrument.`
+      : null
+  };
+}
 /** The registry's own summary — the number A-G143 calls the hardest finding of the phase. */
 export function boundProvenanceSummary() {
   const byStatus = {};
@@ -731,7 +815,9 @@ export function boundProvenanceSummary() {
   }
   const total = Object.keys(BOUNDS).length;
   const derived = Object.keys(BOUNDS).filter(k => boundOf(k).derived).length;
-  return { total, derived, cited: Object.keys(BOUNDS).filter(k => BOUNDS[k].origin.startsWith("CITED")).length, byStatus };
+  const laundered = Object.keys(BOUNDS).filter(k => statusOf(k).launderingDetected).map(k => ({ bound: k, local: statusOf(k).localStatus, effective: statusOf(k).effectiveStatus, chain: statusOf(k).derivationChain }));
+  if (UNRECOGNISED_STATUSES.length > 0) throw new Error(`ERR_INSTRUMENT_UNRECOGNISED_STATUS:${UNRECOGNISED_STATUSES.join("|")}`);
+  return { total, derived, cited: Object.keys(BOUNDS).filter(k => BOUNDS[k].origin.startsWith("CITED")).length, byStatus, launderedThroughAChain: laundered };
 }
 /** Look a bound up and carry its origin into the output. A missing key throws rather than defaulting. */
 export function boundOf(key) {
