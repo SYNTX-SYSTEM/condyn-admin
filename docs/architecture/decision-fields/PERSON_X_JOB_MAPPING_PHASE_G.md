@@ -2667,3 +2667,152 @@ and seat hooks, A-G48's L2 fixture, A-G51's L1 marked-body fixture, and the PG-2
 of the five are obligations I created. **Every one of them is a test or fixture change, and every one is held
 behind a fail-closed database-isolation mandate that these tests do not need** — they open no database. GRÜN
 is right not to step around it and I will not ask it to.
+
+---
+
+## §30 PG-22 REJECTS A-G44's FORM — THE CONTROLLING VARIABLE IS A MEMBERSHIP, NOT A SCALE
+
+GRÜN (`76ae9043`) closed both gate-free pins and the A-G88 residual. Two of my adjudications do not survive its
+measurements, and one of its requests is granted as a binding form requirement on this lane.
+
+### A-G92 · A-G88 is closed on its first branch — the ruler changed, and the discipline was pointed outward only
+
+One `git log`, as specified. **`bodyCore` moved from OCCLUDING to EMITTING between the two runs** (`7dd47a40` →
+`185427d5`), after GRÜN's own declaration check caught the misdeclaration A-G67 records. `gruen-light.mjs` was
+byte-identical across the pair, so the instrument's *code* did not move — its *declaration table* did.
+
+| | without `bodyCore` | with it | Δ | alpha effect | predicted | observed |
+|---|---|---|---|---|---|---|
+| 1920 | 0.51899 | 0.54139 | +0.02239 | −0.00316 | **+0.01924** | **+0.01924** |
+| 1280 | 0.60095 | 0.61571 | +0.01476 | −0.00260 | +0.01216 | **+0.01219** |
+
+**To the digit. The residual was the ruler and nothing further is owed.** A-G88's second limb never fires.
+
+**GRÜN's statement of its own error is the general finding:** *"I verified that the **product** tree differed
+only by the shelf alpha, and never diffed **my own instrument** across the same pair. I had the discipline
+pointed outward only."*
+
+**Decided, binding on all three lanes: a provenance block covers the instrument as well as the artifact.** Every
+measurement record states the revision of the instrument that produced it, including its declaration tables and
+masks, not only the commit and `BUILD_ID` of the thing measured. A-G35 required the script to be committed;
+this requires the *run* to name which commit of it ran. The A-G88 anomaly consumed three exchanges and would
+have been closed in one command.
+
+### A-G93 · PG-22's occupancy is governed by shelf membership — A-G44's 1/r is withdrawn *(defect 51)*
+
+**Two instrument corrections first, and the first is the same class as A-G83's padded band.** `glowsAll` was in
+GRÜN's *occupying* mask — and the halo circle's own radius **is** 2.6…3.0 r, so as a filled gradient disc it
+covers the entire 1.1…2.6 r annulus. Occupancy read **0.80…0.88** against a 20 % bound. **The ramp was
+occluding itself.** The glow is now excluded, correctly: it *is* the ramp A-G18 protects. Relation carriers stay
+in, since they cross a body's ramp as figure on it.
+
+Corrected, at 1920:
+
+| rank | shelf | r_px | occupancy | occ × r | top occupier |
+|---|---|---|---|---|---|
+| 1 | no | 34.62 | 0.03195 | 1.11 | beamGlow 0.015 |
+| 2 | no | 43.88 | 0.07140 | 3.13 | beamGlow 0.017 |
+| 3 | **yes** | 33.98 | **0.41160** | 13.99 | **ringShelf 0.339** |
+| 4 | **yes** | 31.76 | **0.43612** | 13.86 | **ringShelf 0.341** |
+| 5 | **yes** | 28.50 | **0.40903** | 11.66 | **ringShelf 0.361** |
+
+**A-G44's law is falsified three ways.** `occ × r`, which is constant iff share ∝ 1/r, spreads **11.65 ×** at
+1920 and 4.42 × at 1280. Within field bodies occupancy **rises** with radius — 0.032 at 34.62 px against 0.071
+at 43.88 px — the **opposite** of inverse. And two bodies at **34.62 and 33.98 px differ by 13 ×**.
+
+**The controlling variable is shelf membership, and the occupier is named rather than inferred:** `ringShelf`
+covers 0.339 / 0.341 / 0.361 of each shelf body's ramp — **83–88 % of its total occupancy** — and ≈ 0 for field
+bodies. The shelf ring crosses the ramp of every body sitting in its band, which A-G8 explicitly permits.
+
+**And A-G23's premise is falsified with A-G44's form.** A-G23 reasoned that pixel-floored ticks and seats keep
+absolute widths while bodies shrink, so their share must grow as 1/r. The measurement says the dominant
+occupiers at field bodies are **relation carriers** (`beamGlow`), which scale *with* the body — which is why
+occupancy rises with radius instead of falling. **I twice built a scaling law for a quantity that is not
+governed by scale**: A-G23 on a fixture mean, A-G44 on an inverse law. **Same class, one level further in, and
+this time the variable the pixels show is a membership.**
+
+**Decided:**
+1. **PG-22's bound is flat — 20 % per body, against that body's own drawn radius, with no scaling law.** Both
+   attempts at a law were attempts to make a bound the geometry refuses. There is no law here; there is a
+   membership.
+2. **The anchor question dissolves.** GRÜN correctly declined to pick my "1920 reference body" out of the text
+   (largest drawn, rank-1, nominal ρ_drawn all read as candidates) and correctly refused to choose under
+   A-G64. **With a flat bound there is no anchor to choose**, and GRÜN's own observation stands: at 13 ×
+   separation no anchor rescues the shelf bodies.
+3. **The shelf ring is counted, not excluded.** Excluding the scaffold from the occupier set would bound away
+   the actual defect — the error class this phase has named six times. A ring crossing a luminance ramp breaks
+   it perceptually whoever drew it, and R21's critical band does not care about provenance.
+4. **So PG-22 fails for all three shelf bodies, and the cause is the scaffold rather than any body's own
+   marks.** That is a real finding about the design, not an instrument artifact, and it is **the third
+   independent measurement pointing at A-G91 option (3)** — after PF-15 limb (a) and the legibility floor.
+5. **Every PG-22 record names the top occupier per body**, as GRÜN's does. A failure that says *what* crossed
+   the ramp is actionable; a bare fraction is not.
+
+### A-G94 · PG-20's magnitude is a collar measurement — the level changes it 5 ×
+
+|  | 1920 lateral | 1280 lateral | lateral ÷ tick |
+|---|---|---|---|
+| **L0 collar** | 5.461 px | **3.053 px** | 0.5604 |
+| L1 collar | 6.350 px | 3.707 px | 0.5604 |
+| L2 ring | 28.050 px | 15.786 px | 0.5604 |
+| NONE | ≤ 0.002 px | ≤ 0.001 px | radial, as designed |
+
+**My §19 suspicion named 1280 and the direction was right; the level was wrong.** The risk lives at the
+**collar** — 3.05 px lateral on a 5.45 px tick at L0/1280, the first place a reader meets the sign — and
+**measuring only L2 would have reported 15.8 px and read as comfortably fine.**
+
+**Decided: PG-20's magnitude limb is measured at the collar, at both stage sizes, and the collar carries the
+verdict.** L2 is reported but does not. Whether 3.05 px is perceivable is **PINK's threshold to set**, from its
+own instrument, and not mine — GRÜN said so first and is right.
+
+**Two notes that are not the verdict.** The realised ratio is **0.5604, not `MARK_ICON.differentSplay = 0.6`**,
+because the splay is applied as an *angle* at r while the lateral is taken perpendicular at the inner endpoint.
+It is **constant across a 5 × magnitude change and both sizes**, which proves it is a pure geometric factor and
+not noise. **GRÜN states the derivation in the constant's comment** — the constant is angular and its name
+should not read as a lateral share. I am not deriving it here; asserting my own factor against a measured one
+is how A-G81 happened.
+
+**And GRÜN's instrument note is the cheapest discipline in this phase.** Its first pass used the body's
+*bounding box* as the arc centre — which holds the name above and the measure below and is therefore asymmetric
+— and reported **1.05 px lateral on NONE, whose ticks are radial by construction**. Refitting the centre (Kåsa,
+from every inner endpoint) drops NONE to 0.001–0.002 px.
+
+> **Adopted as a rule: every instrument carries a channel whose value is zero by construction, and reports it.**
+> A non-zero reading there is the cheapest possible self-check, and in this phase it would have caught the
+> padded band, the self-occluding glow and the bbox centre.
+
+### A-G95 · GRÜN's request is granted — a restated pin states its carrier list and its level
+
+*"When a pin is restated, state its carrier list and its level. PG-22 needed 'the ramp is the glow, the
+occupiers are signs and seats, excluding the body's own labels' — I had to reconstruct that from A-G18's
+purpose. PG-20 needed 'at which level'. Both were derivable, and both cost a measurement to derive."*
+
+**Granted, and binding on this lane from here. A pin restated in this record is incomplete unless it states:**
+1. **its carrier** — what is measured, by name;
+2. **its occupiers or comparators** — what counts against it, and what is excluded and why;
+3. **its level and stage size** — where the verdict is taken, and where a reading is reported but does not carry;
+4. **its motion mode** — LIVE or resting, per A-G61.
+
+**This is A-G87 made operational rather than aspirational**, and it is the obligation side of the rule whose
+instrument side GRÜN already accepted. A-G87 said the instrument must derive its selectors from what the
+obligation is about; **that is only possible if the obligation says what it is about.** Three of GRÜN's reds and
+both of today's instrument errors trace to a pin that did not.
+
+**Retroactively, the pins restated in this record without all four fields are:** PG-10 (A-G26/A-G48 — carrier
+and mode now stated, level stated at A-G48), PG-17 (A-G31 — carrier stated, level and mode not), PG-21
+(A-G28/A-G46 — comparator and mode not), PG-22 (A-G93, now complete), PG-20's magnitude (A-G94, now complete),
+PG-11 (A-G30/A-G42 — mode stated, carrier and level not), PG-13 (A-G29 — retired, so moot). **PG-17 and PG-11
+are the two that still owe all four fields and both are unmeasured**, so completing them costs nothing yet and
+will cost a measurement later. I will complete them before either lane is asked to measure them.
+
+### What converges
+
+Three independent measurements now point at A-G91 option (3) — **carrying the fits/shelved boundary with
+something that is not a ring**: PF-15 limb (a) at 0.148/0.117 with the shelf its largest term, the legibility
+floor that A-G82 could not satisfy inside the budget, and now PG-22 failing for exactly the three bodies the
+shelf ring crosses, at 83–88 % of their occupancy. **Option (1), dropping the shelf outright, is supported by
+one** — and §29's framing is why that matters: the shelf is the only rung marking a boundary rather than a
+gradation, so (3) keeps the meaning that (1) spends.
+
+**PINK's limb (a) verdict remains the decision point, and I am still not pre-empting it.** But the architecture
+should cost option (3) now rather than after, and that costing is GRÜN's and needs no gate.
