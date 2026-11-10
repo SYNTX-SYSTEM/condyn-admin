@@ -1606,3 +1606,136 @@ so A-G55 moves it before it means anything. And Weber here is defined per mean a
 it otherwise, and that is a finding to report, not something to reconcile** (A-G36 point 4). The straddle at
 PG-1 is the phase's founding obligation sitting on the fence, and it will be decided by PINK on a corrected
 denominator, not by either lane's present reading.
+
+---
+
+## §22 PG-1 PASSES — THE FOUNDING OBLIGATION IS GREEN, MEASURED BY THE VERDICT LANE
+
+PINK committed `7e31cf26` on `3ec8457d`, on its own build, with scripts, outputs and manifest. **This is the
+first verdict on a phase-G artifact, and the phase's founding obligation is met.**
+
+### A-G58 · PG-1 is GREEN at both sizes and both motion settings
+
+| | 1920 reduce | 1920 LIVE | 1280 reduce | 1280 LIVE |
+|---|---|---|---|---|
+| **PG-1 excl. rings** | 0.62610 | **0.63857** | 0.72348 | **0.73335** |
+| incl. rings | 0.69772 | 0.71180 | 0.79327 | 0.80556 |
+
+Against ≥ 0.55. Carrier set corrected per F-G1 (glows via `.mf-halo`, plus `.mf-travel` and `.mf-beam-glow`),
+rings excluded per A-G5, by suppression, first measurement per A-G41 with no baseline sought.
+
+**The inversion is complete, as a measured fact.** At phase F the coordinate rings alone (5.25 %) out-lit every
+relation combined (4.55 %). Here the rings are 0.083 against a semantic 0.639 — **the relations out-light the
+scaffold by about 7.7 ×.** §0 named the defect as a number: *"95 % of the field's light is ground … that is
+'eine große blaue Zielscheibe' as a number."* It is no longer the case, and it is no longer an impression either
+way.
+
+**The largest single term is the glows, at 0.222** — which is precisely why F-G1 mattered. My
+`mapping-glows` instruction would have captured only the field half of the biggest term in the obligation.
+
+**PG-1 passes with A-G55's defect uncorrected**, the occluding body group included at its negative value
+(−0.085/−0.098 at 1920). PINK reported the uncorrected arithmetic deliberately as the conservative direction:
+**correcting it can only raise the figure.** A-G55 stands as a method fix, not as a condition on this verdict.
+
+A-G55 is also now **independently reproduced on a different mask** — GRÜN found the sign flip on `bodyContent`,
+PINK on `[data-mapping-body]`, the whole body group: −0.085 / −0.098 at 1920 against **+0.119 / +0.103 at
+1280**. Two lanes, two masks, same instability.
+
+### A-G59 · A-G26's limb returns as written — PINK withdrew its own charge
+
+PINK measured the in-disc static floor on `3ec8457d`, 24 frames, `reduce`, with **0 animated elements asserted**
+so it is a floor and not suppressed signal:
+
+| | 1920 | 1280 | phase F, same basis |
+|---|---|---|---|
+| **disc (r ≤ 1.0) max** | **0.000000** | **0.000000** | — |
+| quiet mid disc .3–.6 | 0.000000 | 0.000000 | 0.005917 |
+| whole region max | 0.005939 | 0.006077 | **0.031872** |
+| mean \|step\| | 3.34e-07 | 3.63e-06 | 3.62e-05 |
+
+**Exactly zero inside the disc at both sizes**, every non-zero swing at r/R > 0.98. GRÜN's reading is confirmed
+on an independent instrument and an independent build. PINK's own words: *"my charge against PG-10's ceiling
+was true at `9cc06f84` and is false at `3ec8457d`."*
+
+**Decided: A-G26's suspension is lifted and PG-10's max-swing limb returns as written (≤ 0.030).** The
+distributional ceiling specified in A-G26 is retired as unnecessary — the simpler bound is admissible on this
+ground, and A-F11 is satisfied with a floor five orders under the bound. A-G54's general rule is confirmed by
+both lanes and stands: **a floor is a property of a build, not of a lane.**
+
+**PINK's additive caveat is binding, not a hedge.** PG-10's carrier is `.mf-wave-halo`, and A-G8 accepted that a
+shelf body's drawn rim reaches ≈ 546 past the field ring at 500 — so glow pixels at r/R > 0.98 sit on a ≈ 0.006
+floor rather than 0. Still 5 × under the ceiling, so the limb holds, but **the per-run floor must be measured on
+the carrier mask, not on the disc**, or the limb inherits a floor it was never measured against. A-F20's
+per-run rule already requires it; this is the specific way it bites and it goes in every PG-10 record.
+
+### A-G60 · Per-group attributions are never summands — binding on every record
+
+PINK: the attribution is **non-additive in both directions.** At 1920 the sum of parts is 0.539 against a joint
+0.639 (the occluder cancels emitters when hidden alone); at 1280 the sum is 0.929 against a joint 0.733
+(overlapping carriers double-count).
+
+**Decided: a per-group attribution is an attribution and never a summand. No record may add them, and every
+record that prints them states this.** The overlap is not a flaw to be removed — PG-17's glow annulus runs
+1.1…2.6 r and PG-15 puts rings behind bodies, so carriers overlap by design, which is PINK's Q1 surviving in
+yet another form. An instrument that reported additive shares on this field would be reporting a fiction.
+
+### A-G61 · The LIVE figure is primary — a resting field is a different claim
+
+Travel reads 0.00000 under `reduce` (it is `visibility: hidden` there) against +0.013/+0.015 LIVE. Small, and it
+moves no verdict here. But **a `reduce`-read PG-1 omits a semantic channel by construction.**
+
+**Decided: the LIVE figure, period-averaged across the full 10 s, is the normative PG-1.** A `reduce` reading is
+a statement about the *resting* field's light and must say so in the record. The field's light includes its
+motion — G-3 makes the travelling light part of what a relation is, and an obligation about how much light the
+semantics carry cannot exclude a semantic channel for the convenience of a stable frame. PINK's declaration is
+adopted as written.
+
+### A-G62 · The shelf floor limb fails on arithmetic — A-G5 over-corrected *(defect 38)*
+
+A-G56 gave PF-15 a floor limb: the shelf's engraved minimum must exceed the stage ground by at least the run's
+own static floor. **With the in-disc floor now measured at 0, that floor is 0, and the limb reduces to "must
+exceed the ground at all."** PINK's reading is that this is no longer a noise question but a **quantization**
+one. I computed it out:
+
+| | |
+|---|---|
+| plate `rgb(3,5,8)` | L = 0.001454319 |
+| shelf engraved minimum | L = 0.001453100 |
+| difference | **1.219e-06** |
+| smallest single 8-bit code step from the plate | **2.191e-05** (blue channel) |
+| difference as a fraction of one code | **0.0556** |
+
+**At its darkest angle the shelf ring is byte-identical to the plate it sits on.** Not subordinate, not dim —
+the same byte. The limb therefore **fails on arithmetic, before any measurement**, and that is a stronger
+finding than a failed measurement would have been.
+
+**Decided: A-G5 over-corrected, and `RING_LUMINANCE.shelf = 0.02` is insufficient at the dark angle.** The
+shelf's engraved minimum must differ from the stage ground by **at least one 8-bit code** — it must be a
+different byte — which on this plate is ≥ 2.191e-05 above it. That is derivable rather than chosen, and it is
+A-F31's own near-black discipline applied to the ring the scaffold most needed subordinating.
+
+This does not restore the shelf to phase F's 0.05. **The requirement is a floor, not a return**: the shelf stays
+the dimmest rung, it stays a step below best-fit, and it stays inside PF-15(a)'s 8 % budget — it simply has to
+*exist* at every angle. GRÜN raises the alpha to the smallest value that clears one code at the darkest angle
+and reports the value; PINK then re-asks A-G34 with a shelf that is actually present, since limb (b)'s ladder
+has been measuring a rung that vanishes.
+
+### PINK's baseline survival table — adopted as authoritative
+
+My A-G54 prerequisite, answered. Recorded here because it governs every phase-G run:
+
+| baseline | verdict |
+|---|---|
+| `noise-floor.json` 0.031872 | **does not survive** in-disc; retained only as a statement about the translucent ground and the host region |
+| `floor-regions.json` mark_AAedge 0.02751 | **does not survive** — mark edges inside the disc now read 0 |
+| `floor-regions.json` quietMidDisc 0.005917 | **does not survive** — now 0.000000; this was the host-through-translucent-ground term, and **A-F4 predicted its removal** |
+| `floor-regions.json` outsideDisc_host 0.009368 | **survives in kind** (0.0059/0.0049) but is outside the field's scope per A-F4 |
+| `PF8-PERCLASS2.json` bracketed-null amplitudes | **do not survive** — both ground and taxonomy changed; re-measure per class |
+| A-F21's window result | **the rule survives, the numbers do not** — "the floor falls until ~2 resolution cells then flattens" is a property of the estimator and the frequency spacing, hence build-independent; the absolute values are ground-dependent and retired |
+| A-F20 adequacy rule | **survives**, re-measured and far easier here |
+| A-F30 (tier B/C NOT RUN ≤ 1.5 px) | **survives as geometry**; phase-G stroke widths to be re-checked before applying |
+| A-F6 / PF-15 1.636 / 0.630 / 0.861 | **do not survive** — wrong statistic *and* wrong ground. **Superseded, not merely stale.** |
+
+The distinction in A-F21's row is the one worth keeping: **a rule about an estimator is build-independent; a
+number about a ground is not.** That is the sharpest form of A-G54 and it should be how every future baseline is
+filed.
