@@ -65,6 +65,8 @@ From `evidence/mapping-phase-f-contract/scripts` (PINK's, committed, manifest 43
 | two render modes, `travel-masked` / `travel-drawn` | **A-G42**: A-G13 made the travel's period exactly the breath's, so the travel's coherent energy lands on the **same harmonics** the firewall uses. PF-8 and PG-11 therefore need mutually exclusive renders, and neither may reuse the other's frames. Supported from the start rather than retrofitted. |
 | the **engraved minimum** statistic | **A-G45**: per angle the radial peak, then the **minimum over 720 angles**. A max over a ring band measures a **body crossing it** — PINK's shelf once read 0.58 that way. |
 | per-body **local** ground | the §13 lesson: a statistic written for one ground reads differently on another. The glow carrier is defined against each body's own surround, not a disc-wide median. |
+| **emitting / occluding** class declaration | **A-G55**: a semantic element that *removes* light cannot be scored by a light-removal difference. Each class is declared, occluders are excluded with the exclusion recorded per run, and the measured sign is checked against the declaration — a mismatch is emitted as a finding. |
+| the carrier is the **breathing** glow | the shelf is a still ring (A-F8), so a shelf glow cannot swing by design. Mixing it into PG-10's carrier counts a pixel that cannot swing in the denominator of "fraction of pixels that swing". |
 | provenance block in every output | **A-G47 point 3**: PINK must *check* the input, not trust it. |
 
 ## 3 · What is measured, and what is deliberately not
@@ -182,6 +184,45 @@ was not clean while it ran and a reading whose provenance is ambiguous is worth 
 PINK's `93c47e03` build (`BUILD_ID YUIyV6i0VG5cALibnbi58`) is untouched (A-G47 point 2). If PINK wants a
 build of the pure `3ec8457d` product rather than of this tip, this lane can produce one on request; it has not
 done so unasked, because that would put a third production build on the machine.
+
+## 6a · Readings this instrument has SUPERSEDED, and why
+
+A-G35 makes a committed number a standing claim, so the ones this lane has withdrawn are named here
+rather than left to be inferred from a newer file. All four were reported to GELB on 2026-11-09 and
+**none of them should be read as current.**
+
+| reading | reported | why it is superseded |
+|---|---|---|
+| **PG-1** semantic share | 0.517 (1920) / 0.584 (1280) | computed with `[data-mapping-body-content]` in the set — **A-G55**. That group is MIXED (`:689`): it wraps the firewall's opaque **black seat** — the field's one occluder, measured at **−0.515** of its light — together with the core, body shape, collar and text, which is why its own share read **−0.084 at 1920 and +0.119 at 1280**. The sign flipped with which pixels the core happened to cover, so the class could be declared neither emitting nor occluding. |
+| **PG-6** relation share | 0.163 / 0.194 | the relation class was `[data-beam]`, which **is not a beam count**: every *arc* carries the sign table's `beam` word as an attribute (`arcSign` emits `data-beam={s.beam}`). Measured live — L0 22 `[data-beam]` of which **3** are drawn beams, L1 19 of which **0** are. The share carried the arcs' light. |
+| **PF-15 limb (a)** | 0.141 / 0.115 | same denominator defect as PG-1: the semantic light included `bodyContent`. |
+| **PG-10** limbs 1 and 2 | 0.296 / 0.272 and 0.143 / 0.140 | the carrier was every glow (`.mf-halo`). At L0 **three of five glows belong to shelf bodies** and are still by design (A-F8), so both limbs were diluted downward. The carrier is now `.mf-wave-halo`. |
+
+**Unaffected, and therefore still current:** PG-3's rendered diameters (57.0–87.77 px at 1920,
+30.37–46.76 px at 1280, model path and rendered-shape path agreeing to the hundredth), the PF-15
+ladder on the engraved minimum, the shelf's engraved minimum against the stage ground, and the
+in-disc static floor of 0.000. None of those touch the corrected selectors.
+
+**How the defects were found.** Not by re-reading the source — by probing the live DOM to answer
+A-G51's invitation to contest it. The same probe that showed L1 draws zero beams (so its travel of 0
+is correct, not a build gap) showed that `[data-beam]` counts arcs, and the same glow count that
+reproduced A-G49's 2-of-5 showed that three of the five glows cannot breathe. One probe, three
+corrections, two of them against this lane's own published numbers.
+
+**One more correction, and it is this instrument's declaration rather than its arithmetic.** `bodyCore`
+was first declared OCCLUDING on G-1's own words — *"a dark core, a luminous rim"*. It is not
+light-removing: `mf-core` is `rgb(205, 240, 255)` at alpha 0.16 → 0.067 (`:857`), i.e. dark *relative
+to the rim* and additive over the black seat under it. The declaration/measurement check flagged it on
+its first run (+0.0429 at 1920, +0.0280 at 1280 against a declared OCCLUDING) and it is now declared
+emitting. That is the argument for A-G55 asking for a **declaration** and not a sign test alone: a bare
+sign test would have silently absorbed the error, and a bare declaration would have carried it.
+
+**A-G49, recorded against this instrument.** The glow hook is `.mf-halo` — a **className**, the exact
+channel A-G49 deprecates — and it is nonetheless the only complete hook today, because
+`[data-testid="mapping-glows"]` holds `fieldHalos` only (`:923`) while `shelfHalos` render in an
+anonymous `<g>` (`:884`). Measured live: `.mf-halo` 5, inside the container 2, outside it 3. This
+lane's readings escaped the gap only by using the fragile channel. The `data-*` hooks A-G49 requires
+are a product change and are held with A-G43 until the suite can run.
 
 ## 7 · Boundary
 

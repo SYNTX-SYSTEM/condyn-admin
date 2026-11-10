@@ -215,10 +215,18 @@ export const CLASS_SELECTOR = Object.freeze({
   beams: '[data-testid^="mapping-beam-"]',
   nodes: "[data-mapping-node]",
   sectorText: "[data-mapping-sector]",
-  /** OCCLUDERS — these REMOVE light. Suppressing one raises the field's luminance, so a share computed as
-   *  (full − suppressed)/full books them negative (A-G55). The body's opaque black seat and its deliberately
-   *  dark core (G-1: dark core, luminous rim). Both are classNames today; A-G49 applies to them too. */
+  /** THE occluder — it REMOVES light. Suppressing it raises the field's luminance, so a share computed as
+   *  (full − suppressed)/full books it negative (A-G55): the firewall's opaque BLACK seat under every sign
+   *  (F-6 / A-F5), measured at −0.515 of the field's light at 1920. A className today; A-G49 applies. */
   bodySeat: ".mf-seat",
+  /**
+   * EMITTING, against this instrument's own first declaration. G-1's prose — "a dark core, a luminous rim" —
+   * reads as light-removing, and it is not: `mf-core` is `rgb(205, 240, 255)` (INK, near-white) at
+   * `VOLUME.coreAlpha` 0.16 falling to 0.067 (`:857`). It is DARK RELATIVE TO THE RIM and ADDITIVE over the
+   * black seat beneath it. The declaration/measurement check caught the misdeclaration on its first run
+   * (+0.0429 at 1920, +0.0280 at 1280 against a declared OCCLUDING) — which is the check doing its job, and
+   * the reason A-G55 asks for a declaration rather than a sign test alone.
+   */
   bodyCore: ".mf-core",
   ringBest: '[data-testid="mapping-ring-best"]',
   ringField: '[data-testid="mapping-ring-field"]',
@@ -236,8 +244,8 @@ export const RING_CLASSES = Object.freeze(["ringShelf", "ringBest", "ringField",
  * +0.119 at 1280 — the sign flipped with which pixels the core happened to cover. It is decomposed here into
  * `bodyOutlines` + `bodyNames` + `arcs` (emitting) and `bodySeat` + `bodyCore` (occluding).
  */
-export const EMITTING_CLASSES = Object.freeze(["glowsAll", "bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]);
-export const OCCLUDING_CLASSES = Object.freeze(["bodySeat", "bodyCore"]);
+export const EMITTING_CLASSES = Object.freeze(["glowsAll", "bodyCore", "bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]);
+export const OCCLUDING_CLASSES = Object.freeze(["bodySeat"]);
 /** Kept as the name the earlier readings used, now meaning the emitting set (A-G55). */
 export const SEMANTIC_CLASSES = EMITTING_CLASSES;
 /** G-3's relations: the coupling beams, by their own testid — see the `beams` note above. */

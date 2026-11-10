@@ -1,0 +1,281 @@
+{
+ "reading": "GRÜN development reading · PG-10's two surviving limbs on the visible glow",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "priorBaseline": "NONE — A-G41 voided §12/§14's readings; A-G26 withdrew the max-swing limb; A-G37 instructs a FIRST measurement and forbids reproducing 0.0297.",
+ "renderMode": "travel-masked",
+ "renderModeNote": "travel DRAWN, excluded by its own mask (A-G42 point 1 / A-G32). PG-11's travel-drawn-on-relation-pixels pass is a SEPARATE run and may not reuse these frames (A-G42 point 3).",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "7dd47a4010e85c0c372f31b30c57a7b51da7ee80",
+  "headShort": "7dd47a40",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/README.md"
+  ],
+  "productDeltaFrom3ec8457d": "NONE",
+  "untrackedProductFiles": [],
+  "buildId": "ymq-3TimwOQHr0BIsToOx",
+  "measuredAt": "2026-11-10T17:07:49.781Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "masksPass": {
+   "overlayInitial": 1,
+   "overlayFinal": 0,
+   "dismissAttempts": 1,
+   "centre": {
+    "topTag": "circle",
+    "insideSvg": true,
+    "overlayAbove": null
+   },
+   "pageErrors": [],
+   "api": [
+    "200 /api/career/analyses/CAN_…/investigation",
+    "200 /api/career/job-pools",
+    "200 /api/career/analyses/CAN_…",
+    "200 /api/career/analyses/CAN_…/auto-match",
+    "200 /api/career/analyses/CAN_…/job-ranking"
+   ]
+  },
+  "livePass": {
+   "overlayInitial": 1,
+   "overlayFinal": 0,
+   "dismissAttempts": 1,
+   "centre": {
+    "topTag": "circle",
+    "insideSvg": true,
+    "overlayAbove": null
+   },
+   "pageErrors": [],
+   "api": [
+    "200 /api/career/analyses/CAN_…/investigation",
+    "200 /api/career/job-pools",
+    "200 /api/career/analyses/CAN_…",
+    "200 /api/career/analyses/CAN_…/auto-match",
+    "200 /api/career/analyses/CAN_…/job-ranking"
+   ]
+  }
+ },
+ "viewport": "1920x1080",
+ "region": "924x924",
+ "discPixels": 545417,
+ "clipMatch": true,
+ "frames": 165,
+ "spanS": 57.7,
+ "adequacyGuard": {
+  "cadenceMs": 352,
+  "nyquistHz": 1.421,
+  "maxFittedFreqHz": 0.35,
+  "limit": 1.279,
+  "adequate": true
+ },
+ "windowRule": {
+  "seconds": 57.7,
+  "deltaFHz": 0.05,
+  "requiredSeconds": 57,
+  "satisfied": true
+ },
+ "definitions": {
+  "carrierIsBreathingGlowOnly": "the carrier is the BREATHING glow (.mf-wave-halo). Shelf glows are still by design (A-F8) and are excluded; at L0 three of five glows are shelf glows, so including them diluted both limbs in this instrument's first reading.",
+  "carrier": "A-G22's carrier: a body's own glow-mask pixels (inside haloFar) whose base luminance ≥ 2 × that body's LOCAL ground; local ground = median of disc pixels in the annulus [3.2 r, 4.0 r] that are neither glow, mark nor travel",
+  "localGroundCaveat": "per body, not a single disc-wide ground — the §13 lesson was that a statistic written for one ground reads differently on another",
+  "medium": "disc pixels that are neither glow, mark nor travel; deterministically subsampled by stride for tractability",
+  "swing": "per-pixel (max − min) over the live window",
+  "weber": "per-pixel swing ÷ that pixel's own temporal MEAN (named explicitly: /mean, not /min — a definitional choice PINK may differ on, which A-G36 point 4 makes a finding rather than something to reconcile)",
+  "limb1": "fraction of carrier pixels with swing ≥ 0.004 (bound ≥ 0.25)",
+  "limb2": "median Weber fraction over carrier pixels (bound [0.10, 0.35])",
+  "withdrawnLimb": "the 0.030 max-swing ceiling is NOT evaluated — withdrawn by A-G26",
+  "ceilingNotMeasured": "A-G26's replacement ceiling needs p999.9 on CO-REGISTERED frames; co-registration does not exist in this instrument, so swing_p9999_uncoregistered is MATERIAL ONLY and is not that ceiling"
+ },
+ "PG10_limb1_fracCarrierSwingGe0004": 0.52038,
+ "PG10_limb1_boundForReference": ">= 0.25",
+ "PG10_limb2_medianWeber": 0.28644,
+ "PG10_limb2_boundForReference": "[0.10, 0.35]",
+ "carrier": {
+  "px": 35958,
+  "swing": {
+   "n": 35958,
+   "mean": 0.0076109,
+   "p50": 0.0043392,
+   "p90": 0.017839,
+   "p99": 0.028812,
+   "p999": 0.23532,
+   "p9999": 0.31515,
+   "max": 0.39467,
+   "min": 0
+  },
+  "weber": {
+   "n": 35958,
+   "mean": 0.28662,
+   "p50": 0.28644,
+   "p90": 0.4187,
+   "p99": 0.46935,
+   "p999": 0.99902,
+   "p9999": 1.499,
+   "max": 1.7467,
+   "min": 0
+  },
+  "fracSwingGe0004": 0.52038,
+  "swing_p9999_uncoregistered": 0.31515,
+  "weberMedian": 0.28644
+ },
+ "medium": {
+  "px": 107393,
+  "swing": {
+   "n": 107393,
+   "mean": 0.00084599,
+   "p50": 0.00030053,
+   "p90": 0.00059659,
+   "p99": 0.0007609,
+   "p999": 0.23735,
+   "p9999": 0.6365,
+   "max": 0.68048,
+   "min": 0
+  },
+  "weber": {
+   "n": 107393,
+   "mean": 0.080065,
+   "p50": 0.084442,
+   "p90": 0.16782,
+   "p99": 0.25673,
+   "p999": 1.8044,
+   "p9999": 4.9555,
+   "max": 6.0366,
+   "min": 0
+  },
+  "fracSwingGe0004": 0.00303,
+  "swing_p9999_uncoregistered": 0.6365,
+  "weberMedian": 0.08444
+ },
+ "stillGlow_shelfBodies": {
+  "px": 25051,
+  "swing": {
+   "n": 25051,
+   "mean": 0.0014819,
+   "p50": 0.000043941,
+   "p90": 0.0012976,
+   "p99": 0.012625,
+   "p999": 0.31931,
+   "p9999": 0.58245,
+   "max": 0.58605,
+   "min": 0
+  },
+  "weber": {
+   "n": 25051,
+   "mean": 0.10412,
+   "p50": 0.0039177,
+   "p90": 0.1492,
+   "p99": 2.1084,
+   "p999": 2.9225,
+   "p9999": 3.0561,
+   "max": 3.0931,
+   "min": 0
+  },
+  "fracSwingGe0004": 0.04746,
+  "swing_p9999_uncoregistered": 0.58245,
+  "weberMedian": 0.00392,
+  "note": "a shelf body's glow is STILL by design (A-F8); reported beside the carrier, never inside it. An earlier reading of this instrument mixed these in and diluted both limbs."
+ },
+ "coherentEnergy": {
+  "carrier": {
+   "px": 35958,
+   "pooledSignal": 0.0034724,
+   "pooledNull": 0.000023311,
+   "pooledRatio": 148.96,
+   "perPixelP99": 0.014071,
+   "perPixelNullP99": 0.00017865,
+   "perPixelNullP50": 0.000038773
+  },
+  "medium": {
+   "px": 107393,
+   "pooledSignal": 0.000067368,
+   "pooledNull": 0.0000022559,
+   "pooledRatio": 29.86,
+   "perPixelP99": 0.00051035,
+   "perPixelNullP99": 0.000022701,
+   "perPixelNullP50": 0.0000073402
+  },
+  "harmonics": [
+   0.1,
+   0.2,
+   0.3
+  ],
+  "nullFreqs": [
+   0.05,
+   0.15,
+   0.25,
+   0.35
+  ]
+ },
+ "perBody": [
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "rank": 1,
+   "shelf": false,
+   "requiredGaps": 1,
+   "drawnRadiusPx": 34.62,
+   "localGround": 0.0037349,
+   "groundSamples": 18104,
+   "glowPixels": 17833,
+   "carrierPixels": 12736,
+   "carrierFraction": 0.7142
+  },
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+   "rank": 2,
+   "shelf": false,
+   "requiredGaps": 5,
+   "drawnRadiusPx": 43.88,
+   "localGround": 0.0033615,
+   "groundSamples": 28457,
+   "glowPixels": 29852,
+   "carrierPixels": 23561,
+   "carrierFraction": 0.7893
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+   "rank": 3,
+   "shelf": true,
+   "requiredGaps": 0,
+   "drawnRadiusPx": 33.98,
+   "localGround": 0.0031853,
+   "groundSamples": 12752,
+   "glowPixels": 0,
+   "carrierPixels": 0,
+   "carrierFraction": 0
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+   "rank": 4,
+   "shelf": true,
+   "requiredGaps": 0,
+   "drawnRadiusPx": 31.76,
+   "localGround": 0.0031255,
+   "groundSamples": 11443,
+   "glowPixels": 0,
+   "carrierPixels": 0,
+   "carrierFraction": 0
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+   "rank": 5,
+   "shelf": true,
+   "requiredGaps": 0,
+   "drawnRadiusPx": 28.5,
+   "localGround": 0.0028676,
+   "groundSamples": 7490,
+   "glowPixels": 0,
+   "carrierPixels": 0,
+   "carrierFraction": 0
+  }
+ ],
+ "stageGroundNote": "the glow lives OUTSIDE the medium group (mapping-glows) since A-G10 pin 7; PG-17's domain is glows + the medium beneath them (A-G31), which this carrier definition follows"
+}

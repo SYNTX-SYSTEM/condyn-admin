@@ -1,0 +1,135 @@
+{
+ "reading": "GRÜN development reading · the run's own static floor under reducedMotion:reduce",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "7dd47a4010e85c0c372f31b30c57a7b51da7ee80",
+  "headShort": "7dd47a40",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/README.md"
+  ],
+  "productDeltaFrom3ec8457d": "NONE",
+  "untrackedProductFiles": [],
+  "buildId": "ymq-3TimwOQHr0BIsToOx",
+  "measuredAt": "2026-11-10T17:09:10.192Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "deviceScaleFactor": 1,
+ "region": "520x520",
+ "discPixels": 154765,
+ "frames": 125,
+ "spanS": 12.2,
+ "definitions": {
+  "swing": "per-pixel (max − min) over the frame stack, reducedMotion:reduce so the FIELD contributes no motion",
+  "buckets": "markAaEdge = mark boxes dilated 2px; quietMidDisc = disc r/R 0.30–0.60 outside marks; glowBand = the rest of the disc; outsideDisc = host",
+  "whyItMatters": "A-F11 — a bound below this floor is not a bound (A-G26 withdrew PG-10's 0.030 ceiling on exactly this ground)"
+ },
+ "wholeRegion": {
+  "n": 270400,
+  "mean": 0.000088755,
+  "p50": 0,
+  "p90": 0,
+  "p99": 0.0025663,
+  "p999": 0.0052879,
+  "p9999": 0.007464,
+  "max": 0.0081084,
+  "min": 0,
+  "fracGe0004": 0.00276
+ },
+ "discInterior": {
+  "n": 154765,
+  "mean": 0,
+  "p50": 0,
+  "p90": 0,
+  "p99": 0,
+  "p999": 0,
+  "p9999": 0,
+  "max": 0,
+  "min": 0,
+  "fracGe0004": 0
+ },
+ "byBucket": {
+  "markAaEdge": {
+   "n": 42679,
+   "mean": 0.000044144,
+   "p50": 0,
+   "p90": 0,
+   "p99": 0.001485,
+   "p999": 0.0051633,
+   "p9999": 0.0066437,
+   "max": 0.0081084,
+   "min": 0,
+   "fracGe0004": 0.00244
+  },
+  "quietMidDisc": {
+   "n": 33617,
+   "mean": 0,
+   "p50": 0,
+   "p90": 0,
+   "p99": 0,
+   "p999": 0,
+   "p9999": 0,
+   "max": 0,
+   "min": 0,
+   "fracGe0004": 0
+  },
+  "glowBand": {
+   "n": 83892,
+   "mean": 0,
+   "p50": 0,
+   "p90": 0,
+   "p99": 0,
+   "p999": 0,
+   "p9999": 0,
+   "max": 0,
+   "min": 0,
+   "fracGe0004": 0
+  },
+  "outsideDisc": {
+   "n": 110212,
+   "mean": 0.00020066,
+   "p50": 0,
+   "p90": 0.00054766,
+   "p99": 0.0032844,
+   "p999": 0.0059385,
+   "p9999": 0.007464,
+   "max": 0.007464,
+   "min": 0,
+   "fracGe0004": 0.00582
+  }
+ },
+ "meanAbsStep": 0.0000026762,
+ "pinkComparison": {
+  "source": "mapping-phase-f-contract/outputs/9cc06f84-baseline/noise-floor.json (9cc06f84)",
+  "pink_swing_max": 0.031872,
+  "note": "divergence is a FINDING to report, not to reconcile (A-G36 point 4)"
+ }
+}

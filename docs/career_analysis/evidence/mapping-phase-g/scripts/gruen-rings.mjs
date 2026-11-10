@@ -47,7 +47,13 @@ const semanticLight = full - semSuppressed, ringsLight = full - ringsSuppressed;
 const base = await captureLuminance(cdp, clip, N);
 const k = geo.unitsToPx;
 const band = {
-  shelf: [spec.rings.shelfNear * k, spec.rings.shelfFar * k],
+  /**
+   * The shelf band AS DRAWN, not as the spec's two radii: one circle at r (shelfNear + field.radius)/2 with
+   * strokeWidth (field.radius − shelfNear), i.e. 430…500 — NOT 430…`shelfFar` 480. The earlier form sampled
+   * 50 of the stroke's 70 units. Immaterial to the engraved minimum here (both read the plate), but it is a
+   * defect: a band statistic must sample the band the renderer actually paints.
+   */
+  shelf: [spec.rings.shelfNear * k, spec.field.radius * k],
   best: [spec.rings.bestFit * k - (STROKE_PX.best / 2 + 1.5), spec.rings.bestFit * k + (STROKE_PX.best / 2 + 1.5)],
   horizon: [spec.rings.horizon * k - (STROKE_PX.horizon / 2 + 1.5), spec.rings.horizon * k + (STROKE_PX.horizon / 2 + 1.5)],
   field: [spec.field.radius * k - (STROKE_PX.field / 2 + 1.5), spec.field.radius * k + (STROKE_PX.field / 2 + 1.5)]
@@ -85,6 +91,10 @@ const out = {
   limbB_ladder: steps,
   limbB_boundForReference: ">= 1.6 per step",
   perRing: measured,
+  shelfCompositedOverItsOwnBlackSeat: {
+    note: "The shelf ring is NOT composited over the stage plate. A black seat circle of the SAME geometry (:882) is painted immediately before it, so the band is pure black beneath the ring and rgba(INK, alpha) composites over rgb(0,0,0), not over rgb(3,5,8). Measured radial profile at 1920: the band reads 1.45e-3 with the ring and ~0 without it (+1.5e-3 contribution at every sampled radius 435…495), and the ring contributes light at 718 of 720 angles. At alpha 0.02 that lands on 0.0014531 against the plate's 0.00145432 — luminance-identical to within 1.2e-6 BY COINCIDENCE, not because the ring is missing.",
+    consequence: "the shelf band renders at the stage ground's luminance at EVERY angle, which is systematic rather than the single dark angle this lane first reported"
+  },
   shelfRenderedLuminance_forTheStaleComment: {
     engravedMin: measured.shelf.engravedMin, p50: measured.shelf.p50,
     note: "A-G39(a): PersonJobMappingField.tsx:96–100 still records the pre-inversion ladder at shelf alpha 0.05. GELB's instruction is to correct that comment with the shelf's REAL rendered luminance when a measurement produces it, never with an invented number. This is that measurement — development grade, so the comment should cite it as GRÜN's development reading, not as a verdict."
