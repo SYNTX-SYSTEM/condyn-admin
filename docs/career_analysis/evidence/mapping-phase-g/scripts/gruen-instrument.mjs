@@ -216,6 +216,14 @@ export const CLASS_SELECTOR = Object.freeze({
   nodes: "[data-mapping-node]",
   sectorText: "[data-mapping-sector]",
   /**
+   * A-G61: two relation carriers that a `reduce` read CANNOT see. `.mf-travel` is `visibility: hidden` unless
+   * the field breathes (MAPPING_FIELD_CSS keys it on data-breath="LIVE"), so a reduce-read PG-1 omits a
+   * semantic channel by construction and is a statement about the RESTING field. Both are G-3's relation
+   * light (PG-6) and belong in the emitting set.
+   */
+  travel: ".mf-travel",
+  beamGlow: ".mf-beam-glow",
+  /**
    * THE occluder — it REMOVES light. Suppressing it raises the field's luminance, so a share computed as
    * (full − suppressed)/full books it negative (A-G55): the firewall's opaque BLACK seat under every sign
    * (F-6 / A-F5), measured at −0.515 of the field's light at 1920 on `.mf-seat` alone.
@@ -255,12 +263,13 @@ export const RING_CLASSES = Object.freeze(["ringShelf", "ringBest", "ringField",
  * +0.119 at 1280 — the sign flipped with which pixels the core happened to cover. It is decomposed here into
  * `bodyOutlines` + `bodyNames` + `arcs` (emitting) and `bodySeat` + `bodyCore` (occluding).
  */
-export const EMITTING_CLASSES = Object.freeze(["glowsAll", "bodyCore", "bodyOutlines", "bodyNames", "arcs", "beams", "nodes", "sectorText"]);
+export const EMITTING_CLASSES = Object.freeze(["glowsAll", "bodyCore", "bodyOutlines", "bodyNames", "arcs", "beams", "beamGlow", "travel", "nodes", "sectorText"]);
 export const OCCLUDING_CLASSES = Object.freeze(["bodySeat"]);
 /** Kept as the name the earlier readings used, now meaning the emitting set (A-G55). */
 export const SEMANTIC_CLASSES = EMITTING_CLASSES;
 /** G-3's relations: the coupling beams, by their own testid — see the `beams` note above. */
-export const RELATION_CLASSES = Object.freeze(["beams"]);
+/** G-3's relations: the beam, its glow and its travelling light — all three are relation light (PG-6). */
+export const RELATION_CLASSES = Object.freeze(["beams", "beamGlow", "travel"]);
 
 const clearStyles = async page => {
   await page.evaluate(() => { for (const st of document.querySelectorAll("style")) if (st.textContent.includes("visibility:hidden")) st.remove(); });
@@ -553,3 +562,22 @@ export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001 } 
   }
   return { covered, perClassPixels: per, note: "sign AND seat pixels, by |Δ| so the opaque black seat is caught too" };
 }
+
+/* ── A-G81: the alpha is quantised to 8 bits BEFORE compositing ────────────────────────────────────── */
+/**
+ * PHASE_G §28 A-G81, GELB's mechanism, which reproduces this instrument's swept threshold to five figures:
+ * the browser rounds the ALPHA to a byte first, then composites — it does not round the per-channel products.
+ *   α 0.0215 → byte 5 → effective 0.0196078 → rgb(4,5,5) → 1.4531051e-03  (0.9992 × the plate: clears nothing)
+ *   α 0.0216 → byte 6 → effective 0.0235294 → rgb(5,6,6) → 1.7566321e-03  (1.2079 ×)
+ * against this lane's measured 1.7566e-03 at 1.208 ×, and the swept threshold of 0.0216.
+ *
+ * The corollary is larger than the fix: the quantum is 1/255 ≈ 0.00392, so 0.022 and 0.025 RENDER
+ * IDENTICALLY (both byte 6), and there are ~64 distinguishable alphas in [0, 0.25], not 2500. A constant
+ * written to four decimals where the medium resolves ~0.0039 carries three significant figures of fiction.
+ * The rule is: quantise α, then compute, then SWEEP to confirm — a swept threshold with no mechanism cannot
+ * be checked, and a computed one with no sweep was wrong twice this phase.
+ */
+export const ALPHA_QUANTUM = 1 / 255;
+export const alphaByte = alpha => Math.round(alpha * 255);
+export const effectiveAlpha = alpha => Math.round(alpha * 255) / 255;
+export const alphaRendersAs = alpha => ({ requested: alpha, byte: alphaByte(alpha), effective: +effectiveAlpha(alpha).toFixed(7), quantum: +ALPHA_QUANTUM.toFixed(7) });

@@ -1,0 +1,258 @@
+{
+ "reading": "GRÜN development reading · A-G61 LIVE period-averaged PG-1, and A-G86's joint/parts discriminator",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "642b0c26fea9ea8016e95a802c996501d515f239",
+  "headShort": "642b0c26",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:47:53.873Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "region": "520x520",
+ "discPixels": 154765,
+ "motion": "LIVE (reducedMotion: no-preference) — the breath runs and .mf-travel is visible",
+ "periodAveraging": {
+  "periodMs": 10000,
+  "note": "each figure is the mean disc sum over ≥ one full breath period, so the breath cancels rather than being sampled at a phase (A-G61)"
+ },
+ "definitions": {
+  "emittingClasses": [
+   "glowsAll",
+   "bodyCore",
+   "bodyOutlines",
+   "bodyNames",
+   "arcs",
+   "beams",
+   "beamGlow",
+   "travel",
+   "nodes",
+   "sectorText"
+  ],
+  "occludingClasses": [
+   "bodySeat"
+  ],
+  "relationClasses": [
+   "beams",
+   "beamGlow",
+   "travel"
+  ],
+  "travelCarriersAdded": "A-G61: .mf-travel and .mf-beam-glow are now in the emitting set. A reduce read cannot see .mf-travel at all (visibility:hidden off LIVE), which is most of why this lane's RESTING PG-1 sat below PINK's LIVE figure.",
+  "PG1_standard": "(ΣL_full − ΣL_emittingSuppressed) / ΣL_full over disc pixels",
+  "PG1_occluderExcluded": "A-G86: (ΣL_occlSuppressed − ΣL_occlAndEmittingSuppressed) / ΣL_occlSuppressed — the occluder removed from numerator AND denominator, which is what A-G55 already owed",
+  "discriminator": "run at shelf alpha byte 5 (0.02) and byte 6 (0.022) by live style override on ONE build, so the perturbation is controlled and no rebuild is involved",
+  "alphaQuantum": "the alpha is quantised to 8 bits BEFORE compositing (A-G81): quantum 0.0039216, so 0.022 and 0.025 render identically",
+  "nonAdditive": "A-G60: the per-class shares are NOT summands and are not added here; the sum is printed ONLY to exhibit the gap against the joint"
+ },
+ "A_G86_discriminator": {
+  "PG1_standard": {
+   "byte5_0.02": 0.74578,
+   "byte6_0.022": 0.74241,
+   "delta": -0.00337
+  },
+  "PG1_occluderExcluded": {
+   "byte5_0.02": 0.7539,
+   "byte6_0.022": 0.75112,
+   "delta": -0.00278
+  },
+  "reading": "a POSITIVE delta reproduces the inversion (PG-1 rising when scaffold light rises, against the expected slight fall). Compare the two rows: if the occluder-excluded delta is ~0 or negative while the standard delta is positive, the inversion is occluder-mediated. If both stay positive, PG-1's definition needs its joint-to-parts relationship stated.",
+  "expectedDirectionWithoutInversion": "NEGATIVE — rings are excluded from the numerator and included in the denominator, so adding ring light should lower the share"
+ },
+ "byShelfAlpha": {
+  "0.02": {
+   "renders": {
+    "requested": 0.02,
+    "byte": 5,
+    "effective": 0.0196078,
+    "quantum": 0.0039216
+   },
+   "PG1_standard": 0.74578,
+   "PG1_occluderExcluded": 0.7539,
+   "discMeanLuminance": {
+    "full": 0.014186,
+    "occludersSuppressed": 0.01759
+   },
+   "windows": {
+    "full": {
+     "label": "none",
+     "mean": 2195.4440700422433,
+     "frames": 98,
+     "spanS": 11.3,
+     "periodsCovered": 1.13
+    },
+    "hidEmit": {
+     "label": ".mf-halo,.mf-core,[data-mapping-body-shape],[data-testid^=\"mapping-name-\"],[data-testid^=\"mapping-measure-\"],[data-mapping-arc],[data-testid^=\"mapping-beam-\"],.mf-beam-glow,.mf-travel,[data-mapping-node],[data-mapping-sector]",
+     "mean": 558.1340109191108,
+     "frames": 115,
+     "spanS": 11.4,
+     "periodsCovered": 1.14
+    },
+    "hidOccl": {
+     "label": ".mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
+     "mean": 2722.306040852775,
+     "frames": 98,
+     "spanS": 11.3,
+     "periodsCovered": 1.13
+    },
+    "hidBoth": {
+     "label": ".mf-halo,.mf-core,[data-mapping-body-shape],[data-testid^=\"mapping-name-\"],[data-testid^=\"mapping-measure-\"],[data-mapping-arc],[data-testid^=\"mapping-beam-\"],.mf-beam-glow,.mf-travel,[data-mapping-node],[data-mapping-sector],.mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
+     "mean": 669.9712915980356,
+     "frames": 115,
+     "spanS": 11.4,
+     "periodsCovered": 1.14
+    }
+   }
+  },
+  "0.022": {
+   "renders": {
+    "requested": 0.022,
+    "byte": 6,
+    "effective": 0.0235294,
+    "quantum": 0.0039216
+   },
+   "PG1_standard": 0.74241,
+   "PG1_occluderExcluded": 0.75112,
+   "discMeanLuminance": {
+    "full": 0.01427,
+    "occludersSuppressed": 0.017698
+   },
+   "windows": {
+    "full": {
+     "label": "none",
+     "mean": 2208.4850102061355,
+     "frames": 97,
+     "spanS": 11.3,
+     "periodsCovered": 1.13
+    },
+    "hidEmit": {
+     "label": ".mf-halo,.mf-core,[data-mapping-body-shape],[data-testid^=\"mapping-name-\"],[data-testid^=\"mapping-measure-\"],[data-mapping-arc],[data-testid^=\"mapping-beam-\"],.mf-beam-glow,.mf-travel,[data-mapping-node],[data-mapping-sector]",
+     "mean": 568.8747812524815,
+     "frames": 116,
+     "spanS": 11.5,
+     "periodsCovered": 1.15
+    },
+    "hidOccl": {
+     "label": ".mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
+     "mean": 2738.990797963692,
+     "frames": 98,
+     "spanS": 11.3,
+     "periodsCovered": 1.13
+    },
+    "hidBoth": {
+     "label": ".mf-halo,.mf-core,[data-mapping-body-shape],[data-testid^=\"mapping-name-\"],[data-testid^=\"mapping-measure-\"],[data-mapping-arc],[data-testid^=\"mapping-beam-\"],.mf-beam-glow,.mf-travel,[data-mapping-node],[data-mapping-sector],.mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
+     "mean": 681.6882056875215,
+     "frames": 121,
+     "spanS": 11.5,
+     "periodsCovered": 1.15
+    }
+   }
+  }
+ },
+ "PG1_boundForReference": ">= 0.55",
+ "perClassShareOfField_notSummands": {
+  "glowsAll": {
+   "removedShareOfField": 0.11797,
+   "frames": 98
+  },
+  "bodyCore": {
+   "removedShareOfField": 0.02934,
+   "frames": 96
+  },
+  "bodyOutlines": {
+   "removedShareOfField": 0.07911,
+   "frames": 97
+  },
+  "bodyNames": {
+   "removedShareOfField": 0.207,
+   "frames": 99
+  },
+  "arcs": {
+   "removedShareOfField": 0.08722,
+   "frames": 95
+  },
+  "beams": {
+   "removedShareOfField": 0.01357,
+   "frames": 98
+  },
+  "beamGlow": {
+   "removedShareOfField": 0.12894,
+   "frames": 98
+  },
+  "travel": {
+   "removedShareOfField": 0.01216,
+   "frames": 110
+  },
+  "nodes": {
+   "removedShareOfField": 0.07494,
+   "frames": 97
+  },
+  "sectorText": {
+   "removedShareOfField": 0.00438,
+   "frames": 93
+  },
+  "bodySeat": {
+   "removedShareOfField": -0.24135,
+   "frames": 95
+  },
+  "ringShelf": {
+   "removedShareOfField": 0.03181,
+   "frames": 97
+  },
+  "ringBest": {
+   "removedShareOfField": 0.00364,
+   "frames": 97
+  },
+  "ringField": {
+   "removedShareOfField": 0.00947,
+   "frames": 98
+  },
+  "ringHorizon": {
+   "removedShareOfField": 0.03407,
+   "frames": 98
+  }
+ },
+ "nonAdditivity": {
+  "sumOfEmittingParts": 0.75463,
+  "jointEmittingShare": 0.74241,
+  "gap": 0.01222,
+  "note": "A-G60 — the gap is expected and the parts may not be added; printed to exhibit it"
+ },
+ "PG6_relationShareOfSemanticLight_live": 0.19452,
+ "PG6_boundForReference": ">= 0.15",
+ "PG6_note": "LIVE and with all three relation carriers (beam, its glow, its travelling light). The RESTING reading with the beam alone was 0.02075 / 0.02181."
+}
