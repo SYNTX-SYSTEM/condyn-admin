@@ -276,14 +276,24 @@ const clearStyles = async page => {
   await page.waitForTimeout(260);
 };
 export async function hide(page, selector) { await page.addStyleTag({ content: `${selector}{visibility:hidden !important}` }); await page.waitForTimeout(340); }
-export async function unhideAll(page) { await clearStyles(page); }
+/**
+ * `keep` re-applies a PERSISTENT suppression after clearing, because `clearStyles` removes EVERY style tag
+ * containing "visibility:hidden" — including a condition a caller set up and expects to survive.
+ *
+ * Found by the zero-by-construction channel on its first run (§30): a costing probe that suppressed the shelf
+ * ring and then built a per-class mask lost the condition at the mask's first `unhideAll`, so all three render
+ * conditions silently measured the SAME field. The share figures were unaffected (they re-applied the
+ * condition themselves) and the per-body occupancies were worthless, which is the hardest kind of defect to
+ * notice: a subset of one run's numbers invalidated while the rest stayed right.
+ */
+export async function unhideAll(page, keep = null) { await clearStyles(page); if (keep !== null) await hide(page, keep); }
 
 /**
  * One mask per class by DIFFERENTIAL suppression: the pixels a class's own light reaches. Built with the page
  * under reducedMotion:reduce so the breath does not enter the mask (PINK's "eleventh defect" guard).
  * `threshold` 0.001 is PINK's. Returns index arrays, clip-local.
  */
-export async function classMasks(page, cdp, clip, N, classes, { threshold = 0.001 } = {}) {
+export async function classMasks(page, cdp, clip, N, classes, { threshold = 0.001, keepHidden = null } = {}) {
   const base = await captureLuminance(cdp, clip, N);
   const masks = {};
   for (const cls of classes) {
@@ -292,7 +302,7 @@ export async function classMasks(page, cdp, clip, N, classes, { threshold = 0.00
     const ix = [];
     for (let i = 0; i < N; i += 1) if (base[i] - hidden[i] > threshold) ix.push(i);
     masks[cls] = ix;
-    await unhideAll(page);
+    await unhideAll(page, keepHidden);
   }
   return { base, masks, threshold };
 }
@@ -547,7 +557,7 @@ export function ringBandMasked(L, geom, innerPx, outerPx, covered, { angles = 72
 
 /** The union mask of every sign AND every seat — what A-G65 excludes. Seats are found by |Δ|, since suppressing
  *  an opaque black seat RAISES the luminance beneath it (it is the field's one occluder, at −0.515). */
-export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001, exclude = [] } = {}) {
+export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001, exclude = [], keepHidden = null } = {}) {
   const base = await captureLuminance(cdp, clip, N);
   const covered = new Uint8Array(N);
   const classes = [...EMITTING_CLASSES, ...OCCLUDING_CLASSES].filter(c => !exclude.includes(c));
@@ -558,7 +568,7 @@ export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001, e
     let n = 0;
     for (let i = 0; i < N; i += 1) if (Math.abs(base[i] - hidden[i]) > threshold) { covered[i] = 1; n += 1; }
     per[cls] = n;
-    await unhideAll(page);
+    await unhideAll(page, keepHidden);
   }
   return { covered, perClassPixels: per, note: "sign AND seat pixels, by |Δ| so the opaque black seat is caught too" };
 }
@@ -581,3 +591,26 @@ export const ALPHA_QUANTUM = 1 / 255;
 export const alphaByte = alpha => Math.round(alpha * 255);
 export const effectiveAlpha = alpha => Math.round(alpha * 255) / 255;
 export const alphaRendersAs = alpha => ({ requested: alpha, byte: alphaByte(alpha), effective: +effectiveAlpha(alpha).toFixed(7), quantum: +ALPHA_QUANTUM.toFixed(7) });
+
+/* ── §30: every run carries a channel whose value is ZERO BY CONSTRUCTION, and reports it ───────────── */
+/**
+ * From this lane's bbox-centre catch, made general by GELB: a quantity that must be zero is the cheapest
+ * self-check there is, and it would have caught the padded band, the self-occluding glow and the bbox centre.
+ *
+ * The channel must be measured on a domain where the claim actually holds. Under `reducedMotion:reduce` the
+ * FIELD is static — this instrument measures in-disc swing 0.000000 — but the HOST outside the disc keeps
+ * animating, so a whole-region repeat-capture difference is NOT zero and reads ~0.002. Restricting it to disc
+ * pixels is the difference between a self-check and a false alarm; the first version of this channel read
+ * 0.0020223 and declared a valid run invalid.
+ */
+export async function zeroByConstruction(cdp, clip, N, disc) {
+  const a = await captureLuminance(cdp, clip, N);
+  const b = await captureLuminance(cdp, clip, N);
+  let maxAbs = 0, n = 0;
+  for (let i = 0; i < N; i += 1) if (disc[i]) { n += 1; const d = Math.abs(a[i] - b[i]); if (d > maxAbs) maxAbs = d; }
+  return {
+    name: "repeat-capture difference over DISC pixels on a static field (reducedMotion:reduce)",
+    domain: "disc only — the host animates outside it, so a whole-region form is not zero and would false-alarm",
+    pixels: n, mustBe: 0, measured: e4(maxAbs), valid: maxAbs === 0
+  };
+}
