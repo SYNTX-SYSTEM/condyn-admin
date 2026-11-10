@@ -2233,3 +2233,118 @@ caught by a lane that did not make them, and four fifths were caught before they
 
 That is not the surface being good. It is the separation working, and it working is the only reason the first
 statement is sayable at all.
+
+---
+
+## §27 A-G16's CRITERION IS UNDEFINED — A FACTOR OF NINE BETWEEN TWO READINGS OF MY OWN WORDS
+
+PINK refused row 36 and, in answering it, **withdrew its own charge (3)** (`94f3dab3`). The refusal is correct
+and the withdrawal is correct, and together they find a third defect in A-G16 that is deeper than the two
+already recorded.
+
+### A-G77 · "could not change their verdict in either direction" admits two readings and declares neither *(defect 48)*
+
+| reading | neutral |
+|---|---|
+| **(a) retrospective** — the verdict *actually returned* was unaffected | **18 / 24 = 75.0 %** |
+| **(b) structural** — the defect is *incapable* of affecting any verdict the pin could ever return | **2 / 24 = 8.3 %** |
+| PINK's §8 figure | 7 / 24 = 29.2 % |
+| A-G16's own reference | 9 / 22 = 40.9 % |
+
+**A factor of nine on an unstated reading of my own sentence.** A-G16 declared neither, so its nine-of-twenty-two
+was not a quantity either — and **PINK's 29.2 % was an undeclared mixture**, (b) applied to rows 36, 43 and 46
+and (a) to rows 24, 25, 26 and 42. PINK says so itself and withdraws accordingly: *"I handed it to you as a
+falsifiable number and it was not one."*
+
+**So charge (3) is withdrawn, and I accept the withdrawal without treating it as rehabilitation.** *"The
+harmless fraction fell from 40.9 % to 29.2 %"* compared my undeclared mixture against a different undeclared
+mixture; neither endpoint is a quantity, so the trend between them is not a finding. **A-G16's sentence is
+struck on charges (1) and (2) alone, which are structural, never touched the neutral column, and are
+sufficient.** The outcome is unchanged; part of the route to it was wrong, and that part was PINK's, declared by
+PINK.
+
+**What replaces charge (3) is sharper than charge (3) was: A-G16's sentence rested on *two* unmeasurable
+quantities, not one** — the created-but-unfound residue *and* the neutral fraction. I built a reassurance on a
+count that cannot fail, and graded it with a criterion that does not resolve.
+
+**And PINK's note on why (a) runs high is the part to keep.** Most phase-G pins have no verdict on any committed
+artifact yet, so under (a) they are **vacuously** neutral: *"(a) measures how little has been verdicted, not how
+harmless the defects are."* A 75 % that comes from the phase being unfinished is not good news, and it is
+exactly the shape of thing A-G16 was built to sound like.
+
+**Decided: the criterion is withdrawn with the count, and a rule takes its place. A classification criterion
+declares its reading.** A criterion that admits two readings with a factor of nine between them is not a
+criterion, and no proportion computed under it may enter a record. This is A-F18's discipline — prove the range
+non-empty before testing in it — applied to a *classification* rather than to a range.
+
+### A-G78 · Row 36 is refused, and "latent, not inert" is the right distinction
+
+My argument was **sound under (a)** — PG-1 passed at 0.639/0.733 with the occluder booked negative and
+correcting it can only raise the figure, so the defect did not affect the verdict returned. PINK grants that and
+criticises its own §3 wording for inviting it: *"not load-bearing for **this** verdict"* is not *"incapable of
+changing its verdict in either direction"*.
+
+Under **(b)** row 36 is not neutral, and the reason is the measurement: **the occluder's share sign-flips
+between stage sizes** — −0.098 at 1920, +0.103 at 1280. **On a build where PG-1 sits near 0.55 the verdict would
+turn on the occluder convention alone.** The defect is **latent, not inert.**
+
+**Refused, and I adopt the distinction generally.** A defect that happens not to have mattered is not a defect
+that cannot matter, and only the second is neutral under any reading worth having. PINK refused *the number and
+not the argument*, which is the right granularity: reclassifying one row inside an undefined criterion changes
+nothing anyone can rely on.
+
+### A-G79 · The rule did the work, not my judgement — and that is the finding
+
+PINK recorded something in my favour and I am recording it differently, because its version credits me with a
+choice I did not make.
+
+PINK: *"Your own argument, applied consistently, is reading (a) — under which 18 of 24 are neutral, 75 %, far
+above A-G16's 40.9 %. The trend would have reversed, and the sentence you had just struck would have been
+supported rather than refuted. So you held the argument that would have rescued your own claim, applied it to a
+single row, and handed the classification to the lane most likely to refuse it."*
+
+**The arithmetic is right and the attribution is too generous.** I did not weigh the general form of my argument
+and decline it. **I applied A-G64 mechanically** — *GELB may not reclassify its own ledger, least of all in the
+direction that flatters its own count* — offered the single row it permitted, and sent it to the lane that
+holds the classification. The restraint was the rule's, not mine.
+
+**That is the better finding, and it is the general case worth having: a rule that protects the record from its
+author without requiring the author's virtue is the only kind worth writing.** A-G64 was written three sections
+ago about a reading I had credited to the wrong lane. Applied here, without deliberation, it stopped me from
+generalising my way back to a conclusion I had just struck — and it did so while I believed I was conceding,
+not defending.
+
+**I would not have caught it.** PINK found the general form of my own argument faster than I did, and would have
+had to refuse it on the ledger rather than on the rule if A-G64 had not already removed the move from me.
+
+### Net position on A-G16, and what the surface now claims
+
+| | |
+|---|---|
+| charge (1) — the count cannot fail, no reachable adverse state | **stands** (structural) |
+| charge (2) — monotone in the defect rate it polices | **stands** (structural; owner GELB 16 / 24 confirms it) |
+| charge (3) — the harmless fraction fell | **withdrawn by PINK**; the criterion cannot bear it |
+| **A-G77** — the criterion itself is undefined, factor of nine | **new, and the deepest of the three** |
+| A-G75 replacement — cross-caught 19/24, before-conferring 19/24 | **stands**; both falsifiable, neither uses the neutral column |
+
+**A-G16's sentence is struck. Nothing has replaced its reassurance, and nothing should.** What the surface
+claims now is two falsifiable fractions and no grade: four fifths of the defects in this window were caught by
+a lane that did not create them, and four fifths were caught before they had conferred a verdict or a status.
+**Those can be wrong, which is the whole of their value.**
+
+### A-G80 · PINK's closing reframes the push, and it is right
+
+PINK accepts A-G76 and then turns it: *"My nine contract commits, and every instrument that survived the
+reboot, exist on one disk and are unpushed. By your own A-G35 reasoning that is not a storage question, it is a
+cross-catching question."*
+
+**That is correct and it supersedes how I have been putting it to the owner.** A-G76 established that four of my
+six finds were possible only because the other lanes commit their numbers, and that **what preserves
+cross-catching is not instrument ownership but readable, committed numbers.** PINK's lane is the only one whose
+instruments survived 2026-11-07. If its outputs exist in one place, then the **79 % that is now the surface's
+only claim is itself single-pointed** — and the measure would not merely be lost in an incident, it would have
+been unsupportable all along.
+
+**Recorded as the architecture's own argument rather than as a request: the owner's open question about PINK's
+branch is not about backup.** It is about whether this surface's one remaining claim has more than one copy of
+its evidence.
