@@ -699,7 +699,16 @@ export const BOUNDS = Object.freeze({
   "PG-1.semanticShare":      { value: 0.55,   parents: [{ node: "G-1", quote: "G-1 · The space is dark and the bodies carry the light (inverts F-1)" }], origin: "PARTLY DERIVED — A-G143: G-1's own title, 'The space is dark and the bodies carry the light', yields >= 0.50 directly (if the bodies CARRY the light they carry most of it). The remaining 0.05 appears nowhere in the record. The only costless repair in the registry, and the derivation was in the obligation's own title all along." },
   "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24",
                                                   parents: [{ node: "layout-spec-v1.1.json", quote: "rho_drawn = drawn.min + (rho - body.min) / (body.max - body.min) * (drawn.max - drawn.min) … 34.2 … 54.6 field units: ≥ 56 … ≤ 92 px diameter at L0, 1920 × 1080, with the frame widened to hold every drawn body whole (PG-14)." }] },
-  "PG-5.bodiesAtL0":         { value: 7,      origin: "ARGUED — PHASE_G §2 G-2: 'the existing CAPABILITY FIELD draws six'; a comparison, not a derivation. SUSPENDED by A-G150: it stands in the code and carries the status 'set from a contradicted constant'.",
+  /**
+   * A-G156 point 2: RETIRED as non-discriminating, on A-G29's treatment and for A-G29's reason — a bound that
+   * cannot bind is not a bound. At 0.5 the budget binds on exactly ONE layout (LV10) and there the spacing
+   * gives 7 as well, so the two agree and the cap never binds alone. A-G4's seven is not corrected to 5 or 6;
+   * it is REMOVED, and BODY_BUDGET.L0 becomes a derived consequence of the spacing rather than an independent
+   * constant. The two constants also swap which pin does the work: at 0.3 PG-5 is load-bearing and PG-16
+   * mostly is not; at 0.5 it reverses — so the claim that PG-16 DERIVES PG-5 was false in a third way, a
+   * derivation whose consequent does no work being a replacement.
+   */
+  "PG-5.bodiesAtL0":         { value: null,  origin: "RETIRED — A-G156 point 2, non-discriminating at 0.5: the cap never binds alone. Superseded local status was ARGUED (PHASE_G §2 G-2, 'the existing CAPABILITY FIELD draws six' — a comparison). BODY_BUDGET.L0 = 7 remains in the code; the constant is GELB's.",
                                                   parents: [{ node: "PG-16.crowding", quote: "This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks." }] },
   "PG-6.relationShare":      { value: 0.15,   origin: "UNDERIVED — PHASE_G §2 G-3 states >= 15 % with no derivation recorded" },
   "PG-10.swingFraction":     { value: 0.25,   origin: "CITED — A-G22 rests it on 'R17's ceiling is what keeps this calm' while the record never states R17's own numbers; it also restates a measurement of a tree A-G41 later voided. A mechanism is named and no quantity is taken from it." },
@@ -716,7 +725,9 @@ export const BOUNDS = Object.freeze({
    * reclassified, because reclassifying on a guess about a paper this lane has not read would be the mirror of
    * the post-hoc derivation A-G143 forbids.
    */
-  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED-AND-CONTRADICTED — A-G145: a quantity IS taken from R23 and it is not the quantity the record states R23 gives. §10 says 'Critical spacing is roughly half the target\'s eccentricity (as free space, in Bouma\'s original form)'; §11 bounds at 0.3. A 40 % relaxation of the cited law, written eight minutes apart in one document. No reading of the paper was required — and A-G153 records that this lane missed it by going to the literature instead of to the record's own statement.",
+  "PG-5.bodiesAtL1":         { value: 12,     origin: "UNDERIVED — A-G156 point 4: the L1 cap is untested at 0.5 and is NOT to be read as surviving. Weaker than A-G50 left it. This lane has since computed it (see outputs/pg16-crowding-L1.json); the decision is GELB's." },
+  "PG-5.overflowStatement":  { value: null,  origin: "ARGUED — A-G156 point 3: PG-5's overflow-statement limb stands on A-G3, which made it its own statement. A copy obligation, not a count bound, so no numeric provenance applies." },
+  "PG-16.crowding":          { value: 0.5,    recordedInCodeAs: 0.3, origin: "DERIVED — A-G156 point 1: PG-16 bounds at 0.5, the figure the record states AND applies (R23's arrow, 'free space between bodies at the rim'). The contradiction A-G145 found is RESOLVED rather than recorded. NOTE: CROWDING in PersonJobMappingField.tsx is still 0.3 — the product constant is GELB's and this registry records the bound, not the code. Superseded reasoning kept: A-G145: a quantity IS taken from R23 and it is not the quantity the record states R23 gives. §10 says 'Critical spacing is roughly half the target\'s eccentricity (as free space, in Bouma\'s original form)'; §11 bounds at 0.3. A 40 % relaxation of the cited law, written eight minutes apart in one document. No reading of the paper was required — and A-G153 records that this lane missed it by going to the literature instead of to the record's own statement.",
                                                   parents: [{ node: "R23", quote: "Critical spacing is roughly **half the target's eccentricity** (as free space, in Bouma's original form), it is far stronger in the periphery, and the revised law puts critical spacing **across parts, not objects** — so a body *and its collar of ticks* crowd each other internally." }] },
   "PG-17.coreOverGround":    { value: 1.45,   origin: "UNDERIVED, AND IT COLLIDES — A-G138: PHASE_G §11 states 1.45 x local ground with no derivation, and VOLUME.depthRatio is also 1.45 in an unrelated role. GELB does not claim the bound was taken from the constant and cannot establish it was not. A reader will assume a relation that may not exist." },
   "PG-17.monotoneExtentInR":  { value: 1.5,   origin: "CITED — PHASE_G §11 names R21's critical band of luminance gradients as the mechanism and takes no quantity from it. GELB's own guess (§41) and consistent with the §11 text." },
@@ -756,7 +767,15 @@ export const STATUS_ORDER = Object.freeze(["DERIVED", "PARTLY DERIVED", "CITED",
 export const INACTIVE_STATUSES = Object.freeze(["WITHDRAWN", "WITHDRAWN UN-BEGUN", "RETIRED", "RE-FORMED"]);
 /** Source nodes: whether the record states a quantity for them at all. */
 export const SOURCE_NODES = Object.freeze({
-  "R23": { status: "DERIVED-AND-CONTRADICTED", quantityInRecord: 0.5, note: "the record states 0.5 for the ORIGINAL form as free space, and says the REVISED law measures across parts rather than objects. A-G150 holds that no constant is therefore available for what PG-16 measures; this lane's reading of the same sentence is recorded in the phase-G README and differs." },
+  /**
+   * A-G155 withdrew A-G150 and settled this from the record alone — the decisive sentence is R23's own arrow,
+   * which neither lane had quoted: "Bouma then asks for several degrees of free space BETWEEN BODIES at the
+   * rim. This derives PG-5's budget instead of asserting it." The record APPLIES R23 between bodies, i.e.
+   * objects, and derives PG-5 from that application — so "across parts, not objects" is an additional
+   * observation used for the collar, not a replacement of the quantity then applied. Nothing terminates
+   * outside the repository and there was never an R23 question.
+   */
+  "R23": { status: "DERIVED", quantityInRecord: 0.5, note: "0.5 — free space between bodies at the rim, by the record's own statement AND its own application (R23's arrow). A-G155." },
   "G-1": { status: "DERIVED", quantityInRecord: 0.50, note: "the obligation's own title yields >= 0.50; the remaining 0.05 of PG-1's 0.55 appears nowhere" },
   "layout-spec-v1.1.json": { status: "DERIVED", quantityInRecord: [56, 92], note: "the spec states the px range directly" }
 });
@@ -814,10 +833,11 @@ export function boundProvenanceSummary() {
     (byStatus[status] ??= []).push(key);
   }
   const total = Object.keys(BOUNDS).length;
-  const derived = Object.keys(BOUNDS).filter(k => boundOf(k).derived).length;
+  const derived = Object.keys(BOUNDS).filter(k => localStatusOf(k) === "DERIVED").length;
+  const contradicted = Object.keys(BOUNDS).filter(k => localStatusOf(k) === "DERIVED-AND-CONTRADICTED").length;
   const laundered = Object.keys(BOUNDS).filter(k => statusOf(k).launderingDetected).map(k => ({ bound: k, local: statusOf(k).localStatus, effective: statusOf(k).effectiveStatus, chain: statusOf(k).derivationChain }));
   if (UNRECOGNISED_STATUSES.length > 0) throw new Error(`ERR_INSTRUMENT_UNRECOGNISED_STATUS:${UNRECOGNISED_STATUSES.join("|")}`);
-  return { total, derived, cited: Object.keys(BOUNDS).filter(k => BOUNDS[k].origin.startsWith("CITED")).length, byStatus, launderedThroughAChain: laundered };
+  return { total, derived, contradicted, cited: Object.keys(BOUNDS).filter(k => BOUNDS[k].origin.startsWith("CITED")).length, byStatus, launderedThroughAChain: laundered };
 }
 /** Look a bound up and carry its origin into the output. A missing key throws rather than defaulting. */
 export function boundOf(key) {
@@ -825,12 +845,19 @@ export function boundOf(key) {
   if (b === undefined) throw new Error(`ERR_INSTRUMENT_UNKNOWN_BOUND:${key}`);
   return Object.freeze({
     bound: b.value, origin: b.origin,
-    derived: b.origin.startsWith("DERIVED"),
+    /**
+     * EXACT status equality, not a prefix. `origin.startsWith("DERIVED")` also matches
+     * "DERIVED-AND-CONTRADICTED" — so while PG-16 carried that status it was reported as `derived: true` and
+     * emitted NO provenanceWarning. A contradicted bound passed as a derived one, which is precisely the
+     * laundering A-G140 added this registry to prevent, committed inside the registry itself. The counts this
+     * lane published as "2 derived" while PG-16 was contradicted were therefore 1 derived and 1 contradicted.
+     */
+    derived: localStatusOf(key) === "DERIVED",
     /** CITED is not DERIVED: a mechanism was named and no quantity taken from it (A-G143). */
     cited: b.origin.startsWith("CITED"),
     /** A-G140: a comparison against an underived bound is reported AS one, every time it is made. */
-    provenanceWarning: b.origin.startsWith("DERIVED") ? null
+    provenanceWarning: localStatusOf(key) === "DERIVED" ? null
       : `the bound for ${key} is not derived (${b.origin.split(" — ")[0]}). Any comparison against it inherits that status, and this instrument reports it rather than laundering the literal into a measurement.` +
-        (b.origin.startsWith("CITED") ? " CITED means a mechanism was named and no quantity taken from it — motivated, not derived, and it has somewhere to go for a number." : "")
+        (localStatusOf(key) === "CITED" ? " CITED means a mechanism was named and no quantity taken from it — motivated, not derived, and it has somewhere to go for a number." : "")
   });
 }
