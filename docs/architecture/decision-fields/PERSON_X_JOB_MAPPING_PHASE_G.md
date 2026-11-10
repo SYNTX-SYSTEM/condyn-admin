@@ -2499,3 +2499,171 @@ mitigation, not the fix; measuring the backdrop before claiming what sits on it 
 **Adopted over mine.** A lane that declines the comfortable lesson in favour of the one that costs it something
 is the same move PINK made in refusing the credit in A-G64, and both are worth more than the corrections they
 accompany.
+
+---
+
+## §29 PG-6 CLEARS — AND A-G51 IS WITHDRAWN, BECAUSE I DECIDED IT ON A CONTAMINATED COUNT
+
+GRÜN (`02a1b585`) reports PG-6 clearing, A-G86 answered on its first limb, and a LIVE PG-1 within 1.2 % of
+PINK's. One of its remarks contradicted PINK's L1 measurement, so I read the source. **It settles against one of
+my own rulings.**
+
+### A-G87 · PG-6 clears at 0.17977 / 0.19452 — and the pattern behind three false reds is now nameable
+
+**PG-6: 0.17977 / 0.19452 against ≥ 0.15.** Its earlier 0.02075 / 0.02181 was a relation channel measured in a
+mode where its **principal carrier is invisible** — `.mf-travel` is `visibility: hidden` unless
+`data-breath="LIVE"` — and with **two of its three carriers omitted**, `RELATION_CLASSES` holding only the beam.
+G-3 makes all three relation light, and PG-6 asks for relation light.
+
+**So PG-6 was never a factor of seven short, the levers do not need to move, and §28's statement that it was
+"the phase's live red" is withdrawn.** GRÜN was *"a message away from moving `TRAVEL.glowPx` / `glowGain` /
+`glowMax` to close a gap that was mine"* — and I had endorsed that plan twice.
+
+**GRÜN's diagnosis of its own pattern is the finding, and I adopt it as a rule.** Three times this phase a red
+of GRÜN's was the instrument, *"and each time, a selector or a mode was chosen from the source's **vocabulary**
+(`data-beam`, `.mf-halo`, `reduce`) rather than from what the obligation is **about**."*
+
+> **An obligation names its carriers by what it is about; the instrument derives its selectors from that
+> naming, not from the source's convenient handles.** `data-beam` was a handle, `reduce` was a convenience, and
+> `.mf-halo` was a class that happened to exist. Every one of them produced a red that cost a tuning plan.
+
+This is the same defect A-G49 bounds from the other side: the source's handles are not an obligation's
+vocabulary, and the fix is that **the obligation publishes its carrier list and the instrument implements it** —
+not that the instrument goes looking for something matching.
+
+### A-G88 · A-G86 is answered on its first limb — the inversion does not reproduce *(and the residual is an instrument question, not a product one)*
+
+GRÜN ran my discriminator in **both** motion modes, perturbing the shelf between byte 5 and byte 6 by live style
+override on one build:
+
+| | standard | occluder-excluded |
+|---|---|---|
+| LIVE 1920 / 1280 | −0.00451 / −0.00337 | −0.00325 / −0.00278 |
+| REDUCE 1920 / 1280 | −0.00411 / −0.00326 | −0.00312 / −0.00264 |
+
+**All eight deltas negative — the expected direction. The inversion does not reproduce in either mode or either
+definition.** So it is **not occluder-mediated**, and **PG-1's definition needs nothing added**: A-G60's
+non-additivity warning is the whole of what is required. The second limb of A-G86 does not fire.
+
+**And GRÜN wrote a second probe because the first would have answered in the wrong mode.** It had a
+non-reproduction in hand, LIVE — A-G61's normative mode but *not* the mode the anomaly was observed in — and
+*"a non-reproduction in the wrong mode answers nothing. The mode was the backdrop."* **That is its own §28
+lesson applied to its own result within one message**, and it is the strongest use of a rule by its author in
+this phase.
+
+**The residual, and I decline both of GRÜN's framings.** The +0.019 between the two build-based runs is not the
+alpha — measured effect −0.003 to −0.004, a factor of five and opposite in sign. GRÜN recorded it as *"not the
+alpha"* and stopped, reasoning that chasing it means measuring a retired definition to explain a retired
+number. **That reasoning is right about the product and incomplete about the instrument.**
+
+> **Decided: the cheap discriminator is the instrument revision, not the definition.** Record which revision of
+> `gruen-rings`/`gruen-light` produced each of the two original readings. **If they differ, the residual is
+> attributable to the instrument changing between runs and nothing further is owed.** If they are the same
+> revision, a +0.019 on an unchanged instrument and an unchanged product is a real open item and it does not go
+> away by the definition being retired.
+
+That costs one `git log` and no measurement, and it distinguishes "we changed the ruler" from "something moved".
+An unexplained delta five times the size of the only known cause is worth that much.
+
+### A-G89 · PG-1 LIVE — the first *figure* two lanes have reached separately
+
+| | 1920 | 1280 |
+|---|---|---|
+| GRÜN LIVE excl. rings | 0.64659 | 0.74241 |
+| **PINK** (A-G58, the verdict) | **0.63857** | **0.73335** |
+| agreement | **1.26 %** | **1.24 %** |
+
+**On different carrier definitions and different masks, period-averaged over one full breath so the breath
+cancels rather than being sampled at a phase.** GRÜN's earlier 0.541 / 0.616 was the resting field with two
+carriers missing.
+
+Beside PG-3, this is the second number two lanes reached independently and **the first where the agreement is on
+a figure rather than on a bound**. What it licenses: confidence that PG-1's *measurement* is now
+instrument-independent at the percent level. What it does not license: a second verdict. **PINK's 0.63857
+remains the verdict; GRÜN's 0.64659 is a development reading that agrees with it** (A-G36 point 2), and the
+agreement is evidence about the instruments, not about the pin.
+
+A-G60 honoured in the exhibit rather than only the warning: parts 0.67289 against joint 0.64659 at 1920, parts
+0.75463 against joint 0.74241 at 1280.
+
+### A-G90 · A-G51 is WITHDRAWN — at L1 beams are drawn only for the marked body *(defect 50, and it is mine)*
+
+GRÜN noted that *"L1 draws zero beams absent a mark"*, which contradicts PINK's L1 table (beams 19). **I read
+`levelBeams` and the source is unambiguous:**
+
+```
+else if (view.level === "L1") { const marked = markedBody(state, model); if (marked !== null) for (const arc of marked.arcs) add(marked, arc); }
+```
+
+**At L1, beams exist only for the marked body. With no body marked, L1 draws zero.** GRÜN is right.
+
+**And PINK's own numbers contain the explanation.** Its L1 table reads *beams 19* and *arcs 19 = 19* — the same
+figure, because **`data-beam` is carried by the arc sign at `:386` as well as by the beam line at `:1004`.**
+A `[data-beam]` selector matches both. PINK's nineteen L1 "beams" were its nineteen L1 **arcs**. It is the same
+selector collision GRÜN found in PG-6, surfacing in a second lane's count, and neither lane had reason to
+suspect it from the other's report.
+
+**So A-G51's ruling rests on a contaminated count and is withdrawn.** I decided that *"PG-18 has no satisfier at
+L1 … it is a build gap, not a property of L1,"* on the premise that nineteen relations were drawn without their
+life. **Zero were drawn.** There is nothing at L1 for the travelling light to attach to, and G-3 is not
+contradicted: a level that draws no relations is not a level drawing relations without their life.
+
+**Restated: PG-18's lack of a satisfier at L1 is a scope question, not a build gap.** Either PG-18 declares the
+levels it binds at — L0 and L2, where relations exist unmarked — or the L1 fixture marks a body, which makes L1
+measurable without changing the product. **The fixture is the cheaper and more honest fix**, for A-G48's reason:
+a pin should not be scoped away from a level because the fixture failed to reach the state the level is for.
+**GRÜN is released from the "travel wherever a beam is drawn" instruction**, which would have been a product
+change to satisfy a defect in a measurement.
+
+This is the second ruling of mine this phase overturned by a lane reading the source (A-G62's mechanism was the
+first), and both times the contaminating number came from a selector that matched more than its name suggests.
+**A-G49 is now carrying three independent reasons.**
+
+### A-G91 · The rung-count question, framed but not taken
+
+GRÜN applied A-G81 to its own commit — **`shelf = 0.022` and `shelf = 0.025` are the same render**, both byte 6,
+so its two trailing digits are fiction; it added `alphaRendersAs()` so any future alpha claim states its byte,
+and it correctly **did not touch the ladder** pending PINK's limb (a) verdict.
+
+It then offered a pre-verdict observation, explicitly not a proposal: the shelf is at 0.045 of the field, the
+largest single ring term, **so it is both the least legible rung and the most expensive one.** If the answer is
+three rungs, the measurements point at the shelf.
+
+**That is correct arithmetic and I am framing the decision rather than taking it, because the trade is not the
+one the numbers show.** The shelf ring is the only rung that marks a **semantic** boundary rather than a scale
+gradation: horizon, best-fit and field are positions on `fitDistance`, while the shelf is the line between
+*fits* and *shelved*, and A-G8's A1 already has shelf bodies straddling it. **So the shelf is cheapest in budget
+and most expensive in meaning, and a rung count decided on budget alone would delete the one rung that is not a
+gradation.**
+
+**Three options go to PINK's verdict with the decision pre-framed:**
+1. **Three rungs, shelf dropped** — the budget's biggest saving; the fits/shelved boundary then has no mark.
+2. **Three rungs, a gradation dropped** (best-fit or horizon) — keeps the semantic boundary, costs less meaning,
+   saves less budget, and makes `fitDistance`'s scale coarser.
+3. **Four rungs, the shelf boundary carried by something that is not a ring** — the territory wash (A-G12) or a
+   change in the medium already distinguishes regions, and a boundary marked by a change in ground costs no ring
+   budget at all. **This is the option the numbers do not see and the architecture does**, and it is the one I
+   would want costed before (1) is taken.
+
+**I am not choosing. PINK's limb (a) verdict decides whether a choice is needed**, and if it is, GRÜN costs
+option 3 first.
+
+### GRÜN applied A-G85 to itself twice, unprompted
+
+*"PG-6 clearing is a **new** reading, not a vindication of anything I argued, and the A-G86 non-reproduction
+**contradicts** the anomaly I reported two messages ago rather than refining it. Neither is a result I
+predicted."*
+
+Recorded because A-G85 was written three sections ago about a lane declining credit for a conclusion that
+survived its own correction, and it is now being applied by that lane to a result that **contradicts** its own
+earlier report. **A rule that a lane turns against its own prior claim without being asked is a rule that has
+been internalised rather than complied with**, and that is the only state in which these rules are worth
+anything.
+
+### Five items on one owner decision
+
+GRÜN's count, and it is the argument: the test-database admin URL now blocks **A-G43's re-keying, A-G49's glow
+and seat hooks, A-G48's L2 fixture, A-G51's L1 marked-body fixture, and the PG-20 mutant's execution.** Three
+of the five are obligations I created. **Every one of them is a test or fixture change, and every one is held
+behind a fail-closed database-isolation mandate that these tests do not need** — they open no database. GRÜN
+is right not to step around it and I will not ask it to.
