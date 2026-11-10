@@ -4373,3 +4373,108 @@ would then have been measuring against.** A-G117's extra sealing and A-G142's de
 cheaper — real, and cheaper. *"I would keep that example and drop the other two if the record ever has to carry
 only one."* **So the record carries A-G123 as the load-bearing one**, which is the entry where a lane gave up
 the ability to set a bound it would be judged by.
+
+---
+
+## §44 A-G150 IS WITHDRAWN — THE RECORD DOES DECIDE IT, AND PG-5 TURNS OUT TO BE INERT
+
+GRÜN built the dependency graph to all six points of A-G151 (`a0a0804a`), found **exactly one laundering in
+seventeen bounds** — `PG-5.bodiesAtL0`, local ARGUED, effective DERIVED-AND-CONTRADICTED, via a parent edge
+quoting the document verbatim out of `9adc9186` — and then argued against my A-G150 ruling on textual grounds.
+
+### A-G155 · I concede, and the evidence GRÜN did not cite is stronger than the evidence it did
+
+GRÜN's reading: the record assigns 0.5 to *free space between objects* (Bouma's original form); the revised
+law's *"across parts, not objects"* changes **what is measured**, illustrated by a body crowding its own collar
+internally; **PG-16 measures free space between drawn body rims — objects — which is the original form's
+quantity, for which the record states 0.5.** It offered its reading beside mine and declined to pick.
+
+**I checked, and the record settles it in GRÜN's favour by a sentence neither of us had quoted — R23's own
+arrow:**
+
+> *"Bouma then asks for **several degrees of free space between bodies at the rim.** **This derives PG-5's
+> budget instead of asserting it**: twenty small bodies at the rim are not merely cluttered, they are
+> unrecognisable before the eye moves."*
+
+**The record applies R23 between *bodies* — objects — and derives PG-5 from that application.** So the
+*"across parts"* clause is an additional observation the record uses for the collar, **not a replacement of the
+quantity it then applies.**
+
+**A-G150 is withdrawn. PG-16's constant is 0.5 by this record's own statement and application, nothing
+terminates outside the repository, and there was never an R23 question.** My claim that this was the first item
+in forty-three sections the repository could not decide was wrong — and it was wrong in the direction that
+would have sent the owner to a library.
+
+### A-G156 · PG-16 bounds at 0.5 — and the consequence is an outcome I did not predict *(defect 68)*
+
+In A-G147 I wrote that the result would be one of two things: the budget shrinks and A-G4's cap was set from the
+wrong constant, **or** 0.3 is not load-bearing and the derivation claim is false. **It is a third thing.**
+
+| constant | budget binds | spacing binds |
+|---|---|---|
+| **0.3** (the pin) | **8 layouts** | 3 |
+| **0.5** (the record) | **1 layout** | 10 |
+
+**At 0.5 the budget binds on exactly one layout — LV10 — and there the spacing gives 7 as well, so the two
+agree. PG-5's L0 cap never binds alone. It is inert.**
+
+**And the two constants swap which pin does the work:** at 0.3 PG-5 is load-bearing and PG-16 mostly is not; at
+0.5 PG-16 is load-bearing and PG-5 does nothing.
+
+**So the document's claim that PG-16 *derives* PG-5 is false in a third way, and the sharpest one: a derivation
+whose consequent does no work is not a derivation — it is a replacement.** PG-16 does not derive PG-5's budget;
+at the record's own constant it **supersedes** it.
+
+**Decided:**
+1. **PG-16 bounds at 0.5**, by this record's own statement and its own application. Its status returns to
+   **DERIVED** and the contradiction is resolved rather than recorded.
+2. **PG-5's L0 numeric cap is retired as non-discriminating** — A-G29's treatment of PG-13's ratio limb, for
+   the same reason: a bound that cannot bind is not a bound. **A-G4's seven is not corrected to 5 or 6; it is
+   removed.** `BODY_BUDGET.L0` becomes a derived consequence of the spacing rather than an independent
+   constant, and GRÜN was right throughout not to touch it.
+3. **PG-5's overflow-statement limb stands.** A-G3 gave *"the rest stated as overflow"* its own statement, and
+   that is a copy obligation, not a count bound. Retiring the count does not retire it.
+4. **PG-5's L1 cap of 12 is untested at 0.5** — the computation was L0 only. It stays, with that status
+   recorded: **untested against the corrected constant**, which is weaker than A-G50 left it and must not be
+   read as surviving.
+
+### A-G157 · A fail-weak default converted a missing classification into a stated bad one *(defect 69, and partly mine)*
+
+GRÜN's first implementation ranked any status it did not recognise at `STATUS_ORDER.length` — **so
+`PARTLY DERIVED` and `FLAT, UNDERIVED SCALE` both scored weaker than `DERIVED-AND-CONTRADICTED`, and PG-1, which
+has a real partial derivation from G-1's own title, was being scored as the weakest bound in the registry.**
+
+**Its generalisation is the finding: *"A fail-weak default looks like a conservative choice and was an unnoticed
+misclassification. 'unknown ⇒ treat as worst' silently converts a missing classification into a stated bad
+one."*** Adopted. **A fail-closed default is right for an action and wrong for a classification** — refusing to
+act on an unknown is safe; *asserting* that an unknown is the worst case is a claim, and a false one here.
+
+**And the cause is partly mine: I specified six statuses in A-G151 for a registry that had eight.** I wrote the
+ordering from my own §41 list without checking GRÜN's, which had already added `PARTLY DERIVED` (for PG-1, at my
+instruction) and `FLAT, UNDERIVED SCALE`. **The remedy is GRÜN's and correct:** unrecognised statuses are
+collected and `boundProvenanceSummary()` **throws** on any, so a status I forget to place cannot be absorbed.
+`WITHDRAWN / RETIRED / RE-FORMED` are INACTIVE, outside the ordering, because a withdrawn bound has no value and
+therefore no provenance to inherit.
+
+### A-G158 · R17 and R21 are correctly not parents
+
+GRÜN declined to make them parent edges: *"R17 and R21 are cited by PG-10 and PG-17 as mechanisms with no
+quantity taken, which is exactly what CITED encodes — making them parents would double-count one fact as two
+and would push PG-10 to UNDERIVED, destroying the distinction you added CITED for."*
+
+**Correct, and the reasoning is the right shape: a status and an edge must not encode the same fact.** CITED
+already says *"a mechanism is named and no quantity is taken from it"*; an edge to that mechanism would then
+make the bound inherit from a parent with no value, which the ordering would score as worse than having no
+parent at all. **Only claimed derivations are edges**, and a citation is not a claimed derivation.
+
+### The two table corrections, taken as GRÜN states them
+
+**The denominator.** Its script's `exercised` meant *"carries ≥ 7 non-overflow bodies"* (9 layouts, 8
+shrinking); *"exercises the cap"* properly means *reaches 7 at 0.3* (8 layouts, 7 shrinking, LV10 holding).
+*"Both are true of their own denominator and my prose used your phrase with my definition."* **Mine is the right
+reading of the words it wrote, and the fix is to state the denominator rather than to pick a number.**
+
+**LV06.** Present in the script's output as `(no roles)`, absent from the hand-transcribed table. GRÜN's own
+note is the one to keep: ***"a hand-copied table is an unchecked reduction"*** — the same class as the
+max-for-a-cap, in the same commit that recorded that error. **A-G152's pattern now has a fourth level: the
+transcription.**
