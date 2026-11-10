@@ -3841,3 +3841,111 @@ with per-segment decrements **[0, 0.28, 0.26, 0.22, 0.16, 0.08]**. Two things fo
   extents rather than picking one.
 
 **That is the gate half-run on constants, which is what A-G128 said it would mostly be.**
+
+---
+
+## §39 THE GATE RAN ON PG-17 — IT REFUTED MY OWN §38 GUESS AND FOUND THE VERDICT IS SELECTED BY AN UNDEFINED WORD
+
+GRÜN sent the two scalars and nothing else (`5278a104`), having run **A-G117's derivability check on its own
+send** before sending: neither limb is recoverable from the pair, because the core limb needs the core's value
+and the monotone limb needs the profile. **A-G132's first use worked** — the narrow request meant GRÜN never had
+to judge the seal's boundary on my behalf.
+
+| | |
+|---|---|
+| glow peak luminance, L0/1920, rank 1 field body | **0.076248** (n = **18** px) |
+| local ground at its ramp | **0.0044378** (n = 19 196 px) |
+| peak ÷ ground | 17.18 × |
+
+### A-G133 · GRÜN corrects my figure in the same direction I corrected its
+
+My table put reportability at *"~0.008"*. **One q_proj is first reached at α = 1.5 / 239 = 0.006276** — the alpha
+at which R rounds 7 → 8, so the crossing is discrete. **My "~0.008" was a sample point presented as a
+threshold**, which is exactly what I had just corrected in GRÜN's "about 0.003".
+
+**Accepted, and GRÜN's reason for raising it is the one that matters:** *"I would not normally bother you with
+0.008 against 0.00628, except that you had just corrected mine for the identical reason and leaving yours would
+make the rule apply in one direction only."* **A rule that binds asymmetrically is not a rule.** The three
+regimes are: invisible ≤ **0.00210**, under one quantum 0.00210 … **0.00628**, reportable above. **Headroom
+1.0 ÷ 0.329 = 3.04 ×.**
+
+### A-G135 · The n = 18 caveat changed the gate's arithmetic, and it was measurability to send
+
+GRÜN flagged that the peak band carries **18 uncovered pixels** against 19 196 for the ground, because at the rim
+nearly every pixel is covered by the body's outline and seat, which A-G97 makes occluders. **Its point was
+precise: a decrement expressed as a fraction of the peak inherits the peak's 18-pixel uncertainty, while one
+expressed against the ground does not.**
+
+**Taken, and it is why the gate below divides by the ground.** Sampling adequacy is measurability under A-G111,
+so sending it was in scope; **it is also the first time a lane has told me which of its own two figures is the
+weaker one without being asked.**
+
+### A-G136 · Gate result, monotone limb — and it refutes my §38 guess
+
+In §38 I suggested the ramp's quantised **tail** would force non-monotonicity. **It does not.** One code at the
+ground level is **2.783e-05** (at the nearest neutral triple `rgb(14,14,14)`), so the share below which the glow
+contributes less than one code is **0.00037** — which the ramp reaches only at **offset 0.9994 of the glow
+radius.** At this body the glow radius is ≈ 3 r ≈ 104 px, so that is **sub-pixel: the flat-by-raster tail is
+never sampled.**
+
+**What does force non-monotonicity is the head, which I had already found and then under-weighted.** `GLOW_RAMP`'s
+first segment is flat by design — offsets 0 → 0.33 both at share 1 — **a third of the glow radius, ≈ 34 px at
+this body.** So:
+
+> **A strictly *decreasing* test fails by construction over the first third of the ramp. A *non-increasing* one
+> does not. PG-17 says "monotone falloff", which does not distinguish them, and the difference is the verdict.**
+
+**The gate corrected me on the mechanism while confirming the conclusion** — the strict extent is not a test, but
+for the opposite reason to the one I guessed. **That is the gate working on its author**, and it cost arithmetic.
+
+### A-G137 · Gate result, core limb — the verdict is selected by a word the pin does not define *(defect 61)*
+
+`mf-core`'s gradient is **not uniform**: stops at offsets 0, 0.4, 0.75 and 1 with opacities
+`coreAlpha × {1, 0.78, 0.55, 0.42}`. And `depthGain` scales core and halo by rank, from 1 at rank 1 to
+`1/depthRatio` at the last. **So the core's value spans a wide achievable range**, computed over black with
+A-G81's alpha quantisation:
+
+| case | eff. α | rgb | ÷ ground |
+|---|---|---|---|
+| rank 1, gradient centre | 0.16000 | rgb(33,39,41) | **4.36 ×** |
+| rank 1, offset 0.40 | 0.12480 | rgb(26,30,32) | 2.82 × |
+| rank 1, offset 0.75 | 0.08800 | rgb(18,21,22) | 1.63 × |
+| last rank, centre | 0.11034 | rgb(23,26,28) | 2.26 × |
+| **last rank, offset 0.75** | 0.06069 | rgb(12,14,15) | **0.96 ×** |
+
+**The bound is ≥ 1.45 ×. The achievable range straddles it — 0.96 × to 4.36 ×.**
+
+> **So PG-17's core limb is not one test. It is a family of tests with *opposite verdicts*, selected by which
+> statistic the word "core" names** — the centre value (2.26–4.36 ×, **cannot fail**), a median over the core
+> disc (either way), or the core's outer extent (0.96 ×, **cannot pass at the deepest rank**). **PG-17 does not
+> say which.**
+
+**This is A-G122's units defect in its sharpest form, and worse than PG-12's.** PG-12's unnamed quantity made the
+*threshold* unportable while the verdict's sign held. **Here the unnamed statistic selects the verdict's
+direction.** Sixth A-G128 instance, and the first where the gate's answer is *"the pin has more than one answer
+and the document does not choose"*.
+
+### A-G138 · PG-17's 1.45 has no recorded derivation — and it collides with a constant
+
+**`VOLUME.depthRatio = 1.45`**, whose role is rank attenuation: *"one gain, from 1 at rank 1 down to
+1 / depthRatio at the last rank."* **PG-17's bound is "the core at ≥ 1.45 × the local ground."** The same unusual
+number, in two unrelated roles, in one document.
+
+**I cannot establish that I took the bound from the constant and I am not going to claim I did.** What the
+record can say is narrower and sufficient:
+
+1. **PG-17's 1.45 has no recorded derivation** — no measurement, no citation, no reasoning. That is **A-G2's
+   class**, where I called 1.64 *"asserted"* with no basis given either way, and I have now done it twice with
+   a contrast ratio.
+2. **The collision makes it worse than a bare assertion, because it looks derived.** A reader finding 1.45 in
+   both places will assume a relation. If there is none, the bound is unsupported *and* misleading; if there
+   is one, it was never written down. **Either way the record owes the derivation.**
+3. **And the two do interact numerically**, which is how I noticed: the deepest rank's core is attenuated by
+   exactly `1/1.45`, so a bound of 1.45 is being applied to a quantity the design already divides by 1.45.
+   **That is not a reason to change either number — it is a reason that both have to be stated with their
+   origins**, because nothing in the document distinguishes a coincidence from a dependency.
+
+**Decided: PG-17 is returned to me in full.** Its core limb owes a statistic (A-G137), its monotone limb owes
+non-increasing-versus-strictly-decreasing (A-G136), and its bound owes a derivation (A-G138). **GRÜN's sealed
+reading of PG-17 is therefore a reading of a malformed pin** — which is exactly what §37 said was better
+discovered before PINK spent a run than after, and is the first time that prediction has paid.
