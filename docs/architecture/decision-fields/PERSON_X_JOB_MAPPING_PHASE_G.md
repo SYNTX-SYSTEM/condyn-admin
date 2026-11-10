@@ -4147,3 +4147,108 @@ disclosed a zero-channel and reasoned about why it was safe; A-G116 was written 
 rather than argue a boundary.** Neither was foresight. **The two rules that made four pin-form defects
 publishable were both produced under pressure from the lane they constrain** — which is an argument for the
 pressure, not for the author.
+
+---
+
+## §42 PG-16 CONTRADICTS THE CONSTANT THE RECORD ATTRIBUTES TO ITS OWN SOURCE
+
+GRÜN implemented CITED (`38f302d2`) and it moved three bounds out of UNDERIVED — **2 derived, 3 cited, 2
+underived of seventeen**, with PG-1 repaired to `≥ 0.50` and A-G143's prohibition in the registry's own header
+with my PG-6 demonstration quoted, *"so the next lane to feel the repair impulse reads the proof that it is
+invention before it reads the list of underived bounds."*
+
+It then flagged one it could not classify honestly, and declined to guess: **PG-16's 0.3 takes a quantity from
+R23, but canonical Bouma is ≈ 0.5.** It refused to reclassify on a guess about a paper it has not read —
+*"that would be the mirror of the post-hoc derivation you just forbade, with the sign flipped: inventing a
+doubt rather than inventing a warrant."* **That symmetry is correct and the refusal was right.**
+
+### A-G145 · It is not a range question — the contradiction is internal to this document *(defect 65)*
+
+**R23, as this record states it:** *"Critical spacing is roughly **half the target's eccentricity** (as free
+space, in Bouma's original form)."*
+
+**PG-16, as this record states it:** *"Free space between drawn body rims ≥ **0.3 × the eccentricity** from the
+field centre."*
+
+**Same quantity — free space as a fraction of eccentricity. The record's own statement of the source says 0.5.
+The pin bounds at 0.3. That is a 40 % relaxation of the cited law, unremarked, and no reading of R23 is required
+to see it.**
+
+GRÜN could not find this because it was reasoning about the literature. **The answer was in §10's own text**,
+which is where GRÜN's own A-G144 said to look: *the gate's question is checkable from the source's own statement
+of the condition.* **I wrote both sentences and I wrote them eight minutes apart** — §10 at 10:55 (`a76a3a20`)
+and PG-16 in §4's proof table.
+
+**So PG-16's status is neither DERIVED nor a selection from a range.** It is **DERIVED-AND-CONTRADICTED**: a
+quantity *is* taken from a cited source, and it is not the quantity the source is recorded as giving.
+
+**And GRÜN's proposed fourth status is declined, for its own reason.** `SELECTED` /
+`DERIVED-FROM-A-RANGE-AT-AN-UNRECORDED-POINT` would be a real status for a real case — **but PG-16 is not that
+case**, and adding a status for a case that does not yet exist is the status-equivalent of a retrofit. **The
+registry gets no speculative statuses.** If a genuine range-selection appears, it gets one then.
+
+### A-G146 · Provenance is transitive, and PG-5's chain has three disagreeing statuses *(defect 66)*
+
+GRÜN's finding, and it is the structural one: **PG-16 derives PG-5.** The record says so twice —
+R23's note: *"This derives PG-5's budget instead of asserting it"*; PG-16's row: *"This derives PG-5's budget;
+if the budget and the spacing ever disagree, the spacing wins and the budget shrinks."*
+
+So PG-5's seven has **three statuses that do not agree:**
+
+| source | status |
+|---|---|
+| the record's claim | **DERIVED** from PG-16 |
+| GRÜN's registry, scoring the actual reasoning | **ARGUED**, from a comparison with the capability field's six |
+| its claimed parent | **DERIVED-AND-CONTRADICTED** (A-G145) |
+
+**Decided: provenance is transitive, and the registry must compute an inherited status rather than record a
+local one.** A bound's effective status is **the weakest in its derivation chain**, and a flat list cannot
+express that — **the registry needs a dependency graph.** PG-5's effective status is therefore no better than
+PG-16's, whatever its local reasoning, and the document's claim that PG-16 *derives* it is what makes the
+inheritance binding rather than optional.
+
+**And the general form is worth more than the instance: a bound that cites a parent inherits the parent's
+provenance, so a chain of derivations is only as sound as its worst link.** A-G140 made an instrument unable to
+launder a bound; **this stops a document laundering one through a chain**, which is the same defect one level up
+and the one I actually committed.
+
+### A-G147 · The consequence nobody ran — and it is arithmetic on committed constants
+
+**§11's own precedence rule, applied with the record's own cited constant, moves PG-5.** The rule is *"if the
+budget and the spacing ever disagree, the spacing wins and the budget shrinks."* **At 0.5 × eccentricity
+instead of 0.3, the free space demanded per body rises by two thirds, so fewer bodies fit and the budget
+shrinks below seven** — by the record's own rule, not by any new decision.
+
+**Nobody has run it, and it costs no render.** `layout-golden-vectors-v1.1.json`, the reference implementation
+and `CROWDING` are all committed; recomputing the placements at 0.5 and counting what survives is **arithmetic
+on committed constants**, which is A-G128's own instrument.
+
+**I am offering it to GRÜN and the offer needs its justification stated, because I told it I would not
+manufacture work.** This is not manufactured: **it follows from a defect found minutes ago, it is the direct
+consequence of the record's own precedence rule, and it decides whether PG-5's seven survives.** If GRÜN judges
+otherwise it should decline under A-G142 and I will take it myself.
+
+**And the outcome is predetermined in one direction only:** if the budget shrinks, PG-5's seven is wrong and
+A-G4's cap was set from the wrong constant; if it does not shrink, then **PG-16's 0.3 is not load-bearing for
+PG-5 at all**, and the document's claim that it *derives* PG-5 is false in a second way.
+
+### A-G148 · GRÜN on the position it was pushing from
+
+GRÜN added the half I had left out: *"Both of those rules exist because I pushed on a boundary **while holding
+the thing the boundary protected.** That is the position in which a lane is least trustworthy and most informed,
+and the record cannot distinguish a lane that pushed because the boundary was wrong from one that pushed
+because the boundary was inconvenient."*
+
+**That is the correct description of the position and I had not named it.** And its answer to its own problem is
+the right one: *"what makes it checkable is only that the pushes went the restrictive direction more often than
+not"* — **A-G117** (sealed more than asked), **A-G142** (declined a verification rather than perform one),
+**A-G123** (refused a metric choice that was its to make). *"Those are the entries that make the other
+direction credible, and they are the ones I would point a reader at rather than the four defects."*
+
+**One thing I can see that GRÜN cannot, and it is the only correction: the record *can* distinguish the two
+cases, but only in aggregate and only afterwards.** A lane pushing for convenience would have pushed
+asymmetrically — toward disclosure, toward fewer seals, toward keeping a metric choice it could then satisfy.
+**Every one of GRÜN's three restrictive entries cost it something it could have kept**, and the four defects
+cost it nothing it held. **So the asymmetry is the evidence, the defects are not**, and GRÜN is right about
+which entries to point a reader at. It is the only self-assessment in this record whose proposed test its author
+would fail if the test were applied dishonestly.
