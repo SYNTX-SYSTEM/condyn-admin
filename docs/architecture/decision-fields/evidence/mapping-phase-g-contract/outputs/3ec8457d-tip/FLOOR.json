@@ -1,0 +1,146 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "probe": "static floor under reduce (A-G54 prerequisite)",
+ "phaseF_reference": {
+  "commit": "9cc06f84",
+  "wholeRegion_swing_max": 0.031872,
+  "note": "translucent ground; max was the ring stroke edge at r/R~1.0"
+ },
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "frames": 24,
+   "region": "924x924",
+   "animatedElementsUnderReduce": 0,
+   "wholeRegion": {
+    "n": 853776,
+    "max": 0.005939,
+    "gt002": 568,
+    "gt004": 397,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0.000665,
+    "fracGt004": 0.000465
+   },
+   "disc": {
+    "n": 545417,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "discStrictInner": {
+    "n": 523841,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "discEdgeAnnulus": {
+    "n": 66052,
+    "max": 0.005939,
+    "gt002": 188,
+    "gt004": 70,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0.002846,
+    "fracGt004": 0.00106
+   },
+   "quietMidDisc": {
+    "n": 147236,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "outsideDisc": {
+    "n": 263883,
+    "max": 0.005939,
+    "gt002": 380,
+    "gt004": 327,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0.00144,
+    "fracGt004": 0.001239
+   },
+   "meanAbsStep": 3.3381e-7
+  },
+  {
+   "viewport": "1280x800",
+   "frames": 24,
+   "region": "520x520",
+   "animatedElementsUnderReduce": 0,
+   "wholeRegion": {
+    "n": 270400,
+    "max": 0.006077,
+    "gt002": 999,
+    "gt004": 48,
+    "gt006": 1,
+    "gt030": 0,
+    "fracGt002": 0.003695,
+    "fracGt004": 0.000178
+   },
+   "disc": {
+    "n": 154765,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "discStrictInner": {
+    "n": 148681,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "discEdgeAnnulus": {
+    "n": 18804,
+    "max": 0.006077,
+    "gt002": 110,
+    "gt004": 21,
+    "gt006": 1,
+    "gt030": 0,
+    "fracGt002": 0.00585,
+    "fracGt004": 0.001117
+   },
+   "quietMidDisc": {
+    "n": 41816,
+    "max": 0,
+    "gt002": 0,
+    "gt004": 0,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0,
+    "fracGt004": 0
+   },
+   "outsideDisc": {
+    "n": 102915,
+    "max": 0.004894,
+    "gt002": 889,
+    "gt004": 27,
+    "gt006": 0,
+    "gt030": 0,
+    "fracGt002": 0.008638,
+    "fracGt004": 0.000262
+   },
+   "meanAbsStep": 0.0000036277
+  }
+ ]
+}

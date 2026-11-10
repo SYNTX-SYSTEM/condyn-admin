@@ -146,3 +146,111 @@ per run (A-F20's rule is per-run, not per-machine). A profile is an expectation;
 CROSS-CHECK, and it corroborates F-G3 from an independent direction: L1 is the CHEAPEST level (184 ms vs L0's
 347 ms), which is what a level with NO travel and NO beam-glows should cost. F-G3 was found by counting DOM
 carriers; the timing says the same thing without counting anything. Two instruments, one conclusion.
+
+
+§3  PG-1 MEASURED ON 3ec8457d — IT PASSES, AND THE "ZIELSCHEIBE" IS QUANTIFIABLY GONE
+--------------------------------------------------------------------------------------
+FIRST measurement of PG-1 on a phase-G artifact (A-G41: the 0.42 was void, so this is not a re-measurement and
+there is no baseline to look for). Carrier set CORRECTED per F-G1: glows = `.mf-halo` (field AND shelf), plus
+`.mf-travel` and `.mf-beam-glow`, which exist in no earlier mask. Rings EXCLUDED from "semantic" per A-G5.
+By suppression, as PG-1 specifies. (scripts/pink-pg1-g.mjs, outputs/3ec8457d-tip/PG1.json)
+
+                        1920 reduce   1920 LIVE(14f avg)   1280 reduce   1280 LIVE(14f avg)
+  PG-1 excl rings         0.62610         0.63857            0.72348        0.73335     bound >= 0.55
+  PG-1 incl rings         0.69772         0.71180            0.79327        0.80556
+  disc mean lum (full)    0.010356        0.0096533          0.015051       0.014211
+  disc mean (ground only) 0.0031013       0.0027391          0.0030567      0.0027097
+  VERDICT                 PASS            PASS               PASS           PASS
+
+PER-GROUP (fraction of disc light each group's suppression removes), 1920 / 1280, LIVE:
+  glows  0.22207 / 0.11695   beamGlow 0.10101 / 0.13284   text   0.11120 / 0.29399   beams 0.08525 / 0.10001
+  arcs   0.06393 / 0.09089   nodes    0.04042 / 0.07605   travel 0.01310 / 0.01472   sectors 0.00238 / 0.00279
+  bodies -0.09753 / +0.10346                               RINGS  0.08266 / 0.07714
+
+READ: at phase F the coordinate RINGS alone (5.25%) out-lit every relation combined (4.55%) — the quantified
+"blaue Zielscheibe". Here the rings are 0.083 against a semantic 0.639: the relations out-light the scaffold
+by ~7.7x, and the inversion is complete. The GLOWS are the single largest semantic contributor at 1920
+(0.222) — which is exactly why F-G1 mattered: GELB's instructed `mapping-glows` mask would have captured only
+the field half of the largest term in the obligation.
+
+TWO METHOD FINDINGS, both of which say PG-1's arithmetic is not sound as specified:
+
+(a) A-G55 INDEPENDENTLY REPRODUCED, on a different mask. `bodies` = **-0.08456 (1920 reduce) / -0.09753 (1920
+    LIVE) but +0.11907 / +0.10346 at 1280** — a SIGN FLIP between stage sizes. GRÜN found this on `bodyContent`;
+    PINK reproduces it on `[data-mapping-body]`, the whole body group. The body core is deliberately dark (G-1),
+    so as an OCCLUDER its suppression ADDS light and (full - suppressed)/full books it as negative presence. The
+    sign flip proves the measure is unstable, not merely awkward. A-G55's remedy (declare each class emitting or
+    occluding; exclude occluders from numerator AND denominator, recorded per run) is adopted. NOTE: PG-1 PASSES
+    at every size and motion setting with the occluder INCLUDED at its negative value, so the defect is not
+    load-bearing for this verdict — correcting it can only raise the figure. The verdict is reported on the
+    uncorrected arithmetic deliberately, as the conservative direction.
+(b) THE ATTRIBUTION IS NOT ADDITIVE, in both directions. 1920: sum of parts 0.53945 < joint 0.63857 (the
+    occluder cancels emitters when hidden alone). 1280: sum 0.92891 >> joint 0.73335 (overlapping carriers
+    double-count). So per-group numbers are attributions, NEVER summands, and no reading may add them.
+
+(c) A REDUCE-ONLY PG-1 OMITS A SEMANTIC CHANNEL. `travel` contributes 0.00000 under reduce and +0.0131 / +0.0147
+    LIVE, because the travel is `visibility:hidden` under reduce (GLOW-TRAVEL.json). The effect is small, so it
+    does not move the verdict — but PG-1 read under reduce is a statement about the RESTING field's light and
+    must say so. PINK reports both and declares the LIVE figure (period-averaged over 14 frames across the full
+    10 s travel/breath period) the primary one.
+
+
+§4  THE STATIC FLOOR ON 3ec8457d — A-G54 IS RIGHT AND MY PHASE-F FLOOR DOES NOT CARRY
+--------------------------------------------------------------------------------------
+GELB's A-G54 prerequisite. My 0.031872 was measured at 9cc06f84 on the TRANSLUCENT ground. A-G17 made the disc
+opaque. Measured here, both ways, so the comparison is apples-to-apples with noise-floor.json (whose max was the
+RING STROKE EDGE at r/R~1.0, i.e. ON the disc boundary, which a strict disc mask can exclude).
+(scripts/pink-floor-g.mjs, 24 frames, reducedMotion:reduce, ASSERTED 0 animated elements under reduce —
+ so this is a floor and not suppressed signal (A-F11). outputs/3ec8457d-tip/FLOOR.json)
+
+                        1920x1080                 1280x800
+  animated under reduce 0                         0
+  WHOLE REGION max      0.005939                  0.006077      (phase F, same basis: 0.031872)
+  DISC (r<=1.0) max     0.000000                  0.000000
+  disc strict (r<=0.98) 0.000000                  0.000000
+  disc edge r 0.98-1.04 0.005939                  0.006077
+  quiet mid disc .3-.6  0.000000                  0.000000      (phase F: 0.005917)
+  outside disc (host)   0.005939                  0.004894      (phase F: 0.009368)
+  mean |step|           3.34e-07                  3.63e-06
+
+THE IN-DISC STATIC FLOOR IS EXACTLY ZERO, at both sizes, over 24 frames, with the field provably motionless.
+Every non-zero swing in the region lies at r/R > 0.98 — the disc edge and the host outside it. GRÜN's 0.000 is
+CONFIRMED independently.
+
+I THEREFORE WITHDRAW MY OWN OBJECTION, ON THIS BUILD. My charge against PG-10's max-swing limb was that 0.030
+sits below the instrument's own static floor of 0.0319. That was true at 9cc06f84 and is FALSE at 3ec8457d: the
+in-disc floor is 0. By my own asymmetric-admissibility rule (a GREEN needs the floor well under the bound), the
+max-swing limb IS admissible here. **A-G26's suspended limb returns as written.** A-G54's general rule is correct
+and I adopt it: a floor is a property of a BUILD, not of a lane. A-G17 removed the host's bleed through the
+translucent ground — which is what A-F4 predicted — and with it the mark-edge AA jitter inside the disc.
+
+ONE ADDITIVE CAVEAT, which is not a hedge but a radius: PG-10's carrier is `.mf-wave-halo` (A-G48) and a SHELF
+body's drawn rim reaches ~546 units past the field ring at 500 — A-G8 accepted that shelf bodies straddle the
+rim. Glow pixels lying at r/R > 0.98 therefore sit on a floor of ~0.006, not 0. That is still 5x under the 0.030
+ceiling so the limb stays admissible, but the per-run floor MUST be measured on the actual carrier mask, not on
+the disc, or the limb inherits a floor it was not measured against. A-F20's per-run rule covers this; I am
+naming the specific way it bites here.
+
+WHICH OF MY COMMITTED BASELINES SURVIVE THE OCCLUSION CHANGE (A-G54's explicit ask):
+  noise-floor.json  0.031872 whole region        DOES NOT SURVIVE in-disc (now 0). Retained only as a statement
+                                                 about the translucent ground and the host region.
+  floor-regions.json mark_AAedge max 0.02751     DOES NOT SURVIVE — mark edges inside the disc now read 0.
+                     quietMidDisc 0.005917       DOES NOT SURVIVE — now 0.000000. This was precisely the
+                                                 host-through-translucent-ground term; A-F4 predicted its
+                                                 removal and the prediction is confirmed.
+                     outsideDisc_host 0.009368   SURVIVES IN KIND (host, unchanged mechanism; now 0.0059/0.0049)
+                                                 but is outside the field's scope per A-F4. Note the host's own
+                                                 jitter is ~unchanged — it is simply no longer visible through
+                                                 the disc.
+  PF8-PERCLASS2.json bracketed-null amplitudes   DO NOT SURVIVE. Both the ground AND the element taxonomy
+                     (rings tierA 0.000195/1.96e-5 etc.)   changed (§1). Re-measure per class on this build.
+  A-F21 window result                            THE RULE SURVIVES, THE NUMBERS DO NOT. "The floor falls until
+                     (settles at 2/df = 40s;     ~2 resolution cells then flattens" is a property of the
+                      full window >= 57s)        ESTIMATOR and the frequency spacing, not of the ground, and so
+                                                 is build-independent. The absolute floor values (3.28e-5 ...
+                                                 2.65e-5) are ground-dependent and are retired.
+  A-F20 adequacy rule                            SURVIVES; re-measured on this build in §2 and far easier here.
+  A-F30 (tier B/C NOT RUN for strokes <= 1.5px)  SURVIVES AS GEOMETRY, but the phase-G stroke widths must be
+                                                 re-checked before it is applied.
+  A-F6 / PF-15 ring readings (1.636/0.630/0.861) DO NOT SURVIVE — wrong statistic (max, not the engraved min)
+                                                 per A-G45/A-G56, AND phase-F ground. Superseded, not merely stale.
