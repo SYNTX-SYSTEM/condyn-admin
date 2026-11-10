@@ -3,20 +3,20 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
-  "headShort": "0698bf83",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": false,
+  "productTreeClean": true,
   "dirtyOutsideProduct": [
-   "pp/components/career/demo/PersonJobMappingField.tsx"
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
   ],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T17:27:29.366Z"
+  "measuredAt": "2026-11-10T17:33:19.896Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -47,7 +47,7 @@
  "deviceScaleFactor": 1,
  "region": "520x520",
  "discPixels": 154765,
- "frames": 172,
+ "frames": 167,
  "spanS": 12.1,
  "definitions": {
   "swing": "per-pixel (max − min) over the frame stack, reducedMotion:reduce so the FIELD contributes no motion",
@@ -56,15 +56,15 @@
  },
  "wholeRegion": {
   "n": 270400,
-  "mean": 0.000089945,
+  "mean": 0.000089892,
   "p50": 0,
   "p90": 0,
-  "p99": 0.0026488,
-  "p999": 0.0053119,
+  "p99": 0.0026108,
+  "p999": 0.0053198,
   "p9999": 0.007464,
   "max": 0.0081084,
   "min": 0,
-  "fracGe0004": 0.00277
+  "fracGe0004": 0.00278
  },
  "discInterior": {
   "n": 154765,
@@ -81,15 +81,15 @@
  "byBucket": {
   "markAaEdge": {
    "n": 42679,
-   "mean": 0.00004465,
+   "mean": 0.000044629,
    "p50": 0,
    "p90": 0,
-   "p99": 0.0015284,
-   "p999": 0.0051902,
+   "p99": 0.0015176,
+   "p999": 0.0052244,
    "p9999": 0.0066437,
    "max": 0.0081084,
    "min": 0,
-   "fracGe0004": 0.00253
+   "fracGe0004": 0.00258
   },
   "quietMidDisc": {
    "n": 33617,
@@ -117,7 +117,7 @@
   },
   "outsideDisc": {
    "n": 110212,
-   "mean": 0.00020339,
+   "mean": 0.00020326,
    "p50": 0,
    "p90": 0.00054766,
    "p99": 0.0032844,
@@ -128,7 +128,7 @@
    "fracGe0004": 0.00582
   }
  },
- "meanAbsStep": 0.0000021347,
+ "meanAbsStep": 0.0000021733,
  "pinkComparison": {
   "source": "mapping-phase-f-contract/outputs/9cc06f84-baseline/noise-floor.json (9cc06f84)",
   "pink_swing_max": 0.031872,

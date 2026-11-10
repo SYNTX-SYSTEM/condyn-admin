@@ -4,20 +4,20 @@
  "priorBaseline": "NONE — A-G41 voided §12's 54 px. PG-3 stays OPEN per A-G24. FIRST MEASUREMENT.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
-  "headShort": "0698bf83",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": false,
+  "productTreeClean": true,
   "dirtyOutsideProduct": [
-   "pp/components/career/demo/PersonJobMappingField.tsx"
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
   ],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T17:28:15.222Z"
+  "measuredAt": "2026-11-10T17:34:05.192Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",

@@ -4,20 +4,20 @@
  "priorBaseline": "NONE for limb (a) — A-G41 voided §12's 0.23. Limb (b) has PINK's phase-F readings on a different ground and a different statistic.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
-  "headShort": "0698bf83",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": false,
+  "productTreeClean": true,
   "dirtyOutsideProduct": [
-   "pp/components/career/demo/PersonJobMappingField.tsx"
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
   ],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T17:28:02.778Z"
+  "measuredAt": "2026-11-10T17:33:52.760Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -66,17 +66,17 @@
  "limbB_ladder": [
   {
    "step": "shelf → best",
-   "ratioOnMaskedMedian": 3.835,
+   "ratioOnMaskedMedian": 2.222,
    "ratioOnEngravedMin_SUPERSEDED": 2.022
   },
   {
    "step": "best → field",
-   "ratioOnMaskedMedian": 2.071,
+   "ratioOnMaskedMedian": 0.572,
    "ratioOnEngravedMin_SUPERSEDED": 2.092
   },
   {
    "step": "field → horizon",
-   "ratioOnMaskedMedian": 2.364,
+   "ratioOnMaskedMedian": 0.77,
    "ratioOnEngravedMin_SUPERSEDED": 2.341
   }
  ],
@@ -97,22 +97,22 @@
    },
    "masked": {
     "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
-    "anglesMeasured": 697,
-    "anglesFullyCovered": 23,
+    "anglesMeasured": 446,
+    "anglesFullyCovered": 274,
     "bandPixels": 90000,
-    "coveredPixels": 17940,
-    "coveredFraction": 0.1993,
-    "pooledMedian": 0.0017566,
+    "coveredPixels": 87947,
+    "coveredFraction": 0.9772,
+    "pooledMedian": 0.0022854,
     "perAngleMedian": {
-     "min": 0.00032544,
-     "p05": 0.0017566,
-     "p25": 0.0017566,
-     "p50": 0.0017566,
-     "p75": 0.0017566,
-     "p95": 0.01693,
-     "max": 0.01693
+     "min": 0.00030353,
+     "p05": 0.0011496,
+     "p25": 0.0020602,
+     "p50": 0.0027195,
+     "p75": 0.0035653,
+     "p95": 0.0063542,
+     "max": 0.010048
     },
-    "perAngleSpread": 8.638
+    "perAngleSpread": 1.914
    },
    "supersededExtrema": {
     "angles": 720,
@@ -140,22 +140,22 @@
    },
    "masked": {
     "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
-    "anglesMeasured": 696,
-    "anglesFullyCovered": 24,
+    "anglesMeasured": 8,
+    "anglesFullyCovered": 712,
     "bandPixels": 7200,
-    "coveredPixels": 422,
-    "coveredFraction": 0.0586,
-    "pooledMedian": 0.0067363,
+    "coveredPixels": 7192,
+    "coveredFraction": 0.9989,
+    "pooledMedian": 0.0050793,
     "perAngleMedian": {
-     "min": 0.00080344,
-     "p05": 0.003907,
-     "p25": 0.0062641,
-     "p50": 0.0067363,
-     "p75": 0.0072286,
-     "p95": 0.0072286,
-     "max": 0.168
+     "min": 0.004699,
+     "p05": 0.004699,
+     "p25": 0.0047368,
+     "p50": 0.0050793,
+     "p75": 0.0051847,
+     "p95": 0.0055018,
+     "max": 0.0055664
     },
-    "perAngleSpread": 0.493
+    "perAngleSpread": 0.158
    },
    "supersededExtrema": {
     "angles": 720,
@@ -183,22 +183,22 @@
    },
    "masked": {
     "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
-    "anglesMeasured": 700,
-    "anglesFullyCovered": 20,
+    "anglesMeasured": 389,
+    "anglesFullyCovered": 331,
     "bandPixels": 6480,
-    "coveredPixels": 538,
-    "coveredFraction": 0.083,
-    "pooledMedian": 0.013954,
+    "coveredPixels": 5297,
+    "coveredFraction": 0.8174,
+    "pooledMedian": 0.0029062,
     "perAngleMedian": {
      "min": 0,
-     "p05": 0.0046462,
-     "p25": 0.0094497,
-     "p50": 0.013228,
-     "p75": 0.016117,
-     "p95": 0.01693,
-     "max": 0.01693
+     "p05": 0.000239,
+     "p25": 0.0011496,
+     "p50": 0.0026027,
+     "p75": 0.004543,
+     "p95": 0.0067363,
+     "max": 0.0092927
     },
-    "perAngleSpread": 0.929
+    "perAngleSpread": 2.496
    },
    "supersededExtrema": {
     "angles": 720,
@@ -226,22 +226,22 @@
    },
    "masked": {
     "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
-    "anglesMeasured": 589,
-    "anglesFullyCovered": 131,
+    "anglesMeasured": 37,
+    "anglesFullyCovered": 683,
     "bandPixels": 6480,
-    "coveredPixels": 1565,
-    "coveredFraction": 0.2415,
-    "pooledMedian": 0.032994,
+    "coveredPixels": 6436,
+    "coveredFraction": 0.9932,
+    "pooledMedian": 0.0022364,
     "perAngleMedian": {
-     "min": 0,
-     "p05": 0.0063005,
-     "p25": 0.017834,
-     "p50": 0.030611,
-     "p75": 0.039161,
-     "p95": 0.043057,
-     "max": 0.043057
+     "min": 0.0018459,
+     "p05": 0.0018459,
+     "p25": 0.0019323,
+     "p50": 0.0022364,
+     "p75": 0.0024773,
+     "p95": 0.0029965,
+     "max": 0.0033907
     },
-    "perAngleSpread": 1.201
+    "perAngleSpread": 0.514
    },
    "supersededExtrema": {
     "angles": 720,
@@ -256,15 +256,15 @@
   }
  },
  "signAndSeatMaskPixels": {
-  "glowsAll": 24965,
+  "glowsAll": 24967,
   "bodyCore": 5266,
   "bodyOutlines": 7002,
-  "bodyNames": 6451,
-  "arcs": 3203,
-  "beams": 1450,
-  "nodes": 3182,
-  "sectorText": 4323,
-  "bodySeat": 12108
+  "bodyNames": 6712,
+  "arcs": 3191,
+  "beams": 1473,
+  "nodes": 3431,
+  "sectorText": 4407,
+  "bodySeat": 64707
  },
  "shelfCompositedOverItsOwnBlackSeat": {
   "note": "The shelf ring is NOT composited over the stage plate. A black seat circle of the SAME geometry (:882) is painted immediately before it, so the band is pure black beneath the ring and rgba(INK, alpha) composites over rgb(0,0,0), not over rgb(3,5,8). Measured radial profile at 1920: the band reads 1.45e-3 with the ring and ~0 without it (+1.5e-3 contribution at every sampled radius 435…495), and the ring contributes light at 718 of 720 angles. At alpha 0.02 that lands on 0.0014531 against the plate's 0.00145432 — luminance-identical to within 1.2e-6 BY COINCIDENCE, not because the ring is missing.",

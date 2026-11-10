@@ -6,20 +6,20 @@
  "renderModeNote": "travel DRAWN, excluded by its own mask (A-G42 point 1 / A-G32). PG-11's travel-drawn-on-relation-pixels pass is a SEPARATE run and may not reuse these frames (A-G42 point 3).",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
-  "headShort": "0698bf83",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": false,
+  "productTreeClean": true,
   "dirtyOutsideProduct": [
-   "pp/components/career/demo/PersonJobMappingField.tsx"
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
   ],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T17:26:08.917Z"
+  "measuredAt": "2026-11-10T17:31:59.740Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -70,17 +70,17 @@
  "region": "924x924",
  "discPixels": 545417,
  "clipMatch": true,
- "frames": 189,
- "spanS": 57.8,
+ "frames": 191,
+ "spanS": 57.7,
  "adequacyGuard": {
-  "cadenceMs": 307,
-  "nyquistHz": 1.627,
+  "cadenceMs": 304,
+  "nyquistHz": 1.646,
   "maxFittedFreqHz": 0.35,
-  "limit": 1.465,
+  "limit": 1.481,
   "adequate": true
  },
  "windowRule": {
-  "seconds": 57.8,
+  "seconds": 57.7,
   "deltaFHz": 0.05,
   "requiredSeconds": 57,
   "satisfied": true
@@ -97,113 +97,113 @@
   "withdrawnLimb": "the 0.030 max-swing ceiling is NOT evaluated — withdrawn by A-G26",
   "ceilingNotMeasured": "A-G26's replacement ceiling needs p999.9 on CO-REGISTERED frames; co-registration does not exist in this instrument, so swing_p9999_uncoregistered is MATERIAL ONLY and is not that ceiling"
  },
- "PG10_limb1_fracCarrierSwingGe0004": 0.52043,
+ "PG10_limb1_fracCarrierSwingGe0004": 0.52051,
  "PG10_limb1_boundForReference": ">= 0.25",
- "PG10_limb2_medianWeber": 0.28578,
+ "PG10_limb2_medianWeber": 0.28546,
  "PG10_limb2_boundForReference": "[0.10, 0.35]",
  "carrier": {
   "px": 35880,
   "swing": {
    "n": 35880,
-   "mean": 0.0075896,
-   "p50": 0.0043433,
+   "mean": 0.0075865,
+   "p50": 0.0043426,
    "p90": 0.017742,
-   "p99": 0.028778,
-   "p999": 0.2287,
-   "p9999": 0.33236,
-   "max": 0.38817,
+   "p99": 0.028782,
+   "p999": 0.22696,
+   "p9999": 0.33558,
+   "max": 0.39837,
    "min": 0
   },
   "weber": {
    "n": 35880,
-   "mean": 0.28578,
-   "p50": 0.28578,
-   "p90": 0.4173,
-   "p99": 0.46735,
-   "p999": 0.97452,
-   "p9999": 1.5294,
-   "max": 1.7409,
+   "mean": 0.28541,
+   "p50": 0.28546,
+   "p90": 0.41645,
+   "p99": 0.46616,
+   "p999": 0.97276,
+   "p9999": 1.4595,
+   "max": 1.7798,
    "min": 0
   },
-  "fracSwingGe0004": 0.52043,
-  "swing_p9999_uncoregistered": 0.33236,
-  "weberMedian": 0.28578
+  "fracSwingGe0004": 0.52051,
+  "swing_p9999_uncoregistered": 0.33558,
+  "weberMedian": 0.28546
  },
  "medium": {
-  "px": 107389,
+  "px": 107388,
   "swing": {
-   "n": 107389,
-   "mean": 0.0008512,
+   "n": 107388,
+   "mean": 0.00082796,
    "p50": 0.00030053,
    "p90": 0.00059797,
    "p99": 0.0007609,
-   "p999": 0.2378,
-   "p9999": 0.61434,
+   "p999": 0.22773,
+   "p9999": 0.61568,
    "max": 0.67856,
    "min": 0
   },
   "weber": {
-   "n": 107389,
-   "mean": 0.080175,
-   "p50": 0.08439,
-   "p90": 0.16769,
-   "p99": 0.25722,
-   "p999": 1.9633,
-   "p9999": 4.871,
-   "max": 6.0006,
+   "n": 107388,
+   "mean": 0.079991,
+   "p50": 0.084366,
+   "p90": 0.16793,
+   "p99": 0.25776,
+   "p999": 1.8515,
+   "p9999": 4.9875,
+   "max": 5.9558,
    "min": 0
   },
-  "fracSwingGe0004": 0.00296,
-  "swing_p9999_uncoregistered": 0.61434,
-  "weberMedian": 0.08439
+  "fracSwingGe0004": 0.00287,
+  "swing_p9999_uncoregistered": 0.61568,
+  "weberMedian": 0.08437
  },
  "stillGlow_shelfBodies": {
-  "px": 25047,
+  "px": 25048,
   "swing": {
-   "n": 25047,
-   "mean": 0.001465,
-   "p50": 0.00005029,
+   "n": 25048,
+   "mean": 0.0014779,
+   "p50": 0.00004868,
    "p90": 0.0012976,
    "p99": 0.012625,
-   "p999": 0.25568,
-   "p9999": 0.58083,
-   "max": 0.59019,
+   "p999": 0.28256,
+   "p9999": 0.58245,
+   "max": 0.58605,
    "min": 0
   },
   "weber": {
-   "n": 25047,
-   "mean": 0.10418,
-   "p50": 0.0039796,
-   "p90": 0.14945,
-   "p99": 2.1055,
-   "p999": 2.9007,
-   "p9999": 3.0542,
-   "max": 3.0937,
+   "n": 25048,
+   "mean": 0.10415,
+   "p50": 0.003937,
+   "p90": 0.14942,
+   "p99": 2.1106,
+   "p999": 2.9074,
+   "p9999": 3.0817,
+   "max": 3.1561,
    "min": 0
   },
-  "fracSwingGe0004": 0.04707,
-  "swing_p9999_uncoregistered": 0.58083,
-  "weberMedian": 0.00398,
+  "fracSwingGe0004": 0.04715,
+  "swing_p9999_uncoregistered": 0.58245,
+  "weberMedian": 0.00394,
   "note": "a shelf body's glow is STILL by design (A-F8); reported beside the carrier, never inside it. An earlier reading of this instrument mixed these in and diluted both limbs."
  },
  "coherentEnergy": {
   "carrier": {
    "px": 35880,
-   "pooledSignal": 0.0034614,
-   "pooledNull": 0.000027896,
-   "pooledRatio": 124.08,
-   "perPixelP99": 0.014023,
-   "perPixelNullP99": 0.00017836,
-   "perPixelNullP50": 0.000038654
+   "pooledSignal": 0.0034682,
+   "pooledNull": 0.00001505,
+   "pooledRatio": 230.45,
+   "perPixelP99": 0.014092,
+   "perPixelNullP99": 0.00016526,
+   "perPixelNullP50": 0.00003876
   },
   "medium": {
-   "px": 107389,
-   "pooledSignal": 0.000068043,
-   "pooledNull": 9.3146e-7,
-   "pooledRatio": 73.05,
-   "perPixelP99": 0.00050862,
-   "perPixelNullP99": 0.000023389,
-   "perPixelNullP50": 0.0000061482
+   "px": 107388,
+   "pooledSignal": 0.000067038,
+   "pooledNull": 0.0000021619,
+   "pooledRatio": 31.01,
+   "perPixelP99": 0.00050491,
+   "perPixelNullP99": 0.000025033,
+   "perPixelNullP50": 0.000007352
   },
   "harmonics": [
    0.1,

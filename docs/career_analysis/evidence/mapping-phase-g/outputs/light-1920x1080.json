@@ -4,20 +4,20 @@
  "priorBaseline": "NONE — A-G41 voided §12's 0.42 / 0.025 (measured on a vanished working tree). FIRST MEASUREMENT.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
-  "headShort": "0698bf83",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": false,
+  "productTreeClean": true,
   "dirtyOutsideProduct": [
-   "pp/components/career/demo/PersonJobMappingField.tsx"
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
   ],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
   "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T17:25:33.483Z"
+  "measuredAt": "2026-11-10T17:31:24.320Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -83,7 +83,7 @@
    "beams": "[data-testid^=\"mapping-beam-\"]",
    "nodes": "[data-mapping-node]",
    "sectorText": "[data-mapping-sector]",
-   "bodySeat": ".mf-seat",
+   "bodySeat": ".mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
    "bodyCore": ".mf-core",
    "ringBest": "[data-testid=\"mapping-ring-best\"]",
    "ringField": "[data-testid=\"mapping-ring-field\"]",
@@ -138,8 +138,8 @@
   "arcs": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.0728,
-   "removedSum": 414.49
+   "removedShareOfField": 0.07282,
+   "removedSum": 414.59
   },
   "beams": {
    "declared": "EMITTING",
@@ -162,8 +162,8 @@
   "bodySeat": {
    "declared": "OCCLUDING",
    "measured": "OCCLUDING",
-   "removedShareOfField": -0.51226,
-   "removedSum": -2916.4
+   "removedShareOfField": -0.49474,
+   "removedSum": -2816.7
   },
   "ringShelf": {
    "declared": "SCAFFOLD",
@@ -180,14 +180,14 @@
   "ringField": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
-   "removedShareOfField": 0.00673,
-   "removedSum": 38.339
+   "removedShareOfField": 0.00672,
+   "removedSum": 38.277
   },
   "ringHorizon": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
    "removedShareOfField": 0.02613,
-   "removedSum": 148.77
+   "removedSum": 148.75
   }
  },
  "occluderSignCheck": {
