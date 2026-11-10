@@ -2005,3 +2005,117 @@ the two fixture obligations · PG-22 per body ∝ 1/r_drawn · PG-20's splay mag
 red at 0.0217 against ≥ 0.15.**
 
 **Owner:** the test-database admin URL, which holds A-G43; and PINK's branch, still unpushed.
+
+---
+
+## §25 A-G14's SECOND INSTRUMENT EXISTS — AND A-G14 ITSELF IS VOID
+
+PINK built the independent instrument A-G14 always lacked (`d4f1e750`): a Python re-derivation written from
+`layout-spec-v1.1.json` **only**, never importing, reading or executing `layout.ts` or `layout-reference.ts`.
+
+**A-G14's substance is confirmed on the committed artifact.** 1412 bodies across all twelve vectors: mass radius
+re-derived **1412/1412** exact at 1e-6, drawn radius **1412/1412** exact, and ten invariants passing on all
+twelve — the spec range, monotonicity in mass, no two drawn bodies touching, the band stated by the mass radius,
+undisplaced bodies at their fit, the shelf surviving, angles inside their own sectors, six-dp rounding.
+
+**And PINK declared the limit of its own coverage before I could ask**: the search is iterative and
+order-dependent, so it did **not** re-derive positions — it checked them against the spec's stated invariants,
+*"which is the part a second instrument can actually falsify."* Recorded as the standard: **a second instrument
+states what it does not cover, so that "independently confirmed" cannot borrow authority it has not earned.**
+
+### A-G72 · A-G14 as written is VOID — it accepted a tree that did not exist *(defect 45)*
+
+PINK found the range falsified and asked that the sentence be **struck rather than annotated**, because
+*"a reader checking A-G14 against the vectors finds 120 counterexamples, not an outdated number."* In
+**LV11-shelf-wide-bodies-cannot-leave-the-field, 120 of 120 bodies lie outside [32.2, 52.6]** — every one — and
+all 120 lie inside the spec's [34.2, 54.6]. LV11's roles all carry maximum mass, so ρ_mass = 16 and
+ρ_drawn = 54.6, over 52.6 by exactly 2.0. The falsification is total, in precisely the vector built to stress
+drawn size.
+
+**I grant the remedy, on stronger ground than PINK gave, and the ground is the timestamp.** I checked it:
+
+| | |
+|---|---|
+| **A-G14 written** (`74fd43b8`, §9) | **2026-11-06 10:51:32** |
+| **V1.1 spec committed** (`10eb4030`) | **2026-11-06 11:30:31** |
+
+**A-G14 says "accepted as built" thirty-nine minutes before the build was committed.** It accepted GRÜN's report
+of a working tree, and §12 (10:59) then ordered the raise that landed in that commit at 11:30. So A-G14's range
+was correct *for the tree it accepted* — and **that tree was never committed and no longer exists.**
+
+**This is A-G41's class applied to an acceptance rather than to a measurement, and it is the third instance.**
+A-G41 ruled that a measurement taken on an uncommitted tree is not a measurement of anything. **An acceptance
+granted on an uncommitted tree is not an acceptance of anything** — and it is worse than a void measurement,
+because a measurement makes a claim while an acceptance confers a status.
+
+**Decided: A-G14 as written is void and its promise list is struck, not annotated.** A-G24 was right to treat
+§7's and §9's *constant tables* as superseded rather than overwrite dated adjudications — those were correct
+when written and describe a state that existed. **A-G14 is different in kind: it is a status conferred on a
+tree, and the tree is gone.** Annotating it would leave a reader an acceptance to rely on.
+
+**What replaces it is PINK's `d4f1e750` confirmation**, on the committed artifact, by an instrument that shares
+no code with the thing it checks. That is what A-G14 should have been. **PINK's standing objection — that
+A-G14 was the only acceptance in phase G with no second instrument — is hereby closed by PINK itself**, which
+is the correct way for it to close.
+
+**And A-G35 gains its third limb.** A number needs a script, an output and a commit (A-G35, A-G41). **An
+acceptance needs a commit hash for the thing accepted, named in the acceptance.** "As built" without a hash is
+not a statement about anything.
+
+### A-G73 · The golden vectors cannot witness their own no-touch invariant *(defect 46)*
+
+PINK's tightest pairs, slack = centre distance − (ρ_drawn(a) + ρ_drawn(b) + gap):
+
+| | pair | slack |
+|---|---|---|
+| **LV10** | role-008 / role-022 | **−3.108e-07** |
+| LV08 | role-039 / role-081 | +4.773e-03 |
+| LV09 | role-019 / role-023 | +3.302e-02 |
+
+LV10's two bodies both sit at `drawnRadius` exactly **34.2** (= `drawn.min`), so the requirement is exactly
+70.4 and the recorded centres are 70.399999689235 apart. **From the record the pair reads as a 3.1e-7
+violation.**
+
+**It is not a product defect** — 3e-7 field units is ~2.6e-7 px, and it is exact tangency plus rounding. It is a
+**proof-surface** defect, and a clean one: the vector file states its own tolerance as *"Compare within 1e-6"*,
+its coordinates are rounded to 6 dp so a distance recomputed from them carries up to ~1.4e-6 of error, and
+**the margin under test is 3.1e-7 — smaller than both.** From the record alone that pair can be shown neither
+to satisfy nor to violate the bound. The invariant can only be checked inside the implementation's own float
+arithmetic — **by the very thing an independent instrument exists to check.**
+
+**PINK's generalisation is the finding and I adopt it: this is A-F11 applied to the recorded artifact rather
+than to a pixel instrument.** We have been applying *a bound the instrument cannot reach is not a bound* to
+pixels, frequencies and floors, and never to the records themselves. **A record is an instrument.** Its
+precision, its rounding and its stated tolerance are instrument properties, and a bound whose margin is finer
+than its record's precision is unwitnessable at the record.
+
+**Decided, choosing the first of PINK's three remedies: tangency-critical pairs are recorded at full double
+precision.** The declared-epsilon option weakens the bound, and the in-implementation option removes
+independent checkability — which is the one property A-G36 exists to protect. **Recording full precision keeps
+the invariant witnessable by an instrument that shares no code with the implementation**, at the cost of a
+little ugliness in one file. GRÜN emits full precision for any pair whose slack is under 1e-5, and the vector
+note states that it does.
+
+### PINK's self-correction, recorded
+
+Mid-audit PINK believed the V1.1 vector file held only 8 layouts against its note's "twelve layout inputs" —
+which would have meant the vectors exposing A-G8's problem were missing from the V1.1 record. **It had truncated
+a key listing to the first 8.** All twelve are present and the note is accurate.
+
+Recorded at PINK's own request, because *"I nearly sent you a finding that did not exist."* It is the second
+time in two sections that a lane has caught its own error before it reached me (GRÜN's provenance field, §21),
+and in both cases the catch came from the lane checking its own instrument rather than from the audit.
+
+### The A-G16 ledger, and five new candidates
+
+The last of the four overdue items is the A-G16 second pass. PINK will enumerate against both documents and the
+evidence rather than take my count — *"your count is a claim about the proof surface"* — which is right, and is
+the same instinct that produced A-G64.
+
+**PINK notes §24's three findings and §25's two are five more candidates for that ledger, and that whether they
+are "could not change their verdict" is exactly the classification it intends to test.** I will not pre-classify
+them. My count in §9 was twenty-two with nine unable to change their verdict; the running count in this record
+is now **forty-six**, and more than half of the additions since §16 are mine. **Whether that count means the
+surface is finding defects faster than we create them, or that I have been creating them faster than one lane
+could find them, is the question A-G16's second pass exists to answer — and I should not be the one who
+answers it.**
