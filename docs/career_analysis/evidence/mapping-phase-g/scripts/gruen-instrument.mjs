@@ -679,26 +679,60 @@ export async function captureChroma(cdp, clip, N) {
  * silently launder one, because the laundering required the literal.
  *
  * `origin` is the adjudication or source that FIXES the value — not the one that merely restates it.
+ *
+ * §41 A-G143 adds a THIRD STATUS at GELB's request, because conflating two things lost a distinction:
+ *   DERIVED  — a quantity was taken from a stated source or computed from the spec.
+ *   CITED    — a MECHANISM is named and no quantity is taken from it. "Motivated, not derived." PG-10's
+ *              corridor rests on "R17's ceiling is what keeps this calm" while the record never states R17's
+ *              own numbers; PG-17's 1.5 r cites R21's critical band the same way. The difference from
+ *              UNDERIVED is "we had a reason and no number" against "we had neither", and it matters because
+ *              a CITED bound has somewhere to go for a number and an UNDERIVED one does not.
+ *   UNDERIVED — neither.
+ *
+ * A-G143 also forbids the repair this registry tempts: **no bound gets a derivation it did not have**, because
+ * a post-hoc derivation makes an arbitrary number look principled — A-G138's "it looks derived" hazard turned
+ * on the repair impulse. GELB proved the rule on itself with PG-6: the charitable reconstruction is an equal
+ * share among the emitting classes, and eight gives 1/8 = 0.125 while seven gives 1/7 = 0.143. Neither is
+ * 0.15, so even the most generous reconstruction fails to produce the number.
  */
 export const BOUNDS = Object.freeze({
-  "PG-1.semanticShare":      { value: 0.55,   origin: "UNDERIVED — PHASE_G §2 G-1 states >= 55 % with no derivation recorded" },
+  "PG-1.semanticShare":      { value: 0.55,   origin: "PARTLY DERIVED — A-G143: G-1's own title, 'The space is dark and the bodies carry the light', yields >= 0.50 directly (if the bodies CARRY the light they carry most of it). The remaining 0.05 appears nowhere in the record. The only costless repair in the registry, and the derivation was in the obligation's own title all along." },
   "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24" },
   "PG-5.bodiesAtL0":         { value: 7,      origin: "ARGUED — PHASE_G §2 G-2: 'the existing CAPABILITY FIELD draws six'; a comparison, not a derivation" },
   "PG-6.relationShare":      { value: 0.15,   origin: "UNDERIVED — PHASE_G §2 G-3 states >= 15 % with no derivation recorded" },
-  "PG-10.swingFraction":     { value: 0.25,   origin: "UNDERIVED — A-G22 restated it from a measurement of a tree that A-G41 later voided" },
-  "PG-10.weberCorridor":     { value: [0.10, 0.35], origin: "UNDERIVED — A-G22, same provenance as above" },
+  "PG-10.swingFraction":     { value: 0.25,   origin: "CITED — A-G22 rests it on 'R17's ceiling is what keeps this calm' while the record never states R17's own numbers; it also restates a measurement of a tree A-G41 later voided. A mechanism is named and no quantity is taken from it." },
+  "PG-10.weberCorridor":     { value: [0.10, 0.35], origin: "CITED — A-G22, same: R17's corridor is invoked, R17's numbers are not in the record" },
   "PG-10.maxSwing":          { value: null,   origin: "WITHDRAWN — A-G26; the ceiling sat inside PINK's static jitter floor" },
   "PG-11.guard":             { value: null,   origin: "WITHDRAWN — A-G115 replaced the absolute 0.0002 with resolution against the run's own null; the FACTOR is PINK's to set (A-G115)" },
   "PG-12.chromaRatio":       { value: null,   origin: "RE-FORMED — A-G123/A-G126 projection along the hue direction; the FACTOR is PINK's, floored at 0.329 q_proj by the raster (A-G131)" },
   "PG-13.coreOverSurround":  { value: null,   origin: "RETIRED — A-G29, non-discriminating at 12-50x looser than the rejected stage" },
-  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED — R23 Bouma, PHASE_G §11" },
+  /**
+   * DERIVED, with one question this lane cannot settle: Bouma's law is canonically b ~ 0.5, and R23 is the
+   * REVISED law, which reports a range across conditions and observers. 0.3 is inside that literature but the
+   * record does not say WHERE in it, or why 0.3 rather than 0.5. So a quantity was taken from the source — it
+   * is not CITED — but the value's position within the source's range is unrecorded. Flagged rather than
+   * reclassified, because reclassifying on a guess about a paper this lane has not read would be the mirror of
+   * the post-hoc derivation A-G143 forbids.
+   */
+  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED — R23 (the Bouma law of crowding, revised), PHASE_G §11. QUESTION: canonical Bouma is ~0.5; the record does not state where in R23's range 0.3 sits or why it rather than 0.5." },
   "PG-17.coreOverGround":    { value: 1.45,   origin: "UNDERIVED, AND IT COLLIDES — A-G138: PHASE_G §11 states 1.45 x local ground with no derivation, and VOLUME.depthRatio is also 1.45 in an unrelated role. GELB does not claim the bound was taken from the constant and cannot establish it was not. A reader will assume a relation that may not exist." },
-  "PG-17.monotoneExtentInR":  { value: 1.5,   origin: "UNDERIVED — PHASE_G §11 states >= 1.5 x the body radius with no derivation recorded" },
+  "PG-17.monotoneExtentInR":  { value: 1.5,   origin: "CITED — PHASE_G §11 names R21's critical band of luminance gradients as the mechanism and takes no quantity from it. GELB's own guess (§41) and consistent with the §11 text." },
   "PG-19.markAboveGround":   { value: null,   origin: "WITHDRAWN UN-BEGUN — A-G141: the disjunction is not the negation of its conjunction, the contrast statistic is unnamed, and the connective makes the weakest escape decide" },
   "PG-22.occupancy":         { value: 0.20,   origin: "FLAT, UNDERIVED SCALE — A-G93 made it flat per body after this lane falsified A-G44's 1/r three ways; the 20 % itself has no recorded derivation" },
   "PF-15.ringBudget":        { value: 0.08,   origin: "UNDERIVED — A-G5" },
   "PF-15.ladderStep":        { value: 1.6,    origin: "ASSERTED — A-G2 called 1.64 asserted; the ladder's 1.6 inherits that status" }
 });
+/** The registry's own summary — the number A-G143 calls the hardest finding of the phase. */
+export function boundProvenanceSummary() {
+  const byStatus = {};
+  for (const [key, b] of Object.entries(BOUNDS)) {
+    const status = b.origin.split(" — ")[0];
+    (byStatus[status] ??= []).push(key);
+  }
+  const total = Object.keys(BOUNDS).length;
+  const derived = Object.keys(BOUNDS).filter(k => boundOf(k).derived).length;
+  return { total, derived, cited: Object.keys(BOUNDS).filter(k => BOUNDS[k].origin.startsWith("CITED")).length, byStatus };
+}
 /** Look a bound up and carry its origin into the output. A missing key throws rather than defaulting. */
 export function boundOf(key) {
   const b = BOUNDS[key];
@@ -706,8 +740,11 @@ export function boundOf(key) {
   return Object.freeze({
     bound: b.value, origin: b.origin,
     derived: b.origin.startsWith("DERIVED"),
+    /** CITED is not DERIVED: a mechanism was named and no quantity taken from it (A-G143). */
+    cited: b.origin.startsWith("CITED"),
     /** A-G140: a comparison against an underived bound is reported AS one, every time it is made. */
     provenanceWarning: b.origin.startsWith("DERIVED") ? null
-      : `the bound for ${key} is not derived (${b.origin.split(" — ")[0]}). Any comparison against it inherits that status, and this instrument reports it rather than laundering the literal into a measurement.`
+      : `the bound for ${key} is not derived (${b.origin.split(" — ")[0]}). Any comparison against it inherits that status, and this instrument reports it rather than laundering the literal into a measurement.` +
+        (b.origin.startsWith("CITED") ? " CITED means a mechanism was named and no quantity taken from it — motivated, not derived, and it has somewhere to go for a number." : "")
   });
 }
