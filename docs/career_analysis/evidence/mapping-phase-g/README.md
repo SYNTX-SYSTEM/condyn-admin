@@ -1,0 +1,192 @@
+# PERSON × JOB MAPPING · PHASE G · GRÜN'S **DEVELOPMENT** INSTRUMENT
+
+> ## THIS INSTRUMENT RETURNS NO VERDICT
+>
+> `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
+> readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
+> output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.
+> Self-certification stays invalid.
+>
+> **The verdict is PINK's**, in `mapping-phase-g-contract` on `validation/hr-decision-loop-pink`.
+> No output in `outputs/` contains the words pass, green or ok. Every bound appears as
+> `…_boundForReference`, never as a comparison result.
+
+Lane: 🟢 GRÜN · worktree `condyn-admin-mapping-d` · branch `frontend/mapping-phase-g`.
+Authority: `PERSON_X_JOB_MAPPING_PHASE_G.md` §16–§19 (A-G26 … A-G47) on `architecture/mapping-phase-f`.
+
+---
+
+## 1 · Why this exists
+
+A-G36 point 1, in GELB's words: *"Phase F's stage was rejected after everything passed; a lane that cannot see
+its own field is the cause."* Phase G's twelve new pins were written against **one** instrument and four of
+them could not bite. The strength of phase F was never PINK's instrument — it was the **disagreement between
+two**. So the split is **asymmetric**: two instruments, one verdict.
+
+| lane | instrument | output |
+|---|---|---|
+| 🟢 GRÜN | this directory | development readings — see whether a change moved the number **before** delivering |
+| 🩷 PINK | `mapping-phase-g-contract` | **the verdict** |
+| 🟡 GELB | retired (A-G36 point 5) | adjudicates on the two lanes' committed numbers |
+
+**Divergence between GRÜN's readings and PINK's is a FINDING to report, not to reconcile** (A-G36 point 4).
+The precedent is PF-8's beams — PINK FAIL 0.0022 against GELB's 0.00072 passing, a 3× split that was a mask
+definition difference, promised a resolution and never given one. Every script here therefore names its own
+**definitional choices** in its output under `definitions`, and carries a `pinkComparison` block where a PINK
+reading exists. Silent agreement after a quiet adjustment is the mechanism defeated.
+
+## 2 · Methods inherited from PINK (A-G36 point 1)
+
+From `evidence/mapping-phase-f-contract/scripts` (PINK's, committed, manifest 43/43):
+
+- per-class masks built **under `reducedMotion:reduce`**, so the breath never enters a mask;
+- **differential** measurement (a class's mask is the pixels its own light reaches, threshold 0.001);
+- **mask-based** suppression rather than hide-and-reveal (defect nineteen: suppression does not isolate the
+  medium, because the medium is partly underneath);
+- the **bracketed, dof-matched null** — harmonics {0.1, 0.2, 0.3}, raw null freqs {0.05, 0.15, 0.25, 0.35},
+  each harmonic's null the RMS of its two ±0.05 brackets, so the null is spectrally **centred** on the signal
+  and carries the **same** degrees of freedom (§27 / A-F17, after GELB and PINK found a shared false-red);
+- one **joint LSQ** of DC + 7 frequencies over a long, naturally jittered window — never a short uniform DFT,
+  which aliases on this machine's ~0.6–1.3 s screenshot cadence and inflates the null to ≈ the signal;
+- the **window rule** ≥ 2/(0.7 · Δf) ≈ 57 s with Δf = 0.05 Hz (PINK's refinement of A-F21: the 70 % self-check
+  is itself resolution-limited);
+- the **adequacy guard** — the highest fitted frequency must stay below 0.9 × Nyquist, or the run says it is
+  inadequate instead of returning a number (this guard caught a false red in phase F);
+- the **overlay / scrim abort**: the element under the field centre must belong to the svg, or the run aborts;
+- `deviceScaleFactor: 1` so one screenshot pixel is one CSS pixel;
+- **decode deferred** — the capture loop only captures; sharp decoding happens afterwards, or the cadence
+  degrades and under-samples.
+
+### What is new here, and why
+
+| addition | reason |
+|---|---|
+| `glows` as a first-class mask class | **A-G36 point 3**: A-G10 pin 7 moved the glow **out of the medium** into `mapping-glows`. No PF-8 mask has ever held it — the *methods* survived phase F, the *masks* did not. |
+| two render modes, `travel-masked` / `travel-drawn` | **A-G42**: A-G13 made the travel's period exactly the breath's, so the travel's coherent energy lands on the **same harmonics** the firewall uses. PF-8 and PG-11 therefore need mutually exclusive renders, and neither may reuse the other's frames. Supported from the start rather than retrofitted. |
+| the **engraved minimum** statistic | **A-G45**: per angle the radial peak, then the **minimum over 720 angles**. A max over a ring band measures a **body crossing it** — PINK's shelf once read 0.58 that way. |
+| per-body **local** ground | the §13 lesson: a statistic written for one ground reads differently on another. The glow carrier is defined against each body's own surround, not a disc-wide median. |
+| provenance block in every output | **A-G47 point 3**: PINK must *check* the input, not trust it. |
+
+## 3 · What is measured, and what is deliberately not
+
+Measured (the list GELB left to GRÜN in §17's standing instruction, as amended by §18):
+
+| reading | script | note |
+|---|---|---|
+| the run's **own static floor** | `gruen-floor.mjs` | A-F11 — every run carries its own floor, because a bound below the floor is not a bound |
+| **PG-1** semantic share of the field's light, with per-class attribution | `gruen-light.mjs` | rings excluded from "semantic": PINK's finding is that the scaffold out-lit the subject |
+| **PG-6** relations' share of the **semantic** light | `gruen-light.mjs` | denominator is the semantic light, not the field's |
+| **PF-15 inverted**, limbs (a) budget and (b) ladder, **jointly** | `gruen-rings.mjs` | A-G34 joint satisfiability · A-G45 engraved minimum |
+| **PG-3** rendered drawn-body diameter | `gruen-bodies.mjs` | measured two ways (model × scale, and the shape's own rect) because they can disagree — that gap *is* the frame widening |
+| **PG-10** limbs 1 and 2 on the visible glow | `gruen-glow.mjs` | `travel-masked` mode |
+
+**Not measured, and why — each on instruction:**
+
+- **PG-2** — restated by A-G27; its old form was cleared 4.13× by `rgb(3,5,8)`'s own luminance (0.0014543).
+  GELB's standing instruction: do not build against it.
+- **PG-10's max-swing limb** — **withdrawn** by A-G26. PINK's committed `noise-floor.json` records
+  `swing_max = 0.031872` under `reducedMotion:reduce` with nothing animating, above both the 0.030 ceiling and
+  the 0.0297 reading. By A-F11 it was never a bound. **A-G37: do not attempt to reproduce 0.0297.**
+- **PG-13** — ratio limb **retired** by A-G29 as non-discriminating (green-by-coincidence at 12–50× on the very
+  stage OTTAVIO rejected). A-G7's multi-channel presence obligation is **unmet**, not met.
+- **PG-21** — restated by A-G28/A-G46 as pre-and-post with a **required mutant** plus an absolute limb at
+  PINK's Q-F6 anchor (8.92e-3). The mutant is the proof, and a mutant build is a product change, not a reading.
+- **A-G26's replacement ceiling** — needs p999.9 on **co-registered** frames. Co-registration exists in
+  neither lane's instrument and A-G26 calls it *"a prerequisite, not an assumption"*. `gruen-glow.mjs` emits
+  `swing_p9999_uncoregistered` as **material only** and says so in the same object.
+- **PG-11** — needs the `travel-drawn` mode in a separate pass with an explicit attribution rule, and returns
+  INCONCLUSIVE unless the medium's coherent energy is ≥ 0.0002 in its own right (A-G30's guard). The mode is
+  built; the pass is not run here.
+- **PG-22 occupancy** — A-G44 restated the bound **per body, share ∝ 1/r_drawn** against each body's own drawn
+  radius, 20 % anchored at 1920; the fixture-mean 1.86× form is withdrawn. Not in this round's scope.
+
+## 4 · The baselines are void — these are first measurements
+
+**A-G41 (defect 28).** `DISC_OCCLUSION` and `BODY_BUDGET` are **absent at `93c47e03`** and present at
+`10eb4030`, with exactly one commit between them, while §12 — the four reds — is `39d50bae` at 10:59 and
+`10eb4030` is 11:30. So **PG-1 0.42, PG-6 0.025, PF-15-inv 0.23 and PG-3 54 px were measured on an uncommitted
+working tree that no longer exists.** Not merely unreproducible: **void**.
+
+Consequence for this instrument, stated in every affected output under `priorBaseline`:
+
+- there is nothing to tune *toward*, because the starting value is unknown;
+- **A-G45** additionally forbids treating the shelf band's area as the proven cause of PF-15's red until the
+  statistic is corrected to `min()`;
+- A-G39(a)'s stale `RING_LUMINANCE` comment is corrected **only** once `gruen-rings.mjs` has produced the
+  shelf's real rendered luminance — GELB's instruction is explicit that an invented number would be worse than
+  a stale one.
+
+## 5 · Running it
+
+```bash
+cd /home/codi/Entwicklung/condyn-admin-mapping-d
+npm run build                                                   # PRODUCTION build — see §6
+npx next start --port 3221 &                                    # GRÜN's prod port
+node_modules/.bin/tsx docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-facade.mts &   # façade 3220 → 3221
+bash docs/career_analysis/evidence/mapping-phase-g/scripts/run-all.sh 1920x1080 1280x800
+```
+
+Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and
+`:3017` (the DLL owner demo) is **not** started — §18 records that `condyn-admin-dll-runtime` @ `32c63c2b` would
+serve code twelve commits behind `main`, so restarting it is not a no-op.
+
+Playwright is **not** a dependency of this repository (the established project rule): it is reached through
+`CONDYN_PLAYWRIGHT_MODULE`, defaulting to `/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs`.
+That dependency is a recorded **HIGH integrity risk (I-2)** — unversioned, outside the repository, one
+`node_modules` deletion in an unrelated project away from rendering the proof stand unrunnable. `sharp` is a
+real dependency of this worktree and is resolved from its own `node_modules`.
+
+### Why a production build, not `next dev`
+
+Standing finding, re-confirmed: **Turbopack dev does not hydrate headless.** Every pixel reading needs
+`next build` + `next start`. A-G47 point 1 lifted the no-build constraint for exactly this: GRÜN builds its own
+tip in its own worktree, PINK's `93c47e03` build (`BUILD_ID YUIyV6i0VG5cALibnbi58`) stays untouched.
+
+## 6 · Provenance PINK should check rather than trust (A-G47 point 3)
+
+Every output carries a `provenance` block: worktree, `HEAD`, branch, tree-clean, the served `.next/BUILD_ID`,
+and the timestamp.
+
+**Two deviations from A-G47 point 3, named here rather than hidden.** That clause asks PINK to assert
+`rev-parse HEAD == 3ec8457d` with a clean tree. Neither half survives contact, for reasons that are
+themselves instructions:
+
+1. **A-G35 obliges this lane to commit its instrument**, so HEAD necessarily moves past `3ec8457d`; leaving
+   the instrument uncommitted to keep HEAD still would violate A-G35 instead.
+2. **A-G43 obliges this lane to re-key PG-20's splay onto the relation state**, which is a change to product
+   source. The tip is therefore `3ec8457d` **plus that correction**, and pretending otherwise would hide a
+   product change from the lane that has to measure it.
+
+So the measured tip is **not** `3ec8457d`, and the honest provenance is the exact distance from it. What PINK
+should check, in place of the literal clause:
+
+```
+git -C condyn-admin-mapping-d rev-parse HEAD            # the tip named in the run record
+git -C condyn-admin-mapping-d status --porcelain         # empty
+cat condyn-admin-mapping-d/.next/BUILD_ID                # equals the run record's buildId
+git -C condyn-admin-mapping-d diff --stat 3ec8457d HEAD -- app lib test docs/architecture \
+      package.json package-lock.json next.config.ts      # EXACTLY the A-G43 hunk + its mutant test
+```
+
+The product delta from `3ec8457d` is two files and nothing else: one hunk in
+`app/components/career/demo/PersonJobMappingField.tsx` (the splay's predicate, `s.mark === "counterTick"` →
+`arc.state === "DIFFERENT"`, A-G43) and the new `test/career/mapping-field/field-g-mutant.test.tsx` that
+fails if it is ever keyed back. The engine (`lib/`), the specification (`docs/architecture/`), the dependency
+set and the Next config are byte-identical to `3ec8457d`.
+
+**Every reading in `outputs/` was taken on a build compiled from the committed tip**, so the served artifact,
+the commit and the readings are one state. The earlier shakedown pass — which proved the instrument runs end
+to end against a build of the pure `3ec8457d` product — is **not** committed, precisely because the worktree
+was not clean while it ran and a reading whose provenance is ambiguous is worth less than no reading.
+
+PINK's `93c47e03` build (`BUILD_ID YUIyV6i0VG5cALibnbi58`) is untouched (A-G47 point 2). If PINK wants a
+build of the pure `3ec8457d` product rather than of this tip, this lane can produce one on request; it has not
+done so unasked, because that would put a third production build on the machine.
+
+## 7 · Boundary
+
+Read-only against the product: nothing in `app/`, `lib/`, `test/` or `docs/architecture/` is touched by this
+directory. No merge, no push, no deployment. Gemini is off and unreachable — the façade answers 404 to every
+`/api` path it does not script and logs it, so an unscripted read is visible rather than invented. No model
+call can occur. Existing fixtures only (B-7): the façade serves exactly what
+`test/career/mapping-field/field-g.test.tsx` already uses.
