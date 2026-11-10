@@ -3106,3 +3106,128 @@ A-G105 above, which I had committed to in A-G95 and now owe nothing further on.
 
 What is left is PINK's to measure or behind the gate. **The gated set stands at six, plus whatever
 `SEAT_PAD_PX` needs if A-F5's area limb lands, which would make seven.**
+
+---
+
+## §33 I MADE A TWO-SAMPLE FIGURE BINDING — AND THE RESIDUAL THAT STARTED §31 WAS NOISE
+
+GRÜN (`8d62028c`) measured A-G103's resolution properly, corrected its own estimate by 2.4 ×, and drew the
+consequence against its own earlier caution. Then it asked the one sequencing question I had left open.
+
+### A-G106 · A rule may not rest on a figure whose own uncertainty is unmeasured *(defect 55, and it is mine)*
+
+GRÜN's ±0.01 came from **two cross-run observations**. The proper form — two independent passes over identical
+conditions in one session, each rebuilding the mask — gives:
+
+| | max delta | reportable-failure threshold |
+|---|---|---|
+| 1920 × 1080 | **0.01874** | **0.03748** |
+| 1280 × 800 | **0.02380** | **0.04760** |
+
+**2.4 × my binding figure.** GRÜN: *"Two samples cannot bound a variance, and I gave you a number as though
+they could."*
+
+**And I took it and made it binding on both lanes in the same section it appeared in.** That is my error and it
+is a distinct one: A-G64 was crediting a lane with a reading it had not taken; **this was promoting a lane's
+own under-powered estimate to a rule without asking what its uncertainty was.** A-G103's *rule* was right —
+state the variation, require 2 × it — and I attached a number to it that had no standing.
+
+> **Decided: a rule that quantifies a threshold names the measurement that established the threshold, with its
+> own sample count.** A figure cited inside a rule inherits the rule's authority, so it must carry the rule's
+> evidentiary standard. A-G35's limbs were about numbers in records; this is about numbers in *rules*, which is
+> worse, because a record is read once and a rule is applied repeatedly.
+
+A-G103's threshold is **0.037 / 0.048**, measured, and the rule is otherwise unchanged.
+
+### A-G107 · The residual that motivated §31's entire seat analysis was inside the noise
+
+GRÜN drew the consequence against itself: **rank 4's 0.016 overage at 1280 in option (3)'s condition C is far
+under 2 × the variation, so by A-G103's own rule it is not reportable as a failure at all.**
+
+**So the honest statement of option (3)'s PG-22 cost is stronger than the one in §31: post-shelf there is no
+reportable PG-22 failure at either size.** GRÜN's *"improved 2.7 × but not closed at 1280"* was wrong in the
+conservative direction — *"which is still wrong"*, as it says.
+
+**And the part that matters for this record: that residual is what prompted A-G99, which prompted my seat-width
+reading, which prompted the whole of §31 and §32.** The chain's first link was noise.
+
+**Decided, and it is an epistemics ruling rather than a measurement one: a finding reached through a spurious
+motivation is not thereby spurious, but the record states which.** A-G102's seat mechanism stands on its own
+evidence — a crossing prediction that matched, a best-fit seat contributing nothing, rank 1 reading exactly zero
+on all three. **What does not stand is the narrative** that we noticed an overage, investigated it, and found
+its cause. We noticed noise, investigated, and found a real mechanism that happened to be there. **Both
+sentences describe the same work and only one of them is true**, and a reader who inherits the first will trust
+the next residual more than it deserves.
+
+### A-G108 · A-G103's resolution applies to attributions too — and the field seat's contribution does not carry
+
+GRÜN applied the measured variation to **overages against a bound**. It did not apply it to its own
+**attributions**, and they are differential readings of the same instrument at the same resolution. I did:
+
+| rank | best | horizon | field | allThree |
+|---|---|---|---|---|
+| 2 | — | **0.03891** ✓ | — | **0.03891** ✓ |
+| 3 | −0.01103 | **0.03203** ✓ | 0.01523 | **0.04603** ✓ |
+| 4 | 0.00140 | **0.03228** ✓ | 0.02286 | **0.05414** ✓ |
+| 5 | 0 | **0.02385** ✓ | **0.02385** ✓ | **0.05018** ✓ |
+
+Against the 1280 bound of 0.02380 (✓ = above it):
+
+- **Every aggregate carries.** The three seats together are 0.039–0.054, comfortably above.
+- **The horizon seat's contribution carries at ranks 2, 3 and 4.**
+- **The field seat's contribution carries nowhere** — 0.01523 and 0.02286 are under the variation, and rank 5's
+  is at it.
+- **The zeros still carry**, and this is the important exception: the best-fit seat contributing nothing and
+  rank 1 reading exactly 0 on all three are **not** differential measurements at the margin. A structural zero
+  is not a small difference, and the crossing prediction's confirmation rests on those.
+
+**So A-G102 is narrowed, not withdrawn: the seats collectively cause the 1280 occupancy, the horizon seat is
+individually established, and the field seat's individual contribution is not.** That matters practically —
+if A-F5's area limb lands and `SEAT_PAD_PX` is changed, the evidence supports acting on the horizon seat and
+does not yet distinguish the field seat from noise.
+
+**And one thing I flag that neither lane has: rank 5's horizon and field drops are byte-identical at 0.02385.**
+Two different seats at two different radii producing the same figure to five decimals is the signature GRÜN
+itself named as a sampling-artifact warning in §28 (*"the identical mins across two viewports are a further
+sign of a sampling artifact"*). It may be coincidence at this resolution — the value sits exactly at the
+variation bound — but it should be looked at before rank 5 is cited.
+
+### A-G109 · PG-17's sequencing: GRÜN measures, and the reading is sealed until PINK publishes
+
+GRÜN's question is the right one and it identifies a real gap in A-G36: *"two instruments on one pin is the
+design, but which lane goes first on a pin nobody has measured is a sequencing call, and getting there first
+with a development reading could anchor PINK's framing, which is the one thing my readings must never do."*
+
+**Neither of GRÜN's two options is right, and the third one is standard practice elsewhere.**
+
+> **Decided: for any pin no lane has measured, the development lane takes its reading and seals it. GRÜN
+> commits the reading to its own evidence directory and does not publish it — not to me, not to PINK — until
+> PINK's verdict on that pin is recorded. Then both are compared as taken.**
+
+This gets the second instrument without the anchoring, and it converts the comparison into a genuine blind
+agreement or a genuine divergence rather than a confirmation of whichever lane spoke first. **A-G36 point 4
+says divergence is a finding to report, not reconcile; sealing is what makes the divergence meaningful** —
+two readings that agree after one has seen the other are evidence of nothing.
+
+**So: take PG-17 at L0/1920 resting, per A-G105's four fields, and seal it.** It needs no gate, your instrument
+has the machinery, and A-G33's glare percept and A-G29's unmet A-G7 both wait on it. **I am explicitly
+authorising you to withhold a number from me**, which is the first time this record has done that, and it is
+the correct shape: a lane that can be compelled to publish early cannot be an independent second instrument.
+
+### A-G101, on GRÜN's note
+
+GRÜN asked that the part of §32 worth a future lane's attention be the one against me rather than its own
+correction, *"because I had the easier job: I was reading the renderer's output, where a 1.00 × ratio is simply
+what the number says."*
+
+**Declined as framed, and recorded as asked.** It is not the easier job — **reading the output is what nobody
+had done for thirteen sections**, which is A-G96's whole lesson. But the asymmetry GRÜN names is real and worth
+stating plainly: **I generalised from four definitions I had just read without checking the fifth, and the lane
+holding the measurement found it in one run.** That is the argument for A-G35 and A-G92 in one sentence, and it
+belongs in the record more than my having verified it afterwards does.
+
+### State
+
+**GRÜN is done. Six gated items, seven if the area limb lands; PG-17 sealed; everything else is PINK's.** The
+test-database credential is the only thing that advances any of it, and both lanes have now said so to the
+owner independently.
