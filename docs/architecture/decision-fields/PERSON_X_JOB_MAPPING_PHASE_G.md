@@ -1893,3 +1893,115 @@ the rung is luminance-invisible at some angles and the statistic is contaminated
 measure neither the design nor the build. Meanwhile PINK takes the four items that need no build — §3.106's
 D-5 host-file pin, MAP-G-ARCH, A-G14's missing second instrument, the A-G16 second pass — which I have named
 four times and which are overdue.
+
+---
+
+## §24 D-5 AND MAP-G-ARCH ARE HELD — AND A RESTATED BOUNDARY INHERITS ITS OPEN OBJECTIONS
+
+PINK closed two of the four overdue items (`f7727fa3`), computed at the artifact rather than by running GRÜN's
+test. **Both are HELD.** I verified all three of its findings against `test/career/mapping-field/architecture.ts`
+myself before adjudicating.
+
+### A-G69 · D-5 is HELD, bounded to phase G
+
+The §3.106 deferral — *"D-5's exact host-file pin lands at delivery for PINK to hold then"* — is spent. Across
+`93c47e03..3ec8457d` the diff is **empty** for `SemanticCareerIntelligenceField.tsx`,
+`CareerIntelligenceDashboard.tsx`, `SyntxFieldSelector.tsx`, `career-demo-layout.ts`, `career-demo-url.ts`,
+`app/api`, `lib/career/job-pool` and `lib/career/job-scope`, and `--diff-filter=D` is empty — **no deletions
+anywhere in the range.**
+
+**PINK's boundary on its own certification is adopted verbatim: this pins the host across phase G only.** The
+host did change earlier in the mapping line and that is phase D/E/F's business, held there. **A pin that names
+its own range is worth more than one that reads as general**, and PINK declining to certify retroactively is
+the behaviour I want, not a limitation to work around.
+
+### A-G70 · MAP-G-ARCH is HELD — and the whitelist is tight, which deserves recording
+
+Held on every substantive limb: V1 stays phase B's record byte for byte (`layout-spec.json`,
+`layout-golden-vectors.json`, `real-shape-73.json`, `sign-table.json`, `PERSON_X_JOB_MAPPING_SPEC.md` all
+unchanged — and PINK had already confirmed `sign-table.json` separately while verifying A-G21, where **no commit
+on the GRÜN branch touches it at all**); in `lib/career` only `layout.ts` and the view model move; no merge
+commits; no script motion, re-read from the component diff and independently corroborated from the
+computed-animation side by F-G4.
+
+**And the finding PINK says deserves saying rather than only auditing, which I verified: `G_ENTRY` has 20
+entries, the real `93c47e03..3ec8457d` change set has 20 files, and the two sets are identical. No breach and
+no slack.** A whitelist with no unused entries was written *from* the delivery rather than padded against it.
+That is the right way round, PINK says it is not what it expected to find, and it is the one place in this phase
+where the construction was tighter than the audit assumed.
+
+### A-G71 · Three findings at the boundary itself — and the meta-finding is the one that matters *(defects 42, 43, 44)*
+
+**(1) The boundary is defined only inside the file it governs, and that file is in its own whitelist.**
+Verified: `G_ENTRY` is declared at `architecture.test.ts:363`, and `"test/career/mapping-field/architecture.test.ts"`
+is itself one of its 20 entries. A-G10 pin 6 names `G_ENTRY` in this record and **never enumerates it.** So the
+extent of the phase-G boundary exists in exactly one place, that place may change itself, and **a commit can
+widen the boundary and satisfy it in the same breath, with no trace in the architecture record.**
+
+PINK is right that this is not a bad-faith hypothetical: **it is the mechanism of A-G24.** The drawn range
+drifted because the document and the artifact disagreed and only the artifact bound. Same shape, different
+constant.
+
+**Remedied here, on my side, by enumerating it** — and the test stays spec-relative, because A-G24 was right
+about that dependency direction:
+
+> **`G_ENTRY`, 20 entries, as of `3ec8457d`.** Product (4): `PersonJobMappingField.tsx` · `mapping-field-copy.ts` ·
+> `lib/career/view-model/mapping-field.ts` · `lib/career/mapping/layout.ts`. Spec (2):
+> `mapping-spec/layout-spec-v1.1.json` · `mapping-spec/layout-golden-vectors-v1.1.json`. Support (2):
+> `test/support/mapping/layout-reference.ts` · `test/support/mapping/vectors.ts`. Proofs (12):
+> `mapping/layout-v1_1.test.ts` · `mapping/architecture.test.ts` · `mapping-field/architecture.test.ts` ·
+> `mapping-field/phase-base.ts` · `mapping-field/field-g.test.tsx` · `field-d` · `field-e` · `field-f` ·
+> `field-interaction` · `field-render` · `model.test.ts` · `neurovisual-e.test.ts`.
+>
+> **Any widening of this set is a documented change to this section first.** A commit that adds an entry without
+> amending §24 breaches MAP-G-ARCH whatever the test says.
+
+**(2) The provider/API scan exempts two of the files phase G added.** Verified at `:400`:
+`G_ENTRY.filter(f => !f.endsWith("architecture.test.ts") && !f.endsWith(".json"))`, while the test's own sentence
+is *"no provider and no API in anything phase G added"* — and `layout-spec-v1.1.json` and
+`layout-golden-vectors-v1.1.json` are two of the six non-test files phase G added. They hold numbers, so the
+risk is low, **which is exactly why the exemption costs nothing to remove.** As written it is a bound not
+applied where it is least likely to fire — the error class named four times this phase and now a fifth.
+**Decided: drop the `.json` exemption.**
+
+**(3) Nothing asserts the phase-G proof files still exist.** Verified: the change-set limb is
+`expect(set.files.filter(p => !G_ENTRY.includes(p))).toEqual([])` — it checks only that changed files lie
+*within* `G_ENTRY`, permitting any change to them including deletion, and the sole non-emptiness guards
+(`expect(added.length).toBeGreaterThan(0)`) cover the view model and the component. **Deleting
+`field-g.test.tsx` would satisfy MAP-G-ARCH** — and it is the only carrier of the structural assertions for
+PG-3, PG-4, PG-5, PG-7, PG-8, PG-20 and PG-21.
+
+**A boundary that permits removal of the proofs it bounds is bounding the wrong thing.** Decided: assert
+existence and non-emptiness of the phase-G proof files, per pin where a pin has a single carrier. This also
+closes a gap in the SFE core's own prohibition — *"never delete, weaken, quarantine or rewrite tests to obtain
+a pass"* was a rule with no mechanism on this surface.
+
+### The meta-finding, and the rule it earns
+
+**PINK: all three are the class it raised against MAP-D-ARCH in phase D. *"The structure was inherited rather
+than re-derived, so the objections came with it."*** And at §3.106 PINK had already **refused** GELB's
+equivalent "logic carried over unchanged" claim on four counts, after which it was restated rather than closed.
+
+**Decided, and binding beyond this phase: a restated boundary inherits its open objections. Restating is not
+closing.** When MAP-*-ARCH is carried to a new phase, every objection outstanding against the previous one is
+outstanding against the new one until it is answered on the new one's own terms — and the architecture record
+names them rather than inheriting them silently. This is the structural sibling of A-G54 (*a floor is a property
+of a build*) and A-G41 (*a measurement on an uncommitted tree is not a measurement*): **a certificate carries
+its conditions, or it is not a certificate.**
+
+**No GO is implied by either hold.** MAP-G-ARCH is a boundary, not an obligation, and holding it says nothing
+about any PG pin — PINK said so first and it is correct.
+
+### The remaining ledger
+
+**PINK:** A-G14's missing second instrument and the A-G16 second pass on the counting argument — both need no
+build and are next. The engraved ladder, A-G34 and PF-8 per class all wait on GRÜN's new `RING_LUMINANCE.shelf`,
+and PINK is right that PF-8 waits too: **a shelf alpha change invalidates the per-class nulls**, so running it
+first would only buy a re-run. That is A-G54's rule applied before the fact rather than after, which is the
+first time in this phase it has been used that way.
+
+**GRÜN:** `shelf = 0.022` and report it · the A-G65 mask-based statistic · the three MAP-G-ARCH remedies above ·
+the two fixture obligations · PG-22 per body ∝ 1/r_drawn · PG-20's splay magnitude · **PG-6, the phase's live
+red at 0.0217 against ≥ 0.15.**
+
+**Owner:** the test-database admin URL, which holds A-G43; and PINK's branch, still unpushed.
