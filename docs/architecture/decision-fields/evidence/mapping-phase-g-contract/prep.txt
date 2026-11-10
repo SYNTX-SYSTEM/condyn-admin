@@ -108,3 +108,41 @@ this build (the tip's lit animated ground cost ~1.25s/screenshot at ef466ca8; it
 ANY temporal verdict), then PG-1 and the PF-15 inversion with the engraved-minima min() (A-G45) at both sizes
 with per-group attribution, then PF-8 per class at L0, L1 and L2 on the corrected masks.
 NO VERDICT IS ISSUED IN THIS FILE. Nothing here is a GO.
+
+
+§2  SAMPLING-ADEQUACY GUARD ON 3ec8457d — THE PHASE-F FREQUENCY-AXIS CONSTRAINT IS NO LONGER BINDING
+----------------------------------------------------------------------------------------------------
+A-F20 carried to the frequency axis (and A-G20): no temporal verdict is admissible unless the capture cadence
+resolves the highest fitted frequency. maxFreq = 0.35 Hz (the top bracketed decoy, §9) must sit below
+0.9 x Nyquist, Nyquist = 1/(2*cadence) => cadence must be < 1286 ms. Phase F's cost is NOT inherited: phase G
+adds glows, travel and beam-glows but retired phase F's LIT plate (A-G17 — the disc now OCCLUDES in the stage's
+own ground colour rather than emitting), so the cost had to be re-measured here.
+(scripts/pink-tip-timing-g.mjs, 10 frames per configuration per level, 1920x1080, svg clip 924x924,
+ reducedMotion no-preference; outputs/3ec8457d-tip/TIMING-ADEQUACY.json)
+
+                              L0        L1        L2      | at ef466ca8 (phase F)
+  shot only (p50)            474 ms    281 ms    338 ms   | ~1250 ms L0 / ~1400 ms L2
+  shot optimizeForSpeed      347 ms    184 ms    283 ms   | 910 ms L2
+  fast + INLINE decode       228 ms    185 ms    210 ms   | inline decode was unaffordable
+  Nyquist, worst config      1.055 Hz  1.779 Hz  1.479 Hz
+  0.9 x Nyquist (the limit)  0.949 Hz  1.601 Hz  1.331 Hz
+  maxFreq 0.35 Hz            ADEQUATE  ADEQUATE  ADEQUATE   (in EVERY configuration, at every level)
+
+RESULT: the tip renders 3.6-7x faster than ef466ca8 and the adequacy guard clears with large margin in the
+WORST configuration — plain screenshots, no optimizeForSpeed, decode inline. The two workarounds phase F was
+forced into (defer the decode out of the capture loop; CDP optimizeForSpeed) are NO LONGER REQUIRED by the
+frequency axis at this tip. Attributed to A-G17: phase F paid for a lit translucent plate composited over the
+host's backdrop-filters; phase G occludes instead of emitting, and occlusion is cheap. A design decision taken
+for presence reasons has made the instrument better conditioned, which is worth recording because it runs the
+other way to the usual trade.
+PRACTICAL CONSEQUENCE for the PF-8 pass: at 347 ms a >=57 s window (A-F21 + PINK's sub-window refinement) yields
+~164 frames instead of ~46 at phase F's 1.25 s — a materially better-conditioned joint LSQ on the same 13
+parameters, and inline decode is affordable again, which removes the deferred-decode machinery and its bug risk.
+
+GUARD NOT RELAXED. This is a profile taken with nothing else contending, so it licenses nothing by itself:
+every temporal run still measures and REPORTS its own achieved cadence and still fires the 0.9 x Nyquist check
+per run (A-F20's rule is per-run, not per-machine). A profile is an expectation; the guard is the proof.
+
+CROSS-CHECK, and it corroborates F-G3 from an independent direction: L1 is the CHEAPEST level (184 ms vs L0's
+347 ms), which is what a level with NO travel and NO beam-glows should cost. F-G3 was found by counting DOM
+carriers; the timing says the same thing without counting anything. Two instruments, one conclusion.
