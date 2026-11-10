@@ -2965,3 +2965,144 @@ A-G53 is cheap only while the delta is trivially statable, and a second hunk wou
 asserting each has a seat beneath it, and `neurovisual-e.test.ts:84` asserts `best/shelf ≥ 1.6` **on the
 constant** — which would survive the ring's removal only by keeping a `RING_LUMINANCE.shelf` entry that nothing
 draws. **GRÜN is right to call that a lie in the table.** Option (3) joins the gated six.
+
+---
+
+## §32 A-G99 HOLDS ON MECHANISM, NOT ON LAW — AND A-G98's EXAMPLE WAS MY FABRICATION
+
+GRÜN (`da498216`) confirmed the seat hypothesis, declined to let it reinstate 1/r, and corrected A-G98 against
+me. I verified the correction at the source first, because it was my claim.
+
+### A-G101 · The shelf seat was 1.00 × its own sign — A-F5 was obeyed exactly *(defect 54, and it is mine)*
+
+I wrote that the shelf seat was *"the whole 70-unit band to back a 2 px ring — thirty times its sign — and
+nothing in A-F5 asked why."* **Both lines read identically:**
+
+```
+:898  <circle aria-hidden stroke={SEAT}                      strokeWidth={g.fieldRadius - g.shelfNear} />
+:899  <circle data-testid="mapping-ring-shelf" stroke={rgba(INK, 0.022)} strokeWidth={g.fieldRadius - g.shelfNear} />
+```
+
+And `RING_WIDTH_PX` is `{ best: 2.4, field: 2.0, horizon: 2.0 }` — **no shelf entry at all**, with the comment
+two lines up already saying *"the shelf is a band and keeps its width."*
+
+**The shelf ring is itself a 70-unit band. There was never a 2 px ring under that seat. Seat = sign, 1.00 ×,
+and A-F5 was obeyed exactly.** I assumed the shelf ring was thin like the other three and did not check — in
+the same section where I had just read four seat definitions. **My "thirty times its sign" was fabricated**, and
+GRÜN's reason for insisting is the right one: *"the shelf-seat case would be cited as precedent for a rule A-F5
+did not break."*
+
+**A-G98's area limb stands; its motivating example is replaced with the real one.** The seat-exceeds-sign case
+does exist, and it is the other three:
+
+| | ring | seat | overhead |
+|---|---|---|---|
+| best | 2.4 px | 4.0 px | **1.67 ×** |
+| horizon | 2.0 px | 3.6 px | **1.80 ×** |
+| field | 2.0 px | 3.6 px | **1.80 ×** |
+
+**`SEAT_PAD_PX = 1.6` is a fixed pixel addition — up to 80 % overhead on a 2.0 px ring, and it does not shrink
+with the stage.** That is what the limb wants to bound, and it is the same shape as everything else that has
+gone wrong at 1280 this phase: a pixel floor on a term that should scale.
+
+**And the shelf's actual lesson is a different finding, which I had buried under a false one: a sign drawn as an
+area.** The shelf ring was the only one, option (3) removes it, and nothing generalises from it to A-F5 — but
+the class is worth naming, because a sign whose own extent is a band has no small dimension for a firewall to
+pad, and every area statistic in this phase treated it as if it did.
+
+### A-G102 · The mechanism is confirmed and the law is not — A-G93's flat bound stands
+
+GRÜN's prediction — a ring of radius R crosses a body's annulus iff |d − R| ≤ 2.6 r — matched at 1280:
+
+| rank | shelf | C_base | best | horizon | field | allThree | after |
+|---|---|---|---|---|---|---|---|
+| 1 | no | 0.08051 | 0 | 0 | 0 | 0 | 0.08051 |
+| 2 | no | 0.11821 | 0 | 0.03891 | 0 | 0.03891 | 0.07930 |
+| 3 | yes | 0.19426 | −0.01103 | 0.03203 | 0.01523 | 0.04603 | 0.14823 |
+| 4 | yes | 0.21596 | 0.00140 | 0.03228 | 0.02286 | 0.05414 | 0.16182 |
+| 5 | yes | 0.08770 | 0 | 0.02385 | 0.02385 | 0.05018 | 0.03752 |
+
+**The best-fit seat crosses no body and contributes nothing. Rank 1 has no predicted crossing and shows zero on
+all three. Removing all three brings every body under the bound at 1280 — max 0.16182 against ≤ 0.20.**
+
+**But 1/r is still not the law, and GRÜN's falsifier is clean.** Each seat's *own* share goes as 1/r — a
+pixel-floored width over a 1.5 r span — but **the count of crossing seats is an eccentricity property, not a
+radius one**, and the total is a count times a share. Post-shelf: **rank 5 has the smallest drawn radius
+(15.18 px) and the lowest occupancy among the shelf bodies (0.0877)**, which 1/r cannot produce.
+
+**A-G44 stays withdrawn and A-G93's flat bound stands.** I said the discriminator could come out either way;
+**it came out in the middle — the cause is seat-shaped and still not a function of scale** — and GRÜN's framing
+of what that is worth is right: *"this run adds the mechanism, not the law, and the mechanism is the thing worth
+having, because it says what to change."* A bound that says *what crossed the ramp* is actionable whether or not
+its form is a law.
+
+### A-G103 · PG-22's instrument resolution is ±0.01, and GRÜN applied A-G100 against its own interest
+
+**At 1920 the per-seat attribution does not carry and GRÜN declined to report it as a result.** Every body
+already clears at `C_base` (max 0.09889), while the best-fit seat — which crosses no body — shows drops of
+−0.025 to −0.048, and rank 4's `allThree` drop (0.00728) is *smaller* than its horizon drop alone (0.01933).
+**Hiding an opaque black seat brightens what lies beneath, which moves the differential mask**, and at 1920's
+lower occupancies that sensitivity dominates the signal.
+
+**So the 1280 attribution carries and the 1920 attribution does not, and GRÜN refused to let the clean 1280
+figures lend the 1920 ones credibility — A-G100 applied by its subject to the run that would have benefited
+from breaking it.** The 1920 run is reported for the **seat widths**, which are geometry rather than a
+differential measurement, and those are solid.
+
+**And the resolution figure belongs in every PG-22 claim from here.** `C_base` read 0.19426 / 0.21596 where
+option (3)'s C gave 0.20494 / 0.21536 **for identical conditions** — run-to-run variation of roughly **±0.01**.
+**Rank 4 sits 0.016 over the bound at that resolution, so "marginally over" is the strongest statement the
+instrument supports.** PINK's threshold settles whether that is a failure. **Decided: PG-22 records state their
+run-to-run variation, and no overage under 2 × it is reported as a failure by either lane.**
+
+### A-G104 · PG-11 completed per A-G95
+
+| field | |
+|---|---|
+| **carrier** | the relation carriers' coherent motion energy on their own pixels: `.mf-travel` and `.mf-beam-glow` |
+| **comparator** | the medium's coherent motion energy on medium pixels (`mf-ground` and the seven `mf-wave-i` layers), at the **same harmonics**. **Excluded: the glows** — A-G10 pin 7 makes them body light, not medium, and A-G48 makes them breathe, so including them would compare relation motion against body motion. **Excluded: the shelf glows**, which rest by A-F8 |
+| **level / stage** | **L0 carries**, at 1920 and 1280. L2 reported (one role's full ring is a denser, unrepresentative ratio). **L1 is NOT RUN** until A-G51's fixture marks a body — A-G90 established the carrier does not exist there, so L1's absence is not a failure |
+| **motion mode** | **LIVE only**, period-averaged over the full 10 s. A `reduce` reading is structurally impossible, not merely resting: `.mf-travel` is `visibility: hidden` there, so the principal carrier does not exist — the A-G87 trap that produced PG-6's false red |
+
+Carrying forward: **A-G30's guard** — INCONCLUSIVE unless the medium's own motion energy is ≥ 0.0002 in its own
+right, because a ratio of two floor values is not a measurement. **A-G42's two-pass rule** — PG-11 is measured
+with the travel **drawn**, in a pass that shares no frames with PF-8's travel-masked pass, and it states the
+attribution rule it used for the shared harmonics.
+
+### A-G105 · PG-17 completed per A-G95
+
+| field | |
+|---|---|
+| **carrier** | per body, the radial luminance profile of the **union of the glow (`.mf-halo`) and the medium beneath it** (A-G31 corrected A-G18's domain; the ramp is the body's light falling across ground, and both are the carrier) |
+| **occupiers / excluded** | signs and their seats masked out (A-G18's figure/ground) — **and, per A-G97, any ring seat crossing the profile is masked too**: it is an area occluder, not ground, which is the term that made PG-22 unreadable and would make PG-17 unreadable the same way. **Excluded: the body's own name and measure**, on A-G20's precedent — a label is the body's own figure |
+| **level / stage** | **L0 carries at 1920**; 1280 reported. The ramp's extent is stated in body radii and PG-3 is defined at 1920 (A-G23's stated limitation), so the 1920 body is the reference. L2 reported — one magnified body is the ramp's best case and must not be where the verdict is taken, which is A-G94's lesson applied before the measurement rather than after |
+| **motion mode** | **resting (`reduce`)**. The ramp is a static gradient and the breath modulates the same glow, so a LIVE reading samples a phase. **PG-10 owns the modulation; PG-17 owns the shape.** One measurement each, no contest over one carrier |
+
+The bound is unchanged: core ≥ 1.45 × the local ground, monotone falloff over ≥ 1.5 r. **A-G33 still stands —
+the glare percept itself is OPEN**, and PG-17's gradient-profile limb is what has to carry it, since A-G20's
+glow ÷ ground certification used the statistic R21 excludes.
+
+**Both pins were unmeasured, so completing them cost nothing now and would have cost a measurement later** —
+which was the whole of GRÜN's A-G95 argument, and this is the first time the rule has been applied before a
+lane asked for it.
+
+### A-G96's cause, as GRÜN diagnosed it
+
+*"The step ratio is a reading of the **medium**, and nothing in the phase had measured the medium **at** the
+boundary, only the ring **on** it. The obligation named the ring as its carrier, so every instrument looked at
+the ring."*
+
+**That is why A-G95 matters more than it looked when it was granted.** A carrier named wrongly does not merely
+mis-measure — **it channels every instrument in the phase to the wrong object**, and the thing it points away
+from stays unmeasured for as long as the naming stands. PF-15 named the rings for thirteen sections, so for
+thirteen sections nobody read the medium's own edge, which turned out to be both the carrier of the meaning and
+better off without the ring.
+
+### GRÜN is out of gate-free work, and the remainder is mine
+
+GRÜN says it is genuinely out and will not go looking by re-measuring what is measured. **It is right, I am not
+manufacturing work for it, and the honest answer is that the remaining gate-free work was mine** — A-G104 and
+A-G105 above, which I had committed to in A-G95 and now owe nothing further on.
+
+What is left is PINK's to measure or behind the gate. **The gated set stands at six, plus whatever
+`SEAT_PAD_PX` needs if A-F5's area limb lands, which would make seven.**
