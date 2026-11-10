@@ -254,3 +254,81 @@ WHICH OF MY COMMITTED BASELINES SURVIVE THE OCCLUSION CHANGE (A-G54's explicit a
                                                  re-checked before it is applied.
   A-F6 / PF-15 ring readings (1.636/0.630/0.861) DO NOT SURVIVE — wrong statistic (max, not the engraved min)
                                                  per A-G45/A-G56, AND phase-F ground. Superseded, not merely stale.
+
+
+§5  THE SHELF RING (A-G56 / A-G62) — THE CONCLUSION HOLDS, THE MECHANISM IS WRONG, AND min() IS CONTAMINATED TOO
+----------------------------------------------------------------------------------------------------------------
+GELB credited PINK with a shelf reading PINK had not taken: §4's reply reasoned ARITHMETICALLY on GRÜN's numbers
+and said so ("if that holds on my render"). A-G62 then decided a semantic change on it. So PINK measured it.
+(scripts/pink-shelf-g.mjs, outputs/3ec8457d-tip/SHELF.json, 720 angles, both sizes, reduce)
+
+WHAT THE SOURCE SAYS, and it changes the account. PersonJobMappingField.tsx:882 draws an OPAQUE BLACK seat
+(`SEAT = "rgba(0, 0, 0, 1)"`) across the FULL band width, and only then does :883 stroke the shelf in
+`rgba(205, 240, 255, 0.02)` over it. **The shelf band does not sit on the plate. Its own seat occludes the plate
+underneath it.** Geometry confirmed on the render: r = 465, stroke-width = 70 user units, i.e. the band spans
+430…500 exactly as A-G8 has it (58.33 px at 1920, 31.08 px at 1280).
+
+THE ARITHMETIC, which reproduces GRÜN's number exactly and identifies it:
+  INK rgb(205,240,255) at alpha 0.02 over BLACK  -> rgb(4.1, 4.8, 5.1) -> rounds to **rgb(4,5,5)**, L = 1.453105e-3
+  GRÜN's reported shelf engraved minimum                                                        = 0.0014531
+  the plate rgb(3,5,8)                                                                     L = 1.454319e-3
+  difference                                                                                   = 1.214e-6
+So GRÜN is measuring the band's OWN value — ink over its own black seat — to seven significant figures.
+BUT: **the two are DIFFERENT byte triples with near-equal luminance, not the same byte.** rgb(4,5,5) against
+rgb(3,5,8): R differs by +1 and B by −3. A-G62's phrase "byte-identical to the plate it sits on" is wrong twice —
+the bytes are not identical, and the band does not sit on the plate. The real mechanism is a COINCIDENCE OF THE
+COMPOSITING CHAIN: the seat zeroes the plate under the band, and 2 % ink adds back a luminance that lands
+1.2e-6 from where the plate was. A-G62's OPERATIONAL conclusion is nevertheless correct and survives intact —
+on the LUMINANCE plane, which is where PF-15 is measured (A-F26/A-F31: never in sRGB alpha), 1.2e-6 is 5.6 % of
+the smallest available code step (2.1915e-5, a blue +1), so no luminance instrument can separate the band from
+the plate. The ring is luminance-invisible at its darkest angle. The decision stands; the reason in the record
+should not.
+
+PINK'S OWN MEASUREMENT DIVERGES FROM GRÜN'S, AND THE DIVERGENCE IS THE FINDING (reported, NOT reconciled — A-G36
+point 4):
+                                   1920x1080        1280x800
+  engraved min, darkest angle      0  rgb(0,0,0)    0  rgb(0,0,0)
+  engraved min, p01                0                0
+  engraved min, p50                8.4605e-4        9.1058e-4
+  engraved min, p99                5.8977e-3        1.3670e-2
+  plate just OUTSIDE band  (p50)   1.4324e-3 rgb(3,5,7)   1.4324e-3 rgb(3,5,7)
+  plate just INSIDE band   (p50)   2.7460e-3 rgb(4,10,15) 2.7460e-3 rgb(5,11,15)
+
+**On PINK's instrument the band's minimum across its width reaches 0 — pure black — at the darkest angle, and at
+over 1 % of all angles.** That is not the band's own value; it is the OPAQUE BLACK SEAT of some mark crossing the
+58 px band (shelf bodies' seats, sector edges, beams — all SEAT = rgba(0,0,0,1)).
+
+THIS IS THE EXACT MIRROR OF PINK'S PHASE-F FINDING, IN THE OTHER DIRECTION. In phase F PINK found MAX-across-the-
+band contaminated by crossing BODIES (shelf max 0.58 = a body). §29 adopted min() to fix it. **min() across the
+band is contaminated by crossing SEATS.** Both extremes of a wide band crossed by marks are contaminated; the
+engraved-minimum statistic inherits the same defect as the maximum it replaced, and GRÜN's clean 1.4531e-3 means
+GRÜN's method is avoiding the seats by some means PINK's is not — a method difference, not a disagreement about
+the build.
+
+SO PF-15's STATISTIC NEEDS DEFECT NINETEEN'S REMEDY, NOT A CHOICE BETWEEN min AND max. GELB established the
+correct technique in phase F for PF-17/PF-18 and never applied it to the ring ladder: *keep every sign drawn and
+EXCLUDE sign pixels by mask* — because suppression removes medium and bare extremes read the marks. The ring's
+own value is a robust central statistic over band pixels NOT covered by a mark or its seat. Until PF-15 is
+measured that way, neither PINK's 0.630/0.861 nor GRÜN's 1.758/1.615 is measuring the ring.
+
+AND A SECOND, INDEPENDENT PROBLEM WITH PF-15's LOCAL-GROUND LIMB, SPECIFIC TO THE SHELF: the band's two
+neighbours are not the same ground. Just INSIDE it the plate reads 2.746e-3 (the lit `mf-ground` gradient, which
+runs out to shelfNear); just OUTSIDE it 1.432e-3. That is a factor of **1.92 between the band's own two sides** —
+larger than PF-15's own 1.6x threshold. "Each ring separated from its own local ground by >= 1.6x in either
+direction" is therefore ILL-POSED for the shelf: which side is "its own local ground" decides the verdict, and
+the two sides differ by more than the bound. This limb needs a side declared, or a different formulation, before
+it can return a verdict on the shelf at all.
+
+THE ALPHA A-G62 ASKED FOR, DERIVED (over BLACK, which is what the band actually composites against):
+  target = plate 1.454319e-3 + one code 2.1915e-5 = 1.476234e-3
+  alpha 0.0200 -> rgb(4,5,5)  L 1.453105e-3  (-1.2e-6)   does NOT clear
+  alpha 0.0220 -> rgb(5,5,6)  L 1.539550e-3  (+8.5e-5)   CLEARS, ~3.9 code steps above the plate
+  alpha 0.0250 -> rgb(5,6,6)  L 1.756632e-3  (+3.0e-4)   clears comfortably
+**RING_LUMINANCE.shelf = 0.022 is the smallest value on a 0.0005 grid that clears one 8-bit code.** It is a
++10 % nudge, not a return to 0.05: the shelf stays the dimmest rung, a step below best-fit (0.085), well inside
+PF-15(a)'s 8 % budget. A-G62's "a floor, not a return to 0.05" is satisfied at 0.022.
+
+HELD, as GELB advised: PINK does NOT spend the engraved-minimum ladder run on the current build. The rung is
+luminance-invisible at some angles and the STATISTIC is contaminated at others, so the ladder would measure
+neither the design nor the build. The ladder runs after GRÜN reports the new alpha AND after the mask-based
+statistic is built.
