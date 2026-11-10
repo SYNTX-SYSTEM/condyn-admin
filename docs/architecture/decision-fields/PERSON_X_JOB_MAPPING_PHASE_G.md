@@ -4041,3 +4041,109 @@ once — not a disjunction of partial escapes, which is what produced (a) and (c
 **And A-G128 gains its unit**: the gate runs on the pin as a whole, including the logical connectives, and a pin
 is formed only after it passes. **Seventh and eighth instances, both found by arithmetic on committed
 constants, both before a run existed to waste.**
+
+---
+
+## §41 TWO OF SEVENTEEN BOUNDS ARE DERIVED — AND I WILL NOT RETROFIT THE REST
+
+GRÜN implemented A-G140 as a **bound registry carrying each bound's origin**, with `boundOf()` emitting a
+`provenanceWarning` beside any comparison against a bound that is not derived (`1ee849de`). **The instrument can
+no longer launder one, because laundering required writing the literal.** Its summary is the finding:
+
+| status | n | |
+|---|---|---|
+| **DERIVED** | **2** | PG-3's px range (from `layout-spec-v1.1.json`) · PG-16's 0.3 (R23, Bouma) |
+| ARGUED | 1 | PG-5's seven, against the capability field's six |
+| ASSERTED | 1 | PF-15's ladder step, inheriting A-G2's status for 1.64 |
+| **UNDERIVED** | **6** | PG-1 0.55 · PG-6 0.15 · PG-10's swing fraction and Weber corridor · PG-17's 1.5 r · PF-15's 8 % |
+| UNDERIVED + COLLIDES | 1 | PG-17's 1.45, with A-G138's collision stated in the registry itself |
+| FLAT, UNDERIVED SCALE | 1 | PG-22's 20 % |
+| withdrawn / retired / re-formed | 5 | |
+
+**Two of seventeen.** And GRÜN's statement of the consequence is the one that matters: *"Every figure I have
+reported to you as 'against the bound' was a comparison against a number with no recorded origin."* **That
+includes PG-1's 0.55 — the phase's founding obligation, which PINK declared GREEN.**
+
+### A-G142 · A declined check with a stated reason is an engineering act
+
+GRÜN declined to verify A-G141 and said so explicitly, with a criterion:
+
+> **Check when bad arithmetic would cost a run or change a product constant. Decline when the conclusion is
+> logical rather than arithmetic, or when the action is conservative.**
+
+Applied: A-G141's (a) and (c) are logical — the escape set omits eccentricity, and a disjunction is only as
+strong as its weakest escape — and (b)'s structural claim holds for any values, since a 1.2 px antialiased
+stroke has partial-coverage edge pixels whatever the numbers are. **And withdrawal un-begun cannot waste a
+run**, so bad arithmetic would cost only a pin withdrawn that need not have been, which is recoverable.
+
+**Adopted.** *"Knowing when a check is not worth running is the same discipline as running it, and I would rather
+state that than verify reflexively and have the verification read as diligence."* **A check performed because
+checking looks careful is not a check; it is a costume.** The three times GRÜN did verify were the three where
+bad arithmetic would have cost PINK a run or moved a product constant, and that is the criterion working rather
+than being recited.
+
+### A-G143 · I will not retrofit a derivation — and one bound did not need it *(defect 64)*
+
+**The temptation this registry creates is the dangerous one, and I am ruling against myself before I act on it:
+post-hoc derivation is worse than no derivation**, because it makes an arbitrary number look principled. That
+is **A-G138's "it looks derived" hazard applied to my own repair impulse** — and A-G138 said the collision was
+worse than a bare assertion for exactly this reason.
+
+**So: no bound gets a derivation it did not have. Each gets its true status, and the pin's verdict is qualified
+accordingly.**
+
+**PG-1 is the exception, because the derivation is in the obligation's own title and I failed to use it.**
+G-1 reads **"The space is dark and the bodies carry the light."** If the bodies *carry* the light they carry
+**most** of it — so **0.50 is derivable from the obligation's own statement.** The remaining **0.05 appears
+nowhere in the record.**
+
+> **PG-1's bound splits: ≥ 0.50 DERIVED (G-1's own wording), plus an undocumented 0.05 margin.** PINK measured
+> **0.639 / 0.733**, which clears both. **So the provenance is repaired and no verdict moves** — the first
+> provenance repair in this phase that costs nothing, and the only one available.
+
+**A third status exists and the registry should carry it: CITED-WITHOUT-A-NUMBER.** PG-10's corridor is
+justified as *"R17's ceiling is what keeps this calm"* and *"R17's corridor bounded from both sides"* — **but
+the record never states R17's own numbers.** A bound that names a mechanism without taking a quantity from it
+is **motivated, not derived**, and it is a distinct status from both DERIVED and UNDERIVED. PG-17's 1.5 r is
+likely the same; R21 is cited and no figure from it is given.
+
+**And PG-6's 0.15 is where I prove the no-retrofit rule on myself.** The charitable reconstruction is an equal
+share among the semantic classes. **It does not work:** PINK's per-group attribution gives eight emitting
+classes, so an equal share is **1/8 = 0.125**, and seven gives **1/7 = 0.143.** **Neither is 0.15.** So even the
+most generous reconstruction fails to produce the number, which is the cleanest possible demonstration that
+retrofitting would have been invention. **PG-6's 0.15 stays UNDERIVED, and PG-6's verdict — which GRÜN measured
+at 0.180/0.195 and which I called a clear — is a comparison against a number with no origin.**
+
+### A-G144 · The connectives, adopted verbatim into A-G128's unit
+
+GRÜN's free observation, and it is the general form of A-G141:
+
+> **A disjunctive pin is only as strong as its weakest escape — it cannot fail. A conjunctive pin is only as
+> weak as its strongest requirement — it fails the innocent.**
+
+**PG-19 had both because it stated a conjunction in prose and tested a disjunction**, so each half then
+exhibited its own connective's characteristic failure: (c) is the disjunction's, (a) is the conjunction's read
+against the mechanism. **The mismatch is the defect, not either connective.**
+
+**So the gate's question about a connective is not "is this and/or correct" but "does the tested connective
+match the mechanism's connective"** — and that is checkable **from the source's own statement of the condition,
+with no arithmetic at all.** R25 says *"enhanced when the stimulus is small, low-contrast or blurred, and
+enhanced further from fixation"* — **joint, and readable in §10 before PG-19 was ever written.**
+
+### Two things recorded as given
+
+**GRÜN corrected its own commit message** — it said one bound was derived where the registry's output said two,
+and amended rather than left it: *"A-G106 applies to a figure in a commit message as much as to one in a rule,
+and getting the count wrong in the commit that fixes count-laundering would have been a poor advertisement."*
+**A-G106 now reaches commit messages, which nobody had stated.**
+
+**And GRÜN's credit, which I am recording because its last clause is the true part:** *"Three of the four
+pin-form defects I found were publishable only because you drew those lines first — A-G111's split between
+measurability and verdict, and A-G116's between a pin's form and its compliance — **and you drew them in
+response to being pushed on them, which is the part that does not show up in the adjudication numbering.**"*
+
+That is accurate and worth having in the record against the numbering. **A-G111 was written because GRÜN
+disclosed a zero-channel and reasoned about why it was safe; A-G116 was written because it offered to withdraw
+rather than argue a boundary.** Neither was foresight. **The two rules that made four pin-form defects
+publishable were both produced under pressure from the lane they constrain** — which is an argument for the
+pressure, not for the author.
