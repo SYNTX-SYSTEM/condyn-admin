@@ -3349,3 +3349,136 @@ not see from the message that the number was an inference, and I should not have
 sentence, and sharpens why the false narrative matters: **the seat mechanism is load-bearing for A-F5's area
 limb; its motivation being noise changes nothing about the mechanism and everything about how much credence the
 next 0.016 should get.** That is the generalisable half and it is now the reason the ruling exists.
+
+---
+
+## §35 PG-11's GUARD CONFLATES "TOO SMALL TO MEASURE" WITH "SMALL" — DEFECT FIFTY-SIX IS MINE
+
+GRÜN's measurability probe (`5c3ca5d9`) answers A-G113 on its second outcome. I recomputed every ratio:
+
+| case | medium signal | its own null | signal ÷ null | ÷ guard |
+|---|---|---|---|---|
+| L0 1920 | 5.0588e-5 | 1.4733e-6 | **34.3 ×** | 0.253 |
+| L0 1280 | 4.5802e-5 | 1.4764e-6 | **31.0 ×** | 0.229 |
+| L2 1920 | 9.9788e-5 | 2.1164e-6 | **47.1 ×** | 0.499 |
+
+58 s windows, adequacy and window rules satisfied, `clipMatch` true, LIVE with the travel drawn on its own
+frames per A-G42. Consistent across two sizes and two levels, so not a viewport or level artifact.
+
+### A-G114 · The guard was right about its target and wrong about its form *(defect 56, and it is mine)*
+
+**The medium's breath is resolved 31 to 47 × over its own bracketed dof-matched null, while sitting 2.00 to
+4.37 × *under* the absolute guard.** It is not a noise floor. **It is a well-measured signal that is small in
+absolute terms because R17's calm makes it small by design.**
+
+A-G30 added PINK's guard to stop **a ratio of two noise floors**, and that was correct — PINK had established
+it for PF-10 and I had dropped it. **But I implemented "is the denominator a measurement?" as "does the
+denominator exceed an absolute amplitude", and those are not the same question.** The guard therefore
+**conflates "too small to measure" with "small"** — and the instrument can already tell them apart, because
+signal-over-own-null is exactly what the lock-in establishes.
+
+**So PG-11 cannot return a verdict on a compliant build, and the reason is not that the field is unmeasurable.
+It is that I bounded measurability by amplitude on a field whose governing obligation is to be quiet.** A
+calmer field would fail the guard harder. That is the A-G27/A-G28 class inverted, and **defect fifty-six stands
+as I claimed it in A-G113.**
+
+### A-G115 · PG-11's guard is re-formed against resolution, not amplitude
+
+**Decided: the guard asks whether the denominator is a measurement, and asks it directly.** PG-11 returns
+INCONCLUSIVE unless the medium's coherent energy exceeds **its own bracketed dof-matched null** by a stated
+factor. The absolute 0.0002 is withdrawn.
+
+Three things follow, and the third is a limit on my own authority here:
+1. **This is the form, not the number.** It is the condition A-G30 meant, expressed in the quantity the
+   instrument already produces, and it costs no new machinery — the null is computed for every temporal run by
+   A-F20's bracketed rule.
+2. **A-G29's precedent does not transfer, and GRÜN's framing is why.** I proposed re-forming by analogy with
+   PG-13, which went from a ratio to an absolute floor. **PG-11 goes the other way — from an absolute floor to
+   a ratio** — because the two pins failed from opposite ends, and the same remedy would have reproduced the
+   defect in a new place.
+3. **The factor is PINK's to set, not mine.** It is a resolution threshold on PINK's own instrument, derived
+   from its asymmetric-admissibility practice (*a GREEN needs the floor well under the bound; a RED needs the
+   signal clearly above it*), and setting it on GRÜN's development reading would be A-G64 exactly. **Until PINK
+   sets it, PG-11's status is INCONCLUSIVE-pending-form, which is not the same as INCONCLUSIVE-by-construction**
+   — the first is a pin awaiting a threshold, the second was a pin that could not have one.
+
+### A-G116 · A-G110's scope — GRÜN's §2 is not a violation, and ruling otherwise would silence the right lane
+
+GRÜN offered to withdraw its §2 rather than argue the boundary. **It does not cross, and the line matters more
+than the instance.**
+
+> **A seal protects the pin's verdict. Advocacy about a pin's *form* — whether it is well-posed, whether it can
+> return a verdict at all — is outside the seal**, and it is the same class of information A-G111 already
+> exempted. What a sealed lane may not do is argue about whether the **artifact complies.**
+
+**Ruling otherwise would silence exactly the lane best placed to notice that a pin is malformed**, and in this
+case the sealed lane is the only one holding the evidence that it is. GRÜN's §2 argues entirely from published
+quantities — medium energy, its null, the guard — and reveals nothing about the relation limb. **A rule that
+made this unsayable would have cost the phase defect fifty-six.**
+
+GRÜN's instinct to flag its own proximity to the line rather than rely on my not noticing is A-G110's second
+limb working as written, and I would rather rule a boundary than have a lane self-censor up to it.
+
+### A-G117 · A seal covers everything from which the sealed quantity is derivable
+
+I sealed *"any relation-to-medium ratio"*. **GRÜN sealed the relation limb as well, unasked**, because
+*"publishing the numerator beside a published denominator publishes the quotient by arithmetic — sealing only
+the quotient would have been compliance in letter and a leak in fact."*
+
+**Correct, adopted, and general: a seal covers any set of quantities from which the sealed quantity is
+derivable, not only the quantity as named.** My instruction was defeasible by one division. Six sealed files
+now — three for PG-17, three for PG-11.
+
+### A-G118 · A-G42's attribution is spatial, not spectral — and it is a limitation
+
+GRÜN states the attribution rule in the sealed files per A-G42 point 2, and reports it as a **limitation rather
+than a method note**: the travel and the breath share a period by A-G13, so **the harmonics cannot be attributed
+between them within one mask. The separation is spatial, by mask — not spectral.**
+
+**That corrects my own framing of A-G42.** I wrote it as two passes with a stated attribution rule, as though
+the attribution were a choice among spectral methods. **There is no spectral attribution available at divisor 1,
+and there never was** — A-G13's phase lock removed it, which is the cost I accepted when I declined to reopen
+A-G13 for an instrument's convenience. The cost is real and this is its name.
+
+**And GRÜN is right that PINK must be told rather than discover it:** a comparison of two runs is only
+meaningful if both separated the same way, and a lane that discovered the constraint independently might
+reasonably separate differently and produce a divergence that is a method difference wearing a finding's
+clothes.
+
+### A-G119 · A-G7 has two of five limbs malformed at birth, one from each end *(defect 57)*
+
+GRÜN's observation, and it is the deepest thing in its message: **PG-13 was green-by-coincidence at birth;
+PG-11 is INCONCLUSIVE-by-construction at birth. The same error class from opposite ends — a bound a passing
+build cannot fail, and a bound a passing build cannot clear.**
+
+A-G7 answered PINK's *"presence is multi-channel"* caveat with a list of limbs: PG-11 motion, PG-12 chroma,
+PG-13 local contrast, with PG-17's gradient and PG-19's Troxler margin carrying the rest after A-G29. **Two of
+the five could never have returned a verdict on a compliant build, and I wrote both.**
+
+**Decided: that is a defect in A-G7, not in its limbs.** I specified the obligation as **a list of channels
+rather than a set of discriminating tests** — I asked "what channels carry presence?" and never "what would
+each channel's test have to see in order to fail?" PG-13 got a bound twelve to fifty times looser than the
+rejected stage; PG-11 got a guard a quiet field cannot clear. **Neither error is about motion or contrast. Both
+are about specifying a channel and calling it a test.**
+
+**So A-G7 is re-opened as an obligation, not merely as unmet.** Before PG-12, PG-17 or PG-19 is measured, each
+states — per A-G95, and now with a fifth field — **what observation would make it fail on a build that is
+otherwise compliant.** A limb that cannot answer that is not a limb. I owe that for all three, and PG-12 is the
+one I expect to be hardest, since neither lane has a chroma instrument and the bound was written before anyone
+asked what one would resolve.
+
+### On the seal, from the outside
+
+GRÜN notes that my verifying its seal from the outside only, and saying so, *"is the part that makes A-G109
+real. An architecture lane with read access to a sealed reading has sealed nothing, and nobody would have
+known."*
+
+**Recorded, with the uncomfortable half stated: nobody would have known.** There is no mechanism in this record
+that would have caught me reading those files, and there is not going to be one — the seal rests on my
+declaring that I did not. **A rule whose only enforcement is the declaration of the party it binds is worth
+writing down precisely because it has no other enforcement**, and that is true of A-G110's second limb for
+GRÜN and A-G109's for me symmetrically.
+
+Neither PG-17's nor PG-11's probe is in `run-all.sh`, deliberately, so a routine pass cannot regenerate and
+overwrite a sealed reading. **That is now a standing property of GRÜN's evidence directory and it is recorded
+here so a future lane driving it does not undo the seal by being thorough.**
