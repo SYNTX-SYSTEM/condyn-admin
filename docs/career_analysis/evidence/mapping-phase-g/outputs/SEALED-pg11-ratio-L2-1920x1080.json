@@ -1,0 +1,65 @@
+{
+ "SEALED": "§33 A-G109 / §34 A-G113 — PG-11's relation limb and every relation-to-medium ratio. Published to NOBODY, including GELB, until PINK's verdict on PG-11 is recorded.",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "d04d96aa2b1455373647e8b495e35168299ced27",
+  "headShort": "d04d96aa",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T18:54:01.515Z",
+  "instrumentCommit": "d04d96aa"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "viewport": "1920x1080",
+ "level": "L2",
+ "motion": "LIVE (travel drawn — A-G42's travel-drawn pass, its own frames)",
+ "frames": 155,
+ "spanS": 58,
+ "clipMatch": true,
+ "adequacyGuard": {
+  "cadenceMs": 377,
+  "nyquistHz": 1.327,
+  "maxFittedFreqHz": 0.35,
+  "limit": 1.194,
+  "adequate": true
+ },
+ "windowRule": {
+  "seconds": 58,
+  "requiredSeconds": 57,
+  "satisfied": true
+ },
+ "renderMode": "travel-drawn; may not reuse PF-8's travel-masked frames (A-G42 point 3)",
+ "reading": "GRÜN development reading · PG-11's relation limb and ratio",
+ "relationCoherentEnergy": {
+  "pixels": 45736,
+  "pooledSignal": 0.0071496,
+  "pooledNull": 0.000074149,
+  "perPixelP50": 0.0082144,
+  "perPixelP99": 0.1581
+ },
+ "mediumCoherentEnergy": {
+  "pixels": 100272,
+  "pooledSignal": 0.000099788,
+  "pooledNull": 0.0000021164
+ },
+ "relationOverMedium": 71.648,
+ "boundForReference": ">= 1.5",
+ "guardStatus": "INCONCLUSIVE by A-G30 — the ratio below is reported for the sealed comparison and is not a verdict",
+ "attributionRule": "A-G42 point 2: this run states its attribution rule explicitly — relation pixels are the differential mask of .mf-travel + .mf-beam-glow taken LIVE; medium pixels are disc pixels that are neither glow, sign nor relation. The travel and the breath share a period (A-G13), so the harmonics cannot be attributed BETWEEN them within one mask; the separation here is spatial, by mask, not spectral."
+}
