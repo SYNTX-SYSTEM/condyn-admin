@@ -415,7 +415,15 @@ export async function servedProvenance(page, worktree) {
   return {
     worktree, head: git("rev-parse HEAD"), headShort: git("rev-parse --short=8 HEAD"),
     branch: git("rev-parse --abbrev-ref HEAD"),
+    /**
+     * The WHOLE tree is normally dirty during a run, and benignly so: the probes write their own readings into
+     * `outputs/`, which is a tracked directory since the instrument was committed. The field that carries
+     * A-G47 point 3's meaning is `productTreeClean` — nothing uncommitted under the paths a build is compiled
+     * from. `treeClean` is kept beside it so the difference is visible rather than argued.
+     */
     treeClean: git("status --porcelain=v1") === "",
+    productTreeClean: git(`status --porcelain=v1 -- ${PRODUCT_PATHS}`) === "",
+    dirtyOutsideProduct: (git("status --porcelain=v1") || "").split("\n").filter(Boolean).map(l => l.slice(3)).filter(f => !f.startsWith("docs/career_analysis/evidence/mapping-phase-g/")),
     /**
      * A-G47 point 3 wants HEAD == 3ec8457d. This lane must commit its instrument (A-G35) and must re-key the
      * splay (A-G43), so the tip necessarily moves: the assertion PINK can make instead is the exact PRODUCT

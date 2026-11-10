@@ -76,4 +76,4 @@ const out = {
   pinkComparison: { source: "mapping-phase-f-contract/outputs/9cc06f84-baseline/noise-floor.json (9cc06f84)", pink_swing_max: 0.031872, note: "divergence is a FINDING to report, not to reconcile (A-G36 point 4)" }
 };
 writeFileSync(resolve(here, `../outputs/floor-${VW}x${VH}.json`), JSON.stringify(out, null, 1));
-console.log(JSON.stringify({ frames: out.frames, spanS: out.spanS, discSwingMax: out.discInterior.max, discSwingP999: out.discInterior.p999, markAaMax: out.byBucket.markAaEdge.max, provenance: { head: provenance.headShort, clean: provenance.treeClean, buildId: provenance.buildId, productEqual3ec8457d: provenance.productTreeEqual3ec8457d } }, null, 1));
+console.log(JSON.stringify({ frames: out.frames, spanS: out.spanS, discSwingMax: out.discInterior.max, discSwingP999: out.discInterior.p999, markAaMax: out.byBucket.markAaEdge.max, provenance: { head: provenance.headShort, clean: provenance.treeClean, buildId: provenance.buildId, productDelta: provenance.productDeltaFrom3ec8457d, productTreeClean: provenance.productTreeClean } }, null, 1));
