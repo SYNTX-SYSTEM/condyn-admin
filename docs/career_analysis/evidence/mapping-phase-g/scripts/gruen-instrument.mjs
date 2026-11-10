@@ -665,3 +665,49 @@ export async function captureChroma(cdp, clip, N) {
   }
   return { C, rgb };
 }
+
+/* ── A-G140: a bound carries its ORIGIN, or the instrument launders it ─────────────────────────────── */
+/**
+ * §40 A-G140, from this lane's own observation: A-G2's "asserted" class is a PROVENANCE problem, not a
+ * confidence one, and the laundering is MECHANICAL — the pin states 1.45 with no origin, this instrument
+ * implements 1.45 as a literal, the output reports a comparison against 1.45, and nothing downstream can tell
+ * that number from a measured one. A-G35 made numbers in RECORDS carry their scripts; this makes numbers in
+ * BOUNDS carry their derivations, one layer earlier.
+ *
+ * The remedy is mechanical too, which is the point: a bound is looked up rather than written, and a bound whose
+ * origin is UNDERIVED is reported as such beside every comparison that uses it. The instrument can then not
+ * silently launder one, because the laundering required the literal.
+ *
+ * `origin` is the adjudication or source that FIXES the value — not the one that merely restates it.
+ */
+export const BOUNDS = Object.freeze({
+  "PG-1.semanticShare":      { value: 0.55,   origin: "UNDERIVED — PHASE_G §2 G-1 states >= 55 % with no derivation recorded" },
+  "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24" },
+  "PG-5.bodiesAtL0":         { value: 7,      origin: "ARGUED — PHASE_G §2 G-2: 'the existing CAPABILITY FIELD draws six'; a comparison, not a derivation" },
+  "PG-6.relationShare":      { value: 0.15,   origin: "UNDERIVED — PHASE_G §2 G-3 states >= 15 % with no derivation recorded" },
+  "PG-10.swingFraction":     { value: 0.25,   origin: "UNDERIVED — A-G22 restated it from a measurement of a tree that A-G41 later voided" },
+  "PG-10.weberCorridor":     { value: [0.10, 0.35], origin: "UNDERIVED — A-G22, same provenance as above" },
+  "PG-10.maxSwing":          { value: null,   origin: "WITHDRAWN — A-G26; the ceiling sat inside PINK's static jitter floor" },
+  "PG-11.guard":             { value: null,   origin: "WITHDRAWN — A-G115 replaced the absolute 0.0002 with resolution against the run's own null; the FACTOR is PINK's to set (A-G115)" },
+  "PG-12.chromaRatio":       { value: null,   origin: "RE-FORMED — A-G123/A-G126 projection along the hue direction; the FACTOR is PINK's, floored at 0.329 q_proj by the raster (A-G131)" },
+  "PG-13.coreOverSurround":  { value: null,   origin: "RETIRED — A-G29, non-discriminating at 12-50x looser than the rejected stage" },
+  "PG-16.crowding":          { value: 0.3,    origin: "DERIVED — R23 Bouma, PHASE_G §11" },
+  "PG-17.coreOverGround":    { value: 1.45,   origin: "UNDERIVED, AND IT COLLIDES — A-G138: PHASE_G §11 states 1.45 x local ground with no derivation, and VOLUME.depthRatio is also 1.45 in an unrelated role. GELB does not claim the bound was taken from the constant and cannot establish it was not. A reader will assume a relation that may not exist." },
+  "PG-17.monotoneExtentInR":  { value: 1.5,   origin: "UNDERIVED — PHASE_G §11 states >= 1.5 x the body radius with no derivation recorded" },
+  "PG-19.markAboveGround":   { value: null,   origin: "WITHDRAWN UN-BEGUN — A-G141: the disjunction is not the negation of its conjunction, the contrast statistic is unnamed, and the connective makes the weakest escape decide" },
+  "PG-22.occupancy":         { value: 0.20,   origin: "FLAT, UNDERIVED SCALE — A-G93 made it flat per body after this lane falsified A-G44's 1/r three ways; the 20 % itself has no recorded derivation" },
+  "PF-15.ringBudget":        { value: 0.08,   origin: "UNDERIVED — A-G5" },
+  "PF-15.ladderStep":        { value: 1.6,    origin: "ASSERTED — A-G2 called 1.64 asserted; the ladder's 1.6 inherits that status" }
+});
+/** Look a bound up and carry its origin into the output. A missing key throws rather than defaulting. */
+export function boundOf(key) {
+  const b = BOUNDS[key];
+  if (b === undefined) throw new Error(`ERR_INSTRUMENT_UNKNOWN_BOUND:${key}`);
+  return Object.freeze({
+    bound: b.value, origin: b.origin,
+    derived: b.origin.startsWith("DERIVED"),
+    /** A-G140: a comparison against an underived bound is reported AS one, every time it is made. */
+    provenanceWarning: b.origin.startsWith("DERIVED") ? null
+      : `the bound for ${key} is not derived (${b.origin.split(" — ")[0]}). Any comparison against it inherits that status, and this instrument reports it rather than laundering the literal into a measurement.`
+  });
+}
