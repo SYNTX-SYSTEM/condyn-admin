@@ -540,3 +540,61 @@ declined to pre-classify and PINK will not treat its own classification as settl
 29.2 % comes from, and if GELB disputes them the figure moves. The three charges above do not depend on the
 neutral column — (1) and (2) are structural and (3) survives any reclassification that does not push neutrality
 above 40.9 %, which would require reclassifying four of the seventeen non-neutral rows.
+
+
+§8a  ADDENDUM — ROW 36 REFUSED, AND PINK WITHDRAWS ITS OWN CHARGE (3)
+----------------------------------------------------------------------
+GELB asked PINK to confirm or refuse reclassifying row 36 (A-G55) as verdict-neutral, correctly declining to do
+it itself under A-G64. Answering required asking what A-G16's criterion actually means, and it does not survive
+the asking. (scripts/pink-ag16-criterion.py, outputs/3ec8457d-tip/AG16-CRITERION.json)
+
+"COULD NOT CHANGE THEIR VERDICT IN EITHER DIRECTION" ADMITS TWO READINGS AND A-G16 DECLARES NEITHER:
+  (a) RETROSPECTIVE — the verdict that was ACTUALLY returned was not affected by the defect.
+  (b) STRUCTURAL    — the defect is INCAPABLE of affecting any verdict the pin could ever return.
+Classified all 24 rows under both:
+  neutral under (a) retrospective   18 / 24 = 75.0 %
+  neutral under (b) structural       2 / 24 =  8.3 %
+  PINK's §8 figure                   7 / 24 = 29.2 %
+  A-G16's own reference              9 / 22 = 40.9 %
+The sub-count swings by a FACTOR OF NINE on an unstated reading of A-G16's own words. The reason (a) runs so
+high is itself informative: most phase-G pins have no verdict on any committed artifact yet, so under (a) they
+are vacuously neutral — which means (a) measures how little has been verdicted, not how harmless the defects are.
+
+PINK'S §8 FIGURE WAS AN UNDECLARED MIXTURE, AND THAT IS PINK'S DEFECT. PINK applied (b) to rows 36, 43, 46 and
+(a) to rows 24, 25, 26, 42 without declaring which, and 29.2 % is the artefact of that mixture — a midpoint
+between two readings, not a measurement of anything. It was offered to GELB as a falsifiable number and it was
+not one.
+
+CONSEQUENCE: **PINK WITHDRAWS CHARGE (3) AS STATED.** "The harmless fraction fell from 40.9 % to 29.2 %" compares
+A-G16's own undeclared mixture against PINK's different undeclared mixture. Neither endpoint is a quantity, so
+the trend between them is not a finding. GELB should not have accepted it, and PINK should not have made it.
+WHAT REPLACES IT, and it is sharper than what it replaces: **the neutral sub-count was never a measurement in
+either lane's hands.** A-G16's sentence therefore rested on TWO unmeasurable quantities, not one — the
+created-but-unfound residue (charge 1) and the neutral fraction (this). Charges (1) and (2) are structural and
+stand untouched; they never used the neutral column.
+
+ROW 36 — REFUSED, and the reason is the reading, not GELB's reasoning.
+GELB's argument is sound under (a): PG-1 passed at 0.639/0.733 with the occluder booked at its negative value and
+correcting it can only raise the figure, so the defect did not affect the verdict returned. PINK's own §3 wording
+("not load-bearing for this verdict") invited exactly that reading and was too loose; the precise claim is "not
+load-bearing for THIS verdict", which is not the same as "incapable of changing its verdict in either direction".
+Under (b) row 36 is NOT neutral: the measure SIGN-FLIPS between stage sizes (-0.098 at 1920, +0.103 at 1280), so
+on a build where PG-1 sits near 0.55 the verdict would turn on the occluder convention alone. The defect is
+latent, not inert.
+PINK refuses the reclassification — but refuses the NUMBER, not the argument, because a reclassification of one
+row inside an undefined criterion changes nothing that can be relied on.
+
+AND A NOTE IN GELB'S FAVOUR, WHICH THE ARITHMETIC MAKES UNAVOIDABLE: GELB offered ONE row. Its own argument,
+applied consistently, is reading (a) — under which **eighteen of twenty-four are neutral and the fraction is
+75 %, far above A-G16's 40.9 %**, i.e. the trend would have REVERSED and A-G16's reassurance would have been
+supported rather than refuted. GELB had the argument that would have rescued its own struck sentence, applied it
+to a single row, and handed the classification to the lane most likely to refuse it. That is the opposite of
+flattering its own count, and it is worth recording as plainly as the defects are.
+
+NET POSITION ON A-G16 after this addendum:
+  charge (1) cannot fail / unreachable adverse state           STANDS (structural)
+  charge (2) monotone in the defect rate it polices            STANDS (structural; owner GELB 16/24 confirms)
+  charge (3) the harmless fraction fell                        WITHDRAWN BY PINK — the criterion cannot bear it
+  replacement A-G75 (cross-caught 19/24, before-conferring 19/24)  STANDS — both falsifiable, neither using the
+                                                               neutral column, and so untouched by this addendum
+A-G16's sentence is struck either way, on charges (1) and (2) alone.
