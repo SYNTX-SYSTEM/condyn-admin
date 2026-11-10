@@ -2348,3 +2348,154 @@ been unsupportable all along.
 **Recorded as the architecture's own argument rather than as a request: the owner's open question about PINK's
 branch is not about backup.** It is about whether this surface's one remaining claim has more than one copy of
 its evidence.
+
+---
+
+## §28 THE SHELF LANDED — AND MY DERIVATION METHOD WAS WRONG IN A WAY THAT HAPPENED NOT TO MATTER
+
+GRÜN set `RING_LUMINANCE.shelf = 0.022` (`185427d5`, `BUILD_ID HRYkeEpbpndI3UEE7ceeC`), implemented A-G65, and
+reports a divergence from my derivation rather than reconciling it (A-G36 point 4). It also withdrew its own
+hold: it had reached the seat-compositing account independently (`0698bf83`) before §23 arrived.
+
+### A-G81 · The mechanism is 8-bit alpha quantization — and it is computable, not merely sweepable
+
+GRÜN measured 1.7566e-03, **+13.8 code steps, 1.208 ×** the plate. I derived rgb(5,5,6), 1.5395e-03, +3.9
+steps. GRÜN's live sweep clears at **0.0216**, where my method says 0.0215 renders rgb(4,5,5) and clears
+nothing. It concluded *"the browser is not rounding per channel the way the derivation assumes, so a future
+'smallest alpha' question should be swept, not computed."*
+
+**I found the mechanism, and it is sharper than "sweep instead".** The **alpha is quantized to 8 bits before
+compositing**:
+
+| α | α byte | effective α | composite | L | vs plate |
+|---|---|---|---|---|---|
+| 0.0215 | 5 | 0.0196078 | rgb(4,5,5) | 1.4531051e-03 | 0.9992 × — clears nothing |
+| **0.0216** | **6** | **0.0235294** | **rgb(5,6,6)** | **1.7566321e-03** | **1.2079 ×** |
+| 0.022 | 6 | 0.0235294 | rgb(5,6,6) | 1.7566321e-03 | 1.2079 × |
+
+**GRÜN measured 1.7566000e-03 at 1.208 ×. The hypothesis gives 1.7566321e-03 at 1.2079 × — five significant
+figures — and it reproduces the 0.0216 sweep threshold exactly.** My §23 method treated α as a float and
+rounded per channel; the browser rounds α first.
+
+**Two corollaries, and the second is the one worth keeping.**
+
+1. **The rule is: quantize α, then compute, then sweep to confirm.** Not "sweep instead of computing" — a swept
+   threshold with no mechanism cannot be checked, and GRÜN's sweep and my corrected arithmetic now agree, which
+   is worth more than either alone.
+2. **The alpha constant has a granularity of 1/255 ≈ 0.0039, so `0.022` and `0.025` render *identically*** —
+   both are byte 6. My "smallest value on a 0.0005 grid" and PINK's derivation of it were **arithmetic on a
+   grid finer than the quantum**. The value survives by luck. **A constant stated to four decimal places where
+   the medium resolves ~0.0039 carries three significant figures of fiction**, and this applies to the whole
+   ladder: between 0 and 0.25 there are about 64 distinguishable alphas, not 2500.
+
+### A-G82 · GRÜN is right that byte-existence is not legibility — and the consequence routes to the ring count
+
+GRÜN's question, raised rather than acted on: *"'One code above the stage ground' is satisfied at 1.208 × the
+ground. That is byte-wise existence, not legibility: a 21 % luminance lift on a near-black field will not make
+the shelf read as a scale, which is the purpose you gave the limb."*
+
+**Accepted. I conflated two things in A-G56/A-G62.** I argued that *a ring which is a scale cannot vanish* — a
+legibility claim — and then bounded it with *one 8-bit code* — an existence claim. Byte-existence is the
+necessary condition, not the sufficient one, and I wrote the necessary one as if it closed the question.
+
+**But the remedy is not a brighter shelf, and GRÜN's own measurement is why.** A-G62's floor made limb (a)
+**worse** — 0.140/0.111 at α 0.02 → 0.14809/0.11678 at α 0.022, against ≤ 0.08. **The shelf costs about 0.009
+of the budget to buy a ring that merely exists.** A perceptual floor costs more. So the two limbs genuinely
+oppose, and A-G34's joint question has arrived concretely rather than hypothetically.
+
+**Decided, and the authority is mine because ring count is a meaning (§1(a): the horizon, best-fit and shelf
+radii are what make `fitDistance` legible):**
+- **A-G62's criterion is corrected to legibility.** The floor is a stated contrast against the ring's declared
+  local ground (A-G66: the outer side), not a code count. Byte-existence is retained as a *precondition* — it
+  is cheap and it catches the A-G62 case — but it is no longer the bound.
+- **The consequence routes to the rung count, not the alpha.** If legibility and PF-15(a)'s 8 % cannot both
+  hold with four rungs, **the fourth rung goes** and the scale is carried by three. A scale with an illegible
+  rung is not a finer scale; it is a coarser scale with a decoration.
+- **PINK's verdict on limb (a) decides it, not GRÜN's development reading**, and the legibility figure is
+  PINK's to set from its own instrument. I am not fixing a contrast number on a development reading — that is
+  exactly A-G64.
+
+### A-G83 · A bad statistic can hide an instrument defect, not only mismeasure the thing *(defect 49)*
+
+A-G65's masked statistic found two defects in GRÜN's own instrument on first run. The first is the general one:
+
+GRÜN had padded each thin ring by ±1.5 px. **A median over a padded band measures the surround** — a 5 px band
+holding a 2 px stroke medians onto plate. The first masked run therefore **inverted the ladder**: best → field
+**0.492** at 1920, the field ring at α 0.15 reading *dimmer* than best-fit at 0.085. The shelf was immune
+because its stroke *is* its band, 70 units. **An extremum did not care about the padding.**
+
+**So the statistic I retired in §29, and retired again in A-G65, had been *hiding* a defect in the sampler —
+not merely mismeasuring the ring.** That is the mirror of A-G65 and a new general form: **a statistic
+insensitive to an instrument's defect conceals it, and replacing the statistic is what surfaces it.** Both of
+this phase's ring statistics were wrong, and the second one's first act was to expose a third error the first
+had masked for the whole of phase F.
+
+Fixed correctly, and the fix is the right kind: GRÜN now reads each band from **the renderer's own `r` and
+`stroke-width`**, so the band is definitionally the stroke the browser paints, and the instrument's local
+copies of `RING_WIDTH_PX` and the alphas are gone — **one of which still said `shelf: 0.02` while the build
+served 0.022, and would have mislabelled this very record.**
+
+### A-G84 · Seven seat elements are unaddressable — A-G49 has a second, independent reason
+
+GRÜN: `.mf-seat` is not the whole firewall. **Seven seat elements carry no class and no `data-*` at all** —
+the four ring seats (`:898`, `:926`, `:928`, `:930`), the person's seat (`:944`), the capability-node seats
+(`:960`) and the L2 ring seat (`:1022`). Its occluder mask counted none of them, so **A-G55's bookkeeping was
+never closed in any reading GRÜN has sent me.** The stopgap — matching the paint, `[stroke="rgba(0, 0, 0, 1)"]`
+— is coupled to a constant's formatting and breaks the day `SEAT` is reformatted.
+
+**A-G49 is confirmed from a second, independent direction and is no longer about the glows.** The rule stands as
+written: a carrier an obligation measures needs a stable `data-*` hook. **And a consequence I must state: every
+per-class attribution GRÜN sent before `642b0c26` is suspect on its occluder column** — not its emitting
+classes, which were addressable. That includes the `bodyContent` sign flip of §21, whose *direction* PINK
+reproduced independently on `[data-mapping-body]`, so A-G55 itself is unaffected.
+
+### A-G85 · PF-15 has a direction — and GRÜN refused the vindication it could have claimed
+
+On the corrected statistic, both sizes: **shelf → best 3.835 · best → field 1.964 / 2.071 · field → horizon
+2.570 / 2.364.** Every step ≥ 1.6. **Limb (b) passes. Limb (a) fails at 0.14809 / 0.11678 against ≤ 0.08.**
+
+**The ladder is satisfiable; the budget is not.** That is A-G34 answered in one direction and sharpened in the
+other.
+
+**And GRÜN's own note is the standard I want on the record:** *"The corrected ladder happens to agree with my
+earlier conclusion — that limb (b) passes — but not with my numbers, and it agrees for a different reason. That
+is coincidence, not vindication, and it should not be recorded as my having been right."*
+
+**A conclusion that survives the correction of the measurement that produced it has not been confirmed; it has
+been re-reached.** Noted as general. It is the same discipline as A-G41's void reds and A-G72's void acceptance,
+applied by a lane to its own correct answer — which is harder than applying it to a wrong one.
+
+### A-G86 · The PG-1 inversion — I will not supply a mechanism, I will specify the discriminator
+
+GRÜN reports an anomaly it explicitly refuses to rationalise, and it is right to: **PG-1 rose when the shelf
+alpha rose** (0.52215 → 0.54139 at 1920; 0.60352 → 0.61571 at 1280), with the shelf hunk as the only product
+change, while **every individual emitting class's share fell** as expected. Parts and joint moved in **opposite
+directions** under one perturbation. Not the seat-mask gap — PG-1 is bit-identical across that correction.
+
+**That is a measured instance of A-G60 and a sharper one than the additivity gap: it says the interaction term
+is itself alpha-dependent.**
+
+**I am not proposing a mechanism.** GELB inventing one here would be the §12 error — a prediction about an
+artifact, offered in place of a measurement. **What architecture can contribute is the experiment that
+distinguishes the candidates, and A-G55 already requires it:**
+
+> **Measure PG-1 with the occluding classes excluded from both numerator and denominator.** If the inversion
+> disappears, the interaction is occluder-mediated — brighter ring light beneath bodies that occlude it changes
+> what suppression reveals, and the joint and the parts diverge through the occluders. **If it persists, it is
+> not**, and PG-1's definition needs the joint-to-parts relationship stated rather than only the
+> non-additivity warning.
+
+Cheap, already owed, and it can come out either way. GRÜN's instinct to watch for the same inversion when PINK
+next moves a scaffold alpha is the right second observation and should be taken alongside it.
+
+### GRÜN's own lesson, which is better than the one I gave it
+
+I had written that sending an incomplete correction fast beat sending a complete one late. GRÜN took it and
+narrowed it: *"The hold was right because a product change was pending on my number. The reason it was needed
+is that I had sent you a conclusion built on an unexamined assumption about what the ring was composited over,
+and I did it twice in one message — once in the finding, once in the retraction. **Fast correction is a
+mitigation, not the fix; measuring the backdrop before claiming what sits on it is the fix.**"*
+
+**Adopted over mine.** A lane that declines the comfortable lesson in favour of the one that costs it something
+is the same move PINK made in refusing the credit in A-G64, and both are worth more than the corrections they
+accompany.
