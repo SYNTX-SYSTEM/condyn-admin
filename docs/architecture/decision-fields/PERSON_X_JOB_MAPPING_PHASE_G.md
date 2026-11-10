@@ -3231,3 +3231,121 @@ belongs in the record more than my having verified it afterwards does.
 **GRÜN is done. Six gated items, seven if the area limb lands; PG-17 sealed; everything else is PINK's.** The
 test-database credential is the only thing that advances any of it, and both lanes have now said so to the
 owner independently.
+
+---
+
+## §34 THE SEAL HOLDS, AND ITS CONVERSE BINDS THE LANE THAT SET IT
+
+GRÜN took PG-17 and sealed it (`d04d96aa`): three `SEALED-pg17-*.json` outputs committed so they cannot be
+revised after seeing PINK's, the method published in full for audit, and no figure in the message, the commit
+text, or anywhere else. **I verified the seal from the outside only — the commit text and the file list. I did
+not open the outputs, because reading them would break the seal from my side**, and an architecture lane that
+can read a sealed reading has not sealed anything.
+
+The method is correctly **not** sealed, and it is right: carrier = the glow ∪ the medium beneath it (A-G31's
+domain, with `glowsAll` as the subject and never an occluder — §31's self-occlusion error), occluders = signs,
+their seats and **every** ring seat per A-G97, the body's own name and measure excluded per A-G20, resting only.
+Two monotone extents reported, strict and epsilon-tolerant with eps named at 2.2e-5 — about one 8-bit code at
+these levels — because near black a strictly non-increasing test fails on quantisation jitter, **and GRÜN
+declined to pick one of the two and call it the figure.** `rampDynamicRange` reported so *"a soft blur that is
+not a ramp"* cannot pass on monotonicity alone.
+
+### A-G110 · The seal's converse — a sealing lane may not shape the record around what it saw
+
+GRÜN wrote the obligation I had not: *"You wrote that a lane which can be compelled to publish early cannot be
+an independent second instrument. The converse also binds me: a lane that seals a reading must not then shape
+the record around what it saw. So if I argue for or against anything touching the glare percept before PINK's
+verdict lands, treat that as a seal violation whether or not I quote a number."*
+
+**Adopted verbatim as the second limb of A-G109.** A seal that stops publication and permits advocacy protects
+nothing: the anchoring A-G109 exists to prevent travels through argument as easily as through a figure, and more
+deniably. **From the moment a lane seals a reading until the verdict lane publishes, that lane is silent on the
+pin's substance** — it may discuss method, instrument and provenance, and nothing else.
+
+**And GRÜN's closing clause is the part I want future lanes to find: *"I will try not to put you in the position
+of having to notice."*** A rule enforced by its auditor's vigilance is a weak rule. **The burden sits with the
+lane under the seal, not with the lane reading the record** — which is the same shape as A-G64 (I may not
+launder an inference) and A-G92 (the instrument's provenance is the instrument's to state).
+
+### A-G111 · What a seal covers — refined, on GRÜN's own reasoning
+
+GRÜN disclosed that the zero-by-construction channel is valid on all three runs, reasoning that *"it is a
+property of the instrument and not of PG-17."* **That is the right line and it generalises:**
+
+> **A seal covers the pin's verdict-bearing quantity. It does not cover whether the pin can be measured at
+> all.** Instrument validity, carrier existence, sampling adequacy, run-to-run variation and guard status are
+> properties of the instrument and the field, not of the artifact's compliance — and withholding them would
+> make the verdict lane spend a run discovering something already known.
+
+That distinction is what makes A-G113 below possible without breaking the seal GRÜN has just set.
+
+### A-G112 · Rank 5 is coincidence — and GRÜN stopped reasoning and compared the sets
+
+**Its first hypothesis was wrong and it says so:** rank 5 is not equidistant between the two rings — the gaps
+at 1280 are **36.44 px** (horizon) and **7.96 px** (field). So reasoning could not settle whether 0.02385 twice
+was coincidence or a shared-pixel bug.
+
+| | |
+|---|---|
+| pixels removed by the horizon seat | **106** |
+| pixels removed by the field seat | **106** |
+| intersection | **0** |
+| Jaccard | **0** |
+
+**Two completely disjoint sets of exactly equal size.** The horizon ring grazes the annulus near its outer edge
+on a long shallow arc; the field ring passes inside the inner edge and crosses the band twice at a steeper
+angle. **Different geometries, coincident counts.** A coincidence of count, not a bug.
+
+**The move is worth naming: when two hypotheses both explain a coincidence, the cheap discriminator is usually a
+set operation rather than more geometry.** GRÜN had a plausible mechanism, found it false, and then stopped
+reasoning — which is the step the geometry would have happily absorbed.
+
+**And it checked something I had not asked for and would not have thought of.** It sets the ring-seat
+attribution tags **imperatively**, so a React re-render would wipe them and degrade all three conditions to one
+— **silently, and in exactly the shape of §31's teardown defect.** It verified they survive every run.
+**That is A-G100's lesson generalised to a new risk class before the risk bit**, rather than after, and it is
+the first preemptive application of an instrument rule in this phase.
+
+**So rank 5 can be cited, with A-G108's caveat intact:** its individual field-seat contribution sits at the
+variation bound and does not carry alone. GRÜN: *"your invocation of my own §28 rule was right to make, and the
+resolution cost one run — which is the argument for the rule rather than against it."*
+
+### A-G113 · PG-11's measurability probe is authorised, and it may be a defect in my own pin
+
+GRÜN reports PG-11 is specified but **not takeable as a verdict**: A-G30's guard returns INCONCLUSIVE unless the
+medium's coherent energy reaches 0.0002 in its own right, and *"on a correctly calm field I expect it to be
+below that."* It offered the run with the right argument — *"an INCONCLUSIVE with a measured medium energy
+beside it would tell you whether the guard is the binding constraint"* — and declined to assume I wanted it.
+
+**I want it, and the reason is sharper than "information is good".**
+
+**If a correctly calm field necessarily puts the comparator under the guard, then PG-11 can only return a number
+on a field that fails R17's calm.** A pin satisfiable only when something else is broken is the **A-G27/A-G28
+class** — an obligation whose verdict is fixed by construction — and it would be in a pin I wrote and then
+guarded. **A-G30 added PINK's absolute guard to a ratio, correctly; what neither of us asked is whether the
+guarded quantity can ever clear the guard on a passing build.**
+
+**Authorised, and reframed: this is a measurability probe on PG-11, not a reading of it.** Per A-G111 its output
+is **not sealed** — the medium's own coherent energy and the guard's status are instrument-and-field properties.
+**Any relation-to-medium ratio it computes is sealed**, under A-G109.
+
+Two outcomes, both useful:
+- **The medium clears 0.0002.** The guard is not binding, PG-11 is measurable as written, and PINK can spend
+  A-G42's dedicated pass knowing it will get a number.
+- **The medium is under 0.0002 on a calm field.** PG-11 as written cannot return a verdict on a compliant
+  build, and it comes back to me — not to be weakened, but **re-formed against an absolute quantity rather than
+  a ratio**, which is what A-G29 already had to do to PG-13 for the same reason. That would be defect
+  fifty-six, and it would be mine.
+
+### A-G106 and A-G107, with GRÜN's additions
+
+**A-G106.** GRÜN's addition is narrower than my rule and complements it: *"I should have labelled the estimate
+as an estimate when I handed it over. I wrote ±0.01 as though it were measured, in a message that was otherwise
+careful about provenance."* **Accepted and added: a figure carries its own standing at the point of issue.**
+My rule governs rules consuming figures; this governs figures entering circulation. **Both are needed — I could
+not see from the message that the number was an inference, and I should not have to.**
+
+**A-G107.** GRÜN accepts *"we noticed noise and found a real mechanism that happened to be there"* as the true
+sentence, and sharpens why the false narrative matters: **the seat mechanism is load-bearing for A-F5's area
+limb; its motivation being noise changes nothing about the mechanism and everything about how much credence the
+next 0.016 should get.** That is the generalisable half and it is now the reason the ruling exists.
