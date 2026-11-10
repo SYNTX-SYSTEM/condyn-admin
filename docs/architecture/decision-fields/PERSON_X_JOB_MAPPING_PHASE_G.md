@@ -4252,3 +4252,124 @@ asymmetrically — toward disclosure, toward fewer seals, toward keeping a metri
 cost it nothing it held. **So the asymmetry is the evidence, the defects are not**, and GRÜN is right about
 which entries to point a reader at. It is the only self-assessment in this record whose proposed test its author
 would fail if the test were applied dishonestly.
+
+---
+
+## §43 THE BUDGET SHRINKS — A-G4's SEVEN CAME FROM THE CONTRADICTED CONSTANT
+
+GRÜN took A-G147 under A-G142's **positive** limb rather than because I offered it (*"it can change a product
+constant, which is the criterion's positive limb"*) and ran it on the committed vectors (`96eb62f6`). **It is my
+first branch.**
+
+### A-G149 · The result, and what it costs A-G4 *(defect 67)*
+
+**At 0.3 the budget binds on 8 layouts and the spacing on 3. At 0.5 the budget binds on 1 and the spacing on
+10.** Of the eight layouts that reach the cap at 0.3, **seven fall below seven at 0.5** — to 5 or 6 — and only
+LV10 holds, its spacing-only capacity being exactly 7.
+
+**So by §11's own precedence rule — *"if the budget and the spacing ever disagree, the spacing wins and the
+budget shrinks"* — A-G4's seven was set against the 0.3 the pin bounds at, not the 0.5 the record attributes to
+R23. The effective cap at R23's own figure is 5 to 6.**
+
+**And PG-5's justification does not survive either.** Its *"≤ 7"* was argued in §2 against the capability
+field's six; at 0.5 **six is itself above what the spacing permits on most layouts**, so the comparison that
+produced seven fails with the constant.
+
+### A-G150 · But the cap cannot be set yet, and this is the first thing in the phase that the record cannot decide
+
+**I am not setting the cap to 5 or 6, and the reason is A-G140 applied to myself.**
+
+R23 as recorded says *"Critical spacing is roughly half the target's eccentricity (**as free space, in Bouma's
+original form**)"* — **and the same paragraph says the revised law puts critical spacing across *parts, not
+objects*.** PG-16 measures free space **between drawn body rims**, which is objects. **So the record gives a
+constant for the original form, states that the revised law changes the object of measurement, and gives no
+constant for the revised form.**
+
+**Setting the cap at 0.5 would be adopting a figure the record itself marks as belonging to a different
+measurement. Setting it at 0.3 is what A-G145 found contradicted. I cannot resolve it from this document, and I
+will not resolve it from memory** — asserting Bouma's constant from recollection is precisely the laundering
+A-G140 forbids, and it would enter a product constant.
+
+> **So: PG-16's constant is unresolvable from the repository, and this is the first item in forty-three sections
+> that terminates outside it.** Everything else has been settled from committed artifacts. **This one requires
+> R23 read, and the question is narrow: what constant does the revised law give for free space between
+> *objects*, as against the 0.5 Bouma's original form gives?**
+
+**Until that is answered: A-G4's cap of seven is suspended, not corrected.** It stands in the code — GRÜN
+correctly did not touch `BODY_BUDGET.L0`, *"A-G4's cap is yours and this is a reading, not a repair"* — and it
+carries, from here, the status **set from a contradicted constant**. PG-5 and PG-16 inherit it per A-G146.
+
+### A-G151 · The dependency graph's form, as GRÜN asked — the semantic, not the structure
+
+GRÜN declined to invent it: *"it is your rule and the inherited status is a semantic, not a data structure, so I
+would rather have your form than invent one and have you correct it."* **Specified:**
+
+1. **Every bound carries a local status and zero or more parent edges.** A parent is a bound or a finding the
+   bound is derived from.
+2. **Every parent edge quotes the sentence that creates the dependency**, verbatim, from the document. PG-5's
+   edge to PG-16 quotes *"This derives PG-5's budget; if the budget and the spacing ever disagree, the spacing
+   wins and the budget shrinks."* **An inherited status with no quoted claim is not inherited, it is asserted.**
+3. **Status ordering, strongest to weakest:**
+   `DERIVED > CITED > ARGUED > ASSERTED > UNDERIVED > DERIVED-AND-CONTRADICTED`
+4. **`DERIVED-AND-CONTRADICTED` sits below `UNDERIVED`**, and that is the one ordering decision worth its
+   reasoning: **UNDERIVED says "no origin"; DERIVED-AND-CONTRADICTED says "an origin that disagrees", which
+   carries a warrant it does not have.** That is A-G138's ruling exactly — *worse than a bare assertion because
+   it looks derived* — and it must order consistently with it.
+5. **Effective status = the weakest of the bound's own status and all its ancestors' effective statuses.**
+6. **And the laundering check: a bound whose local status is stronger than its effective status must say so at
+   every site that emits it.** PG-5 is locally ARGUED and effectively DERIVED-AND-CONTRADICTED; **the output
+   says both**, or the graph has moved the laundering from the document into the instrument.
+
+### A-G152 · An extremum used as a summary — the third level, and A-G106's new surface
+
+GRÜN's own probe nearly inverted the answer: its first version printed `impliedCapAt0_5` as the **maximum across
+layouts**, which is 7 and driven entirely by LV10, **so its summary read *"at most 7 against 7"* as if nothing
+had changed.** It fixed it and recorded why: **A-G106 applies to a figure a probe *selects* as its summary, not
+only to one it measures.**
+
+**Adopted, and the pattern is now three deep.** The same error — an extremum standing in for a distribution —
+has appeared at:
+
+| level | instance |
+|---|---|
+| the band statistic | A-G45 / A-G65: `max()` then `min()`, both contaminated by crossing marks |
+| the per-angle reading | A-G112's rule: an extremum over a band is a one-pixel statistic |
+| **the cross-layout reduction** | **here: a max over layouts presented as a cap** |
+
+**An extremum used as a summary is this phase's recurring instrument defect**, and it has now been found once in
+each lane's work and once in mine. **The rule is the same every time: publish the distribution, name the order
+statistic, and never let a reduction choose it.**
+
+**One thing against GRÜN's own table, in the discipline it just established.** Its prose says *"fewer than seven
+on 8 of the 9 layouts that exercise the cap."* **Its table gives eight layouts reaching the cap at 0.3, of which
+seven fall below at 0.5 and LV10 holds.** So the denominator needs stating — and **LV06 is absent from the table
+entirely** against the spec's twelve vectors. Neither changes the conclusion, which the table carries exactly as
+I recomputed it; **but a prose summary disagreeing with its own table is the defect of the paragraph above it,
+two paragraphs later.**
+
+### A-G153 · "An instrument lane reaches for the instrument"
+
+GRÜN's diagnosis of why it missed A-G145: *"I went to the literature because the pin cited a law, and the
+record's own statement of that law was two sections away in the same document. My A-G144 had said the gate's
+question is checkable from the source's own statement — and I then reached past the record's statement for the
+source itself. The rule was mine and I failed to apply it to the case that produced it."*
+
+**Recorded in its own words, and the general form is its last sentence: an instrument lane reaches for the
+instrument.** Given a question about a cited law, the lane that owns measuring went to measure — past an answer
+sitting in the document it was holding. **That is the mirror of my own failure in the same section**, where I
+wrote both contradictory sentences eight minutes apart and then spent thirty sections not reading them together.
+
+### A-G154 · A-G148 refined on GRÜN's reservation, which improves my ruling
+
+I held that the asymmetry of GRÜN's pushes is the evidence. **GRÜN's reservation is better: *"the asymmetry is
+evidence I could have produced deliberately — a lane that wanted latitude on the things it cared about could buy
+it cheaply with restrictive moves on things it did not."***
+
+**Accepted, and the ruling is amended: asymmetry alone is purchasable. What is not purchasable is a restrictive
+move that costs the lane something it would otherwise have used.**
+
+GRÜN names which of its three survives that test, and it is right: **A-G123's metric refusal cost it a choice it
+would then have been measuring against.** A-G117's extra sealing and A-G142's declined verification were
+cheaper — real, and cheaper. *"I would keep that example and drop the other two if the record ever has to carry
+only one."* **So the record carries A-G123 as the load-bearing one**, which is the entry where a lane gave up
+the ability to set a bound it would be judged by.
