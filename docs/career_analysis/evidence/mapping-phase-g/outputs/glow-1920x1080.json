@@ -6,18 +6,20 @@
  "renderModeNote": "travel DRAWN, excluded by its own mask (A-G42 point 1 / A-G32). PG-11's travel-drawn-on-relation-pixels pass is a SEPARATE run and may not reuse these frames (A-G42 point 3).",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "7dd47a4010e85c0c372f31b30c57a7b51da7ee80",
-  "headShort": "7dd47a40",
+  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
+  "headShort": "0698bf83",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": true,
+  "productTreeClean": false,
   "dirtyOutsideProduct": [
-   "ocs/career_analysis/evidence/mapping-phase-g/README.md"
+   "pp/components/career/demo/PersonJobMappingField.tsx"
   ],
-  "productDeltaFrom3ec8457d": "NONE",
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
   "untrackedProductFiles": [],
-  "buildId": "ymq-3TimwOQHr0BIsToOx",
-  "measuredAt": "2026-11-10T17:07:49.781Z"
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:26:08.917Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -68,17 +70,17 @@
  "region": "924x924",
  "discPixels": 545417,
  "clipMatch": true,
- "frames": 165,
- "spanS": 57.7,
+ "frames": 189,
+ "spanS": 57.8,
  "adequacyGuard": {
-  "cadenceMs": 352,
-  "nyquistHz": 1.421,
+  "cadenceMs": 307,
+  "nyquistHz": 1.627,
   "maxFittedFreqHz": 0.35,
-  "limit": 1.279,
+  "limit": 1.465,
   "adequate": true
  },
  "windowRule": {
-  "seconds": 57.7,
+  "seconds": 57.8,
   "deltaFHz": 0.05,
   "requiredSeconds": 57,
   "satisfied": true
@@ -95,113 +97,113 @@
   "withdrawnLimb": "the 0.030 max-swing ceiling is NOT evaluated — withdrawn by A-G26",
   "ceilingNotMeasured": "A-G26's replacement ceiling needs p999.9 on CO-REGISTERED frames; co-registration does not exist in this instrument, so swing_p9999_uncoregistered is MATERIAL ONLY and is not that ceiling"
  },
- "PG10_limb1_fracCarrierSwingGe0004": 0.52038,
+ "PG10_limb1_fracCarrierSwingGe0004": 0.52043,
  "PG10_limb1_boundForReference": ">= 0.25",
- "PG10_limb2_medianWeber": 0.28644,
+ "PG10_limb2_medianWeber": 0.28578,
  "PG10_limb2_boundForReference": "[0.10, 0.35]",
  "carrier": {
-  "px": 35958,
+  "px": 35880,
   "swing": {
-   "n": 35958,
-   "mean": 0.0076109,
-   "p50": 0.0043392,
-   "p90": 0.017839,
-   "p99": 0.028812,
-   "p999": 0.23532,
-   "p9999": 0.31515,
-   "max": 0.39467,
+   "n": 35880,
+   "mean": 0.0075896,
+   "p50": 0.0043433,
+   "p90": 0.017742,
+   "p99": 0.028778,
+   "p999": 0.2287,
+   "p9999": 0.33236,
+   "max": 0.38817,
    "min": 0
   },
   "weber": {
-   "n": 35958,
-   "mean": 0.28662,
-   "p50": 0.28644,
-   "p90": 0.4187,
-   "p99": 0.46935,
-   "p999": 0.99902,
-   "p9999": 1.499,
-   "max": 1.7467,
+   "n": 35880,
+   "mean": 0.28578,
+   "p50": 0.28578,
+   "p90": 0.4173,
+   "p99": 0.46735,
+   "p999": 0.97452,
+   "p9999": 1.5294,
+   "max": 1.7409,
    "min": 0
   },
-  "fracSwingGe0004": 0.52038,
-  "swing_p9999_uncoregistered": 0.31515,
-  "weberMedian": 0.28644
+  "fracSwingGe0004": 0.52043,
+  "swing_p9999_uncoregistered": 0.33236,
+  "weberMedian": 0.28578
  },
  "medium": {
-  "px": 107393,
+  "px": 107389,
   "swing": {
-   "n": 107393,
-   "mean": 0.00084599,
+   "n": 107389,
+   "mean": 0.0008512,
    "p50": 0.00030053,
-   "p90": 0.00059659,
+   "p90": 0.00059797,
    "p99": 0.0007609,
-   "p999": 0.23735,
-   "p9999": 0.6365,
-   "max": 0.68048,
+   "p999": 0.2378,
+   "p9999": 0.61434,
+   "max": 0.67856,
    "min": 0
   },
   "weber": {
-   "n": 107393,
-   "mean": 0.080065,
-   "p50": 0.084442,
-   "p90": 0.16782,
-   "p99": 0.25673,
-   "p999": 1.8044,
-   "p9999": 4.9555,
-   "max": 6.0366,
+   "n": 107389,
+   "mean": 0.080175,
+   "p50": 0.08439,
+   "p90": 0.16769,
+   "p99": 0.25722,
+   "p999": 1.9633,
+   "p9999": 4.871,
+   "max": 6.0006,
    "min": 0
   },
-  "fracSwingGe0004": 0.00303,
-  "swing_p9999_uncoregistered": 0.6365,
-  "weberMedian": 0.08444
+  "fracSwingGe0004": 0.00296,
+  "swing_p9999_uncoregistered": 0.61434,
+  "weberMedian": 0.08439
  },
  "stillGlow_shelfBodies": {
-  "px": 25051,
+  "px": 25047,
   "swing": {
-   "n": 25051,
-   "mean": 0.0014819,
-   "p50": 0.000043941,
+   "n": 25047,
+   "mean": 0.001465,
+   "p50": 0.00005029,
    "p90": 0.0012976,
    "p99": 0.012625,
-   "p999": 0.31931,
-   "p9999": 0.58245,
-   "max": 0.58605,
+   "p999": 0.25568,
+   "p9999": 0.58083,
+   "max": 0.59019,
    "min": 0
   },
   "weber": {
-   "n": 25051,
-   "mean": 0.10412,
-   "p50": 0.0039177,
-   "p90": 0.1492,
-   "p99": 2.1084,
-   "p999": 2.9225,
-   "p9999": 3.0561,
-   "max": 3.0931,
+   "n": 25047,
+   "mean": 0.10418,
+   "p50": 0.0039796,
+   "p90": 0.14945,
+   "p99": 2.1055,
+   "p999": 2.9007,
+   "p9999": 3.0542,
+   "max": 3.0937,
    "min": 0
   },
-  "fracSwingGe0004": 0.04746,
-  "swing_p9999_uncoregistered": 0.58245,
-  "weberMedian": 0.00392,
+  "fracSwingGe0004": 0.04707,
+  "swing_p9999_uncoregistered": 0.58083,
+  "weberMedian": 0.00398,
   "note": "a shelf body's glow is STILL by design (A-F8); reported beside the carrier, never inside it. An earlier reading of this instrument mixed these in and diluted both limbs."
  },
  "coherentEnergy": {
   "carrier": {
-   "px": 35958,
-   "pooledSignal": 0.0034724,
-   "pooledNull": 0.000023311,
-   "pooledRatio": 148.96,
-   "perPixelP99": 0.014071,
-   "perPixelNullP99": 0.00017865,
-   "perPixelNullP50": 0.000038773
+   "px": 35880,
+   "pooledSignal": 0.0034614,
+   "pooledNull": 0.000027896,
+   "pooledRatio": 124.08,
+   "perPixelP99": 0.014023,
+   "perPixelNullP99": 0.00017836,
+   "perPixelNullP50": 0.000038654
   },
   "medium": {
-   "px": 107393,
-   "pooledSignal": 0.000067368,
-   "pooledNull": 0.0000022559,
-   "pooledRatio": 29.86,
-   "perPixelP99": 0.00051035,
-   "perPixelNullP99": 0.000022701,
-   "perPixelNullP50": 0.0000073402
+   "px": 107389,
+   "pooledSignal": 0.000068043,
+   "pooledNull": 9.3146e-7,
+   "pooledRatio": 73.05,
+   "perPixelP99": 0.00050862,
+   "perPixelNullP99": 0.000023389,
+   "perPixelNullP50": 0.0000061482
   },
   "harmonics": [
    0.1,
@@ -224,8 +226,8 @@
    "drawnRadiusPx": 34.62,
    "localGround": 0.0037349,
    "groundSamples": 18104,
-   "glowPixels": 17833,
-   "carrierPixels": 12736,
+   "glowPixels": 17832,
+   "carrierPixels": 12735,
    "carrierFraction": 0.7142
   },
   {
@@ -236,9 +238,9 @@
    "drawnRadiusPx": 43.88,
    "localGround": 0.0033615,
    "groundSamples": 28457,
-   "glowPixels": 29852,
-   "carrierPixels": 23561,
-   "carrierFraction": 0.7893
+   "glowPixels": 29775,
+   "carrierPixels": 23484,
+   "carrierFraction": 0.7887
   },
   {
    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
@@ -247,7 +249,7 @@
    "requiredGaps": 0,
    "drawnRadiusPx": 33.98,
    "localGround": 0.0031853,
-   "groundSamples": 12752,
+   "groundSamples": 12749,
    "glowPixels": 0,
    "carrierPixels": 0,
    "carrierFraction": 0

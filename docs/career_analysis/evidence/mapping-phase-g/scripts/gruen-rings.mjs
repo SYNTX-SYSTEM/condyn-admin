@@ -8,21 +8,17 @@
  * 0.58 and that was a BODY crossing the 61 px annulus, so a max over a ring band measures the contaminant.
  * A-G41: §12's 0.23 is void as a measurement. This is a FIRST reading of limb (a) with no prior.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureLuminance, hide, unhideAll,
-  servedProvenance, PROVENANCE, CLASS_SELECTOR, SEMANTIC_CLASSES, RING_CLASSES, ringBandLuminance, e4
+  servedProvenance, PROVENANCE, CLASS_SELECTOR, SEMANTIC_CLASSES, RING_CLASSES, ringBandLuminance, ringBandMasked, signAndSeatMask, e4
 } from "./gruen-instrument.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const WT = resolve(here, "../../../../..");
 const VW = Number(process.env.VW ?? 1920), VH = Number(process.env.VH ?? 1080);
-const spec = JSON.parse(readFileSync(resolve(here, "../../../../architecture/decision-fields/mapping-spec/layout-spec.json"), "utf8"));
-/** The drawn stroke widths (PersonJobMappingField.tsx RING_WIDTH_PX); the shelf is a BAND and keeps its width. */
-const STROKE_PX = { best: 2.4, field: 2.0, horizon: 2.0 };
-const ALPHA = { shelf: 0.02, best: 0.085, field: 0.15, horizon: 0.25 };
 
 const sel = classes => classes.map(c => CLASS_SELECTOR[c]).join(",");
 const browser = await chromium.launch();
@@ -45,31 +41,48 @@ const semanticLight = full - semSuppressed, ringsLight = full - ringsSuppressed;
 
 /* ── limb (b): the ladder, on the engraved minimum, with the bodies DRAWN (no suppression) ─────────── */
 const base = await captureLuminance(cdp, clip, N);
+/** A-G65: the statistic is neither min nor max — exclude every sign and seat pixel, keep the signs DRAWN. */
+const { covered, perClassPixels } = await signAndSeatMask(page, cdp, clip, N);
 const k = geo.unitsToPx;
-const band = {
-  /**
-   * The shelf band AS DRAWN, not as the spec's two radii: one circle at r (shelfNear + field.radius)/2 with
-   * strokeWidth (field.radius − shelfNear), i.e. 430…500 — NOT 430…`shelfFar` 480. The earlier form sampled
-   * 50 of the stroke's 70 units. Immaterial to the engraved minimum here (both read the plate), but it is a
-   * defect: a band statistic must sample the band the renderer actually paints.
-   */
-  shelf: [spec.rings.shelfNear * k, spec.field.radius * k],
-  best: [spec.rings.bestFit * k - (STROKE_PX.best / 2 + 1.5), spec.rings.bestFit * k + (STROKE_PX.best / 2 + 1.5)],
-  horizon: [spec.rings.horizon * k - (STROKE_PX.horizon / 2 + 1.5), spec.rings.horizon * k + (STROKE_PX.horizon / 2 + 1.5)],
-  field: [spec.field.radius * k - (STROKE_PX.field / 2 + 1.5), spec.field.radius * k + (STROKE_PX.field / 2 + 1.5)]
-};
+/**
+ * The band of each ring is read from the RENDERER, not from this script's constants: each ring circle's own
+ * `r` and `strokeWidth` (SVG user units) scaled by units→px. So the band IS the stroke the browser paints —
+ * no padding, no assumption about RING_WIDTH_PX, and no local copy of the alphas to drift out of date (an
+ * earlier version of this file carried `ALPHA.shelf = 0.02` and mislabelled a build serving 0.022).
+ */
+const ringDom = await page.evaluate(() => Object.fromEntries(["shelf", "best", "field", "horizon"].map(name => {
+  const el = document.querySelector(`[data-testid="mapping-ring-${name}"]`);
+  return [name, el === null ? null : {
+    r: Number(el.getAttribute("r")),
+    strokeWidthUnits: Number(el.getAttribute("stroke-width") ?? el.style.strokeWidth),
+    alpha: Number(el.getAttribute("data-ring-luminance")),
+    stroke: el.getAttribute("stroke")
+  }];
+})));
+const band = {};
+for (const [name, d] of Object.entries(ringDom)) {
+  if (d === null) throw new Error(`ERR_INSTRUMENT_RING_ABSENT:${name}`);
+  band[name] = [(d.r - d.strokeWidthUnits / 2) * k, (d.r + d.strokeWidthUnits / 2) * k];
+}
 const ladderOrder = ["shelf", "best", "field", "horizon"];
 const measured = {};
-for (const ring of ladderOrder) measured[ring] = { bandPx: band[ring].map(v => +v.toFixed(1)), specAlpha: ALPHA[ring], ...ringBandLuminance(base, geom, band[ring][0], band[ring][1]) };
+for (const ring of ladderOrder) measured[ring] = {
+  bandPx: band[ring].map(v => +v.toFixed(1)), bandIsStrokeExtent: true,
+  fromRenderer: { r: ringDom[ring].r, strokeWidthUnits: ringDom[ring].strokeWidthUnits, strokeWidthPx: +(ringDom[ring].strokeWidthUnits * k).toFixed(2), alpha: ringDom[ring].alpha, stroke: ringDom[ring].stroke },
+  /** A-G65's figure, and the one the ladder uses. */
+  masked: ringBandMasked(base, geom, band[ring][0], band[ring][1], covered),
+  /** The superseded extremum form, kept beside it so the two statistics can be compared rather than argued. */
+  supersededExtrema: ringBandLuminance(base, geom, band[ring][0], band[ring][1])
+};
 await ctx.close(); await browser.close();
 
 /** The ladder: each step against the one below it, on the engraved minimum (A-G45's statistic). */
 const steps = [];
 for (let i = 1; i < ladderOrder.length; i += 1) {
   const lo = measured[ladderOrder[i - 1]], hi = measured[ladderOrder[i]];
-  const onMin = lo.engravedMin > 0 ? hi.engravedMin / lo.engravedMin : null;
-  const onP50 = lo.p50 > 0 ? hi.p50 / lo.p50 : null;
-  steps.push({ step: `${ladderOrder[i - 1]} → ${ladderOrder[i]}`, ratioOnEngravedMin: onMin === null ? null : +onMin.toFixed(3), ratioOnP50: onP50 === null ? null : +onP50.toFixed(3) });
+  const onMasked = lo.masked.pooledMedian > 0 ? hi.masked.pooledMedian / lo.masked.pooledMedian : null;
+  const onMinSuperseded = lo.supersededExtrema.engravedMin > 0 ? hi.supersededExtrema.engravedMin / lo.supersededExtrema.engravedMin : null;
+  steps.push({ step: `${ladderOrder[i - 1]} → ${ladderOrder[i]}`, ratioOnMaskedMedian: onMasked === null ? null : +onMasked.toFixed(3), ratioOnEngravedMin_SUPERSEDED: onMinSuperseded === null ? null : +onMinSuperseded.toFixed(3) });
 }
 
 const out = {
@@ -79,7 +92,8 @@ const out = {
   provenance, instrument: PROVENANCE, guard,
   viewport: `${VW}x${VH}`, region: `${clip.width}x${clip.height}`, discPixels, unitsToPx: +k.toFixed(5),
   definitions: {
-    statistic: "A-G45: per angle the radial PEAK across the band, then the MINIMUM over 720 angles (the engraved minimum). A max would measure a body crossing the band — PINK's 0.58 shelf reading.",
+    statistic: "A-G65: per-angle MEDIAN over band pixels no SIGN and no SEAT covers, signs kept drawn; the ring's figure is the pooled median and the distribution is always published. min() and max() are BOTH superseded: max() caught a crossing body (PINK's 0.58), min() caught a crossing opaque seat (pure rgb(0,0,0) over ~1% of angles). The engraved minimum is retained in `supersededExtrema` for comparison only.",
+    signsDrawn: "defect nineteen's remedy: suppression does not isolate the medium, so every sign stays drawn and is excluded by mask instead.",
     limbA: "(ΣL_full − ΣL_ringsSuppressed) / (ΣL_full − ΣL_semanticsSuppressed) — the rings' light as a share of the semantic light (A-G5 limb a, bound ≤ 0.08)",
     limbB: "ring-to-ring ratio on the engraved minimum, ladder shelf → best → field → horizon (A-G5 limb b, bound ≥ 1.6 per step)",
     bodiesDrawn: "the bodies are DRAWN, not suppressed: the engraved minimum is what makes that safe, and suppressing them would change the ground the rings sit on",
@@ -91,6 +105,7 @@ const out = {
   limbB_ladder: steps,
   limbB_boundForReference: ">= 1.6 per step",
   perRing: measured,
+  signAndSeatMaskPixels: perClassPixels,
   shelfCompositedOverItsOwnBlackSeat: {
     note: "The shelf ring is NOT composited over the stage plate. A black seat circle of the SAME geometry (:882) is painted immediately before it, so the band is pure black beneath the ring and rgba(INK, alpha) composites over rgb(0,0,0), not over rgb(3,5,8). Measured radial profile at 1920: the band reads 1.45e-3 with the ring and ~0 without it (+1.5e-3 contribution at every sampled radius 435…495), and the ring contributes light at 718 of 720 angles. At alpha 0.02 that lands on 0.0014531 against the plate's 0.00145432 — luminance-identical to within 1.2e-6 BY COINCIDENCE, not because the ring is missing.",
     consequence: "the shelf band renders at the stage ground's luminance at EVERY angle, which is systematic rather than the single dark angle this lane first reported"

@@ -4,18 +4,20 @@
  "priorBaseline": "NONE — A-G41 voided §12's 0.42 / 0.025 (measured on a vanished working tree). FIRST MEASUREMENT.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "7dd47a4010e85c0c372f31b30c57a7b51da7ee80",
-  "headShort": "7dd47a40",
+  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
+  "headShort": "0698bf83",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": true,
+  "productTreeClean": false,
   "dirtyOutsideProduct": [
-   "ocs/career_analysis/evidence/mapping-phase-g/README.md"
+   "pp/components/career/demo/PersonJobMappingField.tsx"
   ],
-  "productDeltaFrom3ec8457d": "NONE",
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
   "untrackedProductFiles": [],
-  "buildId": "ymq-3TimwOQHr0BIsToOx",
-  "measuredAt": "2026-11-10T17:09:27.657Z"
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:27:46.464Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -49,6 +51,7 @@
   "domain": "the field disc (inside mapping-ring-field), the medium's own boundary",
   "emittingClasses": [
    "glowsAll",
+   "bodyCore",
    "bodyOutlines",
    "bodyNames",
    "arcs",
@@ -57,8 +60,7 @@
    "sectorText"
   ],
   "occludingClasses": [
-   "bodySeat",
-   "bodyCore"
+   "bodySeat"
   ],
   "relationClasses": [
    "beams"
@@ -94,117 +96,110 @@
   "perClassCaveat": "classes are suppressed one at a time; shares do not sum to the joint removal where classes overlap"
  },
  "discMeanLuminance": {
-  "full": 0.015051,
-  "groundOnly_semAndRingsSuppressed": 0.0049721
+  "full": 0.015127,
+  "groundOnly_semAndRingsSuppressed": 0.0047488
  },
  "stageGroundConstant": {
   "rgb": "rgb(3, 5, 8)",
   "wcagRelativeLuminance": 0.0014543,
   "note": "A-G27's recomputation — the occluding plate's own light, which is why PG-2 was restated"
  },
- "PG1_semanticShare_exclRings": 0.60352,
- "PG1_share_inclRings": 0.66964,
+ "PG1_semanticShare_exclRings": 0.61571,
+ "PG1_share_inclRings": 0.68607,
  "PG1_boundForReference": ">= 0.55",
- "ringsShareOfField": 0.06718,
- "PG6_relationShareOfSemanticLight": 0.02236,
+ "ringsShareOfField": 0.0719,
+ "PG6_relationShareOfSemanticLight": 0.02181,
  "PG6_boundForReference": ">= 0.15",
  "perClassShareOfField": {
   "glowsAll": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.11825,
-   "removedSum": 275.44
+   "removedShareOfField": 0.11824,
+   "removedSum": 276.82
+  },
+  "bodyCore": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.02788,
+   "removedSum": 65.277
   },
   "bodyOutlines": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.08768,
-   "removedSum": 204.24
+   "removedShareOfField": 0.08779,
+   "removedSum": 205.52
   },
   "bodyNames": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.19085,
-   "removedSum": 444.55
+   "removedShareOfField": 0.1897,
+   "removedSum": 444.11
   },
   "arcs": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.0998,
-   "removedSum": 232.46
+   "removedShareOfField": 0.09934,
+   "removedSum": 232.57
   },
   "beams": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.0135,
+   "removedShareOfField": 0.01343,
    "removedSum": 31.438
   },
   "nodes": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.07087,
+   "removedShareOfField": 0.07051,
    "removedSum": 165.07
   },
   "sectorText": {
    "declared": "EMITTING",
    "measured": "EMITTING",
-   "removedShareOfField": 0.00364,
-   "removedSum": 8.4732
+   "removedShareOfField": 0.00362,
+   "removedSum": 8.472
   },
   "bodySeat": {
    "declared": "OCCLUDING",
    "measured": "OCCLUDING",
-   "removedShareOfField": -0.42558,
-   "removedSum": -991.32
-  },
-  "bodyCore": {
-   "declared": "OCCLUDING",
-   "measured": "EMITTING",
-   "removedShareOfField": 0.02802,
-   "removedSum": 65.263
+   "removedShareOfField": -0.42459,
+   "removedSum": -994.03
   },
   "ringShelf": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
-   "removedShareOfField": 0.02388,
-   "removedSum": 55.615
+   "removedShareOfField": 0.02882,
+   "removedSum": 67.469
   },
   "ringBest": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
-   "removedShareOfField": 0.00295,
-   "removedSum": 6.8659
+   "removedShareOfField": 0.00293,
+   "removedSum": 6.865
   },
   "ringField": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
-   "removedShareOfField": 0.00862,
+   "removedShareOfField": 0.00858,
    "removedSum": 20.086
   },
   "ringHorizon": {
    "declared": "SCAFFOLD",
    "measured": "EMITTING",
-   "removedShareOfField": 0.0316,
+   "removedShareOfField": 0.03144,
    "removedSum": 73.611
   }
  },
  "occluderSignCheck": {
-  "mismatches": [
-   {
-    "cls": "bodyCore",
-    "declared": "OCCLUDING",
-    "measured": "EMITTING",
-    "share": 0.02802
-   }
-  ],
+  "mismatches": [],
   "note": "empty = every class behaved as declared (A-G55)"
  },
  "sums": {
-  "full": 2329.3,
-  "semanticsSuppressed": 923.54,
-  "semanticsAndRingsSuppressed": 769.51,
+  "full": 2341.2,
+  "semanticsSuppressed": 899.69,
+  "semanticsAndRingsSuppressed": 734.95,
   "ringsSuppressed": 2172.8,
-  "beamsSuppressed": 2297.9
+  "beamsSuppressed": 2309.7
  },
  "pinkComparison": {
   "source": "pink-pg1.mjs at 93c47e03",

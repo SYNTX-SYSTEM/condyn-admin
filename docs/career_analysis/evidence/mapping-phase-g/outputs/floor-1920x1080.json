@@ -3,16 +3,20 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "7dd47a4010e85c0c372f31b30c57a7b51da7ee80",
-  "headShort": "7dd47a40",
+  "head": "0698bf839dc06960143cc7dbdcccb0555d54e4e5",
+  "headShort": "0698bf83",
   "branch": "frontend/mapping-phase-g",
   "treeClean": false,
-  "productTreeClean": true,
-  "dirtyOutsideProduct": [],
-  "productDeltaFrom3ec8457d": "NONE",
+  "productTreeClean": false,
+  "dirtyOutsideProduct": [
+   "pp/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
   "untrackedProductFiles": [],
-  "buildId": "ymq-3TimwOQHr0BIsToOx",
-  "measuredAt": "2026-11-10T17:06:57.152Z"
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:25:16.256Z"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
@@ -43,8 +47,8 @@
  "deviceScaleFactor": 1,
  "region": "924x924",
  "discPixels": 545417,
- "frames": 45,
- "spanS": 12.4,
+ "frames": 94,
+ "spanS": 12.3,
  "definitions": {
   "swing": "per-pixel (max − min) over the frame stack, reducedMotion:reduce so the FIELD contributes no motion",
   "buckets": "markAaEdge = mark boxes dilated 2px; quietMidDisc = disc r/R 0.30–0.60 outside marks; glowBand = the rest of the disc; outsideDisc = host",
@@ -52,15 +56,15 @@
  },
  "wholeRegion": {
   "n": 853776,
-  "mean": 0.0000089923,
+  "mean": 0.0000088627,
   "p50": 0,
   "p90": 0,
   "p99": 0,
-  "p999": 0.0021428,
+  "p999": 0.0020783,
   "p9999": 0.0059385,
-  "max": 0.011789,
+  "max": 0.011434,
   "min": 0,
-  "fracGe0004": 0.00074
+  "fracGe0004": 0.00072
  },
  "discInterior": {
   "n": 545417,
@@ -77,15 +81,15 @@
  "byBucket": {
   "markAaEdge": {
    "n": 62049,
-   "mean": 0.00001286,
+   "mean": 0.000011743,
    "p50": 0,
    "p90": 0,
    "p99": 0,
-   "p999": 0.0034645,
-   "p9999": 0.0053727,
-   "max": 0.0061287,
+   "p999": 0.0034153,
+   "p9999": 0.0053302,
+   "max": 0.0058395,
    "min": 0,
-   "fracGe0004": 0.00074
+   "fracGe0004": 0.00061
   },
   "quietMidDisc": {
    "n": 134342,
@@ -113,18 +117,18 @@
   },
   "outsideDisc": {
    "n": 304471,
-   "mean": 0.000022595,
+   "mean": 0.000022459,
    "p50": 0,
    "p90": 0,
-   "p99": 0.00049712,
+   "p99": 0.00049991,
    "p999": 0.0059385,
    "p9999": 0.0059385,
-   "max": 0.011789,
+   "max": 0.011434,
    "min": 0,
-   "fracGe0004": 0.00191
+   "fracGe0004": 0.00189
   }
  },
- "meanAbsStep": 3.1525e-7,
+ "meanAbsStep": 1.5082e-7,
  "pinkComparison": {
   "source": "mapping-phase-f-contract/outputs/9cc06f84-baseline/noise-floor.json (9cc06f84)",
   "pink_swing_max": 0.031872,

@@ -84,12 +84,28 @@ export const MOTION = Object.freeze({
  * field ring is at opacityMean − opacityAmplitude of its value.
  */
 // Phase G (§3 "the four rings re-derived", PF-15 inverted): the shelf band is an area, so its alpha is most of the rings' light;
-// 0.05 → 0.02 keeps it a step below best-fit (≥ 1.6×, the ladder) while the scaffold stops out-lighting the content.
-export const RING_LUMINANCE = Object.freeze({ shelf: 0.02, best: 0.085, field: 0.15, horizon: 0.25 });
+// 0.05 → 0.02 kept it a step below best-fit (≥ 1.6×, the ladder) while the scaffold stopped out-lighting the content.
+//
+// §23 A-G62: 0.02 → 0.022, because A-G5 over-corrected. The shelf ring is stroked over its OWN opaque black seat (the circle of the
+// same r and strokeWidth two lines below), never over the stage plate, so rgba(INK, 0.02) composites over rgb(0, 0, 0) and lands at
+// a MEASURED 0.0014531 against the plate's 0.00145432 — 1.2e-6 apart, 0.055 of one 8-bit code, by compositing coincidence. On the
+// luminance plane PF-15 is measured on, the shelf band was therefore indistinguishable from the ground at EVERY angle, and a ring
+// that exists to be a scale cannot vanish. Quantisation makes the step discrete: 0.0205 / 0.021 / 0.0215 all still render the same
+// triple and clear nothing. MEASURED at 0.022 (live override, 1920, band as drawn 430…500): 0.0017566, +3.02e-4 over the plate
+// ≈ 13.8 code steps, 1.208 × the ground. The shelf stays the dimmest rung — best/shelf = 0.085/0.022 = 3.86 ≥ 1.6, the ladder.
+export const RING_LUMINANCE = Object.freeze({ shelf: 0.022, best: 0.085, field: 0.15, horizon: 0.25 });
 /**
  * PF-15 / M-F7: the rings' rendered luminance is width × dash × alpha, not alpha. On their black seats each ring is drawn solid and
- * wide enough that its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance (0.0036 · 0.0069 ·
- * 0.0169 · 0.0431 at 0.05 · 0.085 · 0.15 · 0.25 ink). Screen px; the shelf is a band and keeps its width.
+ * wide enough that its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance. Screen px; the
+ * shelf is a band and keeps its width.
+ *
+ * A-G39(a): the pre-inversion ladder this comment used to quote (0.0036 · 0.0069 · 0.0169 · 0.0431 at 0.05 · 0.085 · 0.15 · 0.25)
+ * was stale from the moment the shelf moved to 0.02, and is replaced by MEASURED values rather than by arithmetic — GRÜN's
+ * development instrument, 1920 × 1080, the engraved minimum of each band as drawn (docs/career_analysis/evidence/mapping-phase-g):
+ * shelf 0.0017566 at 0.022 · best 0.0067363 at 0.085 · field 0.011843 at 0.15 · horizon 0.019131 at 0.25, against the stage plate
+ * rgb(3, 5, 8) at 0.00145432. A DEVELOPMENT reading (PHASE_G §17 A-G36 point 2), not a verdict: PINK's contract instrument owns
+ * that. The minimum itself is superseded as PF-15's statistic by A-G65 (mask-based, seats excluded) — these four are the band
+ * values, not the obligation's figure.
  */
 export const RING_WIDTH_PX = Object.freeze({ best: 2.4, field: 2.0, horizon: 2.0 });
 /**

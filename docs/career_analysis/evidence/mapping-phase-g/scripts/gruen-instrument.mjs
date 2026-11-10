@@ -215,10 +215,21 @@ export const CLASS_SELECTOR = Object.freeze({
   beams: '[data-testid^="mapping-beam-"]',
   nodes: "[data-mapping-node]",
   sectorText: "[data-mapping-sector]",
-  /** THE occluder — it REMOVES light. Suppressing it raises the field's luminance, so a share computed as
-   *  (full − suppressed)/full books it negative (A-G55): the firewall's opaque BLACK seat under every sign
-   *  (F-6 / A-F5), measured at −0.515 of the field's light at 1920. A className today; A-G49 applies. */
-  bodySeat: ".mf-seat",
+  /**
+   * THE occluder — it REMOVES light. Suppressing it raises the field's luminance, so a share computed as
+   * (full − suppressed)/full books it negative (A-G55): the firewall's opaque BLACK seat under every sign
+   * (F-6 / A-F5), measured at −0.515 of the field's light at 1920 on `.mf-seat` alone.
+   *
+   * `.mf-seat` IS NOT THE WHOLE FIREWALL. Seven seat elements carry no class and no `data-*` at all — the four
+   * RING seats (`:898` shelf, `:926` best, `:928` horizon, `:930` field), the person's seat (`:944`), the
+   * capability-node seats (`:960`) and the L2 ring seat (`:1022`) — so a `.mf-seat` mask leaves every one of
+   * them counted nowhere, and the emitting/occluding bookkeeping A-G55 asks for was never closed.
+   *
+   * Stopgap until A-G49's hooks exist: match the seat's exact paint, `SEAT = "rgba(0, 0, 0, 1)"`, on stroke or
+   * fill. It is value-coupled and will break the day the constant is reformatted — which is the argument for
+   * the `data-*` hook, not a substitute for it.
+   */
+  bodySeat: '.mf-seat,[stroke="rgba(0, 0, 0, 1)"],[fill="rgba(0, 0, 0, 1)"]',
   /**
    * EMITTING, against this instrument's own first declaration. G-1's prose — "a dark core, a luminous rim" —
    * reads as light-removing, and it is not: `mf-core` is `rgb(205, 240, 255)` (INK, near-white) at
@@ -474,4 +485,71 @@ export async function servedProvenance(page, worktree) {
     untrackedProductFiles: (git(`ls-files --others --exclude-standard -- ${PRODUCT_PATHS}`) || "").split("\n").filter(Boolean),
     buildId, measuredAt: new Date().toISOString()
   };
+}
+
+/* ── A-G65: PF-15's statistic is neither min nor max — mask-based, over band pixels no mark covers ──── */
+/**
+ * PHASE_G §23 A-G65. The history matters, because the statistic has now failed twice in mirror image:
+ *   max() over a ring band was contaminated by a crossing BODY  — PINK's shelf once read 0.58;
+ *   min() over a ring band is contaminated by a crossing SEAT   — PINK measured pure rgb(0,0,0) at the
+ *                                                                 darkest angle, over ~1 % of all angles,
+ *                                                                 from the opaque SEAT of any mark crossing
+ *                                                                 the band (shelf bodies, sector edges, beams).
+ * §29's replacement inherited, inverted, the defect of the thing it replaced. An extremum over a band is a
+ * one-pixel statistic and both lanes have been misled by one.
+ *
+ * The remedy is defect nineteen's own: keep every sign DRAWN, exclude sign and seat pixels BY MASK, and take a
+ * robust central statistic over the band pixels no mark covers. Per-angle medians are reported as a
+ * DISTRIBUTION, never as an extremum alone (GRÜN's request, adopted as a rule in §23).
+ */
+export function ringBandMasked(L, geom, innerPx, outerPx, covered, { angles = 720 } = {}) {
+  const { cx, cy, W, H } = geom;
+  const perAngle = [], pooled = [];
+  let bandPx = 0, coveredPx = 0, emptyAngles = 0;
+  for (let a = 0; a < angles; a += 1) {
+    const th = (2 * Math.PI * a) / angles, ct = Math.cos(th), st = Math.sin(th);
+    const clear = [];
+    for (let r = innerPx; r <= outerPx; r += 0.25) {
+      const x = Math.round(cx + r * ct), y = Math.round(cy + r * st);
+      if (x < 0 || y < 0 || x >= W || y >= H) continue;
+      const i = y * W + x;
+      bandPx += 1;
+      if (covered[i]) { coveredPx += 1; continue; }
+      clear.push(L[i]);
+      pooled.push(L[i]);
+    }
+    if (clear.length === 0) { emptyAngles += 1; continue; }
+    clear.sort((p, q) => p - q);
+    perAngle.push(clear[Math.floor(clear.length / 2)]);
+  }
+  const ang = Float64Array.from(perAngle); ang.sort();
+  const all = Float64Array.from(pooled); all.sort();
+  return {
+    statistic: "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
+    anglesMeasured: ang.length, anglesFullyCovered: emptyAngles,
+    bandPixels: bandPx, coveredPixels: coveredPx, coveredFraction: +(coveredPx / Math.max(1, bandPx)).toFixed(4),
+    /** The ring's figure. */
+    pooledMedian: e4(all.length ? pct(all, 0.5) : NaN),
+    perAngleMedian: ang.length ? { min: e4(ang[0]), p05: e4(pct(ang, 0.05)), p25: e4(pct(ang, 0.25)), p50: e4(pct(ang, 0.5)), p75: e4(pct(ang, 0.75)), p95: e4(pct(ang, 0.95)), max: e4(ang[ang.length - 1]) } : null,
+    /** Spread of the per-angle medians, so a ring that is uneven cannot read as a clean figure. */
+    perAngleSpread: ang.length ? +((pct(ang, 0.95) - pct(ang, 0.05)) / Math.max(1e-12, pct(ang, 0.5))).toFixed(3) : null
+  };
+}
+
+/** The union mask of every sign AND every seat — what A-G65 excludes. Seats are found by |Δ|, since suppressing
+ *  an opaque black seat RAISES the luminance beneath it (it is the field's one occluder, at −0.515). */
+export async function signAndSeatMask(page, cdp, clip, N, { threshold = 0.001 } = {}) {
+  const base = await captureLuminance(cdp, clip, N);
+  const covered = new Uint8Array(N);
+  const classes = [...EMITTING_CLASSES, ...OCCLUDING_CLASSES];
+  const per = {};
+  for (const cls of classes) {
+    await hide(page, CLASS_SELECTOR[cls]);
+    const hidden = await captureLuminance(cdp, clip, N);
+    let n = 0;
+    for (let i = 0; i < N; i += 1) if (Math.abs(base[i] - hidden[i]) > threshold) { covered[i] = 1; n += 1; }
+    per[cls] = n;
+    await unhideAll(page);
+  }
+  return { covered, perClassPixels: per, note: "sign AND seat pixels, by |Δ| so the opaque black seat is caught too" };
 }
