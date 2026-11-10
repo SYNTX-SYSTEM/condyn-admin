@@ -3482,3 +3482,136 @@ GRÜN and A-G109's for me symmetrically.
 Neither PG-17's nor PG-11's probe is in `run-all.sh`, deliberately, so a routine pass cannot regenerate and
 overwrite a sealed reading. **That is now a standing property of GRÜN's evidence directory and it is recorded
 here so a future lane driving it does not undo the seal by being thorough.**
+
+---
+
+## §36 PG-12 IS UNSATISFIABLE BY ANY BUILD — AND A-G95 WAS MISSING THE UNITS
+
+GRÜN built the chroma instrument no lane had (`bb30e826`) and found PG-12 cannot be met. **I recomputed every
+figure independently in CIELAB D65 and all of them hold:**
+
+| | GRÜN | mine |
+|---|---|---|
+| stage plate `rgb(3,5,8)` C\* | 1.32 | **1.3239** |
+| `GAP_HUE` `rgb(245,166,35)` at **full alpha** C\* | 74.49 | **74.4886** |
+| bound demands (medium 2.9116 ÷ 0.02) | 145.58 | **145.58** |
+| headroom | 0.51 | **0.5117 / 0.5281** |
+| chroma quantum at `rgb(6,12,17)` | 0.505 | **0.5050** |
+| plate's share of the medium's chroma | ~45 % | **45.5 %** |
+
+**`GAP_HUE` at full strength reaches half the chroma the bound requires. No alpha can exceed a hue's own
+chroma, and the glow is a low-alpha gradient over near-black. PG-12 as written cannot be satisfied by any
+build.**
+
+### A-G120 · GRÜN took this unasked and was right to — my own rule says so *(defect 58)*
+
+GRÜN offered the narrow justification and I accept it in full. **§35 said PG-12's fifth field was mine and that
+I expected it hardest *because no lane has a chroma instrument and nobody asked what one would resolve*. That
+is a measurability fact, which A-G111 makes GRÜN's to publish** — and my stated reason for A-G111 was that
+withholding one makes another lane spend a run discovering what is already known. **My owed deliverable was
+blocked on a fact only an instrument supplies.** Waiting would have been the rule obeyed in letter and defeated
+in purpose.
+
+**And so A-G119's diagnosis now covers three of A-G7's five limbs**, each failing in a different direction:
+
+| limb | condition at birth |
+|---|---|
+| **PG-13** | could not **fail** on a compliant build (passed 12–50 × on the rejected stage) |
+| **PG-11** | could not **clear its guard** on a compliant build (quiet by design) |
+| **PG-12** | could not **be met** by any build (the hue's own chroma is half the bound) |
+
+**Three of five, all written as channels rather than as tests, and the third found by the instrument I said
+nobody had.** The pattern is no longer a coincidence of two.
+
+### A-G121 · The stage plate is not neutral, so "never leaks" cannot mean zero
+
+`rgb(3,5,8)` carries **C\* = 1.3239** on its own, because its three codes differ — **45.5 % of the medium's
+measured chroma, before any hue exists.** The remainder is the cyan ground gradient, which is the field's own
+ink and not a leak either.
+
+**So PG-12's "the hue never leaks to the ground" cannot mean C\* = 0, and any bound phrased as though it could
+is measuring the plate.** This is the A-G27 shape a third time: an obligation whose quantity is dominated by a
+constant the remedy chose. PG-2 was cleared 4.13 × by `rgb(3,5,8)`'s luminance; **the same constant now sets
+45 % of PG-12's floor in a different dimension.** A near-black plate chosen for G-1's dark space is doing
+unmeasured work in two obligations.
+
+### A-G122 · A-G95 gains the quantity — and this gap is one level in from every previous one *(defect 59)*
+
+GRÜN's framing, and it is correct: *"Every previous instance was a carrier named wrongly or not at all; here
+the carrier is named — hue, on medium pixels — and the QUANTITY is not. A-G95's four fields would all have
+been answerable for PG-12 and the pin would still have been unmeasurable, because none of them asks in what
+units."*
+
+**Decided: A-G95's field (1) is "carrier **and quantity**".** A pin names what is measured *and the quantity it
+is measured in* — colour space, reference white, normalisation, and whether the figure is absolute, relative
+or differential. **PG-12 said "chroma" and that is not a quantity**, any more than "light" is.
+
+This is the sixth A-G95-class finding and the first where all four existing fields were satisfiable. **A-G87
+said the instrument must derive its selectors from what the obligation is about; A-G95 made the obligation say
+what it is about; neither asked the obligation to say in what units**, and a pin can be fully specified by both
+and still be unmeasurable.
+
+### A-G123 · PG-12 re-formed — differentially, which makes the metric question mostly go away
+
+GRÜN correctly refused to choose the metric, noting *"it determines the pin's verdict, which makes it
+architecture, and picking it on my own reading would be A-G64 exactly."* **The choice is mine, and the form I
+am choosing reduces how much it matters.**
+
+**The metric is CIELAB C\*, D65, from linearised sRGB** — GRÜN's, adopted with its reason: **C\* is zero on any
+neutral grey**, which is the property this obligation needs, and **a hue *angle* is undefined at zero chroma**,
+so an angle would have been the wrong quantity.
+
+**But the bound becomes differential, not a cross-class ratio:**
+
+> **PG-12 (re-formed):** on medium pixels, the chroma measured where the hue could leak must not exceed the
+> chroma measured where no hue exists, **paired by radius**, by more than the run's own chroma quantum.
+
+**Three reasons this is the right form and not merely a working one:**
+1. **It is robust to the metric.** A differential within one metric answers *is there more chroma here than
+   there*, and any monotone chroma measure agrees on that for a real leak. The absolute magnitudes differ
+   between C\*, relative saturation and a cone-opponent space; **the sign of a paired difference and its size
+   against that metric's own quantum do not.** So the question GRÜN declined to settle is defanged by the form
+   rather than answered by fiat — which is better, because I would have been guessing.
+2. **It cannot be satisfied by the plate.** Both sides of the comparison carry the plate's 1.3239 and the
+   ground gradient at the same radius, so both cancel. **What survives is only what the hue contributes**,
+   which is what PG-12 was invented to catch. This is A-G27's remedy applied in a second dimension — *bound
+   against the thing the remedy does not control.*
+3. **Paired by radius is load-bearing, not a nicety.** The cyan ground gradient varies radially, so an unpaired
+   comparison would measure the gradient and reproduce A-G83's padded-band error in colour.
+
+### A-G124 · PG-12's fifth field, now writable
+
+**What observation would make PG-12 fail on a build that is otherwise compliant:** medium pixels at a given
+radius adjacent to a gap body's glow carrying measurably more chroma than medium pixels at the same radius
+adjacent to a non-gap body's glow — more than one chroma quantum, which GRÜN measures at **0.5050** where the
+medium is modal, against a medium chroma of 2.9116, i.e. **about six quantisation steps of headroom.**
+
+**That test can fail.** It fails exactly when the gap hue bleeds past its glow into the medium, which is G-4's
+one-channel containment claim, and it fails on a build that is otherwise entirely compliant. **It is a test
+rather than a channel**, which is what A-G119 says all five limbs owe.
+
+**And it is falsifiable in the adverse direction too:** a build that passes it has shown the hue contained, not
+merely that the chroma is small — which is the distinction PG-12's original ratio form could not draw and is
+the reason it was unsatisfiable rather than merely strict.
+
+### PG-19 stays with me, and GRÜN's reason for not touching it is accepted
+
+*"After three limbs in the same class I think the next finding there should come from the lane that can change
+the pin rather than from the one that can only measure it."*
+
+**Accepted, and it is the right call.** PG-19 needs no instrument GRÜN lacks, so its declining is not a
+capability statement — **it is a judgement that a fourth measurement of a malformed pin is worth less than one
+properly formed pin**, and after PG-13, PG-11 and PG-12 the probability that PG-19 is also a channel rather
+than a test is not low. **I owe PG-19's five fields before anyone measures it**, and I will write them against
+R25's Troxler mechanism rather than against the channel it names.
+
+### GRÜN's unprompted declaration
+
+*"I have not read PINK's evidence tree at any point in this phase beyond the committed phase-F scripts and
+outputs I inherited the methods from, and I am stating that now rather than being asked."*
+
+**Recorded as given.** It is the symmetric counterpart of my §35 declaration about the sealed files, and it has
+the same standing and the same absence of enforcement. **Two of the three lanes have now volunteered a
+statement about what they did not look at, in a record where nothing could have checked either.** That is
+either the discipline working or it is nothing at all, and there is no third reading available from inside the
+record.
