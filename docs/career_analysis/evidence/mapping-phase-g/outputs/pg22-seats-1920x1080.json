@@ -1,0 +1,478 @@
+{
+ "reading": "GRÜN development reading · A-G99's discriminator — does PG-22's post-shelf residual track the remaining ring seats?",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "276ef95deb09fb4bb8a4b3f4087e135590a7a461",
+  "headShort": "276ef95d",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T18:29:56.841Z",
+  "instrumentCommit": "276ef95d"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "zeroByConstructionChannel": {
+  "name": "repeat-capture difference over DISC pixels on a static field (reducedMotion:reduce)",
+  "domain": "disc only — the host animates outside it, so a whole-region form is not zero and would false-alarm",
+  "pixels": 545417,
+  "mustBe": 0,
+  "measured": 0,
+  "valid": true
+ },
+ "viewport": "1920x1080",
+ "unitsToPx": 0.83332,
+ "definitions": {
+  "conditions": "every condition sits on top of option (3)'s C — the shelf ring AND its seat suppressed — and adds one or all of the remaining ring seats. Each condition is threaded through every mask build via unhideAll(page, keep) (A-G100).",
+  "conditionsStatedPerFigure": "A-G100: each figure below names the condition it was taken under, not the condition the run was configured with",
+  "seatTagging": "no ring seat has a class or data-* (A-G49's seven), so each is tagged by geometry: the circle whose stroke is SEAT and whose r equals that ring's own r",
+  "prediction": "a ring of radius R crosses a body's annulus iff |d − R| ≤ 2.6 r, with d the body's eccentricity — reported beside the measured drop so 'the residual tracks the seats' is a comparison, not an impression",
+  "boundForReference": "PG-22 ≤ 0.20 per body (A-G93: flat, no 1/r law)",
+  "notReinstating": "A-G93 withdrew A-G44's 1/r form on measurement. This probe does not reinstate it; it tests whether the residual has a seat-shaped cause, which is what would bring the form back to the table WITH a measurement behind it."
+ },
+ "seatGeometryFromRenderer": {
+  "shelf": {
+   "ringRadiusUnits": 465,
+   "ringStrokeUnits": 70,
+   "seatStrokeUnits": 70
+  },
+  "best": {
+   "ringRadiusUnits": 160,
+   "ringStrokeUnits": 2.88,
+   "seatStrokeUnits": 4.8
+  },
+  "horizon": {
+   "ringRadiusUnits": 400,
+   "ringStrokeUnits": 2.4,
+   "seatStrokeUnits": 4.32
+  },
+  "field": {
+   "ringRadiusUnits": 500,
+   "ringStrokeUnits": 2.4,
+   "seatStrokeUnits": 4.32
+  }
+ },
+ "geometricPrediction": [
+  {
+   "rank": 1,
+   "shelf": false,
+   "drawnRadiusPx": 34.62,
+   "eccentricityPx": 234.5,
+   "annulusRadialSpanPx": 51.93,
+   "crossings": {
+    "shelf": {
+     "crossesAnnulus": false,
+     "gapPx": 152.99,
+     "seatWidthPx": 58.33,
+     "seatShareOfAnnulusRadially": 1.1233
+    },
+    "best": {
+     "crossesAnnulus": false,
+     "gapPx": 101.17,
+     "seatWidthPx": 4,
+     "seatShareOfAnnulusRadially": 0.077
+    },
+    "horizon": {
+     "crossesAnnulus": false,
+     "gapPx": 98.83,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0693
+    },
+    "field": {
+     "crossesAnnulus": false,
+     "gapPx": 182.16,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0693
+    }
+   }
+  },
+  {
+   "rank": 2,
+   "shelf": false,
+   "drawnRadiusPx": 43.88,
+   "eccentricityPx": 251.94,
+   "annulusRadialSpanPx": 65.83,
+   "crossings": {
+    "shelf": {
+     "crossesAnnulus": true,
+     "gapPx": 135.56,
+     "seatWidthPx": 58.33,
+     "seatShareOfAnnulusRadially": 0.8862
+    },
+    "best": {
+     "crossesAnnulus": false,
+     "gapPx": 118.61,
+     "seatWidthPx": 4,
+     "seatShareOfAnnulusRadially": 0.0608
+    },
+    "horizon": {
+     "crossesAnnulus": true,
+     "gapPx": 81.39,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0547
+    },
+    "field": {
+     "crossesAnnulus": false,
+     "gapPx": 164.72,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0547
+    }
+   }
+  },
+  {
+   "rank": 3,
+   "shelf": true,
+   "drawnRadiusPx": 33.98,
+   "eccentricityPx": 359.06,
+   "annulusRadialSpanPx": 50.97,
+   "crossings": {
+    "shelf": {
+     "crossesAnnulus": true,
+     "gapPx": 28.44,
+     "seatWidthPx": 58.33,
+     "seatShareOfAnnulusRadially": 1.1445
+    },
+    "best": {
+     "crossesAnnulus": false,
+     "gapPx": 225.72,
+     "seatWidthPx": 4,
+     "seatShareOfAnnulusRadially": 0.0785
+    },
+    "horizon": {
+     "crossesAnnulus": true,
+     "gapPx": 25.73,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0706
+    },
+    "field": {
+     "crossesAnnulus": true,
+     "gapPx": 57.6,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0706
+    }
+   }
+  },
+  {
+   "rank": 4,
+   "shelf": true,
+   "drawnRadiusPx": 31.76,
+   "eccentricityPx": 358,
+   "annulusRadialSpanPx": 47.64,
+   "crossings": {
+    "shelf": {
+     "crossesAnnulus": true,
+     "gapPx": 29.49,
+     "seatWidthPx": 58.33,
+     "seatShareOfAnnulusRadially": 1.2244
+    },
+    "best": {
+     "crossesAnnulus": false,
+     "gapPx": 224.67,
+     "seatWidthPx": 4,
+     "seatShareOfAnnulusRadially": 0.084
+    },
+    "horizon": {
+     "crossesAnnulus": true,
+     "gapPx": 24.68,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0756
+    },
+    "field": {
+     "crossesAnnulus": true,
+     "gapPx": 58.65,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0756
+    }
+   }
+  },
+  {
+   "rank": 5,
+   "shelf": true,
+   "drawnRadiusPx": 28.5,
+   "eccentricityPx": 400.91,
+   "annulusRadialSpanPx": 42.75,
+   "crossings": {
+    "shelf": {
+     "crossesAnnulus": true,
+     "gapPx": 13.42,
+     "seatWidthPx": 58.33,
+     "seatShareOfAnnulusRadially": 1.3645
+    },
+    "best": {
+     "crossesAnnulus": false,
+     "gapPx": 267.58,
+     "seatWidthPx": 4,
+     "seatShareOfAnnulusRadially": 0.0936
+    },
+    "horizon": {
+     "crossesAnnulus": true,
+     "gapPx": 67.59,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0842
+    },
+    "field": {
+     "crossesAnnulus": true,
+     "gapPx": 15.74,
+     "seatWidthPx": 3.6,
+     "seatShareOfAnnulusRadially": 0.0842
+    }
+   }
+  }
+ ],
+ "perBodyDrops": [
+  {
+   "rank": 1,
+   "shelf": false,
+   "C_base": 0.03181,
+   "dropFrom_best": 0,
+   "dropFrom_horizon": 0,
+   "dropFrom_field": 0,
+   "dropFrom_allThree": 0,
+   "afterAllThree": 0.03181,
+   "predictedCrossings": []
+  },
+  {
+   "rank": 2,
+   "shelf": false,
+   "C_base": 0.05088,
+   "dropFrom_best": 0,
+   "dropFrom_horizon": 0.02324,
+   "dropFrom_field": -0.00086,
+   "dropFrom_allThree": 0.02237,
+   "afterAllThree": 0.02851,
+   "predictedCrossings": [
+    "shelf",
+    "horizon"
+   ]
+  },
+  {
+   "rank": 3,
+   "shelf": true,
+   "C_base": 0.07487,
+   "dropFrom_best": -0.02588,
+   "dropFrom_horizon": 0.02236,
+   "dropFrom_field": 0.0152,
+   "dropFrom_allThree": 0.03761,
+   "afterAllThree": 0.03726,
+   "predictedCrossings": [
+    "shelf",
+    "horizon",
+    "field"
+   ]
+  },
+  {
+   "rank": 4,
+   "shelf": true,
+   "C_base": 0.09889,
+   "dropFrom_best": -0.02455,
+   "dropFrom_horizon": 0.01933,
+   "dropFrom_field": 0.0137,
+   "dropFrom_allThree": 0.00728,
+   "afterAllThree": 0.09161,
+   "predictedCrossings": [
+    "shelf",
+    "horizon",
+    "field"
+   ]
+  },
+  {
+   "rank": 5,
+   "shelf": true,
+   "C_base": 0.06358,
+   "dropFrom_best": -0.04767,
+   "dropFrom_horizon": -0.00518,
+   "dropFrom_field": 0.02272,
+   "dropFrom_allThree": 0.03975,
+   "afterAllThree": 0.02383,
+   "predictedCrossings": [
+    "shelf",
+    "horizon",
+    "field"
+   ]
+  }
+ ],
+ "conditions": {
+  "C_base": {
+   "conditionSelector": "[data-testid=\"mapping-ring-shelf\"],[data-gruen-seat=\"shelf\"]",
+   "perBody": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "occupancy": 0.03181
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "occupancy": 0.05088
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "occupancy": 0.07487
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "occupancy": 0.09889
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "occupancy": 0.06358
+    }
+   ]
+  },
+  "C_minus_best": {
+   "conditionSelector": "[data-testid=\"mapping-ring-shelf\"],[data-gruen-seat=\"shelf\"],[data-gruen-seat=\"best\"]",
+   "perBody": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "occupancy": 0.03181
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "occupancy": 0.05088
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "occupancy": 0.10075
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "occupancy": 0.12344
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "occupancy": 0.11125
+    }
+   ]
+  },
+  "C_minus_horizon": {
+   "conditionSelector": "[data-testid=\"mapping-ring-shelf\"],[data-gruen-seat=\"shelf\"],[data-gruen-seat=\"horizon\"]",
+   "perBody": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "occupancy": 0.03181
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "occupancy": 0.02764
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "occupancy": 0.05251
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "occupancy": 0.07956
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "occupancy": 0.06876
+    }
+   ]
+  },
+  "C_minus_field": {
+   "conditionSelector": "[data-testid=\"mapping-ring-shelf\"],[data-gruen-seat=\"shelf\"],[data-gruen-seat=\"field\"]",
+   "perBody": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "occupancy": 0.03181
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "occupancy": 0.05174
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "occupancy": 0.05967
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "occupancy": 0.08519
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "occupancy": 0.04086
+    }
+   ]
+  },
+  "C_minus_allThree": {
+   "conditionSelector": "[data-testid=\"mapping-ring-shelf\"],[data-gruen-seat=\"shelf\"],[data-gruen-seat=\"best\"],[data-gruen-seat=\"horizon\"],[data-gruen-seat=\"field\"]",
+   "perBody": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "occupancy": 0.03181
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "occupancy": 0.02851
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "occupancy": 0.03726
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "occupancy": 0.09161
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "occupancy": 0.02383
+    }
+   ]
+  }
+ }
+}

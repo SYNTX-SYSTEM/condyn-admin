@@ -15,7 +15,7 @@ SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs}"
 for size in "${SIZES[@]}"; do
   export VW="${size%x*}" VH="${size#*x}"
-  for probe in gruen-floor gruen-light gruen-rings gruen-bodies gruen-glow gruen-pg1-live gruen-discriminator gruen-pg22 gruen-pg20; do
+  for probe in gruen-floor gruen-light gruen-rings gruen-bodies gruen-glow gruen-pg1-live gruen-discriminator gruen-pg22 gruen-pg20 gruen-option3 gruen-pg22-seats; do
     printf '\n=== %s @ %s ===\n' "$probe" "$size"
     node "$probe.mjs" || printf '!! %s FAILED at %s (exit %s)\n' "$probe" "$size" "$?"
   done
