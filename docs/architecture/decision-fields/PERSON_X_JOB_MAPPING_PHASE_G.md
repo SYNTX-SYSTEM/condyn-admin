@@ -1475,3 +1475,134 @@ than merely enjoyed.
 **The guard is not relaxed, and PINK said so before I could.** A profile with nothing contending licenses
 nothing; every temporal run still measures and reports its own achieved cadence and still fires the check per
 run. A profile is an expectation; the guard is the proof.
+
+---
+
+## §21 GRÜN'S INSTRUMENT IS COMMITTED — AND IT FINDS THAT A-G26 RESTS ON A GROUND THAT NO LONGER EXISTS
+
+GRÜN committed its development instrument at `92d82c62` (`docs/career_analysis/evidence/mapping-phase-g/`:
+a 436-line shared library, a façade and five probes), rebound `:3221` to loopback, and reports provenance in the
+form A-G47 point 3 requires: **product delta against `3ec8457d` is empty** — `HEAD` differs only by the
+instrument commit, which touches nothing outside the evidence directory. A-G36 point 2 is enforced in the
+artifacts rather than the prose: no probe can emit a pass, every bound is a `…_boundForReference` field, and
+every output carries `verdict: "NONE — development reading only"` plus its own `definitions` and
+`pinkComparison` blocks.
+
+Its instrument also caught a defect in its own provenance field on the first run — it compared `3ec8457d` to
+`HEAD`, which is trivially empty while `HEAD` *is* `3ec8457d` however dirty the tree. **A check whose verdict
+was fixed by its own construction: the A-G27/A-G28 class, found by the lane that built it, before it was used.**
+That is the discipline working.
+
+### A-G54 · A-G26's withdrawal is SUSPENDED, not reversed — a floor inherits the ground it was measured on *(defect 35)*
+
+GRÜN's finding, and it lands on me: **the in-disc static floor on this build is exactly 0.000** — every pixel
+inside the disc, under `reducedMotion:reduce`, over 86 frames at 1920 and 170 at 1280. The only non-zero floor
+sits on mark boxes extending *outside* the disc (0.0061 / 0.0081), which is host motion behind the stage. The
+pipeline is live — the same code reads carrier swing p50 0.00133 against medium 0.00030 on the breathing pass,
+resolving three orders down. **The cause is A-G17's own remedy:** `DISC_OCCLUSION` paints `rgb(3,5,8)` at
+alpha 1, so no translucent ground remains for the host's sub-pixel antialiasing to come through.
+
+**A-G26 withdrew PG-10's max-swing ceiling because PINK's floor of 0.031872 exceeded the 0.030 bound. That
+floor was measured at `9cc06f84`, on the translucent ground, which no longer exists.** My withdrawal is
+therefore a statistic read on a ground it was not written for — **the third instance of that error class in
+this phase**, after A-G41's void reds and A-G45's PF-15 statistic, and I named the class myself.
+
+**Decided: A-G26's withdrawal is suspended, and the limb is held — neither withdrawn nor reinstated.** I will
+not reinstate an obligation on a development reading; A-G36 point 2 forbids it and GRÜN explicitly did not ask
+me to. **PINK measures its own in-disc static floor on the phase-G build, and that decides it.** If PINK's
+phase-G floor sits well under 0.030 by its own asymmetric-admissibility rule, the max-swing limb returns as
+written; if not, A-G26's withdrawal becomes final and the distributional ceiling stands in its place.
+
+**And the general rule, stated so it stops recurring: a floor is a property of a build, not of a lane.** Every
+floor, null and jitter baseline inherits the ground it was measured on, and carries forward only to builds whose
+ground is unchanged. A-G17 changed the ground. **Every phase-F floor is therefore suspect on every phase-G tip
+until re-measured**, not only this one — PINK to state which of its committed baselines survive the change and
+which do not, as a prerequisite rather than as a finding.
+
+### A-G55 · PG-1 cannot score an occluding semantic by light-removal *(defect 36)*
+
+GRÜN's per-class attribution at 1920 gives `bodyContent` = **−0.084**: suppressing it *increases* the disc's
+light. That is not an artifact — it is G-1 working as designed. **The body core is deliberately dark** (dark
+core, luminous rim), so as an occluder it *subtracts* light, and a share computed as (full − suppressed) / full
+books it as negative contribution. At 1280 the same class reads **+0.119**, because the geometry changes which
+pixels the core covers.
+
+**A sign flip between stage sizes proves the measure is not merely awkward in that class — it is unstable.**
+
+**Decided: PG-1's ≥ 55 % is defined over the field's *emitting* classes**, and an occluding semantic is not
+scored by a light-removal difference. The dark core's contribution to presence is real and is **PG-13's and
+PG-17's business** — the core-to-rim ramp, the thing R21's critical band is actually about — not PG-1's. PG-1's
+per-group attribution must therefore declare each class as emitting or occluding and exclude the occluding ones
+from both numerator and denominator, with the exclusion recorded per run.
+
+I decline to specify the occluders' own treatment here. GRÜN was right not to invent one; neither will I, on a
+channel whose instrument does not yet exist. It is PG-17's monotone-falloff limb that has to carry it, and that
+limb has still never been measured by anyone.
+
+### A-G56 · A-G45 is vindicated — and the shelf ring is absent at its darkest angle *(defect 37)*
+
+On the engraved-minimum statistic I adopted in A-G45, GRÜN's development reading has the ladder **passing every
+step at both sizes**: 1920 → 4.636 / 1.758 / 1.615; 1280 → 2.689 / 3.031 / 1.775. PINK's closest-point method
+on the phase-F ground gave 1.636 / 0.630 / 0.861, the lower two decisively below 1.0. **The statistic was
+carrying the failure, exactly as A-G45 suspected.** A-G34's mutual-satisfiability question is therefore
+re-framed: limb (b) is no longer obviously the limb that gives way, and PINK asks it *after* its own
+engraved-minimum run, not before.
+
+Limb (a) reads 0.141 / 0.115 against ≤ 0.08 — over, but nowhere near §12's void 0.23, and the shelf is **not**
+the dominant term (`ringShelf` 0.037, `ringHorizon` 0.026 at 1920). **My §12 attribution to "the shelf band's
+sheer area" is withdrawn as another void-ground reading.**
+
+**But GRÜN found something sharper, and I have recomputed it.** The shelf's engraved minimum is **0.0014531 at
+both sizes**; `rgb(3,5,8)`'s own WCAG luminance is **0.00145432**. The difference is **1.22e-6 — 1.7 % of one
+8-bit code at that level**, by A-F31's own near-black resolution. **At its darkest angle the shelf ring is the
+bare stage ground.** It is not subordinate there; it is **not there**.
+
+**Decided, and this is mine because it is a semantic question, not an instrument one: A-G5's subordination may
+not become erasure.** A ring whose purpose is to be a *scale* — the horizon, best-fit and shelf radii are what
+make `fitDistance` legible (§1(a)) — cannot be absent at some angles and still be a scale. **PF-15 gains a
+floor limb: the shelf's engraved minimum must exceed the stage ground by at least the run's own static floor.**
+If `RING_LUMINANCE.shelf = 0.02` cannot clear that, then A-G5 over-corrected and the shelf's alpha comes back
+up until it can — which is a presence decision about the shelf itself, and it is **not** the ladder question
+limb (b) asks. GRÜN flagged it rather than concluding it, which was right.
+
+### A-G57 · The proof of A-G43 is blocked by a fail-closed mandate — owner item
+
+GRÜN made A-G43's change (the splay now keys on `arc.state === "DIFFERENT"`) and wrote the mutant I required as
+`test/career/mapping-field/field-g-mutant.test.tsx` — mocking the sign table with DIFFERENT's mark set to
+`"none"`, asserting no `counterTick` is drawn, and asserting the splay **remains**. It then **could not run it**:
+every vitest run in this repository is gated fail-closed by `test/support/database-isolation/global-setup.ts`
+(the 2026-10-10 isolation mandate), which refuses to start unless `DATABASE_URL` names a positively identified
+disposable test database, and this worktree has no `.env`.
+
+**GRÜN held the change out of the tree rather than committing it unproven, and refused to step around the
+gate.** Both are correct and I endorse both: these are pure render tests that open no database, but a
+fail-closed safety mandate is not a lane's to bypass, and A-G35 forbids an unproven product change entering the
+record. **The consequence is good for the phase** — PINK's stand is the pure `3ec8457d` product rather than one
+carrying an untested re-keying.
+
+**It is an owner item: the test-database admin URL.** Until it arrives, A-G43 is implemented-and-held, not
+implemented-and-unproven, and PG-20's state-keying stays open.
+
+### GRÜN's development readings, recorded as such
+
+No verdict, PINK's to confirm or refuse, at `BUILD_ID ymq-3TimwOQHr0BIsToOx`:
+
+| pin | 1920 | 1280 | reference |
+|---|---|---|---|
+| PG-1 excl. rings | 0.517 | 0.584 | ≥ 0.55 — **straddling** |
+| PG-6 | 0.163 | 0.194 | ≥ 0.15 |
+| PF-15 (a) | 0.141 | 0.115 | ≤ 0.08 |
+| PG-3 | 57.0 – 87.77 px | 30.37 – 46.76 px | 56 – 92 px at 1920 |
+| PG-10 limb 1 | 0.296 | 0.272 | ≥ 0.25 |
+| PG-10 limb 2 (Weber median) | 0.143 | 0.140 | [0.10, 0.35] |
+
+178 and 501 frames over 57.7 s and 57.8 s; adequacy guard and window rule satisfied. **PG-3's model path and
+rendered-shape path agree to the hundredth**, so there is no frame-widening divergence — and the 1280 range
+independently corroborates A-G23's "30…47 px" from a different direction, which is the first time two lanes
+have arrived at one of this phase's numbers separately.
+
+Two cautions attach to the table. **PG-1's 0.517/0.584 is computed with the `bodyContent` class still in it**,
+so A-G55 moves it before it means anything. And Weber here is defined per mean and says so; **PINK may define
+it otherwise, and that is a finding to report, not something to reconcile** (A-G36 point 4). The straddle at
+PG-1 is the phase's founding obligation sitting on the fence, and it will be decided by PINK on a corrected
+denominator, not by either lane's present reading.
