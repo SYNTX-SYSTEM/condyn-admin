@@ -1343,3 +1343,135 @@ this instance it would have cost the one reference artifact the phase still has.
 the single-disk exposure of 64 unpushed commits (A-G39(b)), the `:3017` restart against code twelve commits
 behind `main` (§18), and `condyn-admin-role-discovery`'s RD-5 re-set, which has been waiting on a commit so
 PINK can check the delta my own earlier authorisation required.
+
+---
+
+## §20 PINK'S PHASE-G CONTRACT IS OPEN — AND MY `mapping-glows` INSTRUCTION REACHED 2 OF 5 GLOWS
+
+PINK opened `mapping-phase-g-contract` on `3ec8457d` (`dfb71480`, `86aabeeb`) with scripts, outputs and manifest,
+on its own production stand. I verified the state: `condyn-admin-pink-visual-g` @ `3ec8457d`, detached, clean,
+`BUILD_ID xCD8LBxdjnP97-2Gjs5yr`; and **`condyn-admin-pink-visual-e` still @ `93c47e03`, clean, `BUILD_ID
+YUIyV6i0VG5cALibnbi58` unchanged.** The reference artifact is intact.
+
+### A-G53 · A-G47 is superseded — the owner's route is better than mine
+
+I resolved B1 by having GRÜN build and PINK verify provenance. **The owner authorised a new worktree instead,
+and that is the better answer.** A-G47 bought preservation at the cost of putting the build in the lane that
+does not hold the verdict; PINK now owns both its build and its provenance, and nothing was traded. `rev-parse
+HEAD` = `3ec8457d`, tree clean, lockfile md5 identical to `pink-visual-e`.
+
+**A-G47 is not withdrawn, it is demoted to a fallback.** GRÜN still builds and serves its own tip — two
+independent builds of one commit agreeing is evidence, and PINK says it will take it. What changes is that
+PINK is no longer *dependent* on it.
+
+Recorded because it is a reusable boundary mechanic: PINK reports `node_modules` must be **copied**, not linked.
+A symlink out of the project root is rejected outright (`TurbopackInternalError: Symlink [project]/node_modules
+is invalid, it points out of the filesystem root`) and a hardlink would let a build write back into
+`pink-visual-e`'s tree — **both cheap options threaten the state the owner told us to preserve.**
+
+### A-G48 · PG-10's carrier is `.mf-wave-halo` — the field glows, and only those *(the decision PINK asked for)*
+
+Verified in the source: `PersonJobMappingField.tsx:670` — `className={b.shelf ? undefined : "mf-wave
+mf-wave-halo"}`, and the group comment at `:922` states it outright: *"on the shelf they rest (A-F8)."* PINK
+measures `.mf-wave-halo` at **2 of 5** glows at L0 and L1, **0 of 1** at L2.
+
+A-G22 restated PG-10 *"on the visible glow"* and never said which. Taken literally, three of five glows **cannot
+swing by construction**, so the ≥ 25 % limb is diluted by area the design deliberately froze — a false-RED of
+precisely the class A-F25 and A-G26 have already closed twice.
+
+**Decided: PG-10's carrier is `.mf-wave-halo`.** The rule is the one that settled PG-17's domain in A-G31 and
+retired PF-5/7/10 in A-G20: **an obligation follows the thing it measures.** The breath lives on the field
+glows; the shelf's stillness is a *meaning* (A-F8), not an omission, and a bound that penalises a meaning is a
+broken bound.
+
+**But scoping PG-10 away from the shelf opens a hole, and it closes here in the same breath.** If PG-10 only
+looks at breathing glows, nothing checks that the resting ones actually rest. **PG-10 therefore carries a
+negative limb: the shelf glows' swing must lie within the run's own measured static floor.** That is the
+two-limb checklist applied to my own scoping — the statistic can fail, and the thing it must fail on (a shelf
+glow that breathes) is in the frame.
+
+**On L2: NOT RUN is correct, and the fixture is the defect, not the pin.** PINK is right that with a shelf body
+alone at L2 there is no breathing glow and A-F11 gives NOT RUN rather than a failure. I decline to weaken the
+pin for it. **The fixture must place a field body at L2** so the level is measurable; that is a fixture
+obligation on GRÜN, and until it is met PG-10 at L2 reads NOT RUN and the phase may not be closed on it.
+
+### A-G49 · The pattern is the finding — a semantic carrier may not live only in `className` *(defect 32)*
+
+My instruction to re-probe *"including `mapping-glows`"* was wrong, and PINK's correction is exact. Verified:
+`:667` splits `(b.shelf ? shelfHalos : fieldHalos)`; only `fieldHalos` goes inside `<g
+data-testid="mapping-glows">` (`:923`), while `shelfHalos` renders at `:884` inside an **anonymous `<g
+aria-hidden pointerEvents="none">` with no testid, no `data-*` and no class of its own.** A mask built as I
+specified misses **3 of 5 glows at L0 and L1 and all of them at L2** — silently, which is the signature we keep
+chasing. The only selector reaching every glow is the className `.mf-halo`.
+
+**PINK's wider claim is accepted as the real finding: this is A-F15 recurred.** In phase F the halo *layout*
+marker lived in `classList` (`mf-layout`) and was adjudicated once. The glow *carrier* has now done the same.
+**This drawing puts semantic carriers in `className` while every instrument looks in `data-*`.** PG-1, PG-13,
+PG-17 and PF-8's glow coverage all depend on it.
+
+**Decided, and it is a standing rule, not a one-off fix:** `className` is a **styling** channel. A carrier that
+an obligation measures must be addressable by a stable `data-*` hook, and `data-testid` on a container is not
+enough when the container holds a subset. GRÜN to give the glows an addressable identity that distinguishes
+shelf from field, and the breath carrier likewise. Until it exists, PINK addresses via `.mf-halo` /
+`.mf-wave-halo` and **records in each run that it is reaching semantics through a styling channel** — so the
+reading carries its own caveat rather than inheriting a silent one.
+
+**And PINK caught its own instrument before measuring, which is why this is a note and not a retraction.** Its
+committed `pink-pg1.mjs` SEM selector carries **no glow term at all** — correct at `93c47e03` where no glow
+existed, and on this tip it would have under-counted semantic light by the entire glow channel, the channel my
+own `:920` comment calls *"part of each body's light (PG-1)."* **PINK's 2.82 % stands as a reading of
+`93c47e03` and is not transferable to any phase-G tip.**
+
+### A-G50 · A-G4's justification is falsified — L1 is not the densest level *(defect 33)*
+
+I ordered L1 measured *"because A-G4 just made L1 the densest level."* PINK measured it. **L1 is denser than L0
+on no mask:** beams 19 vs 22, text 11 vs 15, arcs 19 = 19, glows 5 = 5, travel 0 vs 3.
+
+A-G4 raised L1's cap to 12 on *"the stage zooms to the sector there, so the same screen space holds more bodies
+at the same drawn size"* — a geometric intuition, flagged as unmeasured, now contradicted at this fixture.
+**Decided: the cap of 12 stands as a cap; its justification is withdrawn.** A cap is a ceiling and a ceiling
+need not be reached. What is retired is the claim that L1 *is* denser, and with it my instruction's reason.
+**L1 remains worth measuring — for A-G51, not for density.**
+
+### A-G51 · PG-18 has no satisfier at L1, and that is a build gap *(defect 34)*
+
+PINK: `mf-travel` and `mf-beam-glow` are **0 at L1**, under `reduce` **and** `no-preference`, so it is not a
+probe artifact. Beams exist at L1 (19 of them) — their travelling light does not.
+
+PG-11 therefore returns INCONCLUSIVE at L1 by A-G30's guard, and **PG-18 has no satisfier at L1 whatsoever**,
+having been written to require *"the travelling light departing on a coupling"* and to state explicitly that the
+breath alone does not satisfy it.
+
+**Decided: it is a build gap, not a property of L1.** G-3 makes the travelling light part of what a relation
+*is* — *"relations are paths with their own life."* A level that draws nineteen relations without their life
+contradicts G-3 on its own terms, and no adjudication in this phase ever decided to quiet L1. **GRÜN makes the
+travel present wherever a beam is drawn**, which gives PG-11 and PG-18 their carrier at L1 as a consequence
+rather than as a patch. If GRÜN has a reason L1 was quieted deliberately, it contests this with the reason and
+I will take it — but silence is not that reason.
+
+PINK's timing cross-check supports the reading from an independent direction: **L1 is the cheapest level**,
+which is exactly what a level with no travel and no beam-glows should cost. The DOM count and the stopwatch say
+the same thing without either consulting the other.
+
+### A-G52 · A-G17 made the instrument better conditioned — recorded because it runs the wrong way
+
+PINK re-measured the adequacy guard instead of inheriting phase F's cost:
+
+| | L0 | L1 | L2 | at `ef466ca8` |
+|---|---|---|---|---|
+| shot only | 474 ms | 281 ms | 338 ms | ~1250 / ~1400 ms |
+| `optimizeForSpeed` | 347 ms | 184 ms | 283 ms | 910 ms |
+| fast + inline decode | 228 ms | 185 ms | 210 ms | unaffordable |
+
+maxFreq 0.35 Hz clears 0.9 × Nyquist **in every configuration at every level**, including plain screenshots
+with the decode inline. Phase F's two forced workarounds are no longer required by the frequency axis, and a
+≥ 57 s PF-8 window now yields ~164 frames instead of ~46 on the same 13 parameters.
+
+PINK attributes it to **A-G17**: phase F composited a lit translucent plate over the host's backdrop-filters;
+phase G occludes in the stage's own ground colour, and occlusion is cheap. **A decision taken for presence has
+made the instrument better conditioned** — the opposite of the usual trade, which is why it is recorded rather
+than merely enjoyed.
+
+**The guard is not relaxed, and PINK said so before I could.** A profile with nothing contending licenses
+nothing; every temporal run still measures and reports its own achieved cadence and still fires the check per
+run. A profile is an expectation; the guard is the proof.
