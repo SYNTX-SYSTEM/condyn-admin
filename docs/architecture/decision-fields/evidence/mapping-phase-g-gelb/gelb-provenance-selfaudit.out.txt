@@ -1,0 +1,66 @@
+========================================================================================================
+GELB · PROVENANCE SELF-AUDIT — does each section name a build for the figures it quotes?
+========================================================================================================
+
+  sections: 86      quoted measurements: 1489
+  in sections naming a commit or build: 1468  (98.6 %)
+  in sections naming NEITHER:           21  (1.4 %)
+
+  sections with figures and no provenance of any kind — the ones that fail the weakest test:
+
+      12 figures   §46 THE GATE RAN ON PG-10 AND PG-10 PASSED IT — WHICH REFUTES A-G165's PREDICTION A
+       4 figures   §12 THE GHOST, THE RAMP, AND PG-20's FORM
+       3 figures   §11 WHAT R21 … R26 ADD TO THE ARCHITECTURE
+       2 figures   §2 THE ARCHITECTURE
+
+  *** AND THAT RESULT IS THE DEFECT, NOT THE FINDING: 98.6 % PASS A TEST THAT CANNOT FAIL. ***
+  A section counts as attributed if it mentions ANY 8-hex token anywhere in itself — and these
+  sections mention commit SHAs constantly, because this lane quotes its OWN commits. The test
+  measures "does this section contain a hex string", not "does this figure name its build".
+  A-G128's gate applied to my own audit, and the sixth instance of the family this phase.
+
+--------------------------------------------------------------------------------------------------------
+THE SHARPER TEST — a provenance token within N lines of the figure itself
+--------------------------------------------------------------------------------------------------------
+
+  within  0 lines:     41 of 1489  (2.8 %)
+  within  2 lines:     68 of 1489  (4.6 %)
+  within  5 lines:    145 of 1489  (9.7 %)
+  within 10 lines:    316 of 1489  (21.2 %)
+
+  *** AT THE FIGURE'S OWN LINE THE SHARE COLLAPSES. *** That is the number A-G389's obligation
+  actually describes, and it is the one worth reporting. The section-level 98.6 % was a
+  measurement of my commit habit.
+
+  AND THE OBLIGATION ITSELF IS WRONG, which the audit shows by being unable to test it: prose
+  does not BIND a figure to a provenance token, so no proximity threshold is the right one.
+  *** RULED, REPLACING A-G389's INTERIM FORM: a figure quoted from a reading names the READING'S
+  FILE, not a build. *** The file carries provenance.buildId, so GRÜN's audit can decide whether
+  it is stale; a build id written into my prose goes stale silently and cannot be re-checked by
+  anything. A reference that delegates its own currency to an instrument beats one that asserts it.
+  GRÜN's census found 3 of 41 readings valid; that number is checkable precisely BECAUSE it lives
+  in the files rather than in either lane's prose.
+
+========================================================================================================
+A-G277 · WHAT THE PG-11 CLOSURE RESTS ON, QUOTED FROM ITS OWN TEXT
+========================================================================================================
+
+  figures in the closure: 4.58e-05, 9.98e-05, 0.229, 0.499
+
+  A-G30's threshold 0.0002   readings 0.0000458 and 0.0000998
+    marginFactor 0.229  — 4.37x below the threshold
+    marginFactor 0.499  — 2.00x below the threshold
+
+  The closure's logic has two limbs:
+   (a) the measured energy is BELOW A-G30's threshold, so the guard does not clear  <- DEPENDS ON THE VALUES
+   (b) no factor rescues it: >= 1.0 fails, < 1.0 asks for resolution the instrument lacks
+
+  *** LIMB (a) IS A FIGURE AND THE FIGURE IS STALE. *** The nearer reading is only 2.00x below
+  the threshold, and the new solve changes the emitted viewBox, hence k, hence every rendered
+  size — so the pooled region changes. A factor-of-two move flips limb (a). GRÜN is right that
+  this is the thing to re-take, and right that it needs a re-run and not a re-seal.
+
+  BUT THE STATUS IS NOT "WITHDRAWN". A-G54: a figure is a property of a build. The closure is
+  correct AS A STATEMENT ABOUT 3ec8457d and silent about 7910845b.
+  *** RULED: CLOSED ON A BUILD THAT NO LONGER SHIPS — a status this record did not have, and
+  one that reads differently from "closed", which is how §64's sweep row will otherwise be read.
