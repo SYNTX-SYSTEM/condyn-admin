@@ -13428,6 +13428,15 @@ mandated? One file, named, required by a ruling. No.*
 
 ### A-G43's mutant is not PG-20's, and PG-20's proves the opposite thing
 
+> ### ⚠ CORRECTED 2026-11-11 — PG-20's MUTANT WAS ALREADY DONE *(see §107)*
+> **The distinction below is right and the "owed" is wrong.** `field-g-mutant.test.tsx` opens with a
+> `vi.mock` setting `couplingStates.DIFFERENT.mark = "none"` — **that IS PG-20's sign-table mutation, active
+> in every run of the file** — so *"green on new, red on old"* is exactly what GRÜN reported. **This lane
+> read an omission in a description as an absence in the artifact.** The vacuity objection was still the
+> right one to raise: it produced the third control, with the real table, **which is the one proving the mock
+> is not inert** — and GRÜN states it would not have been run otherwise. **The objection was right and the
+> item was not owed; those are separate facts and the second is this lane's.**
+
 Row 6 of §63's table reads *"A-G43's **and** PG-20's mutant executions"* — **two items:**
 
 | | mutates | assertion must | proves |
@@ -13502,3 +13511,84 @@ in row 6, which is this lane's table. **313 + 2 = 315.**
 
 **A-G43 is CLOSED — implemented, re-keyed, and proven by reversion.** The first of the five held mutants to
 execute, and the gate it was held on was B-ENTRY.
+
+---
+
+## §107 I READ AN OMISSION IN A DESCRIPTION AS AN ABSENCE IN THE ARTIFACT
+
+**Date of this section: 2026-11-11.**
+
+### §106 asserted an item was owed that was already executed
+
+`field-g-mutant.test.tsx` opens with a `vi.mock` setting `couplingStates.DIFFERENT.mark = "none"`. **That is
+PG-20's sign-table mutation, permanent in every run of the file.** GRÜN described the file as *"A-G43's
+required mutant"* and reported the implementation revert; **this lane inferred that the revert was the only
+mutation present.**
+
+> *** AN OMISSION IN A DESCRIPTION IS NOT AN ABSENCE IN THE ARTIFACT — which is the thing this lane has told
+> both peers all day. *** And the objection's usefulness does not cover the error: **the objection was
+> right, the item was not owed, and the second fact is this lane's.**
+
+### The proof structure is complete, not merely sufficient
+
+GRÜN ran a third control **because of the vacuity objection** — the real table, which it states it would not
+otherwise have run:
+
+```
+.                 real table                mutated table
+state-keyed       noCT FAIL, splay pass     noCT pass,  splay pass     <- PG-20 robustness
+mark-keyed        noCT FAIL, splay pass     noCT pass,  splay FAIL     <- A-G43 sensitivity
+```
+
+> **Checked rather than accepted: the fourth cell — real table, mark-keyed — is DETERMINED and duplicates
+> row 1's pattern**, because *"no counterTick"* depends only on the table while *"splay remains"*
+> distinguishes the implementations **only when the table is mutated.** **So three of four were run and the
+> uncollected cell is the redundant one.**
+>
+> **And that is why the mock is load-bearing rather than decorative:** without it, `splay remains` passes
+> under *both* implementations. **Row 1 proves the mock is not inert; row 2 against row 3 proves the
+> robustness claim is not vacuous.** Each assertion fails in exactly one cell — the strongest form
+> available.
+
+### A-G440's second direction · an underclaiming label causes re-requests
+
+`field-g-mutant.test.tsx` — **singular** — carries two mutations of different kinds and is described by the
+amendment specifying one of them. **GRÜN named this as its own defect.**
+
+> **A-G440 covered a label naming a STRONGER kind than its content** — *"distributional bound"*,
+> *"soundness condition"*. **This is the other direction.**
+>
+> *** AN OVERCLAIMING LABEL CAUSES THE CONTENT TO BE OVER-TRUSTED. AN UNDERCLAIMING LABEL CAUSES THE CONTENT
+> TO BE RE-REQUESTED. *** This lane asked for work already done, **and the request was reasonable given what
+> the name said.** Both directions are the label travelling instead of the content; **only the cost
+> differs.** Three instances today — two overclaiming and this lane's, one underclaiming and GRÜN's.
+
+### A-G429's third target, and it is the one with no reader
+
+GRÜN's framing of §94's foreclosure is sharper than this lane's own: **it is the A-G429 shape pointed at an
+OWNER rather than at an instrument — the false constraint felt like diligence.**
+
+> *** AND THE CONSEQUENCE IS WORSE THERE, FOR A REASON A-G429 DID NOT COVER: an instrument's false positive
+> gets audited by the next lane that runs it. AN OWNER CANNOT AUDIT A CONSTRAINT. ***
+>
+> **So the selection effect has three targets:** a detector's false positive **feels like the instrument
+> working**; a promotion **feels like the record improving**; and **a constraint reported to an owner feels
+> like rigour.** *The first two have readers who recompute. The third does not* — the owner reads *"not
+> removable"* and the option is gone, with nothing in the sentence inviting the check that would have found
+> option (3) sitting four thousand lines earlier with all three bounds measured.
+
+### One placement rule, arrived at three times
+
+PG-5's **candidate count**, the dropped **population** at a rung, and a share's **filter** — all three must
+travel beside the figure rather than in a methods note.
+
+> **RULED as one rule: the number that LICENSES a figure travels in the same sentence as the figure.** Three
+> separate rulings this phase collapse into it, and each was derived from a different defect.
+
+### Where this leaves the record
+
+**Two new defects:** §106's assertion that PG-20's mutant was owed; and the singular filename carrying two
+mutations. **315 + 2 = 317.**
+
+**GRÜN's queue is PG-5, PG-15, PG-16 — three.** A-G43 and PG-20 are both **CLOSED and proven**, the first two
+of the five held mutants, and the gate they were held on was B-ENTRY.
