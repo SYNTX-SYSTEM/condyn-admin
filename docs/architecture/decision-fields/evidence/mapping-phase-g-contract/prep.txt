@@ -1721,3 +1721,66 @@ only under `reduce`.** Scoped as ruled, §21's 0.000 % stands as the measurement
 that survives is the one GELB kept: **properly scoped, limb 3 is the limb that protects evidence from
 depth, it holds exactly, and an unexamined move of `depthRatio` would break the one limb of PF-4 that
 works.** §68 declined on three dependants; this is a fourth.
+
+
+================================================================================================
+§23  PF-2's SCOPE, ANSWERED FROM MY OWN PHASE-E INSTRUMENT — AND IT IS A THIRD OPTION NEITHER OF
+     US OFFERED. THE SEPARATION SURVIVES THE ACCOMMODATION; PF-2's JUSTIFICATION DOES NOT. AND MY
+     PIXEL READING IS VOID ON ITS OWN TWO-ROUTE CHECK, SO THE PIXEL HALF IS NOT ANSWERED BY ME.
+================================================================================================
+Instrument `scripts/pink-pf2-dim-inversion-g.mjs`; output kept as
+`outputs/PF2-DIM-INVERSION-VOID-ATTEMPT1.json` for audit. **No figure from it is reported.**
+
+THE SCOPE QUESTION, ANSWERED, AND IT NEEDED NO RASTER. GELB asked whether PF-2's comparison is
+within a body or across bodies, and said my phase-F instrument's actual behaviour would be worth more
+than its reading of the text. PF-2 (`:320`) cites **PHASE_E §12** for *"floor of the upper band vs
+ceiling of the lower"*, and that measurement is mine, recorded at
+`mapping-phase-e-contract/prep.txt:267`:
+    *"bands PER FOCUSED GROUP (role_all), from `data-evidence-luminance` bucketed by
+    `data-evidence-step`"* ... *"within-band ratios are NOT a separation test (A-6: separation is
+    between classes, within one focused group)."*
+  > **So the scope is BETWEEN CLASSES, WITHIN ONE FOCUSED GROUP. That is ACROSS BODIES — a focused
+  > group spans several — but across bodies that SHARE A FOCUS STATE. Neither "within-body" nor
+  > "across bodies" is the answer: it is "within one focus state", the third option the question did
+  > not offer, and the one the record actually contains.**
+  > **And within one focus state the dim cannot enter, for a reason that needs no measurement: every
+  > body in that state carries the SAME group opacity, and a common multiplier cancels in a ratio.**
+  > So GELB's inversion cannot arise inside PF-2's inherited scope. **PF-2 is not red under the
+  > accommodation, and I would rather report that than carry it** — which is what GELB asked for.
+
+BUT THE ACCOMMODATION DOES BREAK SOMETHING IN PF-2, AND IT IS THE JUSTIFICATION RATHER THAN THE BOUND.
+`:898` reads: *"Marks are black-seated, so the values are **absolute** and should reproduce phase E's
+1.814 / 1.940."* That is the bridge carrying phase E's ATTRIBUTE measurement across to PF-2's demand
+for *"rendered pixels, not computed styles"* (`:320`). **Under `reduce` with a capability selected the
+body group's opacity multiplies the already-composited mark, so a mark's rendered luminance is no
+longer a function of its own alpha alone.**
+  > **The separation is scale-invariant and survives; the ABSOLUTENESS is not and does not.** So
+  > phase E's 1.814 / 1.940 remain the right *ratios* to reproduce, and they remain reproducible
+  > within a focus state — but `:898`'s reason for expecting them is false in one of the build's two
+  > motion modes, and PF-2 names no mode. **Same shape as §22: the pin is sound, the sentence under
+  > it is conditioned, and the condition is the accommodation.** Fifth instance of the unstated-carrier
+  > class, and the second where `reduce` is what moves the carrier.
+
+MY PIXEL READING IS VOID, ON MY OWN DISAGREEMENT DETECTOR. The instrument carried two routes per mark
+(A-G176): the median rendered luminance sampled along the mark's drawn geometry, and
+`data-evidence-luminance` x group opacity x arc opacity composited over black under A-G81. **They
+disagree by a factor of 0.10 to 45.6 — a spread of 450x.** A second, independent tell: at REST, inside
+one focus state, the sampler put NAME_ONLY *below* NONE (ratio 0.40), which the declared values forbid
+(NAME_ONLY 0.45...0.528 against NONE's 0.232). **Two independent impossibilities, so the sampler is
+wrong and no number from it is admissible** — including the four "inversions" it reported, which I am
+not citing even though they point the way GELB's derivation predicts.
+  > The cause is rule 2's shape once more: **`[data-mapping-arc]` is a `<g>` carrying the attributes,
+  > and the drawn mark is a CHILD of it.** My first pass required `getTotalLength` on the attributed
+  > element and produced **zero** marks; my second picked the first measurable child, which for these
+  > tick groups is not reliably the lit mark. **The attribute carrier and the geometry carrier are
+  > different elements, and choosing between the children needs the same treatment the halo masks got
+  > in §10-§14 rather than a `querySelector`.**
+  > **So: the scope half is answered and the pixel half is not, and I am saying which is which.**
+  > A verdict I would have to withdraw is worth less than a stated hole — GELB's own standard, applied
+  > to its own question.
+
+PF-11, NOTED BUT NOT RUN. GELB's four thresholds (0.001 / 0.002 / 0.004 / 0.008, count ratio <= 1.5 at
+EVERY threshold, plus the computed-style clause) match the **restatement at `:862` / `:907`**, not the
+original row at `:329` (*"every pixel identical"*). I was reading `:329` and GELB is right. **The two
+differ substantially and the live form is the restatement** — worth recording, because a lane quoting
+`:329` would measure a different pin by the same name. Four thresholds reported separately when run.
