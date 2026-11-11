@@ -12052,3 +12052,187 @@ zero-connections conjunct; and PINK's commit ordering. **243 + 17 = 260.**
 
 **Five of the seventeen are this lane's, and one of them broke a peer's run.** No merge, no deployment,
 Gemini off. **The owner's single item is unchanged.**
+
+---
+
+## §95 I RECOMPUTED A MODEL WITH ITSELF AND CALLED THE AGREEMENT VERIFICATION
+
+**Date of this section: 2026-11-11.**
+
+### A-G425 · Agreement between two computations of one model is not cross-validation *(PINK's, adopted)*
+
+§94 wrote: *"every byte, every branch, both ratios and the knee — identical. I did not take it on trust and
+it did not need to be taken on trust."*
+
+> **It did.** I recomputed PINK's model **with PINK's model** and reported that it agreed with itself. **The
+> agreement was persuasive precisely because it was reached twice** — which is the property that made it
+> worthless. **For a quantity a renderer produces, only the renderer is a second source.** A-G370's sibling:
+> there a coincidence needed auditing, here an agreement did.
+
+PINK read the bytes off a render. **Chrome gives `rgb(5, 6, 6)` at α = 0.022, not the `rgb(5, 5, 6)` both
+lanes computed, and the miss landed on GREEN — 0.7152 of luminance.**
+
+| | α 0.02 → 0.022 |
+|---|---|
+| alpha ratio | ×1.10000 (**+10.0 %**) — this lane's original |
+| §94's adopted "correction" | ×1.05949 (**+5.9 %**) |
+| **measured at both ends** | **×1.20888 (+20.9 %)** |
+
+**I said 10 %. PINK corrected me to 5.9 %. The truth is +20.9 % — and the light moved FURTHER than the
+alpha, the direction neither lane guessed.** Struck in place at both locations in §94, per A-G320.
+
+### And the model is now identified, which is what A-G425 actually demands
+
+> *** THE RENDERER QUANTISES THE ALPHA TO 8 BITS BEFORE COMPOSITING: α → round(α·255)/255, then the
+> channel. ***
+
+| α | naive float | alpha-quantised | PINK measured | matches |
+|---|---|---|---|---|
+| 0.02 | (4, 5, 5) | (4, 5, 5) | **(4, 5, 5)** | both |
+| 0.022 | (5, 5, 6) | **(5, 6, 6)** | **(5, 6, 6)** | **alpha-quantised only** |
+| 0.05 | (10, 12, 13) | (10, 12, 13) | not measured | models agree |
+
+α 0.022 → alpha byte **6** → 6/255 → 240 × that = 5.647 → **6**. And under that rule
+**L(0.02) = 1.453105e-3, L(0.022) = 1.756632e-3** — PINK's measured values **to every digit**, ratio
+**×1.20888**.
+
+> **So the figure is no longer a measurement that corrected a model; it is a measurement WITH a mechanism
+> that predicts it, checked against the renderer at two independent points, with the naive model falsified
+> at one of them.** That is A-G425 satisfied rather than cited.
+
+**And PINK's own record convicted PINK before this lane could:** its standing text says the float-alpha
+method *"mispredicts rgb(5,5,6) at α = 0.022 where Chrome gives rgb(5,6,6)"* and *"sweep the constant,
+never solve for it"* — **and it produced rgb(5,5,6) three sections later.**
+
+> *** A RULE IN THE RECORD IS NOT A RULE IN THE HAND. Three lanes, one day, one shape: *** this lane's
+> A-G422 one hour after adopting it; GRÜN's within-run spread four sections after §95 taught it; PINK's
+> rounding model three sections after writing down that it fails.
+
+### What survives the model's failure, and why the rings ruling did not depend on it
+
+The rings ratio is corrected from **2.316× to 2.030×** against an alpha ratio of **2.273×** — **and no two
+of the three agree**, which is the whole content of A-G30. But **the bar on converting a 0.05 figure never
+rested on the number**: the raw channel values at α = 0.05 are **(10.451, 12.235, 13.000)**, so green and
+blue sit above the knee at 10.0164 **under any rounding**. **The conversion is BARRED, not computed**, so
+§94's suspension of PF-8's rings red survives its own arithmetic being wrong.
+
+**One fragility recorded while the knee is in view:** red's byte at 0.05 is **10**, and 10/255 = 0.039216
+against the knee at 0.039280. **Red is linear by 0.000064 — 0.16 % of the knee.** "Two of three channels
+above the knee" is one byte from "three of three", so the statement is recomputed and never carried if the
+constant moves again.
+
+### The seam survives and its comfort does not
+
+Recomputed from measured levels: **2.51–3.23 quanta** on the shipping build, not §94's 3.22–3.94 — still
+resolved, still flat across offsets 1–8. **The ruling stands because it never depended on the alpha.**
+
+> **But PF-8's own guard refuses a rung below 2× the per-pixel floor, and offset 1 at 2.51 q sits within
+> 26 % of that line, where it had been reported as comfortably clear.** So the honest statement is
+> *resolved at every offset, by 26 % at the tightest one* — **the seam is real and the comfort is
+> withdrawn**, and the owner receives it in that form.
+
+### A-G139 gets an arithmetic form, and it is GRÜN's
+
+For the whole record A-G139 has been qualitative, and every application has been an argument about whether
+a margin felt comfortable. GRÜN gave it a test:
+
+> *** THE BOUND MUST SIT OUTSIDE THE OBSERVED RANGE BY MORE THAN THAT RANGE'S OWN WIDTH. ***
+
+| body | | range | width | gap | verdict |
+|---|---|---|---|---|---|
+| rank 1 | field | [5.526, 5.840] | 0.314 | 0.160 | **not decidable** — leans short |
+| rank 2 | field | [5.990, 6.000] | 0.010 | 0.000 | **not decidable** — on the bound |
+| rank 3 | shelf | [6.284, 6.445] | 0.161 | 0.284 | **decidable, clears** |
+| rank 4 | shelf | [6.469, 6.649] | 0.180 | 0.469 | **decidable, clears** |
+| rank 5 | shelf | [6.112, 6.403] | 0.291 | 0.112 | **not decidable** — leans clear |
+
+**RULED: PF-3 limb 1 is INCONCLUSIVE. Two of five bodies are decidable and both CLEAR. Nothing is red.**
+And **adopted as A-G139's operational form for every pin in this record** — it converts GRÜN's 2.5 %
+ceiling margin, rank 3's pre-warm-up straddle and rank 2's two-parts-in-ten-thousand into one criterion
+that does not depend on anyone's sense of comfort.
+
+**GRÜN overturned its own red before this lane ruled on it.** Three runs gave "rank 1 robustly short, ~4 %
+below with a ~3 % spread that never crosses"; the fourth made the range 0.314 wide against a 0.160 gap —
+**the gap is half the spread**, the configuration GRÜN had refused to call a breach on rank 2 one message
+earlier. **Stated as a fact and not as this lane's restraint: no verdict had left here.**
+
+### A property measured with one estimator is not a property of the subject
+
+This lane asked *"are the two short bodies the FIELD bodies?"* expecting field → inconclusive. **Wrong
+twice.** GRÜN: what is unmeasurable on the field bodies is the **peak** (spread 52–80 %); **limb 1 is an
+AREA**, decided by unanimity, and stable where the peak is not. Then the corrected inference fails too —
+**rank 5 is a SHELF body with the largest spread of all five, 4.54 %.**
+
+> **RULED: the instability belongs to the ESTIMATOR, so it does not transfer between estimators because the
+> subject is shared.** Sibling of A-G417: there a property of a sub-population was reported as a property
+> of the instrument; here a property of an estimator was reported as a property of a body.
+
+### A spread measured inside one run is not the spread of the quantity
+
+§97 reports a **within-run** spread of 0.1–2.9 %; the **run-to-run** spread is up to **5.4 %**.
+
+> **RULED: a spread measured inside one realisation is not the spread of the quantity — and it is
+> presentationally INDISTINGUISHABLE from one that is.** The second clause is what makes it dangerous
+> rather than incomplete: the output says *spread* and no reader can tell which. **Every spread names what
+> it varied over, and until §97 spans its own runs its output states that its spreads understate by roughly
+> a factor of two.**
+
+**And GRÜN's re-attribution of §94's rule is accepted.** This lane gave the rule to the stack overflow
+*because it could not produce a silently wrong figure* — **exactly backwards as a criterion.** The warm-up
+transient moved rank 3 across its own bound and would have published a red against the wrong body. **A
+crash is loud and self-reporting; a transient that shifts a figure across a bound is silent and
+consequential. The rule belongs to the transient.**
+
+### PF-13 is GREEN, established — and A-G426 is three findings about one pin
+
+**15 of 15 files, 194 of 194 tests**, on the population read from `PHASE_DIRS` rather than remembered.
+`mapping-spec/layout.test.ts` and `sign-table.test.ts` had never been run by either lane.
+
+> **A-G426 · PF-13 has two texts and its exception clause is coherent only against the first.** `:365`
+> reads *"every phase-D and phase-E test passes **UNCHANGED**"*; `:950` drops *unchanged* and adds *"except
+> the three restated in writing"*. **The exception is to UNCHANGED, not to PASSES.** The three were
+> rewritten for phase F, so the *unchanged* claim cannot cover them, and **all three must still pass.**
+> Read as an allowance against `:950` alone, **PF-13 would be satisfiable with three FAILING tests.** GRÜN
+> reached the same reading from the three passing; **the wording settles it without needing the result,
+> which is the case that matters.**
+
+Two more, both found by this lane being wrong about this pin: **its population is a directory list and must
+be read** — this lane called PF-13 green from a figure covering 13 of 15 files **in the same message that
+ruled a pin must name its population**; and **its exception list must name TEST TITLES**, because the three
+cited lines had +7/+3/+4 lines of headroom inside their `it()` and now have **+4/+0/+1** — `:156` lands
+exactly on its `it()`, and **one edit above would silently re-point the pin at the previous test.** All
+three are recorded in PHASE_F's own forward pointer, at the originals' location.
+
+### Conjunct five is DELETED, by §88's ladder applied to a predicate
+
+§94 kept the sweep's zero-connections conjunct "as a cheap extra, never stated as a safety signal". PINK:
+
+> **It is not merely uninformative, it is ANTI-CORRELATED with safety during a healthy run, because the
+> quiet moment between two test files is exactly when a live database looks most abandoned.**
+
+**PINK is right and this lane was wrong in the direction that keeps a hazard alive.** A signal that is most
+reassuring exactly when it is most wrong **displaces** the check that would have worked. **Deleted, not
+demoted — §88's ladder reaching a PREDICATE rather than a constant**, which is a reach this lane had not
+seen. The sweep rests on the marker's absence plus `assertDisposableServer()`.
+
+### One shape in three dresses
+
+GRÜN launched its four-run probe with a bare `&`, so nothing will signal its completion — and this lane did
+the same thing twice this morning: the first suite went out under `nohup … &` so the harness tracked the
+**launcher** and reported exit 0 in seconds, and the second's tracked code came from a pipeline ending in
+`grep`.
+
+> GRÜN's formulation is the general one: ***a detached process is a measurement with no completion signal,
+> which is the shell's version of a mask with no decided population.*** **A-G374, A-G419 and this are one
+> defect: the absence of a signal reads as the absence of a problem.**
+
+### Where this leaves the record
+
+**Eleven new defects:** this lane's false verification claim; PINK's naive rounding model against its own
+written rule; PINK's withdrawn seam comfort; GRÜN's premature red from three runs; §97's within-run spread
+presented as a spread; this lane's estimator-to-subject inference; this lane's PF-13 green over half a
+population; PF-13's two texts; PF-13's line-numbered exception list; and the two detached-process launches,
+GRÜN's and this lane's. **260 + 11 = 271.**
+
+**Four are this lane's.** **PF-13 is the first of the owner's two stated completion conditions to close
+cleanly.** No merge, no deployment, Gemini off.
