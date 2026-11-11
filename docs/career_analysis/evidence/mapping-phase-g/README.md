@@ -177,17 +177,20 @@ independently checked.** It claimed the delta was "two files and nothing else": 
 a new `test/career/mapping-field/field-g-mutant.test.tsx`. Neither is in the tree. PINK running the command
 above as it was written would have found a mismatch and been right to.
 
-The delta from `3ec8457d`, as measured rather than as remembered, is **one file, one behavioural hunk, and
-eleven added attributes** (§81 grew it past the single hunk it had been for the whole phase):
+**§104 CORRECTION, AND THIS TABLE HAD GONE STALE TWICE OVER.** It read "one file, one behavioural hunk, and
+eleven added attributes" — true when §62 wrote it and false from §86 onward, because §86 rewrote the frame
+solver. §104 then added a second product predicate and a new test file. This is the section written to be
+INDEPENDENTLY CHECKED by PINK, and it is the second time it has described a product state that does not exist,
+so the figures below are now produced by `git diff --stat 3ec8457d HEAD` rather than carried in prose:
 
 | | |
 |---|---|
-| file | `app/components/career/demo/PersonJobMappingField.tsx`, and nothing else |
-| the one behavioural change | `RING_LUMINANCE.shelf` **0.02 → 0.022** (§23 **A-G62**) |
+| **files** (outside this evidence directory) | **FOUR.** `PersonJobMappingField.tsx` · `test/career/mapping-field/architecture.test.ts` · `test/career/mapping-field/field-g-mutant.test.tsx` (new) · `test/career/mapping-field/neurovisual-e.test.ts` |
+| **behavioural changes in the component** | **FOUR.** §86's `frameWithBodies` rewrite with `FRAME_EM_PER_CHAR` / `FRAME_PASS_CAP` · `RING_LUMINANCE.shelf` **0.02 → 0.022** (§23 **A-G62**) · §104's splay re-keying (**A-G43**) · §93's deletion of the dead `MOTION.breath` (**A-G406**, zero render-path readers, proven by `tsc`) |
 | **§81 A-G49's hooks** | **eleven added `data-*` attributes.** `data-mapping-halo` / `data-rank` / `data-shelf` / `data-required-gaps` / `data-halo-radius` on the halo's drawn **circle** (not its group), and `data-mapping-seat` naming the seven previously unaddressable seats plus the two body seats and the arc-marks group. |
 | everything else in the diff | comment-only — the `GLOW_RAMP` and `G-2` rewrites of §45/§47/§51, and §62/§81's corrections |
-| **A-G43's splay re-keying** | **NOT APPLIED**, and now deliberately so. `:389` still reads `s.mark === "counterTick"`. GELB's §62 correction 2 established that PINK's rendered-page route *cannot* verify a re-keying — React keys are reconciliation inputs and never reach the DOM, so a correct re-key and a broken one both read "no change". It is therefore essentially gated on vitest, and vitest is gated on B-ENTRY. |
-| **the A-G43 mutant test** | **DOES NOT EXIST.** `test/career/mapping-field/` has no `field-g-mutant.test.tsx`. |
+| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === "DIFFERENT"`. It was held out of the tree for the whole phase because a re-keying is unverifiable from a rendered page — React keys are reconciliation inputs and never reach the DOM — so it was gated on vitest, and vitest was gated on B-ENTRY. **B-ENTRY was restored in this lane in §93**, which is the only reason this row changed. |
+| **the A-G43 mutant test** | **EXISTS AND BINDS.** `test/career/mapping-field/field-g-mutant.test.tsx` mocks the sign table with DIFFERENT's mark set to `"none"` and asserts the splay remains. **It FAILS on the mark-keyed form** — verified by reverting the predicate and re-running, not asserted: DIFFERENT's end lengths read 9.994517 / 9.994913 against a radial reference of 9.994517, so the splay was exactly zero. A mutant that passes on both forms proves nothing. |
 
 **The hooks are additive and that is proved, not asserted.** Strip every `data-*` attribute and every comment
 from the base and from the working tree and the only remaining difference is the single `RING_LUMINANCE` hunk;
