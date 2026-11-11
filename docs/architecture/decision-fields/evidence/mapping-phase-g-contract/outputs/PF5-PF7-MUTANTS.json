@@ -1,0 +1,249 @@
+{
+ "commit": "3ec8457d",
+ "stand": "http://127.0.0.1:3122",
+ "shelfAlpha": 0.02,
+ "pin": "PF-5 and PF-7 red-first by runtime injection (PINK §53)",
+ "statements": {
+  "PF-5": ">= 25 % of disc pixels swing >= 0.004 over one period, blurred (GELB §115)",
+  "PF-7": "phase monotone in radius; total spread 1200 +/- 300 ms (GELB §115)"
+ },
+ "technique": "faithful runtime injection, no rebuild — the phase-E method of pink-p4-mutants.mjs",
+ "runs": [
+  {
+   "mutant": "BASELINE",
+   "viewport": "1920x1080",
+   "injectionProof": {
+    "breath": "LIVE",
+    "haloDepth": "0.1175",
+    "groundDepth": "0.5",
+    "waveCount": 9,
+    "distinctDelays": 9,
+    "delaySpanS": 1.2,
+    "animationRunning": "mappingFieldWave",
+    "injected": null
+   },
+   "framesSampled": 51,
+   "stepMs": 400,
+   "spanS": 34,
+   "periodsCovered": 3.398,
+   "PF5": {
+    "discPopulation": 545417,
+    "pixelsOverSwing": 26822,
+    "share": 0.0492,
+    "bound": ">= 0.25",
+    "pass": false,
+    "medianSwing": 0.00030053
+   },
+   "PF7": {
+    "pixelsCarryingSignal": 412513,
+    "ampFloorUsed": 0.000324,
+    "binsPopulated": 12,
+    "binMediansMs": [
+     8104,
+     8104,
+     8134,
+     8123,
+     8132,
+     8131,
+     8125,
+     8142,
+     8097,
+     8123,
+     8104,
+     8104
+    ],
+    "spreadMs": 45,
+    "bound": "1200 +/- 300 ms",
+    "spreadPass": false,
+    "monotone": false,
+    "direction": "DECREASING with radius",
+    "stepsUp": 4,
+    "stepsDown": 7
+   }
+  },
+  {
+   "mutant": "MUT-PF5-DEPTH0",
+   "viewport": "1920x1080",
+   "injectionProof": {
+    "breath": "LIVE",
+    "haloDepth": "0",
+    "groundDepth": "0",
+    "waveCount": 9,
+    "distinctDelays": 9,
+    "delaySpanS": 1.2,
+    "animationRunning": "mappingFieldWave",
+    "injected": null
+   },
+   "framesSampled": 51,
+   "stepMs": 400,
+   "spanS": 31.7,
+   "periodsCovered": 3.167,
+   "PF5": {
+    "discPopulation": 545417,
+    "pixelsOverSwing": 5645,
+    "share": 0.0103,
+    "bound": ">= 0.25",
+    "pass": false,
+    "medianSwing": 0
+   },
+   "PF7": {
+    "pixelsCarryingSignal": 431972,
+    "ampFloorUsed": 0.000211,
+    "binsPopulated": 12,
+    "binMediansMs": [
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990,
+     8990
+    ],
+    "spreadMs": 0,
+    "bound": "1200 +/- 300 ms",
+    "spreadPass": false,
+    "monotone": true,
+    "direction": "DECREASING with radius",
+    "stepsUp": 0,
+    "stepsDown": 11
+   }
+  },
+  {
+   "mutant": "MUT-PF7-NOLAG",
+   "viewport": "1920x1080",
+   "injectionProof": {
+    "breath": "LIVE",
+    "haloDepth": "0.1175",
+    "groundDepth": "0.5",
+    "waveCount": 9,
+    "distinctDelays": 1,
+    "delaySpanS": 0,
+    "animationRunning": "mappingFieldWave",
+    "injected": {
+     "n": 9,
+     "before": [
+      "-10s",
+      "-9.8s",
+      "-9.6s",
+      "-9.4s"
+     ],
+     "after": [
+      "0s",
+      "0s",
+      "0s",
+      "0s"
+     ]
+    }
+   },
+   "framesSampled": 51,
+   "stepMs": 400,
+   "spanS": 33,
+   "periodsCovered": 3.298,
+   "PF5": {
+    "discPopulation": 545417,
+    "pixelsOverSwing": 27117,
+    "share": 0.0497,
+    "bound": ">= 0.25",
+    "pass": false,
+    "medianSwing": 0.00030053
+   },
+   "PF7": {
+    "pixelsCarryingSignal": 404896,
+    "ampFloorUsed": 0.000307,
+    "binsPopulated": 12,
+    "binMediansMs": [
+     8238,
+     8238,
+     8238,
+     8283,
+     8274,
+     8317,
+     8286,
+     8285,
+     8326,
+     8282,
+     8290,
+     8238
+    ],
+    "spreadMs": 88,
+    "bound": "1200 +/- 300 ms",
+    "spreadPass": false,
+    "monotone": false,
+    "direction": "DECREASING with radius",
+    "stepsUp": 4,
+    "stepsDown": 7
+   }
+  },
+  {
+   "mutant": "MUT-PF7-REVERSE",
+   "viewport": "1920x1080",
+   "injectionProof": {
+    "breath": "LIVE",
+    "haloDepth": "0.1175",
+    "groundDepth": "0.5",
+    "waveCount": 9,
+    "distinctDelays": 9,
+    "delaySpanS": 1.2,
+    "animationRunning": "mappingFieldWave",
+    "injected": {
+     "n": 9,
+     "before": [
+      "-10s",
+      "-9.8s",
+      "-9.6s",
+      "-9.4s"
+     ],
+     "after": [
+      "10s",
+      "9.8s",
+      "9.6s",
+      "9.4s"
+     ]
+    }
+   },
+   "framesSampled": 51,
+   "stepMs": 400,
+   "spanS": 35.2,
+   "periodsCovered": 3.525,
+   "PF5": {
+    "discPopulation": 545417,
+    "pixelsOverSwing": 26179,
+    "share": 0.048,
+    "bound": ">= 0.25",
+    "pass": false,
+    "medianSwing": 0.00030053
+   },
+   "PF7": {
+    "pixelsCarryingSignal": 431365,
+    "ampFloorUsed": 0.0003192,
+    "binsPopulated": 12,
+    "binMediansMs": [
+     6619,
+     6619,
+     6587,
+     6619,
+     6580,
+     6625,
+     6616,
+     6566,
+     6604,
+     6572,
+     6619,
+     6619
+    ],
+    "spreadMs": 59,
+    "bound": "1200 +/- 300 ms",
+    "spreadPass": false,
+    "monotone": false,
+    "direction": "DECREASING with radius",
+    "stepsUp": 4,
+    "stepsDown": 7
+   }
+  }
+ ]
+}

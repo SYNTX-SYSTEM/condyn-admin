@@ -36,6 +36,7 @@ af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPT
 3748a19bd0b5a48492f2a8de967f9dcd651013500cbbadc1e2dbcc5806f65607  ./outputs/PF2-DIM-INVERSION-VOID-ATTEMPT1.json
 e903011c39e3ecd7a018f6e4ae77488b3f0a5c80f1a09113ffd741e08c81c422  ./outputs/PF3-HALO-DIFFERENTIAL.json
 b09c105062e7a5a8dd67e143737ad6c8955b5efe53cc153c5d0ede63530fdd0d  ./outputs/PF4-LIMB3-FOCUS.json
+ce50e7fed01a27643264751c5447b106eb49688dce3848e35fc68ecae6ecc42e  ./outputs/PF5-PF7-MUTANTS.json
 914296c48f0548ca6dd3bc57105ccfccee0e61218b7769be1a18cb876cf97b8e  ./outputs/PF6-PF4.json
 0d6b7e1cde1bc92f75680d22fa7ed5003ad9be106ca5617f0b746b5e5fda75b5  ./outputs/PF8-RINGS-RETAKE-L0.json
 4c54084af9839f1d45547319729e57fae779fe4a2b9544a785c52ae1aefc0eeb  ./outputs/PF8-RINGS-RETAKE-L2.json
@@ -44,7 +45,7 @@ b9e6b4ba96f61cd12deb3b61de6f1ee0afdc359a4c41094820edd50a241e71a8  ./outputs/PG10
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
 be726ca60ea42727d852c13ee073c8d1e4c377da718477d9269e5841e55993e2  ./PINK-SYSTEM-VALIDATION.md
-76e3dfa3c1ec3925a4a0f4f090d3ae5147a79fb65323be99d10ee2f724ba3eef  ./prep.txt
+1b4b86f27c637ff0d950a0951e429fcb539b864e472f5698b042c83e566a64b4  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0  ./scripts/pink-ag340-capability-g.mjs
@@ -68,6 +69,7 @@ ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink
 9d425c3cc1aa989a9dfb342a297767d4caaf7325316a2c46f6b931edc7285332  ./scripts/pink-pf2-dim-inversion-g.mjs
 8d50352413fd981f03d4a2e9f9a0fe35a0a7e2c5d7ad050c1b5ff40f1b558823  ./scripts/pink-pf3-halo-differential-g.mjs
 64d85032aa127af0e59389b77782d18edd7017b1e16fd557893268577e0f290c  ./scripts/pink-pf4-limb3-focus-g.mjs
+78f87a04becb6db9784f3f2bcad37a3a5de59b407e8fc67f8d00ab5315bbac24  ./scripts/pink-pf5-pf7-mutants-g.mjs
 6bc97ed47f5787803bb323f9426fdf69c3dcb4c1a112c459d9dbceefddf7e492  ./scripts/pink-pf6-pf4-g.mjs
 bf034f6463216e5416a4b0e34cd99bc3a3e83a750c5dac3df53b2648ba5ad8c0  ./scripts/pink-pf8-rings-retake-g.mjs
 d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0  ./scripts/pink-pg10-g.mjs

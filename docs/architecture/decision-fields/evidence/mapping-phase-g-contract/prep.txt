@@ -4445,3 +4445,88 @@ and two phases old. **Neither of us searched for it; we both reasoned about who 
 have to build it.** The same error class as A-G448 and A-G449 pointed at a tool instead
 of a pin: *what exists was inferred from what was recent rather than established by
 looking.* The remedy is the one that keeps working — **open the directory.**
+
+================================================================================
+§53  PF-5 AND PF-7 BY RUNTIME INJECTION — THE TECHNIQUE WORKS AND ONE MUTANT IS
+      KILLED. But PF-5's verdict is decided by a DENOMINATOR I took from a relay,
+      PF-7 is NOT MEASURABLE by a per-pixel phase fit for a structural reason, and
+      the mutants exposed three defects in my own instrument.
+      PINK, 2026-11-11, :3122, 3ec8457d, shelf α 0.02, 1920×1080.
+      `scripts/pink-pf5-pf7-mutants-g.mjs` -> `outputs/PF5-PF7-MUTANTS.json`
+================================================================================
+
+§52 claimed the unnamed pins are dischargeable here and that the blocker was the pins'
+STATEMENTS. GELB (§115) supplied them, so the claim had to be tested rather than left
+standing. **It is half true, and the half that fails is instructive.**
+
+[1] *** THE INJECTION TECHNIQUE WORKS, PROVEN BY READ-BACK, AND ONE MUTANT IS KILLED. ***
+    Every mutation is verified in the output rather than assumed:
+      MUT-PF5-DEPTH0   haloDepth 0.1175 -> **0**, groundDepth 0.5 -> **0**
+      MUT-PF7-NOLAG    animationDelay ['-10s','-9.8s','-9.6s','-9.4s'] -> **all '0s'**,
+                       distinctDelays 9 -> **1**, delaySpan 1.2s -> **0s**
+      MUT-PF7-REVERSE  the same delays -> **['10s','9.8s','9.6s','9.4s']**, span 1.2s kept
+    **MUT-PF5-DEPTH0 IS KILLED:** share of disc pixels over the 0.004 swing falls
+    **0.0492 -> 0.0103**, and the median swing goes **3.0053e-4 -> EXACTLY 0.** A PF-5
+    guard would fire on this mutation. **So the phase-E technique transfers to phase G
+    and the capability claim in §52 is confirmed — on a render mutant, with no rebuild.**
+
+[2] *** BUT PF-5's BASELINE "FAILS" AT 0.0492 AGAINST 0.25, AND THE DENOMINATOR DECIDES
+    IT — AND I TOOK THE DENOMINATOR FROM A RELAY. ***
+    The statement I was given reads ">= 25 % of **DISC** pixels". Over the disc:
+      disc population 545417 · pixels over the swing **26822** · share **0.0492** · 5x under
+      median disc swing **3.0053e-4** — which is ONE QUANTUM (§35's per-pair floor)
+    **The same numerator over a GLOW MASK passes easily.** §28's masks at this viewport
+    were 36268 px unselected, so 26822/36268 = **0.74**, nearly three times the bound.
+    PG-10 limb 1 — which I measured at length in §27/§28 — is phrased "on the **visible
+    glow**, >= 25 % of pixels swing >= 0.004", i.e. mask-scoped.
+    **SO PF-5 IS NOT EVALUABLE HERE. The verdict is determined entirely by whether the
+    denominator is the disc or the glow, and I do not hold the pin's text.** I have spent
+    this phase insisting a validator must not take a requirement from the lane it
+    validates, and then took a pin's denominator from exactly there. **Recorded as my
+    error, not as PF-5's red.** What IS established: the numerator (26822 px), the disc
+    population, the median swing at one quantum, and that the mutation is killed.
+
+[3] *** PF-7 IS NOT MEASURABLE BY A PER-PIXEL PHASE FIT, AND THE REASON IS IN THE SOURCE. ***
+      BASELINE          radial phase spread **45 ms** (bound 1200 +/- 300)
+      MUT-PF7-NOLAG     **88 ms** — HIGHER than baseline, not zero
+      MUT-PF7-REVERSE   **59 ms**
+    All twelve radial bins agree to within tens of ms in **every** condition (baseline
+    8104…8142, nolag 8238…8326, reverse 6566…6625). **Zeroing a 1200 ms lag constant did
+    not reduce the measured spread.** That is a verdict on the instrument.
+    THE CAUSE IS STRUCTURAL: `:876` draws all **seven** ground layers at the SAME radius
+    — `<circle className="mf-wave mf-wave-ground" r={g.shelfNear} …>` — so the radial
+    structure lives in each layer's GRADIENT, while the 1.2 s stagger lives in each
+    layer's `animationDelay`. **Every pixel therefore superposes all seven staggered
+    layers, and a single-frequency fit returns one blended phase that is similar
+    everywhere.** A per-layer lag is not recoverable from a per-pixel fit on the
+    composite.
+    **So GELB's mutation 2 — the direction question, which it rightly called the
+    interesting one — is UNANSWERABLE BY THIS INSTRUMENT.** Not because PF-7 is sound but
+    because the quantity is not visible here. What it would need is per-layer isolation
+    (the §33 technique: pause all, run one layer), and that is a different instrument.
+
+[4] *** THREE DEFECTS IN MY OWN INSTRUMENT, ALL FOUND BY THE MUTANTS AND NOT BY READING. ***
+    (a) **THE SPAN IS NOT A WHOLE NUMBER OF PERIODS.** I specified 51 frames × 400 ms =
+        20.0 s = 2 periods; the runs came in at **34.0 / 31.7 / 33.0 / 35.2 s = 3.40 /
+        3.17 / 3.30 / 3.53 periods**, because the capture-plus-blur costs ~270 ms a frame
+        on top of the wait. The projection uses the ACTUAL timestamps, so it is not
+        nonsense — but the `2/FRAMES` normalisation assumes uniform spacing over whole
+        periods and got neither. **A span I declared and never measured.**
+    (b) **THE AMPLITUDE FLOOR IS SELF-REFERENTIAL.** I wrote `ampFloor = median(amp) ×
+        0.5`, which admits roughly half the pixels **by construction**, whatever the
+        signal. The zero-width-interval family (A-G421): a threshold derived from the
+        distribution it is thresholding cannot exclude anything.
+    (c) **AND THE CONTROL PROVES (b) RATHER THAN THE SIGNAL.** Under MUT-PF5-DEPTH0 the
+        median swing is **exactly 0** — nothing breathes — and the instrument still
+        reported **431972 pixels "carrying signal"** and a tidy 0 ms spread with all bins
+        at 8990 ms. **A no-signal state produced a clean monotone reading.** That is the
+        clearest possible demonstration that the floor was admitting noise, and it was
+        only visible because a mutant produced a state with no signal in it.
+
+A-G452 (offered): **A MUTANT TESTS THE INSTRUMENT BEFORE IT TESTS THE PIN, AND THE
+NO-SIGNAL MUTANT IS THE ONE THAT AUDITS THE FLOOR.** MUT-PF5-DEPTH0 was written to kill
+PF-5's guard and its most valuable output was a clean, monotone, zero-spread PF-7 reading
+on a field that was not moving at all. **Red-first mutation is usually described as
+proving a guard can fail; this says it also produces the only state in which a floor's
+vacuity is visible** — because a floor that admits noise looks identical to a floor that
+admits signal until the signal is removed. Neither lane's mutants had been read that way.
