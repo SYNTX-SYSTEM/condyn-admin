@@ -1,0 +1,125 @@
+========================================================================================================
+GELB · A-G340 LIMB 1 — the mask threshold is DERIVABLE. Product @ 4b83414e
+========================================================================================================
+
+[1] THE CONSTANTS, LOCATED IN THE PRODUCT
+
+  :138  WAVE.haloDepth    = 0.235     the halo breathes this, peak-to-peak, about its own mean
+  :138  WAVE.selectedGain = 0.35      "while a capability is selected the amplitude is selectedGain of itself (F-7)"
+  :315  .mf-wave-halo → --mf-wave-mean = 0.8825, --mf-wave-depth = 0.1175
+  :316  [data-selection="CAPABILITY"] → --mf-wave-gain = 0.35
+  :223  keyframe: opacity = mean + depth × gain × w
+  :313  .mf-wave { opacity: var(--mf-wave-mean) }  ← the UN-ANIMATED base
+
+  THE MODULATION IS ON THE HALO GROUP'S OPACITY, NOT ON ITS ALPHA DIRECTLY, and it swings about a
+  MEAN OF 0.8825 — not about 1. That is the whole reason the threshold below is not simply
+  0.004 / haloDepth. And :313 is a useful check: under `reduce` the animation is gone and the
+  halo rests at exactly `--mf-wave-mean` = 0.8825, so a static capture samples the MEAN.
+
+========================================================================================================
+[2] A PIXEL CAN ONLY SWING WHAT IT CARRIES — and the threshold is STATE-DEPENDENT
+========================================================================================================
+
+  A pixel's halo contribution c and its luminance swing s share the SAME gradient alpha, so the
+  (S − D) term and the gradient cancel and the ratio is pure opacity:
+      s / c = opSwing / op_sampled        →  capability threshold = 0.004 × op_sampled / opSwing
+  which means THE THRESHOLD DEPENDS ON WHERE THE MASK WAS SAMPLED. Both variants given.
+
+    state        opacity p-p   mask sampled at MEAN   mask sampled at PEAK
+    unselected   0.23500       0.01502                0.01702
+    selected     0.08225       0.04292                0.04492
+
+    selected / unselected = 2.8571 = 1 / selectedGain, either way.
+
+  SO NEITHER CANDIDATE IS THE THRESHOLD:
+    (b) t → 1e-9    admits pixels 1.50e+7× below capability, unselected
+    (a) t = 0.004   admits pixels down to 0.004 — still 3.76× below capability unselected,
+                    and 10.73× below it selected
+
+  *** DERIVED, for a mask sampled at the mean (which a `reduce` capture is, by :313):
+      t = 0.004 × 0.8825 / (haloDepth × gain)  →  0.01502 unselected, 0.04292 selected. ***
+  That is the set of pixels CAPABLE of the swing the limb tests. It is not a choice between two
+  readings of "visible"; it is the only threshold that makes the denominator answerable by the
+  numerator. (a) is in the right direction and PINK's reason for it is the right reason — it is
+  simply not far enough, because the limb's threshold is a SWING and the mask's is a LEVEL.
+
+========================================================================================================
+[3] WHY (b) IS NOT MERELY PERMISSIVE — IT IS ANTI-MONOTONE IN THE THING THE PIN REWARDS
+========================================================================================================
+
+  share = (# pixels swinging ≥ 0.004) / (# pixels in mask).
+  Under (b) the mask is every pixel the glow reaches. Widen the glow's reach — paint further out,
+  which is the mechanism PG-1 and F-3 exist to certify — and the denominator grows while the
+  numerator cannot, because the added pixels are below capability by construction.
+
+  *** UNDER (b), A STRICTLY BETTER GLOW READS WORSE. *** The pin punishes the mechanism it certifies.
+  That is not a bias to be corrected; it is the wrong sign on the derivative, and it is why this
+  is a contract question and not a tolerance question.
+
+  (a) and the derived form have the OPPOSITE failure mode, and it must be guarded: shrink the glow
+  to a tiny bright core and the mask shrinks with it, so the share → 1. PINK named this exact
+  artefact for blur — "a mask that keeps only the bright core is where spreading always wins".
+  RULED WITH THE THRESHOLD: the mask POPULATION is reported beside every share. A share without
+  its denominator cannot be audited for this, and A-G340's four numbers did not carry one.
+
+========================================================================================================
+[4] PINK'S SWEEP, RE-READ — the selected column is PF-10's compliance, not the glow's liveness
+========================================================================================================
+
+  FIRST, THE DISCRIMINATOR I NEARLY USED, AND WHY IT IS THE WRONG WAY ROUND. I was going to write
+  "if this were an independent observation, sel/none would vary with the rung". The arithmetic says
+  the opposite: with ONE mask M shared by both states, share = N/M, so sel/none = N_sel/N_none and
+  M cancels — the ratio is RUNG-INDEPENDENT by construction. And every pixel capable of the swing
+  is already inside the t = 0.004 mask (capability 0.01502 > 0.004), so dropping t adds only
+  incapable pixels, which change M and not N. The ratio should be FLAT.
+
+    rung                 1920 sel/none   1280 sel/none
+    old whole-clip          0.2943          0.2074
+    t = 0.004               0.3487          0.2843
+    t = 0.002               0.3643          0.3076
+    t = 0.001               0.3791          0.3342
+    disc floor → 1e-9       0.3953          0.3283
+
+    mean 0.3244   sd 0.0518   span 0.2074 … 0.3953
+    WAVE.selectedGain = 0.35          |mean − selectedGain| = 0.0256
+
+  IT IS NOT FLAT. Over the four t rungs it drifts 0.0466 at 1920 and 0.0440 at 1280, both upward
+  as t falls. *** THAT IS A SECOND FINDING AND IT IS ABOUT THE MASK, NOT THE GLOW: *** a shared,
+  state-independent mask cannot produce a t-dependent ratio. Either the mask is built PER STATE,
+  or the 2 px blur is mixing pixels across the mask boundary so that changing M changes the
+  measured swings too. Both are checkable on PINK's stand and neither is visible in the shares.
+
+  WHAT SURVIVES THE CORRECTION, AND IT IS THE POINT: ten cells, five rungs, two viewports, and the
+  ratio sits at mean 0.3244, sd 0.0518 — 7.3 % from the declared selectedGain of 0.35. A
+  share measuring "does a quarter of the glow breathe" has no reason to land on a CSS constant.
+  To first order the selected column is selectedGain re-measured; the drift is the residual.
+
+  AND PF-10 REQUIRES IT. PF-10: "with a capability selected, the measured breath amplitude is
+  ≤ 45 % of its unselected value." selectedGain = 0.35 ≤ 0.45, satisfied with margin.
+
+  *** SO LIMB 1'S SELECTED READING PENALISES THE BUILD FOR COMPLYING WITH PF-10. *** A fixed
+  absolute swing threshold against a deliberately reduced amplitude is a pin fighting a pin.
+  "Selected fails 10 of 10" is not a defect in the build; it is the limb measuring the wrong
+  quantity in that state.
+
+========================================================================================================
+[5] WHAT THE LIMB CAN AND CANNOT DECIDE
+========================================================================================================
+
+  *** THE VERDICT PINK COULD NOT PICK IS DECIDED, AND WITHOUT A RE-RUN. ***
+  The derived threshold 0.01502 lies ABOVE every rung PINK swept (0.004 is the highest).
+  Raising t shrinks the mask by removing incapable pixels only, so the share is MONOTONE
+  INCREASING in t — and PINK's own 1280-unselected column confirms it, listed in ASCENDING t:
+      t=1e-9 → 0.2251   t=0.001 → 0.3638   t=0.002 → 0.4847   t=0.004 → 0.5852
+  monotone increasing in t: yes
+  So at t = 0.01502 the 1280 unselected share is ≥ its t = 0.004 value of 0.5852,
+  against a bound of 0.25. **1280 UNSELECTED CLEARS, by at least 0.3352.**
+  1920 unselected clears at every rung PINK ran, so it clears at the derived threshold too.
+  (b)'s 1e-9 floor was the only reading that failed it, and block [3] rules (b) out on its own.
+
+  NOT EVALUABLE — selected, at any threshold, until the limb states its swing threshold as a
+  FRACTION of the state's own amplitude rather than an absolute. Eight of PINK's cells.
+
+  This is a THIRD inconclusive state, and it is not A-G277's: PG-11 is INCONCLUSIVE BY MEASUREMENT
+  (the instrument cannot resolve it). This is INCONCLUSIVE BY CONSTRUCTION — the instrument
+  resolves it perfectly and the quantity it resolves is not the one the pin names.
