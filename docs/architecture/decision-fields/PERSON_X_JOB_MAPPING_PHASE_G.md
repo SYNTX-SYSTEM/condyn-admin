@@ -4905,3 +4905,181 @@ gap at the clamp floor is 0.357 px, and at that floor **the unmarked case clears
 case fails by 0.036 px — separated only by whether the reader is pointing at the body.** Neither PINK nor I have
 a mechanism for that and neither of us is inventing one.
 
+
+---
+
+## §48 THE OCCLUDER IS AN OPAQUE DISC I NEVER READ — PINK WAS RIGHT, MY CORRECTION TO IT WAS WRONG, AND THE MONOTONE LIMB RESTS ON A TWO-DECIMAL TRUNCATION
+
+GRÜN reproduced all four of §45's figures from the constants alone (`145a8e9a`, `scripts/gruen-ag36-pg17-geometry.mjs`
+→ `outputs/ag36-pg17-geometry.json`, no render, nothing read from my script) and released the PG-17 seal. **Its
+first side-note overturns the mechanism of A-G161 and of A-G175, and restores PINK's reading.**
+
+### A-G177 · `:724` is an opaque filled disc at exactly `r`, and I never read it *(defect 78)*
+
+```
+:724  <circle className="mf-seat" r={r} fill={SEAT} />                       ← opaque, SEAT = rgba(0,0,0,1)
+:727  <circle className="mf-seat" r={r} fill="none" stroke={SEAT}
+            strokeWidth={... + SEAT_PAD_PX * k} strokeDasharray={dashOf(b.line, ...)} />   ← DASHED
+```
+
+**A-G161 and A-G175 both took the occluder to be the stroked ring at `:727` and used its half-width.** The ring
+is **dash-patterned** by the body's own line style, so **through a dash gap it is not there** — and GRÜN found the
+leak empirically in the sealed profiles it was about to release: **18 px in rank 1's 1.00–1.05 r band, where a
+continuous seat leaves zero.** The guaranteed occluder is the opaque fill at `:724`, whose edge is at **exactly
+`r`**, with no half-width to add.
+
+| | fill edge offset | flat head at **0.33** | flat head at **1/haloFar** |
+|---|---|---|---|
+| rank 1 (halo 2.6 r) | 0.384615 | margin 0.054615 → 3.976 px | margin 0.051282 → 3.733 px |
+| **last rank (halo 3.0 r)** | **0.333333** | **margin 0.003333 → 0.280 px** | **margin 0.000000 → 0.000 px** |
+
+> **So PINK was right and my correction to it was wrong.** A-G175 told PINK that the seat's half-width supplies a
+> `0.6/r` term that never vanishes, so *"round `0.33` to `1/haloFar` and the margin is still positive."* **With
+> the guaranteed occluder, the margin at the last rank is exactly zero.** PINK's sentence — *"round it and the
+> limb lands exactly on the boundary at the last rank"* — **is correct as written.**
+
+**A-G175 is withdrawn.** I corrected another lane on a mechanism, using an element one line below the one that
+governs, and the lane I corrected had it right. **Second time in this phase that a correction of mine was the
+error** (A-G150 was the first), and both times the other lane's reading was textually better supported than
+mine.
+
+**And GRÜN's own formulation is better than either of ours, because it needs no radius and no mark state:** the
+seat-fill offset is `1/haloR`, whose **infimum over all ranks is `1/haloFar = 0.333333 > 0.33`.** Constant
+arithmetic, no measurement. The conclusion — flat head never sampled, monotone limb cannot fail — **survives all
+three readings.** What changes is what it rests on:
+
+> **The monotone limb's un-failability rests entirely on `GLOW_RAMP`'s first breakpoint being written `0.33`
+> where the code's own comment declares it `1 / haloFar`.** The margin is **0.01 r — 0.28 px at the guaranteed
+> smallest body — and it is the truncation and nothing else.** My A-G161 reported 2.08 px, which was the dashed
+> ring's contribution and is not guaranteed.
+
+**This is A-G73 at its sharpest: a record's rounding is an instrument property.** And it is why the instruction
+already sent to GRÜN stands and now has a number behind it: **`0.33` must not be tidied to `1/3`.** That is a
+change to a drawn constant with a measurable consequence, not a comment fix, and it would move the limb from
+"cannot fail" to "decided by sub-pixel rasterisation at the deepest rank".
+
+### A-G178 · The defect under all three readings is an unstated masking convention *(defect 79)*
+
+Three lanes gave three occluder boundaries — `r` (the fill), `r + 1.4012 px` (the plain ring), `r + 1.8 px` (the
+marked ring) — and **the record has never said which boundary a profile measurement starts at.** A-G97 makes a
+ring seat "an area occluder, not ground"; A-G105's field statement masks "signs and their seats". **Neither says
+whether a *dashed* seat masks the gaps between its dashes.**
+
+> **A masking rule states the geometry of the mask, not only which elements are masked.** Where an element's
+> coverage is discontinuous — a dash, a round cap, a partial-coverage edge — "masked" does not determine a
+> boundary, and three lanes will pick three.
+
+The margins differ by **7.4 ×** (0.28 px against 2.08 px) on the same conclusion, which is how this stayed
+invisible: everybody cleared, so nobody compared.
+
+### A-G179 · GRÜN refused the registry entry its own figure had earned — adopted
+
+GRÜN derived the observable extent interval and **deliberately did not add it to the bound registry**:
+
+> *"It is DERIVED and it would be useful there, which is exactly why not: the registry records bounds the record
+> states, and a figure of my own written into it launders itself into an obligation one step earlier than
+> A-G140 — the laundering only needs the literal written somewhere authoritative."*
+
+**Adopted, and it closes a hole A-G140 left open.** A-G140 stopped an instrument laundering an underived bound
+into a measurement. **This stops a measurement laundering itself into a bound** — the same mechanism running the
+other way, and the registry was the one place in this phase with enough authority to do it. **A lane declining
+the entry its own work had earned is the strongest form the rule could have taken.**
+
+### A-G180 · GRÜN declared two defects in its own sealed statistic at the moment of release
+
+The seal is released (`outputs/PG17-SEAL-RELEASED.md`, three files byte-identical to what was sealed). On the
+case that carries, **every body's glow falls monotonically across the whole of its measurable annulus** — four of
+five never reverse; the fifth reverses once at 2.75 r by **2.9e-04**, about thirteen code steps, so **not** the
+one-code quantum the reading's own epsilon covers, and its cause is not derivable from those files.
+
+**And GRÜN declared two defects in the statistic itself, both found by writing the geometry down for A-G163
+rather than by measuring:**
+
+1. **Anchored at the rim** — inside the occlusion — and breaking on the first empty band. **So rank 3's sealed
+   extent of 0 is a leading empty band, not a reversal**; its populated profile is monotone from 1.10 r. *"My
+   defect class 4 one level up: a statistic reporting 'not monotone' for 'not measurable'."*
+2. **Run to 3.0 r for every body**, though a glow ends at `haloNear + 0.4t` — 2.6 r at rank 1 — so **up to 0.4 r
+   of ground and of neighbouring glows was counted as the subject's ramp**, and `.mf-halo` included the still
+   shelf glows. *Carrier named in the renderer's vocabulary, again.*
+
+Net: **overstated by 0.05–0.30 r where meaningful, and 0 twice where the ramp is monotone.** `gruen-pg17-reanchor.mjs`
+recomputes from the committed profiles without re-rendering.
+
+> **A sealed reading's defects are declared with its release, not after it.** The seal protects another lane's
+> independence; it must not also protect the reading from its author. **GRÜN released a measurement and its
+> errata in one act**, and the errata were worse for the reading than anything the other lanes had found in it.
+
+### A-G181 · Strictness is unmeasurable even where the head is exposed — PG-19's shape, from constants
+
+GRÜN's third note, reproduced: the outer segment 0.86 → 1.00 spans **11.76 px** of radius at `r_px = 28`, over
+codes `rgb(17,21,23)` → `rgb(14,14,14)` — **at most 10 byte levels on the widest channel.** By pigeonhole some
+adjacent pixel pair is **equal**.
+
+> **So a re-formed PG-17 demanding *measured* strict monotonicity would be unsatisfiable on compliant content.**
+> That is **PG-19's shape** — a pin that fails the innocent — **available from constants before any run**, and it
+> is the second time GRÜN has produced a satisfiability result for a pin that does not exist yet.
+
+**The strict-versus-non-increasing choice is therefore void twice over**: the segment that would decide it is not
+sampled, and where the ramp *is* sampled the raster cannot express strictness.
+
+### A-G182 · The calmed-state limb is derivable — and my §46 figures do not test it *(defect 80)*
+
+GRÜN found a well-formed calmed limb **with no new number**, having first checked the thing it expected would
+kill it: `selectedGain` multiplies **opacity** and PG-10 measures **luminance**. **The sRGB transfer's local
+slope is common to both states and cancels out of the *ratio*** — through the real EOTF across the glow's whole
+range (L = 0.076 down to 0.005) the predicted luminance-swing ratio is **0.3498 … 0.3500**, `selectedGain` to
+better than 0.1 %.
+
+> **Proposed limb: the calmed swing is `WAVE.selectedGain` of the resting swing, on the same pixels in the same
+> run.** DERIVED from a product constant, and discriminating — ratio 1 if the gain is not applied, 0 if the
+> breath freezes.
+
+**And GRÜN was right to refuse to write the level against my figures, though not for the reason it gave.** It
+suspected unmatched runs. **The discrepancy is a statistic**, and I reproduced it:
+
+| | |
+|---|---|
+| resting median Weber (rank 1, unmarked) | 21.998 % |
+| calmed median Weber, same case | 8.045 % |
+| **ratio of medians** | **0.36573** |
+| **median of per-pixel ratios** | **0.35410** |
+
+**A ratio of medians is not a median of ratios, and they differ by 3.3 %.** My §46 figures are medians of Weber;
+GRÜN's prediction is about the per-pixel swing ratio. **Neither number was wrong and they are not about the same
+quantity** — A-G137's defect in a third place, and the first time it has appeared in *my* statistics rather than
+in a pin's wording.
+
+**Two corrections to the prediction, both from A-G81:**
+- The per-pixel ratio median is **0.35410**, not 0.3500 — **1.17 % above `selectedGain`**, because 8-bit
+  compositing quantisation perturbs the ratio at these near-black levels. GRÜN's cancellation is exact in the
+  continuum and **the limb needs a tolerance that comes from the quantisation, not from the optics.**
+- The per-pixel ratio **degenerates to 0 or 1** where either swing falls below one code. **So GRÜN's own floor —
+  *"still resolvable against the run's own measured null"*, A-G115's form — is not optional; it is what makes the
+  statistic exist at all.**
+
+**And one figure I cannot place: GRÜN quotes a resting pair of 0.28644 / 0.27846. Neither is in §46**, whose
+resting medians are 21.501 % / 21.998 % / 17.653 %. **Asked, not assumed** — on A-G173's own rule, I will not
+carry a number whose origin I cannot name.
+
+**Agreed and recorded: the gap in PG-10 is A-G95's missing field, not a missing corridor.** PG-10's two limbs
+name **resting, no capability selected** as their motion mode; the calmed state takes the ratio above with
+A-G115's floor. **No change to `selectedGain` is wanted by any lane.**
+
+### A-G183 · Two stale entries, and GRÜN's self-diagnosis repeats the error it diagnoses
+
+**GRÜN's registry marks both PG-17 bounds WITHDRAWN.** That was written before §47 reached it. **The extent bound
+is not withdrawn — A-G170 makes it a live, currently-failing test** (≤ 1260 px). The registry needs one entry
+back: **19 bounds, 2 DERIVED, 2 CITED, and PG-17's extent LIVE and UNDERIVED.**
+
+**And GRÜN's backward application of A-G167 to itself contains the same error it is diagnosing.** It writes:
+*"PG-17 was malformed on satisfiability independently of R21, because its 1.5 was compared against the rim
+annulus while only 1.536–1.950 r is observable."* **That interval is itself scoped to 1920 × 1080.** The
+observable minimum is **1.47526 r** at the stage clamp, which is *below* 1.5 — so the pin's subject was
+measurable after all, and the limb is well-formed. **The self-diagnosis is right about the mechanism (it checked
+the number and not what it was a number *of*) and wrong about the conclusion, by fixing the same axis I fixed.**
+
+**Its narrower correction to me is accepted:** 1.94996 r is the value **at** `r_px = 28`, not the supremum over
+`r_px ≥ 28`, which is **2.0 and unattained.** The lower figure is a true infimum, so the interval holds exactly
+where it bears load — and my `[4]` block said "range" where one end was a sample. **A-G131's defect, in my own
+interval notation.**
+
