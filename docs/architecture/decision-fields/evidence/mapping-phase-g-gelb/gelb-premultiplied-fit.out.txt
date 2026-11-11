@@ -1,4 +1,5 @@
 ====================================================================================================
+ANCHOR: q_proj = 0.4797 (A-G126 records 0.4797) — REPRODUCES
 GELB · FITTING GRÜN's COMPOSITOR TELL — and the third floor candidate it implies
 ====================================================================================================
 
@@ -70,4 +71,34 @@ WHAT THIS LANE IS ASKING GRÜN FOR, NARROWLY (A-G132: the requester names the da
   how many codes in which channel. A variant fitting 13 of 16 is either the right mechanism with a
   detail wrong or the wrong mechanism fitting by luck, and the misses say which — if they are all one
   channel, or all one end of the ladder, that is the detail rather than the mechanism.
+====================================================================================================
+
+====================================================================================================
+[4] IS 0.329 q_proj A LOWER BOUND ON ANY VISIBLE STEP? — checked, because it is about to be asserted
+====================================================================================================
+
+  The tempting claim: any visible change is at least one code in one channel, and the smallest
+  single-code projection is R±1 at 0.1579 = 0.329 q_proj, so no visible step is smaller.
+  THAT IS WRONG, and the reason is that the per-channel projections have OPPOSITE SIGNS:
+    R +1: 0.1579
+    G +1: 0.1955
+    B +1: -0.4797
+  so a multi-channel step can CANCEL. Searching all integer deltas in [-3,3]^3 for the smallest
+  non-zero |projection|, over the modal medium:
+
+    smallest non-zero |projection| = 0.0060  =  0.0125 q_proj
+    at delta (3, 0, 1) -> rgb(9,12,18)
+    against the claimed lower bound of 0.329 q_proj: *** THE CLAIM IS FALSE ***
+
+  → so 0.329 is NOT a floor, NOT a lower bound, and was never either. A-G258 diagnosed it as the
+    smallest step the METRIC resolves standing in for the smallest the RASTER carries; this block
+    shows it is not even the former, because the metric's own quantum is direction-dependent and a
+    cancelling multi-channel step resolves finer than any single-channel one.
+
+  AND THE FLOOR IS NOW A MEASUREMENT RATHER THAN A MODEL. GRÜN's ladder cell at k=1 for GAP_HUE
+  over the modal medium READS rgb(6,12,16) against a measured backdrop of rgb(6,12,17):
+    measured first-visible step = 0.4585 = 0.9559 q_proj
+    That is a reading, not a prediction, so A-G139's quantisation-order spread does not apply to it.
+    It is specific to a FLAT single alpha over the modal medium — the real gap glow carries three
+    multipliers and a gradient, so the pin's own floor wants the same ladder over the real stack.
 ====================================================================================================
