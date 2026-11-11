@@ -2260,3 +2260,109 @@ A-G341'S GUARD IS HONOURED HERE AND SHOULD BE RETROFITTED: **mask population is 
 share, every rung, both states.** §28's four numbers carried none, which is why neither failure mode could
 be audited from them.
 
+
+
+=== §30 · A-G366: THE s/c CEILING TEST — THE EXCURSIONS ARE THE QUANTISER, NOT FOREIGN MOVERS ========
+
+Instrument: scripts/pink-ag366-foreign-g.mjs   Output: outputs/AG366-FOREIGN.json
+Stand: PINK :3122, 3ec8457d, BUILD_ID xCD8LBxdjnP97-2Gjs5yr.
+
+**IT WAS A RE-RUN, NOT A RE-READ, AND THAT MATTERS FOR PROVENANCE.** GELB asked for the fraction of masked
+pixels with `s/c > 0.5503` *"from the distribution you already hold"*. I did not hold it: §29 persisted five
+summary statistics and a 42-bin histogram, not the per-pixel ratios. **I grepped the artifact first** (its
+own habit, and the right one) and the histogram gives only a per-bin median, which bounds nothing tightly
+— in a bin whose median is under the ceiling, up to half the pixels may still exceed it. So these are fresh
+captures on the same build, and that is said rather than glossed.
+
+**BUT THE HISTOGRAM ALREADY SETTLED THE SHAPE OF THE ANSWER WITHOUT A RUN:** every bin whose median
+exceeded the ceiling sat at tiny `c` — the 12 over-ceiling bins at 1920 unselected ran 2.39e-5 … 5.40e-4,
+against a median `c` of 6.2e-3. One green LSB is 2.171e-4. **The excursions live exactly where `c` is a few
+quantisation steps.**
+
+WHERE GELB'S CEILING ARGUMENT HOLDS AND WHERE IT DOES NOT. *"Quantisation cannot raise it — rounding never
+manufactures swing the opacity range does not contain."* **True of the NUMERATOR. Not true of the RATIO.**
+`s/c` has a quantised DENOMINATOR, and `c` can be rounded DOWN: a true `c` of 1.9 LSB that lands on 1 LSB
+nearly doubles `s/c` with no foreign mover anywhere near the pixel. The ceiling bounds the physics of the
+breath; it does not bound a ratio whose divisor is a difference of two 8-bit luminances.
+  > **This is the same shape as the envelope defect GELB confessed in the same message, and A-G30 covers
+  > it for the same reason it covered that one:** *a ratio of two floor values is not a measurement.* The
+  > rule was already there; what was missing was applying it to the divisor of a test built to police
+  > someone else's divisor.
+
+SO THE FRACTION IS REPORTED AGAINST A LADDER OF ADMISSIBILITY IN UNITS OF EACH PIXEL'S OWN QUANTUM `q`
+(half an LSB on each channel, summed, **measured from the actual bytes** at that pixel — not assumed from
+the dark-regime constant). Median `q` is 3.16e-4 at 1920 and 2.36e-4 at 1280:
+
+  1920x1080   shared mask 35423
+    none   (exact s/c at capability = 0.3756)
+      admissibility        px      %mask    FRACTION > 0.5503   median s/c   p95 s/c    max s/c
+      none (as asked)     35423   1        0.1207              0.39045      1.35659    505.838
+      c >= 1 x quantum    34281   0.9678   0.0968              0.38782      0.85953    141.161
+      c >= 2 x quantum    32842   0.9271   0.0624              0.3842       0.60786    113.116
+      c >= 5 x quantum    29918   0.8446   0.0307              0.37906      0.49667    29.944
+      c >= 10 x quantum   24040   0.6787   0.0135              0.37582      0.46925    12.033
+    sel   (exact s/c at capability = 0.1504)
+      admissibility        px      %mask    FRACTION > 0.5503   median s/c   p95 s/c    max s/c
+      none (as asked)     35107   0.9911   0.1119              0.18609      0.99329    636.039
+      c >= 1 x quantum    34117   0.9631   0.0907              0.18447      0.82422    141.753
+      c >= 2 x quantum    32797   0.9259   0.0589              0.1821       0.58074    98.168
+      c >= 5 x quantum    29994   0.8467   0.0269              0.17878      0.4288     31.681
+      c >= 10 x quantum   24203   0.6833   0.0032              0.16919      0.25696    11.288
+  1280x800   shared mask 13096
+    none   (exact s/c at capability = 0.3756)
+      admissibility        px      %mask    FRACTION > 0.5503   median s/c   p95 s/c    max s/c
+      none (as asked)     13096   1        0.3839              0.4308       13.54285   658.929
+      c >= 1 x quantum    12170   0.9293   0.3407              0.42048      6.80965    150.404
+      c >= 2 x quantum    10277   0.7847   0.2272              0.39845      4.38514    96.705
+      c >= 5 x quantum    8188    0.6252   0.0962              0.37983      1.17023    25.492
+      c >= 10 x quantum   6144    0.4692   0.0322              0.3702       0.47633    10.09
+    sel   (exact s/c at capability = 0.1504)
+      admissibility        px      %mask    FRACTION > 0.5503   median s/c   p95 s/c    max s/c
+      none (as asked)     11281   0.8614   0.2607              0.20007      9.91106    525.766
+      c >= 1 x quantum    10762   0.8218   0.2288              0.19463      6.92124    88.264
+      c >= 2 x quantum    9622    0.7347   0.1445              0.18531      4.29099    85.804
+      c >= 5 x quantum    8070    0.6162   0.0428              0.17267      0.50497    27.597
+      c >= 10 x quantum   6285    0.4799   0.0048              0.15817      0.25639    10.162
+
+**THE ANSWER GELB ASKED FOR, UNRESTRICTED: 0.1207 / 0.1119 / 0.3839 / 0.2607.** And the answer to the
+question behind it is the opposite of what the unrestricted figure suggests, because the fraction collapses
+monotonically as the divisor is required to be measurable:
+
+  · **p95 of s/c falls BELOW the 0.5503 ceiling in ALL FOUR CELLS at `c >= 10q`** — 0.469 / 0.257 / 0.476 /
+    0.256. GELB read *"p95 1.567 is above the ceiling by 2.85×, and 14.59 by 26.5×"* as foreign movers,
+    derived. **They are not. They are the denominator being quantised down.** The 1280 p95 goes 13.54 ->
+    0.476 on admissibility alone, with no suppression pass and no selector list.
+  · **The unselected median converges on GELB's exact derived value**: 0.37582 against 0.3756 at 1920
+    (0.06 %) and 0.37020 at 1280 (1.4 % low). That agreement **exists only after the guard is applied** —
+    unrestricted it reads 0.39045 and 0.43080.
+  · Residue above the ceiling at `c >= 10q`: **1.35 % / 0.32 % / 3.22 % / 0.48 %**, with max s/c falling
+    from ~500-660 to 10-12. A real foreign-mover residue, bounded and small.
+
+**SO, BY GELB'S OWN SEQUENCING CRITERION: my medians stand, the empirical capability threshold is nearly
+right, and the FOREIGN-suppressed re-run does NOT earn its cost.** It said *"if it is small your medians
+stand … if it is large, the suppressed re-run earns its cost"*. It is small once the test is admissible.
+
+ON WHETHER THIS IS TWO-ROUTE CORROBORATION — **I am declining it the way GELB declined the weaker version.**
+The derivation cannot see foreign movers at all, and my measurement now has most of them excluded by
+admissibility rather than by suppression. So the 0.06 % / 1.4 % agreement on unselected **bounds how much
+contamination survives the guard**; it is not two independent routes meeting. That is the weaker and more
+useful statement, and it is stronger than the 1 % / 13 % GELB already refused to call corroboration.
+
+**SELECTED DOES NOT CONVERGE AS WELL, AND THAT IS THE INFORMATIVE HALF.** At `c >= 10q` the selected median
+is 0.16919 (1920) and 0.15817 (1280) against an exact 0.1504 — still 12.5 % and 5.2 % high, where unselected
+lands inside 1.4 %. **The selected signal is 2.857× smaller by construction, so whatever foreign movement
+remains bites hardest exactly there.** That is independent support for A-G365's resolution ground, from the
+opposite direction: the selected state is where the breath is least separable from everything else moving.
+
+A FINDING BEYOND THE ASK, AND IT BELONGS TO MY MASK RATHER THAN TO THIS TEST. **A third to a half of the
+shared mask is quantiser-dominated**: at `c >= 10q` only 0.679 / 0.683 of the 1920 mask survives and
+**0.469 / 0.480 of the 1280 mask** — so at 1280 more than half the masked pixels have a contribution that
+is not measurable to 10 %. A-G30's guard therefore belongs on the MASK, not only on this ratio.
+  > **Reach, with its sign: this does NOT touch any verdict at the capability rung.** The capability
+  > threshold is 0.01125 (1920) and 0.01147 (1280), which is **35.6 and 48.6 quanta** — far above the 10q
+  > rung, so the mask that decides limb 1 is entirely admissible already. The quantiser population sits
+  > in the loose rungs only. And its direction there is known: tiny `c` means tiny `s`, so those pixels
+  > land in the denominator and not the numerator, **depressing** the loose-rung shares. Excluding them
+  > would RAISE every loose-rung share, which moves clears further into the clear and is the generous
+  > direction for the build — so no green of mine depends on including them.
+
