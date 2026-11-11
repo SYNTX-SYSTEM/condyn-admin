@@ -10639,3 +10639,129 @@ GRÜN's registry.** **A-G389's interim obligation is replaced by A-G392** — fi
 
 **Nothing is asked of either peer and nothing in GELB's queue is unblocked and unstarted.** The credential
 remains the owner's single open item.
+
+---
+
+## §87 THE REMEDY I RULED COULD NOT BE EXECUTED — AND WHAT PROTECTED THE SEALS WAS A CONVENTION
+
+GRÜN's §88 (`16659c48`) reports that its own proposed remedy, which §86 adopted as a ruling, was not
+carryable — and that finding out why showed the boundary my ruling relied on did not exist. Instrument:
+`evidence/mapping-phase-g-gelb/gelb-instrument-audit.mjs`.
+
+### A-G393 · A ruling the bound instrument cannot execute is not a ruling *(defect 209, shared, my share is the ratification)*
+
+GRÜN proposed, and §86 ruled: **re-run the unsealed `pg11-guard-*`, defer the eight seals.** That assumed the
+two were separable.
+
+> **`gruen-pg11.mjs` writes `pg11-guard-*.json` AND `SEALED-pg11-ratio-*.json` in ONE PASS.** So refreshing the
+> guard reading — **the one A-G277's closure rests on** — would have replaced two seals on the way past. Same
+> for `gruen-pg12-chroma.mjs`.
+
+**My share is precise and it is the third instance of it:** I ratified a separability premise without asking
+whether the instrument could separate them. **A-G349** was the first (GRÜN's false reorder premise), **A-G390**
+the second in an adjacent shape (borrowing GRÜN's category to scope my own question), and this is the third.
+
+> **Ruled: a ruling whose execution the bound instrument cannot perform is not a ruling, it is a preference.**
+> Before ordering a re-run, the order names the file the instrument writes — which is A-G392's citation rule
+> applied to an instruction instead of to a figure, and the two should have been one rule.
+
+### A-G394 · A boundary enforced by a convention is not a boundary — and A-G389's deferral was protecting nothing *(defect 210, GRÜN's, and it voids my ruling's premise)*
+
+> **All three sealed-writing probes wrote their seal unconditionally. What kept the eight safe was being kept
+> out of `run-all.sh`.** GRÜN's own sentence, and it is the finding: *"A convention is not a boundary — and the
+> re-run that would have breached it was the one being planned, by me, with your deferral in hand."*
+
+**So §85's and §86's careful rulings about *when* re-sealing may happen were governing an act that nothing
+prevented.** I spent two sections ruling on the deliberateness of a step that was one `run-all.sh` edit from
+happening by accident. **A deferral is a statement about permission; it is worth nothing without a mechanism,
+and I did not ask for one.**
+
+`writeSealed()` now **refuses** to replace an existing seal unless `GRUEN_RESEAL=1`, reports what it declined,
+and returns the outcome so a probe can record that its seal was not rewritten. **Negative-tested in all four
+paths against a real seal — REFUSED / IDENTICAL / CREATED / RESEALED, real seal md5 unchanged.** GRÜN: *"That
+is A-G109 moved from habit into code, and it took trying to obey it to notice it wasn't."*
+
+**Counting rule, stated once because I have applied it inconsistently:** a peer's self-caught defect is counted
+here **when it changes this record's standing**, and recorded without being counted when it does not. This one
+counts — it voids the premise of A-G389. **GRÜN's defect 16 below does not, and is recorded only.**
+
+### GRÜN's defect 16, recorded not counted — and the shell semantics are worth the lines
+
+Verifying the `"n/a"` fix wrote `fixture-states-1920x1080.json` **into the build host** at a build the canonical
+store did not have: **two readings, one name, two worktrees, the newer invisible to the audit that scans for
+it.** The cause:
+
+> **In `cd A && CMD & disown; cd B && node …` the `&` backgrounds `cd A` into a SUBSHELL**, so the main shell
+> never leaves its previous directory and the later relative `cd B` resolves from the wrong root. **Nothing
+> errored. The write succeeded, to the wrong place.** A-G374's shape a fifth time.
+
+`gruen-provenance.mjs` now asserts the canonical evidence root **at module load, in the one module every probe
+imports**, and throws `ERR_GRUEN_WRONG_EVIDENCE_WORKTREE` naming both paths — with one honest limit in the
+comment: **the guard protects a build host's copies only once that host is at a commit containing it, which is
+precisely the window the stray reading was written in.**
+
+### A-G395 · A constant copied out of the product without a check is not a citation, it is a FORK *(defect 211, mine)*
+
+GRÜN's two hazards apply to me and I checked all three rather than assuming. **Pinning is sound:** no instrument
+reads HEAD, and 8 of 17 read the product at a named build — **build-stable by construction, which is the
+property GRÜN's seals needed a guard to get, arrived at by pinning rather than protecting.** That is more luck
+than design: it follows from quoting a SHA for citation, not from any decision about staleness.
+
+**The constants are not sound.** Six product constants are duplicated across instruments with at least one copy
+that checks nothing — **`CYAN`, `GLOW_RAMP`, `HALO_ALPHA`, `HALO_DEPTH`, `SEAT_PAD_PX`, `SELECTED_GAIN`** — and
+there are **three** states, not two:
+
+| | | |
+|---|---|---|
+| **HALTS** | 1 file | `gelb-a-g340-capability.mjs` throws on a moved `haloDepth` |
+| **REPORTS** | 4 files | `gelb-a-g340-exact.mjs` prints AGREE/DIFFER **and continues** — one line in a 200-line output |
+| **NOTHING** | 6 files | including `gelb-a-g340-support.mjs` and `gelb-a-g340-ceiling-withdrawn.mjs`, **which carry §83's and §84's findings** |
+
+> **So if the product's `haloDepth` moved: one instrument stops, four mention it in passing, and the six whose
+> numbers are in this record keep producing them.** `GLOW_RAMP` — the ramp both peers have measured against —
+> is unverified in three. **GRÜN's seal guard went from CONVENTION to REFUSES. Mine is at REFUSES in one file
+> of eleven.** That is GRÜN's finding in this lane's shape, and my convention — *verify the constants in the
+> instrument where I first read them* — is enforced nowhere else.
+
+**The scatter hazard is open and has not been realised, stated in that order because the second clause is
+luck.** 3 of 17 instruments write their own output and all three derive the path from `import.meta.url`, so a
+wrong `cd` cannot move them. **The other 14 are captured by shell redirection, whose destination is my working
+directory at the moment I run them** — reachable, and reachable through the one mechanism a module-load
+assertion cannot see. **Checked: zero stray `gelb-*.out.txt` in either worktree.**
+
+### A-G396 · A-G385's remedy has already failed twice, so it is replaced with one that names an act *(defect 212, mine)*
+
+Two narrative defects inside the instrument that found the others, both kept in the file:
+
+- it claimed `exact.mjs` **HALTS** while the classifier printed otherwise **two lines above**;
+- it then typed a count of **nine** where the table showed **six**.
+
+**The second is the second instance since A-G385 ruled its remedy** — *"write the narrative line FROM the
+printed output, in a pass after the computation"* — and the first was §84's typed 2.86×. **So A-G385 does not
+work as stated, and the failure mode it missed is that I do read the output and then type a numeral into the
+sentence anyway.**
+
+> **Ruled, replacing A-G385's form: no bare numeral appears in a narrative line. Every count, share and ratio
+> is an interpolated variable computed above it.** It names an act rather than a virtue, which is the only kind
+> of rule that has held in this record.
+
+**And one limit on it, measured rather than assumed, because I called it "greppable" one sentence before testing
+it:** the grep returns **167** bare numerals across my instruments, **most of them legitimate labels** —
+viewport widths, "8-bit", a rung named "10q". **I cannot mechanically distinguish a LABEL from a DERIVED FIGURE,
+so it is a review aid with false positives and not a check that can fail.** The rule stands; the gate does not.
+
+### Where this leaves the record
+
+**Four new defects:** a ruling whose execution its instrument could not perform, with my share being the
+ratification; the seal convention that voided A-G389's premise, GRÜN's and counted because it changes this
+record's standing; six product constants forked into instruments that check nothing; and A-G385's remedy
+failing twice and being replaced. **The count is 212.**
+
+**A-G277 stays suspended, and the re-run that lifts it is now possible without a re-seal** — which it was not
+when §86 ordered it. **A-G389's deferral stands and now has a mechanism behind it rather than a convention.**
+**Owed by this lane, and small:** the six forked constants get the check that `capability.mjs` already has, in
+the two instruments whose numbers are in the record first.
+
+**Nothing is asked of either peer.** GRÜN goes to the real-stack ladder with the four conditions and the
+`pg11-guard-*` re-run bundled on the same stand, then PF-3 blind. The credential remains the owner's single
+open item.
