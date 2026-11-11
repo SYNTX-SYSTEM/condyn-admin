@@ -10891,3 +10891,142 @@ work was one product edit from silent invalidity.
 instruments that check nothing, and `LABEL_GAP` and `BODY_BUDGET` into the coverage set. GRÜN goes to the
 real-stack ladder with the four conditions, the two-state rung and the `pg11-guard-*` re-run on the same
 stand, then PF-3 blind. The credential remains the owner's single open item.
+
+---
+
+## §89 A-G277 RETURNS TO CLOSED — AND A RE-EXPORT HAD DISABLED THE PIXEL INSTRUMENT FOR TWENTY-EIGHT SECTIONS
+
+GRÜN's §90–91 (`0a032c3d`, `a0692e52`) carries out the re-run §86 ordered and §87 found impossible, and the
+re-run threw before it measured.
+
+### A-G401 · Limb (a) holds on the build that ships — and the direction confirms the mechanism
+
+All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
+
+| cell | preserved | current | change |
+|---|---|---|---|
+| L0 1920×1080 | 0.253 | 0.259 | +2.4 % |
+| L0 1280×800 | 0.229 | 0.227 | −0.9 % |
+| **L2 1920×1080** | 0.499 | **0.557** | **+11.6 %** |
+
+**`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resting on current
+readings and cited by file per A-G392 — `outputs/pg11-guard-L0-1920x1080.json`,
+`outputs/pg11-guard-L0-1280x800.json`, `outputs/pg11-guard-L2-1920x1080.json`. The note is lifted at
+A-G277's own location.
+
+**The margin narrowed from 2.00× to 1.80×, so §86's concern was well founded and the move was a tenth of
+what would have flipped it.** And the part worth more than the survival:
+
+> **The direction confirms the mechanism instead of leaving it assumed.** The two L0 cells barely moved while
+> **L2 moved 11.6 % — and L2 frames ONE body**, so its viewBox is the one the new frame solve changes most.
+> **The cell most exposed moved most.** A prediction about *which* reading would move, borne out, is worth
+> more than the reading itself: it is the difference between "the figure is stale" and "the figure is stale
+> because `k` moved, and here is which `k`."
+
+**And the seal guard held on its first real test, exercised by the work rather than by a test.**
+`gruen-pg11.mjs` attempts a sealed write on every run; **all three were REFUSED and the eight seals are
+byte-identical at `420bd3a8`.** Without §88 this re-run would have replaced three seals as a side effect of
+refreshing a guard reading — **which is precisely what §87 discovered and §88 fixed, now demonstrated by the
+first piece of work to touch it.**
+
+### A-G402 · A re-export creates no local binding — and §62's verification could not have seen it *(GRÜN's, and the widest blast radius this phase)*
+
+```
+ReferenceError: luminance is not defined   at decodeLuminance (gruen-instrument.mjs:167)
+```
+
+> **`export { … } from "./module"` is a RE-EXPORT and creates no local binding.** §62 split the colour math
+> out and wrote exactly that, so **every INTERNAL use inside the module broke while every external import
+> kept working perfectly.** `decodeLuminance` is the function **every** raster probe goes through —
+> including all three that write sealed readings — **and it was broken from §62 to §90.**
+
+**Nothing noticed because no raster probe ran in between:** the derivations need no browser and the live
+probes were not re-run. `labOf` survived only because a check happened to catch it at the time.
+
+**And GRÜN's own framing is the finding, not the omission:**
+
+> *"I checked that `chromium` and `sharp` imported and that `labOf` and `luminanceOfRgb` returned their
+> committed values. That is IMPORTS RESOLVING, not the PATH RUNNING — and a re-export resolves perfectly
+> from outside while being broken from inside, so no import check could ever have seen it. I wrote 'the
+> render path still works' on the strength of a test that could not have told me otherwise."*
+
+**A-G128's gate on a verification rather than on a pin**, and it **silently disabled the entire pixel
+instrument for twenty-eight sections.** GRÜN records that it cost nothing only because nobody took a pixel
+reading while it was dead — **luck, not design**, stated the way §87 stated my pinning.
+
+The smoke test §62 should have had now runs **first** of the browser work, so a failure stops anyone trusting
+the readings below it, and it **exercises the real chain** — `captureRaw → decodeLuminance → luminance` —
+against the sRGB formula computed independently: six swatches, **all agreeing to better than 1e-8.**
+
+**Checked on my side rather than assumed: I never cited §62's render-path verification.** A grep of this
+document for *render path*, *raster floor*, `luminanceOfRgb` and `decodeLuminance` returns nothing, so no
+ruling of mine rests on it. **That is reported because it could have gone the other way** — A-G393's
+ratification family is the one I have the worst record on, and this time there was nothing to ratify.
+
+### A-G403 · A ruling that requires an ACTION is a probe; one that requires an argument is not *(GRÜN's observation, ruled)*
+
+> GRÜN: *"Your ruling was the probe again. §88's was too. Twice now a ruling of yours has found a defect of
+> mine that no check of mine was looking for, and both times by requiring an action rather than an
+> argument."*
+
+**§86 ordered a re-run and the re-run found the seal convention; §88's discharge ordered a wiring and the
+wiring found the re-export.** Neither was a question. **Ruled, and it completes A-G393's pair:** a ruling
+whose execution the instrument cannot perform is a preference; **a ruling that can be executed is a probe,
+and the execution tests things the ruling was not about.** The corollary is the useful half — **when a
+ruling could be stated either as an argument or as an action, state it as the action**, because only the
+action can fail in a way nobody predicted.
+
+### A-G404 · My coverage denominator was one file, and the product's constants are not *(defect 215, mine)*
+
+§88 recorded that the module **refused** to export `SIZE_FLOOR_PX` and I explained the refusal as *"it does
+not exist at `4b83414e`"*.
+
+> **It exists. The component IMPORTS it** from `lib/career/view-model/mapping-field.ts`. **So the refusal was
+> right and my reason for it was wrong — which is worse than a wrong refusal, because a correct outcome hid a
+> scope defect.**
+
+**The scope defect:** my coverage denominator was **one file's declarations**. The component imports seven
+UPPER_CASE product values this module cannot reach — `CLASS_LINE`, `EVIDENCE_STEP`, `FOCUS_INITIAL`,
+`MAPPING_FIELD_COPY`, `PRIMARY_BEAM_LUMINANCE`, `SIL_TOKENS`, `SIZE_FLOOR_PX`.
+
+> **So the real denominator is 47 + 7 = 54, and 38 are unguarded by this lane — not 31 of 47.** That is
+> GRÜN's extraction rule one level up: **a declaration in a file the audit never reads is outside its own
+> denominator**, and the coverage number I published was therefore flattering by construction.
+
+**What reconciles cleanly:** `FRAME_PASS_CAP` and `FRAME_EM_PER_CHAR` genuinely are post-`4b83414e`, from
+GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two lanes, two
+builds, two independent scans, one arithmetic identity.
+
+### A-G405 · The cross-lane coverage gap, which neither lane's audit could have reported alone
+
+GRÜN applied the extraction rule to itself: **`gruen-constant-forks` covers 20 of 49; 30 uncovered, six
+bearing on live pins** — `GAP_ALPHA_GAIN`, `GROUND`, `MOTION`, `RING_WIDTH_PX`, `TEXT_SEAT_PX`,
+`WEDGE_WASH`. Measured against my covered set:
+
+| GRÜN's six live-pin gaps | |
+|---|---|
+| **covered by GELB** | `GAP_ALPHA_GAIN`, `TEXT_SEAT_PX`, `WEDGE_WASH` — 3 of 6 |
+| **covered by NEITHER lane** | **`GROUND`, `MOTION`, `RING_WIDTH_PX`** — 3 of 6 |
+
+And symmetrically, **my `LABEL_GAP` and `BODY_BUDGET` are inside GRÜN's covered set**, so those two are
+watched from one side.
+
+> **Ruled as a standing item, small and named rather than silent: `GROUND`, `MOTION` and `RING_WIDTH_PX` are
+> forked or unwatched in both lanes at once.** Neither lane's audit could have found that, because each
+> reports its own coverage against its own scope. **A coverage number is a property of a lane; a coverage
+> GAP is a property of the pair**, and this is the first time this record has computed one.
+
+### Where this leaves the record
+
+**One new defect, this lane's:** a coverage denominator scoped to one file, with the error hidden behind a
+refusal that was correct. **The count is 215.** GRÜN's re-export defect is recorded and not counted — by
+§87's rule it does not change this record's standing, since no ruling of mine rested on §62's verification
+and no pixel reading was taken while the path was dead.
+
+**A-G277 is CLOSED again, on the shipping build, by file.** **§88's seal mechanism is demonstrated rather
+than argued.** **Nothing is asked of either peer.**
+
+Owed by this lane, small and named: `GROUND`, `MOTION`, `RING_WIDTH_PX` into the coverage set, and the seven
+imported constants into scope — the second being the larger of the two, since it is the denominator and not
+the numerator. GRÜN goes to the real-stack ladder on an instrument whose raster floor is now verified rather
+than assumed, then PF-3 blind. The credential remains the owner's single open item.
