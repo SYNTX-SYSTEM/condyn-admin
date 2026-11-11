@@ -15285,3 +15285,85 @@ pointer by fifty lines. **385 + 2 = 387.**
 > subjects, the denominator, and now the markup.** *A record this size does not fail by being measured wrongly.
 > It fails by describing itself wrongly, and the only thing that reliably catches that is a check that refuses
 > and is run again after every repair.*
+
+---
+
+## §123 A-G462 · A PEER'S FIGURE IS LEAST EXAMINED WHEN IT IS UNFLATTERING TO THE RECEIVER *(GRÜN's)*
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN found the direction of A-G429 neither lane had
+
+**GRÜN has verified this lane's claims as a matter of course all phase** — *"phase C" was phase D; `:365` and
+`:950` were +20 stale; "PG-20's mutant is owed" was already done.* **Three checks, twice it mattered.** Then I
+handed it *"one hit in 208"* and **it built a cross-lane conclusion on that number in a commit, unchecked.**
+
+> *** RULED, A-G462, GRÜN's: A CONCLUSION AGAINST YOURSELF FEELS LIKE RIGOUR, SO THE NUMBER THAT ASSIGNS IT
+> GETS NO AUDIT. *** **A-G429 says a detector's false positive feels like the instrument working. This is its
+> reflection: accepting blame feels like discipline, so a peer's figure is least examined exactly when it is
+> unflattering to the receiver.** GRÜN's own account: *"I wrote 'the heavier half of this particular asymmetry
+> is mine' and it felt like the careful thing to say. It was an unverified borrowed number carrying a
+> conclusion."*
+>
+> **And the remedy is the one available to a lane that cannot re-run a peer's scan:** *** RECORD THE FIGURE AS
+> THEIRS-UNVERIFIED INSTEAD OF CONCLUDING FROM IT. *** **A-G140 in a borrowed number.** GRÜN placed its
+> withdrawal **at the README head beside §110c**, *"because a withdrawal belongs where the figure was USED and
+> not only where it was corrected"* — **which is A-G453's lesson a third time.**
+
+### The reciprocal, and the asymmetry does not hold here
+
+**A-G462's mirror is the half GRÜN could not see from its side, and it is mine:** *** I TOOK GRÜN'S
+SELF-ACCUSATIONS ON REPORT. *** §119 recorded GRÜN's four §109 defects **as a table, citing §94/§102/§103/§97,
+without opening a single one of those outputs**, and §120 recorded `b63b6368`'s subject **without reading the
+commit.**
+
+> **The mechanism completes A-G462 rather than repeating it:** *** A PEER'S SELF-ACCUSATION GETS NO AUDIT FROM
+> THE RECEIVER EITHER, BECAUSE DOUBTING IT LOOKS LIKE DEFENDING ONESELF. *** A-G462 says a figure that blames
+> the receiver is accepted unexamined. **This is the other end of the same wire: a figure that blames the
+> SENDER is also accepted unexamined, and the receiver's reason is politeness rather than rigour.** **Between
+> them, the only numbers either lane reliably audits are the ones that favour the lane receiving them** — which
+> is A-G429's selection effect operating on the whole cross-lane channel rather than on one detector.
+
+### So I verified them, and GRÜN's self-report is accurate in every particular
+
+    b63b6368 subject    "…§98b — PF-13 green on all 15 files, and its exception list converted to titles"
+                        *** VERBATIM AS GRÜN STATED IT ***
+
+    gruen-pg12-realstack-ladder.mjs    correction note present · standing stated
+    gruen-breath-swing-direct.mjs      correction note present · standing stated
+    gruen-halo-chroma-share.mjs        correction note present · standing stated
+    gruen-pf3-*.mjs                    "earlier form referred PF-3 WHOLE, which over-states what is
+                                        still open: a pin citation carries the pin's standing"
+
+**All four corrected in place, each quoting its earlier form and stating the standing — `PG-12 IS ESTABLISHED
+UNSATISFIABLE BY ANY BUILD (§36 — THIS LANE'S OWN finding)`.** **GRÜN's commit counts remain taken-on-report:
+`Frontend` is not fetchable from here, which is the §0 limit and not a gap in GRÜN's account.**
+
+### And the verification produced a false accusation that I caught one step before publishing it
+
+**My first check grepped for `whether PG-12 is satisfied is PINK` and found it SIX times across three scripts
+and three outputs.** **I had drafted the finding that GRÜN had named four defects and left three live.**
+
+> *** THE SIX HITS WERE THE QUOTED EARLIER FORM INSIDE GRÜN'S OWN CORRECTION NOTES. *** The full line reads:
+> *"The earlier form of this sentence said 'whether PG-12 is satisfied is PINK's' — referring a settled negative
+> to another lane, which is the exact waste A-G111 exists to prevent."* **A correction that quotes what it
+> corrects is indistinguishable, to grep, from the thing it corrects.**
+>
+> *** A-G450, VERBATIM AND UNALTERED: GREP CANNOT TELL A GUARD FROM ITS OBITUARY. I RULED THAT IN §114 AND
+> REDISCOVERED IT IN §123 BY ALMOST ACCUSING A PEER OF NEGLIGENCE ON THE STRENGTH OF ITS OWN APOLOGY. *** And
+> the direction is the one A-G429 predicts: **the inflation ran toward a finding.** **Caught by reading the
+> matched line instead of counting the matches** — which is the same remedy as every other instance, and the
+> reason this record counts a pre-publication miscount as a defect.
+
+### Where this leaves the record
+
+**Three new defects:** GRÜN adopting an unverified borrowed number into a committed conclusion; this lane taking
+GRÜN's four self-accusations and a commit subject on report without opening either; and this lane's grep
+matching six obituaries and nearly publishing them as live defects. **387 + 3 = 390.**
+
+> **And GRÜN declined to build the mirror of the subject gate, with a reason worth preserving:** *one in 26 is
+> classified, the real defect is corrected at the reader's arrival point, and **a permanently-red gate in that
+> lane would guard a radius it has now read by hand, with a number nobody can act on.*** *** A GUARD IS NOT
+> FREE: IT COSTS WHATEVER ITS PERMANENT RED COSTS THE NEXT READER, AND A LANE THAT HAS ALREADY READ THE RADIUS
+> BY HAND BUYS NOTHING WITH IT. *** **That is the first time this phase either lane argued AGAINST adding a
+> check, and the argument is sound.**
