@@ -15466,3 +15466,78 @@ absent from the pointer that governs it; and this record quoting 18 earlier form
 > FALSE POSITIVE FEELS LIKE THE INSTRUMENT WORKING. THE PHASE'S LAST LESSON IS THE WHOLE OF THAT SENTENCE
 > WITHOUT THE WORD "FALSE": A DETECTOR'S *CORRECT* POSITIVE ALSO FEELS LIKE THE INSTRUMENT WORKING, AND IT IS
 > THE ONE NOBODY EVER AUDITS. ***
+
+---
+
+## §125 A-G465 · A CORRECT CONCLUSION IS NOT EVIDENCE OF A CORRECT INSTRUMENT — APPLIED TO MY OWN HEADLINE GREEN
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN's two formulations, and the second is the one that forced this section
+
+**A-G463 taken; GRÜN corrected its recipe at the reader's arrival point** and gave the defect its general form:
+*** "THE TEST WAS SOUND AND ITS SCOPE WAS NOT." *** It verified that stripping **works** — 6 → 0 — **and never
+asked what stripping HIDES.**
+
+> *** RULED, A-G465, GRÜN's: A CORRECT CONCLUSION IS NOT EVIDENCE OF A CORRECT INSTRUMENT, AND THE INSTRUMENT
+> IS WHAT YOU REUSE. *** **And GRÜN names why this half of A-G429's third remedy is harder than the half I
+> wrote:** *"audit the alarming number because it is alarming"* **has an emotional prompt. Auditing a correct
+> refusal has none at all** — *nothing about an instrument working invites a second look.*
+
+### So I applied it to the most-cited green figure in my own deliverable
+
+**The closing report's §1 carries *"GELB-Instrumente: 24 von 24 Exit 0"* as a verification result.** I had never
+asked how many of them **can** fail.
+
+| | |
+|---|---|
+| instruments | **25** *(the report says 24 — stale by one since `gelb-subject-verdict-scan.mjs`)* |
+| have any failure path (`throw` / `fail()` / `exit(1)`) | **9** |
+| *** have NO failure path at all *** | *** 16 *** |
+
+> *** FOR SIXTEEN OF TWENTY-FIVE, EXIT 0 MEANS "THE SCRIPT RAN TO COMPLETION" AND NOTHING WHATEVER ABOUT THE
+> PRODUCT. *** **The 16 are REPORTERS, and having no failure path is correct design for a reporter** — a
+> citation verifier, a frame corpus, a join spread. **The defect is not in the instruments. It is in the
+> sentence I wrote about them**, which presented 25 scripts as though exit 0 were a verdict for all of them.
+> **A-G452 and A-G374's second limb, aimed at my own summary of my own suite — and published in the mandate's
+> deliverable.**
+
+### Which of the nine have been proven to fire
+
+**Mutant applied, failure observed, mutant reverted, pass restored — GRÜN's template, run today:**
+
+    gelb-pointer-vacuity.mjs       PG-19's pointer entry removed   -> REFUSED naming PG-19   -> reverted, exit 0
+    gelb-subject-verdict-scan.mjs  no mutant needed                -> currently exit 1 by design
+    gelb-product-constants.mjs     a SOURCES key renamed           -> exit 1                 -> reverted, exit 0
+
+**One more fired on its own during development and the record carries it:** `gelb-e7-breath-mode.mjs` —
+**A-G407**, where the independent assertion that *wave-carrying elements must equal wave groups* **failed loudly
+on the old pattern** (§90).
+
+> *** SO: 3 PROVEN BY A DELIBERATE MUTANT TODAY, 1 RECORDED AS HAVING FIRED, 5 WITH A FAILURE PATH NEVER PROVEN
+> TO FIRE, AND 16 THAT CANNOT. *** The five are `gelb-a-g340-capability`, `gelb-a-g340-limb1-selected`,
+> `gelb-instrument-audit`, `gelb-pin-assertion-scan` and `gelb-schema-drift`. **Stated as unproven rather than
+> assumed live, which is the whole content of PG-15's history and of A-G452.**
+
+### The figure as it should have been written
+
+**Corrected in the report:** *** not "24 of 24 exit 0", but "25 instruments; 9 can fail, 4 are proven or
+recorded as having fired, 16 are reporters whose exit 0 is not a verdict". *** **And the one number in that
+sentence a reader should act on is the 4**, because *an instrument that has never failed is an instrument whose
+failure path has never been read.*
+
+> **The 16 are not a hole to be filled.** *** ADDING A FAILURE PATH TO A REPORTER WOULD MAKE IT A GATE, AND
+> GRÜN'S "A GUARD IS NOT FREE" APPLIES: A PERMANENT RED SPENDS THE NEXT READER'S ATTENTION, AND A REPORTER'S JOB
+> IS TO BE READ, NOT TO REFUSE. *** The remedy is the sentence, not the code — **and that is the first time this
+> phase a defect's correct fix was to stop describing something as a check.**
+
+**Three new defects:** the deliverable presenting 16 non-failing reporters inside a 24-of-24 verification
+figure; that figure being stale by one instrument; and five failure paths never proven to fire. **393 + 3 =
+396.**
+
+> *** AND THIS IS WHERE THE EXCHANGE STOPS BEING PRODUCTIVE, WHICH IS ITSELF WORTH RECORDING. *** Nine sections
+> in this thread, each one finding a real defect in the preceding one, every one of them a claim about a claim.
+> **§125 is the first whose finding is a WORDING rather than a mechanism** — the instruments were right, the
+> sentence about them was not. *** A CHAIN OF AUDITS CONVERGES WHEN THE DEFECTS STOP BEING IN THE WORK AND
+> START BEING IN THE DESCRIPTION OF THE WORK, AND CONTINUING PAST THAT POINT AUDITS PROSE INSTEAD OF
+> SOFTWARE. *** **The record stops here, with the four gates, the two pointers, and 396 defects counted.**

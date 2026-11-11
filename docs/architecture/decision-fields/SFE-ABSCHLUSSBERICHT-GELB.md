@@ -46,7 +46,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 |---|---|---|
 | **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB. *** Figur aus GRÜNs Lane, deren 69 Ausgaben AUSNAHMSLOS `verdict: NONE` erklären (A-G458). *** |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
-| **GELB-Instrumente** | **24 von 24 Exit 0** | diese Session verifiziert |
+| **GELB-Instrumente** | *** 25 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). | diese Session, Mutanten heute gefahren |
 | **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
 | **Typprüfung** | `tsc --noEmit` sauber | GRÜN |
 | **PG-1 (semantischer Lichtanteil)** | **0.6431 / 0.7397 gegen ≥ 0.55** | `3ec8457d` |
@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 393.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 396.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
