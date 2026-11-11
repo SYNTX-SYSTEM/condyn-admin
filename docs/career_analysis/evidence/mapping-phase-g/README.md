@@ -11,6 +11,26 @@
 > No output in `outputs/` contains the words pass, green or ok. Every bound appears as
 > `…_boundForReference`, never as a comparison result.
 
+> ### §110 · AND THE BANNER'S SCOPE IS `outputs/`, WHICH IS NOT WHERE THE VERDICT LEAKED
+>
+> **Both PF-13 instruments declare `verdict: "NONE — development reading only (A-G36 point 2)"`, and they
+> mean it.** The leak is in prose this banner never covered: **commit `b63b6368`'s own subject line reads
+> *"PF-13 green on all 15 files"*,** and relay messages from this lane said *"PF-13 is GREEN"* repeatedly.
+>
+> *** THE INSTRUMENT REFUSED THE VERDICT AND THE SUMMARY ISSUED IT. *** A-G374's second limb, in the text
+> that travels furthest: a commit subject outlives a JSON field, is read by people who never open
+> `outputs/`, and cannot be corrected in place. GELB withdrew *"PF-13 is closed"* for exactly this reason —
+> **PINK caught it because it was the most favourable possible outcome for the build** — and the same
+> sentence was in my prose first.
+>
+> **The correct form, and the only one this lane may state: the PHASE_DIRS population passes — 16 files,
+> 197 tests, 0 failed, coverage matching the population in both directions, verdict read from vitest's JSON
+> reporter. PF-13 is GUARDED, not CLOSED. Its closure is PINK's to issue.**
+>
+> Recorded here rather than only in a commit message, because a note written where the defect was *noticed*
+> is not written where a reader *arrives* — which is the lesson A-G453 taught in GELB's lane an hour before
+> it applied to mine.
+
 Lane: 🟢 GRÜN · worktree `condyn-admin-mapping-d` · branch `frontend/mapping-phase-g`.
 Authority: `PERSON_X_JOB_MAPPING_PHASE_G.md` §16–§19 (A-G26 … A-G47) on `architecture/mapping-phase-f`.
 

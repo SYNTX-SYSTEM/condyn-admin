@@ -1,5 +1,8 @@
 # §105 · The mutant executions — GRÜN
 
+> **§110:** where this file or its commits say PF-13 is "green", read: **the PHASE_DIRS population passes.**
+> PF-13 is **GUARDED, not CLOSED** — both instruments declare `verdict: NONE` and this lane may not issue one.
+
 **NO VERDICT** (A-G36 point 2). Each mutation was applied to the working tree, run, and reverted; `git status
 --porcelain` was verified clean after every one. GELB specified the four below in §108 and ruled option (3) off
 this queue (it is a product decision with a measured cost, not a test to execute).
