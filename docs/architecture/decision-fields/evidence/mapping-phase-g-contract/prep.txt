@@ -3864,3 +3864,96 @@ reasoning stays in the message and the label travels**, so a wrong noun on right
 reasoning is more portable than a wrong figure, because a figure invites recomputation
 and a noun does not. Both instances were its own and both were caught by reading the
 noun against the argument rather than the argument against the data.
+
+================================================================================
+§46  THE RINGS RE-TAKE — DONE, AND IT WAS NEVER BLOCKED. A-G424 VINDICATED IN THE
+      OPPOSITE DIRECTION TO THE WEIGHTING ARGUMENT: THE BAND CARRIES MOST OF THE
+      LIGHT AND NONE OF THE SIGNAL. PLUS A DISCONTINUITY IN PF-8's TIER C.
+      PINK, 2026-11-11. Stand :3122, commit 3ec8457d, shelf alpha 0.02 (byte 5).
+      `scripts/pink-pf8-rings-retake-g.mjs` -> `outputs/PF8-RINGS-RETAKE-{L0,L2}.json`
+================================================================================
+
+[0] FIRST, A CORRECTION TO MY OWN QUEUE. I have carried the rings re-take as blocked
+    behind GRÜN's fixtures since §36. **It was not blocked.** The committed phase-F
+    instrument `pink-pf8-tip.mjs` is complete, takes `LEVEL=L0|L2` from the
+    environment, and reaches L2 by clicking a body twice. What the record calls the
+    L0-and-L2 requirement is PF-8's own form — "at EVERY level that draws evidence
+    (L0 and L2 at minimum)" — which that instrument already satisfies by two runs on
+    one fixture. **I asked A-G432's question of a measurement and never of my own
+    queue: what else could "blocked" have come out as? It came out as "runnable", in
+    the time it took to read the instrument I already had.**
+
+    INSTRUMENT DISCIPLINE, since the build is moving (ef466ca8 shelf 0.05 -> 3ec8457d
+    shelf 0.02): the phase-F instrument was copied and changed in **FIVE functional
+    lines, all declared** — sharp path, BASE to :3122, the CLASSES split, the commit/
+    alpha label, the output path. **The tier math, the bracketed null and all three
+    guards are untouched**, so A-G54 is honoured: the build moved and the instrument
+    did not.
+    Sampling recorded: L0 span 95.1 s, 287 frames, cadence 321 ms, Nyquist 1.558 Hz;
+    L2 span 95.3 s, 251 frames, cadence 380 ms, Nyquist 1.316 Hz; `samplingAdequate =
+    true` both, breath LIVE, wave animations 18 / 12 — the dead-field guard passed.
+
+[1] *** THE SPLIT RESOLVES THE SUSPENDED RED, AND IT LANDS ON THE STROKES. ***
+    L0, shelf alpha 0.02, 3ec8457d:
+      shelfBand    els 1  px **127337**  A 4.03e-7 / 4.87e-8   B p99 **0** -> PASS   C inf x4 -> red
+      ringStrokes  els 3  px   15062     A 1.04e-4 / 2.95e-6   B p99 **0.00262** -> **FAIL**  C 14.73/14.47/2.82/6.25 -> red
+    L2:
+      shelfBand    els 1  px  33298  A 8.62e-35  B p99 **0** -> PASS   C 1/1/1/1 -> **ok (fully green)**
+      ringStrokes  els 3  px   6976  A 1.50e-5   B p99 **0** -> PASS   C 2/inf/inf/inf -> red
+    **Tier A on the band is 4.03e-7 against a 0.0005 bound — 1240x UNDER. Tier B p99
+    is EXACTLY ZERO at both levels. The band is the quietest class in the set.**
+    Meanwhile the three 2px strokes FAIL tier B at L0 (0.00262 against 0.002) and
+    carry finite tier C ratios up to 14.73.
+
+    SO THE OLD `rings` RED — tier B 4.01 at 9cc06f84, 10.62 at ef466ca8 — BELONGS TO
+    THE THREE THIN STROKES, NOT THE BAND. A-G424 is vindicated, and **in the opposite
+    direction to the weighting argument that motivated it.** The expectation was that
+    the band dominates the class because it dominates the light — 26.04% of the disc,
+    "most of the rings' light" by the component's own comment. **It does dominate the
+    light and contributes none of the signal.** A correctly WEIGHTED statistic over
+    the old class would therefore have gone the wrong way even harder, because the
+    dominant member by light is the silent one by breath. **A-G424's remedy was right
+    and its stated reason was the weaker of the two available.**
+    §41's regime argument is the one that survives intact: the band is interior-
+    dominated and the strokes are 2px partial-coverage objects, and tier B is a p99 —
+    so the old class read a p99 across two regimes and attributed it to the quiet one.
+
+[2] *** AND A DISCONTINUITY IN PF-8's TIER C, FROM THE COMMITTED INSTRUMENT, NOT MINE. ***
+    Source, unmodified, at the tier C line:
+      cRed = THR.some(... cN[i]>0 && cS[i]/cN[i] > 1.5)
+          || THR.some(... **cN[i]===0 && cS[i]>0**)
+    The second branch is DELIBERATE, not an `Infinity>1.5` accident. Its intent is
+    sound — zero decoy count with any signal above the rung means the signal is
+    distinguishable. **But it is unbounded below on the signal count, and it is
+    DISCONTINUOUS with the first branch.** With cN = 1 and cS = 1 the ratio is 1.00
+    and the rung PASSES; with cN = 0 and cS = 1 the rung is RED. **One decoy pixel
+    appearing flips the verdict from red to pass, and the signal count does not enter
+    the second branch at all.** Tier C guards its class population (m >= 1000) and its
+    floor (t >= 2 x floorPix) and **has no guard on the decoy population**, which is
+    the one the second branch divides by.
+    THE EVIDENCE THAT IT IS FIRING, not merely possible: **shelfBand at L0 is red on
+    tier C at all four rungs while tier A is 1240x under bound and tier B p99 is
+    exactly zero.** p99 = 0 bounds the nonzero-amplitude population at <= 1% of the
+    class, i.e. <= 1273 of 127337 px, so the red is compatible with as few as ONE
+    pixel over the rung. **A class is red for being quiet, on the branch that fires
+    precisely when the null is quietest.**
+    SCOPE IN THIS RUN: the reds that are ENTIRELY zero-decoy-driven are **shelfBand L0
+    and outlines L0** — all four rungs `inf`, tier B passing in both. ringStrokes L0
+    (14.73 finite), arcs L0 (46.38 finite), ringStrokes L2 and arcs L2 (finite at the
+    0.001 rung) carry genuine reds as well and are not affected.
+    REMEDY, NOT MINE TO IMPLEMENT: the instrument already has an `n/e` state for its
+    two existing guards. **A rung whose null has no population is NOT EVALUABLE, not
+    red** — A-G419's family, and the same shape as GELB's own vacuity guards. Either
+    that, or the second branch needs a minimum cS. **Handed to whoever owns PF-8's
+    tier C; this lane measured it and is not rewriting it.**
+
+[3] WHAT THE RE-TAKE SETTLES AND WHAT IT DOES NOT.
+    SETTLED: the suspended `rings` red is resolved — it is the strokes, at L0, on
+    tier B, by 1.31x the bound (0.00262 vs 0.002). The band passes tiers A and B at
+    both levels with the largest margins in the set, and is fully green at L2.
+    NOT SETTLED: the band's L0 tier C verdict, which is not evaluable until the
+    zero-decoy branch is fixed; and whether the strokes' tier B failure survives the
+    partial-coverage question §41 raised, since a p99 over 2px strokes reads exactly
+    the regime the construct limb does not license. **That second one is a real
+    qualification on my own new red and I am stating it beside the figure rather than
+    after someone finds it.**
