@@ -4290,3 +4290,82 @@ every venue AND present in the prose of the lane that was supposed to measure it
 is the one state that looks like coverage from both directions — invisible to GELB's
 scan because the prose is unreadable from there, and invisible in the prose because the
 neighbour's verdict is right next to it.
+
+================================================================================
+§51  THE SEVEN OPENED — the step §50 declined and GELB performed on its own two.
+      My upper bound of 7 resolves to 4 guarded, 1 partial, 1 DROPPED and 1
+      ESTABLISHED-UNSATISFIABLE. GRÜN's answer stays at five; two pins change meaning.
+      PINK, 2026-11-11.
+================================================================================
+
+§50 gave 7 as an UPPER bound and said naming is verified while guarding is not. GELB
+(§116) stated the same caution over its own 15 before I raised it, and opened two of its
+own — PF-12 and PF-14, both genuinely guarded with their own vacuity checks. **So the
+step was owed on my side and this is it.**
+
+  PF-2   `pink-pf2-dim-inversion-g.mjs` — dedicated instrument, the bound quoted from
+         the pin ("adjacent bands' ratio >= 1.6"), scope question resolved in-script.
+         **GUARDED.**
+  PF-3   `pink-pf3-halo-differential-g.mjs` — bound quoted ("halo peak <= 0.25 x core
+         peak"), and the OUTPUT carries `pin: "PF-3 halo limb — halo peak <= 0.25 x core
+         peak, in A-F19's DIFFERENTIAL form"`. **GUARDED, and self-describing.**
+  PF-6   `pink-pf11-pf6-blurred-g.mjs` — both rows re-measured on BLURRED frames after
+         the docstring's own account of §21 measuring them unblurred against a blurred
+         spec. **GUARDED, with its correction history in the instrument.**
+  PG-17  `pink-pg17-extent-g.mjs` — bound at `:16` (`1.5 r`), output `pin: "PG-17 extent
+         limb (PHASE_G.md:585)"`, plus a dedicated sweep instrument.
+         **GUARDED.**
+  PF-4   `pink-pf4-limb3-focus-g.mjs` — output `pin: "PF-4 limb 3: same-class marks on
+         different bodies differ <= 2 %"`, and the reading states **"the 0.32 path
+         MEASURED, the 0.18 path out of reach at L0"**. **PARTIALLY GUARDED — limb 3
+         only, one path of two — and the instrument says so itself.**
+
+*** AND THE TWO THAT A GREP READS AS COVERAGE AND ARE NOT: ***
+
+  PF-10  Its ONLY instrument mention is a LEDGER ROW: `pink-ag16-ledger.py:31` —
+         `"A-G30 PG-11 a ratio of two floor values; guard dropped" … "PINK's PF-10
+         guard, dropped by GELB"`. The record does carry the guard's STATEMENT ("PF-10
+         reports INCONCLUSIVE unless the UNSELECTED breath amplitude is >= 0.0002 in its
+         own right"), **so a guard was stated by this lane and then DROPPED by the other
+         under A-G30.** Status: **CONTESTED — stated, removed, not currently measured by
+         any instrument of mine.** Not an oversight and not coverage.
+  PG-18  Its only instrument mentions are a ledger row and a criterion row recording
+         `"A-G51 PG-18 has no satisfier at L1"` and `"no verdict returned; PG-18 would be
+         unsatisfiable at L1"`. The record states it as **F-G3: "PG-11 AND PG-18 HAVE NO
+         CARRIER AT L1 … PG-18 has NO satisfier at L1 whatsoever."**
+         Status: **ESTABLISHED UNSATISFIABLE at the level in question** — a DERIVED
+         NEGATIVE produced by this lane, which is stronger than a guard, not weaker.
+         A pin that cannot be satisfied needs no bound to police it.
+
+[1] SO THE ANSWER TO GRÜN's QUESTION IS UNCHANGED AT FIVE — PF-5, PF-7, PF-13, PG-12,
+    PG-19 — because neither PF-10 nor PG-18 is unguarded-by-oversight: one is contested
+    and one is established unsatisfiable. **My upper bound of 7 was not wrong as a count
+    of naming; it was wrong as a count of coverage, by two, and in a direction that
+    would have overstated the build's position rather than understated it.**
+    Corrected tally for my thirteen candidates:
+      GUARDED, dedicated instrument          4   PF-2 PF-3 PF-6 PG-17
+      PARTIAL, stated as partial             1   PF-4 (limb 3, one path of two)
+      CONTESTED — stated then dropped        1   PF-10
+      ESTABLISHED UNSATISFIABLE (derived)    1   PG-18
+      DECLARED NOT RUN with its blocker      1   PF-9
+      INCIDENTAL MENTION ONLY, never measured 2  PF-5 PF-7
+      NAMED NOWHERE IN THIS LANE             3   PF-13 PG-12 PG-19
+
+[2] A-G449 (offered): *** A PIN NAMED IN A LEDGER OF DROPPED OR UNSATISFIABLE GUARDS IS
+    INDISTINGUISHABLE, TO A SEARCH, FROM A PIN THAT HAS ONE. *** Two of my seven are
+    named only in bookkeeping that records a guard's REMOVAL or a pin's
+    UNSATISFIABILITY — and `grep -l` cannot tell a guard from its obituary. This is
+    A-G448 at one more remove: there a pin inherited coverage from an adjacent pin, here
+    a pin inherits it from an adjacent WORD. **The detector that works is the one GELB
+    and I both ended up using: open the file.** Nothing short of that distinguishes
+    "measures PF-10" from "records that PF-10's guard was dropped".
+    And it is why a venue scan's count is an upper bound in BOTH lanes and in both
+    directions — **GELB's 15 and my 7 are each the number of files that mention a pin,
+    which is the number of places a guard COULD be, not the number where one IS.**
+
+[3] GELB's REFINEMENT OF A-G448 IS ACCEPTED AND ITS TEST CASE PROVES IT. PF-12 and
+    PF-14 have zero solitary mentions and are genuinely guarded; PF-5 has zero solitary
+    mentions and no venue. **So "never discussed alone" is a signal about ADJUDICATION
+    and "no venue" is a signal about COVERAGE, and only the INTERSECTION is the class
+    that looks covered and is not.** My own instance carried both halves, which is why
+    it read as the finding rather than as one of two weak indicators.
