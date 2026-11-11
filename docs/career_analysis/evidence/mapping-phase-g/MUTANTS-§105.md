@@ -12,7 +12,7 @@ on both forms proves nothing.
 | **A-G43** sensitivity | implementation: `arc.state === "DIFFERENT"` → `s.mark === "counterTick"` | assertion goes **RED** | **KILLED** |
 | **PG-20** robustness | sign table: `couplingStates.DIFFERENT.mark` → `"none"` | assertion stays **GREEN** | **KILLED** (survives on new, fails on old) |
 | **PG-5** | `if (out.length >= budget) break;` removed from `spaced()`; `BODY_BUDGET` untouched | drawn ≤ budget goes **RED** | **KILLED** |
-| **PG-15** | the field ring moved to the last SVG child, so it draws **in front of** every body | occlusion assertion goes **RED** | *** SURVIVED *** |
+| **PG-15** | the field ring moved to the last SVG child, so it draws **in front of** every body | occlusion assertion goes **RED** | *** SURVIVED *** — **killed in §106**, see below |
 | **PG-16** | the *filter* in `spaced()` loosened to `0.2 ×` eccentricity; exported `CROWDING` left at `0.3` | the ≥ 0.3 assertion goes **RED** | **KILLED** |
 
 ## A-G43 / PG-20 — one file, two mutations of different kinds
@@ -78,3 +78,27 @@ These five were applied and reverted **by hand**, with `git status` checked afte
 apply · run · revert for all five and asserts the tree is clean would make them reproducible rather than
 reported — and it is exactly the kind of verification code §100 found to be the least examined in either lane,
 so it needs the tree-clean assertion in a `finally`, not in a comment.
+
+
+## §106 · PG-15's absence closed — the mutant that survived now dies
+
+GELB ruled PG-15 **UNASSERTED**, not zero-by-construction, and corrected §63's table: a zero-by-construction
+pin has a test that cannot fail, an unasserted one has no test. The enforcement was always real — the shipped
+build draws the rings first, so **PG-15 holds** — but nothing asserted it.
+
+Added: `field-g.test.tsx`, *"MAP-G-FIELD · PG-15's PAINT ORDER — the mechanism a render can decide"*. Every
+field ring's index in the rendered subtree must precede the first body's.
+
+**Labelled as the MECHANISM, not the property**, per A-G440 and GELB's second condition. PG-15 says *"no ring
+stroke crosses a body's drawn disc"*; document order is how the build achieves that. An assertion named
+"PG-15" would overclaim what a render can decide, so the test is named for the paint order and the occlusion
+itself stays a pixel reading on a build.
+
+**And it kills the mutant that survived §105**, verified rather than assumed:
+
+```
+mapping-ring-field paints before the first body (index 500 vs 261): expected 500 to be less than 261
+```
+
+So §105's surviving mutation is now a failing one, which is the only evidence that the new assertion guards
+anything. 17 files, 197 tests, all passing; `tsc --noEmit` exits 0.

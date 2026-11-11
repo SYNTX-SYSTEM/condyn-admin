@@ -235,3 +235,35 @@ describe("MAP-G-FIELD · PG-20 — the mark glyphs gain an icon for their own qu
     view.unmount();
   });
 });
+
+/**
+ * §106 (GELB's ruling on §105's surviving mutant): PG-15 was listed in the record as ZERO-BY-CONSTRUCTION with
+ * "SVG paints in document order" as its enforcement. It is not zero-by-construction — it was UNASSERTED. A
+ * zero-by-construction pin has a test that cannot fail; an unasserted one has no test, and §105's mutant moved
+ * the field ring to the last SVG child, in front of every body, and all 196 tests passed.
+ *
+ * *** THIS ASSERTS THE PAINT ORDER, WHICH IS THE MECHANISM — NOT THE OCCLUSION, WHICH IS THE PROPERTY. ***
+ * A-G440: PG-15 says "no ring stroke crosses a body's drawn disc". Document order is how the build achieves
+ * that, and an assertion labelled "PG-15" would overclaim what a render can decide. The occlusion itself stays
+ * a pixel reading on a build (this lane's instrument), which is why this test's name says paint order.
+ */
+describe("MAP-G-FIELD · PG-15's PAINT ORDER — the mechanism a render can decide", () => {
+  it("every field ring is drawn BEFORE every body, so a body paints over it (§106; §105's mutant moved one to last and nothing failed)", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const tree = view.settle(props());
+    const svg = byTestId(tree, "mapping-field-svg")!;
+    const seq = all(svg, () => true);
+    const drawn = bodies(tree);
+    expect(drawn.length, "bodies must be drawn, or this passes over nothing").toBeGreaterThan(0);
+    const firstBody = Math.min(...drawn.map(b => seq.indexOf(b)));
+    expect(firstBody, "the bodies are inside the svg's own subtree").toBeGreaterThanOrEqual(0);
+    for (const id of ["mapping-ring-shelf", "mapping-ring-best", "mapping-ring-horizon", "mapping-ring-field"]) {
+      const ring = byTestId(svg, id);
+      expect(ring, `${id} is drawn`).not.toBeNull();
+      const at = seq.indexOf(ring!);
+      expect(at, `${id} is in the svg's subtree`).toBeGreaterThanOrEqual(0);
+      expect(at, `${id} paints before the first body (index ${at} vs ${firstBody})`).toBeLessThan(firstBody);
+    }
+    view.unmount();
+  });
+});
