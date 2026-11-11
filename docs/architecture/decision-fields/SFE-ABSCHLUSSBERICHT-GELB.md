@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 379.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 385.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -222,8 +222,13 @@ der Satz ist das, was zitiert wird.* GRÜN hielt **drei Guards, alle eingehalten
 in allen 69 Ausgaben, `…_boundForReference`-Konvention) — **keiner erreichte eine Commit-Betreffzeile.** *** EINE
 BETREFFZEILE ÜBERLEBT EIN JSON-FELD, WIRD VON LESERN GESEHEN, DIE `outputs/` NIE ÖFFNEN, UND IST NICHT AN IHREM
 ORT KORRIGIERBAR. *** **Mit A-G458 und §119 ein Defekt in drei Radien: die Ausgabe ist diszipliniert, der Satz
-darüber nicht, und Disziplin pflanzt sich nicht von selbst nach außen fort.** **Auch in dieser Lane gefunden:
-`a50dbccc` schreibt „the full suite is green" in eine dauerhafte Betreffzeile.**
+darüber nicht, und Disziplin pflanzt sich nicht von selbst nach außen fort.** **Auch in dieser Lane gefunden, und schwerer als zuerst berichtet:** `2272dc7c` schreibt
+*** „PG-1 PASSES (0.639 / 0.733)“ *** in eine dauerhafte Betreffzeile, `c308a0f9` „the pin is green
+under `reduce`“. **Mein erster Scan meldete „ein Treffer in 208“ — er lief über `head -40`, der Nenner war
+40, und mein eigener Ausdruck liefert 43 Treffer über den vollen Bereich (§121).** *** ICH HABE DIESE ZAHL
+EINEM PEER UND IHNEN BERICHTET. *** Der Guard an diesem Radius existiert jetzt
+(`gelb-subject-verdict-scan.mjs`, fehlgeschlossen), **kann aber kein Hook sein — das ist Ihre
+Konfigurationsentscheidung, nicht die einer Lane.**
 
 **A-G459 (GRÜN)** — *eine Pin-Zitation trägt den STAND des Pins — lebend, stillgelegt, unerfüllbar,
 unbegonnen-zurückgezogen — nicht nur seinen Namen.* **„Ob X erfüllt ist, entscheidet PINK" setzt voraus, dass
