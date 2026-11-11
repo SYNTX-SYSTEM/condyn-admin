@@ -87,9 +87,13 @@ does, this document covers a fraction of it and says so.**
 ## 3. INDEPENDENTLY VALIDATED — my stand, my instruments, my builds
 
 **GUARDED BY A DEDICATED INSTRUMENT** (bound quoted from the pin, verdict in the output;
-verified by opening each file, §51–§52): **PF-2, PF-3, PF-6, PF-11, PG-17.**
+verified by opening each file, §51–§52): **PF-2, PF-6, PF-11, PG-17.**
 **PARTIAL AND SAYING SO:** **PF-4** — limb 3 only, 0.32 path measured, 0.18 path out of
 reach at L0.
+**PF-3 LEFT THIS ROW IN §54.** Its instrument carries a bound and a verdict, but GELB
+reports A-G20 retired PF-3 **having never been measured** — so an instrument that guards a
+retired pin is not coverage of anything live. **That retirement is taken on report (§5):
+`PHASE_G*.md` exists in none of the four worktrees this lane can read.**
 
 **PG-1** (semantic light fraction ≥ 0.55 by suppression): **PASSES**, 0.6261 / 0.63857 at
 1920 and 0.72348 / 0.73335 at 1280, both motion settings, disc-scoped.
@@ -150,6 +154,16 @@ unused.
 - **GELB's A-G62 derivation** and its vitest venue scan's internals.
 - **The five mutants and PF-13** — GRÜN's, not run here.
 - **Everything in the owner's mandate**, including the clause that asks for this document.
+- *** THE A-G20 RETIREMENTS — PF-5, PF-7, PF-10 retired in favour of PG-10, and PF-3
+  retired unmeasured. *** GELB cites `PHASE_G:725` and `:998`. **`PHASE_G*.md` and
+  `PHASE_F*.md` exist in NONE of the four worktrees this lane can read**, so this is
+  accepted on a peer's word and its line numbers are not verified (A-G430).
+  **AND THE SYMMETRY IS STRUCTURAL: GELB cannot read this statement and I cannot read its
+  obligation record** — it confirmed the first from outside, §54 confirms the second from
+  inside. **So every cross-lane pin fact in this record is taken-on-report in BOTH
+  directions, and has been throughout.** That is a property of the arrangement rather than
+  a lapse in either lane, and it is the strongest reason the unpushed branch is a defect in
+  the work and not an inconvenience.
 
 ---
 
@@ -203,8 +217,10 @@ a guard this lane stated and GELB dropped under A-G30), **1 ESTABLISHED UNSATISF
 **2 incidental mentions only** (PF-5, PF-7), **3 named nowhere** (PF-13, PG-12, PG-19).
 **`grep -l` cannot tell a guard from its obituary.**
 
-**UPPER BOUND ON UNGUARDEDNESS** (§52, corrected in §53): **four pins are not NAMED by
-any guard in either readable lane** — **PF-5, PF-7, PF-13, PG-19**. That is not the same
+**UPPER BOUND ON UNGUARDEDNESS** (§52, corrected in §53 and again in §54): **two pins are
+not NAMED by any guard in either readable lane** — **PF-13 and PG-19**. PF-5 and PF-7 left
+the list as **retired** (A-G20, taken on report) and PG-12 as **unsatisfiable by any
+build**. That is not the same
 as unguarded: a guard that does not name its pin is invisible to a name scan, and GELB's
 own PG-16 is guarded, unnamed, and found only by a mutant. **PG-12 left this list when
 GELB re-read its own §36** — "PG-12 IS UNSATISFIABLE BY ANY BUILD", the hue's own chroma
@@ -220,18 +236,29 @@ and §53 re-ran the technique on phase G with every injection verified by read-b
 
 **BUT TWO OF THE FOUR DID NOT DISCHARGE, AND NEITHER FAILURE IS THE BUILD'S:**
 
-- **PF-5 is NOT EVALUABLE here.** Its verdict is decided entirely by the denominator: over
-  the disc (545417 px) the share is 0.0492 against a 0.25 bound, while the **same
-  numerator** over §28's 36268-px glow mask is **0.74**. I took "≥ 25 % of **disc**
-  pixels" from GELB's relay — after insisting throughout this phase that a validator must
-  not take its requirement from the lane it validates. **Recorded as my error, not as
-  PF-5's red.**
-- **PF-7 is NOT MEASURABLE by a per-pixel phase fit**, for a reason in the source: `:876`
+- **PF-5 was RETIRED, and the mutants found something better than the pin.** GELB confirms
+  both of PF-5's texts say "disc pixels" verbatim, so the relay was accurate and my error
+  was measuring a retired pin, not trusting a denominator. **And on this lane's own
+  figures the bound exceeded its attainable ceiling:** the glow mask is 36268 px =
+  **6.650 %** of the 545417-px disc; 26822 disc pixels clear the 0.004 swing = **4.92 %**
+  of the disc and **73.96 %** of the glow, the same order as PF-5's historical green of
+  0.647; and the bound was **25 % of DISC pixels — 3.76× that ceiling.** The median disc
+  swing is **one quantum** against a **13.3-quantum** threshold, so the ground cannot
+  reach it and the glow is the only population that plausibly can: **even if every glow
+  pixel swung, the disc share would be 6.65 %.** *** So PF-5 was unsatisfiable as written
+  — the PG-12 shape — and went green for four phases because the instrument used a
+  denominator the pin did not name. *** Established on 3ec8457d at 1920; **not proven for
+  all builds and not claimed.**
+- **PF-7 was also RETIRED — and its hazard is a live structural fact.** It is **NOT
+  MEASURABLE by a per-pixel phase fit**, for a reason in the source: `:876`
   draws all seven ground layers at the **same radius**, so the radial structure is in the
   gradients while the 1.2 s stagger is per-layer. Every pixel superposes all seven, and
   one fit returns one blended phase — baseline spread 45 ms against a 1200 ms bound, and
   **zeroing the lag raised it to 88 ms.** It needs per-layer isolation, which is a
-  different instrument.
+  different instrument. **GELB checked whether the hazard reaches PG-10, PF-7's
+  replacement, and answered that it does not: PG-10 measures the glows, each body's halo
+  is a spatially separate element with its own delay, so there is no superposition at a
+  pixel.** The hazard is specific to the ground's co-radial layers.
 
 **PF-13** has no evaluator at all (its population was read by hand) and is a meta-pin no
 render mutant reaches; **PG-19** is disjunctive and needs a per-mark limb breakdown before
