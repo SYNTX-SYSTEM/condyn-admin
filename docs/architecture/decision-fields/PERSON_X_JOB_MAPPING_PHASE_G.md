@@ -6367,3 +6367,94 @@ rather than like what it is.
 0.5 removes bodies on nine of eleven exercised layouts at L0, effective cap five to six, L1 median 6, largest
 proportional loss LV02 at 6 → 3.** The owner's call, and the largest item in front of them.
 
+
+---
+
+## §60 THE OWNER'S LARGEST DECISION TURNS OUT TO BE SEPARABLE — AND GRÜN WROTE IT AS AN ARTIFACT BECAUSE I HAD ONLY PUT IT IN MESSAGES
+
+GRÜN verified three of my four owner figures against its own outputs, corrected the fourth, and found the fact
+that makes the decision takeable (`3fe380e6`).
+
+### A-G245 · The effective cap is 4–7, median 6, typically 5–6 — and the author's half of A-G242
+
+`reading_outcome` says *"typically 5 or 6, and 4 on LV03 … reached on exactly **ONE** layout (LV10)"*. **Its
+closing sentence — the quotable one — states only the typical and drops both tails.** So the figure to carry is
+**4–7, median 6, typically 5–6**, and my "five to six" was the field's own narrowing passed on.
+
+**And GRÜN's author-side rule is the half of A-G242 I had left out:**
+
+> **A reading that matters belongs where the data is read, not in a sibling field.** `maxIsNotTheCap` worked
+> because **it names the field it warns about**; `reading_outcome` did not, because **it names only itself.**
+
+**That is cheaper than asking every reader to enumerate keys**, and it is the fix the author can actually make.
+A-G242 therefore has two halves — *read the artifact's own account* for the reader, *put the account where the
+data is read* for the author — **and the second is the one with a mechanism.**
+
+### A-G246 · The loss is not where any reader would expect it *(confirmed on the rows)*
+
+**LV02 carries six bodies — below the cap of seven, so the budget cannot bind — and it binds on spacing at both
+values. Its 6 → 3 is attributable to `CROWDING` alone.** And it is the largest proportional loss in the table.
+
+> **A seventy-body layout loses one of seven. A six-body layout loses half.** The spacing rule scales with
+> **eccentricity**, so a sparse field with distant bodies needs *more* clearance than a tight one near the
+> person. **Anyone reading "a tighter crowding rule" will expect the opposite**, and the figure that matters is
+> on the smallest layout, not the most crowded.
+
+### A-G247 · The decision is separable from the budget constants, which is what makes it takeable
+
+**The removal is driven by the spacing rule, not by the caps.** LV02 proves it: the worst case never touches
+`BODY_BUDGET` at all.
+
+> **So `CROWDING` can be settled without touching `BODY_BUDGET`, and the budget bounds can be decided
+> afterwards. One entangled decision becomes two sequential ones** — and that, in GRÜN's words, *"is the
+> difference between a decision the owner can take and one they cannot."*
+
+**That is the most useful thing produced for the owner in fifteen sections**, and it came out of the exchange
+that withdrew two of my adjudications. **The withdrawals were the cost; this is what the cost bought.**
+
+### A-G248 · The owner's largest open line existed only inside two lanes' messages
+
+GRÜN wrote `outputs/CROWDING-0.3-TO-0.5-WHAT-MOVES.md` — **verdict NONE, no recommendation, every row labelled
+build-or-record per A-G233** — *"because it seemed wrong for the owner's largest open line to exist only inside
+two lanes' messages."*
+
+**It was wrong, and the omission was mine.** I have reported owner items in prose in every report and **never
+once written one as an artifact.** A-G35 requires a number in the record to carry a script and a commit; **a
+decision put to the owner has had no such requirement, and it is the one place where losing the figures costs
+the most**, because the owner is the only reader who cannot re-derive them.
+
+> **A decision put to the owner is written where they can read it without a lane present**, with its source, its
+> build-or-record labelling, and no recommendation. **Adopted, and GRÜN's file is the template.**
+
+### A-G249 · GRÜN's own test, applied to this record
+
+> *"A guard that has caught its author more often than it has cost them is the only kind with evidence behind
+> it."*
+
+**Applied honestly to a hundred adjudications, two pass:**
+
+| | evidence |
+|---|---|
+| **A-G157** — the fail-loud status guard | fired twice during GRÜN's revert, right both times, and exists only because of the fail-weak default it replaced |
+| **A-G128** — the satisfiability gate | killed PG-19 before formation, reduced PG-17 to one limb, cleared PG-10, and saved PINK a three-limb pixel run |
+
+**Everything else in this record has reasoning.** A-G239 has three confirmations and **has never fired
+prospectively**; A-G214, A-G235, A-G243 and A-G244 were each written the section after the error they describe.
+**That is not an argument against them — it is the honest statement of what they are**, and GRÜN is right that
+*"worth knowing which is which"* is worth more than another rule.
+
+**And GRÜN declined the credit I offered it on A-G241, correctly:** it narrowed the precision *"because you had
+quoted a figure of mine at a precision it does not have, and the constants were mine, so the cost of being wrong
+was mine too."* **The `verdict: NONE` field is the better example, because there the qualification was written
+before anyone needed it** — which is the only version that helps, and the version A-G248 is now asking of me.
+
+### The owner's three items, now independent
+
+| | needs | state |
+|---|---|---|
+| **`CROWDING` 0.3 → 0.5** | **a judgement, no tooling at all** | **has an artifact behind it** |
+| `TEST_DATABASE_ADMIN_URL` | a credential | seven items |
+| permission to start a local server | a word | PG-23's last limb |
+
+**All three are the owner's, none depends on the others, and the first needs nothing but the decision.**
+
