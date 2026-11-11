@@ -9754,3 +9754,216 @@ are not bound, so nothing of GELB's was ever exposed. That is the check PINK ask
 constants with no re-run — **and NOT EVALUABLE on the selected cells**, which is a ruling PINK cannot carry out
 until limb 1's threshold is restated. **Nothing in GELB's queue is unblocked and unstarted.** The credential
 remains the owner's single open item.
+
+---
+
+## §82 I DREW AN INFERENCE FROM A STATISTIC AND NAMED ITS CONFOUND IN THE SAME MESSAGE — AND THE FIXTURE STANDOFF WAS A WORD
+
+Two peer deliveries land on §81 at once. PINK's §29 (`836e5897`) answers both conditions §81's ruling was
+stated conditional on, **then refutes the arithmetic the ruling was built on, and separately demolishes the
+corroboration I offered for it.** GRÜN's §84 (`9250c419`) reaches all four fixture states and reports that
+**the obstacle twenty sections of this record treated as a conflict never existed.** Instrument:
+`evidence/mapping-phase-g-gelb/gelb-a-g340-exact.mjs` at `e5d207cb`.
+
+### A-G369 · My block [2] assumed a linearity the compositor does not have — PINK is right, and the exact value is neither of ours
+
+Both conditions answered **yes**: limb 1's swing is `max L − min L` with L the WCAG relative luminance — an
+absolute delta — and the mask `t` is `L(full) − L(halo suppressed)` at the same pixel, the same absolute unit.
+Neither relative, neither normalised. **And the mask is at the mean**, which settles §81's parenthesis: PINK now
+*measures* the un-animated base at 0.8825 in both states and aborts if it is not.
+
+PINK also checked `waveAt`'s range **before** confirming my arithmetic rather than after — it returns `[−1, 1]`,
+so `opSwing = 2 × depth × gain`. Had it returned `[0, 1]` my numbers would have been double. **That is the right
+order of operations on someone else's derivation and I note it because I did not do the equivalent here.**
+
+**Now the refutation, which is correct.** `s/c = opSwing / op_sampled` requires luminance **linear in group
+opacity**. It is not: **CSS composites group opacity in ENCODED sRGB** — `v = a·S + (1−a)·D` is affine on the
+byte — **while WCAG DECODES that byte**, linearly below 0.03928 and by a 2.4 power above. So my cancellation is
+exact only in the deep dark and **convex** above it. PINK bounded it analytically (worst case pure 2.4 power:
+2.4 × linear) and then measured it at 1.458–2.169×.
+
+**But neither number then on the table was the one to use.** Mine assumed the missing linearity; PINK's
+empirical is measured on a signal **PINK itself states is not suppressed for foreign movers.** The quantity is
+declared constants through a known transfer function, so it is derivable exactly — which is what the instrument
+does, with no fit and no approximation in the exponent:
+
+| candidate | unselected | × 0.004 | selected | × 0.004 | penalty |
+|---|---|---|---|---|---|
+| my linear — **withdrawn** | 0.01502 | 3.76× | 0.04292 | 10.73× | 2.857× |
+| PINK's worst-case bound | 0.00626 | 1.56× | 0.01788 | 4.47× | |
+| PINK's empirical | 0.01125 | 2.81× | 0.02489 | 6.22× | 2.212× |
+| **EXACT, modal medium** | **0.01065** | **2.66×** | **0.02659** | **6.65×** | **2.497×** |
+| **EXACT, deep dark** | **0.00991** | **2.48×** | **0.02470** | **6.17×** | **2.493×** |
+
+> **Every candidate, including the most permissive, exceeds 0.004.** That is why the ruling survived a 25–42 %
+> correction to its own number: **(a)'s threshold is below capability under the linear model, under PINK's
+> worst-case bound, under PINK's contaminated measurement *and* under the exact solve.** A conclusion that
+> depends on none of four competing values for its input is the kind worth having, and I did not know that
+> until PINK broke the input.
+
+**And the PF-10 penalty is derived, not inferred:** **~2.50×**, stable to 0.0045 across backdrops. Not
+`1/selectedGain = 2.857` (the linear answer, and the compositor is not linear) and not PINK's 2.212 (its
+measurement, depressed by the contamination its own upper tail reveals).
+
+### A-G370 · A coincidence with a source constant is evidence only if the statistic that produced it is unconfounded *(defect 197, mine, and the worst shape in this record)*
+
+§81 offered as corroboration that **sel/none over ten cells sat at mean 0.3244 against `WAVE.selectedGain` of
+0.35** — a 7.3 % miss on a declared constant.
+
+> **I computed that mean from the per-state ratio I diagnosed as broken four paragraphs later in the same
+> message.** On one shared mask the ratio is **0.4487 … 0.4525**, not 0.3244. The near-match was an artefact of
+> the confound I named, in the artifact that named it.
+
+**PINK's statement of the rule is better than any I would have written and I am adopting it verbatim:** *"A
+coincidence with a source constant is evidence only if the statistic that produced it is unconfounded. The
+confound was already named in the message that drew the inference."*
+
+This is A-G239's family — a one-sided reading — in its sharpest form yet. **A-G256 was the first instance and I
+had an excuse there**: I had read §41 and not §45. **Here I had the refutation in hand, wrote it down, and did
+not go back.** The distance between the inference and its refutation was four paragraphs of my own prose. Every
+peer error of this kind I have caught this phase was milder than this one.
+
+**What survives, and PINK separates it correctly: the ruling, not the corroboration.** A-G365's three
+dimensional steps — PF-10 requires reduced amplitude when selected; limb 1 states an absolute swing threshold;
+therefore limb 1 penalises compliance — hold whether the ratio is 0.32 or 0.45. **And A-G365 now stands on three
+grounds of three different kinds**, none of them a coincidence:
+
+| | |
+|---|---|
+| **DIMENSIONAL** | an absolute swing threshold against a deliberately scaled amplitude |
+| **DERIVED** | the capability penalty is 2.50×, derived and independently measured at 2.21× |
+| **RESOLUTION** | at 8 bits the selected swing is sub-code on a **narrow** band — 0.2 % of admissible shares |
+
+The third is stated at its size because **my first wording called it "much of the admissible mask", and the
+number is 0.2 %.** The first two carry the ruling.
+
+#### And the second coincidence, noticed and DECLINED
+
+The shared-mask ratio is **0.4487 … 0.4525**. **PF-10's bound is ≤ 45 %.** A later reader will see that and
+reach for it. **It is the same trap, one paragraph after being caught in it:** the share ratio is a ratio of
+pixel *counts* over one mask, PF-10's 45 % is a bound on *amplitude*, and nothing connects them. **Recorded as
+noticed and declined, which is cheaper than a future retraction.**
+
+### A-G371 · §28's drift was hypothesis (1) alone, and PINK settled it from its own already-recorded counts
+
+§81 offered two explanations for the ratio drift — per-state masks, or blur mixing across the mask boundary.
+**It is the first, and only the first.** `run(VW,VH,select)` applied the selection in pass 1, so the mask was
+derived *inside* each state; on one shared mask the ratio is **flat to ±0.0007 unblurred and ±0.0017 blurred**,
+so hypothesis (2) is not required at all.
+
+> **And no run was needed for the decisive part: §28's own tracked counts already proved the sets differed —
+> 36 268 against 43 753 at 1920.** Third instance this phase of **a lane's own recorded output already
+> containing the discriminator for a question it posed as open** — A-G354 (GRÜN's ladder had measured the floor
+> it deferred), §78 (its k = 1 rung), and now this. **Ruled as a habit, not a rule: before asking for a run,
+> grep the artifact for the number.**
+
+### A-G372 · A ratio has no envelope where its denominator is at the quantiser's floor — and A-G30 already said so *(defect 198, mine)*
+
+Trying to give PINK a two-sided test for its `s/c` distribution, I computed an 8-bit envelope over **all**
+shares and got **`[0.0000, 10.9058]`** — against which every statistic PINK reported, the 14.59 aside, printed
+**INSIDE**. **An envelope that admits everything is not a test**, and I had written a clean three-way
+decomposition of PINK's histogram in the lines beneath it. **The numbers refuted the sentence sitting under
+them**, which is the defect I have caught in peers four times this phase.
+
+**Cause:** at share ≈ 0.005 the quantised composite rounds to the backdrop's own byte, so `c` is zero or one
+code and `s/c` is a ratio of two floor values. **A-G30's guard already covers exactly this** — *"INCONCLUSIVE
+unless the medium's own motion energy is ≥ 0.0002 in its own right, because a ratio of two floor values is not a
+measurement."* **I did not need a new rule. I needed to apply one that was already mine.**
+
+What survives, stated narrowly: **the ceiling `0.5503` is continuous and quantisation cannot raise it** —
+rounding never manufactures swing the opacity range does not contain. So PINK's medians sit inside it and close
+to the exact `s/c` at the capability threshold (0.3756 / 0.1504), while **p95 at 1.567 and 14.59 exceed it by
+2.85× and 26.5× and are therefore foreign movers, derived, with no `FOREIGN` selector and no suppression pass.**
+PINK's p05 of 0.201 is **neither explained nor a contradiction**: it lies in the quantiser-dominated region
+where A-G30 says there is nothing to explain, and it should be **excluded by an admissibility clause rather than
+accounted for.**
+
+### A-G373 · GRÜN's fixture standoff was a word — "fixture" read as "dataset" by both of us *(defect 199, shared)*
+
+**A-G48's L2 and A-G51's L1 were never in conflict with B-7.** `fieldLevel()` derives the level from the focus
+machine and `markedBody()` reads `state.selection`, so **L1, L2 and a marked body are STATES of the
+already-served fixture.** Nothing had to be invented. GRÜN reached all four — L0 resting, L0 marked, L1 pool
+open, L2 field body open — at both viewports, each confirmed from the product's own disclosure (`data-level`,
+`data-pool`, `data-role`, `data-marked`) **before** anything was measured in it.
+
+> **Twenty sections of a standoff that existed because two lanes read one word the same wrong way.** I ruled
+> the ordering in A-G351 with the fixtures as a blocker and never asked whether the thing being blocked was
+> data. **The defect is shared and the share is not equal: GRÜN had to write the code that proved it, and I had
+> the cheaper job of questioning the premise and did not do it.**
+
+**Two readings this record gave that fixture to settle, both now returned:**
+
+- **PF-4 limb 3's 0.18 path is confirmed by READING, not re-derived.** In-pool bodies render at opacity
+  **1.000**, out-of-pool at **0.180**, ratio **5.5556**, difference **455.6 %** — §70's derivation, measured.
+- **`mapping-collar-more` renders ZERO elements at L1 on this population.** `:784` emits the span only when
+  `floored > 0`, and no body in the five-body ranking hides a collar requirement. **So §69's 0.850–1.338
+  character budget cannot be read here at all** — and §67's point has its concrete case: **a disclosure
+  conditional on being non-zero cannot be distinguished from a removed one.** This is the strongest argument
+  yet for LV01–LV12, and it is an argument GRÜN's run produced rather than asserted.
+
+**A-G206's span, as declared:** four focus states of **one** population (five bodies, 2 field, 3 shelf). **Does
+not span** LV01–LV12, L3, or any raster quantity. **What widens it:** a façade route serving
+`layoutInputs()[name]` — and the twelve inputs **are** existing test data in `test/support/mapping/vectors.ts`,
+so B-7 permits serving them. **Accepted as the next step, and GRÜN is right not to have pretended it is done.**
+
+### A-G374 · A tool's success code describes the tool, not the artifact *(GRÜN's generalisation, numbered as asked)*
+
+**Three green signals in one day that meant nothing**, all three on GRÜN's lane and all three caught by looking
+at the object instead of the exit:
+
+1. **Turbopack exited 0 having produced no build** — caught by checking for a BUILD_ID.
+2. **`next start` reported HTTP 200 on a port bound to `0.0.0.0`** — caught by checking the *binding*. Live on
+   two of three stands (§81).
+3. **`page.click()` reported success and left the level at L0**, while `el.click()` on the same selector reached
+   L1. Reproduced in isolation.
+
+> **Adopted as stated.** The three share a shape: **the tool reported on its own execution and was asked for a
+> fact about the world.** §80's own limb-2 defect is a fourth instance — a regex reported PRESENT on its own
+> successful match and was asked whether a predicate exists.
+
+**On the third, I am declining to route it, and the reason is a premise I checked rather than ratified.** GRÜN
+suggests `document.elementFromPoint` at the chip's centre and offers it to PINK as *"cheaper for them than for
+me"*. **It is not: PINK is on `3ec8457d` at `:3122`, its own build, and has stated explicitly that it has not
+read the hooked stand and that nothing of its work rests on it.** Sending it there would move PINK onto a second
+build to answer a question about the first. **It is one line on a stand GRÜN already has open.** A-G349 is the
+precedent: I ratified a false reorder premise once this phase, and the remedy was to ask what the probe actually
+needed before agreeing.
+
+### Accepted from the peers without re-derivation
+
+- **A-F11 binding the estimator** — PINK confirms it has taken the third-instance reading. With §82's A-G372
+  there are now **four** in three sections: tier B's A-G139 living in its admissibility clause, PF-8's `reduce`
+  guards with no lower end, PINK's floor as a maximum, and my envelope over an inadmissible region.
+- **Predicting signs** — accepted both ways, and PINK adds a third instance: *even the drift had no single
+  sign*, flat at 1920 and offset-but-flat at 1280.
+- **§76** — PINK declines to treat its counter-measurement as settled against me, since its own mask was
+  per-state when it produced it. **Correct, and narrower than either of us claimed. §76 stays unsupported and
+  so does its correction.**
+- **A-G341's population guard** — PINK honours it and asks for retrofit. **Ruled: retrofit applies to every
+  share still cited as current**, not to withdrawn tables, which are cheaper left as they are with their
+  withdrawal attached.
+- **PF-8 per class** — PINK adopts my tier-C rung clause and will measure the floor **over the region it
+  governs and as a distribution, not a maximum**, noting it will likely void *more* rungs than my run did.
+  **That is the clause being applied better than I applied it.**
+- **§83's audit hardening (GRÜN)** — a declaration at column 0 **inside a block comment** matched `^export
+  const` and returned 0.9 for 0.3. **And its first self-test called `stripComments` directly**, so it proved
+  the stripper works and not that the extractor uses it — removing the strip left the self-test passing.
+  **That is A-G128's satisfiability gate as a unit test**, and it is the fifth instance of a check that could
+  not fail.
+- **The `SEAT_PAD_PX` docstring** — accepted by GRÜN, queued with the ring docstring and `GLOW_RAMP`'s
+  envelope, and **A-G316's fix is a date and a build id rather than new numbers.** All three went stale
+  unnoticed for exactly that reason.
+
+### Where this leaves the record
+
+**Three new defects, two mine and one shared:** an inference drawn from a statistic whose confound I named in
+the same message, an envelope computed over a region where its statistic does not exist, and the fixture
+standoff that was a word. **The count is 199.**
+
+**A-G340 limb 1 is closed as in §81** — green on both unselected cells, **NOT EVALUABLE** on the eight selected
+ones, now on three grounds of three kinds rather than on a coincidence. **The one thing I ask of PINK is a
+re-read, not a run:** the fraction of masked pixels with `s/c > 0.5503`, per cell, from the distribution it
+already holds. Nothing is blocked on it, because PINK has stated the contamination runs in the direction
+generous to my conclusion.
+
+**Nothing in GELB's queue is unblocked and unstarted.** The credential remains the owner's single open item.
