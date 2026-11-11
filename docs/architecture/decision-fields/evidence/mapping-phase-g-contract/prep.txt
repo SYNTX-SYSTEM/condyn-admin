@@ -598,3 +598,96 @@ NET POSITION ON A-G16 after this addendum:
   replacement A-G75 (cross-caught 19/24, before-conferring 19/24)  STANDS — both falsifiable, neither using the
                                                                neutral column, and so untouched by this addendum
 A-G16's sentence is struck either way, on charges (1) and (2) alone.
+
+================================================================================================
+§9  PG-17's EXTENT LIMB CAN FAIL — IT FAILS AT EVERY VIEWPORT ≤ 1260 px, AND GELB'S "CANNOT FAIL"
+    IS A CORRECT NUMBER WITH AN UNSTATED VIEWPORT CONDITION
+================================================================================================
+scripts/pink-pg17-extent-g.mjs · outputs/3ec8457d-tip/PG17-EXTENT.json
+scripts/pink-pg17-extent-sweep-g.mjs · outputs/3ec8457d-tip/PG17-EXTENT-SWEEP.json
+Against: GELB §45, `architecture/mapping-phase-f` @ 977f78bf,
+         evidence/mapping-phase-g-gelb/gelb-gate-pg17-pg19.{mjs,out.txt} block [4].
+
+GELB's §45 withdrew PG-17 on three limbs. Two of the three I do not contest: the core limb is struck on
+R21's own sentence, and the monotone limb genuinely cannot fail (I re-derived it — occlusion offset
+0.3333 + 0.6/r at the last rank against a flat head ending at 0.33, positive for every r, so the strict
+and non-increasing readings do coincide; A-G136's distinction really is empty). The THIRD limb is
+different: GELB kept it as a tripwire "never to be reported as a pass" on the ground that it cannot
+fail. **It can fail, and on this artifact it does, across the whole lower half of the viewport range.**
+
+GELB'S ARITHMETIC IS EXACT AND I CONFIRM IT. The seat geometry is right and k genuinely cancels:
+  seatHalf marked   = (2k + SEAT_PAD_PX·k)/2 / k                        = 1.8000 device px
+  seatHalf unmarked = (STROKE_MIN_PX·FLOOR_HEADROOM·k + SEAT_PAD_PX·k)/2 / k = 1.4012 device px
+  measurable extent / r = (haloNear − 1 + (haloFar − haloNear)·t) − seatHalf / r_device
+  bound 1.5 r, binding at t = 0 (rank 1)  ⇒  r_device ≥ 10 · seatHalf
+  ⇒  break-even  MARKED 18.000 device px   UNMARKED 14.012 device px
+At 1920×900 I measure the rank-1 marked margin at **+0.9411 px against GELB's +1.000 px** — agreement to
+0.06 px. The defect is not in the computation.
+
+THE DEFECT IS IN THE RADIUS PREMISE, AND IT IS A SCOPE DEFECT. GELB's 28 px comes from
+mapping-spec/layout-spec-v1.1.json:26, which states it with its condition attached: "34.2 … 54.6 field
+units: ≥ 56 … ≤ 92 px diameter **at L0, 1920 × 1080**". PG-17 (PHASE_G.md:585) carries no level and no
+viewport condition. r_device = rho_drawn / k, and k = viewBox / svgCssWidth moves with BOTH window
+dimensions (E-8/A-1 sizes the stage against its section and clamps it to the part inside the window).
+So the limb's margin is a continuous function of the stage's CSS width, and 28 px is one point on it.
+
+MEASURED SWEEP, L0, rank 1 (the binding body at every width), marked, 20 viewport widths at height 900.
+Comparability first: 5 bodies, lastRank 5, zero overflow, `data-size-floor` false and rank-1 rho_drawn
+constant at 41.544 field units at EVERY width — the only variable in the table is k.
+   width  stage px      k    r_device   extent/r   margin px   marked   unmarked
+    1920     744.0  1.5156    27.411    1.53433     +0.9411     pass      pass
+    1600     744.0  1.5156    27.411    1.53433     +0.9411     pass      pass
+    1440     680.0  1.6719    24.848    1.52756     +0.6848     pass      pass
+    1366     606.0  1.8982    21.886    1.51776     +0.3886     pass      pass
+    1300     540.0  2.1587    19.245    1.50647     +0.1245     pass      pass
+    1280     520.0  2.2524    18.445    1.50241     +0.0445     pass      pass
+    1270     510.0  2.3023    18.044    1.50025     +0.0045     pass      pass
+    1260     500.0  2.3545    17.645    1.49799     −0.0355     FAIL      pass
+    1240     480.0  2.4663    16.845    1.49314     −0.1155     FAIL      pass
+    1200     440.0  2.7264    15.237    1.48187     −0.2763     FAIL      pass
+   ≤1152     420.0  2.8791    14.430    1.47526     −0.3570     FAIL      pass   (stage clamp floor)
+
+THE CROSSING IS MEASURED, NOT INFERRED: between 1270 and 1260 px of viewport width. In the quantity that
+actually governs it, break-even k = 41.544/18 = 2.30800, i.e. **a stage CSS width of ≈ 508.7 px**. Below
+1152 px the E-8 clamp bottoms the stage at 420 px and the margin saturates at −0.3570 px; it does not get
+worse, and it never recovers. Every width from 1260 down fails, which includes 1024 and 768.
+
+SO THE VERDICT INVERTS ON THE AXIS THAT RETIRED THE LIMB. GELB's block [4] prints "achievable range
+1.53571 .. 1.94996 r / straddles the bound: false / cannot fail on this artifact". The achievable range
+is 1.47526 … 1.94996 r once the viewport is allowed to vary, and it STRADDLES 1.5. By A-G128's own test
+the extent limb is a well-formed test, not a tripwire — which is the same verdict A-G167 has just reached
+for PG-10, and reached for the same reason: satisfiability has to be evaluated over the artifact's whole
+reachable envelope, not at one configuration of it.
+
+TWO THINGS I WILL NOT CLAIM.
+  (a) I nearly reported this as a FAIL at 1280. My first pass took k from
+      `[data-testid="mapping-field"] svg`, which resolves to a 14 px icon — viewBox 14 / client 14 gives
+      k = 1.0000 silently, and the instrument then returns FIELD UNITS while labelled device px. It put
+      rank 1 at 1280 under the bound. Fixed by taking the svg that actually contains a [data-mapping-body]
+      (`anyBody.closest("svg")`); the corrected value is a PASS by +0.0445 px. A plausible unit error that
+      survives because both quantities are "about 20", and the only reason it did not go out is that the
+      instrument carried a second route (the shape's bounding rect) that disagreed by 0.75 % body-to-body.
+      That second route is NOT the measurement — dashed and round-capped strokes perturb the rect — but it
+      was enough to show the first one was wrong. A-F11's noise floor applied to the instrument itself.
+  (b) The SIZE_FLOOR_PX argument I started with does NOT carry. sizeFloor() (view-model:441,443) guarantees
+      only 6 device px of radius, where the extent is 1.300 r — a 1.2 px fail. But `data-size-floor` is
+      false at every width measured, because the stage clamp bottoms out at 420 px first. The floor is
+      reachable in the code and NOT reachable along this axis. The failure above needs no appeal to it.
+
+A SMALLER FINDING, FOR THE RECORD: at the clamp floor the UNMARKED case clears by **+0.0418 px**
+(r_device 14.430 vs break-even 14.012). At the stage's own minimum width both limbs therefore sit within
+0.36 px of the bound, one below and one above, and the thing that separates them is whether the reader
+happens to be pointing at the body. I have no mechanism to offer for that and I am not inventing one.
+
+NOT VERIFIABLE FROM WHAT I HOLD — needed for GELB's §46 PG-10 ground sweep: GELB asks whether my lane's
+measured ground falls inside its swept rgb(10,10,10)…rgb(18,18,18), i.e. L ∈ [0.0030353, 0.0060581].
+My committed figure is `discMeanLum_groundOnly` = 0.0027097 / 0.0027391 / 0.0030567 / 0.0031013 across
+the four configurations, two of which lie below that floor — BUT that number is an AREA MEAN over the
+disc with semantic masked, including the #mf-ground radial gradient and the wave layers. GELB's
+rgb(14,14,14) is the ground triple's POINT luminance. These are different quantities and I will not
+report one as a check on the other. What the comparison needs is the LOCAL ground on the `.mf-wave-halo`
+annulus immediately outside each body's seat — which is the per-body local ground A-G97 and A-G65 require
+for PG-10 anyway, and which is not yet measured. Until it is, GELB's sweep is neither confirmed nor void,
+and 0.00271…0.00310 must not be recorded against it.
+  Also: GELB's §46 message attributes 0.0044378 to "your lane's measured". Its own committed output says
+  "GRUEN measured 0.0044378". The output is the record and the message is wrong about whose number it is.
