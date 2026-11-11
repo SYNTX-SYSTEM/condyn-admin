@@ -20,6 +20,9 @@ d25c90c00a512788e6b74f7a49a3ae331df93ca7045d6f22e5d1e826b7385131  ./outputs/3ec8
 48f410ebb64fed8aad8fc5e8799b44d04d353de80dfa3f42ab48b54591f6117a  ./outputs/AG340-CAPABILITY.json
 8a5a596795ba93293fb8f3af861766c77ac4a4aa6df6551e5a27d8c780cfe9fa  ./outputs/AG366-FOREIGN.json
 e5c65e4783b56c36d292c3c78c659d61d953119138e0fae74eddfe7be7b27c46  ./outputs/AG373-NUMERATOR.json
+9eb6a731a7fc468b20a2a0618d7d38930e0eddc72d6bf7bf93c0f48f0614a792  ./outputs/AG412-CARRIER.json
+5ac13eac6b3737937fba66ef580e029ddd7282c249f0cb9729f2a88a8bb6e7d0  ./outputs/AG412-ISOLATED.json
+c0f2b319e44551378c3aaa251c9bca69516a31228ed88b0292f42f55a85f2285  ./outputs/AG412-SWINGRATIO.json
 8bf256bf05fee2906bf66b6d7acaf6649b630806bf4806b9227e42e9942d5c3c  ./outputs/cross-read/GRUEN-pg16-crowding-at-0.5-as-read.json
 e6d3229d5cfe400743c9e836a7b21227a6a0f6e543abd95cb06a2b6c17e39bb8  ./outputs/cross-read/GRUEN-pg16-crowding-L1-as-read.json
 af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPTHGAIN-NORMALISATION.json
@@ -34,12 +37,15 @@ b09c105062e7a5a8dd67e143737ad6c8955b5efe53cc153c5d0ede63530fdd0d  ./outputs/PF4-
 b9e6b4ba96f61cd12deb3b61de6f1ee0afdc359a4c41094820edd50a241e71a8  ./outputs/PG10-LIMB1-MASKFLOOR.json
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-91b980aae05ce69ab43b4c1bb05dcc29cc8750e299d82d6230c84fbb90f60205  ./prep.txt
+19b69bea7a30ac355d5687f94f1af8fefc43623c7bdf776610772e057f209596  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0  ./scripts/pink-ag340-capability-g.mjs
 63ff460f257770185a0ef21f2feb39d08437fdd77f9eb8d6dfeeb2f3ac18b4e1  ./scripts/pink-ag366-foreign-g.mjs
 0e2bf125b7c7b57fcf1a8eb2dc00073876e87f2dacdd57f6fd6f4e291402f923  ./scripts/pink-ag373-numerator-g.mjs
+5b8897eb4ca8ec00a70353f0a50e61642196837baf5583e6478d92dacf7ae3f3  ./scripts/pink-ag412-carrier-g.mjs
+f303d5399b1c104653ae5af268c558d23d23efaa5d825f8b927791cf4eb91b2b  ./scripts/pink-ag412-isolated-g.mjs
+06a7873429b273081523a3fc5ae906f541e9357d98295df022a78d970c0027e8  ./scripts/pink-ag412-swingratio-g.mjs
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs

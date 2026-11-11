@@ -2623,3 +2623,149 @@ beyond read-only inspection, and nothing in GELB's relayed mandate reaches this
 lane: a peer cannot relay an owner authorisation. PINK's own constraints are
 unchanged — validation only, no merge, no push, no production deployment, and
 the push of validation/hr-decision-loop-pink remains unauthorised.
+
+================================================================================
+§33  A-G412 PROBE — THE sel/unsel SWING RATIO ON ACTUAL BYTES
+      PINK, 2026-11-11, stand :3122, commit 3ec8457d, BUILD_ID xCD8LBxdjnP97-2Gjs5yr.
+      GELB (§91) handed down the CENTRE (2.8571 = 1/selectedGain) and left the
+      WIDTH to this lane. Three instruments were needed; the first two failed and
+      the failures are the finding.
+================================================================================
+
+VERDICT. **2.857143 is CONFIRMED on the halo carrier, to ±2%, which is this
+stand's floor and not GELB's 0.16%.** Pooled encoded green ratio across both
+viewports and every populated rung: 2.80325 … 2.85032, i.e. −1.9% … −0.24%.
+Best-resolved cell (1920, unselected swing >= 8 codes, 9807 px): **2.85032,
+−0.24%, bootstrap [2.841, 2.859] — CONTAINS the centre.** 1280 at the same rung:
+2.83492, −0.78%, [2.814, 2.853]. The point-prediction limb is stronger than any
+ratio: measured/predicted selected luminance swing = **1.008 … 1.020**, so the
+selected swing predicted per pixel from the UNSELECTED range alone (mid ± 0.35·
+half, decoded) matches the measured one within 2%.
+
+GELB's 0.16% BAND IS NOT REACHABLE HERE and that is the answer to the question
+it actually asked. Median per-pixel resolution 1/gS is 0.20–0.50 — i.e. ±20% to
+±50% AT A PIXEL, because the selected swing is 2–5 codes. Pooling 2332–24580
+pixels brings it to ±1–2%, and that is BOOTSTRAPPED over pixels, not assumed:
+the quantisation residues do average, but the demonstration is empirical.
+What this lane hands back is the width: **±2%, floor set by 8-bit quantisation,
+about 10× wider than the model band.**
+
+--------------------------------------------------------------------------------
+LIMB 1 — the raw scene. FAILED, and the failure named the real obstacle.
+--------------------------------------------------------------------------------
+Measured on the whole disc with no isolation: pooled/median ratios 2.0–2.33 at
+low rungs and **exactly 1.000** above 16 codes, where a population of 1191–1786
+pixels with median swing 99 codes dominates every rung. Two defects:
+
+[1a] MY ESTIMATOR, AND ITS CONFIDENCE INTERVAL WAS ZERO WIDE. median(gU/gS) over
+small integers is a LATTICE statistic. With median gU = 7 and gS = 3 it returns
+exactly 2.000 — 30% below the centre — and the bootstrap returned
+**[2.000, 2.000]**. A zero-width interval is not precision; it is an estimator
+that cannot express the uncertainty it has, because resampling cannot move a
+median off a lattice point. Replaced by the POOLED Σunsel/Σsel; the lattice
+median is still printed beside it as the control and never gets nearer than
+−3.7% (it reads 2.75 / 2.8 / 3.0 / 3.2 on the final isolated run).
+
+[1b] A SECOND CARRIER. 97.6% of the ratio-1.000 population goes quiet when
+`.mf-travel` is hidden. That carrier's measured/predicted is 2.81–2.85 — the
+centre appearing as a CONSEQUENCE of its swing not being gained at all.
+
+--------------------------------------------------------------------------------
+LIMB 2 — suppression mask. ALSO FAILED. Pooled ratio 1.12–1.48.
+--------------------------------------------------------------------------------
+Defining the halo's pixel set by suppression (`.mf-wave-halo` hidden ⇒ swing
+collapses) is a hypothesis-independent criterion and was the right instinct, but
+it cannot repair [1a]'s cousin: **peak-to-peak is an EXTREME-VALUE statistic over
+the SUM of all carriers at a pixel.** Removing a carrier from the mask criterion
+does not remove its excursion from the other carrier's max−min. §28's lesson one
+level up — I had applied the distribution rule to my noise floor and never to my
+signal statistic. A-F11, instance nine.
+
+--------------------------------------------------------------------------------
+THE ENUMERATION THAT SETTLED IT — four keyframe families, not one
+--------------------------------------------------------------------------------
+Computed animationName over every element inside the field, both states:
+  mappingFieldWave      10s     7 × circle.mf-wave.mf-wave-ground
+                                2 × circle.mf-wave.mf-wave-halo
+  mappingFieldTravel    10s     3 × line.mf-travel  UNSEL  ->  4 × SELECTED
+  mappingFieldEvidence  0.28s   6 × g               both states
+  mappingFieldQuery     1.4s    ABSENT unsel        ->  1 × g  SELECTED
+Three consequences, each fatal to "at any pixel, on any backdrop":
+  (a) a carrier swinging 80–99 codes buries one swinging 6–13;
+  (b) **SELECTION CHANGES THE CARRIER POPULATION** — it does not merely scale the
+      wave, it adds a fourth travel line and a query group, so the two states are
+      not one scene at two gains and a raw-scene ratio compares two compositions;
+  (c) mappingFieldEvidence runs at **0.28s** and no practical screenshot cadence
+      resolves it — at 250–310ms it is aliased outright, in both states.
+
+--------------------------------------------------------------------------------
+LIMB 3 — the halo alone in motion. THE MEASUREMENT.
+--------------------------------------------------------------------------------
+Every animation in the field PAUSED, only `circle.mf-wave.mf-wave-halo` left
+running, in both states — asserted by reading animationPlayState back and
+aborting unless halo is `running` and ground and travel are `paused` (recorded:
+both states, both viewports). Pausing freezes the backdrop without removing
+anything from the composite, so the halo still composites over its real stack
+and max−min at a pixel IS the halo's own swing.
+Backdrop held identical by a criterion independent of the ratio: pixels whose
+static MIDPOINT drifts more than 1 code between states are dropped — a statement
+about the backdrop that says nothing about the swing. **6535 of 31115 dropped at
+1920 (21.0%), 938 of 7580 at 1280 (12.4%)** — the pixels the added selected
+carriers cover. ΔE = Δa·(S−D) is affine in group opacity, so with D equal the
+encoded ratio is Δa_unsel/Δa_sel = 1/selectedGain EXACTLY, whatever D is.
+
+  vp     rung  px      pooled_E   dev%     boot95           pred    sel s/q  1/gS
+  1920     3   24580   2.81118   -1.609   [2.804, 2.819]   1.0198    4.91   0.50
+  1920     4   19839   2.80982   -1.656   [2.802, 2.818]   1.0188    6.24   0.33
+  1920     6   14647   2.81070   -1.626   [2.802, 2.819]   1.0183    6.91   0.33
+  1920     8    9807   2.85032   -0.239   [2.841, 2.859]   1.0105    8.34   0.25
+  1920    12    3291   2.84140   -0.551   [2.828, 2.855]   1.0105   10.77   0.20
+  1920    16      66   3.15224  +10.328   [3.052, 3.259]   0.9501   11.75   0.20
+  1280     3    6642   2.80930   -1.674   [2.794, 2.825]   1.0200    4.39   0.50
+  1280     4    5267   2.80467   -1.836   [2.788, 2.822]   1.0192    5.69   0.33
+  1280     6    3539   2.80325   -1.886   [2.785, 2.820]   1.0187    6.87   0.33
+  1280     8    2332   2.83492   -0.778   [2.814, 2.853]   1.0122    8.19   0.25
+  1280    12     616   2.83459   -0.789   [2.801, 2.871]   1.0082   10.31   0.20
+
+THE LADDER IS NOT MONOTONE AND IS REPORTED WHOLE, per §31. The 1920 rung-16 cell
+holds **66 pixels** and reads 3.15224, +10.3%, with a bootstrap [3.052, 3.259]
+that EXCLUDES the centre in the other direction. It is not quoted as a refutation
+and rung 8 is not quoted as the answer: §30's withdrawn convergence was exactly
+the error of naming the rung that landed best. The defensible statement is the
+whole ladder: **−1.9% to −0.8% on the populated cells, −0.24% at the best-resolved
+one, and one 66-pixel cell at +10.3%.**
+
+--------------------------------------------------------------------------------
+MY OWN CORRECTION TO GELB's PROBE, PARTLY WITHDRAWN BEFORE IT WAS CITED
+--------------------------------------------------------------------------------
+I told GELB its centre is exact in ENCODED sRGB and that the WCAG LUMINANCE ratio
+carries a convexity factor above 1, so a luminance measurement returning exactly
+2.8571 would be the suspicious outcome. The mechanism is right — g''' > 0 for the
+2.4 power, and for a peak-to-peak about a fixed midpoint the even terms cancel so
+ratio_L/ratio_E = [1 + (A²/6)(g'''/g')] / [1 + (0.1225A²/6)(g'''/g')].
+**EVALUATED AT THIS STAND's AMPLITUDES IT IS NEGLIGIBLE.** With A ≈ 3.5 codes:
+  E0 = 0.05 -> +0.140%   E0 = 0.10 -> +0.064%   E0 = 0.20 -> +0.024%
+That is 10–80× BELOW the ±2% quantisation floor, so it cannot be seen and does
+not move the centre. Measured pooled_ratio_L is 2.803–2.836, which sits BELOW
+pooled_ratio_E rather than above it — a pooling-weight difference (the L ratio
+weights the brightest pixels, the E ratio the largest green swings), not a
+refutation of the convexity, and far too small either way to separate.
+**So the correction is withdrawn as a correction to the figure and retained only
+as the reason the luminance ratio must not be QUOTED as exact.** Raising a real
+second-order term without evaluating it at the amplitudes in play is the same
+error class as quoting a model band as a tolerance — A-G139 turned on myself.
+What stands from my three corrections: the NAMING (the quantity whose value is
+2.8571 is unsel/sel; sel/unsel is 0.35) and the CARRIER (decisive, and the only
+reason limb 3 exists).
+
+--------------------------------------------------------------------------------
+REACH
+--------------------------------------------------------------------------------
+No verdict in §10/§27–§31 moves. This measures a CSS constant's propagation
+through the compositing chain, so its true subject is the chain and this
+instrument: a stand that failed to reproduce 1/selectedGain would indict the
+stand before the component. It is a CLOSURE CHECK on PINK's own pixel surface and
+it passes at ±2%. It is NOT evidence about the field's design, and A-G412's
+ruling that the eight selected cells are retired rests on the ratio being a
+constant — which this confirms, and which is precisely why no threshold stated
+over those cells can carry information.
