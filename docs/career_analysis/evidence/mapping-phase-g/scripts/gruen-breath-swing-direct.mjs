@@ -105,20 +105,38 @@ async function swingFor(gain, label) {
   const trough = await captureChroma(cdp, clip, N);
   await setHaloOpacity(+(mean + a).toFixed(6), `${label} peak`);
   const peak = await captureChroma(cdp, clip, N);
-  const s = [], meets = [], ratios = [];
-  let met = 0, best = 0;
+  const s = [], ratios = [], qs = [];
+  let met = 0, best = 0, sTotal = 0, qSum = 0;
   for (const i of hueIx) {
     const swing = Math.abs(peak.C[i] - trough.C[i]);
     const { q } = quantumAt(trough.rgb[i * 3], trough.rgb[i * 3 + 1], trough.rgb[i * 3 + 2]);
     if (q <= 0) continue;
     const need = 2 * q / P, ratio = swing / need;
-    s.push(swing); ratios.push(ratio);
+    s.push(swing); ratios.push(ratio); qs.push(q); sTotal += swing; qSum += q;
     if (swing >= need) met += 1;
     if (ratio > best) best = ratio;
   }
+  /* ── the axis that actually decides this, measured rather than chosen ─────────────────────────────
+     GELB asks whether the requirement's noise factor is 2q, sqrt(2)q or q — a factor of 2. But the per-pixel
+     framing is not the only one: an instrument timing the breath would pool the glow region, and pooling n
+     pixels moves the uncertainty by up to sqrt(n). That axis spans ~217 here and dwarfs the factor of 2. So
+     BOTH are computed: the worst case, where every pixel's rounding error aligns and pooling buys NOTHING,
+     and the independent-error case, where it buys sqrt(n). */
+  const n = qs.length, meanSwing = sTotal / Math.max(1, n);
+  const qbar = qSum / Math.max(1, n);
+  const sigmaWorst = 2 * qbar;                                        // errors aligned: no averaging at all
+  const sigmaIndep = 2 * Math.sqrt(qs.reduce((a, q) => a + q * q, 0)) / Math.max(1, n);
   return { label, gain, troughOpacity: +(mean - a).toFixed(6), peakOpacity: +(mean + a).toFixed(6),
     evaluated: s.length, swing: stats(s), fractionOfRequirement: stats(ratios),
-    pixelsMeetingTheRequirement: met, bestPixelAsFractionOfRequirement: +best.toFixed(4) };
+    pixelsMeetingTheRequirement: met, bestPixelAsFractionOfRequirement: +best.toFixed(4),
+    pooledOverTheWholePopulation: {
+      n, meanSwing: +meanSwing.toFixed(6), meanQ: +qbar.toFixed(6),
+      worstCase: { sigma: +sigmaWorst.toFixed(6), relativePrecision: +(sigmaWorst / Math.max(1e-12, meanSwing)).toFixed(5), meetsP: sigmaWorst / Math.max(1e-12, meanSwing) <= P,
+        why: "every pixel's quantisation error aligned in the same direction. Pooling buys NOTHING: the mean of n identically-biased readings carries the same bias." },
+      independentErrors: { sigma: +sigmaIndep.toFixed(8), relativePrecision: +(sigmaIndep / Math.max(1e-12, meanSwing)).toFixed(8), meetsP: sigmaIndep / Math.max(1e-12, meanSwing) <= P,
+        why: "rounding errors decorrelated across pixels, which is a MODELLING ASSUMPTION and not something measured here. Pooling then buys sqrt(n)." },
+      theAxisSpan: +(sigmaWorst / Math.max(1e-12, sigmaIndep)).toFixed(1)
+    } };
 }
 function stats(v) { const a = Float64Array.from(v); a.sort(); return a.length === 0 ? { n: 0 } : { n: a.length, min: +a[0].toFixed(6), p50: +pct(a, 0.5).toFixed(6), p90: +pct(a, 0.9).toFixed(6), p99: +pct(a, 0.99).toFixed(6), max: +a[a.length - 1].toFixed(6) }; }
 
@@ -160,6 +178,8 @@ out.finding =
 UNSELECTED: swing p50 ${unselected.swing.p50}, max ${unselected.swing.max}. The requirement is s >= ${2 / P}q and ${unselected.pixelsMeetingTheRequirement} of ${unselected.evaluated} pixels meet it; the best pixel reaches ${unselected.bestPixelAsFractionOfRequirement} of what it needs.
 SELECTED: swing p50 ${selected.swing.p50}, max ${selected.swing.max}. ${selected.pixelsMeetingTheRequirement} of ${selected.evaluated} meet it; best pixel ${selected.bestPixelAsFractionOfRequirement} of requirement.
 AND THE STATE RATIO IS NOT 1/selectedGain HERE: the stylesheet forces ${(1 / selectedGain).toFixed(3)} on OPACITY, and the measured ratio of chroma swings is ${(unselected.swing.p50 / Math.max(1e-12, selected.swing.p50)).toFixed(3)} at the median. C* is not linear in the composite, so the wider unselected interval subtends a larger chord than linear scaling predicts. 1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain, and both lanes have been quoting one number for both — GELB's spread-domain rule, applied to a ratio. It moves neither limb: both are short by factors well outside the discrepancy.
+AND THE OPEN AXIS IS NOT THE ONE GELB NAMED. They ask whether the noise factor is 2q, sqrt(2)q or q — a factor of 2 that flips the best PIXEL. But the per-pixel framing is itself a choice: an instrument timing the breath would POOL the glow region, and pooling ${unselected.pooledOverTheWholePopulation.n} pixels spans ${unselected.pooledOverTheWholePopulation.theAxisSpan}x between the two honest treatments of quantisation error. Worst case (every pixel's error aligned, pooling buys nothing): relative precision ${unselected.pooledOverTheWholePopulation.worstCase.relativePrecision} unselected, meets ${P}: ${unselected.pooledOverTheWholePopulation.worstCase.meetsP}. Independent errors (a MODELLING ASSUMPTION, not measured here): ${unselected.pooledOverTheWholePopulation.independentErrors.relativePrecision}, meets ${P}: ${unselected.pooledOverTheWholePopulation.independentErrors.meetsP}.
+*** SO "A CHROMA INSTRUMENT CANNOT TIME THE BREATH" IS A PER-PIXEL CLAIM AND I STATED IT WITHOUT THAT QUALIFIER. *** Pooled with decorrelated errors it is comfortably measurable; pooled with aligned errors it is not; per pixel it is not. The decisive axis is worst-case versus independent-error treatment, spanning ~${unselected.pooledOverTheWholePopulation.theAxisSpan}x, which dwarfs the factor of 2 between 2q and q.
 THIS CLOSES THE 36 % GAP WITHOUT THE SHARE. §102's share is undefined wherever the full-removal differential is <= 0, and GELB's share <= 1 closure is sound only where the share exists. A local swing is defined at every pixel, so this covers the whole population and supersedes both proxies rather than refining them.
 NO VERDICT (A-G36 point 2): this is a resolution over a population. Whether PG-12 is satisfied is PINK's.`;
 
