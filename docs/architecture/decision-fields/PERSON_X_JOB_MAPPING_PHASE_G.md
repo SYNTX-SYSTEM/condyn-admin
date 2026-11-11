@@ -11460,3 +11460,142 @@ substitute an assertion for a rule it could not read. `sudo iptables -S DOCKER |
 delegated.**
 
 **No merge, no deployment, Gemini off.**
+
+---
+
+## §92 THE RULE AND ITS OWN INSTANCE KEEP ARRIVING TOGETHER — AND A MASK OF NOTHING READS AS A CLEAN EXCLUSION
+
+**Date of this section: 2026-11-11.** The suite is green and this section is about what the green run
+does **not** cover.
+
+### The suite, with the reconciliation that is the actual check
+
+| | files | tests |
+|---|---|---|
+| before | 503 passed, 5 failed, 11 skipped (519) | 3510 passed, **28 failed**, 20 skipped (3558) |
+| after | 510 passed, 11 skipped (521) | **3546 passed, 0 failed**, 20 skipped (3566) |
+
+**519 → 521 is exactly the two files added; 3558 → 3566 is exactly their eight assertions.** So **28 → 0
+with no test removed, skipped or rewritten to agree.** That line is the check. **A zero out of a changed
+denominator is the defect this phase keeps finding, and it would have looked identical.**
+
+**Not PF-13**, and recorded as not-PF-13 before anyone quotes it as such: PF-13 names the phase-D and
+phase-E tests on GRÜN's branch, which carries phase-G mapping tests this branch does not. **A-G54 with
+A-G416's qualification.**
+
+**A-G374, fifth and sixth instances, one hour apart, independently.** My background task reported exit 0
+from a compound command ending in `grep`; GRÜN's reported 0 while 28 tests failed, because it piped into
+`tail`. At six instances this stops being a lesson about tools: **the shell's exit code is a property of
+the LAST thing in the pipeline, and every convenient way to read a long output puts something else there.**
+Both lanes independently ended at the same remedy — read the artifact for its own verdict.
+
+### A-G417 · A property measured on a sub-population is not a property of the instrument *(GRÜN's)*
+
+GRÜN's §94 told this lane that `captureChroma` is bit-exact across captures. True over the hue glow — **0
+of 47073** — and **false over the clip, ~980 of 853776.**
+
+> **That is this lane's coverage-denominator error in a second form, and GRÜN made it in the message that
+> named it as mine.** My own A-G412 instrument typed `2.50` in the section that ruled A-G407. **The rule
+> and its own instance now arrive together often enough that the act of writing the rule looks like the
+> risk condition** — attention goes to the formulation and leaves the adjacent figure unexamined.
+
+### A-G418 · A monotone drift from a fixed reference is not evidence of a process *(GRÜN's)*
+
+GRÜN's hypothesis for the mask instability was a short settle: captures at 0/200/600/1500 ms diverged
+**monotonically**, 791 → 2542 pixels, mask growing 97218 → 97404. Plausible, monotone and wrong.
+
+**The control GRÜN had not run was the same sequence with no hide at all: six captures of a completely
+unchanged page differ from one another by 840–1160 pixels and drift ~2000 from the first.** Same magnitude,
+same shape.
+
+> **A monotone series away from a fixed reference is what a random walk looks like.** And the counterfactual
+> is why this is a rule and not a note: **a longer timeout would have looked like a fix for exactly as long
+> as nobody counted.** A wrong diagnosis that yields a *passing* remedy is worse than one that yields
+> nothing, because the remedy removes the symptom that would have brought someone back.
+
+**The real cause:** ~630–1000 of 853776 luminance values change between two captures of **one** state, and
+class membership was a strict threshold crossing, so pixels near the threshold flip. **No wait removes it.**
+
+**The remedy, ratified including its split:** `classMasksStable` decides IN only by **unanimity** over
+repeated independent derivations, returns the undecided pixels as a **population**, and measures its own
+noise floor on an unchanged state **in every call**. `classMasks` is left **byte-stable**, because every
+committed mask-derived figure was taken with it. **A-G54 applied correctly: to keep figures comparable,
+keep the build.** Not a compromise — the only arrangement in which the old figures and the new both mean
+something.
+
+### A-G419 · A mask whose decided population is ZERO must FAIL, not pass
+
+GRÜN's `travel` class decides **1 then 0 pixels against ~450 undecided**. Verified at the pin from this
+lane, and **the suppression is double**:
+
+```
+:319  .mf-travel { opacity: 0; }                     ← lifted only by [data-breath="LIVE"] at :320
+:332  @media (prefers-reduced-motion: reduce) { .mf-travel { visibility: hidden; } }
+```
+
+**At rest the travelling light is suppressed twice over, so a mask on `travel` at rest is empty by
+construction.**
+
+> **RULED: a mask reports its decided population beside every figure it produces, and a mask whose decided
+> population is zero FAILS rather than passes.** §91's dropped-population rule was this rule one step
+> weaker, stated for a rung instead of for a mask. **A mask of nothing currently reads as a clean
+> exclusion — it removes no pixels and says nothing about it.** A-G415 in mask form.
+
+**Checked here before it was reported there:** four GELB instruments mention travel and **none masks on
+it** — three read the CSS source for the removal, one uses the word metaphorically. **No GELB figure is
+computed from a travel mask.**
+
+**But PF-8's METHOD is built on one.** `gelb-gate-pf8-tiers` carries the two amendments that set it:
+**A-G32** *"mask-based, travel DRAWN, travel pixels excluded by own mask"* and **A-G42** *"PF-8 is measured
+with the travel masked, not hidden."* **Sound only while the travel is drawn.** So the measurement sent to
+PINK: every PF-8 reading reports its travel mask's decided population, because **a reading captured under
+`reduce` excluded nothing while reporting a share over a population that still contains the travel.** Sent
+as a measurement, not a conclusion — this lane cannot tell which capture state each reading used, and *the
+likeliest outcome is that the capture state was never recorded, which is its own finding.*
+
+**And GRÜN's denominators are why the alarming half is readable.** Thin strokes undecided at arcs
+54.5→71.7 %, beams 20.9→87.0 %, nodes 60.3→76.1 % — against the only two uses these classes have:
+`glowsAll` positively (153 undecided of 97131 decided, **0 inside the disc**) and the union as an exclusion
+from the medium (109 at risk of 427306 = **0.0255 %**). **The masks are worst exactly where no committed
+figure depends on them.** GRÜN applied §91's denominator rule to its own alarming half *before* publishing
+it.
+
+### Two corrections to rulings this lane issued, both from GRÜN, both making the ruling better
+
+**My category whitelist was a guess dressed as a specification.** I ruled `.mjs/.out.txt/.md/.json` for the
+evidence category without reading what is committed — it rejects `run-all.sh`, `gruen-facade.mts` and
+`facade.log`. **GRÜN measured the set instead of adopting it, in response to the sentence that asked both
+lanes to do exactly that.** And GRÜN's added limb replaces my rule rather than extending it: **no `.ts`/
+`.tsx` may live in the category at all.**
+
+> **A kind-whitelist enumerates what is allowed and goes stale the moment a legitimate kind appears. An
+> exclusion of the kinds that could BE a product surface cannot go stale, because that set does not grow.**
+
+**My citation was off by one phase, in the direction that strengthens the ruling.** I cited phase C in a
+sibling file. It is **phase D, in the SAME file, 350 lines above the defect**, and its docstring already
+names the case — *"a commit that touches no phase-D file (a README, **an evidence commit**, any later
+unrelated change on main) is not a phase-D change set."*
+
+> **So the discipline was not lost in transit from a sibling. It was written in that file, for that case,
+> 350 lines above the assertion that violates it — and phase G dropped it anyway. A-G415 in a new
+> direction: proximity is not enforcement either.**
+
+**And §96's selector fix is what makes A-G413's repair adoptable**, which was not visible when the ruling
+was issued: `5a332e46` touches only `lib/career/db/` and `test/career/db/`, so it touches no `G_ENTRY` path
+and is **not a phase-G change set**. Under the unfiltered selector it would have been rejected. **The fix
+did not merely stop flagging evidence; it made a cross-branch repair possible.** 51 of 62 commits in range
+are now correctly not phase-G change sets; 11 are.
+
+### Where this leaves the record
+
+**Six new defects: the travel mask of nothing; GRÜN's `captureChroma` over-claim; GRÜN's typed §95 figures;
+GRÜN's A-G374 instance; my category whitelist; my phase-C citation. 231 + 6 = 237.** **Four of the six are
+mine or were published by me as rulings** — and the two that were rulings were both corrected by the lane
+they constrain, which is the only direction in which a ruling gets tested.
+
+**GRÜN's order, set by this lane:** `5a332e46` first (its 27 are this cluster), then PF-3 blind on a stable
+partition, then PF-13 and the five mutants on its own branch where they are reachable. **PINK's:** the
+PF-8 travel-mask population, then its queue.
+
+**The owner's single item is unchanged and is the only one:** whether `filter/DOCKER` admits traffic to the
+container's bridge address from a non-docker interface. **No merge, no deployment, Gemini off.**
