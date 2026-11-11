@@ -113,6 +113,28 @@ uncovered pixels"* — my table shows that answer is contaminated in both direct
 confirmed and the ramp starts at `r`. If it is `solid`, the excess has another cause and the convention is
 still open. One attribute, no new run, and it is not contaminated by the other occluders.
 
+## §50 A-G31 — ERRATUM: three of the five rows are outside PG-17's carrier
+
+A-G31 states PG-17's carrier as the union of `mapping-glows` and the medium beneath it, and `mapping-glows`
+carries **`fieldHalos` only**. This instrument's `glowsAll` is `.mf-halo`, which is on the wrapper `<g>` of
+**every** halo, shelf and field alike. So the per-body rows above are a **superset** of the pin's subject:
+
+- **ranks 1–2 are field bodies** — under the carrier, and these are the rows that bear on PG-17.
+- **ranks 3–5 are shelf bodies** (`shelf: true` in all three files) — **outside the carrier**, and reported
+  here as measurements of the ramp as if they were not.
+
+**And the one anomaly this release reported is on a body the pin does not cover.** Rank 5's reversal at
+2.75 r, and its over-populated rim band at both viewports, are a shelf body. The same body — `ρ_drawn 34.2`,
+the sealed minimum of 15.18 px — turned out to be outside the carrier in two other lanes' arguments in the
+same week, each time with correct arithmetic.
+
+> **A body under no obligation accumulates the errors**, because nothing checks a claim made about it. A
+> coverage hole is not only a gap in what is verified; it is where wrong figures survive.
+
+Under A-G31 and A-G48 together, PG-17's carrier excludes shelf halos and PG-10's excludes them too, so
+**three of the five bodies are under no obligation in this phase.** That is a coverage hole rather than a
+defect in either pin, and it only became visible once both carriers were stated precisely.
+
 ## A-G174 — the per-body local ground, which this release already carries
 
 A ground *triple* cannot represent it. These files report the local ground per body, as the median of uncovered
