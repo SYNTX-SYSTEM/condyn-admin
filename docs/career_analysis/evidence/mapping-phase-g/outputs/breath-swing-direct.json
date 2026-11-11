@@ -1,0 +1,171 @@
+{
+ "reading": "GRÜN · §103 — the breath's chroma swing measured DIRECTLY at trough and peak, over the whole population",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T21:00:23.776Z",
+  "measuredBuildCommit": "c84ab292",
+  "measuredWorktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "level": "L0",
+ "motion": "resting; the halo group's own mean is overridden to the breath's trough and peak",
+ "whyThisSupersedesTheProxies": {
+  "s94": "derived the requirement from relSwing applied to a pixel's TOTAL chroma — assumed share = 1.",
+  "s102": "corrected by the halo's chroma share, measured as a FULL-REMOVAL differential.",
+  "theGapBothLeft": "a full-removal differential is NOT a local derivative. The breath moves the halo between mean-amp and mean+amp and never removes it, so a pixel whose removal differential is <= 0 (36 % of the population) can still have non-zero local sensitivity, and GELB's sound `share <= 1` closure cannot reach it. This measures the local swing itself and covers all 47073.",
+  "requirement": "a reading carries uncertainty q; differencing two captures carries 2q; relative precision 0.1 needs s >= 2q/0.1 = 20q. Compared per pixel, directly."
+ },
+ "constantsRead": {
+  "haloDepth": 0.235,
+  "selectedGain": 0.35,
+  "mean": 0.8825,
+  "amp": 0.1175
+ },
+ "overrideProvenAppliedNotAssumed": {
+  "why": "if the override silently failed, both captures would be identical, s would be 0 everywhere, and this probe would report the very conclusion §94 reached. A probe whose broken state agrees with its author's hypothesis must prove it is not broken.",
+  "readbacks": [
+   {
+    "label": "unselected trough",
+    "set": 0.765,
+    "computed": [
+     0.765,
+     0.765
+    ],
+    "agreeing": 2,
+    "total": 2
+   },
+   {
+    "label": "unselected peak",
+    "set": 1,
+    "computed": [
+     1,
+     1
+    ],
+    "agreeing": 2,
+    "total": 2
+   },
+   {
+    "label": "selected trough",
+    "set": 0.841375,
+    "computed": [
+     0.841375,
+     0.841375
+    ],
+    "agreeing": 2,
+    "total": 2
+   },
+   {
+    "label": "selected peak",
+    "set": 0.923625,
+    "computed": [
+     0.923625,
+     0.923625
+    ],
+    "agreeing": 2,
+    "total": 2
+   }
+  ],
+  "allAgreed": true
+ },
+ "population": {
+  "hueCarryingGlowPixels": 47073,
+  "hueCarryingBodiesAllBreathe": true,
+  "note": "the hue-carrying bodies are ranks 1 and 2, both non-shelf, so both halos carry .mf-wave-halo and do breathe. Checked and asserted, because a shelf hue body would give a swing of zero BY DESIGN (A-F8) and that must never be reported as a resolution limit."
+ },
+ "unselected": {
+  "label": "unselected",
+  "gain": 1,
+  "troughOpacity": 0.765,
+  "peakOpacity": 1,
+  "evaluated": 47073,
+  "swing": {
+   "n": 47073,
+   "min": 0,
+   "p50": 2.825259,
+   "p90": 6.452684,
+   "p99": 7.91839,
+   "max": 8.820271
+  },
+  "fractionOfRequirement": {
+   "n": 47073,
+   "min": 0,
+   "p50": 0.195994,
+   "p90": 0.569301,
+   "p99": 0.76821,
+   "max": 0.88753
+  },
+  "pixelsMeetingTheRequirement": 0,
+  "bestPixelAsFractionOfRequirement": 0.8875
+ },
+ "selected": {
+  "label": "selected",
+  "gain": 0.35,
+  "troughOpacity": 0.841375,
+  "peakOpacity": 0.923625,
+  "evaluated": 47073,
+  "swing": {
+   "n": 47073,
+   "min": 0,
+   "p50": 0.845734,
+   "p90": 2.338831,
+   "p99": 2.98901,
+   "max": 3.444681
+  },
+  "fractionOfRequirement": {
+   "n": 47073,
+   "min": 0,
+   "p50": 0.062726,
+   "p90": 0.207222,
+   "p99": 0.301676,
+   "max": 0.357637
+  },
+  "pixelsMeetingTheRequirement": 0,
+  "bestPixelAsFractionOfRequirement": 0.3576
+ },
+ "theStateRatioIsNOT1OverSelectedGain_inTheCHROMAdomain": {
+  "stylesheetForcedRatio_onOPACITY": 2.8571,
+  "measuredRatio_onCHROMA_median": 3.3406,
+  "measuredRatio_onCHROMA_max": 2.5605,
+  "why": "--mf-wave-gain multiplies the DEPTH and leaves the mean alone, so the OPACITY swing ratio is exactly 1/selectedGain and GELB reproduced that to 0.16 % across the alpha range. C* is not a linear function of the composite: the unselected interval [mean-amp, mean+amp] is wider and therefore samples more of the response curve's curvature than the selected one, so the chord it subtends in chroma is larger than linear scaling predicts. Hence a chroma ratio above the opacity ratio.",
+  "whatThisMeans": "1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain. Both lanes have been quoting one number for both. That is GELB's own spread-domain rule applied to a RATIO: a ratio stated without its domain is indistinguishable from one stated with it, and the two differ here by about a sixth.",
+  "andItDoesNotMoveTHISfinding": "both states are short by factors well outside that discrepancy — 1.13x unselected, 2.80x selected — so the domain confusion changes neither limb's direction."
+ },
+ "finding": "THE BREATH'S CHROMA SWING, MEASURED DIRECTLY at the halo group's own trough and peak, over 47073 hue-glow pixels — no relSwing, no share, no additivity assumption, and the override PROVEN applied by reading back the computed opacity of all 2 breathing halo elements at every step.\nUNSELECTED: swing p50 2.825259, max 8.820271. The requirement is s >= 20q and 0 of 47073 pixels meet it; the best pixel reaches 0.8875 of what it needs.\nSELECTED: swing p50 0.845734, max 3.444681. 0 of 47073 meet it; best pixel 0.3576 of requirement.\nAND THE STATE RATIO IS NOT 1/selectedGain HERE: the stylesheet forces 2.857 on OPACITY, and the measured ratio of chroma swings is 3.341 at the median. C* is not linear in the composite, so the wider unselected interval subtends a larger chord than linear scaling predicts. 1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain, and both lanes have been quoting one number for both — GELB's spread-domain rule, applied to a ratio. It moves neither limb: both are short by factors well outside the discrepancy.\nTHIS CLOSES THE 36 % GAP WITHOUT THE SHARE. §102's share is undefined wherever the full-removal differential is <= 0, and GELB's share <= 1 closure is sound only where the share exists. A local swing is defined at every pixel, so this covers the whole population and supersedes both proxies rather than refining them.\nNO VERDICT (A-G36 point 2): this is a resolution over a population. Whether PG-12 is satisfied is PINK's."
+}
