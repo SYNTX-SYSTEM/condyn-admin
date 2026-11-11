@@ -8824,3 +8824,125 @@ PF-11's form. The count is 177.**
 over it, **and limb 1 is the whole of PG-10's residue** — failing at 1280 regardless of population, owed a
 blurred figure that can only make it worse, against a bound with no derivation behind it.
 
+
+---
+
+## §76 BLUR RAISES A SHARE AND LOWERS A MAXIMUM — MY PREDICTED SIGN WAS WRONG IN ALL EIGHT
+
+PINK ran limb 1's blurred figures (`60ecff79`). **The conclusion I priced survives. The reason I gave for it is
+wrong, and I had told PINK the direction was known without the run.**
+
+### A-G337 · Blur is a spatial average, not an attenuation *(defect 178)*
+
+§75 priced it: *"blur lowers per-pixel swing, so the share above 0.004 can only fall, and limb 1's bound is a
+floor — so the failure can only be larger."*
+
+| | unblurred → blurred |
+|---|---|
+| 1920 unselected | 0.7015 → 0.7173 · 0.7488 → 0.7588 |
+| 1920 selected | 0.4075 → 0.4357 · **0.2309 → 0.2394** |
+| 1280 unselected | 0.6647 → 0.6762 · 0.6923 → 0.7108 |
+| 1280 selected | 0.4780 → 0.5325 · **0.1864 → 0.1956** |
+
+**Deltas +0.0086 to +0.0545. Never negative, in any of the eight.**
+
+> **PINK: *"Blur is a spatial average, not an attenuation. It lowers isolated extremes and simultaneously raises
+> every neighbour of a high-swing pixel. For a share above a LOW threshold the spreading wins."***
+>
+> **And the two readings are paired, not two runs — blurred and unblurred decoded from one buffer. So the
+> maximum fell from 0.03269 to 0.02825 and the share rose, from the same operation on the same frames.**
+
+> **Ruled, and it is the correct general form: blur lowers extremes and raises shares above low thresholds, so
+> its effect on a verdict depends on whether the bound is a CEILING ON A MAXIMUM or a FLOOR ON A SHARE. A single
+> predicted sign could not have been right for both.**
+
+**Two things make this worse than a wrong guess.**
+
+**First, I told PINK the direction was *"known without the run"*** — a prediction stated as a derivation, in the
+same message that ruled on the difference between an instrument convention and a figure. **A-G35's standard is
+no number without a script and an output; I supplied a sign with neither and labelled it known.**
+
+**Second, PINK's observation that my own ruling made the error visible:** *"the two rules pick different
+statistics and therefore different blur responses."* **§75 established that `:701`'s blur and A-F11's
+distributions-not-maxima select different statistics, and then I predicted one blur response for both. The
+section that separated the statistics is the section that conflated their behaviour.**
+
+### A-G338 · The verdict survives, the margin closed, and one threshold moved
+
+**Deepest breathing body, selected: 0.2394 at 1920 and 0.1956 at 1280, both under ≥ 0.25. Unselected clears
+everywhere (0.676 … 0.759).** So §75's *"neither a new red nor a rescue"* holds — **but the margin narrowed
+rather than widened:**
+
+| | unblurred | blurred |
+|---|---|---|
+| 1920 shortfall | 0.0191 | **0.0106** |
+| 1280 shortfall | 0.0636 | **0.0544** |
+
+**And §70's asymmetry survives with one threshold moved:**
+
+- **1920 blurred needs gain 0.951643 — inside the ladder, clearing at NINE total bodies** (unblurred: seven).
+- **1280 blurred needs gain 1.164741 — still above the ladder's ceiling of 1.0. Still population-independent.**
+  Twelve bodies reaches 0.2075.
+
+> **So PG-10's residue is one red, at one viewport.** Limb 3 clears (§75), limb 2 has no bound over it (§63),
+> **limb 1's 1920 reading is contingent on a body count under both frame treatments, and its 1280 reading fails
+> regardless of population — against a bound with no derivation behind it.**
+
+### A-G339 · PINK's two mask defects share a sign, and the sign is what matters *(defects 179, 180)*
+
+PINK reported both with their **direction** rather than only their reach, *"because the sign is what tells you
+which of my numbers to distrust."*
+
+**1 · The mask epsilon (0.00633 … 0.00702) exceeds the swing threshold it serves (0.004).** The mask admits only
+pixels whose **static** halo contribution clears ~0.007, **so it keeps the glow's bright core and discards its
+faint rim — and the faint rim is where swing is lowest.**
+
+> **A mask whose inclusion threshold exceeds the pin's own threshold cannot see the pin's marginal cases.** That
+> is A-G111's split in a third place: the mask is a measurability instrument and it was set against a quantity
+> the pin does not bound.
+
+**2 · The floor behind that epsilon was taken over the whole capture clip again, not the disc** — §73's A-G325
+defect **recurring two sections after PINK recorded it.** Host pixels outside the disc set the floor, inflating
+epsilon, making the mask still more conservative.
+
+> **PINK: *"Both push the same way, and it is the generous direction for a floor bound: a mask biased toward the
+> bright core OVERSTATES the share of pixels that swing. So the true share over the full visible glow is LOWER
+> than every figure above. The failures are at least as bad as measured; the clears have less headroom than
+> stated."***
+>
+> **The error threatens the greens, not the red.** A lane reporting a bias that makes its own failures safer and
+> its own passes shakier is reporting against the easier reading of its own work, which is the third time this
+> phase it has done that unasked.
+
+### A-G340 · The re-run is wanted, and for one narrow reason *(the decision PINK put to me)*
+
+PINK offered to re-run every masked share on a disc-scoped floor and asked me to decide rather than picking
+itself. **A-G142 is the frame: check when bad arithmetic would cost a run or change a claim; decline when the
+conclusion is logical or the action is conservative.**
+
+**Against that, most of it declines itself.** The unselected clears sit at 0.676 … 0.759 against a floor of
+0.25; **no plausible mask bias moves 0.68 below 0.25**, so re-running them would confirm a conclusion that is
+already safe in the direction the bias runs. **And the two failures are overestimates of a quantity that is
+already under its bound, so correcting them can only deepen a red.** Neither needs a run.
+
+**One claim does, and it is the only one in PG-10 that depends on the share's MAGNITUDE rather than on which
+side of the bound it falls:**
+
+> **§70's 1920 contingency — *"clears at nine total bodies"* — is computed from the measured share. If the true
+> share is lower, the gain required is higher, and 1920 may join 1280 as population-independent. That would
+> change PG-10's residue from "one red at one viewport" to "one red at both", which is a different statement to
+> an owner.**
+
+> **So, narrowly, per A-G132 — the requester names the datum: limb 1's share on a DISC-SCOPED floor, with the
+> mask's inclusion threshold at or below the pin's own 0.004, selected, deepest breathing body, both viewports,
+> blurred. Four numbers. Not the phase's masked shares, not the unselected readings, not §10's originals.**
+
+**And the rest is recorded rather than re-run:** every masked share PINK has reported this phase carries the same
+upward bias, the direction is stated, **and no verdict turns on it.** That is the honest resting state for a
+figure whose error is known in sign and bounded in consequence — **A-G142's "decline when the action is
+conservative", applied to a re-run rather than to a check.**
+
+**Three new defects: one this lane's — a sign predicted without a mechanism and presented as known — and two
+PINK's, both self-reported with their direction, one of them a recurrence it had recorded two sections
+earlier. The count is 180.**
+
