@@ -1488,3 +1488,62 @@ PG-3's DISCLOSURE (GELB §64 item 1) — READ, AND IT DOES NOT MEASURE PG-3. Thr
      smallest.** 1280 and 1024 are reported as out-of-condition context, not as failures. **The limb holds at
      its condition and holds by layout arithmetic, with nothing enforcing it** — the floor that looks like its
      guard is set almost five times lower and never fires.
+
+
+================================================================================================
+§20  PG-14's BEFORE READING. CONTAINMENT HOLDS ON THIS STAND AND THE STAND CAN SEE THE DEFECT —
+     BUT THE WIDEN'S SIDE ALLOWANCE IS NOT A BOUND ON THE LABELS IT EXISTS TO CONTAIN, AND THAT
+     IS INVISIBLE TO AN ARITHMETIC SWEEP BECAUSE THE SWEEP MODELS THE SAME CONSTANT ON BOTH SIDES.
+================================================================================================
+`scripts/pink-pg14-label-containment-g.mjs` -> `outputs/PG14-LABEL-CONTAINMENT-BEFORE.json`.
+Taken on `3ec8457d` BEFORE GRÜN's convergence fix lands, because the before is the half that stops
+existing. §63: one fixture, one analysisId, five bodies (2 field / 3 shelf), L0. 1920 / 1280 / 1024.
+
+THIS STAND CAN SEE THE LENGTH-DRIVEN DEFECT, which had to be established before any verdict meant
+anything. The fixture's titles are **'Platform Engineer' (17), 'All States' (10), 'Key Cases' (9),
+'Platform Engineer' (17), 'Unspecified Role' (16)** — longest **17**, above the 16 at which GRÜN
+measured 4 of 11 layouts failing. No title was synthesised; a fabricated label would have made the
+reading mine rather than the build's.
+
+CONTAINMENT HOLDS. All **10 of 10** labels lie inside the emitted `viewBox` at all three viewports,
+with **13.64 to 16.67 device px** of margin at the worst label. That is the honest before, and it is
+conditioned on this population: the bodies here sit well inside the frame, so slack elsewhere absorbs
+the allowance shortfall below.
+
+  > **THE FINDING AN ARITHMETIC SWEEP CANNOT REACH. `:457` buys the side allowance from the TITLE's
+  > length — `side = max(collar, (b.title.length * 0.62 * font) / 2)` — but every body carries TWO
+  > labels: the SANS name above (`:715`) and the MONO measure below (`:719`), and NOTHING ties the
+  > measure's length to the title's.** Paired per body, measured:
+  >   'Platform Engineer' (17) / `#1 · checked`    (12)   need/allowance 0.856   —
+  >   'All States'        (10) / `#2 · checked`    (12)   need/allowance **1.161  EXCEEDS**
+  >   'Key Cases'         ( 9) / `#3 · names only` (15)   need/allowance **1.618  EXCEEDS**
+  >   'Platform Engineer' (17) / `#4 · names only` (15)   need/allowance 0.857   —
+  >   'Unspecified Role'  (16) / `#5 · names only` (15)   need/allowance 0.910   —
+  > **Two of five bodies need more side room than their own title bought, the worst by 1.618x. And on
+  > FOUR of five the MONO measure is the wider label even where the title has more characters**, because
+  > MONO's advance is ~0.602 em per character against SANS's ~0.563. So the widen term is an estimate of
+  > one label used as a bound on two, and the one it does not model is usually the wider.
+  > **GRÜN's sweep cannot see this: it models `0.62 * title.length` on both sides of its own comparison,
+  > so the constant cancels. A browser measures glyphs.** This is A-G244's independence paying out —
+  > not two routes agreeing, but one route seeing what the other is structurally blind to.
+
+AND THE CONSTANT ITSELF IS NEARLY EXHAUSTED. Measured advance against the assumed 0.62 em/char:
+**mean 0.5632, worst 0.602 — 2.9 % of headroom at the worst label.** `anyLabelWiderThanEstimated` is
+false, but only just, and the worst cases are all MONO. **0.62 is an average-case constant doing a
+worst-case job**: it is not a bound over faces, and a wider glyph set or a caps-heavy title exceeds it
+with nothing to absorb the difference. Separate from, and latent under, the convergence defect.
+  > **A frame that converges to the wrong allowance is still the wrong frame. GRÜN's tolerance fixes the
+  > ITERATION; neither the tolerance nor the disclosure touches WHAT is being iterated toward.**
+
+TWO DEFECTS OF MINE IN THIS INSTRUMENT, BOTH CAUGHT BY INVARIANCE RATHER THAN BY REVIEW:
+  1. I divided the font size by `k`. On an SVG `<text>`, `getComputedStyle().fontSize` resolves the
+     `font-size` ATTRIBUTE and is **already in user units**, so the division converted user units into
+     user units twice. **The tell was structural: the estimate ratio must be k-INDEPENDENT, because both
+     its terms scale as 1/k — and it came out 0.714 / 0.380 / 0.298 across the three viewports.** Fixed,
+     it is **0.9084 at all three**. Confirmed from the other side: the label's rendered half-width is
+     **49.744 CSS px at every viewport**, so the product holds the text at a constant SCREEN size by
+     scaling the attribute as 1/k — which is why a ratio in user units cannot move with the viewport.
+  2. `measuredEmPerChar` was reported at double, having multiplied by `2 * CHAR_W` when the halving is
+     already inside the ratio. Corrected to 0.5632 mean / 0.602 worst.
+  > **Rule 9 turned on its author. The free test is to name a quantity's invariance and check it holds;
+  > both defects were visible in my own first printout and neither was visible in my reasoning.**

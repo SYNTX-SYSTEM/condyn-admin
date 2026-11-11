@@ -22,8 +22,9 @@ e6d3229d5cfe400743c9e836a7b21227a6a0f6e543abd95cb06a2b6c17e39bb8  ./outputs/cros
 af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPTHGAIN-NORMALISATION.json
 96e2a05c5a629654fb67f3d9e7e2000ca10f7b0272db0d173980ed8e8770ef6a  ./outputs/PF15.json
 90f8534b390dcf7c725fc1a4d213604e5a55696699f1313b1daf610c711e31ca  ./outputs/PF15-SHELF-ALPHA-SWEEP.json
+71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-63c98fc4d21a7716d674b45a2cca98397bda3a1513189a73b099b0775304858d  ./prep.txt
+6fe3bf654efacb77ed4ebe57507b76342a18039a8e37dbd20f120c1d420f380c  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
@@ -36,6 +37,7 @@ ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink
 d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0  ./scripts/pink-pg10-g.mjs
 39325cbde6028d9dd3ea2a554ca244604d1dc57e1cfd8976b2c0d2d78f4c9a3c  ./scripts/pink-pg10-limb3-g.mjs
 d9ebd477bdd71500f4d652831f699a5c51418f9508e8372e2bec7b3caeac3059  ./scripts/pink-pg10-radial-pg23-g.mjs
+9033168194c9ccbc976fedb04c06495bd3b1a4ef60fe682a1bab98915af44357  ./scripts/pink-pg14-label-containment-g.mjs
 f29a9a2f625818d0d68916064de3b397b9ab273439bc25d4268dce3d1d974376  ./scripts/pink-pg17-extent-g.mjs
 cb2aee3d88b0a0b19b0e9d1d2020a41a0def86bda9d808c56b5f35e24d0f4ce5  ./scripts/pink-pg17-extent-sweep-g.mjs
 cacff1121d9afb02e16a14b1d8433b3e637cf9c0ac2c0c3b6b8d4cc8f9b2dd82  ./scripts/pink-pg1-g.mjs
