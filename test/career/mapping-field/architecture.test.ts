@@ -436,6 +436,10 @@ describe("MAP-G-ARCH · the change set, and no script motion", () => {
   it("§95 limb 1: every path in the evidence category is an instrument or an output — the category admits no product surface", () => {
     const files = git("ls-files", "--", EVIDENCE_DIR);
     expect(files.length, "an empty category would make the exclusion above vacuous").toBeGreaterThan(0);
+    /* §106: guards phase-base's core.quotePath=false without keeping a non-ASCII filename in the tree. A quoted
+       path defeats every path predicate here by its trailing quote, and both limbs then fail for the wrong
+       reason — which is how a `§` in a filename was diagnosed as a disallowed extension. */
+    expect(files.filter(p => p.startsWith('"')), "git must return UNQUOTED paths (phase-base's git helper sets core.quotePath=false)").toEqual([]);
     /* Measured from what is there rather than adopted: GELB proposed .mjs/.out.txt/.md/.json, which would
        reject run-all.sh, gruen-facade.mts and facade.log — all three committed instruments or their output. */
     const ALLOWED = /\.(mjs|mts|json|md|sh|log)$/;

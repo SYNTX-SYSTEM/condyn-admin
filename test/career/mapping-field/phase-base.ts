@@ -12,7 +12,16 @@ import { join } from "node:path";
 export const ROOT = join(__dirname, "../../..");
 export const PHASE_D_BASE = "e360caf9dcc7b7359d13e2a09884ff4ce09211a8";
 
-export const git = (...args: string[]) => execFileSync("git", args, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).split("\n").filter(Boolean);
+/**
+ * §106: `core.quotePath=false` is not a convenience. git QUOTES any path containing a non-ASCII byte by
+ * default, so a file named with a `§` came back as `"docs/.../MUTANTS-\302\247105.md"` — surrounded by double
+ * quotes — and EVERY path predicate built on this helper then failed on the quote rather than on the path:
+ * the entry-set test reported it as outside the entry set, and the evidence-category test reported a valid
+ * `.md` as neither an instrument nor an output. Both failed CLOSED, which is right, and both would have sent a
+ * reader after the wrong cause, which is worse than failing open on a path nobody has. One flag at the source
+ * rather than a strip at each of five call sites.
+ */
+export const git = (...args: string[]) => execFileSync("git", ["-c", "core.quotePath=false", ...args], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).split("\n").filter(Boolean);
 
 /**
  * The base, resolved when a test asks for it (not at module load), so the tests that need no history still run. In a clone without
