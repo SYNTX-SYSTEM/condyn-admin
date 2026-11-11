@@ -1,0 +1,83 @@
+========================================================================================================
+GELB · A-G128 OVER PF-1 … PF-18 — tree @ 4b83414e
+========================================================================================================
+
+--------------------------------------------------------------------------------------------------------
+PF-4  "depth monotone in rank, ratio first : last ∈ [1.5, 3.0]; same-class marks differ ≤ 2 %"
+      [ok] app/components/career/demo/PersonJobMappingField.tsx:143   "depthRatio: 1.45"
+      [ok] app/components/career/demo/PersonJobMappingField.tsx:213   depthGain = depthRatio ** -t
+      depthGain(1) = 1.000000   depthGain(last) = 0.689655   ratio first:last = 1.45000
+      PF-4's band is [1.5, 3.0].  *** OUTSIDE — BELOW THE FLOOR ***
+      shortfall: 0.05000  (3.33 % under)
+      → the ratio is depthRatio itself, exactly, for ANY rank count ≥ 2 (t is normalised to [0,1]).
+      → so PF-4's ratio limb FAILS BY CONSTRUCTION on this build, at every population and viewport,
+        and nothing in the product can move it but the constant. Monotonicity holds.
+      → PINK's §18 measured this ladder exactly (1.000 / 0.911293 / 0.830455 / 0.756788 / 0.689655)
+        and reported it against 1.45^-t, which is what PF-4's band was never compared to.
+
+--------------------------------------------------------------------------------------------------------
+PF-3  "body footprint ≥ 6 × outline footprint; halo peak ≤ 0.25 × core peak"
+      [ok] app/components/career/demo/PersonJobMappingField.tsx:143   "coreAlpha: 0.16"
+      [ok] app/components/career/demo/PersonJobMappingField.tsx:143   "haloAlpha: 0.5"
+      core peak alpha (mf-core offset 0)                 = 0.16000
+      halo peak alpha declared (mf-halo offsets 0…0.33)  = 0.50000
+      halo peak alpha VISIBLE past the opaque seat, rank 1 (haloNear 2.6) = 0.43628   ratio to core = 2.727 ×
+      halo peak alpha VISIBLE past the opaque seat, last rank (haloFar 3.0) = 0.49611   ratio to core = 3.101 ×
+      PF-3's bound is ≤ 0.25 ×.  The visible ratio is 2.727–3.101 ×, i.e. 10.9–12.4 × the bound.
+      (this line is computed, not typed — the first draft read "2.8–3.4, i.e. 11–13 ×" beside the
+       figures above it, which is A-G283's class in a sentence of this lane's own.)
+      → BUT the premise is gone. §4 inverted the light budget and replaced PF-1 with PG-1/PG-2
+        ('the disc must now be DARK, and the semantics must carry the light'), and G-2/R21 made the
+        glow a LIGHT SOURCE — 'full at the body's rim … the profile that is seen as self-luminous'.
+      → 'halo peak ≤ 0.25 × core peak' is the OPPOSITE obligation. §4 restated PF-1 and carried PF-3.
+      → so PF-3 is not a red: it is a phase-F obligation CONTRADICTED BY a phase-G architecture
+        decision, and the contradiction is between two things this record adopted.
+
+--------------------------------------------------------------------------------------------------------
+PF-6  "blurred: no disc pixel swings > 0.030; mean |ΔL| per 500 ms ≤ 0.0025"
+      PG-10 limb 3 is "max swing ≤ 0.030" on the same quantity over the same disc.
+      → THE SAME BOUND ON THE SAME QUANTITY, carried under two names. §52 measured it breached at
+        1920 (max 0.0327, p999.9 0.0319155, 105 of 51 289 px) and reported it as PG-10's.
+      → so PF-6's ceiling is ALSO breached and has never been reported as breached. One measurement,
+        two pins, one report. PF-6's second row (mean |ΔL| per 500 ms) is independent and unmeasured.
+
+--------------------------------------------------------------------------------------------------------
+PF-11 "… ≤ 1.5 × the back-to-back count AT EVERY THRESHOLD; plus no element with a non-zero
+       computed animation or transition duration"
+      → 'at every threshold' over 0.001 / 0.002 / 0.004 / 0.008 is a FOUR-WAY CONJUNCTION, and
+        A-G144: a conjunctive pin is only as weak as its strongest requirement — it fails the
+        innocent. At base one threshold returned ∞ (6.43 / 4.48 / 13.7 / ∞), so the conjunction is
+        carried by its worst threshold and the pin cannot report WHICH regime moved.
+      → and the second clause is a COMPUTED-STYLE read, so PF-11 mixes a raster statistic and a DOM
+        assertion under one verdict — two carriers, one name.
+
+--------------------------------------------------------------------------------------------------------
+PF-13 "every phase-D and phase-E test passes, except the three restated in writing"
+      → PF-13 IS the suite. It is not incidentally gated on B-ENTRY, it is unverifiable without it,
+        and no instrument of any lane can stand in for it.
+      → so the regression risk §62's A-G253 accepted has a NAME in this record, and it is PF-13.
+        A-G253 said the risk was 'stated and currently unverifiable'. PF-13 is the obligation that
+        states it, and it has been carried as 'carries over' since §4 without being marked HELD.
+
+--------------------------------------------------------------------------------------------------------
+PF-16 (A-G12) "the wedge wash is ≥ 1 and ≤ 3 sRGB codes above the base ground"
+      [ok] app/components/career/demo/PersonJobMappingField.tsx:207   "export const WEDGE_WASH = 0.009"
+      rgba(CYAN, 0.009) over rgb(6,12,17) → rgb(7,13,19)  = +1/+1/+2 codes
+      the product's own comment claims "+1/+1…2/+2 in R/G/B".  MATCHES
+      PF-16's band is [1, 3] codes.  INSIDE
+      → the one product comment this lane has checked that is exactly right. Recorded because two
+        others were corrected this week and a lane that only reports wrong comments is not auditing.
+
+========================================================================================================
+WHAT THE OMITTED HALF CONTAINED:
+  PF-4   ratio limb FAILS BY CONSTRUCTION — depthRatio 1.45 against a floor of 1.5. Never reported.
+  PF-3   CONTRADICTED by G-2's inversion, which this record adopted. §4 restated PF-1 and not PF-3.
+  PF-15  unsatisfiable as a conjunction (§67) — three limbs, disjoint regions.
+  PF-6   ceiling is PG-10 limb 3 under another name, breached and reported once.
+  PF-11  four-way conjunction plus a second carrier under one verdict.
+  PF-13  unverifiable without B-ENTRY — the name of the risk A-G253 accepted.
+  PF-16  holds, and its product comment is accurate.
+
+Four of these are findings no measurement would have produced, and all four are arithmetic or a
+source reading. The gate's score since §37 is now six prospective firings.
+========================================================================================================
