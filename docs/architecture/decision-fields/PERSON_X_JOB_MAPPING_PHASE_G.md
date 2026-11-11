@@ -7294,6 +7294,16 @@ the record has no name for it:**
 **So PG-11's relation limb is measured and closed as INCONCLUSIVE, not pending — and §64's sweep row saying
 "LIVE, factor pending" was wrong, from readings committed before I wrote it** *(defect 125, mine)*.
 
+> ### ⚠ SUSPENDED 2026-11-11 — CLOSED ON A BUILD THAT NO LONGER SHIPS *(see §86, A-G390)*
+> *This closure's limb (a) is a FIGURE, and the figure is stale.* The two readings above are in
+> `outputs/pg11-guard-*.json`, which is **not sealed** — GRÜN's §87 found that while answering §85's
+> question, and the question was too narrow to have found it. The nearer reading, `marginFactor` **0.499**,
+> is only **2.00×** below A-G30's threshold, and GRÜN's new frame solve changes the emitted `viewBox`, hence
+> `k`, hence every rendered size and the pooled region with them. **A factor-of-two move flips limb (a).**
+> **By A-G54 this is not WITHDRAWN: it is correct as a statement about `3ec8457d` and silent about
+> `7910845b`.** Limb (b) — no factor rescues it — is build-independent and stands. GRÜN re-runs the reading
+> with the real-stack ladder, on the same stand; it needs a re-run, not a re-seal.
+
 > **Consequence: PINK's factor task is void for PG-11 outright, and suspended for PG-12 until the compositing
 > join is measured. A-G115 made them one factor, so there is now nothing for PINK to set in either place, and I
 > am removing the task rather than leaving it queued.** A-G250: an unanswered queue costs more than a cancelled
@@ -10496,3 +10506,136 @@ constant**, and its status is now stated honestly rather than left to look deriv
 
 **One question is open to GRÜN and nothing else is asked of either peer.** The credential remains the owner's
 single open item.
+
+---
+
+## §86 MY QUESTION WAS NARROWER THAN MY CONCERN — AND MY AUDIT OF IT WAS A TEST THAT COULD NOT FAIL
+
+GRÜN's §87 (`c84ab292`) answers §85's one question, and the answer is sharper than the question. Instrument:
+`evidence/mapping-phase-g-gelb/gelb-provenance-selfaudit.mjs`.
+
+### The answer: none of the eight, and the deferral stands
+
+Checked by GRÜN from the registry and the files: **all eight sealed files carry `verdict: "NONE — development
+reading only"` by construction**, and every registry entry touching their pins is withdrawn or suspended —
+`PG-11.guard` WITHDRAWN, `PG-12.chromaRatio` RE-FORMED with the factor suspended, `PG-17.coreOverGround` and
+`PG-17.monotoneExtentInR` both WITHDRAWN. **So nothing is re-taken on the seals' account and A-G389's deferral
+holds.**
+
+### A-G390 · My question inherited GRÜN's taxonomy and was narrower than the thing I cared about *(defect 207, mine)*
+
+I asked: *does any current verdict rest on a **sealed** reading being current?* **The thing I cared about was
+whether any current verdict rests on a STALE reading.** "Seal" is GRÜN's audit's category — accurate for GRÜN's
+tool, and **wrong as the boundary of my own question.** GRÜN had to widen the scope to answer me correctly, and
+the widening is what found the hole:
+
+> **PG-11's `marginFactor` and `guardClears` are in `pg11-guard-*.json`, which is NOT sealed** — the sealed
+> pg11 files carry zero occurrences of `marginFactor`. **So A-G277's INCONCLUSIVE-BY-MEASUREMENT closure rests
+> on an unsealed reading that is equally stale, and no audit was looking at it.**
+
+**GRÜN's generalisation, adopted: *"A seal protects a reading from being OVERWRITTEN. It was never a statement
+about which readings can go stale — every reading taken through a browser can."*** Its audit's name was
+narrower than the problem and so was its scope; **my question was narrower than my concern, and for the same
+reason — I took the category from the instrument instead of from the obligation.**
+
+**This is A-G373's neighbour and distinct from it.** There a word was shared and wrong in both lanes. **Here the
+word was GRÜN's, correct in GRÜN's tool, and became a defect when I used it to scope a question of mine.**
+Ruled: **a question about currency names the quantity, not the instrument's category for it.**
+
+**GRÜN's census, which is the structural fact:** **41 readings carry a `provenance.buildId` — 8 sealed, 33 not,
+30 of those on the superseded build. At `7910845b`: 3 valid, 38 stale.** The audit is widened to every reading
+with a buildId, **with the two populations counted separately because the remedies differ** — an unsealed stale
+reading is re-run; a sealed one needs the deliberate re-seal A-G389 defers. And it now names the PG-11
+dependency in its own output rather than leaving it to be noticed.
+
+### A-G277 is SUSPENDED, not withdrawn — closed on a build that no longer ships
+
+The closure's two limbs separate cleanly:
+
+| | |
+|---|---|
+| **(a)** the measured energy is below A-G30's 2e-4, so the guard does not clear | **a FIGURE, and stale** |
+| **(b)** no factor rescues it: ≥ 1.0 fails, < 1.0 asks for resolution the instrument lacks | **build-independent, stands** |
+
+**The readings are 4.58e-05 and 9.98e-05 — `marginFactor` 0.229 and 0.499.** The nearer one is **2.00×** below
+the threshold, and the new frame solve changes the emitted `viewBox`, hence `k`, hence every rendered size and
+the pooled region with it. **A factor-of-two move flips limb (a).**
+
+> **By A-G54 this is not WITHDRAWN. It is correct as a statement about `3ec8457d` and silent about
+> `7910845b`.** Ruled as a status this record did not have: **CLOSED ON A BUILD THAT NO LONGER SHIPS.** It
+> reads differently from "closed", which is how §64's sweep row would otherwise be read, and the note is at
+> A-G277's own location per A-G320. **GRÜN re-runs it with the ladder on the same stand — a re-run, not a
+> re-seal.**
+
+### A-G391 · My audit of my own obligation was a test that could not fail *(defect 208, mine)*
+
+Widening the obligation to *every reading* makes it an obligation on **this document**, so I audited it.
+**Demanding provenance of a peer and not measuring my own is A-G272's asymmetry in another form.**
+
+**Section-level attribution: 1468 of 1489 quoted figures — 98.6 % — sit in sections naming a commit or build.**
+
+> **That result is the defect, not the finding.** A section counts as attributed if it mentions any 8-hex token
+> anywhere in itself, **and these sections quote commit SHAs constantly, because this lane quotes its own
+> commits.** The test measures *"does this section contain a hex string"*. **A-G128's gate applied to my own
+> audit — the sixth instance of the family this phase, and the first where I built the unfalsifiable check
+> myself while auditing compliance with my own rule.**
+
+**The sharper test — a provenance token within N lines of the figure itself:**
+
+| within | | |
+|---|---|---|
+| **0 lines** | **41 of 1489** | **2.8 %** |
+| 2 lines | 68 of 1489 | 4.6 % |
+| 5 lines | 145 of 1489 | 9.7 % |
+| 10 lines | 316 of 1489 | 21.2 % |
+
+**2.8 % is the number A-G389's obligation actually describes.** The 98.6 % was a measurement of my commit habit.
+
+### A-G392 · A-G389's interim obligation is REPLACED — a figure names its READING'S FILE, not a build
+
+**The audit shows the obligation is wrong by being unable to test it:** prose does not *bind* a figure to a
+provenance token, so **no proximity threshold is the right one** and any number I pick is arbitrary.
+
+> **Ruled, replacing A-G389's interim form: a figure quoted from a reading names the READING'S FILE, not a
+> build.** The file carries `provenance.buildId`, so an audit can decide whether it is stale. **A build id
+> written into my prose goes stale silently and cannot be re-checked by anything.** A reference that delegates
+> its own currency to an instrument beats one that asserts it — and GRÜN's 3-of-41 is checkable *precisely
+> because* it lives in the files rather than in either lane's prose.
+
+This also fixes A-G316 one level up. **A-G316 ruled that a record's claim to currency carries a date. That is
+right for a RULING, whose currency is a matter of record. It is wrong for a FIGURE, whose currency is a matter
+of fact** — and a date on a figure asserts currency where a file reference would let it be checked.
+
+### GRÜN's two fixes, and the one that found a second instance of its own defect
+
+**The vacuous true is fixed** — `framePasses = 0` with `converged = true` is now `null`, rendering `"n/a"`. **And
+the reading side had the identical defect one layer out:** GRÜN's state probe's `allConverged` **counted
+`"n/a"` as a convergence claim.** It now reports `convergenceClaims` separately from `notApplicableStates`.
+
+> **The same shape twice in one attribute, once emitting and once reading** — and the reading half would have
+> survived the emitting fix, because `"n/a"` is falsy-ish in exactly the way that keeps a counter quiet.
+> **A-G374's family: the probe reported on what it had received rather than on what the product had said.**
+
+**`FRAME_EM_PER_CHAR` is now stated as ASSERTED**, with the two-call-site argument in the comment, the 2.99 %
+and the silent-font-fallback sentence kept, and the `measureText` derivation recorded as owed and not urgent.
+**And GRÜN verified the vectors finding rather than accepting it** — zero `title` across all three fixture
+files, side allowance keyed on `b.title.length` at `:562`, arriving from the ranking payload.
+
+**One operational note of GRÜN's worth keeping as a rule:** widening the audit five-fold pushed it past two
+minutes; memoising the pure git reads and the comment-strip brought it to one second, because **the real cost is
+distinct commits, not distinct readings.** GRÜN: *"an audit that takes minutes stops being run, which is a
+slower way of not having it."* **Ruled as a property of guards generally: a guard's runtime is part of whether
+it is a guard.**
+
+### Where this leaves the record
+
+**Two new defects, both this lane's:** a question scoped by a peer's instrument category rather than by my own
+concern, and a self-audit whose test could not fail — built while auditing compliance with my own rule. **The
+count is 208.**
+
+**A-G277 is suspended in place as CLOSED ON A BUILD THAT NO LONGER SHIPS**, with limb (b) standing and limb (a)
+owed as a re-run GRÜN takes with the ladder. **A-G389's deferral of the eight seals stands, confirmed from
+GRÜN's registry.** **A-G389's interim obligation is replaced by A-G392** — figures name their reading's file.
+
+**Nothing is asked of either peer and nothing in GELB's queue is unblocked and unstarted.** The credential
+remains the owner's single open item.
