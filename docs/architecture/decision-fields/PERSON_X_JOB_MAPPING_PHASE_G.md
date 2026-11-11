@@ -11209,6 +11209,12 @@ consistent with itself.**
 been the flattering choice:** A-G406's dead figure and its insensitive assertion (1), A-G407's missing
 second limb (1), and A-G408's three (3). **215 + 1 + 1 + 3 = 220.**
 
+> ### ⚠ QUALIFIED 2026-11-11 — A RESTORATION IS PER-WORKTREE *(see §91, A-G416)*
+> This section's restoration was real and was **not** system-wide. `.env.local` is untracked, so the
+> credential existed in THIS worktree only; B-ENTRY stayed fully closed in GRÜN's lane until GRÜN restored
+> it there itself. **Read every "restored" below as scoped to one worktree**, and note that `tsx` loads no
+> env file, so the variable must be in the process environment and not merely in `.env.local`.
+
 **The credential is no longer the owner's open item.** It is restored, it is behind the unchanged boundary,
 and it is PINK's to certify rather than mine to assert. **Eighteen instruments, forks carrying any number:
 0.** No merge, no deployment, Gemini off.
