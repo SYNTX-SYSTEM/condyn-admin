@@ -1,0 +1,193 @@
+==============================================================================================================
+GELB · PF-8 IN ITS THREE-TIER FORM — A-G128's three limbs over the assembled pin
+==============================================================================================================
+
+[1] AMENDMENT INVENTORY — located by exact substring
+
+  ok   PHASE_F: 475  BOUND          first bound: p99 ≤ 0.002 AND max ≤ 0.006
+  ok   PHASE_F: 564  SCOPE          restated over sign AND structure pixels
+  ok   PHASE_F: 682  READING        both limbs red at base from antialiasing alone
+  ok   PHASE_F: 774  SCOPE          A-F13: own luminance, NOT contrast against ground
+  ok   PHASE_F: 867  BOUND          REPLACED by two tiers: A pooled mean, B per-pixel p99
+  ok   PHASE_F: 879  BOUND          tier B floor-relative, ≤ 2× the run's decoy floor
+  ok   PHASE_F: 980  METHOD         dof-matched null (3 harmonics vs 3 incommensurate)
+  ok   PHASE_F: 994  BOUND          tier C added: population ladder at 4 rungs, ≤ 1.5× null
+  ok   PHASE_F:1213  SCOPE          per class, each against its OWN bound and OWN null
+  ok   PHASE_F:1307  SCOPE          every level that draws evidence — L0 AND L2
+  ok   PHASE_F:1354  SCOPE          mask is the FULL seat footprint; fringe is inside it
+  ok   PHASE_F:1355  ADMISSIBILITY  tier C: class population ≥ 1000 px or NOT EVALUATED
+  ok   PHASE_F:1359  ADMISSIBILITY  tier C: rung ≥ 2× per-pixel floor or NOT EVALUATED
+  ok   PHASE_F:1513  BOUND          tier B → 0.002 ABSOLUTE; floor-relative demoted to admissibility (floor ≤ 0.0004)
+  ok   PHASE_G: 949  METHOD         A-G32: mask-based, travel DRAWN, travel pixels excluded by own mask
+  ok   PHASE_G:1207  METHOD         A-G42: separate pass from PG-11; neither may reuse the other's frames
+  ok   PHASE_G:1999  CURRENCY       a shelf alpha change voids every per-class null
+  ok   PHASE_G:8726  BOUND          §74: `max ≤ 0.006` RETIRED under A-F11 corrected
+  ok   PHASE_G:8238  MODE           under `reduce` PF-8 goes vacuous
+
+  located 19 of 19   UNVERIFIED 0
+  by file:  PHASE_F 14   PHASE_G 5
+  by kind:  BOUND 6   SCOPE 5   READING 1   METHOD 3   ADMISSIBILITY 2   CURRENCY 1   MODE 1
+
+  A-G327's corrected list named 11, all in PHASE_F. This inventory finds 14 there
+  and 5 in PHASE_G. The 5 phase-G amendments were in NO list before this run.
+  Of the 19, 2 are ADMISSIBILITY clauses — they decide whether a tier is
+  EVALUATED, not what it must beat. A-G327's reason for counting at all.
+
+==============================================================================================================
+[2] A-G128 LIMB 1 — does each tier admit BOTH a passing and a failing observation?
+==============================================================================================================
+
+  TIER A — pooled mean coherent amplitude ≤ 0.0005 absolute
+    bound 0.00050   dof-matched floor 0.00007   bound/floor = 7.14×
+    base reading 0.00014 → PASS; a value above 0.00050 is reachable and resolvable
+    LIMB 1: SATISFIABLE — both outcomes lie above the floor
+    A-G139: bound sits 7.14× above the floor it is read against — outside the spread
+
+  TIER B — per-pixel p99, two successive forms
+    OLD (:879, floor-relative ≤ 2× decoy floor), at 64 frames: floor 0.00027 → bound 0.00054
+      bound/floor = 2.00× BY CONSTRUCTION, at every frame count, forever.
+      A floor-relative bound at 2× the floor can NEVER sit outside the spread of its own floor:
+      a passing observation must lie between the floor and twice the floor — INSIDE the noise band.
+      LIMB 1: formally satisfiable, A-G139: NOT SATISFIED, structurally and permanently.
+    NEW (:1513, p99 ≤ 0.002 absolute, admissible only if floor ≤ 0.00040)
+      worst admissible floor 0.00040 → bound/floor = 5.00× at the admissibility edge
+      at the measured 64-frame floor 0.00027 → 7.41×
+      LIMB 1: SATISFIABLE.   A-G139: SATISFIED, and satisfied by the ADMISSIBILITY clause, not the bound.
+    *** A-F29 is what made tier B satisfiable. Not a tightening and not a loosening — it moved the
+    bound off the instrument and onto the physics, and the floor condition is what keeps it honest. ***
+    arcs at 64 frames read 0.00330 against 0.00200 → FAIL (the one surviving firewall question)
+
+  TIER C — population ladder, count ≤ 1.5× null count at each rung
+    the rung-admissibility clause (:1359) applied to the ladder the record actually printed:
+
+      rung     signal      null   ratio     printed   2×floor(mid)  admissible?
+      0.001     24210     22586     1.07      1.07   0.00574       no — below 2× floor
+      0.002     18218      8703     2.09      2.09   0.00574       no — below 2× floor
+      0.004     10584       323    32.77     32.77   0.00574       no — below 2× floor
+      0.008       163         4    40.75         ∞   0.00574       YES
+
+    per-pixel floor for that run (:980-era tier B floor) = 0.00287, so a rung is evaluated only at ≥ 0.00574
+    ADMISSIBLE RUNGS: 1 of 4.
+    The record's headline — "red by 32.77× at 0.004", "tier C separates by more than an order of
+    magnitude where tier B separates by 2.2×" — rests on rung 0.004, which is INADMISSIBLE
+    under the clause adopted at :1359 three sections later. So are 0.001 and 0.002.
+    Inadmissible rungs that were read as red: 0.002 (2.09×), 0.004 (32.77×)
+
+    AND THE ONE ADMISSIBLE RUNG IS THE ONE WHOSE RATIO IS MISPRINTED.
+      rung 0.008:  signal 163 ÷ null 4 = 40.75.   The record prints ∞.
+      4 is not zero. The ratio is finite, well-resolved, and 27.2× over the 1.5 bound.
+      This matters because A-F26's erosion guard was written for exactly the ∞ form — "the null counts
+      go to nothing, blowing ratios to ∞". A reader applying that guard to the printed ∞ DISCARDS the
+      only admissible rung in the ladder. The printed form decides which guard reaches the figure.
+
+    VERDICT ON TIER C: still RED, and still the sharpest of the three — 40.75× against tier B's
+    2.19×. The CONCLUSION survives; the cited EVIDENCE does not.
+    A-G323's rule applies in the same shape PINK gave it: a figure reached by an inadmissible rung is
+    unsupported, not wrong. Three of four rungs are unsupported; the fourth is misprinted; the verdict holds.
+
+==============================================================================================================
+[3] A-G128 LIMB 2 — does the product evaluate PF-8's predicate and decline to emit a counterexample?
+==============================================================================================================
+
+  source 4b83414e:app/components/career/demo/PersonJobMappingField.tsx — 1107 lines, probed with comments REMOVED (93690 → 68737 chars)
+
+  ABSENT   a tier bound as a literal in code (0.0005 / 0.002 / 1.5× ladder)
+  ABSENT   a frequency-domain term in code
+  ABSENT   a clamp on the wave's amplitude keyed to a mark or seat
+  PRESENT  ANY amplitude identifier in code at all
+           matches: amplitude, Amplitude
+
+  The one PRESENT row is `radiusAmplitude` / `opacityAmplitude` / `amplitudePx` — the breath's own
+  amplitude constants. Those are the SOURCE of the quantity PF-8 bounds, not a bound on it.
+
+  LIMB 2: NOT zero-by-construction, and the reason is sharper than "no code matched".
+  The product's answer to PF-8 is `SEAT_PAD_PX = 1.6` — a seat 0.8 px wider than its mark on each
+  side, so the breath shows through only by (1 − coverage). *** THAT IS A MITIGATION, NOT AN
+  ENFORCEMENT. *** A-G268's limb asks whether the product evaluates the pin's predicate and
+  declines to emit a counterexample. A wider seat emits a SMALLER counterexample. It never
+  evaluates anything, which is exactly why arcs still read 0.0033 against a 0.002 bound: the
+  mechanism is antialiasing coverage over a breathing ground (:1218, GRÜN's diagnosis, confirmed
+  from a third direction by PINK's erosion at :1350), and coverage is geometry, not a branch.
+
+  The distinction is worth keeping: of the pins that cleared limb 2 as ZERO-BY-CONSTRUCTION, each had
+  a predicate in the product. PF-8 has a parameter. A parameter cannot return a verdict.
+
+==============================================================================================================
+[4] A-G128 LIMB 3 — the motion-mode limb, and it is where PF-8 fails
+==============================================================================================================
+
+  accommodation present                      yes
+  `* { animation: none !important }`          yes — EVERY animation, the ground's breath included
+  `.mf-travel { visibility: hidden }`         yes
+
+  PF-8's quantity is coherent amplitude AT THE BREATH'S HARMONICS. Under `reduce` there is no breath,
+  so signal and null are both identically zero. :8238 records this as "PF-8 goes vacuous". Correct —
+  and incomplete, which is what this limb is for. Run the three tiers at zero:
+
+    tier A   0.00000 ≤ 0.00050                                  → PASS
+    tier B   0.00000 ≤ 0.00200   admissibility: floor 0.00000 ≤ 0.00040   → PASS, ADMISSIBLE
+    tier C   rung admissibility: rung ≥ 2 × 0.00000 = 0.00000  → ALL FOUR RUNGS ADMISSIBLE
+             counts 0 vs 0 at every rung → ratio 0/0
+
+  *** EVERY ADMISSIBILITY CLAUSE PASSES IN THE ONE MODE WHERE THE MEASUREMENT CANNOT FAIL. ***
+  :1513's floor condition reads "floor ≤ 0.0004" and a floor of zero satisfies it most comfortably
+  of all. :1359's rung condition reads "rung ≥ 2× the floor" and a zero floor admits every rung.
+  Both were written against a floor that was TOO HIGH. Neither has a lower end.
+  So PF-8 under `reduce` does not merely go vacuous — it returns GREEN ON THREE TIERS WITH ALL
+  GUARDS SATISFIED. A vacuity that announces itself as a pass is worse than one that errors.
+
+  And A-G42's two-pass rule degenerates in the same mode: PF-8 is travel-MASKED, PG-11 travel-DRAWN,
+  and the two passes "may not reuse the other's frames". Under `reduce` `.mf-travel` is hidden, so the
+  travel mask is EMPTY and the two configurations are pixel-identical. The rule separating them
+  still reads as satisfied because it is stated over frames, not over configurations.
+
+  LIMB 3: PF-8 is LIVE-ONLY, and nothing in its eighteen amendments says so.
+  PF-9 states the STILL case (:8238's own reference). PF-8 names no mode — the same gap A-G313
+  found in nine pins, and PF-8 is the one with the most guards and the least mode discipline.
+
+==============================================================================================================
+[5] THE CURRENCY CLAUSE — "a shelf alpha change invalidates the per-class nulls"
+==============================================================================================================
+
+  9cc06f84  2026-11-06  shelf 0.05   the ONLY tier C ladder in the record (§21)
+  93c47e03  2026-11-06  shelf 0.05   phase F re-delivery
+  3ec8457d  2026-11-06  shelf 0.02   phase G PG-20
+  185427d5  2026-11-10  shelf 0.022  A-G62
+  4b83414e  2026-11-11  shelf 0.022  this sweep's source
+  839623e8  2026-11-11  shelf 0.022  GRÜN's hooked stand (§82)
+
+  TWO THINGS FALL OUT, AND NEITHER WAS IN ANY LANE'S QUEUE.
+
+  (a) THE DEFERRAL OUTLIVED ITS PRECONDITION. :1999 shelved "the engraved ladder, A-G34 and PF-8
+      per class" pending GRÜN's new `RING_LUMINANCE.shelf`, and called it "A-G54's rule applied
+      BEFORE the fact rather than after, the first time in this phase it has been used that way".
+      The change landed at 185427d5 — A-G62, 2026-11-10 — and the deferral was never lifted.
+      *** PF-8 PER CLASS HAS BEEN UNBLOCKED SINCE THEN. *** A precondition stated correctly and
+      then satisfied, with nobody watching for its satisfaction. A-G343's shape in the other
+      direction: there I left a lane working from a statement I had superseded; here a lane is
+      waiting on an event that has already happened.
+
+  (b) THE LADDER IS ON A SUPERSEDED GROUND. §21's tier C ladder — the only one in the record — was
+      measured at 9cc06f84, shelf 0.05. The current build is shelf 0.022, a factor of
+      2.27 down. :1205 states the shelf band alone is about HALF of the ~173 k sign pixels, so
+      it is the pool's dominant class, and :1999 says in its own words that this voids the nulls.
+
+  So tier C has no rung that is simultaneously ADMISSIBLE (1 of 4), CORRECTLY PRINTED (the admissible
+  one reads ∞ for 40.75) and CURRENT (all four predate A-G62 by two shelf changes).
+  The verdict RED is not overturned by any of that — 40.75 would have to fall below 1.5, and the
+  AA-fringe mechanism that produces it is unchanged. It is UNSUPPORTED in A-G323's exact sense,
+  now on three independent grounds instead of one.
+
+==============================================================================================================
+SUMMARY
+==============================================================================================================
+  amendments located        19/19  (PHASE_F 14, PHASE_G 5)
+  limb 1 tier A            SATISFIABLE, A-G139 satisfied at 7.14×
+  limb 1 tier B (old form) A-G139 NOT SATISFIED by construction at 2.0× — A-F29 repaired it
+  limb 1 tier B (current)  SATISFIABLE, A-G139 satisfied via the admissibility clause
+  limb 1 tier C            1/4 rungs admissible; the headline rung 0.004 is NOT one of them
+  tier C rung 0.008        ratio 40.75, printed ∞ — finite, and the only admissible rung
+  limb 2                   NOT zero-by-construction
+  currency (a)             PF-8 per class UNBLOCKED since 185427d5 (A-G62) — deferral never lifted
+  currency (b)             the only tier C ladder is at shelf 0.05 vs the build's 0.022 — nulls void
+  limb 3                   FAILS — green on all three tiers with all guards satisfied under `reduce`
