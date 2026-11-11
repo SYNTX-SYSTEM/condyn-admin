@@ -828,3 +828,82 @@ the limiting unknown rather than the occluder convention: (i) PG-17's carrier sc
 whether the extent limb reaches SHELF halos at all, since they are glows that rest rather than
 glows that breathe; and (ii) the azimuthal quantifier. Under "every ray" the open-line body fails
 24 % of its rim at every width. Under "some ray" it never fails. I will not pick one.
+
+================================================================================================
+§12  PG-10 LIMB 3 IS RUNNABLE, AND ON A-G26's OWN STATISTIC IT EXCEEDS AT 1920. A-G195's TWO
+     REASONS ARE BOTH ANSWERED BY THE TABLE IN GELB'S OWN RECORD.
+================================================================================================
+scripts/pink-pg10-limb3-g.mjs · outputs/3ec8457d-tip/PG10-LIMB3-FLOOR.json
+Against: A-G195, PHASE_G.md:5307-5322, `architecture/mapping-phase-f` @ e6078e0b.
+
+A-G195 tells me not to compute limb 3, on two grounds. Neither survives, and the refutation is in
+GELB's own record at the section that lifted A-G26's suspension (PHASE_G.md:1650-1669):
+
+  (i) "the static noise floor is 0.031872, above both numbers." **0.031872 is the WHOLE-REGION max at
+      `9cc06f84`, on the translucent ground.** The table immediately above that decision prints, for
+      `3ec8457d`: disc max 0.000000 / 0.000000, whole-region max 0.005939 / 0.006077. A-G54 — GELB's
+      own rule, confirmed by both lanes in that same paragraph — is that **a floor is a property of a
+      BUILD, not of a lane**, and that section applied A-G54 to THIS limb and restored it "as written
+      (≤ 0.030)", stating that "the distributional ceiling specified in A-G26 is retired as
+      unnecessary". So on this build 0.031872 has no standing in any region, the live bound is 0.030,
+      and 0.030 is not a withdrawn constant — GELB restored it. A-G195 reverts its own decision.
+  (ii) "the co-registration step does not exist in either lane's instrument." A static swing of
+      **exactly 0.000000** inside the disc over 24 frames with the field provably motionless **is** a
+      co-registration measurement: sub-pixel registration error cannot yield zero swing at an interior
+      edge. It is measured on this build, in §4, and reproduced on the carrier below.
+
+WHAT WAS GENUINELY UNMEASURED IS THE FLOOR ON THE CARRIER MASK — my own §4 caveat, which GELB adopted
+verbatim as binding ("the per-run floor must be measured on the carrier mask, not on the disc, or the
+limb inherits a floor it was never measured against"). Neither lane had measured it. Now measured, on
+the SAME mask, in the SAME run, both states:
+
+                                1920×1080              1280×800
+  carrier mask px               51,289                 13,574
+  carrier radial extent r/R     0.331 … 1.075          0.331 … 1.647
+  animated carriers (reduce)    0                      0          ← co-registration precondition
+  animated carriers (live)      2                      2
+  STATIC floor   median         0.0000000              0.0000000
+                 p99            0.0000000              0.0007872
+                 p99.9          0.0002958              0.0026648
+                 p99.99         0.0023684              0.0030408
+                 max            0.0041447              0.0032079
+  LIVE  swing    periods        1.32                   1.31
+                 median         0.0019368              0.0015619
+                 p99            0.0264989              0.0224250
+                 p99.9          0.0308056              0.0269044
+                 p99.99         0.0319155              0.0279076
+                 max            0.0326883              0.0282471
+                 frac > 0.030   0.0020472              0.0000000
+
+THE FLOOR IS 0.0032…0.0041, NOT 0.031872 — a factor of 8…10 — and sits 7.2…9.4× under the ceiling, so
+by my own asymmetric-admissibility rule (a RED needs signal clearly above the floor) the bound IS
+admissible on this carrier. On A-G26's own re-specified statistic, p999.9 read as the 99.99th
+percentile, with the threshold taken from the run's own measured static floor and never below it:
+
+  **1920×1080  p999.9 = 0.0319155  EXCEEDS the 0.030 ceiling**
+  **1280×800   p999.9 = 0.0279076  CLEARS**
+
+AND IT IS NOT A MAX ARTEFACT, which is the whole reason A-F11 wanted the distribution. At 1920 the
+p99.9 also exceeds (0.0308056), 0.205 % of the carrier — 105 pixels — exceeds 0.030, and those pixels
+sit 8× above the floor's own extreme (0.0041447). The signal is resolved well clear of the floor.
+
+A DEFECT IN THIS INSTRUMENT, FOUND AND FIXED BEFORE THE RESULT WAS SENT, AND THE FIX FALSIFIED MY
+OWN HYPOTHESIS. The first revision omitted A-G97's seat exclusion, which §10 applies. I expected the
+near-body ring — where the halo lies under the body's own bright outline — to be driving the max, and
+re-ran with the exclusion. It removed **43 pixels of 51,332 at 1920 and 22 of 13,596 at 1280**, and
+moved no percentile. The reason is itself worth recording: the bodies are painted AFTER the glow
+group, so the opaque seat at r already covers the halo beneath it, and the measured carrier mask
+therefore **starts outside the seat on its own**. That is an independent, purely empirical
+confirmation of A-G97's occluder and of §11's r + h boundary — arrived at from the raster rather than
+from the source, and agreeing with it.
+
+ONE FIGURE I CANNOT ACCOUNT FOR AND WILL NOT LEAN ON: the carrier mask reaches r/R = 1.647 at 1280,
+where field-body geometry (non-shelf bodies in [bestFit, horizon − ρ], haloR ≤ 3 ρ) should not put
+carrier pixels past ≈ 1.0 R. At 1920 it reaches 1.075, which the §4 caveat anticipates. The 1280
+figure is unexplained, so **the load-bearing result here is the 1920 EXCEEDS**, whose mask stays
+within 1.075 R; the 1280 CLEARS is reported but not relied on until that extent is explained.
+
+STATUS: limb 3 is NOT withdrawn and NOT unrunnable. It is RUN, and on the statistic A-G26 specified it
+EXCEEDS at 1920 against a floor 7.2× below the bound. Its provenance is unchanged and carried: 0.030
+is UNDERIVED, so this is a measured breach of an underived bound — a finding against the pair, not a
+certification of either. What it is not is unmeasurable.
