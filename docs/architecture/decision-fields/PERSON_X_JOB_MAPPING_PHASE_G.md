@@ -5083,3 +5083,123 @@ the number and not what it was a number *of*) and wrong about the conclusion, by
 where it bears load — and my `[4]` block said "range" where one end was a sample. **A-G131's defect, in my own
 interval notation.**
 
+
+---
+
+## §49 THE MASK BOUNDARY DECIDES BOTH OF PG-17's LIMBS IN OPPOSITE DIRECTIONS — AND §47 AND §48 USED DIFFERENT ONES
+
+GRÜN's `13cbef38` refines the monotone mechanism to a sum of two terms. **Checking whether the seat term is
+available at all found something larger: A-G178 was not a cosmetic gap. The mask's boundary selects both of
+PG-17's verdicts, and I used one boundary in §47 and the other in §48.**
+
+### A-G184 · One unstated convention, two opposite verdicts — my inconsistency across two sections *(defect 81)*
+
+| mask starts at | extent limb (rank 1, at the 1152 clamp) | monotone limb margin (last rank) |
+|---|---|---|
+| **`r`** — the opaque fill at `:724` | **1.60000 r**, independent of `r_px` **and** of mark state → **cannot fail**, margin 0.1 r | **0.003333** offset — the truncation alone, 0.28 px |
+| **`r + h`** — the full ring annulus, marked | **1.47526 r** → **FAILS** | 0.003333 + 0.021429 = **0.024762** offset, 2.08 px |
+| `r + h`, unmarked | 1.50289 r → passes by 0.042 px | 0.003333 + 0.016683 |
+
+> **§47's A-G170 used `r + h`. §48's A-G177 used `r`.** Each was the boundary the lane that raised it had used —
+> PINK measured the ring annulus, GRÜN pointed at the fill — **and I adopted whichever arrived last without
+> noticing they were different conventions.** Under `r` the extent limb cannot fail; under `r + h` it is a live
+> failing test. **No single convention makes both limbs well-formed.**
+
+**A-G178 is restated at its true weight:** the missing convention is not a 7.4 × discrepancy on a shared
+conclusion. **It is the thing that decides whether PG-17 has a live failing limb at all**, and three lanes
+cleared it three different ways because nobody compared.
+
+### A-G185 · The convention A-G97's own reasoning implies is per-pixel — and it clears the extent limb *(asked, not ruled)*
+
+A-G97 makes a ring seat *"an area occluder, not ground."* **A dash gap is not occupied by the ring, so by
+A-G97's own words it is ground** — and GRÜN measured exactly that before releasing the seal: **18 px in rank 1's
+1.00–1.05 r band, where a continuous seat leaves zero.**
+
+**Under per-pixel masking the innermost uncovered pixel sits at `r`, so the measurable ramp runs `r → haloR·r`
+and the extent is 1.6 r at rank 1 — and the extent limb cannot fail.**
+
+**I am not ruling this.** PINK holds the instrument and only PINK knows whether its sweep masked the ring's
+annulus or its coverage. **The narrow question, per A-G132: at 1260 px, does the measured profile contain
+uncovered pixels in the 1.00 … 1.00 + h/r_px band?** If it does, A-G170's failure is an artefact of masking dash
+gaps as though they were covered, and A-G170 goes the way of A-G162. **If it does not, `r + h` is the right
+boundary and A-G170 stands.** One datum settles it and PINK has already rendered the widths.
+
+### A-G186 · GRÜN over-credits the seat term: it is zero in a dash gap at every radius
+
+GRÜN's dominance figures are right where the ring covers — the seat term is **12.48 × / 10.00 × / 6.43 × /
+5.20 × / 2.26 ×** the truncation at `r_px` 14.43 / 18 / 28 / 34.62 / 79.58, matching its four to two decimals.
+**But in a dash gap it is zero, at every one of those radii**, so the *guaranteed* margin is the truncation and
+nothing else.
+
+**So PINK's mechanism is not "sufficient but not unique" — it is the only guaranteed one**, and not asymptotically
+but locally and everywhere. GRÜN's framing (*"the seat term vanishes asymptotically and the truncation does
+not"*) understates its own finding: **the dash gap makes the seat term vanish at finite radius too.**
+
+**And this is the second time GRÜN's own earlier result contradicts its later argument** — A-G183 was the first.
+*Both times the earlier result was the correct one*, which is worth recording as its own pattern rather than as
+two incidents: **a lane that keeps producing findings faster than it integrates them will refute itself before
+anyone else does.** It is not a criticism; it is the cost of the rate, and the alternative rate is worse.
+
+### A-G187 · The ≤ 1260 px threshold is rank-1-specific, and the real figure is 1366 *(defect 82)*
+
+PINK swept twenty widths **at rank 1**, whose `ρ_drawn` is 41.544. **The bound is per body, and `ρ_drawn` ranges
+34.2 … 54.6.** Break-even `k = ρ_drawn / 18`, so (under `r + h`, marked):
+
+| ρ_drawn | break-even k | at 1920 | at 1366 | at 1280 |
+|---|---|---|---|---|
+| **34.2** (spec min) | 1.9000 | +0.4565 px | **+0.0017 px** | **−0.2816 px FAIL** |
+| 41.544 (rank 1) | 2.3080 | +0.9411 px | +0.3886 px | +0.0444 px |
+| 54.6 (spec max) | 3.0333 | +1.8025 px | +1.0764 px | +0.6241 px — never fails |
+
+> **The smallest drawn body crosses just below 1366 px, clearing there by 0.0017 px — two thousandths of a
+> pixel.** So under `r + h`, **at least one body fails at every width below ≈ 1366**, not 1260, and 1366 is a
+> common laptop width.
+
+**And GRÜN's falsifying data named the body, not just the premise.** Its sealed 1280 × 800 minimum `r_px` of
+**15.18 is `34.2 / 2.2524 = 15.184` exactly** — the spec's smallest drawn body, realised in its own fixture and
+already failing at 1280. *(Its maximum, 23.38, gives `ρ_drawn = 52.66`, so the fixture does not realise the
+spec's 54.6 — the one body that never fails is not in it.)*
+
+**GRÜN's self-indictment is therefore sharper than it wrote it.** It did not merely publish a premise failure as
+*"does not carry"*; **it published the identity of the smallest body at a width where that body fails, and
+labelled it with a protocol word.** *"I had the falsifying data, labelled it with a protocol word, and stopped
+looking"* — and PINK needed twenty widths to find what one of its own files held.
+
+### A-G188 · The interaction-state hole is real and conditional on the convention
+
+GRÜN's break-even is exact and mark-dependent — `r_device = 10 · seatHalf`, so **18.000 px marked and 14.012 px
+unmarked** — and its consequence is right: **a headless probe marks nothing, so an instrument measures the
+unmarked limb while the bound is stated on the marked one.** At the clamp the unmarked case **passes** by
+0.042 px while the marked case **fails** by 0.036 px.
+
+**So the failure needs both the `r + h` convention and the marked state**, and under the `r` convention the mark
+does not enter the extent limb at all. **A-G95's hole is confirmed in new clothing — the pin names neither its
+motion state nor its interaction state** — and it is now the second thing A-G185's one datum would settle.
+
+### A-G189 · The local ground is two populations, and PG-10's carrier makes the split irrelevant to it
+
+GRÜN released the quantity A-G174 asked for — the per-body local ground as the median of uncovered carrier pixels
+in 3.2 … 4.0 r:
+
+| bodies | local ground | n |
+|---|---|---|
+| field (ranks 1–2) | 0.0044378 · 0.0045120 | 19 196 · 20 920 |
+| shelf (ranks 3–5) | 0.0028105 · 0.0028105 · 0.0028384 | 16 666 · 14 504 · 7 451 |
+
+**A factor of 1.58, and A-F8 predicts it: the shelf is where the medium ends.** My A-G169 sweep spans
+L 0.003035 … 0.006049, which **contains the field population and excludes the shelf population from below** —
+exactly as GRÜN says.
+
+**But A-G48 settles what that means for PG-10, and it is better than GRÜN's reading: PG-10's carrier is
+`.mf-wave-halo`, which the shelf halos do not carry** — `b.shelf ? undefined : "mf-wave mf-wave-halo"`. **So the
+shelf population is not under PG-10's carrier and cannot bear on its verdict.**
+
+> **A-G174's sweep is therefore confirmed, not pending, for the quantity PG-10 measures** — and §48 recorded it
+> as pending because I had asked for "the local ground" without naming the carrier, which is the same
+> carrier-vocabulary defect A-G180 found in GRÜN's own statistic. **Two lanes, one week, the same error: a
+> quantity named in the renderer's vocabulary instead of the pin's.**
+
+**GRÜN's preference is adopted anyway, for a different reason:** the two populations are reported separately
+because they *are* two quantities — the shelf ground is the right denominator for anything measured on a shelf
+body, and PG-22 and the shelf ring work sit there.
+
