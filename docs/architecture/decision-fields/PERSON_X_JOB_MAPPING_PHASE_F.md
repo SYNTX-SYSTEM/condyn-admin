@@ -377,6 +377,7 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 | # | Obligation |
 |---|---|
 | **PF-1** | The disc carries light: median ∈ [0.006, 0.020]; fraction above 0.005 ≥ 0.55. |
+| | ⚠ **RETIRED for phase G** *(§114)* — replaced by **PG-1/PG-2** and *not measured in this form at all*. A lane reading this row alone measures a pin phase G does not carry. |
 | **PF-2** | **The evidence survives the light.** The E-1/A-3 band separation holds at the pixel level — adjacent bands' ratio **≥ 1.6 at their closest points** (floor of the upper band vs. ceiling of the lower, PHASE_E §12). Measured on rendered pixels, not computed styles. |
 | **PF-3** | Bodies are volumes: footprint ≥ 6 × outline footprint; halo peak ≤ 0.25 × core peak. |
 | **PF-4** | Depth is monotone in rank, ratio rank 1 : last ∈ [1.5, 3.0]; **and** same-class marks on different bodies differ by ≤ 2 % — i.e. depth did not touch evidence. |
@@ -976,6 +977,7 @@ failure I have now caused twice in one phase.
 | **PF-13** | every phase-D and phase-E test passes, except the three restated in writing: `neurovisual-e :156`, `:174`, `:140`. | §12, A-F15 |
 | **PF-14** | no per-frame script write to SVG geometry outside the E-5 stage tween; the breath is **CSS animation rules** the reduced-motion blanket can stop (never WAAPI or SMIL). | §12 |
 | **PF-15** | the four rings separated by ≥ **1.6×** in measured pixel luminance at their closest points, **and** each ring separated from **its own local ground** by ≥ 1.6× in either direction. Both viewport sizes. The horizon/field step is **marginal and instrument-sensitive** (GELB 1.316, PINK 1.636) and needs margin, not a pass. | A-F6, A-F12, A-F14 |
+| | ⚠ **MALFORMED AS A CONJUNCTION** *(§98, §114)* — **not merely unsatisfiable.** No shelf alpha repairs it (the gap between limb (a) and A-G66 is **7 alpha-bytes = 6.37 plateau widths**, and discretisation can only move a disjointness verdict when the gap is under one step), **and where limb (a) clears, limb (b) has no quantity to be true or false about** — the band renders as `rgb(0,0,0)` or a single-code grey at the quantisation floor. *"Unsatisfiable" invites a search for a clever alpha; "malformed" says stop looking.* |
 
 **The admissibility rule applies to all of them (A-F11 corrected):** every temporal obligation measures its own
 floor in the same run; distributions are compared, not maxima; blur is for area statistics only, never for a

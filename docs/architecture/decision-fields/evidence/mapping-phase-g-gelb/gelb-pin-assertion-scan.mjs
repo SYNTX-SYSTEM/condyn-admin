@@ -207,4 +207,76 @@ console.log(`
   looks like one". ***
 `);
 rule();
+/* ────────────────────────────────────────────────────────────────────────────────────────────────── */
+rule();
+console.log("[5] OPENING THE FIFTEEN — A-G449: grep cannot tell a guard from its obituary");
+rule();
+console.log(`
+  PINK opened its seven and two of them turned out to be LEDGER ROWS recording that a guard was dropped or
+  that a pin is unsatisfiable. *** A pin named in a ledger of dropped guards is indistinguishable, to a
+  search, from a pin that has one — grep cannot tell a guard from its obituary. *** So the venue count is
+  an upper bound in BOTH lanes: 15 and 7 are the number of places a guard COULD be, not where one IS.
+
+  This limb opens each mention. A mention inside an it()/test()/describe() TITLE whose block contains an
+  expect() is a GUARD CANDIDATE; a mention in a comment is a MENTION; anything else is OTHER. The block is
+  taken to the next line at the title's own indentation, which is crude and stated as such — it cannot tell
+  an assertion ABOUT the pin from an assertion merely inside the same block, and only reading the
+  assertion does that. *** This narrows 15 to a shorter list to read; it does not read them. ***
+`);
+const stripComments = t => t.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " "));
+const classify = (src, pin) => {
+  const bare = stripComments(src);
+  const lines = src.split("\n");
+  const out = { guard: 0, mention: 0, other: 0, titles: [] };
+  lines.forEach((line, i) => {
+    if (!new RegExp(`\\b${pin}\\b`).test(line)) return;
+    const isComment = /^\s*(\/\/|\*|\/\*)/.test(line) || !new RegExp(`\\b${pin}\\b`).test(stripComments(line));
+    const isTitle = /\b(it|test|describe)(\.\w+)?\s*\(\s*["'`]/.test(line);
+    if (isTitle) {
+      const indent = (line.match(/^\s*/) || [""])[0].length;
+      let body = "";
+      for (let j = i; j < lines.length; j++) {
+        if (j > i && (lines[j].match(/^\s*/) || [""])[0].length <= indent && /\S/.test(lines[j]) && /\}\)/.test(lines[j])) { body += lines[j]; break; }
+        body += lines[j] + "\n";
+      }
+      if (/\bexpect\s*\(/.test(body)) { out.guard++; out.titles.push(line.trim().slice(0, 94)); return; }
+      out.other++; return;
+    }
+    if (isComment) { out.mention++; return; }
+    out.other++;
+  });
+  return out;
+};
+const states = {};
+for (const p of named) {
+  const agg = { guard: 0, mention: 0, other: 0, titles: [] };
+  for (const [, src] of Object.entries(text)) {
+    const c = classify(src, p);
+    agg.guard += c.guard; agg.mention += c.mention; agg.other += c.other; agg.titles.push(...c.titles);
+  }
+  states[p] = agg;
+}
+const withGuard = named.filter(p => states[p].guard > 0);
+const mentionOnly = named.filter(p => states[p].guard === 0);
+console.log(`  pin      titled-with-expect   comment mentions   other`);
+for (const p of named) {
+  const a = states[p];
+  console.log(`  ${p.padEnd(7)} ${String(a.guard).padStart(13)} ${String(a.mention).padStart(18)} ${String(a.other).padStart(7)}${a.guard === 0 ? "   <- NO TITLED TEST NAMES IT" : ""}`);
+}
+console.log(`
+  *** ${withGuard.length} of the ${named.length} named pins appear in at least one it()/describe() TITLE whose block asserts.
+  ${mentionOnly.length} appear only in comments or other positions — the shorter list to read. ***
+`);
+for (const p of mentionOnly) console.log(`  READ THIS ONE  ${p}`);
+if (mentionOnly.length === 0) console.log("  (every named pin has at least one asserting titled test)");
+console.log("\n  the titles, so a reader can go to one rather than to all:");
+for (const p of withGuard) for (const t of states[p].titles.slice(0, 2)) console.log(`    ${p.padEnd(7)} ${t}`);
+console.log(`
+  *** AND THE LIMIT, WHICH IS THE SAME ONE PINK NAMED: a titled test that asserts is a guard CANDIDATE and
+  not a guard. It may assert something adjacent to the pin rather than the pin's own bound — PF-4's
+  instrument is partial and says so, PF-10's mention is its guard's obituary, and neither could be told
+  from a grep. The only detector that works is opening the file, and this limb opens it one level: far
+  enough to say which files to read, not far enough to say what they prove. ***
+`);
+rule();
 rule();
