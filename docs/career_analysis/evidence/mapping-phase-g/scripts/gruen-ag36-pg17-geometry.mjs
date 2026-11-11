@@ -73,9 +73,13 @@ const flatHead = {
    * repeat is forced** and strictness is not measurable in the tail after all.
    *
    * The lesson is not the arithmetic. **A level-counting argument is void unless it states the quantisation
-   * model it counts under** (A-G210). My scope-carrying guard does not cover this: nothing was reused out of
-   * scope. A NEW number was computed outside a model the record had already fixed, and no condition travelled
-   * with it because none was attached to anything.
+   * model it counts under** (A-G214 — not A-G210, which is the carrier-mask statistic; §54 corrected the
+   * citation and A-G207 applies to adjudication numbers too). My scope-carrying guard does not cover this and
+   * neither does any other provenance rule in the record: all five attach to a number that ALREADY EXISTS, and
+   * a fresh calculation has no ancestor to inherit a condition from. **A-G214 governs production rather than
+   * transport** — not where a number came from or where it is going, but what it assumed when it was made.
+   * Both of §§51–53's errors slipped five rules built for this family: neither number was reused, neither was
+   * transported, both were wrong, and nothing was looking.
    *
    * Two conclusions, one support each — conflating them is what produced both of my errors:
    *   the flat head is never sampled   <- the TRUNCATION alone (the seat term is zero in a dash gap)
