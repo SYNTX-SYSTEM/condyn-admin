@@ -4,8 +4,8 @@
  "scope": "rendered-page interaction and computed style on a loopback build. No raster, no luminance, no sealed datum, NO NEW FIXTURE DATA.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
-  "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
-  "headShort": "fb4632da",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
   "branch": "HEAD",
   "treeClean": false,
   "productTreeClean": true,
@@ -14,13 +14,13 @@
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
-  "buildId": "TKZRoMo0_1Ro-svJrokkW",
-  "measuredAt": "2026-11-11T16:15:22.176Z"
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T16:28:48.089Z"
  },
  "viewport": "1920x1080",
  "motion": "reducedMotion:reduce — these are structural states, not breath readings",
  "A_G206_spanDeclaration": {
-  "one_whatThisSpans": "Four focus states of ONE served fixture (TKZRoMo0_1Ro-svJrokkW): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
+  "one_whatThisSpans": "Four focus states of ONE served fixture (utpaUMQpafZVzAeyYImhv): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
   "two_whatThisDoesNotSpan": "It spans ONE POPULATION — the five bodies of the shared ranking, 2 field and 3 shelf. It is NOT LV01-LV12: the twelve layout inputs exist as existing test data in test/support/mapping/vectors.ts (so B-7 permits them), but the façade serves one job-ranking payload and reaching the other eleven populations needs the façade to serve a chosen vector, which is a façade change and is NOT in this reading. It also does not span L3, a requirement open, or any raster quantity.",
   "three_whatWouldWidenIt": "A façade route that serves `layoutInputs()[name]` as the job-ranking for a requested vector name. That is a transformation of existing test data rather than new data, so B-7 permits it; it is the next step and it is not pretended to be done here."
  },
@@ -97,12 +97,16 @@
     "state": "L2 · a FIELD body open (A-G48)",
     "reached": true,
     "framePasses": "0",
-    "frameConverged": "true",
+    "frameConverged": "n/a",
     "viewBox": "-7 -7 14 14"
    }
   ],
   "note": "§86: data-frame-passes and data-frame-converged are emitted UNCONDITIONALLY, so `present` is a real check — a build without the fix returns null for both and this reports it rather than passing.",
-  "allConverged": true
+  "convergenceClaims": 3,
+  "allThatClaimedDidConverge": true,
+  "notApplicableStates": [
+   "L2 · a FIELD body open (A-G48)"
+  ]
  },
  "statesAttempted": 4,
  "statesReached": 4,
@@ -208,7 +212,7 @@
    "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
    "role": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
    "framePasses": "0",
-   "frameConverged": "true",
+   "frameConverged": "n/a",
    "viewBox": "-7 -7 14 14",
    "bodies": 1,
    "markedCount": 0,
