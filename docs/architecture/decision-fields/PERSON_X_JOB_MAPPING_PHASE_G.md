@@ -5391,3 +5391,150 @@ rather than quoting the figure.** That is what turned GRÜN's 18 px from evidenc
 the same move that would have caught my own A-G162** — recomputing 28 px from the spec would have surfaced the
 condition attached to it.
 
+
+---
+
+## §51 A-G31 NAMED PG-17's CARRIER IN THE RENDERER'S VOCABULARY — WHICH IS THE ROOT OF THREE SECTIONS OF CARRIER ERRORS, NOT A FOURTH
+
+GRÜN answered A-G199 (`ffdc0570`) and declared a fourth erratum on its own released evidence. **One of the two
+findings here is a defect in an adjudication I wrote, and it is the parent of the three I had been recording as
+separate instances.**
+
+### A-G201 · A-G199 is A-G49 item 2, and GRÜN's refusal is endorsed
+
+A `data-*` on the shelf halo circle **changes the rendered DOM, so it is a product delta, not a comment fix** —
+and it is not a new item: **it is A-G49, item 2 of the six already behind `TEST_DATABASE_ADMIN_URL`.** The
+attribute is one line; what it needs is the suite proving it moved nothing else, and that is exactly what the
+gate withholds.
+
+> *"I am not routing around a fail-closed gate for a one-liner, and I would hold this line even if the change
+> were cosmetic."*
+
+**Endorsed without qualification.** A fail-closed gate that can be stepped around for small changes is not a
+gate, and the size of the change is the worst possible criterion for crossing one. **Nothing is added to the
+owner's list** — A-G199 moves *inside* the existing blockage rather than beside it, which is the honest
+accounting and makes the credential's cost one item larger rather than the queue one item longer.
+
+### A-G202 · GRÜN's released anomaly sits on a body PG-17 does not cover *(erratum 4)*
+
+`mapping-glows` carries `fieldHalos` only; GRÜN's `glowsAll` is `.mf-halo`, **which sits on the wrapper `<g>` of
+every halo.** So its released per-body rows are a **superset of the pin's subject** — ranks 1–2 bear on PG-17,
+ranks 3–5 do not.
+
+**And the single anomaly its release reported is outside the carrier:** rank 5's reversal at 2.75 r by 2.9e-04,
+its 50 px rim band at 1920 and 6 px at 1280 — **the datum it offered me as the clean discriminator two messages
+ago** — is a shelf body.
+
+> **So PG-17's monotone limb has no measured anomaly on its own carrier at all.** Both field bodies fall
+> monotonically across the whole measurable annulus. **The limb's "cannot fail" verdict from constants
+> (A-G161/A-G175) and the measurement now agree, and the one piece of evidence that looked like tension was
+> never about this pin.**
+
+### A-G203 · A-G31 named the carrier in the renderer's vocabulary — the parent defect *(defect 87)*
+
+I have recorded three carrier-vocabulary errors in three sections and treated them as instances of a shared
+mistake: **A-G180** (GRÜN's statistic named `.mf-halo`), **A-G189** (I asked for "the local ground" without a
+carrier), **A-G191** (I extended a bound to a body the carrier excludes). **They are not three instances. They
+are three consequences of one line I wrote.**
+
+A-G31 decided PG-17 is measured on *"the union of **`mapping-glows`** and the medium beneath them."* **That is a
+`data-testid`.** It is the renderer's grouping, chosen because A-G10's pin 7 had just moved the glow into it —
+and **a group is not a subject.**
+
+> **A pin's carrier is named by what the pin is about. The renderer's groups are how that subject is currently
+> found, never what it is.** A carrier named as a group silently changes whenever the grouping changes, and
+> **silently excludes whatever the grouping never included** — which is precisely how three of five bodies left
+> PG-17 without any decision being taken about them.
+
+**Decided: PG-17's carrier is restated as its subject — *every body's surrounding ramp, and the ground it falls
+across, with signs and seats masked*** — and `mapping-glows ∪ medium` is recorded as the **current locator for
+that subject**, with A-G31's figure/ground ruling intact. **This is not a widening of PG-17**; it is the
+statement that the question *"does PG-17 cover a shelf body?"* has an answer in the record rather than in a
+`<g>`.
+
+### A-G204 · A body under no obligation accumulates the errors — GRÜN's rule, adopted and acted on
+
+The same body keeps appearing: `ρ_drawn 34.2`, rank 5, GRÜN's sealed minimum 15.18 px. **It is the body my §49
+re-sweep targeted and my own dash-gap argument exempted; the body GRÜN's convention datum rested on; the body
+GRÜN's anomaly sits on. Three lanes, three errors, one body, each with correct arithmetic.**
+
+> **A body under no obligation accumulates the errors, because nothing checks a claim made about it. A coverage
+> hole is not only a gap in what is verified — it is where wrong figures survive.**
+
+**Adopted, and it is the best general statement produced in this exchange.** It also explains why the hole was
+invisible: **every lane's errors about those bodies were individually plausible and collectively undetected.**
+
+**So it is acted on rather than filed.** The obligation the shelf halos need **already exists as an instrument
+check and costs no new number**: A-G48's negative limb, which caught all three defects in PINK's void first
+attempt by reporting `maxSwing` up to 0.7925 on elements that rest.
+
+**Decided — PG-23, the first new pin since §4:** *a resting glow's per-pixel swing is zero to the run's own
+measured static floor, on every body whose halo carries no breath.* **Derived, not asserted** — the quantity is
+zero by construction, and the floor is A-G26's form, the run's own measured null and never below it. It is a
+zero-by-construction channel, which A-G197 explains the value of: **a motionless element cannot exceed zero, so
+the limb falsifies an instrument before a build.**
+
+**And PG-17's exclusion of the shelf halos is now stated rather than inherited from a `<g>`** — A-G95's
+occupiers/exclusions field, which PG-17 never filled.
+
+### A-G205 · This record holds two figures called "one code at the ground level" that differ by 13.85 × *(defect 88)*
+
+GRÜN checked my quantisation account rather than conceding it — correctly, since its own cancellation claim was
+what I had withdrawn — and gives one code as **0.000376 L at byte 14, 0.000493 at byte 20.** I reproduce
+**0.000386 / 0.000504** as one code on **all three channels**.
+
+**But A-G136 states, in this record, that one code at the ground level is 2.783e-05** — and that reproduces
+**exactly** as one code on the **blue channel alone** at byte 14 (`2.7834e-05`). **The two namings differ by
+`1/0.0722 = 13.85 ×`.**
+
+| | quantum | PINK's selected swing (0.0017–0.0023 L) | verdict |
+|---|---|---|---|
+| all three channels | 0.000386 | **4.5 … 6.1 codes** | quantisation-limited |
+| blue channel alone | 2.783e-05 | **61 … 83 codes** | **not** quantisation-limited |
+
+> **So "is the ratio quantisation-limited?" has opposite answers under two figures the record gives the same
+> name.** A-G137's units defect, in the one place I had treated as settled arithmetic — and both figures are
+> correct for different questions: the **blue-only** step is the finest change the raster can express at a cyan
+> glow, the **all-channel** step is what a typical step costs.
+
+**Three consequences:**
+
+1. **GRÜN's residual diagnosis is the better-supported one and its quantisation account is not.** Its own
+   arithmetic — whole-code rounding of a true 0.35 lands at 0.333…0.400 across resting 8–14 codes, **never
+   reaching 0.419–0.469** — holds, and I confirm it. **The gap is not rounding.** Its alternative is a **floor
+   or threshold effect in the per-pixel median**: if sub-code pixels are floored or dropped, the surviving
+   population is the high-swing tail, which inflates the selected median far harder than rounding does. **Then
+   the instrument's own mask threshold is part of the measured number.**
+2. **Therefore the resolvability floor must be *measured*, never computed from a nominal code size** — because
+   the nominal size is ambiguous by 13.85 × and the ambiguity flips the verdict. **A-G26's form and A-G115's
+   were right for a reason neither section stated: the run's own null is the only figure that cannot be the
+   wrong quantum.**
+3. **And GRÜN's placement is adopted: the floor goes *in front of* the ratio, not beside it** — a precondition
+   for the ratio being measurable at all, **A-G128's gate applied to a statistic rather than to a bound.** That
+   is a genuine extension of A-G128 and the first since A-G144 gave it its unit.
+
+**A-G136's conclusion survives and its margin does not.** Its claim that the glow's quantised tail is never
+sampled used the blue-only quantum and the right one for that question; under the all-channel quantum the
+flat-by-raster tail spans the outer **0.94 px** rather than 0.06 px. **Still sub-pixel, so "never sampled"
+holds — by fifteen times less than the record implies.**
+
+### A-G206 · A-G192, tightened to GRÜN's three-part form
+
+> **A fixture declares the spec's range, its own realised range, and the gap, before it is used.**
+
+GRÜN's own would have read `ρ_drawn spec 34.2…54.6, realised 34.2…52.67, missing the upper 1.93` — **and that
+one line would have stopped a width conclusion being drawn on two mid-range bodies.** Adopted for A-G48's and
+A-G51's fixtures, which do not exist yet, so it costs nothing to require.
+
+### A-G207 · The message layer gets an origin field, because GRÜN was right not to start one
+
+GRÜN's account of the 0.28644 hop: it arrived with no origin, GRÜN could not place it, **and carried it for
+several sections as "the record's resting pair"** before PINK's measurement placed it. Its diagnosis is the
+mechanism neither of us had: *"nothing in the message format carries an origin field."* And it declined to
+change the process unprompted, which is correct — **a lane does not rewrite the orchestration layer.**
+
+**So I rule it, since it is mine: every quantity crossing lanes carries its origin inline — the lane, the
+artifact, and the name of the quantity — or it is not sent.** A-G173 stated the obligation and left the carrier
+to goodwill; **this gives it a place to live.** It costs one clause per number and it has now cost two lanes
+several sections each.
+
