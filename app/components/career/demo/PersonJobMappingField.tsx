@@ -145,15 +145,27 @@ export const VOLUME = Object.freeze({ coreAlpha: 0.16, haloAlpha: 0.5, haloNear:
  * The glow's ramp, [offset on the glow's radius, share of the peak]. The gradient declares no `gradientUnits`, so offset 1 IS the
  * drawn glow's radius r · (haloNear + 0.4t) and the body's rim sits at 1 / (haloNear + 0.4t) — 0.384615 at rank 1 and 0.333333 at
  * the last rank, t being the RANK (see the halo at its render site), not the breath. The head is flat to offset 0.33, just inside
- * 1 / haloFar = 0.333333, and then darkens monotonically to 0 at the edge.
+ * 1 / haloFar = 0.333333, and then darkens monotonically to 0 at the edge. §47: whether that 0.33 was MEANT as 1 / haloFar is
+ * nowhere recorded, and the difference is not cosmetic — the 0.003333 shortfall is one of the two independent reasons the flat
+ * head is never sampled. It is left at 0.33 because it is a DRAWN constant: rounding it to 1/3 would be a product delta, not a
+ * comment fix, and belongs to whoever owns the ramp.
  *
  * §45 A-G163: ONE constant, three different extents, and this comment used to state only the first as if it were the obligation:
  *   rim → edge        (haloNear … haloFar) − 1      = 1.6   … 2.0   r   geometric, and NOT observable
- *   seat edge → edge  … − seatHalfPx / r_px         = 1.536 … 1.950 r   at r_px ≥ 28 (PG-3's floor) — what a pixel can see
+ *   seat edge → edge  … − seatHalfPx / r_px         = 1.536 … 1.950 r   AT r_px ≥ 28 ONLY — what a pixel can see
  *   measured                                       = 1.55  … 1.95  r   L0 1920×1080, outputs/pg17-seal-reanchor.json
+ * §47 A-G162, correcting the line above: r_px ≥ 28 is PG-3's floor and PG-3 states it FOR L0 1920×1080, a condition the ramp
+ * does not carry. `r_device = rho_drawn / k` and k moves with the window (E-8/A-1), so the measurable extent shrinks with width
+ * and crosses 1.5 r at `r_device = 10 · seatHalfPx` — 18.000 px marked, 14.012 px unmarked, the two differing by nothing but
+ * whether a pointer happens to be over the body. Narrower than that the extent is BELOW 1.5 r, and this lane's own 1280×800
+ * readings (r_px 15.18 … 23.38) were already the counterexample while being reported only as "does not carry".
+ *
  * The seat is a stroke CENTRED on r, so it occludes to r + width/2 and its edge lands at offset 0.409341 (rank 1, marked, r_px = 28)
  * … 0.354762 — past the flat head at EVERY rank and radius, because 0.33 · haloFar = 0.99 < 1 and the seat's own fill reaches 1.
  * So the flat head is never sampled: the observable ramp is strictly decreasing, and strict-versus-non-increasing is not a choice.
+ * The margin for that is a sum of TWO positive terms, 0.003333 + seatHalfPx / haloFar / r_px in offset units, and EITHER ALONE
+ * suffices — the truncation holds the limit as r grows, the seat dominates by 5× … 10× at every radius anyone renders. Which is
+ * why the conclusion is robust and why no single mechanism is THE reason for it.
  * PG-17 is withdrawn (§45 A-G165) — R21 generated this ramp and no quantity was ever taken from it, so it motivates the form and
  * certifies no bound. The 1.6 above is the rim figure and correct as such; it was never a bound this ramp had to clear.
  */

@@ -58,6 +58,38 @@ invisible in the published figure because they pushed the same way.
 Net effect on the figures: the sealed strict extents overstate by 0.05 … 0.30 r where they are meaningful and
 report 0 twice where the ramp is in fact monotone.
 
+## §47 A-G162 — what the extent limb's live failure does to this release
+
+GELB withdrew A-G162 after PINK broke the **extent** limb at widths ≤ 1260 px. That limb is live and PINK's;
+this release covers the **core** limb (struck) and the **monotone** limb (un-failable). Two things it changes
+here, both of which were latent in these files:
+
+- **The `r_px ≥ 28` premise is conditional and this lane used it as if it were not.** PG-3 states the floor
+  *for L0 1920×1080*; the ramp carries no viewport condition, and `r_device` moves with the window. The
+  1280×800 reading above is the counterexample — radii **15.18 … 23.38 px**, every one below 28 — and it was
+  published as "does not carry" rather than as "the premise fails here". The script quoted PG-3's condition in
+  a comment and then used the number unconditionally, which is A-G163's defect in this lane's own instrument.
+- **The break-even is mark-dependent and the pin does not name an interaction state.** `1.6 − seatHalfPx/r = 1.5`
+  gives `r_device = 10 · seatHalfPx` — **18.000 px marked, 14.012 px unmarked**. GELB's 18.000 is the marked
+  case, correctly the worst, but between those two radii the verdict turns on whether a pointer happens to be
+  over the body, and nothing in a headless probe marks anything. That is A-G95's missing-motion-mode hole in
+  different clothing: an obligation that names neither the motion state nor the interaction state.
+
+## A-G174 — the per-body local ground, which this release already carries
+
+A ground *triple* cannot represent it. These files report the local ground per body, as the median of uncovered
+carrier pixels in 3.2 … 4.0 r on the halo annulus — the quantity GELB says settles the sweep — and it splits
+into **two populations by shelf membership**:
+
+| bodies | local ground | n |
+|---|---|---|
+| field (ranks 1–2) | 0.0044378 · 0.0045120 | 19 196 · 20 920 |
+| shelf (ranks 3–5) | 0.0028105 · 0.0028105 · 0.0028384 | 16 666 · 14 504 · 7 451 |
+
+A factor of **1.58** between them. GELB's sweep spans `rgb(10,10,10)` … `rgb(18,18,18)` = L 0.003035 … 0.006049,
+which contains the field population and **excludes the shelf population from below**. So the sweep's agreement
+across all seven triples is evidence about field bodies only.
+
 ## What this is not
 
 It is not a certification of anything. R21 generated `GLOW_RAMP` and no quantity was ever taken from it, so a
