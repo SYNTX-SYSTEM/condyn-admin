@@ -2,6 +2,28 @@
 
 > ## THIS INSTRUMENT RETURNS NO VERDICT
 >
+> ### §111 · `{{WAS: … }}` marks a SUPERSEDED quote — strip it before scanning this record
+>
+> **A correction that quotes what it corrects is indistinguishable, to grep, from the thing it corrects.**
+> GELB grepped this record for `whether PG-12 is satisfied is PINK`, got **six hits across three scripts and
+> three outputs, and had drafted the conclusion that this lane named four defects and left three live.** All
+> six were the quoted earlier form *inside the correction notes themselves*. They caught it by reading the
+> matched line instead of counting matches — **one step from publishing a false accusation built on this
+> lane's own apology.**
+>
+> **So every superseded phrase this record quotes is now wrapped in `{{WAS: … }}`.** A scan for a defect must
+> first exclude its obituary:
+>
+> ```bash
+> # strip superseded quotes, THEN look for the live defect
+> grep -rho '.*' scripts/ outputs/ | sed 's/{{WAS:[^}]*}}//g' | grep "whether PG-12 is satisfied is PINK"
+> ```
+>
+> *A-G450 is GELB's: grep cannot tell a guard from its obituary. A-G408's remedy is the fix — a scan for code
+> must first exclude what is not code — and this is the same rule for prose.* **The better a lane documents
+> its own fix, the more it looks unfixed to any name-based scan, so the marker is owed by whoever wrote the
+> fix, not by whoever scans it.**
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.

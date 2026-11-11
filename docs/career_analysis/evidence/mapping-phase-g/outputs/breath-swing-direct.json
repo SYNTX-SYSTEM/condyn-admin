@@ -14,7 +14,7 @@
   ],
   "untrackedProductFiles": [],
   "buildId": "utpaUMQpafZVzAeyYImhv",
-  "measuredAt": "2026-11-11T22:18:41.129Z",
+  "measuredAt": "2026-11-11T22:40:30.247Z",
   "measuredBuildCommit": "c84ab292",
   "measuredWorktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks"
  },
@@ -118,7 +118,7 @@
   "swing": {
    "n": 47073,
    "min": 0,
-   "p50": 2.824584,
+   "p50": 2.825259,
    "p90": 6.452684,
    "p99": 7.91839,
    "max": 8.820271
@@ -126,7 +126,7 @@
   "fractionOfRequirement": {
    "n": 47073,
    "min": 0,
-   "p50": 0.195963,
+   "p50": 0.195994,
    "p90": 0.569301,
    "p99": 0.76821,
    "max": 0.88753
@@ -135,17 +135,17 @@
   "bestPixelAsFractionOfRequirement": 0.8875,
   "pooledOverTheWholePopulation": {
    "n": 47073,
-   "meanSwing": 3.004528,
+   "meanSwing": 3.005471,
    "meanQ": 0.623805,
    "worstCase": {
     "sigma": 1.24761,
-    "relativePrecision": 0.41524,
+    "relativePrecision": 0.41511,
     "meetsP": false,
     "why": "every pixel's quantisation error aligned in the same direction. Pooling buys NOTHING: the mean of n identically-biased readings carries the same bias."
    },
    "independentErrors": {
     "sigma": 0.00587936,
-    "relativePrecision": 0.00195683,
+    "relativePrecision": 0.00195622,
     "meetsP": true,
     "why": "rounding errors decorrelated across pixels, which is a MODELLING ASSUMPTION and not something measured here. Pooling then buys sqrt(n)."
    },
@@ -161,7 +161,7 @@
   "swing": {
    "n": 47073,
    "min": 0,
-   "p50": 0.844437,
+   "p50": 0.844019,
    "p90": 2.338831,
    "p99": 2.98901,
    "max": 3.444681
@@ -169,7 +169,7 @@
   "fractionOfRequirement": {
    "n": 47073,
    "min": 0,
-   "p50": 0.062567,
+   "p50": 0.062556,
    "p90": 0.207222,
    "p99": 0.301676,
    "max": 0.357637
@@ -178,17 +178,17 @@
   "bestPixelAsFractionOfRequirement": 0.3576,
   "pooledOverTheWholePopulation": {
    "n": 47073,
-   "meanSwing": 1.08769,
-   "meanQ": 0.621134,
+   "meanSwing": 1.087454,
+   "meanQ": 0.621129,
    "worstCase": {
-    "sigma": 1.242269,
-    "relativePrecision": 1.14212,
+    "sigma": 1.242257,
+    "relativePrecision": 1.14235,
     "meetsP": false,
     "why": "every pixel's quantisation error aligned in the same direction. Pooling buys NOTHING: the mean of n identically-biased readings carries the same bias."
    },
    "independentErrors": {
-    "sigma": 0.00584778,
-    "relativePrecision": 0.00537633,
+    "sigma": 0.00584775,
+    "relativePrecision": 0.00537747,
     "meetsP": true,
     "why": "rounding errors decorrelated across pixels, which is a MODELLING ASSUMPTION and not something measured here. Pooling then buys sqrt(n)."
    },
@@ -197,11 +197,11 @@
  },
  "theStateRatioIsNOT1OverSelectedGain_inTheCHROMAdomain": {
   "stylesheetForcedRatio_onOPACITY": 2.8571,
-  "measuredRatio_onCHROMA_median": 3.3449,
+  "measuredRatio_onCHROMA_median": 3.3474,
   "measuredRatio_onCHROMA_max": 2.5605,
   "why": "--mf-wave-gain multiplies the DEPTH and leaves the mean alone, so the OPACITY swing ratio is exactly 1/selectedGain and GELB reproduced that to 0.16 % across the alpha range. C* is not a linear function of the composite: the unselected interval [mean-amp, mean+amp] is wider and therefore samples more of the response curve's curvature than the selected one, so the chord it subtends in chroma is larger than linear scaling predicts. Hence a chroma ratio above the opacity ratio.",
   "whatThisMeans": "1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain. Both lanes have been quoting one number for both. That is GELB's own spread-domain rule applied to a RATIO: a ratio stated without its domain is indistinguishable from one stated with it, and the two differ here by about a sixth.",
   "andItDoesNotMoveTHISfinding": "both states are short by factors well outside that discrepancy — 1.13x unselected, 2.80x selected — so the domain confusion changes neither limb's direction."
  },
- "finding": "THE BREATH'S CHROMA SWING, MEASURED DIRECTLY at the halo group's own trough and peak, over 47073 hue-glow pixels — no relSwing, no share, no additivity assumption, and the override PROVEN applied by reading back the computed opacity of all 2 breathing halo elements at every step.\nUNSELECTED: swing p50 2.824584, max 8.820271. The requirement is s >= 20q and 0 of 47073 pixels meet it; the best pixel reaches 0.8875 of what it needs.\nSELECTED: swing p50 0.844437, max 3.444681. 0 of 47073 meet it; best pixel 0.3576 of requirement.\nAND THE STATE RATIO IS NOT 1/selectedGain HERE: the stylesheet forces 2.857 on OPACITY, and the measured ratio of chroma swings is 3.345 at the median. C* is not linear in the composite, so the wider unselected interval subtends a larger chord than linear scaling predicts. 1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain, and both lanes have been quoting one number for both — GELB's spread-domain rule, applied to a ratio. It moves neither limb: both are short by factors well outside the discrepancy.\nAND THE OPEN AXIS IS NOT THE ONE GELB NAMED. They ask whether the noise factor is 2q, sqrt(2)q or q — a factor of 2 that flips the best PIXEL. But the per-pixel framing is itself a choice: an instrument timing the breath would POOL the glow region, and pooling 47073 pixels spans 212.2x between the two honest treatments of quantisation error. Worst case (every pixel's error aligned, pooling buys nothing): relative precision 0.41524 unselected, meets 0.1: false. Independent errors (a MODELLING ASSUMPTION, not measured here): 0.00195683, meets 0.1: true.\n*** SO \"A CHROMA INSTRUMENT CANNOT TIME THE BREATH\" IS A PER-PIXEL CLAIM AND I STATED IT WITHOUT THAT QUALIFIER. *** Pooled with decorrelated errors it is comfortably measurable; pooled with aligned errors it is not; per pixel it is not. The decisive axis is worst-case versus independent-error treatment, spanning ~212.2x, which dwarfs the factor of 2 between 2q and q.\nTHIS CLOSES THE 36 % GAP WITHOUT THE SHARE. §102's share is undefined wherever the full-removal differential is <= 0, and GELB's share <= 1 closure is sound only where the share exists. A local swing is defined at every pixel, so this covers the whole population and supersedes both proxies rather than refining them.\nNO VERDICT (A-G36 point 2): this is a resolution over a population. PG-12 IS ESTABLISHED UNSATISFIABLE BY ANY BUILD (§36 — THIS LANE'S OWN finding, already recorded in gruen-pg12-chroma.mjs: the hue's own chroma is half the bound), so there is NO verdict to refer. These are measurability readings about a CHANNEL, not evidence toward an open pin. The earlier form of this sentence said \"whether PG-12 is satisfied is PINK's\" — referring a settled negative to another lane, which is the exact waste A-G111 exists to prevent, and the settlement was in my own record when I wrote it."
+ "finding": "THE BREATH'S CHROMA SWING, MEASURED DIRECTLY at the halo group's own trough and peak, over 47073 hue-glow pixels — no relSwing, no share, no additivity assumption, and the override PROVEN applied by reading back the computed opacity of all 2 breathing halo elements at every step.\nUNSELECTED: swing p50 2.825259, max 8.820271. The requirement is s >= 20q and 0 of 47073 pixels meet it; the best pixel reaches 0.8875 of what it needs.\nSELECTED: swing p50 0.844019, max 3.444681. 0 of 47073 meet it; best pixel 0.3576 of requirement.\nAND THE STATE RATIO IS NOT 1/selectedGain HERE: the stylesheet forces 2.857 on OPACITY, and the measured ratio of chroma swings is 3.347 at the median. C* is not linear in the composite, so the wider unselected interval subtends a larger chord than linear scaling predicts. 1/selectedGain is exact in the ALPHA domain and is not the ratio in the CHROMA domain, and both lanes have been quoting one number for both — GELB's spread-domain rule, applied to a ratio. It moves neither limb: both are short by factors well outside the discrepancy.\nAND THE OPEN AXIS IS NOT THE ONE GELB NAMED. They ask whether the noise factor is 2q, sqrt(2)q or q — a factor of 2 that flips the best PIXEL. But the per-pixel framing is itself a choice: an instrument timing the breath would POOL the glow region, and pooling 47073 pixels spans 212.2x between the two honest treatments of quantisation error. Worst case (every pixel's error aligned, pooling buys nothing): relative precision 0.41511 unselected, meets 0.1: false. Independent errors (a MODELLING ASSUMPTION, not measured here): 0.00195622, meets 0.1: true.\n*** SO \"A CHROMA INSTRUMENT CANNOT TIME THE BREATH\" IS A PER-PIXEL CLAIM AND I STATED IT WITHOUT THAT QUALIFIER. *** Pooled with decorrelated errors it is comfortably measurable; pooled with aligned errors it is not; per pixel it is not. The decisive axis is worst-case versus independent-error treatment, spanning ~212.2x, which dwarfs the factor of 2 between 2q and q.\nTHIS CLOSES THE 36 % GAP WITHOUT THE SHARE. §102's share is undefined wherever the full-removal differential is <= 0, and GELB's share <= 1 closure is sound only where the share exists. A local swing is defined at every pixel, so this covers the whole population and supersedes both proxies rather than refining them.\nNO VERDICT (A-G36 point 2): this is a resolution over a population. PG-12 IS ESTABLISHED UNSATISFIABLE BY ANY BUILD (§36 — THIS LANE'S OWN finding, already recorded in gruen-pg12-chroma.mjs: the hue's own chroma is half the bound), so there is NO verdict to refer. These are measurability readings about a CHANNEL, not evidence toward an open pin. The earlier form of this sentence said {{WAS: whether PG-12 is satisfied is PINK's}} — referring a settled negative to another lane, which is the exact waste A-G111 exists to prevent, and the settlement was in my own record when I wrote it."
 }
