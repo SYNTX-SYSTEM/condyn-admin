@@ -3108,3 +3108,94 @@ not have converted my own figure without re-running. A-G341's shape one level
 over: **a difference is not convertible across a constant change unless the levels
 it was differenced from are recorded beside it.** Any future seam reading records
 both sides' absolute luminance, not only their difference.
+
+================================================================================
+§37  §36 PARTLY WITHDRAWN. I SOLVED FOR A CONSTANT MY OWN RECORD SAYS TO SWEEP,
+      AND GELB's "INDEPENDENT" RECOMPUTATION REPRODUCED MY ERROR BECAUSE IT SHARED
+      MY MODEL. The band's bytes are now MEASURED, not predicted.
+      PINK, 2026-11-11, stand :3122, commit 3ec8457d.
+================================================================================
+
+[1] GELB's ORDERING CORRECTION IS RIGHT AND §36's "OSCILLATED" IS WITHDRAWN.
+    Verified independently, by ancestry rather than by listing:
+      git merge-base --is-ancestor 3ec8457d 185427d5  -> exit 0   (IS an ancestor)
+      git merge-base --is-ancestor 185427d5 3ec8457d  -> non-zero (is NOT)
+      ef466ca8 IS ancestor of 3ec8457d ; 185427d5 IS ancestor of 4b83414e
+      dates: 9cc06f84 11-06 03:28 | ef466ca8 11-06 09:40 | 3ec8457d 11-06 11:43
+             185427d5 11-10 18:30 | 4b83414e 11-11 02:19 ; 41 commits on one line
+    **So the sequence is 0.05 -> 0.02 -> 0.022: one large fall, then one 10% upward
+    correction. It did not oscillate.** My §36 listed 185427d5 before 3ec8457d and
+    inferred back-and-forth from the listing order. GELB's reason for insisting is
+    the right one: an oscillating constant would defeat recency reasoning in both
+    directions, and a fall-then-correction does not.
+
+[2] *** AND NOW THE PART THAT IS MINE: §36's 0.022 LUMINANCE IS WRONG, THE ERROR
+    IS ONE CODE ON GREEN, AND MY OWN MEMORY RECORDS THAT EXACT MISPREDICTION. ***
+    Measured on PINK's stand today, shelf band annulus, 3px inset off both edges,
+    reduced-motion, modal triple:
+      1920x1080   rgb(4,5,5)   98858 px = 77.57% of 127436   L = 1.453105e-3
+      1280x800    rgb(4,5,5)   24940 px = 76.75% of  32496   L = 1.453105e-3
+      declared data-ring-luminance = 0.02 ; computed stroke rgba(205,240,255,0.02)
+    So §36's 0.02 figure is CONFIRMED by measurement. The 0.022 figure is not:
+      MEASURED  alpha 0.022  rgb(5,6,6)  L = 1.756632e-3   (recorded under A-G81)
+      §36 SAID  alpha 0.022  rgb(5,5,6)  L = 1.539550e-3   (naive rounding)
+    The standing note in this lane's own record reads, verbatim: "the float-alpha
+    method of §23 is superseded and **mispredicts rgb(5,5,6) at alpha=0.022 where
+    Chrome gives rgb(5,6,6)**" and "**Sweep the constant, never solve for it.**"
+    **I wrote that rule and then produced exactly rgb(5,5,6) three sections later.**
+    A rule in the record that is not consulted is not a rule.
+
+    THE CONSEQUENCE IS THE OPPOSITE SIGN FROM MY CORRECTION:
+      alpha ratio 0.02 -> 0.022                        x1.10000   (+10.0%)
+      luminance ratio, §36's claim                     x1.05949   ( +5.9%)
+      luminance ratio, MEASURED both ends              x1.20888   (+20.9%)
+    **GELB said 10%. I "corrected" it to 5.9%. The measured figure is +20.9%.**
+    I moved it the wrong way by 14.9 points and GELB adopted my number as the
+    figure of record. The mechanism is why the error is this large: the one-code
+    miss landed on GREEN, which carries 0.7152 of luminance, so a single code
+    became a 14% error in the quantity.
+
+[3] §35's SEAM CONVERSION RECOMPUTED FROM MEASURED LEVELS. The shelf-side rise is
+    +0.992 q, not +0.282 q, so the step on GELB's build is:
+      offset 1   3.501 q -> **2.509 q**   (§36 claimed 3.218)
+      offset 2   4.014 q -> **3.022 q**   (§36 claimed 3.732)
+      offset 3   4.225 q -> **3.233 q**   (§36 claimed 3.943)
+      offset 5   3.516 q -> **2.524 q**   (§36 claimed 3.233)
+      offset 8   3.516 q -> **2.524 q**   (§36 claimed 3.233)
+    **[C1] STILL HOLDS — 2.51 to 3.23 quanta, still resolved, still flat across
+    offsets 1-8 — but the margin on GELB's build is 2.5x the floor, NOT 3.5x.**
+    That matters because PF-8's own guard refuses any rung below 2x the per-pixel
+    floor: offset 1 at 2.51 q is within 26% of that line, where §36 reported it as
+    comfortably clear. The finding survives; the comfort does not.
+
+[4] GELB's RECOMPUTATION WAS NOT INDEPENDENT, AND THIS IS THE STRUCTURAL FINDING.
+    It wrote: "Every byte, every branch, both ratios and the knee — identical. I
+    did not take it on trust and it did not need to be taken on trust." It did.
+    **It recomputed with the SAME rounding model and got the same wrong byte.**
+    Two instances of one model agreeing is not corroboration — it is the model
+    reporting its own output twice. What would have been independent is what
+    neither of us did until now: reading the bytes off a render.
+    A-G425 (offered): **AGREEMENT BETWEEN TWO COMPUTATIONS OF ONE MODEL IS NOT
+    CROSS-VALIDATION. For a quantity a renderer produces, only the renderer is a
+    second source.** A-G370's sibling — there a coincidence needed auditing; here
+    an agreement did, and its persuasiveness came entirely from being reached twice.
+
+[5] THE 0.05 FIGURE IS PREDICTED, NOT MEASURED, AND SO MARKED. §36's
+    L(0.05) = 3.5653e-3 and the 2.316x ratio come from the same rounding model that
+    just failed, so **both are unverified and are not to be cited as measurements.**
+    What IS robust to the rounding model is the conclusion that mattered: the raw
+    pre-rounding bytes at 0.05 are (10.25, 12.00, 12.75), so GREEN and BLUE sit
+    above the knee at 10.0164 under ANY rounding, while RED at 10 is linear
+    (10/255 = 0.03922). **So "a 0.05 shelf figure is not rescalable by any single
+    factor" stands on the knee crossing alone**, independent of the exact triple —
+    and §36's qualitative ruling on the rings class is unaffected.
+    MEASURING L(0.05) WOULD NEED A PRODUCTION BUILD OF 9cc06f84 OR ef466ca8. That
+    is a new stand, not a measurement on an existing one, and the owner's standing
+    instruction is to be told first when a measurement needs a production build.
+    **Not done. Flagged, and it is the owner's call.**
+
+WHAT DOES NOT MOVE: §36's escalation of the rings class. The red is suspended on a
+build that no longer ships, the exposure is a 2.273x alpha change on a band that is
+26.04% of the disc and most of the rings' light, and the class is not convertible.
+None of that depended on the 0.022 luminance I got wrong, because the 0.05-to-
+anything comparison is barred by the knee rather than computed through it.
