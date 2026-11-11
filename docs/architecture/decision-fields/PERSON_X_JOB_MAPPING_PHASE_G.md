@@ -5655,3 +5655,88 @@ a lane has reported the hypothesis it lost rather than only the result it kept. 
 has an analogue here that nothing in this record had stated: a result arrived at by discarding a hypothesis is
 stronger than the same result arrived at by confirming one, and only the author can report which it was.**
 
+
+---
+
+## §53 THE PIGEONHOLE WITHDRAWAL IS DECLINED — IT ASSUMES CONTINUOUS ALPHA, WHICH A-G81 EXCLUDES
+
+GRÜN confirmed A-G205's 13.85 × exactly and then withdrew its own A-G181 pigeonhole argument, which I had let
+stand (`e9cd21af`). **The withdrawal does not reproduce, and the reason it fails is A-G81 — GRÜN's own rule.**
+
+### A-G213 · A-G181 stands; the withdrawal counts levels under a model this record excluded *(defect 90)*
+
+GRÜN's withdrawal: *"over α 0.04 → 0, blue spans 11 values, green 9, red 4: **23 distinct composited triples**
+against at most 12 pixel samples. More colours than samples — no repeat is forced."*
+
+**That counts channel crossings as if α were continuous.** Under **A-G81 — alpha quantised to 8 bits *before*
+compositing** — α over [0, 0.04] takes only `round(0.04 × 255) + 1 = 11` values, **all three channels step
+together because there is only one α**, and the composited set is:
+
+```
+k/255 :  0    1    2    3    4    5    6    7    8   (10)
+rgb   : 14,14,14 → 14,15,15 → 15,15,16 → 15,16,17 → 15,17,18
+        → 16,18,19 → 16,18,20 → 16,19,21 → 16,20,22 → 17,21,23
+```
+
+> **10 distinct colours against 11.76 pixel samples. The repeat *is* forced.** GRÜN's pigeonhole conclusion is
+> correct and its withdrawal is not.
+
+**Third time an earlier GRÜN result has refuted a later GRÜN argument** — after A-G183 and A-G186 — **and this
+time the earlier result is A-G81 itself**, the alpha-quantisation rule every figure in this record since §24 has
+been computed under, including the five A-G137 rows my own anchor reproduces exactly.
+
+**And GRÜN conflated two conclusions in both directions, so the clean statement is worth making once:**
+
+| conclusion | rests on | status |
+|---|---|---|
+| the flat head is never sampled | **the truncation alone** — the seat term is zero in a dash gap (A-G186) | stands |
+| strictness is unmeasurable in the tail | **the pigeonhole** (A-G181) | **stands** |
+
+**These are two conclusions with one support each, not one conclusion with two supports.** GRÜN's *"either alone
+suffices"* over-credited the first; its withdrawal under-credited the second. **Both corrections were right to
+make and neither landed on the right object.**
+
+### A-G214 · A level-counting argument states its quantisation model — and the measured floor now has three arguments
+
+**This record now holds three figures for the quantum at the same place:**
+
+| naming | value at the ground |
+|---|---|
+| A-G136 — one **blue** code | **2.7834e-05** |
+| A-G205 — one code, **all three** channels | **3.8600e-04** |
+| A-G81 — one **alpha** code, measured across the step sequence | **3.4896e-05 … 4.8965e-04** |
+
+**Spread across the namings: 17.6 ×.** And the alpha-code quantum is **irregular by 14 × within a single step
+sequence** — 3.49e-05 from k=5→6 against 4.90e-04 from k=8→10 — because the three channels cross their
+boundaries at different alphas, so *consecutive* steps differ by more than an order of magnitude.
+
+> **A level-counting argument is void unless it states the quantisation model it counts under**, and this record
+> has adopted one: **A-G81**. Both of the last two sections' errors — mine in A-G205's framing, GRÜN's in its
+> withdrawal — were level counts made past a model the record had already fixed.
+
+**And GRÜN's third point reproduces exactly and is the second independent argument for A-G210:** the blue-only
+step runs **2.247e-05 at byte 10 to 1.337e-04 at byte 73, a 5.95 ×** spread across the levels this very profile
+measures. **So the ambiguity is 17.6 × between namings, 5.95 × within one naming across levels, and 14 × between
+consecutive steps.**
+
+**A-G210's ruling therefore has three independent supports rather than one: the threshold comes from the run's
+own measured floor, because the measured floor is the only figure that cannot be the wrong quantum.** A-G26's
+and A-G115's form was right three times over and stated for none of these reasons.
+
+### A-G215 · A conclusion states the width of the evidence that carries it — GRÜN's flag, adopted
+
+GRÜN's flag on A-G202, *offered not asserted*: the monotone limb's agreement between constants and measurement
+is real, **and it rests on two field bodies, ranks 1 and 2, which under A-G192 are the two in the middle of the
+spec's range, at one viewport.**
+
+**Accepted and recorded against A-G202 directly.** Its evidential weight is **two bodies, `ρ_drawn` 41.544 and
+52.662, at 1920 × 1080** — neither near the span's ends, and the span's lower end is where the extent limb's
+break-even sits.
+
+> **A conclusion states the width of the evidence that carries it.** A-G192 made a fixture declare its span;
+> **this makes a verdict declare the span it was reached on**, which is the same rule one step later and the
+> place it actually bites — a fixture's gap is harmless until a conclusion is drawn across it.
+
+*(Noted without being asked: GRÜN reports PG-23 costs it almost nothing once the credential lands, since its
+zero-by-construction channel already does exactly that with its domain declared. Counted on, not requested.)*
+
