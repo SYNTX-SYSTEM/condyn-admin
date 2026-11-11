@@ -1,0 +1,39 @@
+====================================================================================================
+GELB · PG-14's THIRD LABEL — the collar's "more" text is left-anchored and unbought
+====================================================================================================
+
+The fit condition. Writing rpx for the body radius in CSS px (so r = rpx * k):
+  allowance  side   >= collar = r + 2.6k + max(2.4k, 0.18r) + 3.6k
+  required   reach   = collarR + 3k + width = r + 2.6k + 3k + chars * EM * font
+  so it fits iff     chars * EM * 11 * 1.002 * k  <=  max(2.4k, 0.18r) + 0.6k
+
+  Taking the 0.18r branch (it dominates for every rpx >= 14):
+    chars <= (0.18 * rpx + 0.6) / (EM * 11 * 1.002)
+
+  rpx   diameter   chars that FIT (MONO 0.602)   chars that FIT (product's 0.62)
+   28     56 px       0.850                        0.825
+   32     64 px       0.959                        0.931
+   36     72 px       1.067                        1.036
+   40     80 px       1.176                        1.141
+   46     92 px       1.338                        1.299
+
+  PG-3's stated range is a 56…92 px diameter at 1920, i.e. rpx 28…46.
+  → the budget is ONE CHARACTER at the smallest body and under one and a half at the largest.
+  → any real copy for "n more" overruns the frame on the right, at L1, whenever a collar hides
+    an arc. The label is left-anchored, so it overruns by nearly its whole width.
+
+  Why neither route reached it:
+    · GRÜN's sweep models 0.62 * title.length on both sides of its comparison, so the constant
+      cancels and the title is the only string in it (PINK's A-G244 point, one label further).
+    · PINK's stand is L0, and this text renders only at L1 with collar.hidden > 0.
+    · It is a DERIVATION here, not a measurement — it needs the copy string and A-G51's L1
+      fixture to become a reading. Recorded as a derivation with its assumptions named.
+
+----------------------------------------------------------------------------------------------------
+AND A SEPARATE DEFECT IN THE SAME LINE, which costs nothing to state:
+  :452  const CHAR_EM = 0.62;          ← the named constant, used at :459 for sector labels
+  :498  (b.title.length * 0.62 * font) ← the same number as a BARE LITERAL in the frame solve
+  So CHAR_EM does not govern the frame. Changing it would silently leave the frame on 0.62,
+  and PINK's finding that 0.62 has 2.9 % headroom against a measured 0.602 worst case is a
+  finding about a literal that no constant controls.
+====================================================================================================
