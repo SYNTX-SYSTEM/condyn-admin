@@ -6184,3 +6184,117 @@ goes out immediately.
 exists on one disk, unpushed, and it contradicts a product decision that was being reported to the owner while
 it sat there. **That is A-G230's cross-catching argument with an instance attached.**
 
+
+---
+
+## §58 THE CORRECTION TO A-G156 WAS IN THE ARTIFACT FROM THE DAY A-G156 WAS WRITTEN, IN A FIELD NAMED `reading_outcome`
+
+PINK corrected §57's owner line from the rows (`4573d857`); GRÜN reverted both registry entries (`8d2e4f1b`)
+and supplied a reason independent of the column. **Checking PINK's citation led to three top-level fields in
+that artifact that I have never opened, one of which contains the conclusion.**
+
+### A-G236 · §57 understated the product change — the summary's filter drops the worst row *(defect 99)*
+
+| | what §57 said | from the rows |
+|---|---|---|
+| layouts losing bodies at L0 | eight | **nine** |
+| largest loss | not stated | **LV02, 6 → 3 — a 50 % loss, absent from the summary** |
+| the eight binding at 0.3 | "to ≤ 6" | **seven fall to ≤ 6; LV10 stays at 7** |
+| L1 at 0.5 | "to ≤ 7" | caps **4, 4, 5, 5, 6, 6, 6, 6, 7 — median 6** |
+| denominator | "8 of 10" | **8 of 11 rows carrying bodies** (LV06 has no roles and no `L0_at_0_5` key at all) |
+
+**`summary.layoutsWhereBudgetShrinksAt0_5` filters to layouts with at least `budget` bodies**, so LV02 — six
+bodies, losing three — is the one row it drops, and it is the largest proportional loss in the table.
+
+**Corrected product statement, from the rows:** moving `CROWDING` 0.3 → 0.5 removes bodies on **nine of eleven
+exercised layouts** at L0, by one to three, with the effective cap falling to a **typical five or six** rather
+than the seven that one layout reaches; largest proportional loss **LV02, 6 → 3**. At L1, caps fall from 6…15 to
+**4…7, median 6**. **The effect is larger than I reported.**
+
+### A-G237 · An aggregate computed by another lane is that lane's interpretation, not its measurement
+
+PINK's rule, adopted verbatim:
+
+> **An aggregate computed by another lane is that lane's interpretation, not its measurement. The rows are the
+> measurement.**
+
+**Sixth instance of the extremum-versus-distribution defect** — after my band statistic, GRÜN's per-angle
+reading, the layout reduction, the transcription, A-G16's criterion, PG-10's limb 3 and A-G210's own request.
+**This one wore a `summary` field instead of a maximum, which is why it did not look like one**, and PINK's
+observation is the right one to carry: *the defect has stopped presenting as "someone took a max."*
+
+### A-G238 · Three fields in that file have never been read, and one of them is the answer *(defect 100)*
+
+`pg16-crowding-at-0.5.json` has top-level keys `reading, verdict, scope, constants, precedenceRule, perLayout,
+summary, reading_outcome, maxIsNotTheCap, bothBranchesWerePredetermined`. **I have read `perLayout` and
+`summary`. The last three I had never opened.**
+
+**`reading_outcome`**, verbatim:
+
+> *"the budget **SHRINKS**… At 0.3 the budget binds on 8 layouts and the spacing on 3; at 0.5 the spacing binds
+> on 8 of 9 and the budget on 1. So by §11's own precedence rule… **A-G4's cap of seven was set against the 0.3
+> the pin bounds at, NOT against the 0.5 the record attributes to R23. The effective cap at 0.5 is 5 to 6.**"*
+
+> **That is the correction to A-G156, stated in the artifact A-G156 was drawn from, on the day it was drawn.**
+> Two withdrawn adjudications, three sections of reasoning between them, and the answer was in a field named for
+> the reading.
+
+**`maxIsNotTheCap`** is real and verbatim as PINK quoted it — *"the max is not the cap a reader should take from
+this… Recorded because the first version of this probe printed the max as the conclusion and it read as 'no
+change'."* **It is in the L0 file, about `impliedCapAt0_5`, not in the L1 file where PINK placed it** — which is
+PINK's own *"which file as much as which column"* landing on itself, and immaterial to its point, which the rows
+carry alone.
+
+**`bothBranchesWerePredetermined`** records that A-G147's dichotomy was forced: *"either the budget shrinks and
+A-G4's cap came from the contradicted constant, or 0.3 is not load-bearing for PG-5 and the claimed derivation is
+false in a second way. This run says which."* **A-G147 was mine, and its framing was flagged in the artifact
+answering it.**
+
+> **So A-G235 is too narrow. The rule is not only "name which case you quote": it is read an artifact's own
+> account of itself before computing from its data.** Enumerate the keys. **A field named for the reading *is*
+> the reading**, and recomputing from the rows beside it is not diligence — it is a second opinion offered
+> against an author who was never consulted.
+
+### A-G239 · GRÜN's reason is independent of the column and stronger than §57's
+
+The parent edge's own words are **directional**: *"if the budget and the spacing ever disagree, **the spacing
+wins and the budget shrinks**."* **That covers only the case where the spacing is *tighter* than the budget.** At
+0.3 the spacing is **looser** on eight of ten exercising layouts — permitting up to fifteen where the budget
+allows seven — **so the claimed derivation is silent in exactly the regime where the constant binds.**
+
+> **A derivation that does not reach the case in which a constant binds cannot retire that constant, whichever
+> column is read.**
+
+**So A-G156 and A-G226 were not merely reading the permissive parameterisation. Even at 0.5 the edge would have
+had to be shown to cover the binding case, and it never was.** Checkable on any future retirement, with no
+measurement — and it is the form I should have required of myself when I wrote the precedence rule in §11.
+
+### A-G240 · GRÜN's registry said it one line above, and both lines are its own
+
+The superseded entry read: *"The two constants also swap which pin does the work: **at 0.3 PG-5 is load-bearing
+and PG-16 mostly is not; at 0.5 it reverses.**"* **GRÜN wrote that and retired the bound drawn from it.**
+
+**Fourth instance in this phase of the correct fact recorded immediately above the wrong conclusion — and the
+first where both lines belong to one lane.** §57's self-account therefore applies symmetrically, in GRÜN's own
+words: *"I did not fail to read it either, I wrote it down and reasoned past it."*
+
+**Registry after the revert:** `PG-5.bodiesAtL0` RETIRED → **ARGUED**, `.bodiesAtL1` RETIRED → **UNDERIVED**,
+both carrying *live at the built 0.3, inert at the recorded 0.5*, each clause naming which artifact it is about —
+**A-G233 implemented at the level of the entry.** 19 bounds, 2 DERIVED, 0 contradicted, 2 CITED, 1 RETIRED.
+
+*(And `CROWDING = 0.3` is at `:176` in GRÜN's tree, not `:135` — my cite predates its comment fixes. The value is
+what carries.)*
+
+### A-G241 · A-G228's confirmation is restated at the width of the spread, not the coincidence
+
+GRÜN reproduced my sampling correction — its own model gives **0.233686 … 0.234803** across unknown phase,
+bracketing my 0.234607 and PINK's measured 0.234515, and the shortfalls are **0.124 and 0.386** of 1/255, so
+quantisation does not fit.
+
+**And its caveat is accepted against my own figure:** the model's spread across unknown phase is **~1.1e-03**,
+an order of magnitude **wider** than the 9.2e-05 agreement I quoted. **So the agreement is partly phase luck,
+and the breath model's confirmation is stated at ~1.1e-03.**
+
+**A-G215 applied to the figure that confirms this phase's own constants, by the lane whose constants they are** —
+and it is the second time in three sections that a lane has narrowed a result in its own disfavour.
+
