@@ -135,30 +135,55 @@ Under A-G31 and A-G48 together, PG-17's carrier excludes shelf halos and PG-10's
 **three of the five bodies are under no obligation in this phase.** That is a coverage hole rather than a
 defect in either pin, and it only became visible once both carriers were stated precisely.
 
-## §51 A-G205 — ERRATUM: my pigeonhole argument is withdrawn, and the quantum has no single value
+## §51/§53 — the quantum, and an erratum I had to take back
 
-I offered a second, independent reason the strict-versus-non-increasing distinction is void: that the outer
-tail carries at most 11 byte levels over 11.76 px, so by pigeonhole some adjacent pixel pair must read equal.
-**It does not hold.** 11 was **one channel's** levels, and luminance is a weighted sum of three channels whose
-code crossings do not coincide. `CYAN` is `(92, 200, 255)`, so across the tail's α 0.04 → 0 blue spans 11
-values, green 9 and red 4 — **23 distinct composited triples against at most 12 pixel samples.** More colours
-than samples, so no repeat is forced and strict decrease *is* expressible there.
+This section went out twice. The settled position first, then what moved.
 
-**So there is ONE reason the flat head is never sampled, not two: the truncation.** Which is where GELB had
-already put it, for the dash-gap reason, in §49. My second support is withdrawn on its own arithmetic.
+**Two conclusions, one support each.** Conflating them produced both of my errors here:
 
-**And the figure that made the count look small is the wrong quantum.** GELB's A-G205 is confirmed exactly:
-one code on all three channels at byte 14 is **0.000386 L**, one code on **blue alone** is **2.7834e-05** —
-a factor of **13.85**, and for a cyan glow the blue-only step is the finest the raster can express. Under it
-PINK's selected swing of 0.0017–0.0023 L is **61 … 83 levels**, so that measurement is **not**
-quantisation-limited and my quantisation account of the 0.419–0.469 ratio falls with it. The floor/threshold
-explanation is the one that survives.
+| conclusion | rests on | status |
+|---|---|---|
+| the flat head is never sampled | the **truncation** alone — the seat term is zero in a dash gap | stands |
+| strictness is unmeasurable in the tail | the **pigeonhole**, under A-G81 | stands |
 
-**One more reason the floor must be measured, independent of the channel question:** the blue-only quantum is
-itself **2.247e-05 at byte 10 and 1.337e-04 at byte 73 — a 6× spread across the very levels this profile
-measures.** So even with the channel convention settled there is no single nominal quantum for this carrier.
-A-G26's and A-G115's form — resolution against the run's own measured null — is the only figure that cannot
-be the wrong quantum.
+**The pigeonhole stands, and my withdrawal of it was wrong.** In §51 I withdrew it after counting 23 distinct
+composited triples along the tail, reasoning that luminance sums three channels whose code crossings do not
+coincide. **That count treats α as continuous, and this record fixed the opposite in A-G81: α is quantised to
+8 bits *before* compositing.** So there is one α, not three independent channels, and over the tail's
+[0, 0.04] it takes `round(0.04 × 255) + 1 = 11` values — of which k = 9 and k = 10 composite to the same
+triple:
+
+```
+k:   0          1          2          3          4          5          6          7          8      9 (=10)
+rgb: 14,14,14   14,15,15   15,15,16   15,16,17   15,17,18   16,18,19   16,18,20   16,19,21   16,20,22   17,21,23
+```
+
+**10 distinct colours against at most 12 pixel samples: the repeat is forced.** So a re-formed pin demanding
+*measured* strict decrease would be unsatisfiable on compliant content — PG-19's shape, available from
+constants before any run.
+
+**The quantum has no single value here, and this is the part that survived both passes.** Three figures for
+the quantum at one place, under three namings:
+
+| naming | value |
+|---|---|
+| one **blue** code | 2.7834e-05 |
+| one code, **all three** channels | 3.8600e-04 |
+| one **α** code, the model A-G81 actually fixes | **3.4896e-05 … 4.8965e-04** |
+
+**17.6× across the namings**, and the α-code quantum is **irregular by 14.0× between consecutive steps** —
+3.4896e-05 from k = 5→6 against 4.8965e-04 from k = 8→9 — because the channels cross their boundaries at
+different α. On top of which the blue-only step spans **2.247e-05 at byte 10 to 1.337e-04 at byte 73, 5.95×
+across the levels this profile measures.**
+
+> **A resolvability floor must be measured against the run's own null, never computed from a nominal code
+> size.** Three independent reasons: 17.6× between namings, 5.95× within one naming across levels, 14.0×
+> between consecutive steps. The measured floor is the only figure that cannot be the wrong quantum.
+
+And the generalisation, which my own scope-carrying rule does **not** cover: **a level-counting argument is
+void unless it states the quantisation model it counts under.** Nothing here was reused out of scope — a *new*
+number was computed outside a model the record had already fixed, and no condition travelled with it because
+none was attached to anything.
 
 ## A-G174 — the per-body local ground, which this release already carries
 

@@ -64,24 +64,38 @@ const flatHead = {
     caveat: "the seat RING carries the body's own dash pattern (LINE_DASH dotted/open/broken), so through a dash gap the guaranteed occluder is the fill alone and the margin is this sub-pixel figure, not the ring's 1.68 px. The CONCLUSION is unaffected; the MARGIN is." },
   consequence: "the flat head is never sampled, so the observable ramp is strictly decreasing and strict-versus-non-increasing is not a difference.",
   /**
-   * §51 A-G205 — WITHDRAWN. I claimed a second, independent reason the distinction is void: that the outer
-   * tail carries at most 11 byte levels over 11.76 px, so by pigeonhole some adjacent pair must read equal.
-   * **It does not hold.** 11 was ONE channel's levels, and luminance is a weighted sum of THREE channels that
-   * cross their code boundaries at different alpha. CYAN is (92, 200, 255), so over the tail's alpha 0.04 → 0
-   * blue spans 11 values, green 9 and red 4, giving **23 distinct composited triples** against at most 12
-   * pixel samples — more colours than samples, so no repeat is forced. Strict decrease IS expressible there.
-   * The flat-head conclusion is unaffected and rests on the truncation alone, which is where GELB put it.
+   * §53 A-G181 — REINSTATED, and the withdrawal was the error. I withdrew this limb in §51 after counting
+   * 23 distinct composited triples, on the reasoning that luminance sums three channels whose code crossings
+   * do not coincide. That count treats alpha as CONTINUOUS and this record fixed the opposite in A-G81:
+   * **alpha is quantised to 8 bits BEFORE compositing.** There is therefore ONE alpha, not three independent
+   * channels, and over the tail's [0, 0.04] it takes round(0.04 * 255) + 1 = 11 values, of which k = 9 and
+   * k = 10 composite to the same triple — **10 distinct colours against at most 12 pixel samples, so the
+   * repeat is forced** and strictness is not measurable in the tail after all.
+   *
+   * The lesson is not the arithmetic. **A level-counting argument is void unless it states the quantisation
+   * model it counts under** (A-G210). My scope-carrying guard does not cover this: nothing was reused out of
+   * scope. A NEW number was computed outside a model the record had already fixed, and no condition travelled
+   * with it because none was attached to anything.
+   *
+   * Two conclusions, one support each — conflating them is what produced both of my errors:
+   *   the flat head is never sampled   <- the TRUNCATION alone (the seat term is zero in a dash gap)
+   *   strictness is unmeasurable here  <- the PIGEONHOLE, under A-G81
    */
-  andTheOtherWayToo: (() => {
-    const C = [92, 200, 255].map(v => v / 255), GROUND = [6, 6, 6];
-    const triple = a => C.map((c, i) => Math.round(GROUND[i] + 255 * a * c * (1 - GROUND[i] / 255)));
-    const seen = new Set();
-    for (let i = 0; i <= 200000; i += 1) seen.add(triple(0.04 * (1 - i / 200000)).join(","));
-    const tailPx = (1 - 0.86) * R(1) * R_FLOOR_PX;
-    return { status: "WITHDRAWN — §51 A-G205", claimWas: "the tail cannot read strictly decreasing, by pigeonhole on 11 byte levels over 11.76 px",
-      whyItFails: "11 was one channel's levels; luminance sums three channels whose code crossings do not coincide",
-      distinctTriplesAlongTail: seen.size, pixelSamples: Math.ceil(tailPx), pigeonholeHolds: seen.size <= Math.ceil(tailPx),
-      note: "so there is ONE reason the flat head is never sampled, not two: the truncation. The all-channel quantum that made the count look small is also the wrong quantum for a cyan glow — one BLUE code is 2.7834e-05, 13.85x finer." };
+  strictnessUnmeasurableInTail: (() => {
+    const C = [92, 200, 255], GROUND = [14, 14, 14];   // CYAN over the measured local ground, L 0.0044378 -> byte 14.1
+    const kMax = Math.round(0.04 * 255);               // haloAlpha * the tail's final share = 0.5 * 0.08
+    const seen = new Map();
+    for (let k = 0; k <= kMax; k += 1) {
+      const t = C.map((c, i) => Math.round(GROUND[i] + (k / 255) * (c - GROUND[i])));
+      if (!seen.has(t.join(","))) seen.set(t.join(","), k);
+    }
+    const tailPx = (1 - 0.86) * R(1) * R_FLOOR_PX, samples = Math.ceil(tailPx);
+    return { status: "STANDS — §53 A-G181, reinstated after my own §51 withdrawal was shown wrong",
+      quantisationModel: "A-G81: alpha quantised to 8 bits BEFORE compositing, so one alpha steps all three channels together",
+      alphaLevels: kMax + 1, distinctColours: seen.size, tailPx: r6(tailPx), pixelSamples: samples,
+      pigeonholeHolds: seen.size <= samples,
+      supersededCount: "23 triples, computed as if alpha were continuous — the model, not the arithmetic, was wrong",
+      note: "so a re-formed pin demanding MEASURED strict decrease would be unsatisfiable on compliant content, which is PG-19's shape and available from constants before any run." };
   })(),
   rows: [0, 0.5, 1].flatMap(t => Object.entries(seatHalf).flatMap(([m, h]) => [R_FLOOR_PX, 56].map(rpx => ({
     t, mark: m, rpx, seatOffset: r6(seatOffset(t, h, rpx)), occludesFlatHead: seatOffset(t, h, rpx) >= FLAT_END,
