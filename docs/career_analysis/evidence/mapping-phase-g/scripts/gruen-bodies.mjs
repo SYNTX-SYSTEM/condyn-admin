@@ -15,7 +15,11 @@ import { fileURLToPath } from "node:url";
 import { chromium, openField, probeGeometry, clipOf, servedProvenance, PROVENANCE, stats } from "./gruen-instrument.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const WT = resolve(here, "../../../../..");
+/* §82: the worktree whose .next/BUILD_ID and git state the provenance block records. Defaults to THIS
+   worktree, so every existing reading is unaffected; GRUEN_WT points it at a second build served on its own
+   port, which is how the A-G49 hooks are verified without rebuilding — or overwriting — the build the eight
+   sealed readings were taken against. */
+const WT = process.env.GRUEN_WT ?? resolve(here, "../../../../..");
 const VW = Number(process.env.VW ?? 1920), VH = Number(process.env.VH ?? 1080);
 
 const browser = await chromium.launch();

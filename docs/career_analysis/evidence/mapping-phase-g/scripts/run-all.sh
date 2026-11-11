@@ -40,4 +40,19 @@ for size in "${SIZES[@]}"; do
     node "$probe.mjs" || printf '!! %s FAILED at %s (exit %s)\n' "$probe" "$size" "$?"
   done
 done
+# §82 · the HOOKED stand, which is a SECOND build on its own loopback ports and is NOT what the loop above
+# reads. The preserved build (3220/3221, BUILD_ID HRYkeEpbpndI3UEE7ceeC) is the one the eight SEALED readings
+# were taken against and is never rebuilt. gruen-hooks-verify declares itself VOID against a build without
+# the hooks, so pointing it at the preserved stand is safe and informative rather than a false pass.
+if curl -s -o /dev/null --max-time 3 http://127.0.0.1:3230/ 2>/dev/null; then
+  for size in "${SIZES[@]}"; do
+    export VW="${size%x*}" VH="${size#*x}"
+    printf '\n=== gruen-hooks-verify @ %s (HOOKED stand :3230) ===\n' "$size"
+    GRUEN_BASE=http://127.0.0.1:3230 GRUEN_WT=/home/codi/Entwicklung/condyn-admin-mapping-d-hooks \
+      node gruen-hooks-verify.mjs || printf '!! gruen-hooks-verify FAILED at %s (exit %s)\n' "$size" "$?"
+  done
+else
+  printf '\n(hooked stand :3230 not up — gruen-hooks-verify skipped; see README 6b)\n'
+fi
+
 printf '\nreadings in %s\n' "$(cd ../outputs && pwd)"

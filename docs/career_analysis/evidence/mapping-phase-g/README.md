@@ -220,6 +220,41 @@ PINK's `93c47e03` build (`BUILD_ID YUIyV6i0VG5cALibnbi58`) is untouched (A-G47 p
 build of the pure `3ec8457d` product rather than of this tip, this lane can produce one on request; it has not
 done so unasked, because that would put a third production build on the machine.
 
+## 6b · TWO STANDS · §82, the additive build
+
+The A-G49 hooks needed a build; the eight sealed readings needed their build kept. Both, rather than either:
+the hooked build is a **second worktree on its own loopback ports**, and nothing belonging to the first was
+written to. Verified afterwards, not assumed — the preserved `BUILD_ID` file was not even re-dated.
+
+| | **preserved stand** | **hooked stand** |
+|---|---|---|
+| worktree | `condyn-admin-mapping-d` | `condyn-admin-mapping-d-hooks` (detached at the same commit) |
+| `BUILD_ID` | `HRYkeEpbpndI3UEE7ceeC` | `UTiHc2G2tn-Nh1fyJ6vFH` |
+| carries A-G49's hooks | **no** — predates them | **yes** — 4 `data-mapping-halo`, 30 `data-mapping-seat`, 3 each of `data-halo-radius` / `data-seat-is-group` in the compiled bundle |
+| prod server | `127.0.0.1:3221` | `127.0.0.1:3231` |
+| fixture façade | `127.0.0.1:3220` | `127.0.0.1:3230` |
+| façade log | `outputs/facade.log` | the hooked worktree's `outputs/facade-hooks.log` |
+| what it is for | the eight `SEALED-*` readings and every figure quoted from them | PINK's independent verification of the hooks, and any reading that needs them |
+
+**All four ports are bound to `127.0.0.1` and nothing else.** `next start` binds `0.0.0.0` by default and the
+first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,
+PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.
+
+```bash
+# read the hooked stand from the ORIGINAL evidence directory, so all output stays in one place
+GRUEN_BASE=http://127.0.0.1:3230 GRUEN_WT=/home/codi/Entwicklung/condyn-admin-mapping-d-hooks   node docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-hooks-verify.mjs
+```
+
+`GRUEN_WT` is new in §82 and names the worktree whose `BUILD_ID` and git state the provenance block records.
+It defaults to this worktree, so **every existing reading is unaffected**.
+
+**Why a second worktree rather than `distDir`.** Next 16 has no `--distDir` flag, so building elsewhere means
+editing `next.config.ts` — a tracked file the provenance check asserts is byte-identical to `3ec8457d`. A
+worktree changes nothing in the repository. One wrinkle, recorded because it cost a build: Turbopack rejects a
+**symlinked** `node_modules` (*"points out of the filesystem root"*) and **exits 0 while producing no build**,
+so the first attempt looked successful and had written nothing. `node_modules` is a real copy. An exit code is
+not an artifact.
+
 ## 6a · Readings this instrument has SUPERSEDED, and why
 
 A-G35 makes a committed number a standing claim, so the ones this lane has withdrawn are named here
