@@ -20,7 +20,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { PROVENANCE } from "./gruen-instrument.mjs";
+import { PROVENANCE } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const vectors = JSON.parse(readFileSync(resolve(here, "../../../../architecture/decision-fields/mapping-spec/layout-golden-vectors-v1.1.json"), "utf8"));

@@ -167,19 +167,42 @@ git -C condyn-admin-mapping-d rev-parse HEAD            # the tip named in the r
 git -C condyn-admin-mapping-d status --porcelain         # empty
 cat condyn-admin-mapping-d/.next/BUILD_ID                # equals the run record's buildId
 git -C condyn-admin-mapping-d diff --stat 3ec8457d HEAD -- app lib test docs/architecture \
-      package.json package-lock.json next.config.ts      # EXACTLY the A-G43 hunk + its mutant test
+      package.json package-lock.json next.config.ts      # EXACTLY the A-G62 hunk — see below
 ```
 
-The product delta from `3ec8457d` is two files and nothing else: one hunk in
-`app/components/career/demo/PersonJobMappingField.tsx` (the splay's predicate, `s.mark === "counterTick"` →
-`arc.state === "DIFFERENT"`, A-G43) and the new `test/career/mapping-field/field-g-mutant.test.tsx` that
-fails if it is ever keyed back. The engine (`lib/`), the specification (`docs/architecture/`), the dependency
-set and the Next config are byte-identical to `3ec8457d`.
+### What the delta actually is — §62 correction
 
-**Every reading in `outputs/` was taken on a build compiled from the committed tip**, so the served artifact,
-the commit and the readings are one state. The earlier shakedown pass — which proved the instrument runs end
-to end against a build of the pure `3ec8457d` product — is **not** committed, precisely because the worktree
-was not clean while it ran and a reading whose provenance is ambiguous is worth less than no reading.
+**This section described a product state that does not exist, and it was the one section written to be
+independently checked.** It claimed the delta was "two files and nothing else": an A-G43 splay re-keying plus
+a new `test/career/mapping-field/field-g-mutant.test.tsx`. Neither is in the tree. PINK running the command
+above as it was written would have found a mismatch and been right to.
+
+The delta from `3ec8457d`, as measured rather than as remembered, is **one file and one behavioural hunk**:
+
+| | |
+|---|---|
+| file | `app/components/career/demo/PersonJobMappingField.tsx`, and nothing else |
+| the one behavioural change | `RING_LUMINANCE.shelf` **0.02 → 0.022** (§23 **A-G62**) |
+| everything else in the diff | comment-only — the `GLOW_RAMP` and `G-2` rewrites of §45/§47/§51 |
+| **A-G43's splay re-keying** | **NOT APPLIED.** `:389` still reads `s.mark === "counterTick"`. |
+| **the A-G43 mutant test** | **DOES NOT EXIST.** `test/career/mapping-field/` has no `field-g-mutant.test.tsx`. |
+
+`lib/`, `docs/architecture/`, the dependency set and the Next config are byte-identical to `3ec8457d`.
+A-G43 remains an obligation on this lane, not a completed one; it is item 1 of GELB's §62 implementation list.
+
+**On the readings' build state.** The claim that every reading "was taken on a build compiled from the
+committed tip, so the served artifact, the commit and the readings are one state" is now too strong: the
+eight sealed readings were taken 22–24 commits back, because A-G109 keeps the sealed probes out of a routine
+pass so a pass cannot overwrite a seal. That protection also removed the only thing that would have noticed a
+seal going stale, so `scripts/gruen-seal-staleness.mjs` now audits every seal against HEAD on every pass —
+exactly, by comparing the twelve named product constants at the seal's own commit and at HEAD, and by
+comparing the product file with every comment stripped. At HEAD `4b83414e` all eight seals are **VALID**: the
+product file moved only in comments since each was taken. The audit carries a self-test that makes it fire on
+A-G62's known `RING_LUMINANCE` move, so it cannot quietly degrade into always-VALID.
+
+The earlier shakedown pass — which proved the instrument runs end to end against a build of the pure
+`3ec8457d` product — is **not** committed, precisely because the worktree was not clean while it ran and a
+reading whose provenance is ambiguous is worth less than no reading.
 
 PINK's `93c47e03` build (`BUILD_ID YUIyV6i0VG5cALibnbi58`) is untouched (A-G47 point 2). If PINK wants a
 build of the pure `3ec8457d` product rather than of this tip, this lane can produce one on request; it has not

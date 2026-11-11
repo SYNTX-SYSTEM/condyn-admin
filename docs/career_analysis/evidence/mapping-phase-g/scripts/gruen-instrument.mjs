@@ -22,22 +22,19 @@
  */
 import { pathToFileURL } from "node:url";
 
-const PW_MODULE = process.env.CONDYN_PLAYWRIGHT_MODULE ?? "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
-const SHARP_MODULE = process.env.CONDYN_SHARP_MODULE ?? new URL("../../../../../node_modules/sharp/lib/index.js", import.meta.url).pathname;
+/**
+ * §62: the lane's identity and verdict stamp live in `gruen-provenance.mjs`, which imports NOTHING, so a
+ * derivation that renders nothing no longer has to load Playwright to learn its own verdict string. They are
+ * re-exported here unchanged, so every probe that imports them from this module keeps working untouched.
+ */
+import { PW_MODULE, SHARP_MODULE, BASE, ANALYSIS, FIELD_URL, PROVENANCE } from "./gruen-provenance.mjs";
+export { BASE, ANALYSIS, FIELD_URL, PROVENANCE };
 
 const pwNamespace = await import(pathToFileURL(PW_MODULE).href);
 export const chromium = (pwNamespace.chromium ?? pwNamespace.default?.chromium);
 if (chromium === undefined) throw new Error(`ERR_INSTRUMENT_NO_PLAYWRIGHT:${PW_MODULE}`);
 const sharpNamespace = await import(pathToFileURL(SHARP_MODULE).href);
 export const sharp = sharpNamespace.default ?? sharpNamespace;
-
-export const BASE = process.env.GRUEN_BASE ?? "http://127.0.0.1:3220";
-export const ANALYSIS = "CAN_00000000000000000000000000000002";
-export const FIELD_URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${ANALYSIS}`;
-export const PROVENANCE = Object.freeze({
-  playwrightModule: PW_MODULE, sharpModule: SHARP_MODULE, base: BASE,
-  instrument: "GRÜN phase-G development instrument", verdict: "NONE — development reading only (A-G36 point 2)"
-});
 
 /* ── WCAG relative luminance ──────────────────────────────────────────────────────────────────────── */
 const LUT = new Float64Array(256);
@@ -476,6 +473,27 @@ const PRODUCT_PATHS = "app lib test docs/architecture package.json package-lock.
 export async function servedProvenance(page, worktree) {
   const { execSync } = await import("node:child_process");
   const git = args => { try { return execSync(`git -C ${worktree} ${args}`, { encoding: "utf8" }).trim(); } catch { return null; } };
+  /**
+   * §62 DEFECT 9 — `git()` trims the WHOLE output, which strips the leading status space of the FIRST porcelain
+   * line. `git status --porcelain=v1` writes two status columns then a space, so a modified tracked file is
+   * " M path"; after .trim() that first line is "M path" and the old `l.slice(3)` ate one character of the
+   * path. The truncated path then failed the evidence-directory exclusion below, so a dirty EVIDENCE file was
+   * reported as dirty OUTSIDE the product. Found in the committed SEALED-pg17-L0-1920x1080.json, which records
+   *   "dirtyOutsideProduct": ["ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"]
+   * — one character short of "docs/…". It never touched `productTreeClean`, which is computed from its own
+   * pathspec, so no READING is affected; the provenance block PINK is told to check was simply wrong, and wrong
+   * in the over-reporting direction. `gitStatusPaths` parses the UNTRIMMED output so the columns stay aligned.
+   */
+  const gitStatusPaths = () => {
+    try {
+      const raw = execSync(`git -C ${worktree} status --porcelain=v1`, { encoding: "utf8" });
+      return raw.split("\n").filter(l => l.length > 3).map(l => {
+        const path = l.slice(3);
+        /* git quotes paths with unusual bytes; unquote so the exclusion filter below can match them */
+        return path.startsWith('"') && path.endsWith('"') ? JSON.parse(path) : path;
+      });
+    } catch { return []; }
+  };
   let buildId = null;
   try { const { readFileSync } = await import("node:fs"); buildId = readFileSync(`${worktree}/.next/BUILD_ID`, "utf8").trim(); } catch { /* absent */ }
   return {
@@ -489,7 +507,7 @@ export async function servedProvenance(page, worktree) {
      */
     treeClean: git("status --porcelain=v1") === "",
     productTreeClean: git(`status --porcelain=v1 -- ${PRODUCT_PATHS}`) === "",
-    dirtyOutsideProduct: (git("status --porcelain=v1") || "").split("\n").filter(Boolean).map(l => l.slice(3)).filter(f => !f.startsWith("docs/career_analysis/evidence/mapping-phase-g/")),
+    dirtyOutsideProduct: gitStatusPaths().filter(f => !f.startsWith("docs/career_analysis/evidence/mapping-phase-g/")),
     /**
      * A-G47 point 3 wants HEAD == 3ec8457d. This lane must commit its instrument (A-G35) and must re-key the
      * splay (A-G43), so the tip necessarily moves: the assertion PINK can make instead is the exact PRODUCT

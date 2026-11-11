@@ -14,10 +14,14 @@ cd "$(dirname "$0")"
 SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 
 # Derivations first: these render NOTHING and need no build, no server and no façade, so they run on a bare
-# checkout and they fail loudly if a product constant moves under a figure that was derived from it. Neither
+# checkout and they fail loudly if a product constant moves under a figure that was derived from it. None
 # writes to a SEALED-* file. The sealed probes themselves stay OUT of this script on purpose — a routine pass
 # must not be able to overwrite a sealed reading.
-for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha; do
+#
+# gruen-seal-staleness is the counterweight to that exclusion: keeping the sealed probes out of a pass also
+# removed the only thing that would have noticed a seal going stale, so this audit re-checks every SEALED-*
+# file against HEAD on every pass and exits non-zero if any is stale. It re-measures nothing and cannot.
+for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha gruen-pg16-satisfiability gruen-seal-staleness; do
   printf '\n=== %s (derivation, no render) ===\n' "$derivation"
   node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
 done
