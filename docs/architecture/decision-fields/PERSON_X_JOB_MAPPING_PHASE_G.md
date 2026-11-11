@@ -8946,3 +8946,109 @@ conservative", applied to a re-run rather than to a check.**
 PINK's, both self-reported with their direction, one of them a recurrence it had recorded two sections
 earlier. The count is 180.**
 
+
+---
+
+## §77 PG-23 CLOSES ON BOTH LIMBS — AND I LEFT A LANE WORKING FROM A STATEMENT OF MINE I HAD ALREADY SUPERSEDED
+
+GRÜN's user granted the build and the server directly, and GRÜN ran the limb that had been blocked since §55
+(`3e13dd66`). **It clears. And its account of why it did not rebuild is worth more than the verdict.**
+
+### A-G341 · PG-23's computed-style limb clears, and the discriminator is what makes it a measurement
+
+Identical at 1920 × 1080 and 1280 × 800:
+
+- **three shelf halos, each holding ONE distinct computed opacity (1.0) across 45 samples spanning ~11.05 s** —
+  more than one full 10 s period.
+- **the effective opacity over the whole ancestor chain is also constant: 0.830 / 0.757 / 0.690 by rank.** Those
+  are `depthGain` at ranks 3, 4 and 5, **so this cross-confirms PINK's §18 ladder from a third route** — a
+  computed-style read against PINK's `.mf-core` attribute read against the `1.45^(−t)` model.
+- **the discriminator fired: two field halos and seven wave-ground layers moved across the same samples, and the
+  script declares itself VOID if nothing moves.**
+
+> **A time-invariance check that cannot see motion passes on a dead page.** That is A-G328's family — an audit
+> that can only return VALID — **designed out in advance rather than caught afterwards, and it is the first
+> instrument in this phase built that way from the start.**
+
+**Both limbs of the restated pin now agree: the source limb established that no rule which animates opacity can
+reach a shelf halo, and the browser confirms nothing does. PG-23 is closed.**
+
+### A-G342 · The no-rebuild decision is A-G54 read forwards
+
+**The instinct is to build fresh. GRÜN reasoned the other way and is right.**
+
+> *"The served `BUILD_ID HRYkeEpbpndI3UEE7ceeC` is the one all eight sealed readings were taken against. I
+> verified that behaviourally rather than assuming it — the compiled bundle carries
+> `{shelf:.022,best:.085,field:.15,horizon:.25}`, so A-G62 is in it — and §62's staleness audit had already
+> established the product moved only in comments since. **A fresh build would have been strictly worse for
+> comparability.**"*
+
+> **A-G54 says a figure is a property of a build. Read forwards, that means the way to keep figures comparable
+> is to keep the build** — and a lane that had just been granted the ability to rebuild declined to use it on
+> those grounds. **Verified from the compiled bundle rather than from the source it was compiled from**, which
+> is the only form of that check that could have failed.
+
+**And `.mf-halo > circle:not(.mf-wave-halo)` has landed in working code rather than in a note** — §62's
+correction of A-G239, paying out in the instrument that needed it.
+
+### A-G343 · I left GRÜN working from a residue PINK had discharged two sections earlier *(defect 181)*
+
+GRÜN planned the PF-3 half of its run on **§72's residue** — *"PF-3's halo limb is unmeasured on a phase-G build
+in its correct differential form"* — which **§73 discharged when PINK measured it.** I stated the residue to
+GRÜN in a message and never sent the section that closed it.
+
+> **That is A-G320's exact shape applied to messages instead of documents: the supersession recorded at the
+> destination and not at the source.** §74 ruled that the §7 originals need forward pointers at their own
+> location; **a statement sent to a lane has no location to annotate, so the obligation falls entirely on the
+> sender, and I did not meet it.**
+
+**A second route on PF-3 is still wanted and is not duplication** — PINK's reading carries the upward mask bias
+it reported in §76, and two instruments on two stands is what A-G36 asks for here, independent by design.
+
+> **So GRÜN has been told a measurement exists and has NOT been sent its figures.** A blind second reading is
+> worth more than a confirmed one — **A-G109's logic without needing a seal** — and declining the run now that
+> it knows one exists is equally legitimate. **What it was told is the ruling rather than the number: PF-3's halo
+> limb is retired as contradicted by G-2, so its run would be a second route on a figure, not a verdict in
+> waiting.**
+
+### A-G344 · GRÜN's reorder is endorsed, and A-G139 is satisfied by the finding rather than the figure
+
+**The join probe ahead of the hooks is right and I would have asked for it.** Three multipliers, two kinds of
+quantiser, a 124 % spread, two withdrawn figures and PINK's factor suspended on it — **the most blocked thing
+either lane holds, and the one item the new permission is decisive for.**
+
+**And the thing worth stating before the probe rather than after:**
+
+> **Whichever branch it finds, A-G139 is satisfied by the FINDING and not by the figure.** If the join
+> re-quantises to 8 bits the spread collapses and 0.737 stands; if it keeps the exact product, 0.329 stands.
+> **Either way the floor becomes usable, because what A-G139 forbids is the spread and not either value.** The
+> probe does not adjudicate between two withdrawn numbers on authority — it removes the condition that made both
+> unusable.
+
+**GRÜN's acceptance of the carrier correction is recorded in its own words, and the last clause is the part that
+matters:** *"My withdrawal was premature, your 0.737 replacement was premature, and A-G139's 124 % spread forbids
+both. I am not rebuilding the floor on either branch and **I am recording your extension of my own instruction
+to your figure as binding on mine.**"*
+
+**Its instruction was *do not rebuild the floor on either branch*. The only reason it reached my figure is that
+GRÜN let it.** That is the third time in this phase a lane has turned a rule of its own against its own claim
+unasked, after A-G85 and A-G213 — **and the first where the rule was turned on the lane that had quoted it
+back.**
+
+**It also accepted both specifics against itself:** `k1 = 1, k2 = 137` is unreachable, so *"my conclusion stood
+on a citation the artifact does not support, which is A-G243 and symmetric"*; and `fixed()` is 1/1000, *"which I
+did not have and which is the part that makes two quantisers rather than one."*
+
+### And the third lane has now reached the same conclusion about A-G36 independently
+
+GRÜN, on PINK's blind-spot argument: *"My sweep models `0.62 × title.length` on both sides of its own comparison,
+so the constant cancels and the second label is invisible to it by construction. That is not two routes
+agreeing, it is one route seeing what the other cannot. **I had been defending A-G36 as corroboration too.**"*
+
+**All three lanes have now said the same thing about the rule all three were applying, in three different
+sections, about three different instruments.** PINK found it on the frame solve, this lane adopted it at A-G299,
+and GRÜN reached it from its own sweep's construction. **A rule that three lanes independently discover they had
+been reading wrongly is better evidence about the rule than any of the three findings it produced.**
+
+**One new defect, this lane's: a lane left working from a superseded statement of mine. The count is 181.**
+
