@@ -14054,3 +14054,127 @@ limb; and PINK's sixfold configuration inflation. **329 + 3 = 332.**
 **What goes to the owner on the seam, in PINK's terms:** existence rests on the interior comparison and
 **transfers across the one real contrast**; extent was never characterisable and is additionally
 backend-dependent where measured; **quantifier as above; nothing about colour management.**
+
+---
+
+## §112 AN ASSUMPTION THAT SAT UNDER FOUR PHASES — AND A GREEN SUITE CANNOT SAY WHICH PINS HAVE NO GUARD
+
+**Date of this section: 2026-11-11.**
+
+### A-G374's second limb, built rather than resolved — `gruen-verify.sh`
+
+GRÜN took *"reading the artifact fixes what you report; it does not fix what you do"* and **built the
+remedy**: the suite runs **unpiped**, its output goes to a file, the **runner's SUMMARY** is parsed, and the
+script **exits non-zero unless the summary says nothing failed.** Anything chained with `&&` is then gated
+on **the artifact's verdict** rather than on the last process in a pipe. Demonstrated end to end —
+*"runner exit was 0 (NOT the verdict — the summary below is)"*.
+
+**Fail-closed on ABSENCE, which is the half most often omitted:** a missing or unparseable summary exits
+non-zero. *A run that died before printing one is not a pass, and "no summary" must never be quieter than
+"1 failed"* — **A-G419's shape pointed at a runner's output instead of at a mask.**
+
+**And it ships with its own negative test, because §100 says verification code is the least examined code in
+either lane and this IS verification code:** `--parse FILE` exercises the parser alone — red summary → 1,
+green → 0, no summary → 3, missing file → 2. **One limitation stated rather than hidden: it still trusts
+that vitest's summary reflects the run** — *a smaller trust than a pipeline's exit code, and the smallest
+available without reimplementing the runner.*
+
+**And GRÜN is right that this lane's eighth instance was worse than its seventh:** GRÜN's produced **a false
+action, wrong once**; this lane's `| head -10; echo "tsc exit=$?"` produced **a verification that could not
+be right** — it prints 0 whether tsc passes or fails. ***Wrong once against incapable of being right, in
+the form this lane used repeatedly while telling two other lanes to read the artifact.***
+
+### A-G446 · An assumption in the measurement CHAIN has no regime
+
+PINK tested the limit this lane called *"possibly untestable"* — **and the reason was wrong, because the
+reasoning was still about FLAGS.** Wide-gamut CSS colours test it with no flag at all, and **A-G445 applied
+forwards** first: `CSS.supports` true, the computed style **retaining** `color(display-p3 …)`, and the
+in-gamut limb producing **different** bytes. *Both limbs had two available outcomes.*
+
+```
+sRGB cyan                  rgb(92, 200, 255)                 -> (92,200,255)
+p3, same coordinates       color(display-p3 0.361 0.784 1)   -> (4,203,255)    conversion is REAL
+p3 red  (out of gamut)     color(display-p3 1 0 0)           -> (255,0,0)      output is CLIPPED
+rec2020 red (out of gamut) color(rec2020 1 0 0)              -> (255,0,0)
+```
+
+> **So §48's inert flag is OVER-DETERMINED: even a working flag could not have shown.** The conclusion is
+> not *"possibly untestable"* but **NOT TESTABLE BY SCREENSHOT ON THIS STAND, ESTABLISHED BY MEASUREMENT** —
+> which tells a reader a re-run needs **a different capture path, not another flag.** *This lane's form
+> invited the wrong re-run.*
+
+*** AND THE POSITIVE IS LARGER THAN THE QUESTION. Every luminance figure in this record applies the sRGB
+transfer function to `Page.captureScreenshot` output, and nothing had ever confirmed the captured bytes are
+sRGB-encoded. THEY ARE. ***
+
+**That assumption sat unexamined under four phases** — the knee at byte 10.0164, the per-pixel quantum, the
+plateau map, every share, every swing, A-G62's table, GRÜN's ladders, the seam, the chroma ceiling. **Had it
+failed, all of them would have been wrong at once.**
+
+> *** RULED, A-G446: AN ASSUMPTION IN THE MEASUREMENT CHAIN HAS NO REGIME. IT HOLDS FOR EVERY FIGURE OR FOR
+> NONE. *** **A-G443's complement** — that one made transferability a property of a figure's *regime*; this
+> says some assumptions are **not figure-level at all**, and their failure is **total**.
+>
+> **So they are the first thing that should be tested and the last thing anyone checks, because a
+> chain-level assumption produces no anomalies to notice.** A regime-level error shows up as two figures
+> disagreeing; **a chain-level error moves every figure by the same factor and nothing disagrees with
+> anything.** *Four phases is the measure of how long that invisibility lasts.*
+>
+> **And PINK found it by testing a BOUNDARY rather than by looking for it — the second time today.** *A
+> stated limit is the one claim nobody has defended, so it is where the unexamined assumptions sit.*
+
+### The owner line, on the right component at the third attempt
+
+**The obstacle is not the rasteriser** — §47 showed it transfers byte-identically at full coverage. **It is
+that the capture is sRGB by construction and collapses exactly the difference a p3 display would show:** p3
+red and sRGB red are **the same bytes here and visibly different colours on a p3 monitor.**
+
+> *** THE RASTER TRANSFERS; THE GAMUT DOES NOT, AND CANNOT BE MADE TO BY ANY FLAG ON THIS STAND. *** This
+> lane put the caveat on the wrong component twice — first blanket, then on the raster — **and this is the
+> third and correct placement.** Untested and asserted by neither lane: whether any deliverable surface is
+> wide-gamut, and whether the design's colours sit near enough the sRGB boundary to matter.
+
+**And PINK's §49 is a THIRD ascent which PINK audited itself before sending** — recorded **not as a
+refutation of A-G438 but as the first instance of its remedy being applied.** *The mechanism was always the
+generalisable part; the count was two cases.*
+
+### A-G447 · A green suite cannot say which pins have no guard — so the candidate list is measured
+
+GRÜN's closing clause is the strongest thing the mutant programme produced: ***the mutant did not find a
+weak test, it found the ABSENCE of one, and no run of the suite in any configuration could have reported
+that.*** **A green suite is consistent with a pin having no guard, and nothing in a green suite says which
+pins those are.**
+
+**PG-15 was found because it was one of five pins someone chose to mutate.** So
+`gelb-pin-assertion-scan.mjs` scans the test population — **read from `PHASE_DIRS`, not named** — for every
+pin id in both records:
+
+| | |
+|---|---|
+| pin ids stated in the records | **32** |
+| named in the **vitest** population | **15** |
+| named only in a **readable raster** instrument | **4** — expected; these are pixel pins |
+| named in **neither venue this lane can read** | **13** |
+
+> **ITS FIRST FORM REPORTED "17 OF 32 NAMED NOWHERE" AND THAT WAS MOSTLY VENUE** — pixel pins are not
+> supposed to appear in vitest. **A-G429's third remedy applied before publishing: the alarming number was
+> audited BECAUSE it was alarming.**
+>
+> **And the remaining hole is stated rather than closed: PINK's instruments are on an unpushed branch and
+> are not readable from this lane**, so a pin named only there appears as a candidate when it is not one.
+> **Twelve of the thirteen are pixel pins PINK almost certainly names; the thirteenth is PF-13, a meta-pin
+> about the population itself.** *One line in PINK's statement — which pin ids its instruments name — turns
+> the list into whatever is actually left, and whatever is left is the answer to GRÜN's question.*
+
+**And the instrument states what it is not:** *zero mentions is not a proof of absence and a mention is not
+a proof of presence.* **PG-15 was mentioned and had no guard.** The closing move is a mutant per pin, which
+is the only thing that distinguishes a weak guard from no guard.
+
+### Where this leaves the record
+
+**Three new defects:** this lane's venue-inflated first scan; its flag-bound reasoning that called a
+testable limit untestable; and **the chain-level sRGB assumption carried unexamined for four phases** — now
+closed. **332 + 3 = 335.**
+
+**GRÜN's lane is closed.** The last item in the phase is PINK's statement, now carrying §47, §48, §49 and
+the one line that closes the pin-candidate list.

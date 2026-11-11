@@ -1,0 +1,88 @@
+========================================================================================================
+GELB · §112 A-G446 — PIN NAMES IN THE TEST POPULATION. GRÜN @ de70cb5f
+========================================================================================================
+
+  pin ids stated in the two records:  32
+  PHASE_DIRS, read not named:         test/career/mapping-field/, test/career/mapping-spec/
+  test files in the population:       19
+
+========================================================================================================
+[1] PINS NAMED NOWHERE IN THE TEST POPULATION — the candidate list
+========================================================================================================
+
+  raster instrument files readable from this lane: 2
+  *** PINK's instruments are on an unpushed branch and are NOT readable here — so a pin named only in
+  PINK's lane will appear below as a candidate when it is not one. That hole is stated, not closed. ***
+
+  named in the VITEST population:              15
+  named only in a RASTER instrument:           4   <- expected; these are pixel pins
+  named in NEITHER venue this lane can read:   13
+
+  raster-only  PF-8    1 file(s)
+  raster-only  PG-11   1 file(s)
+  raster-only  PG-13   1 file(s)
+  raster-only  PG-22   1 file(s)
+
+  *** CANDIDATE  PF-2
+  *** CANDIDATE  PF-3
+  *** CANDIDATE  PF-4
+  *** CANDIDATE  PF-5
+  *** CANDIDATE  PF-6
+  *** CANDIDATE  PF-7
+  *** CANDIDATE  PF-9
+  *** CANDIDATE  PF-10
+  *** CANDIDATE  PF-13
+  *** CANDIDATE  PG-12
+  *** CANDIDATE  PG-17
+  *** CANDIDATE  PG-18
+  *** CANDIDATE  PG-19
+
+  *** THE FIRST FORM OF THIS BLOCK REPORTED 17 OF 32 "NAMED NOWHERE" BY SCANNING ONLY THE VITEST
+  POPULATION — and 4 of those are pixel pins measured on a raster stand, where their absence from
+  vitest is expected and carries no information. *** A-G429's third remedy applied to this instrument
+  before publishing: the alarming number was audited BECAUSE it was alarming, and it was mostly venue.
+========================================================================================================
+[2] WHAT THIS IS AND WHAT IT IS NOT
+========================================================================================================
+
+  *** ZERO MENTIONS IS NOT A PROOF OF ABSENCE AND A MENTION IS NOT A PROOF OF PRESENCE. ***
+
+    a pin named nowhere   -> a CANDIDATE for being unasserted. Its property may still be guarded by a test
+                             that never writes its id — which is exactly how PG-15 was NOT guarded, but is
+                             also how a pin could be guarded without this scan seeing it.
+    a pin named somewhere -> NOT thereby asserted. A mention can be a comment, a docstring, or a restated
+                             obligation with no assertion attached. PG-15 was mentioned and had no guard.
+
+  So this bounds the hole from below and names the places to look. It does not close it. The closing move
+  is GRÜN's: a mutant per pin, which is the only thing that distinguishes a weak guard from no guard —
+  *** because a green suite is consistent with a pin having no guard, and nothing in a green suite says
+  which pins those are. ***
+
+  AND THE COUNT ABOVE IS A LOWER BOUND ON THE WORK, NOT AN UPPER BOUND ON THE RISK: 13 pins are
+  candidates by name, and any of the 15 named ones may be mentioned without being asserted. PG-15 was
+  in the second group.
+
+========================================================================================================
+[3] WHERE EACH NAMED PIN IS MENTIONED — so the next lane can check one rather than all
+========================================================================================================
+
+  PF-1    1 file(s): mapping-field/field-f.test.tsx
+  PF-11   1 file(s): mapping-field/field-f.test.tsx
+  PF-12   1 file(s): mapping-field/field-f.test.tsx
+  PF-14   2 file(s): mapping-field/architecture.test.ts, mapping-field/field-f.test.tsx
+  PF-15   1 file(s): mapping-field/field-f.test.tsx
+  PF-16   1 file(s): mapping-field/field-f.test.tsx
+  PF-17   1 file(s): mapping-field/field-f.test.tsx
+  PG-4    3 file(s): mapping-field/field-d.test.tsx, mapping-field/field-e.test.tsx, mapping-field/field-g.test.tsx
+  PG-5    2 file(s): mapping-field/field-g.test.tsx, mapping-field/field-interaction.test.tsx
+  PG-7    3 file(s): mapping-field/architecture.test.ts, mapping-field/field-g.test.tsx, mapping-field/neurovisual-e.test.ts
+  PG-14   1 file(s): mapping-field/field-g.test.tsx
+  PG-15   1 file(s): mapping-field/field-g.test.tsx
+  PG-16   2 file(s): mapping-field/field-g.test.tsx, mapping-field/field-interaction.test.tsx
+  PG-20   2 file(s): mapping-field/field-g-mutant.test.tsx, mapping-field/field-g.test.tsx
+  PG-21   1 file(s): mapping-field/field-g.test.tsx
+========================================================================================================
+CONSTANT PROVENANCE: pin ids parsed from the obligation tables of both records; the population
+READ from PHASE_DIRS in GRÜN's architecture test at de70cb5f, never named here (A-G426).
+This instrument asserts nothing about the build. It reports where to look.
+========================================================================================================
