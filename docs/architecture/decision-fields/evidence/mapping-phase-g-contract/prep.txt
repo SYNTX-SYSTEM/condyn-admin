@@ -1836,9 +1836,92 @@ on the constant.
   > **Reach of the defect: none on this verdict.** The peaks are 17x to 34x the floor either way, and the
   > ratio is peak over peak, so a tighter epsilon admits more low pixels without moving either maximum.
   > **But it bounds what this instrument could ever have detected, and that is the part worth recording:
-  > A-F19's phase-F halo excess of 0.0035…0.0076 lies BELOW my epsilon of 0.0063902.** So this instrument
-  > could not have reproduced A-F19's figures had phase G been phase-F-like — it can measure phase G's
-  > much larger excess and could not have measured phase F's at all.
+  > A-F19's phase-F halo excess of 0.0035…0.0076 STRADDLES my epsilon of 0.0063902.** (§24a, GELB's
+  > correction, and it makes the bound WORSE not better: an earlier version of this line said "lies
+  > below". 0.0035 is below; **0.0076 is above it by 18.9 %**, and the span above the epsilon is ~30 % of
+  > A-F19's reported width.)
+  > **A floor ABOVE the range it must clear returns nothing and announces itself. A floor that STRADDLES
+  > the range returns the top of it and looks like a complete reading.** So this instrument would not have
+  > failed to reproduce A-F19 — it would have reproduced the upper part of A-F19's five bodies, rejected
+  > the rest below the epsilon, and reported the remainder as if it were all of them. A-F19 gives a range
+  > across bodies rather than per-body values, so WHICH of its five would have survived is not knowable
+  > from the record — only that some would not. Same family as the unnormalised histogram and the filtered
+  > summary: **the reading that is partial and does not say so.**
   > **An instrument that cannot detect the magnitude its predecessor reported is not a replacement for it,
   > even when it returns a defensible number on the build in front of it.** Declared here rather than left
   > for whoever next compares the two figures.
+
+
+================================================================================================
+§25  PF-8 READ AT EVERY AMENDMENT BEFORE MEASURING, AS PROMISED — AND THE READING IS THE FINDING.
+     ELEVEN LOCATIONS, NOT FOUR. A LIMB THAT WAS RED WAS DROPPED SILENTLY AT A RESTATEMENT AND
+     NEVER WITHDRAWN. AND PF-8's OWN :1307 PUTS IT BEHIND THE FIXTURES I DO NOT HAVE.
+================================================================================================
+No instrument this section. GELB flagged four amendment locations and said mutual inconsistency
+would be a finding rather than an obstacle. **It is not inconsistency. It is an incomplete list and
+an orphaned limb**, and the second one matters.
+
+THE AMENDMENT INVENTORY — ELEVEN LOCATIONS IN `PHASE_F.md`, OF WHICH GELB'S MESSAGE NAMED FOUR:
+  `:475`  "Amended — PF-8 tolerance: p99 of mark pixels <= 0.002 **and max <= 0.006**"
+  `:564`  "Amended — PF-8: every drawn sign and structure pixel swings <= 0.002 (p99; **max <= 0.006**)"
+  `:682`  measured as TWO limbs — *"PF-8 (p99 ... <= 0.002, max <= 0.006): **both limbs already red at
+          base from AA alone**"*
+  `:774`  A-F13 — PF-8 bounds a sign's own rendered LUMINANCE, not its contrast (a scope ruling)
+  `:867`  **"PF-8, restated in two tiers"** — tier A coherent amplitude <= 0.0005 absolute; tier B
+          per-pixel p99 <= 2x the run's own decoy floor
+  `:879`  tier B's bound stated floor-relative *deliberately*: *"a bound the instrument cannot reach is
+          not a bound"*
+  `:980`  harmonics in signal and null; tier A's floor rises 0.00001 -> 0.00007
+  `:994`  **"PF-8 is now three tiers, all of which must pass"** — tier C, counts above
+          0.001/0.002/0.004/0.008 <= **1.5x** the decoy counts
+  `:1214` per class, against its own bound and its own null
+  `:1307` **every level that draws evidence — L0, L2 — measured, per class, separately**
+  `:1354` **tier C needs a minimum class population: below 1 000 px it is NOT EVALUATED**
+  `:1356` **a rung below 2x the measured per-pixel floor is NOT EVALUATED** (A-F11 on the ladder)
+  `:1513` **tier B amended to `p99 <= 0.002` ABSOLUTE**, admissible only if the run's floor <= 0.0004;
+          the floor-relative form survives only as the admissibility check
+
+  > **THE TWO GELB'S LIST OMITS ARE BOTH ADMISSIBILITY CONDITIONS** (`:1354`, `:1356`), and those are
+  > exactly the ones a measuring lane cannot do without: miss them and you report a verdict on a rung or
+  > a class the pin says is not evaluated. **An amendment that narrows what counts as a measurement is
+  > more dangerous to omit than one that moves a bound, because a moved bound gives a wrong answer and a
+  > missing admissibility rule gives an answer to a question the pin did not ask.**
+
+THE FINDING · `max <= 0.006` WAS DROPPED SILENTLY AT `:867`, WHILE RED, AND NEVER WITHDRAWN.
+It was a live second limb of PF-8 at `:475` and `:564`, and at `:682` it was *measured as a limb and
+found red* — *"both limbs already red at base from AA alone."* **`:867`'s two-tier restatement replaces
+PF-8 entirely with tier A and tier B and does not mention it. No later restatement reintroduces it, and
+no section withdraws it.** Every subsequent `0.006` in the document belongs to PF-1's disc median or to
+unrelated readings; I checked all fourteen occurrences.
+  > **So a limb that was FAILING stopped being tracked by a restatement that did not say it was dropping
+  > it.** That is not a bound being amended — amendments are visible and arguable. **A red that
+  > disappears into a restatement leaves the record looking like it was answered.** Its status today is
+  > genuinely undetermined: either it was superseded by tier B's p99 (plausible — both bound per-pixel
+  > swing) or it is an outstanding red. **Nothing in the record says which, and I will not assume the
+  > convenient reading of a limb that was red.** Under A-G320 the fix is a pointer at `:475`, `:564` and
+  > `:682`, not a twelfth restatement.
+
+AND ONE THAT LOOKS LIKE A CONTRADICTION AND IS NOT, WHICH IS WORTH SAYING SO IT IS NOT "FOUND" LATER.
+`:879` made tier B's bound floor-relative on purpose; `:1513` made it absolute again. That reads as a
+reversal, but `:1513` **answers `:879`'s objection instead of ignoring it**: it keeps the absolute bound
+AND requires the run to resolve it (floor <= 0.0004, met at 0.00027), so the floor-relative form becomes
+the admissibility check rather than the bound. **A proper supersession, and the only one of the eleven
+that is.**
+
+PF-8's ASSEMBLED CURRENT FORM, so no future reader has to do this again:
+  three tiers, ALL must pass · PER CLASS · at EVERY level that draws evidence (L0 and L2 at minimum)
+  A  RSS of coherent amplitude over the breath's first three harmonics (T, T/2, T/3) of the MEAN over
+     the class's sign pixels, <= 0.0005 absolute, against a null at T/2.7, T/4.3, T/5.9
+  B  per-pixel p99 of coherent amplitude, unblurred, <= 0.002 ABSOLUTE; admissible only if floor <= 0.0004
+  C  counts above 0.001 / 0.002 / 0.004 / 0.008 <= 1.5x the decoy counts; NOT EVALUATED below 1 000
+     class px; rungs below 2x the measured per-pixel floor NOT EVALUATED
+  ?  `max <= 0.006` — status undetermined, last seen red
+  mask: the FULL SEAT FOOTPRINT (`:1354`), so the AA fringe is unavoidably inside it
+
+  > **AND PF-8 IS FIXTURE-BLOCKED BY ITS OWN AMENDMENT.** `:1307` requires *every level that draws
+  > evidence — L0, L2*. **My stand is L0.** So PF-8 cannot be discharged here however good the
+  > instrument: a three-tier reading at L0 alone is exactly the "firewall certified at one level"
+  > that `:1307` was written to forbid. **It belongs behind A-G51's fixtures with A-G34 and PF-8 per
+  > class — which is where I already had PF-8 per class queued, without having noticed that the
+  > three-tier form is blocked by the same line.** Reported rather than measured, and the queue is
+  > corrected: PF-11 at `:907` is the only PF item on my side that this stand can actually finish.
