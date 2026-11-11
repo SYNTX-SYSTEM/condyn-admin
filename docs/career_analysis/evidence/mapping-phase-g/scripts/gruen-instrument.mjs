@@ -725,7 +725,22 @@ export const BOUNDS = Object.freeze({
    * reclassified, because reclassifying on a guess about a paper this lane has not read would be the mirror of
    * the post-hoc derivation A-G143 forbids.
    */
-  "PG-5.bodiesAtL1":         { value: 12,     origin: "UNDERIVED — A-G156 point 4: the L1 cap is untested at 0.5 and is NOT to be read as surviving. Weaker than A-G50 left it. This lane has since computed it (see outputs/pg16-crowding-L1.json); the decision is GELB's." },
+  /**
+   * §56 A-G226: decided, on this lane's own committed computation, four sections after it was handed over.
+   * `outputs/pg16-crowding-L1.json` ends "the decision on BODY_BUDGET.L1 is GELB's" and sat as "untested".
+   *
+   * **Marking something untested is not a status; it is a request with no addressee.** This lane produced
+   * the evidence and then stopped at the label too — the same habit as reading "does not carry" instead of
+   * the radii under it (§47), and as filing PG-23's free limb behind a credential it never needed (§55).
+   *
+   * And the figures make it the L0 result repeating rather than a new one: at 0.3 the budget BINDS on two
+   * layouts (LV08, LV10, both wanting 15 against 12); at 0.5 it binds on **0 of 9** pools and the largest
+   * the spacing ever allows is **7 against 12**, never within five of binding. So at PG-16 = 0.5 the spacing
+   * rule subsumes the budget cap at EVERY level, and `BODY_BUDGET` stops being an independent constraint
+   * anywhere. PG-5 reduces entirely to its overflow-statement limb.
+   */
+  "PG-5.bodiesAtL1":         { value: null,   origin: "RETIRED — §56 A-G226, on A-G29's treatment and for A-G156 point 2's reason: a bound that cannot bind is not a bound. At 0.5 the L1 budget binds on 0 of 9 pools (outputs/pg16-crowding-L1.json, budgetStillBindsAt0_5: 0) and the spacing's maximum is 7 against 12. BODY_BUDGET.L1 = 12 remains in the code; the constant is GELB's. Superseded local status was UNDERIVED — A-G156 point 4: untested at 0.5 and not to be read as surviving.",
+                                                  parents: [{ node: "PG-16.crowding", quote: "This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks." }] },
   "PG-5.overflowStatement":  { value: null,  origin: "ARGUED — A-G156 point 3: PG-5's overflow-statement limb stands on A-G3, which made it its own statement. A copy obligation, not a count bound, so no numeric provenance applies." },
   "PG-16.crowding":          { value: 0.5,    recordedInCodeAs: 0.3, origin: "DERIVED — A-G156 point 1: PG-16 bounds at 0.5, the figure the record states AND applies (R23's arrow, 'free space between bodies at the rim'). The contradiction A-G145 found is RESOLVED rather than recorded. NOTE: CROWDING in PersonJobMappingField.tsx is still 0.3 — the product constant is GELB's and this registry records the bound, not the code. Superseded reasoning kept: A-G145: a quantity IS taken from R23 and it is not the quantity the record states R23 gives. §10 says 'Critical spacing is roughly half the target\'s eccentricity (as free space, in Bouma\'s original form)'; §11 bounds at 0.3. A 40 % relaxation of the cited law, written eight minutes apart in one document. No reading of the paper was required — and A-G153 records that this lane missed it by going to the literature instead of to the record's own statement.",
                                                   parents: [{ node: "R23", quote: "Critical spacing is roughly **half the target's eccentricity** (as free space, in Bouma's original form), it is far stronger in the periphery, and the revised law puts critical spacing **across parts, not objects** — so a body *and its collar of ticks* crowd each other internally." }] },
