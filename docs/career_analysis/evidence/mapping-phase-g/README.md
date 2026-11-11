@@ -31,6 +31,21 @@
 > is not written where a reader *arrives* — which is the lesson A-G453 taught in GELB's lane an hour before
 > it applied to mine.
 
+> **§110c · the scan done systematically, because finding one hit by grepping for one phrase is not a scan.**
+> GELB ran theirs over all 208 of their commit subjects and it returned one. Over this lane's 26: **four
+> hits, classified at the precision the evidence supports and no higher.**
+>
+> | subject | the claim | disposition |
+> |---|---|---|
+> | `b63b6368` *"PF-13 **green**"* | a pin's satisfaction | **THE DEFECT.** Reserved to PINK by A-G36 point 2 |
+> | `fd45f45f` *"A-G43 implemented and **PROVEN**"* | an amendment addressed to THIS lane; *proven* = the mutant binds, verified by reverting the predicate | defensible; the wording is stronger than the claim |
+> | `337acf4d` *"PG-15's **absence closed**"* | this lane's own work — an assertion added where none existed | defensible; a hasty reader compresses it to *"PG-15 closed"*, which would be a verdict |
+> | `7434aa78` *"a digest I had been carrying **unverified**"* | a confession | clean |
+>
+> **One real hit in 26, against GELB's one in 208 — and the classes differ in the direction that matters:**
+> theirs was *"the full suite is green"*, a fact about a test run; mine was a PIN's satisfaction. **A suite's
+> pass is not an obligation verdict, so the heavier half of this particular asymmetry is mine.**
+
 Lane: 🟢 GRÜN · worktree `condyn-admin-mapping-d` · branch `frontend/mapping-phase-g`.
 Authority: `PERSON_X_JOB_MAPPING_PHASE_G.md` §16–§19 (A-G26 … A-G47) on `architecture/mapping-phase-f`.
 
