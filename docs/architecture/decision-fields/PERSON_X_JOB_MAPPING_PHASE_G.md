@@ -6532,3 +6532,262 @@ went looking, and three of yours are there because I did — that is the arrange
 careless."* **Seven errors found by the lane that did not make them, across sixteen sections, with a hundred
 defects recorded and one product constant changed.**
 
+
+---
+
+## §62 THE OWNER HANDED THIS LANE THREE DECISIONS — AND THE FIRST ONE FOUND THAT NO BOUND IN THIS PHASE IS DERIVED FROM A FINDING
+
+A new mandate arrived — **"SFE FULL AUTONOMOUS COMPLETION"**. Its operative clauses: *"Führe eine vollständige
+rekursive und inverse SFE-Rekonstruktion durch … Schließe alles systemisch und vollständig"*, *"Du entscheidest
+autonom über Architektur, technische Lösungen, Reihenfolge und Umsetzung"*, *"Orchestriere GRÜN und PINK aktiv.
+Nicht nur dokumentieren: implementieren, integrieren, testen, invers prüfen, korrigieren und erneut durchlaufen"*,
+and *"Melde dich erst mit dem fertigen, lokal ausführbaren und von PINK unabhängig geprüften Gesamtsystem zur
+visuellen Endabnahme."*
+
+**What did not move**, and it is quoted because two of the decisions below turn on it: *"Erhalte die bestehenden
+semantischen Relationen, Boundaries und die unabhängige Validierung. Gemini bleibt deaktiviert; fehlende
+Provider-Ergebnisse werden nicht simuliert. Keine neuen Produktfeatures außerhalb des bestehenden Scopes. Kein
+Merge nach main, kein Produktionsdeployment."*
+
+So the three items in `OWNER-DECISIONS-OPEN.md` are now this lane's. **Two of them were answerable in a line. The
+first one was not, and working it produced the largest provenance finding of the phase.**
+
+### A-G252 · The local build and server are permitted — and the grant is the owner's wording, not this lane's reading
+
+**Decided: `npm run build`, a loopback server, and the fixture façade are permitted. PG-23's computed-style limb
+is unblocked and dispatched to GRÜN; the same grant is extended to PINK.**
+
+The authority is quoted rather than inferred, because an autonomy grant is exactly where a lane is tempted to
+read itself a permission: the report is to be made *"mit dem fertigen, **lokal ausführbaren** … Gesamtsystem zur
+visuellen Endabnahme."* **A locally runnable system cannot be reported as runnable without being run.** Loopback
+only, no provider reachable, Gemini untouched — which is the standing constraint and not a concession.
+
+### A-G253 · The credential is not supplied, boundary B-ENTRY stays, and the seven-item queue was mis-partitioned — by this lane as much as by GRÜN
+
+The mandate contains no connection string. **This lane probed whether the local postgres would admit a role
+without one; it would not, and it stopped there rather than try candidate roles.** Guessing at database
+credentials is not an engineering act, and `scripts/test-db/provision-role.ts` carries the words *"owner action"*
+in its own docstring, which this lane is treating as binding on itself.
+
+**And the gate stays, unbypassed.** `verifyDisposableTestDatabase` is boundary B-ENTRY; the mandate's first
+preserved constraint is *"Erhalte die bestehenden … Boundaries"*; and GRÜN's own sentence is the correct one and
+is adopted rather than softened: *"The gate is fail-closed and is not a lane's to bypass — five of the seven
+items held behind it open no database at all, and that does not matter."*
+
+**What is decided instead is that the seven items are not one blockage, and carrying them as one was this lane's
+error before it was anyone's.** The gate blocks **vitest**. It does not block implementation, and it does not
+block either lane's instruments, which are standalone node and have never run through vitest.
+
+| | item | new state |
+|---|---|---|
+| 1 | A-G43's splay re-keying | **do now**, proven on GRÜN's instrument |
+| 2 | A-G49's `data-*` hooks, the seven unaddressable seats, A-G199's shelf halo | **do now** |
+| 3 | A-G48's L2 fixture with a field body | **do now** — PG-10 finally gets a breathing carrier |
+| 4 | A-G51's L1 fixture that marks a body | **do now** |
+| 5 | A-G206's three-part span declaration | **do now**, in front of 3 and 4 |
+| 6 | A-G43's and PG-20's **mutant executions** | **held on B-ENTRY** — a mutant test *is* a vitest assertion |
+| 7 | option (3) | **held on B-ENTRY** |
+
+**One cause, one line, in place of a seven-row table in every report** — which is A-G250 applied to the thing
+A-G250 was about.
+
+**The risk this takes, stated as this lane's and not mitigated away:** items 1 and 2 change rendered DOM while
+the suite cannot run, so they land under a **regression risk the suite cannot currently check.** The mitigation
+is a route the gate does not touch — **PINK verifies the hooks and the re-keying against the rendered page, not
+against GRÜN's instrument.** That satisfies A-G36 under A-G244's condition, because the two routes are
+independent *by design*: one is a `.mjs` model, the other is a browser. **It does not make the suite risk
+disappear and nothing in this section claims it does.**
+
+### A-G254 · R23 is in R21's position — the record took *two* quantities from it, and that is not taking one *(defect 101)*
+
+This began as the `CROWDING` decision and became something else. **§41's provenance census records
+*"PG-16's 0.3 (R23, Bouma)"* as one of only two DERIVED bounds in seventeen. §45's A-G165 table records
+*"R23 Bouma — quantity the record took from it: **0.5** (A-G156) — what it can carry: a pin, PG-16, DERIVED."***
+
+**Both are in this document, both cite R23, and they name different numbers for the same bound.** That is the
+parent of A-G233, and A-G233 described the symptom.
+
+**A-G165's own rule decides it against A-G165's own table:**
+
+> *"A pin may be derived from a finding only where the record took a quantity from that finding. Where a finding
+> was cited for its direction, it can justify a design and it cannot certify one."*
+
+**A finding from which the record took two different quantities for one bound has not had a quantity taken from
+it — it has had one chosen, twice, differently.** R23 supplies Bouma's range; the record never states R23's own
+numbers, which §61's A-G245 had already flagged on the registry entry. **So R23 sits exactly where R21 sits:
+load-bearing for the design, incapable of carrying a pin.**
+
+> **Ruled: PG-16's bound is CITED-WITHOUT-A-NUMBER. A-G165's table entry for R23 is corrected, and §41's census
+> falls from two DERIVED bounds of seventeen to one.**
+
+**And the one that survives is not a perceptual derivation either.** PG-3's px range comes from
+`layout-spec-v1.1.json` — a spec file, which is a prior *decision*, traceable but not evidential, and A-G162
+already broke on a premise that spec states with its condition attached.
+
+> **So: not one bound in this phase is derived from a perceptual finding. Zero of seventeen.**
+
+That is a worse number than §41's two, it was obtainable in §41 by reading the next table along, and it is the
+honest state of the phase's evidentiary base. **A-G143's refusal to retrofit is what makes it survivable:**
+every bound carries its true status, so the verdicts above them are qualified rather than false.
+
+### A-G255 · PG-16 bounds at 0.3 because the artifact does — and the selection rule is stated, not dressed as a derivation
+
+With no derivation available, the question is no longer *which number does R23 give* but *what decides a bound
+that nothing derives.*
+
+> **Decided: PG-16's bound is 0.3. `export const CROWDING = 0.3` stays. A-G156 is withdrawn. There is no product
+> change.**
+
+**The selection rule, stated openly because that is the whole point:** where a bound has no derivation, **it
+follows the artifact**, because moving the artifact to match an underived bound would be manufacturing a product
+change out of a number with no origin — A-G143's *"post-hoc derivation is worse than no derivation"* in the
+direction of the build, and the owner's own standing constraint, *"Keine Neuentwicklung aus Vermutungen."*
+
+Three consequences, all already measured and none new:
+
+- **`BODY_BUDGET.L0 = 7` and `L1 = 12` stay load-bearing**, as §57 established: at 0.3 the L0 cap binds on **8 of
+  10** layouts and the L1 cap binds on LV08/LV10 by three against a spacing capacity of 15.
+- **The 0.5 column is kept as evidence, not as a pending change.** `CROWDING-0.3-TO-0.5-WHAT-MOVES.md` stays
+  exactly as GRÜN wrote it — nine layouts losing bodies, LV02 6 → 3, effective cap 4–7 with median 6. **A
+  sensitivity that has been computed is worth more kept than deleted** (A-G143's shape: history preserved,
+  adjudications carry changes).
+- **The divergence A-G233 named is closed**, and closed in the direction that moves no pixel.
+
+### A-G256 · And the reading of this that this lane sent to GRÜN an hour ago was one-sided, in A-G239's exact shape *(defect 102)*
+
+Before working it, this lane messaged GRÜN that *"§41's own census decides it"* — having read §41's census and
+**not** A-G165's table, which is **in the same document, seventeen sections later, and says the opposite.**
+
+**A-G239 is: read an artifact's own account of itself before computing from its data; a field named for the
+reading IS the reading.** Its shape here is the same with the artifact being this record. **That is now four
+confirmations of A-G239 and still zero prospective firings** — §61 called that the interesting case about it, and
+this is the fourth time it has explained an error rather than prevented one.
+
+**It cost nothing only because the correction and the claim are in the same section**, and the corrected version
+is what reaches GRÜN. Recorded at full weight regardless: a claim sent to a peer is a claim, and the fact that
+the next hour's work refuted it is not a mitigation, it is the reason it is here.
+
+### A-G257 · The gate ran on PG-12: the hue's carrier is a bounded circle, so the pin can only fail on glow overlap — which neither reading of A-G124 names *(defect 103)*
+
+`gelb-gate-pg12.mjs` + `.out.txt`, committed at `de4c2380`. **Its anchor reproduces A-G126's six single-code
+projections, q_proj, and A-G129's two hue angles and their 178.24° separation to four decimals**, so what follows
+it is standing on a pipeline that agrees with the record.
+
+**The carrier, read off the renderer rather than inferred** (A-G51's lesson: name it in the renderer's own
+vocabulary): the gap hue has exactly **one** carrier inside the field SVG — `url(#mf-halo-gap)` on the single
+`<circle>` at `:711`. `GAP_HUE` appears at `:190` (the constant), `:862` (an HTML `<li>` legend, outside the SVG)
+and `:910` (the gradient), and nowhere else. **That gradient declares no `gradientUnits` and no `spreadMethod`,
+and its last stop is `stopOpacity 0` at offset 1** — so the hue reaches exactly zero at the circle's own rim and
+SVG paints nothing beyond the shape. No filter reaches `mapping-glows`.
+
+**So A-G124's fifth field names a region in which the pin cannot fail, under either reading of it.** *"Medium
+pixels at a given radius adjacent to a gap body's glow"* taken **outside** the glow's circle gives a projection
+that is identically zero by construction — no failing observation. Taken **inside** it, the pin fires on the glow
+itself, which is the mirror defect A-G126 rejected the magnitude form for. **The region that admits both is the
+one neither reading names:** where a gap body's glow circle **overlaps the angular neighbourhood of a non-gap
+body.** The glow runs to 2.6–3.0 × the drawn radius while A-G1's collision search only guarantees the **drawn**
+radii do not touch, so glow overlap is permitted by the layout and is the **only** mechanism that can place gap
+chroma where no gap body is.
+
+> **PG-12 is satisfiable, and what it actually tests is glow overlap. A-G124's fifth field is restated on that
+> region.**
+
+**The envelope, along every axis the pin ranges over** (A-G171), which is the glow's own radius, the **rank**
+(`haloMult` 2.6 → 3.0) and the **group opacity** (`--mf-wave-mean` 0.8825 ± 0.1175 at `:317`/`:290`, which this
+lane had not been treating as an axis):
+
+| | rank 1 (haloNear) | last rank (haloFar) |
+|---|---|---|
+| seat edge at offset | 0.384615 | 0.333333 |
+| peak α on a medium pixel, trough → peak | 0.35986 → 0.47059 | 0.41084 → 0.53725 |
+| in q_proj | **69.9 → 87.5** | **78.0 → 97.3** |
+
+**The one datum the gate still needs, stated narrowly by the requester per A-G132:** the **maximum gap-glow alpha
+landing on a medium pixel whose nearest drawn body is a non-gap body**, over the exercised layouts at L0/1920 and
+L1. One scalar. It is a layout computation from `layout-spec-v1.1.json` and the fixtures — no render, no raster,
+no credential, and **no verdict**.
+
+### A-G258 · A-G131's raster floor took the metric's resolution for the raster's — 0.737 q_proj, not 0.329 *(defect 104)*, and its "exact" alpha overstates the boundary it was correcting GRÜN for overstating *(defect 105)*
+
+A-G131 built a three-regime table and made **0.329 q_proj** *"the hard lower bound on any factor PINK sets"*,
+concluding that *"a factor of 1.0 q_proj sits a comfortable 3 × above the floor … the first time in this phase a
+threshold has had headroom rather than a margin."*
+
+**Over the modal medium `rgb(6,12,17)`, the table's middle regime names a composite the raster cannot produce.**
+
+| | |
+|---|---|
+| A-G131's first visible state | `rgb(7,12,17)` at 0.329 q_proj |
+| computed first visible state | **`rgb(7,13,17)` at 0.737 q_proj** |
+| reachable under round / truncate / two-stage group opacity at trough, mean and peak / linear light | **no, in every one** |
+
+**The mechanism: R leaves 6 and G leaves 12 at the same alpha code.** At `qa = 1/255`,
+R = round(1769/255) = round(6.9373) = 7 and G = round(3214/255) = round(12.6039) = **13**. G's fractional part is
+0.60, so **G cannot stay at 12 while R moves to 7 under any integer alpha code.** Truncation moves both later
+together; the group opacity changes which code, not the reachable set; linear-light compositing is refuted by the
+record's own figures, since it puts R at 14 on the first code.
+
+**And the diagnosis is worth more than the number:** 0.1579 / 0.4797 = **0.3292.** A-G131's floor is **A-G126's
+single-code R step divided by q_proj** — *the smallest step the metric can resolve, taken for the smallest step
+the raster can carry.* **Those are different sets.** A single code moves alone only if something moves it alone,
+and compositing a triple over a triple moves every channel at once, so **the smallest achievable step is the
+vector step, never the smallest component step.** This is A-G122's family — the quantity named in the right units
+and taken from the wrong set — and the **sixth** shape in this record of extremum-versus-achievable. **It is
+recorded as a diagnosis and is not offered as a rule (A-G251).**
+
+**The second figure, and it is the sharper embarrassment.** A-G131 corrected GRÜN's *"about α 0.003"* on the
+express ground that *"a floor used as a lower bound on PINK's factor should not be conservative upward"*, and
+stated *"the exact figure is α 0.00210."* **Under A-G81 the exact boundary is 0.5/255 = 0.0019608.** A-G131
+overstates the floor it was correcting an overstatement of, by **7.1 %**, in the same paragraph, having invoked
+A-G106 to do it.
+
+**What this lane is NOT claiming, and the distinction is load-bearing:** not that GRÜN's table is wrong. It may
+have been read off a **rendered** pixel whose backdrop was not the modal medium. The instrument swept all 27
+backdrops within one code and **two of them do reach `rgb(7,12,17)`** — `rgb(6,11,17)` and `rgb(5,11,17)`. **But
+not one of the 27 produces a first step near 0.329**; on `rgb(6,11,17)`, where `rgb(7,12,17)` *is* the first
+visible composite, the first step is **0.715 q_proj.** So the backdrop question changes which composite and does
+not rescue the floor.
+
+> **Ruled: A-G131's floor and its "exact figure" are withdrawn. The floor is UNCONFIRMED pending GRÜN's
+> statement of which backdrop its raster measured, and no factor is to be set against it meanwhile.** The
+> consequence for A-G131's own conclusion: if the floor is 0.737, a factor of 1.0 q_proj has **1.36 ×** headroom,
+> not 3 ×, and the sentence about headroom rather than margin does not survive. **PG-11's guard takes the same
+> factor under A-G115, so this bears on two pins, not one.**
+
+### A-G259 · q_proj and the C\* quantum are good to three decimals, not four *(defect 106)*
+
+The anchor reproduces under the ASTM E308 D65 white point and misses the fourth decimal under the sRGB
+specification's:
+
+| white point | q_proj | C\* quantum |
+|---|---|---|
+| IEC 61966-2-1 (sRGB spec) | 0.4796 | 0.5049 |
+| CIE 15:2004 / ASTM E308 | **0.4797** | **0.5050** |
+| CIE 15:2004, 4 dp x, y | 0.4796 | 0.5049 |
+
+**A-G126 and A-G124 state 0.4797 and 0.5050 as exact to four decimals and name no white point.** So they are
+**q_proj = 0.480 and 0.505**, and the fourth decimal is a convention rather than a measurement. **A-G241's shape
+again** — a constant quoted at a precision it does not have — and this time in a figure that sits inside a rule,
+which is what A-G106 exists for.
+
+### What is dispatched, and the one thing that is not
+
+Both lanes have the mandate verbatim and their work. **GRÜN:** PG-23's computed-style limb under A-G252; the five
+do-now items of A-G253; the A-G128 check on PG-16 at 0.3 — *can the pin pass and fail at the bound the record now
+carries?*; the backdrop question behind A-G258; and the one scalar A-G257 needs. **PINK:** the same server grant,
+its four queued items, and the gate-independent verification of GRÜN's DOM changes.
+
+**And both were asked the inverse question rather than given a list**, because the mandate says *recursive and
+inverse* and the register cannot come from the lane that assembled it: *what is open in your lane that is not on
+my list?* **A-G239's coverage hole was found that way and it is the most useful thing either peer produced in
+twenty sections.**
+
+**PINK's branch push is not among this.** It was decided once by the owner, whose authorization named only the
+mapping and architecture branches; the new mandate adds *"kein Merge, kein Produktionsdeployment"* and adds no
+push. **It was not routed to GRÜN either, which is the form the temptation actually takes.** Per A-G250 it does
+not appear in reports again, and the engineering argument stays readable at A-G230 without being re-asked.
+
+**Six new defects, all six this lane's, taking the count to 106.** Four of them are in adjudications this lane
+wrote between §36 and §45, and the fourth — the census that said two of seventeen — was refuted by the table
+seventeen sections after it, in this document, by its own rule.
+
