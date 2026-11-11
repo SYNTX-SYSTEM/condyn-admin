@@ -31,6 +31,9 @@ import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, sharp, PROVENANCE } from "./gruen-instrument.mjs";
+import { rgbConstant } from "./gruen-provenance.mjs";
+/* §89: CYAN too — both named product colours are READ, never copied. rgb(3,5,8) stays a literal because it
+   is the stage plate as MEASURED, not a named product constant, and that distinction is the point. */
 
 const here = dirname(fileURLToPath(import.meta.url));
 const clamp = v => Math.max(0, Math.min(255, v));
@@ -57,10 +60,10 @@ for (const [pn, pf] of Object.entries(PREMUL)) for (const [bn, bf] of Object.ent
 FAMILY.push({ name: "RECORD: round(D + a(S-D))", f: (d, s, A) => d.map((v, i) => clamp(Math.round(v + (A / 255) * (s[i] - v)))) });
 
 const PAIRS = [
-  { label: "GAP_HUE over the modal medium", d: [6, 12, 17], s: [245, 166, 35] },
-  { label: "CYAN over the modal medium",    d: [6, 12, 17], s: [92, 200, 255] },
-  { label: "GAP_HUE over pure black",       d: [0, 0, 0],   s: [245, 166, 35] },
-  { label: "CYAN over the stage plate",     d: [3, 5, 8],   s: [92, 200, 255] }
+  { label: "GAP_HUE over the modal medium", d: [6, 12, 17], s: rgbConstant("GAP_HUE") },
+  { label: "CYAN over the modal medium",    d: [6, 12, 17], s: rgbConstant("CYAN") },
+  { label: "GAP_HUE over pure black",       d: [0, 0, 0],   s: rgbConstant("GAP_HUE") },
+  { label: "CYAN over the stage plate",     d: [3, 5, 8],   s: rgbConstant("CYAN") }
 ];
 const CELL = 16, COLS = 16, INNER = 6;
 

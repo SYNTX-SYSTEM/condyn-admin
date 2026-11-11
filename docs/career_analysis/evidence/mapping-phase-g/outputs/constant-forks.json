@@ -1,0 +1,509 @@
+{
+ "reading": "GRÜN · §89 — product constants copied into this lane's instruments, classified HALTS / REPORTS / NOTHING",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "source reading and string matching over scripts/gruen-*.mjs and the product's own declarations. No browser, no build, no server.",
+ "why": "GELB ran the three hazards I reported against their own instruments and the constants hazard FAILED there — one HALTS of eleven files. I reported it and had not run it on myself. GELB's sentence is the standard: a constant copied out of the product without a check is not a citation, it is a FORK.",
+ "classification": {
+  "READS": "holds NO copy — the value is read out of the product at run time, so there is nothing to go stale. Strictly stronger than HALTS.",
+  "HALTS": "holds a copy and THROWS if the copy disagrees with the product",
+  "READS (partly)": "reads some constants and still copies others",
+  "REPORTS": "reads the product and notices a move, but continues",
+  "NOTHING": "a literal with no tie to the product at all",
+  "NO CONSTANT": "no product constant appears"
+ },
+ "commentsStripped": "a constant NAMED in a comment is not a constant USED in code — §83's defect — so every scan runs on the comment-stripped source",
+ "detectorLimit": "a constant is credited to a file by NAME, or by a DISTINCTIVE value — a decimal with two or more fractional digits, a quoted triple, or a multi-field literal. A bare small integer is never evidence: LABEL_GAP, FRAME_PASS_CAP and SIZE_FLOOR_PX are all 12, and the first version of this detector credited every script containing the digits '12' with forking all three. So this audit UNDER-reports by design where a product value is a small integer copied as a literal, and that is the honest direction.",
+ "productConstantsRead": {
+  "CYAN": "92, 200, 255",
+  "GAP_HUE": "245, 166, 35",
+  "INK": "205, 240, 255",
+  "SEAT": "rgba(0, 0, 0, 1)",
+  "RING_LUMINANCE": "{ shelf: 0.022, best: 0.085, field: 0.15, horizon: 0.25 }",
+  "GLOW_RAMP": "[[0, 1], [0.33, 1], [0.45, 0.72], [0.58, 0.46], [0.72, 0.24], [0.86, 0.08], [1, 0]]",
+  "VOLUME": "{ coreAlpha: 0.16, haloAlpha: 0.5, haloNear: 2.6, haloFar: 3.0, depthRatio: 1.45 }",
+  "WAVE": "{ periodMs: 10000, riseMs: 4000, edgeLagMs: 1200, layers: 7, peakAlpha: 0.015, haloDepth: 0.235, selectedGain: 0.35 }",
+  "CROWDING": "0.3",
+  "BODY_BUDGET": "{ L0: 7, L1: 12 }",
+  "SEAT_PAD_PX": "1.6",
+  "STROKE_MIN_PX": "1.2",
+  "TEXT_MIN_PX": "11",
+  "FLOOR_HEADROOM": "1.002",
+  "STAGE_GROUND_ALPHA": "0.92",
+  "CHAR_EM": "0.62",
+  "LABEL_GAP": "12",
+  "FRAME_EM_PER_CHAR": "{ sans: 0.62, mono: 0.62 }",
+  "FRAME_PASS_CAP": "12",
+  "SIZE_FLOOR_PX": "12"
+ },
+ "productConstantsNOTReadable": [],
+ "census": {
+  "NOTHING": 11,
+  "NO CONSTANT": 16,
+  "READS": 7,
+  "HALTS": 5
+ },
+ "byState": {
+  "NOTHING": [
+   "gruen-ag36-pg17-geometry.mjs",
+   "gruen-glow.mjs",
+   "gruen-instrument.mjs",
+   "gruen-option3.mjs",
+   "gruen-pg16-crowding-L1.mjs",
+   "gruen-pg17-gate.mjs",
+   "gruen-pg17-reanchor.mjs",
+   "gruen-pg22-seats.mjs",
+   "gruen-pg23-alpha.mjs",
+   "gruen-rings.mjs",
+   "gruen-vector-expressibility.mjs"
+  ],
+  "NO CONSTANT": [
+   "gruen-bodies.mjs",
+   "gruen-colour.mjs",
+   "gruen-discriminator.mjs",
+   "gruen-fixture-states.mjs",
+   "gruen-floor.mjs",
+   "gruen-hooks-verify.mjs",
+   "gruen-light.mjs",
+   "gruen-pg1-live.mjs",
+   "gruen-pg11.mjs",
+   "gruen-pg16-crowding.mjs",
+   "gruen-pg17.mjs",
+   "gruen-pg20.mjs",
+   "gruen-pg22.mjs",
+   "gruen-pg23-computed.mjs",
+   "gruen-provenance.mjs",
+   "gruen-rank5-check.mjs"
+  ],
+  "READS": [
+   "gruen-compositing-ladder.mjs",
+   "gruen-compositing-model.mjs",
+   "gruen-join-quantisation.mjs",
+   "gruen-pg12-alpha-quantisation.mjs",
+   "gruen-pg12-chroma.mjs",
+   "gruen-pg12-direction.mjs",
+   "gruen-pg12-floor-measured.mjs"
+  ],
+  "HALTS": [
+   "gruen-constant-forks.mjs",
+   "gruen-pg14-convergence.mjs",
+   "gruen-pg14-frame-fixed.mjs",
+   "gruen-pg16-satisfiability.mjs",
+   "gruen-seal-staleness.mjs"
+  ]
+ },
+ "forksThatCarryRecordedNumbers": [],
+ "perFile": [
+  {
+   "file": "gruen-ag36-pg17-geometry.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GLOW_RAMP",
+    "SEAT_PAD_PX",
+    "STROKE_MIN_PX",
+    "FLOOR_HEADROOM"
+   ],
+   "byValueOnly": [
+    "GLOW_RAMP"
+   ]
+  },
+  {
+   "file": "gruen-bodies.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-colour.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-compositing-ladder.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "CYAN",
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-compositing-model.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-constant-forks.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "CYAN",
+    "GAP_HUE",
+    "INK",
+    "SEAT",
+    "RING_LUMINANCE",
+    "GLOW_RAMP",
+    "VOLUME",
+    "WAVE",
+    "CROWDING",
+    "BODY_BUDGET",
+    "SEAT_PAD_PX",
+    "STROKE_MIN_PX",
+    "TEXT_MIN_PX",
+    "FLOOR_HEADROOM",
+    "STAGE_GROUND_ALPHA",
+    "CHAR_EM",
+    "LABEL_GAP",
+    "FRAME_EM_PER_CHAR",
+    "FRAME_PASS_CAP",
+    "SIZE_FLOOR_PX"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-discriminator.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-fixture-states.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-floor.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-glow.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "VOLUME"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-hooks-verify.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-instrument.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "VOLUME",
+    "CROWDING",
+    "BODY_BUDGET"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-join-quantisation.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-light.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-option3.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "SEAT",
+    "RING_LUMINANCE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg1-live.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg11.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg12-alpha-quantisation.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg12-chroma.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg12-direction.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg12-floor-measured.mjs",
+   "state": "READS",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg14-convergence.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "CROWDING",
+    "BODY_BUDGET",
+    "TEXT_MIN_PX",
+    "FLOOR_HEADROOM",
+    "CHAR_EM",
+    "LABEL_GAP",
+    "SIZE_FLOOR_PX"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg14-frame-fixed.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "CROWDING",
+    "BODY_BUDGET",
+    "TEXT_MIN_PX",
+    "FLOOR_HEADROOM",
+    "LABEL_GAP",
+    "FRAME_EM_PER_CHAR",
+    "FRAME_PASS_CAP",
+    "SIZE_FLOOR_PX"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg16-crowding-L1.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "BODY_BUDGET"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg16-crowding.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg16-satisfiability.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "CROWDING"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg17-gate.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "INK"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg17-reanchor.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "SEAT_PAD_PX",
+    "STROKE_MIN_PX",
+    "FLOOR_HEADROOM"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg17.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg20.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg22-seats.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "SEAT"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg22.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg23-alpha.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "GLOW_RAMP"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg23-computed.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-provenance.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": true,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-rank5-check.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-rings.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "INK",
+    "SEAT"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-seal-staleness.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "RING_LUMINANCE",
+    "GLOW_RAMP",
+    "VOLUME",
+    "WAVE",
+    "CROWDING",
+    "BODY_BUDGET",
+    "SEAT_PAD_PX",
+    "STROKE_MIN_PX",
+    "TEXT_MIN_PX",
+    "STAGE_GROUND_ALPHA"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-vector-expressibility.mjs",
+   "state": "NOTHING",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [
+    "CROWDING"
+   ],
+   "byValueOnly": []
+  }
+ ],
+ "finding": "39 instruments scanned. 5 HALT, 0 REPORT, 11 do NOTHING, 16 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
+}

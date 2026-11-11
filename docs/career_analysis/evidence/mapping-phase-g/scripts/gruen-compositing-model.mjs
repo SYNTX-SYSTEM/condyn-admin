@@ -51,9 +51,10 @@ import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, sharp, PROVENANCE } from "./gruen-instrument.mjs";
+import { rgbConstant } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const D = [6, 12, 17], S = [245, 166, 35];
+const D = [6, 12, 17], S = rgbConstant("GAP_HUE");   // D is MEASURED (the modal medium); S is READ from the product
 const clamp = v => Math.max(0, Math.min(255, v));
 const KS = [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 255];
 

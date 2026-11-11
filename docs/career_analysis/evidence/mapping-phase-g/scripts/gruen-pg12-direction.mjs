@@ -14,11 +14,11 @@ import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { labOf, chromaQuantumFloor } from "./gruen-colour.mjs";
-import { PROVENANCE } from "./gruen-provenance.mjs";
+import { PROVENANCE, rgbConstant } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const MEDIUM = [6, 12, 17];          // the medium's modal triple, MEASURED at both sizes
-const GAP_HUE = [245, 166, 35];      // the source constant
+const GAP_HUE = rgbConstant("GAP_HUE");   // §89: READ from the product, not copied into this file
 const labC = (r, g, b) => labOf(r, g, b).C;
 const hsvS = (r, g, b) => { const mx = Math.max(r, g, b), mn = Math.min(r, g, b); return mx === 0 ? 0 : 100 * (mx - mn) / mx; };
 const srgbRange = (r, g, b) => Math.max(r, g, b) - Math.min(r, g, b);

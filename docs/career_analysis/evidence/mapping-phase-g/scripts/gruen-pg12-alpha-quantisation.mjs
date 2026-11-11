@@ -36,11 +36,11 @@ import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { labOf, chromaQuantumFloor } from "./gruen-colour.mjs";
-import { PROVENANCE } from "./gruen-provenance.mjs";
+import { PROVENANCE, rgbConstant } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const MEDIUM = [6, 12, 17];           // the modal medium triple, MEASURED at both sizes
-const GAP_HUE = [245, 166, 35];       // the source constant
+const GAP_HUE = rgbConstant("GAP_HUE");       // the source constant
 const eq = (x, y) => x[0] === y[0] && x[1] === y[1] && x[2] === y[2];
 const rgb = t => `rgb(${t.join(", ")})`;
 

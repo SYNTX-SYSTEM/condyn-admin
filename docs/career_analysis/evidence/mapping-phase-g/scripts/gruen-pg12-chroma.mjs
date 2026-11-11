@@ -28,7 +28,11 @@ import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureChroma, chromaQuantumFloor, labOf,
   classMasks, servedProvenance, PROVENANCE, median, pct, e4
 } from "./gruen-instrument.mjs";
-import { writeSealed } from "./gruen-provenance.mjs";
+import { writeSealed, rgbConstant } from "./gruen-provenance.mjs";
+/* §89: GAP_HUE is READ from the product, not copied here. This probe writes a SEALED reading and its
+   gapHueAtFullStrength figure carries the "PG-12 cannot be satisfied by any build" finding, so a
+   forked copy of the hue would have put a withdrawn-hue number behind a live conclusion. */
+const GAP_HUE_RGB = rgbConstant("GAP_HUE");
 
 const here = dirname(fileURLToPath(import.meta.url));
 /* §82: the worktree whose .next/BUILD_ID and git state the provenance block records. Defaults to THIS
@@ -104,7 +108,7 @@ const publishable = {
   mediumModalTriple: medianTriple,
   chromaQuantumFloorAtMedium: floor,
   mediumC50_overQuantum: +(mediumC.p50 / Math.max(1e-9, floor.maxOneCodeDeltaC)).toFixed(2),
-  referenceChromas: { gapHueAtFullStrength_rgb245_166_35: +labOf(245, 166, 35).C.toFixed(2), fieldInkAtFullStrength_rgb205_240_255: +labOf(205, 240, 255).C.toFixed(2), stagePlate_rgb3_5_8: +labOf(3, 5, 8).C.toFixed(2) },
+  referenceChromas: { gapHueAtFullStrength: +labOf(...GAP_HUE_RGB).C.toFixed(2), gapHueTripleReadFromProduct: `rgb(${GAP_HUE_RGB.join(", ")})`, fieldInkAtFullStrength_rgb205_240_255: +labOf(205, 240, 255).C.toFixed(2), stagePlate_rgb3_5_8: +labOf(3, 5, 8).C.toFixed(2) },
   resolutionReading:
     `the medium's median C* is ${mediumC.p50} and one sRGB code step at its own modal triple [${medianTriple}] moves C* by up to ${floor.maxOneCodeDeltaC}. ` +
     `So the medium's chroma is ${(mediumC.p50 / Math.max(1e-9, floor.maxOneCodeDeltaC)).toFixed(2)} x the raster's chroma quantum there. ` +
@@ -116,7 +120,7 @@ const publishable = {
    */
   satisfiability: (() => {
     const required = mediumC.p50 / BOUND;                       // the hue class's C* the bound demands
-    const hueFullStrength = labOf(245, 166, 35).C;              // GAP_HUE at alpha 1 — the most chroma this hue can have
+    const hueFullStrength = labOf(...GAP_HUE_RGB).C;            // GAP_HUE at alpha 1, READ from the product — the most chroma this hue can have
     return {
       mediumChromaP50: mediumC.p50,
       hueClassChromaRequiredByBound: +required.toFixed(2),
@@ -125,7 +129,7 @@ const publishable = {
       satisfiableAtAnyAlpha: hueFullStrength >= required,
       reading: hueFullStrength >= required
         ? "the bound is reachable in principle; whether this build reaches it is sealed"
-        : `the bound demands the hue-carrying class reach C* ${required.toFixed(2)} while GAP_HUE at FULL strength (alpha 1, rgb 245,166,35) has C* only ${hueFullStrength.toFixed(2)}. No alpha can exceed the hue's own chroma, and the glow is a low-alpha gradient over near-black, so NO rendering of this hue can satisfy the bound. PG-12 as written cannot be satisfied by any build — the mirror of PG-11, which cannot return a verdict on a compliant one.`,
+        : `the bound demands the hue-carrying class reach C* ${required.toFixed(2)} while GAP_HUE at FULL strength (alpha 1, rgb ${GAP_HUE_RGB.join(",")}) has C* only ${hueFullStrength.toFixed(2)}. No alpha can exceed the hue's own chroma, and the glow is a low-alpha gradient over near-black, so NO rendering of this hue can satisfy the bound. PG-12 as written cannot be satisfied by any build — the mirror of PG-11, which cannot return a verdict on a compliant one.`,
       metricCaveat: "CONDITIONAL ON THE METRIC. PG-12 says 'chroma' without naming a colour space or a reference white. This is CIELAB C* (D65). A different definition — relative saturation, chroma in a cone-opponent space, a ratio against each pixel's own lightness — could change the conclusion, and some would make it satisfiable. That the pin's verdict depends on an unnamed metric is itself an A-G95 gap: the carrier is named (hue, on medium pixels) and the QUANTITY is not.",
       notAnOpinionOnCompliance: "this says the pin cannot be met by any artifact, which A-G116 places outside the seal. It says nothing about this build's reading, which is in the sealed file."
     };

@@ -22,11 +22,11 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { labOf } from "./gruen-colour.mjs";
-import { PROVENANCE } from "./gruen-provenance.mjs";
+import { PROVENANCE, rgbConstant } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const OUT = resolve(here, "../outputs");
-const D = [6, 12, 17], S = [245, 166, 35];
+const D = [6, 12, 17], S = rgbConstant("GAP_HUE");   // D is MEASURED (the modal medium); S is READ from the product
 
 /* A-G126's projection, identical in form to the other two scripts so the three cannot drift */
 const med = labOf(...D), hue = labOf(...S);

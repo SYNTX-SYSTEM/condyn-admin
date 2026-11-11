@@ -31,10 +31,11 @@ import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { chromium, sharp, PROVENANCE } from "./gruen-instrument.mjs";
+import { rgbConstant } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const D = [6, 12, 17];            // the modal medium, as measured at both sizes
-const S = [245, 166, 35];         // GAP_HUE, the source constant
+const S = rgbConstant("GAP_HUE");         // GAP_HUE, the source constant
 const CELL = 40, COLS = 8;
 const clamp = v => Math.max(0, Math.min(255, v));
 const q8 = a => Math.round(a * 255) / 255;

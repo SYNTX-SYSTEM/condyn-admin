@@ -94,3 +94,26 @@ export function writeSealed(path, json) {
   writeFileSync(path, text);
   return { written: true, outcome: "RESEALED", path };
 }
+
+/**
+ * §89 · READ THE PRODUCT'S COLOUR CONSTANTS, DO NOT COPY THEM.
+ *
+ * GELB's standard, which I reported as a hazard and had not run on myself: a constant copied out of the
+ * product without a check is not a citation, it is a FORK. The audit found four of my instruments forking
+ * `GAP_HUE` — and those four carry every PG-12 figure in the record, including the measured floor
+ * (`outputs/pg12-floor-measured.json`) and the compositing ladder (`outputs/compositing-ladder.json`).
+ *
+ * A guard on a duplicate is weaker than no duplicate, so this reads the value instead of checking a copy.
+ * It throws when the declaration cannot be found, because a colour constant that silently defaults is how a
+ * figure ends up describing a hue the product does not draw.
+ */
+const PRODUCT_SOURCE = new URL("../../../../../app/components/career/demo/PersonJobMappingField.tsx", import.meta.url).pathname;
+export function rgbConstant(name) {
+  const src = readFileSync(PRODUCT_SOURCE, "utf8");
+  const m = new RegExp(`^(?:export )?const ${name} = "([^"]+)";`, "m").exec(src);
+  if (m === null) throw new Error(`ERR_GRUEN_PRODUCT_CONSTANT_MISSING: ${name} is not declared as an rgb triple in ${PRODUCT_SOURCE}. An instrument that cannot read it must not assume it.`);
+  const parts = m[1].split(",").map(x => Number(x.trim()));
+  if (parts.length !== 3 || parts.some(n => !Number.isInteger(n) || n < 0 || n > 255))
+    throw new Error(`ERR_GRUEN_PRODUCT_CONSTANT_SHAPE: ${name} = "${m[1]}" is not three 8-bit channels.`);
+  return parts;
+}
