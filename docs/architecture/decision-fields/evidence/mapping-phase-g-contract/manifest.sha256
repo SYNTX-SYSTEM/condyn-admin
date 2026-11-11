@@ -17,6 +17,7 @@ d25c90c00a512788e6b74f7a49a3ae331df93ca7045d6f22e5d1e826b7385131  ./outputs/3ec8
 813de366297e0319e9401473fd7fea13a864b14e30c3d56862d4e80bda1bf32d  ./outputs/3ec8457d-tip/TAXONOMY.json
 9fd668db1f8b8670177a9b8d32af7a0152c4c256783b4f469f97ae0bf2c68dbc  ./outputs/3ec8457d-tip/TIMING-ADEQUACY.json
 0c2f7f2d2d28ad3e45d5c024b79d6e54bf6baa763f86ca460016562c69981aaa  ./outputs/3ec8457d-tip/V11-REFERENCE.json
+48f410ebb64fed8aad8fc5e8799b44d04d353de80dfa3f42ab48b54591f6117a  ./outputs/AG340-CAPABILITY.json
 8bf256bf05fee2906bf66b6d7acaf6649b630806bf4806b9227e42e9942d5c3c  ./outputs/cross-read/GRUEN-pg16-crowding-at-0.5-as-read.json
 e6d3229d5cfe400743c9e836a7b21227a6a0f6e543abd95cb06a2b6c17e39bb8  ./outputs/cross-read/GRUEN-pg16-crowding-L1-as-read.json
 af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPTHGAIN-NORMALISATION.json
@@ -31,9 +32,10 @@ b09c105062e7a5a8dd67e143737ad6c8955b5efe53cc153c5d0ede63530fdd0d  ./outputs/PF4-
 b9e6b4ba96f61cd12deb3b61de6f1ee0afdc359a4c41094820edd50a241e71a8  ./outputs/PG10-LIMB1-MASKFLOOR.json
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-9b0477201503f2a4eb2ecd993b5e4e887c7aa287c689c57e316ca2d5e488c588  ./prep.txt
+1173eb42e37d3885c4ae4de010b4edec796c811d5099fabd719bce3bee07d22b  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
+9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0  ./scripts/pink-ag340-capability-g.mjs
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs

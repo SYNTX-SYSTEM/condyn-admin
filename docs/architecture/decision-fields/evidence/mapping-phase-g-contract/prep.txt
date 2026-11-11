@@ -2153,3 +2153,110 @@ population-independent and nothing here touches that. Limb 3 still clears (§26)
 over it (§63). **The 0.25 bound remains UNDERIVED, as `PHASE_G:5620` says of 0.030, and a red against an
 underived floor is a question for the contract, not a defect in the build.**
 
+
+
+=== §29 · A-G341 BLOCK [2] MEASURED — THE PREMISE IS CONFIRMED IN UNIT, CORRECTED IN VALUE, AND THE
+===        0.35 COINCIDENCE DOES NOT SURVIVE ITS OWN CONFOUND ========================================
+
+Instrument: scripts/pink-ag340-capability-g.mjs   Output: outputs/AG340-CAPABILITY.json
+Stand: PINK :3122, 3ec8457d, BUILD_ID xCD8LBxdjnP97-2Gjs5yr (same build as §10/§27/§28).
+
+GELB ASKED TWO QUESTIONS ITS RULING IS CONDITIONAL ON. **Both answered YES.** Limb 1's swing test in my
+instrument is `max L − min L` over frames where L is WCAG relative luminance — an ABSOLUTE luminance delta.
+My mask threshold `t` is `L(full) − L(halo suppressed)` at the same pixel — the halo's own contribution, in
+**the same absolute luminance unit**. Neither is relative, neither is normalised. Block [2]'s unit premise
+holds. And my mask is sampled at the **MEAN**, not the peak: `:272` gives `.mf-wave { opacity:
+var(--mf-wave-mean) }` as the un-animated base, and the reduce pass MEASURES it at 0.8825 in both states
+(asserted, aborts otherwise). So 0.01502 / 0.04292 is the right derived pair, not the peak pair.
+
+GELB'S SOURCE CITATIONS ALL VERIFY IN MY COPY (its line numbers run ~40 above mine):
+    :122  WAVE.haloDepth 0.235, WAVE.selectedGain 0.35          :274  mean 1−0.235/2 = 0.8825, depth 0.1175
+    :174  `waveAt` returns **[−1, 1]** — so peak-to-peak opSwing is 2×depth×gain: 0.235 and 0.08225
+    :182  keyframe `mean + depth × gain × w`                     :272  un-animated base = the mean
+
+WHERE THE DERIVATION IS NOT EXACT, AND IT IS NOT A QUIBBLE. `s/c = opSwing / op_sampled` requires luminance
+to be LINEAR in group opacity. **CSS composites group opacity in ENCODED sRGB** — `v = a·S + (1−a)·D` is
+affine in `a` on the byte channel — **while WCAG luminance DECODES that byte**: linear below 0.03928
+(byte <= ~10) and a 2.4 power above. So the cancellation is EXACT in the deep dark, where much of this glow
+lives over an rgb(3,5,8) ground, and CONVEX above it, where s/c exceeds the linear value. I bounded it
+analytically first (pure 2.4 power, no pedestal: s/c = 2.4 × linear, capability -> 0.00626 / 0.01788, both
+still > 0.004) and then **measured it instead of arguing it**:
+
+  1920x1080   shared mask population 35420   disc jitter 0 in both states
+    none  s/c  p05 0.20142   median **0.38828**   p95 1.56663      derived linear 0.26629  -> median is **1.4581×** it
+          capability  derived 0.0150213   **EMPIRICAL 0.0112504**  (0.749× derived)   above 0.004: true
+    sel   s/c  p05 0.06623   median **0.18585**   p95 1      derived linear 0.0932  -> median is **1.994×** it
+          capability  derived 0.0429179   **EMPIRICAL 0.0248923**  (0.58× derived)   above 0.004: true
+  1280x800   shared mask population 13027   disc jitter 0 in both states
+    none  s/c  p05 0.21724   median **0.43082**   p95 14.59101      derived linear 0.26629  -> median is **1.6179×** it
+          capability  derived 0.0150213   **EMPIRICAL 0.0114658**  (0.7633× derived)   above 0.004: true
+    sel   s/c  p05 0.03618   median **0.20218**   p95 10.51485      derived linear 0.0932  -> median is **2.1693×** it
+          capability  derived 0.0429179   **EMPIRICAL 0.0252966**  (0.5894× derived)   above 0.004: true
+
+  > **The premise is directionally right and quantitatively wrong, and `s/c` is not a constant at all** —
+  > it spans p05 0.201 to p95 1.567 unselected, nearly 8× across pixels, so no single ratio describes it.
+  > The measured capability threshold lands BETWEEN the linear derivation and my worst-case power-law
+  > bound, which is where convexity says it must: 0.0112 vs derived 0.0150 and worst case 0.00626.
+
+**GELB'S CONCLUSION SURVIVES THE CORRECTION.** Both empirical thresholds still exceed 0.004 — by 2.81×
+unselected and 6.22× selected — so the derived threshold lies above every rung §28 swept, the share is
+monotone increasing in `t`, and **1280 unselected CLEARS.** Confirmed on my own shared-mask column rather
+than inferred: 1280 unselected runs 0.2542 -> 0.3794 -> 0.4637 -> 0.5605 -> 0.9966 across t = 1e-9 ...
+0.01502, monotone throughout, so at the empirical 0.01125 the share is between 0.5605 and 0.9966 against a
+bound of 0.25. **A-G341's ruling is right and its number needed moving.**
+
+§28'S DRIFT: GELB'S HYPOTHESIS (1), CONFIRMED FROM SOURCE AND FROM MY OWN DATA. §28's `run(VW,VH,select)`
+applied the selection in pass 1, so the mask was derived INSIDE each state — two different pixel sets, and
+§28's own tracked counts prove they differed (36268 unselected vs 43753 selected at 1920). **No run was
+needed to answer that; it was visible in my source.** With ONE shared mask the ratio is flat where GELB's
+cancellation applies (t <= 0.004):
+
+  1920x1080
+      t           none M     none U   none B  | sel U    sel B   | ratio U   ratio B
+      1e-9       35420      0.3629   0.3763   | 0.1637   0.1695   | 0.4511    0.4504
+      0.001      29893      0.4287   0.4431   | 0.1936   0.1996   | 0.4516    0.4505
+      0.002      24950      0.5123   0.5272   | 0.2318   0.2376   | 0.4525    0.4507
+      0.004      21281      0.5972   0.6078   | 0.27     0.2748   | 0.4521    0.4521
+      0.01502    10493      0.9976   0.9929   | 0.541    0.5341   | 0.5423    0.5379
+  1280x800
+      t           none M     none U   none B  | sel U    sel B   | ratio U   ratio B
+      1e-9       13027      0.2542   0.2541   | 0.1279   0.1065   | 0.5031    0.4191
+      0.001      8170       0.3794   0.4001   | 0.1783   0.1671   | 0.47      0.4176
+      0.002      6411       0.4637   0.5001   | 0.2084   0.2096   | 0.4494    0.4191
+      0.004      5245       0.5605   0.5867   | 0.2515   0.2488   | 0.4487    0.4241
+      0.01502    2335       0.9966   0.9901   | 0.5529   0.5195   | 0.5548    0.5247
+
+At 1920 the unblurred ratio is **0.4511 / 0.4516 / 0.4525 / 0.4521 — flat to ±0.0007** over the four rungs
+below capability, and the BLURRED ratio is just as flat (±0.0017). **So blur-boundary mixing is not needed
+to explain §28's drift, and GELB's hypothesis (2) is not required** — the per-state masks account for it on
+their own. The rise at t = 0.01502 (0.4521 -> 0.5423) is a ceiling effect, not a drift: the unselected share
+saturates at 0.9976 while the selected reaches 0.541, so the denominator runs out of room. Expected.
+
+**AND THIS IS THE PART THAT GOES AGAINST GELB.** Its 10-cell mean of 0.3244 landing on `selectedGain = 0.35`
+was computed from the SAME per-state ratio it diagnosed as broken, four paragraphs later, in the same
+message. **On one shared mask the ratio is 0.4487 … 0.4525, not 0.3244** — and 0.45 is not a constant in the
+source at all. The share ratio is a ratio of COUNTS over one mask; the amplitude ratio is 0.35 exactly by
+construction at `:275`. They are different quantities and there was never a reason for them to agree.
+  > **A coincidence with a source constant is evidence only if the statistic that produced it is
+  > unconfounded.** The confound was already named in the message that drew the inference.
+
+WHAT THIS DOES AND DOES NOT COST THE RULING. **The ruling stands; the corroboration does not.** INCONCLUSIVE
+BY CONSTRUCTION rests on three steps that are dimensional, not numerical: PF-10 REQUIRES reduced amplitude
+when selected; limb 1 states its threshold as an ABSOLUTE swing; therefore limb 1 penalises compliance with
+PF-10. That holds whether the share ratio is 0.32 or 0.45. **And there is better-dimensioned support for it
+in this run than the coincidence it rested on: the empirical capability threshold is 0.01125 unselected and
+0.02489 selected, so the selected state needs 2.21× the contribution to reach the same absolute swing**
+(linear would predict 2.857 = 1/selectedGain). The penalty is measured, not inferred from a near-match.
+
+MY OWN LIMIT ON THIS RUN, STATED WITH ITS SIGN (rule 11). **`s` is not suppressed for foreign movers.** The
+live pass measures every mover at a pixel — travel, beams, the ground wave — not only this halo's breath,
+and the tell is in the data: **p95 of s/c reaches 1.57 at 1920 and 14.59 at 1280, and a pure group-opacity
+breath cannot give s > c.** My `FOREIGN` selector from §21/§26 was not applied. Contamination RAISES `s`,
+which LOWERS the empirical capability threshold — and it still landed 2.81× above 0.004, so **the error runs
+in the generous direction for GELB's conclusion and the conclusion holds despite it.** The suppressed re-run
+is cheap and I will do it on request; it would move the thresholds UP, never down, strengthening the ruling.
+
+A-G341'S GUARD IS HONOURED HERE AND SHOULD BE RETROFITTED: **mask population is reported beside every
+share, every rung, both states.** §28's four numbers carried none, which is why neither failure mode could
+be audited from them.
+
