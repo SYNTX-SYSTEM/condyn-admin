@@ -70,12 +70,15 @@ export const BODY_BUDGET_L0 = num(/BODY_BUDGET = Object\.freeze\(\{ L0: ([0-9]+)
 export const BODY_BUDGET_L1 = num(/BODY_BUDGET = Object\.freeze\(\{ L0: [0-9]+, L1: ([0-9]+)/g, "BODY_BUDGET.L1");
 export const LABEL_GAP      = num(/LABEL_GAP = ([0-9.]+)/g, "LABEL_GAP");
 export const DRAWN_PX       = num(/const DRAWN_PX = ([0-9.]+)/g, "DRAWN_PX");
-/* NOT covered, and the refusal is the finding: SIZE_FLOOR_PX and FRAME_PASS_CAP do not exist at this
-   pinned build. GRÜN's §89 named LABEL_GAP, FRAME_PASS_CAP and SIZE_FLOOR_PX as the three product
-   constants equal to 12; only LABEL_GAP is here, so two of the three are POST-4b83414e — they came with
-   GRÜN's PG-14 work. So this module's coverage count is against 4b83414e and NOT against what ships,
-   which is a limit on the number rather than on the module. Stated because the module refused to export
-   a constant I had assumed existed, which is the behaviour A-G398 bought. */
+/* CORRECTED in §89. The first form of this note said SIZE_FLOOR_PX "does not exist at this pinned build".
+   IT EXISTS — it is IMPORTED by the component from lib/career/view-model/mapping-field.ts, not declared
+   in it, so a module that reads ONE FILE cannot see it. The refusal was right and my reason for it was
+   wrong, which is worse than a wrong refusal because it hid a scope defect behind a correct outcome.
+   FRAME_PASS_CAP and FRAME_EM_PER_CHAR genuinely are post-4b83414e (GRÜN's PG-14 work), and 47 + 2 = 49
+   reconciles exactly with GRÜN's count on the current build.
+   So the coverage denominator below is ONE FILE'S declarations, and the product's constants are not all
+   in one file — GRÜN's "a declaration the audit cannot extract is unguarded everywhere", one level up:
+   a declaration in a file the audit never reads is outside its own denominator. */
 
 export const GLOW_RAMP = (() => {
   const body = one(/export const GLOW_RAMP[^=]*=\s*Object\.freeze\(\[([\s\S]*?)\]\s*as const\)/g, "GLOW_RAMP");
@@ -98,5 +101,14 @@ export function coverage() {
     "HALO_NEAR", "HALO_FAR", "SEAT_PAD_PX", "TEXT_SEAT_PX", "CHAR_EM", "CROWDING", "WEDGE_WASH",
     "GAP_ALPHA_GAIN", "CYAN", "INK", "GAP_HUE", "RING_SHELF", "GLOW_RAMP", "WAVE", "VOLUME",
     "RING_LUMINANCE", "BODY_BUDGET", "LABEL_GAP", "DRAWN_PX"]);
-  return { declared: [...new Set(declared)].sort(), uncovered: [...new Set(declared)].filter(n => !covered.has(n)).sort() };
+  /* third category, added in §89: UPPER_CASE names the component IMPORTS. These are product values it
+     uses and this module cannot reach, because it reads one file. SIZE_FLOOR_PX is the proof. */
+  const importBlock = src.slice(0, src.indexOf("\n/**"));
+  const imported = [...new Set((importBlock.match(/\b[A-Z][A-Z0-9_]{2,}\b/g) || [])
+    .filter(n => !/^(PERSON_X_JOB_MAPPING_PHASE_[A-Z]|URL|ONE|POST|JOB|PERSON|MAPPING)$/.test(n)))].sort();
+  return {
+    declared: [...new Set(declared)].sort(),
+    uncovered: [...new Set(declared)].filter(n => !covered.has(n)).sort(),
+    imported, outOfScope: imported.filter(n => !covered.has(n)).sort(),
+  };
 }

@@ -7303,6 +7303,17 @@ the record has no name for it:**
 > **By A-G54 this is not WITHDRAWN: it is correct as a statement about `3ec8457d` and silent about
 > `7910845b`.** Limb (b) — no factor rescues it — is build-independent and stands. GRÜN re-runs the reading
 > with the real-stack ladder, on the same stand; it needs a re-run, not a re-seal.
+>
+> ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+> *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's.*
+> **`guardClears: false` in every cell, on both builds.** L0 1920 **0.253 → 0.259** (+2.4 %), L0 1280
+> **0.229 → 0.227** (−0.9 %), L2 1920 **0.499 → 0.557** (+11.6 %). **So limb (a) holds on the build that
+> ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1920x1080.json`,
+> `outputs/pg11-guard-L0-1280x800.json`, `outputs/pg11-guard-L2-1920x1080.json`, cited by file per A-G392.
+> **The margin narrowed from 2.00× to 1.80×**, so the concern was well founded and the move was a tenth of
+> what would have flipped it. **And the direction confirms the mechanism rather than leaving it assumed:
+> the two L0 cells barely moved while L2 — which frames ONE body, so its viewBox is the one the new frame
+> solve changes most — moved 11.6 %. The cell most exposed moved most.**
 
 > **Consequence: PINK's factor task is void for PG-11 outright, and suspended for PG-12 until the compositing
 > join is measured. A-G115 made them one factor, so there is now nothing for PINK to set in either place, and I
