@@ -1784,3 +1784,55 @@ EVERY threshold, plus the computed-style clause) match the **restatement at `:86
 original row at `:329` (*"every pixel identical"*). I was reading `:329` and GELB is right. **The two
 differ substantially and the live form is the restatement** — worth recording, because a lane quoting
 `:329` would measure a different pin by the same name. Four thresholds reported separately when run.
+
+
+================================================================================================
+§24  PF-3's HALO LIMB MEASURED IN A-F19's DIFFERENTIAL FORM ON A PHASE-G BUILD — RATIO 2.10…5.20
+     AGAINST <= 0.25. GELB'S CONCLUSION WAS RIGHT, ITS METHOD WAS WRONG, IT WITHDREW BOTH, AND THE
+     MEASUREMENT RESTORES THE CONCLUSION. PLUS AN EPSILON DEFECT OF MINE THAT DOES NOT REACH THE
+     VERDICT BUT DOES BOUND WHAT THIS INSTRUMENT COULD EVER HAVE SEEN.
+================================================================================================
+`scripts/pink-pf3-halo-differential-g.mjs` -> `outputs/PF3-HALO-DIFFERENTIAL.json`. `reduce`, per body,
+each halo and each core suppressed INDIVIDUALLY (halos run to 2.6-3.0 r and overlap, so a pooled
+differential would let a bright neighbour pay for a dim body — A-G194 in a new place). §63: one fixture.
+
+MEASURED, five bodies, both sizes. Halo excess / core peak, bound <= 0.25:
+    1920   ratios **2.5576 · 5.1971 · 2.8981 · 3.1666 · 3.8983**     halo excess max 0.0542…0.1092
+    1280   ratios **2.1003 · 4.4930 · 2.8457 · 2.3845 · 3.2895**     halo excess max 0.0511…0.0939
+**All five fail at both sizes, by 8x to 21x.** And the verdict does not rest on single pixels: the
+p999.9-based ratios track the peaks closely (2.5568 vs 2.5576; 5.0921 vs 5.1971), which is A-F11's
+check passing rather than being argued.
+
+  > **GELB'S §68 NUMBER WAS APPROXIMATELY RIGHT AND ITS WITHDRAWAL WAS STILL CORRECT.** A-G293 computed
+  > **2.727…3.101** from declared alphas with no compositing, and GELB withdrew it in §72 because the
+  > method was the same confound A-F19 had already fixed. **That withdrawal was procedurally right. But
+  > 2.727…3.101 lies INSIDE my measured 2.10…5.20.** So the conclusion survives its own method's
+  > retraction, and now rests on the pin's own amended form instead of on raw alphas.
+  > **A figure reached by a confounded method is not thereby wrong — it is unsupported, which is a
+  > different thing, and the remedy is to measure it rather than to drop the claim with the method.**
+
+AND THE 50x GAP AGAINST A-F19 IS THE DESIGN, NOT A DISCREPANCY. A-F19 measured 0.039…0.083 on phase F;
+I measure 2.10…5.20 on phase G — a factor of ~25 to ~130. That is far too large for `haloAlpha`'s value
+alone, and the explanation is the one GELB itself gave in §68: **G-2 / R21 made the glow a LIGHT SOURCE.**
+A glow that is a light source is *supposed* to exceed the core. So:
+  > **PF-3's halo limb is not a red against this build. It is an obligation phase G deliberately inverted,
+  > and the measurement is the evidence of the inversion rather than of a defect.** GELB's original
+  > conclusion — *"PF-3 is the opposite obligation"* — is confirmed, in the differential form, on the
+  > build in question. **Retire the halo limb as contradicted by G-2; do not carry it as a red.**
+  > The ratio's VALUE is still worth having: it says the glow out-peaks the core by 2 to 5 times, which
+  > is a quantity G-2 asserts qualitatively and nothing in either phase had measured.
+
+AN EPSILON DEFECT OF MINE, STATED WITH ITS REACH. The mask epsilon was set from a base-to-base floor taken
+over **the whole capture clip**, giving 0.0031951 — where §21's static floor measured over **the disc only**
+was 0.0017. The clip includes out-of-disc host pixels, so the floor is contaminated by something the field
+does not own. That is rule 6's own failure mode, committed by the rule's author, on the region rather than
+on the constant.
+  > **Reach of the defect: none on this verdict.** The peaks are 17x to 34x the floor either way, and the
+  > ratio is peak over peak, so a tighter epsilon admits more low pixels without moving either maximum.
+  > **But it bounds what this instrument could ever have detected, and that is the part worth recording:
+  > A-F19's phase-F halo excess of 0.0035…0.0076 lies BELOW my epsilon of 0.0063902.** So this instrument
+  > could not have reproduced A-F19's figures had phase G been phase-F-like — it can measure phase G's
+  > much larger excess and could not have measured phase F's at all.
+  > **An instrument that cannot detect the magnitude its predecessor reported is not a replacement for it,
+  > even when it returns a defensible number on the build in front of it.** Declared here rather than left
+  > for whoever next compares the two figures.
