@@ -7962,3 +7962,152 @@ about A-G239 and this is the second confirmation of it.
 **Six new defects: three this lane's (one allowance derivation, one wrong prediction, one shared with the
 product), one the product's bare literal, two PINK's own and self-caught. The count is 150.**
 
+
+---
+
+## §70 PF-6's OPEN ROW CLEARS, AND PF-4's THIRD LIMB HOLDS ONLY IN THE STATE IT WAS MEASURED IN
+
+PINK measured PF-6's second row and decomposed PF-4 (`425e54aa`). **One clean clear, one confirmation reached
+backwards, and one limb whose "holds exactly" is conditioned on a state the product leaves on purpose.**
+
+### A-G305 · PF-6's second row CLEARS — the first measurement of it on a phase-G build
+
+| | |
+|---|---|
+| mean \|ΔL\| per 500 ms, all drawn | **2.558e-4** |
+| …foreign motion suppressed | **1.036e-4** |
+| **worst single pair** | **6.292e-4** against ≤ 0.0025 — **clears by 4 × on the worst pair, not only on the mean** |
+| static floor under `reduce` | **7.204e-10** — six orders below the signal |
+
+**A-F11's asymmetric admissibility holds with room rather than by argument**, and PINK reported the worst pair
+beside the mean unasked, which is the distinction this record has had to impose six times elsewhere.
+
+**And it declined phase F's figure for the row with a reason rather than silently:** phase F's 0.0001 *"is not
+what I report and was not admissible"* — A-G54, plus **A-G17 swapped a lit translucent plate for cheap occlusion
+between `9cc06f84` and `3ec8457d`, which is exactly the change that moves a per-frame difference.** A floor is a
+property of a build.
+
+### A-G306 · PF-6's first row names no carrier, so it cannot tell the breath from the travel *(defect 151)*
+
+**§68 identified PF-6's ceiling as PG-10's third limb. PINK confirmed it from the opposite direction and the
+agreement is exact:**
+
+| | max swing | px > 0.030 |
+|---|---|---|
+| `reduce` (floor) | 1.699e-3 | 0 |
+| **LIVE, every sign drawn** | **0.6908** | 1984 |
+| LIVE, foreign motion suppressed | **0.03269** | **104** |
+| LIVE 1280, foreign suppressed | 0.02825 | **0 — clears** |
+
+**§52 masked *in* the carrier and got max 0.0327 on 105 of 51 289 px. PINK masked *out* the foreign and got
+0.03269 on 104. Two different masks, one measurement.**
+
+**And PINK did not report the 0.6908**, because *"a max of 0.69 is a pixel going from near-black to near-white,
+which no translucent breath does — it is the signature that voided my first PG-10 attempt, where resting glows
+'swung' 0.7925."* **Suppressing foreign motion collapses the maximum by a factor of 21: about 95 % of the
+disc-wide breach magnitude is the travelling light that A-G17 and G-4 put in the same disc.**
+
+> **PF-6 row 1 says "no pixel" and names no carrier. So as written it cannot distinguish the breath from the
+> travel, and a lane obeying it literally would report a 0.69 breach that is a correct render of two adopted
+> decisions.** Same class as PG-23's swing form in §55: **a bound whose carrier is unstated is unmeasurable
+> wherever the medium and a signal share pixels.** Third instance, after PG-23's swing and PG-10's carrier.
+>
+> **Ruled: PF-6 row 1 takes PG-10's carrier explicitly. It is one bound on one quantity, breaching only at 1920,
+> on about a hundred pixels of fifty-one thousand.**
+
+**And the inheritance argument is PINK's, stated carefully enough to be worth adopting:** *"A breach inherited
+from a subset was only a lower bound on the superset; measured on the superset it is the **same** breach,
+because nothing else in the disc breaches once the travel is out of frame."*
+
+### A-G307 · PF-4 is a three-limb conjunction and §68 examined one *(defect 152)*
+
+PF-4's full text at `PHASE_F.md:322`: *"monotone in rank, ratio first : last ∈ [1.5, 3.0]; **and** same-class
+marks on different bodies differ ≤ 2 % — i.e. depth did not touch evidence."*
+
+| limb | verdict |
+|---|---|
+| 1 · monotone in rank | **HOLDS** — strictly decreasing at every body count |
+| 2 · ratio ∈ [1.5, 3.0] | **FAILS at 1.4500004**, 3.333 % under; invariant at lastRank 2, 3, 5, 8, 12 **and 70** |
+| 3 · same-class marks ≤ 2 % | **holds in the measured state** — see A-G308 |
+
+**§68's ruling was correctly scoped to the ratio limb and §68 presented PF-4 as though the ratio limb were the
+whole examination.** Three limbs, one evaluated.
+
+**And PINK's figure is more precise than mine: 1.4500004, not 1.45000.** `depthGain` rounds at 1e-6, so
+1.45^(−1) = 0.689655 and 1/0.689655 = 1.4500004. **My instrument printed five decimals and hid the rounding;
+the shortfall is 33 300 × the quantisation spread, so A-G139 cannot reach it either way** — but a figure printed
+to fewer places than its mechanism needs is the thing A-G259 was about, two sections after I wrote A-G259.
+
+### A-G308 · Limb 3 holds in one state and fails by construction in two the product leaves on purpose *(defects 153, 154)*
+
+PINK measured limb 3 as **0.000 % spread** — SEMANTIC (2), LEXICAL (2), NONE (1), strokes byte-identical at
+`rgba(205, 240, 255, 0.82)` — and told me the marks are protected because they *"live outside the body group
+entirely."* **It then corrected itself: 19 arcs and 19 beams ARE inside `[data-mapping-body]`, and the real
+protection is that `depthGain` sits on `.mf-core`, a sibling of the marks rather than an ancestor — and the body
+group's own `opacity` is 1 for every body.** Its own framing: *"'The marks are outside' would survive a change
+that moved the gain onto the group. 'The gain is on a sibling' names the thing that must not change."*
+
+**That is right about the gain and the second clause is conditioned on its fixture.** `4b83414e:723` — **the body
+group carries `opacity={opacity}`**, and `:695` is **`const opacity = inPoolNow ? 1 : 0.18`.** It is 1 for every
+body **only when every body is in the focused pool, which is PINK's L0 single-pool fixture.** And there is a
+second path at `:333`:
+
+```
+[data-testid="mapping-field"] [data-mapping-body][data-lit="false"][data-in-pool="true"] { opacity: 0.32; }
+```
+
+| state | same-class marks differ by | against ≤ 2 % |
+|---|---|---|
+| L0, resting, one pool (PINK's) | **0.000 %** | holds |
+| **L1, a body outside the focused pool** (`opacity` 1 vs 0.18) | **455.6 %** | **fails** |
+| **L0 under `reduce`, a capability selected** (`:333`, 1 vs 0.32) | **212.5 %** | **fails** |
+
+> **Limb 3 fails by construction in both — and both are deliberate: A-6 is the adjudication that put them there**
+> (*"the focused group is never dimmed; the other pools are context at one common gain"*).
+>
+> **So limb 3's wording cannot distinguish depth from focus. Its intent — "depth did not touch evidence" — is
+> satisfied exactly, and its text is violated by a channel it was never about.** PF-3 against G-2 was the same
+> shape one section ago: an obligation contradicted by a decision this record adopted.
+>
+> **Ruled: limb 3 is scoped to its own channel — *same-class marks on different bodies **at the same focus
+> state** differ ≤ 2 %*. Scoped that way it holds, and it tests what it was written to test.**
+
+**And PINK's point survives the correction in the form that matters most.** Limb 3, properly scoped, **is the
+limb that protects evidence from depth, and it currently holds exactly** — so an unexamined move of
+`depthRatio` would be most likely to break the one limb of PF-4 that works. **§68 declined to move the constant
+on three dependants; the pin's own third limb is a fourth and the best of them.**
+
+**Third correction of a source reading of PINK's by measurement in one session** — the `k` icon, the horizon
+disc, and this — **and the third version is still population-conditional, which is §17a's lesson one notch
+further than PINK took it: the reason the next reader inherits has to carry the state it was read in.**
+
+### A-G309 · The bare literal, confirmed from the other side
+
+PINK reads `CHAR_EM = 0.62` at its `:411`, used at `:418` for the **sector label** fit, and the frame widen at
+its `:457` writing **`0.62` as a bare literal** — my `:452`/`:459`/`:498`, the ~40-line offset being the comment
+delta A-G266 established. **Two lanes, two trees, same finding.**
+
+**And it sharpens rather than restates A-G300: the 0.62 sitting 2.9 % from exhaustion is the unnamed duplicate,
+in a place nothing controls. A font fallback exhausts it with no constant to point at.**
+
+### A-G310 · Corroboration is what you get when both routes can see the thing
+
+PINK's closing form of A-G299, adopted into the record because it is the cleaner statement:
+
+> **"Three routes, three blind spots. The point of independence by design is that a blind spot is a property of
+> a construction, so a second route covers the first rather than agreeing with it. *Corroboration is what you
+> get when both routes can see the thing.*"**
+
+**And it is immediately load-bearing: PINK cannot reach the third label because `mapping-collar-more-*` renders
+at L1 and its stand is L0.** So **A-G51's L1 fixture is now the blocker on a named target rather than a general
+one**, which is the state a fixture obligation should be in before anyone builds it.
+
+**Five new defects: three this lane's — a pin examined on one of three limbs, a figure printed to fewer places
+than its mechanism needs, and a limb carried without its channel named — one PINK's self-caught, one PINK's
+corrected and still conditioned. The count is 155.**
+
+**And one clean clear.** PF-6's second row is the first obligation in this phase to pass with its worst case four
+times inside the bound and its floor six orders below the signal, measured by the lane that owes the verdict,
+with the predecessor's figure declined for a stated reason. **After seventy sections that is worth saying
+plainly rather than burying under the defects.**
+
