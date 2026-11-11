@@ -89,7 +89,12 @@ for (const [k, v] of [...dup].sort()) {
               (bad.length ? `  — ${bad.map(x => x.f.replace("gelb-", "").replace(".mjs", "")).join(", ")}` : ""));
 }
 const short = n => n.replace("gelb-", "").replace(".mjs", "");
-const filesIn = st => Object.entries(byFile).filter(([, v]) => v === st).map(([k]) => short(k));
+/* built HERE and not taken from the `byFile` below: that one is declared later in the file, so the first
+   form of this block threw ReferenceError at load — and I committed it. Second broken instrument I have
+   committed this phase, and the lesson is the same one: an exit code is checked, not assumed. */
+const stateOf = {};
+for (const [, v] of dup) for (const x of v) stateOf[x.f] = x.state;
+const filesIn = st => Object.entries(stateOf).filter(([, v]) => v === st).map(([k]) => short(k));
 const wired = rows.filter(r => /from "\.\/gelb-product-constants\.mjs"/.test(r.t)).map(r => short(r.f));
 console.log(`\n  *** ${forks} CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The three states, with their`);
 console.log(`  members LISTED FROM THE SCAN rather than named by hand — the first form of this block named`);
