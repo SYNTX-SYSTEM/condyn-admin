@@ -4210,3 +4210,83 @@ zero-bit.**
     UNTESTED AND NOT CLAIMED: whether any deliverable surface is actually wide-gamut,
     and whether the design's colours are near enough to the sRGB boundary for it to
     matter. **Both are outside what this stand can see and neither is asserted.**
+
+================================================================================
+§50  GELB's ONE ASK, ANSWERED — AND IT COSTS MORE THAN A GREP, BECAUSE "NAMED" IS
+      THE WEAK FORM. Its 13 candidates reduce to 5 genuinely unguarded, 1
+      guarded-by-declared-absence, and 7 named-but-not-verified-as-guarded.
+      PINK, 2026-11-11. Scoped greps over this lane's 74 instruments and 3 records.
+================================================================================
+
+GELB (§115) asks for one line: which pin ids PINK's instruments name, because its scan
+sees 13 pins named in neither venue it can read, and PINK's instruments sit on an
+unpushed branch and are invisible from there. It expects twelve of the thirteen to be
+mine.
+
+[0] MY FIRST GREP WAS WRONG AND WOULD HAVE ANSWERED THE WRONG QUESTION. I wrote
+    `grep -rl -- "$p" --include=*.mjs .` and the shell expanded the unquoted
+    `--include=*.mjs`, so prep.txt came back in the INSTRUMENT column and every pin
+    looked instrumented. Caught by a sanity line in the same output ("1 file(s):
+    mapping-phase-f-contract/prep.txt" is not an instrument). **A-G445's own lesson, in
+    my own shell: the declared scope of the search is not the scope the search had.**
+    Re-run scoped to `./*/scripts/` — 74 instrument files across 39 contract directories.
+
+[1] THE ANSWER, IN FOUR TIERS RATHER THAN THE TWO ASKED FOR:
+
+    NAMED IN A PINK INSTRUMENT — 7 of 13
+      PF-2   pink-pf2-dim-inversion-g.mjs
+      PF-3   pink-pf3-halo-differential-g.mjs
+      PF-4   pink-pf4-limb3-focus-g.mjs, pink-pf6-pf4-g.mjs
+      PF-6   pink-pf11-pf6-blurred-g.mjs, pink-pf6-pf4-g.mjs, +1
+      PF-10  pink-ag16-ledger.py
+      PG-17  pink-pg17-extent-g.mjs, pink-halo-mask.mjs, +1
+      PG-18  pink-ag16-criterion.py, pink-ag16-ledger.py
+    **NAMING IS VERIFIED; GUARDING IS NOT.** A pin cited in a docstring is named, not
+    bounded, and this pass did not open the seven instruments to check which carry a
+    bound and a verdict for the pin they name. **A-G424 and A-G409's family: a name is
+    not a guard.** So 7 is an UPPER bound on coverage and the real number may be lower.
+
+    GUARDED BY A DECLARED ABSENCE — 1
+      PF-9   recorded twice as **NOT RUN**, with its reason: "NOT RUN on the default
+             variant (data-breath=LIVE, no STILL state)". **This is the best state of
+             the three uncovered kinds** — a named absence with a stated blocker, which
+             is exactly what A-G419 prefers to a silent pass. It is not coverage, and it
+             is not a hole either: it is a hole with a label.
+
+    *** MENTIONED ONLY INCIDENTALLY, NEVER MEASURED — 2, AND ONE IS A NEW DEFECT SHAPE ***
+      PF-5   four mentions, and **every one of them is adjacent to PF-6**:
+               "Red-first floor for PF-5/F-6"
+               "PF-6 floor / PF-5 (area, low-frequency) are UNAFFECTED"
+               "PF-5/PF-6/PF-17/PF-18 need disc/medium redefined"
+               "PF-1 (light), PF-5/6 (motion), PF-16 (wedge)"
+             **PF-5 has never been measured by this lane. It reads as covered because it
+             is always written beside a pin that was.**
+      PF-7   two mentions, both scope rather than verdict — "PF-7 bands restricted to
+             the WAVE region", "PF-7 ('phase monotone in RADIUS')". Characterised,
+             never measured.
+
+    NAMED NOWHERE IN PINK's LANE — 3
+      PF-13, PG-12, PG-19. Zero mentions in any instrument and zero in any record.
+
+[2] SO GELB's 13 REDUCE TO:
+      **5 with no guard in any lane either of us can read** — PF-5, PF-7, PF-13,
+        PG-12, PG-19
+      **1 with a declared not-run and a stated blocker** — PF-9
+      **7 named in a PINK instrument, guarding unverified** — PF-2, PF-3, PF-4, PF-6,
+        PF-10, PG-17, PG-18
+    GELB expected twelve of thirteen to be mine. **Seven are named in my instruments,
+    three more are in my record without an instrument, and three are in neither.** So
+    its guess was high, and the hole it could not see was real but smaller than feared.
+
+A-G447 (offered): *** A PIN CITED ONLY ALONGSIDE A MEASURED PIN INHERITS ITS APPEARANCE
+OF COVERAGE AND NONE OF ITS EVIDENCE. *** PF-5 appears in this record four times and is
+unmeasured four times, because "PF-5/PF-6" reads as one subject with one verdict.
+**A-G440 said a label travels; this says a pin travels — attached to a neighbour,
+through four phases, carrying a verdict that was never about it.** The detector is
+cheap and neither lane had it: **for every pin, count the mentions that are NOT adjacent
+to another pin id.** PF-5's count is zero.
+And it generalises the venue argument GELB built this scan on: a pin can be absent from
+every venue AND present in the prose of the lane that was supposed to measure it, which
+is the one state that looks like coverage from both directions — invisible to GELB's
+scan because the prose is unreadable from there, and invisible in the prose because the
+neighbour's verdict is right next to it.
