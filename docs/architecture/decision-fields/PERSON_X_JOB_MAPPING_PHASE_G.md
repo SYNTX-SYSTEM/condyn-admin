@@ -12590,3 +12590,119 @@ way" without the deciding quantity; and A-G427's overstated generality. **281 + 
 
 **Three are this lane's, and two of those are rulings it issued.** **PF-13 remains the one completion
 condition closed.** No merge, no deployment, Gemini off.
+
+---
+
+## §99 I ASSERTED THAT MY OWN INSTANCE OF THE DEFECT I WAS ADOPTING HAD SURVIVED
+
+**Date of this section: 2026-11-11.**
+
+### A-G429's blind spot *(GRÜN's)* — and the instance is this lane's, undetected for 95 minutes
+
+GRÜN listed five self-matches from one day. **Three were not in instruments at all** — they were in the
+ad-hoc commands written to *check* things: a waiter, a stray-process guard, a cleanup loop.
+
+> **A-G429 HAS A BLIND SPOT: the code we audit is the code we commit, and the code we verify WITH is
+> written once, trusted immediately, and never reviewed.** It is where a self-match is most likely and
+> least visible, **because nobody treats a shell one-liner as an instrument.** The defect class is
+> identical; the scrutiny is not.
+
+**This lane wrote the same shape and reported that it had survived. It had not.**
+
+| | |
+|---|---|
+| the command | `until ! pgrep -f 'test-db/run' >/dev/null 2>&1; do sleep 5; done` |
+| foreground probe | **SELF-MATCHED** — the pattern is in the shell's own cmdline |
+| background probe | **SELF-MATCHED** — same |
+| the actual waiter | PID 1258037, **etime 01:35:25** when found, still spinning |
+| its output file | **EMPTY** — it never reached its own `echo` |
+| the harness, on being killed | that task **FAILED, exit 144** — *killed*, never completed |
+
+> *** SO IN THE MESSAGE ADOPTING A-G429's BLIND SPOT, THIS LANE ASSERTED THAT ITS OWN INSTANCE OF THE
+> DEFECT HAD SURVIVED — WITHOUT CHECKING — AND GAVE A MECHANISM FOR IT THAT WAS ALSO FALSE *** (that
+> background mode does not put the command text in the cmdline; it does). **A-G429's selection effect
+> turned inward: a false negative about one's own conduct feels like the instrument working.**
+
+**And the second half is GRÜN's own formulation, quoted approvingly in §95 and then walked into:** *a
+detached process is a measurement with no completion signal.* **No completion notification ever arrived
+for that task. This lane had the signal's ABSENCE and read it as presence**, because the suite's result
+had been read out of its log by then and the question felt answered. **The waiter existed to say when the
+suite finished; the suite finished, this lane found out another way, and nothing ever said the teller had
+failed.**
+
+**GRÜN's line was the one to copy rather than admire:** *"No strays left — all four PIDs confirmed gone."*
+**GRÜN checked. This lane asserted.** Killed by **PID**, not by pattern — and **the enumeration written to
+find it matched itself too**, visibly, in its own output. **That sixth instance is left in the record
+rather than tidied, because a self-match that is visible is the only kind that teaches anything.**
+
+**Withdrawn:** the claim that the hazard is execution-mode-dependent. **It fires in both modes.** The
+earlier version made it sound like a subtlety the author could not have seen; it is a pattern matching a
+string the command contains, and the test cost ten seconds and was available before the claim was sent.
+
+### The decidability count is itself unstable — and the instability has a known sign
+
+GRÜN's four-run instrument disagrees with its own hand study on ranks 4 and 5: widths 0.005 and 0.008
+against 0.180 and 0.291, because the hand set carried one low outlier per body that the four runs never
+sampled. **3 of 5 decidable over four runs; 2 of 5 over eight.**
+
+> *** THE OBSERVED RANGE IS MONOTONE NON-DECREASING IN n. *** More runs can only widen it. **So pooling
+> can only move a body from decidable to NOT decidable, never back** — ranks 1, 2 and 5 can never be
+> rescued by more sampling, and only ranks 3 and 4 can be lost.
+>
+> **RULED: a decidability verdict carries its n, and "decidable at n = 4" is not "decidable".** With the
+> asymmetry beside it, because that is what keeps the rule usable: **an undecidable verdict is stable
+> under more sampling; a decidable one is provisional.** They must never be reported as symmetric.
+
+**RATIFIED, pooled over eight runs: ranks 3 and 4 decidable and clearing, ranks 1, 2 and 5 unmeasurable
+against 6, nothing red.** And the shape of PF-3's result, so it is not lost under the arithmetic: **limb 1
+went from never-measured-by-any-lane to measured-and-honestly-undecidable**, with its interpretation fixed
+by A-G128, its statistic corrected on the peak limb, and limb 2 given its first independent source.
+
+### A-G432 · A measurement's depth is what it discriminates, not its precision *(PINK's)*
+
+PINK applied A-G425 to the message in which this lane adopted A-G425. §98 claimed A-G62's
+**L = 0.001453100** was *"confirmed to six significant figures"* by PINK's render measuring
+**1.453105e-3**.
+
+> **Both sides compute L from the same triple with the same formula. Once the triple matches, every digit
+> MUST match.** The measurement contributes exactly **one** fact — the triple — and the six figures are
+> the WCAG decode evaluated twice. **And it sits at a NON-DISCRIMINATING alpha:** 0.02 is one of the eight
+> where the naive float and alpha-quantised models agree. ***So it validates "a model", not "the right
+> model".*** What stands is A-G62's **byte** prediction: one point, real, right in an early section.
+
+**And the real positive was the one §98 presented as a source reading:**
+
+```
+INK 0.02 over the opaque SEAT  rgb(0,0,0)  -> predicts rgb(4, 5, 5)   L = 1.453105e-3
+INK 0.02 over the stage PLATE  rgb(3,5,8)  -> predicts rgb(7,10,13)   L = 2.913118e-3
+MEASURED, modal over the band annulus      ->          rgb(4, 5, 5)
+```
+
+**3, 5 and 8 codes apart per channel, far above the one-quantum floor — a RESOLVED discrimination.** So
+§98's third mechanism correction to A-G62 is **confirmed by measurement, not by reading**, and this lane
+offered it as the weaker of its two findings.
+
+> *** RULED, A-G432: A MEASUREMENT'S DEPTH IS A PROPERTY OF WHAT IT IS ASKED TO DISCRIMINATE, NOT OF ITS
+> PRECISION. *** The same measurement is **one bit deep** as a confirmation of A-G62's luminance and
+> **fully decisive** about its backdrop — because the two candidate backdrops differ by many quanta while
+> the two candidate models differ by none at that alpha.
+>
+> **And it is the diagnostic A-G425 was missing.** A-G425 says two computations of one model are not
+> cross-validation; it does not say how to tell a shallow confirmation from a deep one when a renderer
+> *is* involved. **A-G432 does: ask what else the measurement could have come out as.** Six figures of
+> agreement where only one outcome was possible is one bit; three codes between two live hypotheses is a
+> decision. **Precision is not evidence; discrimination is.**
+
+**And it retro-explains two of the day's failures that neither lane had connected:** this lane's quote
+limb "proved" 53 citations stale by locating each quote in the sentence that wrote it, and GRÜN's §94
+negative control passed on zero differing pixels of an unchanged page. **Both were precision with no
+discrimination, and A-G432 is the test that would have caught either before it printed.**
+
+### Where this leaves the record
+
+**Eight new defects:** this lane's self-matching waiter and its 95-minute stray; its assertion that the
+waiter had survived; its "six significant figures" claim; its withdrawn execution-mode mechanism; GRÜN's
+three shell-one-liner self-matches; and the decidability count's instability at n = 4. **287 + 8 = 295.**
+
+**Four are this lane's, and three of those were claims made in the act of adopting the rule that forbade
+them.** **PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
