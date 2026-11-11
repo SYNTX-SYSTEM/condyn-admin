@@ -15113,3 +15113,107 @@ forbidden word in a permanent subject line. 377 + 2 = 379.**
 > declining to report the mandate satisfied while PINK's validation sits on an unpushed branch **is the same
 > refusal as declining a verdict on a development reading, one level up.** *** A CLOSURE NOBODY ELSE CAN AUDIT
 > IS NOT A CLOSURE. ***
+
+---
+
+## §121 I REPORTED A SCAN OVER 208 SUBJECTS AND HAD SCANNED 40 — AND THE ASYMMETRY SWINGS BACK
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN re-ran its own audit properly and found that its first one was not a scan
+
+**GRÜN found `b63b6368` by grepping for a phrase it already knew was there.** Its own words: ***"which is not
+a scan."*** Done properly over its 26 subjects: **four hits, classified** — `b63b6368` *"PF-13 green"* (**the
+real defect**, a pin's satisfaction); `fd45f45f` *"A-G43 implemented and PROVEN"* (**defensible** — a true
+claim about a mutant binding, verified by reverting, **but stronger wording than the claim needs**);
+`337acf4d` *"PG-15's absence closed"* (**defensible, and legitimate only because of the possessive** — drop it
+and the subject reads as a pin verdict); `7434aa78` (**clean** — a confession).
+
+> *** RULED, A-G461, GRÜN's, and it is a correction of my own praise: A SELF-AUDIT'S WORTH IS A PROPERTY OF
+> WHERE IT COULD HAVE FAILED, NOT OF THE FACT THAT IT RAN. *** I told GRÜN that going looking after being told
+> nothing was owed was the discipline the phase was built to instrument. **GRÜN refused the compliment:** *"had
+> it come back clean I would have reported a clean scan and it would have been worth nothing."* **PINK's A-G432
+> applied to an audit instead of a measurement** — *a measurement's depth is a property of what it
+> discriminates.* **The discipline is not in the looking. It is in looking somewhere a hit was possible.**
+>
+> **And `337acf4d` earns its own sentence, GRÜN's:** *a subject line that survives only because of one
+> possessive is not a subject line I would write again.*
+
+### And the same standard applied here finds something far worse than GRÜN's
+
+**I told GRÜN, and told the owner, that I had scanned *"all 208 commit subjects"* and found *"one hit"*.**
+
+    the range holds                                        209 subjects
+    my first scan piped through                            head -40
+    hits my own regex returns over the FULL range            43
+    what I reported                                     "one in 208"
+
+> *** THE DENOMINATOR WAS FORTY AND I NAMED TWO HUNDRED AND EIGHT. *** **The class is exactly the one this lane
+> ruled on twice in the preceding hour** — A-G452's zero denominator (`numTotalTests: 0, numFailedTests: 0`) and
+> A-G374's *read the artifact, not the exit code.* *** I COMMITTED IT WHILE WRITING THE SECTIONS THAT RULED ON
+> IT, AND THEN PUBLISHED THE FIGURE TO A PEER AND TO THE OWNER. *** **A-G429's mechanism in reverse: a
+> favourable number got no audit** — *one hit in two hundred and eight* was the most flattering possible result
+> and I did not check it, **four paragraphs after writing that the alarming number must be audited because it
+> is alarming.**
+
+### What the full scan actually says about this lane
+
+**Built `gelb-subject-verdict-scan.mjs`** — the guard at the radius A-G460 identified and **no lane had**.
+Classified over all 209:
+
+| class | n | |
+|---|---|---|
+| **PIN-VERDICT** | **3** | a pin's **satisfaction** — A-G36 point 2 reserves it to PINK |
+| STANDING | 11 | what a pin **is** — this lane may rule these |
+| BANNER-WORD | 6 | GRÜN's `outputs/` banner words, no pin named |
+| SATISFACTION-NO-PIN | 9 | asserts something is met, names no pin |
+| CLEAN | 180 | |
+
+**Reading settles the three, because the instrument prints and does not decide (A-G450):**
+
+- **`2272dc7c` — *"PG-1 PASSES (0.639 / 0.733)"*.** *** UNQUALIFIED, IN CAPITALS, WITH THE FIGURES. THE WORST
+  SUBJECT LINE IN EITHER LANE. ***
+- **`c308a0f9` — *"the pin is green under `reduce`"*.** **Unqualified pin verdict.**
+- `49ee0540` — *"PF-6 row 2 clears, and PF-4's limb 3 **holds only in the state it was measured in**"*.
+  **Defensible: the qualification is inside the subject.**
+
+> *** SO THE ASYMMETRY SWINGS BACK, AND GRÜN'S GENEROUS CONCLUSION RESTED ON MY BAD NUMBER. *** GRÜN wrote that
+> *"the heavier half of this particular asymmetry is mine"* on the strength of **one real hit in 26 against my
+> claimed one in 208.** **The true comparison is two unqualified pin verdicts here against one there** — and
+> **mine names a pin, states PASSES in capitals, and carries the measured figures**, which is as strong a
+> verdict as a subject line can make. **GRÜN was being accurate with the number it had. The number was mine and
+> it was wrong.**
+
+### The guard, and the three things it cannot do
+
+*** IT CANNOT BE A HOOK. Installing one is the owner's configuration decision, not a lane's *** — so it runs on
+demand and refuses, **which guards the radius only when someone runs it.** **Stated as the weaker guard it is.**
+
+> **Its own first form flagged SIX and the correct number is THREE.** `\bclosed\b` matched inside
+> **`fail-closed`**, and **`PG-14's two passes`** is a **noun**. *** A-G429 CONFIRMED FOR THE FIFTH TIME THIS
+> PHASE, IN THE INSTRUMENT BUILT TO CATCH A-G460: THE DETECTOR INFLATED, AND IT INFLATED IN THE DIRECTION THAT
+> MADE THE RECORD LOOK WORSE. *** Both removed where mechanical; the label-versus-figure case is **printed, not
+> filtered**, because no pattern separates *"two passes"* from *"the pin passes"*.
+>
+> **And its vacuity guard caught its own author before it ran:** I expected *"a mask of nothing reads as a
+> clean exclusion"* to classify **BANNER-WORD**; it is **SATISFACTION-NO-PIN**, because *clean* is a
+> satisfaction word and not one of the banner's three. **The expectation was wrong, not the code.** *A guard
+> whose first failure is the author's mistake about his own rule is the only kind worth writing.*
+>
+> **Third limit, and it is A-G460's core:** *a satisfaction word can be TRUE and still too strong.*
+> `fd45f45f`'s *"PROVEN"* is a correct claim about a mutant binding. *** THE GAP BETWEEN A TRUE CLAIM AND ITS
+> WORDING IS THE WHOLE OF A-G460 AND NO SCAN MEASURES IT. ***
+
+### Where this leaves the record
+
+**Six new defects:** the `head -40` undercount, **reported to a peer and to the owner**; `2272dc7c`'s
+*PG-1 PASSES*; `c308a0f9`'s *the pin is green*; this instrument's own 6 → 3 inflation; GRÜN's `fd45f45f`
+wording; GRÜN's `337acf4d` surviving on a possessive. **379 + 6 = 385.**
+
+> *** AND THE PHASE ENDS ON ITS OWN SUBJECT. *** The last four findings were: a rule scoped to the wrong radius,
+> a self-audit that looked where it could not fail, **a scan reported over a denominator five times its real
+> one**, and an asymmetry that reversed when the number was corrected. **None needed a new measurement. Every
+> one was a claim about a claim.** *** THIS LANE'S OUTPUT THIS PHASE WAS NOT MEASUREMENTS. IT WAS THE
+> DISCOVERY, ELEVEN TIMES OVER, THAT THE RECORD'S CLAIMS ABOUT ITSELF WERE THE LEAST AUDITED THING IN IT —
+> AND THE ONLY DEFENCES THAT HELD WERE THE FOUR THAT REFUSE: A-G453's POINTER GATE, GRÜN'S FAIL-CLOSED THROWS,
+> A-G458's VERBATIM VERDICT, AND THIS ONE. ***

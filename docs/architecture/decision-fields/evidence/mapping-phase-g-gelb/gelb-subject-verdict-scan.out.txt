@@ -1,0 +1,79 @@
+========================================================================================================
+GELB · A-G460 (GRÜN's) — COMMIT SUBJECTS: THE RADIUS THAT CANNOT BE CORRECTED IN PLACE
+========================================================================================================
+
+  range: origin/main..HEAD        subjects scanned: 209
+
+  PIN-VERDICT           3   <- a pin's SATISFACTION. A-G36 point 2 reserves it to PINK. REFUSED.
+  STANDING              11   <- what a pin IS. This lane may rule these.
+  BANNER-WORD           6   <- GRÜN's outputs/ banner forbids these words; no pin named.
+  SATISFACTION-NO-PIN   9   <- asserts something is met, names no pin.
+  CLEAN                 180
+
+========================================================================================================
+[PIN-VERDICT] 3
+========================================================================================================
+  c308a0f9  PF-8  evidence(career): PF-8's three-tier sweep — 19 amendments across TWO files, and the pin is green under `reduce`
+  49ee0540  PF-6  docs(career): phase G §70 — PF-6 row 2 clears, and PF-4's limb 3 holds only in the state it was measured in
+  2272dc7c  PG-1  docs(career): phase G §22 — PG-1 PASSES (0.639 / 0.733); PG-10's ceiling returns; the shelf is byte-identical to the p
+========================================================================================================
+[BANNER-WORD] 6
+========================================================================================================
+  35465c14     —    docs(career): phase G §112 — an assumption that sat under four phases, and a green suite cannot say which pins have no
+  a50dbccc     —    evidence(career): the full suite is green on the restored B-ENTRY — 3546 passed, 0 failed
+  fdd7d4aa  PF-8  docs(career): phase G §80 — PF-8's nineteen amendments in two files, and the pin returns green where it cannot fail
+  8745f2a2  PG-14  docs(career): phase G §66 — PG-14's two passes undershoot their fixed point, and labels clip at ordinary role names
+  74fd43b8     —    docs(career): phase G — the travel IS the breath, and three more green-by-coincidence
+  df7dc5ff     —    docs(career): phase E — GRÜN's first green: M-4b, the clamp invariants, and what is still unreported
+========================================================================================================
+[SATISFACTION-NO-PIN] 9
+========================================================================================================
+  a55aea27     —    docs(career): phase G §105 — a condition satisfied everywhere, and a label is the part that travels
+  1ace1297     —    docs(career): phase G §92 — a mask of nothing reads as a clean exclusion, and the rule keeps arriving with its own ins
+  32b05c59     —    docs(career): phase G §89 — A-G277 closed again, and a re-export had disabled the pixel instrument for 28 sections
+  0d511729     —    docs(career): A-G277's suspension lifted — limb (a) holds on the shipping build — and my coverage denominator was one 
+  b5e4be74     —    evidence(career): GRÜN's READS rung adopted — the module no longer holds a single product value
+  96aec6c2     —    docs(career): phase G §32 — A-G98's example was my fabrication; the mechanism holds, the law does not
+  3f85af3a     —    docs(career): phase F — A-F25 confirmed independently, both instruments aligned
+  66a781b2     —    docs(career): phase D — D-Q9 the pre-MAP-D-ARCH clean is surgical, never blanket
+  95bd0129     —    docs(career): phase D CONTRACTED — PINK holds C-1..C-11 and D-1..D-7; §8.8 must drive the admitted actions
+========================================================================================================
+[STANDING] 11
+========================================================================================================
+  265ac7f1  PF-10  docs(career): A-G20's four retirements reach the forward pointer, and §114's PF-10 ruling is withdrawn
+  94c56a2b  PF-1  docs(career): A-G320 at three pins' own locations — PF-1 retired, PF-15 malformed, PG-18 unsatisfiable at L1
+  59482cac  PF-15  docs(career): phase G §98 — PF-15 is malformed, not unsatisfiable, and A-G62 was always a byte requirement
+  592dcd3b  PG-23  docs(career): phase G §77 — PG-23 closes on both limbs, and I left a lane working from a superseded statement
+  c2a85d81  PF-3  evidence(career): PF-3's block is withdrawn — the table that calls itself current is current as of §17
+  a42998a5  PG-16  docs(career): phase G §44 — A-G150 withdrawn; PG-16 bounds at 0.5 and PG-5 turns out to be inert
+  093f1cb2  PG-12  docs(career): phase G §36 — PG-12 is unsatisfiable by any build; A-G95 was missing the units
+  e204c706  PG-11  docs(career): phase G §35 — PG-11's guard conflates "too small to measure" with "small"; A-G7 has two limbs malformed 
+  7e0f8329  PG-22  docs(career): phase G §30 — PG-22's governing variable is shelf membership; A-G44's 1/r withdrawn
+  28edf803  PG-6  docs(career): phase G §29 — PG-6 clears; A-G51 withdrawn, decided on a contaminated count
+  90ac32cb  PG-3  docs(career): phase G — A-G24 the drawn range is superseded (PG-3 stays OPEN), A-G25 no A-G11
+
+========================================================================================================
+  WHAT THIS GUARD IS, AND WHAT IT IS NOT
+
+  *** IT CANNOT BE A HOOK. Installing one is the user's configuration decision, not a lane's, so
+  this runs on demand and refuses — which means it guards the radius only when someone runs it. ***
+  That is a weaker guard than the three at the inner radius and it is stated as weaker.
+
+  THE CLASSES IT CANNOT SEPARATE: "PG-15's absence closed" is GRÜN's own work and legitimate, but
+  the POSSESSIVE is what makes it legitimate — drop it and the subject reads as a pin verdict.
+  *** A SUBJECT LINE THAT SURVIVES ONLY BECAUSE OF ONE POSSESSIVE IS BEYOND THIS INSTRUMENT, AND
+  GRÜN SAID IT FIRST: not a subject line it would write again. *** So STANDING is printed, never
+  trusted silently.
+
+  AND A SATISFACTION WORD CAN BE TRUE AND STILL TOO STRONG. GRÜN's "A-G43 implemented and PROVEN"
+  is a true claim about a mutant binding, verified by reverting the predicate. *** THE GAP BETWEEN
+  A TRUE CLAIM AND ITS WORDING IS THE WHOLE OF A-G460, AND NO SCAN MEASURES IT. ***
+========================================================================================================
+
+REFUSED — 3 commit subject(s) assert a pin's satisfaction.
+  c308a0f9  PF-8  evidence(career): PF-8's three-tier sweep — 19 amendments across TWO files, and the pin is green under `reduce`
+  49ee0540  PF-6  docs(career): phase G §70 — PF-6 row 2 clears, and PF-4's limb 3 holds only in the state it was measured in
+  2272dc7c  PG-1  docs(career): phase G §22 — PG-1 PASSES (0.639 / 0.733); PG-10's ceiling returns; the shelf is byte-identical to the plate
+
+  A subject cannot be corrected in place. The correction goes where a reader lands.
+
