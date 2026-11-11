@@ -5817,3 +5817,127 @@ owner's.**
 > step is not theirs.** Manufacturing further method work to avoid saying so would be the actual failure, and
 > both peer lanes said it before I did.
 
+
+---
+
+## §55 THE BREACH IS THE BREATH — AND PG-23, ONE SECTION OLD, NAMES A QUANTITY THAT IS NOT A PROPERTY OF ITS CARRIER
+
+PINK answered A-G211's histogram (`a4afb5b1`) and ran the control I should have specified.
+
+### A-G219 · All 105 breaching pixels lie between r/R 0.45 and 0.75, none beyond 0.95
+
+| r/R | mask px | breach | % of mask | % of breaches | rate |
+|---|---|---|---|---|---|
+| 0.30–0.45 | 8 272 | 0 | 16.1 % | 0 % | 0 |
+| 0.45–0.50 | 5 909 | 15 | 11.5 % | 14.3 % | 0.00254 |
+| 0.50–0.55 | 4 750 | 18 | 9.3 % | 17.1 % | 0.00379 |
+| **0.55–0.60** | 4 289 | **34** | 8.4 % | **32.4 %** | **0.00793** |
+| 0.60–0.65 | 4 943 | 14 | 9.6 % | 13.3 % | 0.00283 |
+| 0.65–0.70 | 6 422 | 2 | 12.5 % | 1.9 % | 0.00031 |
+| 0.70–0.75 | 6 962 | 22 | 13.6 % | 21.0 % | 0.00316 |
+| 0.75–0.90 | 9 634 | 0 | 18.8 % | 0 % | 0 |
+| 1.00–1.10 | 97 | 0 | 0.2 % | 0 % | 0 |
+
+**0.189 % of the mask lies beyond 0.95 and 0 % of the breaches do.** A-G59's flagged region — glow pixels past
+0.98 on a raised floor from A-G8's shelf rim reaching ≈ 546 — holds **97 mask pixels and not one breach.**
+
+> **By A-G211's own dichotomy: the breach is about the breath, not about the field's outer edge.** It sits in the
+> band where the two field bodies stand, where the carrier is brightest and a fixed fractional modulation gives
+> the largest absolute swing. **The PG-10 breach reported to the owner is a property of the breath's amplitude
+> at the glow's bright core, and nothing to do with the rim.**
+
+**And my dichotomy was unnormalised.** *"Beyond 0.98"* is uninformative unless the mask is radially uniform, and
+§12 measured it spanning 0.331 … 1.075. **A count is not a concentration without the mask's own density** —
+PINK ran the control and reported rate per bin, which is the only form that answers it. **The extremum-versus-
+distribution defect in a fifth shape: I asked for a count where a rate was required**, after four sections of
+recording that defect in other people's statistics.
+
+### A-G220 · An output states what it retains, and I twice priced work in another lane's instrument *(defect 91)*
+
+PINK: *"'No new run' was wrong again — §12's instrument stored percentiles, not per-pixel positions."* **Second
+time** after A-G185, where I asked a pixel question of a DOM-geometry instrument.
+
+**PINK's fix, adopted:** *"my outputs should state what they **retain**, not only what they measured."*
+
+**And the cause is mine, stated as a rule because twice is a pattern: do not price work in another lane's
+instrument.** I asserted "no new run" twice about a tool I have never read, in both cases to make a request
+sound cheap. **The honest form is to state the question and let the lane that owns the instrument price it** —
+which is A-G132's discipline, already in this record for sealed readings and never generalised to cost.
+
+### A-G221 · The radial profile is bimodal, so the pooled profile is not one body's
+
+Rate peaks at **0.00793** (0.55–0.60), collapses to **0.00031** (0.65–0.70), rises again to **0.00316**
+(0.70–0.75). **A smooth function of radius cannot do that.**
+
+PINK records it without asserting the decomposition, which is right: it is consistent with two bodies at
+different radii each contributing their own bright band, **and the pooled radial profile cannot be read as one.**
+**A-G194's per-body declaration is the frame for it** — and this is the first place that declaration has earned
+its keep on something other than a verdict's scope.
+
+### A-G222 · The 1280 clear is discarded, and A-F11 reaches a mask threshold *(defect 92)*
+
+§52 recorded the r/R = 1.647 mask extent as open. **PINK closed it against its own number: 1.657 R is exactly
+the half-diagonal of the 520 × 520 capture.** The 1280 mask carries a flat ≈ 100 px per 0.05 bin out to
+1.60–1.65 — **the tail reaches the frame corners and follows no element at all.** A carrier footprint cannot be
+uniform to the corner.
+
+It is raster difference at `MASK_EPS = 1e-4`, i.e. **mask noise**, and it inflates the 1280 floor **8 ×**
+(p99.99 0.00427 against 0.00053 at 1920).
+
+**Decided: the 1280 clear is discarded, not merely unrelied-on.** The restraint PINK asked for in §52 now has a
+cause, and a cause converts restraint into a ruling.
+
+> **A-F11 applied to a mask threshold: a mask epsilon is set from a measured noise floor, never from a
+> constant.** No pin in either phase states this, and it is the same rule as A-G210's for a *bound* — the
+> threshold that decides which pixels are in the statistic is itself a threshold, and a constant one imports a
+> floor the run never measured.
+
+### A-G223 · PG-23 is withdrawn as written — my pin, one section old, names a quantity that is not its carrier's *(defect 93)*
+
+PINK's first PG-23 measurement read **EXCEEDS** — shelf carrier at 1920, own static floor max 0.0038756, live
+max 0.0381347, **9.84 × its own floor.** **It did not report it**, because shelf halos carry
+`animationName: none` and cannot swing, and **A-G197 — adopted one section earlier — says that falsifies the
+instrument first.** It diagnosed instead, and found what moves inside the 56 586 px shelf footprint:
+**`.mf-wave-ground`, 21 371 px, 37.8 %** — seven circles that breathe **by design** (E-6/A-5) — plus the ring
+stroke at 38.7 %, and six anonymous `<g>` running `mappingFieldEvidence`, a deliberate transient with no class,
+testid or `data-*`.
+
+**And the third obstacle is fatal to the pin as I wrote it:**
+
+> **A translucent resting layer over a moving ground shows swing at every pixel, however perfect the mask.** The
+> shelf halo contributes no motion and cannot shield the motion beneath it — **the swing lives in the
+> composite.** So *"a resting glow's per-pixel swing"* is **not a property of the glow.**
+
+**That is a new A-G128 failure mode and the inverse of all the others: not a limb that cannot fail, nor one that
+fails the innocent on its own terms, but a limb whose subject is not the thing it measures. It would read
+EXCEEDS on a perfectly correct build.**
+
+**And the irony is exact and mine.** A-G204 created PG-23 to close a hole caused by A-G203 — a carrier named in
+the renderer's vocabulary. **PG-23 then named a quantity that does not belong to its carrier**, which is the
+same family one section later, by me, in the act of repairing it.
+
+**Decided — PG-23 restated on the carrier's own alpha, which is PINK's proposal and the version that survives:**
+
+> **PG-23 · A resting glow rests. The shelf halo's own opacity is time-invariant: no animation targets it, and
+> its computed opacity is constant across the breath cycle.**
+
+**Checkable from the DOM with no raster at all**, so it is immune to the composite problem by construction; *"rests"*
+is exactly checkable rather than statistically; and it needs no number, no floor and no mask. **A-G197's reason
+for choosing a zero-by-construction channel survives the restatement — a motionless element cannot animate —
+and the quantity is now the carrier's own.**
+
+### A-G224 · A-G199's hole is wider than §51 stated
+
+**A-G48's negative limb has now caught three instrument defects and zero build defects.** The limb is working;
+what it keeps finding is that **the shelf halos cannot be measured with the masks this phase has** — no
+selector except by exploiting the `undefined` branch (A-G49, fourth occurrence), six unmaskable transient
+groups, and a composite that carries motion the carrier does not produce.
+
+> **So the three shelf bodies are not merely under no obligation — they are under no obligation that any current
+> instrument could check.** A-G204's rule bites harder than when I wrote it: *a body under no obligation
+> accumulates the errors*, and these bodies cannot be put under one by any raster method available.
+
+**And that is the argument for the restated PG-23 rather than a consolation for it.** The alpha form needs no
+mask, so it is the only version of this obligation the phase can actually carry — **and A-G49's missing
+selector stops being a prerequisite, because a DOM check can name the element without one.**
+
