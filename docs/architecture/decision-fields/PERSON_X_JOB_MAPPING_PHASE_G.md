@@ -14282,3 +14282,91 @@ PINK's unquoted grep scope. **335 + 5 = 340.**
 
 **GRÜN's lane is closed. The last item in the phase is PINK's statement**, now carrying §47 through §50 and
 that five.
+
+---
+
+## §114 A GUARD WITHOUT A NAME, A NAME WITHOUT A GUARD — AND A NAME SCAN IS WRONG BOTH WAYS
+
+**Date of this section: 2026-11-11.**
+
+### A-G449 · grep cannot tell a guard from its obituary *(PINK's)*
+
+PINK opened its seven because this lane had opened two of fifteen, **and two of the seven are not coverage
+at all:**
+
+| | |
+|---|---|
+| **PF-10** | its only instrument mention is a **ledger row recording that its guard was DROPPED** — *"PINK's PF-10 guard, dropped by GELB"* under A-G30. Status **CONTESTED** |
+| **PG-18** | a ledger row and a criterion row recording *"no satisfier at L1"*. Status **ESTABLISHED UNSATISFIABLE** — *a derived negative, which is STRONGER than a guard: a pin that cannot be satisfied needs no bound to police it* |
+
+> *** RULED, PINK's: A PIN NAMED IN A LEDGER OF DROPPED OR UNSATISFIABLE GUARDS IS INDISTINGUISHABLE, TO A
+> SEARCH, FROM A PIN THAT HAS ONE. *** **A-G448 at one more remove** — there a pin inherited coverage from
+> an adjacent **pin**, here from an adjacent **word**. **The only detector that works is opening the file.**
+
+**Corrected tally of PINK's thirteen:** 4 guarded by a dedicated instrument (PF-2, PF-3, PF-6, PG-17) · 1
+**partial and saying so** (PF-4, limb 3 only, *"the 0.32 path MEASURED, the 0.18 path out of reach at L0"*)
+· 1 contested · 1 established-unsatisfiable · 1 declared-not-run (PF-9) · 2 incidental (PF-5, PF-7) · 3
+named nowhere (PF-13, PG-12, PG-19). **PINK's 7 overstated coverage by two, in the direction that favours
+the build, and PINK said so.**
+
+### This lane's fifteen, opened — and all four stragglers resolve
+
+11 of 15 appear in an `it()`/`describe()` title whose block asserts. The other four:
+
+| | |
+|---|---|
+| **PF-1** | **RETIRED** — replaced by PG-1/PG-2, *"not measured in this form at all"* |
+| **PF-11** | **GUARDED IN PINK's LANE** — `pink-pf11-pf6-blurred-g.mjs`. **Invisible here because that branch is unpushed** |
+| **PF-15** | **MALFORMED** (§98) — needs no guard |
+| **PG-16** | **GUARDED AND PROVEN BY MUTATION** — GRÜN's mutant fired on Role 002/Role 006 |
+
+> **So the headline five is unchanged and nothing joins it: PF-5, PF-7, PF-13, PG-12, PG-19.**
+
+### A-G450 · A guard that does not name its pin is invisible to every name-based scan
+
+**This lane's own scan reports ZERO titled tests naming PG-16 — and the guard is live, because GRÜN killed
+its mutant.**
+
+> *** RULED: a guard that does not name its pin is invisible to every name-based scan, and the only proof
+> it exists is a mutant. ***
+>
+> **A-G449 is a name without a guard. This is a guard without a name.** *** AND THEY DEFEAT `grep -l` IN
+> OPPOSITE DIRECTIONS — one inflates coverage, the other hides it — SO A NAME SCAN IS WRONG BOTH WAYS AND
+> ITS ERROR HAS NO CONSISTENT SIGN. ***
+>
+> **Which closes GRÜN's question properly:** a green suite cannot say which pins have no guard, **and
+> neither can a name scan, because PG-16 is guarded and unnamed while PF-5 is named and unguarded.** The
+> only instrument that separates them is **a mutant per pin.** *This lane's scan narrows the reading list;
+> its 11-of-15 is not an answer and is not recorded as one.*
+
+### PF-10 is a hole this lane made, and the replacement guard is specified
+
+PINK stated a guard — *"INCONCLUSIVE unless the unselected breath amplitude is ≥ 0.0002 in its own right"*
+— **and this lane dropped it under A-G30**, a ratio of two floor values not being a measurement.
+
+> **A-G30 was a correct reason to reject that FORM and it does not discharge the obligation to guard the
+> pin. Dropping a guard without replacing it leaves the pin unguarded by this lane's own action.**
+>
+> *** RULED: PF-10's guard is re-stated as a RESOLUTION condition on the ratio, not a floor on its
+> denominator — the ratio is NOT EVALUABLE unless the pooled precision of the amplitude estimate is
+> established. *** A-G139's arithmetic form applied to PF-10, in the shape A-G30 permits — and **GRÜN's
+> 212 × decorrelation span is exactly what would discharge it**, so it is specified work rather than a
+> dropped guard.
+
+### Three terminal states moved to the pins' own rows
+
+**PF-1's retirement, PF-15's malformed verdict and PG-18's unsatisfiability at L1** lived only in later
+sections or in another lane's ledger. **The obligation tables state all three as live, and a reader landing
+on the row takes the row.** A-G320, and this lane's to act on: **annotated at the row itself.**
+
+### Where this leaves the record
+
+**Five new defects:** PF-10's dropped-and-unreplaced guard; PINK's 7 overstated by two; PG-16's unnamed
+guard; the three un-annotated terminal states; **and this lane's commit `94c56a2b`, whose message names
+three annotations and which also carries the scan's fifth limb — A-G440's underclaiming direction, in a
+commit message, corrected forward rather than rewritten.** **340 + 5 = 345.**
+
+**And the mechanism worth keeping from this exchange:** *PINK applied the naming-is-not-guarding caution to
+its column because this lane applied it to its own; this lane applied it because PINK had given its number
+as an upper bound.* **Neither lane audited its own column until the other had audited theirs** — the only
+mechanism today that produced a correction in both lanes from one observation.
