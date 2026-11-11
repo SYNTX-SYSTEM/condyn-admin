@@ -1,0 +1,90 @@
+========================================================================================================
+GELB · §91 A-G413 — SCHEMA BOOTSTRAP vs ORM SCHEMA. Repo @ 59610f47
+========================================================================================================
+
+  ORM tables parsed from lib/career/db/schema.ts: 18
+  bootstrap tables parsed from lib/career/db/client.ts: 18
+
+  declared in the ORM and never created by the bootstrap: 0
+  created by the bootstrap and absent from the ORM:       0
+========================================================================================================
+[1] COLUMN DRIFT, PER TABLE — the ORM is authoritative because every write goes through it
+========================================================================================================
+
+  career_actions
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): actor
+  career_attributions
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): actor
+  career_commitments
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): actor
+  career_learning_proposals
+      MISSING from the bootstrap (a write to any of these fails 42703): feedback_id
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): actor
+  career_outcomes
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): observer
+  career_policy_evaluations
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): proposal_id
+  career_policy_families
+      MISSING from the bootstrap (a write to any of these fails 42703): updated_at
+  career_policy_promotions
+      MISSING from the bootstrap (a write to any of these fails 42703): from_policy_version_id, to_policy_version_id, actor, promoted_at
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): candidate_policy_id, baseline_policy_id, timestamp
+  career_policy_versions
+      MISSING from the bootstrap (a write to any of these fails 42703): version, parent_version, created_at, created_by
+      created but NOT in the ORM (dead columns, NOT NULL ones break every insert): timestamp
+
+  *** 9 OF 18 TABLES HAVE DRIFTED: 10 COLUMN(S) MISSING, 10 CREATED BUT UNDECLARED, out of 125 ORM columns. ***
+========================================================================================================
+[2] WHICH DRIFT IS FATAL, AND WHY ONLY A DATABASE WITHOUT HISTORY SEES IT
+========================================================================================================
+
+  A MISSING column is fatal the first time anything writes it: the ORM names every column in its INSERT,
+  so postgres refuses the statement with 42703 before any row exists. An EXTRA column is fatal only if
+  it is NOT NULL, because then the bootstrap's own table rejects the ORM's complete insert.
+
+  career_learning_proposals: missing 1, of which NOT NULL in the ORM: 1
+      feedback_id (NOT NULL)
+      extra: actor — fatal if NOT NULL in the bootstrap
+  career_policy_families: missing 1, of which NOT NULL in the ORM: 1
+      updated_at (NOT NULL)
+  career_policy_promotions: missing 4, of which NOT NULL in the ORM: 3
+      from_policy_version_id, to_policy_version_id (NOT NULL), actor (NOT NULL), promoted_at (NOT NULL)
+      extra: candidate_policy_id, baseline_policy_id, timestamp — fatal if NOT NULL in the bootstrap
+  career_policy_versions: missing 4, of which NOT NULL in the ORM: 3
+      version (NOT NULL), parent_version, created_at (NOT NULL), created_by (NOT NULL)
+      extra: timestamp — fatal if NOT NULL in the bootstrap
+
+  *** AND THIS IS WHY IT SURVIVED: the bootstrap says CREATE TABLE IF NOT EXISTS. *** On a database that
+  already has the table — any database with history — the statement is a no-op and the hand-added columns
+  stay. The bootstrap is only the author of the schema on a database that has none. So the defect is
+  INVISIBLE to every run against a long-lived database and CERTAIN against a fresh one, which is exactly
+  the shape §90's restoration changed: a disposable database is a database with no history.
+========================================================================================================
+[3] THE REMEDY, AND WHY IT IS NOT "ADD THE FOUR COLUMNS"
+========================================================================================================
+
+  Adding the missing columns by hand closes 10 holes and leaves the MECHANISM intact: two
+  declarations of one schema, with nothing comparing them. The next column added to the ORM drifts again,
+  silently, and is caught only by whoever next runs the suite on a fresh database.
+
+  *** RULED: the comparison becomes a TEST, and the bootstrap is corrected to agree with the ORM. ***
+  The ORM is authoritative, because every repository writes through it and the bootstrap is read by
+  nothing but itself. In §88's terms the bootstrap is a second COPY of the schema at state REPORTS — it
+  does not even report, it simply disagrees. The rung above is READS: generate the DDL from the ORM so
+  no second copy exists. That is the right end state and it is a larger change than this phase's scope
+  allows, so the ruling is the two-step that does not pretend otherwise:
+      1. correct the bootstrap now, column by column, so the suite can be green on a fresh database;
+      2. add the drift test, so the copy cannot disagree again without saying so.
+  Step 2 is what makes step 1 durable, and without it step 1 is a repair rather than a remedy.
+========================================================================================================
+DRIFT SUMMARY (machine-readable, for the fix):
+  career_actions  missing=[]  extra=[actor]
+  career_attributions  missing=[]  extra=[actor]
+  career_commitments  missing=[]  extra=[actor]
+  career_learning_proposals  missing=[feedback_id]  extra=[actor]
+  career_outcomes  missing=[]  extra=[observer]
+  career_policy_evaluations  missing=[]  extra=[proposal_id]
+  career_policy_families  missing=[updated_at]  extra=[]
+  career_policy_promotions  missing=[from_policy_version_id to_policy_version_id actor promoted_at]  extra=[candidate_policy_id baseline_policy_id timestamp]
+  career_policy_versions  missing=[version parent_version created_at created_by]  extra=[timestamp]
+========================================================================================================
