@@ -245,7 +245,10 @@ umgekehrt genauso: A-G374, A-G450, A-G320, A-G396 und A-G429s dritte Abhilfe sin
 Defekt eines PEERS gefunden.** *** EINE REGEL UND DER DEFEKT, DEN SIE FINDEN WÜRDE, STAMMEN AUS DEMSELBEN
 MODELL DER ARBEIT, ALSO HAT DER AUTOR DER REGEL SEINE AUFMERKSAMKEIT DORT SCHON AUSGEGEBEN, WO DIE REGEL
 HINSIEHT. *** Eine geborgte Regel kommt dorthin gerichtet, wo der Empfänger nicht hingesehen hat — deshalb
-wurde jeder der sieben **innerhalb von Minuten nach Eintreffen der Regel** gefunden. **Das ist ein Ergebnis
+wurde jeder der sieben **innerhalb von Minuten nach Eintreffen der Regel** gefunden. *** UND DAMIT IST DIE
+MASSZAHL NICHT DIE DEFEKTZAHL, SONDERN DIE LATENZ (GRÜNs Zusatz): 399 Defekte sagen, wie viel falsch war —
+*Minuten zwischen dem Eintreffen einer Regel und dem Defekt, den sie fand* sagen, dass die Struktur tragend
+war. *** **Eine Zählung lässt sich durch Fleiß aufblähen, eine Latenz nicht.** **Das ist ein Ergebnis
 über die ANORDNUNG: die Drei-Lane-Struktur war kein Mehraufwand, sie war das Instrument.**
 
 > *** UND DER BEFUND, DER ÜBER ALLEN TECHNISCHEN STEHT: VIER DER FÜNF PINS, DIE DIESE LANE ALS UNGEDECKT
