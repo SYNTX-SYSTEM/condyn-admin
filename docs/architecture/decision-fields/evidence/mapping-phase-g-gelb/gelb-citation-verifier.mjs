@@ -173,4 +173,81 @@ console.log(`
   *** A RULE AND ITS VIOLATION IN ONE PARAGRAPH IS NOT A WORSE FAILURE OF ATTENTION — IT IS EVIDENCE
   THAT WRITING THE RULE IS THE RISK CONDITION, because the writing is where the attention goes. ***
 `);
+/* ────────────────────────────────────────────────────────────────────────────────────────────────── */
+rule();
+console.log("[4] THE HARDER TARGET — citations into a file that CHANGES, and whether a build is named");
+rule();
+console.log(`
+  GRÜN audited its own record on its own criterion ("does the citation carry a subject") and declined to
+  compare its 80.2 % to this lane's 0 of 248, because the questions differ — and then said the thing worth
+  acting on: *your verifier would be the thing to run against it, not mine.* So this limb runs this lane's
+  criterion on the target where it bites hardest, against THIS lane's own prose: a citation into the
+  drawing surface, a file that has changed 41 times between the builds this record quotes.
+
+  A citation into a mutable source file is resolvable ONLY against a named build. So the question is not
+  "is the number right" but "is there anything here that could make it right or wrong at all".
+`);
+const SHA_RE = /\b[0-9a-f]{8}\b/;
+const bare = intoDocs.filter(c => c.target === c.where && !/PHASE_[FG]/.test(c.src.slice(Math.max(0, c.src.indexOf(`:${c.n}`) - 12), c.src.indexOf(`:${c.n}`))));
+/* a citation is "component-shaped" when its own line talks about the drawing surface or its constants */
+const COMPONENT_HINT = /PersonJobMappingField|drawing surface|the component|mf-wave|WAVE\.|VOLUME\.|RING_LUMINANCE|GROUND|TRAVEL\.|MOTION\.|\.mf-|keyframe|stopColor|SEAT|shelfNear|haloNear/;
+const compCites = intoDocs.filter(c => COMPONENT_HINT.test(c.src));
+let withBuild = 0, withoutBuild = 0;
+const examples = [];
+for (const c of compCites) {
+  const win = [text[c.where][c.line - 2], text[c.where][c.line - 1], text[c.where][c.line], text[c.where][c.line + 1], text[c.where][c.line + 2]].join(" ");
+  const sha = (win.match(SHA_RE) || [null])[0];
+  if (sha) withBuild++; else { withoutBuild++; if (examples.length < 8) examples.push(c); }
+}
+console.log(`  citations whose own line is about the drawing surface: ${compCites.length}`);
+console.log(`    a build SHA appears within 2 lines:                  ${withBuild}`);
+console.log(`    NO build named within 2 lines:                       ${withoutBuild}\n`);
+for (const e of examples) console.log(`  NO BUILD  ${e.where}:${e.line}  cites :${e.n}  —  "${trim(e.src, 72)}"`);
+console.log(`
+  *** ${withoutBuild} of ${compCites.length} citations about the drawing surface name no build within two lines. ***
+  A line number into a file that changed 41 times across the builds this record quotes is not a weak
+  citation without its build; it is a citation to nothing in particular. And the asymmetry with this
+  lane's INSTRUMENTS is the uncomfortable part: every instrument that reads the product pins its SHA in
+  code, because an unpinned read would not run. *** THE PROSE HAS NO SUCH FORCING FUNCTION, SO THE PROSE
+  IS WHERE THE UNPINNED CITATIONS ARE. *** An instrument cannot cite sloppily and still execute; a
+  paragraph can.
+
+  A-G427 EXTENDED: a citation into a file that changes names its BUILD as well as its subject. The build
+  is not provenance decoration — without it the citation has no referent at all.
+`);
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────────── */
+rule();
+console.log("[5] A-G429 — FOUR INSTRUMENT ERRORS, TWO LANES, NO CONTACT, ONE DIRECTION");
+rule();
+console.log(`
+  GRÜN audited its own citations today and its auditor's first form made two errors; this verifier's
+  first form made two. Independent instruments, different languages of thought, no contact between them:
+
+    GELB   counted a HEADING target as impossible                 65 -> 83 impossible
+    GELB   quote limb matched the quote in its own citing sentence  0 -> 53 "proven stale"
+    GRÜN   counted the README's PORT MAP as citations              56 -> 62 citations
+    GRÜN   scanned its own source, finding its header's examples   component count inflated
+
+  *** ALL FOUR RAN IN THE DIRECTION THAT MADE THE RECORD LOOK WORSE. ***
+
+  RULED, A-G429, and it is GRÜN's, including the mechanism: *a false positive looks like SUCCESS to
+  whoever built the detector, so nothing in the build loop pushes back on it. A detector's own errors
+  are selected for by what its author is hoping to find.*
+
+  THIS IS NOT A BIAS TOWARD PESSIMISM. It is a selection effect with a named mechanism: when a detector
+  fires, its author reads the firing as the instrument working, and only a firing that is obviously
+  absurd gets audited. A detector that under-reports is silent, and silence prompts no review at all.
+  So the errors that survive a build loop are the ones that inflate.
+
+  THE REMEDY IS THE PRACTICE BOTH LANES ALREADY CONVERGED ON, and A-G429's value is that it says WHY:
+    1. CLASSIFY rather than filter — a number removed without a name is a number nobody can audit
+       (GRÜN's ports, and this lane's first verifier had the same shape);
+    2. EXCLUDE THE INSTRUMENT'S OWN SOURCE — a scanner that finds its own header's examples is A-G408;
+    3. AUDIT THE ALARMING NUMBER BEFORE SENDING IT, specifically because it is alarming — the opposite
+       of the instinct, which is to audit the number that looks too good.
+  *** THE THIRD IS THE ONE NEITHER LANE HAD WRITTEN DOWN, and it is the one that would have caught all
+  four. ***
+`);
+rule();
 rule();

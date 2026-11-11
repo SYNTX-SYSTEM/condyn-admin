@@ -2,35 +2,35 @@
 GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILES
 ========================================================================================================
 
-  PHASE_F is 1659 lines, PHASE_G is 12239 lines.
-  line-number citations found in total:        318
-    into one of these two documents:           248   <- resolvable here
+  PHASE_F is 1665 lines, PHASE_G is 12383 lines.
+  line-number citations found in total:        311
+    into one of these two documents:           241   <- resolvable here
     into a code artifact (field-e:365, …):     70   <- a different target, not resolved here
 
 ========================================================================================================
 [1] WHAT EACH CITATION NOW POINTS AT — and a heading target is legitimate, not broken
 ========================================================================================================
 
-  CONTENT         165   <- resolves to content; whether it is the RIGHT content is unknowable here
-  BLANK            63   <- IMPOSSIBLE as a citation subject
-  HEADING          18   <- LEGITIMATE: cites a section or amendment by the line that names it
+  CONTENT         161   <- resolves to content; whether it is the RIGHT content is unknowable here
+  BLANK            61   <- IMPOSSIBLE as a citation subject
+  HEADING          17   <- LEGITIMATE: cites a section or amendment by the line that names it
   TABLE RULE        2   <- IMPOSSIBLE as a citation subject
 
-  BLANK         PHASE_F:332    cites PHASE_F:955  ->  ""
   BLANK         PHASE_F:333    cites PHASE_F:735  ->  ""
-  BLANK         PHASE_F:337    cites PHASE_F:1396  ->  ""
-  BLANK         PHASE_F:347    cites PHASE_F:174  ->  ""
-  BLANK         PHASE_F:347    cites PHASE_F:140  ->  ""
-  BLANK         PHASE_F:573    cites PHASE_F:174  ->  ""
-  BLANK         PHASE_F:593    cites PHASE_F:174  ->  ""
-  BLANK         PHASE_F:624    cites PHASE_F:152  ->  ""
-  BLANK         PHASE_F:840    cites PHASE_F:83  ->  ""
-  BLANK         PHASE_F:847    cites PHASE_F:140  ->  ""
-  BLANK         PHASE_F:859    cites PHASE_F:140  ->  ""
-  BLANK         PHASE_F:970    cites PHASE_F:174  ->  ""
-  … and 53 more
+  BLANK         PHASE_F:337    cites PHASE_F:1400  ->  ""
+  BLANK         PHASE_F:579    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:599    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:630    cites PHASE_F:152  ->  ""
+  BLANK         PHASE_F:846    cites PHASE_F:83  ->  ""
+  BLANK         PHASE_F:853    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:865    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:976    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:976    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:1357   cites PHASE_F:669  ->  ""
+  BLANK         PHASE_G:394    cites PHASE_G:174  ->  ""
+  … and 51 more
 
-  *** 65 of 248 document citations point at a BLANK LINE, a table rule or past the end of the file.
+  *** 63 of 241 document citations point at a BLANK LINE, a table rule or past the end of the file.
   Every one of those is stale by construction: nothing was ever written there to cite. ***
 ========================================================================================================
 [2] CAN A CITATION BE VERIFIED AT ALL? — the quote limb, which only verifies and never accuses
@@ -40,16 +40,12 @@ GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILE
   accompanies the number, is the quoted text at the cited line? This limb verifies and never accuses —
   a miss does not distinguish a stale number from a quote that was never about the target.
 
-  citations carrying a quotation:          66
+  citations carrying a quotation:          55
     VERIFIED — the quote is at the target:  0
-    UNVERIFIED:                            66
-      of those, the quote sits elsewhere in the target file — STALE CANDIDATES: 11
+    UNVERIFIED:                            55
+      of those, the quote sits elsewhere in the target file — STALE CANDIDATES: 9
       (the rest quote a code file, paraphrase, or quote something not in the target at all)
 
-  CANDIDATE  PHASE_F:346 cites PHASE_F:365 — quote also at PHASE_F:262
-             "every phase-d and phase-e test passes un"
-  CANDIDATE  PHASE_F:346 cites PHASE_F:950 — quote also at PHASE_F:262
-             "every phase-d and phase-e test passes un"
   CANDIDATE  PHASE_G:1959 cites PHASE_G:400 — quote also at PHASE_G:1936
              "architecture.test.ts"
   CANDIDATE  PHASE_G:6016 cites PHASE_G:670 — quote also at PHASE_G:5922
@@ -64,9 +60,10 @@ GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILE
              "every temporal obligation is measured on"
   CANDIDATE  PHASE_G:8733 cites PHASE_G:715 — quote also at PHASE_G:8703
              "every temporal obligation is measured on"
-  CANDIDATE  PHASE_G:9455 cites PHASE_F:1400 — quote also at PHASE_F:1420
+  CANDIDATE  PHASE_G:9455 cites PHASE_F:1400 — quote also at PHASE_F:1426
              "a rung below 2× the measured per-pixel f"
-  … and 1 more candidates
+  CANDIDATE  PHASE_G:11834 cites PHASE_F:355 — quote also at PHASE_F:381
+             "footprint ≥ 6 × outline footprint"
 
   *** NO NUMBER HERE IS A COUNT OF STALE CITATIONS. *** 0 are verified; the rest are
   unverifiable by any means this instrument has, because the record does not say what they were meant
@@ -76,11 +73,11 @@ GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILE
 [3] WHAT THIS BOUNDS, AND WHAT IT DOES NOT
 ========================================================================================================
 
-  *** OF 248 LINE-NUMBER CITATIONS INTO THESE TWO DOCUMENTS, 0 CAN BE VERIFIED. ***
+  *** OF 241 LINE-NUMBER CITATIONS INTO THESE TWO DOCUMENTS, 0 CAN BE VERIFIED. ***
 
-  That is the finding, and it is sharper than any count of stale ones would have been. 65 point at a
+  That is the finding, and it is sharper than any count of stale ones would have been. 63 point at a
   blank line or a table rule and are stale by construction — nothing was ever written there to cite. Of
-  the remaining 183, 11 carry a quotation that sits somewhere else in the target file and are
+  the remaining 178, 9 carry a quotation that sits somewhere else in the target file and are
   candidates for a human to read. *** THE REST CANNOT BE CHECKED BY ANY MEANS THIS INSTRUMENT OR ANY
   OTHER HAS, because the record does not say what they were meant to name. *** A citation that carries
   only an offset is not weakly verifiable. It is UNVERIFIABLE, permanently, by anyone.
@@ -95,7 +92,7 @@ GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILE
 
   TWO DEFECTS IN THIS INSTRUMENT'S OWN FIRST FORM, both of which inflated a finding, both recorded
   rather than quietly fixed:
-    1. it counted a HEADING target as impossible and reported 83 impossible citations. Citing A-F18 by
+    1. it counted a HEADING target as impossible and reported 80 impossible citations. Citing A-F18 by
        the line that reads "### A-F18 · …" is the most precise citation available, not a broken one.
     2. its quote limb searched the whole target file and reported the FIRST occurrence — which is very
        often the CITING line itself, because the citing sentence contains the quote it just wrote. It
@@ -108,4 +105,74 @@ GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILE
   *** A RULE AND ITS VIOLATION IN ONE PARAGRAPH IS NOT A WORSE FAILURE OF ATTENTION — IT IS EVIDENCE
   THAT WRITING THE RULE IS THE RISK CONDITION, because the writing is where the attention goes. ***
 
+========================================================================================================
+[4] THE HARDER TARGET — citations into a file that CHANGES, and whether a build is named
+========================================================================================================
+
+  GRÜN audited its own record on its own criterion ("does the citation carry a subject") and declined to
+  compare its 80.2 % to this lane's 0 of 248, because the questions differ — and then said the thing worth
+  acting on: *your verifier would be the thing to run against it, not mine.* So this limb runs this lane's
+  criterion on the target where it bites hardest, against THIS lane's own prose: a citation into the
+  drawing surface, a file that has changed 41 times between the builds this record quotes.
+
+  A citation into a mutable source file is resolvable ONLY against a named build. So the question is not
+  "is the number right" but "is there anything here that could make it right or wrong at all".
+
+  citations whose own line is about the drawing surface: 25
+    a build SHA appears within 2 lines:                  0
+    NO build named within 2 lines:                       25
+
+  NO BUILD  PHASE_F:576  cites :156  —  "- `:156` — the `[data-breath="LIVE"]` rule set must be **exactly** the o"
+  NO BUILD  PHASE_G:1375  cites :922  —  "mf-wave-halo"}`, and the group comment at `:922` states it outright: *"o"
+  NO BUILD  PHASE_G:2839  cites :855  —  "r = `shelfNear` (`:855`), all seven wave layers (`:859`), the territory "
+  NO BUILD  PHASE_G:2839  cites :859  —  "r = `shelfNear` (`:855`), all seven wave layers (`:859`), the territory "
+  NO BUILD  PHASE_G:2840  cites :894  —  "`personRadius…shelfNear` (`:894`), and `mf-rest` stepping to `SEAT` at `"
+  NO BUILD  PHASE_G:2841  cites :867  —  "(`:867`). **The lit, breathing field terminates at exactly `shelfNear` b"
+  NO BUILD  PHASE_G:2982  cites :898  —  ":898 <circle aria-hidden stroke={SEAT} strokeWidth={g.fieldRadius - g.sh"
+  NO BUILD  PHASE_G:2983  cites :899  —  ":899 <circle data-testid="mapping-ring-shelf" stroke={rgba(INK, 0.022)} "
+
+  *** 25 of 25 citations about the drawing surface name no build within two lines. ***
+  A line number into a file that changed 41 times across the builds this record quotes is not a weak
+  citation without its build; it is a citation to nothing in particular. And the asymmetry with this
+  lane's INSTRUMENTS is the uncomfortable part: every instrument that reads the product pins its SHA in
+  code, because an unpinned read would not run. *** THE PROSE HAS NO SUCH FORCING FUNCTION, SO THE PROSE
+  IS WHERE THE UNPINNED CITATIONS ARE. *** An instrument cannot cite sloppily and still execute; a
+  paragraph can.
+
+  A-G427 EXTENDED: a citation into a file that changes names its BUILD as well as its subject. The build
+  is not provenance decoration — without it the citation has no referent at all.
+
+========================================================================================================
+[5] A-G429 — FOUR INSTRUMENT ERRORS, TWO LANES, NO CONTACT, ONE DIRECTION
+========================================================================================================
+
+  GRÜN audited its own citations today and its auditor's first form made two errors; this verifier's
+  first form made two. Independent instruments, different languages of thought, no contact between them:
+
+    GELB   counted a HEADING target as impossible                 65 -> 83 impossible
+    GELB   quote limb matched the quote in its own citing sentence  0 -> 53 "proven stale"
+    GRÜN   counted the README's PORT MAP as citations              56 -> 62 citations
+    GRÜN   scanned its own source, finding its header's examples   component count inflated
+
+  *** ALL FOUR RAN IN THE DIRECTION THAT MADE THE RECORD LOOK WORSE. ***
+
+  RULED, A-G429, and it is GRÜN's, including the mechanism: *a false positive looks like SUCCESS to
+  whoever built the detector, so nothing in the build loop pushes back on it. A detector's own errors
+  are selected for by what its author is hoping to find.*
+
+  THIS IS NOT A BIAS TOWARD PESSIMISM. It is a selection effect with a named mechanism: when a detector
+  fires, its author reads the firing as the instrument working, and only a firing that is obviously
+  absurd gets audited. A detector that under-reports is silent, and silence prompts no review at all.
+  So the errors that survive a build loop are the ones that inflate.
+
+  THE REMEDY IS THE PRACTICE BOTH LANES ALREADY CONVERGED ON, and A-G429's value is that it says WHY:
+    1. CLASSIFY rather than filter — a number removed without a name is a number nobody can audit
+       (GRÜN's ports, and this lane's first verifier had the same shape);
+    2. EXCLUDE THE INSTRUMENT'S OWN SOURCE — a scanner that finds its own header's examples is A-G408;
+    3. AUDIT THE ALARMING NUMBER BEFORE SENDING IT, specifically because it is alarming — the opposite
+       of the instinct, which is to audit the number that looks too good.
+  *** THE THIRD IS THE ONE NEITHER LANE HAD WRITTEN DOWN, and it is the one that would have caught all
+  four. ***
+
+========================================================================================================
 ========================================================================================================
