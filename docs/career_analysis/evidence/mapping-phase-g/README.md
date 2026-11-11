@@ -2,6 +2,25 @@
 
 > ## THIS INSTRUMENT RETURNS NO VERDICT
 >
+> ### §112 · what a clean `run-all.sh` does NOT mean — stated before anyone builds the claim out of my silence
+>
+> **49 instruments. 18 have a failure path (a `throw` or a non-zero exit). 31 are REPORTERS: for those,
+> exit 0 means THE SCRIPT RAN TO COMPLETION and nothing whatever about the product.**
+>
+> **That is correct design for a reporter** — a frame corpus or a citation resolver has nothing to refuse, and
+> giving it a failure path would make it a gate, whose permanent red spends the next reader's attention for
+> figures nobody can act on. **The hazard is never the reporter; it is the sentence someone writes about it.**
+> GELB found exactly that in their own deliverable: 16 of 25 instruments with no failure path, summarised in
+> the mandate's report as *"24 of 24 exit 0"* as though that were a verification result.
+>
+> **This record makes no such claim and the check is shown rather than asserted** — the only `exit 0` figures
+> here are `tsc --noEmit`, which is a real compiler verdict, and a note that Turbopack *"exits 0 while
+> producing no build"*, which records the hazard rather than relying on it. **But the figure belongs here
+> anyway, because silence is where that sentence gets written:** a clean `run-all.sh` means the scripts ran.
+> For the 18, it also means their assertions held. For the 31, it means nothing more.
+>
+> *A-G465 is this lane's rule and it was aimed here second, after its author aimed it at themselves first.*
+>
 > ### §111 · `{{WAS: … }}` marks a SUPERSEDED quote — strip it before scanning this record
 >
 > **A correction that quotes what it corrects is indistinguishable, to grep, from the thing it corrects.**
