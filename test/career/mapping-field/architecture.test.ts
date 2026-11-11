@@ -401,11 +401,50 @@ describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves
   });
 });
 
+/**
+ * §95 (GELB's ruling, this lane's implementation): the evidence directory as an OWNED CATEGORY.
+ *
+ * The phase-G change-set assertion below had LOST the selector phase D states 350 lines above —
+ * `sets.filter(set => set.files.some(phaseD))` — whose own docstring names the case it exists for: "a commit
+ * that touches no phase-D file (a README, AN EVIDENCE COMMIT, any later unrelated change on main) is not a
+ * phase-D change set". Without it the assertion does not read "every phase-G change set touches only the entry
+ * set"; it reads "every commit in this repository since the phase-G base touches only these 22 paths", which is
+ * a repository freeze and was red for this lane's 107 instrument files from the first one.
+ *
+ * The repair that would have ABSOLVED this lane was adding those 107 files to a product whitelist. This one adds
+ * no path to G_ENTRY: the selector puts an instrument-only commit out of scope, and a commit that carries a
+ * ruling AND its instrument — the normal shape of this phase's work — is in scope with the evidence paths
+ * excluded by category. The product surface is unchanged, and the category is CHECKED rather than trusted by
+ * the two assertions below, or it would be a hole large enough to drive a product dependency through.
+ */
+const EVIDENCE_DIR = "docs/career_analysis/evidence/mapping-phase-g";
+const isEvidence = (p: string) => p.startsWith(`${EVIDENCE_DIR}/`);
+
 describe("MAP-G-ARCH · the change set, and no script motion", () => {
-  it("every phase-G change set touches only the phase-G entry set; no merge commit after the base", () => {
-    const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeSet()];
-    for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p)), set.commit).toEqual([]);
+  it("every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit after the base", () => {
+    const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeSet()].filter(set => set.files.some(p => G_ENTRY.includes(p)));
+    expect(sets.length, "the selector selected NO change set, so the assertion below would pass over nothing").toBeGreaterThan(0);
+    for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p) && !isEvidence(p)), set.commit).toEqual([]);
     expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..HEAD`)).toEqual([]);
+  });
+
+  it("§95 limb 1: every path in the evidence category is an instrument or an output — the category admits no product surface", () => {
+    const files = git("ls-files", "--", EVIDENCE_DIR);
+    expect(files.length, "an empty category would make the exclusion above vacuous").toBeGreaterThan(0);
+    /* Measured from what is there rather than adopted: GELB proposed .mjs/.out.txt/.md/.json, which would
+       reject run-all.sh, gruen-facade.mts and facade.log — all three committed instruments or their output. */
+    const ALLOWED = /\.(mjs|mts|json|md|sh|log)$/;
+    expect(files.filter(p => !ALLOWED.test(p)), "an evidence path that is neither an instrument nor an output").toEqual([]);
+    expect(files.filter(p => /\.(ts|tsx)$/.test(p)), "a .ts/.tsx file in the evidence category could be imported as product code").toEqual([]);
+  });
+
+  it("§95 limb 2: nothing in the product or the tests imports from the evidence category — an instrument cannot become a dependency through the back door", () => {
+    const sources = git("ls-files", "--", "app", "lib", "test").filter(p => /\.(ts|tsx|mjs|mts)$/.test(p));
+    expect(sources.length, "scanning no source file would make this limb vacuous").toBeGreaterThan(100);
+    /* A-G408's remedy, applied rather than restated: a scan for CODE must first exclude what is not code. The
+       component names this directory in a comment (:111) and the scan must not read that as an import. */
+    const importers = sources.filter(p => /(?:from|require\(|import\()\s*["'`][^"'`]*evidence\/mapping-phase-g/.test(code(p)));
+    expect(importers, "a product or test file imports from the evidence category").toEqual([]);
   });
 
   it("PF-14 / PG-7: phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member", () => {
