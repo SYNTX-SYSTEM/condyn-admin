@@ -75,7 +75,41 @@ describe("MAP-C-ARCH · nothing existing changes meaning", () => {
       // The automatic reads, the URL, the capability core, the backend.
       "lib/career/ui", "lib/career/capability-core", "app/api"
     ];
-    expect(changedSinceBase(...protectedPaths)).toEqual([]);
+    /**
+     * §91 A-G411. This read `toEqual([])` and had been RED for the whole of phases D–G without anyone
+     * seeing it, because boundary B-ENTRY was closed and so the suite never ran — GRÜN's complement to
+     * §90's sentence: a fail-closed gate with nothing behind it is not only withholding new assertions,
+     * it is SILENCING the ones already written against the lane whose commits they constrain.
+     *
+     * Five protected files have changed, and all five changed in exactly two commits, both of which are
+     * the DATABASE-ISOLATION work — the B-ENTRY boundary that every lane in this record defers to. This
+     * docstring's own last paragraph anticipated it: "A later commit that touches a phase-C file or entry
+     * point for other reasons is held to this boundary too. That is the point at which the boundary has
+     * to be re-stated (a later phase)." It was never re-stated. It is re-stated here.
+     *
+     * NOT BY WIDENING THE FILENAME SET. A filename whitelist would permanently exempt those five files
+     * from the boundary, so the next unrelated change to them would pass silently — which is how a
+     * boundary becomes a convention. The crossing is authorised BY COMMIT: every change to a protected
+     * path must be attributable to a named, reasoned commit, and a new commit touching the very same file
+     * still fails. And the authorisation list is asserted to be fully consumed, because an exception set
+     * that is not checked for staleness is a whitelist that only ever grows (A-G408's lesson).
+     */
+    const AUTHORISED_CROSSINGS: ReadonlyArray<readonly [string, string]> = [
+      ["e360caf9dcc7b7359d13e2a09884ff4ce09211a8", "fix(security,database-isolation): server-side admin gate and the B-ENTRY/DDL findings"],
+      ["dc674ee1f21b7e80693ceb07b5233689292521c2", "feat(database-isolation): B-ENTRY second basis — the authorised application database"]
+    ];
+    const authorised = new Set(AUTHORISED_CROSSINGS.map(([sha]) => sha));
+    const changed = changedSinceBase(...protectedPaths);
+    const used = new Set<string>();
+    const unattributable: string[] = [];
+    for (const file of changed) {
+      const commits = git("log", "--no-merges", "--format=%H", `${phaseCBase()}..HEAD`, "--", file);
+      // an untracked or uncommitted change has no commit at all, so it is unattributable by construction
+      if (commits.length === 0) { unattributable.push(`${file} (uncommitted or untracked)`); continue; }
+      for (const sha of commits) authorised.has(sha) ? used.add(sha) : unattributable.push(`${file} @ ${sha.slice(0, 8)}`);
+    }
+    expect(unattributable, "every change to a protected phase-C path must be attributable to an authorised crossing").toEqual([]);
+    expect([...authorised].filter(sha => !used.has(sha)), "an authorised crossing that no longer accounts for any change is stale and must be removed").toEqual([]);
   });
 
   it("every phase-C change set (its commits after the base, and the working tree once it touches phase C) changes only its new files and the three named entry points", () => {
