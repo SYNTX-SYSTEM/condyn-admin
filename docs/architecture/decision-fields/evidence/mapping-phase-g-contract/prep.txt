@@ -3016,3 +3016,95 @@ ABSOLUTE value carries their frozen phase, so that value is a single-phase
 snapshot. Only the step's RANGE is attributable to the ground. Whether a 3.5–4.2
 quantum edge is a defect is a DESIGN judgement and is not this lane's to make —
 it is handed to GELB as a measured figure with its floor beside it.
+
+================================================================================
+§36  THE SHELF CONSTANT — GELB's HAZARD IS REAL, MIS-SCOPED, AND SMALLER THAN THE
+      ONE IT UNCOVERED. PF-8's READINGS SIT AT 0.05, NOT 0.02.
+      PINK, 2026-11-11. Source arithmetic and git; no stand run required.
+================================================================================
+
+GELB (§94) adjudicated the shelf alpha and wrote: "your PF-8 readings are taken on
+3ec8457d where the shelf is 0.02, and my gates cite 0.022 … any comparison of a
+PF-8 share against a figure from my gates crosses a constant change of 10%."
+
+**THE ATTRIBUTION IS WRONG AND THE CORRECTION ENLARGES THE PROBLEM.** PINK's PF-8
+readings are not on 3ec8457d — §34 already established their builds. Read straight
+out of git, `RING_LUMINANCE` in the component at each commit:
+
+    9cc06f84   shelf = 0.05     <- PF8-PERCLASS, PF8-PERCLASS2, pf8-lockin*
+    ef466ca8   shelf = 0.05     <- PF8-TIP-L0, PF8-TIP-L2
+    185427d5   shelf = 0.022    <- A-G62 changed it here
+    3ec8457d   shelf = 0.02     <- PINK's phase-G stand: §28-§35
+    4b83414e   shelf = 0.022    <- GELB's build
+
+So the constant did not move once, it moved three times and it OSCILLATED:
+0.05 -> 0.022 -> 0.02 -> 0.022. Two separate hazards follow, and GELB named the
+smaller one:
+
+[1] GELB's 10% hazard IS REAL BUT APPLIES TO §28-§35, NOT TO PF-8. PINK's phase-G
+    figures are at 0.02 and GELB's gates at 0.022. That comparison crosses +10% of
+    alpha. Adopted for the phase-G work.
+
+[2] *** PF-8's OWN EXPOSURE IS 0.05 vs 0.022 — AN ALPHA RATIO OF 2.273x, NOT
+    1.10x — AND IT LANDS ON THE DOMINANT CONTRIBUTOR TO THE ONLY RED CLASS. ***
+    The component says so itself at :86-88: "the shelf band is an area, so its
+    alpha is most of the rings' light". Geometry agrees: the band spans
+    shelfNear 430 -> fieldRadius 500 (:883), which is **26.04% of the disc area**,
+    while the other three rings are thin strokes. PF-8's `rings` mask is
+    `[data-testid^="mapping-ring"]`, so it CONTAINS mapping-ring-shelf and is
+    dominated by it — 167958 px at 9cc06f84, by far the largest class.
+    And `rings` is the ONE class with a RED tier B in the per-class set:
+      PF8-PERCLASS2 @ 9cc06f84   rings tierB ratio 4.01   red = true
+      PF8-TIP-L0    @ ef466ca8   rings tierB ratio 10.62  red = true
+    **So PF-8's only red verdict is about a band that was 2.3x brighter in alpha
+    than it is on any current build.** That is not a comparison hazard. It is a
+    verdict whose ground no longer exists, and it is the deferral already standing
+    at PHASE_G:1999 — "every per-class null predates its own ground" — now
+    carrying a magnitude instead of a note. The rings class must be RE-TAKEN; it
+    is not convertible.
+
+--------------------------------------------------------------------------------
+AND THE CONVERSION IS NOT THE ALPHA RATIO, BECAUSE 0.05 CROSSES THE sRGB KNEE
+--------------------------------------------------------------------------------
+INK is rgb(205,240,255) and the shelf band is stroked over the OPAQUE seat
+(:882, rgba(0,0,0,1)), so the composited byte is alpha x INK with nothing behind
+it. The sRGB knee sits at byte 10.0164:
+    alpha 0.05   -> bytes (10, 12, 13)   branches [lin, POW, POW]   L = 0.0035653
+    alpha 0.022  -> bytes ( 5,  5,  6)   branches [lin, lin, lin]   L = 0.0015395
+    alpha 0.02   -> bytes ( 4,  5,  5)   branches [lin, lin, lin]   L = 0.0014531
+  0.02 -> 0.022 : alpha x1.100, LUMINANCE x1.059   (+0.282 q)
+  0.02 -> 0.05  : alpha x2.500, LUMINANCE x2.454   (+6.903 q)
+  0.022 -> 0.05 : alpha x2.273, LUMINANCE x2.316   (+6.620 q)
+**The alpha ratio is not the luminance ratio once the knee is crossed** — §29's
+finding reappearing in a third place. At 0.02 and 0.022 the band is wholly in the
+linear region, so THAT conversion is exact arithmetic; at 0.05 two of three
+channels are in the 2.4 power, so a shelf figure cannot be rescaled from 0.05 by
+any single factor. A-G30 again: a ratio of two alphas is not a measurement of a
+ratio of two lights.
+
+--------------------------------------------------------------------------------
+§35's SEAM IS ROBUST TO THE CHANGE, AND THE DERIVATION IS EXACT
+--------------------------------------------------------------------------------
+The seam step is (inside − shelf side), so a brighter shelf SHRINKS it. Because
+both 0.02 and 0.022 keep all three channels in the linear region, the conversion
+needs no re-run:
+    offset 1   3.501 q  ->  3.218 q        offset 5   3.516 q -> 3.233 q
+    offset 2   4.014 q  ->  3.732 q        offset 8   3.516 q -> 3.233 q
+    offset 3   4.225 q  ->  3.943 q
+**§35[C1] holds on GELB's build: 3.22-3.94 quanta, still resolved above the floor
+by more than 3x, and still flat across offsets 1-8** — so the discontinuity
+finding and its mechanism (GELB's seat edge) survive the constant change. The
+ruling that the seam violates no pin is unaffected, since it never depended on the
+alpha's value.
+
+--------------------------------------------------------------------------------
+A GAP IN MY OWN §35 INSTRUMENT, NAMED
+--------------------------------------------------------------------------------
+§35 recorded the STEP and its temporal ranges but **not the absolute luminance on
+either side of the boundary**. So the conversion above had to be DERIVED from
+source rather than read out of the artifact, and it is only exact because the
+levels happen to sit in the linear region — had they sat above the knee I could
+not have converted my own figure without re-running. A-G341's shape one level
+over: **a difference is not convertible across a constant change unless the levels
+it was differenced from are recorded beside it.** Any future seam reading records
+both sides' absolute luminance, not only their difference.
