@@ -11599,3 +11599,179 @@ PF-8 travel-mask population, then its queue.
 
 **The owner's single item is unchanged and is the only one:** whether `filter/DOCKER` admits traffic to the
 container's bridge address from a non-docker interface. **No merge, no deployment, Gemini off.**
+
+---
+
+## §93 A METHOD IS A PROPERTY OF AN INSTRUMENT — AND MY SWEEP WOULD HAVE RACED A LIVE RUN
+
+**Date of this section: 2026-11-11.**
+
+### A-G420 · A method is a property of an INSTRUMENT, not of a pin name *(PINK's, adopted)*
+
+PINK answered §92's PF-8 travel measurement with a **fourth** outcome, worse than the three offered:
+
+> *** `grep -c travel` returns **0** across all nine of PINK's PF-8 scripts. There is no travel exclusion
+> to be empty, because none was ever built. The class set is **six** — rings, arcs, beams, nodes, text,
+> outlines — identical in all four outputs and in source. ***
+
+The capture design is two-pass and that is why the mechanism was right and the conclusion did not apply:
+the **mask** is derived under `reduce`, where `:332` hides the travel, and the **measurement** is taken
+under `LIVE`. **So the travel's pixels fall into no class, drop to the residual medium, and have their
+light measured there.** Magnitude, already in PINK's record before §92 asked: `perGroupFraction.travel`
+**0 under reduce**, **0.01310 at 1920 and 0.01472 at 1280 under no-preference** — with A-G54's caveat
+stated rather than elided, those are `3ec8457d` figures and bound the **order** of the effect on readings
+taken at `9cc06f84` and `ef466ca8`, not the effect.
+
+> **A-G32 and A-G42 bind `gelb-gate-pf8-tiers`, which takes NO PF-8 readings. PINK's PF-8 implements
+> neither and takes ALL of them. Both lanes have written "PF-8" for four phases and meant two instruments
+> with different populations — with nineteen amendments tracked against the NAME.**
+>
+> **RULED: a method is a property of an instrument, not of a pin name. An amendment to a pin's method
+> binds the instrument implementing it; citing the pin does not import the method into another lane's
+> instrument.** A-G54's sibling one level up, and the remedy is cheaper than the problem: **every pin
+> figure names its instrument, as it already names its build.**
+
+**And the consequence, as a ruling rather than a question:** A-G32's and A-G42's amendments are re-stated
+as obligations on the **measuring** instrument and are not satisfied by an instrument that merely records
+them. Either PINK's PF-8 builds the travel class — and then A-G419's amended form applies — or **every
+PF-8 share carries the travel's contribution as stated contamination rather than as an unstated
+inclusion.** This lane does not choose between those, because the first costs a class and the second
+costs only honesty, and which is right depends on whether the tiers absorb a ~1.3–1.5 % disc-light term
+that cannot be evaluated from here.
+
+### A-G419 amended · The absence of a mask, which my own rule could not see
+
+> **PINK: a mask never constructed produces no figure to attach a population to, so the guard has nothing
+> to fire on.** Two assertions, in order: first **every class the method mandates was actually built**,
+> then each built mask's decided population is non-zero.
+>
+> **A class named in a method is not a class present in the instrument** — beside **a value carried in a
+> verdict is not a value checked by it** (A-G409). **Both are the absence that reads as a pass**, and in
+> both cases what looked like protection was the thing standing next to it.
+
+### A-G412 amended · The ruling survives, on better ground, and my specification was wrong twice
+
+**PINK confirmed the centre.** Pooled encoded green ratio 2.80325–2.85032 across both viewports and every
+populated rung; best-resolved cell **2.85032, −0.24 %, bootstrap [2.841, 2.859] containing 2.857143**; and
+the stronger limb — predicting each pixel's **selected** swing from the **unselected** range alone gives
+measured/predicted **1.008–1.020**, so the prediction holds per pixel to within 2 % and needs no ratio at
+all (A-G384's shape, applied to my own prediction).
+
+**The width is PINK's and it is ±2 %, not my 0.16 %.** Median per-pixel resolution is ±20–50 % because the
+selected swing is 2–5 codes; pooling 2332–24580 pixels brings it to ±2 %, bootstrapped over pixels rather
+than assumed. **§91 handed down a centre and explicitly declined a width — this is what that division was
+for.**
+
+**And the 0.16 % is now identified rather than defended.** PINK withdrew its own correction that the
+luminance ratio carries a convexity factor making an exact 2.8571 suspicious, because **evaluated at the
+stand's amplitudes it is +0.024 % to +0.140 %, ten to eighty times below the quantisation floor.**
+
+> **That term IS my 0.16 %.** My instrument computed through the encoded composite and the WCAG decode and
+> got 2.8562–2.8607, straddling 2.857143 at the same order. **So my band was never a tolerance and never
+> noise: it was a real second-order effect, correctly computed, and unobservable.** PINK's withdrawal is
+> right, and it tells this lane what its own band was. *Raising a real second-order term without
+> evaluating it at the amplitudes in play is the same error class as quoting a model band as a tolerance.*
+
+**MY SPECIFICATION WAS WRONG TWICE.** *"At any pixel, on any backdrop"* is false, and the product is worse
+than PINK's four: **five keyframe families are declared** at `4b83414e` — Wave, Query, **Transient**,
+Evidence, Travel — four of them live during PINK's capture, with Transient transition-driven. **I gave
+PINK one.**
+
+| | |
+|---|---|
+| a carrier swinging 80–99 codes **buries** one swinging 6–13 | so peak-to-peak at a mixed pixel is not the halo's swing |
+| **selection ADDS carriers** — 3 travel lines unselected, **4** selected; query absent then present | so the two states are **not one scene at two gains** |
+| the 0.28 s family | aliased outright by any practical screenshot cadence |
+
+Raw-scene ratios came out **1.00–1.48** against a forced 2.857 — contamination, not noise. And a
+suppression **mask** could not repair it: *removing a carrier from the mask CRITERION does not remove its
+excursion from the other carrier's max−min.*
+
+> **SO A-G412 IS AMENDED AND ITS RULING SURVIVES FOR A BETTER REASON THAN I GAVE IT.** On the ~79 %/~88 %
+> of pixels where the halo is the sole carrier, the fractional threshold makes the selected cell a
+> deterministic copy of the unselected one — no information, as ruled. On the **21.0 % at 1920 and 12.4 %
+> at 1280** the added carriers cover, the cell **does** move — and what moves it is a fourth travel line
+> and a query highlight, **each with its own pin** (PG-7, P-3/E-3). **The selected cell's only information
+> content is contamination from other motions.**
+>
+> **Had the ruling gone the other way, those added carriers would have read as the glow breathing HARDER
+> when selected — the exact opposite of PF-10.**
+
+PINK's repair is recorded for both peer lanes: **pause every animation but `circle.mf-wave.mf-wave-halo`,
+asserted by reading `animationPlayState` back** — pausing freezes the backdrop without removing anything
+from the composite, which a mask cannot do — then hold the backdrop identical by a criterion
+**independent of the quantity measured**: drop pixels whose static midpoint drifts over one code. **That
+independence is exactly what §83's withdrawn ceiling lacked.**
+
+### A-G421 · A zero-width confidence interval is not a tight measurement *(PINK's)*
+
+`median(gU)/median(gS)` over small integers is a **lattice** statistic: median 7 over median 3 returns
+exactly **2.000** — 30 % from the centre — **with bootstrap [2.000, 2.000]**, because resampling cannot
+move a median off a lattice point.
+
+> **RULED: a zero-width interval is not precision. It is an estimator that cannot express the uncertainty
+> it has.** An interval of width zero is **refused** rather than published. Keeping the lattice median
+> beside the pooled ratio as a control that never gets nearer than −3.7 % is the right disposal: it stays
+> visible as the thing that lies instead of being deleted and forgotten.
+
+**And PINK reported the ladder WHOLE**: the 1920 rung-16 cell holds **66 pixels** and reads 3.15224,
++10.3 %, bootstrap excluding the centre in the **other** direction — **quoted neither as a refutation nor
+replaced by the rung that lands best**, which was §30's withdrawn error. GRÜN's threshold-crossing cause
+fits it exactly: `gU >= rung` is a strict threshold over a single capture pair, and the thin
+small-population cells are the exposed ones. **Unresolved with a cause beats unresolved with a caveat.**
+
+### The sweep I was one ruling away from specifying would have raced a live run
+
+§91 named three conjuncts for the orphan sweep: name pattern, owned by the connecting role, no user
+tables. PINK:
+
+> *** That set is not a crash signature. A LIVE run's database satisfies all three in the window between
+> `CREATE DATABASE` and the first migration. ***
+
+**So the sweep would have dropped a database a concurrent run was about to use** — and the suite runs
+several at once; three existed simultaneously on the server today. Accepted entire:
+
+| | |
+|---|---|
+| **fourth conjunct** | **the marker is ABSENT** — the actual discriminator, since create writes it immediately and a crash before `COMMENT` is the only state leaving it missing; a database that HAS one is clearable by the ordinary path, so the sweep must not touch it |
+| **fifth** | **zero connections** for that `datid` |
+| **structurally** | **the sweep must call `assertDisposableServer()` itself**, because it drops by INFERENCE rather than by marker — which makes the server limb load-bearing there in a way it is not for `dropDisposableTestDatabase`, where the marker carries it |
+
+> **What kept this from being written is that §91 asked for a fourth conjunct BEFORE writing it rather
+> than after.** That is the one piece of this lane's conduct here worth repeating deliberately.
+
+**Empirically, and it lowers the urgency:** a leftover `condyn_test_*` was on the server when PINK's
+message arrived — **with a well-formed marker, the right owner and zero connections**, so the ordinary
+path cleared it. **PINK's orphan class did not occur in practice today; ordinary litter did.**
+
+### The server limb's reach, measured by PINK and narrowed here
+
+PINK verified rather than read: `SHARED_SERVER_WITNESS_NAMES` derives to a **single** member, `condyn`. So
+limb 1 identifies the shared server by the presence of **this project's own payload**. PINK called that the
+honest reach of positive identification by witness **and not a defect** — which is right, and it was cheap
+to narrow:
+
+- **limb 2, FOREIGN PAYLOAD** — any database neither maintenance nor `condyn_test_<16 hex>`; a server
+  provisioned for this suite holds nothing else, so a production server hosting other applications is now
+  refused **by fact**;
+- **the residual limit ASSERTED, not documented** — a pristine, not-yet-bootstrapped production server
+  holds no witness and no foreign payload and **passes both limbs**. A test says so and pins the witness
+  count at 1. **A limit written in a comment is not a limit anyone has measured** (A-G415);
+- **a vacuity guard** — a server reporting zero databases is impossible for a live server, so it is refused
+  rather than reported clean. **Third vacuity guard this phase, and the pattern never changes: the empty
+  population reads as the passing one.**
+
+87 isolation tests, 10 on this limb, with the fail-closed e2e tests driving the real runner.
+
+### Where this leaves the record
+
+**Six new defects: my one-carrier probe specification and the derivation under it; PINK's lattice-median
+zero-width interval; PINK's unevaluated convexity correction; the PF-8 method/instrument divergence;
+A-G419's gap; and my three-conjunct sweep. 237 + 6 = 243.** The server limb's single-witness reach is
+**not** counted — PINK declined to call it a defect and that judgment is accepted rather than overridden
+into a larger number.
+
+**Three of the six are mine, and two of those were rulings I issued** — both corrected by the lane they
+constrain, which remains the only direction in which a ruling is tested.
+
+**No merge, no deployment, Gemini off. The owner's single item is unchanged.**
