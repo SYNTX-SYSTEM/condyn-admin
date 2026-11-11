@@ -9556,10 +9556,16 @@ with the `GLOW_RAMP` comment floor and the ring-docstring corrections you alread
 
 ### Where this leaves the record
 
-**Five new defects, all five this lane's:** a probe that read a comment as enforcement, a headline rung
-inadmissible under my own later clause, a ratio printed ∞ where its operands give 40.75, a deferral that outlived
-its precondition by a day, and a pin that returns green on three tiers in the mode where it cannot fail. **The
-count is 194.**
+**Six new defects, all six this lane's:** an amendment count taken over one file in the section that adopted
+the rule to count, a probe that read a comment as enforcement, a headline rung inadmissible under my own later
+clause, a ratio printed ∞ where its operands give 40.75, a deferral that outlived its precondition by a day, and
+a pin that returns green on three tiers in the mode where it cannot fail. **The count is 195.**
+
+> **Corrected in place, same session.** This paragraph first read *"Five new defects … the count is 194"* while
+> the section above numbers **190 through 195** — six. The prose list had **omitted defect 190, A-G357's own**,
+> which is the defect of an inventory that misses an item while reporting a total. **A section whose subject is a
+> miscount closed with a miscount**, and the omitted entry was the one about omission. Caught by counting the
+> numbered tags rather than re-reading the sentence.
 
 **Both GELB items §74 and A-G320 recorded as owed are now closed.** PF-8's sweep is this section; the forward
 pointers are at `PHASE_F:317` and `PHASE_F:929`, with every line number in them produced by a verifier that
