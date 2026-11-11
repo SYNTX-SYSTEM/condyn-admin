@@ -28,6 +28,7 @@ import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureChroma, chromaQuantumFloor, labOf,
   classMasks, servedProvenance, PROVENANCE, median, pct, e4
 } from "./gruen-instrument.mjs";
+import { writeSealed } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 /* §82: the worktree whose .next/BUILD_ID and git state the provenance block records. Defaults to THIS
@@ -135,13 +136,17 @@ writeFileSync(resolve(here, `../outputs/pg12-chroma-resolution-${VW}x${VH}.json`
 
 /* ── SEALED: the verdict-bearing quantity ──────────────────────────────────────────────────────────── */
 const ratio = hueC.p50 > 0 ? mediumC.p50 / hueC.p50 : null;
-writeFileSync(resolve(here, `../outputs/SEALED-pg12-ratio-${VW}x${VH}.json`), JSON.stringify({
+const sealedBody = {
   SEALED: "A-G109 — PG-12's verdict-bearing quantity. Published to NOBODY, including GELB, until PINK's verdict on PG-12 is recorded. A-G117: the hue class's C* is sealed as well as the ratio, since the medium's C* is published and one division would recover this.",
   ...common,
   hueCarryingClassChroma: hueC, plainGlowChroma: plainC, mediumChroma: mediumC,
   mediumOverHue: ratio === null ? null : +ratio.toFixed(5), boundForReference: `<= ${BOUND}`,
   hueClassIdentification: "glow pixels within haloFar of a body with data-required-gaps > 0 (G-4's one hue, the mf-halo-gap gradient). Plain-glow chroma is reported beside it as a control: the two glow fills differ only in hue, so a chroma channel that cannot separate them is not resolving hue at all."
-}, null, 1));
+};
+/* §88: A-G109 in code — refuses to replace an existing seal unless GRUEN_RESEAL=1. The UNSEALED companion
+   above (pg12-chroma-resolution-*.json) is written normally, so it can be refreshed without a re-seal. */
+const sealOutcome = writeSealed(resolve(here, `../outputs/SEALED-pg12-ratio-${VW}x${VH}.json`), sealedBody);
+console.log(`seal ${sealOutcome.outcome}: ${sealOutcome.path.split("/").pop()}`);
 
 console.log(JSON.stringify({ viewport: `${VW}x${VH}`, mediumChromaP50: mediumC.p50, mediumPixels: mediumC.n,
   modalTriple: medianTriple, chromaQuantumMax: floor.maxOneCodeDeltaC, mediumOverQuantum: publishable.mediumC50_overQuantum,

@@ -16,6 +16,8 @@
  * So the stamp moves here, where it has no imports, and `gruen-instrument.mjs` re-exports it unchanged so
  * that every existing probe keeps working with no edit. Nothing about any reading changes.
  */
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+
 export const PW_MODULE = process.env.CONDYN_PLAYWRIGHT_MODULE ?? "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
 export const SHARP_MODULE = process.env.CONDYN_SHARP_MODULE ?? new URL("../../../../../node_modules/sharp/lib/index.js", import.meta.url).pathname;
 export const BASE = process.env.GRUEN_BASE ?? "http://127.0.0.1:3220";
@@ -59,3 +61,36 @@ if (_worktreeOfScript !== CANONICAL_EVIDENCE_ROOT) {
   );
 }
 export const EVIDENCE_ROOT = CANONICAL_EVIDENCE_ROOT;
+
+/**
+ * §88 · A-G109 ENFORCED IN CODE RATHER THAN BY CONVENTION.
+ *
+ * Three probes write a `SEALED-*` file — gruen-pg11, gruen-pg12-chroma, gruen-pg17 — and all three wrote it
+ * UNCONDITIONALLY. The only thing protecting the eight seals was that those probes are kept out of
+ * run-all.sh. That is a convention, and a convention is not a boundary: one deliberate re-run of a probe for
+ * its UNSEALED companion would have silently replaced a seal.
+ *
+ * And that companion is the live case, not a hypothetical. `gruen-pg11.mjs` writes `pg11-guard-*.json` AND
+ * `SEALED-pg11-ratio-*.json` in ONE PASS — and the guard file carries the marginFactor that GELB's
+ * INCONCLUSIVE-BY-MEASUREMENT closure of PG-11's relation limb rests on. So "re-run the unsealed reading,
+ * defer the seals" could not be done at all: the probe did not separate them. Now it does.
+ *
+ * `writeSealed` refuses to replace an existing seal unless `GRUEN_RESEAL=1` says so deliberately, reports
+ * what it declined on stderr, and returns the outcome so a probe can record in its own output that its seal
+ * was not rewritten. Re-sealing stays a ruling; refreshing an unsealed companion becomes a re-run.
+ */
+export function writeSealed(path, json) {
+  const text = `${JSON.stringify(json, null, 1)}\n`.replace(/\n$/, "");
+  const exists = existsSync(path);
+  const name = path.split("/").pop();
+  if (!exists) { writeFileSync(path, text); return { written: true, outcome: "CREATED", path }; }
+  if (readFileSync(path, "utf8") === text) return { written: false, outcome: "IDENTICAL", path };
+  if (process.env.GRUEN_RESEAL !== "1") {
+    console.error(`!! DECLINED to overwrite a SEALED reading: ${name}`);
+    console.error(`   A-G109: a seal is replaced only by a deliberate act. Set GRUEN_RESEAL=1 to re-seal.`);
+    console.error(`   The probe's UNSEALED output, if it has one, was written normally.`);
+    return { written: false, outcome: "REFUSED", path };
+  }
+  writeFileSync(path, text);
+  return { written: true, outcome: "RESEALED", path };
+}

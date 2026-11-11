@@ -32,6 +32,7 @@ import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureLuminance, hide, unhideAll,
   signAndSeatMask, zeroByConstruction, servedProvenance, PROVENANCE, median, e4
 } from "./gruen-instrument.mjs";
+import { writeSealed } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 /* §82: the worktree whose .next/BUILD_ID and git state the provenance block records. Defaults to THIS
@@ -169,5 +170,6 @@ const out = {
   },
   perBody
 };
-writeFileSync(resolve(here, `../outputs/SEALED-pg17-${LEVEL}-${VW}x${VH}.json`), JSON.stringify(out, null, 1));
-console.log(`SEALED reading written: SEALED-pg17-${LEVEL}-${VW}x${VH}.json  (${perBody.length} bodies, zero-channel ${zeroChannel.measured}, valid ${zeroChannel.valid})`);
+/* §88: A-G109 in code — refuses to replace an existing seal unless GRUEN_RESEAL=1 */
+const sealOutcome = writeSealed(resolve(here, `../outputs/SEALED-pg17-${LEVEL}-${VW}x${VH}.json`), out);
+console.log(`seal ${sealOutcome.outcome}: SEALED-pg17-${LEVEL}-${VW}x${VH}.json  (${perBody.length} bodies, zero-channel ${zeroChannel.measured}, valid ${zeroChannel.valid})`);

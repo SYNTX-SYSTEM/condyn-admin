@@ -37,6 +37,7 @@ import {
   chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureRaw, decodeLuminance, captureLuminance,
   classMasks, servedProvenance, PROVENANCE, CLASS_SELECTOR, WINDOW_SECONDS, HARMONICS, NULL_FREQS, lockIn, pct, e4
 } from "./gruen-instrument.mjs";
+import { writeSealed } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 /* §82: the worktree whose .next/BUILD_ID and git state the provenance block records. Defaults to THIS
@@ -182,7 +183,9 @@ const sealed = {
   guardStatus: guardClears ? "clears" : "INCONCLUSIVE by A-G30 — the ratio below is reported for the sealed comparison and is not a verdict",
   attributionRule: "A-G42 point 2: this run states its attribution rule explicitly — relation pixels are the differential mask of .mf-travel + .mf-beam-glow taken LIVE; medium pixels are disc pixels that are neither glow, sign nor relation. The travel and the breath share a period (A-G13), so the harmonics cannot be attributed BETWEEN them within one mask; the separation here is spatial, by mask, not spectral."
 };
-writeFileSync(resolve(here, `../outputs/SEALED-pg11-ratio-${LEVEL}-${VW}x${VH}.json`), JSON.stringify(sealed, null, 1));
+/* §88: A-G109 in code — refuses to replace an existing seal unless GRUEN_RESEAL=1 */
+const sealOutcome = writeSealed(resolve(here, `../outputs/SEALED-pg11-ratio-${LEVEL}-${VW}x${VH}.json`), sealed);
+console.log(`seal ${sealOutcome.outcome}: ${sealOutcome.path.split("/").pop()}`);
 
 console.log(JSON.stringify({ viewport: `${VW}x${VH}`, level: LEVEL, frames: F, spanS: +spanS.toFixed(1),
   adequate: adequacy.adequate, windowOk: windowRule.satisfied, clipMatch,
