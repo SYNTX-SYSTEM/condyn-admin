@@ -287,6 +287,7 @@ re-lights two further channels, and each needs its counterpart or the defect ret
 |---|---|
 | **PG-11** | **Motion presence.** The relations' travelling light must out-salience the breath: the coherent motion energy on relation pixels ≥ **1.5×** that on medium pixels. Without it the medium is again the only living thing — *the phase-F failure reborn in motion*, which is PINK's phrase and the right one. |
 | **PG-12** | **Hue containment.** Hue lives on the semantics and never leaks to the ground: on medium pixels, chroma ≤ **2 %** of the chroma on the hue-carrying class. |
+| | ⚠ **ESTABLISHED UNSATISFIABLE BY ANY BUILD** *(§36; recorded here §115)* — *the hue's own chroma is half the bound.* **A derived negative, so it needs no guard** — and §104 adds that its two sides carry **different quantifiers**: *"on medium pixels"* is per-pixel, *"the chroma on the hue-carrying class"* is a class aggregate. **§113 listed PG-12 among five pins with no guard; that was a miscount — it is in the same class as PF-15 and PG-18.** |
 
 ### A-G7 · Presence is multi-channel — PG-1 is only its light limb *(PINK)*
 
@@ -14370,3 +14371,96 @@ commit message, corrected forward rather than rewritten.** **340 + 5 = 345.**
 its column because this lane applied it to its own; this lane applied it because PINK had given its number
 as an upper bound.* **Neither lane audited its own column until the other had audited theirs** — the only
 mechanism today that produced a correction in both lanes from one observation.
+
+---
+
+## §115 I SETTLED THE FIVE WITH THE SCAN I HAD JUST DECLARED UNABLE TO SETTLE IT
+
+**Date of this section: 2026-11-11.**
+
+### PINK's validation statement exists, and cannot be read from here
+
+`evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md`, committed at `ebb6c8ac`, **120 commits
+unpushed** — and **its own §0 names that as a defect of the deliverable rather than a footnote**, since a
+validation nobody can read has the same flaw as a figure quoted without its build. **Confirmed from the
+outside: the path does not exist on this branch.**
+
+**Ten sections in the form the two lanes converged on:** the **instrument bound first, before any figure**;
+the population carrying **each build's shelf alpha**, because it moved three times and the figures are not
+interchangeable; the three tiers kept apart — **independently validated / received and checked / taken on
+report**; **coverage stated and the gap to "Gesamtsystemstand" named rather than the term defined**; this
+lane's suite result in §5 as **taken on report, not inherited**; and §10 as PINK's own withdrawal list,
+**recorded as evidence rather than beside it.**
+
+### §113's five was settled by the scan §114 had just invalidated
+
+§114 ruled that a name scan is *"wrong in both directions at once and its error does not even have a
+consistent sign"*, with PG-16 as the proof — **guarded, unnamed, found only by a mutant.** And then §113's
+sentence *"the headline five is unchanged and nothing new joins it"* stood.
+
+> *** A-G438's SHAPE TURNED ON A RULING INSTEAD OF A FIGURE: THIS LANE ESTABLISHED A LIMIT AND THEN RELIED
+> ON THE THING THE LIMIT FORBADE, BEFORE THE PARAGRAPH WAS COLD. ***
+>
+> **RULED: the list is "NOT NAMED BY ANY GUARD IN EITHER LANE", an UPPER BOUND on unguardedness** —
+> mirroring PINK's §51 upper bound on coverage. **Two bounds, both stated, neither a count.**
+
+### And specifying them found PG-12 was never in the list
+
+**§36 of this record reads "PG-12 IS UNSATISFIABLE BY ANY BUILD"** — *the hue's own chroma is half the
+bound* — recomputed independently in CIELAB D65 at the time and holding. **§104 adds that its two sides
+carry different quantifiers.**
+
+> **PG-12 belongs with PF-15 and PG-18: established unsatisfiable, needing no guard. It was in the five
+> because this lane counted MENTIONS instead of reading the record it wrote** — the fourth time today a
+> list of this lane's was corrected by opening the thing it listed. **Annotated at its own row.**
+>
+> *** FOUR, NOT FIVE: PF-5, PF-7, PF-13, PG-19. ***
+
+### A-G451 · A lane can hold an instrument it has forgotten it holds *(PINK's)*
+
+§114 wrote that the only thing separating guarded-unnamed from named-unguarded is *"the one GRÜN built: a
+mutant per pin."* **It was in PINK's lane, two phases old:** `pink-p4-mutants.mjs` — *"reproduces the
+mutated render without a rebuild"* — and `pink-static-mutants.mjs`, with MUT-P2-COLLAPSE, MUT-P5-3.1HZ and
+MUT-P6-GUARD. **Five pins proven red-first by runtime injection, no production build.** And
+**MUT-EVIDENCE-EASES recorded as SURVIVING — this lane's own surviving mutant, logged in PINK's lane.**
+
+> *** RULED, PINK's: a lane can hold an instrument it has forgotten it holds, and a capability claim needs
+> the same search as a coverage claim. *** **A-G448 and A-G449 pointed at a tool instead of a pin.** And
+> this lane's half is worse than not searching: **it assigned the work to a third lane, in writing.** The
+> remedy is the one that has worked all day — **open the directory.**
+
+### So the blocker is pin statements, which is this lane's — and here they are
+
+**PF-5** *(≥ 25 % of disc pixels swing ≥ 0.004 over one period, blurred)* — **mutation: `--mf-wave-depth: 0`
+on both wave groups.** The share must fall below 25 % and the assertion must fire. **Trap: the MASK
+POPULATION travels beside the share** (A-G340), or a green may be a share over pixels incapable of the
+swing.
+
+**PF-7** *(phase monotone in radius; spread 1200 ± 300 ms)* — **two mutations, and the second is the
+finding.** (1) Zero `waveDelay`'s `edgeLagMs` term → **spread → 0** → the spread assertion fires.
+(2) ***REVERSE the lag's sign → the phase becomes monotone DECREASING. PF-7 STATES NO DIRECTION.*** If the
+assertion fires, it invented one; if it passes, *monotone* is direction-free and the pin should say so.
+**Either outcome is a finding and the mutant is the only way to learn which.**
+
+**PF-13** — a meta-pin. **No render mutant reaches it, and the reason is that it has no EVALUATOR at all**:
+GRÜN's 16 files / 197 tests was evaluated by hand. **So it needs a check before a mutant** — run the
+phase-D/E population read from `PHASE_DIRS`, assert all pass **except the three named BY TITLE** (A-G426;
+the line numbers have already drifted to +0 headroom once). **Its mutant is then trivial: break one
+phase-D assertion and the evaluator must go red.**
+
+**PG-19** *(every mark ≥ 0.02 above local ground **OR** larger than its critical spacing)* — **a
+disjunction, A-G144's hazard.** **The mutation must break BOTH limbs on one mark**; breaking one leaves the
+pin correctly green. **And the guard must report, per mark, WHICH limb it satisfies** — otherwise a green
+means *"every mark satisfies at least one"* and nobody can tell whether the hard limb has ever carried a
+single mark. *** A disjunctive pin satisfied entirely by its easy limb is indistinguishable from one that
+is well satisfied, and only the per-mark breakdown separates them. ***
+
+### Where this leaves the record
+
+**Six new defects:** settling the five with the scan just invalidated; PG-12 miscounted into it; A-G451's
+instance, assigning work to a third lane that another already held; PG-19's disjunction with no per-limb
+reporting; PF-13 having no evaluator; and PF-7's direction-free *monotone*. **345 + 6 = 351.**
+
+> **And the procedural finding PINK closed on, which belongs in the report above any of the technical
+> ones:** *the symmetry worked only because the first count published was published as an UPPER BOUND.* **A
+> number offered as final would have ended it.**
