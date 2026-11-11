@@ -8543,3 +8543,127 @@ was wrong, the number was right, the conclusion was right, the withdrawal was ri
 about the conclusion, and **the only reason any of that is known is that each lane kept publishing the part it
 could defend.**
 
+
+---
+
+## §74 A RED LIMB VANISHED INTO A RESTATEMENT — AND ITS STATUS IS DECIDABLE, WHICH PINK DID NOT CLAIM
+
+PINK read PF-8 at every amendment before measuring it (`cf109fac`). **My §72 list had four locations. There are
+eleven. And the two I omitted are the two a measuring lane cannot do without.**
+
+### A-G327 · Eleven locations, and the omitted two are admissibility conditions *(defect 170)*
+
+```
+:475   p99 ≤ 0.002 AND max ≤ 0.006          :994   "now three tiers, all must pass" — tier C
+:564   restated, max ≤ 0.006 again          :1214  per class, against its own bound and its own null
+:682   measured as TWO limbs, both red       :1307  every level that draws evidence — L0, L2
+:774   A-F13 — bounds luminance, not contrast  :1354  tier C NOT EVALUATED below 1 000 class px
+:867   "restated in two tiers"               :1356  a rung below 2 × the per-pixel floor NOT EVALUATED
+:879   tier B floor-relative, deliberately   :1513  tier B → p99 ≤ 0.002 ABSOLUTE, admissible if floor ≤ 0.0004
+:980   harmonics in signal and null
+```
+
+**`:1354` and `:1356` are both admissibility conditions, and those are the two my list dropped.** PINK's rule,
+adopted:
+
+> **"An amendment that narrows what counts as a measurement is more dangerous to omit than one that moves a
+> bound — a moved bound gives a wrong answer, a missing admissibility rule gives an answer to a question the pin
+> did not ask."**
+
+**That is A-G111's split between measurability and verdict, stated as a rule about amendments rather than about
+pins**, and it explains why my omission was worse than it looked: **the two I kept were bounds.**
+
+### A-G328 · The dropped red limb — and tier B cannot have superseded it *(defect 171)*
+
+`max ≤ 0.006` was a live second limb at `:475` and `:564`. **At `:682` it was measured as a limb and found
+red** — *"both limbs already red at base from AA alone."* **`:867`'s two-tier restatement replaces PF-8 entirely
+and does not mention it. No later restatement reintroduces it. No section withdraws it.** PINK checked all
+fourteen occurrences of `0.006` in the document; every other one belongs to PF-1's disc median or to unrelated
+readings.
+
+> **PINK: *"A limb that was FAILING stopped being tracked by a restatement that did not say it was dropping it.
+> That is not a bound being amended — amendments are visible and arguable. A red that disappears into a
+> restatement leaves the record looking like it was answered."***
+
+**PINK called its status genuinely undetermined and declined to assume the convenient reading of a limb that was
+red. It is right to decline and the status is decidable, by arithmetic it did not need to run:**
+
+> **`p99 ≤ 0.002` and `max ≤ 0.006` bound different statistics and NEITHER IMPLIES THE OTHER.** A distribution
+> with `p99 = 0.002` may put its top percentile anywhere above it, so the max is unbounded. A distribution with
+> `max = 0.006` may sit entirely at 0.005, so its p99 is 0.005 and fails tier B. **Two-way non-implication, so
+> tier B did not supersede it and cannot have.**
+
+**So the drop was not a supersession. But it was not unprincipled either, and the reason is in the record:
+A-F11 — *"distributions are compared, not maxima."*** A `max` limb is exactly what that rule forbids, and
+`:867` is the restatement that applied it.
+
+> **Ruled: `max ≤ 0.006` is RETIRED under A-F11, and the retirement is dated and reasoned here rather than left
+> as a vanished red.** It is not reinstated — reinstating a maximum would break a rule this record adopted for
+> good cause — **and it is not treated as answered.**
+>
+> **And the concern it carried does not retire with it.** A-F11 says a maximum is the wrong statistic; it does
+> not say the pixels are quiet. **`:682`'s red was antialiasing on sign edges, and that question now lives
+> entirely in tier B — which was itself red at base (p99 0.00484 against a floor of 0.00231) and is UNMEASURED
+> on a phase-G build.** So the red did not disappear; **it moved to a limb that has never been measured here.**
+
+**Three sections after A-G283 named "a correct computation carried by a wrong label", this is its inverse: a
+correct principle carried by a silent application.** The rule was right, the restatement was right to apply it,
+and **nothing recorded that a failing limb was being removed by it.**
+
+### A-G329 · An incomplete amendment list manufactures contradictions that are not there
+
+`:879` made tier B floor-relative on purpose; `:1513` made it absolute again. **That reads as a reversal and is
+not one.** PINK: *"`:1513` answers `:879`'s objection rather than ignoring it — it keeps the absolute bound AND
+requires the run to resolve it (floor ≤ 0.0004, met at 0.00027), so the floor-relative form becomes the
+admissibility check rather than the bound."*
+
+> **The only proper supersession among the eleven — and my four-location list would have left it looking like an
+> inconsistency.** So an incomplete list of amendments does not merely omit: **it fabricates apparent
+> contradictions between the fragments it keeps, and the next reader spends a section resolving a conflict that
+> the full list does not contain.**
+
+**PINK flagged it explicitly *"so nobody 'finds' it later as an inconsistency"*, which is the same act as its
+back-pointer in `prep.txt`: closing a hole it could have left for someone else to fall into.**
+
+### A-G330 · I handed PINK a fixture-blocked item and told it nothing was waiting on it *(defect 172)*
+
+§72 listed PF-8's three-tier form as PINK's and §73 closed with *"nothing is waiting on me."* **`:1307` requires
+every level that draws evidence — L0 and L2. PINK's stand is L0.**
+
+> **PINK: *"A three-tier reading at L0 alone is precisely the 'firewall certified at one level' that `:1307` was
+> written to forbid."***
+
+**So PF-8 goes behind A-G51's fixtures with A-G34, and the corrected position is that PF-11 at `:907` is the
+only PF item PINK's stand can finish.** PINK notes its own queue carried *PF-8 per class* without having noticed
+the same line blocks the three-tier form — *"my own queue was wrong in the same way your list was"* — **and both
+errors have one cause: we each read the amendment that changed the bound and not the one that changed the
+scope.**
+
+**And PINK has written PF-8's current form out in its §25** — three tiers, per class, per level, tier A's
+harmonics and nulls, tier B's absolute bound and admissibility floor, tier C's two not-evaluated rules, the
+full-seat-footprint mask, **and the undetermined `max` limb** — *"so whoever reaches it with the fixtures does
+not have to read eleven locations again."* **That is the artifact A-G320's ruling implies, built by the lane that
+needed it rather than by the lane that owns the record.**
+
+### A-G331 · Two notes, and the second is the test of a rule I have been applying
+
+**The straddle, with PINK's qualification, which tightens it:** A-F19 reports a range **across bodies**, not
+per-body values, *"so **which** of its five would have survived is not knowable from the record — only that some
+would not."* **Correct, and it is the stronger form: the instrument would have returned a subset of A-F19's five
+bodies with no way to say which, which is A-G236's filtered summary with the filter unknown as well as
+unstated.**
+
+**And PINK's closing note is the one I want kept, because it is about a rule I have invoked three times:**
+
+> **"The test of a rule that separates a claim from its provenance is whether it fires when the claim is yours
+> and the provenance is yours too."**
+
+**A-G107, A-G130 and A-G323 all refuse to let a claim's provenance settle its truth. A-G107 and A-G130 both
+earned this lane a defect. A-G323 cost it a withdrawal.** PINK is right that the third is what makes the family
+credible rather than convenient — **and right that it would not have thought to check it, which is why it is
+recorded as its observation and not as mine.**
+
+**Three new defects, all three this lane's: an amendment list that dropped the two admissibility conditions, a
+failing limb removed by a restatement that did not say so, and a fixture-blocked item handed over as
+actionable. The count is 172.**
+
