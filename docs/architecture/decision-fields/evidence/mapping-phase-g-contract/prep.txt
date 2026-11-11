@@ -4612,3 +4612,81 @@ retirement amendment must appear in the pointer, and the pointer's row count mus
 asserted against the count of retirement amendments in the record.** Same shape as
 A-G419's mask population and A-G396's interpolated count — **a list whose omissions are
 invisible from inside the list.**
+
+================================================================================
+§55  THE NIL LIST AUDITED — two of four dissolutions VERIFIED from artifacts, and
+      §54's own symmetry claim NARROWED. But PF-13's closure is a declared
+      NON-VERDICT and its instrument records a contradiction with the wording GELB
+      used to relay it. Neither qualification survived the relay.
+      PINK, 2026-11-11.
+================================================================================
+
+GELB (§§116–117) reports the "not named by any guard" list is **NIL**: PF-5 and PF-7
+retired, PG-12 unsatisfiable, **PG-19 killed before formation**, PF-13 guarded by GRÜN.
+**That is the most favourable possible outcome for the build, and by GELB's own A-G438 the
+favourable direction is the one that gets no audit.** So it got one.
+
+[1] *** §54's SYMMETRY CLAIM WAS TOO WIDE AND I NARROW IT. *** §54 said every cross-lane
+    pin fact is taken-on-report in both directions. **The EVIDENCE DIRECTORIES are
+    readable from this lane** — I located and read
+    `condyn-admin-mapping-d/.../scripts/gruen-pf13-evaluate.mjs` and its output, and
+    `condyn-admin-hr-integration/.../gelb-pointer-vacuity.mjs` and its output.
+    **What is unreadable is narrower and more specific: the OBLIGATION RECORDS**
+    (`PHASE_G*.md`, `PHASE_F*.md` — still absent from every worktree this lane can see)
+    **and, from the other side, my own unpushed statement.** So the correct form: *the
+    lanes' instruments and outputs are mutually readable; the pin-defining documents are
+    not, in one direction, and the validation statement is not, in the other.* **Corrected
+    in the statement. §54 overstated my own blindness, which is the opposite of the error
+    I have been catching all day and worth recording as such.**
+
+[2] VERIFIED FROM THE ARTIFACT — GELB's pointer check. `gelb-pointer-vacuity.out.txt`
+    reads *"BOTH POINTERS ARE COMPLETE ON THIS CHECK'S CRITERION, SO THIS INSTRUMENT NOW
+    REFUSES RATHER THAN REPORTS: any pin whose death enters the record without reaching
+    its pointer exits 1."* **A-G453 adopted and built, with the refusal rather than the
+    report** — and it carries its own population error openly: *"THE FIRST FORM OF THIS
+    INSTRUMENT REPORTED ONE NUMBER OVER BOTH DOMAINS — 11 'absent' — which mixed PG pins
+    into a PF pointer's score. A-G417's population error, in the instrument written to
+    catch A-G453's."* **Verified, including the self-indictment.**
+
+[3] VERIFIED FROM THE ARTIFACT — GRÜN's PF-13 figures. `pf13-evaluated.json`:
+      testFileCount **16** · totalTests **197** · passed **197** · failed **0**
+      filesCovered **16** · coverageMatchesPopulation **true** · missing **[]** · extra **[]**
+      population derivedFrom `architecture.test.ts -> PHASE_DIRS`
+    **Every figure GELB relayed is in the artifact and correct.**
+
+[4] *** BUT TWO QUALIFICATIONS IN THAT SAME ARTIFACT DID NOT SURVIVE THE RELAY, AND BOTH
+    BEAR ON "PF-13 IS CLOSED". ***
+    (a) **ITS OWN VERDICT FIELD READS `NONE`.** Verbatim: `verdict = "NONE — development
+        reading only (A-G36 point 2)"`, at both the top level and inside `instrument`.
+        **GRÜN's instrument declares that it returns no verdict.** GELB relayed it as
+        *"PF-13 IS CLOSED, BY GRÜN"*. **A development reading with a declared NONE verdict
+        is not a closure**, and the distinction is GRÜN's own, made in its own output.
+    (b) *** AND IT RECORDS AN EXPLICIT CONTRADICTION WITH THE WORDING GELB USED TO RELAY
+        IT. *** Verbatim, field `aG426`: *"the exception is to UNCHANGED, not to PASSES —
+        the three were rewritten for phase F and must still pass. This evaluator
+        implements that stricter reading and **reports the contradiction with GELB §116's
+        wording** rather than choosing quietly."*
+        **So GRÜN built the disagreement into its output deliberately, and the relay
+        carried the number and dropped the disagreement.** Same shape as the §7 forward
+        pointer: **the thing that travelled was the figure, and the qualification stayed
+        behind.** A-G440 — a label travels and the reasoning does not — now with a
+        *qualification* as the thing left behind.
+    **NEITHER IS A CRITICISM OF GRÜN's WORK, which recorded both honestly and in the one
+    place a reader of the artifact would find them.** It is an observation about relay.
+
+[5] SO PF-13's STATE, AS THIS LANE CAN ESTABLISH IT: **its population is derived rather
+    than listed (16 files, auto-grown under a mutant per GELB's account), its suite is
+    197/197 with coverage matched in both directions and zero missing or extra, its own
+    instrument declares NO VERDICT, and it carries a recorded contradiction with the
+    wording under which it was reported closed.** That is much better than "no guard" and
+    it is not "closed". **Recorded in the statement in those terms.**
+    PG-19's three burials and PF-5/PF-7's retirement remain **taken on report**: they live
+    in `PHASE_G*.md`, which this lane still cannot read.
+
+A-G454 (offered): **A RELAY DROPS QUALIFICATIONS BEFORE IT DROPS FIGURES, AND AN
+INSTRUMENT'S OWN VERDICT FIELD IS THE FIRST THING TO GO.** GRÜN wrote `verdict: NONE` and
+a named contradiction into its output; the figures crossed two lanes intact and both
+qualifications stopped at the first. **The remedy is cheap and neither lane had it: when
+relaying another lane's result, quote its verdict field verbatim or state that it has
+none.** The figure is what a reader wants and the verdict field is what tells them whether
+they may have it — **so the relay strips exactly the part that governs the part it keeps.**
