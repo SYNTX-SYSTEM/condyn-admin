@@ -1,0 +1,173 @@
+================================================================================================================
+GELB · A-G128 SWEPT OVER EVERY PIN IN PHASE G — tree condyn-admin-mapping-d @ 4b83414e
+================================================================================================================
+
+Every 'site' below is an EXACT substring of the committed source. A row whose substring is
+absent, or occurs more than once, is reported as UNVERIFIED and its verdict does not stand.
+
+----------------------------------------------------------------------------------------------------------------
+PG-1   LIVE
+       share of the field's light contributed by semantic elements ≥ 0.50 DERIVED + 0.05 undocumented (A-G143)
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → a region ratio over a render; no product expression computes it. Falsifiable by any build. §63 A-G264: its component table is not evidence; the total alone carries it.
+----------------------------------------------------------------------------------------------------------------
+PG-2   LIVE
+       disc median luminance with all semantics suppressed ≤ 0.006
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → a render measurement under suppression; nothing in the product evaluates it.
+----------------------------------------------------------------------------------------------------------------
+PG-3   SPLIT
+       drawn body diameter ∈ [56, 92] px at 1920 × 1080, monotone in weightSum (A-G2)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:639 "sizeFloor(b.drawnRadius, k)"
+       [ok] lib/career/view-model/mapping-field.ts:442           "export function sizeFloor"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:825 "data-testid="mapping-size-floor""
+       → the >= limb is ENFORCED: sizeFloor lifts any radius under the floor. But the product DISCLOSES the lift (`mapping-size-floor`, data-count), so the falsifiable quantity exists and is addressable — read the disclosure, not the radius. The <= 92 limb is unenforced and LIVE.
+----------------------------------------------------------------------------------------------------------------
+PG-4   OWNER LEVER
+       every drawn body is named at L0 — required (BODY_NAMES_AT_L0 = true)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:57 "export const BODY_NAMES_AT_L0 = true"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:701 "BODY_NAMES_AT_L0 || isMarked"
+       → with the constant true the disjunction is unconditionally true at L0, so no render can fail it. The constant is one of PHASE_E §5's reversible OWNER levers (§8), so the pin states that a lever is set — it is not an obligation on the build and must not be reported as one.
+----------------------------------------------------------------------------------------------------------------
+PG-5   ZERO-BY-CONSTRUCTION
+       bodies drawn at L0 ≤ 7, the rest stated as overflow
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:478 "if (out.length >= budget) break;"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:471 "PG-5 / PG-16: the bodies a level draws"
+       → `spaced()` breaks at the budget, so the drawn count cannot exceed it for any build or constant. The product's own docstring names PG-5 as its implementation. Remedy: a mutant that removes the break must be caught.
+----------------------------------------------------------------------------------------------------------------
+PG-6   LIVE
+       relations' share of the semantic light ≥ 0.15 (UNDERIVED; A-G143 showed no reconstruction yields 0.15)
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → the phase's live red. Nothing in the product evaluates it.
+----------------------------------------------------------------------------------------------------------------
+PG-7   CONSTANT-ONLY
+       travel is one shared period, deterministic, stops with the breath; its period an exact integer divisor of the breath's (A-G11)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:197 "periodMs: 10000, dash: 7"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:138 "periodMs: 10000, riseMs: 4000"
+       → a relation between two source constants. Falsifiable by a BUILD but not by a render, so it belongs in a static assertion and never in a pixel run — and a pixel run against it would be measuring the renderer's clock, not the pin.
+----------------------------------------------------------------------------------------------------------------
+PG-8   LIVE (source)
+       hue is used for exactly one question, and that question is not carried by any other channel
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:190 "export const GAP_HUE"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:910 ""mf-halo-gap", GAP_HUE, GAP_ALPHA_GAIN"
+       → §62 A-G257 established by enumeration that GAP_HUE has exactly one carrier inside the field SVG. Falsifiable: a build that adds a second carrier fails it, and the check is a source enumeration rather than a render.
+----------------------------------------------------------------------------------------------------------------
+PG-9   LIVE
+       the evidence bands' luminance separation (PF-2) is unchanged by hue, measured on the luminance plane
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → a render measurement. One mention in the whole record — the least exercised pin in the phase.
+----------------------------------------------------------------------------------------------------------------
+PG-10  LIVE
+       limb 1 swing fraction ≥ 0.25 · limb 2 Weber corridor [0.10, 0.35] (WITHDRAWN, §63 A-G261) · limb 3 max swing ≤ 0.030
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:211 "export function depthGain"
+       → §63 A-G260: limb 1 is a property of (build × population), 1280 population-independent and failing, 1920 contingent. Limb 3 breached at 1920 (§52). Nothing enforced by the product.
+----------------------------------------------------------------------------------------------------------------
+PG-11  LIVE, factor pending
+       coherent motion energy on relation pixels ≥ 1.5 × that on medium pixels; INCONCLUSIVE unless the medium's energy exceeds its own dof-matched null by a factor (A-G115)
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → the factor is PINK's to set under A-G115 and §62 A-G258 withdrew the floor it was to be set against. Status: INCONCLUSIVE-pending-form.
+----------------------------------------------------------------------------------------------------------------
+PG-12  LIVE, region restated
+       re-formed (A-G123/A-G126): signed projection onto the hue's own chromatic direction, paired by radius, thresholded in q_proj
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:910 ""mf-halo-gap", GAP_HUE, GAP_ALPHA_GAIN"
+       → §62 A-G257: satisfiable only on the glow-overlap region; one scalar outstanding from GRÜN.
+----------------------------------------------------------------------------------------------------------------
+PG-13  RETIRED
+       retired (§36: no failing observation, 12–50 × looser than the rejected stage)
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → caught by A-G128 in §37, at the cost of re-reading PINK's committed data.
+----------------------------------------------------------------------------------------------------------------
+PG-14  ZERO-BY-CONSTRUCTION (with a falsifiable residue)
+       every drawn body's rim lies inside the viewBox at every level; l0Margin re-derived from ρ_drawn
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:490 "function frameWithBodies"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:494 "for (let pass = 0; pass < 2; pass += 1)"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:454 "export function l0Margin"
+       → the frame is WIDENED to the union with every drawn body's extent, so containment holds by construction. The residue is the solve: the product's own comment says it is 'solved twice against the frame it widens' — a two-pass fixed point. THE FALSIFIABLE CONTENT OF PG-14 IS THE CONVERGENCE OF THAT SOLVE, not the containment, and no instrument in this phase has tested it.
+----------------------------------------------------------------------------------------------------------------
+PG-15  ZERO-BY-CONSTRUCTION
+       the field ring and the horizon are drawn behind every body and occluded by it; no ring stroke crosses a body's drawn disc
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:959 "data-testid="mapping-ring-field""
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:967 "data-testid="mapping-glows""
+       → SVG paints in document order and the rings precede `mapping-glows` and the bodies, so occlusion holds for any build that keeps the order. Remedy: a mutant that reorders the groups must be caught — not a pixel measurement of the occlusion.
+----------------------------------------------------------------------------------------------------------------
+PG-16  ZERO-BY-CONSTRUCTION
+       free space between drawn body rims ≥ 0.3 × the eccentricity (CITED-WITHOUT-A-NUMBER, §62 A-G254)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:479 "const clear = out.every(o => Math.hypot(o.x - b.…"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:471 "PG-5 / PG-16: the bodies a level draws"
+       → GRÜN's finding, this sweep's origin. The pin predicate and the filter predicate are one expression. Remedy: delete the clearance term and a layout must visibly gain a crowded body.
+----------------------------------------------------------------------------------------------------------------
+PG-17  WITHDRAWN
+       withdrawn (§45 A-G165): R21 supplied no number, so it could justify the glow and never certify it
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → §63 A-G264: its product comment still carries a floor wrong by 0.075 r, which GRÜN is correcting.
+----------------------------------------------------------------------------------------------------------------
+PG-18  CONSTANT-ONLY + A-G144 HAZARD
+       at least one of the field's motions is self-propelled from rest and contingent on another object
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:200 "departPct: 4, arrivePct: 56, restPct: 70"
+       → `at least one` is a DISJUNCTION, and A-G144: a disjunctive pin is only as strong as its weakest escape — it cannot fail while any one motion qualifies. The travel's depart/arrive/rest profile is in the source as constants, so the pin is satisfied by source inspection and no render can move it.
+----------------------------------------------------------------------------------------------------------------
+PG-19  RETIRED
+       retired (§45): R25 supplies one exponent and no exchange rate; R23 cannot fuse size with eccentricity
+       [--] no product expression claimed — the pin is not enforced anywhere
+       → caught by the gate before any run was spent — the gate's cheapest firing.
+----------------------------------------------------------------------------------------------------------------
+PG-20  HELD
+       every symbol has an iconic or indexical reinforcement; the splay keys on the STATE, not the mark (A-G43); magnitude at the collar (A-G94)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:739 "strokeWidth={(isMarked ? 2 * k : structure) + SE…"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:741 "data-mapping-body-shape r={r}"
+       → §63 A-G263: the state-keying limb is held because no DOM or raster route can verify a re-key. The magnitude limb is complete (A-G94). The mutant is vitest-gated. NOTE a thing this sweep surfaced: `dashOf(b.line, …)` is applied at BOTH sites — the seat ring and the body shape — so the DASH (the symbol) is already keyed on the STATE `b.line` in register at two carriers. That is the symbol, not PG-20's reinforcement, and A-G43's re-keying is about the splay; stated here so the two are not conflated by the next reader.
+----------------------------------------------------------------------------------------------------------------
+PG-21  LIVE
+       with every field element suppressed, the light remaining inside the disc is ≤ the stage's own ground
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:185 "const STAGE_GROUND_RGB"
+       → a suppression render, measured exactly as the ghost was found. Falsifiable and unmeasured since the ghost.
+----------------------------------------------------------------------------------------------------------------
+PG-22  LIVE (geometric)
+       seats and signs occupy ≤ 0.15 of the area of a body's ramp annulus (FLAT, UNDERIVED SCALE); controlling variable is a membership, not a scale (A-G44/A-G93)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:124 "export const SEAT_PAD_PX = 1.6"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:61 "export const STROKE_MIN_PX = 1.2"
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:110 "export const RING_WIDTH_PX = Object.freeze"
+       → computable from constants and falsifiable. A-G93 completed its form; A-G44's scale form was rejected because the controlling variable is a membership.
+----------------------------------------------------------------------------------------------------------------
+PG-23  CLEARS, one limb of two
+       a resting glow's RENDERED ALPHA does not vary across the breath — circle × group (§55/§56)
+       [ok] app/components/career/demo/PersonJobMappingField.tsx:711 "className={b.shelf ? undefined : "mf-wave mf-wav…"
+       → source limb delivered; the computed-style limb is unblocked by §62 A-G252 and dispatched.
+----------------------------------------------------------------------------------------------------------------
+
+23 pins. 0 rows UNVERIFIED.
+
+TALLY:
+   6  LIVE
+   3  ZERO-BY-CONSTRUCTION
+   2  RETIRED
+   1  SPLIT
+   1  OWNER LEVER
+   1  CONSTANT-ONLY
+   1  LIVE (source)
+   1  LIVE, factor pending
+   1  LIVE, region restated
+   1  ZERO-BY-CONSTRUCTION (with a falsifiable residue)
+   1  WITHDRAWN
+   1  CONSTANT-ONLY + A-G144 HAZARD
+   1  HELD
+   1  LIVE (geometric)
+   1  CLEARS, one limb of two
+
+ZERO-BY-CONSTRUCTION: PG-5, PG-14, PG-15, PG-16
+NOT FALSIFIABLE BY ANY RENDER: PG-4, PG-5, PG-7, PG-14, PG-15, PG-16, PG-18  (7 of 23)
+
+What follows for the phase, and it is the point of the sweep:
+  · A-G128 was adopted in §37 and every pin measured before it skipped the gate. This is that
+    omission closed, and it fires on 7 pins, none of which any measurement would
+    have cleared — because each is satisfied by the artifact's construction rather than by its
+    behaviour.
+  · For every ZERO-BY-CONSTRUCTION pin the remedy is one shape: pin the PRESENCE AND CORRECTNESS
+    of the enforcement with a mutant, not the output's compliance with a render. All three such
+    mutants are vitest assertions, so they land in the held-on-B-ENTRY bucket — which makes the
+    credential block larger and better understood than it was, not smaller.
+  · PG-14 is the one with a falsifiable residue and nobody has looked at it: the containment
+    holds by construction, and the TWO-PASS FIXED POINT that establishes it has never been
+    tested for convergence. That is a live, unmeasured obligation hiding inside a pin that
+    reads as trivially satisfied.
+================================================================================================================
