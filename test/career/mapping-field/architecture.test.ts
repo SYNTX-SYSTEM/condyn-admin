@@ -364,6 +364,11 @@ const G_ENTRY = [COMPONENT, COPY, MODEL, "lib/career/mapping/layout.ts",
   `${SPEC_DIR}/layout-spec-v1.1.json`, `${SPEC_DIR}/layout-golden-vectors-v1.1.json`,
   "test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts", "test/career/mapping/layout-v1_1.test.ts", "test/career/mapping/architecture.test.ts",
   "test/career/mapping-field/architecture.test.ts", "test/career/mapping-field/phase-base.ts", "test/career/mapping-field/field-g.test.tsx",
+  /* §104: A-G43 requires this file BY NAME ("the test must assert the splay survives the mark's removal"), and
+     A-G57 names the path. The entry set was missing a file the architecture record already mandates — the same
+     omission class as the lost selector, not a widening to admit this lane's own work. Judgment recorded as
+     mine and reversible by the lane that owns the entry set. */
+  "test/career/mapping-field/field-g-mutant.test.tsx",
   // phase-C/D/E/F assertions restated in PHASE_G §8 (each marked "Phase G" where it stands)
   "test/career/mapping-field/field-d.test.tsx", "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/field-f.test.tsx", "test/career/mapping-field/field-interaction.test.tsx",
   "test/career/mapping-field/field-render.test.tsx", "test/career/mapping-field/model.test.ts", "test/career/mapping-field/neurovisual-e.test.ts"].sort();

@@ -400,7 +400,15 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
         {ends && [arc.startDegrees, arc.endDegrees].map((d, i) => {
           // PG-20 (PHASE_G §13): DIFFERENT's two ends SPLAY outward — they point apart (we looked, and these two do not meet); the other
           // open line (NONE, no relation found) keeps its ends radial. The cross tick stays the glyph.
-          const splay = s.mark === "counterTick" ? (i === 0 ? -1 : 1) * ((tick * MARK_ICON.differentSplay) / Math.max(r, 1)) * (180 / Math.PI) : 0;
+          //
+          // A-G43 (2026-11-11, §104): this keys on the relation STATE, not on the mark. It used to read
+          // `s.mark === "counterTick"` — the same predicate as the glyph it reinforces — so removing the
+          // counterTick removed BOTH carriers together while a test asserting "counterTick => splay" still
+          // passed. PG-20 exists to give a second, NON-SYMBOLIC carrier for a question whose symbol might be
+          // missed, and a reinforcement that cannot survive its symbol's removal is a second rendering of it.
+          // DIFFERENT splays because it IS DIFFERENT. Proved by field-g-mutant.test.tsx, which sets DIFFERENT's
+          // mark to "none" and asserts the splay remains; that test fails on the mark-keyed form.
+          const splay = arc.state === "DIFFERENT" ? (i === 0 ? -1 : 1) * ((tick * MARK_ICON.differentSplay) / Math.max(r, 1)) * (180 / Math.PI) : 0;
           const [ax, ay] = at(cx, cy, r - tick / 2, d), [bx, by] = at(cx, cy, r + tick / 2, d + splay);
           return <line key={i} {...tag("data-arc-end")} x1={ax} y1={ay} x2={bx} y2={by} stroke={ink(0.9)} strokeWidth={w(width)} />;
         })}
