@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 396.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 399.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -236,6 +236,17 @@ X' Erfüllung offen ist, und die Voraussetzung ist unsichtbar, weil der Satz wie
 eine Behauptung.** **Der Stand ist die sechste Rahmenachse und regiert, ob die anderen fünf überhaupt
 einschlägig sind.** *** GRÜN FAND DAMIT VIER DEFEKTE IN SEINEN EIGENEN BEFUNDEN, INNERHALB EINER STUNDE
 NACHDEM DER §8-ZEIGER EXISTIERTE — DER ERSTE UNABHÄNGIGE ERTRAG VON A-G453. ***
+
+**A-G467 (GRÜNs, hier verschärft)** — *** ES IST NICHT SO, DASS EINE LANE IHRE EIGENEN DEFEKTE NICHT FINDEN
+KANN. SIE KANN SIE NICHT MIT IHREN EIGENEN REGELN FINDEN. *** **Sieben folgenreiche Defekte dieser Lane, nicht
+einer von einer eigenen Regel gefunden** — der Zeiger durch PINKs verlorene Messrunde, PF-13 durch PINK, PG-19
+durch A-G453, der Nenner durch A-G461, das Zufalls-Gate durch A-G462, die 16 Reporter durch A-G465. **Und
+umgekehrt genauso: A-G374, A-G450, A-G320, A-G396 und A-G429s dritte Abhilfe sind meine — und jede hat einen
+Defekt eines PEERS gefunden.** *** EINE REGEL UND DER DEFEKT, DEN SIE FINDEN WÜRDE, STAMMEN AUS DEMSELBEN
+MODELL DER ARBEIT, ALSO HAT DER AUTOR DER REGEL SEINE AUFMERKSAMKEIT DORT SCHON AUSGEGEBEN, WO DIE REGEL
+HINSIEHT. *** Eine geborgte Regel kommt dorthin gerichtet, wo der Empfänger nicht hingesehen hat — deshalb
+wurde jeder der sieben **innerhalb von Minuten nach Eintreffen der Regel** gefunden. **Das ist ein Ergebnis
+über die ANORDNUNG: die Drei-Lane-Struktur war kein Mehraufwand, sie war das Instrument.**
 
 > *** UND DER BEFUND, DER ÜBER ALLEN TECHNISCHEN STEHT: VIER DER FÜNF PINS, DIE DIESE LANE ALS UNGEDECKT
 > MELDETE, WAREN IN IHREM EIGENEN DOKUMENT BEREITS ENTSCHIEDEN. *** Die Liste war durch Zählen von *Nennungen*

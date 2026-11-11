@@ -15541,3 +15541,99 @@ figure; that figure being stale by one instrument; and five failure paths never 
 > sentence about them was not. *** A CHAIN OF AUDITS CONVERGES WHEN THE DEFECTS STOP BEING IN THE WORK AND
 > START BEING IN THE DESCRIPTION OF THE WORK, AND CONTINUING PAST THAT POINT AUDITS PROSE INSTEAD OF
 > SOFTWARE. *** **The record stops here, with the four gates, the two pointers, and 396 defects counted.**
+
+---
+
+## §126 A-G467 · NEITHER LANE FOUND ITS OWN DEFECTS USING ITS OWN RULES
+
+**Date of this section: 2026-11-11.** **Closing section.**
+
+### GRÜN aimed A-G465 at itself, and my verification of it was wrong
+
+**GRÜN's figures: 49 instruments, 18 with a failure path, 31 reporters.** **I checked them (A-G462) and got
+17 and 32.**
+
+> *** GRÜN'S NUMBER IS RIGHT AND MINE WAS WRONG. `gruen-raster-smoke.mjs:75` USES `process.exitCode = 1` — A
+> FAILURE FORM MY PATTERN DID NOT MATCH. *** **A-G464 for the second time, one section later, in the same
+> instrument-shaped way: first a death-word list missing five of this record's own verdicts, now a
+> failure-FORM list missing one of Node's two idioms.** *I audited the figure because it disagreed with mine,
+> which is the only reason the blind spot surfaced.*
+>
+> **And §125's own split survives the widening:** re-run with `process.exitCode` included, **this lane is still
+> 25 / 9 / 16** — `gelb-schema-drift.mjs` uses that form but already carried a `fail()`. **Stated because a
+> figure that survives the correction that broke its neighbour is worth more than one that was never tested.**
+
+### And my grep accused GRÜN of the exact claim it had documented avoiding
+
+**My check for an "N of N exit 0" claim in GRÜN's README returned one hit.** **It is GRÜN quoting me:**
+
+    README:14   "…the mandate's report as "24 of 24 exit 0" as though that were a verification result."
+    README:16   "This record makes no such claim and the check is shown rather than asserted…"
+
+> *** A-G450 FOR THE SECOND TIME IN TWO SECTIONS, SAME MECHANISM, AND THIS TIME THE OBITUARY WAS MY OWN
+> DEFECT QUOTED BY THE LANE THAT AVOIDED IT. *** One section after nearly accusing GRÜN of leaving three
+> defects live on the strength of its own apology, **I nearly accused it of making the claim it had written a
+> paragraph to disclaim.**
+>
+> *** A-G466, RULED: A SENTINEL COVERS WHAT A LANE RETRACTED. IT DOES NOT COVER WHAT A LANE QUOTES FROM ANOTHER
+> LANE'S RETRACTION. *** GRÜN's `{{WAS: … }}` wraps **its own** superseded phrases — correctly, since A-G460
+> makes the marker the fix-writer's debt. **But the phrase that tripped me was MINE, quoted by GRÜN, and no
+> convention covers that.** **So the cross-lane direction is exactly the one still unmarked**, and it is the
+> direction where a false accusation costs most. *The marker is owed by whoever wrote the fix; the quotation is
+> owed by whoever wrote the defect.*
+
+### The closing finding, which is GRÜN's and which I am sharpening rather than accepting
+
+**GRÜN declined a closing compliment and offered this instead:** *"neither lane found its own worst defects …
+the cross-lane channel has a bias in both directions and it is still the only thing that caught any of it. That
+is a result about the arrangement, not about either lane's diligence."*
+
+**Checked against the record, and the literal form is too strong — I found several of mine myself. But every
+one came from a borrowed rule:**
+
+| my defect | what found it |
+|---|---|
+| the §7 pointer omitting four retirements | **PINK's** wasted measurement round |
+| PF-13 declared closed on a development reading | **PINK**, directly |
+| PG-19 never a pin | implementing **A-G453 (PINK's)** |
+| *"one hit in 208"* over a denominator of 40 | applying **A-G461 (GRÜN's)** |
+| the gate right by accident (A-G464) | applying **A-G462 (GRÜN's)** |
+| 16 of 25 instruments cannot fail | applying **A-G465 (GRÜN's)** |
+| this section's two | applying **A-G462** again |
+
+> *** RULED, A-G467 — GRÜN'S FINDING, SHARPENED: IT IS NOT THAT A LANE CANNOT FIND ITS OWN DEFECTS. IT IS THAT
+> A LANE CANNOT FIND THEM WITH ITS OWN RULES. *** **Seven consequential defects of mine, not one found by a
+> rule of this lane's.** And the converse holds just as cleanly: **A-G374, A-G450, A-G320, A-G396 and A-G429's
+> third remedy are mine, and every one of them caught a PEER's defect.**
+>
+> **The mechanism is not blindness and it is not diligence.** *** A RULE AND THE DEFECT IT WOULD CATCH COME
+> FROM THE SAME MODEL OF THE WORK, SO THE RULE'S AUTHOR HAS ALREADY SPENT THEIR ATTENTION WHERE THE RULE
+> LOOKS. *** A borrowed rule arrives pointed somewhere its receiver was not looking, **which is why every one
+> of the seven was found within minutes of the rule arriving.** **That is a result about the ARRANGEMENT — and
+> it is the finding to put in front of the owner, because it says the three-lane structure was not overhead.
+> It was the instrument.**
+
+### Where the phase ends
+
+**Three new defects:** my failure-form pattern missing `process.exitCode`, and undercounting a peer's figure by
+it; my grep matching GRÜN's quotation of my own defect; and the sentinel convention leaving cross-lane
+quotations unmarked. **396 + 3 = 399.**
+
+| | |
+|---|---|
+| sections | **§§0–126** |
+| amendments | through **A-G467** |
+| defects counted | **399** |
+| gates | **4**, two of them proven red-first; pointer gate **exit 0 both modes**, subject gate **exit 1 by design** |
+| pointers | **2** — PHASE_F 16 pins, PHASE_G 22 pins, **0 gaps** |
+| instruments | **25**: 9 can fail, **4 proven or recorded as having fired**, 16 reporters whose exit 0 is not a verdict |
+| **PF-13** | **GUARDED, NOT CLOSED** — its closure is PINK's |
+| **condition 4** | *** NOT REPORTED AS SATISFIED *** |
+
+**No merge to `main`. No deployment. Gemini off. B-ENTRY unbypassed in both lanes. No credential guessed.**
+
+> *** AND THE LAST THING THE RECORD SHOULD SAY IS THE THING NO LANE COULD DO FOR ITSELF. *** PINK's validation
+> exists, is good, and **sits where no other reader can open it.** **A closure nobody can audit is not a
+> closure** — GRÜN's words, and the right ones to end on, because they are the same refusal as declining a
+> verdict on a development reading, **one level up.** *That is the owner's to resolve, and it is the only item
+> left in the phase that is not a lane's to close.*
