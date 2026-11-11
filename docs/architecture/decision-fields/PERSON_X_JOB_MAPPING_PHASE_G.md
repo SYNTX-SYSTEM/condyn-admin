@@ -6298,3 +6298,72 @@ and the breath model's confirmation is stated at ~1.1e-03.**
 **A-G215 applied to the figure that confirms this phase's own constants, by the lane whose constants they are** —
 and it is the second time in three sections that a lane has narrowed a result in its own disfavour.
 
+
+---
+
+## §59 A-G239 BECOMES THE GOVERNING REASON — THE COLUMN WAS THE HARDER ROUTE TO THE SAME PLACE
+
+PINK accepted both of §58's corrections and verified GRÜN's directional argument on every binding row
+(`6c637b5c`). **I reproduce all eight.**
+
+### A-G242 · §11's edge covers none of the eight cases in which the constant binds
+
+| | budget | spacing capacity @ 0.3 | |
+|---|---|---|---|
+| LV04 | 7 | 9 | looser |
+| LV05 | 7 | 8 | looser |
+| LV08 | 7 | **15** | looser |
+| LV09 | 7 | 10 | looser |
+| LV11 | 7 | 8 | looser |
+| LV12 | 7 | 9 | looser |
+| LV10 | 7 | **15** | looser |
+| LV07 | 7 | 11 | looser |
+
+**Looser in all eight.** §11's edge reads *"if the budget and the spacing ever disagree, the spacing wins and the
+budget shrinks"* — which describes the spacing being **tighter**. **It covers not one of the eight cases in which
+the budget binds.**
+
+> **A-G239 is promoted to the governing reason for withdrawing A-G156 and A-G226, and the 0.3-versus-0.5 column
+> reading becomes the secondary account.** The derivation cited to retire the constant reaches **no case in which
+> the constant binds** — so both removals fail without reference to the parameterisation at all, **and would have
+> failed at 0.5 too**, since the covering of the binding case was never shown there either.
+
+**§§57–58 found the right answer by the harder route; GRÜN found the reason.** Recorded as GRÜN's, with PINK's
+eight-row confirmation and mine attached — **and it is the form to require on every future retirement, because it
+needs no measurement and no column.**
+
+### A-G243 · A correct conclusion reached through a misattributed citation is still a defect
+
+PINK's rule, on its own error — it cited `maxIsNotTheCap` (an L0 field, about `impliedCapAt0_5`) against a claim
+about L1, **one section after writing that a quoted number must carry which file as much as which column:**
+
+> **A correct conclusion reached through a misattributed citation is still a defect, because the next reader
+> inherits the citation, not the conclusion.**
+
+**Adopted.** Its conclusion survived on the L1 rows alone — 4, 4, 5, 5, 6, 6, 6, 6, 7, median 6 — so nothing
+moved; **and A-G207 is about what travels, not about what was right.** This is the first instance in this phase
+where a finding was *correct* and the defect was in its provenance alone, which is exactly the case A-G140's
+*"nothing downstream can tell that number from a measured one"* was written for, arriving from the opposite
+direction.
+
+### A-G244 · Two routes agreeing is evidence only if the routes were independent by design
+
+PINK declined credit for `reading_outcome`: *"That field was **in my own dump of the file and I did not use
+it**… my row-level figure 'typically 5–6' reproduces its stated '5 to 6' **exactly**. That's genuine two-route
+agreement — but it is **accidental corroboration, not designed corroboration**."* **It printed all ten keys and
+reasoned from two.**
+
+> **A-G36 is refined: two routes agreeing is evidence only where the routes were independent by design. Where
+> the second route exists because the first was overlooked, the agreement is a coincidence of the same file read
+> twice** — and it carries none of A-G36's weight, however exactly the numbers match.
+
+**That distinction is PINK's and it cuts against its own strongest-looking result in this exchange.** A-G36 as I
+wrote it would have counted the exact match as two instruments and one verdict. **It was one instrument, one
+field, and one reader who missed it** — and the agreement being exact is what made it look like corroboration
+rather than like what it is.
+
+**Net state, unchanged by any of the three corrections:** both `BODY_BUDGET` levels are load-bearing at the built
+0.3; both removals are withdrawn, now on A-G239's reason rather than on the column; and **moving `CROWDING` to
+0.5 removes bodies on nine of eleven exercised layouts at L0, effective cap five to six, L1 median 6, largest
+proportional loss LV02 at 6 → 3.** The owner's call, and the largest item in front of them.
+
