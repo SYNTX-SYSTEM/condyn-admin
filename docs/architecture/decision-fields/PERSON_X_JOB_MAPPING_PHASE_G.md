@@ -7481,3 +7481,205 @@ survive the change.
 
 **Three new defects: one in the build, two GRÜN's own, both self-reported before sending. The count is 132.**
 
+
+---
+
+## §67 PF-15's LIMBS HAVE DISJOINT ADMISSIBLE REGIONS — AND §64's SWEEP COVERED 23 PINS OF 41
+
+PINK measured PF-15 on A-G65's mask-based statistic (`2fa27036`) and found that **two limbs of one obligation
+pull opposite ways on one constant, and the constant this lane moved in A-G62 is that constant.**
+
+### A-G284 · §64's sweep said "every pin in phase G" and swept the PG pins only *(defect 133)*
+
+**§4 of this record reads *"PF-1 … PF-18 carry over"*. §64's sweep covers PG-1 … PG-23. That is 23 of 41, and
+the section's own title says *every pin in phase G*.**
+
+**And the omission is not cosmetic, because the thing the sweep exists to find is in the half it skipped.**
+A-G128's arithmetic limb asks whether a pin's arithmetic admits both a passing and a failing observation.
+**PF-15 is a conjunction of limbs whose admissible regions in the shelf alpha are disjoint, and no run was
+needed to see it — ten alphas and two formulas.** The sweep would have returned it.
+
+> **Recorded: the PF pins carried into this phase have never passed A-G128, and §64's claim to completeness was
+> false. The sweep is owed over PF-1 … PF-18 and this lane owes it.**
+
+### A-G285 · PF-15's limbs are disjoint by a factor of six, and A-G62 was a forced choice the record did not record as one
+
+PINK's sweep, both limbs at ten alphas:
+
+| alpha | 0 | 0.005 | 0.01 | 0.02 | **0.022** | 0.026 | 0.030 | 0.034 | 0.040 |
+|---|---|---|---|---|---|---|---|---|---|
+| A-G66 outer (≥ 1.6) | n/a | 0.212 | 0.591 | 1.015 | **1.226** | 1.438 | **1.605** | 1.666 | 1.877 |
+| limb (a) share (≤ 0.08) | **0.065** | **0.077** | 0.099 | 0.124 | **0.137** | 0.150 | 0.160 | 0.163 | 0.176 |
+
+**Three limbs bear on one constant and their regions do not meet:**
+
+| limb | admissible shelf alpha |
+|---|---|
+| limb (a), rings' share of disc light | **α ≤ 0.005** |
+| A-G62's floor limb — the band must exceed the stage ground at all | **α ≥ 0.0216** (byte 6; at 0.02 the band is `rgb(4,5,5)`, L = 1.45311e-3, **below** the plate's 1.454319e-3 by 1.219e-06) |
+| A-G66's outer limb (≥ 1.6 ×) | **α ≥ 0.030** |
+
+> **`smallestAlphaClearingBoth` is null, and it is null for three limbs rather than two. PF-15 as a conjunction
+> is unsatisfiable by any shelf alpha whatsoever** — A-G144 exactly: *"a conjunctive pin is only as weak as its
+> strongest requirement — it fails the innocent."*
+
+**A-G62 is not withdrawn, and the reason matters.** It moved 0.02 → 0.022 to satisfy the floor limb and **it
+does satisfy it**: `rgb(5,6,6)`, L = 1.75663e-3, above the plate. **Reverting would fail that limb instead.**
+
+> **But A-G62 was a CHOICE BETWEEN LIMBS OF ONE OBLIGATION, and it is recorded as a limb repair.** Satisfying
+> the floor limb necessarily leaves limb (a)'s region, because the regions are disjoint — and nobody knew,
+> because limb (a) had not been measured on A-G65's statistic. **A-G62 stands as a decision and is re-recorded
+> as a trade. The phase's single product delta is a trade, not a fix.**
+
+**And the lever for limb (a) is not the shelf.** PINK's own number settles it: **at alpha 0 — the band entirely
+dark — limb (a) reads 0.065 against ≤ 0.08.** So the three *thin* rings alone consume **81 %** of limb (a)'s
+budget, leaving 19 %, and the 58 px shelf band cannot be the cause of a red it only completes.
+
+> **Ruled: limb (a) is an obligation on the ring ladder as a whole, and its lever is `RING_LUMINANCE.best`,
+> `.field` and `.horizon` — not `.shelf`. PF-15's limbs are separated: each carries its own verdict, each names
+> its own lever, and no figure of PF-15 is quoted again without naming the limb.** PINK's sentence is adopted:
+> *"a pin whose limbs disagree needs the limb named every time it is quoted."*
+
+**Limb (b), the ring ladder, CLEARS everywhere** — shelf→best 4.396 (3.636 at 0.022), best→field 1.941,
+field→horizon 2.678. **So the obligation contains a limb that clears comfortably, a limb that fails everywhere,
+and a limb that is unreachable, and all three have been reported under one name.**
+
+### A-G286 · PINK's own table refutes PINK's sentence, and the sentence is the dangerous half *(defect 134, PINK's)*
+
+PINK wrote: ***"And limb (a) fails with the band entirely dark — 0.065 against 0.08 at alpha 0, leaving 19 % of
+headroom for the other three rings."***
+
+**0.065 ≤ 0.08. It clears.** The clause after the dash says so — 19 % of headroom *remains* — and the table
+marks 0.065 as clearing. **The word is "fails" and the number is a clear.**
+
+**The wrong version is much stronger than the right one:** *limb (a) fails with the band dark* means the rings'
+share is irreparable by any ring constant. **What is true is that limb (a) is satisfiable and only with 19 % of
+its budget unspent, which is what makes the thin rings the lever rather than the shelf.** Caught because the
+number and the word disagreed in one sentence — **and this record's eighth instance of a correct computation
+carried by wrong words, after `firstVisibleInRaster` and `spacingOnlyCapacity` (A-G283).**
+
+### A-G287 · A-G65's contamination diagnosis is withdrawn and A-G65's remedy survives *(defect 135)*
+
+**A-G65 ruled that `min()` was contaminated *"exactly as `max()` was"* — pure black at the darkest angle and at
+over 1 % of all angles, attributed to opaque `SEAT` pixels crossing the band.**
+
+**PINK did not reproduce it.** `p05 == p25 == min` is false at every ring and both sizes, and no unmasked minimum
+is pure black — the 1920 shelf's minimum is **1.112e-3, not 0.** And PINK declared the cause rather than
+dressing it as a correction: **it samples the band's centre radius at 720 angles; the earlier reading swept the
+band's radial extent, where shelf bodies' opaque seats cross it.** Both are legitimate samplings of different
+regions, **and A-G65's own wording asks for the centre.**
+
+> **Ruled: A-G65's *diagnosis* is withdrawn — the pure black was the earlier sampling's radial extent, not a
+> property of `min()`. A-G65's *remedy* stands and is what produced these numbers: keep every sign drawn,
+> exclude sign and seat pixels by mask, take a robust central statistic.**
+
+**And A-G45's hope is not borne out.** A-G45 held that PF-15's red was *"not accepted as a product fact until
+re-measured"*. **Re-measured properly, limb (a) fails at 0.12442 / 0.10208 as built, against the withdrawn
+0.141 / 0.115. The contamination was real in the band statistic and did not drive limb (a). The red is a product
+fact.** Sixth prediction of mine in this phase that the instrument was the problem; the artifact was.
+
+### A-G288 · A-G270's PG-3 remedy reads a different floor — and §64's SPLIT row is wrong *(defect 136)*
+
+**`sizeFloor` enforces `SIZE_FLOOR_PX = 12` px of diameter. PG-3's bound is 56. A floor 4.7 × below the bound.**
+
+**PINK demonstrated it rather than argued it: at 1280 all five bodies sit below 56 px — 30.37 px at the smallest,
+25.63 px under the bound — and `data-size-floors` still reads 0**, because none is under 12.
+
+> **A `data-count` of 0 is fully consistent with every body on screen violating PG-3.** So A-G270's preferred
+> remedy — *read the disclosure, not the radius* — **reads the disclosure of a different obligation, and
+> §64's row calling PG-3 SPLIT with an enforced lower limb is wrong. PG-3 is fully LIVE and nothing enforces
+> either end of it.**
+
+**At PG-3's own stated condition the bodies measure 87.77 / 69.24 / 67.96 / 63.52 / 57.00 px — inside [56, 92]
+with a margin of 1.00 px, holding by layout arithmetic and guarded by nothing.** *"The floor that looks like its
+guard never fires."*
+
+**This is the sixth time the answer was one value away in a file this lane had open** — `SIZE_FLOOR_PX = 12` is
+on the same screen as the call site I cited. **A-G239's shape, and A-G270 was written one section after I
+adopted the rule it violates.**
+
+**A-G270's general preference survives, narrowed:** *where the product enforces an obligation, look first for a
+disclosure of the enforcement* — **and check that the disclosure discloses THAT enforcement.** PINK adds the
+second half, which is its own finding: **`:784`'s span renders only when `floored > 0`, so its absence cannot be
+told from a rename, while `:736` carries `data-size-floors` unconditionally.**
+
+> **Adopted: a disclosure conditional on being non-zero cannot be distinguished from a removed one. A disclosure
+> an instrument is to read must have a defined reading at zero.** That is a constraint on A-G270's whole
+> preference and it came from reading both sites rather than the first.
+
+### A-G289 · PINK's A-G81 audit, and the clause worth more than the audit
+
+PINK audited its own figures against A-G274 and found the exposure narrow:
+
+- **§18's ladder** came off `.mf-core`'s `opacity` — a value the compositor **receives**. In A-G81's domain.
+- **PF-15's rings** are `stroke="rgba(INK, RING_LUMINANCE.x)"` — declared constant flat alpha, A-G81's validated
+  domain exactly, which is also where A-G81 was measured.
+- **PG-23 is safe by its FORM and not by its carrier**, and this is the clause to keep:
+
+> **PINK: *"Its carrier IS exposed — a gradient-filled circle under a multiplied group opacity, computed alpha
+> three ways over. But PG-23 asks whether the value is time-invariant, and invariance is immune to the
+> quantisation model: if the declared inputs do not change, the rendered alpha does not change at any bit depth.
+> A level would have been exposed. An invariance is not."***
+>
+> **Adopted, and it is the correct general form of A-G274: a quantisation model travels with the carrier, and an
+> invariance claim does not need one at all.**
+
+**The one flag is PINK's own and is in the work it sent.** PF-15's `realisation` figures compare a measurement
+to an **ideal computed with a quantisation model**, and PINK's model is off by one code step: it predicts
+`rgb(5,5,6)` at 0.022 where Chrome renders `rgb(5,6,6)`. **The finding survives because the thin rings'
+shortfall is about six code steps, an order above the error, and PINK said so rather than leaving it to rest on
+the model.**
+
+**And the cause is identifiable from this record: PINK is using §23's superseded method — float alpha, rounded
+per channel — not A-G81's.** A-G81's table gives 0.022 → byte 6 → effective α 0.0235294 → **`rgb(5,6,6)`**, which
+is what Chrome rendered. **PF-15's rings are a declared constant alpha, so A-G81 applies to them without the
+A-G274 caveat, and adopting it should make `realisation` exact.** That one-code failure is also why PINK refused
+to hand this lane a modelled alpha for A-G66 and swept it instead, **which was the right call made for a reason
+that is now repairable.**
+
+### A-G290 · "A name is not a geometry" — and a tell that cost nothing *(defect 137, PINK's, self-reported)*
+
+Limb (a)'s disc first used the **horizon** ring's radius, *"because 'horizon' sounds outermost."* It is
+second-innermost of four: best 160, horizon 400, shelf band 465 ± 35, **field 500.** So the disc excluded the
+shelf band *and* the field ring, and limb (a) was a share of two inner rings over an inner disc.
+
+**The diagnostic is the part to keep, and it is free:**
+
+> **PINK: *"The rings' share was bit-identical to five decimals at ten different shelf alphas while the band's
+> own median tracked every one. A quantity that does not move when its input moves is not a measurement of that
+> input."***
+>
+> **Adopted. And: a name is not a geometry.** Both instruments now assert the radial ordering they depend on
+> instead of assuming it.
+
+**That tell would have caught this lane's own A-G195 and A-G191** — an invariance where the input moves is
+cheaper to notice than any of the carrier arguments either of us has written.
+
+### A-G291 · The ring docstring is true for one ring in four *(defect 138, GRÜN's)*
+
+Measured / ideal: **shelf band 1.025 · best 0.920 · field 0.733 · horizon 0.770.** The 58 px band realises its
+alpha; the 2 px strokes reach 73–92 %, **because a thin stroke centred on a non-integer radius antialiases
+whatever its nominal width.**
+
+The product comment reads *"each ring … renders at its alpha's own luminance."* **It is true for the band and
+wrong by up to 27 % on the other three — and it is load-bearing for anyone converting a thin ring's alpha to a
+luminance or back.** Comment-only correction, to GRÜN, with PINK's figures and PINK's attribution per A-G279.
+
+**And it bears on A-G285's ruling:** the thin rings consuming 81 % of limb (a)'s budget are *under*-delivering
+their declared alpha by up to 27 %, so limb (a)'s lever is weaker than the constants suggest. **Whoever sets
+those three constants is setting them against a 73–92 % realisation, not against 1.0.**
+
+### Two clearances
+
+**PG-14 is GRÜN's and is already done** (§66, `b6c4bd84`). PINK offered to take it; I have told it not to, and
+the division is the right one: **GRÜN holds the arithmetic, PINK holds the rendered label containment**, which
+is A-G244's two routes on the one product change of this phase that has them.
+
+**Nothing of PINK's rested on the §62 grant.** It confirmed that from its own side rather than accepting my
+correction: *"I treated your relay as changing nothing … it would have cost something if I had leaned on it."*
+
+**Seven new defects: four this lane's, two PINK's own, one GRÜN's. The count is 139.** Mine are a sweep that
+claimed completeness over 23 of 41 pins, a product delta recorded as a repair when it was a trade, a
+contamination diagnosis that was a sampling artefact, and a remedy that reads the disclosure of a different
+obligation.
+
