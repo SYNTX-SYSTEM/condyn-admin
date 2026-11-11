@@ -1,0 +1,46 @@
+========================================================================================================
+GELB · §91 — THE FULL SUITE ON THE RESTORED B-ENTRY. Branch architecture/mapping-phase-f @ 1980f620
+========================================================================================================
+
+A-G54: a figure is a property of a BUILD, not of a lane. A-G416: and an infrastructure restoration is a
+property of a WORKTREE. So both are named here, and this run is NOT PF-13 — PF-13 names the phase-D and
+phase-E tests on GRÜN's branch, where the phase-G mapping tests live; this branch does not carry them.
+What this is: every test this branch has, against a disposable database, with B-ENTRY unbypassed.
+
+BEFORE (the first run after the restoration, 20:16:48)
+  Test Files   503 passed |  5 failed | 11 skipped (519)
+  Tests       3510 passed | 28 failed | 20 skipped (3558)
+
+AFTER (this run)
+  Test Files   510 passed |             11 skipped (521)
+  Tests       3546 passed |             20 skipped (3566)
+  Duration    660.59 s
+  Failures    0
+
+THE ARITHMETIC RECONCILES, which is the check that the difference is the fix and not a changed scope:
+  files 519 -> 521 = +2, exactly the two files added: test/database-isolation/shared-server.test.ts
+                          and test/career/db/bootstrap-drift.test.ts
+  tests 3558 -> 3566 = +8, exactly 6 (shared-server) + 2 (bootstrap-drift)
+  so 28 failures -> 0 with no test removed, skipped or rewritten to agree.
+
+WHAT THE 28 WERE
+  27  one cluster, four files, one cause: PostgresError 42703, column "version" of relation
+      "career_policy_versions" does not exist -> A-G413, the bootstrap/ORM schema drift,
+      9 of 18 career tables, 10 columns missing and 10 created-but-undeclared (all ten NOT NULL)
+   1  MAP-C-ARCH, test/career/mapping-field/architecture.test.ts:78 -> A-G411, red since phase C
+
+THE 20 SKIPPED TESTS, 11 FILES, EVERY ONE CONDITIONAL AND EXPLICIT — no unconditional skip exists:
+   7 files  Gemini, gated on RUN_GEMINI_DIAGNOSTICS or a live key — MANDATED OFF, correctly skipped
+   4 files  browser / PDF stands gated on playwright, which is NOT a declared dependency of this repo;
+            the real-browser stand lives in PINK's and GRÜN's worktrees, which is A-G416 a second time
+  AND ONE LATENT VACUITY, named because it is currently asserting and could stop silently:
+      test/job-pool-validation/layer-separation.test.ts uses it.skipIf(jobPoolFiles.length === 0) on
+      both of its assertions. It runs 4 of 4 here, so the population is non-empty — but if the glob
+      that builds it ever breaks, the layer-separation boundary SKIPS rather than FAILS. That is
+      A-G415's family: a test that cannot fail when its own input vanishes. Not a defect today.
+
+VERIFIED WITHOUT TRUSTING THE EXIT CODE (A-G374: a tool's success code describes the tool, not the
+artifact): the background task reported exit 0, but that code belonged to a compound command ending in
+grep. The numbers above are read from the vitest summary in the log, and the log also carries the
+runner's own "SUITE EXIT=0" from before the grep, so the artifact and the code agree independently.
+========================================================================================================
