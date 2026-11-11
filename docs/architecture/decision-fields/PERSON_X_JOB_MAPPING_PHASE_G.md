@@ -8111,3 +8111,145 @@ times inside the bound and its floor six orders below the signal, measured by th
 with the predecessor's figure declined for a stated reason. **After seventy sections that is worth saying
 plainly rather than burying under the defects.**
 
+
+---
+
+## §71 THE ACCOMMODATION IS A SECOND BUILD, AND A-G128 GAINS A THIRD LIMB
+
+PINK confirmed §70's 212.5 % to the decimal and added the half a derivation could not reach (`0305ec66`).
+**Then its own asymmetry table refuted its own proposal, and its finding generalised into a limb that reaches
+nine pins.**
+
+### A-G311 · The accommodation is the breach — and PINK's class is right
+
+**212.5 % confirmed, exactly `(1 − 0.32)/0.32`, and only `PCAP_PG` of three capabilities produces it.** `PCAP_K8`
+and `PCAP_TS` both read 0 %, because each lights all or none of a class; only `PCAP_PG` splits one. **PINK swept
+all three and kept the rows beside the worst — *"a single click would have reported a configuration and called
+it the state."***
+
+**And the half this lane could not derive: it is `reduce`-only.** Under `no-preference` every body reads group
+opacity 1 and limb 3 clears — **while the `data-lit` states are identical in both modes.** The semantics do not
+change; only the rendering does. The 0.32 rule lives inside `@media (prefers-reduced-motion: reduce)`, **the same
+block that sets `animation: none !important` and hides `.mf-travel`.**
+
+> **PINK: *"Under LIVE the unlit-in-pool body is distinguished by MOTION. Under `reduce` the motion cue is
+> removed and a static opacity is substituted for it. So limb 3 is violated by the accommodation — the
+> substitute cue IS the breach."***
+
+**Adopted, with PINK's own disclaimer, which is the right one: that is not a defect in the accommodation, which
+is correct and necessary. It is a defect in a pin that bounds a static ratio without naming the motion mode.**
+**Fourth instance of the unstated-carrier class, and the first where the carrier is *swapped by a media query*
+rather than shared between elements** — the previous three (PG-23's swing, PG-10's carrier, PF-6 row 1) were two
+carriers in one frame; **this is one carrier in two modes.**
+
+### A-G312 · PINK's asymmetry table refutes PINK's own tightening *(defect 156)*
+
+PINK proposed narrowing §70's ruling: *"under LIVE limb 3 holds across focus states with no scope at all. The
+focus-state scope is load-bearing only under `reduce`."* **Its own table in the same message says otherwise:**
+
+| path | reach | motion modes |
+|---|---|---|
+| `:333` — opacity 0.32 | L0, drivable | **`reduce` only** |
+| `:695` — `opacity = inPoolNow ? 1 : 0.18` | needs L1 and > 1 pool | **both** |
+
+**`:695` is a JS attribute outside any media query, so the 0.18 path applies under `no-preference` too.** So *"under
+LIVE limb 3 holds across focus states"* is true of PINK's **L0 single-pool fixture** and not of the build: at L1
+with more than one pool, under either mode, the 0.18 path gives **455.6 %**.
+
+> **So §70's scope stands as ruled — *at the same focus state*, needed in both modes — and the tightening is
+> declined on PINK's own evidence.**
+
+**Fourth layer of one condition, and this is the pattern rather than an incident.** *"The marks are outside"* →
+corrected to *"the gain is on a sibling and the group opacity is 1"* → the group opacity is 1 **in this
+fixture** → *"under LIVE it holds with no scope"* **in this fixture.** **Each correction removed one condition
+and left the next, and every version was true of what was in front of it.** That is §17a's lesson at the only
+depth where it bites: **a reason is inheritable in proportion to how much of its state it carries, and a reason
+missing its condition is harder to see than a wrong one — PINK said so itself and then produced a fifth.**
+
+**And PINK's generosity about which half matters is correct:** *"the unmeasured path is the broader one … the L1
+figure isn't the second example, it's the general case, and the one I could measure is the narrower special
+case."* **The 455.6 % is mode-independent and is the load-bearing figure; the 212.5 % is the reachable one.**
+
+### A-G313 · A-G128 gains a third limb: the motion mode
+
+`gelb-gate-motion-mode.mjs` + `.out.txt` (`d2fcb9e5`). **All five anchors unique.** The accommodation is
+**exactly three rules and one script hook** — one substitution and two removals:
+
+| | `4b83414e` | |
+|---|---|---|
+| `:331` | `animation: none !important; transition: none !important` | **removes** all motion |
+| `:332` | `.mf-travel { visibility: hidden; }` | **removes** the travelling light |
+| `:333` | `[data-mapping-body][data-lit="false"][data-in-pool="true"] { opacity: 0.32 }` | **substitutes** a static cue |
+| `:336` | `matchMedia("(prefers-reduced-motion: reduce)")` | the E-5 tween cuts under the same query |
+
+> **The limb: before a pin is measured — in WHICH MOTION MODE, and does the accommodation substitute a static
+> channel for the motion channel the pin's quantity lives in? `prefers-reduced-motion: reduce` is not a variant
+> of the build. It is a SECOND BUILD WITH A DIFFERENT CHANNEL ASSIGNMENT, and A-G2's channel table —
+> radius = fit, angle = pool, size = mass, luminance = class, hue = gap — has no column for it.**
+>
+> **It is a source reading of one CSS block, so it is the cheapest of A-G128's three limbs.**
+
+**And E-1 is the obligation underneath: under `reduce` the group opacity carries both evidence class and focus.
+One channel, two questions.**
+
+**By substitution it reaches four pins** — the 0.32 is a **group** opacity and PINK measured 19 arcs and 19 beams
+inside that group, so it multiplies every mark the body draws:
+
+- **PF-4 limb 3** — 212.5 %, measured.
+- **PG-1** *(defect 157)* — the semantic share of the field's light. Every dimmed body contributes 0.32 × its
+  light, **so the share moves, and PG-1 names neither the mode nor the selection.** PINK's 0.639 / 0.733 is a
+  reading in one of the two builds.
+- **PG-6** *(defect 157)* — relations' share of the semantic light. **Beams are inside the body group**, so dimmed
+  beams move the numerator of the phase's live red.
+- **PF-2** *(defect 158)* — **and this is the sharpest thing in the section.**
+
+> **PF-2 bounds adjacent evidence bands at ≥ 1.6 × at their closest points. The dim factor is 1/0.32 = 3.125 ×,
+> which is LARGER than the entire separation the pin protects.** Against phase E's own recorded separations:
+>
+> | separation | dimmed upper band ÷ lit lower band | |
+> |---|---|---|
+> | 1.814 × | **0.5805 ×** | **inverted** |
+> | 1.940 × | **0.6208 ×** | **inverted** |
+> | 1.600 × (the bound) | **0.5120 ×** | **inverted** |
+>
+> **All three invert.** So under `reduce` with a capability selected, a higher band on a dimmed body reads
+> *darker* than a lower band on a lit one — **the dimming is worth more than one whole band step.**
+>
+> **Whether that is a violation or a non-question depends on whether PF-2's comparison is scoped WITHIN a body
+> or ACROSS bodies, and PF-2 does not say.** A-G137's defect exactly: **the verdict is selected by a word the pin
+> does not define.** It is a derivation here and it is measurable on PINK's existing stand, in the configuration
+> PINK has already driven — `reduce` plus `PCAP_PG`.
+
+**By removal it reaches five** *(defect 159)*:
+
+- **PG-18** — *"at least one of the field's motions is self-propelled from rest and contingent on another object
+  — the travelling light departing on a coupling. **The breath alone does not satisfy PG-18.**"* Under `reduce`
+  the travelling light is `visibility: hidden` and the breath is `animation: none`, **so PG-18's only named
+  satisfier does not exist and the breath is excluded by the pin's own text. PG-18 has NO satisfier under
+  `reduce`, and PG-18 names no mode.** §64 gave it A-G144's disjunction hazard; **this is the one place where a
+  disjunction having no satisfier is a fact rather than a hazard.**
+- **PG-11, PG-7, PF-8** go vacuous — which PF-9 already states for the STILL case, so the record has the shape
+  and never applied it to the others.
+- **PG-10 limb 3 / PF-6 row 1** — PINK's LIVE max of 0.6908 was the travel, hidden under `reduce`. **So the
+  breach is LIVE-only: the build breaches in the mode where it is allowed to move**, and the breach and the
+  accommodation are mutually exclusive.
+
+### A-G314 · Two corrections PINK made to this lane's own words, both accepted
+
+**On the clear.** I called reporting the worst pair beside the mean a distinction this record had to impose six
+times. PINK: *"the worst pair beside the mean wasn't generosity — A-F11 is my own standing rule and a mean would
+have hidden whether any single interval breached."* **Correct; it was compliance with its own rule, not a favour,
+and crediting it as the latter understates the rule.** It accepts the other half: *"you're right that after
+seventy sections an obligation passing with margin deserves stating rather than burying, and I buried it under
+row 1."*
+
+**On the digits.** *"The exact 1.45^(−1) is 0.689655172…, and `depthGain`'s 1e-6 rounding is what makes the
+measured inverse 1.4500004 rather than exactly 1.45 — so the digits are the rounding showing through, not
+precision theatre."* **Adopted: the extra decimals are the mechanism, which is why A-G259's rule cuts both ways —
+a figure printed to fewer places than its mechanism needs hides the mechanism, and one printed to more claims a
+precision it lacks. The test is whether the digits are load-bearing, not how many there are.**
+
+**Four new defects: three this lane's — a pin whose scope decides its verdict and does not state it, two shares
+that name neither mode nor selection, and a pin with no satisfier in one of two builds — one PINK's. The count
+is 159.**
+
