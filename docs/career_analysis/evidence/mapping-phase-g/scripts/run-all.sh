@@ -31,6 +31,7 @@ export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwickl
 # page.setContent. Kept separate from the server probes for exactly that reason, and viewport-independent.
 printf '\n=== gruen-compositing-model (browser only, no server) ===\n'
 node gruen-compositing-model.mjs >/dev/null || printf '!! gruen-compositing-model FAILED (exit %s)\n' "$?"
+node gruen-compositing-ladder.mjs >/dev/null || printf '!! gruen-compositing-ladder FAILED (exit %s)\n' "$?"
 
 for size in "${SIZES[@]}"; do
   export VW="${size%x*}" VH="${size#*x}"
