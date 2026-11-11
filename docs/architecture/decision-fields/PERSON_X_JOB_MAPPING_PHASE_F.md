@@ -334,6 +334,10 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   **This pointer omitted all four until §116, and the omission cost two lanes a round:** PINK measured
 >   PF-5 and PF-7 as live pins and this lane specified a replacement guard for PF-10 in §114. **The note
 >   built to stop a lane reading a stale pin listed one replacement and missed four retirements.**
+> - **PF-4 IS LIVE.** It is flagged by A-G453's check only because §70 cited *"PF-4's text at `:322`, the
+>   superseded §7 original"* — **a sentence about a stale CITATION of PF-4, not about PF-4's retirement**
+>   (`PHASE_G:8349`). Its current form is §17's (`:981`), and it is **checked individually against §§19–30**.
+>   *One line, per the rule that a flagged false positive is answered in the pointer rather than argued with.*
 > - **PF-3** — the halo limb is measured as an **EXCESS against a render without it**, never as a raw
 >   window (**A-F19**, §20 `:1095`). A raw ratio of declared alphas is a cruder form of the same confound.
 > - **PF-6 row 1 / PG-10 limb 3** are **one bound on one quantity, stated as a DISTRIBUTION** on 2 px-blurred
@@ -402,6 +406,7 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 | **PF-11** | **Reduced motion, at pixel level.** Two renders ≥ 2 s apart with no interaction: every pixel identical. Plus phase E's half (a): no element carries a non-zero computed animation or transition duration. |
 | **PF-12** | Nothing phase F adds is interactive: no new element in the a11y tree, none focusable, none hit-testable; tab order unchanged. |
 | **PF-13** | Every phase-D and phase-E test passes unchanged. |
+| | ⚠ **EXCEPTION LIST WRONG AS WRITTEN — §116, A-G454.** The restated set is `:136`, `:173`, `:205` by title; PF-13 cites `:140`, `:174`, `:156`. **`:156` is NOT a restated test** (*"REPRODUCE: geometry 420 ms…"*) and **`:205` is not exempted.** Verified at `26fec3c5`/`10eb4030`: **not drift.** Vacuous while all pass; **its two errors have opposite signs (A-G455).** The exempted set must be **derived from the titles**. |
 | **PF-14** | No per-frame script write to SVG geometry outside the E-5 stage tween. |
 
 **PF-2, PF-8 and PF-13 are the ones that can kill the phase.** They are the price of touching light in a field
@@ -987,6 +992,7 @@ failure I have now caused twice in one phase.
 | **PF-11** | blurred, disc-scoped: at thresholds 0.001 / 0.002 / 0.004 / 0.008, the count changing between samples ≥ 2 s apart ≤ **1.5×** the back-to-back count **at every threshold**; plus no element with a non-zero computed animation or transition duration. | A-F4, A-F10, A-F11 |
 | **PF-12** | nothing phase F adds is interactive: not in the a11y tree, not focusable, not hit-testable; tab order unchanged. | — |
 | **PF-13** | every phase-D and phase-E test passes, except the three restated in writing: `neurovisual-e :156`, `:174`, `:140`. | §12, A-F15 |
+| | ⚠ **CORRECTED, §116 (A-G454).** *"the three restated in writing"* is a **predicate**; these are **three offsets**, and they disagreed with it immediately. **`:156` names a non-restated test; the restated `:205` is omitted.** Also: **the population is `PHASE_DIRS`, 15 or 16 files (unreconciled), not "the suite"** (A-G95), and **PF-13 has a population enumerator but NO EVALUATOR** — the run half does not exist. | §116 |
 | **PF-14** | no per-frame script write to SVG geometry outside the E-5 stage tween; the breath is **CSS animation rules** the reduced-motion blanket can stop (never WAAPI or SMIL). | §12 |
 | **PF-15** | the four rings separated by ≥ **1.6×** in measured pixel luminance at their closest points, **and** each ring separated from **its own local ground** by ≥ 1.6× in either direction. Both viewport sizes. The horizon/field step is **marginal and instrument-sensitive** (GELB 1.316, PINK 1.636) and needs margin, not a pass. | A-F6, A-F12, A-F14 |
 | | ⚠ **MALFORMED AS A CONJUNCTION** *(§98, §114)* — **not merely unsatisfiable.** No shelf alpha repairs it (the gap between limb (a) and A-G66 is **7 alpha-bytes = 6.37 plateau widths**, and discretisation can only move a disjointness verdict when the gap is under one step), **and where limb (a) clears, limb (b) has no quantity to be true or false about** — the band renders as `rgb(0,0,0)` or a single-code grey at the quantisation floor. *"Unsatisfiable" invites a search for a clever alpha; "malformed" says stop looking.* |

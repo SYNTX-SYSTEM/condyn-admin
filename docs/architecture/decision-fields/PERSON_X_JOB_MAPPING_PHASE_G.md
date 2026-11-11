@@ -366,6 +366,64 @@ reference implementation computing both. One algorithm, one set of meanings, two
 
 ## §8 G-2's "MEASURE" WAS A CLAIM — AND SEVEN MECHANISM PINS
 
+> ### ⚠ FORWARD POINTER — THE PG PINS ARE DECLARED BELOW AND AMENDED THROUGHOUT. NONE OF THIS IS THE CURRENT CONTRACT.
+> *Added 2026-11-11 by GELB per **A-G453** (PINK's) and §116. **Built because `gelb-pointer-vacuity.mjs` found that
+> this document — the one holding the LIVE pins — carried NO pointer at all, while the superseded PHASE_F has one.**
+> The staleness note had been written where the staleness was first noticed, not where a reader arrives. Each entry
+> cites its **amendment ID first** and its line number second: the ID is stable, the number is correct as of
+> 2026-11-11 and is invalidated by any insertion above it (**A-G427**).*
+>
+> *** THREE PINS BELOW ARE NOT OBLIGATIONS AT ALL, AND A READER WHO MEASURES THEM WASTES A ROUND. THIS HAS
+> ALREADY HAPPENED TWICE. ***
+>
+> - **PG-19 WAS NEVER A PIN.** **Withdrawn un-begun** (§40, `:4038`: *"PG-19 is not returned — it is withdrawn,
+>   un-begun"*), **retired** (**A-G164**, §45, `:4598`), and recorded in the phase ledger as ***"killed before
+>   formation"*** by A-G128's gate (`:6441`). R25 fixes one exponent (`k = −1`) and gives direction only for size
+>   and eccentricity, **so the joint index A-G141 demanded could only have been written by inventing an exchange
+>   rate.** §113 and §115 nonetheless carried PG-19 on the "no guard" list and wrote it a mutation programme.
+> - **PG-12 IS UNSATISFIABLE BY ANY BUILD** (§36) — *the hue's own chroma is half the bound*, recomputed in
+>   CIELAB D65. **A-G448**: its two sides carry different quantifiers (§104). **It needs no guard.**
+> - **PG-18 IS ESTABLISHED UNSATISFIABLE** (`:14305`) — *a derived negative, which is stronger than a guard*. It
+>   also carries **A-G144's disjunction hazard** (*defect 118*, `:7103`): *"at least one of the field's motions"*
+>   cannot fail.
+>
+> **AND THESE ARE LIVE BUT NOT AS DECLARED BELOW:**
+>
+> - **PG-1** excludes the rings from "semantic" (`:257`); measured **0.6431 / 0.7397 against ≥ 0.55** at phase G.
+> - **PG-3** amended to drawn diameter **∈ [56, 92] px** at 1920, monotone in `weightSum` (`:221`).
+> - **PG-5** **reduces entirely to its overflow-statement limb** (`:5999`); the rest is **ZERO-BY-CONSTRUCTION**
+>   via `if (out.length >= budget) break;` (`:7082`), and its **L0 numeric cap is retired as non-discriminating**
+>   (`:4433`). **Mutate the `break`, never `BODY_BUDGET`** (`:13465`).
+> - **PG-6's 0.15 stays UNDERIVED** (`:4116`). Its *"live red"* of 0.02075 / 0.02181 was **a relation channel
+>   measured in a dimmed group**; it reads **0.17977 / 0.19452 against ≥ 0.15** once corrected (`:2515`).
+> - **PG-7 final: the travel's period IS the breath's** (**A-G13**), not merely an integer divisor.
+> - **PG-10 restated** (`:759`): on the **visible glow**, ≥ 25 % of pixels swing ≥ 0.004 **and** the median Weber
+>   fraction in `[0.10, 0.35]`. **It is the replacement for PF-5/PF-7/PF-10** (**A-G20**) — *"an obligation must
+>   follow the thing it measures"* — and **its R17 corridor remains unresolved** (**A-G143**).
+> - **PG-11** has its **mode stated, carrier and level not** (**A-G30**/**A-G42**, `:2806`).
+> - **PG-13's RATIO LIMB is retired as non-discriminating** (**A-G29**, `:916`). **The pin is not retired; the limb
+>   is.**
+> - **PG-15** is enforced by **SVG document order** (`:13471`), was carried as **UNASSERTED** in this record's own
+>   table, and is **now asserted with its mutant re-run** (§110).
+> - **PG-17's domain is corrected** to the union of `mapping-glows` and the bodies (**A-G31**, `:932`), and the pin
+>   is **struck for provenance and tripwired** (**A-G165**): R21 produced `GLOW_RAMP` and **no number was ever
+>   taken from R21, so it cannot certify it.**
+> - **PG-22's occupancy is governed by shelf membership**, and **A-G44's 1/r is withdrawn** (**A-G93**, `:2703`);
+>   counted **excluding a body's own name and measure**, bound **≤ 20 %** (`:712`).
+> - **PG-23 was withdrawn as written** (**A-G223**, `:5897`) and **restated on the carrier's own alpha** (`:5921`).
+>
+> - **PG-2 and PG-20 are live, and both appear in death sentences they are not the subject of** —
+>   PG-2 in *"PF-1 is replaced by PG-1/PG-2"* (**it is the replacement**, **A-G20**, `:162`) and PG-20 in
+>   *"A-G43, PG-20, PG-5 and PG-16 killed and proven"*, where what was killed is **the MUTANT, not the pin**
+>   (`:13774`). **PG-20's mutant — DIFFERENT's `counterTick` removed from the sign table — stayed GREEN, and the
+>   product is robust** (`:13451`). *Recorded here because A-G453's check flags them and the remedy for a flagged
+>   false positive is one line in the pointer, not an argument with the instrument.*
+>
+> **A-G165 is the rule under four of these:** *a pin may be derived from a finding only where the record took a
+> quantity from that finding.* **R23 gave 0.5 and carries PG-16; R25 gave one exponent and carries no threshold;
+> R21 and R17 gave no number at all.** *A finding can be load-bearing for the design and incapable of carrying a
+> pin.*
+
 ### A-G9 · The field may not state a fit. Phase C wins *(GRÜN — my error)*
 
 G-2 said a body carries "its measure (fit, tier)". `field-render.test.tsx:125` is **right to be red**: P-07's
@@ -4596,6 +4654,10 @@ rule.** Two comments on one constant, disagreeing, both written as if quoting th
 the geometry it describes; they describe different geometries and say so in identical language.**
 
 ### A-G164 · PG-19 is retired, and A-G141's own prescription turns out to have been underivable *(defect 74)*
+
+> ⚠ **CITED FORWARD, §116:** this retirement, together with *"withdrawn, un-begun"* at `:4038` and the ledger's
+> *"killed PG-19 before formation"*, is why **PG-19 was never a pin** — and §113/§115 nonetheless carried it on
+> the "no guard" list and wrote it a mutation programme. **Found by `gelb-pointer-vacuity.mjs` (A-G453, PINK's).**
 
 A-G141 ruled that PG-19 *"must be re-derived as a single joint vulnerability index over contrast, drawn size and
 eccentricity, bounded once."* **I ran A-G128's gate on my own prescription before writing it, and it fails.**
@@ -14471,3 +14533,257 @@ reporting; PF-13 having no evaluator; and PF-7's direction-free *monotone*. **34
 > **And the procedural finding PINK closed on, which belongs in the report above any of the technical
 > ones:** *the symmetry worked only because the first count published was published as an UPPER BOUND.* **A
 > number offered as final would have ended it.**
+
+---
+
+## §116 THE LIST WAS NEVER FIVE — AND A FORWARD POINTER IS A GUARD WITH NO VACUITY CHECK
+
+**Date of this section: 2026-11-11.**
+
+### PINK ran the two mutants, and the pins they tested do not exist
+
+PINK's §53 executed §115's PF-5 and PF-7 specifications. **`MUT-PF5-DEPTH0` was killed cleanly** — share
+`0.0492 → 0.0103`, median swing `3.0053e-4 → exactly 0`. **And then the whole round turned out to be aimed at
+retired pins.** `PHASE_G:725`, **A-G20**: *"PF-5/7/10 on the medium are retired in favour of PG-10: the breath
+has moved from the medium to the glows, and an obligation must follow the thing it measures."*
+
+> *** THE CAUSE IS §7's FORWARD POINTER — THE NOTE THIS LANE BUILT FOR THE SOLE PURPOSE OF STOPPING A LANE
+> FROM READING A STALE PIN. IT LISTED PF-1's REPLACEMENT AND OMITTED ALL FOUR A-G20 RETIREMENTS. ***
+>
+> **Cost: PINK built and ran two mutants against dead pins, and this lane specified a replacement guard for
+> PF-10 in §114 — a pin §28 records as "retired having never run".** Fixed at `265ac7f1`: the pointer carries
+> the four retirements, the four rows are annotated at their own locations, and §114's PF-10 ruling is
+> withdrawn in place.
+
+### A-G453 · A forward pointer is a guard, and it needs the same vacuity check as any other *(PINK's)*
+
+**PINK's, committed at `8318b6c4`.** The pointer's purpose is to report staleness, **and nothing in it could
+report that it was itself incomplete.** The check PINK specified is mechanical and neither lane had it: *every
+retirement in the record must appear in the pointer.*
+
+**Built: `gelb-pointer-vacuity.mjs`.** It locates the pointer **by its heading, never by a line number**, cuts
+that region out before scanning (A-G408), and classifies rather than filters (A-G429). **It is deliberately
+OVER-INCLUSIVE and that is the design:**
+
+> **A sentence that CITES a retirement is indistinguishable by any pattern from one that MAKES it — A-G450, in
+> prose. So the check demands a pointer entry for every pin whose death the record discusses.** *** THE
+> ASYMMETRY IS THE WHOLE JUSTIFICATION: A FALSE POSITIVE COSTS ONE LINE IN A POINTER; A FALSE NEGATIVE COSTS A
+> LANE A MEASUREMENT ROUND, WHICH IS WHAT HAPPENED. *** It reports **23** pins in a whole-pin death sentence
+> and **11 absent from the pointer**, and it is **not a count of retirements** — the sentences are printed so
+> that reading, not grepping, settles each one. Its vacuity guard has both limbs (A-G452): it must find nothing
+> on a corpus with no retirement, **and** it must find A-G20's four, or it is measuring nothing.
+>
+> ⚠ **CORRECTED IN PLACE, and the error is the one this lane has ruled on all phase.** This paragraph first read
+> *"**23** pins in a whole-pin death sentence and **11 absent from the pointer**"*. **The §7 pointer's domain is
+> the PF originals; ten of those eleven were PG pins, which it does not govern.** *** A-G417's POPULATION ERROR,
+> COMMITTED INSIDE THE INSTRUMENT WRITTEN TO CATCH A-G453's. *** Scored per domain the gap was **PF-4 alone**, and
+> PF-4's hit is a sentence about a **stale citation of** PF-4's text (`:8349`), not its retirement. **The real
+> figure was one candidate and zero gaps — the conflation inflated it elevenfold, in the direction A-G429
+> predicts.**
+
+### And the gap was never in the pointer that had one
+
+**Scoped per domain, the instrument found what the conflation had hidden:**
+
+| | |
+|---|---|
+| forward pointers in **PHASE_F** (superseded) | **1** |
+| forward pointers in **PHASE_G** (the live pins) | **0** |
+| PG pins whose death PHASE_G discusses | **14** |
+
+> *** THE DOCUMENT HOLDING THE LIVE PINS CARRIED NO STALENESS NOTE, WHILE THE SUPERSEDED ONE DID. *** A reader
+> landing on §8 by search had nothing telling it that **PG-19 was killed before formation**, that **PG-12 and
+> PG-18 are established unsatisfiable**, or that **PG-13's retirement is a LIMB and not the pin.** *** THE
+> POINTER HAD BEEN BUILT WHERE THE STALENESS WAS FIRST NOTICED, NOT WHERE A READER ARRIVES — the same error as
+> writing a rule beside its own violation (A-G427's closing note), displaced by one document. ***
+>
+> **Built: PHASE_G's §8 pointer**, amendment-ID-first per A-G427, covering the **three non-obligations** and the
+> **twelve live-but-not-as-declared** pins. **PF-4, PG-2 and PG-20 each got one line** — all three live, all three
+> the check's designed over-inclusion, **and the remedy for a flagged false positive is a line in the pointer
+> rather than an argument with the instrument.**
+>
+> *** AND THE INSTRUMENT NOW REFUSES INSTEAD OF REPORTING, WHICH IS A-G374's SECOND LIMB TURNED ON ITSELF. ***
+> Both domains read **0 gaps**, so it exits 1 on any pin whose death enters the record without reaching its
+> pointer. **Proven red-first on GRÜN's template:** PG-19's entry removed → ***REFUSED — 1 POINTER GAP, naming
+> PG-19*** → reverted → exit 0. **A pointer that merely prints its own gap is the defect A-G453 names, one level
+> up.**
+
+### And it immediately found the one I would have specified next
+
+**`PHASE_G:4038`: *"So PG-19 is not returned — it is withdrawn, un-begun."*** **`A-G164` (`:4598`), defect 74:
+*"PG-19 is retired, and A-G141's own prescription turns out to have been underivable"*** — because R25 fixes
+one exponent (`k = −1`) and gives direction only for size and eccentricity, **so the joint index A-G141 demanded
+could only have been written by inventing an exchange rate.** And the phase ledger at `:6441` is blunter than
+either: ***"A-G128 — the satisfiability gate | killed PG-19 before formation."***
+
+> **PG-19 was never a pin.** It was withdrawn un-begun, retired by name, and recorded as killed before
+> formation — **three times, in this lane, in this document.** And §115 wrote it a full mutation programme:
+> the disjunction, A-G144's hazard, the per-mark limb breakdown. *** A SPECIFICATION FOR A PIN MY OWN RECORD
+> KILLED BEFORE IT HAD FIVE FIELDS. ***
+>
+> **So PG-17, PG-13 and PG-23 were checked rather than assumed, and all three are live** — PG-17 struck for
+> provenance and tripwired (A-G165) with its domain fixed by A-G31; PG-13's *ratio limb* retired (A-G29), not
+> the pin; PG-23 withdrawn as written and **restated** on the carrier's own alpha (A-G223).
+
+*** THE HEADLINE FIVE IS ONE: PF-13. *** PF-5 and PF-7 retired, PG-12 unsatisfiable (§36), PG-19 never formed.
+**Every one of the four dissolved on reading, and each dissolution was a defect in this lane's record rather
+than a finding about the build.** The five was never a measurement of the product. **It was a measurement of
+how well this lane can read itself, and the answer is one in five.**
+
+### PF-5 was not green on the wrong denominator — it was unsatisfiable as written *(PINK's)*
+
+PF-5's two texts say **"disc pixels"**, verbatim. Its recorded green is **0.647**.
+
+| quantity | value |
+|---|---|
+| disc population | 545417 px |
+| glow mask at 1920, unselected (§28) | **36268 px = 6.650 % of the disc** |
+| disc pixels over the 0.004 swing | 26822 = **4.92 % of disc** = **73.96 % of the glow** |
+| PF-5's bound | **≥ 25 % of DISC pixels** |
+| **bound / attainable ceiling** | **3.76×** |
+
+**Why 6.65 % is a ceiling and not a comparison, which is PINK's argument and the part that upgrades the
+finding:** the median disc swing is **one quantum** (`3.0053e-4`) against a threshold of **13.3 quanta**. The
+ground breathes across the whole disc — mean 0.5, depth 0.5 at `:273` — **and still cannot reach the threshold
+at a typical pixel, so the glow is the only population that plausibly can. Even if every glow pixel swung, the
+disc share would be 6.65 %.**
+
+> *** PF-5's HISTORICAL GREEN OF 0.647 IS THE SAME ORDER AS THE GLOW SHARE OF 0.7396, NOT THE DISC SHARE OF
+> 0.0492. THE FIGURE WAS MEASURED OVER A POPULATION THE PIN DOES NOT NAME, AND THE BOUND IT CLEARED WAS 3.76×
+> THE CEILING OF THE POPULATION IT DOES NAME. *** A-G437's family: **the figure carried a population its pin
+> never stated, and the substitution is what made it passable.** **The PG-12 shape, reached independently.**
+>
+> **Scope, stated as PINK stated it:** established on `3ec8457d` at 1920. **Unsatisfiable on this build by a
+> mechanism that suggests by construction — not proven for all builds, and not claimed.**
+
+### PF-7 is not measurable by the instrument built for it, and the reason is in the source
+
+Baseline per-pixel phase spread **45 ms**; `MUT-PF7-NOLAG` **88 ms — higher, not zero**; `MUT-PF7-REVERSE`
+**59 ms**. **`:876` draws all seven ground layers at the SAME RADIUS**, so the radial structure lives in each
+layer's gradient and the 1.2 s stagger lives in each layer's `animationDelay`: **every pixel superposes all
+seven, and a single-frequency fit returns one blended phase.** The mutants read the instrument, correctly.
+
+> **And I checked whether the hazard reaches PG-10, PF-7's own replacement, rather than leaving PINK the
+> question: it does not.** PG-10 measures the **glows**, and each body's halo is a spatially separate element
+> with its own delay — **no superposition at a pixel.** *The co-radial hazard is the ground's alone.*
+
+### A-G452 survives its subject's retirement, and it is the sharpest rule of the phase *(PINK's)*
+
+Under `MUT-PF5-DEPTH0`, **with the median swing exactly ZERO**, PINK's instrument reported **431972 pixels
+"carrying signal"** and a tidy **0 ms** spread with every bin at 8990 ms.
+
+> **RULED, PINK's: a mutant tests the instrument before it tests the pin, and the no-signal mutant audits the
+> floor.** Everyone describes red-first mutation as proving a guard *can* fail. **It is also the only state in
+> which a floor's vacuity becomes visible, because a floor admitting noise looks identical to one admitting
+> signal until the signal is removed.** **GRÜN's §94 negative control is the same shape from the other side** —
+> it passed on zero differing pixels of an unchanged page.
+>
+> **And this lane produced a third instance one call before writing this.** `vitest run` over PF-13's two
+> directories returned **`numTotalTests: 0, numFailedTests: 0`** with exit 1. *** A ZERO DENOMINATOR REPORTING
+> AS NO FAILURES, IN A JSON BODY THAT READS GREEN FIELD BY FIELD. *** Three instruments, three lanes, one
+> shape. **A-G452 is a property of floors, not of anyone's carelessness.**
+
+### PF-13 is the last pin on the list, and its exception list has named the wrong test since it was written
+
+PF-13: *"every phase-D and phase-E test passes, except the three **restated in writing**: `neurovisual-e :156`,
+`:174`, `:140`."* **Three tests in that file self-identify as restated in their own titles — `:136`, `:173`,
+`:205`.** Resolved to the enclosing `it()`:
+
+| PF-13 cites | resolves to | restated? | |
+|---|---|---|---|
+| `:140` | `it()` at `:136` | **yes** | correct |
+| `:174` | `it()` at `:173` | **yes** | correct |
+| `:156` | `it()` at `:156` | **NO** — *"REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous"* | **wrong test** |
+| — | `it()` at `:205` | **yes** — *"no other ambient motion (restated, phase F §12)"* | *** NOT EXEMPTED *** |
+
+> *** AND IT IS NOT DRIFT, WHICH I CHECKED BEFORE CLAIMING IT. *** At `26fec3c5` and `10eb4030` — the first
+> commits in which three restated tests exist — **`:156` resolved to the same non-restated test**, `it()` at
+> `:153`, title identical. **PF-13 forgives a test that does not claim restatement and withholds forgiveness
+> from one that does, and it has done so from the day it was written.**
+
+**Why four phases did not see it:** every test in the population passes, **so a wrong exemption and a missing
+exemption both cost nothing today.**
+
+> *** A-G454, RULED: A PIN'S EXCEPTION LIST IS A POPULATION, AND IT MUST BE DERIVED FROM THE PROPERTY THAT
+> JUSTIFIES THE EXEMPTION — NEVER ENUMERATED BESIDE IT. *** PF-13 states a **predicate** — *"restated in
+> writing"* — and then lists **three offsets**. The predicate and the enumeration disagreed immediately, and
+> **nothing could notice, because only the enumeration was machine-readable.** A-G419's mask population and
+> A-G445's *"a flag name is a declared intent, a feature status is a measurement"*, applied to an exemption:
+> **the exempted set must be computed from the titles.**
+>
+> *** A-G455, RULED: A VACUOUS GUARD'S ERRORS HAVE OPPOSITE SIGNS AND CANCEL IN THE PRESENT, SO ITS
+> CORRECTNESS IS OBSERVABLE ONLY UNDER THE MUTANT THAT MAKES IT NON-VACUOUS. *** PF-13's two errors point
+> opposite ways — **the first time `:205` goes red the pin goes red when the record says it should not; the
+> first time `:156` goes red the pin stays green when it should not.** **Neither is visible while both tests
+> pass.** This is A-G452's converse: the no-signal mutant audits a floor, **and only a signal-bearing mutant
+> audits an exemption.**
+
+### GRÜN's instrument computed both signals and threw on neither
+
+`gruen-pf13-population.mjs` is the better half of PF-13's guard: it reads `PHASE_DIRS` rather than restating it,
+resolves each citation to a **unique** title, asserts uniqueness, and **cross-checks that the title-based
+resolution lands on the same tests as the line-based one.** `ERR_GRUEN_PF13_TITLE_NOT_UNIQUE` and
+`ERR_GRUEN_PF13_CONVERSION_UNFAITHFUL` are both real guards and both GRÜN's.
+
+> **It computed `selfIdentifiesAsRestated` per citation and narrated the result: *"2 of the 3 titles say
+> restated".* It computed `fragile` and placed it in `fragileCitations`. It threw on neither.**
+>
+> *** A-G374's SECOND LIMB, AND THE CLEANEST INSTANCE EITHER LANE HAS PRODUCED: READING THE ARTIFACT FIXED
+> WHAT WAS REPORTED, NOT WHAT WAS DONE. *** *"2 of 3"* is not a statistic about a citation list. **It is the
+> finding, stated in the voice of a measurement.** The instrument that threw correctly on two invented hazards
+> declined to throw on the one limb that was actually red. **§114's PF-10 guard is this lane's equivalent and
+> this is not reported from above it.**
+>
+> **And the fragility limb has crossed its own threshold since the docstring was written.** It says the
+> citations fall *"3…7 lines INSIDE one `it()`"*; they now read **+0, +1, +4**, two of them below
+> `MIN_HEADROOM = 2`. **The file moved, the instrument noticed, and the output recorded it as prose.**
+
+### What PF-13 still needs, and the boundary that decides where it runs
+
+**The population half exists; the RUN half does not** — GRÜN's instrument states it outright: *"NO VERDICT …
+no test executed here."* Specified to GRÜN: make the two detected limbs throw; build the evaluator over the
+`PHASE_DIRS` population only (A-G95), parsing the **JSON reporter and not the exit code**, asserting *every
+test passes except exactly the restated set*; **two vacuity guards, the first being that executed-test count
+must equal enumerated-test count**; and the two A-G452 mutants, the second of which — **a new always-failing
+file inside `PHASE_DIRS`** — is what proves the population is live rather than a list that was once right.
+
+> *** AND A STAND PROPERTY THAT DECIDES THE VENUE, REPORTED BECAUSE I DID NOT WORK AROUND IT. *** My own
+> attempt died at **`ERR_TEST_DATABASE_ISOLATION_MISSING: DATABASE_URL is not set`**: `global-setup.ts` runs
+> **unconditionally**, so **PF-13's 15 static CSS files cannot be evaluated without a provisioned disposable
+> database.** B-ENTRY stands unbypassed, no credential guessed, no URL set. **A pin over tests that touch no
+> database is gated on one, and that is why the run is GRÜN's and not mine.**
+>
+> **Unreconciled and not guessed: `pf13-population.json` reports `testFileCount: 15`; this record carries 16.**
+> One of the two is wrong. **PF-13's own text still cites line numbers, and I am amending it to the three
+> titles — taking GRÜN's derived set as the text rather than my own reading of it.**
+
+### The symmetry neither lane can fix from inside *(PINK's §54)*
+
+PINK accepts the stop **and states that it cannot verify it**: `PHASE_G*.md` and `PHASE_F*.md` exist in **none
+of the four worktrees PINK can read.** This lane confirmed from the outside that PINK's validation statement
+cannot be read here; PINK confirms the obligation record cannot be read there.
+
+> *** SO EVERY CROSS-LANE PIN FACT IN THIS PHASE HAS BEEN TAKEN-ON-REPORT IN BOTH DIRECTIONS, ALL ALONG. ***
+> That is a property of the arrangement rather than a lapse in either lane — **and it is the strongest
+> statement available of why the unpushed branch is a defect in the work rather than an inconvenience.**
+> PINK's tally corrects with it: **PF-3 leaves the guarded row**, since an instrument guarding a pin A-G20
+> retired having never been measured is not coverage of anything live. **PINK's four becomes three: PF-2,
+> PF-6, PG-17.**
+
+### Where this leaves the record
+
+**Fourteen new defects:** the pointer's four omissions; §114's PF-10 guard; PF-5's green over an unnamed
+population; PF-5's bound at 3.76× its own ceiling; PF-7's unmeasurability by per-pixel fit; PINK's 431972-pixel
+floor under zero swing; PG-19 on the headline list though killed before formation; §115's mutation programme
+for it; PF-13's exception list naming a non-restated test and omitting a restated one; GRÜN's two computed-but-
+unthrown limbs; the fragility threshold crossed and narrated; this lane's zero-denominator vitest read; PF-13's
+DB-gated venue; and the 15-versus-16 file count. **Plus two found while writing this section — PHASE_G carrying
+no forward pointer at all, and this lane conflating two pin populations inside A-G453's own instrument: 351 + 16
+= 367.**
+
+> **And the finding that outranks all fourteen, because it is about this lane's method rather than its
+> arithmetic:** *** FOUR OF THE FIVE PINS THIS LANE REPORTED AS UNGUARDED WERE ALREADY RESOLVED IN THIS LANE'S
+> OWN DOCUMENT. *** PG-12 unsatisfiable at §36, PF-5 and PF-7 retired at A-G20, PG-19 killed before formation
+> at A-G128 and buried twice more. **The list was built by counting mentions instead of reading verdicts**, and
+> every correction came from opening the thing the list named. **A-G453 is the first mechanical defence against
+> that class, and it is PINK's.**
