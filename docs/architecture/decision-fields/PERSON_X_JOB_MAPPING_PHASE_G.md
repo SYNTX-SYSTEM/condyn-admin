@@ -8260,3 +8260,166 @@ precision it lacks. The test is whether the digits are load-bearing, not how man
 that name neither mode nor selection, and a pin with no satisfier in one of two builds — one PINK's. The count
 is 160.**
 
+
+---
+
+## §72 A-G293 IS WITHDRAWN — I CONTRADICTED GRÜN'S OWN FIX WITHOUT READING IT, AND THE TABLE THAT CALLS ITSELF CURRENT IS CURRENT AS OF §17
+
+PINK answered §71's scope question from its own phase-E instrument and voided its own pixel half (`4fe4f5ac`).
+**Following its answer into `PHASE_F.md` found a defect of mine that is the worst of this session.**
+
+### A-G315 · A-G293 is withdrawn in full: PF-3's halo limb was amended, measured, and CLEARS *(defect 161)*
+
+§68's A-G293 computed `halo peak ÷ core peak` from declared alphas, got **2.727–3.101 ×** against a ceiling of
+0.25, called it *"ten to twelve times the bound"*, and then **retired PF-3's halo limb as contradicted by G-2's
+inversion.** All of it is wrong.
+
+**`PHASE_F.md:1046` — A-F19, GRÜN's finding, accepted:**
+
+> *"GRÜN measured that `halo peak ÷ core peak` taken from a **raw** window is confounded at the shelf edge: rank
+> 4 sits exactly at r = 430, so its halo window reads 0.028 — which is the **lit ground inside the shelf**, not
+> the halo — and returns 0.31 against a 0.25 ceiling. **Red for entirely the wrong reason.** Measured
+> **differentially** (a render with the halo minus a render without it), the halo excess is 0.0035–0.0076 and
+> **the ratio 0.039–0.083 across all five bodies — comfortably inside the ceiling.** PF-3 is amended: the halo
+> is measured as an excess against a render without it, never as a raw window."*
+
+> **So PF-3's halo limb had already been amended to a differential, measured, and cleared — and my raw ratio of
+> declared alphas is a CRUDER form of exactly the confound A-F19 identified and fixed.** GRÜN's raw *window*
+> read the lit ground; **my raw *alphas* did not even composite over the medium.** And A-F19's own closing
+> sentence names the class: *"a window that reports what is in it rather than what put it there."*
+
+**A-G293 is withdrawn entirely. PF-3 is not contradicted by G-2, it is not ten times its bound, and its halo
+limb is not retired.** The reasoning was wrong with the arithmetic: **the differential measures the halo's
+excess, so a brighter glow does not contradict a ratio taken against the core.**
+
+**One residue survives and it is modest, which is what I should have reached in the first place:** A-F19's
+clearing figure was measured on a **phase-F** build. Under **A-G54** — a floor is a property of a build —
+**0.039–0.083 does not transfer to phase G, where `haloAlpha` is 0.5 and G-2 made the glow a light source.**
+
+> **PF-3's halo limb is UNMEASURED on a phase-G build, in its correct differential form.** That is a true,
+> small, actionable statement, and it needs a render rather than an adjudication.
+
+### A-G316 · The general defect: a record's claim to currency carries a date, and the date is its own section number *(defect 162)*
+
+**`PHASE_F.md:891` says of the restated table: *"§7 has been amended by §11, §14, §15 and §16. This table is the
+CURRENT contract; where it differs from §7, this wins."*** My §68 sweep took that sentence as timeless. **It is
+current as of §17, and §§19–30 amend it further:**
+
+| | |
+|---|---|
+| `:994` | **PF-8 is now THREE tiers**, all of which must pass — then amended again at `:1214` (against its own bound and its own null), at `:1307` (every level that draws evidence), and tier B again at `:1513` (`p99 ≤ 0.002` absolute) |
+| `:1054` | **PF-3 amended** — A-F19, above |
+| `:1567` | **PF-16 widened to [0.88, 1.12]** as a trimmed mean per pool — superseded *for phase G* by A-G12, which restated it in **codes** because A-F31 found ratios meaningless at this level |
+
+> **Adopted: a record's own claim to currency carries a date, and the date is its own section number. A-G239
+> said *read the artifact's own account of itself*; it must be *read the LAST of the artifact's accounts of
+> itself*, and a table asserting it is current is evidence about the moment it was written.**
+
+**Sixth instance of A-G239 and the first where the artifact said the right thing and I believed it one revision
+too early.** The five before were failures to read a field; this is a failure to read *past* one.
+
+**And §68's sweep is partly void, stated exactly:** **PF-3's row is withdrawn. PF-8 was never examined in its
+three-tier form and is owed.** PF-4, PF-6, PF-11, PF-13 and PF-16 are checked individually against §§19–30 and
+stand. `gelb-gate-sweep-pf.mjs` carries the withdrawal in its header and keeps the void block rather than
+deleting it (`c2a85d81`), per the habit GRÜN set in its limb C.
+
+**A smaller one of the same kind** *(defect 163)*: §70 cited PF-4's text at `:322`, the superseded §7 original,
+while the instrument used the restated `:900`. The two agree materially for PF-4, so nothing moves — **but the
+citation points at the wrong one of two texts, which is A-G243's class and the thing §71 was corrected for.**
+
+### A-G317 · PF-2's scope is a third option, it came from PINK's own instrument, and the accommodation cannot enter
+
+**PF-2 (`:320`) cites PHASE_E §12, and that measurement is PINK's**, at
+`mapping-phase-e-contract/prep.txt:267`:
+
+> *"bands PER FOCUSED GROUP (role_all), from `data-evidence-luminance` bucketed by `data-evidence-step`"* …
+> *"within-band ratios are NOT a separation test (A-6: separation is between classes, within one focused
+> group)."*
+
+**So the scope is *between classes, within one focused group* — across bodies that SHARE a focus state. Neither
+of the two options §71 offered.** And then:
+
+> **PINK: *"The dim cannot enter, for a reason needing no measurement: every body in one focus state carries the
+> same group opacity, and a common multiplier cancels in a ratio."***
+
+**Correct. §71's 3.125 × is real and sits outside the comparison PF-2 inherits. PF-2 is the non-question, which
+is the answer I said I would rather have than carry.** And the answer came from **what PINK's instrument
+actually computed**, not from either lane's reading of the pin's text — which is exactly why I asked it that way.
+
+### A-G318 · But the accommodation falsifies PF-2's *justification*, and that sentence is mine *(defect 164)*
+
+**`:898`: *"Marks are black-seated, so the values are ABSOLUTE and should reproduce phase E's 1.814 / 1.940."***
+That is the bridge carrying phase E's **attribute** measurement across to PF-2's demand for *"rendered pixels,
+not computed styles"*.
+
+> **PINK: under `reduce` with a capability selected, the body group's opacity multiplies the already-composited
+> mark, so a mark's rendered luminance is no longer a function of its own alpha alone. The separation is
+> scale-invariant and survives; the ABSOLUTENESS is not and does not.**
+
+**So phase E's ratios remain the right thing to reproduce and remain reproducible within a focus state, and
+`:898`'s *reason* for expecting them is false in one of the build's two motion modes — and PF-2 names no mode.**
+**Fifth instance of the unstated-carrier class, second where `reduce` moves the carrier, and the same shape as
+A-G311: the pin is sound, the sentence under it is conditioned, and the condition is the accommodation.**
+
+### A-G319 · PINK voided a reading that confirmed my prediction, and did not cite it
+
+Its pixel instrument carried two routes per mark. **They disagree by 0.10 × to 45.6 × — a 450 × spread.** Second
+independent tell: at rest, inside one focus state, the sampler put **NAME_ONLY below NONE** (0.40), which the
+declared values forbid — NAME_ONLY is 0.45…0.528 against NONE's 0.232.
+
+> **Two independent impossibilities, so no number from it is admissible — *"including the four 'inversions' it
+> reported, which I am not citing even though they point exactly the way your derivation predicts."***
+
+**That is the single most disciplined act in this exchange and it goes in the record at full weight.** PINK held
+four results that confirmed an architecture lane's prediction and refused to cite them because its own
+instrument had failed its own check. **A-G110 and A-G209 both say a lane may decline; neither anticipated a lane
+declining to supply a confirmation it already had.**
+
+**The cause is the carrier again** *(defect 165, PINK's)*: **`[data-mapping-arc]` is a `<g>` carrying the
+attributes, and the drawn mark is a child of it.** First pass required `getTotalLength` on the attributed element
+and produced **zero** marks; second took the first measurable child, which for tick groups is not reliably the
+lit mark. **PINK's own remedy is the right one: *"picking the child needs the mask treatment §10–§14 gave the
+halos, not a `querySelector`."*** Third instance in this record of *the attributed element is not the drawn
+element*, after A-G31 and A-G51.
+
+**So §71's question 1 — does the inversion appear in the pixels — is unanswered, and A-G317 makes it moot for
+PF-2's verdict while A-G318 keeps it live for `:898`'s justification.**
+
+### A-G320 · PF-11: two texts, and a lane reading the first measures a different pin *(defect 166)*
+
+PINK was reading `:329` — *"two renders ≥ 2 s apart with no interaction: **every pixel identical**"* — against
+the restatement at `:907`: *"at thresholds 0.001 / 0.002 / 0.004 / 0.008, the count changing between samples
+≥ 2 s apart ≤ 1.5 × the back-to-back count at every threshold."*
+
+> **PINK: *"The two differ substantially and the live form is yours … a lane quoting `:329` would measure a
+> different pin under the same name."***
+
+**And the document does say which wins — at `:891`, five hundred and sixty lines later.** So the hazard is not
+silence; **it is that the supersession is recorded at the destination and not at the source.** GRÜN's README §6
+was the same defect in a different artifact: a statement about the tree, true when written, read later as
+current.
+
+> **Ruled: the §7 originals carry a forward pointer at their own location. It costs one line per table and it is
+> the cheapest defect in this record to prevent — which is exactly what A-G316 just cost me.**
+
+### A-G321 · Wrong-then-right versus right-minus-a-condition
+
+PINK's distinction, adopted, and it is the better statement of §71's layer pattern:
+
+> **"The first three corrections were *wrong → right*. The last two were *right, minus a condition*. Those cost
+> the same to inherit and far more to notice, because nothing in them reads as an error."**
+
+**That is why the motion-mode limb is worth more than the sentence that produced it.** A wrong reason announces
+itself to the next reader who checks it; **a reason missing its condition passes every check the next reader
+thinks to run.**
+
+**Six new defects: five this lane's — a withdrawn adjudication that contradicted another lane's accepted fix, a
+sweep built on a table one revision stale, a citation to the superseded text, a justification sentence
+conditioned on a motion mode, and a supersession recorded only at its destination — one PINK's. The count is
+166.**
+
+**And the arithmetic of this section is worth stating plainly: A-G293 was wrong, it was wrong against a finding
+GRÜN had already made and I had already accepted, and the correction came from following PINK's answer to a
+question I asked about a different pin.** Neither lane set out to find it. **The arrangement found it anyway,
+which is the only argument for the arrangement that this record can actually make.**
+
