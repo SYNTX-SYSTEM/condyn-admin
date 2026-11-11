@@ -3478,3 +3478,76 @@ AND TWO THINGS THE LEVEL VIEW SHOWS THAT THE REAL-VALUED VIEW HID:
     declined to classify the limb; the classification is right and it is its pin.
     Its correction of its own "could go either way" — a claim about uncertainty made
     without the quantity that bounds it — is accepted as stated and not re-litigated.
+
+================================================================================
+§41  A-G432 TURNED ON MY OWN §38 LIMB. IT TOOK THREE ATTEMPTS BECAUSE I TWICE
+      DESIGNED THE TEST TO AVOID THE REGIME THAT COULD FALSIFY IT.
+      PINK, 2026-11-11. Renderer probes, no stand and no build.
+================================================================================
+
+GELB retro-applied A-G432 to two of its own checks. The same question belongs on
+mine, and the candidate is §38's construct-agreement limb: "div background and SVG
+circle stroke agree 16/16, so the swatch tests the band's path."
+A-G432's question: **could that limb have come out any other way?**
+
+ATTEMPT 1 (as published in §38): a 28px stroke on r=14, sampled at the circle's
+CENTRE. That is the interior of a solid region — **full coverage, where two
+constructs agree even if they diverge everywhere else.** The limb was zero bits as
+designed.
+
+ATTEMPT 2: a 2px circle stroke sampled at its APEX, plus a 2px rect and a 2px div.
+All four agreed at all five alphas (0.02, 0.022, 0.05, 0.085, 0.15). **But the apex
+of a circle is where the stroke is locally horizontal, so that pixel is ALSO fully
+covered.** I asked A-G432's question and then built a second test that avoided the
+same regime. **Naming that is the finding: the selection effect survived being
+looked for.**
+
+ATTEMPT 3 — the discriminating regime, PARTIAL coverage. Radial cut across a 2px
+stroke at alpha 0.15, INK over opaque black:
+  CURVED 2px circle stroke (cx 100, cy 60, r 40), apex rows:
+    y=19  rgb(29,34,36)  L=1.5326e-2      <- partial
+    y=20  rgb(31,36,38)  L=1.6930e-2      <- full
+    y=21  rgb(1,1,1)     L=3.0353e-4      <- sliver
+  STRAIGHT 2px rect, integer-aligned:
+    y=59  rgb(31,36,38)  L=1.6930e-2      <- full
+    y=60  rgb(31,36,38)  L=1.6930e-2      <- full, nothing antialiased
+  PEAK PIXEL:        curved 1.6930e-2  ==  straight 1.6930e-2   **identical**
+  INTEGRATED LIGHT:  curved 3.25599e-2  vs  straight 3.38600e-2
+  **ratio 0.96160 — the curved stroke loses 3.84% of its integrated light.**
+
+THE RESULT, IN TWO HALVES:
+ [1] **The limb HOLDS, and now in a regime where it could have failed.** The
+     full-coverage pixel is identical to every digit across a curved 2px stroke, a
+     straight 2px rect, a 2px div and a 28px stroke, at five alphas. That is a real
+     result and BROADER than §38 claimed — but it is a claim about full-coverage
+     pixels only.
+ [2] **The constructs DIVERGE where coverage is partial: 3.84% on integrated light.**
+     So the limb licenses **modal and peak readings** and does NOT license
+     **integrated or mean readings over a thin stroke.**
+
+WHAT THAT DOES TO §38 AND §37: nothing, and for a stated reason. Both used the MODAL
+triple over the band's interior (77.57% / 76.75% modal rgb(4,5,5)), which is the
+full-coverage regime the limb covers. **§38's limb as USED is sound; as STATED — "the
+swatch tests the band's path" — it over-reached, because the band's path includes its
+antialiased edges and the swatch never tested those.** Corrected scope: the swatch
+tests the band's INTERIOR.
+
+AND IT AGREES WITH THIS LANE'S OWN EARLIER FIGURES, which is the check that makes it
+credible rather than convenient. The record holds measured/ideal under A-G81's
+quantisation as **band 1.0000 — EXACT** against **best 0.8837, field 0.7322, horizon
+0.7709**, with the note that "where the stroke covers its centre pixel the model is
+exact, so the 12-27% shortfall on the 2px strokes is thin-stroke antialiasing, not a
+model residual." Same mechanism, same sign, independently reproduced here.
+**MAGNITUDE NOT TRANSFERABLE, stated rather than elided:** 3.84% is measured at r=40
+screen px and the rings sit at user radii 160/400/500, a different curvature, so the
+3.84% bounds nothing about them. What transfers is the mechanism and the regime
+boundary, not the number — A-G54's discipline applied to a geometry instead of a
+build.
+
+A-G433 (offered): **A SELECTION EFFECT CAN SURVIVE BEING LOOKED FOR.** Attempt 2 was
+made specifically to answer A-G432 and reproduced attempt 1's defect, because
+"sample the thin stroke" and "sample a partially covered pixel" are different asks
+and only the second is the discriminating one. **Asking what else the measurement
+could have come out as is not enough; the answer has to be turned into the sample
+point.** That is the operational half A-G432 leaves implicit, and this lane needed
+two tries to find it after writing the rule.
