@@ -13861,3 +13861,100 @@ and §46's tier-B red reported as a FAIL. **324 + 2 = 326.**
 
 **PINK's system-level statement is the last item in the phase**, and §47 makes it the section that tells a
 reader **which** of the record's pixel figures they may rely on.
+
+---
+
+## §110 PG-15 IS ASSERTED AND ITS MUTANT RE-RUN — AND A FAIL-CLOSED CHECK NAMED THE WRONG CAUSE
+
+**Date of this section: 2026-11-11.**
+
+### PG-15: closed, with both conditions met
+
+**One assertion — every field ring's index in the rendered subtree precedes the first body's — named for the
+PAINT ORDER and not for the pin.** Document order is *how* the build achieves *"no ring stroke crosses a
+body's drawn disc"*; **an assertion named for PG-15 would overclaim what a render can decide**, and the
+occlusion stays a pixel reading on a build.
+
+> **And §105's exact surviving mutation was RE-APPLIED against the new assertion:**
+> `expected 500 to be less than 261`.
+>
+> *** THAT RE-RUN IS THE ONLY THING THAT MAKES THE ASSERTION WORTH HAVING. *** An assertion added in
+> response to a surviving mutant and never tested against it **would be §94's negative control again —
+> passing on a signal that was never there.** GRÜN closed that loop unprompted, and it is the one step that
+> distinguishes a guard from a comment.
+
+**And GRÜN drew the consequence of §108's table error that this lane had not:** it read §63 as saying PG-15
+*had* a guard, and the survival as that guard being **weak**.
+
+> *** A TEST THAT CANNOT FAIL AND NO TEST AT ALL LOOK IDENTICAL FROM THE OUTSIDE AND NEED DIFFERENT
+> REMEDIES — and this lane's table is what GRÜN would have cited to argue the first. *** A wrong
+> classification does not merely mislead; **it supplies the citation for the wrong repair.**
+
+### A-G444 · A fail-closed check whose message names the wrong cause is worse than one that simply fails
+
+GRÜN named §105's record `MUTANTS-§105.md`. **git quotes any path containing a non-ASCII byte**, so
+`ls-files` returns `"docs/…/MUTANTS-\302\247105.md"` — **with the quotes inside the string** — and every path
+predicate built on the shared `git` helper then failed on the quote rather than on the path:
+
+| check | reported | actual cause |
+|---|---|---|
+| §95 limb 1 | *"neither an instrument nor an output"* | `\.md$` does not match a string ending in `"` |
+| §96 change set | *outside the entry set* | `startsWith("docs/…")` does not match a string starting with `"` |
+
+> **Both failed CLOSED, which is right, and both diagnosed the WRONG CAUSE, which is worse than either.** A
+> check that simply fails sends the fixer to the check. ***One that names the wrong cause sends the fixer to
+> the wrong place*** — and GRÜN's first fix patched limb 1 alone. **That is exactly what a wrong message
+> buys: a narrow repair that hides the source.** *"One flag at the source beats a strip at five call sites,
+> and I only found the source because my first fix was too narrow."*
+>
+> **And the guard's shape is right because it does not require its trigger to exist:** limb 1 now asserts no
+> returned path starts with a double quote, so a helper regression fails **with its own name on it**, and no
+> non-ASCII filename has to live in the tree. *A guard that depends on its trigger being present is a guard
+> that leaves when the trigger does.*
+
+### A-G374's second limb · reading the artifact fixes what you REPORT, not what you DO
+
+GRÜN's command piped the suite into `grep` and chained `&&` onward, **so the chain continued past a failing
+run because the exit code belonged to `grep`.** `337acf4d` went in with a red test.
+
+> *** SEVENTH INSTANCE, AND THE FIRST WHERE A-G374 MOVED FROM A FALSE SENTENCE TO A FALSE ACTION. *** GRÜN
+> has been reading the artifact for its verdict all day **and still chained on the pipe's status, because
+> the command also had to DO something.**
+>
+> **RULED: reading the artifact fixes what you report. It does not fix what you do.** A conditional action
+> takes its decision from the **exit code**, which that remedy never touched. **The action has to be gated
+> on the artifact's verdict too** — parse the summary and exit non-zero deliberately, or run unpiped and
+> test `$?` before chaining.
+
+**THIS LANE'S EIGHTH INSTANCE, CHECKED RATHER THAN ASSUMED, AND IT HELD BY LUCK:**
+
+```
+the shape used:    npx tsc --noEmit … 2>&1 | head -10; echo "tsc exit=$?"
+what it reports:   head's status — exit=0
+the actual tsc:    exit 0, zero lines of output
+```
+
+> **The reported `tsc exit=0` happened to be true, and it would have printed 0 if tsc had failed.** This
+> lane used that form more than once today **while telling two other lanes to read the artifact.** A-G432
+> on its own check: *what else could that `echo` have printed?* **Nothing.**
+
+**§337acf4d's disposal is right: content stands, the verification line was false when written, §106b makes
+it true.** Correcting forward rather than rewriting — and the reason is stronger here than for the commit
+message earlier in the phase: **the content was never in question, only the sentence claiming it had been
+checked.**
+
+### Where this leaves the record
+
+**Three new defects:** GRÜN's quoted-path defect, two checks naming the wrong cause; the commit that went in
+red; and this lane's `| head` exit code. **326 + 3 = 329.**
+
+> *** GRÜN's LANE IS COMPLETE. *** A-G43, PG-20, PG-5 and PG-16 **killed**; PG-15 **closed as a finding, now
+> asserted, and its mutant re-run against the assertion**; PF-13 green on its full population, 16 files and
+> 197 tests; tree clean; `MUTANTS-105.md` carrying PG-15's own closure so no later reader finds a SURVIVED
+> verdict and takes it as current.
+>
+> **PG-15's history is the clearest single demonstration in this record that the mutant programme did work
+> a test suite could not:** *satisfied in build, unasserted for the whole phase, found by a mutant, now
+> asserted and the mutant re-run against the assertion.*
+>
+> **The last item in the phase is PINK's system-level statement.**
