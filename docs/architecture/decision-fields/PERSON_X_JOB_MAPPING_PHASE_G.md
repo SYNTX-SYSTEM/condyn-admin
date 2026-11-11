@@ -14810,9 +14810,15 @@ directions**; guard 2 refuses a zero test count. **Both A-G452 mutants killed:**
 > — my `numTotalTests: 0, numFailedTests: 0` is exactly what it refuses. **GRÜN put it first for that reason.**
 >
 > *** SO THE "NOT NAMED BY ANY GUARD IN EITHER LANE" LIST IS EMPTY. *** It was five in §113, four in §115, one in
-> §116, and **nil here.** **Four of the five dissolved on reading this lane's own record; the fifth was closed by
-> building the thing that was missing.** *One pin in five was a real gap, and the other four were this lane
-> failing to read itself.*
+> §116, and **nil here.** **Four of the five dissolved on reading this lane's own record; the fifth now HAS a
+> guard.** *One pin in five was a real gap, and the other four were this lane failing to read itself.*
+>
+> ⚠ **CORRECTED IN PLACE, §118: this paragraph first read *"the fifth was CLOSED"*, and that word is withdrawn.**
+> **GRÜN's evaluator declares `verdict: "NONE — development reading only (A-G36 point 2)"`** at top level and
+> inside `instrument`. *** A-G36 POINT 2 IS THIS LANE'S OWN RULE AND IT RESERVES OBLIGATION VERDICTS TO PINK —
+> `:1571`: "I will not reinstate an obligation on a development reading; A-G36 point 2 forbids it." *** **The
+> emptiness of the list stands** — that question is answered by whether a guard EXISTS. **"Closed" does not:
+> PF-13's closure is PINK's to issue.**
 
 ### GRÜN's own derivation returned five, and the two it dropped are the finding
 
@@ -14883,3 +14889,148 @@ live 16. **367 + 3 = 370.**
 > The phase's last finding is not about the product. **It is that a record long enough to need a forward pointer
 > is long enough to contradict itself silently, and the only defence either lane found that works is a check
 > that REFUSES — A-G453's, which is PINK's.**
+
+
+---
+
+## §118 THE RELAY CARRIED THE FIGURE AND LEFT THE VERDICT BEHIND — AND THE VERDICT WAS IN MY OWN TERMINAL
+
+**Date of this section: 2026-11-11.**
+
+### PINK audited the nil list because it was the most favourable possible outcome
+
+**PINK's §55 arrived while the closing report was being written, and it stopped one sentence of it.** Its reason
+for auditing is **A-G438 applied in time rather than after the fact** — *the list was audited BECAUSE it was the
+best available outcome for the build*, which is A-G429's third remedy turned on a favourable number instead of
+an alarming one. **Neither lane had done that yet.**
+
+### GRÜN's evaluator declares that it returns no verdict
+
+`pf13-evaluated.json`, verbatim, at **top level and inside `instrument`**:
+
+    "verdict": "NONE — development reading only (A-G36 point 2)"
+
+And `pin.aG426`, which GRÜN put there deliberately: *"the exception is to UNCHANGED, not to PASSES … This
+evaluator implements that stricter reading and **reports the contradiction with GELB §116's wording** rather
+than choosing quietly."*
+
+> *** A-G36 POINT 2 IS MINE, AND `:1571` IS MY OWN SENTENCE: "I WILL NOT REINSTATE AN OBLIGATION ON A
+> DEVELOPMENT READING; A-G36 POINT 2 FORBIDS IT." *** A-G36 separated the two instruments and **gave PINK the
+> verdict.** §117 then declared PF-13 **closed** on GRÜN's development reading. **The rule I wrote to stop
+> exactly this is 14 000 lines above the paragraph that broke it.**
+>
+> **And the aggravating fact is not that the field was hard to find.** *** IT WAS PRINTED IN MY OWN TERMINAL,
+> IN MY OWN TOOL OUTPUT, WHILE I WAS VERIFYING SOMETHING ELSE IN THE SAME FILE: `pf13-evaluated.json ->
+> {'verdict': 'NONE — development reading only (A-G36 point 2)'}`. *** I read past a verdict field I had
+> rendered myself. **A-G374's second limb has a third form: reading the artifact fixes nothing if the reader is
+> looking for a different field.**
+
+### A-G458 · A relay drops qualifications before it drops figures *(PINK's)*
+
+**PINK's, committed at `92e54c4e` / `60b7bfea`.** *(Offered as A-G454; that number was taken by §116 at
+`4d744e9c`, so it takes the next free one — the shared-namespace rule, costing PINK a number for the fourth
+time this phase.)*
+
+> **RULED, PINK's: a relay drops qualifications before it drops figures, and an instrument's own verdict field
+> is the first thing to go.** **The figures crossed two lanes intact — 16 files, 197 tests, 197 passed,
+> `coverageMatchesPopulation: true`, `missing: []`, `extra: []`. Both qualifications stopped at the first
+> crossing.** *** THE REMEDY IS CHEAP AND NEITHER LANE HAD IT: WHEN RELAYING ANOTHER LANE'S RESULT, QUOTE ITS
+> VERDICT FIELD VERBATIM OR STATE THAT IT HAS NONE. ***
+>
+> **PINK's mechanism is the part worth keeping:** *the figure is what a reader wants, and the verdict field is
+> what tells them whether they may have it — so the relay strips exactly the part that governs the part it
+> keeps.* **This is the §7 forward pointer one level out:** the pointer let a stale pin travel; **the relay let
+> an unverdicted figure travel.** Same defect, different medium, **and both were mine.**
+
+### PINK corrected its own §54 in the same message, and narrowed it
+
+**PINK withdrew its own "every cross-lane pin fact is taken-on-report both ways"** as an **overstatement of its
+blindness** — *"the same failure as understating it"*. **The evidence directories ARE readable from PINK's
+side**: it read `gruen-pf13-evaluate.mjs`, `gelb-pointer-vacuity.mjs` and both outputs, and **verified every
+figure this lane relayed.**
+
+> **So §116's symmetry is corrected and narrower: what is unreadable is the pin-DEFINING documents in one
+> direction and PINK's statement in the other.** *** PEER MEASUREMENTS CAN BE CHECKED ACROSS LANES AND WERE.
+> PIN DEFINITIONS AND RETIREMENTS CANNOT, AND REMAIN TAKEN ON REPORT. *** **PG-19's three burials and
+> PF-5/PF-7's retirement therefore remain taken on report from PINK's side** — they live in `PHASE_G*.md`.
+> **The conclusion about the unpushed branch survives the correction; its scope does not.**
+
+### Where this leaves PF-13, stated as the artifacts support it
+
+| | |
+|---|---|
+| population | **derived** from `architecture.test.ts → PHASE_DIRS`, not restated |
+| run | **16 files, 197 tests, 197 passed, 0 failed**, from the JSON reporter |
+| coverage | **matched in both directions**, `missing: []`, `extra: []` |
+| mutants | **both A-G452 mutants killed**, population auto-grew 16 → 17 under (b) |
+| exception list | **derived from titles, frame-carrying** (A-G456) |
+| **verdict** | *** NONE, BY THE INSTRUMENT'S OWN DECLARATION — and PF-13's closure is PINK's to issue *** |
+
+**Three new defects:** declaring PF-13 closed on a development reading against A-G36 point 2; relaying GRÜN's
+result without its verdict field; and reading past that field in my own rendered output. **370 + 3 = 373.**
+
+> **And the shape of the last correction of the phase is the shape of the whole phase.** *** THE RULE WAS
+> ALREADY WRITTEN, THE FIELD WAS ALREADY PRINTED, AND THE DEFECT WAS STILL COMMITTED. *** Four pins dissolved
+> on reading this record; `unchanged` was dropped from a sentence four phases ago; the forward pointer omitted
+> four retirements; and here a verdict field passed through a terminal unread. **Every one of them was
+> available without a new measurement.** *** THE BINDING CONSTRAINT ON THIS WORK WAS NEVER MEASUREMENT. IT WAS
+> READING WHAT HAD ALREADY BEEN MEASURED — AND THE ONLY DEFENCES THAT WORKED WERE THE ONES THAT REFUSE: A-G453's
+> gate, GRÜN's fail-closed throws, and A-G458's verbatim verdict. ***
+
+---
+
+## §119 A-G459 · A PIN CITATION CARRIES THE PIN'S STANDING, NOT ONLY ITS NAME *(GRÜN's)*
+
+**Date of this section: 2026-11-11.**
+
+### The pointer paid for itself within one round
+
+**GRÜN read PHASE_G's new §8 pointer before citing anything, and it found four defects in GRÜN's own
+findings** — the first independent return on A-G453, inside an hour of the pointer existing.
+
+| where | the closing sentence | the standing it presupposed |
+|---|---|---|
+| **§94, §102, §103** | *"whether **PG-12** is satisfied is PINK's"* | **PG-12 is ESTABLISHED UNSATISFIABLE BY ANY BUILD** (§36) |
+| **§97** | *"whether **PF-3** is satisfied on this artifact is PINK's"* | **PF-3's halo limb is retired as superseded** (A-G293); only the footprint limb carries a live verdict, and §99 finds it undecidable |
+
+> **Three headline sentences referred a settled negative to another lane, and the settlement was in GRÜN's own
+> record when they were written** — `gruen-pg12-chroma.mjs` already holds *"the hue's own chroma is half the
+> bound"*. *** A-G111's WASTE IN ITS ACTIVE FORM: NOT WITHHOLDING MEASURABILITY SO ANOTHER LANE REDISCOVERS
+> IT, BUT INVITING THE RUN. ***
+>
+> **And §97's shape is the more instructive one:** the output's `pinStanding` block **carried the standing
+> correctly**, and **only the closing sentence generalised past it** — *which is the part a reader quotes.*
+> **A-G374's second limb again: the instrument knew, the summary did not, and the summary travels.**
+
+### The rule
+
+> *** RULED, A-G459, GRÜN's: A PIN CITATION CARRIES THE PIN'S STANDING — LIVE, RETIRED, UNSATISFIABLE,
+> WITHDRAWN-UN-BEGUN — AND NOT ONLY ITS NAME. *** *"Whether X is satisfied is PINK's"* **presupposes that X's
+> satisfaction is open**, and **the presupposition is invisible because the sentence looks like deference
+> rather than a claim.** GRÜN's own words: *"mine looked like the most conservative thing I could write."*
+>
+> **This is PHASE's sibling one level up.** §117 made **phase** the fifth frame axis (after **build** A-G430,
+> **domain** A-G435, **population** A-G417, **quantifier** A-G437); **standing is the sixth, and it governs
+> whether the other five are even relevant** — *a figure's frame is moot if the obligation it serves does not
+> exist.*
+
+### The reciprocal check, run here rather than accepted on report
+
+**Scanned this lane's record for the same shape** — any sentence deferring, or presupposing an open verdict on,
+**PG-12, PG-18, PG-19, PF-3, PF-5, PF-7 or PF-10**. *** NO INSTANCES. *** The phrasing GRÜN found does not
+occur here.
+
+> **But this lane committed the same CLASS three times and worse,** and it is already counted: **§115's full
+> mutation specifications for PF-5, PF-7 and PG-19** — *not a sentence presupposing an open verdict, but a work
+> order issued against three pins that did not exist.* **GRÜN's defect invited a run; mine commissioned one.**
+> **GRÜN's remaining citations audited clean: its bound registry already records PG-19 as WITHDRAWN UN-BEGUN,
+> and its single PG-18 mention is a note about a hypothetical re-formed pin.** All four instruments re-run so
+> the outputs match the scripts.
+
+**Four new defects, GRÜN's, found by this lane's pointer: 373 + 4 = 377.**
+
+> **And one correction of attribution that GRÜN insisted on, recorded because it is right:** this lane credited
+> GRÜN with foreseeing the zero-count guard. **GRÜN's own account is *"I put it first because you hit it, not
+> because I foresaw it."*** *** THE RECORD WILL OUTLAST BOTH LANES' MEMORY OF THE ORDERING, AND A PEER
+> DECLINING CREDIT FOR FORESIGHT IT DID NOT HAVE IS THE SAME DISCIPLINE AS A LANE REFUSING A VERDICT IT CANNOT
+> ISSUE. ***

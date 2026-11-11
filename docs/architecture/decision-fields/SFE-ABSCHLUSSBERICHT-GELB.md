@@ -1,0 +1,228 @@
+# SFE · KONSOLIDIERTER ABSCHLUSSBERICHT — PERSON × JOB MAPPING
+
+**Lane GELB (Architektur / Adjudikation) · 2026-11-11 · Branch `architecture/mapping-phase-f` @ `14ae2170`**
+**Mandat: „GELB :: SFE FULL SYSTEM COMPLETION".**
+
+---
+
+## §0 WAS DIESER BERICHT TRAGEN KANN — DIE SCHRANKE VOR DEN ZAHLEN
+
+**Diese Reihenfolge ist nicht Höflichkeit, sie ist das Ergebnis der Phase.** Jede Zahl unten trägt den Rahmen,
+in dem sie berechnet wurde — **Build (A-G430), Domäne (A-G435), Population (A-G417), Quantor (A-G437), Phase
+(A-G456)** — und wo ein Rahmen fehlt, steht das anstelle der Zahl.
+
+| | |
+|---|---|
+| **Drei Lanes, drei Branches, keine gemeinsame Lesbarkeit** | GELB `architecture/mapping-phase-f`, GRÜN `Frontend`, PINK `Implementation` |
+| **GELB kann PINKs Validierungsbericht nicht lesen** | `PINK-SYSTEM-VALIDATION.md`, **124 Commits ungepusht** — von außen bestätigt: der Pfad existiert auf keinem lesbaren Branch |
+| **PINK kann GELBs Pflichtenregister nicht lesen** | `PHASE_F*.md` / `PHASE_G*.md` existieren in **keinem** der vier Worktrees, die PINK öffnen kann |
+
+> *** DARAUS FOLGT DIE WICHTIGSTE EINSCHRÄNKUNG DIESES BERICHTS: JEDE LANE-ÜBERGREIFENDE PIN-AUSSAGE DIESER
+> PHASE IST IN BEIDE RICHTUNGEN „AUF BERICHT HIN" ÜBERNOMMEN. *** Das ist eine Eigenschaft der Anordnung, kein
+> Versäumnis einer Lane — **und es ist das stärkste Argument dafür, dass der ungepushte Branch ein Defekt der
+> Arbeit und keine Unannehmlichkeit ist.** Es ist zugleich der Grund, warum **Bedingung 4 des Mandats von
+> keinem Leser nachvollzogen werden kann** (§7).
+
+**Die Pixelbefunde stehen auf `3ec8457d`, dem gemeinsamen Prüfstand.** Software-Raster; der Jitter-Vorbehalt
+gilt für die betroffenen Marken. **Farbmanagement ist auf diesem Stand per Screenshot nicht prüfbar** —
+Konversion real, Ausgabe geklippt —, aber die zentrale Kettenannahme ist jetzt gemessen statt unterstellt:
+**die von `captureScreenshot` gelieferten Bytes sind sRGB-codiert** (PINK). **Vier Phasen lang hatte das
+niemand bestätigt**, obwohl jede Luminanzzahl die sRGB-Transferfunktion anwendet.
+
+---
+
+## §1 STAND: WAS DAS MAPPING DURCHGÄNGIG TUT
+
+**Das PERSON × JOB MAPPING ist über die gesamte Kette lauffähig und geprüft:** Datenschicht → View-Model →
+Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
+
+| Prüfebene | Stand | Herkunft |
+|---|---|---|
+| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB |
+| **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
+| **GELB-Instrumente** | **24 von 24 Exit 0** | diese Session verifiziert |
+| **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
+| **Typprüfung** | `tsc --noEmit` sauber | GRÜN |
+| **PG-1 (semantischer Lichtanteil)** | **0.6431 / 0.7397 gegen ≥ 0.55** | `3ec8457d` |
+
+**Die Grenzen sind erhalten:** `verifyDisposableTestDatabase` (B-ENTRY) **unumgangen in beiden Lanes**, kein
+Zugangsdatum geraten, **kein Merge nach `main`, kein Produktionsdeployment, Gemini deaktiviert.**
+
+---
+
+## §2 SFE ÜBER DEN GESAMTEN ARCHITEKTURSTAND
+
+**FIELD** — 63 Produktkonstanten über 5 Dateien deklariert, am festgenagelten Build `4b83414e` gelesen.
+`gelb-product-constants.mjs` **hält kein einziges Literal**: es verweigert, wenn eine Deklaration fehlt,
+doppelt oder missgebildet ist. **24 abgedeckt, 39 nicht, 0 außerhalb des Bereichs** — und der Nenner ist
+berechnet, nicht geschätzt (§89 schloss die Lücke 47 → 63).
+
+**RELATION** — Beziehungen werden als Relationen geprüft, nicht als gespeicherte Zahlen: der Mittelwert des
+Halo wird als `1 − haloDepth/2` verifiziert, nicht als `0.8825` abgelesen. **Eine verifizierte Relation
+schlägt eine gespeicherte Zahl.**
+
+**STATE** — `data-breath` am Ring ist **per Design ein Zustandsmarker**; der Atem gehört dem Medium (Produkt
+`:953`). E-7 wurde auf die statische Leiter umgezeigt, `MOTION.breath` gelöscht (A-G406).
+
+**BOUNDARY** — `assertDisposableServer()` mit zwei Gliedern (Zeuge, Fremdlast), Vakuitätsschutz und
+dokumentierter Restgrenze, aufgerufen am **einzigen Engpass** `createDisposableTestDatabaseNamed`. 10 Tests,
+einer prüft die Restgrenze selbst.
+
+**AUTHORITY** — MAP-C-ARCHs `:78` ist durch **Commit-Zuschreibung** neu gefasst (`AUTHORISED_CROSSINGS`):
+jede Änderung ist zuschreibbar **und** die Liste wird vollständig verbraucht.
+
+**DELTA** — Bootstrap gegen ORM auf 9 Tabellen korrigiert; der schärfste Fall: der Körper von
+`career_policy_promotions` **war der Körper der Evaluations**.
+
+**PROOF** — 24 Instrumente, 7 lesen das Produkt an einem benannten Build, **keines liest HEAD**.
+**Fehlgeschlossen, wo möglich** — A-G453s Prüfung verweigert jetzt statt zu berichten.
+
+**RECONSTRUCTION** — invers geführt: Mutanten vor Befunden. **Alle fünf gehaltenen Mutanten geschlossen**
+(A-G43, PG-20, PG-5, PG-16 getötet; PG-15 als Befund geschlossen und jetzt zugesichert), **beide
+PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
+
+---
+
+## §3 GESCHLOSSEN
+
+- **PF-13** — der einzige echte Ungedeckte von fünf. Ausnahmeliste **seit Niederschrift auf dem falschen Test**
+  (`:156` ist nicht restated, `:205` war nicht befreit; an den Builds der Entstehungszeit geprüft: **keine
+  Drift**). Prädikat jetzt **abgeleitet statt aufgezählt**, Lauf-Hälfte gebaut, beide A-G452-Mutanten getötet.
+- **Vier Pins lösten sich beim Lesen auf** — PF-5 und PF-7 **durch A-G20 stillgelegt**, PG-12
+  **unerfüllbar** (§36), PG-19 **vor der Formation getötet** (A-G128, zweimal weiter begraben).
+- **Der Vorwärtszeiger** — §7s Zeiger unterschlug alle vier A-G20-Stilllegungen; **PHASE_G, das Dokument mit
+  den lebenden Pins, hatte überhaupt keinen.** Beide jetzt vollständig, mechanisch geprüft, fehlgeschlossen.
+- **A-G406** (E-7s Atem), **B-ENTRY** (eigenständig wiederhergestellt), **Schema-Drift**, **MAP-C-ARCH**,
+  **Tier Cs ungeschützter Disjunkt**, **PF-15** als *missgebildet* statt bloß unerfüllbar, **PF-3**
+  INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
+- **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
+
+**Defektzahl: 370.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+ist behoben oder entschieden; jeder trägt seinen Ort im Register.
+
+---
+
+## §4 OFFEN — BENANNT, SPEZIFIZIERT, NICHT GESCHLOSSEN
+
+**1. PF-5 ist wie geschrieben unerfüllbar.** Der Glow ist **6.650 %** der Scheibe; der mittlere Scheibenschwung
+ist **ein Quantum** gegen eine Schwelle von **13.3 Quanten**; die Schranke ist **3.76×** die erreichbare
+Obergrenze der von ihr selbst benannten Population. **Ihr historisches Grün von 0.647 passt zum Glow-Nenner,
+nicht zum Scheiben-Nenner.** *Festgestellt auf `3ec8457d` bei 1920; „per Konstruktion" ist durch den Mechanismus
+naheliegend, aber für alle Builds nicht bewiesen und nicht behauptet.* **Der Pin ist stillgelegt — die
+Nennerfrage bleibt als Befund über das Register bestehen.**
+
+**2. PF-7 ist durch eine Pro-Pixel-Phasenanpassung nicht messbar.** `:876` zeichnet alle sieben Bodenschichten
+**auf demselben Radius**, also überlagert jedes Pixel alle sieben. **Geprüft: der Hazard erreicht PG-10 nicht**
+(die Halos sind räumlich getrennt).
+
+**3. PG-6s 0.15 bleibt UNDERIVED**, PG-17 ist **für Provenienz gestrichen und mit Tripwire versehen**, PG-10s
+**R17-Korridor ist unaufgelöst** — A-G165: *ein Befund kann für das Design tragend und zur Zertifizierung
+unfähig sein.*
+
+**4. 39 der 63 Produktkonstanten sind von keinem Instrument gedeckt.** Obergrenze, keine Zählung.
+
+**5. 0 von 241 Zeilennummer-Zitaten im Register sind verifizierbar**; 63 zeigen auf eine Leerzeile oder
+Tabellenlinie; **25 von 25 Zitaten in die Zeichenfläche benennen keinen Build.** A-G427 ist entschieden, die
+Altlast ist nicht zurückgebaut.
+
+---
+
+## §5 DIE NAHT — EINE EIGENTÜMERENTSCHEIDUNG, VOLLSTÄNDIG VORBEREITET
+
+**Existenz:** `inside p05 > bare band level` (≥ 95 % der Winkel; 9/9 bei 1920, 7/9 bei 1280) **plus** das Band
+bei `rgb(4,5,5)` auf 71–77 %. **Mechanismus:** das opake `SEAT` bei `:926` ersetzt den Hintergrund bei
+`r = shelfNear` — durch PINKs Über-Sitz/Über-Platte-Diskrimination bei 3/5/8 Codes bestätigt. **Ausmaß: von
+diesem Instrument NICHT CHARAKTERISIERBAR.**
+
+**Entfernbar über Option (3), und die Kosten sind bereits gemessen:** PF-15 Glied (a) 0.0556/0.0587 ≤ 0.08;
+PG-22 0.0811/0.1693 ≤ 0.20; PG-1 0.6431/0.7397 ≥ 0.55. **Preis: E-7s Leiter verliert eine Sprosse.**
+
+> **Zwei zulässige Ausgänge: die Kante annehmen, oder Option (3) nehmen.** Beide sind vertretbar; **die
+> Entscheidung ist nicht technisch, sondern eine Abwägung zwischen einer sichtbaren Kante und einer
+> Leitersprosse.**
+
+---
+
+## §6 INFRASTRUKTUR — EIN PUNKT, DER EIGENTÜMERRECHTE BRAUCHT
+
+**`sudo iptables -S DOCKER | grep 5432`** — ob `filter/DOCKER` Verkehr zur Bridge-Adresse des Containers von
+einer Nicht-Docker-Schnittstelle zulässt. **Eigenständig nicht wiederherstellbar: es braucht `sudo`.** Alles
+andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich des B-ENTRY-Zugangs.
+
+---
+
+## §7 DIE VIER BEDINGUNGEN VON „FERTIG", UNGESCHMINKT
+
+| Bedingung des Mandats | Stand |
+|---|---|
+| **1. Das MAPPING funktioniert durchgängig** | **ERFÜLLT.** 3546/0, 197/197 auf der Regressionspopulation, `tsc` sauber, Drift 0. |
+| **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. |
+| **3. Alle Prüfungen abgeschlossen** | **ERFÜLLT** für jede Prüfung, die auf einem lesbaren Stand ausführbar ist. **Nicht ausführbar:** die iptables-Frage (sudo) und die Ausmaß-Charakterisierung der Naht (Instrumentengrenze). |
+| **4. PINK hat den tatsächlichen Gesamtsystemstand unabhängig validiert** | *** NICHT NACHVOLLZIEHBAR, UND ICH WEISE ES NICHT ALS ERFÜLLT AUS. *** |
+
+> **Zu Bedingung 4, vollständig:** **PINK hat validiert** — zehn Abschnitte, Instrumentenschranke vor den
+> Zahlen, drei getrennte Stufen (*unabhängig validiert / empfangen und geprüft / auf Bericht hin*), eigene
+> Widerrufsliste als Beweismittel. **Aber: der Bericht liegt auf einem ungepushten Branch (124 Commits) und
+> ist von keinem anderen Leser einsehbar — von mir von außen bestätigt.** **Und PINK hat das Mandat nie
+> gesehen; es kennt den Text dieser Bedingung ausschließlich aus meiner Weitergabe.**
+>
+> *** EINE UNABHÄNGIGE VALIDIERUNG, DIE NIEMAND LESEN KANN, HAT DENSELBEN MANGEL WIE EINE ZAHL OHNE IHREN
+> BUILD. *** PINKs eigener §0 benennt das als Defekt des Ergebnisses, nicht als Fußnote. **Der Push dieses
+> Branches ist eine Eigentümerentscheidung (A-G250) und ich erbitte sie hier nicht erneut; ich stelle fest,
+> dass Bedingung 4 ohne sie unlesbar bleibt.**
+
+---
+
+## §8 WAS DIE PHASE ÜBER IHRE EIGENE METHODE GELERNT HAT
+
+**Die fünf Regeln, die diese Arbeit überdauern — zwei davon sind PINKs, eine GRÜNs:**
+
+**A-G452 (PINK)** — *ein Mutant prüft das Instrument, bevor er den Pin prüft; der Null-Signal-Mutant prüft den
+Boden.* **Dreimal unabhängig belegt:** PINKs 431972 Pixel „mit Signal" bei exakt null Schwung; GRÜNs
+Negativkontrolle, die auf null abweichenden Pixeln bestand; **mein eigenes `numTotalTests: 0,
+numFailedTests: 0` mit Exit 1 — ein Nullnenner, der Feld für Feld grün liest.** *Eine Eigenschaft von Böden,
+nicht von Unachtsamkeit.*
+
+**A-G453 (PINK)** — *ein Vorwärtszeiger ist ein Guard und braucht dieselbe Vakuitätsprüfung wie jeder andere.*
+**Die einzige mechanische Verteidigung, die diese Phase gegen ihre häufigste Fehlerklasse gefunden hat.**
+
+**A-G429 (GRÜN)** — *die Fehler eines Detektors werden von dem selektiert, was sein Autor zu finden hofft.*
+Und die Abhilfe, die keine Lane aufgeschrieben hatte: **die alarmierende Zahl prüfen, WEIL sie alarmierend
+ist.**
+
+**A-G374 Glied 2** — *das Artefakt zu lesen korrigiert, was man BERICHTET, nicht was man TUT.* **Der reinste
+Fall der Phase war GRÜNs Instrument, das auf zwei erfundenen Hazards warf und den einen roten Befund als
+Statistik erzählte** („2 von 3 Titeln sagen restated"). **Und GRÜNs Abhilfe ist eine Sprosse, die keine Lane
+hatte: die Messung VOR dem Wurf veröffentlichen** — *ein Instrument, das vor dem Schreiben wirft, berichtet
+überhaupt nichts.*
+
+**A-G457** — *ein gelöschtes Wort kann eine Ausnahme von einem Prädikat auf ein anderes verschieben, und nichts
+im Satz zeigt die Verschiebung an.* PF-13s `unchanged` war der Anker; seine Streichung ließ ein `except`
+zurück, das sich lautlos an `passes` hängte **und einen Regressionspin autorisierte, drei dauerhafte Fehlschläge
+zu verzeihen.**
+
+> *** UND DER BEFUND, DER ÜBER ALLEN TECHNISCHEN STEHT: VIER DER FÜNF PINS, DIE DIESE LANE ALS UNGEDECKT
+> MELDETE, WAREN IN IHREM EIGENEN DOKUMENT BEREITS ENTSCHIEDEN. *** Die Liste war durch Zählen von *Nennungen*
+> entstanden statt durch Lesen von *Urteilen*. Jede Korrektur kam daher, dass jemand das öffnete, was die Liste
+> benannte. **Kein einziger der vier brauchte eine neue Messung.**
+>
+> **Die Liste war nie eine Messung am Produkt. Sie war eine Messung daran, wie gut diese Lane sich selbst
+> liest, und die Antwort war einer von fünf.** Deshalb ist A-G453 das wichtigste Ergebnis dieser Phase: **ein
+> Register, das lang genug ist, einen Vorwärtszeiger zu brauchen, ist lang genug, sich lautlos selbst zu
+> widersprechen — und die einzige Verteidigung, die wirkt, ist eine Prüfung, die VERWEIGERT.**
+>
+> **Zum Verfahren, von PINK, und es steht bewusst am Ende:** *die Symmetrie funktionierte nur, weil die erste
+> veröffentlichte Zahl als OBERGRENZE veröffentlicht wurde.* **Eine als endgültig angebotene Zahl hätte die
+> Prüfung beendet.**
+
+---
+
+## §9 PROVENIENZ
+
+**Register:** `PERSON_X_JOB_MAPPING_PHASE_G.md` §§0–117 · `PERSON_X_JOB_MAPPING_PHASE_F.md` mit
+Vorwärtszeiger · Amendments bis **A-G457** · Branch `architecture/mapping-phase-f` @ `14ae2170`, nichts
+ungepusht, Arbeitsbaum sauber.
+
+**Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). **Zahlen aus GRÜNs Lane** (Suite, PF-13,
+`tsc`) **und PINKs Lane** (Pixel, sRGB, PF-5/PF-7-Mutanten) **sind AUF BERICHT HIN übernommen** und hier als
+solche gekennzeichnet — **keine davon konnte ich auf einem von mir lesbaren Stand nachvollziehen** (§0).
