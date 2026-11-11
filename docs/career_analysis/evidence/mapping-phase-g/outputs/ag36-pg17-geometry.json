@@ -64,7 +64,13 @@
   },
   "consequence": "the flat head is never sampled, so the observable ramp is strictly decreasing and strict-versus-non-increasing is not a difference.",
   "andTheOtherWayToo": {
-   "note": "a measurement could not read 'strictly decreasing' even with the head exposed: the outer tail spans 11.76 px of radius carrying at most 11 byte levels, so by pigeonhole some adjacent pair is equal. Both roads make the distinction void, for different reasons."
+   "status": "WITHDRAWN — §51 A-G205",
+   "claimWas": "the tail cannot read strictly decreasing, by pigeonhole on 11 byte levels over 11.76 px",
+   "whyItFails": "11 was one channel's levels; luminance sums three channels whose code crossings do not coincide",
+   "distinctTriplesAlongTail": 23,
+   "pixelSamples": 12,
+   "pigeonholeHolds": false,
+   "note": "so there is ONE reason the flat head is never sampled, not two: the truncation. The all-channel quantum that made the count look small is also the wrong quantum for a cyan glow — one BLUE code is 2.7834e-05, 13.85x finer."
   },
   "rows": [
    {

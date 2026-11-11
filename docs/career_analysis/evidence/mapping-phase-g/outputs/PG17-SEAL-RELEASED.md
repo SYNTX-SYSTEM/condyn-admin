@@ -135,6 +135,31 @@ Under A-G31 and A-G48 together, PG-17's carrier excludes shelf halos and PG-10's
 **three of the five bodies are under no obligation in this phase.** That is a coverage hole rather than a
 defect in either pin, and it only became visible once both carriers were stated precisely.
 
+## §51 A-G205 — ERRATUM: my pigeonhole argument is withdrawn, and the quantum has no single value
+
+I offered a second, independent reason the strict-versus-non-increasing distinction is void: that the outer
+tail carries at most 11 byte levels over 11.76 px, so by pigeonhole some adjacent pixel pair must read equal.
+**It does not hold.** 11 was **one channel's** levels, and luminance is a weighted sum of three channels whose
+code crossings do not coincide. `CYAN` is `(92, 200, 255)`, so across the tail's α 0.04 → 0 blue spans 11
+values, green 9 and red 4 — **23 distinct composited triples against at most 12 pixel samples.** More colours
+than samples, so no repeat is forced and strict decrease *is* expressible there.
+
+**So there is ONE reason the flat head is never sampled, not two: the truncation.** Which is where GELB had
+already put it, for the dash-gap reason, in §49. My second support is withdrawn on its own arithmetic.
+
+**And the figure that made the count look small is the wrong quantum.** GELB's A-G205 is confirmed exactly:
+one code on all three channels at byte 14 is **0.000386 L**, one code on **blue alone** is **2.7834e-05** —
+a factor of **13.85**, and for a cyan glow the blue-only step is the finest the raster can express. Under it
+PINK's selected swing of 0.0017–0.0023 L is **61 … 83 levels**, so that measurement is **not**
+quantisation-limited and my quantisation account of the 0.419–0.469 ratio falls with it. The floor/threshold
+explanation is the one that survives.
+
+**One more reason the floor must be measured, independent of the channel question:** the blue-only quantum is
+itself **2.247e-05 at byte 10 and 1.337e-04 at byte 73 — a 6× spread across the very levels this profile
+measures.** So even with the channel convention settled there is no single nominal quantum for this carrier.
+A-G26's and A-G115's form — resolution against the run's own measured null — is the only figure that cannot
+be the wrong quantum.
+
 ## A-G174 — the per-body local ground, which this release already carries
 
 A ground *triple* cannot represent it. These files report the local ground per body, as the median of uncovered

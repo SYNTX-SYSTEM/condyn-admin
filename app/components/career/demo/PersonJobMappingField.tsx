@@ -163,9 +163,10 @@ export const VOLUME = Object.freeze({ coreAlpha: 0.16, haloAlpha: 0.5, haloNear:
  * The seat is a stroke CENTRED on r, so it occludes to r + width/2 and its edge lands at offset 0.409341 (rank 1, marked, r_px = 28)
  * … 0.354762 — past the flat head at EVERY rank and radius, because 0.33 · haloFar = 0.99 < 1 and the seat's own fill reaches 1.
  * So the flat head is never sampled: the observable ramp is strictly decreasing, and strict-versus-non-increasing is not a choice.
- * The margin for that is a sum of TWO positive terms, 0.003333 + seatHalfPx / haloFar / r_px in offset units, and EITHER ALONE
- * suffices — the truncation holds the limit as r grows, the seat dominates by 5× … 10× at every radius anyone renders. Which is
- * why the conclusion is robust and why no single mechanism is THE reason for it.
+ * The margin is 0.003333 + seatHalfPx / haloFar / r_px in offset units. §51: the second term is NOT guaranteed — the seat ring
+ * carries the body's own dash pattern, and `dotted` is a 32 % duty cycle, so in a gap only the first term remains. On the bodies
+ * that matter it does apply: PG-17's carrier is field halos only, and those are SEMANTIC → `solid`, whose dash array is
+ * `undefined`. So: both terms on the carrier, the truncation alone as the general guarantee.
  * PG-17 is withdrawn (§45 A-G165) — R21 generated this ramp and no quantity was ever taken from it, so it motivates the form and
  * certifies no bound. The 1.6 above is the rim figure and correct as such; it was never a bound this ramp had to clear.
  */

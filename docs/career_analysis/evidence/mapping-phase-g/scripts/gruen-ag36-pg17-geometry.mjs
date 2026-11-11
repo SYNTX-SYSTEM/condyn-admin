@@ -63,10 +63,25 @@ const flatHead = {
     fillOnlyMarginPx: r6((1 - FLAT_END * R(1)) * R_FLOOR_PX),
     caveat: "the seat RING carries the body's own dash pattern (LINE_DASH dotted/open/broken), so through a dash gap the guaranteed occluder is the fill alone and the margin is this sub-pixel figure, not the ring's 1.68 px. The CONCLUSION is unaffected; the MARGIN is." },
   consequence: "the flat head is never sampled, so the observable ramp is strictly decreasing and strict-versus-non-increasing is not a difference.",
+  /**
+   * §51 A-G205 — WITHDRAWN. I claimed a second, independent reason the distinction is void: that the outer
+   * tail carries at most 11 byte levels over 11.76 px, so by pigeonhole some adjacent pair must read equal.
+   * **It does not hold.** 11 was ONE channel's levels, and luminance is a weighted sum of THREE channels that
+   * cross their code boundaries at different alpha. CYAN is (92, 200, 255), so over the tail's alpha 0.04 → 0
+   * blue spans 11 values, green 9 and red 4, giving **23 distinct composited triples** against at most 12
+   * pixel samples — more colours than samples, so no repeat is forced. Strict decrease IS expressible there.
+   * The flat-head conclusion is unaffected and rests on the truncation alone, which is where GELB put it.
+   */
   andTheOtherWayToo: (() => {
-    const tailPx = (1 - 0.86) * R(1) * R_FLOOR_PX, levels = Math.round(255 * haloAlpha * 0.08) + 1;
-    return { note: "a measurement could not read 'strictly decreasing' even with the head exposed: the outer tail spans " + r6(tailPx) +
-      " px of radius carrying at most " + levels + " byte levels, so by pigeonhole some adjacent pair is equal. Both roads make the distinction void, for different reasons." };
+    const C = [92, 200, 255].map(v => v / 255), GROUND = [6, 6, 6];
+    const triple = a => C.map((c, i) => Math.round(GROUND[i] + 255 * a * c * (1 - GROUND[i] / 255)));
+    const seen = new Set();
+    for (let i = 0; i <= 200000; i += 1) seen.add(triple(0.04 * (1 - i / 200000)).join(","));
+    const tailPx = (1 - 0.86) * R(1) * R_FLOOR_PX;
+    return { status: "WITHDRAWN — §51 A-G205", claimWas: "the tail cannot read strictly decreasing, by pigeonhole on 11 byte levels over 11.76 px",
+      whyItFails: "11 was one channel's levels; luminance sums three channels whose code crossings do not coincide",
+      distinctTriplesAlongTail: seen.size, pixelSamples: Math.ceil(tailPx), pigeonholeHolds: seen.size <= Math.ceil(tailPx),
+      note: "so there is ONE reason the flat head is never sampled, not two: the truncation. The all-channel quantum that made the count look small is also the wrong quantum for a cyan glow — one BLUE code is 2.7834e-05, 13.85x finer." };
   })(),
   rows: [0, 0.5, 1].flatMap(t => Object.entries(seatHalf).flatMap(([m, h]) => [R_FLOOR_PX, 56].map(rpx => ({
     t, mark: m, rpx, seatOffset: r6(seatOffset(t, h, rpx)), occludesFlatHead: seatOffset(t, h, rpx) >= FLAT_END,
