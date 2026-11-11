@@ -1,0 +1,104 @@
+========================================================================================================
+GELB · POINT VALUE vs TAIL MEDIAN — PINK's §31 [2] measured against PINK's §31 [4]
+========================================================================================================
+
+[1] IS [2] A SUPPORT DEFECT? — my model's s/c as c grows past the 10q rung
+
+  UNSELECTED — 10q rung at share 0.0725; PINK's tail median 0.37535, exact point 0.3756
+
+    share    c/q      s/q     s_q/c_q    s_T/c_T
+    0.0725     10.0     3.70    0.3654    0.3024
+    0.1088     14.4     3.95    0.2765    0.3185
+    0.1450     18.3     7.19    0.3925    0.3344
+    0.2175     25.6     7.93    0.3114    0.3619
+    0.3625     38.3    15.51    0.4060    0.4046
+    0.7250     66.3    31.00    0.4688    0.4709
+    1.0000     86.1    43.01    0.4992    0.5011
+
+    model s_q/c_q over c/q = 14…66 spans [0.2765, 0.4688]
+    PINK's tail median 0.37535 is INSIDE that span — and the value AT the rung edge is 0.3654
+    (no solve: the column above is non-monotone, so a bisection for it would be a crossing)
+
+  SELECTED — 10q rung at share 0.0725; PINK's tail median 0.17153, exact point 0.1504
+
+    share    c/q      s/q     s_q/c_q    s_T/c_T
+    0.0725     10.0     0.20    0.0194    0.1058
+    0.1088     14.4     0.20    0.0142    0.1114
+    0.1450     18.3     3.53    0.1925    0.1170
+    0.2175     25.6     3.76    0.1477    0.1266
+    0.3625     38.3     4.19    0.1096    0.1415
+    0.7250     66.3    11.60    0.1754    0.1647
+    1.0000     86.1    15.66    0.1818    0.1752
+
+    model s_q/c_q over c/q = 14…66 spans [0.0142, 0.1925]
+    PINK's tail median 0.17153 is INSIDE that span — and the value AT the rung edge is 0.0194
+    (no solve: the column above is non-monotone, so a bisection for it would be a crossing)
+
+  *** SO [2] IS A SUPPORT DEFECT, AND MINE IS THE SAME ONE IN THE OTHER DIRECTION. ***
+  My 0.0194 is the model AT c = 10q. The model at 2-3x that c already reads near PINK's tail
+  median, because a tail median over "everything above 10q" is dominated by pixels far above it.
+  *** MY ERROR IS NOT THE NUMBER — IT IS THAT I CALLED A POINT VALUE THE MEDIAN CASE *** and
+  withdrew a hypothesis that was right for the median in favour of one right for 1.3-4.7 % of
+  pixels. PINK's correction of my CONCLUSION stands in full; its refutation of my VALUE is the
+  comparison its own [4] forbids, and its own [6] retires both of our rung figures for it.
+
+========================================================================================================
+[2] DOES MY EXACT MODEL SURVIVE PINK'S §29 BINS ON MATCHED SUPPORT?
+========================================================================================================
+
+  PINK's [4], 1920 unselected, s/c by c — a genuine non-monotone function of c:
+
+  My continuous model predicts a MONOTONE RISE in c, from the linear limit to the ceiling:
+    continuous s_T/c_T over all shares: [0.2664, 0.5011]  — monotone increasing, no minimum
+
+  So the model owns the RIGHT-HAND BRANCH only, and the left branch and the minimum are the
+  quantiser. Tested on matched support — find the share whose c matches each bin's c:
+
+    PINK's c      PINK s/c    model s_T/c_T   model s_q/c_q     delta (true)   regime
+    2.40e-5    14.8100       0.2667        Infinity       -98.2 %   quantiser-dominated
+    3.80e-4     0.8910       0.2738         0.2835       -69.3 %   quantiser-dominated
+    5.10e-3     0.2960       0.3361         0.3114       +13.5 %   the minimum
+    1.20e-2     0.3590       0.3825         0.3756       +6.5 %   convexity growing
+    2.90e-2     0.4110       0.4350         0.4303       +5.9 %   convexity growing
+
+  *** THE MODEL'S RIGHT-HAND BRANCH HOLDS AND ITS LEFT BRANCH IS NOT ITS BUSINESS. *** At the
+  minimum and above, the continuous model tracks PINK's bins; below it the measured ratio runs
+  away upward and the model does not, because the model has no quantiser in c. That is the
+  same statement as A-G375's withdrawal, reached from the data instead of from the refutation:
+  s/c is a two-branch curve, physics on the right and the quantiser on the left, and ANY single
+  number for it is a choice of support. §29 said so as an 8x spread; §30 and my §83 both forgot it.
+
+========================================================================================================
+[3] s/q ADOPTED — the statistic that needs no true ratio, and the 1280 finding
+========================================================================================================
+
+  PINK's measured median s/q at the 10q rung:  unselected 10.63 / 9.67   selected 4.70 / 3.94
+  and s/q reaches 10 at 9q and 13q unselected, at 56q selected at 1920, and NEVER — at any
+  admissible rung — selected at 1280.
+
+  The model's own s/q, so the claim is checked and not relayed:
+
+    state        c/q = 10     c/q = 20     c/q = 50     c/q = 100    max over all shares
+    unselected       3.70         7.48        22.96        43.01       43.0
+    selected         0.20         1.98         7.79        15.66       15.7
+
+  unselected/selected s/q at the same c/q:  10q 18.86x   20q 3.79x   50q 2.95x   100q 2.75x
+
+  *** AND THAT RATIO IS NOT 1/selectedGain EXCEPT ASYMPTOTICALLY. *** I wrote "about 2.86x" here
+  first; it is 18.9x at the 10q rung and falls toward 2.86 only as c/q grows. 2.86 is the ratio of
+  the two AMPLITUDES; the ratio of their RESOLUTIONS is far worse exactly where the rung sits,
+  because the smaller swing crosses the one-code floor and the larger one does not. So the
+  finding is STRONGER than the constant suggests, and it is the fourth time in this stretch that
+  a figure I typed from a declared constant disagreed with the solve beside it.
+
+  A rung set on c therefore gives the two states different numerator resolution BY CONSTRUCTION.
+  PINK's "never reaches ten quanta,
+  selected, at 1280, at any admissible rung" is the strongest form this finding has taken, and
+  it is a MEASUREMENT where mine was a solve against an assumed ratio.
+
+  *** A-G365 NOW HAS A FOURTH GROUND AND IT IS THE BEST ONE: at 1280 the selected swing is
+  NOWHERE resolved to ten quanta inside the mask. *** Not "biased", not "attenuated on a narrow
+  band" — not resolved anywhere. That is measured, model-free, and needs no true s/c at all.
+  My 11.2 / 57.4 quanta and PINK's 17q/9q and 66q/15q are both retired per PINK's [6]: a solve
+  against an assumed single ratio, and a crossing of a non-monotone tail median. The tell PINK
+  names is the right one — its pair disagreed ACROSS VIEWPORTS, which a quantity does not do.
