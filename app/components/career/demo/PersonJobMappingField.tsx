@@ -153,7 +153,14 @@ export const VOLUME = Object.freeze({ coreAlpha: 0.16, haloAlpha: 0.5, haloNear:
  * §45 A-G163: ONE constant, three different extents, and this comment used to state only the first as if it were the obligation:
  *   rim → edge        (haloNear … haloFar) − 1      = 1.6   … 2.0   r   geometric, and NOT observable
  *   seat edge → edge  … − seatHalfPx / r_px         = 1.536 … 1.950 r   AT r_px ≥ 28 ONLY — what a pixel can see
- *   measured                                       = 1.55  … 1.95  r   L0 1920×1080, outputs/pg17-seal-reanchor.json
+ *   measured, ONE VIEWPORT                         = 1.55  … 1.95  r   L0 1920×1080, outputs/pg17-seal-reanchor.json
+ *   swept over the ENVELOPE (PINK)                 = 1.47526 … 1.94996 r  PINK's figure, not this lane's
+ * §62: the line above used to read "measured = 1.55 … 1.95 r" with the viewport as a footnote, which states one viewport as
+ * the envelope — the same defect A-G162 corrected one paragraph down for r_px ≥ 28, committed again two sections later in the
+ * line directly above it. PINK's sweep puts the floor 0.075 r lower, and 1.47526 is BELOW 1.5, so the extent this comment
+ * once asserted as "≥ 1.5 × the radius" is not reached at the bottom of the envelope even on the measurable anchor. The
+ * envelope figure is attributed to PINK and NOT adopted as this lane's: re-measuring it needs a render, which this lane has
+ * not run, and writing another lane's number as though this instrument had produced it is the defect §62 withdrew elsewhere.
  * §47 A-G162, correcting the line above: r_px ≥ 28 is PG-3's floor and PG-3 states it FOR L0 1920×1080, a condition the ramp
  * does not carry. `r_device = rho_drawn / k` and k moves with the window (E-8/A-1), so the measurable extent shrinks with width
  * and crosses 1.5 r at `r_device = 10 · seatHalfPx` — 18.000 px marked, 14.012 px unmarked, the two differing by nothing but
