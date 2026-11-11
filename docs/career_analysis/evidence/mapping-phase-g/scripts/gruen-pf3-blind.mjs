@@ -194,6 +194,13 @@ const out = {
     aG419: "every selector's matched element count is read from the live page BEFORE any capture and a zero count throws, and a zero decided population throws."
   },
   perBody,
+  everySpreadInThisFileNamesWhatItVariedOver: {
+    ruledBy: "GELB: a spread measured inside one realisation is not the spread of the quantity, and it is presentationally INDISTINGUISHABLE from one that is. So every spread figure names its domain.",
+    domainOfEverySpreadHere: "WITHIN ONE RUN — repeat-to-repeat across REPEATS suppression cycles inside a single browser launch and page load, after a discarded warm-up.",
+    whatThatDomainEXCLUDES: "browser launch, page load, and anything that differs between runs. Measured: this file's within-run spreads are 0.1..2.9 %, while the RUN-to-run spread of the same limb-1 ratio reaches 5.4 % — roughly a factor of two understated, and the understatement is invisible in this file because the word 'spread' reads the same either way.",
+    theCrossRunFigureLivesHere: "outputs/pf3-spread.json (§99), which spawns this probe N times as child processes. Any limb-1 adjudication belongs to THAT file, not this one.",
+    andItsOwnCountIsUnstable: "§99's four-run study puts 3 of 5 bodies decidable; pooled with four earlier hand runs it is 2 of 5. The verdict's direction never moves — nothing is red and every decidable body clears — but the COUNT moves, so a decidability count is not settled at n=4 either."
+  },
   pinStanding: {
     haloLimb: "RETIRED as superseded. A-G293 (PHASE_G §…, ':7749') ruled PF-3's halo limb retired because §4 of that record inverted the light budget — PF-1 replaced by PG-1/PG-2, 'the disc must now be dark and the semantics must carry the light' — and G-2/R21 then made the glow a LIGHT SOURCE. 'Halo peak <= 0.25 x core peak' is the opposite obligation. The retirement is recorded there as a CONFLICT BETWEEN TWO ADOPTED DECISIONS, not as a measurement.",
     footprintLimb: "UNTOUCHED AND UNMEASURED, in A-G293's own words. PF-3 was retired in A-G20 'having never been measured' and then returned to the surface on the principle that a proof surface may not shrink by attrition.",
@@ -254,6 +261,7 @@ LIMB 2 (halo peak <= ${HALO_CEILING} x core peak, differentially per A-F19), AND
 AND THE PIN'S OWN STATISTIC IS THE UNMEASURABLE PART. PF-3 says PEAK, and the peak's repeat-to-repeat spread splits the bodies exactly by stillness: worst ${(+Math.max(...shelfB.map(spreadOf))).toFixed(2)} % across the three SHELF bodies, worst ${(+Math.max(...fieldB.map(spreadOf))).toFixed(2)} % across the two FIELD bodies. The p99 of the same differential is stable to a few per cent everywhere and across runs. So the halo limb as written asks for a quantity this instrument cannot deliver on the moving bodies — the BOUND is not the problem, the STATISTIC is — and A-F11 already forbade the maximum form for PF-6 row 1 / PG-10 limb 3 for the same reason, there by argument and here by measurement. It does not rescue the retired limb either way: both bands sit an order of magnitude above 0.25.
 THE HALO HAD TO BE REACHED BY HOOK. It is not a descendant of its body, so the obvious per-body selector suppresses nothing; §81's A-G49 hook is what makes a per-body halo differential possible at all, and the A-G419 precheck is what would have caught it had I used the wrong one — at the selector, before any capture, rather than as a ratio of zero that looked like a pass.
 BLIND: GELB's pooled A-F19 range was not read before or during this run, because a pooled target cannot validate a per-body measurement.
+EVERY SPREAD IN THIS FILE IS A WITHIN-RUN SPREAD (0.1..2.9 %) and the run-to-run spread of the same quantity reaches 5.4 % — named here because the word reads identically either way, which is what made it dangerous rather than merely incomplete. Limb-1 adjudication belongs to outputs/pf3-spread.json, whose own decidability count moves between 3 of 5 at n=4 and 2 of 5 pooled at n=8.
 NO VERDICT (A-G36 point 2): these are readings. Whether PF-3 is satisfied on this artifact is PINK's.`;
 
 writeFileSync(resolve(OUT, "pf3-blind.json"), JSON.stringify(out, null, 1));
