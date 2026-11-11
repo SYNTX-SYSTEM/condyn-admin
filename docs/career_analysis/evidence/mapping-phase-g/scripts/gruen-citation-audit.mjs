@@ -80,6 +80,20 @@ const componentChecked = intoComponent.map(r => ({
   landsOnTrivialLine: trivial(compLines[r.citedLine - 1])
 }));
 
+/* ── A-G427 EXTENDED (GELB §97): a citation into a file that CHANGES names its BUILD as well as its subject,
+   because without a build the citation has no referent at all. Checked over a +/-2 line window, since a build
+   named in the sentence above still binds the citation below it. */
+const BUILD_REF = /\b[0-9a-f]{7,40}\b|BUILD_ID|\bHEAD\b|\b3ec8457d\b|HRYkeEpbpndI3UEE7ceeC|utpaUMQpafZVzAeyYImhv/;
+const windowOf = (path, line) => {
+  const ls = readFileSync(path, "utf8").split("\n");
+  return ls.slice(Math.max(0, line - 3), line + 2).join("\n");
+};
+const buildChecked = componentChecked.map(r => {
+  const path = r.source.startsWith("scripts/") ? join(here, r.source.slice(8)) : join(here, "..", r.source);
+  return { ...r, namesABuildWithinTwoLines: BUILD_REF.test(windowOf(path, r.sourceLine)) };
+});
+const namingABuild = buildChecked.filter(r => r.namesABuildWithinTwoLines).length;
+
 const out = {
   reading: "GRÜN · §100 — A-G427 applied to this lane's own record: every line-number citation, classified",
   verdict: PROVENANCE.verdict,
@@ -99,7 +113,14 @@ const out = {
     note: `the component is the one cited target this lane EDITS. §93 moved it by +7 lines net, so citations past that point are stale by my own hand.`,
     count: componentChecked.length,
     landingOnATrivialLine: componentChecked.filter(r => r.landsOnTrivialLine).length,
-    rows: componentChecked
+    rows: buildChecked,
+    aG427Extended: {
+      rule: "GELB §97: a citation into a file that CHANGES names its BUILD as well as its subject. Without the build the citation has no referent, because the line meant different things at different commits.",
+      citationsIntoTheComponent: buildChecked.length,
+      namingABuildWithinTwoLines: namingABuild,
+      notNamingABuild: buildChecked.length - namingABuild,
+      whyThisLaneLooksTheWayItDoes: "every INSTRUMENT here pins its build in code — servedProvenance() and PROVENANCE record the served BUILD_ID and the worktree SHA on every reading, and a probe that failed to would not run. The PROSE has no such forcing function. GELB's sentence, and it is exactly right: an instrument cannot cite sloppily and still run; a paragraph can. So the unpinned citations are all in the prose, in both lanes, and that is a property of where enforcement reaches rather than of anyone's care."
+    }
   },
   bareOffsets: bare.map(r => ({ source: r.source, sourceLine: r.sourceLine, citedLine: r.citedLine, context: r.context })),
   finding: null
@@ -108,6 +129,7 @@ out.finding =
 `A-G427 ON MY OWN RECORD: ${citations.length} line-number citations across ${sources.length} scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying ${byClass.PORT_OR_ADDRESS ?? 0} port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.
 ${withSubject.length} of ${citations.length} (${(100 * withSubject.length / Math.max(1, citations.length)).toFixed(1)} %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. ${bare.length} carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.
 INTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: ${componentChecked.length} citations, of which ${componentChecked.filter(r => r.landsOnTrivialLine).length} now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.
+A-G427 EXTENDED, ON MY OWN COMPONENT CITATIONS: ${namingABuild} of ${buildChecked.length} name a build within two lines. The drawing surface changed repeatedly across the builds this record quotes, so a bare line number into it is not a weak citation — it is a citation to nothing in particular. Every INSTRUMENT here pins its build in code because a probe that did not would not run; the prose has no such forcing function, which is where both lanes' unpinned citations live.
 NO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation.`;
 
 writeFileSync(resolve(OUT, "citation-audit.json"), JSON.stringify(out, null, 1));

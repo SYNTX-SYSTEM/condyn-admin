@@ -41,7 +41,8 @@
     "carriesSubject": true,
     "context": "* (PersonJobMappingField.tsx:670) — the shelf is a still ring (A-F8), so a shelf glow cannot swing by design.",
     "targetLine": "// PG-14: L0 and L1 frame the bodies they draw whole (the budget's bodies of the level; L1's context bodies ar",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pf3-blind.mjs",
@@ -51,7 +52,8 @@
     "carriesSubject": true,
     "context": "* body group at the component's :835 carries `data-mapping-body data-rank`, and `.mf-core` and the outline sit",
     "targetLine": "data-halo-radius={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))}",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pg14-convergence.mjs",
@@ -61,7 +63,8 @@
     "carriesSubject": true,
     "context": "*     for (let pass = 0; pass < 2; pass += 1) { ... }          // PersonJobMappingField.tsx:501",
     "targetLine": "",
-    "landsOnTrivialLine": true
+    "landsOnTrivialLine": true,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pg16-satisfiability.mjs",
@@ -71,7 +74,8 @@
     "carriesSubject": true,
     "context": "*      `spaced()` at PersonJobMappingField.tsx:479 evaluates THAT EXPRESSION and does not push the body:",
     "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pg16-satisfiability.mjs",
@@ -81,7 +85,8 @@
     "carriesSubject": true,
     "context": "filterPredicate: \"sep(o,b) - r_o - r_b >= CROWDING * max(ecc_o, ecc_b)   [PersonJobMappingField.tsx:479]\",",
     "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pg17-gate.mjs",
@@ -91,7 +96,8 @@
     "carriesSubject": true,
     "context": "* `mf-core` (PersonJobMappingField.tsx:857) stops at offsets 0 / 0.4 / 0.75 / 1 with",
     "targetLine": "<line data-testid={`mapping-trail-${testKey(b)}`} data-mapping-trail x1={fixed(move.from.x - b.x)} y1={fixed(m",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-pg23-computed.mjs",
@@ -101,7 +107,8 @@
     "carriesSubject": true,
     "context": "* the one WITHOUT `mf-wave-halo` (PersonJobMappingField.tsx:711, `b.shelf ? undefined : \"mf-wave mf-wave-halo\"`).",
     "targetLine": "return () => { cancelAnimationFrame(frame); svg.setAttribute(\"viewBox\", boxKey); };",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    },
    {
     "source": "scripts/gruen-rings.mjs",
@@ -111,9 +118,17 @@
     "carriesSubject": true,
     "context": "note: \"A-G39(a): PersonJobMappingField.tsx:96–100 still records the pre-inversion ladder at shelf alpha 0.05. GELB's instruction is to correct that co",
     "targetLine": "// §23 A-G62: 0.02 → 0.022, because A-G5 over-corrected. The shelf ring is stroked over its OWN opaque black s",
-    "landsOnTrivialLine": false
+    "landsOnTrivialLine": false,
+    "namesABuildWithinTwoLines": false
    }
-  ]
+  ],
+  "aG427Extended": {
+   "rule": "GELB §97: a citation into a file that CHANGES names its BUILD as well as its subject. Without the build the citation has no referent, because the line meant different things at different commits.",
+   "citationsIntoTheComponent": 8,
+   "namingABuildWithinTwoLines": 0,
+   "notNamingABuild": 8,
+   "whyThisLaneLooksTheWayItDoes": "every INSTRUMENT here pins its build in code — servedProvenance() and PROVENANCE record the served BUILD_ID and the worktree SHA on every reading, and a probe that failed to would not run. The PROSE has no such forcing function. GELB's sentence, and it is exactly right: an instrument cannot cite sloppily and still run; a paragraph can. So the unpinned citations are all in the prose, in both lanes, and that is a property of where enforcement reaches rather than of anyone's care."
+  }
  },
  "bareOffsets": [
   {
@@ -219,5 +234,5 @@
    "context": "first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,"
   }
  ],
- "finding": "A-G427 ON MY OWN RECORD: 86 line-number citations across 47 scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying 6 port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.\n69 of 86 (80.2 %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. 17 carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.\nINTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: 8 citations, of which 1 now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.\nNO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation."
+ "finding": "A-G427 ON MY OWN RECORD: 86 line-number citations across 47 scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying 6 port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.\n69 of 86 (80.2 %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. 17 carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.\nINTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: 8 citations, of which 1 now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.\nA-G427 EXTENDED, ON MY OWN COMPONENT CITATIONS: 0 of 8 name a build within two lines. The drawing surface changed repeatedly across the builds this record quotes, so a bare line number into it is not a weak citation — it is a citation to nothing in particular. Every INSTRUMENT here pins its build in code because a probe that did not would not run; the prose has no such forcing function, which is where both lanes' unpinned citations live.\nNO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation."
 }

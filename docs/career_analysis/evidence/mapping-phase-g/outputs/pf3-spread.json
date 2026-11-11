@@ -1,0 +1,373 @@
+{
+ "reading": "GRÜN · §99 — PF-3 limb 1 across independent runs, with A-G139 decidability applied before any leaning is reported",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "runs": 4,
+ "scope": "each run is a separate child process: its own browser launch, its own page load. No build, no server write.",
+ "whyThisExists": "§97 reports a WITHIN-run spread (0.1..2.9 %); the run-to-run spread is up to 5.4 %. I compared a margin to the smaller figure and published 'rank 1 is robustly short' from three runs, then retracted it on the fourth. A probe that repeats inside one page load cannot measure the variation that decides a bound.",
+ "decidabilityTest": {
+  "rule": "the bound (6) must sit outside a body's observed range by MORE than that range's own width",
+  "origin": "A-G139 made arithmetic. A body whose margin is smaller than its spread is UNMEASURABLE against the bound, whichever way it leans."
+ },
+ "rawRuns": [
+  {
+   "run": 1,
+   "measuredBuildCommit": "c84ab292",
+   "bodies": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "limb1": 5.792,
+     "limb2_p99": 2.2453,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "limb1": 6.017,
+     "limb2_p99": 2.309,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "limb1": 6.283,
+     "limb2_p99": 2.5032,
+     "limb2_peak": 2.6047,
+     "limb2_peakMeasurable": true
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "limb1": 6.645,
+     "limb2_p99": 2.4989,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "limb1": 6.403,
+     "limb2_p99": 2.8307,
+     "limb2_peak": 2.9686,
+     "limb2_peakMeasurable": true
+    }
+   ]
+  },
+  {
+   "run": 2,
+   "measuredBuildCommit": "c84ab292",
+   "bodies": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "limb1": 5.524,
+     "limb2_p99": 2.3512,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "limb1": 5.993,
+     "limb2_p99": 2.3051,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "limb1": 6.357,
+     "limb2_p99": 2.5032,
+     "limb2_peak": 2.6047,
+     "limb2_peakMeasurable": true
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "limb1": 6.644,
+     "limb2_p99": 2.4989,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "limb1": 6.405,
+     "limb2_p99": 2.8307,
+     "limb2_peak": 2.9686,
+     "limb2_peakMeasurable": true
+    }
+   ]
+  },
+  {
+   "run": 3,
+   "measuredBuildCommit": "c84ab292",
+   "bodies": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "limb1": 5.787,
+     "limb2_p99": 2.341,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "limb1": 5.995,
+     "limb2_p99": 2.3051,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "limb1": 6.445,
+     "limb2_p99": 2.5032,
+     "limb2_peak": 2.6047,
+     "limb2_peakMeasurable": true
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "limb1": 6.649,
+     "limb2_p99": 2.4989,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "limb1": 6.401,
+     "limb2_p99": 2.8307,
+     "limb2_peak": 2.9686,
+     "limb2_peakMeasurable": true
+    }
+   ]
+  },
+  {
+   "run": 4,
+   "measuredBuildCommit": "c84ab292",
+   "bodies": [
+    {
+     "rank": 1,
+     "shelf": false,
+     "limb1": 5.792,
+     "limb2_p99": 2.2601,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 2,
+     "shelf": false,
+     "limb1": 5.709,
+     "limb2_p99": 2.3051,
+     "limb2_peak": null,
+     "limb2_peakMeasurable": false
+    },
+    {
+     "rank": 3,
+     "shelf": true,
+     "limb1": 6.446,
+     "limb2_p99": 2.5032,
+     "limb2_peak": 2.6047,
+     "limb2_peakMeasurable": true
+    },
+    {
+     "rank": 4,
+     "shelf": true,
+     "limb1": 6.645,
+     "limb2_p99": 2.6117,
+     "limb2_peak": 5.1994,
+     "limb2_peakMeasurable": true
+    },
+    {
+     "rank": 5,
+     "shelf": true,
+     "limb1": 6.397,
+     "limb2_p99": 2.8307,
+     "limb2_peak": 2.9686,
+     "limb2_peakMeasurable": true
+    }
+   ]
+  }
+ ],
+ "perBody": [
+  {
+   "rank": 1,
+   "shelf": false,
+   "limb1PerRun": [
+    5.792,
+    5.524,
+    5.787,
+    5.792
+   ],
+   "limb1": {
+    "range": [
+     5.524,
+     5.792
+    ],
+    "width": 0.268,
+    "gapToBound": 0.208,
+    "decidable": false,
+    "leaning": "short"
+   },
+   "limb2_p99PerRun": [
+    2.2453,
+    2.3512,
+    2.341,
+    2.2601
+   ],
+   "limb2_p99SpreadPct": 4.504,
+   "limb2_peakMeasurableInEveryRun": false
+  },
+  {
+   "rank": 2,
+   "shelf": false,
+   "limb1PerRun": [
+    6.017,
+    5.993,
+    5.995,
+    5.709
+   ],
+   "limb1": {
+    "range": [
+     5.709,
+     6.017
+    ],
+    "width": 0.308,
+    "gapToBound": 0,
+    "decidable": false,
+    "leaning": "ON the bound"
+   },
+   "limb2_p99PerRun": [
+    2.309,
+    2.3051,
+    2.3051,
+    2.3051
+   ],
+   "limb2_p99SpreadPct": 0.169,
+   "limb2_peakMeasurableInEveryRun": false
+  },
+  {
+   "rank": 3,
+   "shelf": true,
+   "limb1PerRun": [
+    6.283,
+    6.357,
+    6.445,
+    6.446
+   ],
+   "limb1": {
+    "range": [
+     6.283,
+     6.446
+    ],
+    "width": 0.163,
+    "gapToBound": 0.283,
+    "decidable": true,
+    "leaning": "clears"
+   },
+   "limb2_p99PerRun": [
+    2.5032,
+    2.5032,
+    2.5032,
+    2.5032
+   ],
+   "limb2_p99SpreadPct": 0,
+   "limb2_peakMeasurableInEveryRun": true
+  },
+  {
+   "rank": 4,
+   "shelf": true,
+   "limb1PerRun": [
+    6.645,
+    6.644,
+    6.649,
+    6.645
+   ],
+   "limb1": {
+    "range": [
+     6.644,
+     6.649
+    ],
+    "width": 0.005,
+    "gapToBound": 0.644,
+    "decidable": true,
+    "leaning": "clears"
+   },
+   "limb2_p99PerRun": [
+    2.4989,
+    2.4989,
+    2.4989,
+    2.6117
+   ],
+   "limb2_p99SpreadPct": 4.319,
+   "limb2_peakMeasurableInEveryRun": false
+  },
+  {
+   "rank": 5,
+   "shelf": true,
+   "limb1PerRun": [
+    6.403,
+    6.405,
+    6.401,
+    6.397
+   ],
+   "limb1": {
+    "range": [
+     6.397,
+     6.405
+    ],
+    "width": 0.008,
+    "gapToBound": 0.397,
+    "decidable": true,
+    "leaning": "clears"
+   },
+   "limb2_p99PerRun": [
+    2.8307,
+    2.8307,
+    2.8307,
+    2.8307
+   ],
+   "limb2_p99SpreadPct": 0,
+   "limb2_peakMeasurableInEveryRun": true
+  }
+ ],
+ "summary": {
+  "decidableBodies": [
+   3,
+   4,
+   5
+  ],
+  "decidableCount": 3,
+  "totalBodies": 5,
+  "allDecidableClear": true,
+  "notDecidable": [
+   {
+    "rank": 1,
+    "shelf": false,
+    "leaning": "short",
+    "width": 0.268,
+    "gap": 0.208
+   },
+   {
+    "rank": 2,
+    "shelf": false,
+    "leaning": "ON the bound",
+    "width": 0.308,
+    "gap": 0
+   }
+  ]
+ },
+ "finding": "PF-3 LIMB 1 OVER 4 INDEPENDENT RUNS. Decidable on 3 of 5 bodies by A-G139 — the bound must clear the body's own spread — and EVERY decidable body CLEARS. [{\"rank\":1,\"shelf\":false,\"leaning\":\"short\",\"width\":0.268,\"gap\":0.208},{\"rank\":2,\"shelf\":false,\"leaning\":\"ON the bound\",\"width\":0.308,\"gap\":0}] are unmeasurable against 6 on this instrument.\nNOTHING IS RED, and the three unmeasurable bodies lean in DIFFERENT directions — which is why the field/shelf split does not govern this limb: the largest spread of all five belongs to a SHELF body. The split governs the PEAK, and limb 1 is an area.\nAND THE REASON THIS INSTRUMENT EXISTS IS A VERDICT I SHOULD NOT HAVE PUBLISHED: §97's within-run spread understates the run-to-run spread by roughly a factor of two, and I compared a margin against it and called a body short. Three runs is not a spread.\nNO VERDICT (A-G36 point 2)."
+}
