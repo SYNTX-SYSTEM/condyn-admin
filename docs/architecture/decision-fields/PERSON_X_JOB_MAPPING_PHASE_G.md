@@ -12380,3 +12380,95 @@ reach past A-G81; PINK's escalated non-blocker; and PF-15's unsatisfiability der
 **271 + 7 = 278.** **Four are this lane's.**
 
 **PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
+
+---
+
+## §97 FOUR DETECTOR ERRORS, TWO LANES, NO CONTACT — AND ALL FOUR INFLATED THE FAULT
+
+**Date of this section: 2026-11-11.**
+
+### A-G429 · A detector's own errors are selected for by what its author hopes to find *(GRÜN's, adopted)*
+
+GRÜN turned A-G427 on its own record rather than leaving it pointed at this one. Its auditor's first form
+made two errors; this lane's verifier's first form made two. **Independent instruments, no contact between
+them, and all four ran in one direction:**
+
+| lane | error | effect |
+|---|---|---|
+| GELB | a HEADING target counted as impossible | 65 → **83** impossible |
+| GELB | quote limb matched the quote in its own citing sentence | 0 → **53 "proven stale"** |
+| GRÜN | the README's PORT MAP counted as citations | 56 → **62** citations |
+| GRÜN | the scanner read its own source and found its header's examples | component count inflated |
+
+> *** ALL FOUR MADE THE RECORD LOOK WORSE. ***
+>
+> **RULED, A-G429, mechanism included because the mechanism is the rule:** *a false positive looks like
+> SUCCESS to whoever built the detector, so nothing in the build loop pushes back on it.* And the half
+> that follows: **a detector that UNDER-reports is silent, and silence prompts no review at all.**
+>
+> **So this is not a bias toward pessimism. It is a SELECTION EFFECT.** A firing reads as the instrument
+> working, and only an absurd firing gets audited; an omission never announces itself. **The errors that
+> survive a build loop are the ones that inflate, because they are the only ones the loop rewards.**
+
+**The remedy is what both lanes reached independently — which is why A-G429's value is the *why*:**
+(1) **classify rather than filter**, because a number removed without a name is a number nobody can audit;
+(2) **exclude the instrument's own source** (A-G408); (3) **audit the alarming number BECAUSE it is
+alarming.**
+
+> *** THE THIRD IS THE ONE NEITHER LANE HAD WRITTEN DOWN. It is the opposite of the instinct — which is
+> to audit the figure that looks too good — and it is the only one of the three that would have caught
+> all four. ***
+
+**And the pairing is itself the evidence rather than a coincidence:** this lane's quote limb and GRÜN's
+§94 negative control are one shape — **a limb that cannot fail, reporting the strongest-looking result in
+its own file** — and both were built *inside instruments written to enforce the rule against exactly
+that.*
+
+### GRÜN refused the flattering comparison before this lane could make it
+
+GRÜN's record scores **69 of 86 (80.2 %)** on GRÜN's criterion — *does the citation carry a subject that
+survives its target moving* — against this lane's **0 of 248** on this lane's — *can the citation be
+verified against its target now*.
+
+> **GRÜN said it first: 80.2 % is not a better score than 0 of 248.** Different questions, different
+> denominators — **the A-G417 error with a thumb on the scale**, and the lane that would have benefited
+> refused it unprompted. **GRÜN's record has not been checked on this lane's criterion at all.**
+
+### A-G427 extended · A citation into a file that CHANGES names its BUILD
+
+GRÜN's actionable half was *"your verifier would be the thing to run against it, not mine."* So this lane
+ran its criterion against **its own** prose first, on the target where it bites hardest: the drawing
+surface, a file that changed **41 times** between the builds this record quotes.
+
+> *** 25 citations in this record are about the drawing surface. ZERO name a build within two lines. ***
+
+**A line number into a file that changed 41 times is not a weak citation without its build — it is a
+citation to nothing in particular.** And one of the 25 quotes `rgba(INK, 0.022)` beside a line number:
+**the shelf-alpha hazard in its original form, sitting in this lane's own prose two exchanges before it
+cost PINK and this lane a correction each.**
+
+**A-G427 EXTENDED: a citation into a file that changes names its BUILD as well as its subject. The build
+is not provenance decoration — without it the citation has no referent.**
+
+### And the asymmetry is the finding this lane did not want
+
+**Every instrument in this lane that reads the product pins its SHA in code — because an unpinned read
+would not execute.** The prose has no such forcing function.
+
+> *** AN INSTRUMENT CANNOT CITE SLOPPILY AND STILL RUN. A PARAGRAPH CAN. *** So every unpinned citation
+> is in the prose, and that is not a fact about carelessness — **it is where the only enforcement
+> mechanism either lane has does not reach.** Which is GRÜN's §100 observation one level up: **the places
+> with no forcing function are where the rot is, and they look identical to the places without it.**
+
+**GRÜN's disposals are ratified as stated:** the blank-line citation gets a subject; the 17 bare offsets
+get subjects **as their files are touched** rather than in a sweep — *a sweep over 17 comment lines is
+exactly the cleanup the owner's constraints name*; and new instrument headers carry the pin or amendment
+id beside any number. Its one stale component citation sits in a file already marked SUPERSEDED, **the
+cheapest possible instance: a stale citation in a file nothing reads.**
+
+### Where this leaves the record
+
+**Three new defects:** the 25 unbuilt component citations in this lane's prose, as one class with one
+remedy; and GRÜN's two auditor errors. **278 + 3 = 281.** GELB's two auditor errors were counted in §96.
+
+**PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
