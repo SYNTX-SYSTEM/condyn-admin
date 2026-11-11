@@ -177,15 +177,27 @@ independently checked.** It claimed the delta was "two files and nothing else": 
 a new `test/career/mapping-field/field-g-mutant.test.tsx`. Neither is in the tree. PINK running the command
 above as it was written would have found a mismatch and been right to.
 
-The delta from `3ec8457d`, as measured rather than as remembered, is **one file and one behavioural hunk**:
+The delta from `3ec8457d`, as measured rather than as remembered, is **one file, one behavioural hunk, and
+eleven added attributes** (§81 grew it past the single hunk it had been for the whole phase):
 
 | | |
 |---|---|
 | file | `app/components/career/demo/PersonJobMappingField.tsx`, and nothing else |
 | the one behavioural change | `RING_LUMINANCE.shelf` **0.02 → 0.022** (§23 **A-G62**) |
-| everything else in the diff | comment-only — the `GLOW_RAMP` and `G-2` rewrites of §45/§47/§51 |
-| **A-G43's splay re-keying** | **NOT APPLIED.** `:389` still reads `s.mark === "counterTick"`. |
+| **§81 A-G49's hooks** | **eleven added `data-*` attributes.** `data-mapping-halo` / `data-rank` / `data-shelf` / `data-required-gaps` / `data-halo-radius` on the halo's drawn **circle** (not its group), and `data-mapping-seat` naming the seven previously unaddressable seats plus the two body seats and the arc-marks group. |
+| everything else in the diff | comment-only — the `GLOW_RAMP` and `G-2` rewrites of §45/§47/§51, and §62/§81's corrections |
+| **A-G43's splay re-keying** | **NOT APPLIED**, and now deliberately so. `:389` still reads `s.mark === "counterTick"`. GELB's §62 correction 2 established that PINK's rendered-page route *cannot* verify a re-keying — React keys are reconciliation inputs and never reach the DOM, so a correct re-key and a broken one both read "no change". It is therefore essentially gated on vitest, and vitest is gated on B-ENTRY. |
 | **the A-G43 mutant test** | **DOES NOT EXIST.** `test/career/mapping-field/` has no `field-g-mutant.test.tsx`. |
+
+**The hooks are additive and that is proved, not asserted.** Strip every `data-*` attribute and every comment
+from the base and from the working tree and the only remaining difference is the single `RING_LUMINANCE` hunk;
+`tsc --noEmit` exits 0. The exemption is *conditional* and the condition is checked — this component already
+styles `[data-lit="false"]`, `[data-in-pool="true"]` and `[data-mapping-body]`, so "an added attribute cannot
+move a pixel" is false in general. Zero of the file's 24 CSS attribute-selector rules match any of the four
+newly-added names, and `scripts/gruen-seal-staleness.mjs` re-checks that on every pass rather than trusting it.
+
+**The hooks are NOT on the build currently serving**, which predates them. PINK's independent verification of
+them needs a rebuild; that is the owner's call and has not been taken.
 
 `lib/`, `docs/architecture/`, the dependency set and the Next config are byte-identical to `3ec8457d`.
 A-G43 remains an obligation on this lane, not a completed one; it is item 1 of GELB's §62 implementation list.
