@@ -51,8 +51,34 @@ function srcAt(sha, path) {
   try { return git(`show ${sha}:${path}`); } catch { return null; }
 }
 function constantsAt(sha, path) {
-  const src = srcAt(sha, path);
-  if (src === null) return null;
+  const raw = srcAt(sha, path);
+  if (raw === null) return null;
+  /**
+   * §83 DEFECT 14 — SCAN CODE, NOT THE FILE. GELB's §82 found a probe of theirs that searched the component
+   * for PF-8's enforcement, printed PRESENT, and had matched the pin's own recorded measurements inside a
+   * DOCSTRING. My §81 grep "found" `[data-mapping-halo]` already in the CSS and the hit was the comment I had
+   * just written. Same defect, same day, two lanes — so GELB's advice was to harden any string matching this
+   * audit does over the component, and it was right to be specific:
+   *
+   *     /*
+   *     export const CROWDING = 0.9;
+   *     *\/
+   *     export const CROWDING = 0.3;
+   *
+   * A declaration at column 0 INSIDE A BLOCK COMMENT matched first and the extractor returned 0.9. A `//`
+   * line and a ` * ` line both fail to match, which is why this survived — the hazard needed column 0.
+   * Every scan below now runs on the comment-stripped source.
+   */
+  return constantsFrom(raw);
+}
+/**
+ * §83: the extraction itself, taking a SOURCE STRING, so the self-test below can drive the real code path.
+ * The first version of that self-test called `stripComments` directly and therefore proved only that the
+ * STRIPPER works — not that the EXTRACTOR uses it. Removing the strip from `constantsAt` left the self-test
+ * still passing, which is this phase's recurring shape: an instrument whose reach is narrower than its claim.
+ */
+function constantsFrom(raw) {
+  const src = stripComments(raw).code;
   const found = {};
   for (const name of TRACKED) {
     const m = new RegExp(`^export const ${name}(?::[^=]*)? = (.*);\\s*$`, "m").exec(src);
@@ -163,9 +189,11 @@ function stripComments(src) {
  * in the file, comment lines excluded. If any added name is selected, the exemption is refused.
  */
 const DATA_ATTR = /\s+data-[a-zA-Z0-9-]+(?:=(?:"[^"]*"|\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}))?/g;
-const attrNames = src => new Set([...src.matchAll(/\sdata-([a-zA-Z0-9-]+)/g)].map(m => m[1]));
-const cssAttrSelectors = src => new Set([...src.split("\n")
-  .filter(l => { const t = l.trim(); return !(t.startsWith("*") || t.startsWith("//") || t.startsWith("/*") || t.startsWith("{/*") || t.endsWith("*/}")); })
+/* §83 defect 14: both scans run on the comment-stripped source. The line-based comment filter this used to
+   carry is the same blunt heuristic §74 already replaced with the state machine — a JSX comment's prose
+   continuation lines start with none of those markers, so the filter let them through. */
+const attrNames = src => new Set([...stripComments(src).code.matchAll(/\sdata-([a-zA-Z0-9-]+)/g)].map(m => m[1]));
+const cssAttrSelectors = src => new Set([...stripComments(src).code.split("\n")
   .filter(l => l.includes("[data-") && l.includes("{") && l.includes("}") && l.includes(":"))
   .join("\n").matchAll(/\[data-([a-zA-Z0-9-]+)/g)].map(m => m[1]));
 
@@ -222,7 +250,13 @@ const selfTest = (() => {
   if (unextractable.length > 0) throw new Error(`self-test: these tracked constants no longer extract — the audit would pass silently: ${unextractable.join(", ")}`);
   const moved = TRACKED.filter(n => a[n] !== b[n]);
   if (!moved.includes("RING_LUMINANCE")) throw new Error("self-test: RING_LUMINANCE moved 0.02 -> 0.022 between 3ec8457d and HEAD (A-G62) and the detector did not see it — the audit cannot be trusted");
-  return { base: BASE, constantsExtracted: TRACKED.length, detectedMovesFromBase: moved, provesDetectorFires: true };
+  /* §83: and prove the comment hazard is CLOSED, with the exact shape that defeated it */
+  const trap = "/*\nexport const CROWDING = 0.9;\n*/\nexport const CROWDING = 0.3;\n";
+  const got = constantsFrom(trap).CROWDING;          // the REAL extractor, not a re-implementation of it
+  if (got !== "0.3")
+    throw new Error(`self-test: a declaration inside a block comment is still being read as code (got ${got}, want 0.3) — every scan in this audit is unsafe`);
+  return { base: BASE, constantsExtracted: TRACKED.length, detectedMovesFromBase: moved, provesDetectorFires: true,
+           provesCommentHazardClosed: "a declaration at column 0 inside a block comment is ignored; the real declaration is read" };
 })();
 const seals = readdirSync(OUT).filter(f => f.startsWith("SEALED-") && f.endsWith(".json")).sort();
 const rows = [];
