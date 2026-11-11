@@ -1456,6 +1456,12 @@ A-G66's LOCAL-GROUND LIMB — **FAILS**, on the outer side A-G66 itself declared
   > chosen. Two limbs of one obligation pull opposite ways on one constant, and A-G62 moved it to satisfy the
   > limb that was checked.** Reported as a measured range; the constant is GRÜN's and the bound is GELB's.
 
+  > **SUPERSEDED IN PART BY §19a — read that before using any `realisation` figure below.** The ratios in
+  > the next paragraph were computed with §23's float-alpha quantisation; A-G81's method replaces it and
+  > the corrected figures are band **1.0000** / best **0.8837** / field 0.7322 / horizon 0.7709. The
+  > conclusion is unchanged and better founded. (Back-pointer added after GELB's §72: a supersession
+  > recorded only at the destination is the defect that cost it a section, and this file had it too.)
+
 THE PRODUCT DOCSTRING'S CLAIM IS TRUE FOR ONE RING IN FOUR. *"Each ring is drawn solid and wide enough that
 its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance."* Measured /
 ideal-over-black: **shelf band 1.025 · best 0.920 · field 0.733 · horizon 0.770**. The 58 px band realises its
