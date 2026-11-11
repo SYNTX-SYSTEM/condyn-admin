@@ -11927,6 +11927,15 @@ static ground is unmodulated**; only the seven wave bands breathe. `:926` stroke
 > page. Outside: INK over **pure black**. The medium fades to its faintest exactly at the boundary — the
 > design plainly intends a soft end — **but a fade cannot be continuous across a discontinuous backdrop.**
 
+> ### ⚠ CORRECTED 2026-11-11 — THE PROFILE IS NOT FLAT *(see §101)*
+> **The flatness claim below is this lane's and it is not supported by the profile it rests on.** On the
+> shipping build the step reads **2.509 / 3.022 / 3.233 / 2.524 / 2.524 quanta** at offsets 1 / 2 / 3 / 5 / 8
+> — **it rises 29 % to offset 3 and falls back.** That is neither flat nor monotone-growing, and **a step
+> predicts flat, a ramp predicts monotone growth, and neither predicts a hump.** The seam's EXISTENCE is
+> unaffected — every offset clears the floor, and the seat-edge mechanism is derived from source and
+> confirmed by PINK's over-seat/over-plate discrimination. **What is withdrawn is "discontinuity rather
+> than narrow gradient", which is exactly the distinction sent to the owner.**
+
 **PINK had the signature and this lane had the cause:** a step **flat across offsets 1–8 px** is what an
 abrupt backdrop replacement gives; a ramp's apparent step grows with offset and PINK's does not move.
 
@@ -12124,7 +12133,9 @@ constant moves again.
 ### The seam survives and its comfort does not
 
 Recomputed from measured levels: **2.51–3.23 quanta** on the shipping build, not §94's 3.22–3.94 — still
-resolved, still flat across offsets 1–8. **The ruling stands because it never depended on the alpha.**
+resolved, **and NOT flat — 2.509 / 3.022 / 3.233 / 2.524 / 2.524 at offsets 1 / 2 / 3 / 5 / 8, a 29 % hump
+peaking at offset 3 (corrected in §101).** **The ruling stands because it never depended on the alpha**, and
+the seam's existence stands because every offset clears the floor; **its spatial extent is uncharacterised.**
 
 > **But PF-8's own guard refuses a rung below 2× the per-pixel floor, and offset 1 at 2.51 q sits within
 > 26 % of that line, where it had been reported as comfortably clear.** So the honest statement is
@@ -12782,3 +12793,99 @@ quantities*, not two estimates of one, and reconciling would have meant picking 
 
 **GRÜN's last item is the five mutants; nothing of its remaining work is behind another lane's branch.**
 PF-13 remains the one completion condition closed. No merge, no deployment, Gemini off.
+
+---
+
+## §101 A SELECTION EFFECT CAN SURVIVE BEING LOOKED FOR — AND THE SEAM PROFILE IS NOT FLAT
+
+**Date of this section: 2026-11-11.**
+
+### A-G434 · A selection effect can survive being looked for *(PINK's, renumbered from its A-G433)*
+
+PINK turned A-G432 on its own §38 construct limb — *"a div background and an SVG circle stroke agree 16/16,
+so the swatch tests the band's path"* — and needed **three** attempts:
+
+| | | |
+|---|---|---|
+| **1**, as published | 28 px stroke on r = 14, sampled at the **centre** | full coverage — **zero bits as designed** |
+| **2** | 2 px circle stroke at its **apex**, plus rect and div | **a circle's apex is locally horizontal, so that pixel is also fully covered** |
+| **3** | **partial coverage**, α 0.15, INK over opaque black | the regime that can falsify it |
+
+> *** ATTEMPT 2 EXISTED SPECIFICALLY TO ANSWER A-G432 AND REPRODUCED ATTEMPT 1's DEFECT. *** Because
+> *"sample the thin stroke"* and *"sample a partially covered pixel"* are **different asks, and only the
+> second discriminates.**
+>
+> **RULED: A-G432 is necessary and not sufficient. Asking what else the measurement could have come out as
+> does not discharge it — THE ANSWER HAS TO BECOME THE SAMPLE POINT.** That is the operational half §99
+> left implicit.
+
+**Fifth dress of the day's shape, and the first where the rule was its author's own and minutes old.** This
+lane's A-G422 was an hour after adopting it; GRÜN's within-run spread four sections; PINK's rounding model
+three; **this one, minutes.** *The interval is shrinking, which reads as both lanes getting faster at
+writing rules rather than better at keeping them.*
+
+### The limb holds, in a regime where it could have failed — and it diverges where it cannot be used
+
+```
+PEAK PIXEL        curved 2px stroke 1.6930e-2  ==  straight 2px rect 1.6930e-2   identical
+INTEGRATED LIGHT  curved 3.25599e-2            vs  straight 3.38600e-2
+                  ratio 0.96160 — the curved stroke loses 3.84%
+```
+
+**RATIFIED, both halves. The full-coverage pixel is identical to every digit across a curved 2 px stroke, a
+straight rect, a div and a 28 px stroke, at five alphas — BROADER than §38 claimed.** And the constructs
+**diverge at partial coverage by 3.84 % on integrated light.**
+
+> **So the swatch tests the band's INTERIOR, not the band's path. It licenses MODAL and PEAK readings; it
+> does NOT license INTEGRATED or MEAN readings over a thin stroke.** §37 and §38 are unaffected because
+> both used the modal interior triple — **what over-reached was the limb's STATEMENT, not its figures.**
+
+**And it reproduces PINK's own earlier figures independently** — band **1.0000 exact** against best 0.8837,
+field 0.7322, horizon 0.7709, the thin-stroke shortfall already attributed to antialiasing. Same mechanism,
+same sign, two instruments. **Magnitude correctly fenced: 3.84 % at r = 40 screen px bounds nothing about
+rings at user radii 160 / 400 / 500.**
+
+### A third reason the `rings` class cannot carry a verdict
+
+A-G424 said `rings` is a shelf-band measurement wearing a four-ring name — the band is 26.04 % of the disc
+against three thin strokes. **§41 adds the regime:**
+
+> **The band is interior-dominated; the other three rings ARE thin strokes. So even a correctly WEIGHTED
+> statistic over `rings` mixes a regime the construct limb licenses with one it does not — and `rings`
+> tier B is a p99, not a modal reading.** A-G424 said the class is the wrong population; **this says its
+> members sit in two different measurement regimes.** The re-take needs the band/stroke split for **both**
+> reasons, **and the second survives even if someone argues the first is only about weighting.**
+
+### The seam profile is not flat, and this lane sent the flatness to the owner
+
+§94 ruled the seam *"real, resolved, and flat across offsets 1–8 — so a discontinuity localised at the
+boundary, not a gradient, because a ramp's apparent step would grow with offset."* On the shipping build:
+
+```
+offset   1      2      3      5      8
+quanta   2.509  3.022  3.233  2.524  2.524
+```
+
+> *** THAT RISES 29 % TO OFFSET 3 AND FALLS BACK. It is neither flat nor monotone-growing — and a step
+> predicts flat, a ramp predicts monotone growth, and NEITHER PREDICTS A HUMP. ***
+>
+> **The seam's EXISTENCE is unaffected:** every offset clears PINK's floor, and the seat-edge mechanism is
+> derived from source (`:918` unmodulated ground, `:926` opaque SEAT across the full band width) **and
+> confirmed by measurement** through PINK's over-seat/over-plate discrimination. **What is WITHDRAWN is
+> "discontinuity rather than narrow gradient" — which is exactly the distinction this lane asked the owner
+> to look at.** *A visible edge* and *a three-pixel transition* are different things to put in front of an
+> eye.
+
+**And A-G434 is why this is raised rather than re-run:** **offset 1 is both the reading closest to the floor
+and the one most likely to sit in the partial-coverage regime §41 just fenced off.** *The tightest margin
+may be the least licensed sample.* So the question is not *measure it again* but **"is the offset-1 pixel
+fully covered, and does the hump survive restricting to pixels that are?"**
+
+**Corrected in place at both of its locations, per A-G320, and corrected to the owner: the seam is real and
+resolved; its spatial extent is NOT characterised.** A smaller claim, and the one the data supports.
+
+### Where this leaves the record
+
+**Three new defects:** PINK's attempt-1 and attempt-2 zero-bit limbs as one class with one remedy; the
+`rings` class's two-regime membership; and this lane's unsupported flatness claim, sent to the owner.
+**297 + 3 = 300.**
