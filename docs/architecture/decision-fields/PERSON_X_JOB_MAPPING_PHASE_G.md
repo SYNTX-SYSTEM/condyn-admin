@@ -14787,3 +14787,99 @@ no forward pointer at all, and this lane conflating two pin populations inside A
 > at A-G128 and buried twice more. **The list was built by counting mentions instead of reading verdicts**, and
 > every correction came from opening the thing the list named. **A-G453 is the first mechanical defence against
 > that class, and it is PINK's.**
+
+---
+
+## §117 PF-13 IS GUARDED, THE LIST IS EMPTY — AND ONE DELETED WORD MOVED AN EXCEPTION BETWEEN PREDICATES
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN built the run half, and PF-13 is the last pin off the list
+
+`gruen-pf13-evaluate.mjs` — verdict from the **JSON reporter**, not the exit code. **16 files, 197 tests, 197
+passed, 0 failed.** Guard 1 compares the reporter's file set to the enumerated population **in both
+directions**; guard 2 refuses a zero test count. **Both A-G452 mutants killed:**
+
+| mutant | result |
+|---|---|
+| **(a)** E-7's ladder assertion broken on a non-exempt test | evaluator **red, exit 1, and it NAMED the test** rather than merely failing |
+| **(b)** an always-failing file added inside `PHASE_DIRS` | **population auto-grew 16 → 17**, coverage matched both directions, the new failure was named, exit 1 |
+
+> **(b) is the one that matters, and it proves the thing a green could never show: the population is DERIVED and
+> LIVE, not a list that happened to be right once.** *** AND GUARD 2 IS THE ONE I HIT BEFORE I SPECIFIED IT ***
+> — my `numTotalTests: 0, numFailedTests: 0` is exactly what it refuses. **GRÜN put it first for that reason.**
+>
+> *** SO THE "NOT NAMED BY ANY GUARD IN EITHER LANE" LIST IS EMPTY. *** It was five in §113, four in §115, one in
+> §116, and **nil here.** **Four of the five dissolved on reading this lane's own record; the fifth was closed by
+> building the thing that was missing.** *One pin in five was a real gap, and the other four were this lane
+> failing to read itself.*
+
+### GRÜN's own derivation returned five, and the two it dropped are the finding
+
+**Five titles in the population declare a restatement.** Three say **phase F**; two say **phase G** —
+`field-e.test.tsx:355` and `field-f.test.tsx:195`, both *"REPRODUCE (restated, phase G)"*. **Verified here
+independently, not taken on report.**
+
+> **GRÜN's first derivation printed all five as one list attributed to `neurovisual-e`, caught it, and sent
+> three.** *** HAD IT SENT FIVE, I WOULD HAVE EXEMPTED TWO PHASE-G RESTATEMENTS FROM A PHASE-F PIN ON ITS
+> AUTHORITY — and the amendment would have carried my signature, not GRÜN's. ***
+>
+> *** A-G456, RULED: "RESTATED" IS NOT A PROPERTY, IT IS A RELATION TO A PHASE — SO AN EXCEPTION LIST'S
+> DERIVATION PREDICATE MUST CARRY THE FRAME THE PIN SITS IN. *** A-G454 said the exempted set must be derived
+> from the property that justifies the exemption. **This is the limb A-G454 was missing: the property is
+> *restated-for-phase-F*, and a predicate reading only `/restat/i` collects a superset that grows every time a
+> later phase restates anything.** The frame rules' fifth axis (**A-G430** build, **A-G435** domain, **A-G417**
+> population, **A-G437** quantifier) — **PHASE.** And it was caught **inside** the lane whose output it would
+> have corrupted, which is the only place it could have been caught cheaply.
+
+### The contradiction GRÜN refused to resolve quietly, and it is mine to settle
+
+**§116 asked for *"every test passes EXCEPT exactly the restated set"*. A-G426 — GRÜN's reading, which this lane
+adopted — established the exception is to UNCHANGED, not to PASSES.** The two statements of the pin:
+
+| | |
+|---|---|
+| §7 original | *"Every phase-D and phase-E test passes **unchanged**."* |
+| §17 restatement | *"every phase-D and phase-E test passes, **except** the three restated in writing"* |
+
+**The later form dropped the word `unchanged` and kept the word `except`.** With its anchor deleted, **`except`
+attached to the nearest surviving predicate — `passes`.**
+
+> *** RULED: THE EXCEPTION IS TO *UNCHANGED*, NOT TO *PASSES*. GRÜN's EVALUATOR IS CORRECT AND THE STRICTER
+> READING STANDS. *** A restated test has been deliberately rewritten, so it cannot be asked to pass
+> *unchanged*; **it must still pass.** The permissive reading would let PF-13 — **a regression pin, whose entire
+> job is that phase-D and phase-E work survives phase F** — permit three broken tests indefinitely. *A pin that
+> forgives failures in the tests most recently edited forgives exactly the failures most likely to be real.*
+>
+> *** A-G457, RULED: DELETING A WORD CAN MOVE AN EXCEPTION FROM ONE PREDICATE TO ANOTHER, AND NOTHING IN THE
+> SENTENCE SIGNALS THE MOVE. *** `unchanged` was the exception's anchor. Removing it left a grammatical
+> `except` that **silently re-attached and weakened the pin**, and the restatement reads as a tidy-up. **A-G441
+> is this rule's mirror** — *a disjunct added to a guarded predicate inherits its guards* — **and this is the
+> subtraction case: a predicate removed from under an exception bequeaths the exception to its neighbour.**
+> **Four phases of readers, two lanes, and the clause looked like an abbreviation.**
+
+### Two reconciliations closed
+
+**15 versus 16: the 15 was a stale output**, written before `field-g-mutant.test.tsx` existed. **Neither figure
+was wrong about its own moment; the file was wrong about *now*.** **A-G430 in its purest form** — a figure
+carries the build it was computed in, **and an output file is a figure with a timestamp and no build.** Both
+instruments independently report 16 and agree.
+
+**The venue is in GRÜN's output as asked:** `global-setup.ts` runs **unconditionally**, so the population's
+static files — **which open no database** — cannot be evaluated without a provisioned disposable one. **Recorded
+as a property of the stand, not of the pin.** B-ENTRY stands unbypassed in both lanes; GRÜN states it would have
+refused the credential in the other direction too.
+
+### Where this leaves the record
+
+**Three new defects:** PF-13's §17 restatement weakening the pin by dropping `unchanged`; GRÜN's five-for-three
+derivation over an unframed `restated` predicate; and the stale `pf13-population.json` reporting 15 against a
+live 16. **367 + 3 = 370.**
+
+> **And the closing observation of the pin work, which belongs above the count:** *** EVERY ONE OF THE FOUR
+> DISSOLVED PINS AND BOTH OF THE REAL DEFECTS WAS FOUND BY OPENING SOMETHING THIS LANE HAD ALREADY WRITTEN. ***
+> PG-12 at §36, PF-5 and PF-7 at A-G20, PG-19 at A-G128 and twice after, PF-13's exception list in its own two
+> statements, and the `unchanged` in §7 that §17 dropped. **No new measurement was required for any of them.**
+> The phase's last finding is not about the product. **It is that a record long enough to need a forward pointer
+> is long enough to contradict itself silently, and the only defence either lane found that works is a check
+> that REFUSES — A-G453's, which is PINK's.**
