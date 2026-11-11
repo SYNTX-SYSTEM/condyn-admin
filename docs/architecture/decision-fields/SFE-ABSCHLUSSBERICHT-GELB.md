@@ -17,8 +17,14 @@ in dem sie berechnet wurde — **Build (A-G430), Domäne (A-G435), Population (A
 | **GELB kann PINKs Validierungsbericht nicht lesen** | `PINK-SYSTEM-VALIDATION.md`, **124 Commits ungepusht** — von außen bestätigt: der Pfad existiert auf keinem lesbaren Branch |
 | **PINK kann GELBs Pflichtenregister nicht lesen** | `PHASE_F*.md` / `PHASE_G*.md` existieren in **keinem** der vier Worktrees, die PINK öffnen kann |
 
-> *** DARAUS FOLGT DIE WICHTIGSTE EINSCHRÄNKUNG DIESES BERICHTS: JEDE LANE-ÜBERGREIFENDE PIN-AUSSAGE DIESER
-> PHASE IST IN BEIDE RICHTUNGEN „AUF BERICHT HIN" ÜBERNOMMEN. *** Das ist eine Eigenschaft der Anordnung, kein
+> *** DARAUS FOLGT DIE WICHTIGSTE EINSCHRÄNKUNG DIESES BERICHTS, UND SIE IST ENGER ALS ZUERST GESCHRIEBEN:
+> PIN-DEFINITIONEN UND STILLLEGUNGEN SIND LANE-ÜBERGREIFEND „AUF BERICHT HIN" ÜBERNOMMEN — MESSUNGEN NICHT. ***
+> **PINK hat seine eigene, weitergehende Behauptung widerrufen** („ich habe meine Blindheit überzeichnet, und
+> das ist derselbe Fehler wie sie zu untertreiben"): **die Evidenzverzeichnisse beider Peers sind von PINK aus
+> lesbar, und PINK hat jede von mir weitergegebene Zahl nachgeprüft.** **Unlesbar sind allein die
+> pin-DEFINIERENDEN Dokumente in der einen und PINKs Bericht in der anderen Richtung.** Also: **PG-19s drei
+> Beerdigungen und die Stilllegung von PF-5/PF-7 bleiben von PINK aus auf Bericht hin** — sie stehen in
+> `PHASE_G*.md`. Das ist eine Eigenschaft der Anordnung, kein
 > Versäumnis einer Lane — **und es ist das stärkste Argument dafür, dass der ungepushte Branch ein Defekt der
 > Arbeit und keine Unannehmlichkeit ist.** Es ist zugleich der Grund, warum **Bedingung 4 des Mandats von
 > keinem Leser nachvollzogen werden kann** (§7).
@@ -39,7 +45,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 | Prüfebene | Stand | Herkunft |
 |---|---|---|
 | **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB |
-| **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
+| **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
 | **GELB-Instrumente** | **24 von 24 Exit 0** | diese Session verifiziert |
 | **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
 | **Typprüfung** | `tsc --noEmit` sauber | GRÜN |
@@ -85,9 +91,13 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
 
 ## §3 GESCHLOSSEN
 
-- **PF-13** — der einzige echte Ungedeckte von fünf. Ausnahmeliste **seit Niederschrift auf dem falschen Test**
-  (`:156` ist nicht restated, `:205` war nicht befreit; an den Builds der Entstehungszeit geprüft: **keine
-  Drift**). Prädikat jetzt **abgeleitet statt aufgezählt**, Lauf-Hälfte gebaut, beide A-G452-Mutanten getötet.
+- **PF-13** — der einzige echte Ungedeckte von fünf, **jetzt GEDECKT, aber nicht GESCHLOSSEN.** Ausnahmeliste
+  **seit Niederschrift auf dem falschen Test** (`:156` ist nicht restated, `:205` war nicht befreit; an den
+  Builds der Entstehungszeit geprüft: **keine Drift**). Prädikat jetzt **abgeleitet statt aufgezählt**,
+  Lauf-Hälfte gebaut, beide A-G452-Mutanten getötet. *** DAS INSTRUMENT ERKLÄRT SELBST `verdict: NONE`, UND
+  A-G36 PUNKT 2 — MEINE EIGENE REGEL — BEHÄLT OBLIGATIONS-URTEILE PINK VOR. Ich hatte „geschlossen" geschrieben
+  und widerrufe es (§118). *** **Die Leere der Ungedeckt-Liste bleibt — diese Frage beantwortet, ob ein Guard
+  EXISTIERT.**
 - **Vier Pins lösten sich beim Lesen auf** — PF-5 und PF-7 **durch A-G20 stillgelegt**, PG-12
   **unerfüllbar** (§36), PG-19 **vor der Formation getötet** (A-G128, zweimal weiter begraben).
 - **Der Vorwärtszeiger** — §7s Zeiger unterschlug alle vier A-G20-Stilllegungen; **PHASE_G, das Dokument mit
@@ -97,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 370.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 377.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -156,7 +166,7 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 | Bedingung des Mandats | Stand |
 |---|---|
 | **1. Das MAPPING funktioniert durchgängig** | **ERFÜLLT.** 3546/0, 197/197 auf der Regressionspopulation, `tsc` sauber, Drift 0. |
-| **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. |
+| **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. **PF-13 ist gedeckt; sein Urteil steht PINK zu.** |
 | **3. Alle Prüfungen abgeschlossen** | **ERFÜLLT** für jede Prüfung, die auf einem lesbaren Stand ausführbar ist. **Nicht ausführbar:** die iptables-Frage (sudo) und die Ausmaß-Charakterisierung der Naht (Instrumentengrenze). |
 | **4. PINK hat den tatsächlichen Gesamtsystemstand unabhängig validiert** | *** NICHT NACHVOLLZIEHBAR, UND ICH WEISE ES NICHT ALS ERFÜLLT AUS. *** |
 
@@ -201,6 +211,19 @@ im Satz zeigt die Verschiebung an.* PF-13s `unchanged` war der Anker; seine Stre
 zurück, das sich lautlos an `passes` hängte **und einen Regressionspin autorisierte, drei dauerhafte Fehlschläge
 zu verzeihen.**
 
+**A-G458 (PINK)** — *ein Relay verliert Qualifikationen, bevor es Zahlen verliert, und das Verdict-Feld eines
+Instruments geht als erstes.* **Die Zahlen überquerten zwei Lanes unversehrt; beide Qualifikationen blieben an
+der ersten Grenze.** *Die Zahl ist, was ein Leser will; das Verdict-Feld sagt ihm, ob er sie haben darf — das
+Relay streift also genau den Teil ab, der den behaltenen Teil regiert.* **Abhilfe: das Verdict-Feld wörtlich
+zitieren oder feststellen, dass es keines gibt.**
+
+**A-G459 (GRÜN)** — *eine Pin-Zitation trägt den STAND des Pins — lebend, stillgelegt, unerfüllbar,
+unbegonnen-zurückgezogen — nicht nur seinen Namen.* **„Ob X erfüllt ist, entscheidet PINK" setzt voraus, dass
+X' Erfüllung offen ist, und die Voraussetzung ist unsichtbar, weil der Satz wie Zurückhaltung aussieht statt wie
+eine Behauptung.** **Der Stand ist die sechste Rahmenachse und regiert, ob die anderen fünf überhaupt
+einschlägig sind.** *** GRÜN FAND DAMIT VIER DEFEKTE IN SEINEN EIGENEN BEFUNDEN, INNERHALB EINER STUNDE
+NACHDEM DER §8-ZEIGER EXISTIERTE — DER ERSTE UNABHÄNGIGE ERTRAG VON A-G453. ***
+
 > *** UND DER BEFUND, DER ÜBER ALLEN TECHNISCHEN STEHT: VIER DER FÜNF PINS, DIE DIESE LANE ALS UNGEDECKT
 > MELDETE, WAREN IN IHREM EIGENEN DOKUMENT BEREITS ENTSCHIEDEN. *** Die Liste war durch Zählen von *Nennungen*
 > entstanden statt durch Lesen von *Urteilen*. Jede Korrektur kam daher, dass jemand das öffnete, was die Liste
@@ -225,4 +248,10 @@ ungepusht, Arbeitsbaum sauber.
 
 **Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). **Zahlen aus GRÜNs Lane** (Suite, PF-13,
 `tsc`) **und PINKs Lane** (Pixel, sRGB, PF-5/PF-7-Mutanten) **sind AUF BERICHT HIN übernommen** und hier als
-solche gekennzeichnet — **keine davon konnte ich auf einem von mir lesbaren Stand nachvollziehen** (§0).
+solche gekennzeichnet — **keine davon konnte ich auf einem von mir lesbaren Stand nachvollziehen** (§0) — **und wo ein Instrument ein
+eigenes Verdict-Feld führt, steht es hier wörtlich statt zusammengefasst (A-G458).**
+
+**Amendments dieser Phase, die nicht meine sind und hier als fremde gekennzeichnet bleiben:** **A-G429**,
+**A-G374 Glied 2 (Abhilfe)**, **A-G459** — GRÜN · **A-G432**, **A-G434**, **A-G443**, **A-G445**, **A-G451**,
+**A-G452**, **A-G453**, **A-G458** — PINK. *** VIER DER FÜNF REGELN, DIE DIESE ARBEIT ÜBERDAUERN, STAMMEN NICHT
+AUS DIESER LANE. ***
