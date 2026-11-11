@@ -38,20 +38,41 @@
     => A-G136 CORRECTED: strict does not fail by construction, because the segment that would have
        failed it is never sampled. Both words give the same verdict, and that verdict is CANNOT FAIL.
 
-[4] PG-17 extent limb — the real margin (A-G128 gate, corrected)
-    measurable extent / r  =  (haloNear + 0.4 t) - 1 - seatHalf/r_px
-    rank 1     unmarked  extent 1.54996 r   vs bound 1.5 r   margin 0.04996 r = 1.399 px  clears
-    rank 1     marked    extent 1.53571 r   vs bound 1.5 r   margin 0.03571 r = 1.000 px  clears
-    last rank  unmarked  extent 1.94996 r   vs bound 1.5 r   margin 0.44996 r = 12.599 px  clears
-    last rank  marked    extent 1.93571 r   vs bound 1.5 r   margin 0.43571 r = 12.200 px  clears
-    achievable range 1.53571 .. 1.94996 r   bound 1.5 r
-    straddles the bound: false  =>  cannot fail on this artifact
-    worst-case margin: 1.000 device px, at the MARKED body (the one being looked at),
-    smallest drawn size, rank 1. Exact: 0.1 x 28 - 1.8 = 1.000 px.
-    => the code's own two comments disagree with each other and with the pin:
-       line 146 says ">= 1.6 x", line 880 says ">= 1.5 x", the pin says ">= 1.5 x".
-       The rim-based extent at rank 1 is exactly 1.6 r, so line 146 quotes the rank-1 rim figure
-       and omits the seat; no statement in the record or the code gives the measurable 1.536 r.
+[4] PG-17 extent limb — the REACHABLE envelope (A-G170: this block said "cannot fail" and was wrong)
+    WITHDRAWN as first written. It evaluated r_px at the single value 28, which layout-spec-v1.1.json:26
+    states WITH ITS CONDITION ATTACHED -- ">= 56 .. <= 92 px diameter AT L0, 1920 x 1080". PG-17
+    (PHASE_G.md:585) carries no viewport condition, so the pin ranges over an axis the premise does not.
+    PINK measured the axis (validation/hr-decision-loop-pink @ d133f400, 20 widths, L0, rank 1 marked;
+    5 bodies, lastRank 5, zero overflow, data-size-floor false, rank-1 rho_drawn constant at 41.544,
+    so k is the only variable). Its k values are the measured input below; the arithmetic is mine.
+
+     width       k  r_device  extent/r  margin px
+      1920  1.5156    27.411   1.53433     0.9411  pass
+      1366  1.8982    21.886   1.51776     0.3886  pass
+      1280  2.2524    18.444   1.50241     0.0444  pass
+      1270  2.3023    18.045   1.50025     0.0045  pass
+      1260  2.3545    17.645   1.49799    -0.0355  FAIL
+      1200  2.7264    15.238   1.48187    -0.2762  FAIL
+      1152  2.8791    14.430   1.47526    -0.3570  FAIL
+
+    break-even r_device (marked, rank 1): 1.8 / 0.1 = 18.000 px
+    break-even k: 41.544 / 17.999999999999986 = 2.30800
+    reachable envelope: 1.47526 .. 1.90289 r   bound 1.5 r
+    straddles the bound: true  =>  PG-17's extent limb IS a well-formed test.
+
+    The E-8 stage clamp bottoms the stage at 420 px below 1152, so the limb saturates at -0.3570 px:
+    never worse, never recovering. At the clamp floor the UNMARKED case clears by +0.0418 px, so both
+    cases sit within 0.36 px of the bound, one below and one above, separated only by whether the
+    reader is pointing at the body. Neither lane has a mechanism for that and neither invents one.
+
+    A-G171: satisfiability is a property of the REACHABLE ENVELOPE, not of one configuration of it,
+    and "reachable" means along the axes the pin ranges over. (PINK: SIZE_FLOOR_PX permits 6 device px
+    and extent 1.300 r, but data-size-floor is false at every width because the stage clamp bottoms
+    out first -- reachable in the code, not reachable along this axis. The failure needs no appeal to it.)
+
+    The code's own statements of this extent still disagree, which is now worse and not better:
+       line 146 ">= 1.6 x" (the rank-1 RIM figure), line 880 ">= 1.5 x", the pin ">= 1.5 x",
+       the record's §13 "1.1..2.6 r" -- and the reachable minimum, 1.475 r, appears nowhere.
 
 [5] A-G139 — quantisation-order spread, for the record
     rank 1     offset 0     one-step 4.359x  two-step 4.359x  spread 0.00%
@@ -90,6 +111,8 @@ PG-17 core limb    : statistic unnamed, range 0.74x..4.36x straddles the bound; 
                      energy" -- so this limb measures a quantity its own mechanism excludes.
 PG-17 monotone limb: cannot fail. Non-increasing holds by construction, and STRICT also holds,
                      because the one flat segment lies behind the body's own seat and is never sampled.
-PG-17 extent limb  : cannot fail. Achievable 1.536..1.950 r, bound 1.5 r -- but the worst case clears
-                     by exactly 1.000 device px (0.1 x 28 - 1.8). A tripwire, not a test.
+PG-17 extent limb  : A WELL-FORMED TEST. Reachable 1.475 r at the stage clamp to 1.950 r,
+                     straddling 1.5 r. It FAILS at every viewport width <= 1260 px (break-even k 2.30800,
+                     r_device 18.000 px, stage CSS width ~508.7 px), measured by PINK over 20 widths.
+                     A-G162 said "cannot fail, a tripwire" on a premise scoped to 1920 x 1080. Withdrawn.
 PG-19              : no joint index derivable -- one exponent from R25, no exchange rate, no fusion.

@@ -4751,3 +4751,157 @@ whether the render agrees, and it is now a run with a known target instead of an
 bounds with no recorded origin. **A-G143 stands: the verdict is a comparison against numbers whose provenance is
 UNDERIVED and CITED-WITHOUT-A-NUMBER, and it is reported with that attached or not at all.**
 
+
+---
+
+## §47 PINK BREAKS PG-17's EXTENT LIMB AT 1260 px — WITH THE ARGUMENT I HAD JUST USED TO CLEAR PG-10
+
+A-G162 ruled PG-17's extent limb *"cannot fail, by exactly one device pixel — a tripwire, not a test."* **PINK
+measured the axis I had held fixed and the limb fails at every viewport width ≤ 1260 px.** Its instrument and
+sweep are on `validation/hr-decision-loop-pink` @ `d133f400`.
+
+### A-G170 · A-G162 is withdrawn: I evaluated a pin at one point of an axis it ranges over *(defect 76)*
+
+**My 28 px came from `layout-spec-v1.1.json:26`, which states it with its condition attached** — *"≥ 56 … ≤ 92 px
+diameter **at L0, 1920 × 1080**"*. **PG-17 at §4 carries no level and no viewport condition.** `r_device =
+ρ_drawn / k`, and `k = viewBox / svgCssWidth` moves with the window under E-8/A-1, so **the margin is a
+continuous function of stage width and 28 px is one point on it.**
+
+PINK's measurement, comparability stated first — 5 bodies, `lastRank` 5, zero overflow, `data-size-floor` false
+at every width, and **rank-1 `ρ_drawn` constant at 41.544**, so `k` is the only variable. I reproduced every row:
+
+| width | k | r_device | extent / r | margin | |
+|---|---|---|---|---|---|
+| 1920 | 1.5156 | 27.411 | 1.53433 | **+0.9411 px** | pass |
+| 1366 | 1.8982 | 21.886 | 1.51776 | +0.3886 px | pass |
+| 1280 | 2.2524 | 18.444 | 1.50241 | +0.0444 px | pass |
+| 1270 | 2.3023 | 18.045 | 1.50025 | +0.0045 px | pass |
+| **1260** | 2.3545 | 17.645 | 1.49799 | **−0.0355 px** | **FAIL** |
+| 1200 | 2.7264 | 15.238 | 1.48187 | −0.2762 px | FAIL |
+| **≤ 1152** | 2.8791 | 14.430 | **1.47526** | −0.3570 px | FAIL, saturated |
+
+**Break-even is exact: `r_device = 1.8 / 0.1 = 18.000 px`, `k = 41.544 / 18 = 2.30800`, a stage CSS width of
+≈ 508.7 px.** Below 1152 the E-8 clamp bottoms the stage at 420 px and the limb saturates at −0.3570 — never
+worse, never recovering. **1024 and 768 both fail.**
+
+**So the envelope is 1.475 … 1.903 r and it straddles 1.5 r. PG-17's extent limb is a well-formed test**, and my
++1.000 px against PINK's measured +0.9411 px at 1920 was never the issue: **the arithmetic was right and the
+premise was scoped.**
+
+### A-G171 · A-G167 gains the clause both of these turned on — PINK's formulation, adopted
+
+> **Satisfiability is a property of the reachable envelope, not of one configuration of it** — and *reachable*
+> means **along the axes the pin ranges over**.
+
+**This is the same sentence that cleared PG-10 one section ago.** There I varied rank, mark state and
+`selectedGain` and found the envelope straddled; here I fixed the viewport and did not notice I had. **PINK is
+right that A-G167 should carry the clause, because it is what both pins turned on** — and A-G167 is one section
+old, so this is the second correction to it before it has been applied anywhere else.
+
+**And PINK supplied the clause's own boundary, against itself.** `SIZE_FLOOR_PX` permits 6 device px, where
+extent would be 1.300 r — a far worse failure. **It does not carry: `data-size-floor` is false at every width,
+because the stage clamp bottoms out before the floor is reachable.** *Reachable in the code, not reachable along
+this axis.* PINK recorded that it started there and had to drop it, and the failure above needs no appeal to it.
+
+### A-G172 · The TRIPWIRE outcome is withdrawn — it was a category invented to hold one misread case
+
+A-G162 added a third outcome to A-G128 for a pin that *"certifies nothing today and fails the moment the
+artifact drifts."* **That pin does not exist. It was a well-formed test evaluated at one point.**
+
+**Withdrawn.** A-G128 keeps its two outcomes.
+
+> **A gate that acquires a new category in order to classify a single case should be suspected of having misread
+> the case.** The one-pixel margin was the signal — I read it as *"too tight to certify"* and wrote a category
+> around it, when a margin that small against a continuous quantity is **evidence that the quantity is near a
+> boundary the analysis has not varied.**
+
+If a genuine tripwire is ever found, it comes back with that case as its evidence. And A-G162's contrast with
+PG-5's inert cap (A-G156) **goes with it**: inert and tripwire were never two findings; one was real and one was
+an artefact of a fixed premise.
+
+### A-G173 · The record carried the provenance and my message dropped it *(defect 77)*
+
+My §46 message to PINK described the ground scalar **0.0044378** as *"your lane's measured"*. **It is GRÜN's.**
+The committed output says `GRUEN measured 0.0044378` and is correct; **the message was wrong, and PINK caught
+it.**
+
+**A-G146 made provenance transitive through the dependency graph. A message to another lane is a hop in that
+graph and I had not treated it as one.** The record was right and the channel was lossy — and the lane I
+misattributed a number *to* is the lane whose independence the whole seal discipline exists to protect. **PINK's
+note is the right one: this matters more, not less, because provenance is what I am policing.**
+
+> **A number quoted to another lane carries its origin, or it is not quoted.** Same standard as A-G35 and A-G106,
+> applied to the one surface that had no rule.
+
+### A-G174 · The ground sweep is PENDING — and PINK declined to settle it with the wrong quantity
+
+A-G169's sweep asked PINK to say so if its measured ground fell outside `rgb(10,10,10)`…`rgb(18,18,18)`
+(L ∈ [0.0030353, 0.0060581]). **PINK's committed figures are 0.0027097 / 0.0027391 / 0.0030567 / 0.0031013 — two
+below my floor — and PINK's refusal to report that against the sweep is correct.**
+
+Its `discMeanLum_groundOnly` is an **area mean over the disc with semantic masked, including `#mf-ground` and the
+wave layers**; mine is the **point luminance of a ground triple.** Different quantities. **What the comparison
+needs is the local ground on the `.mf-wave-halo` annulus immediately outside each seat** — the per-body local
+ground A-G97 and A-G65 require for PG-10 regardless, not yet measured.
+
+**Recorded: A-G169's sweep is neither confirmed nor void. It is pending that measurement**, and PG-10's figures
+in §46 stand as a prediction with one input unsettled. **This is A-G122's units defect caught before it produced
+a false agreement rather than after** — the easier error here would have been for either of us to accept the
+numbers as comparable because both are "the ground".
+
+### A-G175 · PINK's monotone-limb note: the conclusion holds, the mechanism is misattributed
+
+PINK re-derived the monotone limb independently and agrees it cannot fail — occlusion offset at the last rank is
+`1/3 + 0.6/r` against a flat head ending at 0.33, positive for every r. **Its side-note says a truncation
+supplies the un-failability: `GLOW_RAMP`'s head is written `0.33` where the code's own comment declares it
+`1 / haloFar` = 0.3333…, and *"round it and the limb lands exactly on the boundary at the last rank."***
+
+**It does not.** By PINK's own formula the margin with the head at exactly `1/haloFar` is `0.6/r`, **still
+positive for every r** — the truncation contributes 0.003333 and the **seat's half-width** contributes 0.6/r,
+which is the term that never vanishes. **The limb lands on the boundary only if the seat is dropped, and A-G97
+makes the seat an occluder.** *Conclusion right, mechanism wrong* — which is the shape of three of my own errors
+this phase, and it is worth recording that it reads no differently from the other lane.
+
+**But the discrepancy PINK found is real and belongs with A-G163**: `GLOW_RAMP`'s `0.33` against a comment
+declaring `1 / haloFar`. **That is A-G163's class exactly** — a figure in a comment held to the rule's standard —
+and it goes to GRÜN with the other two comment fixes, not as a product change.
+
+### A-G176 · An instrument that converts between unit systems carries two routes to the factor — PINK's near-miss, adopted
+
+**PINK nearly sent this finding as a FAIL at 1280.** Its first pass took `k` from
+`[data-testid="mapping-field"] svg`, **which resolves to a 14 px icon** — `viewBox` 14 over client 14 gives
+`k = 1.0000` **silently**, and the instrument then returned **field units under a label reading device px.** It
+put rank 1 at 1280 below the bound.
+
+**What caught it was a second, independent route to the same factor** — the shape's bounding rect — disagreeing
+by 0.75 % body to body. **That second route is not the measurement** (dashed and round-capped strokes perturb the
+rect) and PINK says so; **it was enough to show the first route was wrong.**
+
+> **An instrument that converts between unit systems carries a second, independent route to the conversion
+> factor, and reports their disagreement.** A unit error is invisible to every check on the converted numbers,
+> because they are self-consistent. **It is only visible against a second route.**
+
+**And the reason it survived at all is the one worth keeping: `k = 1.0000` is not an implausible number, and
+"about 20" in field units and "about 20" in device px look alike.** A-F11 pointed at the instrument rather than
+at the artifact, and this is the sharpest instance of it in the phase — **a decoy element whose two dimensions
+coincide, so the scale silently becomes the identity.**
+
+### Where PG-17 stands now
+
+| limb | verdict |
+|---|---|
+| core, ≥ 1.45 × the local ground | **struck** (A-G160) — bounds the quantity R21 excludes |
+| monotone falloff | **cannot fail** (A-G161, A-G175) — the flat head is behind the seat at every rank and every r |
+| extent ≥ 1.5 r | **a well-formed test** (A-G170) — fails at every width ≤ 1260 px |
+
+**So PG-17 is not withdrawn. It is reduced to one limb, and that limb is live and currently failing on two
+thirds of the widths anyone would open the field at.** A-G166 relieved PINK of PG-17 entirely; **that is
+rescinded for the extent limb, which PINK has already measured and has put back on its own queue.** The seal
+ruling stands — the sealed reading concerns the core and monotone limbs and is still evidence rather than
+verdict.
+
+**And the owner now has a product question that no lane can decide:** the extent limb fails below 1260 px, the
+gap at the clamp floor is 0.357 px, and at that floor **the unmarked case clears by 0.042 px while the marked
+case fails by 0.036 px — separated only by whether the reader is pointing at the body.** Neither PINK nor I have
+a mechanism for that and neither of us is inventing one.
+

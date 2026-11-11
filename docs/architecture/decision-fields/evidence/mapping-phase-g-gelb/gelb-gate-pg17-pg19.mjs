@@ -111,25 +111,47 @@ say('    => A-G136 CORRECTED: strict does not fail by construction, because the 
 say('       failed it is never sampled. Both words give the same verdict, and that verdict is CANNOT FAIL.');
 say('');
 
-say('[4] PG-17 extent limb — the real margin (A-G128 gate, corrected)');
-say('    measurable extent / r  =  (haloNear + 0.4 t) - 1 - seatHalf/r_px');
-const ext = [];
-for (const [rname, t] of [['rank 1', 0], ['last rank', 1]])
-  for (const [mname, h] of Object.entries(seatHalf)) {
-    const e = haloR(t) - 1 - h / R_PX_FLOOR;
-    ext.push(e);
-    const marginPx = (e - PG17_EXTENT_R) * R_PX_FLOOR;
-    say(`    ${rname.padEnd(10)} ${mname.padEnd(9)} extent ${e.toFixed(5)} r   vs bound ${PG17_EXTENT_R} r   margin ${(e - PG17_EXTENT_R).toFixed(5)} r = ${marginPx.toFixed(3)} px  ${e >= PG17_EXTENT_R ? 'clears' : 'FAILS'}`);
-  }
-const eMin = Math.min(...ext), eMax = Math.max(...ext);
-say(`    achievable range ${eMin.toFixed(5)} .. ${eMax.toFixed(5)} r   bound ${PG17_EXTENT_R} r`);
-say(`    straddles the bound: ${eMin < PG17_EXTENT_R && eMax > PG17_EXTENT_R}  =>  cannot fail on this artifact`);
-say(`    worst-case margin: ${((eMin - PG17_EXTENT_R) * R_PX_FLOOR).toFixed(3)} device px, at the MARKED body (the one being looked at),`);
-say(`    smallest drawn size, rank 1. Exact: 0.1 x ${R_PX_FLOOR} - ${seatHalf.marked} = ${(0.1 * R_PX_FLOOR - seatHalf.marked).toFixed(3)} px.`);
-say(`    => the code's own two comments disagree with each other and with the pin:`);
-say(`       line 146 says ">= 1.6 x", line 880 says ">= 1.5 x", the pin says ">= 1.5 x".`);
-say(`       The rim-based extent at rank 1 is exactly ${(haloR(0) - 1).toFixed(1)} r, so line 146 quotes the rank-1 rim figure`);
-say(`       and omits the seat; no statement in the record or the code gives the measurable ${eMin.toFixed(3)} r.`);
+say('[4] PG-17 extent limb — the REACHABLE envelope (A-G170: this block said "cannot fail" and was wrong)');
+say('    WITHDRAWN as first written. It evaluated r_px at the single value 28, which layout-spec-v1.1.json:26');
+say('    states WITH ITS CONDITION ATTACHED -- ">= 56 .. <= 92 px diameter AT L0, 1920 x 1080". PG-17');
+say('    (PHASE_G.md:585) carries no viewport condition, so the pin ranges over an axis the premise does not.');
+say('    PINK measured the axis (validation/hr-decision-loop-pink @ d133f400, 20 widths, L0, rank 1 marked;');
+say('    5 bodies, lastRank 5, zero overflow, data-size-floor false, rank-1 rho_drawn constant at 41.544,');
+say('    so k is the only variable). Its k values are the measured input below; the arithmetic is mine.');
+say('');
+const RHO_DRAWN_RANK1 = 41.544;        // PINK, measured, constant across all 20 widths
+const PINK_K = [[1920, 1.5156], [1366, 1.8982], [1280, 2.2524], [1270, 2.3023],
+                [1260, 2.3545], [1200, 2.7264], [1152, 2.8791]];   // 1152 = the E-8 stage clamp floor
+const extentAt = (rPx, t, seatHalf) => haloR(t) - 1 - seatHalf / rPx;
+say(`    ${'width'.padStart(6)} ${'k'.padStart(7)} ${'r_device'.padStart(9)} ${'extent/r'.padStart(9)} ${'margin px'.padStart(10)}`);
+const env = [];
+for (const [w, k] of PINK_K) {
+  const rPx = RHO_DRAWN_RANK1 / k;
+  const e = extentAt(rPx, 0, seatHalf.marked);
+  env.push(e);
+  say(`    ${String(w).padStart(6)} ${k.toFixed(4).padStart(7)} ${rPx.toFixed(3).padStart(9)} ${e.toFixed(5).padStart(9)} ${((e - PG17_EXTENT_R) * rPx).toFixed(4).padStart(10)}  ${e >= PG17_EXTENT_R ? 'pass' : 'FAIL'}`);
+}
+const breakEvenR = seatHalf.marked / (haloR(0) - 1 - PG17_EXTENT_R);
+say('');
+say(`    break-even r_device (marked, rank 1): ${seatHalf.marked} / ${(haloR(0) - 1 - PG17_EXTENT_R).toFixed(1)} = ${breakEvenR.toFixed(3)} px`);
+say(`    break-even k: ${RHO_DRAWN_RANK1} / ${breakEvenR} = ${(RHO_DRAWN_RANK1 / breakEvenR).toFixed(5)}`);
+const eClampMarked = Math.min(...env), eWide = extentAt(RHO_DRAWN_RANK1 / PINK_K[0][1], 1, seatHalf.unmarked);
+say(`    reachable envelope: ${eClampMarked.toFixed(5)} .. ${extentAt(RHO_DRAWN_RANK1 / PINK_K[PINK_K.length-1][1], 1, seatHalf.unmarked).toFixed(5)} r   bound ${PG17_EXTENT_R} r`);
+say(`    straddles the bound: ${eClampMarked < PG17_EXTENT_R}  =>  PG-17's extent limb IS a well-formed test.`);
+say('');
+say('    The E-8 stage clamp bottoms the stage at 420 px below 1152, so the limb saturates at -0.3570 px:');
+say('    never worse, never recovering. At the clamp floor the UNMARKED case clears by +0.0418 px, so both');
+say(`    cases sit within 0.36 px of the bound, one below and one above, separated only by whether the`);
+say('    reader is pointing at the body. Neither lane has a mechanism for that and neither invents one.');
+say('');
+say('    A-G171: satisfiability is a property of the REACHABLE ENVELOPE, not of one configuration of it,');
+say('    and "reachable" means along the axes the pin ranges over. (PINK: SIZE_FLOOR_PX permits 6 device px');
+say('    and extent 1.300 r, but data-size-floor is false at every width because the stage clamp bottoms');
+say('    out first -- reachable in the code, not reachable along this axis. The failure needs no appeal to it.)');
+say('');
+say('    The code\'s own statements of this extent still disagree, which is now worse and not better:');
+say('       line 146 ">= 1.6 x" (the rank-1 RIM figure), line 880 ">= 1.5 x", the pin ">= 1.5 x",');
+say(`       the record's §13 "1.1..2.6 r" -- and the reachable minimum, ${eClampMarked.toFixed(3)} r, appears nowhere.`);
 say('');
 
 // ---------------------------------------------------------------- 5
@@ -176,8 +198,10 @@ say('                     states the percept is "explained by neither local cont
 say('                     energy" -- so this limb measures a quantity its own mechanism excludes.');
 say('PG-17 monotone limb: cannot fail. Non-increasing holds by construction, and STRICT also holds,');
 say('                     because the one flat segment lies behind the body\'s own seat and is never sampled.');
-say(`PG-17 extent limb  : cannot fail. Achievable ${eMin.toFixed(3)}..${eMax.toFixed(3)} r, bound 1.5 r -- but the worst case clears`);
-say('                     by exactly 1.000 device px (0.1 x 28 - 1.8). A tripwire, not a test.');
+say(`PG-17 extent limb  : A WELL-FORMED TEST. Reachable ${eClampMarked.toFixed(3)} r at the stage clamp to 1.950 r,`);
+say('                     straddling 1.5 r. It FAILS at every viewport width <= 1260 px (break-even k 2.30800,');
+say('                     r_device 18.000 px, stage CSS width ~508.7 px), measured by PINK over 20 widths.');
+say('                     A-G162 said "cannot fail, a tripwire" on a premise scoped to 1920 x 1080. Withdrawn.');
 say('PG-19              : no joint index derivable -- one exponent from R25, no exchange rate, no fusion.');
 
 import { writeFileSync } from 'node:fs';
