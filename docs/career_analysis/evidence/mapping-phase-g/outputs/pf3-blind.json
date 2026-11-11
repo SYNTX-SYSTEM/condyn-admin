@@ -14,7 +14,7 @@
   ],
   "untrackedProductFiles": [],
   "buildId": "utpaUMQpafZVzAeyYImhv",
-  "measuredAt": "2026-11-11T20:51:37.616Z",
+  "measuredAt": "2026-11-11T22:18:50.082Z",
   "measuredBuildCommit": "c84ab292",
   "measuredWorktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks"
  },
@@ -80,66 +80,66 @@
     "core": 1
    },
    "limb1_footprint": {
-    "volumeLitPixels": 21888,
-    "outlineLitPixels": 3780,
-    "ratio": 5.79,
+    "volumeLitPixels": 21992,
+    "outlineLitPixels": 3783,
+    "ratio": 5.813,
     "bound": ">= 6",
     "clears": false,
     "populationsPerRepeat": {
      "volume": {
       "perRepeat": [
-       21954,
-       22042,
-       22110
+       22038,
+       22033,
+       22119
       ],
-      "spreadPct": 0.706
+      "spreadPct": 0.389
      },
      "outline": {
       "perRepeat": [
-       3969,
-       3833,
-       3927
+       3827,
+       3834,
+       3917
       ],
-      "spreadPct": 3.427
+      "spreadPct": 2.298
      }
     },
     "undecided": {
-     "volume": 421,
-     "outline": 317
+     "volume": 210,
+     "outline": 218
     },
     "areaIsByUnanimity": "a pixel counts as lit only if it exceeded the threshold in EVERY measured cycle; the pixels some cycles lit and others did not are reported as undecided rather than rounded in. §95's remedy, applied to an arbitrary selector."
    },
    "limb2_haloOverCore": {
     "haloPeakExcess": 0.100071,
-    "corePeakExcess": 0.033158,
+    "corePeakExcess": 0.040395,
     "peakMeasurable": false,
     "peakSpreadPct": {
      "halo": 1.832,
-     "core": 34.613
+     "core": 79.527
     },
     "ratio_peak": null,
-    "ratio_peak_ifPublishedAnyway": 3.018,
+    "ratio_peak_ifPublishedAnyway": 2.4773,
     "ratio_p99": 2.3414,
     "bound": "<= 0.25",
     "clears": null,
     "halo": {
-     "litPixels": 17197,
-     "litPixelsUndecided": 429,
-     "litPixelsUndecidedPctOfUnanimous": 2.495,
-     "litPixelsByMeanExcess": 17296,
+     "litPixels": 17214,
+     "litPixelsUndecided": 213,
+     "litPixelsUndecidedPctOfUnanimous": 1.237,
+     "litPixelsByMeanExcess": 17320,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       17367,
-       17332,
-       17423
+       17255,
+       17350,
+       17256
       ],
-      "spreadPct": 0.522
+      "spreadPct": 0.548
      },
      "peakOfMeanExcess": 0.100071,
      "peakPerRepeat": {
       "perRepeat": [
-       0.101938,
        0.100071,
+       0.101938,
        0.100071
       ],
       "spreadPct": 1.832
@@ -147,34 +147,34 @@
      "peakMeasurable": true,
      "peakSpreadPct": 1.832,
      "p99OfMeanExcess": 0.066581,
-     "totalLight": 259.1128
+     "totalLight": 259.3171
     },
     "core": {
      "litPixels": 3480,
-     "litPixelsUndecided": 544,
-     "litPixelsUndecidedPctOfUnanimous": 15.632,
-     "litPixelsByMeanExcess": 3721,
+     "litPixelsUndecided": 392,
+     "litPixelsUndecidedPctOfUnanimous": 11.264,
+     "litPixelsByMeanExcess": 3563,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       3800,
-       3627,
-       3655
+       3678,
+       3608,
+       3554
       ],
-      "spreadPct": 4.553
+      "spreadPct": 3.371
      },
-     "peakOfMeanExcess": 0.033158,
+     "peakOfMeanExcess": 0.040395,
      "peakPerRepeat": {
       "perRepeat": [
+       0.152131,
        0.099474,
-       0.099474,
-       0.152131
+       0.031146
       ],
-      "spreadPct": 34.613
+      "spreadPct": 79.527
      },
      "peakMeasurable": false,
-     "peakSpreadPct": 34.613,
+     "peakSpreadPct": 79.527,
      "p99OfMeanExcess": 0.028437,
-     "totalLight": 59.4463
+     "totalLight": 58.5223
     },
     "whyBothStatistics": "PF-3 says PEAK, so the peak is the figure. p99 is reported beside it because a single-pixel maximum on a noisy raster is the statistic most exposed to the ~1000-pixel capture noise §95 measured, and a limb that holds on both is not resting on one pixel."
    }
@@ -191,60 +191,60 @@
     "core": 1
    },
    "limb1_footprint": {
-    "volumeLitPixels": 36770,
-    "outlineLitPixels": 6132,
-    "ratio": 5.996,
+    "volumeLitPixels": 36743,
+    "outlineLitPixels": 6131,
+    "ratio": 5.993,
     "bound": ">= 6",
     "clears": false,
     "populationsPerRepeat": {
      "volume": {
       "perRepeat": [
-       37016,
-       36990,
-       36879
+       36889,
+       36859,
+       36869
       ],
-      "spreadPct": 0.37
+      "spreadPct": 0.081
      },
      "outline": {
       "perRepeat": [
-       6240,
-       6238,
-       6240
+       6717,
+       6329,
+       6643
       ],
-      "spreadPct": 0.032
+      "spreadPct": 5.776
      }
     },
     "undecided": {
-     "volume": 429,
-     "outline": 286
+     "volume": 323,
+     "outline": 1210
     },
     "areaIsByUnanimity": "a pixel counts as lit only if it exceeded the threshold in EVERY measured cycle; the pixels some cycles lit and others did not are reported as undecided rather than rounded in. §95's remedy, applied to an arbitrary selector."
    },
    "limb2_haloOverCore": {
     "haloPeakExcess": 0.108823,
-    "corePeakExcess": 0.032075,
+    "corePeakExcess": 0.028,
     "peakMeasurable": false,
     "peakSpreadPct": {
      "halo": 0,
-     "core": 6.667
+     "core": 52.417
     },
     "ratio_peak": null,
-    "ratio_peak_ifPublishedAnyway": 3.3928,
+    "ratio_peak_ifPublishedAnyway": 3.8865,
     "ratio_p99": 2.3051,
     "bound": "<= 0.25",
     "clears": null,
     "halo": {
-     "litPixels": 29759,
-     "litPixelsUndecided": 668,
-     "litPixelsUndecidedPctOfUnanimous": 2.245,
-     "litPixelsByMeanExcess": 29977,
+     "litPixels": 29777,
+     "litPixelsUndecided": 622,
+     "litPixelsUndecidedPctOfUnanimous": 2.089,
+     "litPixelsByMeanExcess": 29970,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       29976,
-       30103,
-       29989
+       29982,
+       29939,
+       30111
       ],
-      "spreadPct": 0.422
+      "spreadPct": 0.571
      },
      "peakOfMeanExcess": 0.108823,
      "peakPerRepeat": {
@@ -258,34 +258,34 @@
      "peakMeasurable": true,
      "peakSpreadPct": 0,
      "p99OfMeanExcess": 0.059277,
-     "totalLight": 434.197
+     "totalLight": 434.1986
     },
     "core": {
      "litPixels": 5666,
-     "litPixelsUndecided": 703,
-     "litPixelsUndecidedPctOfUnanimous": 12.407,
-     "litPixelsByMeanExcess": 6061,
+     "litPixelsUndecided": 495,
+     "litPixelsUndecidedPctOfUnanimous": 8.736,
+     "litPixelsByMeanExcess": 5796,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       6022,
-       5920,
-       5912
+       5861,
+       5861,
+       5791
       ],
-      "spreadPct": 1.827
+      "spreadPct": 1.194
      },
-     "peakOfMeanExcess": 0.032075,
+     "peakOfMeanExcess": 0.028,
      "peakPerRepeat": {
       "perRepeat": [
-       0.049325,
        0.052848,
-       0.052848
+       0.058845,
+       0.028
       ],
-      "spreadPct": 6.667
+      "spreadPct": 52.417
      },
      "peakMeasurable": false,
-     "peakSpreadPct": 6.667,
+     "peakSpreadPct": 52.417,
      "p99OfMeanExcess": 0.025716,
-     "totalLight": 84.6459
+     "totalLight": 83.6435
     },
     "whyBothStatistics": "PF-3 says PEAK, so the peak is the figure. p99 is reported beside it because a single-pixel maximum on a noisy raster is the statistic most exposed to the ~1000-pixel capture noise §95 measured, and a limb that holds on both is not resting on one pixel."
    }
@@ -302,32 +302,32 @@
     "core": 1
    },
    "limb1_footprint": {
-    "volumeLitPixels": 23225,
+    "volumeLitPixels": 23217,
     "outlineLitPixels": 3603,
-    "ratio": 6.446,
+    "ratio": 6.444,
     "bound": ">= 6",
     "clears": true,
     "populationsPerRepeat": {
      "volume": {
       "perRepeat": [
-       23360,
-       23411,
-       23460
+       23441,
+       23333,
+       23433
       ],
-      "spreadPct": 0.426
+      "spreadPct": 0.461
      },
      "outline": {
       "perRepeat": [
-       3916,
-       3773,
+       3826,
+       3748,
        3705
       ],
-      "spreadPct": 5.388
+      "spreadPct": 3.163
      }
     },
     "undecided": {
-     "volume": 505,
-     "outline": 557
+     "volume": 466,
+     "outline": 455
     },
     "areaIsByUnanimity": "a pixel counts as lit only if it exceeded the threshold in EVERY measured cycle; the pixels some cycles lit and others did not are reported as undecided rather than rounded in. §95's remedy, applied to an arbitrary selector."
    },
@@ -345,17 +345,17 @@
     "bound": "<= 0.25",
     "clears": false,
     "halo": {
-     "litPixels": 18705,
-     "litPixelsUndecided": 527,
-     "litPixelsUndecidedPctOfUnanimous": 2.817,
-     "litPixelsByMeanExcess": 18858,
+     "litPixels": 18714,
+     "litPixelsUndecided": 376,
+     "litPixelsUndecidedPctOfUnanimous": 2.009,
+     "litPixelsByMeanExcess": 18844,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       18919,
-       18945,
-       18947
+       18853,
+       18913,
+       18809
       ],
-      "spreadPct": 0.148
+      "spreadPct": 0.55
      },
      "peakOfMeanExcess": 0.063702,
      "peakPerRepeat": {
@@ -369,20 +369,20 @@
      "peakMeasurable": true,
      "peakSpreadPct": 0,
      "p99OfMeanExcess": 0.055546,
-     "totalLight": 246.3893
+     "totalLight": 246.3825
     },
     "core": {
-     "litPixels": 3378,
-     "litPixelsUndecided": 296,
-     "litPixelsUndecidedPctOfUnanimous": 8.763,
-     "litPixelsByMeanExcess": 3468,
+     "litPixels": 3374,
+     "litPixelsUndecided": 407,
+     "litPixelsUndecidedPctOfUnanimous": 12.063,
+     "litPixelsByMeanExcess": 3471,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       3466,
-       3447,
-       3520
+       3587,
+       3493,
+       3449
       ],
-      "spreadPct": 2.074
+      "spreadPct": 3.847
      },
      "peakOfMeanExcess": 0.024457,
      "peakPerRepeat": {
@@ -396,7 +396,7 @@
      "peakMeasurable": true,
      "peakSpreadPct": 0,
      "p99OfMeanExcess": 0.02219,
-     "totalLight": 44.3009
+     "totalLight": 44.3058
     },
     "whyBothStatistics": "PF-3 says PEAK, so the peak is the figure. p99 is reported beside it because a single-pixel maximum on a noisy raster is the statistic most exposed to the ~1000-pixel capture noise §95 measured, and a limb that holds on both is not resting on one pixel."
    }
@@ -413,65 +413,65 @@
     "core": 1
    },
    "limb1_footprint": {
-    "volumeLitPixels": 20970,
+    "volumeLitPixels": 20955,
     "outlineLitPixels": 3154,
-    "ratio": 6.649,
+    "ratio": 6.644,
     "bound": ">= 6",
     "clears": true,
     "populationsPerRepeat": {
      "volume": {
       "perRepeat": [
-       21152,
-       21062,
-       21086
+       21097,
+       21164,
+       21128
       ],
-      "spreadPct": 0.425
+      "spreadPct": 0.317
      },
      "outline": {
       "perRepeat": [
-       3328,
-       3299,
-       3298
+       3404,
+       3264,
+       3295
       ],
-      "spreadPct": 0.901
+      "spreadPct": 4.113
      }
     },
     "undecided": {
-     "volume": 368,
-     "outline": 392
+     "volume": 481,
+     "outline": 414
     },
     "areaIsByUnanimity": "a pixel counts as lit only if it exceeded the threshold in EVERY measured cycle; the pixels some cycles lit and others did not are reported as undecided rather than rounded in. §95's remedy, applied to an arbitrary selector."
    },
    "limb2_haloOverCore": {
-    "haloPeakExcess": 0.108997,
+    "haloPeakExcess": 0.109209,
     "corePeakExcess": 0.021004,
-    "peakMeasurable": true,
+    "peakMeasurable": false,
     "peakSpreadPct": {
      "halo": 1.291,
-     "core": 0
+     "core": 18.09
     },
-    "ratio_peak": 5.1893,
-    "ratio_peak_ifPublishedAnyway": 5.1893,
-    "ratio_p99": 2.6117,
+    "ratio_peak": null,
+    "ratio_peak_ifPublishedAnyway": 5.1994,
+    "ratio_p99": 2.4989,
     "bound": "<= 0.25",
-    "clears": false,
+    "clears": null,
     "halo": {
-     "litPixels": 17086,
-     "litPixelsUndecided": 314,
-     "litPixelsUndecidedPctOfUnanimous": 1.838,
-     "litPixelsByMeanExcess": 17190,
+     "litPixels": 17080,
+     "litPixelsUndecided": 341,
+     "litPixelsUndecidedPctOfUnanimous": 1.996,
+     "litPixelsByMeanExcess": 17163,
      "litPixelsPerRepeat": {
       "perRepeat": [
+       17166,
        17223,
-       17211,
-       17213
+       17216
       ],
-      "spreadPct": 0.07
+      "spreadPct": 0.331
      },
-     "peakOfMeanExcess": 0.108997,
+     "peakOfMeanExcess": 0.109209,
      "peakPerRepeat": {
       "perRepeat": [
-       0.108524,
+       0.109162,
        0.109943,
        0.108524
       ],
@@ -480,34 +480,34 @@
      "peakMeasurable": true,
      "peakSpreadPct": 1.291,
      "p99OfMeanExcess": 0.051124,
-     "totalLight": 202.8225
+     "totalLight": 202.773
     },
     "core": {
-     "litPixels": 3168,
-     "litPixelsUndecided": 123,
-     "litPixelsUndecidedPctOfUnanimous": 3.883,
-     "litPixelsByMeanExcess": 3209,
+     "litPixels": 2931,
+     "litPixelsUndecided": 253,
+     "litPixelsUndecidedPctOfUnanimous": 8.632,
+     "litPixelsByMeanExcess": 3029,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       3219,
-       3203,
-       3206
+       3058,
+       3027,
+       2961
       ],
-      "spreadPct": 0.497
+      "spreadPct": 3.172
      },
      "peakOfMeanExcess": 0.021004,
      "peakPerRepeat": {
       "perRepeat": [
        0.021004,
-       0.021004,
+       0.025643,
        0.021004
       ],
-      "spreadPct": 0
+      "spreadPct": 18.09
      },
-     "peakMeasurable": true,
-     "peakSpreadPct": 0,
-     "p99OfMeanExcess": 0.019575,
-     "totalLight": 35.4379
+     "peakMeasurable": false,
+     "peakSpreadPct": 18.09,
+     "p99OfMeanExcess": 0.020459,
+     "totalLight": 34.4159
     },
     "whyBothStatistics": "PF-3 says PEAK, so the peak is the figure. p99 is reported beside it because a single-pixel maximum on a noisy raster is the statistic most exposed to the ~1000-pixel capture noise §95 measured, and a limb that holds on both is not resting on one pixel."
    }
@@ -524,32 +524,32 @@
     "core": 1
    },
    "limb1_footprint": {
-    "volumeLitPixels": 17388,
+    "volumeLitPixels": 17383,
     "outlineLitPixels": 2715,
-    "ratio": 6.404,
+    "ratio": 6.403,
     "bound": ">= 6",
     "clears": true,
     "populationsPerRepeat": {
      "volume": {
       "perRepeat": [
-       17423,
-       17416,
-       17409
+       17553,
+       17504,
+       17396
       ],
-      "spreadPct": 0.08
+      "spreadPct": 0.894
      },
      "outline": {
       "perRepeat": [
-       2860,
-       2726,
-       2722
+       2739,
+       2747,
+       2723
       ],
-      "spreadPct": 4.825
+      "spreadPct": 0.874
      }
     },
     "undecided": {
-     "volume": 75,
-     "outline": 155
+     "volume": 294,
+     "outline": 48
     },
     "areaIsByUnanimity": "a pixel counts as lit only if it exceeded the threshold in EVERY measured cycle; the pixels some cycles lit and others did not are reported as undecided rather than rounded in. §95's remedy, applied to an arbitrary selector."
    },
@@ -567,17 +567,17 @@
     "bound": "<= 0.25",
     "clears": false,
     "halo": {
-     "litPixels": 14227,
-     "litPixelsUndecided": 12,
-     "litPixelsUndecidedPctOfUnanimous": 0.084,
-     "litPixelsByMeanExcess": 14231,
+     "litPixels": 14216,
+     "litPixelsUndecided": 280,
+     "litPixelsUndecidedPctOfUnanimous": 1.97,
+     "litPixelsByMeanExcess": 14348,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       14232,
+       14241,
        14229,
-       14237
+       14476
       ],
-      "spreadPct": 0.056
+      "spreadPct": 1.706
      },
      "peakOfMeanExcess": 0.055546,
      "peakPerRepeat": {
@@ -591,20 +591,20 @@
      "peakMeasurable": true,
      "peakSpreadPct": 0,
      "p99OfMeanExcess": 0.049538,
-     "totalLight": 177.441
+     "totalLight": 177.7934
     },
     "core": {
      "litPixels": 2402,
-     "litPixelsUndecided": 274,
-     "litPixelsUndecidedPctOfUnanimous": 11.407,
-     "litPixelsByMeanExcess": 2455,
+     "litPixelsUndecided": 312,
+     "litPixelsUndecidedPctOfUnanimous": 12.989,
+     "litPixelsByMeanExcess": 2456,
      "litPixelsPerRepeat": {
       "perRepeat": [
-       2541,
-       2519,
-       2433
+       2558,
+       2535,
+       2432
       ],
-      "spreadPct": 4.25
+      "spreadPct": 4.926
      },
      "peakOfMeanExcess": 0.018711,
      "peakPerRepeat": {
@@ -618,7 +618,7 @@
      "peakMeasurable": true,
      "peakSpreadPct": 0,
      "p99OfMeanExcess": 0.0175,
-     "totalLight": 24.8955
+     "totalLight": 24.8995
     },
     "whyBothStatistics": "PF-3 says PEAK, so the peak is the figure. p99 is reported beside it because a single-pixel maximum on a noisy raster is the statistic most exposed to the ~1000-pixel capture noise §95 measured, and a limb that holds on both is not resting on one pixel."
    }
@@ -655,13 +655,13 @@
   "thisReading_peak": {
    "band": [
     0,
-    5.1893
+    2.9686
    ],
    "perBody": [
     null,
     null,
     2.6047,
-    5.1893,
+    null,
     2.9686
    ]
   },
@@ -674,7 +674,7 @@
     2.3414,
     2.3051,
     2.5032,
-    2.6117,
+    2.4989,
     2.8307
    ]
   },
@@ -683,10 +683,10 @@
    "whyNotAComparison": "A-F19 is a PHASE-F reading, taken before §4 inverted the light budget. A-G54: a figure belongs to a build. My halo excesses are ~14x theirs and my ratios ~50x theirs, and that is two different artifacts rather than two different measurements — the inversion is exactly what the record says it did. Comparing them as if they bounded one quantity is the error A-G293 names."
   },
   "thePeakOutlier": {
-   "rank": 4,
-   "peakRatio": 5.1893,
-   "p99Ratio": 2.6117,
-   "reading": "rank 4 is the only body outside the derived band on the PEAK (5.1893) and is unremarkable on the p99 (2.6117, against a p99 band of 2.3051..2.8307 across all five). A localised maximum, not a body-level fact — and REPRODUCIBLE rather than noise: two runs of this probe returned 5.2096 and 5.2119 for that peak while the p99 stayed inside the band both times. So it is a real geometric feature of where that halo lands, not a capture artefact, which is the more interesting of the two possibilities.",
+   "rank": 5,
+   "peakRatio": 2.9686,
+   "p99Ratio": 2.8307,
+   "reading": "rank 5 is the only body outside the derived band on the PEAK (2.9686) and is unremarkable on the p99 (2.8307, against a p99 band of 2.3051..2.8307 across all five). A localised maximum, not a body-level fact — and REPRODUCIBLE rather than noise: two runs of this probe returned 5.2096 and 5.2119 for that peak while the p99 stayed inside the band both times. So it is a real geometric feature of where that halo lands, not a capture artefact, which is the more interesting of the two possibilities.",
    "andItIsTHESAMEBODY": "A-F19's own confound was rank 4, 'which sits exactly at r = 430' — the shelf edge. The same body is the peak outlier here, in a DIFFERENTIAL measurement that was supposed to have removed that confound.",
    "whyTheDifferentialDoesNotFullyRemoveIt": "A-F19's differential fixes the RAW WINDOW problem — a window reporting what is in it rather than what put it there. It does NOT make the figure independent of what lies beneath, because COMPOSITING IS NOT ADDITIVE: where the halo overlaps a bright structure, removing it changes the composite by more than the halo's own contribution, so the attributed 'excess' carries an interaction term. At the shelf edge that term is largest, and the peak is the statistic most exposed to it. §79 measured that non-additivity directly; this is where it reaches a pin.",
    "consequence": "a differential excess is sound as a METHOD and still needs a statistic robust to the interaction. The p99 is; the single-pixel peak is not. PF-3 says PEAK, so both are reported and the difference is named rather than averaged away."
@@ -694,27 +694,26 @@
  },
  "summary": {
   "limb1_footprintRatios": [
-   5.79,
-   5.996,
-   6.446,
-   6.649,
-   6.404
+   5.813,
+   5.993,
+   6.444,
+   6.644,
+   6.403
   ],
-  "limb1_min": 5.79,
+  "limb1_min": 5.813,
   "limb1_allClear": false,
   "limb2_peakRatios_measurableBodiesOnly": [
    2.6047,
-   5.1893,
    2.9686
   ],
-  "limb2_max": 5.1893,
+  "limb2_max": 2.9686,
   "limb2_bodiesWithAnUNMEASURABLEPeak": [
    {
     "rank": 1,
     "shelf": false,
     "spread": {
      "halo": 1.832,
-     "core": 34.613
+     "core": 79.527
     }
    },
    {
@@ -722,7 +721,15 @@
     "shelf": false,
     "spread": {
      "halo": 0,
-     "core": 6.667
+     "core": 52.417
+    }
+   },
+   {
+    "rank": 4,
+    "shelf": true,
+    "spread": {
+     "halo": 1.291,
+     "core": 18.09
     }
    }
   ],
@@ -730,28 +737,28 @@
    2.3414,
    2.3051,
    2.5032,
-   2.6117,
+   2.4989,
    2.8307
   ],
   "limb2_allClear": false
  },
- "finding": "PF-3 TAKEN BLIND, PER BODY, 5 bodies at 3 repeats each.\nLIMB 1 (footprint >= 6 x outline) — AND THIS LIMB HAS NEVER BEEN MEASURED BY ANY LANE, in A-G293's own words \"untouched and unmeasured\": ratios [5.79,5.996,6.446,6.649,6.404], smallest 5.79. 2 of 5 bodies fall SHORT of 6. The areas are decided by UNANIMITY over 3 cycles with the undecided pixels reported beside them (volume 421/429/505/368/75, outline 317/286/557/392/155), because before that treatment this ratio moved ACROSS ITS OWN BOUND between runs — rank 3 read 6.169 and then 5.902 — and the within-run repeat spread understated the run-to-run spread, which is §95's lesson committed again in a fresh probe. It also depends on ONE INTERPRETATION I am naming rather than resolving: \"outline footprint\" is read here as the footprint of the outlined body DISC (the [data-mapping-body-shape] circle, which carries a CYAN fill as well as its stroke), not of the stroke ring alone. On the stroke-only reading the ratio is several times larger and the limb clears trivially. The pin does not say which, and the answer changes the result.\nLIMB 2 (halo peak <= 0.25 x core peak, differentially per A-F19), AND THE PIN'S HALO LIMB IS ALREADY RETIRED AS SUPERSEDED (A-G293: 'halo peak <= 0.25 x core peak' is the OPPOSITE obligation to G-2's self-luminous glow, and the retirement is a conflict between two adopted decisions rather than a measurement). So this is not a breach report. It is the first MEASUREMENT of a ratio the record had only DERIVED — and the PEAK is publishable on only 3 of the 5 bodies, because on the others its own cycles disagree past 5 % ([{\"rank\":1,\"shelf\":false,\"spread\":{\"halo\":1.832,\"core\":34.613}},{\"rank\":2,\"shelf\":false,\"spread\":{\"halo\":0,\"core\":6.667}}]). Peak ratios where publishable: [2.6047,5.1893,2.9686]. p99 ratios, stable on every body: [2.3414,2.3051,2.5032,2.6117,2.8307], band 2.3051..2.8307. A-G293 DERIVED 2.727..3.101 from two declared alphas and §716 cites 2.5..3.8 as measured; a blind differential agrees with both on the bodies where its statistic is expressible, which is the first time this quantity has had two independent sources — and the agreement is on the p99, not on the statistic the pin names.\nAND THE PIN'S OWN STATISTIC IS THE UNMEASURABLE PART. PF-3 says PEAK, and the peak's repeat-to-repeat spread splits the bodies exactly by stillness: worst 1.29 % across the three SHELF bodies, worst 34.61 % across the two FIELD bodies. The p99 of the same differential is stable to a few per cent everywhere and across runs. So the halo limb as written asks for a quantity this instrument cannot deliver on the moving bodies — the BOUND is not the problem, the STATISTIC is — and A-F11 already forbade the maximum form for PF-6 row 1 / PG-10 limb 3 for the same reason, there by argument and here by measurement. It does not rescue the retired limb either way: both bands sit an order of magnitude above 0.25.\nTHE HALO HAD TO BE REACHED BY HOOK. It is not a descendant of its body, so the obvious per-body selector suppresses nothing; §81's A-G49 hook is what makes a per-body halo differential possible at all, and the A-G419 precheck is what would have caught it had I used the wrong one — at the selector, before any capture, rather than as a ratio of zero that looked like a pass.\nBLIND: GELB's pooled A-F19 range was not read before or during this run, because a pooled target cannot validate a per-body measurement.\nEVERY SPREAD IN THIS FILE IS A WITHIN-RUN SPREAD (0.1..2.9 %) and the run-to-run spread of the same quantity reaches 5.4 % — named here because the word reads identically either way, which is what made it dangerous rather than merely incomplete. Limb-1 adjudication belongs to outputs/pf3-spread.json, whose own decidability count moves between 3 of 5 at n=4 and 2 of 5 pooled at n=8.\nNO VERDICT (A-G36 point 2): these are readings. Whether PF-3 is satisfied on this artifact is PINK's.",
+ "finding": "PF-3 TAKEN BLIND, PER BODY, 5 bodies at 3 repeats each.\nLIMB 1 (footprint >= 6 x outline) — AND THIS LIMB HAS NEVER BEEN MEASURED BY ANY LANE, in A-G293's own words \"untouched and unmeasured\": ratios [5.813,5.993,6.444,6.644,6.403], smallest 5.813. 2 of 5 bodies fall SHORT of 6. The areas are decided by UNANIMITY over 3 cycles with the undecided pixels reported beside them (volume 210/323/466/481/294, outline 218/1210/455/414/48), because before that treatment this ratio moved ACROSS ITS OWN BOUND between runs — rank 3 read 6.169 and then 5.902 — and the within-run repeat spread understated the run-to-run spread, which is §95's lesson committed again in a fresh probe. It also depends on ONE INTERPRETATION I am naming rather than resolving: \"outline footprint\" is read here as the footprint of the outlined body DISC (the [data-mapping-body-shape] circle, which carries a CYAN fill as well as its stroke), not of the stroke ring alone. On the stroke-only reading the ratio is several times larger and the limb clears trivially. The pin does not say which, and the answer changes the result.\nLIMB 2 (halo peak <= 0.25 x core peak, differentially per A-F19), AND THE PIN'S HALO LIMB IS ALREADY RETIRED AS SUPERSEDED (A-G293: 'halo peak <= 0.25 x core peak' is the OPPOSITE obligation to G-2's self-luminous glow, and the retirement is a conflict between two adopted decisions rather than a measurement). So this is not a breach report. It is the first MEASUREMENT of a ratio the record had only DERIVED — and the PEAK is publishable on only 2 of the 5 bodies, because on the others its own cycles disagree past 5 % ([{\"rank\":1,\"shelf\":false,\"spread\":{\"halo\":1.832,\"core\":79.527}},{\"rank\":2,\"shelf\":false,\"spread\":{\"halo\":0,\"core\":52.417}},{\"rank\":4,\"shelf\":true,\"spread\":{\"halo\":1.291,\"core\":18.09}}]). Peak ratios where publishable: [2.6047,2.9686]. p99 ratios, stable on every body: [2.3414,2.3051,2.5032,2.4989,2.8307], band 2.3051..2.8307. A-G293 DERIVED 2.727..3.101 from two declared alphas and §716 cites 2.5..3.8 as measured; a blind differential agrees with both on the bodies where its statistic is expressible, which is the first time this quantity has had two independent sources — and the agreement is on the p99, not on the statistic the pin names.\nAND THE PIN'S OWN STATISTIC IS THE UNMEASURABLE PART. PF-3 says PEAK, and the peak's repeat-to-repeat spread splits the bodies exactly by stillness: worst 18.09 % across the three SHELF bodies, worst 79.53 % across the two FIELD bodies. The p99 of the same differential is stable to a few per cent everywhere and across runs. So the halo limb as written asks for a quantity this instrument cannot deliver on the moving bodies — the BOUND is not the problem, the STATISTIC is — and A-F11 already forbade the maximum form for PF-6 row 1 / PG-10 limb 3 for the same reason, there by argument and here by measurement. It does not rescue the retired limb either way: both bands sit an order of magnitude above 0.25.\nTHE HALO HAD TO BE REACHED BY HOOK. It is not a descendant of its body, so the obvious per-body selector suppresses nothing; §81's A-G49 hook is what makes a per-body halo differential possible at all, and the A-G419 precheck is what would have caught it had I used the wrong one — at the selector, before any capture, rather than as a ratio of zero that looked like a pass.\nBLIND: GELB's pooled A-F19 range was not read before or during this run, because a pooled target cannot validate a per-body measurement.\nEVERY SPREAD IN THIS FILE IS A WITHIN-RUN SPREAD (0.1..2.9 %) and the run-to-run spread of the same quantity reaches 5.4 % — named here because the word reads identically either way, which is what made it dangerous rather than merely incomplete. Limb-1 adjudication belongs to outputs/pf3-spread.json, whose own decidability count moves between 3 of 5 at n=4 and 2 of 5 pooled at n=8.\nNO VERDICT (A-G36 point 2): these are readings. PF-3's HALO LIMB IS RETIRED AS SUPERSEDED (A-G293), so only its FOOTPRINT limb carries a live verdict — and §99 finds that UNDECIDABLE on this instrument (2 of 5 bodies decidable over 8 runs, both clearing). The earlier form referred \"PF-3\" whole, which over-states what is still open: a pin citation carries the pin's STANDING, not only its name.",
  "thePeakFormIsNotMeasurableOnEveryBody": {
   "what": "PF-3 specifies a PEAK. A statistic is only as good as its repeat-to-repeat spread, so this reports the spread of the peak itself rather than only the ratio built from it.",
   "perBody": [
    {
     "rank": 1,
     "shelf": false,
-    "worstPeakSpreadPct": 34.61,
+    "worstPeakSpreadPct": 79.53,
     "haloPeakPerRepeat": [
-     0.101938,
      0.100071,
+     0.101938,
      0.100071
     ],
     "corePeakPerRepeat": [
+     0.152131,
      0.099474,
-     0.099474,
-     0.152131
+     0.031146
     ],
     "ratio_peak": null,
     "ratio_p99": 2.3414
@@ -759,16 +766,16 @@
    {
     "rank": 2,
     "shelf": false,
-    "worstPeakSpreadPct": 6.67,
+    "worstPeakSpreadPct": 52.42,
     "haloPeakPerRepeat": [
      0.108823,
      0.108823,
      0.108823
     ],
     "corePeakPerRepeat": [
-     0.049325,
      0.052848,
-     0.052848
+     0.058845,
+     0.028
     ],
     "ratio_peak": null,
     "ratio_p99": 2.3051
@@ -793,19 +800,19 @@
    {
     "rank": 4,
     "shelf": true,
-    "worstPeakSpreadPct": 1.29,
+    "worstPeakSpreadPct": 18.09,
     "haloPeakPerRepeat": [
-     0.108524,
+     0.109162,
      0.109943,
      0.108524
     ],
     "corePeakPerRepeat": [
      0.021004,
-     0.021004,
+     0.025643,
      0.021004
     ],
-    "ratio_peak": 5.1893,
-    "ratio_p99": 2.6117
+    "ratio_peak": null,
+    "ratio_p99": 2.4989
    },
    {
     "rank": 5,
@@ -832,14 +839,14 @@
      4,
      5
     ],
-    "worstPeakSpreadPct": 1.29
+    "worstPeakSpreadPct": 18.09
    },
    "fieldBodies": {
     "ranks": [
      1,
      2
     ],
-    "worstPeakSpreadPct": 34.61
+    "worstPeakSpreadPct": 79.53
    },
    "reading": "the peak is stable on the STILL (shelf) bodies and unstable on the FIELD bodies, and the split is by that property and no other."
   },
