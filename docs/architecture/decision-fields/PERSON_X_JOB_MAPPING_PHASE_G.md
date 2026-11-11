@@ -9573,3 +9573,184 @@ resolves each citation back to the text it claims to cite — **because writing 
 number in their own draft twice over, and four of the hand-written citations were wrong, one of them pointing at
 a section header.** Nothing in GELB's queue is unblocked and unstarted. The credential remains the owner's single
 open item.
+
+---
+
+## §81 A-G340's THRESHOLD IS DERIVABLE — AND THE SELECTED COLUMN MEASURES A CSS CONSTANT
+
+PINK's §28 (`a14ae046`) ran A-G340's narrow re-run, found its own control rung failed, and withdrew three
+things. It then put exactly one verdict to this lane and declined to pick it, which was right: **A-G340 required
+the mask's inclusion threshold to be ≤ 0.004 and both candidate readings satisfy that, so the amendment does not
+adjudicate its own question.** Instrument and output: `evidence/mapping-phase-g-gelb/gelb-a-g340-capability.mjs`
+at `6a08c89c`. It needed no render — every number comes from the product's own constants.
+
+### A-G363 · A mask stated as a LEVEL cannot answer a limb stated as a SWING — so derive the threshold
+
+PINK's two readings of "the visible glow": **(a)** `t = 0.004`, on the reasoning that *"a pixel whose entire halo
+contribution is under 0.004 cannot swing 0.004"*; **(b)** every pixel the glow reaches, down to one LSB.
+
+**PINK's reasoning for (a) is the correct reasoning. Its threshold is not the one that reasoning produces.** The
+breath does not add 0.004 to a pixel — it modulates the halo **group's opacity**, and about a mean of **0.8825**,
+not about 1:
+
+| | located | |
+|---|---|---|
+| `:138` | `WAVE.haloDepth = 0.235` | the halo's peak-to-peak swing, as a fraction of its own value |
+| `:138` | `WAVE.selectedGain = 0.35` | *"while a capability is selected the amplitude is selectedGain of itself (F-7)"* |
+| `:315` | `--mf-wave-mean: 0.8825`, `--mf-wave-depth: 0.1175` | ± half of `haloDepth` |
+| `:223` | `opacity = mean + depth × gain × w` | the keyframe |
+| `:313` | `.mf-wave { opacity: var(--mf-wave-mean) }` | **the un-animated base — so a `reduce` capture samples the MEAN** |
+
+A pixel's contribution `c` and its swing `s` carry the **same gradient alpha**, so the gradient and the `(S − D)`
+term cancel and the ratio is pure opacity: **`s / c = opSwing / op_sampled`**. Therefore
+
+> **capability threshold = 0.004 × op_sampled / opSwing — `0.01502` unselected, `0.04292` selected**, for a mask
+> sampled at the mean. The selected / unselected ratio is **2.857 = 1 / selectedGain**, exactly, either way.
+
+**So neither candidate is the threshold.** (b) admits pixels **1.5 × 10⁷** below capability; **(a) is still 3.76×
+short unselected and 10.73× short selected.** The question was never "which reading of *visible*" — it is that
+one quantity was expressed in the unit of the other.
+
+#### And (b) is not merely permissive — it has the wrong sign on its derivative
+
+`share = (pixels swinging ≥ 0.004) / (pixels in mask)`. Under (b) the mask is every pixel the glow reaches.
+**Widen the glow's reach — the mechanism PG-1 and F-3 exist to certify — and the denominator grows while the
+numerator cannot**, because the added pixels are below capability by construction.
+
+> **Under (b), a strictly better glow reads worse. The pin punishes the mechanism it certifies.** That is not a
+> bias to be corrected but the wrong sign on the derivative, and it is why this was a contract question rather
+> than a tolerance question. **Ruled: (b) is rejected, and not on grounds of strictness.**
+
+The derived form has the **opposite** failure mode and it is guarded in the same ruling: shrink the glow to a
+tiny bright core and the mask shrinks with it, so the share → 1. **PINK named that exact artefact for blur** —
+*"a mask that keeps only the bright core is where spreading always wins."*
+
+> **Ruled with the threshold: the mask POPULATION is reported beside every share.** A share without its
+> denominator cannot be audited for either failure mode, and A-G340's four numbers did not carry one.
+
+#### The verdict PINK could not pick, decided — and without a re-run
+
+The derived threshold `0.01502` lies **above every rung PINK swept.** Raising `t` shrinks the mask by removing
+**incapable pixels only**, so the share is monotone increasing in `t` — and PINK's own 1280-unselected column
+confirms the monotonicity: `1e-9 → 0.2251`, `0.001 → 0.3638`, `0.002 → 0.4847`, `0.004 → 0.5852`.
+
+> **1280 unselected CLEARS, by at least 0.3352 against the 0.25 bound.** 1920 unselected clears at every rung
+> PINK ran, so it clears at the derived threshold too. **(b)'s `1e-9` floor was the only reading that failed it,
+> and (b) is rejected above on independent grounds.** No re-measurement is needed for this cell.
+
+### A-G364 · Limb 1 cannot be read in the SELECTED state at all — and this is a THIRD inconclusive kind
+
+PINK reported *"selected fails at both viewports at all five rungs, 10 of 10"* and read that as firmer than
+§27's marginal result. **It is firmer, and it is not about the glow.** Re-reading PINK's own sweep as a ratio:
+
+| rung | 1920 sel/none | 1280 sel/none |
+|---|---|---|
+| old whole-clip | 0.2943 | 0.2074 |
+| t = 0.004 | 0.3487 | 0.2843 |
+| t = 0.002 | 0.3643 | 0.3076 |
+| t = 0.001 | 0.3791 | 0.3342 |
+| 1e-9 | 0.3953 | 0.3283 |
+
+**Mean 0.3244, sd 0.0518. `WAVE.selectedGain` is 0.35 — a 7.3 % miss.** A share answering *"does a quarter of the
+glow breathe"* has no reason to land on a CSS constant.
+
+**And PF-10 requires the reduction:** *"with a capability selected, the measured breath amplitude is ≤ 45 % of
+its unselected value."* `selectedGain = 0.35 ≤ 0.45`, satisfied with margin.
+
+> **A-G365 · Limb 1's selected reading penalises the build for complying with PF-10.** A fixed **absolute** swing
+> threshold against a deliberately **reduced** amplitude is one pin fighting another. **Ruled: where two pins
+> demand opposite things of one quantity, the one that states its threshold in the wrong unit yields.** PF-10 is
+> stated as a ratio and is dimensionally correct; limb 1 is stated as an absolute and is not. **Limb 1's selected
+> cells are NOT EVALUABLE** until its threshold is restated as a fraction of the state's own amplitude. Eight of
+> PINK's ten cells.
+
+> **A-G364 · INCONCLUSIVE BY CONSTRUCTION** joins A-G277's **INCONCLUSIVE BY MEASUREMENT** (PG-11) and plain
+> INCONCLUSIVE. The distinction matters because the remedies are opposite: by measurement, the instrument cannot
+> resolve the quantity and a better instrument fixes it. **By construction, the instrument resolves perfectly —
+> and resolves something the pin does not name.** A better instrument makes it worse, by making the wrong number
+> sharper. PINK's 10-of-10 is precisely that: a very firm reading of `selectedGain`.
+
+### A-G366 · A-F11 binds the ESTIMATOR, not only the estimand *(PINK's finding, adopted)*
+
+PINK's cause: its epsilon was `2 × max|base1 − base2|` **over the whole clip — a maximum over ~850 000 noisy
+pixels, an extreme-value statistic.** Across eight runs of one build it spans **1.79×** (0.0048657 … 0.0087199),
+and the mask size moves with it (4222 → 3437 px at 1280 unselected, 19 %), so the share moves. **§27's figures
+are not reproducible by §27's own instrument.**
+
+PINK's own words, and they are the generalisation: *"I had been applying A-F11 to the signal and never once to my
+own instrument's noise floor. The floor WAS a maximum."*
+
+> **Adopted.** A-F11 retired maxima for the measured quantity. **It binds the estimator with the same force**,
+> and nothing in its text said so because nobody had thought of the floor as a measurement. This is the same
+> shape as §80's A-G359 (tier B's A-G139 compliance lives in its admissibility clause, not its bound) and as
+> §80's limb-3 failure (guards with no lower end): **three times in two sections, a rule that was checked
+> against the signal and never against the apparatus that reads it.**
+
+> **A-G367 · A floor that is 100 % foreign is not a floor.** PINK's sharper second finding: **inside the disc the
+> jitter is exactly zero** — all four runs, both viewports, both selection states, two static `reduce` captures
+> bit-identical. `floorRegionShrankBy: 1.0000`. So the whole-clip floor was **not inflated — it was entirely
+> imported**, every bit of it from text, beams and travel outside the field. **Every figure normalised by it was
+> normalised by the noise of elements it was not measuring.** "Inflated" and "foreign" call for different
+> remedies, and only the second explains why the control rung failed rather than merely shifted.
+
+### A-G368 · A predicted sign for a non-monotone quantity is malformed, not weak — and §76 is corrected *(defect 196, mine)*
+
+PINK withdraws *"blur raises the share in all eight measurements."* On the honest mask the sign is **mixed:
++0.0157 and +0.0097 at 1920, −0.0013 and −0.0120 at 1280.**
+
+**That is the measurement §76 rests on, and §76 is mine.** §76's title is *"BLUR RAISES A SHARE AND LOWERS A
+MAXIMUM — MY PREDICTED SIGN WAS WRONG IN ALL EIGHT"*, and A-G337 stated it as a rule. Taking the withdrawal at
+face value:
+
+- **A-G337's absolute form is withdrawn by its author.** The mechanism — blur is a spatial average, lowering
+  extremes and redistributing toward a threshold — stands; **the single-signed conclusion was an artefact of the
+  mask it was measured on**, where keeping only the bright core is where spreading always wins.
+- **§76's "wrong in all eight" is UNSUPPORTED, in A-G323's exact sense.** On the honest mask my predicted
+  direction is **right at 1280 and wrong at 1920**.
+- **And the method defect it confessed stands, undiminished — in fact it is worse.** What I did wrong was tell
+  PINK the direction was *"known without the run"*. The new data says **no single sign is correct for both
+  viewports**, so a confident prediction of *the* sign was guaranteed to be wrong somewhere. **I was not unlucky;
+  the question I answered had no single answer.**
+- **PINK's correction of me was wrong the same way, one layer down** — it asserted a single sign too, and PINK
+  says so itself: its §27 *reasoning* predicted mixed signs and its §27 *measurement* contradicted its own
+  reasoning.
+
+> **Ruled: before predicting a sign, ask whether the quantity admits one.** A prediction about a quantity that
+> is not monotone in the variable is not a weak prediction to be measured more carefully — it is **malformed**,
+> and measuring it harder produces a confident wrong answer at one viewport and a confident right one at the
+> other. Both lanes made this error, in sequence, about the same quantity. **The remedy is not more measurement;
+> it is a question asked before the prediction.**
+
+**Also withdrawn by PINK and recorded here, not re-derived:** §18's population thresholds (0.937544, 1.021629,
+*"clears at 7 bodies"*, and §27's *"9"*) — arithmetic on withdrawn shares over a share-to-gain relation assumed
+linear and never measured. **PINK declines to substitute a fresh number by the same arithmetic, which is right.**
+A real gain sweep is the only thing that produces that threshold, PINK can run it, and **it is not asked for**:
+no pin in this phase's scope turns on a body-count threshold, so it would be a new measurement rather than a
+repair. **Ruled: not now, and recorded as available.**
+
+### The LAN binding was live on two of three stands, and the detection route was a RELAY
+
+GRÜN found it on its own first server by checking the **binding** rather than the HTTP code (`next start` binds
+`0.0.0.0` with no `-H`). I relayed it to PINK as the one thing to check first. **PINK found `:3123` bound
+`0.0.0.0` and confirmed it reachable, not theoretical: HTTP 200 from `192.168.2.110:3123` and from the docker
+bridge `172.17.0.1:3123`.** Restarted on `127.0.0.1`; both refuse now, no rebuild, and PINK checked the build
+object the way GRÜN did — BUILD_ID, md5, mtime **not even re-dated**, worktree clean at `3ec8457d`.
+
+**Verified from this lane, independently of both reports:** all six peer ports read `127.0.0.1`-only
+(`3122, 3123, 3220, 3221, 3230, 3231`). **And this lane's own stand has no listener at all** — `:3020`/`:3021`
+are not bound, so nothing of GELB's was ever exposed. That is the check PINK asked me to make, made.
+
+> **Worth recording as method, not as housekeeping:** the defect was found once by a probe and twice by a
+> **message**. Neither PINK nor I would have looked, because both of us had an HTTP 200 and a façade that served
+> bytes. **A-G299/A-G310's blindness asymmetry paying out in the direction nobody designed it for** — not two
+> routes to one measurement, but one lane's incidental finding reaching two lanes that had no route to it at all.
+
+### Where this leaves the record
+
+**One new defect, this lane's:** §76's conclusion resting on figures its author has now withdrawn. **The count is
+196.** Two peer withdrawals are recorded above without being re-counted here, both self-caught by PINK.
+
+**A-G340 limb 1 is closed on the unselected cells** — green at both viewports, decided from the product's
+constants with no re-run — **and NOT EVALUABLE on the selected cells**, which is a ruling PINK cannot carry out
+until limb 1's threshold is restated. **Nothing in GELB's queue is unblocked and unstarted.** The credential
+remains the owner's single open item.
