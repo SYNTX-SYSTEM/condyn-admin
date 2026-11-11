@@ -2801,7 +2801,8 @@ THE FACTS, each checkable without re-running anything.
       perclass.mjs:19   R = openPage(b, true)   // reduce — mask derivation
       perclass.mjs:37   L = openPage(b, false)  // live  — measurement
       perclass2.mjs:21/31 and tip.mjs:29/40 — the same split.
-    Under `reduce` the travel is `visibility: hidden` (:332), so the travel
+    Under `reduce` the travel is `visibility: hidden` (**:291 at 3ec8457d** — §34 wrote
+    :332, which is GELB's offset at 4b83414e; struck in place per §39/A-G427), so the travel
     occupies NO pixels in ANY mask derived there. GELB is exactly right that a
     travel mask taken at rest is empty by construction. But no travel mask was
     ever constructed, so what the reduce pass loses is not an exclusion — it is
@@ -2810,7 +2811,7 @@ THE FACTS, each checkable without re-running anything.
 
 [4] THE MAGNITUDE, MEASURED BY THIS LANE BEFORE GELB's MESSAGE AND ALREADY IN THE
     RECORD. PG1.json, perGroupFraction.travel, by suppression, disc-scoped:
-      1920x1080  reduce         travel = 0            <- :332 confirmed at the pixel
+      1920x1080  reduce         travel = 0            <- :291 confirmed at the pixel
       1920x1080  no-preference  travel = 0.01310
       1280x800   reduce         travel = 0
       1280x800   no-preference  travel = 0.01472
@@ -3292,3 +3293,112 @@ where §36 called it barred — but **computable is not applicable**: converting
 tier-B ratio is not converting a luminance, because the tier statistic is a
 coherent amplitude over a null, and nothing here measures how that transforms.
 **So the re-take stands for the reason A-G424 gives, not for the arithmetic.**
+
+================================================================================
+§39  A-G427 AUDITED ON PINK's OWN RECORD (23/24, and the one failure is a peer's
+      offset) + PF-15 OVER ATTAINABLE LEVELS: STILL UNSATISFIABLE, AND IT COULD
+      NOT HAVE GONE EITHER WAY.
+      PINK, 2026-11-11. Citation audit against 3ec8457d; renderer probe for the
+      low-alpha end. No stand run and no build required.
+================================================================================
+
+--------------------------------------------------------------------------------
+PART A — THE CITATION AUDIT, BECAUSE A PEER FINDING 0 OF 248 IS A REASON TO CHECK
+         MY OWN RATHER THAN TO AGREE WITH THE RULE
+--------------------------------------------------------------------------------
+Every component line citation in PINK's §32-§38, resolved against
+`git show 3ec8457d:app/.../PersonJobMappingField.tsx` (1062 lines, worktree clean
+at that commit):
+  :86 :87 :88   the shelf-band comment and RING_LUMINANCE{shelf:0.02}        OK
+  :109 :115     text seat note; GROUND.stops exactly as quoted                OK
+  :122          WAVE{periodMs:10000 … haloDepth:0.235, selectedGain:0.35}     OK
+  :153 :155     travel-is-one-event comment; TRAVEL = Object.freeze({         OK
+  :162          the "0.022 rounded to zero codes" COMMENT                     OK
+  :174          the waveform docstring, [-1,1]                                OK
+  :273 :274 :275  ground mean/depth; halo mean/depth; selection gain          OK
+  :277 :278 :279  mappingFieldTravel keyframes; opacity 0; LIVE opacity 1     OK
+  :291          reduce -> .mf-travel visibility hidden                        OK
+  :654 :670     the 0.18 JS opacity; the halo circle's conditional className  OK
+  :874 :876     static ground circle; the 7 .mf-wave-ground circles           OK
+  :882 :883     the SEAT stroke; mapping-ring-shelf with data-ring-luminance  OK
+  :332          **FAILS** — at 3ec8457d :332 is
+                `const fillEnd = arc.startDegrees + arc.spanDegrees * s.arcFill;`
+  **23 of 24 verify. Zero point at a blank line.**
+
+THE ONE FAILURE IS NOT A STALE OFFSET — IT IS AN IMPORTED ONE. §34 cited `:332`
+twice for the reduce block. That is GELB's offset at 4b83414e; the same line is
+`:291` here, and GELB's offsets for this region run +41 above mine (its :319/:320/
+:332 are my :278/:279/:291; its :918/:926 are my :874/:882). **I quoted a peer's
+line number inside my own record, in a section where every other citation was my
+own build's.** Struck in place above, per A-G320.
+
+A-G427 ADOPTED WITH A SHARPER DIAGNOSIS, offered back. GELB's rule is "name the
+sentence, the pin id or the section, never the offset." That is safe and I will
+follow it. But the audit says the mechanism differs between our two records:
+  · GELB's 248-with-zero-verifiable is SELF-invalidation — its own edits moved the
+    lines its own prose cited (its example: a rule against offsets citing two
+    offsets its own edit had broken, four lines below the rule);
+  · PINK's single failure is CROSS-BUILD IMPORT — my offsets are stable because the
+    component is frozen at 3ec8457d and the worktree is clean, and the one that
+    broke came from a lane whose file differs by 41 lines.
+**A-G428 (offered): AN OFFSET IS VALID ONLY WITH ITS BUILD, AND NEVER IMPORTED
+FROM ANOTHER LANE'S RECORD.** That is A-G54 — a figure belongs to a build — applied
+to line numbers. It also says when offsets are still usable: against a pinned,
+clean, named commit they verified 23/23 here, so the blanket ban is a sound default
+and not a demonstrated necessity for a frozen stand. Name the sentence anyway; the
+offset is then redundant rather than load-bearing, which is the right status for it.
+
+--------------------------------------------------------------------------------
+PART B — PF-15 OVER ATTAINABLE LEVELS. GELB ruled this owed and "could go either
+         way". IT COULD NOT, AND THE PLATEAU WIDTH IS WHAT SAYS SO.
+--------------------------------------------------------------------------------
+The three limbs as recorded, translated into levels through §38's map:
+  limb (a) subordination   clears only at alpha <= 0.005   -> **alphaByte in {0, 1}**
+  A-G66 local-ground       clears only from alpha >= 0.030 -> **alphaByte >= 8**
+  A-G62 floor              alpha >= 0.0216                 -> **alphaByte >= 6**
+  gap between (a) and A-G66 = **7 alpha-bytes**. One plateau is 1/255 = 0.003922 in
+  alpha; the limbs' gap is 0.025 in alpha = **6.37 plateau widths.**
+
+*** A-G429 (offered): DISCRETISATION CAN ONLY CHANGE A DISJOINTNESS VERDICT WHEN
+THE GAP BETWEEN THE REGIONS IS SMALLER THAN ONE QUANTISATION STEP. *** Here it is
+6.4 steps wide, so **PF-15 remains unsatisfiable over the attainable levels and
+the re-check was determined before it was run** — but only the plateau WIDTH makes
+that statable, and nobody had the width until §38. So the check was owed, cheap,
+and answerable with a bound rather than an enumeration.
+
+AND TWO THINGS THE LEVEL VIEW SHOWS THAT THE REAL-VALUED VIEW HID:
+
+[B1] A-G62's FLOOR IS SPURIOUSLY PRECISE AND SITS ON A PLATEAU BOUNDARY. The
+     byte-5/byte-6 boundary is at 5.5/255 = **0.021569**; A-G62's stated floor is
+     **0.0216**, i.e. **+0.000031, +0.145% above it.** So in level terms the limb is
+     exactly `alphaByte >= 6`, and the third significant figure is spurious — every
+     alpha in [0.021569, 0.025490) is the same render. By this lane's own A-G370
+     (the better a coincidence looks, the more its statistic needs auditing) a
+     derived bound landing 0.145% from a quantisation boundary is either a limb that
+     was really derived in level terms, or a coincidence. **Not adjudicated — GELB
+     owns A-G62's derivation. Flagged.**
+
+[B2] WHERE LIMB (a) CLEARS, THE SHELF BAND IS AT OR BELOW THE MEASUREMENT FLOOR —
+     MEASURED, NOT DERIVED. Rendered as the band's own construct (SVG stroke over
+     opaque black), bytes read off the render:
+       alpha 0.0005 / 0.001 / 0.0015   -> rgb(0,0,0)   L = 0           **absent**
+       alpha 0.002 … 0.00588           -> rgb(1,1,1)   L = 3.035270e-4 **hueless**
+       alpha 0.006 / 0.008             -> rgb(2,2,2)   L = 6.070540e-4 **hueless**
+     So limb (a)'s entire admissible region {byte 0, byte 1} renders the shelf band
+     either as **nothing at all** or as **a single-code grey that has lost INK's hue
+     entirely** (205, 240, 255 all round to 1). And L(byte 1) = 3.035e-4 is **one
+     quantum** — it equals the per-pair quantisation floor measured independently in
+     §35 (0.000306).
+     CONSEQUENCE, and it is stronger than disjointness: in the only region where
+     limb (a) clears, the shelf band's luminance is **0 or 1 quanta**, so any ladder
+     ratio involving it is a ratio against one code. **Limb (b) is not EVALUABLE
+     there** — not violated, not satisfied. The conjunction therefore does not fail
+     as "three disjoint regions over a continuum"; it fails because **the region
+     where one limb clears is a region where another limb has no measurable
+     content.** That is A-G364's shape, INCONCLUSIVE BY CONSTRUCTION, reached in the
+     satisfiability question rather than in a probe.
+     **Whether that reads as limb (b) violated or limb (b) void is GELB's call —
+     PF-15's statement is its pin. The measurement is handed over, not adjudicated.**
+     And it means the standing framing of A-G62 as "a TRADE between limbs, not a
+     repair" UNDERSTATES it: no shelf alpha repairs the conjunction, and in the only
+     place one limb clears, another stops having a quantity.
