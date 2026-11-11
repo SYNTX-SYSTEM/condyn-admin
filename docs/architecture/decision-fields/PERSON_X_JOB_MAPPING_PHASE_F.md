@@ -342,6 +342,26 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   admissibility check (floor ≤ 0.0004). The earlier form yields a bound four times stricter than the
 >   physics it stood in for, and one no instrument can ever satisfy A-G139 against.
 > - **PF-11** has **two texts** (A-G320, `PHASE_G:8388`): a lane reading the first measures a different pin.
+> - **PF-13 also has two texts, and the exception clause is coherent only against the FIRST** (**A-G426**,
+>   PHASE_G §95). `:365` reads *"every phase-D and phase-E test passes **unchanged**"*; `:950` drops
+>   *unchanged* and adds *"except the three restated in writing: `neurovisual-e :156`, `:174`, `:140`"*.
+>   **The exception is to UNCHANGED, not to PASSES** — the three were rewritten for phase F, so the
+>   *unchanged* claim cannot cover them, and **all three must still pass.** Read as an allowance for three
+>   reds, PF-13 would be satisfiable with three failing tests. GRÜN measured all three passing on
+>   `architecture/mapping-phase-g`, so the distinction changes nothing on this build and everything on one
+>   where any of them fails.
+> - **PF-13's POPULATION is read, not assumed:** `PHASE_DIRS = ["test/career/mapping-field/",
+>   "test/career/mapping-spec/"]` — **two directories, 15 files**. Neither lane had run the second until
+>   2026-11-11, and this lane called PF-13 green from a figure covering 13 of the 15 files. **A pin whose
+>   population is a directory list is quoted by reading the list, never by naming the directory one
+>   remembers.** And the suite at large is NOT PF-13's population: 27 career-lifecycle postgres failures
+>   sat outside it entirely while appearing to bear on it.
+> - **PF-13's exception list should name TEST TITLES, not line numbers** (A-G426). The three cited lines had
+>   +7/+3/+4 lines of headroom inside their `it()` at `3ec8457d` and **+4/+0/+1** after a later three-line
+>   shift — `:156` now lands exactly on its `it()`. **One edit above them and the pin names the previous
+>   test, with nothing to signal it.** A line number into a file still being edited is a property of a
+>   build in the most literal sense, and the only citation form that can come to mean something else with
+>   no edit to the citation itself.
 > - **PF-16** was widened by **A-F31** (§30 `:1599`) and then **restated in CODES** for phase G by **A-G12**, because A-F31
 >   found ratios meaningless at this level.
 > - **Mode discipline:** several pins below name no motion mode and are **not evaluable under
