@@ -6072,3 +6072,115 @@ disk.
 **Recorded as an engineering argument rather than a request**, because the authorisation is the owner's and has
 been declined; **what is new is that this is no longer a backup question.**
 
+
+---
+
+## §57 A-G226 AND A-G156 BOTH REMOVED A LOAD-BEARING CONSTANT — BOTH READ THE 0.5 COLUMN OF A FILE WHOSE BUILD IS 0.3
+
+PINK held A-G226 before it reached the owner (`3907ae8f`). **It is right, and checking whether the same error
+reaches A-G156 shows that it does, four sections earlier and far more severely.**
+
+### A-G231 · A-G226 is withdrawn — `BODY_BUDGET.L1 = 12` is the binding constraint on two layouts *(defect 96)*
+
+GRÜN's file carries **both** parameterisations, named `bind03`/`cap03` and `bind05`/`cap05`:
+
+| layout | bodies | L1@0.3 | cap@0.3 | bind@0.3 | L1@0.5 | bind@0.5 |
+|---|---|---|---|---|---|---|
+| **LV08** | 70 | **12** | **15** | **BUDGET** | 6 | SPACING |
+| **LV10** | 71 | **12** | **15** | **BUDGET** | 7 | SPACING |
+| the other seven | — | 6…10 | = | SPACING | 4…6 | SPACING |
+
+**And the build is 0.3:** `PersonJobMappingField.tsx:135` — `export const CROWDING = 0.3;` with the PG-16 comment
+on it, and §4's pin text at `:584` states 0.3.
+
+> **So on the artifact as built, `BODY_BUDGET.L1 = 12` is not slack. It binds on LV08 and LV10 and it binds by
+> three.** Removing it does not retire a dead constant — **it changes what the component draws at L1 from 12
+> bodies to 15.**
+
+**A-G226 is withdrawn. `BODY_BUDGET.L1` stays.**
+
+**And the direction was predictable from the mechanism, which is why PINK checked at all:** `CROWDING` is the free
+space *required* as a multiple of eccentricity, so a **smaller** factor requires less space, fits more bodies,
+and makes the budget **more** likely to bind. **0.3 is the permissive value, so the 0.5 column is the permissive
+computation** — and *"never comes within five of binding"*, drawn from it, is unsafe in exactly the direction
+that matters.
+
+### A-G232 · A-G156's removal of the seven is withdrawn too, and it is the worse case *(defect 97)*
+
+The same file's L0 table, at the built value:
+
+| | budget | binds at **0.3** | binds at **0.5** | max spacing-only capacity at 0.3 |
+|---|---|---|---|---|
+| **L0** | 7 | **8 of 10 layouts** | 1 (LV10, tying at 7) | **15** |
+
+> **At the built value the L0 budget of seven is the *dominant* constraint — it binds on eight of ten layouts and
+> cuts up to fifteen bodies down to seven.** A-G156 called it *"inert"* and removed it. **It does almost all the
+> work.**
+
+**A-G156's removal of `BODY_BUDGET.L0` is withdrawn.** Its conclusion — *"A-G4's seven is not corrected to 5 or 6
+but **removed**"* — is replaced: **the seven is live and dominant at 0.3, and nearly inert at 0.5.** It is not
+corrected, not removed, and not a constant with one status: **it is conditional on a value the record and the
+build disagree about.**
+
+### A-G233 · The parent defect: A-G156 changed a bound and no product change followed *(defect 98)*
+
+**A-G156 decided PG-16 bounds at 0.5. `CROWDING` is still 0.3. No product change followed, and none could —
+every section since has correctly reported "no product change".**
+
+**So since §44 the record's bound and the artifact's constant have disagreed, and this record has drawn
+consequences on the 0.5 side while reporting them as facts about the build.** A-G156 did it, A-G226 did it, and
+my report to the owner carried the second one.
+
+**§42 already recorded the divergence**, as *"PG-16 CONTRADICTS THE CONSTANT THE RECORD ATTRIBUTES TO ITS OWN
+SOURCE"*, status **DERIVED-AND-CONTRADICTED**. **The two values were known to diverge, by this lane, and the 0.5
+column was still read as governing the artifact.**
+
+> **A bound changed in the record without a product change leaves two artifacts: the one that exists and the one
+> the record describes. Every statement afterwards must say which it is about.** Neither A-G156 nor A-G226 said,
+> and both were read as the first.
+
+**And the consequence is an owner item, not a lane item.** Moving `CROWDING` to 0.5 would cut L0 from 7 to ≤ 6 on
+eight layouts and L1 from 12 to ≤ 7 — **it removes bodies from the field.** That is a visible product change
+which A-G156 implied and never stated, and no lane can make it.
+
+### A-G234 · I took a product removal from a file whose own verdict field says it carries none
+
+GRÜN's `pg16-crowding-L1.json` declares, on its face: **`"verdict": "NONE — development reading only (A-G36
+point 2)"`**, and closes *"the decision on `BODY_BUDGET.L1` is GELB's."*
+
+**A-G36 is mine.** *"Two instruments, one verdict"* — and a development reading is explicitly not one.
+
+> **Same shape as A-G195: acting against a rule I authored, using a figure the record had already qualified.**
+> A-G195 carried a dead build's floor; this carried a non-verdict as a verdict. **Both times the qualification
+> was written in the artifact I was reading.**
+
+### A-G235 · PINK's residue is narrower than A-G220 and is the rule that would have caught this
+
+PINK: *"You **did** apply A-G220 and you **did** read GRÜN's file. The trap is that the file is **titled**
+'recomputed at PG-16 = 0.5' while carrying both columns, and the build is 0.3."*
+
+**That is the correct diagnosis and it exonerates nothing.** §56's own table printed `budget binds at 0.3 — 2
+(LV08, LV10, spacing allows 15)` **one line above the ruling drawn from the 0.5 column.** I did not fail to read
+it; **I tabulated it and then reasoned past it.**
+
+> **Reading another lane's artifact is not enough if you read the column its title points at. A file with more
+> than one parameterisation names the live one at the point of use, not in the title** — and a quoted number
+> carries not only its origin but **which of that file's cases it belongs to.** A-G173 one level down.
+
+**And the sharper form, because the title was *true*:** GRÜN has twice diagnosed this in its own lane as *"a
+protocol word that is true satisfies the part of me that checks, and the number underneath goes unread."* **Here
+the label was a true title on a correct file, and it selected a column.** Nothing in A-G200, A-G207 or A-G214
+reaches that, because nothing was out of scope, mis-transported or computed under the wrong model: **the right
+number was read and the wrong one was used.**
+
+### What this does to the report already sent
+
+**The owner's report carried A-G226 as a decision.** It is withdrawn, A-G156's L0 removal with it, and the
+replacement is narrower and harder: **`BODY_BUDGET` is load-bearing at the built value at both levels, and its
+removal is conditional on a product change to `CROWDING` that only the owner can authorise.** The correction
+goes out immediately.
+
+**PINK's closing observation stands on its own terms and is now concrete rather than general:** this finding
+exists on one disk, unpushed, and it contradicts a product decision that was being reported to the owner while
+it sat there. **That is A-G230's cross-catching argument with an instance attached.**
+
