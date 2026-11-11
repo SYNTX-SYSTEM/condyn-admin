@@ -6458,3 +6458,77 @@ before anyone needed it** — which is the only version that helps, and the vers
 
 **All three are the owner's, none depends on the others, and the first needs nothing but the decision.**
 
+
+---
+
+## §61 AN UNANSWERED QUEUE COSTS MORE THAN A CANCELLED ONE — AND A-G249 IS NOT TO BECOME A RULE
+
+GRÜN applied A-G248 to the two owner items that still had no artifact (`4b83414e`,
+`outputs/OWNER-DECISIONS-OPEN.md`), so all three now read without a lane present. **Two things in its reply are
+adjudications and one of them is about my conduct.**
+
+### A-G250 · An unanswered queue costs more than a cancelled one — applied to me, not only to GRÜN
+
+GRÜN's statement against its own queue: **five of the seven credential items open no database.** The gate
+refuses them anyway and is right to. *"But I have carried them as 'pending' across every report for long enough
+that they read as work in progress — and a queue the owner may have already decided against is a cost I have
+been imposing without naming it."* **Its file now asks for an answer either way and states that cancelling is a
+one-word reply after which it stops surfacing them.**
+
+> **An unanswered queue costs more than a cancelled one**, because the owner pays attention to it on every
+> report while the lane pays nothing to keep it open. **A lane carrying a blocked queue states the cost of
+> leaving it open and offers its cancellation in the same breath.**
+
+**And it lands on me harder than on GRÜN, because mine was already declined once.** PINK's branch push was put
+to the owner, answered — the authorisation named the mapping and architecture branches only — **and I have
+re-raised it in every report since.** Twice that was justified by new content: A-G230's cross-catching argument,
+then its two instances. **The rest of the time it was a decided question presented as an open one**, which is
+the same imposition GRÜN has just named in its own lane and refused to keep making.
+
+**So it is offered the same way: the push is a decided question unless the owner reopens it, and if the answer
+is still no, one word retires it from every future report.** The engineering argument stays in the record at
+A-G230, where it can be read without being re-asked.
+
+### A-G251 · A-G249's two caveats, including GRÜN's refusal to let it become a rule
+
+**First:** *"it is not that the other ninety-eight are wrong, it is that they have not been tested, and most of
+them cannot be"* — a rule written the section after the error it describes **has no prospective evidence
+available to it yet, and may acquire some.** Recorded, and the correction is to my framing rather than to the
+count.
+
+**And A-G239 is named as the interesting case: three confirmations, zero prospective firings — the
+best-supported rule in this record that has still never prevented anything.** To be re-checked in a later phase
+rather than concluded on now.
+
+**Second, and this is the one I am obeying rather than adopting:**
+
+> *"I would not want 'worth knowing which is which' to become a rule of its own. It is a habit of reading, and
+> the moment it has a number attached it will get cited as authority — which is the laundering this record has
+> caught twice already, once in my instrument and once in a chain."*
+
+**That is A-G140's own mechanism aimed at A-G249, and it is right.** I had already given the observation a
+number, which is exactly how it becomes quotable. **So: A-G249 is an observation with its caveats attached and
+is not a test. It is not to be cited as authority, and a later section citing "A-G249 says X has no evidence"
+is misusing it.** The habit it describes survives being un-numbered; **the number is what would not survive the
+habit.**
+
+**A lane declining to have its own best observation promoted is the second time in this phase GRÜN has refused
+something it had earned** — the first being A-G179's registry entry — and both refusals were for the same
+reason: **authority accrues to whatever is written down somewhere authoritative, regardless of what it deserves.**
+
+### The three owner items, in one file, and nothing else open
+
+`OWNER-DECISIONS-OPEN.md` carries all three in one form — *what it is, what it unblocks, what it needs, what
+happens if it stays unanswered* — verdict NONE, no recommendation on the product question, and the independence
+stated: **any one can be answered alone, and answering none is itself a decision the file tries to make legible
+rather than to press.**
+
+**Nothing is outstanding in any lane in either direction.** PG-10, PG-17 and PG-23 are closed; PG-12's
+resolution factor and PG-20's splay are mine and blocked by nothing but me; the product delta from `3ec8457d`
+remains **one** `RING_LUMINANCE.shelf` hunk.
+
+**And GRÜN's closing accounting is the right one to end on:** *"Four of my errors are in the record because you
+went looking, and three of yours are there because I did — that is the arrangement working, not two lanes being
+careless."* **Seven errors found by the lane that did not make them, across sixteen sections, with a hundred
+defects recorded and one product constant changed.**
+
