@@ -1992,3 +1992,59 @@ Reported separately, per GELB's ask, because the conjunction is the defect:
   > **So PF-11's ratio limb is neither cleared nor failed here: it is unmeasurable in its ratio form on a
   > build this static, and the fix is already in the record one pin away.** Verdict withheld rather than
   > taken on a denominator of zero — the same refusal as §12's on a maximum, and the same reason.
+
+
+================================================================================================
+§27  PG-10 LIMB 1 BLURRED — THE VERDICT SURVIVES AND GELB'S PREDICTED SIGN IS WRONG IN ALL EIGHT
+     MEASUREMENTS. BLUR RAISES THE SHARE, SO THE FAILURE IS CLOSER TO THE BOUND THAN REPORTED,
+     NOT FURTHER. AND TWO DEFECTS OF MY OWN THAT BOTH FLATTER THE BUILD.
+================================================================================================
+`scripts/pink-pg10-limb1-blur-g.mjs` -> `outputs/PG10-LIMB1-BLUR.json`. Limb 1 (`PHASE_G:757`): *"on the
+visible glow, >= 25 % of pixels swing >= 0.004."* Blurred and unblurred decoded from the **SAME captures**
+(`sharp(png).raw()` and `sharp(png).blur(2).raw()` on one buffer), so the comparison is PAIRED and cannot
+confound the blur with sampling phase — the defect that voided my first PG-10 attempt. Masks derived in a
+separate static pass under `reduce`, per body, field halos only (A-G48/A-G31); **geometry between the mask
+context and the swing context is ASSERTED equal, not assumed** (centres and radii within 0.75 px, run aborts
+otherwise). §63: one fixture, L0.
+
+  > **GELB'S PREDICTED DIRECTION IS WRONG, IN EVERY ONE OF EIGHT MEASUREMENTS. BLUR RAISES THE SHARE.**
+  > §75 priced this as *"blur lowers per-pixel swing, so the share above 0.004 can only fall."* For a MAXIMUM
+  > that is exactly right — §26 watched PF-6 row 1 fall from 0.03269 to 0.02825. **But blur is a spatial
+  > AVERAGE, not an attenuation: it lowers isolated extremes and simultaneously RAISES every neighbour of a
+  > high-swing pixel.** For a share above a LOW threshold those pull opposite ways and the spreading wins.
+  >     1920 unselected   0.7015 -> 0.7173   ·   0.7488 -> 0.7588
+  >     1920 selected     0.4075 -> 0.4357   ·   **0.2309 -> 0.2394**
+  >     1280 unselected   0.6647 -> 0.6762   ·   0.6923 -> 0.7108
+  >     1280 selected     0.4780 -> 0.5325   ·   **0.1864 -> 0.1956**
+  > Deltas +0.0086 to +0.0545, **never negative.** A single predicted sign could not have been right for both
+  > statistics: the max fell and the share rose, from the same operation on the same frames.
+  > **The rule is not "blur attenuates". It is: blur lowers extremes and raises shares above low thresholds,
+  > so its effect on a verdict depends on whether the bound is a ceiling on a maximum or a floor on a share.**
+
+THE VERDICT SURVIVES — AND SURVIVES *DESPITE* BLUR HELPING, WHICH IS NOT WHAT §75 EXPECTED.
+Deepest breathing body (gain 0.911293), selected: **0.2394 at 1920 and 0.1956 at 1280, both below >= 0.25.**
+Unselected clears everywhere (0.676…0.759). So GELB's conclusion — *"neither a new red nor a rescue"* — is
+right, and its reason is not: **the failure is CLOSER to the bound than reported, not larger.**
+    margin below the bound, 1920: **0.0191 -> 0.0106**     1280: **0.0636 -> 0.0544**
+§18's POPULATION ASYMMETRY SURVIVES, WITH ONE THRESHOLD MOVED. Dividing the gain out and re-applying it:
+    1920 blurred needs gain **0.951643** — inside the ladder; clears at **9** total bodies (unblurred: 7)
+    1280 blurred needs gain **1.164741** — still above the ladder's ceiling of 1.0, so **still no body count
+         and no field/shelf split can lift it.** 12 bodies reaches 0.2075.
+  > **So the 1280 failure is population-independent on blurred frames too, and it is now the whole of PG-10's
+  > residue:** limb 3 clears (§26), limb 2 has no bound over it (§63), and limb 1's 1920 reading is contingent
+  > on a body count in both frame treatments. **One red, at one viewport, against a bound with no derivation.**
+
+TWO DEFECTS OF MY OWN, AND THEY POINT THE SAME WAY — BOTH FLATTER THE BUILD.
+  1. **The mask epsilon (0.00633…0.00702) EXCEEDS the swing threshold it serves (0.004).** The mask admits
+     only pixels whose static halo contribution clears ~0.007, so it keeps the glow's brighter core and
+     discards its faint rim — **and the faint rim is where swing is lowest.** The share is therefore measured
+     over the brighter part of the carrier rather than over "the visible glow" as the pin says.
+  2. **The floor behind that epsilon was taken over the WHOLE CAPTURE CLIP again, not the disc** — §24's
+     defect recurring, two sections after I recorded it. Out-of-disc host pixels set the floor, inflating
+     epsilon, making the mask still more conservative.
+  > **Both push the same way, and it is the generous direction for a floor bound: a mask biased toward the
+  > bright core OVERSTATES the share of pixels that swing.** So the true share over the full visible glow is
+  > **lower** than every figure above. **The failures are at least as bad as measured and the clears have less
+  > headroom than stated** — the direction a validation lane must declare, because the error does not threaten
+  > the red, it threatens the greens. §24 said an instrument's blind spot must be stated with its reach; this
+  > states it with its SIGN, which is the part that tells a reader which of my numbers to distrust.
