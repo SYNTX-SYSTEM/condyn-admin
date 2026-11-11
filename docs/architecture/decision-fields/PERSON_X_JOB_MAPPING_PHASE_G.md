@@ -9338,3 +9338,232 @@ subtracts.**
 mis-shelved under A-G139, and a lower bound refuted before it was asserted — and one GRÜN's, self-caught. The
 count is 189.**
 
+
+---
+
+## §80 PF-8 IN ITS THREE-TIER FORM — NINETEEN AMENDMENTS IN TWO FILES, AND THE PIN RETURNS GREEN WHERE IT CANNOT FAIL
+
+§74 recorded PF-8's three-tier sweep as owed by this lane. It needed no peer, no build and no permission, and
+it is the last GELB item that did not. Instrument and output: `evidence/mapping-phase-g-gelb/gelb-gate-pf8-tiers.mjs`,
+committed at `c308a0f9` and refreshed at `31e03873`. Nineteen locations, every one verified as an exact
+substring, **19 of 19 located, 0 UNVERIFIED**.
+
+### A-G357 · An amendment count is scoped to a file until somebody crosses the boundary *(defect 190)*
+
+A-G327 is PINK's correction of my PF-8 list: I had four locations, there were eleven, and **the two I had
+omitted were the admissibility conditions** — the clauses that decide whether a tier is *evaluated*, not what it
+must beat. PINK's rule, which I adopted: an amendment narrowing what counts as a measurement is more dangerous
+to omit than one moving a bound.
+
+**Every location in A-G327's corrected list is in `PHASE_F.md`.** This sweep finds fourteen there and **five in
+`PHASE_G.md`**:
+
+| | where | what |
+|---|---|---|
+| **A-G32** | `PHASE_G:949` | mask-based, travel **drawn**, its pixels excluded by its own mask — A-G20's hiding instruction withdrawn |
+| **A-G42** | `PHASE_G:1207` | travel **masked**; a separate pass from PG-11, and neither may reuse the other's frames |
+| — | `PHASE_G:1999` | **a shelf alpha change invalidates the per-class nulls** |
+| **§74** | `PHASE_G:8726` | `max ≤ 0.006` **retired** under A-F11 corrected |
+| — | `PHASE_G:8238` | under `reduce`, PF-8 goes vacuous |
+
+Two of the five are METHOD, one is a CURRENCY condition, one retires a limb and one names a mode. **None of them
+is a bound, which is exactly why none of them was in a bound-shaped list.** A-G327's lesson was *count the
+locations*; the count was taken over one file, by me, in the section that adopted the lesson.
+
+> **Ruled: an amendment inventory names its files.** The nineteen break down **BOUND 6 · SCOPE 5 · METHOD 3 ·
+> ADMISSIBILITY 2 · READING 1 · CURRENCY 1 · MODE 1**, and the instrument prints that histogram because the
+> shape of the list is what tells you what kind of amendment you are structurally blind to.
+
+### A-G358 · A mitigation is not an enforcement — a parameter cannot return a verdict *(defect 191, mine)*
+
+Limb 2 asks A-G268's question: does the product evaluate the pin's predicate and decline to emit a
+counterexample? **My first form of this probe answered PRESENT, twice, directly above my own conclusion that no
+such predicate exists.** The hits were `amplitudePx`, `radiusAmplitude`, `opacityAmplitude` — **the breath's own
+amplitude constants, which are the source of the quantity PF-8 bounds rather than a cap on it** — and two
+comments, one of which is the component's `SEAT_PAD_PX` docstring, **which quotes PF-8's own tier A readings.**
+
+> **A probe for enforcement found the pin's recorded measurements written in a comment and reported them as
+> enforcement.** GRÜN hit the identical shape the same day: a grep "found" `[data-mapping-halo]` in the CSS and
+> the hit was the literal string inside the comment it had just written. Two lanes, independently, one day.
+
+The block now strips comments before probing and **prints every match**, so no verdict row can stand on a string
+the instrument cannot show. With comments gone: all three enforcement probes ABSENT.
+
+And the repaired answer is sharper than "nothing matched". The product's answer to PF-8 is `SEAT_PAD_PX = 1.6` —
+a seat 0.8 px wider than its mark on each side, so the medium breathes through only by (1 − coverage).
+
+> **That is a MITIGATION, not an ENFORCEMENT.** A-G268's limb asks whether the product declines to emit a
+> counterexample. **A wider seat emits a smaller counterexample.** It never evaluates anything — which is
+> precisely why arcs still read 0.0033 against a 0.002 bound. Every pin that cleared limb 2 as
+> ZERO-BY-CONSTRUCTION had a *predicate* in the product. **PF-8 has a parameter, and a parameter cannot return
+> a verdict.**
+
+### A-G359 · A floor-relative bound at k × the floor can never satisfy A-G139 — and A-F29 repaired it for a different reason than it stated
+
+Tier B's original form (`PHASE_F:913`) is `p99 ≤ 2 × the run's own decoy floor`. I chose it because 26 frames
+could not resolve A-F5's physical 0.002, and a bound the instrument cannot reach is not a bound.
+
+**But a bound pinned at twice its own floor puts every passing observation inside the noise band — at every
+frame count, permanently, by construction.** `bound / floor = 2.00` is not a measured ratio; it is the
+definition. A-G139 says a bound must sit outside the quantisation-order spread of the quantity it bounds, and a
+self-calibrating bound is *defined* to sit inside it.
+
+A-F29 withdrew that form on a different ground — *"a bound tied to the instrument's floor will eventually reject
+any real system as the instrument gets better"*, with the floor at 64 frames having silently tightened the bound
+to 0.00054. **Both are true and they are not the same argument.** A-F29's is about drift; this one is about
+whether the bound was ever satisfiable. **A-F29 is therefore a larger repair than A-F29 claims.**
+
+Under the current form (`PHASE_F:1554`, `p99 ≤ 0.002` absolute, admissible only if floor ≤ 0.0004):
+
+| | bound | floor | ratio | A-G139 |
+|---|---|---|---|---|
+| old, 64 frames | 0.00054 | 0.00027 | **2.00× by construction** | **NOT SATISFIED, permanently** |
+| current, at the admissibility edge | 0.00200 | 0.00040 | 5.00× | satisfied |
+| current, at the measured floor | 0.00200 | 0.00027 | 7.41× | satisfied |
+
+> **Ruled: A-G139 is satisfied for tier B by its ADMISSIBILITY CLAUSE, not by its bound.** The bound is
+> physical and fixed; the clause is what guarantees the instrument can see the gap. That is the correct
+> division of labour and it is worth stating because the two are usually confused — including by me, in the
+> section that wrote them.
+
+Tier A needs no such help: bound 0.0005 against a dof-matched floor of 0.00007 is **7.14×**, and it reads 0.00014
+at base. Satisfiable, resolvable, green for the right reason.
+
+### A-G360 · Tier C's headline rung is inadmissible under a clause I adopted three sections later *(defect 192)*
+
+The rung-admissibility clause is mine (A-F26, `PHASE_F:1400`): *"a rung below 2× the measured per-pixel floor is
+not evaluated"* — A-F11 applied to the ladder itself, after low rungs produced red on text and nodes at base L2
+where no ground exists to leak. The ladder it was written about is the only tier C ladder in the record, run by
+me at `9cc06f84` on PINK's statistic, with a per-pixel floor of **0.00287**, so a rung is evaluated only at
+**≥ 0.00574**:
+
+| rung | signal | null | ratio | printed | admissible? |
+|---|---|---|---|---|---|
+| 0.001 | 24 210 | 22 586 | 1.07 | 1.07 | **no** — below 2× floor |
+| 0.002 | 18 218 | 8 703 | 2.09 | 2.09 | **no** — below 2× floor |
+| **0.004** | 10 584 | 323 | **32.77** | 32.77 | **no** — below 2× floor |
+| 0.008 | 163 | 4 | **40.75** | **∞** | **YES** |
+
+**One of four rungs is admissible, and it is not the one the record quotes.** §19's conclusion — *"tier C
+separates by more than an order of magnitude where tier B separates by 2.2×"*, *"red by 32.8× at 0.004"* — rests
+on rung 0.004, which my own later clause does not evaluate. So do 0.001 and 0.002.
+
+#### And the one admissible rung is the one whose ratio is misprinted *(defect 193, mine)*
+
+**163 ÷ 4 = 40.75. The record prints ∞.** Four is not zero; the ratio is finite, well resolved and 27.2× over the
+1.5 bound.
+
+> This is not cosmetic, because **A-F26's erosion guard was written for exactly the ∞ form** — *"the null counts
+> go to nothing, blowing ratios to ∞"*. **A reader applying that guard to the printed ∞ discards the only
+> admissible rung in the ladder.**
+
+**A-G362 · The printed form of a figure decides which guard reaches it.** Both forms are red, so the verdict
+never moved — but ∞ reads as *no comparison was possible* and 40.75 reads as *a large, well-resolved excess*, and
+the record's own guards sort those two into opposite bins. Fourth instance this phase of a figure whose
+*presentation*, not value, changed what could be concluded from it.
+
+**Tier C's verdict stands: RED, and still the sharpest limb — 40.75× against tier B's 2.19×.** The conclusion
+survives; its cited evidence does not. **A-G323 in PINK's exact words: a figure reached by a confounded method is
+unsupported, not wrong.** Three rungs are unsupported, the fourth is misprinted, and the verdict holds on the
+fourth.
+
+### A-G361 · A deferral's precondition needs a watcher — PF-8 per class has been unblocked for a day *(defect 194)*
+
+`PHASE_G:1999`, in my own words: *"the engraved ladder, A-G34 and PF-8 per class all wait on GRÜN's new
+`RING_LUMINANCE.shelf`, and PINK is right that PF-8 waits too: a shelf alpha change invalidates the per-class
+nulls, so running it first would only buy a re-run. That is A-G54's rule applied before the fact rather than
+after, which is the first time in this phase it has been used that way."*
+
+The shelf history, read from the product rather than recalled:
+
+| commit | date | `RING_LUMINANCE.shelf` | |
+|---|---|---|---|
+| `9cc06f84` | 2026-11-06 | **0.05** | the only tier C ladder in the record |
+| `93c47e03` | 2026-11-06 | 0.05 | phase F re-delivery |
+| `3ec8457d` | 2026-11-06 | 0.02 | phase G PG-20 |
+| **`185427d5`** | **2026-11-10** | **0.022** | **A-G62 — the change the deferral was waiting for** |
+| `4b83414e` | 2026-11-11 | 0.022 | this sweep's source |
+| `839623e8` | 2026-11-11 | 0.022 | GRÜN's hooked stand (§82) |
+
+> **The change landed, and the deferral was never lifted. PF-8 per class has been unblocked since
+> `185427d5`.** A precondition stated correctly, satisfied a day later, with nobody watching for its
+> satisfaction. **A-G343's shape in the other direction:** there I left a lane working from a statement of mine
+> I had already superseded; here a lane is waiting on an event that has already happened. Both are the same
+> defect — a dependency recorded once and never re-read — and A-G343's remedy (the obligation is the sender's)
+> does not reach this one, because here there is no message to correct. **Ruled: a deferral states the
+> observable that lifts it**, so that the lane holding it can check rather than wait. `:1999` named a constant;
+> it should have named the constant **and its value**.
+
+**And the second consequence, which `:1999` predicted of itself:** the only tier C ladder in the record was
+measured at shelf **0.05** and the build is **0.022**, a factor of **2.27** down. `PHASE_F:1254` states the shelf
+band alone is about half of the ~173 k sign-pixel pool, so it is the pool's dominant class. **Every per-class
+null in the record predates its own ground.**
+
+So tier C has **no rung that is simultaneously admissible, correctly printed and current.** It is unsupported on
+three independent grounds instead of one, and red on all three.
+
+### A-G360 (continued) · The motion-mode limb — PF-8 returns GREEN with every guard satisfied *(defect 195)*
+
+A-G313's limb asks in which motion mode a pin's quantity lives and whether the accommodation substitutes a
+static channel for it. **PF-8's quantity is coherent amplitude at the breath's harmonics, and the accommodation
+does not substitute anything — it removes the channel.** `* { animation: none !important }` at the component's
+`prefers-reduced-motion: reduce` block kills every animation, the ground's breath included. `:8238` records this
+as *"PF-8 goes vacuous"*. Correct, and incomplete. Run the three tiers at zero:
+
+| tier | reading | admissibility | verdict |
+|---|---|---|---|
+| **A** | 0.00000 ≤ 0.0005 | — | **PASS** |
+| **B** | 0.00000 ≤ 0.0020 | floor 0.00000 ≤ 0.0004 | **PASS, ADMISSIBLE** |
+| **C** | 0 vs 0 at every rung | rung ≥ 2 × 0 = 0 → **all four rungs admissible** | ratio 0/0 |
+
+> **Every admissibility clause passes in the one mode where the measurement cannot fail.** `:1554`'s condition
+> reads *floor ≤ 0.0004* and a floor of zero satisfies it most comfortably of all. `:1400`'s reads *rung ≥ 2× the
+> floor* and a zero floor admits every rung. **Both were written against a floor that was too HIGH. Neither has
+> a lower end.**
+
+**So PF-8 under `reduce` does not merely go vacuous — it returns green on three tiers with all guards satisfied.
+A vacuity that announces itself as a pass is worse than one that errors**, because the guards built to catch a
+measurement that cannot fail are the very things certifying it. This is the ninth-and-following member of the
+phase's largest defect family in its sharpest disguise yet: **not a statistic that could not see the leak, and
+not a view the leak was absent from, but a mode in which the leak does not exist and every safeguard agrees the
+run was valid.**
+
+**A-G42's two-pass rule degenerates in the same mode.** PF-8 is travel-**masked**, PG-11 travel-**drawn**, and
+the two *"may not reuse the other's frames"*. Under `reduce` `.mf-travel` is `visibility: hidden`, so the travel
+mask is **empty and the two configurations are pixel-identical** — while the rule separating them still reads as
+satisfied, because it is stated over frames rather than over configurations.
+
+> **Ruled: PF-8 is LIVE-ONLY, and nothing in its nineteen amendments says so.** PF-9 states the STILL case —
+> `:8238`'s own reference — so the record has had the shape all along and never applied it here. PF-8 is the pin
+> with the most guards and the least mode discipline, and it is now in A-G313's list of nine. **A reading taken
+> in the wrong mode is not a weak reading; it is a different pin.**
+
+### What this changes for the other two lanes
+
+**PINK:** PF-8 per class is **unblocked for the shelf alpha** and has been since `185427d5` — but it stays behind
+A-G51's fixtures for **level coverage**, because `PHASE_F:1348` requires L0 **and** L2 and A-G330 is the defect of
+handing you a fixture-blocked item while saying nothing waits on you. What *is* available now, and was not
+before: **the per-class nulls can be re-taken on the current ground**, which is the input every one of the three
+tiers needs and which no figure in the record currently has. When you run it, the ladder's rungs below
+**2 × your measured per-pixel floor** are not evaluated — that is my clause and it voided three of four rungs in
+my own run.
+
+**GRÜN:** nothing here is yours to implement. One thing is yours to know: the `SEAT_PAD_PX` docstring at the
+component's `:118–122` **quotes PF-8 tier A readings per class and per level**, and those readings are from the
+shelf-0.05 era. It is the same class of staleness as the README provenance paragraph you corrected in §81, in the
+same file, against the same reader — and it is a comment, so it moves no pixel and blocks nothing. It belongs
+with the `GLOW_RAMP` comment floor and the ring-docstring corrections you already owe, not ahead of the fixtures.
+
+### Where this leaves the record
+
+**Five new defects, all five this lane's:** a probe that read a comment as enforcement, a headline rung
+inadmissible under my own later clause, a ratio printed ∞ where its operands give 40.75, a deferral that outlived
+its precondition by a day, and a pin that returns green on three tiers in the mode where it cannot fail. **The
+count is 194.**
+
+**Both GELB items §74 and A-G320 recorded as owed are now closed.** PF-8's sweep is this section; the forward
+pointers are at `PHASE_F:317` and `PHASE_F:929`, with every line number in them produced by a verifier that
+resolves each citation back to the text it claims to cite — **because writing those notes invalidated every
+number in their own draft twice over, and four of the hand-written citations were wrong, one of them pointing at
+a section header.** Nothing in GELB's queue is unblocked and unstarted. The credential remains the owner's single
+open item.
