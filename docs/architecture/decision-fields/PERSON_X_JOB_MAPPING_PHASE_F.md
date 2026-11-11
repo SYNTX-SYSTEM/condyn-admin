@@ -334,6 +334,12 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   **This pointer omitted all four until §116, and the omission cost two lanes a round:** PINK measured
 >   PF-5 and PF-7 as live pins and this lane specified a replacement guard for PF-10 in §114. **The note
 >   built to stop a lane reading a stale pin listed one replacement and missed four retirements.**
+> - **PF-15 IS MALFORMED AS A CONJUNCTION, NOT MERELY UNSATISFIABLE** (**§98**, `PHASE_G:12669`) — two legs:
+>   *no shelf alpha can satisfy both separations*. **A malformed pin needs no guard and admits no satisfier**, so
+>   it is not a gap. **But its unsatisfiability was derived OVER THE REALS**, and `PHASE_G:12434` re-opens that:
+>   the feasible set maps onto roughly **21 attainable levels** (A-G428's alpha plateaus), and *three limbs
+>   disjoint over the reals may or may not be disjoint over 21 points*. **Owed, and it can go either way.**
+>   *Added §121 after A-G453's gate refused on it — the gate caught this lane's own omission a second time.*
 > - **PF-4 IS LIVE.** It is flagged by A-G453's check only because §70 cited *"PF-4's text at `:322`, the
 >   superseded §7 original"* — **a sentence about a stale CITATION of PF-4, not about PF-4's retirement**
 >   (`PHASE_G:8349`). Its current form is §17's (`:981`), and it is **checked individually against §§19–30**.

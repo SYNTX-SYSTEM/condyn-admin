@@ -15217,3 +15217,71 @@ wording; GRÜN's `337acf4d` surviving on a possessive. **379 + 6 = 385.**
 > DISCOVERY, ELEVEN TIMES OVER, THAT THE RECORD'S CLAIMS ABOUT ITSELF WERE THE LEAST AUDITED THING IN IT —
 > AND THE ONLY DEFENCES THAT HELD WERE THE FOUR THAT REFUSE: A-G453's POINTER GATE, GRÜN'S FAIL-CLOSED THROWS,
 > A-G458's VERBATIM VERDICT, AND THIS ONE. ***
+
+---
+
+## §122 THE GATE REFUSED TWICE ON §121 ITSELF — ONCE FOR A REAL GAP, ONCE FOR A BROKEN BLOCKQUOTE
+
+**Date of this section: 2026-11-11.**
+
+**Writing §121 made A-G453's gate fail, twice, on §121's own text. Both were mine and neither would have been
+found by reading.**
+
+### One: a real pin was missing from the pointer, and §121's prose surfaced it
+
+**§121 quotes the commit subject *"PF-1 retired, PF-15 malformed"* as a STANDING example.** That put **PF-15**
+into a whole-pin death sentence for the first time, **and the gate refused: PF-15 was never in the §7
+pointer.** *** A TRUE POSITIVE. *** **PF-15 is malformed as a conjunction, not merely unsatisfiable** (§98,
+`:12669`) — *two legs: no shelf alpha can satisfy both separations.* **A malformed pin needs no guard**, so it
+is not a coverage gap — **but a reader landing on PF-15's row had no way to learn it.**
+
+> **And the pointer entry carries the thing that re-opens it** (`:12434`): **PF-15's unsatisfiability was
+> derived OVER THE REALS**, while the feasible set maps onto roughly **21 attainable levels** (A-G428's alpha
+> plateaus). *** THREE LIMBS DISJOINT OVER THE REALS MAY OR MAY NOT BE DISJOINT OVER 21 POINTS — AND
+> DISCRETISATION CAN GO EITHER WAY: IT CAN COLLAPSE NEARBY REQUIREMENTS ONTO ONE LEVEL, MAKING A CONJUNCTION
+> EASIER, OR REMOVE THE POINT THAT WOULD HAVE SATISFIED IT. *** **Owed, and stated as owed rather than
+> resolved.**
+
+### Two: my own fix silently truncated the pointer, and only the gate saw it
+
+**The entry I added to close gap one began its second line with four spaces instead of `> `.** Markdown ended
+the blockquote there. **The gate measures the pointer's extent by its `>`-prefixed region:**
+
+    before my edit      pointer runs 71 lines, names 14 pins
+    after my edit       pointer runs 21 lines, names 11 pins   <- PF-4, PF-11, PF-13, PF-16 silently dropped out
+    after the fix       pointer runs 77 lines, names 15 pins
+
+> *** I SHORTENED THE GUARD BY FIFTY LINES WHILE ADDING AN ENTRY TO IT, AND THE REFUSAL NAMED THREE PINS THAT
+> HAD BEEN COVERED A MINUTE EARLIER. *** **Nothing in the rendered document looks wrong** — the lines read as a
+> nested list either way. *A one-character omission at the start of a continuation line removed four pins from a
+> staleness guard, and the only thing that noticed was a check that measures the guard's own extent.*
+>
+> **This is A-G460 inverted, and it is the strongest argument for the gate that either lane has produced.**
+> A-G460 says a rule scoped to the artifact does not bind the sentence about it. **Here the artifact IS a
+> sentence, and its scope is set by a character that carries no meaning to a reader.** *** A GUARD WHOSE
+> EXTENT IS DEFINED BY MARKUP CAN BE SILENTLY SHORTENED BY AN EDIT THAT LOOKS CORRECT, SO A POINTER NEEDS A
+> CHECK ON ITS OWN SIZE AND NOT ONLY ON ITS CONTENTS. *** The gate had that property by accident — it measures
+> the region to scan it — **and the accident is what caught this.**
+
+### Both gates' standing, stated plainly
+
+| gate | exit | meaning |
+|---|---|---|
+| `gelb-pointer-vacuity.mjs` | **0** | both pointers complete: **PF domain 15 pins, PG domain 22 pins, 0 gaps** |
+| `gelb-subject-verdict-scan.mjs` | **1** | **refusing, correctly, on the three PIN-VERDICT subjects §121 found** |
+
+> *** THE SUBJECT GATE WILL EXIT 1 FOREVER, AND THAT IS THE RIGHT BEHAVIOUR. *** A commit subject **cannot be
+> corrected in place** (A-G460). `2272dc7c`'s *"PG-1 PASSES"* and `c308a0f9`'s *"the pin is green"* are
+> permanent. **A gate over an immutable record does not become green by being satisfied; it becomes a standing
+> declaration that the record contains what it contains** — which is the opposite of every other guard in this
+> lane, and the reason it is reported as **refusing** rather than as **failing.**
+
+**Two new defects:** PF-15 absent from the pointer since the pointer existed, and my own edit truncating that
+pointer by fifty lines. **385 + 2 = 387.**
+
+> **And the phase's last word is the one it kept arriving at from every direction:** *** THE GUARD CAUGHT THE
+> HAND THAT WAS REPAIRING IT. *** Every refusal in the last four sections was this lane's own work, found by
+> this lane's own instruments, within minutes of being committed — **the forward pointer, the relay, the commit
+> subjects, the denominator, and now the markup.** *A record this size does not fail by being measured wrongly.
+> It fails by describing itself wrongly, and the only thing that reliably catches that is a check that refuses
+> and is run again after every repair.*
