@@ -1,0 +1,174 @@
+==========================================================================================================
+GELB · A-G340 — THE CAPABILITY THRESHOLD, DERIVED EXACTLY THROUGH THE REAL TRANSFER FUNCTION
+==========================================================================================================
+
+[0] A-G54 — PINK verified my citations in its OWN build's numbering. Do the constants agree?
+
+  AGREE   WAVE               4b83414e yes   3ec8457d yes
+  AGREE   wave base          4b83414e yes   3ec8457d yes
+  AGREE   halo mean/depth    4b83414e yes   3ec8457d yes
+  AGREE   selected gain      4b83414e yes   3ec8457d yes
+  AGREE   CYAN               4b83414e yes   3ec8457d yes
+  AGREE   haloAlpha          4b83414e yes   3ec8457d yes
+  AGREE   GLOW_RAMP head     4b83414e yes   3ec8457d yes
+
+  7 of 7 identical in both builds. PINK's confirmations transfer; its line
+  numbers are its own file's and differ from mine by construction (shelf alpha differs between
+  these two commits — 0.02 vs 0.022 — so they ARE different builds, and this check is not idle.
+
+==========================================================================================================
+[1] THE CHAIN, STATED ONCE
+==========================================================================================================
+
+  source alpha at a pixel   a = haloAlpha(0.5) x GLOW_RAMP share x group opacity
+  group opacity             op = 0.8825 + 0.1175 x gain x w,   w in [-1, 1] (waveAt, verified)
+                            unselected op in [0.7650, 1.0000]
+                            selected   op in [0.841375, 0.923625]
+  composite                 out_byte = a x CYAN + (1 - a) x D        <- ENCODED, this is PINK's point
+  decode                    L = WCAG relative luminance of out_byte  <- NON-LINEAR, hence convex
+  c = L(op_mean) - L(D)          s = L(op_max) - L(op_min)
+  capability threshold t* = c at the share where s = 0.004
+
+==========================================================================================================
+[2] THE EXACT THRESHOLD — solved, continuous and 8-bit quantised
+==========================================================================================================
+
+  my linear value (block [2], WRONG): 0.01502 unselected, 0.04292 selected
+  PINK's empirical (contaminated):    0.01125 unselected, 0.02489 selected
+
+  backdrop                          state        share*    t* exact    s/c at t*   vs my linear
+  rgb(3,5,8) — PINK's deep dark    unselected   0.2831    0.00991     0.4037      0.660x
+  rgb(3,5,8) — PINK's deep dark    selected     0.4964    0.02470     0.1619      0.575x
+  rgb(6,12,17) — the modal medium  unselected   0.2590    0.01065     0.3756      0.709x
+  rgb(6,12,17) — the modal medium  selected     0.4750    0.02659     0.1504      0.620x
+  rgb(0,0,0) — pure black          unselected   0.3028    0.00967     0.4134      0.644x
+  rgb(0,0,0) — pure black          selected     0.5132    0.02360     0.1695      0.550x
+
+  8-bit  rgb(3,5,8) — PINK's deep dark    unselected   0.2923    0.01030     0.4266
+  8-bit  rgb(3,5,8) — PINK's deep dark    selected     0.4988    0.02498     0.1578
+  8-bit  rgb(6,12,17) — the modal medium  unselected   0.2500    0.01022     0.3439
+  8-bit  rgb(6,12,17) — the modal medium  selected     0.5010    0.02945     0.1563
+  8-bit  rgb(0,0,0) — pure black          unselected   0.3050    0.00978     0.3997
+  8-bit  rgb(0,0,0) — pure black          selected     0.5143    0.02342     0.1658
+
+==========================================================================================================
+[3] DOES THE RULING SURVIVE? — every candidate threshold against 0.004
+==========================================================================================================
+
+  candidate                      unselected   x0.004      selected    x0.004     > 0.004 both?
+  my linear (withdrawn)          0.01502     3.76x     0.04292    10.73x     YES
+  PINK's worst-case bound        0.00626     1.56x     0.01788     4.47x     YES
+  PINK's empirical               0.01125     2.81x     0.02489     6.22x     YES
+  EXACT, modal medium            0.01065     2.66x     0.02659     6.65x     YES
+  EXACT, PINK's deep dark        0.00991     2.48x     0.02470     6.17x     YES
+
+  *** EVERY CANDIDATE, INCLUDING THE MOST PERMISSIVE, EXCEEDS 0.004. ***
+  (a)'s t = 0.004 is below capability under the linear model, under PINK's worst-case bound,
+  under PINK's contaminated measurement and under the exact solve. The RULING does not depend
+  on which of the four is right, which is why it survived a 25-42 % correction to its number.
+
+==========================================================================================================
+[4] A FOREIGN-MOVER DETECTOR THAT NEEDS NO SELECTOR LIST
+==========================================================================================================
+
+  Maximum of s/c over every share, both states and all three backdrops: 0.5503
+  attained at rgb(0,0,0) — pure black, unselected, share 1.0000
+
+  *** s/c > 0.5503 IS IMPOSSIBLE FOR THIS HALO UNDER ANY BACKDROP AND EITHER STATE. ***
+  A pixel exceeding it has a contributor that is not this halo's group opacity. That is a
+  foreign-mover test derived from the transfer function, needing no FOREIGN selector and no
+  suppression pass — it runs on the s and c PINK has already measured.
+
+  Against PINK's reported distribution:
+    1920 unselected  median 0.38828 within ceiling   p95   1.567 ABOVE by 2.85x
+    1280 unselected  median 0.43082 within ceiling   p95  14.590 ABOVE by 26.51x
+    1920 selected    median 0.18585 within ceiling
+    1280 selected    median 0.20218 within ceiling
+
+  So every MEDIAN is consistent with the halo alone — PINK's convexity account is sufficient for
+  the medians and no contamination need be invoked for them. But p95 is above the ceiling at
+  both viewports, and at 1280 by a factor of 26.5. At the 95th percentile of masked pixels
+  at 1280 the dominant mover is NOT this halo, and the gap is too large to be a decoding effect.
+
+  WHAT I ASK PINK FOR, AND IT IS A RE-READ RATHER THAN A RUN: the FRACTION of masked pixels with
+  s/c > 0.5503, per cell, from the distribution already in hand. If it is small the medians
+  stand and the empirical threshold is nearly right; if it is large the suppressed re-run is
+  worth its cost. Sequenced that way because PINK states the error runs in the generous
+  direction, so nothing is blocked on either.
+
+==========================================================================================================
+[5] s/c HAS NO ENVELOPE WHERE ITS DENOMINATOR IS AT THE QUANTISER'S FLOOR
+==========================================================================================================
+
+  *** THIS BLOCK'S FIRST FORM IS WITHDRAWN AND THE WITHDRAWAL IS THE FINDING. ***
+  I computed an 8-bit envelope over ALL shares and got s/c in [0.0000, 10.9058] — against which
+  every statistic PINK reported, p95 of 14.59 aside, printed INSIDE. An envelope that admits
+  everything is not a test, and I had written narrative beneath it claiming a clean three-way
+  decomposition of PINK's histogram. The numbers refuted the sentence sitting under them.
+
+  THE CAUSE: at share ~0.005 the quantised composite rounds to the SAME BYTE as the backdrop, so
+  c is zero or one code and the ratio is a ratio of two floor values. *** A-G30'S GUARD ALREADY
+  COVERS THIS *** — "INCONCLUSIVE unless the medium's own motion energy is >= 0.0002 in its own
+  right, because a ratio of two floor values is not a measurement." The guard was written for
+  PG-11 and it is the same statistic shape. I did not need a new rule; I needed to apply one.
+
+  minimum codes      state        admissible s/c envelope       first admissible share
+  c >=  1 code(s)     unselected   [0.0000, 10.9058]  floor 0 — swing quantises away on 0.5 % of admissible shares
+  c >=  1 code(s)     selected     [0.0000, 9.9058]  floor 0 — swing quantises away on 2.8 % of admissible shares
+  c >=  2 code(s)     unselected   [0.0000, 0.7802]  floor 0 — swing quantises away on 0.0 % of admissible shares
+  c >=  2 code(s)     selected     [0.0000, 0.6920]  floor 0 — swing quantises away on 2.2 % of admissible shares
+  c >=  4 code(s)     unselected   [0.1021, 0.5720]  spread  5.60x
+  c >=  4 code(s)     selected     [0.0000, 0.3721]  floor 0 — swing quantises away on 1.2 % of admissible shares
+  c >=  8 code(s)     unselected   [0.1382, 0.5720]  spread  4.14x
+  c >=  8 code(s)     selected     [0.0000, 0.2129]  floor 0 — swing quantises away on 0.2 % of admissible shares
+
+  UNSELECTED: at c >= 8 codes the quantiser stops dominating and the envelope converges toward the
+  continuous one ([0.2661, 0.5503]): 0.1382 … 0.5720. A usable test, and usable only WITH its
+  admissibility condition — §80's A-G359 and PINK's A-F11-binds-the-estimator, third and fourth
+  instance in three sections.
+
+  SELECTED: the floor stays at ZERO at every code requirement, and this is a third ground — REAL
+  AND NARROW, stated with its size because my first wording said "much of the mask" and the
+  number is 0.2 %. Second overclaim in this instrument, same shape as block [5]'s first form.
+  With c resolved to >= 8 codes the selected swing still quantises to NOTHING on 0.2 % of
+  admissible shares (2.8 % at >= 1 code): the opacity span is only 0.08225, so near
+  share 0.0690 the brightest channel moves under one code. A pixel can sit inside the mask,
+  be perfectly resolved as a LEVEL, and have no measurable SWING at 8 bits — on a narrow band.
+
+  So A-G365 now has three independent grounds and they are of three different kinds:
+    DIMENSIONAL — an absolute swing threshold against a deliberately scaled amplitude (PF-10);
+    DERIVED     — the capability penalty is 2.50x, measured and derived, not a coincidence;
+    RESOLUTION  — at 8 bits the selected swing is sub-code on a narrow band (0.2 %) of the mask.
+  The first two carry the ruling. The third is the weakest and the only one no better instrument
+  repairs, because it is the display's — worth recording at its true size and no larger.
+
+  WHAT SURVIVES FOR PINK'S DISTRIBUTION, STATED NARROWLY:
+    - the CEILING of block [4], 0.5503, is continuous and quantisation cannot raise it:
+      rounding never manufactures swing the opacity range does not contain. So p95 at 1.567
+      (2.85x) and 14.59 (26.5x) are foreign movers, derived, with no selector list.
+    - the MEDIANS, 0.388/0.431 unselected and 0.186/0.202 selected, sit inside the continuous
+      envelope and close to the exact s/c AT the capability threshold (0.3756 / 0.1504).
+    - the p05 of 0.201 is NOT explained and NOT a contradiction: it is below the continuous
+      floor and inside the quantiser-dominated region, where A-G30 says there is no measurement
+      to explain. It should be excluded by an admissibility clause, not accounted for.
+
+  So my "three mechanisms, one histogram" is withdrawn as stated: it was two mechanisms and a
+  region where the statistic does not exist. The difference matters because the third was going
+  to be explained and the correct treatment is to drop it.
+
+==========================================================================================================
+[6] THE PF-10 PENALTY, DERIVED — it is 2.49x, not 2.857x and not 2.21x
+==========================================================================================================
+
+  how much more contribution a SELECTED pixel needs for the same absolute 0.004 swing:
+
+    linear (withdrawn)       2.8571x
+    PINK's empirical         2.2124x
+    EXACT, modal medium      2.4970x
+    EXACT, deep dark         2.4925x
+
+  1 / selectedGain = 2.8571 is the LINEAR answer and the compositor is not linear.
+  The exact penalty is ~2.50x, stable to 0.0045 across the two backdrops.
+  PINK's 2.212x is its measurement of the same quantity, depressed by the contamination
+  its own upper tail reveals. *** THE PENALTY IS REAL, MEASURED AND DERIVED, AND A-G365 RESTS ON
+  IT RATHER THAN ON ANY COINCIDENCE WITH A SOURCE CONSTANT. ***
