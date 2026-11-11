@@ -4,10 +4,13 @@
 // PG-10 as A-G22 restated it: on the visible glow, >= 25 % of pixels swing >= 0.004 relative luminance,
 // AND the median Weber fraction lies in [10 %, 35 %].  Carrier: .mf-wave-halo (A-G48) = field halos only.
 
-const CYAN = [92, 200, 255];
+/* §88 A-G398: these were FORKED product values. They now come from gelb-product-constants.mjs,
+   which PARSES them out of the product at a pinned build and holds no copy — READS, not HALTS.
+   The output is byte-identical after the wiring, which is both the proof the literals were right
+   and the reason nothing would have said so once they stopped being. */
+import { CYAN, GLOW_RAMP } from "./gelb-product-constants.mjs";
 const VOLUME = { coreAlpha: 0.16, haloAlpha: 0.5, haloNear: 2.6, haloFar: 3.0, depthRatio: 1.45 };
 const WAVE = { periodMs: 10000, riseMs: 4000, edgeLagMs: 1200, layers: 7, peakAlpha: 0.015, haloDepth: 0.235, selectedGain: 0.35 };
-const GLOW_RAMP = [[0,1],[0.33,1],[0.45,0.72],[0.58,0.46],[0.72,0.24],[0.86,0.08],[1,0]];
 const GROUND = [14, 14, 14];          // nearest neutral triple to GRUEN's measured local ground (A-G136)
 const GROUND_L_MEASURED = 0.0044378;  // GRUEN's disclosed scalar (A-G132)
 const SWING_MIN = 0.004, SWING_SHARE = 0.25, WEBER_LO = 0.10, WEBER_HI = 0.35;

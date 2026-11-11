@@ -9,7 +9,11 @@
 //   condyn-admin-mapping-d/docs/architecture/decision-fields/mapping-spec/layout-spec-v1.1.json
 
 const INK = [205, 240, 255];
-const GLOW_RAMP = [[0,1],[0.33,1],[0.45,0.72],[0.58,0.46],[0.72,0.24],[0.86,0.08],[1,0]];
+/* §88 A-G398: these were FORKED product values. They now come from gelb-product-constants.mjs,
+   which PARSES them out of the product at a pinned build and holds no copy — READS, not HALTS.
+   The output is byte-identical after the wiring, which is both the proof the literals were right
+   and the reason nothing would have said so once they stopped being. */
+import { GLOW_RAMP } from "./gelb-product-constants.mjs";
 const VOLUME = { coreAlpha: 0.16, haloAlpha: 0.5, haloNear: 2.6, haloFar: 3.0, depthRatio: 1.45 };
 const CORE_STOPS = [[0,1],[0.4,0.78],[0.75,0.55],[1,0.42]];   // mf-core gradient
 const GROUND_L = 0.0044378;        // GRUEN's disclosed scalar, A-G132/A-G133, L0/1920

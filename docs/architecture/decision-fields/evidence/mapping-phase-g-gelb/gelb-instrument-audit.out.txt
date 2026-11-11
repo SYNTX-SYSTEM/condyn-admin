@@ -38,40 +38,40 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   REPORTS  gelb-a-g340-exact.mjs                HALO_DEPTH SELECTED_GAIN HALO_ALPHA CYAN
   READS    gelb-a-g340-support.mjs              HALO_DEPTH SELECTED_GAIN HALO_ALPHA CYAN
   REPORTS  gelb-gate-pf8-tiers.mjs              SEAT_PAD_PX
-  NOTHING  gelb-gate-pg10.mjs                   SEAT_PAD_PX GLOW_RAMP CYAN
-  NOTHING  gelb-gate-pg12.mjs                   HALO_ALPHA GLOW_RAMP GAP_HUE
-  NOTHING  gelb-gate-pg17-pg19.mjs              SEAT_PAD_PX GLOW_RAMP
+  READS    gelb-gate-pg10.mjs                   SEAT_PAD_PX CYAN GLOW_RAMP
+  READS    gelb-gate-pg12.mjs                   GLOW_RAMP GAP_HUE HALO_ALPHA
+  READS    gelb-gate-pg17-pg19.mjs              SEAT_PAD_PX GLOW_RAMP
   REPORTS  gelb-gate-sweep-a-g128.mjs           SEAT_PAD_PX
   REPORTS  gelb-gate-sweep-pf.mjs               HALO_ALPHA CORE_ALPHA DEPTH_RATIO WEDGE_WASH GLOW_RAMP CYAN
   NOTHING  gelb-pg14-side-allowance.mjs         CHAR_EM
 
   constants in more than one instrument, by the state of each copy (reads / halts / reports / none):
 
-    CYAN           5 copies: 2 read, 0 halt, 2 report, 1 NONE  — gate-pg10
-    GLOW_RAMP      4 copies: 0 read, 0 halt, 1 report, 3 NONE  — gate-pg10, gate-pg12, gate-pg17-pg19
-    HALO_ALPHA     5 copies: 2 read, 0 halt, 2 report, 1 NONE  — gate-pg12
+    CYAN           5 copies: 3 read, 0 halt, 2 report, 0 NONE
+    GLOW_RAMP      4 copies: 3 read, 0 halt, 1 report, 0 NONE
+    HALO_ALPHA     5 copies: 3 read, 0 halt, 2 report, 0 NONE
     HALO_DEPTH     4 copies: 2 read, 1 halt, 1 report, 0 NONE
-    SEAT_PAD_PX    4 copies: 0 read, 0 halt, 2 report, 2 NONE  — gate-pg10, gate-pg17-pg19
+    SEAT_PAD_PX    4 copies: 2 read, 0 halt, 2 report, 0 NONE
     SELECTED_GAIN  4 copies: 2 read, 1 halt, 1 report, 0 NONE
 
-  *** 4 CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The 4 states, with their
+  *** 0 CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The 4 states, with their
   members LISTED FROM THE SCAN rather than named by hand — the first form of this block named
   files and went stale the moment §87's remedy landed, which is the tenth instance this phase
   and the first I had already committed:
 
-    READS    a-g340-ceiling-withdrawn, a-g340-support   <- holds no copy; strictly strongest
+    READS    a-g340-ceiling-withdrawn, a-g340-support, gate-pg12, gate-pg10, gate-pg17-pg19   <- holds no copy; strictly strongest
     HALTS    a-g340-capability
     REPORTS  a-g340-exact, gate-sweep-pf, gate-pf8-tiers, gate-sweep-a-g128
-    NOTHING  gate-pg12, gate-pg10, gate-pg17-pg19, pg14-side-allowance
+    NOTHING  pg14-side-allowance
 
-  2 instrument(s) READ gelb-product-constants.mjs: a-g340-ceiling-withdrawn, a-g340-support
-  That module PARSES 21 values out of the product at a pinned build and holds
+  5 instrument(s) READ gelb-product-constants.mjs: a-g340-ceiling-withdrawn, a-g340-support, gate-pg10, gate-pg12, gate-pg17-pg19
+  That module PARSES 25 values out of the product at a pinned build and holds
   NO literal of its own, so there is nothing in it to go stale. It refuses rather than
   reports if a declaration is missing, duplicated or malformed — GRÜN's writeSealed() shape,
   and GRÜN's §89 rung above the HALTS form I first built.
 
   *** AND THE COUNT IN THIS SENTENCE IS COMPUTED, BECAUSE THE FIRST FORM OF IT WAS TYPED AND WRONG.
-  I wrote "absent in nine"; the table above shows 4. *** Ninth instance this phase of a
+  I wrote "absent in nine"; the table above shows 1. *** Ninth instance this phase of a
   narrative figure disagreeing with its own adjacent output, and the SECOND since A-G385 ruled
   the remedy — so A-G385's remedy is not working as stated. The failure mode it missed is that
   I write the sentence after reading the output and then TYPE a numeral into it.
@@ -86,10 +86,10 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   false positives and not a check that can fail. *** The rule is still worth having because it
   names the act rather than the virtue; it is simply not the gate I claimed one sentence ago.
 
-  Instruments by their strongest constant check: HALTS 1, REPORTS 4, NOTHING 4.
-  Copies by state: 2 halt, 12 report, 9 check nothing.
+  Instruments by their strongest constant check: HALTS 1, REPORTS 4, NOTHING 1.
+  Copies by state: 2 halt, 12 report, 1 check nothing.
   So if the product's haloDepth moved: 1 instrument stops, 4 mention it in passing, and the
-  4 whose numbers are in the record keep producing them.
+  1 whose numbers are in the record keep producing them.
   *** GRÜN's seal guard went from CONVENTION to REFUSES. Mine is at REFUSES in 1 file of 11. ***
 
   THAT IS GRÜN'S "A CONVENTION IS NOT A BOUNDARY" IN THIS LANE. My convention is "verify the

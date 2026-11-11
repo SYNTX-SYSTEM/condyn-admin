@@ -56,6 +56,20 @@ export const CYAN          = triple(/const CYAN = "([^"]+)";/g, "CYAN");
 export const INK           = triple(/const INK = "([^"]+)";/g, "INK");
 export const GAP_HUE       = triple(/export const GAP_HUE = "([^"]+)";/g, "GAP_HUE");
 export const RING_SHELF    = num(/RING_LUMINANCE = Object\.freeze\(\{ shelf: ([0-9.]+)/g, "RING_LUMINANCE.shelf");
+/* §88 A-G400: the two uncovered constants that bear on LIVE pins — BODY_BUDGET on §69's character
+   budget and LABEL_GAP on PG-14's frame. Added first because "34 uncovered" is only a useful number
+   if the ones touching open questions come out of it. */
+export const BODY_BUDGET_L0 = num(/BODY_BUDGET = Object\.freeze\(\{ L0: ([0-9]+)/g, "BODY_BUDGET.L0");
+export const BODY_BUDGET_L1 = num(/BODY_BUDGET = Object\.freeze\(\{ L0: [0-9]+, L1: ([0-9]+)/g, "BODY_BUDGET.L1");
+export const LABEL_GAP      = num(/LABEL_GAP = ([0-9.]+)/g, "LABEL_GAP");
+export const DRAWN_PX       = num(/const DRAWN_PX = ([0-9.]+)/g, "DRAWN_PX");
+/* NOT covered, and the refusal is the finding: SIZE_FLOOR_PX and FRAME_PASS_CAP do not exist at this
+   pinned build. GRÜN's §89 named LABEL_GAP, FRAME_PASS_CAP and SIZE_FLOOR_PX as the three product
+   constants equal to 12; only LABEL_GAP is here, so two of the three are POST-4b83414e — they came with
+   GRÜN's PG-14 work. So this module's coverage count is against 4b83414e and NOT against what ships,
+   which is a limit on the number rather than on the module. Stated because the module refused to export
+   a constant I had assumed existed, which is the behaviour A-G398 bought. */
+
 export const GLOW_RAMP = (() => {
   const body = one(/export const GLOW_RAMP[^=]*=\s*Object\.freeze\(\[([\s\S]*?)\]\s*as const\)/g, "GLOW_RAMP");
   const pairs = [...body.matchAll(/\[\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\]/g)].map(m => [Number(m[1]), Number(m[2])]);
@@ -67,7 +81,7 @@ export const GLOW_RAMP = (() => {
 export const READ = {
   HALO_DEPTH, SELECTED_GAIN, WAVE_PEAK, HALO_ALPHA, CORE_ALPHA, DEPTH_RATIO, HALO_NEAR, HALO_FAR,
   SEAT_PAD_PX, TEXT_SEAT_PX, CHAR_EM, CROWDING, WEDGE_WASH, GAP_ALPHA_GAIN, CYAN, INK, GAP_HUE,
-  RING_SHELF, GLOW_RAMP,
+  RING_SHELF, GLOW_RAMP, BODY_BUDGET_L0, BODY_BUDGET_L1, LABEL_GAP, DRAWN_PX,
 };
 
 /** GRÜN's rule: a declaration the audit cannot extract is unguarded everywhere. So report the gap. */
@@ -75,6 +89,7 @@ export function coverage() {
   const declared = [...src.matchAll(/^(?:export )?const ([A-Z][A-Z0-9_]+)\s*(?::[^=]+)?=/gm)].map(m => m[1]);
   const covered = new Set(["HALO_DEPTH", "SELECTED_GAIN", "WAVE_PEAK", "HALO_ALPHA", "CORE_ALPHA", "DEPTH_RATIO",
     "HALO_NEAR", "HALO_FAR", "SEAT_PAD_PX", "TEXT_SEAT_PX", "CHAR_EM", "CROWDING", "WEDGE_WASH",
-    "GAP_ALPHA_GAIN", "CYAN", "INK", "GAP_HUE", "RING_SHELF", "GLOW_RAMP", "WAVE", "VOLUME", "RING_LUMINANCE"]);
+    "GAP_ALPHA_GAIN", "CYAN", "INK", "GAP_HUE", "RING_SHELF", "GLOW_RAMP", "WAVE", "VOLUME",
+    "RING_LUMINANCE", "BODY_BUDGET", "LABEL_GAP", "DRAWN_PX"]);
   return { declared: [...new Set(declared)].sort(), uncovered: [...new Set(declared)].filter(n => !covered.has(n)).sort() };
 }

@@ -26,11 +26,14 @@
  * Medium triple rgb(6,12,17): the modal medium, §36/§38, GRÜN's disclosed reading.
  */
 
-const GAP_HUE   = [245, 166, 35];
+/* §88 A-G398: these were FORKED product values. They now come from gelb-product-constants.mjs,
+   which PARSES them out of the product at a pinned build and holds no copy — READS, not HALTS.
+   The output is byte-identical after the wiring, which is both the proof the literals were right
+   and the reason nothing would have said so once they stopped being. */
+import { GAP_HUE, HALO_ALPHA, HALO_NEAR, HALO_FAR, GLOW_RAMP } from "./gelb-product-constants.mjs";
 const MEDIUM    = [6, 12, 17];
-const HALO_ALPHA = 0.5, GAP_GAIN = 1.08, HALO_NEAR = 2.6, HALO_FAR = 3.0;
+const GAP_GAIN = 1.08;
 const PEAK_ALPHA = HALO_ALPHA * GAP_GAIN;                       // 0.54
-const GLOW_RAMP = [[0,1],[0.33,1],[0.45,0.72],[0.58,0.46],[0.72,0.24],[0.86,0.08],[1,0]];
 
 /* ── colour pipeline: sRGB EOTF → XYZ (D65) → CIELAB, per A-G123's adopted metric ── */
 const lin = c => { const s = c / 255; return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4); };
