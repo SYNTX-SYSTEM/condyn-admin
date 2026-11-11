@@ -1,0 +1,296 @@
+{
+ "commit": "3ec8457d",
+ "stand": "http://127.0.0.1:3122",
+ "pin": "A-G406 (PINK §35)",
+ "ruling": "the ordering E-7 states does not admit this pair: different colorants over different backdrops, a peak that is not a number, and zero shared support",
+ "wellPosedSubstitute": "the LUMINANCE STEP across r = shelfNear, with its range over one breath period, against the per-pair quantisation floor",
+ "sourceFacts": {
+  "RING_LUMINANCE.shelf@:88": 0.02,
+  "GROUND.stops@:115": [
+   [
+    0,
+    0.075
+   ],
+   [
+    0.3,
+    0.06
+   ],
+   [
+    0.6,
+    0.042
+   ],
+   [
+    0.85,
+    0.026
+   ],
+   [
+    1,
+    0.018
+   ]
+  ],
+  "mf-wave-ground mean/depth@:273": [
+   0.5,
+   0.5
+  ],
+  "ground layers@:876": 7,
+  "shelf band@:883": "r=(shelfNear+fieldRadius)/2, strokeWidth=fieldRadius-shelfNear, rgba(INK,0.02) over SEAT painted at :882"
+ },
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "isolation": "all field animations paused, only circle.mf-wave.mf-wave-ground running — asserted",
+   "playState": {
+    "ground": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "halo": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "breath": "LIVE",
+   "selection": "",
+   "shelfStrokeComputed": "rgba(205, 240, 255, 0.02)",
+   "geometry": {
+    "rUserField": 500,
+    "rUserShelf": 465,
+    "swUserShelf": 70,
+    "shelfNearUser": 430,
+    "shelfFarUser": 500,
+    "scale_clientPxPerUserUnit": 0.833318,
+    "boundaryClientR": 358.327,
+    "shelfFarClientR": 416.659,
+    "note": "the ground ends at shelfNear (:874/:876); the shelf band spans shelfNear..fieldRadius (:883). Zero shared area."
+   },
+   "framesSampled": 33,
+   "stepMs": 310,
+   "anglesSampled": 720,
+   "byOffset": [
+    {
+     "offsetPx": 1,
+     "samplePairs": 720,
+     "step_min": 0.000805209,
+     "step_max": 0.00108682,
+     "step_median": 0.00107126,
+     "step_rangeOverBreath": 0.000281612,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.000388757,
+      0.00215041
+     ],
+     "pairQuantum": 0.000305808,
+     "step_in_quanta_median": 3.50303,
+     "insideTemporalRange_median": 0.000303527,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 2,
+     "samplePairs": 720,
+     "step_min": 0.000807118,
+     "step_max": 0.00122837,
+     "step_median": 0.00122837,
+     "step_rangeOverBreath": 0.000421253,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.000700525,
+      0.00197965
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.97205,
+     "insideTemporalRange_median": 0.00048313,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 3,
+     "samplePairs": 720,
+     "step_min": 0.000807118,
+     "step_max": 0.0012929,
+     "step_median": 0.0012929,
+     "step_rangeOverBreath": 0.000485783,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.0000835072,
+      0.00358465
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 4.18071,
+     "insideTemporalRange_median": 0.000485783,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 5,
+     "samplePairs": 720,
+     "step_min": 0.000807118,
+     "step_max": 0.00111387,
+     "step_median": 0.00107582,
+     "step_rangeOverBreath": 0.000306753,
+     "stepSpreadOverAngles_p05_p95": [
+      0,
+      0.00273783
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.47875,
+     "insideTemporalRange_median": 0.00030809,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 8,
+     "samplePairs": 720,
+     "step_min": 0.000832259,
+     "step_max": 0.00111387,
+     "step_median": 0.00107582,
+     "step_rangeOverBreath": 0.000281612,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.00275853,
+      0.00391043
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.47875,
+     "insideTemporalRange_median": 0.000281612,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    }
+   ]
+  },
+  {
+   "viewport": "1280x800",
+   "isolation": "all field animations paused, only circle.mf-wave.mf-wave-ground running — asserted",
+   "playState": {
+    "ground": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "halo": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "breath": "LIVE",
+   "selection": "",
+   "shelfStrokeComputed": "rgba(205, 240, 255, 0.02)",
+   "geometry": {
+    "rUserField": 500,
+    "rUserShelf": 465,
+    "swUserShelf": 70,
+    "shelfNearUser": 430,
+    "shelfFarUser": 500,
+    "scale_clientPxPerUserUnit": 0.443977,
+    "boundaryClientR": 190.91,
+    "shelfFarClientR": 221.988,
+    "note": "the ground ends at shelfNear (:874/:876); the shelf band spans shelfNear..fieldRadius (:883). Zero shared area."
+   },
+   "framesSampled": 33,
+   "stepMs": 310,
+   "anglesSampled": 720,
+   "byOffset": [
+    {
+     "offsetPx": 1,
+     "samplePairs": 720,
+     "step_min": 0.000829033,
+     "step_max": 0.00107126,
+     "step_median": 0.00107126,
+     "step_rangeOverBreath": 0.000242223,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.00399718,
+      0.00356673
+     ],
+     "pairQuantum": 0.000305808,
+     "step_in_quanta_median": 3.50303,
+     "insideTemporalRange_median": 0.000281612,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 2,
+     "samplePairs": 720,
+     "step_min": 0.000807118,
+     "step_max": 0.00122837,
+     "step_median": 0.00122837,
+     "step_rangeOverBreath": 0.000421253,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.00119275,
+      0.00734944
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.97205,
+     "insideTemporalRange_median": 0.000392468,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 3,
+     "samplePairs": 720,
+     "step_min": 0.000807118,
+     "step_max": 0.00122837,
+     "step_median": 0.00122837,
+     "step_rangeOverBreath": 0.000421253,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.00380752,
+      0.0149941
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.97205,
+     "insideTemporalRange_median": 0.00030809,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 5,
+     "samplePairs": 720,
+     "step_min": 0.000832259,
+     "step_max": 0.00111387,
+     "step_median": 0.00107582,
+     "step_rangeOverBreath": 0.000281612,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.00719401,
+      0.0114622
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.47875,
+     "insideTemporalRange_median": 0.000281612,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    },
+    {
+     "offsetPx": 8,
+     "samplePairs": 720,
+     "step_min": 0.000911726,
+     "step_max": 0.00111387,
+     "step_median": 0.00107582,
+     "step_rangeOverBreath": 0.000202145,
+     "stepSpreadOverAngles_p05_p95": [
+      -0.0107714,
+      0.00949225
+     ],
+     "pairQuantum": 0.000309254,
+     "step_in_quanta_median": 3.47875,
+     "insideTemporalRange_median": 0.000281612,
+     "outsideTemporalRange_median": 0,
+     "outsideTemporalRange_in_quanta": 0
+    }
+   ]
+  }
+ ]
+}

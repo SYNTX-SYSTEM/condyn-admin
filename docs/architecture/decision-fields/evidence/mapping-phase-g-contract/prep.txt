@@ -2878,3 +2878,141 @@ branch's whole suite, not the system verdict, and it said so itself (A-G54 with
 A-G416). PINK records it as GELB's number and claims nothing from it. The four
 playwright-gated skips are the real-browser stand that lives in THIS worktree —
 no restoration on GELB's side can reach it, and none was asked to.
+
+================================================================================
+§35  A-G406 RULED (and replaced with a well-posed question, MEASURED) +
+      THE PF-8 TRAVEL DECISION, WHICH IS NEITHER OF THE TWO OPTIONS OFFERED
+      PINK, 2026-11-11, stand :3122, commit 3ec8457d.
+================================================================================
+
+--------------------------------------------------------------------------------
+PART A — PF-8's TRAVEL: GELB's CONDITIONAL IS THE WRONG QUESTION
+--------------------------------------------------------------------------------
+GELB (§93) left the choice to this lane: either PF-8 builds the travel class, or
+every PF-8 share carries the travel as stated contamination — "which is right
+depends on whether the tiers can absorb a ~1.3–1.5 % disc-light term that I
+cannot evaluate from here."
+
+*** IT IS NOT A LIGHT TERM TO ABSORB. IT IS A CONFOUND THAT IS EXACTLY COHERENT
+    WITH THE ESTIMATOR'S SIGNAL BASIS AND EXACTLY INVISIBLE TO ITS NULL. ***
+
+Measured from source, both sides:
+  WAVE.periodMs   = 10000   (:122)
+  TRAVEL.periodMs = 10000   (:155)        -> IDENTICAL fundamental, 0.1 Hz
+  PF-8 tier fit   HARM  = [0.1, 0.2, 0.3]           (perclass2.mjs:11)
+                  NULLF = [0.05, 0.15, 0.25, 0.35]  (the bracketed null, A-F17)
+The travel's fundamental IS HARM[0], and its keyframes (:277 — opacity 0→1→0 plus
+two stroke-dashoffset plateaus under a cubic-bezier easing) are strongly
+non-sinusoidal, so it carries energy at 0.2 and 0.3 as well. **All three signal
+harmonics are contaminated and not one null bracket can see it.** PF-8's entire
+defence is that bracketed null; against the travel it is structurally blind.
+
+AND THE MAGNITUDE IS NOT 1.3 %. §33 measured the travel population's peak-to-peak
+at **81–99 codes** against the halo wave's **6–13**. So wherever the travel
+crosses a class mask, its coherent amplitude at 0.1 Hz exceeds the breath's by
+roughly an order of magnitude. The 1.31 %/1.47 % figure is its share of DISC
+light; the quantity that matters to the tiers is its amplitude ON THE PIXELS IT
+CROSSES, and there it dominates.
+
+RULING: option two is not available. Stating the travel as contamination
+understates it BY CONSTRUCTION — a stated 1.3 % term invites the reader to treat
+it as absorbable, and the thing it actually does is put an order-of-magnitude
+signal on the estimator's own basis where the null cannot subtract it. **The
+travel class must be BUILT.**
+
+AND BUILDING IT NEEDS A THIRD DERIVATION, because neither existing pass can:
+  · under `reduce` the travel is `visibility: hidden` (:291) and before that
+    `opacity: 0` unless LIVE (:278/:279) — so a mask derived at rest is empty,
+    which is exactly GELB's A-G419 point;
+  · under LIVE the live-mask defect applies (GELB's 11th: a live mask sweeps the
+    breath's movement into the mask);
+  · therefore: **pause every animation and run ONLY `.mf-travel`, then difference**
+    — §33 limb 3's isolation, which freezes the backdrop without removing anything
+    from the composite. That yields the travel's mask with the travel DRAWN and no
+    breath sweeping in, satisfying A-G32 and A-G42 together for the first time.
+§33's instrument was built to measure a ratio and its real yield is this: the
+isolation technique is what makes A-G32's "travel DRAWN" compatible with the
+reduce-mask design that A-G42 and GELB's 11th defect jointly require.
+Owed with the tiers. Not implemented blind, and not implemented by this lane into
+anyone else's instrument.
+
+--------------------------------------------------------------------------------
+PART B — A-G406: THE QUANTITY DOES NOT ADMIT THE ORDERING
+--------------------------------------------------------------------------------
+Three independent reasons, all from source at this build:
+
+(1) DIFFERENT COLORANTS OVER DIFFERENT BACKDROPS — stronger than the shared-pixel
+    argument and sufficient on its own. The ground is **CYAN** at GROUND.stops
+    (:115 = [[0,0.075],[0.3,0.06],[0.6,0.042],[0.85,0.026],[1,0.018]]) inside a
+    radial gradient, times an animated group opacity (:273, mean 0.5 depth 0.5, so
+    [0,1]). The shelf ring is **INK** at RING_LUMINANCE.shelf (:88) stroked over a
+    black SEAT painted first (:882). E-7's four rings are all INK at their own
+    alphas on the same seat, so THERE an alpha ordering IS a luminance ordering.
+    Across two colorants over two backdrops it is a category error.
+(2) "THE GROUND AT ITS BREATH PEAK" IS NOT A NUMBER. Seven layers (:876), each
+    with its own animationDelay, each a five-stop radial gradient, under a group
+    opacity sweeping [0,1]. The peak is a maximum over time AND layers AND radius.
+    Against a static constant that is max-vs-point — §31's malformed shape.
+(3) ZERO SHARED SUPPORT, confirmed in user units from the attributes rather than
+    from the prose: shelfNear = **430**, shelf far edge = **500** = fieldRadius
+    (asserted in the instrument). The ground circles end at shelfNear (:874/:876);
+    the shelf band spans shelfNear→fieldRadius (:883). They meet on one circle —
+    zero area — so no pixel carries both and "which is dimmer" has no location at
+    which it is decidable.
+
+**A-G406 IS INCONCLUSIVE BY CONSTRUCTION (A-G364). E-7's obligation is MALFORMED
+for the medium, not violated by it** — which is the outcome GELB ratified in
+advance, and the right one.
+
+CITATION CORRECTION, with its A-G54 caveat. GELB cites "the shelf ring at 0.022".
+At 3ec8457d the constant is **RING_LUMINANCE.shelf = 0.02** (:88), and the browser
+agrees: computed stroke = `rgba(205, 240, 255, 0.02)`, read in both viewports.
+0.022 appears at this build only inside a COMMENT at :162 (F-4/PF-16: "0.022
+rounded to zero codes"). GELB reads 4b83414e and this lane holds 3ec8457d, so
+either the constant moved or a comment was quoted as the constant — **not
+adjudicated here, because a constant belongs to a build and I do not hold GELB's.**
+
+--------------------------------------------------------------------------------
+PART C — THE WELL-POSED NEIGHBOUR, MEASURED. Declining alone is not useful.
+--------------------------------------------------------------------------------
+The real worry behind A-G406 is whether the medium's end at the shelf READS AS A
+SEAM. That question is well posed where the ordering is not: shared support (the
+pixels either side of ONE boundary), one space (WCAG luminance on actual bytes),
+and a STEP at a boundary rather than two values at two radii.
+Isolation per §33 limb 3: every field animation paused, **only
+`circle.mf-wave.mf-wave-ground` running**, asserted by reading animationPlayState
+back (recorded: ground running, halo and travel paused, both viewports).
+720 angles × 5 matched radial offsets, 33 frames over 10.23s (> one period),
+median over angles, per-pair quantum measured from the actual bytes.
+
+  vp     off  step_median   step_min    step_max  range/breath  step/q  outRange/q
+  1920    1    0.00107126  0.00080521  0.00108682  0.00028161   3.503      0
+  1920    2    0.00122837  0.00080712  0.00122837  0.00042125   3.972      0
+  1920    3    0.00129290  0.00080712  0.00129290  0.00048578   4.181      0
+  1920    5    0.00107582  0.00080712  0.00111387  0.00030675   3.479      0
+  1920    8    0.00107582  0.00083226  0.00111387  0.00028161   3.479      0
+  1280    1-8  0.00107126 … 0.00122837                          3.479–3.972  0
+
+THREE FINDINGS, and the second is a positive confirmation of a stated property:
+
+[C1] THE SEAM IS REAL AND RESOLVED. The step is **3.48–4.18 quanta**, essentially
+     flat across offsets 1 to 8 px — so it is a genuine discontinuity localised at
+     the boundary, not a gradient (a ramp's apparent step would grow with offset).
+     Above the stand's own floor by 3.5–4.2×, so it is measured, not inferred.
+
+[C2] **A-F8 IS CONFIRMED AT THE PIXEL: the shelf side's temporal range is EXACTLY
+     ZERO at every offset, in both viewports.** "The shelf is a still ring" is not
+     only asserted in source — the bytes do not move. This is the one unambiguous
+     green in §35 and it was free.
+
+[C3] THE GROUND SIDE BREATHES BY ABOUT ONE QUANTUM: inside temporal range
+     0.00028–0.00049, i.e. **0.9–1.6 quanta**, so the breath modulates the seam at
+     the resolution limit. Consistent with source: GROUND.stops' last stop is
+     0.018 at u = 1, the dimmest, so the boundary is where the ground is faintest.
+     **A quantity at ~1 quantum is reported as at-the-floor, not as a value.**
+
+LIMIT STATED RATHER THAN ELIDED: with the other carriers paused, the step's
+ABSOLUTE value carries their frozen phase, so that value is a single-phase
+snapshot. Only the step's RANGE is attributable to the ground. Whether a 3.5–4.2
+quantum edge is a defect is a DESIGN judgement and is not this lane's to make —
+it is handed to GELB as a measured figure with its floor beside it.
