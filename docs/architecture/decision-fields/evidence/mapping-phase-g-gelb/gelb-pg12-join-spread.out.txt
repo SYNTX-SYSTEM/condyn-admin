@@ -1,0 +1,17 @@
+GROUP OPACITIES the build can emit (product's fixed() = 1/1000):
+  1  0.911  0.83  0.757  0.69  0.18  0.164  0.149  0.136  0.124
+CSS wave opacities: 0.882500  0.765000  1.000000  0.841375  0.923625
+
+BRANCH A — 8-bit at every join (the model A-G258 ruled on):
+  reaches rgb(7,12,17): no   first visible: rgb(7,13,17)  step 0.737 q_proj
+BRANCH B — exact product in float, one 8-bit composite (A-G139's other branch):
+  reaches rgb(7,12,17): YES   first visible: rgb(7,12,17)  step 0.329 q_proj
+  e.g. group 1 x css 0.8825 -> effective alpha 0.0026475 -> rgb(7,12,17)
+
+SPREAD between the two branches' floors: 124 %
+A-G139: "A bound must sit outside the quantisation-order spread of the quantity it bounds."
+
+GRUEN's cited pair k1=1,k2=137: effective 0.0021069 -> rgb(7,12,17)  step 0.329 q_proj
+  but 137/255 = 0.537255, and the build's group x css values are
+  0.09486 0.10404 0.10433 0.10943 0.113985 0.114427 0.114529 0.12002 0.124 0.125365 0.12546 0.125613 0.131492 0.136 0.13762 0.1377 0.137986 0.14473 0.149 0.151447 0.151474 0.15885 0.164 0.166252 0.18 0.52785 0.579105 0.580549 0.608925 0.63495 0.636921 0.637301 0.668052 0.69 0.696915 0.698341 0.699184 0.732475 0.757 0.765 0.766493 0.766609 0.803957 0.83 0.841375 0.841422 0.8825 0.911 0.923625 1
+  -> 0.537255 is NOT among them; the nearest reachable products bracket it or lie outside.
