@@ -1666,3 +1666,58 @@ at `:418` for the SECTOR label fit. **`:457` — the frame widen — writes `0.6
 the named constant does not govern the frame at all, and changing `CHAR_EM` would silently not move it.
   > **§20's finding sharpens: the 0.62 that sits 2.9 % from being exhausted is the unnamed duplicate, in
   > a place nothing controls. A font fallback would exhaust it with no constant to point at.**
+
+
+================================================================================================
+§22  PF-4 LIMB 3 ACROSS FOCUS STATES — GELB'S 212.5 % CONFIRMED EXACTLY, AND IT IS REDUCE-ONLY.
+     THE LIMB IS BROKEN BY THE REDUCED-MOTION ACCOMMODATION ITSELF. THE 455.6 % PATH STAYS A
+     DERIVATION BECAUSE IT NEEDS L1, AND THE TWO PATHS DIFFER IN A WAY NOBODY HAD NOTICED.
+================================================================================================
+`scripts/pink-pf4-limb3-focus-g.mjs` -> `outputs/PF4-LIMB3-FOCUS.json`. All three capabilities tried
+in turn, cleared between each, at `reduce` and `no-preference`. §63: one fixture, L0.
+
+GELB IS RIGHT THAT MY §21 REASON WAS STILL CONDITIONED. I wrote that the body group's opacity is "1
+for every body". It is 1 for every body **in this fixture**. Two paths move it, both deliberate (A-6):
+    `:654`  `const opacity = inPoolNow ? 1 : 0.18;`                                  — a JS attribute
+    `:292`  `[data-mapping-body][data-lit="false"][data-in-pool="true"] { opacity: 0.32; }` — CSS
+**Third time this session a measurement corrected a source reading of mine, and the third version was
+still carrying an unstated condition.** That is §17a one notch further on: the reason the next reader
+inherits must carry the state it was read in, or it becomes the next "the marks are outside".
+
+MEASURED, AND THE DERIVATION IS CONFIRMED TO THE DECIMAL. Under **`reduce`**, selecting `PCAP_PG`
+puts the SEMANTIC class at group opacity **0.32 and 1 simultaneously** — spread **212.5 %** against a
+bound of 2 %, exactly GELB's figure, `(1 - 0.32) / 0.32`.
+  > **AND ONLY ONE CAPABILITY OF THREE PRODUCES IT.** `PCAP_K8` and `PCAP_TS` both read **0 %**, because
+  > each lights either all or none of a class; only `PCAP_PG` splits one. **A single click would have
+  > reported a configuration and called it the state** — which is why all three were swept. The worst
+  > over the sweep is the verdict and the three rows are kept beside it (A-G235).
+
+  > **THE FINDING THE DERIVATION COULD NOT REACH: IT IS REDUCE-ONLY, AND THE ACCOMMODATION IS THE CAUSE.**
+  > Under `no-preference` every body reads group opacity **1** under every selection, and limb 3 CLEARS
+  > unconditionally — while the `data-lit` states are IDENTICAL in both modes (`PCAP_PG` splits SEMANTIC
+  > into lit true/false either way). So the semantics do not change; only the rendering does. The reason
+  > is at `:289`: **the 0.32 rule lives INSIDE `@media (prefers-reduced-motion: reduce)`**, the same block
+  > that sets `animation: none !important` on the whole field and hides `.mf-travel`.
+  > **Under LIVE the unlit-in-pool body is distinguished by MOTION. Under `reduce` the motion cue is
+  > removed and a static opacity is substituted for it. So PF-4 limb 3 is violated only under `reduce`,
+  > and it is violated BY the accessibility accommodation — the substitute cue is the breach.**
+  > That is not a defect in the accommodation, which is correct and necessary. It is a defect in a pin
+  > that bounds a static ratio without naming the motion mode, in a build whose static channel carries
+  > what the motion channel carries elsewhere. **Fourth instance of the unstated-carrier class, and the
+  > first where the carrier is swapped by a media query rather than shared between elements.**
+
+AND THE TWO PATHS ARE NOT SYMMETRIC, WHICH NEITHER OF US HAD NOTICED. `:292`'s 0.32 is **CSS inside the
+reduce query**, so it applies in one motion mode. `:654`'s 0.18 is a **JS `opacity` attribute** on the
+body group, outside any query, so it applies in **both**. Therefore:
+    0.32 path · L0 reachable · **reduce only** · **MEASURED at 212.5 %**
+    0.18 path · needs L1 and > 1 pool · **both motion modes** · **DERIVATION at 455.6 %, not measured**
+**The unmeasured path is the broader one.** GELB's L1 figure is motion-mode-independent and therefore the
+load-bearing half, and it is the half this stand cannot reach — A-G51's fixture, now with two named
+targets on it (this and `mapping-collar-more-*`).
+
+SO THE SCOPE RULING IS RIGHT AND CAN BE MADE TIGHTER. GELB scoped limb 3 to *"at the same focus state"*.
+Measured: **under LIVE limb 3 holds across focus states with no scope at all; the scope is load-bearing
+only under `reduce`.** Scoped as ruled, §21's 0.000 % stands as the measurement of it, and the point
+that survives is the one GELB kept: **properly scoped, limb 3 is the limb that protects evidence from
+depth, it holds exactly, and an unexamined move of `depthRatio` would break the one limb of PF-4 that
+works.** §68 declined on three dependants; this is a fourth.
