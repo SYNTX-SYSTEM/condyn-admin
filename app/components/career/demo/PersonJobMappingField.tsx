@@ -142,8 +142,20 @@ export const WAVE = Object.freeze({ periodMs: 10000, riseMs: 4000, edgeLagMs: 12
  */
 export const VOLUME = Object.freeze({ coreAlpha: 0.16, haloAlpha: 0.5, haloNear: 2.6, haloFar: 3.0, depthRatio: 1.45 });
 /**
- * PG-17: the glow's ramp, [offset on the glow's radius, share of the peak]: flat to the rim of the largest glow (1 / haloFar), then a
- * monotone, roughly quadratic darkening to 0 at the glow's edge — a ramp over (haloNear … haloFar) − 1 ≥ 1.6 × the body radius.
+ * The glow's ramp, [offset on the glow's radius, share of the peak]. The gradient declares no `gradientUnits`, so offset 1 IS the
+ * drawn glow's radius r · (haloNear + 0.4t) and the body's rim sits at 1 / (haloNear + 0.4t) — 0.384615 at rank 1 and 0.333333 at
+ * the last rank, t being the RANK (see the halo at its render site), not the breath. The head is flat to offset 0.33, just inside
+ * 1 / haloFar = 0.333333, and then darkens monotonically to 0 at the edge.
+ *
+ * §45 A-G163: ONE constant, three different extents, and this comment used to state only the first as if it were the obligation:
+ *   rim → edge        (haloNear … haloFar) − 1      = 1.6   … 2.0   r   geometric, and NOT observable
+ *   seat edge → edge  … − seatHalfPx / r_px         = 1.536 … 1.950 r   at r_px ≥ 28 (PG-3's floor) — what a pixel can see
+ *   measured                                       = 1.55  … 1.95  r   L0 1920×1080, outputs/pg17-seal-reanchor.json
+ * The seat is a stroke CENTRED on r, so it occludes to r + width/2 and its edge lands at offset 0.409341 (rank 1, marked, r_px = 28)
+ * … 0.354762 — past the flat head at EVERY rank and radius, because 0.33 · haloFar = 0.99 < 1 and the seat's own fill reaches 1.
+ * So the flat head is never sampled: the observable ramp is strictly decreasing, and strict-versus-non-increasing is not a choice.
+ * PG-17 is withdrawn (§45 A-G165) — R21 generated this ramp and no quantity was ever taken from it, so it motivates the form and
+ * certifies no bound. The 1.6 above is the rim figure and correct as such; it was never a bound this ramp had to clear.
  */
 export const GLOW_RAMP: ReadonlyArray<readonly [number, number]> = Object.freeze([[0, 1], [0.33, 1], [0.45, 0.72], [0.58, 0.46], [0.72, 0.24], [0.86, 0.08], [1, 0]] as const);
 /** PG-16 (R23, Bouma): free rim-to-rim space between two drawn bodies ≥ this × the eccentricity (distance from the person) of the
@@ -876,9 +888,12 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
             <stop offset={0.75} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.55)} />
             <stop offset={1} stopColor={`rgb(${INK})`} stopOpacity={fixed(VOLUME.coreAlpha * 0.42)} />
           </radialGradient>
-          {/* G-2 / PG-17 (R21, the glare effect): the glow is a LIGHT SOURCE — full at the body's rim (offset 1 / haloNear …
-              1 / haloFar, hidden inside by the body's seat) and a monotone ramp darkening outward over ≥ 1.5 × the radius, the profile that
-              is seen as self-luminous. The gap glow (G-4) is the same form in the one hue, its alpha scaled to the cyan glow's luminance. */}
+          {/* G-2 (R21, the glare effect): the glow is a LIGHT SOURCE — full at the body's rim (offset 1 / haloNear … 1 / haloFar on
+              the gradient's own axis) and a monotone ramp darkening outward to 0 at its edge, the profile that is seen as self-luminous.
+              The flat head runs to offset 0.33 and the seat occludes past it at every rank, so the part drawn flat is never the part
+              seen; GLOW_RAMP's own comment carries the three extents and which one a pixel can measure. §45 A-G163: the ≥ 1.5 × the
+              radius this comment used to assert was neither a measurement nor R21's — PG-17 is withdrawn (A-G165) and its core limb
+              with it. The gap glow (G-4) is the same form in the one hue, its alpha scaled to the cyan glow's luminance. */}
           {([["mf-halo", CYAN, 1], ["mf-halo-gap", GAP_HUE, GAP_ALPHA_GAIN]] as const).map(([gid, hue, gain]) => (
             <radialGradient key={gid} id={gid}>
               {GLOW_RAMP.map(([offset, share]) => <stop key={offset} offset={offset} stopColor={`rgb(${hue})`} stopOpacity={fixed(VOLUME.haloAlpha * gain * share)} />)}

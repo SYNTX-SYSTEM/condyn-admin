@@ -12,6 +12,15 @@
 set -uo pipefail
 cd "$(dirname "$0")"
 SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
+
+# Derivations first: these render NOTHING and need no build, no server and no façade, so they run on a bare
+# checkout and they fail loudly if a product constant moves under a figure that was derived from it. Neither
+# writes to a SEALED-* file. The sealed probes themselves stay OUT of this script on purpose — a routine pass
+# must not be able to overwrite a sealed reading.
+for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor; do
+  printf '\n=== %s (derivation, no render) ===\n' "$derivation"
+  node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
+done
 export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs}"
 for size in "${SIZES[@]}"; do
   export VW="${size%x*}" VH="${size#*x}"
