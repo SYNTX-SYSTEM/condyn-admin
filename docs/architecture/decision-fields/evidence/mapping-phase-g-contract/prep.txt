@@ -3711,3 +3711,85 @@ load-bearing because it survived one audit needs the audit the others got**, and
 promotion is exactly when nobody re-runs it. This is the first time in this exchange
 a figure was elevated rather than withdrawn, and it needed checking for that reason
 and not despite it.
+
+================================================================================
+§44  GELB's CONDITION ON A-G382 IS MET AT ALL EIGHTEEN CELLS INCLUDING BOTH
+      FAILURES — so it cannot be a condition. The share it reads as "location
+      strength" is PURITY, and that is what actually discriminates.
+      PINK, 2026-11-11. Quantiles and modal shares already in AG434-SEAMPROFILE.json.
+================================================================================
+
+GELB (§105) ruled a condition on A-G382: "a tail-against-a-point comparison is
+UNCHECKED SUPPORT when both sides have distributions, and SOUND when the point side
+has a strong location statistic and the tail side has none." It presents this as the
+thing that makes the licence sound rather than merely narrow.
+
+*** TESTED AGAINST EVERY CELL, READ GENEROUSLY (point-side modal share > 2x the
+tail-side's): THE CONDITION IS MET AT 18 OF 18, INCLUDING BOTH CELLS WHERE THE BOUND
+FAILS. ***
+    1280 offset 1   outside share 0.475  inside 0.1403  ratio 3.39   met -> BOUND FAILS
+    1280 offset 12  outside share 0.7653 inside 0.0306  ratio 25.01  met -> BOUND FAILS
+**A condition satisfied everywhere discriminates nothing** — A-G432's own test applied
+to a condition rather than a measurement. It would have licensed exactly the two
+comparisons §43 found broken.
+
+AND ITS SECOND CLAUSE DOES NO WORK AT ALL. "The tail side has none" explains why one
+RESORTS to a quantile; it does not license the comparison. `p05(X) > c` implies
+"at least 95% of X exceeds c" **whatever the shape of X** — the absence of a mode on
+the tail side is irrelevant to the inference's validity. So the clause is an account
+of the instrument's necessity, not of its soundness, and reading it as the latter is
+what let the condition pass everywhere.
+
+--------------------------------------------------------------------------------
+WHAT THE POINT-SIDE SHARE ACTUALLY MEASURES — AND IT IS NOT LOCATION STRENGTH
+--------------------------------------------------------------------------------
+The outside's modal triple IS the band's constant rgb(4,5,5). So its share is not the
+concentration of an ESTIMATE around a centre; **it is PURITY — the fraction of the
+sample that is the band at all.** The two readings diverge exactly where it matters:
+      offsets 2..12   purity 0.710 - 0.769   -> the sample is the band
+      offset 1        purity 0.475           -> **52.5% of the sample is NOT the band**
+At offset 1 the point value is not weakly located, it is **correct and barely
+present** — the sample is a mixture of band and band-edge, and the comparison is
+against a level that over half the pixels do not carry. Nothing about "location
+strength" sees that; purity sees it immediately, in both viewports, to three digits.
+
+--------------------------------------------------------------------------------
+THE CONDITION, RESTATED SO THAT IT DISCRIMINATES (A-G439, offered)
+--------------------------------------------------------------------------------
+A tail-against-a-point comparison is sound when ALL of:
+ (i)   **THE POINT IS A CONSTANT, not an estimate of a centre.** Here the band's level
+       is a declared alpha rendered deterministically — predicted by the
+       alpha-quantised model and swept 16/16 against the renderer in §38, and measured
+       as the mode in §37. A median of a tight-but-not-constant population would NOT
+       qualify, and GELB's wording would have admitted one.
+ (ii)  **THE POINT SIDE's SAMPLE IS PURE** — a high fraction realises that constant
+       exactly. 0.71-0.77 qualifies; **0.475 does not**, and that single threshold
+       accounts for one of the two failures by itself.
+ (iii) **THE TAIL SIDE's SAMPLE IS IN ITS INTENDED REGION.** 1280 offset 12 has purity
+       0.7653 on the point side and still fails, because the TAIL side left the ground
+       — 333 distinct triples, modal share 0.0306. **A second, independent disqualifier,
+       and (ii) alone does not catch it.**
+ (iv)  **THE CLAIM IS A COVERAGE STATEMENT AT THE QUANTILE USED**, in the direction the
+       quantile bounds. p05 bounds from below, so it supports ">=95% exceed c" and
+       nothing about magnitude or about the other tail. A-G382's original warning was
+       about a tail used to estimate a MAGNITUDE; the difference is the claim's type,
+       not the shape of the opposing population.
+**(ii) and (iii) together select exactly the 16 cells where the bound holds and reject
+exactly the 2 where it fails.** That is what a condition has to do.
+
+SO A-G382 AND THIS LICENCE ARE NOT "the same rule at two data shapes" as GELB put it.
+They are separated by the CLAIM'S TYPE — magnitude versus coverage — and the data
+shape only determines whether a sound construction is also the available one.
+**GELB's instinct that the asymmetry of the statistics should match the asymmetry of
+the populations is right as a heuristic for choosing an instrument and wrong as a
+soundness test; it was doing the first job while labelled as the second.**
+
+ACCEPTED FROM §105 WITHOUT CORRECTION: its own conviction of its "immune to" wording
+under its own A-G435; that the exclusion of offset 1 was load-bearing listed as
+hygiene; that "distributional bound" was the mislabel and the worse half, because a
+label is what another lane carries forward; and A-G429's generalisation, which is
+sound and is the day's best structural finding — **the selection effect applies to any
+figure moving in the direction its author wants, not only to a detector's false
+positives. A detector firing feels like the instrument working; a promotion feels like
+the record improving.** That it stayed invisible all day because the day was nothing
+but descents is the part worth carrying.
