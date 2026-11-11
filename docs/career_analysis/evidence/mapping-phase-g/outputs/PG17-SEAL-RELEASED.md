@@ -75,6 +75,44 @@ here, both of which were latent in these files:
   over the body, and nothing in a headless probe marks anything. That is A-G95's missing-motion-mode hole in
   different clothing: an obligation that names neither the motion state nor the interaction state.
 
+## §49 A-G184/A-G185 — ERRATUM: the rim bands cannot settle the mask convention, and one figure of mine was quoted wrongly
+
+**Correction first.** I offered rank 1's 18 px in the 1.00–1.05 r band as evidence that a dash gap reads as
+ground. **It is not.** No body is marked in a probe that never hovers, so the unmarked seat edge sits at
+1.0405 r and an *area* occluder already leaves an uncovered sliver of ~75 px there. 18 is **below** that, not
+above it. The dash-gap geometry stands as a source fact — the seat ring carries `dashOf(b.line, …)`, and
+`dotted` is 1.2k on / 2.6k off, a 32 % duty cycle — but **this reading never evidenced it**, and A-G185
+should not rest on that number.
+
+What the rim bands actually show, against what an `r + h` area convention predicts:
+
+| rank | r_px | seat edge | sliver 1.00–1.05 predicts | observed |
+|---|---|---|---|---|
+| 1 | 34.62 | 1.0405 | ~75.0 px | 18 |
+| 2 | 43.88 | 1.0319 | ~227.5 px | 9 |
+| 3 | 33.98 | 1.0412 | ~66.5 px | 0 |
+| 4 | 31.76 | 1.0441 | ~39.0 px | 2 |
+| 5 | 28.50 | 1.0492 | ~4.5 px | **50** |
+
+**Four bodies read far below the prediction and one reads 11× above it.** Neither convention explains the
+set: the rim bands are dominated by occluders this profile does not separate — the body's own name and
+measure (A-G20), crossing ring seats (A-G97), neighbouring signs — pulling four counts down, and something
+body-specific pushing rank 5's up. **So this reading cannot settle the convention question; it reports what
+its own mask assumed.**
+
+**One datum in it is clean, though.** At 1280×800 `h/r_px` is 0.060 … 0.092, so the 1.00–1.05 band lies
+*wholly* inside the `r + h` annulus for every body and an area convention requires it to be **empty**. Four
+bodies read 0. **Rank 5 reads 6** — an excess with no sliver available to explain it, on the same body that
+is 11× over at 1920. That points at a body-specific gap, and the live hypothesis is its line style, since
+`CLASS_LINE` gives SEMANTIC → `solid`, LEXICAL → `dotted`, NONE → `open`, and only a solid ring occludes its
+whole circumference.
+
+**Which refines the question worth asking the lane holding the instrument:** not *"does the band contain
+uncovered pixels"* — my table shows that answer is contaminated in both directions — but **"what is
+`data-line` on the body whose band is over-populated."** If it is `dotted` or `open`, per-pixel masking is
+confirmed and the ramp starts at `r`. If it is `solid`, the excess has another cause and the convention is
+still open. One attribute, no new run, and it is not contaminated by the other occluders.
+
 ## A-G174 — the per-body local ground, which this release already carries
 
 A ground *triple* cannot represent it. These files report the local ground per body, as the median of uncovered
