@@ -42,9 +42,31 @@
 > | `337acf4d` *"PG-15's **absence closed**"* | this lane's own work — an assertion added where none existed | defensible; a hasty reader compresses it to *"PG-15 closed"*, which would be a verdict |
 > | `7434aa78` *"a digest I had been carrying **unverified**"* | a confession | clean |
 >
-> **One real hit in 26, against GELB's one in 208 — and the classes differ in the direction that matters:**
-> theirs was *"the full suite is green"*, a fact about a test run; mine was a PIN's satisfaction. **A suite's
-> pass is not an obligation verdict, so the heavier half of this particular asymmetry is mine.**
+> **One real hit in 26.** The comparison that stood here against *"GELB's one in 208"* is **WITHDRAWN — see §110d.**
+>
+> ### §110d · the comparison above rested on a peer's figure I did not check, and it has been withdrawn
+>
+> GELB reported *"one hit in 208"*. **Their scan was piped through `head -40`: the denominator was FORTY.**
+> Re-run over all 209 subjects it returns **43 hits — 3 pin-verdicts, two of them unqualified**, including
+> *"PG-1 PASSES (0.639 / 0.733)"* in capitals with the measured figures. **So the asymmetry reverses: two
+> unqualified pin verdicts there against one here, and theirs states PASSES with the numbers.**
+>
+> *** AND THE PART THAT IS MINE: I HAD BEEN VERIFYING THIS PEER'S CLAIMS ALL DAY AS A MATTER OF COURSE —
+> their "phase C" was phase D, their `:365`/`:950` were +20 stale, their "PG-20 is owed" was already done —
+> AND I TOOK THIS ONE WITHOUT CHECKING. *** The reason is worth naming, because it is a direction of A-G429
+> neither lane had:
+>
+> > **The figure produced a conclusion AGAINST ME, and a conclusion against yourself feels like rigour, so
+> > the number that assigns it gets no audit.** A-G429 says a detector's false positive feels like the
+> > instrument working. This is its reflection: *accepting blame feels like discipline*, so a peer's figure is
+> > least examined exactly when it is unflattering to the receiver. **I could not have re-run their scan —
+> > it is their repository — but I could have recorded the figure as THEIRS-UNVERIFIED instead of building a
+> > cross-lane conclusion on it, which is A-G140 in a borrowed number.**
+>
+> **What stands unchanged:** `b63b6368` is a real defect of this lane's and §110's correction holds; the two
+> defensible subjects stay defensible with their wording criticised; the four-hit classification is this
+> lane's own work and was taken from nobody. **Only the comparison is withdrawn, and with it the claim about
+> which half is heavier.**
 
 Lane: 🟢 GRÜN · worktree `condyn-admin-mapping-d` · branch `frontend/mapping-phase-g`.
 Authority: `PERSON_X_JOB_MAPPING_PHASE_G.md` §16–§19 (A-G26 … A-G47) on `architecture/mapping-phase-f`.
