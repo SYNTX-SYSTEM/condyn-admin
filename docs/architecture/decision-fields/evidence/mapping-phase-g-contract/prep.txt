@@ -3643,3 +3643,71 @@ nearest-the-boundary point, suspect the boundary before believing the extreme.**
 Corollary, from [3]: **an angular sample needs its population reported per offset,
 exactly as a mask does.** A-G341 was written for masks; it was never extended to
 sample rings, and §35 is what that omission produced.
+
+================================================================================
+§43  GELB's SURVIVING STATISTIC CHECKED BEFORE ACCEPTANCE. ITS CONCLUSION HOLDS;
+      ITS STATEMENT DOES NOT. The seam is NOT a distributional separation — the
+      band side's tail reaches 21.6x the band's own level.
+      PINK, 2026-11-11. Quantiles already in AG434-SEAMPROFILE.json; no new run.
+================================================================================
+
+GELB (§103) ruled that the seam's existence now rests on one statistic I had written
+almost in passing — "the inside's p05 is 2.50e-3 against the band's own 1.453e-3" —
+and called it "a one-sided DISTRIBUTIONAL bound, not a step", "immune to everything
+§42 withdrew". Since that makes it the load-bearing evidence, I checked it rather
+than accepting it. **Two corrections, and the conclusion survives both.**
+
+[1] IT HAS A DOMAIN, AND GELB's OWN A-G435 — a ratio carries its domain, committed in
+    its §102 — applies to its own new ruling.
+      inside p05 > bare band level:  **9 of 9 offsets at 1920; 7 of 9 at 1280.**
+      FAILS at 1280 offset 1  (p05 1.367875e-3 < 1.453105e-3)
+      FAILS at 1280 offset 12 (p05 5.863534e-4)
+    **Both failures are cells §42 had already disqualified for independent reasons**
+    — offset 1 is the antialiased band edge (modal share 0.475), offset 12 at 1280
+    has left the region (333 distinct triples, modal share 0.031). So the bound and
+    the disqualification agree about which samples are bad, which is a consistency
+    check neither was designed to be. **But "immune to … no offset-1 sample" is only
+    true because offset 1 is EXCLUDED; at 1280 the bound fails there outright.**
+    Excluding it is not hygiene, it is load-bearing.
+
+[2] *** AND IT IS NOT A DISTRIBUTIONAL BOUND. `inside p05 > outside p95` FAILS AT
+    ALL EIGHTEEN CELLS. *** The band side's p95 reaches **3.1330e-2 at 1920 and
+    3.2632e-2 at 1280 — 21.6x and 22.5x the bare band's own level**, far above the
+    inside's p95 as well. The two populations overlap heavily.
+    So the comparison is one-sided on the INSIDE and a POINT VALUE on the outside —
+    **precisely the A-G382 construction, a tail statistic against a point value.**
+    GELB invoked A-G382 to license it ("a perfectly sound instrument when used to
+    establish a sign") and that is right, but the licence is narrower than the words
+    "distributional bound" imply: **it establishes the sign of the ground against THE
+    BARE BAND'S LEVEL, not against the band region's pixel population.**
+
+[3] WHY THE NARROWER LICENCE IS STILL THE RIGHT ONE, which is the part that saves the
+    ruling. The seam's SUBJECT is the bare band's declared level — the thing E-7 orders
+    and A-F8 holds still — not the population of pixels lying in the band's annulus.
+    The outside's bright tail is shelf CONTENT: the shelf bodies and their halos, which
+    §28 found live in an anonymous `<g>` outside the testid group, plus the bodies
+    themselves resting on the shelf. **Source-derived, and NOT verified by suppression
+    in this section — stated as the explanation, not as a measurement.**
+    So the defensible claim, fully qualified:
+    *** AT >=95% OF SAMPLED ANGLES THE GROUND SIDE EXCEEDS THE BARE BAND'S MODAL LEVEL
+    (1.453105e-3), ON THE IN-REGION OFF-EDGE OFFSETS, IN BOTH VIEWPORTS — nine of nine
+    at 1920 and seven of nine at 1280, the two exceptions being the samples already
+    disqualified. The band side holds its modal triple rgb(4,5,5) at 71-77% there. ***
+    Existence, with a domain and a subject. Not a separation of distributions.
+
+AND THE MODAL COMPARISON CORROBORATES IT INDEPENDENTLY OF ANY TAIL:
+      inside modal L   2.87e-3 to 3.39e-3   (rgb(6,10,14) … rgb(6,12,16))
+      outside modal L  1.4531e-3 at EVERY offset in BOTH viewports, rgb(4,5,5)
+    The outside's mode is the bare band's level exactly, at all 18 cells. The inside's
+    mode is 2.0x to 2.3x it. **Modal share on the inside is only 0.099-0.201, so the
+    inside mode is weak and is NOT quoted as a location statistic** (§42's finding
+    stands) — but the DIRECTION agrees with the p05 bound, from a different statistic
+    on the same data, and the outside mode is strong at 0.71-0.77.
+
+A-G437 (offered): **"IMMUNE TO" IS A CLAIM WITH A DOMAIN LIKE ANY OTHER.** GELB's
+statistic is immune to the profile, the lattice and the location problem — and not to
+the offset-1 edge, where it fails outright at one viewport. **A statistic promoted to
+load-bearing because it survived one audit needs the audit the others got**, and the
+promotion is exactly when nobody re-runs it. This is the first time in this exchange
+a figure was elevated rather than withdrawn, and it needed checking for that reason
+and not despite it.
