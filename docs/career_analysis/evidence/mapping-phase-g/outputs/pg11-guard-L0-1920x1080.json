@@ -1,41 +1,39 @@
 {
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "provenance": {
-  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
-  "head": "d04d96aa2b1455373647e8b495e35168299ced27",
-  "headShort": "d04d96aa",
-  "branch": "frontend/mapping-phase-g",
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
   "treeClean": false,
   "productTreeClean": true,
-  "dirtyOutsideProduct": [
-   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
-  ],
+  "dirtyOutsideProduct": [],
   "productDeltaFrom3ec8457d": [
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
-  "buildId": "HRYkeEpbpndI3UEE7ceeC",
-  "measuredAt": "2026-11-10T18:50:58.878Z",
-  "instrumentCommit": "d04d96aa"
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T16:49:46.277Z",
+  "instrumentCommit": "c84ab292"
  },
  "instrument": {
   "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
   "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
-  "base": "http://127.0.0.1:3220",
+  "base": "http://127.0.0.1:3230",
   "instrument": "GRÜN phase-G development instrument",
   "verdict": "NONE — development reading only (A-G36 point 2)"
  },
  "viewport": "1920x1080",
  "level": "L0",
  "motion": "LIVE (travel drawn — A-G42's travel-drawn pass, its own frames)",
- "frames": 199,
+ "frames": 198,
  "spanS": 58,
  "clipMatch": true,
  "adequacyGuard": {
-  "cadenceMs": 293,
-  "nyquistHz": 1.707,
+  "cadenceMs": 294,
+  "nyquistHz": 1.699,
   "maxFittedFreqHz": 0.35,
-  "limit": 1.536,
+  "limit": 1.529,
   "adequate": true
  },
  "windowRule": {
@@ -53,17 +51,17 @@
   "question": "A-G113: can the guarded quantity clear the guard on a PASSING build? If a correctly calm field necessarily puts it under, PG-11 can only return a number on a field that fails R17's calm."
  },
  "mediumCoherentEnergy": {
-  "pixels": 106764,
-  "pooledSignal": 0.000050588,
-  "pooledNull": 0.0000014733,
-  "pooledSignalOverNull": 34.34,
-  "perPixelP50": 0.000075133,
-  "perPixelP99": 0.00049815,
-  "perPixelNullP50": 0.0000055948
+  "pixels": 106758,
+  "pooledSignal": 0.000051804,
+  "pooledNull": 0.0000011777,
+  "pooledSignalOverNull": 43.99,
+  "perPixelP50": 0.000075776,
+  "perPixelP99": 0.00050826,
+  "perPixelNullP50": 0.0000046825
  },
  "guardThreshold": 0.0002,
  "guardClears": false,
- "marginFactor": 0.253,
+ "marginFactor": 0.259,
  "measurabilityReading": "the medium's coherent energy is BELOW A-G30's guard on this build, so PG-11 cannot return a verdict here. Whether that is a property of a CALM field or of this field is the architecture's call (A-G113 reserves it), and this lane does not decide it.",
  "relationLimb": "SEALED — see the companion file. Publishing numerator and denominator would publish the ratio by arithmetic."
 }

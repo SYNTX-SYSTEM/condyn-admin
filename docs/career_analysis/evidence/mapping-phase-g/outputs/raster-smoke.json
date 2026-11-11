@@ -1,0 +1,63 @@
+{
+ "reading": "GRÜN · §90 — raster-path smoke test: captureRaw -> decodeLuminance -> luminance, against the sRGB formula",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "a self-rendered page of flat swatches. Browser only — NO build, NO server, NO façade, NO product page.",
+ "why": "§62 verified the colour-math split by checking that imports RESOLVED. A re-export resolves from outside and is broken from inside, so no import check could see that decodeLuminance had lost its binding to `luminance`. This exercises the chain instead of its imports.",
+ "swatches": [
+  {
+   "swatch": "rgb(6, 12, 17)",
+   "pixels": 400,
+   "meanFromRaster": 0.003421326,
+   "expectedFromFormula": 0.003421326,
+   "absError": 0,
+   "agrees": true
+  },
+  {
+   "swatch": "rgb(92, 200, 255)",
+   "pixels": 400,
+   "meanFromRaster": 0.50803864,
+   "expectedFromFormula": 0.508038643,
+   "absError": 3e-9,
+   "agrees": true
+  },
+  {
+   "swatch": "rgb(245, 166, 35)",
+   "pixels": 400,
+   "meanFromRaster": 0.468062639,
+   "expectedFromFormula": 0.468062629,
+   "absError": 1e-8,
+   "agrees": true
+  },
+  {
+   "swatch": "rgb(128, 64, 32)",
+   "pixels": 400,
+   "meanFromRaster": 0.083602704,
+   "expectedFromFormula": 0.083602704,
+   "absError": 0,
+   "agrees": true
+  },
+  {
+   "swatch": "rgb(255, 255, 255)",
+   "pixels": 400,
+   "meanFromRaster": 1,
+   "expectedFromFormula": 1,
+   "absError": 0,
+   "agrees": true
+  },
+  {
+   "swatch": "rgb(0, 0, 0)",
+   "pixels": 400,
+   "meanFromRaster": 0,
+   "expectedFromFormula": 0,
+   "absError": 0,
+   "agrees": true
+  }
+ ],
+ "helpers": {
+  "luminanceIsCallable": true,
+  "labOfOnMedium": 3.0531,
+  "chromaQuantumAtMedium": 0.505,
+  "sharpIsCallable": true
+ },
+ "finding": "The raster path RUNS and AGREES: all 6 swatches match the sRGB formula to better than 1e-7, worst absolute error 1e-8. Every pixel reading taken through this chain is taken through a chain that works."
+}

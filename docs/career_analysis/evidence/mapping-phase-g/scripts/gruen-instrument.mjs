@@ -40,8 +40,23 @@ export const sharp = sharpNamespace.default ?? sharpNamespace;
  * §62: the pure colour arithmetic lives in `gruen-colour.mjs`, which imports NOTHING, so a derivation can
  * check a colour figure without being able to start a browser. Re-exported here unchanged.
  */
-export { luminance, luminanceOfRgb, labOf, chromaQuantumFloor, achievableAlphas, compositeAtCode } from "./gruen-colour.mjs";
-import { labOf } from "./gruen-colour.mjs";
+/**
+ * §90 · `export { … } from` IS A RE-EXPORT AND CREATES NO LOCAL BINDING. §62 split the colour math out and
+ * wrote exactly that, so every INTERNAL use inside this module broke — `decodeLuminance` threw
+ * "luminance is not defined", which is the function every raster probe goes through. `labOf` was imported
+ * locally at the time only because a check happened to catch it; `luminance` was not, and nothing ran the
+ * raster path again until GELB's ruling to re-run pg11-guard sent me through it.
+ *
+ * §62's verification was the defect: it proved `chromium` and `sharp` were importable and that `labOf` and
+ * `luminanceOfRgb` returned the committed values — IMPORTS RESOLVING, not the path RUNNING. A re-export
+ * resolves perfectly from outside and is broken from inside, so no import check could have seen it.
+ * `gruen-raster-smoke.mjs` now exercises the real path.
+ *
+ * One local import, one plain export — the shape line 30/31 already used for the provenance names, which is
+ * why those never broke.
+ */
+import { luminance, luminanceOfRgb, labOf, chromaQuantumFloor, achievableAlphas, compositeAtCode } from "./gruen-colour.mjs";
+export { luminance, luminanceOfRgb, labOf, chromaQuantumFloor, achievableAlphas, compositeAtCode };
 
 /* ── statistics ───────────────────────────────────────────────────────────────────────────────────── */
 export const pct = (sortedAsc, f) => sortedAsc[Math.min(sortedAsc.length - 1, Math.max(0, Math.floor(f * (sortedAsc.length - 1))))];

@@ -83,6 +83,31 @@ const product = {};
 for (const [name, re, text] of DECLS) { const m = re.exec(text); product[name] = m ? m[1].trim() : null; }
 const unreadable = Object.entries(product).filter(([, v]) => v === null).map(([k]) => k);
 
+/**
+ * §90 · THIS AUDIT'S OWN COVERAGE, AS A NUMBER RATHER THAN AS A CLAIM.
+ *
+ * My own rule, applied to the instrument that states it: "a declaration the audit cannot extract is one it
+ * cannot check anywhere — a hole in the audit before it is a hole in any instrument." GELB applied it to
+ * themselves and published the figure (13 of 47 plus six object fields). The same question has an answer
+ * here and it was unstated, which is worse than a bad answer.
+ *
+ * The denominator is every UPPER_CASE declaration in the product, found rather than listed, so the figure
+ * cannot drift as the product gains constants. An uncovered constant is not a defect in any instrument — it
+ * is a constant this audit CANNOT SPEAK ABOUT, and saying which ones is the whole of the improvement.
+ */
+const declaredInProduct = [...src.matchAll(/^(?:export )?const ([A-Z][A-Z0-9_]+)\s*(?::[^=]*)?=/gm)].map(m => m[1]);
+const covered = DECLS.map(([n]) => n).filter(n => product[n] !== null);
+const uncovered = [...new Set(declaredInProduct)].filter(n => !covered.includes(n)).sort();
+const coverage = {
+  productUpperCaseDeclarations: [...new Set(declaredInProduct)].length,
+  coveredByThisAudit: covered.length,
+  uncovered: uncovered.length,
+  uncoveredNames: uncovered,
+  meaning: "an UNCOVERED constant is one this audit cannot speak about at all: it is not reported as a fork, and a fork of it would not be reported either. Not a defect in any instrument — a limit of this one.",
+  whichGoFirstIfAny: uncovered.filter(n => ["BODY_BUDGET", "LABEL_GAP", "RING_WIDTH_PX", "MOTION", "GROUND", "TEXT_SEAT_PX", "GAP_ALPHA_GAIN", "WEDGE_WASH"].includes(n)),
+  whyThose: "they bear on live pins — BODY_BUDGET on PG-5 and §69's budget, LABEL_GAP and RING_WIDTH_PX on PG-14's frame, GAP_ALPHA_GAIN and WEDGE_WASH on the gap hue the ladder measures. Not urgent, and named so the choice is not mine to make silently."
+};
+
 const files = readdirSync(here).filter(f => f.startsWith("gruen-") && f.endsWith(".mjs")).sort();
 const rows = files.map(file => {
   const raw = readFileSync(resolve(here, file), "utf8");
@@ -159,6 +184,7 @@ const out = {
   detectorLimit: "a constant is credited to a file by NAME, or by a DISTINCTIVE value — a decimal with two or more fractional digits, a quoted triple, or a multi-field literal. A bare small integer is never evidence: LABEL_GAP, FRAME_PASS_CAP and SIZE_FLOOR_PX are all 12, and the first version of this detector credited every script containing the digits '12' with forking all three. So this audit UNDER-reports by design where a product value is a small integer copied as a literal, and that is the honest direction.",
   productConstantsRead: Object.fromEntries(Object.entries(product).filter(([, v]) => v !== null)),
   productConstantsNOTReadable: unreadable,
+  auditCoverage: coverage,
   census: Object.fromEntries(Object.entries(byState).map(([k, v]) => [k, v.length])),
   byState,
   forksThatCarryRecordedNumbers: forksInRecord,
@@ -170,7 +196,9 @@ ${forks.length === 0 ? "No forks." : `THE FORKS (NOTHING or partly-read): ${fork
 ${unreadable.length > 0 ? `AND ${unreadable.length} PRODUCT CONSTANTS COULD NOT BE READ AT ALL (${unreadable.join(", ")}) — a declaration this audit cannot extract is one it cannot check anywhere, so that is a hole in the audit before it is a hole in any instrument.` : "Every product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."}`;
 
 writeFileSync(resolve(here, "../outputs/constant-forks.json"), JSON.stringify(out, null, 1));
-console.log(`product constants read: ${Object.keys(out.productConstantsRead).length}${unreadable.length ? ` · NOT readable: ${unreadable.join(", ")}` : ""}\n`);
+console.log(`product constants read: ${Object.keys(out.productConstantsRead).length}${unreadable.length ? ` · NOT readable: ${unreadable.join(", ")}` : ""}`);
+console.log(`AUDIT COVERAGE: ${coverage.coveredByThisAudit} of ${coverage.productUpperCaseDeclarations} UPPER_CASE product declarations · ${coverage.uncovered} uncovered, which this audit cannot speak about`);
+console.log(`   uncovered that bear on live pins: ${coverage.whichGoFirstIfAny.join(", ") || "none"}\n`);
 console.log("state        file                                      constants");
 for (const r of rows) if (r.state !== "NO CONSTANT") console.log(`${r.state.padEnd(12)} ${r.file.padEnd(41)} ${r.constants.join(", ").slice(0, 70)}`);
 console.log(`\n${out.finding}`);

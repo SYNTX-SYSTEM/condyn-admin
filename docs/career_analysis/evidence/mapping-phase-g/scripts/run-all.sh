@@ -30,6 +30,11 @@ export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwickl
 # Needs a BROWSER but no build, no server and no façade: it renders its own controlled stack with
 # page.setContent. Kept separate from the server probes for exactly that reason, and viewport-independent.
 printf '\n=== gruen-compositing-model (browser only, no server) ===\n'
+# The raster-path smoke test goes FIRST of the browser work: if captureRaw -> decodeLuminance -> luminance
+# is broken, every pixel reading below it is worthless, and §90 found exactly that sitting unnoticed for
+# twenty-eight sections because no raster probe ran in between.
+printf '\n=== gruen-raster-smoke (browser only, no server) ===\n'
+node gruen-raster-smoke.mjs || printf '!! gruen-raster-smoke FAILED (exit %s) — DO NOT TRUST ANY PIXEL READING BELOW\n' "$?"
 node gruen-compositing-model.mjs >/dev/null || printf '!! gruen-compositing-model FAILED (exit %s)\n' "$?"
 node gruen-compositing-ladder.mjs >/dev/null || printf '!! gruen-compositing-ladder FAILED (exit %s)\n' "$?"
 
