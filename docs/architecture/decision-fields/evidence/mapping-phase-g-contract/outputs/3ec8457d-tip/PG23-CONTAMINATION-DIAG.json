@@ -1,0 +1,57 @@
+{
+ "animatedElementsLive": {
+  "circle.mf-wave mf-wave-ground|anim=mappingFieldWave": 7,
+  "circle.mf-wave mf-wave-halo|anim=mappingFieldWave": 2,
+  "g.(noclass)|anim=mappingFieldEvidence": 6,
+  "line.mf-travel|anim=mappingFieldTravel": 3
+ },
+ "shelfMaskPx": 56586,
+ "footprintOverlap": {
+  ".mf-wave-ground": {
+   "shelfMaskPxAffected": 21371,
+   "shareOfShelfMask": 0.37767
+  },
+  ".mf-wave": {
+   "shelfMaskPxAffected": 21461,
+   "shareOfShelfMask": 0.37926
+  },
+  ".mf-halo": {
+   "shelfMaskPxAffected": 56578,
+   "shareOfShelfMask": 0.99986
+  },
+  ".mf-core": {
+   "shelfMaskPxAffected": 221,
+   "shareOfShelfMask": 0.00391
+  },
+  "[data-mapping-sector]": {
+   "shelfMaskPxAffected": 252,
+   "shareOfShelfMask": 0.00445
+  },
+  "[data-mapping-body-shape]": {
+   "shelfMaskPxAffected": 397,
+   "shareOfShelfMask": 0.00702
+  },
+  ".mf-seat": {
+   "shelfMaskPxAffected": 1374,
+   "shareOfShelfMask": 0.02428
+  },
+  "[data-testid^=\"mapping-ring\"]": {
+   "shelfMaskPxAffected": 21874,
+   "shareOfShelfMask": 0.38656
+  }
+ },
+ "shelfLive_coveredByGroundWave": {
+  "n": 21964,
+  "median": 0.0004881,
+  "p99": 0.0025121,
+  "p999": 0.0120183,
+  "max": 0.0138972
+ },
+ "shelfLive_notCoveredByGroundWave": {
+  "n": 34622,
+  "median": 0,
+  "p99": 0.0111518,
+  "p999": 0.0155547,
+  "max": 0.0463577
+ }
+}

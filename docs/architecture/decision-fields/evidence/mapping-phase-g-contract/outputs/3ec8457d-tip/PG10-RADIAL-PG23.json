@@ -1,0 +1,431 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "asks": {
+  "A-G210": "r/R distribution of PG-10 limb 3's breaching pixels, WITH the mask's own distribution as control",
+  "PG-23": "a resting glow's per-pixel swing is zero to the run's own measured static floor"
+ },
+ "shelfSelectorCaveat": "the shelf halo circle has no class/testid/data-*; only `.mf-halo circle:not(.mf-wave-halo)` reaches it, i.e. the `undefined` branch (A-G49)",
+ "ceiling": 0.03,
+ "binWidth": 0.05,
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "region": "924x924",
+   "fieldMaskPx": 51278,
+   "shelfMaskPx": 56625,
+   "shelfElementsMatched": 3,
+   "fieldRingR_px": 416.66,
+   "limb3_breachPx": 105,
+   "limb3_breachRateOverall": 0.002048,
+   "radialHistogram": [
+    {
+     "rOverR": "0.30–0.35",
+     "maskPx": 283,
+     "breachPx": 0,
+     "shareOfMask": 0.00552,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.35–0.40",
+     "maskPx": 2971,
+     "breachPx": 0,
+     "shareOfMask": 0.05794,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.40–0.45",
+     "maskPx": 5018,
+     "breachPx": 0,
+     "shareOfMask": 0.09786,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.45–0.50",
+     "maskPx": 5909,
+     "breachPx": 15,
+     "shareOfMask": 0.11523,
+     "shareOfBreaches": 0.14286,
+     "breachRateInBin": 0.002539
+    },
+    {
+     "rOverR": "0.50–0.55",
+     "maskPx": 4750,
+     "breachPx": 18,
+     "shareOfMask": 0.09263,
+     "shareOfBreaches": 0.17143,
+     "breachRateInBin": 0.003789
+    },
+    {
+     "rOverR": "0.55–0.60",
+     "maskPx": 4289,
+     "breachPx": 34,
+     "shareOfMask": 0.08364,
+     "shareOfBreaches": 0.32381,
+     "breachRateInBin": 0.007927
+    },
+    {
+     "rOverR": "0.60–0.65",
+     "maskPx": 4943,
+     "breachPx": 14,
+     "shareOfMask": 0.0964,
+     "shareOfBreaches": 0.13333,
+     "breachRateInBin": 0.002832
+    },
+    {
+     "rOverR": "0.65–0.70",
+     "maskPx": 6422,
+     "breachPx": 2,
+     "shareOfMask": 0.12524,
+     "shareOfBreaches": 0.01905,
+     "breachRateInBin": 0.000311
+    },
+    {
+     "rOverR": "0.70–0.75",
+     "maskPx": 6962,
+     "breachPx": 22,
+     "shareOfMask": 0.13577,
+     "shareOfBreaches": 0.20952,
+     "breachRateInBin": 0.00316
+    },
+    {
+     "rOverR": "0.75–0.80",
+     "maskPx": 5137,
+     "breachPx": 0,
+     "shareOfMask": 0.10018,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.80–0.85",
+     "maskPx": 3358,
+     "breachPx": 0,
+     "shareOfMask": 0.06549,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.85–0.90",
+     "maskPx": 1139,
+     "breachPx": 0,
+     "shareOfMask": 0.02221,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.00–1.05",
+     "maskPx": 89,
+     "breachPx": 0,
+     "shareOfMask": 0.00174,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.05–1.10",
+     "maskPx": 8,
+     "breachPx": 0,
+     "shareOfMask": 0.00016,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    }
+   ],
+   "concentrationCheck": {
+    "maskShareBeyond095": 0.00189,
+    "breachShareBeyond095": 0
+   },
+   "fieldFloor": {
+    "n": 51278,
+    "median": 0,
+    "p99": 0,
+    "p999": 0.0000645,
+    "p9999": 0.0005273,
+    "max": 0.0014586
+   },
+   "fieldLive": {
+    "n": 51278,
+    "median": 0.0019448,
+    "p99": 0.0264989,
+    "p999": 0.0307736,
+    "p9999": 0.0319155,
+    "max": 0.0326883
+   },
+   "livePeriods": 1.32,
+   "PG23_shelf": {
+    "floor": {
+     "n": 56625,
+     "median": 0,
+     "p99": 0,
+     "p999": 0.0013816,
+     "p9999": 0.0029382,
+     "max": 0.0038756
+    },
+    "live": {
+     "n": 56625,
+     "median": 0,
+     "p99": 0.0051078,
+     "p999": 0.0137717,
+     "p9999": 0.0161049,
+     "max": 0.0381347
+    },
+    "verdict": "EXCEEDS",
+    "liveMaxOverFloorMax": 9.84
+   }
+  },
+  {
+   "viewport": "1280x800",
+   "region": "520x520",
+   "fieldMaskPx": 13394,
+   "shelfMaskPx": 13418,
+   "shelfElementsMatched": 3,
+   "fieldRingR_px": 221.99,
+   "limb3_breachPx": 0,
+   "limb3_breachRateOverall": 0,
+   "radialHistogram": [
+    {
+     "rOverR": "0.30–0.35",
+     "maskPx": 74,
+     "breachPx": 0,
+     "shareOfMask": 0.00552,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.35–0.40",
+     "maskPx": 697,
+     "breachPx": 0,
+     "shareOfMask": 0.05204,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.40–0.45",
+     "maskPx": 1335,
+     "breachPx": 0,
+     "shareOfMask": 0.09967,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.45–0.50",
+     "maskPx": 1403,
+     "breachPx": 0,
+     "shareOfMask": 0.10475,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.50–0.55",
+     "maskPx": 973,
+     "breachPx": 0,
+     "shareOfMask": 0.07264,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.55–0.60",
+     "maskPx": 958,
+     "breachPx": 0,
+     "shareOfMask": 0.07152,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.60–0.65",
+     "maskPx": 1119,
+     "breachPx": 0,
+     "shareOfMask": 0.08354,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.65–0.70",
+     "maskPx": 1483,
+     "breachPx": 0,
+     "shareOfMask": 0.11072,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.70–0.75",
+     "maskPx": 1861,
+     "breachPx": 0,
+     "shareOfMask": 0.13894,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.75–0.80",
+     "maskPx": 1340,
+     "breachPx": 0,
+     "shareOfMask": 0.10004,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.80–0.85",
+     "maskPx": 884,
+     "breachPx": 0,
+     "shareOfMask": 0.066,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "0.85–0.90",
+     "maskPx": 335,
+     "breachPx": 0,
+     "shareOfMask": 0.02501,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.00–1.05",
+     "maskPx": 110,
+     "breachPx": 0,
+     "shareOfMask": 0.00821,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.05–1.10",
+     "maskPx": 102,
+     "breachPx": 0,
+     "shareOfMask": 0.00762,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.10–1.15",
+     "maskPx": 118,
+     "breachPx": 0,
+     "shareOfMask": 0.00881,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.15–1.20",
+     "maskPx": 118,
+     "breachPx": 0,
+     "shareOfMask": 0.00881,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.20–1.25",
+     "maskPx": 114,
+     "breachPx": 0,
+     "shareOfMask": 0.00851,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.25–1.30",
+     "maskPx": 108,
+     "breachPx": 0,
+     "shareOfMask": 0.00806,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.30–1.35",
+     "maskPx": 79,
+     "breachPx": 0,
+     "shareOfMask": 0.0059,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.35–1.40",
+     "maskPx": 44,
+     "breachPx": 0,
+     "shareOfMask": 0.00329,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.40–1.45",
+     "maskPx": 56,
+     "breachPx": 0,
+     "shareOfMask": 0.00418,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.45–1.50",
+     "maskPx": 48,
+     "breachPx": 0,
+     "shareOfMask": 0.00358,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.50–1.55",
+     "maskPx": 17,
+     "breachPx": 0,
+     "shareOfMask": 0.00127,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.55–1.60",
+     "maskPx": 9,
+     "breachPx": 0,
+     "shareOfMask": 0.00067,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    },
+    {
+     "rOverR": "1.60–1.65",
+     "maskPx": 9,
+     "breachPx": 0,
+     "shareOfMask": 0.00067,
+     "shareOfBreaches": 0,
+     "breachRateInBin": 0
+    }
+   ],
+   "concentrationCheck": {
+    "maskShareBeyond095": 0.06958,
+    "breachShareBeyond095": 0
+   },
+   "fieldFloor": {
+    "n": 13394,
+    "median": 0,
+    "p99": 0.000478,
+    "p999": 0.0026012,
+    "p9999": 0.0042702,
+    "max": 0.0044998
+   },
+   "fieldLive": {
+    "n": 13394,
+    "median": 0.0015768,
+    "p99": 0.0224476,
+    "p999": 0.0269044,
+    "p9999": 0.0279076,
+    "max": 0.0282471
+   },
+   "livePeriods": 1.3,
+   "PG23_shelf": {
+    "floor": {
+     "n": 13418,
+     "median": 0,
+     "p99": 0.0002816,
+     "p999": 0.0018819,
+     "p9999": 0.0028374,
+     "max": 0.0031434
+    },
+    "live": {
+     "n": 13418,
+     "median": 0.0000645,
+     "p99": 0.0021108,
+     "p999": 0.0039729,
+     "p9999": 0.0139951,
+     "max": 0.0181511
+    },
+    "verdict": "EXCEEDS",
+    "liveMaxOverFloorMax": 5.774
+   }
+  }
+ ]
+}

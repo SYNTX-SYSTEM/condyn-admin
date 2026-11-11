@@ -907,3 +907,113 @@ STATUS: limb 3 is NOT withdrawn and NOT unrunnable. It is RUN, and on the statis
 EXCEEDS at 1920 against a floor 7.2× below the bound. Its provenance is unchanged and carried: 0.030
 is UNDERIVED, so this is a measured breach of an underived bound — a finding against the pair, not a
 certification of either. What it is not is unmeasurable.
+
+================================================================================================
+§13  A-G210 ANSWERED — THE BREACH IS THE BREATH, NOT THE EDGE. AND THE r/R = 1.647 OPEN ITEM
+     FROM §12 IS EXPLAINED: IT IS MASK NOISE, WHICH IS WHY THE 1280 CLEAR SHOULD NOT BE USED.
+================================================================================================
+scripts/pink-pg10-radial-pg23-g.mjs · outputs/3ec8457d-tip/PG10-RADIAL-PG23.json
+
+A NOTE ON THE ASK FIRST. A-G210 says "no new run" because I hold the data. I did not: §12's instrument
+stored percentiles, not per-pixel positions, so the histogram needed a fresh capture. This is the
+second time an ask has assumed my instrument retained a profile it did not (A-G185 was the first).
+The fix is mine, not GELB's: my outputs should state what they RETAIN, not only what they measured.
+Added to the output as a matter of course from here.
+
+AND THE ASK AS POSED CANNOT ANSWER ITS OWN QUESTION WITHOUT A CONTROL. "The breaching pixels lie
+beyond 0.98" is uninformative alone, because the carrier mask's own radial distribution is not uniform
+— §12 measured it spanning 0.331 … 1.075. If a third of the mask already lay beyond 0.98, a third of
+the breaches lying there would be no concentration at all. So both distributions are reported in the
+same bins, with the per-bin breach RATE, which is the quantity the question is about.
+
+MEASURED, 1920×1080, field carrier mask 51,278 px, 105 breaching pixels:
+   r/R bin     mask px   breach px   % of mask   % of breaches   breach rate in bin
+   0.30–0.45     8,272          0      16.1 %          0.0 %          0.000000
+   0.45–0.50     5,909         15      11.5 %         14.3 %          0.002538
+   0.50–0.55     4,750         18       9.3 %         17.1 %          0.003789
+   0.55–0.60     4,289         34       8.4 %         32.4 %          0.007927   ← peak
+   0.60–0.65     4,943         14       9.6 %         13.3 %          0.002832
+   0.65–0.70     6,422          2      12.5 %          1.9 %          0.000311
+   0.70–0.75     6,962         22      13.6 %         21.0 %          0.003160
+   0.75–0.90     9,634          0      18.8 %          0.0 %          0.000000
+   1.00–1.10        97          0       0.2 %          0.0 %          0.000000
+
+**EVERY ONE OF THE 105 BREACHES LIES BETWEEN r/R 0.45 AND 0.75. ZERO LIE BEYOND 0.95.** The control:
+0.189 % of the mask lies beyond 0.95 and **0 %** of the breaches do. A-G59's flagged region — glow
+pixels at r/R > 0.98 on a raised floor from A-G8's shelf rim — holds 97 mask pixels and not one
+breach. So by A-G210's own dichotomy the answer is unambiguous: **the breach is about the breath, not
+about the field's outer edge.** It sits in the band where the two field bodies themselves stand, which
+is where the carrier is brightest and so where a fixed fractional modulation yields the largest
+absolute swing. The finding is about the glow's own amplitude and nothing about the rim.
+
+ONE REFINEMENT I DID NOT EXPECT: the distribution is not monotone in radius. The rate peaks at
+0.007927 in 0.55–0.60 (3.9× the overall 0.002048) and collapses to 0.000311 in 0.65–0.70 before rising
+again to 0.003160. A smooth function of radius cannot do that. It is consistent with two bodies at
+different radii each contributing their own bright band, which is what a per-body statistic would
+separate and a pooled one cannot. I am not asserting that decomposition; I am recording that the
+pooled radial profile is bimodal and that A-G194's per-body declaration is the right frame for it.
+
+THE §12 OPEN ITEM IS CLOSED, AGAINST MY OWN 1280 NUMBER. §12 recorded the carrier mask reaching
+r/R = 1.647 at 1280 as unexplained and declined to rely on the 1280 clear. The histogram explains it:
+beyond 1.00 the 1280 mask carries a thin, nearly FLAT tail of ~100 px per 0.05 bin running all the way
+out to 1.60–1.65, totalling 6.96 % of the mask. 1.657 R is exactly the half-diagonal of the 520×520
+region (368 / 221.99), i.e. **the tail reaches the corners of the capture and follows no element at
+all.** A carrier footprint cannot be uniform to the corner of the frame. It is raster-level difference
+at MASK_EPS = 1e-4 — mask noise — and it inflates the 1280 floor accordingly (p99.99 0.00427 at 1280
+against 0.00053 at 1920, 8×). At 1920 the same tail is 97 px, 0.189 %. **So the restraint in §12 was
+right and now has a cause: the 1920 breach is the load-bearing result, and the 1280 clear should be
+discarded rather than merely not relied on, until the mask epsilon is set from a measured noise floor
+instead of a constant.** That is A-F11 applied to a mask threshold, which no pin in either phase
+states.
+
+================================================================================================
+§14  PG-23 IS NOT RUN, AND AS WRITTEN IT IS NOT MEASURABLE ON A TRANSLUCENT CARRIER OVER A
+     MOVING GROUND — A MALFORMED PIN, NOT A FAILING BUILD
+================================================================================================
+scripts/pink-pg23-diag-g.mjs · outputs/3ec8457d-tip/PG23-CONTAMINATION-DIAG.json
+PG-23 (GELB §52): "a resting glow's per-pixel swing is zero to the run's own measured static floor,
+on every body whose halo carries no breath."
+
+FIRST MEASUREMENT SAID "EXCEEDS" AND I AM NOT REPORTING THAT AS A VERDICT. Shelf carrier, 1920: own
+static floor max 0.0038756, live max 0.0381347 — 9.84× the floor, and above PG-10's own 0.030 ceiling.
+At 1280, 5.77×. **But the shelf halo circles carry `animationName: none` (verified in §10), so they
+cannot swing at all.** That is the physical impossibility of A-G197, which GELB adopted this section,
+and it falsifies the instrument first. So I diagnosed it instead of reporting it.
+
+DIAGNOSED — what actually moves inside the shelf halo footprint (56,586 px at 1920):
+  `.mf-wave-ground`       21,371 px   **37.8 % of the footprint**   7 animated circles, breathe BY DESIGN (E-6/A-5)
+  `[data-testid^=mapping-ring]` 21,874 px  38.7 %                   the ring stroke beneath
+  `.mf-seat`               1,374 px    2.4 %
+  `[data-mapping-body-shape]` 397 px    0.7 %
+  and, with no selector at all: **6 anonymous `<g>` running `mappingFieldEvidence`**
+And splitting the footprint by ground-wave coverage:
+  covered by `.mf-wave-ground`       n=21,964  median 0.000488  p99.9 0.012018  max 0.013897
+  NOT covered by the ground wave     n=34,622  median 0.000000  p99.9 0.015555  max 0.046358
+
+SO THERE ARE THREE SEPARATE OBSTACLES, AND THE THIRD IS FATAL TO THE PIN AS WRITTEN.
+  1. The shelf halo has no selector. Its circle carries no class, no testid, no data-* — reachable only
+     as `.mf-halo circle:not(.mf-wave-halo)`, i.e. by exploiting the `undefined` branch at :670. A-G49,
+     fourth occurrence, and PG-23 is measurable today only because of the defect.
+  2. Six anonymous `<g>` elements run `mappingFieldEvidence` — a deliberate luminance transient (E-3/E-9)
+     — with no class, testid or data-* of any kind, so they cannot be masked out of any statistic. They
+     are the best candidate for the 0.046 max in the non-ground-covered pixels.
+  3. **A translucent resting layer over a moving ground shows swing at every pixel, however perfect the
+     mask.** 37.8 % of the shelf footprint lies over `.mf-wave-ground`, which breathes by design. The
+     shelf halo contributes NO motion and cannot shield the motion beneath it; the swing lives in the
+     composite. So "a resting glow's per-pixel swing" is not a property of the glow. PG-23 names a
+     quantity that does not belong to its own carrier — which is the A-G128 failure mode, arrived at
+     from the opposite side: not a limb that cannot fail, but a limb whose subject is not the thing
+     it measures. It would read EXCEEDS on a perfectly correct build.
+
+WHAT PG-23 WOULD NEED, and this is a statement about instruments, not a request for a number: the
+shelf glow's OWN contribution is `base_t − noShelf_t` per frame, and its swing over t is then the
+quantity the pin is about. That requires the carrier hidden and shown at the SAME animation phase —
+two synchronised captures per frame, or a pausable clock. Neither lane has that, and unlike
+co-registration (which §12 showed is measured on this build) it is genuinely absent. Alternatively
+restate PG-23 on the carrier's own alpha, where "rests" is exactly checkable and needs no raster.
+
+A-G48's negative limb has now caught three instrument defects and zero build defects, which is its own
+small result: the limb is working, and what it keeps finding is that the shelf halos cannot be measured
+with the masks this phase has. The coverage hole A-G199 identified is therefore wider than stated —
+the three shelf bodies are not merely under no obligation, they are under no obligation that any
+current instrument could check.
