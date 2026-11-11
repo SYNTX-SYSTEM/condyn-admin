@@ -16,6 +16,13 @@
  * one it cannot check anywhere — a hole in the audit before it is a hole in any instrument." So the
  * module reports its own COVERAGE: which product constants it extracts, and which exported constants of
  * the product it does not. A constant absent from this list is unguarded everywhere, silently.
+ *
+ * CORRECTION, forward rather than by rewrite (commit beaa902a's message is pushed and this branch is not
+ * force-pushed): that message said "25 values parsed, 30 of 47 uncovered". The module reports 23 and 31.
+ * Both were typed from memory of the run rather than read off it — the twelfth instance of that family
+ * this phase and the first in a COMMIT MESSAGE, which is the gap in A-G396: that rule governs narrative
+ * lines inside an instrument, and a commit message is narrative too and is written by hand from output.
+ * The authoritative figures are whatever `node -e "import(...).then(m => m.coverage())"` prints.
  */
 import { execFileSync } from "node:child_process";
 export const SHA = "4b83414e";
