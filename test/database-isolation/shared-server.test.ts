@@ -43,8 +43,40 @@ describe("B-ENTRY server limb · the URL policy cannot tell two servers on one h
 
   it("ACCEPTS a server that holds only maintenance databases and disposable ones", async () => {
     const disposableServer = async () => ["postgres", "template0", "template1", "condyn_test_0123456789abcdef"];
-    await expect(assertDisposableServer(onDisposable, disposableServer)).resolves.toEqual({ databaseCount: 4 });
-    await expect(assertDisposableServer(onShared, disposableServer)).resolves.toEqual({ databaseCount: 4 });
+    await expect(assertDisposableServer(onDisposable, disposableServer)).resolves.toMatchObject({ databaseCount: 4 });
+    await expect(assertDisposableServer(onShared, disposableServer)).resolves.toMatchObject({ databaseCount: 4 });
+  });
+
+  /**
+   * §93 LIMB 2, from PINK §33: the witness set derives to a SINGLE member, `condyn`, so limb 1
+   * identifies the shared server by the presence of THIS PROJECT'S payload and sees nothing else. A
+   * production server hosting other applications passes limb 1. This limb refuses it.
+   */
+  it("REFUSES a server holding a FOREIGN payload — a production server with other applications", async () => {
+    const otherApps = async () => ["postgres", "template0", "template1", "billing", "analytics_prod"];
+    await expect(assertDisposableServer(onDisposable, otherApps)).rejects.toThrow(/ERR_TEST_DATABASE_ISOLATION_FOREIGN_PAYLOAD/);
+    await expect(assertDisposableServer(onDisposable, otherApps)).rejects.toThrow(/billing/);
+  });
+
+  it("the WITNESS limb fires before the foreign-payload limb, so the sharper reason is the one reported", async () => {
+    const sharedWithApps = async () => ["postgres", ...SHARED_SERVER_WITNESS_NAMES, "billing"];
+    await expect(assertDisposableServer(onShared, sharedWithApps)).rejects.toThrow(/SHARED_SERVER/);
+  });
+
+  /**
+   * *** THE RESIDUAL LIMIT, ASSERTED RATHER THAN ONLY DOCUMENTED, because a limit that is written in a
+   * comment is not a limit anyone has measured (A-G415). A pristine production server — one not yet
+   * bootstrapped — holds no witness and no foreign payload, so it PASSES. This test exists to make that
+   * reach explicit and to fail loudly if someone later believes the check is stronger than it is. ***
+   */
+  it("STATES ITS OWN LIMIT: a pristine server passes both limbs, because a witness reaches only as far as it reaches", async () => {
+    const pristine = async () => ["postgres", "template0", "template1"];
+    await expect(assertDisposableServer(onShared, pristine)).resolves.toMatchObject({ databaseCount: 3 });
+    expect(SHARED_SERVER_WITNESS_NAMES.length, "if this ever exceeds 1 the limit above has narrowed and this test should be revisited").toBe(1);
+  });
+
+  it("refuses a VACUOUS pass: a server reporting no databases at all is impossible, not clean", async () => {
+    await expect(assertDisposableServer(onDisposable, async () => [])).rejects.toThrow(/SERVER_UNREADABLE/);
   });
 
   it("names the database it found, so a refusal says which server it refused", async () => {

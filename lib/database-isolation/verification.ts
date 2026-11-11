@@ -143,20 +143,43 @@ export const SHARED_SERVER_WITNESS_NAMES: readonly string[] = Object.freeze(
   SHARED_PROTECTED_DATABASE_NAMES.filter(name => !(MAINTENANCE_DATABASE_NAMES as readonly string[]).includes(name))
 );
 
-/** Refuses a provisioning basis that is the shared server. Read-only; refuses before anything is created. */
+/**
+ * Refuses a provisioning basis that is not a server provisioned for this suite. Read-only; refuses
+ * before anything is created. TWO LIMBS, because the first one's reach is exactly its witness:
+ *
+ *  1. WITNESS — a protected non-maintenance database is present, so this IS the shared server.
+ *  2. FOREIGN PAYLOAD — some database is neither a maintenance database nor a disposable
+ *     `condyn_test_<16 hex>` one. A server provisioned for this suite holds nothing else. This limb
+ *     catches a production or shared server hosting OTHER applications, which limb 1 cannot see,
+ *     because limb 1's witness is this project's own payload name.
+ *
+ * *** THE RESIDUAL LIMIT, STATED BECAUSE PINK MEASURED IT RATHER THAN BECAUSE IT IS COMFORTABLE
+ * (§93, PINK §33): SHARED_SERVER_WITNESS_NAMES derives to a SINGLE member, `condyn`. So a production
+ * server that has not yet been bootstrapped holds no witness AND no foreign payload, and passes both
+ * limbs. Positive identification by witness reaches exactly as far as the witness reaches, and no
+ * further. *** This is the honest reach of the check and not a defect in it; what would close it is a
+ * positive mark on the disposable server itself, which needs a privilege this lane does not hold.
+ */
 export async function assertDisposableServer(
   basisUrl: string,
   probe: DatabaseNamesProbe = probeDatabaseNames
-): Promise<{ databaseCount: number }> {
+): Promise<{ databaseCount: number; witnessNames: readonly string[] }> {
   if (SHARED_SERVER_WITNESS_NAMES.length === 0) {
     fail("ERR_TEST_DATABASE_ISOLATION_SERVER_UNWITNESSABLE", "no protected database name distinguishes the shared server from a disposable one; this check cannot hold and must not be reported as holding");
   }
   const names = await probe(maintenanceUrlFor(basisUrl));
+  if (names.length === 0) {
+    fail("ERR_TEST_DATABASE_ISOLATION_SERVER_UNREADABLE", "the server reported no databases at all, which is impossible for a live PostgreSQL server — a vacuous pass is refused rather than reported as a pass");
+  }
   const witnesses = SHARED_SERVER_WITNESS_NAMES.filter(name => names.includes(name));
   if (witnesses.length > 0) {
     fail("ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER", `this server holds the protected database ${witnesses.join(", ")}, so it is the shared server and never a provisioning basis — the host and port guards cannot tell it from a disposable server, which is why the server itself is identified`);
   }
-  return { databaseCount: names.length };
+  const foreign = names.filter(name => !(MAINTENANCE_DATABASE_NAMES as readonly string[]).includes(name) && !DISPOSABLE_TEST_DATABASE_PATTERN.test(name));
+  if (foreign.length > 0) {
+    fail("ERR_TEST_DATABASE_ISOLATION_FOREIGN_PAYLOAD", `this server holds ${foreign.length} database(s) that are neither maintenance nor disposable test databases (${foreign.slice(0, 5).join(", ")}${foreign.length > 5 ? ", …" : ""}); a server provisioned for this suite holds nothing else, so this is not a provisioning basis`);
+  }
+  return { databaseCount: names.length, witnessNames: SHARED_SERVER_WITNESS_NAMES };
 }
 
 /** A fresh name in the disposable pattern; unique per call. */
