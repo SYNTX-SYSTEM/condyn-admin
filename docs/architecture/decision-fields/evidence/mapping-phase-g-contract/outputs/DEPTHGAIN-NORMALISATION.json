@@ -1,0 +1,368 @@
+{
+  "reading": "PINK §18 — the depth-gain ladder and who is in its denominator",
+  "verdict": "NONE — this is an inverse-pass coupling report, not a pin verdict (A-G36 point 2 applies to me too)",
+  "commit": "3ec8457d",
+  "constants": {
+    "depthRatio": 1.45,
+    "haloNear": 2.6,
+    "haloFar": 3
+  },
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "lastRank": 5,
+      "nCores": 5,
+      "nHalos": 5,
+      "allPairedOneToOne": true,
+      "ladderFollowsLaw": true,
+      "twoRoutesAgreeAll": true,
+      "classAndAnimationAgreeAll": true,
+      "haloRadiusLawHoldsAll": true,
+      "breathingRanks": [
+        1,
+        2
+      ],
+      "restingRanks": [
+        3,
+        4,
+        5
+      ],
+      "ladder": [
+        1,
+        0.911293,
+        0.830455,
+        0.756788,
+        0.689655
+      ],
+      "deepestBreathing": {
+        "rank": 2,
+        "gain": 0.911293
+      },
+      "deepestOverall": {
+        "rank": 5,
+        "gain": 0.689655,
+        "breathes": false
+      },
+      "restingBodiesOccupyDeepRungs": true,
+      "bodyRadiusMonotoneInRank": false,
+      "bodies": [
+        {
+          "rank": 1,
+          "t": 0,
+          "coreGain": 1,
+          "predictedGain": 1,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 1,
+          "twoRoutesAgree": true,
+          "breathes": true,
+          "hasWaveClass": true,
+          "classAndAnimationAgree": true,
+          "animationName": "mappingFieldWave",
+          "animationDelay": "-9.212s",
+          "bodyR": 41.544,
+          "haloR": 108.014,
+          "haloOverBody": 2.6,
+          "predictedHaloOverBody": 2.6,
+          "pairedCores": 1
+        },
+        {
+          "rank": 2,
+          "t": 0.25,
+          "coreGain": 0.911293,
+          "predictedGain": 0.911293,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.911,
+          "twoRoutesAgree": true,
+          "breathes": true,
+          "hasWaveClass": true,
+          "classAndAnimationAgree": true,
+          "animationName": "mappingFieldWave",
+          "animationDelay": "-9.154s",
+          "bodyR": 52.661788,
+          "haloR": 142.187,
+          "haloOverBody": 2.7,
+          "predictedHaloOverBody": 2.7,
+          "pairedCores": 1
+        },
+        {
+          "rank": 3,
+          "t": 0.5,
+          "coreGain": 0.830455,
+          "predictedGain": 0.830455,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.83,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 40.773981,
+          "haloR": 114.167,
+          "haloOverBody": 2.8,
+          "predictedHaloOverBody": 2.8,
+          "pairedCores": 1
+        },
+        {
+          "rank": 4,
+          "t": 0.75,
+          "coreGain": 0.756788,
+          "predictedGain": 0.756788,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.757,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 38.115473,
+          "haloR": 110.535,
+          "haloOverBody": 2.9,
+          "predictedHaloOverBody": 2.9,
+          "pairedCores": 1
+        },
+        {
+          "rank": 5,
+          "t": 1,
+          "coreGain": 0.689655,
+          "predictedGain": 0.689655,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.69,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 34.2,
+          "haloR": 102.6,
+          "haloOverBody": 3,
+          "predictedHaloOverBody": 3,
+          "pairedCores": 1
+        }
+      ]
+    },
+    {
+      "viewport": "1280x800",
+      "lastRank": 5,
+      "nCores": 5,
+      "nHalos": 5,
+      "allPairedOneToOne": true,
+      "ladderFollowsLaw": true,
+      "twoRoutesAgreeAll": true,
+      "classAndAnimationAgreeAll": true,
+      "haloRadiusLawHoldsAll": true,
+      "breathingRanks": [
+        1,
+        2
+      ],
+      "restingRanks": [
+        3,
+        4,
+        5
+      ],
+      "ladder": [
+        1,
+        0.911293,
+        0.830455,
+        0.756788,
+        0.689655
+      ],
+      "deepestBreathing": {
+        "rank": 2,
+        "gain": 0.911293
+      },
+      "deepestOverall": {
+        "rank": 5,
+        "gain": 0.689655,
+        "breathes": false
+      },
+      "restingBodiesOccupyDeepRungs": true,
+      "bodyRadiusMonotoneInRank": false,
+      "bodies": [
+        {
+          "rank": 1,
+          "t": 0,
+          "coreGain": 1,
+          "predictedGain": 1,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 1,
+          "twoRoutesAgree": true,
+          "breathes": true,
+          "hasWaveClass": true,
+          "classAndAnimationAgree": true,
+          "animationName": "mappingFieldWave",
+          "animationDelay": "-9.212s",
+          "bodyR": 41.544,
+          "haloR": 108.014,
+          "haloOverBody": 2.6,
+          "predictedHaloOverBody": 2.6,
+          "pairedCores": 1
+        },
+        {
+          "rank": 2,
+          "t": 0.25,
+          "coreGain": 0.911293,
+          "predictedGain": 0.911293,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.911,
+          "twoRoutesAgree": true,
+          "breathes": true,
+          "hasWaveClass": true,
+          "classAndAnimationAgree": true,
+          "animationName": "mappingFieldWave",
+          "animationDelay": "-9.154s",
+          "bodyR": 52.661788,
+          "haloR": 142.187,
+          "haloOverBody": 2.7,
+          "predictedHaloOverBody": 2.7,
+          "pairedCores": 1
+        },
+        {
+          "rank": 3,
+          "t": 0.5,
+          "coreGain": 0.830455,
+          "predictedGain": 0.830455,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.83,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 40.773981,
+          "haloR": 114.167,
+          "haloOverBody": 2.8,
+          "predictedHaloOverBody": 2.8,
+          "pairedCores": 1
+        },
+        {
+          "rank": 4,
+          "t": 0.75,
+          "coreGain": 0.756788,
+          "predictedGain": 0.756788,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.757,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 38.115473,
+          "haloR": 110.535,
+          "haloOverBody": 2.9,
+          "predictedHaloOverBody": 2.9,
+          "pairedCores": 1
+        },
+        {
+          "rank": 5,
+          "t": 1,
+          "coreGain": 0.689655,
+          "predictedGain": 0.689655,
+          "gainAgreesWithLaw": true,
+          "secondRouteGroupOpacity": 0.69,
+          "twoRoutesAgree": true,
+          "breathes": false,
+          "hasWaveClass": false,
+          "classAndAnimationAgree": true,
+          "animationName": "none",
+          "animationDelay": "0s",
+          "bodyR": 34.2,
+          "haloR": 102.6,
+          "haloOverBody": 3,
+          "predictedHaloOverBody": 3,
+          "pairedCores": 1
+        }
+      ]
+    }
+  ],
+  "derivedNotMeasured": {
+    "note": "Arithmetic from the confirmed gain law, NOT a measurement. Testable only with a fixture carrying a larger shelf, which this lane does not have and will not fabricate.",
+    "rank2GainByTotalBodies": {
+      "3": 0.830455,
+      "4": 0.883508,
+      "5": 0.911293,
+      "6": 0.928381,
+      "7": 0.939951,
+      "8": 0.948304,
+      "9": 0.954617,
+      "12": 0.966786
+    },
+    "claim": "If the deepest BREATHING body is rank 2, adding RESTING shelf bodies raises its gain monotonically toward 1, because t = (rank-1)/(lastRank-1) shrinks as lastRank grows."
+  },
+  "limb1PopulationSensitivity": {
+    "note": "DERIVED from the measured gain law plus §16's measured limb-1 values. Not itself a measurement. The point is the ENVELOPE, per A-G171: satisfiability is a property of the reachable set, and body population is an axis PG-10 does not mention.",
+    "bound": 0.25,
+    "gainAtMeasurement": 0.911293,
+    "perViewport": {
+      "1280": {
+        "measured": 0.223,
+        "perUnitGain": 0.244707,
+        "gainNeededToClear": 1.021629,
+        "reachableWithinLadder": false,
+        "byTotalBodies": {
+          "5": {
+            "value": 0.223,
+            "clears": false
+          },
+          "6": {
+            "value": 0.22718,
+            "clears": false
+          },
+          "7": {
+            "value": 0.23001,
+            "clears": false
+          },
+          "8": {
+            "value": 0.23206,
+            "clears": false
+          },
+          "9": {
+            "value": 0.2336,
+            "clears": false
+          },
+          "12": {
+            "value": 0.23658,
+            "clears": false
+          }
+        }
+      },
+      "1920": {
+        "measured": 0.243,
+        "perUnitGain": 0.266654,
+        "gainNeededToClear": 0.937544,
+        "reachableWithinLadder": true,
+        "byTotalBodies": {
+          "5": {
+            "value": 0.243,
+            "clears": false
+          },
+          "6": {
+            "value": 0.24756,
+            "clears": false
+          },
+          "7": {
+            "value": 0.25064,
+            "clears": true
+          },
+          "8": {
+            "value": 0.25287,
+            "clears": true
+          },
+          "9": {
+            "value": 0.25455,
+            "clears": true
+          },
+          "12": {
+            "value": 0.2578,
+            "clears": true
+          }
+        }
+      }
+    },
+    "finding": "At 1920 the limb-1 failure is CONTINGENT: it clears at 7 total bodies (two more resting shelf bodies than this fixture carries), because the gain needed (0.937544) lies inside the ladder. At 1280 it is ROBUST: clearing would need a gain of 1.021629, above the ladder's ceiling of 1.0, so NO body count and NO field/shelf split can lift it. The 1280 failure therefore survives the whole population axis; the 1920 one does not."
+  }
+}

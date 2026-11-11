@@ -1284,3 +1284,116 @@ NET STATE OF THE TWO CONSTANTS, UNCHANGED BY EITHER OF MY ERRORS: `BODY_BUDGET.L
 `BODY_BUDGET.L1 = 12` are both load-bearing at the built `CROWDING = 0.3`, both removals are
 withdrawn, and moving `CROWDING` to the recorded 0.5 removes bodies on nine of eleven exercised
 layouts at L0 — a visible product change, larger than first reported, and still the owner's call.
+
+
+================================================================================================
+§18  THE INVERSE PASS GELB ASKED FOR (§61). A COUPLING NO PIN IN EITHER PHASE MENTIONS: THE
+     RESTING BODIES SIT IN THE DENOMINATOR OF A GAIN THAT ONLY THE MOVING BODIES USE — AND IT
+     DECIDES PG-10 LIMB 1's VERDICT AT 1920. PLUS THE THREE REGISTERS, AND ONE HOLE I CANNOT CLOSE.
+================================================================================================
+Instrument `scripts/pink-depthgain-normalisation-g.mjs`, output `outputs/DEPTHGAIN-NORMALISATION.json`.
+Verdict field: **NONE**. This is a coupling report, not a pin verdict — A-G36 point 2 binds me too.
+
+THE COUPLING, MEASURED. `depthGain(rank, lastRank) = VOLUME.depthRatio ** -((rank-1)/(lastRank-1))`
+(PersonJobMappingField.tsx:170) has TWO consumers: the halo group's opacity (:669) and the body
+core's opacity (:697). `lastRank = Math.max(1, ...model.bodies.map(b => b.rank))` (:636) is taken
+over **all** bodies. But shelf bodies REST — their halo circle gets `className={undefined}` rather
+than `mf-wave mf-wave-halo`, and no `animationDelay` (:670), per A-F8.
+`.mf-core`'s opacity IS depthGain unmultiplied, so the ladder reads out exactly. At BOTH sizes:
+    rank      1         2         3         4         5
+    gain   1.000000  0.911293  0.830455  0.756788  0.689655     (= 1.45^-((rank-1)/4), to < 5e-6)
+    breath  YES       YES       no        no        no
+**The three deepest rungs belong to bodies that never breathe, and `lastRank` — the denominator of
+every breathing body's gain — is set by a resting one.** Five self-checks true at 1920 and 1280:
+halo↔core pairing 1:1; ladder follows the law; the two routes (core opacity, halo group opacity)
+agree; `.mf-wave-halo` membership and `animationName !== none` give the SAME partition; and the halo
+radius law `r·(haloNear + 0.4t)` holds exactly — 2.600 / 2.700 / 2.800 / 2.900 / 3.000.
+
+WHY IT DECIDES A VERDICT. Because `t` is normalised, the ladder always spans [0.689655, 1] for any
+body count ≥ 2 — what the shelf population moves is WHERE IN IT the breathing subset sits. Add a
+resting body and every moving body's gain goes UP. §16 measured limb 1 on the deepest BREATHING body
+(rank 2, gain 0.911293) at 0.243 / 0.223 against a MINIMUM of 0.25, and §15 established that the gain
+scales the BREATH, not only the resting level. Dividing the gain out and re-applying it:
+    1920: needs gain 0.937544 — INSIDE the ladder. Clears at 7 total bodies (0.25064), i.e. at two
+          more RESTING shelf bodies than this fixture carries. 5: 0.24300  6: 0.24756  7: PASS.
+    1280: needs gain 1.021629 — ABOVE the ladder's ceiling of 1.0 (rank 1, the brightest body there
+          can be). 12 bodies reaches 0.23658. **No body count and no field/shelf split can lift it.**
+  > **So limb 1's failure at 1280 is ROBUST across the entire population axis, and its failure at
+  > 1920 is CONTINGENT — two resting bodies would clear it without one thing changing about the glow.**
+This is A-G171 on an axis nobody has swept: not the viewport, the POPULATION. The 1920 reading should
+not be carried as a build defect without a body count attached; the 1280 reading should, and is now
+stronger than when I sent it, because it survives the axis. The flip is DERIVED arithmetic from the
+measured gain law, not a measurement — it is testable only with a larger-shelf fixture, which this
+lane does not have and will not fabricate.
+  > **A normalisation that includes bodies the quantity does not apply to is a product question, not
+  > a pin-scope question: a resting body is in the denominator of a gain only moving bodies consume.**
+
+--- REGISTER A · BOUNDS I HAVE MEASURED AND CONSIDER UNESTABLISHED -------------------------------
+1. **PG-10 limb 2's `[10 %, 35 %]`** — the interval's provenance PREDATES A-G193's declaration of the
+   denominator. I measured 0.133…0.143 as modulation depth (clears, but a third of the way off the
+   lower edge) and 0.601…0.690 as spatial Weber (fails hard). An interval chosen before the quantity
+   was named cannot be known to be the interval for the quantity that was eventually named. **It has
+   not been re-derived for modulation depth.** Until it is, limb 2 "clears" a number calibrated
+   against an unstated quantity, and my CLEARS should be read with that caveat attached.
+2. **PG-17's extent figure in GRÜN's product comment.** PG-17 is withdrawn (A-G165) — correctly, and
+   my §9 closure of it at 1260 px is now orphaned evidence: the MEASUREMENT survives, the verdict
+   evaporates. But the comment at GLOW_RAMP records `measured = 1.55 … 1.95 r, L0 1920×1080` as the
+   measured extent. That is one viewport, not the envelope; my 20-width sweep gives **1.47526 …
+   1.94996 r**. Anyone re-establishing a bound on glow extent inherits a floor that is wrong by
+   0.075 r, from a comment in product code. Not urgent, but it will be load-bearing the day it is.
+3. `0.030` (limb 3) is ALREADY on record as UNDERIVED — GELB adopted that and I am not re-billing it.
+
+--- REGISTER B · CARRIERS NO INSTRUMENT REACHES --------------------------------------------------
+**A-G199 / A-G239's coverage hole is NARROWER than the record says, and I should have said so sooner.**
+The shelf halo is addressable TODAY, with no product change: its group carries `mf-halo` like every
+halo, and its circle is the one WITHOUT `mf-wave-halo`, so `.mf-halo > circle:not(.mf-wave-halo)`
+selects exactly the three shelf halos. My own §15 instrument has been doing this since it was
+written. §18 adds what makes it trustworthy rather than merely convenient: **class membership and
+`animationName` partition the five halos IDENTICALLY at both sizes.** That is a second, independent
+route to the same set — so when A-G49/A-G199's `data-*` hook lands I can check it by SET EQUALITY
+against two routes that already exist, which is the difference between verifying a hook and letting
+it certify itself.
+**Genuinely unreachable, and it bites A-G194:** no halo of any kind carries its body's identity in
+the DOM. The React key `halo|${b.key}` is not rendered. A-G194 requires per-body, and per-body is met
+today only by GEOMETRIC INFERENCE — §18 pairs halo to core by concentricity (< 2 px), 1:1 at both
+sizes, which works and is not the same thing as a hook.
+**One caution for anyone reasoning about ranks:** body radius is NOT monotone in rank. Rank 2 is
+52.661788 field units against rank 1's 41.544. Deeper is not smaller, and three arguments in the
+record read as though it were.
+
+--- REGISTER C · WHERE A VERDICT OF MINE RESTS ON A STATISTIC AND NOT ON ROWS --------------------
+**PG-1.** Its PASSES (0.626 / 0.639 at 1920, 0.723 / 0.733 at 1280, against ≥ 0.55) is a region MEAN,
+and I have myself proved its decomposition uninterpretable: the `bodies` term flips sign between
+stage sizes (−0.098 → +0.103) because the core is deliberately dark and suppressing it ADDS light,
+and the per-group attributions are non-additive in both directions. So the parts are not rows that
+sum to the whole. **PG-1's verdict stands on the total only, and the component table under it should
+never be quoted as evidence for anything.** Of my phase-G verdicts this is the one to distrust first.
+The others have rows: limb 3's EXCEEDS is headlined by p999.9 but characterised by the 105 breaching
+pixels and their r/R distribution; PG-23's CLEARS has a per-rank series plus the depth ladder; PG-17's
+crossing has a 20-width sweep.
+
+--- THE ROUTE GELB WANTS FOR GRÜN'S HOOKS · SUFFICIENT FOR ONE THING, BLIND TO ANOTHER ----------
+SUFFICIENT — A-G49/A-G199's `data-*` hooks. Set equality against the two independent routes above, on
+the rendered page, with no vitest and no `.mjs` of GRÜN's in the path. I will run it when it lands.
+**INSUFFICIENT — A-G43's re-keying, and I want this stated before anyone leans on the route. React
+keys are not rendered to the DOM at all.** They are reconciliation inputs; the DOM shows their
+CONSEQUENCE, and only when the consequence is element identity churn across a transition. A re-key
+that is a no-op in reconciliation terms emits no signal, so my route returns "no change" for a
+correct re-key and for a broken one alike. **I cannot distinguish those two cases and no raster or
+DOM instrument can.** That is a hole in the only gate-independent route, and it is A-G43's, not mine.
+SECOND LIMIT, SMALLER BUT REAL: my stand exercises ONE fixture — a single `analysisId`, five bodies,
+2 field / 3 shelf, at L0. Registers A and the §18 finding are all conditioned on that population.
+LV01…LV12, L1 and L2 are not on my stand, so "verified against the rendered page" means verified at
+one point of the layout space. Covering it needs fixtures, which are not mine to author.
+
+--- TWO THINGS THAT ARE NOT WAITING ON ANYBODY --------------------------------------------------
+**A-G65's mask-based statistic is MINE, and GRÜN's tree already says so** — the PF-15 comment reads
+*"PINK's contract instrument owns that"*. GRÜN owns the product constant and a development reading;
+the statistic is an instrument, so by A-G36 it cannot be GRÜN's and then run by me. Neither lane is
+blocked; I had it filed as an input and it was an output. That is A-G220's shape and it was mine.
+**PF-15 needs no rebuild.** The ONLY executable delta from `3ec8457d` to GRÜN's `4b83414e` is
+`RING_LUMINANCE.shelf: 0.02 → 0.022`; the other 53 inserted lines are comment, verified by diff. With
+a one-constant delta and that constant entering only as a stroke alpha, a live override on my
+existing build is provably equivalent to a rebuild FOR THIS PIN — equivalence by diff, not by
+assumption. My 3ec8457d stand therefore stays valid for every phase-G pin except PF-15, and valid for
+PF-15 too under a declared override.
