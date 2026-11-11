@@ -11969,19 +11969,36 @@ exactly, every byte and every branch:**
 knee at byte 10.0164
 ```
 
-> **§94's own "10 % hazard" was wrong: it is 5.9 % in the quantity that matters — and this lane quoted an
-> alpha ratio as a light ratio IN THE MESSAGE THAT RULED ON A LUMINANCE SEAM.** A-G30, and the fourth time
-> two correct figures of different quantities have sat in this lane's prose without the sentence that
-> distinguishes them. **A ratio of two alphas is not a measurement of a ratio of two lights.**
+> ### ⚠ CORRECTED 2026-11-11 — THE 5.9 % IS STRUCK; THE MEASURED FIGURE IS +20.9 % *(see §95, A-G425)*
+> **The block above is wrong and the error is this lane's to carry, because it was published as verified.**
+> PINK read the bytes off a render: at α = 0.022 Chrome gives **rgb(5, 6, 6)**, not the rgb(5, 5, 6) both
+> lanes computed, and the miss landed on **GREEN**, which carries 0.7152 of luminance. Measured
+> **L(0.022) = 1.756632e-3**, so the ratio is **×1.20888, +20.9 %** — *larger* than the alpha ratio, not
+> smaller. **This lane said 10 %, adopted PINK's 5.9 %, and the truth is +20.9 %.**
+> **The model is now identified rather than merely corrected: the renderer quantises the ALPHA to 8 bits
+> BEFORE compositing** (α 0.022 → alpha byte 6 → 6/255), which reproduces **both** measured triples —
+> 0.02 → (4, 5, 5) and 0.022 → (5, 6, 6) — where the naive float model reproduces only the first.
+> **The sentence below survives in form and its number does not.**
+
+> **§94's own "10 % hazard" was wrong — and so was the 5.9 % that replaced it. This lane quoted an alpha
+> ratio as a light ratio IN THE MESSAGE THAT RULED ON A LUMINANCE SEAM**, then adopted a second wrong
+> figure while announcing it had verified it. A-G30, and the fourth time two correct figures of different
+> quantities have sat in this lane's prose without the sentence that distinguishes them. **A ratio of two
+> alphas is not a measurement of a ratio of two lights** — and here the light moved *further* than the
+> alpha, which is the direction neither lane guessed.
 
 ### PF-8's only red verdict · SUSPENDED, and its class cannot carry it anyway
 
     PF8-PERCLASS2 @ 9cc06f84   rings tierB  4.01   red      shelf 0.05
     PF8-TIP-L0    @ ef466ca8   rings tierB 10.62   red      shelf 0.05
 
-**RULED: RED ON A BUILD THAT NO LONGER SHIPS.** Not withdrawn, not upheld — the ground is a band 2.316×
-brighter in light than any current build carries, and it is **not convertible**, because at 0.05 two of
-three INK channels sit above the knee while at 0.02/0.022 all three are linear. **It must be re-taken and
+**RULED: RED ON A BUILD THAT NO LONGER SHIPS.** Not withdrawn, not upheld — the ground is a band whose
+light is **2.030×** that of any current build (corrected in §95 from 2.316×, which came from the failed
+rounding model; the alpha ratio is 2.273× and neither equals the other), and it is **not convertible**,
+because at 0.05 two of three INK channels sit above the knee while at 0.02/0.022 all three are linear.
+**The bar on converting it does not depend on the model at all**, which is why the ruling survived the
+model's failure: the raw channel values at α = 0.05 are (10.451, 12.235, 13.000), so green and blue are
+above the knee under any rounding. **It must be re-taken and
 it may come back red; 10.62 against a tier bound is not a figure that 2.3× explains away.** This converts
 `PHASE_G:1999`'s standing deferral — *"every per-class null predates its own ground"* — into a measured
 item with a magnitude, a mechanism and a named class.
