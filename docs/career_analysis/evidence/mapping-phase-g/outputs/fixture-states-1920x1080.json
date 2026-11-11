@@ -15,7 +15,7 @@
   ],
   "untrackedProductFiles": [],
   "buildId": "UTiHc2G2tn-Nh1fyJ6vFH",
-  "measuredAt": "2026-11-11T15:49:28.141Z"
+  "measuredAt": "2026-11-11T15:56:03.518Z"
  },
  "viewport": "1920x1080",
  "motion": "reducedMotion:reduce — these are structural states, not breath readings",
@@ -23,6 +23,45 @@
   "one_whatThisSpans": "Four focus states of ONE served fixture (UTiHc2G2tn-Nh1fyJ6vFH): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
   "two_whatThisDoesNotSpan": "It spans ONE POPULATION — the five bodies of the shared ranking, 2 field and 3 shelf. It is NOT LV01-LV12: the twelve layout inputs exist as existing test data in test/support/mapping/vectors.ts (so B-7 permits them), but the façade serves one job-ranking payload and reaching the other eleven populations needs the façade to serve a chosen vector, which is a façade change and is NOT in this reading. It also does not span L3, a requirement open, or any raster quantity.",
   "three_whatWouldWidenIt": "A façade route that serves `layoutInputs()[name]` as the job-ranking for a requested vector name. That is a transformation of existing test data rather than new data, so B-7 permits it; it is the next step and it is not pretended to be done here."
+ },
+ "resolved_coordinateClick": {
+  "question": "with a body marked, is the pool chip actually covered — or was Playwright's hit-test merely stricter than a browser's?",
+  "instrument": "document.elementFromPoint at the chip's centre, in both states, on the same stand that produced the anomaly",
+  "unmarked": {
+   "state": "L0, nothing marked",
+   "chip": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "point": [
+    105,
+    474
+   ],
+   "box": [
+    43,
+    464,
+    124,
+    20
+   ],
+   "topAtPoint": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "topIsChipOrInsideIt": true,
+   "inViewport": true
+  },
+  "marked": {
+   "state": "L0, a body MARKED by focus",
+   "chip": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "point": [
+    105,
+    474
+   ],
+   "box": [
+    43,
+    464,
+    124,
+    20
+   ],
+   "topAtPoint": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "topIsChipOrInsideIt": true,
+   "inViewport": true
+  },
+  "verdict": "NOT OBSTRUCTED: the chip is the topmost element at its own centre in BOTH states, so nothing covers it and a real pointer reaches it. The §84 anomaly was Playwright's, not the product's, and the open observation is closed on the instrument side."
  },
  "openObservation_coordinateClick": {
   "what": "page.click() on the pool chip, with a body marked, reported success and left data-level at L0; el.click() on the same selector reached L1. Reproduced in isolation.",

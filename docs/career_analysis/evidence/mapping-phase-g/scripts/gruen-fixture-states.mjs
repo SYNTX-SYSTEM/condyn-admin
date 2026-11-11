@@ -186,6 +186,52 @@ try {
                    reachedBy: "two clicks on the same body — L0 opens its pool, L1 opens the role (:682)",
                    note: "A-G48 asked for an L2 fixture WITH A FIELD BODY so PG-10 finally has a breathing carrier; the body opened here is non-shelf by construction (data-shelf=false), which is the condition A-G48 names" }));
 
+  /**
+   * §85 — THE COORDINATE-CLICK OBSERVATION, SETTLED HERE RATHER THAN ROUTED.
+   *
+   * §84 recorded that `page.click()` on the pool chip, with a body marked, reported success and left the
+   * level at L0 while `el.click()` reached L1. I offered the check to PINK as "cheaper for them"; GELB
+   * declined to route it and was right about the premise — PINK is on 3ec8457d at :3122, its own build, and
+   * sending it to the hooked stand to answer a question about the first build makes any answer ambiguous
+   * under A-G54. It is one line on a stand already open here.
+   *
+   * `elementFromPoint` is the right instrument precisely because Playwright's hit-testing is stricter than a
+   * browser's: it asks WHAT IS ON TOP, not what a click does.
+   */
+  const clickObstruction = await (async () => {
+    await reset();
+    const probeAt = async (label) => page.evaluate(() => {
+      const chip = document.querySelector('[data-testid^="mapping-pool-"]');
+      if (chip === null) return { error: "no pool chip" };
+      const r = chip.getBoundingClientRect();
+      const cx = Math.round(r.left + r.width / 2), cy = Math.round(r.top + r.height / 2);
+      const top = document.elementFromPoint(cx, cy);
+      const describe = el => el === null ? null : `${el.tagName.toLowerCase()}${el.getAttribute?.("data-testid") ? `#${el.getAttribute("data-testid")}` : ""}`;
+      return {
+        chip: describe(chip), point: [cx, cy], box: [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)],
+        topAtPoint: describe(top),
+        topIsChipOrInsideIt: top !== null && (top === chip || chip.contains(top)),
+        inViewport: r.top >= 0 && r.left >= 0 && r.bottom <= window.innerHeight && r.right <= window.innerWidth
+      };
+    }).then(v => ({ state: label, ...v }));
+
+    const unmarked = await probeAt("L0, nothing marked");
+    if (fieldBody) { await page.focus(`[data-testid="${fieldBody}"]`); await page.waitForTimeout(220); }
+    const marked = await probeAt("L0, a body MARKED by focus");
+    await reset();
+    const obstructed = marked.topIsChipOrInsideIt === false;
+    return {
+      question: "with a body marked, is the pool chip actually covered — or was Playwright's hit-test merely stricter than a browser's?",
+      instrument: "document.elementFromPoint at the chip's centre, in both states, on the same stand that produced the anomaly",
+      unmarked, marked,
+      verdict: obstructed
+        ? `OBSTRUCTED: with a body marked, the topmost element at the chip's centre is ${marked.topAtPoint}, not the chip. A real pointer would hit that instead, so the coordinate click was reporting the page correctly and this is a PRODUCT observation, not an instrument artefact.`
+        : marked.inViewport === false
+          ? "NOT OBSTRUCTED BUT OUT OF VIEW: the chip's box lies outside the viewport in the marked state, so a coordinate click had nothing to hit at the position it computed. Not an obstruction and not a product defect — a layout shift."
+          : "NOT OBSTRUCTED: the chip is the topmost element at its own centre in BOTH states, so nothing covers it and a real pointer reaches it. The §84 anomaly was Playwright's, not the product's, and the open observation is closed on the instrument side."
+    };
+  })();
+
   const reached = states.filter(s => s.reached), missed = states.filter(s => !s.reached);
   out = {
     reading: "GRÜN · §84 — A-G48's L2 and A-G51's L1 as navigated STATES of the served fixture, with A-G206's span declaration",
@@ -199,6 +245,7 @@ try {
       three_whatWouldWidenIt: "A façade route that serves `layoutInputs()[name]` as the job-ranking for a requested vector name. That is a transformation of existing test data rather than new data, so B-7 permits it; it is the next step and it is not pretended to be done here."
     },
 
+    resolved_coordinateClick: clickObstruction,
     openObservation_coordinateClick: {
       what: "page.click() on the pool chip, with a body marked, reported success and left data-level at L0; el.click() on the same selector reached L1. Reproduced in isolation.",
       whatIsNotKnown: "whether a REAL pointer is obstructed. Playwright's hit-testing refuses a click whose target is not the topmost element at the point, and it is stricter than a browser; it may also have clicked a stale position. This probe does not resolve it and does not claim a product defect.",
