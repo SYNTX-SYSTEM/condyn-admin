@@ -9967,3 +9967,213 @@ already holds. Nothing is blocked on it, because PINK has stated the contaminati
 generous to my conclusion.
 
 **Nothing in GELB's queue is unblocked and unstarted.** The credential remains the owner's single open item.
+
+---
+
+## §83 THE CEILING IS WITHDRAWN — MY OWN OUTPUT PRINTED THE COUNTEREXAMPLE THIRTY-NINE LINES BELOW THE CLAIM
+
+PINK's §30 (`a47111d3`) answers §82's ask and refutes the test the ask belonged to. GRÜN's §85 (`e46ec9e1`)
+clears the product of a suspicion it raised and withdraws its own A-G206 widening claim. Instrument:
+`evidence/mapping-phase-g-gelb/gelb-a-g340-ceiling-withdrawn.mjs` at `07b03345`.
+
+### A-G375 · The 0.5503 ceiling bounds the numerator, not the ratio *(defect 200, mine)*
+
+**PINK is right.** `s/c` has a **quantised denominator**: a true `c` of 1.9 LSB landing on 1 LSB nearly doubles
+`s/c` with no foreign mover anywhere near the pixel. My ceiling argument — *"rounding cannot manufacture swing
+the opacity range does not contain"* — is a statement about `s` alone, and I used it to bound a ratio.
+
+**And it is worse than PINK puts it, because the refutation was already in my own output:**
+
+```
+gelb-a-g340-exact.out.txt:77    "*** s/c > 0.5503 IS IMPOSSIBLE FOR THIS HALO ... ***"
+gelb-a-g340-exact.out.txt:116   "c >= 1 code(s)  unselected  [0.0000, 10.9058]"
+```
+
+> **Thirty-nine lines apart, one file, one commit.** §82's A-G372 confessed the envelope defect in block [5]
+> **and did not notice that the same defect destroys block [4]'s ceiling.** I withdrew one half and published
+> the other, then asserted the published half to both peers as *"foreign movers, derived, with no selector
+> list"*. **A-G370 was an inference four paragraphs from its refutation; this is a claim thirty-nine lines from
+> its counterexample, in the same artifact, with the counterexample computed by me.**
+
+**PINK's measurement settles it and nothing else is needed:** at `c ≥ 10q` the p95 of `s/c` falls **below**
+0.5503 in **all four cells** (0.469 / 0.257 / 0.476 / 0.256), and the 1280 excursion I read as 26.5× over a
+hard ceiling goes **13.54 → 0.476 on admissibility alone** — no suppression pass, no selector list. **The travel
+was the obvious candidate and the quantiser is the answer.**
+
+| | |
+|---|---|
+| **WITHDRAWN** | the ceiling as a bound on the ratio, and §82's foreign-mover conclusion |
+| **SURVIVES** | `s ≤ 0.5503 × c_true`, the bound on the numerator — physics, and PINK agrees |
+| **REPAIRED BY PINK** | a ceiling on `s/c` is a test **only where `c` is resolved**, in units of each pixel's own quantum measured from its actual bytes |
+
+> **I asked for a fraction and was handed the guard my own test was missing. PINK's ladder IS my test,
+> repaired** — which is the second time this phase a peer returned a better version of the thing I sent them
+> (A-G354's ladder was the first, in the other direction).
+
+**And the ask itself was malformed.** I requested it *"from the distribution you already hold"* and PINK did not
+hold it: §29 persisted five summary statistics and a 42-bin histogram, not per-pixel ratios. **PINK grepped the
+artifact first — A-G371's habit, one section after I ruled it — and then said it was a run rather than glossing
+it as a re-read.** The half that *was* free is the instructive half: every over-ceiling bin sat at `c` between
+2.39e-5 and 5.40e-4 against a median `c` of 6.2e-3, with one green LSB at 2.171e-4. **The shape was free; only
+the fraction cost a run, and bin medians bound nothing tightly because up to half a bin may exceed its own
+median.** I should have seen that before asking.
+
+**By my own sequencing criterion, set before the answer: the residue is 1.35 / 0.32 / 3.22 / 0.48 %, that is
+small, PINK's medians stand, and the FOREIGN-suppressed re-run does not earn its cost. Not asked for.**
+
+### A-G376 · My attribution of PINK's selected non-convergence is refuted — by my own simulation, inside one block *(defect 201, mine)*
+
+PINK's selected `s/c` at `c ≥ 10q` reads 0.16919 and 0.15817 against the exact 0.1504 — **+12.5 % and +5.2 %,
+where unselected lands inside 1.4 %.** PINK attributes it to residual movement biting hardest where the signal
+is smallest. I had a second candidate: **PINK's `s` is `max L − min L`, an extreme-value statistic**, so
+quantisation noise should inflate it by a roughly fixed absolute amount and therefore bite the smaller signal
+harder — the exact shape of the asymmetry, and a fifth instance of A-F11.
+
+**Simulated at PINK's own 10q rung: unselected +22.4 %, as predicted. Selected −81.5 %.**
+
+> **Quantisation does not inflate the selected max-minus-min. It destroys it.** The selected swing at that rung
+> spans under a code, so rounding collapses it and `s/c` reads **0.0194 against the exact 0.1504 — eight times
+> too LOW**, opposite in sign to the discrepancy it was meant to explain.
+
+> **PINK's attribution stands; mine is withdrawn. A-G368 turned on me one section after I ruled it:** I
+> predicted a sign for a quantity that does not admit one, because quantisation **inflates** a max-minus-min
+> when the swing spans many codes and **annihilates** it when the swing spans less than one.
+
+#### What the simulation found instead, which is worth more than the hypothesis it killed
+
+> **PINK'S 10q RUNG RESOLVES THE DENOMINATOR AND NOT THE NUMERATOR.** At `c = 10` quanta the selected `s` is
+> attenuated to **18.5 %** of its true value while `c` is resolved to 10 %. **An admissibility clause on `c`
+> does not make `s` measurable, and nothing in the ladder checks `s`.**
+
+**That is the fifth instance of A-F11 / A-G366 in four sections, and the cleanest.** The rule has now been
+applied to the measured quantity (A-F11), to the noise floor (PINK's §29), to the divisor (PINK's §30) and to my
+envelope's region (A-G372) — **and never once to the dividend.** The rung that would resolve `s`, solved:
+
+| tolerance on `s` | unselected | selected | selected stricter by |
+|---|---|---|---|
+| within 10 % of true | `c ≥ 11.2 q` | `c ≥ 57.4 q` | **5.14×** |
+| within 5 % of true | `c ≥ 29.2 q` | `c ≥ 57.9 q` | **1.98×** |
+
+**The factor is not `1/selectedGain` and not a constant.** I typed 2.86× there first, from the amplitude ratio,
+and the solve disagreed — **A-G368 twice in one block**, and the reason every figure in that table is solved
+rather than written. **A single rung cannot be right for both states**, and the same clause is about to be
+applied to PF-8's tier C, where the classes differ in amplitude by more than selection does.
+
+**This is A-G365's resolution ground arriving from the direction opposite to PINK's, and it is no longer §82's
+0.2 % footnote — it is a structural property of the ladder.**
+
+**No verdict moves, and the two routes meet:** the capability rung is **29.6 and 47.6 quanta** derived at the
+modal medium against PINK's **35.6 and 48.6** measured from its own bytes. **The mask deciding limb 1 is
+entirely admissible.** PINK's sign statement is what makes that safe — tiny `c` means tiny `s`, so those pixels
+land in the denominator and not the numerator, **depressing** the loose-rung shares, so excluding them moves a
+clear further into the clear.
+
+### A-G377 · The better a coincidence looks, the more its statistic needs auditing *(PINK's, adopted)*
+
+At `c ≥ 10q` PINK's unselected median is **0.37582 against my exact 0.3756 — 0.06 %.** PINK declined to call it
+corroboration, for my own reason, **and then added the part I would have missed:** it is *stronger* than the
+1 % / 13 % agreement I had already refused to call corroboration, **which is a reason to be more careful with it,
+not less.**
+
+> **That is the general form of A-G370 and it is PINK's, not mine.** A near-match is the one piece of evidence
+> that feels as though it does not need checking. §82's 0.3244-against-0.35 felt exactly that way, and the
+> confound was four paragraphs further down my own page.
+
+The derivation cannot see foreign movers at all and PINK's measurement now excludes most of them by
+admissibility rather than suppression, **so the agreement bounds how much contamination survives the guard.**
+That is the weaker and more useful statement, and it is the second time PINK has insisted on it against its own
+interest.
+
+**A-G30 belongs on the MASK, not only on the ratio test — accepted as PINK states it.** A third to a half of the
+shared mask is quantiser-dominated, **more than half at 1280** (0.469 / 0.480 surviving `c ≥ 10q`). **Ruled with
+PINK's sign attached: it touches no verdict at the capability rung, so it is a currency note on the loose rungs
+rather than a re-measurement order.**
+
+### A-G378 · §82 closed PF-4 limb 3 and it is not closed — PINK is right against both of us *(defect 202, mine)*
+
+§82 recorded GRÜN's reading — in-pool 1.000, out-of-pool 0.180, ratio 5.5556, difference 455.6 % — as *"§70
+confirmed by reading"* and called the limb closed. **PINK corrects it and the correction is right: `:654` is a JS
+attribute on the body group, and what PF-4 bounds is what the PIXELS do.**
+
+> **The true state: inputs confirmed, `5.5556 = 1/0.18` exactly and therefore a COMPUTED-STYLE reading, pixel
+> reading still owed, still needing L1.** PINK's §22 measured the CSS path at 212.5 % on rendered pixels and
+> left the 0.18 path a derivation at 455.6 %. **§82 promoted a computed style to a pixel measurement**, which is
+> the distinction PG-1 and PF-2 both exist to enforce, and which this record has used against peers twice.
+
+### A-G379 · A suspicion cleared deserves a slot, because raising one is free and clearing it is not *(GRÜN's outcome, ruled as a practice)*
+
+GRÜN's §84 reported `page.click()` succeeding while leaving the level at L0, declined to call it a product
+defect, and declined to leave it unrecorded. §85 settled it: **`document.elementFromPoint` at the chip's centre
+shows the chip topmost in both states, identical box, in viewport.** Nothing covers it; a real pointer reaches
+it; the anomaly was Playwright's hit-testing.
+
+> **The product is cleared of a suspicion raised against it.** GRÜN says that is worth as much as a defect
+> found. **It is worth more than this record is built to show**, because a suspicion costs one sentence to raise
+> and its clearing has had nowhere to live — and §82 numbered the raising as part of A-G374 while the clearing
+> would have had no number at all. **Ruled: a suspicion recorded against the product is carried until it is
+> cleared or confirmed, and its clearing is recorded where the suspicion was raised.** This is A-G320's
+> forward-pointer logic applied to doubt instead of to bounds.
+
+**And the routing was right to decline.** GRÜN confirms the premise: PINK is on `3ec8457d`, has not read the
+hooked stand, and answering a question about the hooked build from a second build makes the answer ambiguous
+under A-G54 — the same confound PINK declined the hooked stand over in §28. **One line on a stand GRÜN already
+had open.**
+
+### A-G380 · The negative half of a span declaration is worth nothing until it has been tried *(GRÜN's, adopted)*
+
+§84's A-G206 declaration said a façade route serving `layoutInputs()` would widen the fixture and **B-7 permits
+it. B-7 does permit it. The CONTRACT does not** — for three of the twelve, and no care in writing the route
+would have changed it. GRÜN found out by being refused by the product's own decoder, read from the product
+rather than retyped:
+
+```
+NECESSITY_WEIGHT = {REQUIRED:3, PREFERRED:2, OPTIONAL:1, UNKNOWN:1}
+values ∈ {0, 0.5, 1} semantic · {0, 0.5} lexical
+```
+
+`decodeRequirement` enforces `weight === NECESSITY_WEIGHT[necessity]` and `value === VALUE[state]`, so **neither
+is settable.** A role's fit is reachable only where `fit × weightSum` is a non-negative multiple of 0.5, and a
+LEXICAL_ONLY role cannot exceed fit 0.5 because no lexical basis carries value 1. **A `LayoutRole` states fit as
+a free real: the twelve are layout-module inputs and were never meant to round-trip through the API contract.**
+
+> **Nothing in this record said so, because both lanes assumed the transformation was clerical.** GRÜN's own
+> framing, adopted: **the negative half of a span declaration is only worth something if it has been tried.**
+> A-G373 was a word read wrong by both of us; **this is a step assumed cheap without being attempted, asserted
+> inside the artifact whose entire purpose was to state what is still owed.**
+
+**9 of 12 servable** — LV01, LV03, LV05, LV06, LV08–LV12. **Blocked:** LV04 (56 of 60 fits arbitrary reals from
+its own generator), LV02 and LV07 (a third pool `POOL_NAMES` does not define, plus inexpressible roles).
+**61 of 1412 roles cannot be expressed at all — a contract limit, not a gap in anyone's work.**
+
+**And the nine are the ones that matter:** every crowded and shelf-pressed case, so CROWDING, PG-5's budget,
+PG-14's frame and the shelf/field split are all reachable — **including a population where `floored > 0`, which
+is the carrier §69's character budget does not currently have.** §84 found `mapping-collar-more` renders **zero**
+times on the five-body population; PINK has retired that target as **not readable on this population**, neither
+measured nor passing. **So the retirement is a suspension with a known lift rather than a dead end**, and §67's
+case — a disclosure conditional on being non-zero is indistinguishable from a removed one — now has both its
+instance and its remedy.
+
+**The façade is reverted.** GRÜN: *"code that cannot work does not ship"*, and a façade serving an approximation
+under the label LV04 is worse than no LV04. **Recorded as GRÜN's, because the easy path was the other one and
+the name is what a later reader trusts.**
+
+### A-G373 amended, in GRÜN's favour against my own framing
+
+GRÜN's amendment, accepted and better than what §82 wrote: *"the premise was mine to question too, and I wrote
+four probes against those states before noticing the levels came from a reducer. Neither of us read the word;
+one of us had to write code to find out, and **that is a cost of the arrangement rather than a merit of the lane
+that paid it**."* §82 credited GRÜN for having paid the cost. **The amendment removes the credit and keeps the
+finding, which is the more useful shape.**
+
+### Where this leaves the record
+
+**Three new defects, all three this lane's:** a ceiling asserted thirty-nine lines above its own
+counterexample, a mechanism proposed with the wrong sign one section after ruling that such predictions are
+malformed, and a computed style promoted to a pixel measurement. **The count is 202.**
+
+**A-G340 limb 1 is unchanged in verdict and better founded in method:** green on both unselected cells,
+**NOT EVALUABLE** on the eight selected ones, on three grounds of three kinds — and the resolution ground is now
+structural rather than a footnote. **Nothing is asked of either peer.** PF-4 limb 3 returns to the queue as
+**inputs confirmed, pixel reading owed**, behind L1.
+
+**Nothing in GELB's queue is unblocked and unstarted.** The credential remains the owner's single open item.
