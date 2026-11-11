@@ -1,0 +1,209 @@
+========================================================================================================
+GELB · A-G128 SATISFIABILITY GATE ON PG-12 (re-formed: signed projection, A-G123/A-G126/A-G127)
+========================================================================================================
+
+[1] ANCHOR — §37 A-G126's six single-code projections, q_proj, and §38 A-G129's hue geometry.
+    Nothing below this block counts if this block does not reproduce.
+
+  GAP_HUE rgb(245,166,35)        hue angle = 74.70°   recorded 74.70°
+  medium  rgb(6,12,17)           hue angle = -103.54°  recorded -103.54°
+  separation = 178.24°   recorded 178.24°   (1.76° from antipodal, recorded 1.76°)
+
+  single-code steps at the medium, projected on the hue direction:
+    step        projected    recorded
+    R +1          0.1579      0.1579   MATCH
+    R -1         -0.1579     -0.1579   MATCH
+    G +1          0.1955      0.1955   MATCH
+    G -1         -0.1853     -0.1853   MATCH
+    B +1         -0.4797     -0.4797   MATCH
+    B -1          0.4585      0.4585   MATCH
+
+  q_proj = 0.4797   recorded 0.4797   MATCH   (set by the BLUE channel, A-G126)
+  C* quantum for comparison: largest single-code |ΔC*| = 0.5050   recorded 0.5050
+
+  ANCHOR: REPRODUCES at the fourth decimal
+
+  [1b] q_proj under each white point — the 4th decimal is a convention, not a measurement:
+       white point                     q_proj     C* quantum
+       IEC 61966-2-1 / sRGB spec      0.4796     0.5049
+       CIE 15:2004 (ASTM E308)        0.4797     0.5050
+       CIE 15:2004, 4 dp x,y          0.4796     0.5049
+       A-G126 and A-G124 state 0.4797 and 0.5050 as exact to four decimals and name no white point.
+       Both are reproduced by one convention and missed by the fourth decimal under another, so the
+       figures are good to THREE decimals: q_proj = 0.480, C* quantum = 0.505. This lane wrote them.
+
+--------------------------------------------------------------------------------------------------------
+[2] A-G131's THREE REGIMES, recomputed under A-G81's model (quantise alpha, then composite).
+    A-G131 set PINK's factor floor from this table, so A-G106 applies to it: a figure inside a rule
+    meets the rule's evidentiary standard. This lane is checking its own adjudication, not GRÜN's.
+
+  exact first-visible alpha boundary: qa(a) first reaches 1/255 at a = 0.5/255 = 0.0019608
+  composite there: rgb(7,13,17)   projected = 0.3534 = 0.737 q_proj
+  A-G131 states the exact figure as a = 0.00210 and the first regime's step as 0.329 q_proj.
+
+  every distinct composite the gap hue can produce over the medium, by alpha code k = round(a*255):
+    k    alpha band                      composite        projected   in q_proj
+     0   [0.000000, 0.001961)   rgb(6,12,17    )     0.0000      0.000
+     1   [0.001961, 0.005882)   rgb(7,13,17    )     0.3534      0.737
+     2   [0.005882, 0.009804)   rgb(8,13,17    )     0.5113      1.066
+     3   [0.009804, 0.013725)   rgb(9,14,17    )     0.8751      1.824
+     4   [0.013725, 0.017647)   rgb(10,14,17   )     1.0330      2.154
+     5   [0.017647, 0.021569)   rgb(11,15,17   )     1.4114      2.942
+     6   [0.021569, 0.025490)   rgb(12,16,17   )     1.8103      3.774
+     7   [0.025490, 0.029412)   rgb(13,16,17   )     1.9914      4.151
+     8   [0.029412, 0.033333)   rgb(13,17,18   )     1.7497      3.648
+     9   [0.033333, 0.037255)   rgb(14,17,18   )     1.9405      4.045
+    10   [0.037255, 0.041176)   rgb(15,18,18   )     2.3901      4.983
+    11   [0.041176, 0.045098)   rgb(16,19,18   )     2.8606      5.964
+    12   [0.045098, 0.049020)   rgb(17,19,18   )     3.0811      6.423
+
+  [2b] is rgb(7,12,17) — A-G131's middle regime's first state — reachable under ANY compositing
+       model this lane can name? The glow circle carries className "mf-wave mf-wave-halo" (:711),
+       and :317/:290 give it a GROUP OPACITY of --mf-wave-mean = 0.8825 at the breath's mean, ranging
+       to 1.0 live. So the single-stage model used above is not the only candidate and the group
+       opacity is a third axis the pin ranges over (A-G171), not a detail.
+
+       model                          reaches rgb(7,12,17)?   first visible composite        first step (q_proj)
+       single-stage, round            no                      rgb(7,13,17   )      0.737
+       single-stage, truncate         no                      rgb(7,13,17   )      0.737
+       two-stage (group opacity) @ resting / mean no                      rgb(7,13,17   )      0.737
+       two-stage (group opacity) @ breath trough no                      rgb(7,13,17   )      0.737
+       two-stage (group opacity) @ breath peak no                      rgb(7,13,17   )      0.737
+       linear-light composite         no                      rgb(17,16,17  )      5.866
+
+       Mechanism: R leaves 6 and G leaves 12 at the SAME alpha code. At qa = 1/255 the composite is
+       R = round((1530 + 239)/255) = round(6.9373) = 7 and G = round((3060 + 154)/255) = round(12.6039) = 13.
+       G's fractional part is 0.60, so G cannot stay at 12 while R moves to 7 under ANY integer alpha
+       code. Truncation moves both later together; the group opacity only changes WHICH code, not the
+       reachable set; linear compositing is refuted by the record's own figures (it puts R at 14 on the
+       first code, which no reading of A-G131's table contains).
+
+  WHAT THIS LANE IS CLAIMING, AND WHAT IT IS NOT:
+    CLAIMED: over a backdrop of EXACTLY rgb(6,12,17), rgb(7,12,17) is unreachable, the first visible
+             composite is rgb(7,13,17), and the first visible step is 0.737 q_proj, not 0.329.
+    CLAIMED: under A-G81 the exact first-visible alpha is 0.5/255 = 0.0019608, not 0.00210. A-G131
+             corrected GRUEN's "about 0.003" for overstating a floor used as a LOWER bound, and then
+             stated a figure that overstates the same floor by 7.1 %. A-G131 is this lane's.
+    NOT CLAIMED: that GRUEN's table is wrong. It may have been read off a RENDERED pixel whose backdrop
+             was not the modal medium — the wave, a sector wash or a ring seat each move it by a code,
+             and rgb(7,12,17) is reachable over a backdrop of rgb(6,11,17) or rgb(6,12,16). If so the
+             table is right about that pixel and the RECORD is wrong to present it as a function of
+             alpha over the modal medium. That is a question for the lane whose raster produced it,
+             and A-G209 binds this lane: an instruction from here that contradicts the record is void.
+
+  [2c] WHICH backdrops DO make rgb(7,12,17) reachable? Verified rather than asserted, because the
+       sentence above is the kind of parenthetical that becomes a defect two sections later.
+
+       backdrop        reaches rgb(7,12,17)?   at alpha code   first visible   first step (q_proj)
+       rgb(5,11,17   )  YES                     k =  2          rgb(6,12,17   )      0.715
+       rgb(6,11,17   )  YES                     k =  1          rgb(7,12,17   )      0.715
+
+       2 of 27 backdrops within one code of the modal medium reach rgb(7,12,17).
+       So the state is reachable in the RENDER and not over the medium the record names, which makes
+       "which backdrop did you measure" the whole question and not a quibble about a decimal.
+
+       AND NOTE WHAT NO BACKDROP DELIVERS: on rgb(6,11,17), the one backdrop where rgb(7,12,17) IS
+       the first visible composite, the first step is 0.715 q_proj. Not one backdrop within a code of
+       the medium produces a first step near 0.329.
+
+  [2d] THE MECHANISM OF A-G131's ERROR, which is more useful than the number:
+       0.1579 / 0.4797 = 0.3292. A-G131's 0.329 is A-G126's SINGLE-CODE R step divided by q_proj —
+       i.e. it took the smallest step the METRIC can resolve as the smallest step the RASTER can
+       carry. Those are different sets. A single code moves alone only if something moves it alone,
+       and compositing a triple over a triple moves every channel at once: at qa = 1/255 R, G and B
+       all take their rounded step together, so the smallest ACHIEVABLE step is the vector step
+       (0.737 q_proj here), never the smallest component step.
+
+       This is A-G122's family — the quantity named in the right units and taken from the wrong set —
+       and it is the sixth shape in this record of extremum-versus-achievable. It is stated here as a
+       diagnosis, not offered as a new rule (A-G251).
+
+  CONSEQUENCE EITHER WAY, and it is the part that moves a decision:
+    A-G131 made 0.329 q_proj "the hard lower bound on any factor PINK sets" and concluded that
+    "a factor of 1.0 q_proj sits a comfortable 3 x above the floor ... the first time in this phase a
+    threshold has had headroom rather than a margin". If the floor is 0.737, the headroom is 1.36 x,
+    not 3 x, and that sentence does not survive. The floor is UNCONFIRMED until the lane with the
+    raster says which backdrop it measured, and a factor must not be set against it meanwhile.
+
+--------------------------------------------------------------------------------------------------------
+[3] THE ACHIEVABLE ENVELOPE — the gap glow's alpha on MEDIUM pixels, seat edge to rim.
+    A-G171: evaluate along the axes the pin ranges over. PG-12 ranges over the glow's own radius and
+    over RANK (t sets haloMult, :679/:711), so both ends of both axes are reported, never one point.
+
+    the OPAQUE seat (:724, fill=SEAT at exactly r) occludes the glow out to offset 1/haloMult,
+    so the first medium pixel the glow can reach sits at that offset, not at the flat head.
+
+    The group opacity (:317/:290, --mf-wave-mean 0.8825 +/- 0.1175) multiplies the gradient's alpha,
+    so the envelope is reported at the breath's TROUGH and PEAK, which bracket every phase.
+
+  rank 1 (t=0, haloNear):  haloMult = 2.6,  seat edge at offset 0.384615
+    offset     share     alpha      composite @mean  projected    q_proj: trough / mean / peak
+    0.3846    0.8726   0.47118   rgb(105,76,24   )    37.838      69.9    78.9    87.5
+    0.4500    0.7200   0.38880   rgb(88,65,23    )    31.976      58.8    66.7    74.3
+    0.5800    0.4600   0.24840   rgb(58,46,21    )    20.871      38.1    43.5    49.5
+    0.7200    0.2400   0.12960   rgb(33,30,19    )    10.496      17.4    21.9    25.6
+    0.8600    0.0800   0.04320   rgb(15,18,18    )     2.390       3.6     5.0     6.0
+    0.9500    0.0286   0.01543   rgb(10,14,17    )     1.033       1.8     2.2     2.2
+    0.9990    0.0006   0.00031   rgb(6,12,17     )     0.000       0.0     0.0     0.0
+    1.0000    0.0000   0.00000   rgb(6,12,17     )     0.000       0.0     0.0     0.0
+    → peak on a medium pixel @ trough : effective alpha 0.35986 = 184 × the raster floor,  69.9 q_proj
+    → peak on a medium pixel @ mean   : effective alpha 0.41522 = 212 × the raster floor,  78.9 q_proj
+    → peak on a medium pixel @ peak   : effective alpha 0.47059 = 240 × the raster floor,  87.5 q_proj
+
+  last rank (t=1, haloFar):  haloMult = 3.0,  seat edge at offset 0.333333
+    offset     share     alpha      composite @mean  projected    q_proj: trough / mean / peak
+    0.3333    0.9922   0.53580   rgb(119,85,26   )    41.946      78.0    87.4    97.3
+    0.4500    0.7200   0.38880   rgb(88,65,23    )    31.976      58.8    66.7    74.3
+    0.5800    0.4600   0.24840   rgb(58,46,21    )    20.871      38.1    43.5    49.5
+    0.7200    0.2400   0.12960   rgb(33,30,19    )    10.496      17.4    21.9    25.6
+    0.8600    0.0800   0.04320   rgb(15,18,18    )     2.390       3.6     5.0     6.0
+    0.9500    0.0286   0.01543   rgb(10,14,17    )     1.033       1.8     2.2     2.2
+    0.9990    0.0006   0.00031   rgb(6,12,17     )     0.000       0.0     0.0     0.0
+    1.0000    0.0000   0.00000   rgb(6,12,17     )     0.000       0.0     0.0     0.0
+    → peak on a medium pixel @ trough : effective alpha 0.41084 = 210 × the raster floor,  78.0 q_proj
+    → peak on a medium pixel @ mean   : effective alpha 0.47405 = 242 × the raster floor,  87.4 q_proj
+    → peak on a medium pixel @ peak   : effective alpha 0.53725 = 274 × the raster floor,  97.3 q_proj
+
+--------------------------------------------------------------------------------------------------------
+[4] THE CARRIER BOUND — and the one datum this gate cannot get from constants.
+
+  Structural, read off the renderer rather than inferred (A-G31/A-G51: name the carrier in the
+  renderer's own vocabulary):
+    · the gap hue has exactly ONE carrier inside the field SVG — `url(#mf-halo-gap)` on the single
+      <circle> at :711. GAP_HUE appears at :190 (the constant), :862 (an HTML <li> legend, outside
+      the SVG) and :910 (the gradient). Nowhere else.
+    · that gradient declares no gradientUnits and no spreadMethod, and its last stop is
+      stopOpacity 0.00 at offset 1 — so the hue reaches exactly 0 at the circle's own rim,
+      and SVG paints nothing outside the shape. No filter touches the glow (:306/:311 are brightness
+      and drop-shadow on transients and focus rings, not on `mapping-glows`).
+
+  CONSEQUENCE for A-G128, and it is the finding:
+    A-G124's failing observation is "medium pixels at a given radius adjacent to a GAP body's glow
+    carrying measurably more chroma than medium pixels at the same radius adjacent to a NON-GAP
+    body's glow". Taken strictly OUTSIDE the gap glow's own circle the projection is identically
+    zero by construction, so there is no failing observation; taken INSIDE it, the pin fires on the
+    glow itself, which is the mirror defect A-G126 rejected the magnitude form for.
+
+    The region that admits BOTH is the one neither reading names: where a gap body's glow circle
+    OVERLAPS the angular neighbourhood of a non-gap body. The glow runs to 2.6–3.0 × the drawn
+    radius while A-G1's collision search only guarantees the DRAWN radii do not touch — so glow
+    overlap is permitted by the layout and is the only mechanism that can place gap chroma where
+    no gap body is. PG-12 is therefore satisfiable, and what it actually tests is glow overlap.
+
+  THE DATUM THE GATE STILL NEEDS — stated narrowly, per A-G132, by the requester:
+    one scalar: the MAXIMUM gap-glow alpha landing on a medium pixel whose nearest drawn body is a
+    NON-GAP body, over the exercised layouts, at L0/1920 and L1. It is a layout computation from
+    `layout-spec-v1.1.json` and the fixtures — no render, no raster, no credential. Not the chroma,
+    not a verdict, not a per-layout table: one alpha.
+
+  Bounds on PINK's factor once that scalar exists, in q_proj:
+    lower — the smallest step the raster can carry: 0.737 q_proj at alpha 0.0019608
+    upper — whatever the datum above delivers; it cannot exceed the seat-edge peak of
+            97.3 q_proj (last rank) / 87.5 q_proj (rank 1).
+
+  VERDICT OF THIS GATE: PG-12 (re-formed) ADMITS BOTH a passing and a failing observation, on the
+  overlap region named above. It does NOT admit a failing observation on either region A-G124's
+  wording can be read as naming, so A-G124's fifth field needs the region stated — that is this
+  lane's to write and it is written in the adjudication, not here.
+
+========================================================================================================
