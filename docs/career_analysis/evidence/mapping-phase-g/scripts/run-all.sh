@@ -17,7 +17,7 @@ SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 # checkout and they fail loudly if a product constant moves under a figure that was derived from it. Neither
 # writes to a SEALED-* file. The sealed probes themselves stay OUT of this script on purpose — a routine pass
 # must not be able to overwrite a sealed reading.
-for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor; do
+for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha; do
   printf '\n=== %s (derivation, no render) ===\n' "$derivation"
   node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
 done

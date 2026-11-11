@@ -1,0 +1,36 @@
+{
+ "instrument": "GRÜN phase-G · PG-23 (restated) source limb",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "basis": "static read of app/components/career/demo/PersonJobMappingField.tsx; nothing rendered, no server, no credential",
+ "animationOrTransitionRules": 10,
+ "opacityAnimatingRules": [
+  {
+   "line": 317,
+   "animation": "mappingFieldWave",
+   "selectorKey": ".mf-wave",
+   "reaches": false,
+   "reason": "the shelf branch gives the circle NO className — `b.shelf ? undefined : \"mf-wave mf-wave-halo\"` (A-G48, line 711) — and the wrapper <g> carries only \"mf-halo\" / \"mf-halo mf-layout\""
+  },
+  {
+   "line": 320,
+   "animation": "mappingFieldTravel",
+   "selectorKey": ".mf-travel",
+   "reaches": false,
+   "reason": "travel strokes only; a halo is never .mf-travel"
+  },
+  {
+   "line": 326,
+   "animation": "mappingFieldEvidence",
+   "selectorKey": "[data-stage-part=\"EVIDENCE\"]",
+   "reaches": false,
+   "reason": "carried by mapping-collar, mapping-beams, mapping-ring and mapping-l3 only; the shelf halos render in their own subtree at line 928, under none of them"
+  }
+ ],
+ "staticOpacityOnTheWrapper": {
+  "note": "the shelf halo <g> carries a render-time opacity attribute (line 710), not an animated one",
+  "changesOn": "pool membership — opacity 1 when in pool, 0.18 when not — which is a STATE change, not the breath"
+ },
+ "gradientStopsAreStatic": true,
+ "noOpacityAnimationReachesAShelfHalo": true,
+ "unresolved": []
+}
