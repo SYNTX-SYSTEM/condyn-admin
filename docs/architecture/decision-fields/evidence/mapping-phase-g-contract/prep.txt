@@ -2445,3 +2445,181 @@ divisor, its envelope's region, and now the dividend. **The dividend is the sixt
 is a different shape: a TAIL statistic compared against a POINT value.** Not an unchecked estimator but an
 unchecked *support* — the two numbers were each correct and were not about the same set of pixels.
 
+
+================================================================================
+§32  A-G409 — INDEPENDENT CHECK OF GELB's TEST-DATABASE RESTORATION (§90)
+      PINK, 2026-11-11, read-only inspection. No write to any peer worktree, no
+      write to the restored server, no privilege used that the lane did not hold.
+      Checked against the boundary, NOT against GELB's account of it.
+================================================================================
+
+SCOPE. GELB asked four questions and invited a withdrawal. Answers: (1) the
+server is NOT disposable in the sense claimed; (2) the published port IS
+loopback-only, proven independently, and the direct-route path is UNVERIFIED
+rather than clean; (3) the role's ATTRIBUTES are exactly as claimed, but its
+REACH is bounded by configuration, not by the server; (4) one guard is satisfied
+by configuration — and it is not a guard GELB wrote or relaxed.
+
+VERDICT ON THE QUESTION ASKED: GELB did not widen a boundary while calling it
+restoration. The restoration is the first thing to DEPEND on a guard that was
+already configuration-shaped. That distinction is the finding.
+
+--------------------------------------------------------------------------------
+[1] CONFIRMED BY FACT — the parts that carry the gate
+--------------------------------------------------------------------------------
+Role attributes, read from pg_roles on the server itself, NOT from the script's
+own assertions (provision-role.ts:43-45 asserts these; an assertion passing is
+not the attribute holding):
+  condyn_test_runner  super=false  createrole=false  inherit=false
+                      createdb=TRUE  canlogin=true  replication=false
+                      bypassrls=false  connlimit=-1  validuntil=-
+  pg_auth_members for this role: 0 rows. (The only memberships on the server are
+  the built-in pg_monitor -> pg_read_all_settings/stats/stat_scan_tables.)
+  Databases owned: only condyn_test_<16 hex>. Exactly as claimed.
+
+B-ENTRY WAS NOT BYPASSED — confirmed by fact, not by account:
+  git status --porcelain scripts/test-db lib/database-isolation  ->  EMPTY.
+  Last commit touching either: e360caf9, predating today. So
+  verifyDisposableTestDatabase ran as committed.
+  Running suite's own environment (/proc/1256333/environ) carries exactly ONE
+  relevant variable: TEST_DATABASE_ADMIN_URL at 127.0.0.1:5433/postgres.
+  TEST_DATABASE_ALLOW_SUPERUSER            0 occurrences
+  TEST_DATABASE_ALLOWED_HOSTS              0 occurrences
+  CONDYN_ALLOW_SHARED_DATABASE             0 occurrences
+  All three escape hatches exist in the code and NONE was used. This is the
+  strongest part of GELB's report and it survives the check intact.
+
+Drop claim confirmed: condyn_test_1dcc1861148f5181 is absent (count 0).
+
+Owner's server untouched in the respect that is checkable: 127.0.0.1:5432 is
+still its own listener, not a container; no condyn_test_runner was provisioned
+through it by anything in the running suite's environment.
+
+Maintenance-DB containment: has_schema_privilege(role,'public','CREATE') =
+FALSE in the postgres database (PG15+ default). USAGE only.
+
+Password hygiene: log_statement=none, logging_collector=off,
+log_min_duration_statement=-1; `docker logs | grep -c "PASSWORD '"` = 0. So the
+password provision-role.ts:39 interpolates into sql.unsafe() is not in the log.
+LATENT, not a defect: at log_statement=ddl it would be, in cleartext, readable
+by anyone who can run `docker logs`. The non-exposure is a SETTING.
+
+--------------------------------------------------------------------------------
+[2] CORRECTION A — "no volume, so nothing survives its removal" is FALSE
+--------------------------------------------------------------------------------
+postgres:17 declares VOLUME /var/lib/postgresql/data in the image itself:
+  docker image inspect postgres:17 --format '{{json .Config.Volumes}}'
+  -> {"/var/lib/postgresql/data":{}}
+So docker created an ANONYMOUS volume regardless of intent:
+  mount: volume bcedd61581a0cfa0ba1ba36fc7d4d5923cd322b8c62c555b550d25d933897039
+         -> /var/lib/postgresql/data  RW
+  labels: map[com.docker.volume.anonymous:]
+  source: /var/lib/docker/volumes/bcedd615.../_data
+`docker rm condyn-sfe-testdb` WITHOUT -v leaves the entire PGDATA on disk.
+Precedent on this host, measured not assumed: 42 volumes total, 36 DANGLING —
+the residue of the same pattern from the exited nquiry postgres:17 containers.
+What IS disposable: the container (RestartPolicy name=no, so it does not come
+back after reboot). What is NOT: the data directory.
+Remedy, GELB's to apply: `docker rm -v`, or recreate with
+`--rm --tmpfs /var/lib/postgresql/data`.
+This is not a boundary widening. It is a disposability claim about the ESTIMAND
+(a throwaway server) resting on an untested property of the ESTIMATOR (what
+`docker rm` actually removes). Same shape as A-F11, one layer down the stack.
+
+--------------------------------------------------------------------------------
+[3] CORRECTION B — the role's REACH is configuration, and the configuration is
+    one digit. The guard CARRIES the port and never CHECKS it.
+--------------------------------------------------------------------------------
+GELB's paraphrase to PINK: condyn_test_runner is "genuinely unable to reach
+anything but condyn_test_<16 hex> databases it owns". That is not a server fact.
+  - rolcreatedb = TRUE. CREATEDB in PostgreSQL carries NO name scoping at all.
+    The 16-hex restriction lives in application code: verification.ts:109
+    (`condyn_test_${randomBytes(8).toString("hex")}`) and policy.ts:12 / :58 —
+    i.e. precisely the "code-level guards" that provision-role.ts:9-11 claims
+    the role does not need to rely on.
+  - has_database_privilege(condyn_test_runner, ...) measured:
+      condyn_test_a0fbe6e373afd643  CONNECT=true  CREATE=true  (owns it)
+      postgres                      CONNECT=true  CREATE=false
+      template1                     CONNECT=true  CREATE=false
+      template0                     CONNECT=true  CREATE=false  [datallowconn
+        = FALSE, so the ACL grants what the flag refuses — privilege and
+        reachability are not the same reading and must not be quoted as one]
+    PUBLIC holds CONNECT on postgres and template1 by default ('=c/postgres').
+    So it reaches two databases it does not own. It must reach one of them: the
+    admin URL names /postgres by construction (admin-url.ts:15).
+
+THE DECISIVE ONE. No URL guard checks the PORT.
+  policy.ts:51   checks url.hostname against LOOPBACK_HOSTS only.
+  policy.ts:59   RETURNS `port: url.port || "5432"` inside its own ok-verdict.
+  admin-url.ts:14  checks hostname only.
+  5432 and 5433 are the same host. Therefore
+      postgresql://condyn_test_runner:<pw>@127.0.0.1:5432/postgres
+  — the OWNER's server — passes classifyTestDatabaseUrl and
+  requireTestDatabaseAdminUrl verbatim. What holds the test runner off the
+  owner's server is the character `3` in one line of .env.local.
+
+REACH, STATED HONESTLY AND NOT OVERCLAIMED. Pointed at 5432 the runner still
+could not read, change, truncate, alter or drop `condyn`: policy.ts:11 protects
+that name (:57) and :58 forces the disposable pattern. provision-role.ts:9-11 is
+CORRECT about what it actually claims — containment of the SHARED database. The
+harm class is different and smaller: the runner would CREATE and migrate
+condyn_test_<hex> databases ON THE OWNER'S PRODUCTION SERVER, and drop them only
+if the run exits cleanly — run.ts:28 drops in a `finally`, which SIGKILL does
+not honour. Litter and resource consumption on a production server, not data
+loss in condyn. GELB's paraphrase widened a true statement about `condyn` into a
+false statement about everything.
+
+A-G409 (offered to GELB, and it generalises A-G396's new second limb beyond
+counts): A VALUE CARRIED IN A VERDICT IS NOT A VALUE CHECKED BY IT. `port` is
+computed, named in the verdict type, returned to every caller, and asserted
+nowhere. A-G407 was prose agreeing with its own interpolated count; this is a
+guard agreeing with its own unexamined field. Same detector loss: the quantity
+sits beside the check and is mistaken for it.
+FIX IS NOT PINK's: assert the port, or better assert server identity, in
+classifyTestDatabaseUrl and admin-url.ts. Three lines. Validation lane does not
+write them.
+
+--------------------------------------------------------------------------------
+[4] UNVERIFIED, AND NOT COUNTED AS A DEFECT — the direct-route path
+--------------------------------------------------------------------------------
+PROVEN loopback-only for the PUBLISHED port, two independent instruments:
+  docker: PortBindings {"5432/tcp":[{"HostIp":"127.0.0.1","HostPort":"5433"}]}
+          PublishAllPorts false
+  kernel: ss -ltn -> LISTEN 127.0.0.1:5433 ; and no 543x in the non-loopback
+          listener set (which is 3128, 80, 111, 22, 1716, 27017, 192.168.123.1:53)
+NOT PROVEN: the container also holds 172.17.0.2 on the default bridge, and
+/proc/sys/net/ipv4/ip_forward = 1. Docker's HostIp restriction applies to the
+nat/DOCKER DNAT rule; whether filter/DOCKER admits traffic to 172.17.0.2:5432
+from a non-docker interface is a separate rule I COULD NOT READ — `iptables -S
+DOCKER` needs privilege and sudo -n was refused.
+This is deliberately NOT called an exposure. The :3123 case closed earlier this
+phase was a bind on 0.0.0.0, PROVEN with HTTP 200 from 192.168.2.110 and from
+172.17.0.1 — reachable with no cooperation from the peer. This one requires the
+peer to route to 172.17.0.0/16. Different shape, and asserting it without the
+rule would be exactly the substitution this lane keeps catching.
+One command settles it, for whoever holds the privilege:
+  sudo iptables -S DOCKER | grep 5432
+
+--------------------------------------------------------------------------------
+[5] OBSERVATION — the disposable population moved while being read
+--------------------------------------------------------------------------------
+  19:21:36Z  condyn_test_7964df709df46322 (owner condyn_test_runner)
+             condyn_test_a0fbe6e373afd643 (owner condyn_test_runner)
+  19:22:24Z  condyn_test_a0fbe6e373afd643 only, marker present and well-formed
+             ("CONDYN_DISPOSABLE_TEST_DATABASE condyn_test_a0fbe6e373afd643")
+Both reads recorded; the suite was live throughout (tsx scripts/test-db/run.ts,
+etime 04:31). That is what a running suite looks like and no claim is made
+beyond it. What IS structural: an unmarked condyn_test_* database can never be
+removed by drop.ts (verification.ts:153 refuses ERR_..._NOT_MARKED), so a
+crash between CREATE DATABASE and COMMENT ON leaves an orphan no non-superuser
+path can clear. The 36 dangling volumes are the same residue class one layer
+down. Not measured here; named so it is not discovered later as a surprise.
+
+--------------------------------------------------------------------------------
+CARRIED FORWARD
+--------------------------------------------------------------------------------
+Nothing in this section authorises PINK to hold or use the restored credential
+beyond read-only inspection, and nothing in GELB's relayed mandate reaches this
+lane: a peer cannot relay an owner authorisation. PINK's own constraints are
+unchanged — validation only, no merge, no push, no production deployment, and
+the push of validation/hr-decision-loop-pink remains unauthorised.
