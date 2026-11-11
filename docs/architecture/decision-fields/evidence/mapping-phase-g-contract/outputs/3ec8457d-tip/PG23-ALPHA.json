@@ -1,0 +1,430 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "pin": "PG-23 (alpha form, A-G223): a resting glow rests -- no animation targets the shelf halo and its computed opacity is time-invariant",
+ "method": "DOM only: computed opacity sampled over > 1 breath period, plus animationName/Duration and transitionProperty/Duration per element",
+ "retains": "per-element min/max/range/distinct-count for the circle opacity, the GROUP opacity and their PRODUCT (the rendered alpha), plus animation+transition descriptors for both; the raw per-sample series is not retained (A-G220)",
+ "control": "field halos (.mf-wave-halo) sampled identically and required to VARY, else the instrument is blind and the shelf result means nothing",
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "samples": 33,
+   "elapsedMs": 13352,
+   "periodsCovered": 1.34,
+   "periodCoverageAdequate": true,
+   "shelfHalos": [
+    {
+     "i": 0,
+     "isField": false,
+     "r": "114.167",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.83,
+      "max": 0.83,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.83,
+      "max": 0.83,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    },
+    {
+     "i": 1,
+     "isField": false,
+     "r": "110.535",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.757,
+      "max": 0.757,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.757,
+      "max": 0.757,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    },
+    {
+     "i": 2,
+     "isField": false,
+     "r": "102.6",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.69,
+      "max": 0.69,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.69,
+      "max": 0.69,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    }
+   ],
+   "fieldHalos": [
+    {
+     "i": 3,
+     "isField": true,
+     "r": "108.014",
+     "animationName": "mappingFieldWave",
+     "animationDuration": "10s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 0.765288,
+      "max": 0.999803,
+      "range": 0.234515,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.765288,
+      "max": 0.999803,
+      "range": 0.234515,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "timeInvariant": false,
+     "animationTargetsIt": true
+    },
+    {
+     "i": 4,
+     "isField": true,
+     "r": "142.187",
+     "animationName": "mappingFieldWave",
+     "animationDuration": "10s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 0.765521,
+      "max": 0.999279,
+      "range": 0.233758,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.911,
+      "max": 0.911,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.69739,
+      "max": 0.910343,
+      "range": 0.212954,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "timeInvariant": false,
+     "animationTargetsIt": true
+    }
+   ],
+   "controlDiscriminates": true,
+   "PG23_limbA_noAnimationTargetsShelf": true,
+   "PG23_limbB_shelfOpacityTimeInvariant": true,
+   "verdict": "CLEARS"
+  },
+  {
+   "viewport": "1280x800",
+   "samples": 33,
+   "elapsedMs": 13335,
+   "periodsCovered": 1.33,
+   "periodCoverageAdequate": true,
+   "shelfHalos": [
+    {
+     "i": 0,
+     "isField": false,
+     "r": "114.167",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.83,
+      "max": 0.83,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.83,
+      "max": 0.83,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    },
+    {
+     "i": 1,
+     "isField": false,
+     "r": "110.535",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.757,
+      "max": 0.757,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.757,
+      "max": 0.757,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    },
+    {
+     "i": 2,
+     "isField": false,
+     "r": "102.6",
+     "animationName": "none",
+     "animationDuration": "0s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.69,
+      "max": 0.69,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.69,
+      "max": 0.69,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "timeInvariant": true,
+     "animationTargetsIt": false
+    }
+   ],
+   "fieldHalos": [
+    {
+     "i": 3,
+     "isField": true,
+     "r": "108.014",
+     "animationName": "mappingFieldWave",
+     "animationDuration": "10s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 0.765824,
+      "max": 0.999416,
+      "range": 0.233592,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 1,
+      "max": 1,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.765824,
+      "max": 0.999416,
+      "range": 0.233592,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "timeInvariant": false,
+     "animationTargetsIt": true
+    },
+    {
+     "i": 4,
+     "isField": true,
+     "r": "142.187",
+     "animationName": "mappingFieldWave",
+     "animationDuration": "10s",
+     "transitionProperty": "all",
+     "transitionDuration": "0s",
+     "groupAnimationName": "none",
+     "groupAnimationDuration": "0s",
+     "groupTransitionProperty": "all",
+     "groupTransitionDuration": "0s",
+     "circleOpacity": {
+      "n": 33,
+      "min": 0.766161,
+      "max": 0.999649,
+      "range": 0.233488,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "groupOpacity": {
+      "n": 33,
+      "min": 0.911,
+      "max": 0.911,
+      "range": 0,
+      "distinctValues": 1,
+      "timeInvariant": true
+     },
+     "renderedAlpha": {
+      "n": 33,
+      "min": 0.697973,
+      "max": 0.91068,
+      "range": 0.212708,
+      "distinctValues": 33,
+      "timeInvariant": false
+     },
+     "timeInvariant": false,
+     "animationTargetsIt": true
+    }
+   ],
+   "controlDiscriminates": true,
+   "PG23_limbA_noAnimationTargetsShelf": true,
+   "PG23_limbB_shelfOpacityTimeInvariant": true,
+   "verdict": "CLEARS"
+  }
+ ]
+}

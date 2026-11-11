@@ -1017,3 +1017,69 @@ small result: the limb is working, and what it keeps finding is that the shelf h
 with the masks this phase has. The coverage hole A-G199 identified is therefore wider than stated —
 the three shelf bodies are not merely under no obligation, they are under no obligation that any
 current instrument could check.
+
+================================================================================================
+§15  PG-23 IN ITS ALPHA FORM — MEASURED, CLEARS AT BOTH SIZES, WITH A DISCRIMINATING CONTROL.
+     AND IT RETURNS THREE CONFIRMATIONS NOBODY ASKED IT FOR, ONE OF WHICH EXPLAINS §10's LIMB 1.
+================================================================================================
+scripts/pink-pg23-alpha-g.mjs · outputs/3ec8457d-tip/PG23-ALPHA.json
+PIN (A-G223, GELB §55): "A resting glow rests. The shelf halo's own opacity is time-invariant: no
+animation targets it, and its computed opacity is constant across the breath cycle."
+
+DOM only — no raster, no mask, no floor, no number — so it is immune by construction to the composite
+problem that killed the swing form in §14, and A-G49's missing selector stops being a prerequisite.
+33 samples over 1.33 breath periods at each size, under reducedMotion: no-preference.
+
+THE CONTROL IS THE POINT AND THE PIN DOES NOT STATE IT. A statistic reporting "constant" must be able
+to report "not constant", and the thing it must fail on has to be in frame — A-G48's own two-limb
+discipline turned on the instrument. So the FIELD halos are sampled identically and required to VARY.
+They do: 33 distinct values each, range 0.2335…0.2345. **controlDiscriminates = true.** Had they read
+constant too, the instrument would have been blind and the shelf result would have meant nothing.
+
+I ALSO HAD TO WIDEN THE PIN'S OWN QUANTITY, AND THIS IS A CORRECTION TO MY FIRST PASS. The pin says
+"its computed opacity". The RENDERED alpha of a halo is the circle's opacity × its group's, and the two
+are set in different places (`:670` the circle, `:669` the group's `opacity={fixed(opacity *
+depthGain(...))}`). My first pass sampled only the circle as a series and the group once. **A constant
+circle under a modulated group would have read as resting.** Re-run with a series on both and the
+verdict taken on the product.
+
+MEASURED, both sizes identical to 6 dp:
+  SHELF halos (3)   circle opacity   1       range 0   distinct 1   anim none   group anim none
+                    group opacity    0.830 / 0.757 / 0.690   range 0   distinct 1
+                    RENDERED alpha   0.830 / 0.757 / 0.690   range 0   distinct 1   INVARIANT
+  FIELD halos (2)   circle opacity   0.7653…0.9998  range 0.2345   distinct 33  anim mappingFieldWave 10s
+                    group opacity    1.000 / 0.911          range 0   distinct 1
+                    RENDERED alpha   range 0.2345 / 0.2130  distinct 33   VARIES
+  limb A (no animation targets the shelf halo or its group)   TRUE
+  limb B (shelf rendered alpha time-invariant)                TRUE
+  **PG-23 CLEARS at 1920×1080 and at 1280×800.**
+
+THREE THINGS IT CONFIRMED WITHOUT BEING ASKED:
+
+(1) THE DEPTH LADDER, EXACTLY. The five group opacities are 1.000 / 0.911 / 0.830 / 0.757 / 0.690 for
+    ranks 1…5. Against `depthGain = VOLUME.depthRatio^(−t)`, t = (rank−1)/4, depthRatio = 1.45:
+    1, 1.45^−0.25 = 0.9107, 1.45^−0.5 = 0.8305, 1.45^−0.75 = 0.7563, 1/1.45 = 0.6897. **All five match
+    to the printed precision.** An independent DOM-side confirmation of VOLUME.depthRatio.
+
+(2) THE 0.235 PEAK-TO-PEAK, MEASURED FOR THE FIRST TIME. Both lanes have computed from
+    `WAVE.haloDepth = 0.235` and `--mf-wave-mean: 0.8825 ± 0.1175` as *constants* throughout §10, §12,
+    GELB's §46 and its gate. The field circle's opacity range measures **0.233488 … 0.234515** — the
+    constant, 0.6 % low, which is 33 samples not landing exactly on the extremes of a 10 s cycle.
+    **The model both lanes have been reasoning from is now a measurement.**
+
+(3) AND IT EXPLAINS §10's LIMB 1 RESULT, WHICH I DID NOT EXPECT FROM THIS INSTRUMENT. The rendered
+    alpha's swing is NOT the same on both field bodies: rank 1 swings 0.2345, rank 2 only **0.2130**,
+    because the group's depth gain of 0.911 scales the breath as well as the resting level. So the
+    deeper-ranked body breathes with 9.2 % less absolute amplitude **by construction**. That is the
+    mechanism for §10's per-body split under selection: at 1920 selected, rank 1's limb-1 fraction is
+    0.28669 and clears, rank 2's is 0.24345 and fails. **The depth gain makes limb 1 fail on the
+    deeper rank first, and it would move further down the ranking if the fixture had more bodies.**
+    A-G194's per-body declaration is therefore not only the correct scope — it is the only scope in
+    which this pin's behaviour is stable, because the quantity it bounds is rank-dependent by design.
+    PG-10 bounds a quantity that `depthGain` monotonically shrinks, and nothing in PG-10 says so.
+
+STRUCTURALLY, WHICH IS WHAT A-F8 SAYS IN ONE LINE: for a field halo the CIRCLE's alpha carries the
+breath and the group carries the depth; for a shelf halo the circle's alpha is pinned at exactly 1 and
+the group carries the depth alone. "On the shelf they rest" is implemented as the absence of the
+breath from the circle, not as a damping of it — which is why the alpha form of PG-23 is exactly
+checkable and the swing form never could be.
