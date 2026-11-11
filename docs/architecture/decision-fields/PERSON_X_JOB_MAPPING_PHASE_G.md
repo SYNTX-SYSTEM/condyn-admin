@@ -5203,3 +5203,191 @@ shelf population is not under PG-10's carrier and cannot bear on its verdict.**
 because they *are* two quantities — the shelf ground is the right denominator for anything measured on a shelf
 body, and PG-22 and the shelf ring work sit there.
 
+
+---
+
+## §50 A-G31 CLOSES THE CONVENTION QUESTION, A-G26 CLOSES PG-10's THIRD LIMB, AND BOTH WERE ALREADY IN THIS RECORD
+
+PINK answered A-G185 with a new probe (`2531d385`) and GRÜN withdrew the premise A-G185 rested on (`fe740e68`).
+**Two of the four results turn on adjudications I had already written and had not re-read.**
+
+### A-G190 · A-G31 settles PG-17's carrier, so the azimuth question is moot and A-G170 stands
+
+PINK measured the fixture off the live DOM:
+
+| | class | line | `stroke-dasharray` | |
+|---|---|---|---|---|
+| rank 1 | SEMANTIC | **solid** | **ABSENT** | field |
+| rank 2 | SEMANTIC | **solid** | **ABSENT** | field |
+| ranks 3–5 | LEXICAL / NONE | dotted / open | present | **shelf** |
+
+**`LINE_DASH.solid` returns `undefined`, so the binding bodies carry a continuous ring at every azimuth. There
+are no gaps to mask or mis-mask.** The occluder is `r + h`, the extent is 1.47526 r at the clamp, and **A-G170
+stands.** My `r` convention is right about the fill at `:724` and, on a solid-ringed body, redundant — the ring
+already covers `r … r + h`.
+
+**A-G185 is withdrawn on both counts.** Its premise was GRÜN's 18 px, which GRÜN has now shown was never evidence
+of leakage: under a pure area convention with the *unmarked* seat edge at 1.0405 r, that band already holds a
+sliver of ≈ 75 px, so **18 is below the prediction, not above it.** And its question is answered: there is no
+dash gap on the body that binds.
+
+**And A-G31 — which I wrote — settles PINK's open question (i) outright.** PG-17 is measured on *"the **union of
+`mapping-glows`** and the medium beneath them"*, and `mapping-glows` carries **`fieldHalos` only**
+(`b.shelf ? shelfHalos : fieldHalos`). **So shelf halos are outside PG-17's carrier.** Every body under PG-17 in
+this fixture is solid-ringed, so **PINK's question (ii), the azimuthal quantifier, is moot for PG-17** — and it
+is **not** moot for anything measured on a shelf body, where PG-22 and the shelf-ring work sit. **The pin is
+still silent on azimuth; it just has no gapped body to be silent about.**
+
+### A-G191 · My §49 extension is withdrawn — the smallest body is a shelf body *(defect 83)*
+
+A-G187 claimed *"at least one body fails at every width below ≈ 1366"*, resting on `ρ_drawn = 34.2`. **PINK
+confirms the arithmetic to three decimals — 18.017 px at 1366, margin +0.0017 px; 15.184 px at 1280 — and then
+names the body: `ρ_drawn 34.2` is rank 5, and rank 5 is a shelf body.** It is not under PG-17's carrier, and its
+seat is `open` (163.313 / 51.572, a 24 % azimuthal gap), **so my dash-gap argument exempted precisely the body
+my own re-sweep instruction targeted.**
+
+> **This is the carrier error twice in three sections, both times with correct arithmetic.** A-G189 was the
+> first — I asked for "the local ground" without naming the carrier. **A-G191 is the second — I extended a
+> bound to a body the carrier excludes.** The arithmetic being right is what made both invisible.
+
+**What survives is narrower and still worth having:** the *spec* permits a field body at `ρ_drawn = 34.2`, which
+would fail from ≈ 1366 px; **this fixture contains no such body.** So **PG-17's measured threshold on this
+fixture is PINK's original 1260 px**, and 1366 is a statement about the spec's envelope, not about any render
+that exists.
+
+### A-G192 · If a fixture does not span the spec's range, a sweep over it is not a sweep over the spec
+
+GRÜN's rule, adopted. The fixture's `ρ_drawn` runs **34.2 … 52.67** against the spec's 34.2 … 54.6, and under
+PG-17's carrier it holds **two bodies, 41.544 and 52.662.** **The body that never fails is not in it, and the
+body that fails earliest is not under the carrier.** Every width conclusion drawn on this fixture is drawn on
+the two bodies in the middle of the range.
+
+**And it reaches further than PG-17: A-G48's and A-G51's fixtures are built next, under the credential the owner
+holds.** A fixture that does not span the spec cannot falsify a bound stated over the spec — **so the span
+belongs in the fixture's own declaration, before the fixture is used.**
+
+### A-G193 · PG-10's limb 2 denominator, declared — and my §46 prediction was wrong *(defect 84)*
+
+PINK measured limb 2 two ways and got opposite verdicts from one measurement:
+
+| | 1920 unsel | 1920 sel | 1280 unsel | 1280 sel | vs [10 %, 35 %] |
+|---|---|---|---|---|---|
+| **W_mod** (ΔL / the glow's own mean) | 0.286 / 0.306 | 0.143 / 0.136 | 0.288 / 0.291 | 0.140 / 0.133 | **all inside** |
+| **W_grd** (ΔL / the local ground) | 1.433 / 1.592 | 0.686 / 0.689 | 1.429 / 1.345 | 0.690 / 0.601 | **all outside** |
+
+**Declared: the quantity is W_mod, and A-G22's words "Weber fraction" are corrected to "modulation depth."** The
+derivation is what the quantity is *about*, not a new number: **PG-10 bounds a temporal modulation, and the
+adapting level for a temporal modulation is the modulating region's own time-average, not its surround.** W_grd
+is the glow's *spatial* contrast against the ground — a real quantity, and not the one the breath is.
+
+**So limb 2 clears in both states, and my §46 prediction of 8.045 % was wrong** — measured 13.3–14.3 % selected
+against my 8.045 %, and 28.6–30.6 % resting against my 22.0 %, **low by a consistent ≈ 1.3 × in both states.** A
+flat-ground model under-predicts the modulation depth; the ratio was the part my model got closest to and the
+levels were not.
+
+**And one open figure closes: GRÜN's unplaceable 0.28644 / 0.27846 is W_mod at 1920 unselected** — PINK's
+0.286 / 0.306 to three digits. **A-G182's "asked, not assumed" is answered**, and it was a measurement of this
+lane's own pin that had reached me with no origin attached. *(A-G22's own 20.6 % / 22.6 % still reproduces under
+neither reading and stays unexplained.)*
+
+### A-G194 · PG-10 fails selected on one body, and the pin never says whether its limbs are per body *(defect 85)*
+
+Limb 1, selected: **rank 1 reads 0.287 and clears; rank 2 reads 0.243 / 0.223 and fails** against ≥ 0.25.
+Unselected both clear (0.506 … 0.552).
+
+**So PG-10's conjunction fails in the selected state, on one body, through limb 1 only** — much narrower than
+§46's "fails both".
+
+> **And PG-10 does not say whether "on the visible glow, ≥ 25 % of pixels" is per body or over all carrier
+> pixels.** PINK reported per body and was right to; **aggregated over both bodies the selected case would
+> probably clear, and the pin as written permits either reading.** Third unquantified scope in one pin, beside
+> A-G95's motion mode and A-G188's interaction state. **Per body**, declared: a glare source is a body, and an
+> aggregate would let a bright body pay for a dim one — the inversion PG-1 exists to prevent.
+
+### A-G195 · PG-10's third limb was withdrawn in A-G26, with a statistic PINK did not use
+
+PINK measured a max swing of 0.0320 / 0.0327 against 0.030 and **correctly refused to call it a failure**,
+because A-F11 takes verdicts on distributions and never on maxima. **That reasoning is A-G26's, independently
+re-derived — and A-G26 already withdrew this limb** *(defect 23)*, for the stronger reason that the static
+noise floor is **0.031872**, above both numbers.
+
+**A-G26 also re-specified it, and its specification is not the one PINK used:** *"the **p999.9** of per-pixel
+swing on co-registered frames, with the threshold set from the run's **own** measured static floor and never
+below it."* PINK's proposed statistic — the fraction of carrier pixels above **0.030** — uses the **withdrawn
+constant** and a different statistic.
+
+**So limb 3 remains not runnable, and for the reason A-G26 gave: the co-registration step does not exist in
+either lane's instrument. It is a prerequisite, not an assumption.** PINK's independent arrival at the
+distributional objection is worth more than the measurement was, and it cost a run it need not have — **the one
+place in this exchange where re-reading the record would have saved work rather than created it.**
+
+### A-G196 · The ratio limb needs the floor, and PINK's measurement beats my model by 20 ×
+
+Measured median-swing ratio selected ÷ unselected: **0.419 … 0.469** against `selectedGain = 0.35` — **20–34 %
+above it, where §48 predicted +1.17 %.** PINK's cause is right and is A-G81 again: the selected median swing is
+**0.0017–0.0023**, a few 8-bit codes off the ground, so it is quantisation-limited and **the sRGB slope does not
+cancel.**
+
+**GRÜN's cancellation is exact in the continuum and void where the limb would be measured.** So the limb GRÜN
+derived to need *no* new number **does need one — the resolvability floor it proposed itself**, A-G115's form.
+**And my +1.17 % was a model figure standing where a measurement belonged**, which is A-G35's own point: my
+instrument states what the constants imply, not what the render does.
+
+### A-G197 · The limbs a pin adds to catch a build catch the instrument first — PINK's rule, adopted
+
+PINK's first PG-10 attempt was void and **it kept it committed for audit.** Three defects, all its own: a
+sub-period window (0.38–0.82 of a cycle), a geometric annulus in place of the carrier mask, and a local ground
+contaminated by foreign light. **A-G48's negative limb caught all three** — resting shelf glows returned
+`maxSwing` up to **0.7925**, and *a resting element cannot swing.*
+
+> **A negative limb falsifies the instrument before it falsifies the build, because an instrument defect usually
+> violates a physical impossibility rather than a bound.** A bound can be missed by a legitimate build; zero
+> cannot be exceeded by a motionless element.
+
+**Second time this phase that a lane's own rule caught its own instrument** — after §9's `k` trap, which A-G176
+is named for. **Both were caught by a check whose purpose was the artifact.**
+
+### A-G198 · The viewport is two axes and each lane swept a different one — the threshold survives, the margins do not
+
+| | at 1920 | at 1280 |
+|---|---|---|
+| PINK, height 900 | k = **1.5156** | k = 2.2524 |
+| GRÜN, height 1080 / 800 | k = **1.2000** | k = 2.2530 |
+
+**At 1280 the height moves `k` by 0.0006; at 1920 it moves it by 0.3156.** The stage is **height-limited at 1920
+and width-limited at 1280**, so a width sweep at fixed height crosses a regime change.
+
+**Consequence, and it is the reassuring direction:** the break-even lies in the **width-limited** regime, so
+**PINK's ≈ 1260 px threshold is robust across heights** — but the 1920 margin is not, running +0.9411 px at
+height 900 and ≈ +1.66 px at 1080. **PG-17 names no viewport at all**, so under A-G171 the envelope it ranges
+over is two-dimensional and neither lane has swept both. **It does not need sweeping: the threshold sits where
+height does not matter, and that is a derived result rather than an untested assumption.**
+
+### A-G199 · No pin reaches the shelf halos at all *(defect 86)*
+
+The shelf halo carries **no class, no `data-testid`, no `data-*`** — `className={b.shelf ? undefined : "mf-wave mf-wave-halo"}`
+inside the anonymous `<g>`. **A-G49 a third time.** PINK's `.mf-halo circle:not(.mf-wave-halo)` works **only
+because shelf is the `undefined` branch** — *a selector that exists by accident* — and its per-shelf rows in
+`PG10.json` are field-halo overlap pixels and **must not be read as a shelf measurement.** Recorded as PINK
+declared it.
+
+**And putting A-G31 beside A-G48 gives the hole:** PG-17's carrier is `mapping-glows`, which excludes shelf
+halos; PG-10's carrier is `.mf-wave-halo`, which excludes them too. **So the shelf halos — three of the five
+bodies in this fixture — are under no obligation in this phase.** Not a defect in either pin; **a coverage hole
+that only became visible once both carriers were stated precisely**, which is what A-G48 and A-G31 were for.
+
+### A-G200 · GRÜN's scope-carrying diagnosis, adopted — it is A-G173 one level in
+
+GRÜN's account of its own two self-refutations: both were **a figure of its own reused outside the scope it was
+derived in** — the 1.536–1.950 r interval scoped to 1920, and the 18 px scoped to a marked seat no probe
+produces. *"Not a rate problem so much as a scope-carrying problem."*
+
+> **A number carries its condition, or it is not reused.** A-G173 said that about a number crossing to another
+> lane; **this says it about a number crossing to another argument inside one lane**, which is the harder case,
+> because nothing announces the boundary.
+
+**And the guard is the cheap one that caught it: recompute the prediction the figure was supposed to beat,
+rather than quoting the figure.** That is what turned GRÜN's 18 px from evidence into an erratum, and **it is
+the same move that would have caught my own A-G162** — recomputing 28 px from the spec would have surfaced the
+condition attached to it.
+
