@@ -7811,3 +7811,154 @@ established in its limb C.
 for sixty-four sections without its name. The count is 144. A-G128's score since §37 is six prospective
 firings.**
 
+
+---
+
+## §69 PG-14's FRAME BUYS ROOM FOR ONE OF THREE LABELS — AND A-G244's INDEPENDENCE PAID OUT AS BLINDNESS, NOT AGREEMENT
+
+PINK ran PG-14's before reading (`7aaa630c`, `7373201c`) and found a **second, independent** defect under it.
+**§66 fixed how the frame iterates. This is what it iterates toward.**
+
+### A-G298 · The side allowance is bought from one string and the body draws three *(defects 145, 146)*
+
+`4b83414e:498` — **`side = Math.max(collar, (b.title.length * 0.62 * font) / 2)`**. One string. The body draws
+up to three texts, all inside its own translated group:
+
+| | element | face | anchor | bought? |
+|---|---|---|---|---|
+| `:757` | `mapping-name-*` — the title | **SANS** | middle, x = 0 | **yes** |
+| `:760` | `mapping-measure-*` — rank and tier | **MONO** | middle, x = 0 | **no** — PINK |
+| `:753` | `mapping-collar-more-*` | **MONO** | **left-anchored**, x = `collarR + 3k` | **no** — this lane |
+
+**PINK's half, measured on the rendered page at three viewports:**
+
+| title | measure | need ÷ allowance |
+|---|---|---|
+| `Platform Engineer` (17) | `#1 · checked` (12) | 0.856 |
+| `All States` (10) | `#2 · checked` (12) | **1.161 EXCEEDS** |
+| `Key Cases` (9) | `#3 · names only` (15) | **1.618 EXCEEDS** |
+| `Platform Engineer` (17) | `#4 · names only` (15) | 0.857 |
+| `Unspecified Role` (16) | `#5 · names only` (15) | 0.910 |
+
+**Two of five bodies need more side room than their own title bought, worst 1.618 ×. And on four of five the
+MONO measure is the wider label even where the title has more characters**, because MONO runs ~0.602 em/char
+against SANS's ~0.563.
+
+**This lane's half, and it is worse in shape rather than in size.** `mapping-collar-more-*` is **left-anchored
+at the collar's right edge**, so it needs its **full** width beyond that edge rather than half of it.
+`gelb-pg14-side-allowance.mjs` (`a4fc13f2`) reduces the fit condition to
+**`chars ≤ (0.18·rpx + 0.6) / (EM · 11 · 1.002)`**, and over PG-3's own radius range:
+
+| body radius (CSS px) | 28 | 32 | 36 | 40 | 46 |
+|---|---|---|---|---|---|
+| characters that fit | **0.850** | 0.959 | 1.067 | 1.176 | **1.338** |
+
+> **The budget is one character at the smallest body and under one and a half at the largest. Any real copy for
+> "n more" overruns the frame on the right, at L1, whenever a collar hides an arc.**
+
+**It is a derivation and not a reading, and it is recorded as one** — it needs the `c.more(n)` copy string and an
+L1 fixture. **That fixture is A-G51's, which is queued with GRÜN, and this gives that obligation a concrete
+target rather than a general one.**
+
+### A-G299 · A-G244's independence paid out as blindness, not as agreement
+
+**PINK's framing is the finding and it corrects how this record has been reading its own rule:**
+
+> ***"Your sweep cannot see this: it models `0.62 × title.length` on both sides of its own comparison, so the
+> constant cancels. A browser measures glyphs. That is A-G244's independence actually paying out — not two
+> routes agreeing, but one seeing what the other is blind to by construction."***
+
+**A-G36 has been defended in this record as corroboration — two instruments, one verdict. That is its weaker
+half.** The reason to insist two routes be independent *by design* is that **each route's blind spot is a
+property of its construction, so an independent route does not confirm the first, it covers it.** GRÜN's
+arithmetic could not see a second label because the only string in it is the title; PINK's render could not see
+the third because the third lives at L1. **Three routes, three blind spots, and the overlap is what the pin
+actually holds.**
+
+**Adopted as the correct reading of A-G244** — and it is the first time in this phase that the two-instrument
+rule has produced a finding rather than a check.
+
+### A-G300 · The frame's own constant is a bare literal that `CHAR_EM` does not govern *(defect 147)*
+
+`:452` declares `const CHAR_EM = 0.62` and `:459` uses it for sector labels. **`:498` writes `0.62` as a bare
+literal.** So **`CHAR_EM` does not govern the frame at all, and changing it would silently leave the frame on
+0.62.**
+
+**Which re-points PINK's constant finding.** It measured 0.5632 mean and **0.602 worst, all worst cases MONO,
+against the assumed 0.62 — 2.9 % headroom.** So the constant **is** currently a bound, by 2.9 %, **and it is a
+bound in a place no named constant controls.** PINK's words for it are right and the duplication makes them
+sharper: *"0.62 is an average-case constant doing a worst-case job; it is not a bound over faces."* **A font
+fallback would exhaust it, and nothing in the product would say so.**
+
+### A-G301 · The remedy, and it is independent of §66's
+
+> **Decided: `side` is bought from the widest label the body actually draws, each label measured in its own
+> face's em — a centred label needing half its width, a left-anchored one needing its full width beyond its
+> anchor. `frameWithBodies`'s parameter gains the measure string and the collar-more string, and the per-face
+> ems become named constants carrying PINK's measurements with PINK's attribution (A-G279).**
+
+**PINK's ruling on how the two defects relate is adopted verbatim because it is exactly right:**
+
+> ***"A frame that converges to the wrong allowance is still the wrong frame. Your tolerance and disclosure fix
+> the iteration; neither touches what it iterates toward. I'd keep PG-14's disclosure either way — this is a
+> second, latent defect under it, not a reason to hold the fix."***
+
+**So §66's convergence fix lands as ruled and this is a second change behind it.** Both are GRÜN's to implement;
+**both have two independent routes and neither needs vitest.**
+
+### A-G302 · PINK's before reading holds, and it does not contradict GRÜN's clipping result
+
+**Containment HOLDS on PINK's stand: 10 of 10 labels inside the emitted `viewBox` at 1920 / 1280 / 1024, with
+13.6–16.7 device px of margin.** Longest title 17 characters, **above GRÜN's 16-character threshold, and no
+title synthesised.**
+
+**That is not a conflict and must not be read as one.** GRÜN's clipping figures are at the component's own
+**420 px** `minWidth`; its own table already says a 24-character title still clips on 3 of 11 layouts at 1040 px
+and a 16-character one clips **at 420 px**. PINK's stand is at ≥ 1024 with a 17-character maximum. **Both are
+true and they describe different widths.** Recorded explicitly because two lanes reporting opposite-sounding
+results on one pin is exactly where a record acquires a phantom disagreement.
+
+### A-G303 · My A-G81 clause was half right, and the half that fails is the useful half *(defect 148)*
+
+I told PINK that adopting A-G81 *"should make `realisation` exact."* **It does not, and what it does instead is
+better:**
+
+| ring | stroke | realisation under A-G81 |
+|---|---|---|
+| **shelf band** | 58.3 px | **1.0000 at 0.02 *and* 0.022 — exact, five figures** |
+| best | 2.4 px | 0.8837 *(PINK's earlier 0.9199 was slightly optimistic)* |
+| field | 2.0 px | 0.7322 |
+| horizon | 2.0 px | 0.7709 |
+
+> **PINK: *"A model proved exact on one carrier is worth more than a model never tested: the band's 1.0000 is
+> what makes the rings' 0.73 a measurement rather than a leftover."***
+
+**So the band is the control, and the thin rings' 12–27 % shortfall is thin-stroke antialiasing rather than
+model residual.** My prediction of exactness was wrong; **the replacement of §23's method was right, and it is
+now validated on a second carrier — a declared constant alpha on a stroke wide enough to cover its centre
+pixel, at two different alphas.** A-G274's limit is unchanged: **still never tested on a gradient.**
+
+### A-G304 · A-G290's tell turned on its own author *(defects 149, 150, PINK's, self-caught)*
+
+PINK divided an SVG `<text>`'s computed `fontSize` by `k`. **On an SVG text it is already in user units, so it
+converted user units into user units twice.** And the catch was not review:
+
+> ***"The tell was structural: the estimate ratio must be `k`-independent, because both its terms scale as 1/k —
+> and it read 0.714 / 0.380 / 0.298 across three viewports."*** Corrected it is **0.9084 at all three**, and
+> confirmed from the other side: the label's rendered half-width is **49.744 CSS px at every viewport**, so the
+> product holds the text at constant screen size by scaling the attribute as 1/k.
+
+Second: `measuredEmPerChar` was reported at double — a `2 × CHAR_W` where the halving was already inside the
+ratio.
+
+> **PINK: *"Both were visible in my own first printout and neither was visible in my reasoning. The free tell
+> you want to keep works on the person holding it, which is the only real test of it."***
+
+**A-G290 was adopted one section ago on PINK's own evidence and has now fired prospectively, twice, on its
+author.** That is the second rule in this record with prospective firings, after A-G128 — **and the two share a
+property: both are questions that can be run, not habits that must be remembered.** §61 named that distinction
+about A-G239 and this is the second confirmation of it.
+
+**Six new defects: three this lane's (one allowance derivation, one wrong prediction, one shared with the
+product), one the product's bare literal, two PINK's own and self-caught. The count is 150.**
+
