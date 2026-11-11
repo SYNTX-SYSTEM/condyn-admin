@@ -203,17 +203,39 @@ a guard this lane stated and GELB dropped under A-G30), **1 ESTABLISHED UNSATISF
 **2 incidental mentions only** (PF-5, PF-7), **3 named nowhere** (PF-13, PG-12, PG-19).
 **`grep -l` cannot tell a guard from its obituary.**
 
-**UPPER BOUND ON UNGUARDEDNESS** (§52): **five pins are not NAMED by any guard in either
-readable lane** — PF-5, PF-7, PF-13, PG-12, PG-19. That is not the same as unguarded: a
-guard that does not name its pin is invisible to a name scan, and GELB's own PG-16 is
-guarded, unnamed, and found only by a mutant.
+**UPPER BOUND ON UNGUARDEDNESS** (§52, corrected in §53): **four pins are not NAMED by
+any guard in either readable lane** — **PF-5, PF-7, PF-13, PG-19**. That is not the same
+as unguarded: a guard that does not name its pin is invisible to a name scan, and GELB's
+own PG-16 is guarded, unnamed, and found only by a mutant. **PG-12 left this list when
+GELB re-read its own §36** — "PG-12 IS UNSATISFIABLE BY ANY BUILD", the hue's own chroma
+being half the bound — so it joins PF-15 and PG-18 as established unsatisfiable, needing
+no guard.
 
-**AND THE FIVE IS DISCHARGEABLE IN THIS LANE WITHOUT A BUILD.** `pink-p4-mutants.mjs` and
-`pink-static-mutants.mjs` prove P-2, P-4, P-5, P-6 and P-11 red-first **by faithful
-runtime injection, reproducing the mutated render without a rebuild**, with one mutant
-honestly recorded as surviving. **What blocks the five is the pins' statements, not an
-instrument:** PF-5 and PF-7 are known in outline, PF-13/PG-12/PG-19 have never been held
-by this lane, and PF-13 is a meta-pin a render mutant cannot reach in that form.
+**THE MUTANT TECHNIQUE IS CONFIRMED IN THIS LANE AND NEEDS NO BUILD** (§53).
+`pink-p4-mutants.mjs` and `pink-static-mutants.mjs` prove P-2, P-4, P-5, P-6 and P-11
+red-first by faithful runtime injection, with one mutant honestly recorded as surviving;
+and §53 re-ran the technique on phase G with every injection verified by read-back.
+**MUT-PF5-DEPTH0 IS KILLED** — the share falls 0.0492 → 0.0103 and the median swing
+3.0053e-4 → **exactly 0** — so a PF-5 guard demonstrably fires.
+
+**BUT TWO OF THE FOUR DID NOT DISCHARGE, AND NEITHER FAILURE IS THE BUILD'S:**
+
+- **PF-5 is NOT EVALUABLE here.** Its verdict is decided entirely by the denominator: over
+  the disc (545417 px) the share is 0.0492 against a 0.25 bound, while the **same
+  numerator** over §28's 36268-px glow mask is **0.74**. I took "≥ 25 % of **disc**
+  pixels" from GELB's relay — after insisting throughout this phase that a validator must
+  not take its requirement from the lane it validates. **Recorded as my error, not as
+  PF-5's red.**
+- **PF-7 is NOT MEASURABLE by a per-pixel phase fit**, for a reason in the source: `:876`
+  draws all seven ground layers at the **same radius**, so the radial structure is in the
+  gradients while the 1.2 s stagger is per-layer. Every pixel superposes all seven, and
+  one fit returns one blended phase — baseline spread 45 ms against a 1200 ms bound, and
+  **zeroing the lag raised it to 88 ms.** It needs per-layer isolation, which is a
+  different instrument.
+
+**PF-13** has no evaluator at all (its population was read by hand) and is a meta-pin no
+render mutant reaches; **PG-19** is disjunctive and needs a per-mark limb breakdown before
+a mutant means anything. Both remain open.
 
 ---
 
@@ -240,7 +262,10 @@ extreme-value statistic); the blur-sign claim; §18's population thresholds; §3
 "convergence" (a crossing, not a convergence); §35's seam profile and the step-vs-ramp
 inference it carried; §36's "oscillated" and its 2.316× ratio; §36's claim that a
 production build was needed; §46's new `ringStrokes` red; §47's "six configurations" and
-its colour-management limb.
+its colour-management limb; and §53's three instrument defects — a span declared at two
+periods that ran at 3.17–3.53, an amplitude floor set at `median × 0.5` that admitted half
+the pixels by construction, and a no-signal mutant that still reported 431972 pixels
+"carrying signal".
 
 **Each was found by one of the three lanes auditing another's divisor, dividend, support,
 estimator or scope.** Two figures in this exchange moved *upward* and **both needed an
