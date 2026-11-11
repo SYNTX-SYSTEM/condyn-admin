@@ -1,0 +1,330 @@
+{
+ "reading": "GRÜN · §94 — the ladder over the REAL stack: per-pixel quantum, GELB's four conditions, and the two-state rung",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T19:34:21.749Z",
+  "measuredBuildCommit": "c84ab292",
+  "measuredWorktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "level": "L0",
+ "motion": "resting (reducedMotion:reduce)",
+ "whatWasOwed": "§80: its floor is a FLAT SINGLE ALPHA over the modal medium, while the gap glow carries three multipliers and a per-pixel gradient.",
+ "conditions": {
+  "origin": "GELB, §90 — quoted in this file's header. A-G140: these are an ORIGIN, not a measurement taken here.",
+  "q": "half an LSB per channel, SUMMED, from the actual bytes at each pixel — the L1 bound on a reading's error, NOT chromaQuantumFloor's largest single-code step. Both are reported so the two cannot be confused.",
+  "rung": "c >= 10q",
+  "tierC": "a rung below 2 x the pixel's own q is not evaluated"
+ },
+ "quantumDefinitions": {
+  "halfLsbSummed": "0.5 * sum over channels of the worst |dC*| from a +/-1 code step at this pixel's own triple",
+  "maxSingleCodeDeltaC": "chromaQuantumFloor's quantity, for comparison only",
+  "whyTheDarkRegimeConstantIsWrong": "C* is a function of linearised sRGB through a cube root, so one code step near black moves C* far more than one code step in a lit glow. A single constant q taken at the medium's modal triple understates the error bar where the glow is bright and overstates it where it is dark."
+ },
+ "perPopulation": {
+  "hueGlow": {
+   "c": {
+    "n": 47073,
+    "min": 0,
+    "p10": 1.68101,
+    "p50": 6.49157,
+    "p90": 22.97066,
+    "p99": 29.83106,
+    "max": 33.10522,
+    "mean": 9.57383
+   },
+   "q_halfLsbSummed": {
+    "n": 47073,
+    "min": 0.29573,
+    "p10": 0.46298,
+    "p50": 0.61671,
+    "p90": 0.79707,
+    "p99": 0.92064,
+    "max": 0.9759,
+    "mean": 0.61933
+   },
+   "maxSingleCodeDeltaC": {
+    "n": 47073,
+    "min": 0.26528,
+    "p10": 0.40743,
+    "p50": 0.61852,
+    "p90": 0.81695,
+    "p99": 0.91803,
+    "max": 0.95246,
+    "mean": 0.61525
+   },
+   "cOverQ": {
+    "n": 47073,
+    "min": 0,
+    "p10": 2.79562,
+    "p50": 9.5277,
+    "p90": 42.83399,
+    "p99": 62.36947,
+    "max": 73.20357,
+    "mean": 16.69687
+   },
+   "rung": {
+    "condition": "c >= 10q",
+    "evaluated": 23301,
+    "dropped": 23772,
+    "droppedPct": 50.5
+   },
+   "tierC_perPixelFloor": {
+    "rule": "a rung below 2 x this pixel's own q is not evaluated",
+    "p50_notEvaluatedBelow": 1.23342,
+    "p99_notEvaluatedBelow": 1.84128
+   }
+  },
+  "plainGlow": {
+   "c": {
+    "n": 50067,
+    "min": 0.55452,
+    "p10": 2.02124,
+    "p50": 7.33918,
+    "p90": 13.90473,
+    "p99": 16.72955,
+    "max": 18.9075,
+    "mean": 7.65855
+   },
+   "q_halfLsbSummed": {
+    "n": 50067,
+    "min": 0.29488,
+    "p10": 0.37053,
+    "p50": 0.4418,
+    "p90": 0.53836,
+    "p99": 0.58623,
+    "max": 0.65772,
+    "mean": 0.44764
+   },
+   "maxSingleCodeDeltaC": {
+    "n": 50067,
+    "min": 0.24455,
+    "p10": 0.36362,
+    "p50": 0.44705,
+    "p90": 0.59232,
+    "p99": 0.66434,
+    "max": 0.72083,
+    "mean": 0.45987
+   },
+   "cOverQ": {
+    "n": 50067,
+    "min": 1.40858,
+    "p10": 5.38991,
+    "p50": 14.83864,
+    "p90": 33.97451,
+    "p99": 42.99139,
+    "max": 49.93141,
+    "mean": 17.35191
+   },
+   "rung": {
+    "condition": "c >= 10q",
+    "evaluated": 33417,
+    "dropped": 16650,
+    "droppedPct": 33.26
+   },
+   "tierC_perPixelFloor": {
+    "rule": "a rung below 2 x this pixel's own q is not evaluated",
+    "p50_notEvaluatedBelow": 0.8836,
+    "p99_notEvaluatedBelow": 1.17246
+   }
+  },
+  "medium": {
+   "c": {
+    "n": 427309,
+    "min": 0,
+    "p10": 0.27726,
+    "p50": 2.91163,
+    "p90": 5.12456,
+    "p99": 8.02618,
+    "max": 9.33582,
+    "mean": 2.81197
+   },
+   "q_halfLsbSummed": {
+    "n": 427309,
+    "min": 0.2816,
+    "p10": 0.3998,
+    "p50": 0.45253,
+    "p90": 0.52834,
+    "p99": 0.58164,
+    "max": 0.79532,
+    "mean": 0.46395
+   },
+   "maxSingleCodeDeltaC": {
+    "n": 427309,
+    "min": 0.23825,
+    "p10": 0.41269,
+    "p50": 0.47814,
+    "p90": 0.61669,
+    "p99": 0.67087,
+    "max": 0.79234,
+    "mean": 0.49201
+   },
+   "cOverQ": {
+    "n": 427309,
+    "min": 0,
+    "p10": 0.6127,
+    "p50": 6.73841,
+    "p90": 9.71096,
+    "p99": 15.91925,
+    "max": 29.5114,
+    "mean": 5.91488
+   },
+   "rung": {
+    "condition": "c >= 10q",
+    "evaluated": 37553,
+    "dropped": 389756,
+    "droppedPct": 91.21
+   },
+   "tierC_perPixelFloor": {
+    "rule": "a rung below 2 x this pixel's own q is not evaluated",
+    "p50_notEvaluatedBelow": 0.90506,
+    "p99_notEvaluatedBelow": 1.16328
+   }
+  }
+ },
+ "theTwoQuantitiesComparedOnThisStack": {
+  "why": "this probe insisted that half-an-LSB-summed is not chromaQuantumFloor's largest-single-code step, so it owes the comparison rather than just the claim.",
+  "hueGlow_q_p50": 0.61671,
+  "hueGlow_maxSingleCode_p50": 0.61852,
+  "finding": "they agree to within a few tenths of a percent AT THE MEDIAN of this stack, and that is a property of the stack's colour geometry rather than a coincidence or a bug. On a cyan glow over a dark near-neutral ground the per-channel sensitivities are lopsided — red contributes ~0.07..0.16 of a C* per code while blue contributes ~0.43..0.63, and blue is close to red+green — so 0.5*(R+G+B) lands near max(R,G,B). Hand-checked at five triples the ratio q/max runs 0.89 .. 1.09, so it is not even consistently one-sided.",
+  "whyTheDistinctionStillStands": "where the three channels contribute EQUALLY the two differ by a factor of 1.5 (q = 1.5 x max), and nothing about this stack guarantees lopsidedness at another viewport, another hue or another backdrop. A quantity that happens to equal another on one page is not that other quantity. Recorded because the honest version of 'I was right to distinguish them' is 'I was right to distinguish them AND here it changed almost nothing'."
+ },
+ "readbackDeterminism": {
+  "what": "two captures of the SAME resting page, back to back.",
+  "whatItProves": "ONLY that the readback is deterministic. It does NOT exercise the rung: with zero pixels differing there is no excursion to admit or reject, so a zero survivor count here is not evidence about condition 3. See rungExercise, which supplies a known non-zero signal.",
+  "pixelsTested": 47073,
+  "bytesDiffering": 0,
+  "chromaDiffering": 0,
+  "deltaC": {
+   "n": 0
+  },
+  "worstDeltaC": 0,
+  "worstAsMultipleOfItsOwnQ": 0,
+  "survivorsOfTheTierCRung": 0,
+  "reading": "DETERMINISTIC: 0 of 47073 hue-glow pixels differ by even one byte between two captures. The instrument's own repeatability contributes NOTHING to an excursion, which is worth knowing and is not a test of the rung."
+ },
+ "rungExercise_condition3and4": {
+  "what": "at each hue-glow pixel, step its OWN bytes by n codes and find the smallest n whose |dC*| reaches the tier-C rung (2q). A known non-zero excursion, so the rung is tested rather than assumed.",
+  "distinctTriples": 4021,
+  "smallestAdmittedExcursion_codes": {
+   "n": 47073,
+   "min": 2,
+   "p10": 2,
+   "p50": 2,
+   "p90": 3,
+   "p99": 3,
+   "max": 3,
+   "mean": 2.32261
+  },
+  "histogram": {
+   "2": 31887,
+   "3": 15186
+  },
+  "oneCodeExcursionsAdmitted": 0,
+  "neverAdmittedWithin12Codes": 0,
+  "reading": "THE RUNG REJECTS EVERY ONE-CODE EXCURSION on all 47073 hue-glow pixels, and the smallest excursion it admits is 2 codes at the median pixel (p99 3). Condition 3 is protected against the smallest signal a raster can carry, with a non-zero signal to prove it.",
+  "whyThisIsTheRealFloor": "2q is the sum of the three per-channel worst one-code moves, and any single-channel n=1 step moves C* by at most ONE of those three. So the rung cannot admit a one-code excursion by construction, and this probe confirms the construction on the drawn stack instead of trusting it — the inequality is only obvious once stated, and A-G81's 8-bit quantisation was 'obvious' too until §80 found it unvalidated on a gradient carrier."
+ },
+ "twoStateRung": {
+  "derivation": [
+   "the halo group's opacity is mean + depth * gain * w(t), w in [-1,1], with mean = 1 - haloDepth/2 and depth = haloDepth/2 — the product's OWN expression in the stylesheet, so this mirrors it rather than restating it.",
+   "unselected gain is 1 (the CSS default); selected gain is WAVE.selectedGain, applied to the DEPTH only, so the mean does not move.",
+   "peak-to-trough swing relative to the mean: s/c = 2 * haloAmp * gain / haloMean.",
+   "a reading's uncertainty is q, and an amplitude read by DIFFERENCING two captures carries 2q (L1, worst case). Relative precision p therefore needs 2q <= p*s, i.e. c >= 2q / (p * s/c)."
+  ],
+  "constantsRead": {
+   "haloDepth": 0.235,
+   "selectedGain": 0.35,
+   "haloMean": 0.8825,
+   "haloAmp": 0.1175,
+   "constantsAgreeWithInstrumentWorktree": true
+  },
+  "relativeSwing": {
+   "unselected": 0.266289,
+   "selected": 0.093201
+  },
+  "rungs": [
+   {
+    "targetRelativePrecisionOnS": 0.2,
+    "unselected_cOverQ_needed": 37.6,
+    "selected_cOverQ_needed": 107.3,
+    "hueGlowPixelsMeeting_unselected_pct": 13.32,
+    "hueGlowPixelsMeeting_selected_pct": 0
+   },
+   {
+    "targetRelativePrecisionOnS": 0.1,
+    "unselected_cOverQ_needed": 75.1,
+    "selected_cOverQ_needed": 214.6,
+    "hueGlowPixelsMeeting_unselected_pct": 0,
+    "hueGlowPixelsMeeting_selected_pct": 0
+   },
+   {
+    "targetRelativePrecisionOnS": 0.05,
+    "unselected_cOverQ_needed": 150.2,
+    "selected_cOverQ_needed": 429.2,
+    "hueGlowPixelsMeeting_unselected_pct": 0,
+    "hueGlowPixelsMeeting_selected_pct": 0
+   }
+  ],
+  "oneRungCannotServeBothStates": {
+   "factor": 2.8571,
+   "why": "the selected state's swing is selectedGain of the unselected one and the mean is unchanged, so the chroma a given precision needs is 1/selectedGain times larger. GELB's structural claim is CONFIRMED and the rung is set by the SMALLER amplitude, which is the selected state.",
+   "gelbsFiguresNotReconstructed": {
+    "theirs": {
+     "unselected": 11.2,
+     "selected": 57.4,
+     "ratio": 5.125
+    },
+    "mine": {
+     "unselected": 75.1,
+     "selected": 214.6,
+     "ratio": 2.857
+    },
+    "theDisagreementThatMatters": "not the magnitudes — those depend on whether the amplitude is differenced (2q) or read once (q), and on peak-to-trough versus peak-to-mean, all of which are stateable conventions. It is the RATIO. Mine is 1/selectedGain = 2.857 and is forced by the stylesheet: the gain multiplies the depth and not the mean. Theirs is 5.125, which no combination of those conventions produces, because every one of them cancels in a ratio. So one of us has the wrong mechanism, not the wrong convention, and a ratio is the right place to find that out."
+   }
+  }
+ },
+ "comparisonToTheFlatLadder": {
+  "flat": "outputs/pg12-floor-measured.json — one alpha, one backdrop, the modal medium",
+  "realStack": "this file — the drawn glow, per-pixel q, over whatever each pixel's own backdrop is",
+  "note": "the flat ladder's floor remains correct FOR THE FLAT LADDER. What it could not carry is a per-pixel error bar, and that is the whole of the difference."
+ },
+ "finding": "REAL-STACK LADDER. On the hue-carrying glow (n=47073) the per-pixel half-LSB-summed quantum is q p50 0.61671 (p99 0.92064), against chroma c p50 6.49157 — so c/q p50 9.5277. GELB's rung c >= 10q evaluates 23301 of 47073 pixels and DROPS 23772 (50.5 %), which is the population condition 2 asks me to report rather than hide.\nTHE DARK-REGIME CONSTANT WAS THE WRONG q, measurably: on the medium (n=427309) q p50 is 0.45253 and on the glow 0.61671 — the same instrument, the same page, 1.36x apart. Condition 1 was not a refinement, it was a correction.\nCONDITION 3, EXERCISED RATHER THAN ASSERTED — and my first attempt at it was hollow. Two captures of the resting page differ by 0 bytes out of 47073 pixels, so the rung \"rejected\" a signal that did not exist. The real test steps each pixel's own bytes: the rung admits a one-code excursion at 0 pixels, and the smallest excursion it admits is 2 codes at the median pixel (p99 3, over 4021 distinct triples).\nTHE TWO-STATE RUNG CONFIRMS GELB'S STRUCTURE AND DISAGREES ON THE NUMBER. One rung cannot serve both states, and the rung is set by the SMALLEST amplitude — the selected state — exactly as GELB said. But the factor is 1/selectedGain = 2.857, read from the product, where GELB's pair implies 5.125. Conventions cancel in a ratio, so this is a mechanism disagreement and not a bookkeeping one.\nAND THE CEILING IS THE RESULT, not the rung. The BRIGHTEST pixel of all 47073 in the hue-carrying glow reaches c/q 73.20357, while 10 % relative precision on the UNSELECTED amplitude needs 75.1 — so the best pixel on the page falls short by 2.5 %, and NO pixel anywhere meets it. At 20 % precision 13.32 % of the glow qualifies unselected and 0 % selected. The SELECTED state needs 214.6, which is 2.9x the best pixel that exists. So the breath's amplitude is NOT measurable in the CHROMA channel on the drawn stack at any precision worth stating — the two-state rung is not merely unserved by one rung, it is unreachable by any pixel. That is a measurability reading about a CHANNEL, not a claim about whether the breath is visible: the breath is an opacity modulation and luminance is a different channel with a different error bar.\nNO VERDICT (A-G36 point 2): these are resolutions and populations. Whether PG-12 is satisfied on this artifact is PINK's."
+}

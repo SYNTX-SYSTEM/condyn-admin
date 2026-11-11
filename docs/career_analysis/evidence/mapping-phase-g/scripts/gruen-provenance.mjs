@@ -117,3 +117,23 @@ export function rgbConstant(name) {
     throw new Error(`ERR_GRUEN_PRODUCT_CONSTANT_SHAPE: ${name} = "${m[1]}" is not three 8-bit channels.`);
   return parts;
 }
+
+/**
+ * §94 — the same discipline as `rgbConstant`, for a NUMBER inside a frozen record, plus the one thing
+ * `rgbConstant` cannot do: read it out of the build being MEASURED rather than the worktree the instrument
+ * runs in. A-G54 says a figure belongs to a build; a CONSTANT a figure is derived from belongs to one too,
+ * and this instrument runs in the canonical evidence worktree while the pixels come from another.
+ *
+ * It throws rather than defaulting, and it refuses a nested record instead of guessing which brace closed
+ * the one asked for — `MOTION.stage.geometryMs` needs a path this does not take, and a reader that silently
+ * matched the wrong closing brace would return a number from a sibling key.
+ */
+export function numericConstant(objectName, key, sourcePath = PRODUCT_SOURCE) {
+  const src = readFileSync(sourcePath, "utf8");
+  const m = new RegExp(`^(?:export )?const ${objectName} = Object\\.freeze\\(\\{([^;]*?)\\}\\);`, "m").exec(src);
+  if (m === null) throw new Error(`ERR_GRUEN_PRODUCT_RECORD_MISSING: ${objectName} is not declared as a frozen record in ${sourcePath}.`);
+  if (/Object\.freeze/.test(m[1])) throw new Error(`ERR_GRUEN_PRODUCT_RECORD_NESTED: ${objectName} in ${sourcePath} contains a nested Object.freeze, so this reader cannot tell which brace closes it. Give the key a path-aware reader instead of guessing.`);
+  const k = new RegExp(`\\b${key}:\\s*(-?\\d+(?:\\.\\d+)?)\\b`).exec(m[1]);
+  if (k === null) throw new Error(`ERR_GRUEN_PRODUCT_CONSTANT_MISSING: ${objectName}.${key} is not declared as a number in ${sourcePath}. An instrument that cannot read it must not assume it.`);
+  return Number(k[1]);
+}
