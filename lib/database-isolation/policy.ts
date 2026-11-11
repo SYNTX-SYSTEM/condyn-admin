@@ -20,7 +20,7 @@ export type TestDatabaseUrlRefusal = "MISSING" | "MALFORMED" | "AMBIGUOUS" | "PR
 export const LOOPBACK_HOSTS = Object.freeze(["localhost", "127.0.0.1", "[::1]", "::1"] as const);
 
 export type TestDatabaseUrlVerdict =
-  | { ok: true; url: string; databaseName: string; host: string; port: string }
+  | { ok: true; url: string; databaseName: string; host: string }
   | { ok: false; code: TestDatabaseUrlRefusal; detail: string };
 
 const refuse = (code: TestDatabaseUrlRefusal, detail: string): TestDatabaseUrlVerdict => ({ ok: false, code, detail });
@@ -56,7 +56,14 @@ export function classifyTestDatabaseUrl(raw: string | undefined | null, allowedH
   if (databaseName.includes("%")) return refuse("AMBIGUOUS", "percent-encoded database names are refused");
   if (isProtectedDatabaseName(databaseName)) return refuse("PROTECTED", `database ${databaseName} is protected and never a test target`);
   if (!DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName)) return refuse("NOT_DISPOSABLE", `database ${databaseName} does not match condyn_test_<16 hex>`);
-  return { ok: true, url: raw, databaseName, host: url.hostname, port: url.port || "5432" };
+  /* §91 A-G410 (PINK §32): `port: url.port || "5432"` stood here. It was computed, named in the verdict
+     type, handed to every caller — and asserted NOWHERE, by this function or any other. A value carried in
+     a verdict is not a value checked by it, and it read as protection because it sat beside the host check
+     that IS protection. Grepped before removal: zero readers in lib, scripts, test or app. §88's ladder
+     says a dead VALUE is deleted rather than guarded, so it is deleted. The protection it appeared to give
+     — telling two servers on one host apart — is now given properly, by assertDisposableServer() in
+     verification.ts, which identifies the server positively instead of inspecting a number. */
+  return { ok: true, url: raw, databaseName, host: url.hostname };
 }
 
 /** Same server and credentials, maintenance database `postgres`; used only for CREATE/DROP DATABASE of disposable databases. */

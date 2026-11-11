@@ -6,7 +6,9 @@ import {
   DISPOSABLE_TEST_DATABASE_PATTERN,
   disposableTestDatabaseMarker,
   isProtectedDatabaseName,
-  maintenanceUrlFor
+  maintenanceUrlFor,
+  MAINTENANCE_DATABASE_NAMES,
+  SHARED_PROTECTED_DATABASE_NAMES
 } from "./policy";
 
 const fail = (code: string, detail: string): never => { throw new Error(`${code}: ${detail}`); };
@@ -104,6 +106,59 @@ function message(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+/**
+ * BOUNDARY B-ENTRY, SERVER LIMB (§91 A-G410, from PINK §32).
+ *
+ * The URL policy checks the HOST and never the port, so two servers on one host were ONE server to this
+ * boundary — and on a developer machine the shared `condyn` server and a disposable test server both
+ * answer on loopback. Pointed at the shared server, every URL guard passed verbatim: the only thing
+ * holding a test run off it was one character in an untracked env file.
+ *
+ * The remedy is deliberately NOT a port allowlist. 5432 is a legitimate port for a disposable server,
+ * this boundary's own policy tests are written against it, and a number cannot say which server it is.
+ * Instead the SERVER is identified positively, the same way this module already identifies a DATABASE:
+ * a server that holds a protected shared database IS the shared server, whatever port it answers on,
+ * and is never a provisioning basis.
+ *
+ * The probe is a parameter for the same reason `CurrentDatabaseProbe` is — so the refusal path can be
+ * proven by a test with no database at all.
+ */
+export type DatabaseNamesProbe = (maintenanceUrl: string) => Promise<readonly string[]>;
+
+export const probeDatabaseNames: DatabaseNamesProbe = async maintenanceUrl => {
+  const sql = postgres(maintenanceUrl, { ...options, connection: { default_transaction_read_only: true } });
+  try {
+    const rows = await sql`SELECT datname FROM pg_database` as unknown as Array<{ datname: string }>;
+    return rows.map(row => row.datname);
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
+};
+
+/**
+ * The protected names that do NOT exist on every PostgreSQL server. `postgres`, `template0` and
+ * `template1` are present everywhere and so witness nothing; what remains identifies the shared server.
+ */
+export const SHARED_SERVER_WITNESS_NAMES: readonly string[] = Object.freeze(
+  SHARED_PROTECTED_DATABASE_NAMES.filter(name => !(MAINTENANCE_DATABASE_NAMES as readonly string[]).includes(name))
+);
+
+/** Refuses a provisioning basis that is the shared server. Read-only; refuses before anything is created. */
+export async function assertDisposableServer(
+  basisUrl: string,
+  probe: DatabaseNamesProbe = probeDatabaseNames
+): Promise<{ databaseCount: number }> {
+  if (SHARED_SERVER_WITNESS_NAMES.length === 0) {
+    fail("ERR_TEST_DATABASE_ISOLATION_SERVER_UNWITNESSABLE", "no protected database name distinguishes the shared server from a disposable one; this check cannot hold and must not be reported as holding");
+  }
+  const names = await probe(maintenanceUrlFor(basisUrl));
+  const witnesses = SHARED_SERVER_WITNESS_NAMES.filter(name => names.includes(name));
+  if (witnesses.length > 0) {
+    fail("ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER", `this server holds the protected database ${witnesses.join(", ")}, so it is the shared server and never a provisioning basis — the host and port guards cannot tell it from a disposable server, which is why the server itself is identified`);
+  }
+  return { databaseCount: names.length };
+}
+
 /** A fresh name in the disposable pattern; unique per call. */
 export function newDisposableTestDatabaseName(): string {
   return `condyn_test_${randomBytes(8).toString("hex")}`;
@@ -124,6 +179,9 @@ export function disposableTestDatabaseUrl(basisUrl: string, databaseName: string
  */
 export async function createDisposableTestDatabaseNamed(basisUrl: string, databaseName: string): Promise<{ url: string; databaseName: string }> {
   if (!DISPOSABLE_TEST_DATABASE_PATTERN.test(databaseName) || isProtectedDatabaseName(databaseName)) fail("ERR_TEST_DATABASE_ISOLATION_NAME", databaseName);
+  /* the server limb, before anything is created on it — this is the one choke point every creation goes
+     through, so guarding it here guards run.ts, create.ts and every integration test at once. */
+  await assertDisposableServer(basisUrl);
   const admin = postgres(maintenanceUrlFor(basisUrl), options);
   try {
     await admin.unsafe(`CREATE DATABASE ${quote(databaseName)}`);
