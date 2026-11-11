@@ -14178,3 +14178,106 @@ closed. **332 + 3 = 335.**
 
 **GRÜN's lane is closed.** The last item in the phase is PINK's statement, now carrying §47, §48, §49 and
 the one line that closes the pin-candidate list.
+
+---
+
+## §113 WHICH PINS HAVE NO GUARD — THE NUMBER, AND WHAT IT IS NOT
+
+**Date of this section: 2026-11-11.**
+
+### A-G448 · A pin cited only alongside a measured pin inherits its appearance of coverage *(PINK's, renumbered)*
+
+PINK answered §112's ask, **and the answer cost more than a grep because "named" is the weak form.** Its
+first grep had `--include=*.mjs` unquoted, **the shell expanded it, `prep.txt` landed in the instrument
+column, and every pin looked instrumented** — caught by a sanity line in its own output.
+
+> **A-G445 in a shell, and the cleanest instance of it: *the declared scope of a search is not the scope the
+> search had.*** A flag name against a feature status, one layer down into the tooling.
+
+**Re-run scoped, 74 instrument files across 39 contract directories, four tiers:**
+
+| tier | n | |
+|---|---|---|
+| named in a PINK instrument | **7** | PF-2, PF-3, PF-4, PF-6, PF-10, PG-17, PG-18 |
+| guarded by a **declared absence** | **1** | **PF-9** — *"NOT RUN on the default variant (data-breath=LIVE, no STILL state)"*, recorded twice with its reason |
+| mentioned only **incidentally**, never measured | **2** | **PF-5**, PF-7 |
+| named **nowhere** in PINK's lane | **3** | PF-13, PG-12, PG-19 |
+
+**PF-9 is the best of the uncovered kinds: a hole with a label.** A-G419 prefers it to a silent pass
+**because it is the only form of absence a reader can act on** — and it cost nothing to write.
+
+*** AND PF-5 IS THE FINDING. Four mentions, EVERY ONE adjacent to PF-6: *** *"Red-first floor for PF-5/F-6"*,
+*"PF-6 floor / PF-5 (area, low-frequency) are UNAFFECTED"*, *"PF-5/PF-6/PF-17/PF-18 need disc/medium
+redefined"*, *"PF-1 (light), PF-5/6 (motion), PF-16 (wedge)"*. **It has never been measured by that lane and
+it reads as covered because it is always written beside a pin that was.**
+
+> *** RULED, PINK's: A PIN CITED ONLY ALONGSIDE A MEASURED PIN INHERITS ITS APPEARANCE OF COVERAGE AND NONE
+> OF ITS EVIDENCE. *** **A-G440 said a LABEL travels; this says a PIN travels** — attached to a neighbour,
+> through four phases, carrying a verdict that was never about it. ***"PF-5/PF-6" reads as one subject with
+> one verdict.***
+>
+> **And it is the class that looks like coverage from BOTH directions:** a pin **absent from every
+> instrument venue** *and* **present in the prose of the lane that was meant to measure it** — invisible to
+> a venue scan because the prose is elsewhere, invisible in the prose because the neighbour's verdict sits
+> beside it. ***GRÜN asked which pins have no guard. This is the class where the answer is "none, and it
+> looks like one".***
+
+### The detector, run on the records that STATE the pins — and what opening it found
+
+PINK's detector is cheap: **for every pin, count the mentions that are NOT adjacent to another pin id.**
+Run over PHASE_F and PHASE_G with the defining table rows excluded, **two pins have zero solitary
+mentions:**
+
+```
+PF-12   solitary 0   adjacent 1   <- one mention in 112 sections, inside a list
+PF-14   solitary 0   adjacent 1   <- the SAME list
+```
+
+**And then they were opened, which is the step that was owed:**
+
+| | |
+|---|---|
+| **PF-12** | `field-f.test.tsx:64` — an `it()` with `expect(added.length).toBeGreaterThan(0)` **and then a per-element assertion over every added node** |
+| **PF-14** | `architecture.test.ts:350` and `:459` — both with their own non-empty guard and `expect(added).not.toMatch(/requestAnimationFrame\|setInterval\|…/)` |
+
+> *** BOTH ARE GENUINELY GUARDED, AND BOTH CARRY THEIR OWN VACUITY CHECK — better than most of what either
+> lane found today. *** So this is **a gap in the ADJUDICATION and not in the coverage:** two pins went
+> through four phases and 112 sections **without a single sentence of their own, while the suite held them
+> the whole time.** *This lane's gap, not the build's.*
+
+*** AND RUNNING IT REFINED THE RULE: "NEVER DISCUSSED ALONE" IS A WEAKER SIGNAL THAN "NO VENUE", AND NEITHER
+IS DIAGNOSTIC ALONE. ***
+
+> **PF-5 sits in BOTH classes — no venue AND never alone — and that is exactly why it is the finding.** A
+> pin **with** a venue and no solitary mention is **under-adjudicated**; a pin with **no** venue and no
+> solitary mention is **unguarded and looks covered.** **The detector's value is the intersection**, and
+> PINK's own instance is the one that shows it because both halves landed on one pin.
+
+### Naming is verified; guarding is not — and that applies to this lane's column
+
+PINK gave its 7 as an **upper** bound for exactly this reason. **This lane's 15 "named in the vitest
+population" carry the same defect, and two have been opened.**
+
+> *** 13 OF THIS LANE'S 15 ARE NAMING-VERIFIED AND GUARDING-UNVERIFIED, SYMMETRIC WITH PINK's 7 — AND THE
+> SYMMETRY IS THIS LANE'S TO STATE RATHER THAN PINK's TO POINT OUT. ***
+
+### The answer to GRÜN's question, with what it is not attached
+
+> *** FIVE PINS HAVE NO GUARD IN ANY VENUE EITHER LANE CAN READ: PF-5, PF-7, PF-13, PG-12, PG-19. ONE HAS A
+> DECLARED ABSENCE: PF-9. TWENTY OF THE REMAINING TWENTY-SIX ARE NAMED SOMEWHERE WITH THEIR GUARDING
+> UNVERIFIED. ***
+>
+> **The first time this record has had that number** — and it rests on two lanes' prose plus one readable
+> instrument set, **with PINK's branch unpushed and GRÜN's raster instruments only partly readable from
+> here.** *Zero mentions is not a proof of absence and a mention is not a proof of presence; PG-15 was
+> mentioned and had no guard.* **The closing move is a mutant per pin, which is the only thing that
+> distinguishes a weak guard from no guard.**
+
+### Where this leaves the record
+
+**Five new defects:** the five unguarded pins as one class with its members named; PF-5's
+adjacency-inherited coverage; this lane's 13 naming-verified-only; PF-12 and PF-14 under-adjudicated; and
+PINK's unquoted grep scope. **335 + 5 = 340.**
+
+**GRÜN's lane is closed. The last item in the phase is PINK's statement**, now carrying §47 through §50 and
+that five.

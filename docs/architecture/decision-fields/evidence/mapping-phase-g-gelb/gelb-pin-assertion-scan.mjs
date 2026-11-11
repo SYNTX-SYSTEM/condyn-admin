@@ -151,4 +151,60 @@ rule();
 console.log(`CONSTANT PROVENANCE: pin ids parsed from the obligation tables of both records; the population`);
 console.log(`READ from PHASE_DIRS in GRÜN's architecture test at ${HEAD}, never named here (A-G426).`);
 console.log(`This instrument asserts nothing about the build. It reports where to look.`);
+/* ────────────────────────────────────────────────────────────────────────────────────────────────── */
+rule();
+console.log("[4] A-G448's DETECTOR, RUN ON THE RECORDS THAT DEFINE THE PINS");
+rule();
+console.log(`
+  PINK ran this on its own instrument prose and found PF-5: four mentions, every one adjacent to PF-6, and
+  never measured. *** A pin cited only alongside a measured pin inherits its appearance of coverage and
+  none of its evidence. *** The reciprocal check belongs here, because these two records are where the pins
+  are STATED — a pin that is defined and then only ever discussed in a LIST is the sharper case.
+
+  Each mention is SOLITARY if no other pin id sits within 40 characters of it, ADJACENT otherwise. The
+  defining table row is excluded: it names the pin by construction and says nothing about whether anyone
+  ever reasoned about it on its own.
+`);
+const docSrc = ["PERSON_X_JOB_MAPPING_PHASE_F.md", "PERSON_X_JOB_MAPPING_PHASE_G.md"]
+  .map(f => readFileSync(join(DOCS, f), "utf8")).join("\n");
+const ANY_PIN = /\bP[FG]-\d+\b/g;
+const adjacency = {};
+for (const p of PINS) {
+  let solitary = 0, adjacent = 0, inTable = 0;
+  const re = new RegExp(`\\b${p}\\b`, "g");
+  for (const m of docSrc.matchAll(re)) {
+    const lineStart = docSrc.lastIndexOf("\n", m.index) + 1;
+    const lineEnd = docSrc.indexOf("\n", m.index);
+    const line = docSrc.slice(lineStart, lineEnd < 0 ? undefined : lineEnd);
+    if (/^\|\s*\*\*P[FG]-\d+\*\*\s*\|/.test(line)) { inTable++; continue; }
+    const w = docSrc.slice(Math.max(0, m.index - 40), m.index + p.length + 40);
+    const others = [...w.matchAll(ANY_PIN)].map(x => x[0]).filter(x => x !== p);
+    others.length ? adjacent++ : solitary++;
+  }
+  adjacency[p] = { solitary, adjacent, inTable };
+}
+const neverAlone = PINS.filter(p => adjacency[p].solitary === 0 && adjacency[p].adjacent > 0);
+const onlyTable = PINS.filter(p => adjacency[p].solitary === 0 && adjacency[p].adjacent === 0);
+console.log("  pin     solitary  adjacent  table rows");
+for (const p of PINS) {
+  const a = adjacency[p];
+  const flag = a.solitary === 0 ? (a.adjacent > 0 ? "   <- NEVER DISCUSSED ALONE" : "   <- ONLY the table row") : "";
+  console.log(`  ${p.padEnd(7)} ${String(a.solitary).padStart(7)} ${String(a.adjacent).padStart(9)} ${String(a.inTable).padStart(10)}${flag}`);
+}
+console.log(`
+  *** ${neverAlone.length} pin(s) are mentioned outside their table row and NEVER ALONE: ${neverAlone.join(", ") || "(none)"} ***
+  *** ${onlyTable.length} pin(s) appear ONLY in a table row and nowhere else at all: ${onlyTable.join(", ") || "(none)"} ***
+
+  A zero in the solitary column is not a proof that nobody reasoned about the pin — a sentence can be about
+  one pin while naming two. It is the detector PINK describes and it has one job: *** to find the pin whose
+  whole textual life is as the second half of a pair. *** PF-5 is PINK's instance in its own lane; the
+  column above is the same question asked of the records that state the obligations.
+
+  AND THE STATE IT CATCHES IS THE ONE THAT LOOKS LIKE COVERAGE FROM BOTH DIRECTIONS: a pin absent from
+  every instrument venue AND present in the prose of the lane that was meant to measure it — invisible to
+  a venue scan because the prose is elsewhere, invisible in the prose because the neighbour's verdict sits
+  beside it. *** GRÜN asked which pins have no guard. This is the class where the answer is "none, and it
+  looks like one". ***
+`);
+rule();
 rule();

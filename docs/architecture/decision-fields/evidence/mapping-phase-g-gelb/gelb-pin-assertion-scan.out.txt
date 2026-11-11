@@ -86,3 +86,65 @@ CONSTANT PROVENANCE: pin ids parsed from the obligation tables of both records; 
 READ from PHASE_DIRS in GRÜN's architecture test at de70cb5f, never named here (A-G426).
 This instrument asserts nothing about the build. It reports where to look.
 ========================================================================================================
+[4] A-G448's DETECTOR, RUN ON THE RECORDS THAT DEFINE THE PINS
+========================================================================================================
+
+  PINK ran this on its own instrument prose and found PF-5: four mentions, every one adjacent to PF-6, and
+  never measured. *** A pin cited only alongside a measured pin inherits its appearance of coverage and
+  none of its evidence. *** The reciprocal check belongs here, because these two records are where the pins
+  are STATED — a pin that is defined and then only ever discussed in a LIST is the sharper case.
+
+  Each mention is SOLITARY if no other pin id sits within 40 characters of it, ADJACENT otherwise. The
+  defining table row is excluded: it names the pin by construction and says nothing about whether anyone
+  ever reasoned about it on its own.
+
+  pin     solitary  adjacent  table rows
+  PF-1          4        12          3
+  PF-2         17         5          2
+  PF-3         45         9          2
+  PF-4         19         6          2
+  PF-5          4         7          3
+  PF-6         22        17          3
+  PF-7          4         3          2
+  PF-8        106        10          2
+  PF-9          5         4          2
+  PF-10        22         4          3
+  PF-11        28         2          3
+  PF-12         0         1          2   <- NEVER DISCUSSED ALONE
+  PF-13        38         6          2
+  PF-14         0         1          2   <- NEVER DISCUSSED ALONE
+  PF-15        65         8          1
+  PF-16        11         2          1
+  PF-17         3         6          1
+  PG-4          4         1          1
+  PG-5         34        21          2
+  PG-7          5         3          1
+  PG-11        32        17          2
+  PG-12        46        10          2
+  PG-13        12        12          1
+  PG-14        24         5          2
+  PG-15        16         6          2
+  PG-16        36        16          2
+  PG-17        91        22          1
+  PG-18        13         5          3
+  PG-19        23        11          1
+  PG-20        28         9          1
+  PG-21         7         2          1
+  PG-22        32         6          1
+
+  *** 2 pin(s) are mentioned outside their table row and NEVER ALONE: PF-12, PF-14 ***
+  *** 0 pin(s) appear ONLY in a table row and nowhere else at all: (none) ***
+
+  A zero in the solitary column is not a proof that nobody reasoned about the pin — a sentence can be about
+  one pin while naming two. It is the detector PINK describes and it has one job: *** to find the pin whose
+  whole textual life is as the second half of a pair. *** PF-5 is PINK's instance in its own lane; the
+  column above is the same question asked of the records that state the obligations.
+
+  AND THE STATE IT CATCHES IS THE ONE THAT LOOKS LIKE COVERAGE FROM BOTH DIRECTIONS: a pin absent from
+  every instrument venue AND present in the prose of the lane that was meant to measure it — invisible to
+  a venue scan because the prose is elsewhere, invisible in the prose because the neighbour's verdict sits
+  beside it. *** GRÜN asked which pins have no guard. This is the class where the answer is "none, and it
+  looks like one". ***
+
+========================================================================================================
+========================================================================================================
