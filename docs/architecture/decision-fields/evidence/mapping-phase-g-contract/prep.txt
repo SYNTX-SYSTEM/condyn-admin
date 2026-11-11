@@ -3199,3 +3199,96 @@ build that no longer ships, the exposure is a 2.273x alpha change on a band that
 26.04% of the disc and most of the rings' light, and the class is not convertible.
 None of that depended on the 0.022 luminance I got wrong, because the 0.05-to-
 anything comparison is barred by the knee rather than computed through it.
+
+================================================================================
+§38  A-G425 SATISFIED BY SWEEP, NOT BY FIT. GELB's MODEL IS VALIDATED 16/16 AND
+      8/8 WHERE IT DISCRIMINATES — AND MY PRODUCTION-BUILD BLOCKER WAS NOT REAL.
+      PINK, 2026-11-11. Renderer probe, no stand and no build required.
+================================================================================
+
+[1] THE BLOCKER I RAISED WAS A CONFLATION, AND I WITHDRAW IT.
+    §37 told the owner that measuring alpha 0.05 needs a production build of
+    9cc06f84. That conflated two different questions:
+      · "what did the shelf band look like ON THAT BUILD" — needs the build;
+      · "what bytes does THIS renderer emit for rgba(205,240,255,a) over opaque
+        black" — a property of the RENDERER, testable in four minutes with a
+        synthetic swatch and no build at all.
+    **The conversion question only ever needed the second.** I escalated a blocker
+    that did not exist. Not harmful — the owner was asked rather than bypassed —
+    but it is the second time today I have reached for a heavier instrument than
+    the question required (§33 limbs 1 and 2 were the first).
+
+[2] GELB's MODEL, SWEPT RATHER THAN FITTED. alpha -> round(alpha*255)/255, then
+    the channel. 16 alphas from 0.010 to 0.085, rendered in one page, read off the
+    bytes. **Two constructs side by side — a div background AND an SVG circle
+    STROKE, which is what the shelf band actually is at :883 — because agreement
+    between them is a real check and disagreement would mean a swatch does not
+    test the band's path.**
+      constructs agree on ALL 16 of 16          -> the swatch tests the band's path
+      alpha-quantised model correct             -> **16 / 16**
+      naive float model correct                 -> 8 / 16
+      points where the models DISAGREE          -> 8  (0.01, 0.018, 0.022, 0.026,
+                                                       0.03, 0.04, 0.045, 0.085)
+      alpha-quantised correct where it matters  -> **8 / 8**
+      naive correct where it matters            -> **0 / 8**
+    So GELB's identification is right and is now checked against the renderer
+    across a sweep, not inferred from two points one of which did not discriminate.
+
+    AND ITS PREDICTION AT 0.05 IS NOW MEASURED: rgb(10,12,13), L = 3.565321e-3.
+    All three ends are measurements and none is a model output any more:
+      L(0.02)  = 1.453105e-3     L(0.022) = 1.756632e-3     L(0.05) = 3.565321e-3
+      0.02 -> 0.022 : alpha x1.1000  LUMINANCE **x1.20888**
+      0.022-> 0.05  : alpha x2.2727  LUMINANCE **x2.02963**  <- GELB's 2.030 CONFIRMED
+      0.02 -> 0.05  : alpha x2.5000  LUMINANCE **x2.45359**
+    **§36's 2.316x is withdrawn; GELB's corrected 2.030x is upheld by measurement.**
+
+[3] ATTRIBUTION, AND IT IS WORSE FOR ME THAN §37 SAID. GELB presents the model as
+    newly identified. **It is already in this lane's own record, by name: A-G81,
+    described there as "alpha->byte FIRST, then channels against the effective
+    alpha", with the float method explicitly marked superseded.** So GELB
+    re-derived A-G81 from first principles, correctly and independently, while I
+    held a record that named it and used the method that record calls superseded.
+    The credit for re-deriving is GELB's. **The failure is not that I lacked the
+    model — it is that I had it written down, correctly, and reached past it.**
+    That is the sharpest form of today's recurring shape: a rule in the record is
+    not a rule in the hand.
+
+[4] NEW, AND BEYOND THE ASK: *** THE SHELF ALPHA IS NOT A CONTINUOUS DIAL. ***
+    Because the alpha is quantised to 8 bits first, declared alphas collapse into
+    PLATEAUS that render identically:
+      alphaByte  5  <- declared 0.0180 .. 0.0215   rgb(4,5,5)    L = 1.453105e-3
+      alphaByte  6  <- declared 0.0220 .. 0.0250   rgb(5,6,6)    L = 1.756632e-3
+      alphaByte  7  <- declared 0.0255 .. 0.0290   rgb(6,7,7)    L = 2.060159e-3
+      alphaByte 13  <- declared 0.0495 .. 0.0525   rgb(10,12,13) L = 3.565321e-3
+      alphaByte 22  <- declared 0.0845 .. 0.0880   rgb(18,21,22) L = 7.228564e-3
+    (full map, bytes 3..23, in outputs/AG425-ALPHASWEEP.json)
+    TWO CONSEQUENCES THAT BEAR ON OPEN WORK:
+    (a) **A-G62's change had an effect only because it crossed a plateau boundary.**
+        0.02 -> byte 5, 0.022 -> byte 6. Had it gone 0.02 -> 0.021 instead,
+        **the render would not have changed at all** — same byte, same triple, same
+        luminance. A constant change that stays inside a plateau is a no-op.
+    (b) **Any limb of PF-15 "solved" for a shelf alpha is solved over a step
+        function.** The feasible set is a union of intervals mapping onto ~21
+        attainable luminance levels between 0.010 and 0.090, not a continuum — so
+        a real-valued solution is indistinguishable from every other alpha in its
+        plateau, and the standing note that PF-15 is unsatisfiable as a conjunction
+        should be re-read as a statement about ATTAINABLE LEVELS, not alphas.
+        This lane's own rule already said "sweep the constant, never solve for it";
+        **the plateau map is why that rule is true rather than merely cautious.**
+
+[5] GELB's KNEE NEAR-THING, CONFIRMED AND BOUNDED. At 0.05 red's byte is 10 and
+    10/255 = 0.039216 against a knee at 0.039280 — **linear by 0.000064, which is
+    0.16% of the knee.** The next attainable alpha byte (14, declared ~0.0530 ..
+    0.0565) puts red at 11 -> 0.043137, ABOVE the knee. So "two of three channels
+    above the knee" at 0.05 is exactly one alpha byte from "three of three", and
+    the knee statement must be recomputed rather than carried if the constant moves
+    again. GELB raised this unprompted and it is correct.
+
+WHAT DOES NOT MOVE: the rings suspension. The verdict still sits at alpha 0.05 on
+builds that no longer ship, the band is still 26.04% of the disc and most of the
+rings' light, and A-G424 still holds that `rings` cannot carry a verdict about
+rings. The conversion is now COMPUTABLE (x2.02963 from 0.022, x2.45359 from 0.02)
+where §36 called it barred — but **computable is not applicable**: converting a
+tier-B ratio is not converting a luminance, because the tier statistic is a
+coherent amplitude over a null, and nothing here measures how that transforms.
+**So the re-take stands for the reason A-G424 gives, not for the arithmetic.**
