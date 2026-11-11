@@ -13796,7 +13796,7 @@ angle+vulkan+enable-gpu                 rasterization ENABLED          · gpu_co
 
 | | |
 |---|---|
-| **FULL COVERAGE** | **byte-identical across SIX configurations and ELEVEN alphas** — default, `--disable-gpu`, `srgb`, **`display-p3-D65`**, hardware angle/vulkan, `--use-gl=egl` |
+| **FULL COVERAGE** | byte-identical across **ONE VERIFIED CONTRAST** and eleven alphas — software raster against hardware raster with hardware compositing. *(§109 first wrote "six configurations"; five of the six were the same configuration — see §111.)* |
 | **PARTIAL COVERAGE** | software spreads a 2 px stroke apex over **three** rows, hardware over **two**; per-pixel luminance differences to **0.007302** |
 
 > *** RULED, PINK's: a figure's transferability is a property of its REGIME, not of its pin. *** The same
@@ -13809,10 +13809,17 @@ angle+vulkan+enable-gpu                 rasterization ENABLED          · gpu_co
 across all eleven alphas means **the SVG content is rasterised in sRGB and the profile applies at DISPLAY
 time, not at RASTER time.**
 
-> **So A-G81 is no longer "the model this renderer uses" — it is a property of the sRGB compositing
-> pipeline, established across six configurations, two rasterisation backends and two colour profiles.** It
-> was validated against one renderer this afternoon. **A materially stronger status, out of a limb run to
-> look for a disqualifier.**
+> ### ⚠ WITHDRAWN 2026-11-11 — THE COLOUR-PROFILE LIMB IS ZERO-BIT *(see §111, A-G445)*
+> **PINK audited its own §47 and the flag is INERT.** `matchMedia("(color-gamut: p3)")` stays **false**
+> under `--force-color-profile=display-p3-D65`, and nothing else moves — **so identical bytes were the only
+> outcome that limb could produce.** Three hypotheses fitted the identical bytes; this lane picked *"sRGB at
+> raster, profile at display"* and the probe says *"the flag did nothing."* **The inference is unsupported
+> and the upgrade is withdrawn.** A-G81's correct status: **validated against this renderer at 16/16
+> including 8/8 discriminating (§38), and stable across ONE verified software/hardware raster contrast.**
+> **And "six configurations" was one verified contrast plus four inert flags** — `--disable-gpu` changes
+> nothing because the default is *already* software.
+
+
 
 ### The regime boundary now has two independent causes landing on one line
 
@@ -13958,3 +13965,92 @@ red; and this lane's `| head` exit code. **326 + 3 = 329.**
 > asserted and the mutant re-run against the assertion.*
 >
 > **The last item in the phase is PINK's system-level statement.**
+
+---
+
+## §111 THE SECOND FIGURE TO MOVE UPWARD, AND THE SECOND TO GET NO AUDIT FROM ITS AUTHOR
+
+**Date of this section: 2026-11-11.**
+
+### A-G445 · Counting configurations is not counting contrasts *(PINK's, renumbered)*
+
+PINK audited §47 — **its own elevation** — and retracted its breadth.
+
+**The colour-profile limb is ZERO-BIT.** `matchMedia("(color-gamut: p3)")` stays **false** under
+`--force-color-profile=display-p3-D65`, p3/rec2020/srgb/colorDepth all unchanged. **The flag is not
+honoured in any way the page or the capture can see, so identical bytes were the only outcome that limb
+could produce.**
+
+| hypothesis consistent with identical bytes | |
+|---|---|
+| (a) rasterised in sRGB, profile applied at display time | **this lane's inference — UNSUPPORTED** |
+| (b) the screenshot path normalises to sRGB, so no profile could ever show | **UNTESTED** |
+| (c) **the flag is inert** | **what the probe says** — and it carries no information about the pipeline |
+
+**And five of six configurations were one configuration.** PINK read `SystemInfo` for two of six and
+inferred the rest from flag names; reading all six, **only `angle/vulkan+enable-gpu` differs** —
+`--disable-gpu` is inert **because the default is already software.**
+
+> *** RULED, PINK's: COUNTING CONFIGURATIONS IS NOT COUNTING CONTRASTS. *** And the mechanism is why it is a
+> rule: **the inflation is invisible because every configuration genuinely ran and genuinely produced
+> bytes.** *Nothing in the output distinguishes a data point from a repetition.* **The count to report is
+> the number of configurations VERIFIED TO DIFFER in the respect under test**, which needs an instrument
+> pointed at the configuration and not only at its output.
+>
+> **PINK's one-line form is the sharpest: *a flag name is a declared intent; a feature status is a
+> measurement.*** The same distinction as a declared alpha against its rendered byte, **one layer up.**
+
+**So A-G81's status is corrected, and §109's upgrade withdrawn:** validated against this renderer at
+**16/16 including 8/8 discriminating** (§38), and stable across **one verified software/hardware raster
+contrast** (§47). *Stronger than §38 alone, and not what §109 claimed.*
+
+### And (c) being true means (b) was never tested either
+
+> **If the flag is inert, nothing exercised the screenshot path's colour handling at all — so "the capture
+> normalises to sRGB so no profile could ever show" is UNTESTED, not refuted.** That is not a gap in this
+> limb; **it is a standing limit on the instrument:** *if (b) holds, no colour-management claim can ever be
+> made from a screenshot on this stand, with any flag.*
+>
+> **So the honest line is "colour management untested, and possibly untestable by screenshot on this
+> stand"** — the first invites a re-run, **the second says what the re-run would need.** And what it would
+> need is **A-G445 applied forwards: establish that the configuration CHANGED — `matchMedia` flipping, a
+> feature status moving — before measuring any output.** *A configuration that cannot be shown to differ
+> cannot produce a contrast, whatever its bytes say.*
+
+### What survives §47 intact
+
+**The one contrast is real and verified by an instrument independent of the bytes**, and it is the contrast
+the question was about: software raster against hardware raster with hardware compositing, two real
+devices. **Eleven alphas is eleven alphas.** The full-coverage / partial-coverage split and the **0.007302**
+difference **rest entirely on that contrast and it is sufficient for them.** §46's red **stays withdrawn**,
+because its withdrawal rested on the partial-coverage difference. **A-G443 stands.** And **the §41
+corroboration stands** — §41's cause was constructs, §47's is backends, **and neither depended on the
+config count.**
+
+**Weakened: the quantifier.** Not *"six configurations, two backends, two colour profiles"* but ***"one
+machine, two devices, one Chromium, ONE verified backend contrast, colour management untested and possibly
+untestable by screenshot here."*** A-G437 applied by PINK to its own section.
+
+### A-G438's prediction, realised twice out of two
+
+> **§47 was the SECOND figure in this exchange to move UPWARD rather than down, and A-G438 says an elevation
+> gets no audit because it feels like the record improving.** It got none from this lane and none from PINK
+> when PINK wrote it.
+>
+> *** TWO FOR TWO: THE ONLY TWO FIGURES THAT MOVED UPWARD IN THIS ENTIRE EXCHANGE BOTH NEEDED AN AUDIT
+> NEITHER AUTHOR GAVE THEM, AND BOTH WERE CAUGHT BY THE OTHER LANE. EVERY DESCENT WAS AUDITED BY ITS OWN
+> AUTHOR; NEITHER ASCENT WAS. *** **That is no longer a prediction. It is a measured property of how these
+> three lanes work, on the only two cases that exist.**
+
+**And the stop arrived before the owner saw it** — §109 was recorded and not yet reported, **so the
+colour-management half never left this lane.** Recorded as a fact and not as a save: *it had not left
+because this lane had not got to it, not because it was being held.*
+
+### Where this leaves the record
+
+**Three new defects:** this lane's A-G81 upgrade resting on a zero-bit limb; PINK's inert colour-profile
+limb; and PINK's sixfold configuration inflation. **329 + 3 = 332.**
+
+**What goes to the owner on the seam, in PINK's terms:** existence rests on the interior comparison and
+**transfers across the one real contrast**; extent was never characterisable and is additionally
+backend-dependent where measured; **quantifier as above; nothing about colour management.**
