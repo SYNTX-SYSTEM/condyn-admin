@@ -95,16 +95,44 @@ const unreadable = Object.entries(product).filter(([, v]) => v === null).map(([k
  * cannot drift as the product gains constants. An uncovered constant is not a defect in any instrument — it
  * is a constant this audit CANNOT SPEAK ABOUT, and saying which ones is the whole of the improvement.
  */
-const declaredInProduct = [...src.matchAll(/^(?:export )?const ([A-Z][A-Z0-9_]+)\s*(?::[^=]*)?=/gm)].map(m => m[1]);
+const declaredInProduct = [...new Set([...src.matchAll(/^(?:export )?const ([A-Z][A-Z0-9_]+)\s*(?::[^=]*)?=/gm)].map(m => m[1]))];
+/**
+ * §92 · MY DENOMINATOR HAD THE DEFECT I HAD JUST NAMED IN GELB'S.
+ *
+ * §90 published "20 of 49" against the component's OWN declarations. But the component IMPORTS seven
+ * UPPER_CASE product values — CLASS_LINE, EVIDENCE_STEP, FOCUS_INITIAL, MAPPING_FIELD_COPY,
+ * PRIMARY_BEAM_LUMINANCE, SIL_TOKENS, SIZE_FLOOR_PX — and a constant declared in a file this audit never
+ * reads is OUTSIDE ITS OWN DENOMINATOR. So the figure was flattering by construction, which is exactly the
+ * defect GELB reported against their own one-file scope and I did not check for in mine while quoting their
+ * number back at them.
+ *
+ * The denominator is now every UPPER_CASE value the component USES, declared or imported, found by parsing
+ * its import list rather than by listing names. 49 + 7 = 56, and GELB's 47 + 7 = 54 at `4b83414e`
+ * reconciles exactly: FRAME_PASS_CAP and FRAME_EM_PER_CHAR are the only two added since, both from §86.
+ */
+const importedByProduct = [...new Set([...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']([^"']+)["']/g)]
+  .flatMap(m => m[1].split(",").map(x => x.split(" as ")[0].replace(/\btype\b/, "").trim()))
+  .filter(n => /^[A-Z][A-Z0-9_]+$/.test(n)))];
+const usedByProduct = [...new Set([...declaredInProduct, ...importedByProduct])];
 const covered = DECLS.map(([n]) => n).filter(n => product[n] !== null);
-const uncovered = [...new Set(declaredInProduct)].filter(n => !covered.includes(n)).sort();
+const uncovered = usedByProduct.filter(n => !covered.includes(n)).sort();
 const coverage = {
-  productUpperCaseDeclarations: [...new Set(declaredInProduct)].length,
+  denominator: "every UPPER_CASE value the component USES — declared in it OR imported into it. §90's figure counted declarations only, which is flattering by construction: a constant in a file this audit never reads cannot be reported as forked either.",
+  productUpperCaseDeclarations: declaredInProduct.length,
+  importedUpperCase: importedByProduct.length,
+  importedNames: importedByProduct.sort(),
+  totalUsedByProduct: usedByProduct.length,
   coveredByThisAudit: covered.length,
   uncovered: uncovered.length,
   uncoveredNames: uncovered,
   meaning: "an UNCOVERED constant is one this audit cannot speak about at all: it is not reported as a fork, and a fork of it would not be reported either. Not a defect in any instrument — a limit of this one.",
   whichGoFirstIfAny: uncovered.filter(n => ["BODY_BUDGET", "LABEL_GAP", "RING_WIDTH_PX", "MOTION", "GROUND", "TEXT_SEAT_PX", "GAP_ALPHA_GAIN", "WEDGE_WASH"].includes(n)),
+  /* §92: a coverage number is a property of a lane; a coverage GAP is a property of the pair. GELB's audit
+     covers GAP_ALPHA_GAIN, TEXT_SEAT_PX and WEDGE_WASH of my six live-pin uncovered; GROUND, MOTION and
+     RING_WIDTH_PX are covered by NEITHER lane. Neither audit could report that alone, because each scores
+     its own coverage against its own scope. Recorded here so the pair's gap has a location. */
+  uncoveredByBOTHLanes: uncovered.filter(n => ["GROUND", "MOTION", "RING_WIDTH_PX"].includes(n)),
+  coveredByGELBNotByMe: ["GAP_ALPHA_GAIN", "TEXT_SEAT_PX", "WEDGE_WASH"].filter(n => uncovered.includes(n)),
   whyThose: "they bear on live pins — BODY_BUDGET on PG-5 and §69's budget, LABEL_GAP and RING_WIDTH_PX on PG-14's frame, GAP_ALPHA_GAIN and WEDGE_WASH on the gap hue the ladder measures. Not urgent, and named so the choice is not mine to make silently."
 };
 
@@ -197,7 +225,8 @@ ${unreadable.length > 0 ? `AND ${unreadable.length} PRODUCT CONSTANTS COULD NOT 
 
 writeFileSync(resolve(here, "../outputs/constant-forks.json"), JSON.stringify(out, null, 1));
 console.log(`product constants read: ${Object.keys(out.productConstantsRead).length}${unreadable.length ? ` · NOT readable: ${unreadable.join(", ")}` : ""}`);
-console.log(`AUDIT COVERAGE: ${coverage.coveredByThisAudit} of ${coverage.productUpperCaseDeclarations} UPPER_CASE product declarations · ${coverage.uncovered} uncovered, which this audit cannot speak about`);
+console.log(`AUDIT COVERAGE: ${coverage.coveredByThisAudit} of ${coverage.totalUsedByProduct} UPPER_CASE values the component USES (${coverage.productUpperCaseDeclarations} declared + ${coverage.importedUpperCase} imported) · ${coverage.uncovered} uncovered`);
+console.log(`   uncovered by BOTH lanes: ${coverage.uncoveredByBOTHLanes.join(", ") || "none"}   ·   covered by GELB but not me: ${coverage.coveredByGELBNotByMe.join(", ") || "none"}`);
 console.log(`   uncovered that bear on live pins: ${coverage.whichGoFirstIfAny.join(", ") || "none"}\n`);
 console.log("state        file                                      constants");
 for (const r of rows) if (r.state !== "NO CONSTANT") console.log(`${r.state.padEnd(12)} ${r.file.padEnd(41)} ${r.constants.join(", ").slice(0, 70)}`);

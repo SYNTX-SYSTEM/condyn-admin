@@ -37,22 +37,38 @@
  },
  "productConstantsNOTReadable": [],
  "auditCoverage": {
+  "denominator": "every UPPER_CASE value the component USES — declared in it OR imported into it. §90's figure counted declarations only, which is flattering by construction: a constant in a file this audit never reads cannot be reported as forked either.",
   "productUpperCaseDeclarations": 49,
+  "importedUpperCase": 7,
+  "importedNames": [
+   "CLASS_LINE",
+   "EVIDENCE_STEP",
+   "FOCUS_INITIAL",
+   "MAPPING_FIELD_COPY",
+   "PRIMARY_BEAM_LUMINANCE",
+   "SIL_TOKENS",
+   "SIZE_FLOOR_PX"
+  ],
+  "totalUsedByProduct": 56,
   "coveredByThisAudit": 20,
-  "uncovered": 30,
+  "uncovered": 36,
   "uncoveredNames": [
    "BEAM_GRADIENT",
    "BEAM_MIN_PX",
    "BEAM_STROKE",
    "BEAM_WIDTH_GAIN",
    "BODY_NAMES_AT_L0",
+   "CLASS_LINE",
    "DISC_BASE_RGB",
    "DISC_OCCLUSION",
    "DRAWN_PX",
+   "EVIDENCE_STEP",
+   "FOCUS_INITIAL",
    "GAP_ALPHA_GAIN",
    "GROUND",
    "LABEL_BAND_PX",
    "LINE_DASH",
+   "MAPPING_FIELD_COPY",
    "MAPPING_FIELD_CSS",
    "MARKS",
    "MARK_ICON",
@@ -60,8 +76,10 @@
    "MOTION",
    "NO_ARC_CHANGES",
    "NO_MOVES",
+   "PRIMARY_BEAM_LUMINANCE",
    "RING_WIDTH_PX",
    "SANS",
+   "SIL_TOKENS",
    "SINE_STEPS",
    "STAGE_GROUND_RGB",
    "STAGE_GUTTER_PX",
@@ -81,11 +99,21 @@
    "TEXT_SEAT_PX",
    "WEDGE_WASH"
   ],
+  "uncoveredByBOTHLanes": [
+   "GROUND",
+   "MOTION",
+   "RING_WIDTH_PX"
+  ],
+  "coveredByGELBNotByMe": [
+   "GAP_ALPHA_GAIN",
+   "TEXT_SEAT_PX",
+   "WEDGE_WASH"
+  ],
   "whyThose": "they bear on live pins — BODY_BUDGET on PG-5 and §69's budget, LABEL_GAP and RING_WIDTH_PX on PG-14's frame, GAP_ALPHA_GAIN and WEDGE_WASH on the gap hue the ladder measures. Not urgent, and named so the choice is not mine to make silently."
  },
  "census": {
   "NOTHING": 11,
-  "NO CONSTANT": 16,
+  "NO CONSTANT": 17,
   "READS": 7,
   "HALTS": 5
  },
@@ -119,7 +147,8 @@
    "gruen-pg22.mjs",
    "gruen-pg23-computed.mjs",
    "gruen-provenance.mjs",
-   "gruen-rank5-check.mjs"
+   "gruen-rank5-check.mjs",
+   "gruen-raster-smoke.mjs"
   ],
   "READS": [
    "gruen-compositing-ladder.mjs",
@@ -512,6 +541,14 @@
    "byValueOnly": []
   },
   {
+   "file": "gruen-raster-smoke.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
    "file": "gruen-rings.mjs",
    "state": "NOTHING",
    "readsProduct": false,
@@ -552,5 +589,5 @@
    "byValueOnly": []
   }
  ],
- "finding": "39 instruments scanned. 5 HALT, 0 REPORT, 11 do NOTHING, 16 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
+ "finding": "40 instruments scanned. 5 HALT, 0 REPORT, 11 do NOTHING, 17 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
 }
