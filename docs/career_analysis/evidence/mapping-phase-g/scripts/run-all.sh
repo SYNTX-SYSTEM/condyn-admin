@@ -21,7 +21,7 @@ SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 # gruen-seal-staleness is the counterweight to that exclusion: keeping the sealed probes out of a pass also
 # removed the only thing that would have noticed a seal going stale, so this audit re-checks every SEALED-*
 # file against HEAD on every pass and exits non-zero if any is stale. It re-measures nothing and cannot.
-for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha gruen-pg16-satisfiability gruen-seal-staleness gruen-pg12-alpha-quantisation gruen-pg14-convergence gruen-pg12-floor-measured gruen-vector-expressibility; do
+for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha gruen-pg16-satisfiability gruen-seal-staleness gruen-pg12-alpha-quantisation gruen-pg14-frame-fixed gruen-pg12-floor-measured gruen-vector-expressibility; do
   printf '\n=== %s (derivation, no render) ===\n' "$derivation"
   node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
 done

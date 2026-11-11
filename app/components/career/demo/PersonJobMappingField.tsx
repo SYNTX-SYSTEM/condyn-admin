@@ -493,24 +493,86 @@ function spaced<T extends { x: number; y: number; drawnRadius: number }>(byRank:
 }
 
 /**
- * PG-14 (PHASE_G §7): the frame holds every drawn body whole — its rim, its collar, its name above and its measure below. The level's
- * own frame is widened, symmetrically about its centre, to the union with every drawn body's extent; the extent is in screen px (k),
- * so it is solved twice against the frame it widens.
+ * The frame's own glyph-advance bound, per face, in em per character.
+ *
+ * §86: PINK MEASURED the real advances on the rendered page — **0.5632 mean and 0.602 worst, every worst
+ * case MONO** — against the 0.62 this frame had always assumed. Those are PINK's figures and are recorded
+ * here with PINK's attribution; they are NOT adopted as the bound, and the reason is the direction of the
+ * obligation. A frame must CONTAIN its labels, so this constant is an UPPER BOUND and not an estimate:
+ * dropping it to a measured mean would tighten the frame onto the text and clip the very labels PG-14 exists
+ * to hold. It stays at 0.62, which sits 2.9 % above PINK's worst case, and that 2.9 % is the whole headroom —
+ * a font fallback would exhaust it and nothing in the product would say so.
+ *
+ * Both faces carry the same bound because no per-face WORST is measured: PINK's worst is MONO's, and SANS's
+ * own worst is unknown. Two named entries rather than one number, so a later per-face measurement has a
+ * place to land.
  */
-function frameWithBodies(base: ViewBox, bodies: ReadonlyArray<{ x: number; y: number; r: number; title: string }>, drawnPx: number): ViewBox {
-  if (bodies.length === 0) return base;
+const FRAME_EM_PER_CHAR = Object.freeze({ sans: 0.62, mono: 0.62 });
+/** §86: the solve's hard stop. Reaching it is disclosed, never silent — see `frameWithBodies`. */
+const FRAME_PASS_CAP = 12;
+
+/**
+ * PG-14 (PHASE_G §7): the frame holds every drawn body whole — its rim, its collar, its name above, its
+ * measure below, and its "n more" label to the right. The level's own frame is widened, symmetrically about
+ * its centre, to the union with every drawn body's extent.
+ *
+ * §86, TWO CORRECTIONS, both measured before they were made.
+ *
+ * ONE · IT USED TO RUN EXACTLY TWICE, AND TWICE IS NOT ENOUGH. The extent is in screen px, so widening the
+ * frame raises `k`, which raises the extent, which raises how much the frame must widen — a monotone ascent.
+ * Running it a fixed two passes emitted the frame with the `k` of the PREVIOUS iterate while the bodies were
+ * then drawn at the FINAL one, so the labels exceeded the frame sized for them: sub-pixel at an 8-character
+ * name, but **1.59 px on 4 of 11 layouts at a 16-character name at the component's own 420 px minimum
+ * width**, and 6.12 px at 24 characters. "Product Manager" is fifteen characters. The solve now runs until
+ * `half` grows by less than HALF A DEVICE PIXEL — `0.5 · k`, the tolerance that makes the exit condition and
+ * the defect's own definition one quantity rather than a second undrived constant — under a hard cap, and it
+ * DISCLOSES whether it converged. The disclosure is unconditional (`data-frame-converged` is always
+ * present), because a disclosure conditional on being non-zero cannot be told from a removed one.
+ *
+ * TWO · IT BOUGHT ROOM FOR ONE OF THREE LABELS. `side` carried the title alone. A body draws up to three
+ * texts, and PINK measured the MONO measure to be the wider label on FOUR OF FIVE bodies even where the
+ * title has more characters. Each is now bought in its own face and with its own anchoring:
+ *     `mapping-name-*`         SANS, textAnchor=middle at x=0   -> half its width, each side
+ *     `mapping-measure-*`      MONO, textAnchor=middle at x=0   -> half its width, each side
+ *     `mapping-collar-more-*`  MONO, LEFT-ANCHORED at collarR + 3k -> its FULL width BEYOND that anchor,
+ *                              to the right only, and its own descent below it
+ * The asymmetry is the part that was invisible before: a left-anchored label needs all of its width past its
+ * anchor, not half of it about a centre, and over PG-3's radius range that budget is under one and a half
+ * characters. It is reserved on the right alone rather than symmetrically, so the fix does not pay for the
+ * left side it never needed.
+ *
+ * AND `CHAR_EM` NEVER GOVERNED THIS FUNCTION. `:462` declares `const CHAR_EM = 0.62` for the sector labels;
+ * this frame wrote `0.62` as a BARE LITERAL, so changing the named constant would have left the frame where
+ * it was. Found independently in two lanes' trees from two readings of the same line.
+ */
+type FramedBody = { x: number; y: number; r: number; title: string; measure: string; collarMore: string | null };
+function frameWithBodies(base: ViewBox, bodies: ReadonlyArray<FramedBody>, drawnPx: number): { box: ViewBox; passes: number; converged: boolean } {
+  if (bodies.length === 0) return { box: base, passes: 0, converged: true };
   const cx = base.x + base.width / 2, cy = base.y + base.height / 2;
-  let half = base.width / 2;
-  for (let pass = 0; pass < 2; pass += 1) {
+  let half = base.width / 2, passes = 0, converged = false;
+  while (passes < FRAME_PASS_CAP) {
+    const before = half;
     const k = (2 * half) / drawnPx, font = TEXT_MIN_PX * k * FLOOR_HEADROOM;
+    const centredHalf = (chars: number, em: number) => (chars * em * font) / 2;
     for (const b of bodies) {
-      const r = Math.max(b.r, (SIZE_FLOOR_PX / 2) * k), collar = r + 2.6 * k + Math.max(2.4 * k, r * 0.18) + 3.6 * k;
-      const above = collar + 4 * k + font, below = collar + 4 * k + 1.8 * font, side = Math.max(collar, (b.title.length * 0.62 * font) / 2);
-      half = Math.max(half, Math.abs(b.x - side - cx), Math.abs(b.x + side - cx), Math.abs(b.y - above - cy), Math.abs(b.y + below - cy));
+      const r = Math.max(b.r, (SIZE_FLOOR_PX / 2) * k), collarR = r + 2.6 * k;
+      const collar = collarR + Math.max(2.4 * k, r * 0.18) + 3.6 * k;
+      const above = collar + 4 * k + font, below = collar + 4 * k + 1.8 * font;
+      // the two centred labels and the collar, each needing the same room on both sides
+      const sideBoth = Math.max(collar, centredHalf(b.title.length, FRAME_EM_PER_CHAR.sans), centredHalf(b.measure.length, FRAME_EM_PER_CHAR.mono));
+      // the left-anchored label: its full width beyond its own anchor, to the right, and its descent below
+      const moreRight = b.collarMore === null ? 0 : collarR + 3 * k + b.collarMore.length * FRAME_EM_PER_CHAR.mono * font;
+      const moreBelow = b.collarMore === null ? 0 : collarR + 3 * k + font;
+      half = Math.max(half,
+        Math.abs(b.x - sideBoth - cx), Math.abs(b.x + Math.max(sideBoth, moreRight) - cx),
+        Math.abs(b.y - above - cy), Math.abs(b.y + Math.max(below, moreBelow) - cy));
     }
+    passes += 1;
+    // the tolerance is half a device pixel at the scale the bodies will ACTUALLY be drawn at, i.e. the new k
+    if (half - before < 0.5 * ((2 * half) / drawnPx)) { converged = true; break; }
   }
   half = Math.ceil(half * 1000) / 1000;
-  return { x: fixed(cx - half), y: fixed(cy - half), width: fixed(2 * half), height: fixed(2 * half) };
+  return { box: { x: fixed(cx - half), y: fixed(cy - half), width: fixed(2 * half), height: fixed(2 * half) }, passes, converged };
 }
 
 /** Whether an element or one of its ancestors is position: fixed — its viewport rectangle then does not move with the page's scroll. */
@@ -583,7 +645,23 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
   const ranked = model === null ? [] : [...model.bodies].sort((a, b) => a.rank - b.rank);
   const framed = openBody !== null ? [] : openSector !== null ? spaced(ranked.filter(b => b.id.jobPoolUploadId === openSector.poolId), BODY_BUDGET.L1) : spaced(ranked, BODY_BUDGET.L0);
   const baseBox: ViewBox = openBody !== null ? roleViewBox(asDrawn(openBody)) : openSector !== null ? sectorViewBox(openSector) : fieldViewBox(l0Margin(drawnPx, model?.geometry.fieldRadius ?? 500));
-  const box: ViewBox = frameWithBodies(baseBox, framed.map(b => ({ x: b.x, y: b.y, r: b.drawnRadius, title: b.title })), drawnPx);
+  /**
+   * §86: the frame is bought for all three labels. Two of them are deterministic here; the third is not, and
+   * the WORST CASE is reserved rather than the actual, on purpose.
+   *
+   * `mapping-collar-more-*` renders `c.more(collar.hidden)`, and `collar.hidden` comes from `collarSplit`,
+   * which takes `collarR(b) / k` — and `k` is `box.width / drawnPx`, which is what this call PRODUCES. The
+   * dependency is circular, so the actual string cannot be known before the frame exists. The longest form
+   * it can take is `c.more(b.arcs.length)`, since nothing can be hidden that is not an arc, and a frame that
+   * reserves for the longest possible label can never clip the real one. Declared rather than approximated:
+   * this over-reserves on the right at L1 by the difference between hidden and total arcs.
+   */
+  const frame = frameWithBodies(baseBox, framed.map(b => ({
+    x: b.x, y: b.y, r: b.drawnRadius, title: b.title,
+    measure: c.measure(b.rank, b.tier === "SEMANTIC"),
+    collarMore: level === "L1" && openSector !== null && b.id.jobPoolUploadId === openSector.poolId && b.arcs.length > 0 ? c.more(b.arcs.length) : null
+  })), drawnPx);
+  const box: ViewBox = frame.box;
   const boxKey = `${box.x} ${box.y} ${box.width} ${box.height}`;
   const stageKey = `${level}|${pool ?? ""}|${openBody?.key ?? ""}|${view.arc?.poolRequirementId ?? ""}`;
   // E-5 · staged recursion: the geometry re-frames first (a script tween of the viewBox, MOTION.stage.geometryMs); the evidence of
@@ -790,6 +868,11 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     <section
       ref={sectionRef}
       data-testid="mapping-field" data-level={level} data-pool={pool ?? ""} data-role={openBody === null ? "" : testKey(openBody)} data-requirement={view.arc?.poolRequirementId ?? ""}
+      /* §86: PG-14's solve discloses its own convergence, UNCONDITIONALLY — both attributes are always
+         present, because a disclosure that appears only when something went wrong cannot be told from a
+         disclosure that was removed. `data-frame-converged="false"` means the frame was emitted at the pass
+         cap and may not hold its labels; it is the one state PG-14 cannot certify from the output alone. */
+      data-frame-passes={frame.passes} data-frame-converged={String(frame.converged)}
       data-selection={focus.selection?.kind ?? ""} data-capability={selected?.key ?? ""}
       data-run-state={run.state} data-field-motion={run.sign.fieldMotion} data-frozen={String(run.sign.frozen)} data-pending-breath={String(run.pendingBreath)}
       data-resume-pulse={String(run.sign.resumePulse)} data-evidence-class={evidence} data-authority-state={model.authority.authorityState} data-decision={String(model.authority.decision)}

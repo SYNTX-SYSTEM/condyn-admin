@@ -1,6 +1,14 @@
 /**
  * GRÜN · PHASE-G · §64 — PG-14's FALSIFIABLE CONTENT: does `frameWithBodies`' fixed point CONVERGE in the
- * two passes it is given?  **NO VERDICT** (A-G36 point 2). Arithmetic on committed constants and committed
+ * two passes it is given?  **NO VERDICT** (A-G36 point 2).
+ *
+ * ┌─ SUPERSEDED BY §86, AND KEPT ───────────────────────────────────────────────────────────────────────┐
+ * │ The defect this file measured IS FIXED: `frameWithBodies` no longer runs a fixed two passes, so this │
+ * │ derivation's fail-loud guard on the pass count now fires BY DESIGN and it is NO LONGER RUN by        │
+ * │ run-all.sh. It is kept, not deleted, because it is the record of what the defect was and how large:  │
+ * │ 284 of 440 swept cases short of the fixed point, 1.59 px of observable clipping at a 16-character    │
+ * │ name at 420 px. `scripts/gruen-pg14-frame-fixed.mjs` measures the replacement.                       │
+ * └─────────────────────────────────────────────────────────────────────────────────────────────────────┘ Arithmetic on committed constants and committed
  * golden vectors. No render, no server, no build, no browser, no credential.
  *
  * GELB's §64 stated this rather than assigning it, so it is taken here. PG-14's containment — "the frame
