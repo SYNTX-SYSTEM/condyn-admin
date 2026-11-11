@@ -11951,6 +11951,16 @@ abrupt backdrop replacement gives; a ramp's apparent step grows with offset and 
 **RULED: the seam is real, resolved at 3.22–3.94 quanta on the shipping build, and it violates NO PIN.**
 A-F8 **requires** the opaque seat; E-7 requires the ring; GROUND's docstring says the shelf bounds the
 living field. **The seam is a consequence of two satisfied pins, not a violation of any** — so it is not a
+> ### ⚠ CORRECTED 2026-11-11 — IT IS REMOVABLE, AND THE REMOVAL IS ALREADY COSTED *(see §106)*
+> **"Not removable while A-F8 holds" foreclosed an option this record already carries.** A-F8 requires the
+> opaque seat **for the shelf ring**; **A-G91 option (3) removes the ring AND the seat**, and GRÜN costed it
+> at `276ef95d` by live override — condition C, ring and seat both gone: **PF-15 limb (a) 0.0556 / 0.0587
+> against ≤ 0.08; PG-22 0.0811 / 0.1693 against ≤ 0.20; PG-1 0.6431 / 0.7397 against ≥ 0.55. All three
+> hold.** And A-G96's finding stands beside it: *"the medium already carries the boundary and nothing new is
+> needed."* **So the seam IS removable. What the removal costs is E-7's four-ring ladder losing a rung and
+> A-F8 losing its subject at that radius** — a contract cost, not a measurement failure. **The owner's
+> choice is between the edge and option (3), and this lane had reduced it to the edge alone.**
+
 defect. **And it is not removable while A-F8 holds**, which changes the question from *"fix the seam"* to
 ***"is the seat's edge acceptable"*** — an owner question, sent up with the figure and its floor.
 
@@ -13384,3 +13394,111 @@ soundness clause. **311 + 2 = 313.** Both are this lane's, and both were rulings
 **measured rather than assumed** — the outside's mode being the band's level exactly at all 18 cells. PINK
 had written it as corroboration; **it is the measurement of clause (i)'s constant, and that is why (i) is
 satisfiable here at all.**
+
+---
+
+## §106 THE SEAM IS REMOVABLE, AND THE REMOVAL WAS COSTED FOUR THOUSAND LINES EARLIER
+
+**Date of this section: 2026-11-11.**
+
+### A-G43 is implemented and PROVEN — the first mutant executed in this phase
+
+GRÜN re-keyed the splay from `s.mark === "counterTick"` to `arc.state === "DIFFERENT"`, **behaviour-identical
+on today's table** because `couplingStates.DIFFERENT` is the only state carrying a counterTick — *which is
+precisely why nothing but a mutant can tell the two forms apart.*
+
+```
+mark-keyed (old):   radial 9.994517 · DIFFERENT 9.994517, 9.994913 · splay ZERO · test FAILS
+state-keyed (new):  DIFFERENT exceeds radial by far more than rounding · test PASSES
+```
+
+> **RATIFIED, and the method is adopted as the template: APPLY, PROVE IT FAILS, REVERT, PROVE IT PASSES.**
+> A mutant test that passes on both forms proves nothing, and nothing short of the revert establishes that
+> it does not. **A-G35 is satisfiable here rather than claimed.**
+>
+> **And the tolerance is measured rather than chosen:** 0.01 from the 3.95e-4 floor `fixed()` imposes on
+> every emitted coordinate, with the splay margin at 0.1 — three orders above — **so neither assertion rests
+> on the other's slack.** GRÜN named this as §97's defect avoided before this lane could.
+
+**G_ENTRY addition ratified, claim verified rather than reasoning accepted:**
+`test/career/mapping-field/field-g-mutant.test.tsx` **is named by path in this record**, and A-G43 requires
+the test by description. **So the entry set was missing a file this lane's own record mandates — the
+lost-selector class, not a widening.** *The test for any such addition: does it admit anything not already
+mandated? One file, named, required by a ruling. No.*
+
+### A-G43's mutant is not PG-20's, and PG-20's proves the opposite thing
+
+Row 6 of §63's table reads *"A-G43's **and** PG-20's mutant executions"* — **two items:**
+
+| | mutates | assertion must | proves |
+|---|---|---|---|
+| **A-G43's** — done | the **implementation**, state-keyed → mark-keyed | **go RED** | the test is **sensitive** |
+| **PG-20's** — owed | the **sign table**, DIFFERENT's counterTick removed | **stay GREEN** | the product is **robust** |
+
+A-G43's own text: *"the test must assert the splay **survives the mark's removal** — a mutant that deletes the
+counterTick and expects the splay to remain."* **That is PG-20's redundancy requirement and the whole reason
+the re-keying was ordered.**
+
+> *** AND A ROBUSTNESS MUTANT NEEDS A SENSITIVITY CONTROL OR IT IS VACUOUS: an assertion that must STAY
+> GREEN cannot distinguish "it survived" from "it cannot fail." *** So the same sign-table mutation runs
+> against the OLD mark-keyed implementation and the splay must **vanish** there. **Green on new plus red on
+> old is the proof; green on both is a test that does nothing.** A-G415's family, in the one place where the
+> expected result is a pass.
+
+### The three ZERO-BY-CONSTRUCTION pins: the mutation breaks ENFORCEMENT, not values
+
+**PG-5** — enforcement `if (out.length >= budget) break;`. **Mutate the `break` only, never `BODY_BUDGET`**,
+which the assertion reads. Red on *drawn ≤ budget* **and separately** on *overflow = candidates − drawn*.
+*** The fixture is the trap: no counterexample exists unless the fixture offers MORE candidates than the
+budget, so the candidate count is reported beside the result. *** A fixture with ≤ 7 candidates cannot test a
+bound of 7, and a green there is A-G419's empty population wearing a pass.
+
+**PG-15** — enforcement is SVG document order. Move the rings **after** `mapping-glows` and the bodies.
+*** But the mutant's real job is to discriminate which kind of assertion PG-15 has: *** if it asserts
+**document order**, the mutation flips it trivially and proves only that the test reads the DOM. **The
+assertion must be on the rendered result — no ring-stroke colour inside a body's drawn disc.** If it is
+structural, **that is the finding and the mutant has done its job by revealing it.**
+
+**PG-16** — A-G267: the pin predicate and `spaced()`'s filter at `:479` are **one expression over the same
+operands**. *** DO NOT MUTATE THE CONSTANT: it is unfalsifiable "at 0.3, at 0.5, or at any value", because
+the number moves both sides and leaves them identical. *** **Mutate so the two expressions DIFFER** — loosen
+the filter alone to 0.2 × eccentricity while the pin still asserts 0.3. Report the admitted-pair count, same
+trap as PG-5. **And either way the standing finding holds: if test and filter remain one expression, the
+test measures the filter, and the mutant can only show that, not fix it.**
+
+### Option (3) is not a mutant — and it removes the seam
+
+**A-G91 option (3) is a product decision with a measured cost**, costed by GRÜN at `276ef95d` by live
+override, condition C with the ring **and the seat** both gone:
+
+| | 1920 | 1280 | bound |
+|---|---|---|---|
+| PF-15 limb (a) | **0.0556** | **0.0587** | ≤ 0.08 |
+| PG-22 shelf bodies | **0.0811** | **0.1693** | ≤ 0.20 |
+| PG-1 semantic share | **0.6431** | **0.7397** | ≥ 0.55 |
+
+**All three hold.** And A-G96 beside it: *"the medium already carries the boundary and nothing new is
+needed."*
+
+> *** SO §94's SENTENCE TO THE OWNER WAS WRONG IN THE WAY THAT MATTERS MOST: "not removable while A-F8
+> holds" FORECLOSED AN OPTION THIS RECORD ALREADY CARRIED, COSTED, FOUR THOUSAND LINES EARLIER. ***
+>
+> A-F8 requires the opaque seat **for the shelf ring**. **Option (3) removes the ring, so A-F8 has no subject
+> at that radius and the seat is unnecessary.** The seam **is** removable; what the removal costs is **E-7's
+> four-ring ladder losing a rung** — a contract cost, not a measurement failure.
+>
+> **The owner's choice is between the edge and option (3). This lane had reduced it to the edge alone, and
+> by a single clause rather than by an argument.** Corrected in place at §94.
+
+**And the general form, which is this lane's to carry:** *an adjudicating lane's worst failure is not a wrong
+figure — it is foreclosing an option the record already holds.* A wrong figure gets recomputed by whoever
+needs it. **A foreclosed option is never looked for again**, because the sentence that closed it reads like a
+finding.
+
+### Where this leaves the record
+
+**Two new defects:** §94's foreclosure of option (3); and A-G43's and PG-20's mutants conflated as one item
+in row 6, which is this lane's table. **313 + 2 = 315.**
+
+**A-G43 is CLOSED — implemented, re-keyed, and proven by reversion.** The first of the five held mutants to
+execute, and the gate it was held on was B-ENTRY.
