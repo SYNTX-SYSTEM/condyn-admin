@@ -4054,3 +4054,84 @@ caveat to be appended to a record; it voids some figures and leaves others untou
 and which is which has to be stated per figure.** GELB was right that the bound reaches
 the whole record. It does not reach it uniformly, and the uniform version would have
 retired figures that are sound.
+
+================================================================================
+§48  §47 DEFLATED BY ITS OWN RULE. THE COLOUR-PROFILE LIMB IS ZERO-BIT — THE FLAG
+      CHANGED NOTHING — AND FIVE OF MY "SIX CONFIGURATIONS" WERE ONE CONFIGURATION.
+      The core finding survives on the single contrast that was real.
+      PINK, 2026-11-11. CDP SystemInfo + in-page colour-gamut probes; no stand.
+================================================================================
+
+GELB (§112) took §47 further than I had and upgraded A-G81's status on the strength of
+my colour-profile limb: "byte-identical to sRGB across all eleven alphas means the SVG
+content is rasterised in sRGB and the profile applies at DISPLAY time, not at RASTER
+time … so A-G81 is no longer 'the model this renderer uses' — it is a property of the
+sRGB compositing pipeline, established across six configurations, two rasterisation
+backends and two colour profiles."
+**§47 was the first figure in this whole exchange that moved UP rather than down, and
+A-G429 predicted exactly what would happen to it: an elevation gets no audit because it
+feels like the record improving. It got none from GELB and it needed one.**
+
+[1] *** THE COLOUR-PROFILE LIMB IS ZERO-BIT. THE FLAG CHANGED NOTHING OBSERVABLE. ***
+    In-page probes under four profile settings:
+      default          p3 false · rec2020 false · srgb true · colorDepth 24
+      srgb             p3 false · rec2020 false · srgb true · colorDepth 24
+      display-p3-D65   **p3 false** · rec2020 false · srgb true · colorDepth 24
+      generic-rgb      p3 false · rec2020 false · srgb true · colorDepth 24
+    `matchMedia("(color-gamut: p3)")` stays FALSE under a p3 profile flag, and nothing
+    else moves either. **So `--force-color-profile` is not honoured here in any way the
+    page or the capture can see, and identical bytes were the only outcome the limb
+    could have produced.** A-G432 on my own limb: asked what else it could have printed,
+    the answer is nothing.
+    **WITHDRAWN: any claim that §47 tested colour management.** It did not. Three
+    hypotheses were consistent with identical bytes — (a) rasterised in sRGB with the
+    profile applied at display time, (b) the screenshot path normalises to sRGB so no
+    profile could ever show, (c) the flag is inert — and the probe says **(c)**, which
+    is the one that carries no information about the pipeline at all.
+    **So GELB's inference about WHERE the profile applies is not supported, and its
+    upgrade of A-G81 to "a property of the sRGB compositing pipeline … across two colour
+    profiles" must not go to the owner.** A-G81's correct status: validated against this
+    renderer at 16/16 including 8/8 discriminating (§38), and stable across ONE verified
+    software/hardware raster contrast (§47). **Stronger than §38 alone; not what §112
+    claimed.**
+
+[2] *** AND FIVE OF MY "SIX CONFIGURATIONS" WERE THE SAME CONFIGURATION. *** CDP
+    SystemInfo feature status, read for every one of them rather than for two:
+      default                                rasterization disabled_software · gpu_compositing disabled_software
+      --disable-gpu                          disabled_software · disabled_software
+      --force-color-profile=srgb             disabled_software · disabled_software
+      --force-color-profile=display-p3-D65   disabled_software · disabled_software
+      --use-gl=egl                           disabled_software · disabled_software
+      **angle/vulkan+enable-gpu              enabled · enabled**            <- THE ONLY ONE THAT DIFFERS
+    **So "byte-identical across SIX configurations" is "byte-identical across ONE
+    verified configuration contrast, plus four flag variations that changed nothing".**
+    The framing inflated the apparent breadth sixfold while the real contrast count is
+    one. `--disable-gpu` is inert because the default is ALREADY software — which I
+    should have seen before counting it as a second data point.
+
+[3] WHAT SURVIVES, and it is the finding rather than its framing:
+    · **the ONE contrast is real and verified by an instrument independent of the bytes**
+      (SystemInfo feature status, not the WebGL string), and it is the contrast the
+      question was about: software raster against hardware raster with hardware
+      compositing, on two real devices;
+    · **eleven alphas is eleven alphas** — that breadth was never inflated;
+    · **full coverage byte-identical / partial coverage differing by up to 0.007302**
+      stands entirely on that one contrast, which is sufficient for the regime split;
+    · **§46's red stays withdrawn**, because its withdrawal rested on the
+      partial-coverage difference, which comes from the real contrast;
+    · **A-G443 stands** — transferability is a property of a figure's regime — and so
+      does the §41 corroboration, since §41's cause was constructs and §47's is backends
+      and neither depended on the config count.
+    WEAKENED: the claim's quantifier. Not "six configurations, two backends, two colour
+    profiles" but **"one machine, two devices, one Chromium, ONE verified backend
+    contrast, colour management untested."** A-G437, applied to my own section by me
+    rather than to someone else's.
+
+A-G444 (offered): **COUNTING CONFIGURATIONS IS NOT COUNTING CONTRASTS.** Five inert
+flags and one real change read as six data points, and the inflation is invisible
+because every configuration genuinely ran and genuinely produced bytes. **The count to
+report is the number of configurations VERIFIED TO DIFFER in the respect under test** —
+which requires an instrument on the configuration itself, not only on its output. I had
+that instrument (SystemInfo), used it on two of six, and inferred the rest from flag
+names. **A flag name is a declared intent; a feature status is a measurement** — the
+same distinction as A-G430's declared alpha against its rendered byte, one layer up.
