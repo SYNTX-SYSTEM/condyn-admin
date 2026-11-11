@@ -71,7 +71,10 @@ PF-16 (A-G12) "the wedge wash is ≥ 1 and ≤ 3 sRGB codes above the base groun
 ========================================================================================================
 WHAT THE OMITTED HALF CONTAINED:
   PF-4   ratio limb FAILS BY CONSTRUCTION — depthRatio 1.45 against a floor of 1.5. Never reported.
-  PF-3   CONTRADICTED by G-2's inversion, which this record adopted. §4 restated PF-1 and not PF-3.
+  PF-3   *** WITHDRAWN. A-F19 amended it to a DIFFERENTIAL and GRÜN measured 0.039-0.083 against
+         0.25 — it CLEARS. The one residue: that figure was measured on a phase-F build, so under
+         A-G54 it does not transfer to phase G, where haloAlpha is 0.5 and the glow is a light
+         source. PF-3 is UNMEASURED on a phase-G build IN ITS CORRECT FORM. ***
   PF-15  unsatisfiable as a conjunction (§67) — three limbs, disjoint regions.
   PF-6   ceiling is PG-10 limb 3 under another name, breached and reported once.
   PF-11  four-way conjunction plus a second carrier under one verdict.

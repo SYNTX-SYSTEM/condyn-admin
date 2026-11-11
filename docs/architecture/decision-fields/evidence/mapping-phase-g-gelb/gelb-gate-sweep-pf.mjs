@@ -5,8 +5,23 @@
  * covered PG-1 … PG-23 under the title "every pin in phase G". That is 23 of 41, and PF-15's disjoint
  * limbs (§67) are exactly what the gate exists to find. This is the omission closed.
  *
- * Statements are quoted from PERSON_X_JOB_MAPPING_PHASE_F.md's restated table (A-F7 … A-F15), which is
- * the current form of each PF pin, not the §9 originals.
+ * Statements are quoted from PERSON_X_JOB_MAPPING_PHASE_F.md's restated table at :897 (A-F7 … A-F15).
+ *
+ * *** WITHDRAWAL, SAME SESSION — READ THIS BEFORE THE PF-3 BLOCK BELOW ***
+ * That table says of itself at :891: "This table is the CURRENT contract; where it differs from §7, this
+ * wins." It is current as of §17, and §§19-30 amend it further. This instrument treated that sentence as
+ * timeless. It is not:
+ *   :1054  A-F19 — PF-3 is amended: the halo is measured as an EXCESS against a render without it, never
+ *          as a raw window. GRÜN measured the raw window confounded at the shelf edge (rank 4 at r = 430
+ *          reads the LIT GROUND inside the shelf, 0.31 against 0.25, "red for entirely the wrong reason")
+ *          and the DIFFERENTIAL at 0.039-0.083 — comfortably inside the ceiling.
+ *   :994   PF-8 is now THREE tiers, amended twice more at :1214 and :1307, tier B again at :1513.
+ *   :1567  PF-16 widened to [0.88, 1.12] as a trimmed mean per pool (superseded for phase G by A-G12,
+ *          which restated it in CODES because A-F31 found ratios meaningless at this level).
+ * So the PF-3 block below is VOID and its verdict is withdrawn. It is kept rather than deleted, per the
+ * habit GRÜN set in its limb C, because the shape of the error is the useful part: a raw ratio of declared
+ * alphas is a CRUDER form of exactly the confound A-F19 identified and fixed.
+ * PF-4, PF-6, PF-11, PF-13 and PF-16 are unaffected — checked individually against §§19-30.
  *
  * Same discipline as §64's sweep: every source claim is an EXACT substring of the committed product at
  * 4b83414e and a row whose substring is absent or ambiguous is reported UNVERIFIED.
@@ -115,7 +130,10 @@ console.log("        others were corrected this week and a lane that only report
 console.log("\n" + "=".repeat(104));
 console.log("WHAT THE OMITTED HALF CONTAINED:");
 console.log("  PF-4   ratio limb FAILS BY CONSTRUCTION — depthRatio 1.45 against a floor of 1.5. Never reported.");
-console.log("  PF-3   CONTRADICTED by G-2's inversion, which this record adopted. §4 restated PF-1 and not PF-3.");
+console.log("  PF-3   *** WITHDRAWN. A-F19 amended it to a DIFFERENTIAL and GRÜN measured 0.039-0.083 against");
+console.log("         0.25 — it CLEARS. The one residue: that figure was measured on a phase-F build, so under");
+console.log("         A-G54 it does not transfer to phase G, where haloAlpha is 0.5 and the glow is a light");
+console.log("         source. PF-3 is UNMEASURED on a phase-G build IN ITS CORRECT FORM. ***");
 console.log("  PF-15  unsatisfiable as a conjunction (§67) — three limbs, disjoint regions.");
 console.log("  PF-6   ceiling is PG-10 limb 3 under another name, breached and reported once.");
 console.log("  PF-11  four-way conjunction plus a second carrier under one verdict.");
