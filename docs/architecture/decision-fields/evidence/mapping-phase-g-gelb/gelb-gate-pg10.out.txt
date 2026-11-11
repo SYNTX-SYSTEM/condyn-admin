@@ -1,0 +1,50 @@
+=== GELB gate · PG-10 · constants only ===
+
+ground triple rgb(14,14,14) -> L = 0.0043914   (GRUEN measured 0.0044378, delta 4.64e-5)
+breath on .mf-wave-halo: opacity = 0.8825000000000001 +/- 0.1175  =>  [0.765, 1.000], peak-to-peak 0.235
+with CAPABILITY selected, --mf-wave-gain = 0.35  =>  peak-to-peak 0.08225
+
+--- resting carrier geometry, breath at full gain (no CAPABILITY selection) ---
+[rank 1, marked body (smallest guaranteed drawn size)]
+    measurable annulus: gradient offset 0.409341 .. 1   (everything inside is the body's seat)
+    limb (a) area share swinging >= 0.004: 40.60 %   vs >= 25 %   clears
+    limb (b) area-weighted median Weber: 21.501 %   vs [10, 35] %   clears
+    PG-10 (conjunction): CLEARS
+[rank 1, unmarked body]
+    measurable annulus: gradient offset 0.403863 .. 1   (everything inside is the body's seat)
+    limb (a) area share swinging >= 0.004: 40.91 %   vs >= 25 %   clears
+    limb (b) area-weighted median Weber: 21.998 %   vs [10, 35] %   clears
+    PG-10 (conjunction): CLEARS
+[last rank, unmarked body]
+    measurable annulus: gradient offset 0.350014 .. 1   (everything inside is the body's seat)
+    limb (a) area share swinging >= 0.004: 32.42 %   vs >= 25 %   clears
+    limb (b) area-weighted median Weber: 17.653 %   vs [10, 35] %   clears
+    PG-10 (conjunction): CLEARS
+--- with a CAPABILITY selected, --mf-wave-gain = 0.35 ---
+[rank 1, unmarked body, selected gain]
+    measurable annulus: gradient offset 0.403863 .. 1   (everything inside is the body's seat)
+    limb (a) area share swinging >= 0.004: 20.35 %   vs >= 25 %   FAILS
+    limb (b) area-weighted median Weber: 8.045 %   vs [10, 35] %   FAILS
+    PG-10 (conjunction): FAILS
+
+=== what the gate says ===
+limb (a) share across the four cases: 40.6 % / 40.9 % / 32.4 % / 20.4 %
+limb (b) median across the four cases: 21.50 % / 22.00 % / 17.65 % / 8.05 %
+limb (a) can fail: true    limb (b) can fail: true
+PG-10 is a CONJUNCTION, so by A-G144 it fails as soon as its strongest requirement fails.
+cases clearing both limbs: 3 of 4
+
+--- sensitivity: the ground is the ONE approximated input, so sweep it ---
+    rgb(10,10,10 ) L=0.003035  gain 1    share 40.69% median 24.42% CLEARS  |  gain 0.35 share 19.50% median 8.97% FAILS 
+    rgb(12,12,12 ) L=0.003677  gain 1    share 41.36% median 22.57% CLEARS  |  gain 0.35 share 20.46% median 8.59% FAILS 
+    rgb(13,13,13 ) L=0.004025  gain 1    share 40.46% median 22.56% CLEARS  |  gain 0.35 share 19.58% median 8.39% FAILS 
+    rgb(14,14,14 ) L=0.004391  gain 1    share 40.91% median 22.00% CLEARS  |  gain 0.35 share 20.35% median 8.05% FAILS 
+    rgb(16,16,16 ) L=0.005182  gain 1    share 41.14% median 20.86% CLEARS  |  gain 0.35 share 21.03% median 6.56% FAILS 
+    rgb(18,18,18 ) L=0.006049  gain 1    share 41.90% median 19.57% CLEARS  |  gain 0.35 share 20.95% median 6.20% FAILS 
+    rgb(6,12,17  ) L=0.003421  gain 1    share 41.54% median 22.94% CLEARS  |  gain 0.35 share 20.04% median 8.69% FAILS 
+    => the verdict is stable over a +/-4 code ground range and over the non-neutral rgb(6,12,17):
+       unselected clears both limbs, selected fails both. The split is not an artefact of my estimate.
+
+PROVENANCE (A-G143/A-G165): PG-10 cites R17 for its ceiling. The record states no number from R17.
+  0.004 : UNDERIVED        0.25 : UNDERIVED        [10 %, 35 %] : CITED-WITHOUT-A-NUMBER
+  Every verdict below is a comparison against a number with no recorded origin.

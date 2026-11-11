@@ -4666,3 +4666,88 @@ drawn for it by the requester, and I am asking for nothing from inside it.
 run rather than cost one; **this is the second time it has paid, and the largest** — PG-17 was a three-limb pixel
 measurement at two levels.
 
+
+---
+
+## §46 THE GATE RAN ON PG-10 AND PG-10 PASSED IT — WHICH REFUTES A-G165's PREDICTION AND SPLITS THE AXIS IT CONFLATED
+
+§45 predicted PG-10's corridor sits in R21's position, because R17 is cited for the ceiling and the record
+states no number from R17. **I ran the gate before PINK could spend a run on it. PG-10 passes.** The instrument is
+`evidence/mapping-phase-g-gelb/gelb-gate-pg10.mjs` with its output, committed.
+
+| case | share swinging ≥ 0.004 (≥ 25 %) | median Weber (in [10 %, 35 %]) | PG-10 |
+|---|---|---|---|
+| rank 1, **marked** body, smallest guaranteed size | 40.60 % | 21.501 % | **clears** |
+| rank 1, unmarked | 40.91 % | 21.998 % | **clears** |
+| last rank, unmarked | 32.42 % | 17.653 % | **clears** |
+| **rank 1, with a CAPABILITY selected** | **20.35 %** | **8.045 %** | **FAILS both** |
+
+Both limbs can clear and both can fail, on the committed artifact, with no limb true or false by construction.
+**PG-10 is the first of A-G7's examined limbs that is a well-formed test.** Four were malformed and I wrote all
+four; this one I also wrote, and it is sound.
+
+### A-G167 · A-G165 conflated two independent axes, and PG-10 is the counterexample *(my error, one section old)*
+
+A-G165's table put R17 beside R21 and drew the inference that PG-10's corridor was therefore in PG-17's
+position. **That inference does not follow, and PG-10 disproves it.**
+
+> **Provenance and satisfiability are independent axes.** A bound with no recorded origin can be a perfectly
+> well-formed test, and a derived bound can still be malformed. PG-17 and PG-19 failed on **satisfiability**;
+> their provenance defects were real and *separate*. A-G165 as written implies the two travel together.
+
+**So A-G165 is narrowed, not withdrawn.** Its rule — *a pin may be derived from a finding only where the record
+took a quantity from that finding* — governs whether a pin is **justified**. It says nothing about whether the
+pin is **measurable**, and I presented it as if it predicted both. **PG-10's bounds remain UNDERIVED (0.004,
+0.25) and CITED-WITHOUT-A-NUMBER ([10 %, 35 %]), and PG-10 remains a good test.** Those two facts sit together
+without tension, which is what I got wrong one section ago.
+
+**And the warning I sent PINK was still the right act.** The prediction was wrong; stopping a three-limb pixel
+run for the cost of one constants-only script was not. **A gate that clears a pin has done the same work as a
+gate that kills one**, and this is the first time one has cleared.
+
+### A-G168 · PG-10 fails in the CAPABILITY-selected state, and both the pin and the product are deliberate *(defect 75)*
+
+`WAVE.selectedGain = 0.35` drives `--mf-wave-gain`, which scales the breath's depth while a capability is
+selected. The breath's peak-to-peak falls from **0.235 to 0.08225**, and both of PG-10's limbs fall with it:
+**the swing share to 20.35 % against a floor of 25 %, and the median Weber fraction to 8.045 % against a floor
+of 10 %.**
+
+**Neither side of this is a mistake.** `selectedGain` exists so the field calms while the reader is looking at
+one capability — the same instinct R17 was cited for. PG-10 exists so the breath stays measurable. **They
+contradict each other in one state, and the contradiction is by design on both sides.**
+
+> **PG-10 never states its motion mode, and A-G95 requires one.** It was written for `LIVE` at full gain and
+> reads as if it governed every state. **This is the first time A-G95's missing field has had a consequence
+> rather than being a formal gap**, and it is the field PG-17 also lacked (A-G105 had to supply it there).
+
+**Decided: PG-10 is scoped to the unselected LIVE state, and the selected state needs its own statement or an
+explicit exclusion.** I am writing neither now, because a corridor for the calmed state would be a number with no
+origin invented to cover a case I have just discovered — **A-G143 exactly.** The honest record is: *PG-10 holds
+where it was written to hold; in the selected state the field deliberately falls below PG-10's floor and no
+obligation covers it.*
+
+**And note where it fails.** R17 was cited for the **ceiling** — *"R17's ceiling is what keeps this calm"*. The
+selected state breaks the **floor**. **The one place PG-10 fails is the one place R17 was never invoked**, which
+is a cleaner demonstration than A-G143's PG-6 arithmetic that the citation and the bound were never connected.
+
+### A-G169 · The sensitivity sweep, because one input was mine and not measured
+
+The ground triple is the one input I estimated — `rgb(14,14,14)`, giving **L = 0.0043914** against GRÜN's
+measured **0.0044378**, a gap of **4.64e-05**. So the instrument sweeps it: `rgb(10,10,10)` through
+`rgb(18,18,18)` plus the non-neutral `rgb(6,12,17)` from §38's table. **Across all seven, unselected clears both
+limbs (share 40.5–41.9 %, median 19.6–24.4 %) and selected fails both (share 19.5–21.0 %, median 6.2–9.0 %).**
+
+**The split is not an artefact of my estimate**, and saying so with a sweep rather than with a margin is the
+A-G103 lesson applied before anyone had to correct me for it: **a verdict that rests on an unmeasured input
+states its range, not its point.**
+
+### What PINK should now do with PG-10, and what it should not
+
+**PG-10 is cleared for measurement**, scoped: **both states, and the selected state is expected to fail both
+limbs.** The figures above are a prediction from constants, not a verdict — the point of PINK's run is to find out
+whether the render agrees, and it is now a run with a known target instead of an open sweep.
+
+**What it must not do is report the unselected pass as PG-10 met.** Three of the four cases clear against two
+bounds with no recorded origin. **A-G143 stands: the verdict is a comparison against numbers whose provenance is
+UNDERIVED and CITED-WITHOUT-A-NUMBER, and it is reported with that attached or not at all.**
+
