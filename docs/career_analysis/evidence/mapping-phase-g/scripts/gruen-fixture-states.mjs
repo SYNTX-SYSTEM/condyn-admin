@@ -261,7 +261,11 @@ try {
       present: states.every(s => !s.reached || (s.framePasses !== null && s.frameConverged !== null)),
       perState: states.map(s => ({ state: s.name, reached: s.reached, framePasses: s.framePasses, frameConverged: s.frameConverged, viewBox: s.viewBox })),
       note: "§86: data-frame-passes and data-frame-converged are emitted UNCONDITIONALLY, so `present` is a real check — a build without the fix returns null for both and this reports it rather than passing.",
-      allConverged: states.filter(s => s.reached).every(s => s.frameConverged === "true")
+      /* §87: "n/a" is the honest value where no body is framed, so it is NOT counted as a convergence claim.
+         Treating it as true was the vacuous-true defect on the reading side of the same attribute. */
+      convergenceClaims: states.filter(s => s.reached && s.frameConverged !== null && s.frameConverged !== "n/a").length,
+      allThatClaimedDidConverge: states.filter(s => s.reached && s.frameConverged !== null && s.frameConverged !== "n/a").every(s => s.frameConverged === "true"),
+      notApplicableStates: states.filter(s => s.frameConverged === "n/a").map(s => s.name)
     },
     statesAttempted: states.length, statesReached: reached.length,
     statesNotReached: missed.map(s => ({ name: s.name, driveError: s.driveError, levelSeen: s.level })),

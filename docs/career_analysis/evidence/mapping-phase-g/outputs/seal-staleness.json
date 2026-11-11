@@ -2,8 +2,8 @@
  "reading": "GRÜN · §62 — seal-staleness audit: does each SEALED reading still describe the product at HEAD?",
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "scope": "git object reads and string comparison only. No render, no server, no build, no browser, nothing written outside this file.",
- "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
- "headShort": "fb4632da",
+ "head": "7910845b5de40c75d5e8240c96255fc5595dc855",
+ "headShort": "7910845b",
  "selfTest": {
   "base": "3ec8457d",
   "constantsExtracted": 12,
@@ -20,11 +20,22 @@
   "whatAValidResultDoesNotMean": "VALID means the product the reading was taken from has not moved. It says nothing about whether the reading was correct, whether its carrier was the right carrier, or whether its pin is falsifiable."
  },
  "summary": {
-  "seals": 8,
-  "valid": 0,
-  "stale": 8,
-  "unknown": 0
+  "readings": 41,
+  "sealed": 8,
+  "unsealed": 33,
+  "valid": 3,
+  "stale": 38,
+  "unknown": 0,
+  "staleSealed": 8,
+  "staleUnsealed": 30,
+  "buildsPresent": [
+   "HRYkeEpbpndI3UEE7ceeC",
+   "TKZRoMo0_1Ro-svJrokkW",
+   "UTiHc2G2tn-Nh1fyJ6vFH"
+  ]
  },
+ "remedyDiffersByPopulation": "an UNSEALED stale reading is simply re-run on a current build. A SEALED one needs a deliberate re-seal, which is a ruling and not a chore — so the two are counted separately rather than summed.",
+ "liveStatusesRestingOnStaleReadings": "pg11-guard-*.json is stale and GELB's INCONCLUSIVE-BY-MEASUREMENT closure of PG-11's relation limb rests on its marginFactor / guardClears. That closure is a CLOSURE rather than a green, but it is a live status resting on a stale reading and it is named here rather than left to be noticed.",
  "staleSeals": [
   {
    "file": "SEALED-pg11-ratio-L0-1280x800.json",
@@ -65,14 +76,166 @@
    "file": "SEALED-pg17-L2-1920x1080.json",
    "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
    "movedConstants": []
+  },
+  {
+   "file": "bodies-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "bodies-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "discriminator-reduce-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "discriminator-reduce-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "floor-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "floor-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "glow-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "glow-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "hooks-verify-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "light-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "light-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "option3-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "option3-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg1-live-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg1-live-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg11-guard-L0-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg11-guard-L0-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg11-guard-L2-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg12-chroma-resolution-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg12-chroma-resolution-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg20-splay-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg20-splay-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg22-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg22-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg22-seats-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg22-seats-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg23-computed-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "pg23-computed-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "rings-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "rings-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
   }
  ],
  "perSeal": [
   {
    "file": "SEALED-pg11-ratio-L0-1280x800.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 37,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -92,9 +255,11 @@
   },
   {
    "file": "SEALED-pg11-ratio-L0-1920x1080.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 37,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -114,9 +279,11 @@
   },
   {
    "file": "SEALED-pg11-ratio-L2-1920x1080.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 37,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -136,9 +303,11 @@
   },
   {
    "file": "SEALED-pg12-ratio-1280x800.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
    "sealHeadShort": "5c3ca5d9",
-   "commitsBehindHead": 36,
+   "commitsBehindHead": 37,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -158,9 +327,11 @@
   },
   {
    "file": "SEALED-pg12-ratio-1920x1080.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
    "sealHeadShort": "5c3ca5d9",
-   "commitsBehindHead": 36,
+   "commitsBehindHead": 37,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -180,9 +351,11 @@
   },
   {
    "file": "SEALED-pg17-L0-1280x800.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
-   "commitsBehindHead": 38,
+   "commitsBehindHead": 39,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -202,9 +375,11 @@
   },
   {
    "file": "SEALED-pg17-L0-1920x1080.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
-   "commitsBehindHead": 38,
+   "commitsBehindHead": 39,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,
@@ -224,9 +399,803 @@
   },
   {
    "file": "SEALED-pg17-L2-1920x1080.json",
+   "sealed": true,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
+   "commitsBehindHead": 39,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "bodies-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "bodies-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "discriminator-reduce-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "642b0c26fea9ea8016e95a802c996501d515f239",
+   "sealHeadShort": "642b0c26",
+   "commitsBehindHead": 44,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "discriminator-reduce-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "642b0c26fea9ea8016e95a802c996501d515f239",
+   "sealHeadShort": "642b0c26",
+   "commitsBehindHead": 44,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "fixture-states-1280x800.json",
+   "sealed": false,
+   "buildId": "TKZRoMo0_1Ro-svJrokkW",
+   "sealHead": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+   "sealHeadShort": "fb4632da",
+   "commitsBehindHead": 1,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": false,
+   "changedLinesAreCommentOnly": true,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": true,
+     "strippedLinesAtSeal": 837,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file with every comment removed is IDENTICAL at the seal's commit and at HEAD, so no behavioural line moved"
+    }
+   ],
+   "status": "VALID",
+   "why": "the product file is byte-identical to the seal's commit"
+  },
+  {
+   "file": "fixture-states-1920x1080.json",
+   "sealed": false,
+   "buildId": "TKZRoMo0_1Ro-svJrokkW",
+   "sealHead": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+   "sealHeadShort": "fb4632da",
+   "commitsBehindHead": 1,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": false,
+   "changedLinesAreCommentOnly": true,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": true,
+     "strippedLinesAtSeal": 837,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file with every comment removed is IDENTICAL at the seal's commit and at HEAD, so no behavioural line moved"
+    }
+   ],
+   "status": "VALID",
+   "why": "the product file is byte-identical to the seal's commit"
+  },
+  {
+   "file": "floor-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "floor-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "glow-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "glow-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "hooks-verify-1280x800.json",
+   "sealed": false,
+   "buildId": "UTiHc2G2tn-Nh1fyJ6vFH",
+   "sealHead": "47e34329c8b749e712fb9bfee8d7f475a27cd9e4",
+   "sealHeadShort": "47e34329",
+   "commitsBehindHead": 6,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 818,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "hooks-verify-1920x1080.json",
+   "sealed": false,
+   "buildId": "TKZRoMo0_1Ro-svJrokkW",
+   "sealHead": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+   "sealHeadShort": "fb4632da",
+   "commitsBehindHead": 1,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": false,
+   "changedLinesAreCommentOnly": true,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": true,
+     "strippedLinesAtSeal": 837,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file with every comment removed is IDENTICAL at the seal's commit and at HEAD, so no behavioural line moved"
+    }
+   ],
+   "status": "VALID",
+   "why": "the product file is byte-identical to the seal's commit"
+  },
+  {
+   "file": "light-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "light-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "option3-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "76ae90433590a822b021a6d9168e5c01e984865f",
+   "sealHeadShort": "76ae9043",
+   "commitsBehindHead": 42,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "option3-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "76ae90433590a822b021a6d9168e5c01e984865f",
+   "sealHeadShort": "76ae9043",
+   "commitsBehindHead": 42,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg1-live-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "642b0c26fea9ea8016e95a802c996501d515f239",
+   "sealHeadShort": "642b0c26",
+   "commitsBehindHead": 44,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg1-live-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "642b0c26fea9ea8016e95a802c996501d515f239",
+   "sealHeadShort": "642b0c26",
+   "commitsBehindHead": 44,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg11-guard-L0-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
+   "sealHeadShort": "d04d96aa",
    "commitsBehindHead": 38,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg11-guard-L0-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
+   "sealHeadShort": "d04d96aa",
+   "commitsBehindHead": 38,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg11-guard-L2-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
+   "sealHeadShort": "d04d96aa",
+   "commitsBehindHead": 38,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg12-chroma-resolution-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
+   "sealHeadShort": "5c3ca5d9",
+   "commitsBehindHead": 37,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg12-chroma-resolution-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
+   "sealHeadShort": "5c3ca5d9",
+   "commitsBehindHead": 37,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg20-splay-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "02a1b58590c1906c262240887fb8ffc2f91cbac2",
+   "sealHeadShort": "02a1b585",
+   "commitsBehindHead": 43,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg20-splay-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "02a1b58590c1906c262240887fb8ffc2f91cbac2",
+   "sealHeadShort": "02a1b585",
+   "commitsBehindHead": 43,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg22-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "da498216518c5e87ad923a9c4ea67386528be61c",
+   "sealHeadShort": "da498216",
+   "commitsBehindHead": 40,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg22-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "da498216518c5e87ad923a9c4ea67386528be61c",
+   "sealHeadShort": "da498216",
+   "commitsBehindHead": 40,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg22-seats-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "276ef95deb09fb4bb8a4b3f4087e135590a7a461",
+   "sealHeadShort": "276ef95d",
+   "commitsBehindHead": 41,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg22-seats-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "276ef95deb09fb4bb8a4b3f4087e135590a7a461",
+   "sealHeadShort": "276ef95d",
+   "commitsBehindHead": 41,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg23-computed-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "b6c4bd84d1213fbfd4ed17711943124e7f3b7342",
+   "sealHeadShort": "b6c4bd84",
+   "commitsBehindHead": 12,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "pg23-computed-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "b6c4bd84d1213fbfd4ed17711943124e7f3b7342",
+   "sealHeadShort": "b6c4bd84",
+   "commitsBehindHead": 12,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "rings-1280x800.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
+   "trackedConstantsThatMoved": [],
+   "productFileTouchedSinceSeal": true,
+   "changedLinesAreCommentOnly": false,
+   "commentStrip": [
+    {
+     "path": "app/components/career/demo/PersonJobMappingField.tsx",
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+    }
+   ],
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
+  },
+  {
+   "file": "rings-1920x1080.json",
+   "sealed": false,
+   "buildId": "HRYkeEpbpndI3UEE7ceeC",
+   "sealHead": "185427d51714d3850511768b27757db6bbbfda88",
+   "sealHeadShort": "185427d5",
+   "commitsBehindHead": 45,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
    "changedLinesAreCommentOnly": false,

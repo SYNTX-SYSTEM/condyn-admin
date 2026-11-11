@@ -496,16 +496,27 @@ function spaced<T extends { x: number; y: number; drawnRadius: number }>(byRank:
  * The frame's own glyph-advance bound, per face, in em per character.
  *
  * §86: PINK MEASURED the real advances on the rendered page — **0.5632 mean and 0.602 worst, every worst
- * case MONO** — against the 0.62 this frame had always assumed. Those are PINK's figures and are recorded
- * here with PINK's attribution; they are NOT adopted as the bound, and the reason is the direction of the
- * obligation. A frame must CONTAIN its labels, so this constant is an UPPER BOUND and not an estimate:
- * dropping it to a measured mean would tighten the frame onto the text and clip the very labels PG-14 exists
- * to hold. It stays at 0.62, which sits 2.9 % above PINK's worst case, and that 2.9 % is the whole headroom —
- * a font fallback would exhaust it and nothing in the product would say so.
+ * case MONO** — against the 0.62 this frame had always assumed. Those are PINK's figures, recorded here with
+ * PINK's attribution, and they are NOT adopted as the value. A frame must CONTAIN its labels, so this
+ * constant has to be an upper bound rather than an estimate: dropping it to a measured mean would tighten the
+ * frame onto the text and clip the very labels PG-14 exists to hold.
  *
- * Both faces carry the same bound because no per-face WORST is measured: PINK's worst is MONO's, and SANS's
- * own worst is unknown. Two named entries rather than one number, so a later per-face measurement has a
- * place to land.
+ * AND THE SAME DIRECTION HOLDS AT THE OTHER CALL SITE, which is why one constant can serve both. `0.62`
+ * appears twice with opposite-looking jobs — the "how many characters FIT" divisor for sector labels
+ * (`CHAR_EM`, a separate constant of the same value) and the "how much room to RESERVE" multiplier here.
+ * Raising it is monotonically conservative at both: a smaller em claims more characters fit than do, AND
+ * reserves less room than the label needs. So a measured mean would be unsafe in two places, not one.
+ *
+ * STATUS: **ASSERTED, not derived** — and this is the claim rather than the one it resembles. 0.62 is a bound
+ * on an ASSUMED CHARACTER MIX, not a per-character upper bound: the quantity it must bound is a MAXIMUM over
+ * strings, and in a proportional sans the widest glyphs run near one em. Its headroom over PINK's worst
+ * MEASURED case is 2.99 %, and **a font fallback would exhaust that silently**. What would derive it is a
+ * `measureText` loop over the admissible character set in the actual face at the actual size — owed, and not
+ * reachable from the twelve layout vectors, which carry NO role titles at all.
+ *
+ * Both faces carry the same number because no per-face WORST is measured: PINK's worst is MONO's and SANS's
+ * own worst is unknown. Two named entries rather than one value, so a later per-face measurement has a place
+ * to land.
  */
 const FRAME_EM_PER_CHAR = Object.freeze({ sans: 0.62, mono: 0.62 });
 /** §86: the solve's hard stop. Reaching it is disclosed, never silent — see `frameWithBodies`. */
@@ -546,8 +557,16 @@ const FRAME_PASS_CAP = 12;
  * it was. Found independently in two lanes' trees from two readings of the same line.
  */
 type FramedBody = { x: number; y: number; r: number; title: string; measure: string; collarMore: string | null };
-function frameWithBodies(base: ViewBox, bodies: ReadonlyArray<FramedBody>, drawnPx: number): { box: ViewBox; passes: number; converged: boolean } {
-  if (bodies.length === 0) return { box: base, passes: 0, converged: true };
+function frameWithBodies(base: ViewBox, bodies: ReadonlyArray<FramedBody>, drawnPx: number): { box: ViewBox; passes: number; converged: boolean | null } {
+  /**
+   * §87: with NO bodies to frame the solve never runs, so `converged` is a statement about an empty set —
+   * a VACUOUS TRUE. It used to return `true` here, and a reader at L2 (where `framed` is empty) saw a healthy
+   * solve where none had executed. That is a signal describing its own execution rather than a fact about the
+   * world, which is the same shape as a self-test that proves its helper instead of its subject. `null` means
+   * NOT APPLICABLE and renders as "n/a", so the one cell a later reader could misread no longer claims
+   * anything.
+   */
+  if (bodies.length === 0) return { box: base, passes: 0, converged: null };
   const cx = base.x + base.width / 2, cy = base.y + base.height / 2;
   let half = base.width / 2, passes = 0, converged = false;
   while (passes < FRAME_PASS_CAP) {
@@ -872,7 +891,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
          present, because a disclosure that appears only when something went wrong cannot be told from a
          disclosure that was removed. `data-frame-converged="false"` means the frame was emitted at the pass
          cap and may not hold its labels; it is the one state PG-14 cannot certify from the output alone. */
-      data-frame-passes={frame.passes} data-frame-converged={String(frame.converged)}
+      data-frame-passes={frame.passes} data-frame-converged={frame.converged === null ? "n/a" : String(frame.converged)}
       data-selection={focus.selection?.kind ?? ""} data-capability={selected?.key ?? ""}
       data-run-state={run.state} data-field-motion={run.sign.fieldMotion} data-frozen={String(run.sign.frozen)} data-pending-breath={String(run.pendingBreath)}
       data-resume-pulse={String(run.sign.resumePulse)} data-evidence-class={evidence} data-authority-state={model.authority.authorityState} data-decision={String(model.authority.decision)}

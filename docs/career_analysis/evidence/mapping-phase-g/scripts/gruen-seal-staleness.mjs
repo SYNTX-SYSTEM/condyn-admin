@@ -46,9 +46,19 @@ const PRODUCT = ["app/components/career/demo/PersonJobMappingField.tsx"];
  * now means the file on disk, which is the one `next build` compiles.
  */
 const WORKTREE = "WORKTREE";
+/* §87: widening the scope from 8 sealed files to 41 readings multiplied the work and it went superlinear —
+   the first widened run did not finish in two minutes. Both the git reads and the comment-strip are PURE, in
+   (sha, path) and (source), so both are memoised. The real cost is DISTINCT COMMITS, not distinct readings.
+   An audit that takes minutes stops being run, which is a slower way of not having it. */
+const _src = new Map(), _strip = new Map();
 function srcAt(sha, path) {
-  if (sha === WORKTREE) { try { return readFileSync(resolve(ROOT, path), "utf8"); } catch { return null; } }
-  try { return git(`show ${sha}:${path}`); } catch { return null; }
+  const key = `${sha}\u0000${path}`;
+  if (_src.has(key)) return _src.get(key);
+  let v = null;
+  if (sha === WORKTREE) { try { v = readFileSync(resolve(ROOT, path), "utf8"); } catch { v = null; } }
+  else { try { v = git(`show ${sha}:${path}`); } catch { v = null; } }
+  _src.set(key, v);
+  return v;
 }
 function constantsAt(sha, path) {
   const raw = srcAt(sha, path);
@@ -105,6 +115,13 @@ function constantsFrom(raw) {
  *     That is the one residual way it can be wrong, and it is recorded here rather than left implicit.
  */
 function stripComments(src) {
+  const hit = _strip.get(src);
+  if (hit !== undefined) return hit;
+  const v = stripCommentsUncached(src);
+  _strip.set(src, v);
+  return v;
+}
+function stripCommentsUncached(src) {
   let out = "", i = 0, regexLiterals = 0;
   const n = src.length;
   const stack = [];                       // template-literal nesting
@@ -232,6 +249,18 @@ function changedLinesAreCommentOnly(sha, path) {
   };
 }
 
+/**
+ * §87 DEFECT 15 — THIS AUDIT'S NAME WAS NARROWER THAN THE PROBLEM. It scanned `SEALED-*.json` only, and a
+ * census of `outputs/` finds FORTY-ONE readings carrying a `provenance.buildId`: eight sealed and
+ * THIRTY-THREE NOT. Thirty of those sit on the same superseded build, and they are not decorative —
+ * `pg11-guard-*.json` carries the `marginFactor` and `guardClears` that GELB's INCONCLUSIVE-BY-MEASUREMENT
+ * closure of PG-11's relation limb rests on, and nothing was watching it.
+ *
+ * A seal is a protection against OVERWRITING a reading. It was never a statement about which readings can go
+ * stale — every reading taken through a browser can. So the scope is now every output with a
+ * `provenance.buildId`, sealed or not, and the two populations are reported separately because their remedies
+ * differ: an unsealed reading can simply be re-run, a sealed one needs a deliberate re-seal.
+ */
 const head = git("rev-parse HEAD");
 
 /**
@@ -258,16 +287,20 @@ const selfTest = (() => {
   return { base: BASE, constantsExtracted: TRACKED.length, detectedMovesFromBase: moved, provesDetectorFires: true,
            provesCommentHazardClosed: "a declaration at column 0 inside a block comment is ignored; the real declaration is read" };
 })();
-const seals = readdirSync(OUT).filter(f => f.startsWith("SEALED-") && f.endsWith(".json")).sort();
+const seals = readdirSync(OUT).filter(f => f.endsWith(".json")).filter(f => {
+  try { return typeof JSON.parse(readFileSync(resolve(OUT, f), "utf8"))?.provenance?.buildId === "string"; } catch { return false; }
+}).sort();
 const rows = [];
 for (const file of seals) {
   const seal = JSON.parse(readFileSync(resolve(OUT, file), "utf8"));
+  const isSealed = file.startsWith("SEALED-");
+  const buildId = seal?.provenance?.buildId ?? null;
   const sealHead = seal?.provenance?.head ?? null;
-  if (!sealHead) { rows.push({ file, status: "UNKNOWN", why: "the seal records no provenance.head, so nothing can be compared" }); continue; }
+  if (!sealHead) { rows.push({ file, sealed: isSealed, buildId, status: "UNKNOWN", why: "the reading records no provenance.head, so nothing can be compared" }); continue; }
 
   let reachable = true;
   try { git(`cat-file -e ${sealHead}^{commit}`); } catch { reachable = false; }
-  if (!reachable) { rows.push({ file, status: "UNKNOWN", sealHead, why: "the seal's commit is not in this repository — it cannot be compared and must be treated as stale" }); continue; }
+  if (!reachable) { rows.push({ file, sealed: isSealed, buildId, status: "UNKNOWN", sealHead, why: "the reading's commit is not in this repository — it cannot be compared and must be treated as stale" }); continue; }
 
   const moved = [];
   for (const path of PRODUCT) {
@@ -291,7 +324,7 @@ for (const file of seals) {
   const anyProductDiff = PRODUCT.some(p => { try { return git(`diff --name-only ${sealHead} -- ${p}`).length > 0; } catch { return true; } });
 
   rows.push({
-    file, sealHead, sealHeadShort: sealHead.slice(0, 8), commitsBehindHead: Number(git(`rev-list --count ${sealHead}..HEAD`)),
+    file, sealed: isSealed, buildId, sealHead, sealHeadShort: sealHead.slice(0, 8), commitsBehindHead: Number(git(`rev-list --count ${sealHead}..HEAD`)),
     trackedConstantsThatMoved: moved,
     productFileTouchedSinceSeal: anyProductDiff,
     changedLinesAreCommentOnly: commentOnly,
@@ -306,6 +339,8 @@ for (const file of seals) {
 
 const stale = rows.filter(r => r.status === "STALE");
 const unknown = rows.filter(r => r.status === "UNKNOWN");
+const staleSealed = stale.filter(r => r.sealed), staleUnsealed = stale.filter(r => !r.sealed);
+const builds = [...new Set(rows.map(r => r.buildId).filter(Boolean))];
 const out = {
   reading: "GRÜN · §62 — seal-staleness audit: does each SEALED reading still describe the product at HEAD?",
   verdict: PROVENANCE.verdict,
@@ -318,7 +353,13 @@ const out = {
     secondCheck: "the product file is compared at both commits AFTER removing every comment with a character state machine, so 'only comments changed' is decided exactly; the stripper reports its own residue and regex-literal risk and downgrades to stale if either appears",
     whatAValidResultDoesNotMean: "VALID means the product the reading was taken from has not moved. It says nothing about whether the reading was correct, whether its carrier was the right carrier, or whether its pin is falsifiable."
   },
-  summary: { seals: rows.length, valid: rows.length - stale.length - unknown.length, stale: stale.length, unknown: unknown.length },
+  summary: { readings: rows.length, sealed: rows.filter(r => r.sealed).length, unsealed: rows.filter(r => !r.sealed).length,
+             valid: rows.length - stale.length - unknown.length, stale: stale.length, unknown: unknown.length,
+             staleSealed: staleSealed.length, staleUnsealed: staleUnsealed.length, buildsPresent: builds },
+  remedyDiffersByPopulation: "an UNSEALED stale reading is simply re-run on a current build. A SEALED one needs a deliberate re-seal, which is a ruling and not a chore — so the two are counted separately rather than summed.",
+  liveStatusesRestingOnStaleReadings: staleUnsealed.filter(r => r.file.startsWith("pg11-guard")).length > 0
+    ? "pg11-guard-*.json is stale and GELB's INCONCLUSIVE-BY-MEASUREMENT closure of PG-11's relation limb rests on its marginFactor / guardClears. That closure is a CLOSURE rather than a green, but it is a live status resting on a stale reading and it is named here rather than left to be noticed."
+    : null,
   staleSeals: stale.map(r => ({ file: r.file, why: r.why, movedConstants: r.trackedConstantsThatMoved })),
   perSeal: rows,
   standingGap: "This audit is a derivation and so it runs in every routine pass. It does NOT re-measure anything and it cannot: re-measuring a sealed reading needs a build, a server and the façade, and A-G109 keeps the sealed probes out of a routine pass so a pass cannot overwrite a seal. So the audit's job is to make a stale seal LOUD rather than to repair it. A STALE line here is an instruction to re-run that one probe deliberately, under the owner's build permission, and to re-seal it."
@@ -326,15 +367,14 @@ const out = {
 writeFileSync(resolve(OUT, "seal-staleness.json"), JSON.stringify(out, null, 1));
 
 console.log(`self-test: detector fires on ${selfTest.detectedMovesFromBase.join(", ")} between ${BASE} and HEAD · ${selfTest.constantsExtracted} constants extract at both ends`);
-console.log(`HEAD ${out.headShort} · ${rows.length} seals · ${out.summary.valid} valid, ${out.summary.stale} stale, ${out.summary.unknown} unknown\n`);
-for (const r of rows) {
-  console.log(`${r.status.padEnd(8)} ${r.file.padEnd(40)} ${(r.sealHeadShort ?? "--------")}  +${r.commitsBehindHead ?? "?"} commits`);
-  console.log(`         ${r.why}`);
-}
+console.log(`HEAD ${out.headShort} · ${rows.length} readings (${out.summary.sealed} sealed, ${out.summary.unsealed} unsealed) · ${out.summary.valid} valid, ${out.summary.stale} stale (${out.summary.staleSealed} sealed / ${out.summary.staleUnsealed} unsealed), ${out.summary.unknown} unknown`);
+console.log(`builds present in outputs/: ${out.summary.buildsPresent.join(", ")}\n`);
+for (const r of rows) console.log(`${r.status.padEnd(8)} ${(r.sealed ? "SEAL " : "     ")}${r.file.padEnd(40)} ${(r.sealHeadShort ?? "--------")}  +${r.commitsBehindHead ?? "?"} commits  ${String(r.buildId).slice(0, 12)}`);
 /* stderr, not stdout: run-all.sh sends a derivation's stdout to /dev/null, so a stale seal would otherwise
    be reduced to a bare "FAILED (exit 1)" with the reason discarded. */
 if (stale.length > 0) {
-  console.error("\n!! STALE SEALS PRESENT — re-run those probes deliberately and re-seal; do not quote them as current.");
-  for (const r of stale) console.error(`   ${r.file}: ${r.why}`);
+  console.error(`\n!! ${staleUnsealed.length} STALE UNSEALED READINGS — re-run those probes on a current build; do not quote them as current.`);
+  if (staleSealed.length > 0) console.error(`!! ${staleSealed.length} STALE SEALS — re-sealing is a deliberate act on a deliberate build, not a routine re-run.`);
+  if (out.liveStatusesRestingOnStaleReadings) console.error(`!! ${out.liveStatusesRestingOnStaleReadings}`);
   process.exitCode = 1;
 }
