@@ -12706,3 +12706,79 @@ three shell-one-liner self-matches; and the decidability count's instability at 
 
 **Four are this lane's, and three of those were claims made in the act of adopting the rule that forbade
 them.** **PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
+
+---
+
+## §100 A STATISTIC UNDEFINED OVER A THIRD OF ITS DOMAIN — AND WHY IT CANNOT TOUCH THE CEILING
+
+**Date of this section: 2026-11-11.**
+
+### The halo chroma share, measured — and §94's lower bound becomes a figure
+
+| | |
+|---|---|
+| halo chroma share | p10 **0.278**, median **0.728**, p90 **0.872** |
+| corrected requirement, median pixel | **103.2** where §94 said 75.1 — **0 of 30130** meet it |
+| selected | **294.8** — 0 meet it |
+| brightest pixel, share 0.8992 | own requirement **83.5** against its 73.20 — **1.14×** short, where uncorrected it was 1.03× |
+
+**The inconclusive ruling on the unselected limb STANDS.** 1.14× is inside a factor of two, and the
+convention spread was never 2.5 % wide — it is a factor of two between peak-to-mean and peak-to-trough
+plus up to 1.5× between quantum definitions. **The near-miss is gone; the reason for the ruling is
+untouched.** GRÜN declined to report its own measurement as having decided a limb it did not decide,
+three hours after "robustly short" — **the expensive lesson actually held.**
+
+### 36 % of the population has NO share, and that would have been a hole
+
+**16943 of 47073 hue-glow pixels have a halo contribution ≤ 0** — hiding the halo did not reduce C* there
+and at some pixels **raised** it, because compositing is not additive and a cyan layer at low alpha over a
+dark near-neutral ground can leave the ground's own chroma more dominant once removed. **§79's
+non-additivity surfacing in a statistic.** So the corrected requirement is computed over the 64 % where
+the share exists, and *"0 of 30130"* says nothing about the other 16943.
+
+> *** CLOSED BY ONE INEQUALITY: THE REQUIREMENT IS 75.1 / share, AND share ≤ 1, SO THE REQUIREMENT IS
+> ≥ 75.1 FOR EVERY PIXEL — INCLUDING EVERY PIXEL WHOSE SHARE IS UNDEFINED. ***
+>
+> §94's uncorrected 75.1 is not a weaker comparison. **It is the requirement at the most favourable share
+> that can exist**, hence a valid lower bound on the whole population. GRÜN's own figures confirm the
+> form: 75.1/0.728 = 103.2 and 75.1/0.8992 = 83.5.
+
+```
+unselected   best pixel 73.20  vs  >= 75.1     short on every pixel, by >= 1.03x
+selected     best pixel 73.20  vs  >= 214.6    short on every pixel, by >= 2.93x
+```
+
+**RULED: the ceiling conclusion holds on the WHOLE population, the selected limb carries it, and the 36 %
+undefined share cannot weaken it, because the bound that decides it needs no share at all.** The share
+widens the selected margin from 2.93× to 4.03× at the median.
+
+> **Two things are true at once and both are worth keeping: GRÜN's measurement was right to take, AND the
+> conclusion never depended on it.** A-G140 insists a lower bound be turned into a figure, and it was.
+> **What it bought is not the verdict — it is knowing how far from the requirement the build sits**, which
+> is what anyone deciding whether to change the glow would need.
+
+**And the 36 % becomes a finding rather than an obstacle: the share is not a small number there — it is
+not a number there.** A-G364's shape in a **third** place today, after PF-15's limb (b) and A-G406's
+ordering.
+
+> *** THREE PINS THIS PHASE HAVE TURNED OUT TO NAME QUANTITIES THAT DO NOT EXIST IN PART OF THEIR OWN
+> DOMAIN. *** At three that stops looking like coincidence and starts looking like a property of how these
+> pins were written: **each states a relation between two quantities without stating where both exist.**
+
+### A-G433 · A share names its filter in the same phrase
+
+GRÜN's own output carries **two medians under one word**: 0.475 over all hue-glow pixels, 0.728 over the
+positive subset. **GRÜN named it rather than reconciling it, which was right** — they are *different
+quantities*, not two estimates of one, and reconciling would have meant picking one and hiding the filter.
+
+> **RULED: a share reported over a filtered population names the filter in the same phrase, not in the
+> methods.** Same rule as the dropped population travelling with its figure (§91), applied to the
+> **denominator** rather than to the rung. **A-G417's shape, caught by its own author in its own output.**
+
+### Where this leaves the record
+
+**Two new defects:** the share undefined over a third of its domain, and the two medians under one word.
+**295 + 2 = 297.**
+
+**GRÜN's last item is the five mutants; nothing of its remaining work is behind another lane's branch.**
+PF-13 remains the one completion condition closed. No merge, no deployment, Gemini off.
