@@ -13239,6 +13239,14 @@ INSIDE    modal L = 2.87e-3 .. 3.39e-3,                          share 0.099-0.2
 > **The point value is used on the side that HAS a location statistic; the tail on the side that has NONE.
 > The asymmetry of the statistics matches the asymmetry of the populations.**
 >
+> ### ⚠ WITHDRAWN 2026-11-11 — THIS CONDITION DISCRIMINATES NOTHING *(see §105, A-G439)*
+> **It is satisfied at 18 of 18 cells including BOTH failures** — 1280 offset 1 at a 3.39× share ratio and
+> 1280 offset 12 at 25.01× — **so it would have licensed exactly the two comparisons §43 found broken.**
+> A-G432 applied to a condition, and the condition fails it. **And its second clause does no work at all:**
+> `p05(X) > c` implies *"at least 95 % of X exceeds c"* **whatever the shape of X**, so the tail side's lack
+> of a mode is irrelevant to validity — **this lane read an account of the instrument's NECESSITY as one of
+> its SOUNDNESS.** The discriminating quantity is **PURITY**, and PINK's four-clause A-G439 replaces this.
+
 > *** RULED, as a CONDITION on A-G382 rather than an exception to it: a tail-against-a-point comparison is
 > UNCHECKED SUPPORT when both sides have distributions, and SOUND when the point side has a strong location
 > statistic and the tail side has none. *** It is not a weaker construction tolerated — **it is the only
@@ -13274,3 +13282,105 @@ found. **PINK marked that source-derived rather than measured, with no suppressi
 
 **Four new defects:** this lane's "immune to" exclusion; its "distributional bound" mislabel; PG-12's mixed
 quantifiers; and GRÜN's hidden per-pixel scope. **307 + 4 = 311.**
+
+---
+
+## §105 A CONDITION SATISFIED EVERYWHERE — AND A LABEL IS THE PART THAT TRAVELS
+
+**Date of this section: 2026-11-11.**
+
+### §104's condition is withdrawn: it would have licensed the failures it was written to exclude
+
+> *** READ GENEROUSLY AS POINT-SIDE SHARE > 2× THE TAIL SIDE'S, THIS LANE'S CONDITION IS MET AT 18 OF 18
+> CELLS — INCLUDING 1280 OFFSET 1 (3.39×) AND 1280 OFFSET 12 (25.01×), THE TWO WHERE THE BOUND FAILS. ***
+>
+> **A condition satisfied everywhere discriminates nothing.** A-G432 applied to a condition rather than to a
+> measurement, and the condition does not survive it.
+
+**And its second clause does no work, which is the sharper half.** `p05(X) > c` implies *"at least 95 % of X
+exceeds c"* **whatever the shape of X.** The tail side's lack of a mode is irrelevant to the inference.
+
+> *** THIS LANE READ AN ACCOUNT OF THE INSTRUMENT'S NECESSITY AS AN ACCOUNT OF ITS SOUNDNESS. *** Why one
+> *resorts* to a quantile and why the quantile *licenses* a conclusion are different questions — **and the
+> first answer dressed as the second passes everywhere, because necessity is always satisfiable after the
+> fact.**
+
+### Purity, not location strength — and it was in this lane's own table
+
+The outside's modal triple **IS** the band's constant, so its share is not concentration around a centre —
+**it is the fraction of the sample that is the band at all.**
+
+| | purity | |
+|---|---|---|
+| offsets 2…12 | **0.710–0.769** | the sample is the band |
+| offset 1 | **0.475** | **52.5 % of the sample is NOT the band** |
+
+> **At offset 1 the point value is not weakly located. It is CORRECT AND BARELY PRESENT** — a level that
+> over half the compared pixels do not carry. *Location strength cannot see that; purity sees it in both
+> viewports to three digits.*
+
+### A-G439 · The licence, restated so that it discriminates *(PINK's)*
+
+A tail-against-a-point comparison is sound when **all** of:
+
+| | |
+|---|---|
+| **(i)** | **the point is a CONSTANT, not an estimate of a centre** — here a declared alpha rendered deterministically, predicted by the alpha-quantised model, swept 16/16 against the renderer, measured as the mode |
+| **(ii)** | **the point side's sample is PURE** — 0.71–0.77 qualifies, 0.475 does not |
+| **(iii)** | **the tail side's sample is in its INTENDED REGION** — 1280 offset 12 has point-side purity 0.7653 and still fails, because the *tail* side left the ground |
+| **(iv)** | **the claim is a COVERAGE statement at the quantile used**, in the direction the quantile bounds |
+
+**(ii) and (iii) together select exactly the 16 cells where the bound holds and reject exactly the 2 where
+it fails. That is what a condition has to do.**
+
+> **(i) IS THE CLAUSE THIS LANE'S VERSION WAS MISSING, and it is the one that stops the licence spreading:**
+> this lane's wording would have admitted **a median of a tight-but-not-constant population** — the next
+> lane finds a tight distribution, calls its median a point value, and the construction looks identical.
+> **(i) cannot be satisfied by luck.**
+
+**ADDED HERE, because (iii) as stated needs geometry the instrument may not have:**
+
+```
+offsets in region   165-219 distinct triples   modal share 0.099-0.201
+1280 offset 12      333 distinct triples       modal share 0.0306
+```
+
+> **A 1.75× jump in distinct-value count against a 3× collapse in modal share is the signature of having
+> left a region, and it needs no knowledge of the geometry.** *** So (iii) gets a test: a step in the tail
+> side's own heterogeneity relative to the neighbouring samples of the same sweep. *** **A sample that has
+> left its region is not a noisier reading of that region — it reads as a different population and says so
+> in its own distribution.** That makes (iii) checkable **by the instrument** rather than by its author,
+> which is precisely what this lane's withdrawn clause was not.
+
+### And the type separation is better than this lane's unification
+
+**A-G382 and this licence are NOT one rule at two data shapes.** They are separated by **the claim's TYPE —
+magnitude versus coverage** — and the data shape only decides whether a sound construction is also the
+available one.
+
+> §104 **collapsed a question about what is being CLAIMED into one about what the data LOOKS LIKE**, which
+> is how it arrived at a condition that reads the data and never reads the claim.
+
+### A-G440 · A label names a kind, and an overclaiming label survives correct reasoning
+
+PINK: this lane's asymmetry instinct *"is right as a heuristic for CHOOSING an instrument and wrong as a
+soundness TEST; it was doing the first job while labelled as the second"* — **the same shape as
+"distributional bound" one message earlier.** Twice in two messages: **the argument right, the noun wrong.**
+
+> *** RULED: a label names a KIND, and a label naming a stronger kind than the reasoning supports is an
+> overclaim that SURVIVES the reasoning being correct. ***
+>
+> **And the mechanism is why it outranks an ordinary slip: the reasoning stays in the message and the LABEL
+> travels.** Another lane carries *"GELB ruled this a distributional bound"* into a context where the
+> distributions overlap, and nothing it carried says otherwise. **A wrong label on right reasoning is more
+> portable than a wrong figure — because a figure invites recomputation and a noun does not.**
+
+### Where this leaves the record
+
+**Two new defects:** §104's condition, satisfied everywhere and therefore empty; and its necessity-as-
+soundness clause. **311 + 2 = 313.** Both are this lane's, and both were rulings.
+
+**Confirmed rather than merely allowed by PINK:** that its second statistic established the point value was
+**measured rather than assumed** — the outside's mode being the band's level exactly at all 18 cells. PINK
+had written it as corroboration; **it is the measurement of clause (i)'s constant, and that is why (i) is
+satisfiable here at all.**
