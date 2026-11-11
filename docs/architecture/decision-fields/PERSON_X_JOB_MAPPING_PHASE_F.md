@@ -343,8 +343,14 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   physics it stood in for, and one no instrument can ever satisfy A-G139 against.
 > - **PF-11** has **two texts** (A-G320, `PHASE_G:8388`): a lane reading the first measures a different pin.
 > - **PF-13 also has two texts, and the exception clause is coherent only against the FIRST** (**A-G426**,
->   PHASE_G §95). `:365` reads *"every phase-D and phase-E test passes **unchanged**"*; `:950` drops
->   *unchanged* and adds *"except the three restated in writing: `neurovisual-e :156`, `:174`, `:140`"*.
+>   PHASE_G §95). **PF-13's row in §7's obligation table** reads *"Every phase-D and phase-E test passes
+>   **unchanged**."* **Its restatement in §17's table** drops *unchanged* and adds *"except the three
+>   restated in writing"*. **And B-F2, in §4's boundary list, carries the same word**: *"Every phase-D and
+>   phase-E test passes unchanged. If a phase-E test goes red, phase F is wrong"* — so *unchanged* is the
+>   load-bearing word in two independent statements of the obligation (GRÜN found the third).
+>   *Cited by section and pin id, not by line number: the first form of this very note cited two line
+>   numbers that its own insertion had invalidated by twenty lines, four lines below the rule forbidding
+>   exactly that — see A-G427.*
 >   **The exception is to UNCHANGED, not to PASSES** — the three were rewritten for phase F, so the
 >   *unchanged* claim cannot cover them, and **all three must still pass.** Read as an allowance for three
 >   reds, PF-13 would be satisfiable with three failing tests. GRÜN measured all three passing on

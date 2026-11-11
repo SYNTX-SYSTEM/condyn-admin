@@ -11812,8 +11812,8 @@ GRÜN reverted `5a332e46` because MAP-G-ARCH has a **second** assertion at `:383
 `changedSinceG("lib/career")` must equal exactly `layout.ts` and the view model — which the database fix
 violates with a third path. GRÜN refused to widen it, on the same ground it refused in §96.
 
-**The revert was right, and PF-13 never needed the import.** `PHASE_F:950`: *"every phase-D and phase-E
-test passes."*
+**The revert was right, and PF-13 never needed the import.** PF-13, as PHASE_F §17's table restates it:
+*"every phase-D and phase-E test passes."*
 
 > **PF-13's POPULATION IS THE PHASE-D AND PHASE-E TESTS. The 27 are career-lifecycle postgres tests —
 > not phase-D, not phase-E, not mapping tests at all.** GRÜN reports **170/170 on
@@ -12188,9 +12188,10 @@ consequential. The rule belongs to the transient.**
 **15 of 15 files, 194 of 194 tests**, on the population read from `PHASE_DIRS` rather than remembered.
 `mapping-spec/layout.test.ts` and `sign-table.test.ts` had never been run by either lane.
 
-> **A-G426 · PF-13 has two texts and its exception clause is coherent only against the first.** `:365`
-> reads *"every phase-D and phase-E test passes **UNCHANGED**"*; `:950` drops *unchanged* and adds *"except
-> the three restated in writing"*. **The exception is to UNCHANGED, not to PASSES.** The three were
+> **A-G426 · PF-13 has two texts and its exception clause is coherent only against the first.** **Its row
+> in PHASE_F §7's obligation table** reads *"every phase-D and phase-E test passes **UNCHANGED**"*; **its
+> restatement in §17's table** drops *unchanged* and adds *"except the three restated in writing"*. **And
+> B-F2, in §4, carries the same word** — so two independent statements make *unchanged* load-bearing. **The exception is to UNCHANGED, not to PASSES.** The three were
 > rewritten for phase F, so the *unchanged* claim cannot cover them, and **all three must still pass.**
 > Read as an allowance against `:950` alone, **PF-13 would be satisfiable with three FAILING tests.** GRÜN
 > reached the same reading from the three passing; **the wording settles it without needing the result,

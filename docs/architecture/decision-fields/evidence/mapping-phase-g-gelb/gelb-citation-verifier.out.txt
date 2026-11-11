@@ -1,0 +1,111 @@
+========================================================================================================
+GELB · §96 A-G427 — LINE-NUMBER CITATIONS, RESOLVED AGAINST THE CURRENT FILES
+========================================================================================================
+
+  PHASE_F is 1659 lines, PHASE_G is 12239 lines.
+  line-number citations found in total:        318
+    into one of these two documents:           248   <- resolvable here
+    into a code artifact (field-e:365, …):     70   <- a different target, not resolved here
+
+========================================================================================================
+[1] WHAT EACH CITATION NOW POINTS AT — and a heading target is legitimate, not broken
+========================================================================================================
+
+  CONTENT         165   <- resolves to content; whether it is the RIGHT content is unknowable here
+  BLANK            63   <- IMPOSSIBLE as a citation subject
+  HEADING          18   <- LEGITIMATE: cites a section or amendment by the line that names it
+  TABLE RULE        2   <- IMPOSSIBLE as a citation subject
+
+  BLANK         PHASE_F:332    cites PHASE_F:955  ->  ""
+  BLANK         PHASE_F:333    cites PHASE_F:735  ->  ""
+  BLANK         PHASE_F:337    cites PHASE_F:1396  ->  ""
+  BLANK         PHASE_F:347    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:347    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:573    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:593    cites PHASE_F:174  ->  ""
+  BLANK         PHASE_F:624    cites PHASE_F:152  ->  ""
+  BLANK         PHASE_F:840    cites PHASE_F:83  ->  ""
+  BLANK         PHASE_F:847    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:859    cites PHASE_F:140  ->  ""
+  BLANK         PHASE_F:970    cites PHASE_F:174  ->  ""
+  … and 53 more
+
+  *** 65 of 248 document citations point at a BLANK LINE, a table rule or past the end of the file.
+  Every one of those is stale by construction: nothing was ever written there to cite. ***
+========================================================================================================
+[2] CAN A CITATION BE VERIFIED AT ALL? — the quote limb, which only verifies and never accuses
+========================================================================================================
+
+  A citation can only be CHECKED if the citing sentence also carries its subject. So: where a quotation
+  accompanies the number, is the quoted text at the cited line? This limb verifies and never accuses —
+  a miss does not distinguish a stale number from a quote that was never about the target.
+
+  citations carrying a quotation:          66
+    VERIFIED — the quote is at the target:  0
+    UNVERIFIED:                            66
+      of those, the quote sits elsewhere in the target file — STALE CANDIDATES: 11
+      (the rest quote a code file, paraphrase, or quote something not in the target at all)
+
+  CANDIDATE  PHASE_F:346 cites PHASE_F:365 — quote also at PHASE_F:262
+             "every phase-d and phase-e test passes un"
+  CANDIDATE  PHASE_F:346 cites PHASE_F:950 — quote also at PHASE_F:262
+             "every phase-d and phase-e test passes un"
+  CANDIDATE  PHASE_G:1959 cites PHASE_G:400 — quote also at PHASE_G:1936
+             "architecture.test.ts"
+  CANDIDATE  PHASE_G:6016 cites PHASE_G:670 — quote also at PHASE_G:5922
+             "its computed opacity"
+  CANDIDATE  PHASE_G:6016 cites PHASE_G:669 — quote also at PHASE_G:5922
+             "its computed opacity"
+  CANDIDATE  PHASE_G:8176 cites PHASE_G:695 — quote also at PHASE_G:8168
+             "under live limb 3 holds across focus sta"
+  CANDIDATE  PHASE_G:8211 cites PHASE_G:336 — quote also at PHASE_G:8153
+             "(prefers-reduced-motion: reduce)"
+  CANDIDATE  PHASE_G:8733 cites PHASE_G:701 — quote also at PHASE_G:8703
+             "every temporal obligation is measured on"
+  CANDIDATE  PHASE_G:8733 cites PHASE_G:715 — quote also at PHASE_G:8703
+             "every temporal obligation is measured on"
+  CANDIDATE  PHASE_G:9455 cites PHASE_F:1400 — quote also at PHASE_F:1420
+             "a rung below 2× the measured per-pixel f"
+  … and 1 more candidates
+
+  *** NO NUMBER HERE IS A COUNT OF STALE CITATIONS. *** 0 are verified; the rest are
+  unverifiable by any means this instrument has, because the record does not say what they were meant
+  to name. That is the finding and it is the argument for A-G427: a citation that carries its subject
+  can be checked, and a citation that carries only an offset cannot be checked by anyone, ever.
+========================================================================================================
+[3] WHAT THIS BOUNDS, AND WHAT IT DOES NOT
+========================================================================================================
+
+  *** OF 248 LINE-NUMBER CITATIONS INTO THESE TWO DOCUMENTS, 0 CAN BE VERIFIED. ***
+
+  That is the finding, and it is sharper than any count of stale ones would have been. 65 point at a
+  blank line or a table rule and are stale by construction — nothing was ever written there to cite. Of
+  the remaining 183, 11 carry a quotation that sits somewhere else in the target file and are
+  candidates for a human to read. *** THE REST CANNOT BE CHECKED BY ANY MEANS THIS INSTRUMENT OR ANY
+  OTHER HAS, because the record does not say what they were meant to name. *** A citation that carries
+  only an offset is not weakly verifiable. It is UNVERIFIABLE, permanently, by anyone.
+
+  RULED, A-G427: a citation into a document names what the document CARRIES — a quoted sentence, a pin
+  id, an amendment id, a section number — and a line number may ACCOMPANY it but never replace it.
+  GRÜN's §98 form transferred to prose: name the sentence, not the offset. The asymmetry is the whole
+  argument: *** a quoted sentence that moves is still findable; a line number that moves is silently
+  wrong, with nothing in the citation to signal it. *** And the 18 HEADING targets show the cheap fix is
+  already in use here — citing an amendment by the line that names it survives an edit above it only by
+  luck, but citing it by its ID survives everything.
+
+  TWO DEFECTS IN THIS INSTRUMENT'S OWN FIRST FORM, both of which inflated a finding, both recorded
+  rather than quietly fixed:
+    1. it counted a HEADING target as impossible and reported 83 impossible citations. Citing A-F18 by
+       the line that reads "### A-F18 · …" is the most precise citation available, not a broken one.
+    2. its quote limb searched the whole target file and reported the FIRST occurrence — which is very
+       often the CITING line itself, because the citing sentence contains the quote it just wrote. It
+       reported 53 citations "PROVEN stale" on that basis. *** A check that locates a quote in the
+       sentence quoting it has measured nothing, and it produced the largest number in the output. ***
+
+  AND THE SHAPE THIS CAME FROM, recorded because the gap was zero: the note ruling against line-number
+  citations cited two line numbers its own edit had invalidated, four lines below the rule. A-G422 was
+  an hour after its rule; GRÜN's within-run spread four sections; PINK's rounding model three sections.
+  *** A RULE AND ITS VIOLATION IN ONE PARAGRAPH IS NOT A WORSE FAILURE OF ATTENTION — IT IS EVIDENCE
+  THAT WRITING THE RULE IS THE RISK CONDITION, because the writing is where the attention goes. ***
+
+========================================================================================================
