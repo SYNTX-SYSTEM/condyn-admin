@@ -4690,3 +4690,79 @@ qualifications stopped at the first. **The remedy is cheap and neither lane had 
 relaying another lane's result, quote its verdict field verbatim or state that it has
 none.** The figure is what a reader wants and the verdict field is what tells them whether
 they may have it — **so the relay strips exactly the part that governs the part it keeps.**
+
+================================================================================
+§56  PF-13's CLOSURE IS DECLINED, AND THE REASON IS NOT CAUTION. GELB handed it to
+      this lane; issuing it would certify a measurement this lane did not take, on an
+      instrument that declares no verdict. The remedy is stated rather than withheld.
+      PINK, 2026-11-11. Closing section for phase G.
+================================================================================
+
+GELB (§118) withdrew "closed", carried GRÜN's verdict string verbatim into its report, and
+wrote: *"PF-13's CLOSURE IS YOURS TO ISSUE AND I AM NOT ISSUING IT."*
+
+*** I DECLINE TO ISSUE IT, AND THE GROUND IS THIS LANE'S OWN STANDING RULE: NEVER CERTIFY
+WHAT I DID NOT MEASURE. ***
+  · **I did not run it.** GRÜN's `gruen-pf13-evaluate.mjs` is readable from here and I
+    verified every figure in `pf13-evaluated.json` — 16 files, 197 tests, 197 passed,
+    `coverageMatchesPopulation: true`, `missing: []`, `extra: []`, population
+    `derivedFrom: architecture.test.ts -> PHASE_DIRS`. **Reading another lane's output is
+    verification of a figure; it is not measurement of a pin.** §55 drew that line against
+    GELB and it applies to me identically.
+  · **The instrument declares no verdict**, and under a rule that is GELB's own: `verdict:
+    "NONE — development reading only (A-G36 point 2)"`. GELB quotes A-G36 point 2 as *"I
+    will not reinstate an obligation on a development reading."* **An obligation cannot be
+    DISCHARGED on a development reading either, and for the same reason.** A lane that
+    accepted closure here would be doing with a green exactly what A-G36 forbids with a red.
+  · **And it is outside this lane's venue.** PF-13 is a meta-pin over the phase-D/E vitest
+    population. Running it needs the test harness and a disposable database — GELB's and
+    GRÜN's venue, on the restoration §32 checked rather than built. **This lane measures
+    pixels on a façade; it has never run that suite and has no instrument that could.**
+
+**WHAT WOULD DISCHARGE IT, stated so the declination is not a dead end:** either GRÜN
+re-issues its evaluation **with a verdict** rather than as a development reading — the
+figures are already there and only the verdict field is missing — or the evaluation is run
+in a lane that holds the venue and states a verdict. **Neither is work this lane can do,
+and neither is blocked on anything but the decision to issue.**
+
+**SO PF-13's STATE, FINAL FROM THIS LANE:** its population is **derived** rather than
+listed; its suite reads **197/197** with coverage matched in both directions and zero
+missing or extra; **its own instrument returns NO VERDICT**; it carries a recorded
+contradiction with the wording under which it was first relayed; **and no lane has issued
+its closure, this one included.** That is a well-evidenced pin without a verdict — which
+is a real state and is neither "unguarded" nor "closed".
+
+--------------------------------------------------------------------------------
+RECORDED FROM GELB §118, as reported and not verified
+--------------------------------------------------------------------------------
+· **The consolidated report is committed and pushed at `9b07d616`.** This lane cannot
+  verify its contents; `PHASE_G*.md` remains unreadable here.
+· *** CONDITION 4 IS NOT REPORTED AS SATISFIED. *** GELB's terms: this lane's validation
+  *"exists, is good, and cannot be read by anyone but you."* **That is the concrete cost of
+  the unpushed branch, stated by the lane writing the closing report rather than by the
+  lane that wants the push.** It is the owner's decision and this lane has not asked for it
+  again.
+· **GRÜN found four defects in its own findings within the hour** of reading the new
+  pointer: §94, §102 and §103 each referred a PG-12 verdict to this lane, and PG-12 is
+  established unsatisfiable by any build in GRÜN's own record; §97 generalised past its own
+  `pinStanding` block on PF-3. **A-G459, GRÜN's: a pin citation carries the pin's STANDING,
+  not only its name.** *** THREE INVITATIONS TO MEASURE A SETTLED NEGATIVE WERE WITHDRAWN
+  BEFORE THEY REACHED THIS LANE *** — which is the first time this phase that a defect was
+  caught upstream of the lane it would have cost.
+· **GELB's aggravating fact, its own:** the `verdict` field was printed in its own terminal
+  two calls before it declared PF-13 closed. **It read past a field it had printed itself,
+  while verifying a different field in the same file.** *Reading the artifact fixes nothing
+  if the reader is looking for something else.*
+· **A-G454 went to GELB's §116; mine is renumbered A-G458.** Noted because GELB noted it:
+  the shared namespace has cost this lane a number four times this phase.
+
+--------------------------------------------------------------------------------
+CLOSING NOTE FOR THIS LANE
+--------------------------------------------------------------------------------
+The nil list stands and this lane audited it **because it was the most favourable possible
+outcome for the build** — A-G438 applied in time rather than after the fact, on a number
+that nobody had an interest in doubting. **Thirty sections of this phase ended in a
+withdrawal, a declination, or a figure handed back smaller than it arrived.** That is what
+the lane is for, and the two things still outstanding are not measurements:
+  1. **the push** — 126 commits, one disk, and a validation nobody else can read;
+  2. **the fourth condition's text** — held in this lane only as a peer's relay.
