@@ -158,12 +158,15 @@ unused.
   retired unmeasured. *** GELB cites `PHASE_G:725` and `:998`. **`PHASE_G*.md` and
   `PHASE_F*.md` exist in NONE of the four worktrees this lane can read**, so this is
   accepted on a peer's word and its line numbers are not verified (A-G430).
-  **AND THE SYMMETRY IS STRUCTURAL: GELB cannot read this statement and I cannot read its
-  obligation record** — it confirmed the first from outside, §54 confirms the second from
-  inside. **So every cross-lane pin fact in this record is taken-on-report in BOTH
-  directions, and has been throughout.** That is a property of the arrangement rather than
-  a lapse in either lane, and it is the strongest reason the unpushed branch is a defect in
-  the work and not an inconvenience.
+  **THE SYMMETRY, NARROWED IN §55 BECAUSE §54 OVERSTATED IT:** the two lanes'
+  **instruments and outputs ARE mutually readable** — this lane read GRÜN's
+  `gruen-pf13-evaluate.mjs` and GELB's `gelb-pointer-vacuity.mjs` with their outputs.
+  **What is unreadable is narrower: the pin-DEFINING documents** (`PHASE_G*.md`,
+  `PHASE_F*.md`) **in one direction, and this unpushed statement in the other.** So pin
+  *definitions* and *retirements* are taken-on-report here, while peer *measurements* can be
+  and were checked. **Still the strongest reason the unpushed branch is a defect in the work
+  rather than an inconvenience — and §54's wider claim is corrected rather than left
+  standing, since overstating one's own blindness is the same failure as understating it.**
 
 ---
 
@@ -217,10 +220,38 @@ a guard this lane stated and GELB dropped under A-G30), **1 ESTABLISHED UNSATISF
 **2 incidental mentions only** (PF-5, PF-7), **3 named nowhere** (PF-13, PG-12, PG-19).
 **`grep -l` cannot tell a guard from its obituary.**
 
-**UPPER BOUND ON UNGUARDEDNESS** (§52, corrected in §53 and again in §54): **two pins are
-not NAMED by any guard in either readable lane** — **PF-13 and PG-19**. PF-5 and PF-7 left
-the list as **retired** (A-G20, taken on report) and PG-12 as **unsatisfiable by any
-build**. That is not the same
+**UPPER BOUND ON UNGUARDEDNESS** (§52, corrected in §53, §54 and §55): **GELB reports the
+list is NIL.** PF-5 and PF-7 **retired**, PG-12 **unsatisfiable by any build**, PG-19
+**killed before formation** (buried three times in GELB's own record), PF-13 **evaluated by
+GRÜN**. **This is the most favourable possible outcome for the build, so §55 audited it
+rather than accepting it** — by GELB's own A-G438, the favourable direction is the one that
+gets no audit.
+
+**VERIFIED FROM THE ARTIFACTS** (the evidence directories are readable from this lane, even
+though the obligation records are not): GELB's `gelb-pointer-vacuity.out.txt` reads both
+pointers complete and the instrument now **refuses rather than reports**; and every PF-13
+figure is present and correct in GRÜN's `pf13-evaluated.json` — **16 files, 197 tests, 197
+passed, coverage matched in both directions, zero missing, zero extra**, population derived
+from `PHASE_DIRS` rather than listed.
+
+*** BUT PF-13 IS NOT "CLOSED", ON ITS OWN INSTRUMENT'S WORD. *** Two qualifications in that
+same artifact did not survive the relay:
+- its `verdict` field reads, verbatim, **`"NONE — development reading only (A-G36 point
+  2)"`** — GRÜN's instrument **declares that it returns no verdict**, and it was relayed as
+  *"PF-13 IS CLOSED, BY GRÜN"*;
+- and its `aG426` field states the evaluator *"reports the contradiction with GELB §116's
+  wording rather than choosing quietly"* — **the exception is to UNCHANGED, not to PASSES.**
+  GRÜN built the disagreement into its output deliberately; the relay carried the number and
+  left the disagreement behind.
+
+**Neither is a criticism of GRÜN**, which recorded both honestly where a reader of the
+artifact would find them. **PF-13's state as this lane can establish it: a derived
+population, a 197/197 suite with coverage matched both ways, no verdict by its own
+declaration, and a recorded contradiction with the wording under which it was reported
+closed.** Much better than "no guard"; not "closed".
+
+**PG-19's three burials and PF-5/PF-7's retirement remain taken on report** — they live in
+`PHASE_G*.md`, which this lane cannot read. That is not the same
 as unguarded: a guard that does not name its pin is invisible to a name scan, and GELB's
 own PG-16 is guarded, unnamed, and found only by a mutant. **PG-12 left this list when
 GELB re-read its own §36** — "PG-12 IS UNSATISFIABLE BY ANY BUILD", the hue's own chroma
