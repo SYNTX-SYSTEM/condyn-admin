@@ -11030,3 +11030,185 @@ Owed by this lane, small and named: `GROUND`, `MOTION`, `RING_WIDTH_PX` into the
 imported constants into scope — the second being the larger of the two, since it is the denominator and not
 the numerator. GRÜN goes to the real-stack ladder on an instrument whose raster floor is now verified rather
 than assumed, then PF-3 blind. The credential remains the owner's single open item.
+
+---
+
+## §90 THE OWED COVERAGE ITEM FOUND A DEAD FIGURE — AND THE CREDENTIAL WAS MINE TO RESTORE
+
+**Date of this section: 2026-11-11** (A-G316: a record's claim to currency carries a date, and the date is
+its own section number).
+
+The owner's mandate widened in two ways that matter to this lane, quoted because they change what is
+permitted and not merely what is encouraged:
+
+> *"Keine weiteren Owner-Rückfragen für normale Entwicklungsentscheidungen."*
+> *"Fehlende Infrastrukturzugänge konkret melden, falls sie nicht eigenständig wiederhergestellt werden
+> können."*
+
+Unchanged and still binding: *"Bestehende Prüfstände und Boundaries erhalten."* Gemini off, no merge to
+`main`, no production deployment, no product features outside the existing scope.
+
+**The second clause retires this record's longest-standing escalation.** `TEST_DATABASE_ADMIN_URL` has stood
+as "the owner's single open item" since §74. It is now read correctly: **the clause asks for restoration
+where restoration is possible, and reporting only where it is not.** It was possible.
+
+### The restoration, stated so it can be attacked rather than accepted
+
+| | |
+|---|---|
+| **what was created** | a `postgres:17` container, bound to `127.0.0.1:5433` only, password generated here |
+| **what was NOT touched** | the existing server on `:5432` — no credential guessed, no role enumerated |
+| **the role** | `scripts/test-db/provision-role.ts` produced `condyn_test_runner`: NOSUPERUSER, CREATEDB, NOCREATEROLE, NOINHERIT, NOREPLICATION, NOBYPASSRLS, zero memberships, owning no protected database — **every assertion in the script's own verification block passed** |
+| **where the line went** | one line in `.env.local` at the repo root, mode 600, gitignored — the form the owner was asked for |
+
+**B-ENTRY WAS NOT BYPASSED, AND DID NOT NEED TO BE.** `verifyDisposableTestDatabase` ran unchanged and
+passed on its own terms: `create.ts` made `condyn_test_1dcc1861148f5181`, the disposable marker was written,
+the read-only identity probe confirmed it, `drop.ts` removed it and verified its absence.
+
+> **The boundary was never the problem. The problem was that nothing satisfied it — and a fail-closed gate
+> with nothing behind it is still a fail-closed gate.** That is why this was an infrastructure item and not
+> an architectural one, and it is why five phases of refusing to guess a credential was the right call and
+> not an excess of caution: **the refusal cost nothing except time, and guessing would have cost the
+> boundary.**
+
+**And it is not this lane's to certify.** PINK has been given the restoration itself as its first action —
+is the server genuinely disposable, genuinely loopback-only, is the role genuinely confined, and *did any
+guard get satisfied by configuration rather than by fact*. A-G393's symmetric half applies to me here: a
+boundary I claim to have respected is worth nothing until someone who did not build it says so.
+
+### A-G406 · E-7's four-ring ladder is asserted at a breath trough no element visits
+
+**§89 left one item owed: `GROUND`, `MOTION`, `RING_WIDTH_PX` into the coverage set — A-G405's three
+constants unwatched in both lanes at once. The first of them read held a dead figure.**
+
+`MOTION.breath` declares `periodMs 10000, radiusAmplitude 0.015, opacityMean 0.96, opacityAmplitude 0.04`.
+A `git grep` across the whole tree, at `4b83414e` and at `HEAD`:
+
+| | |
+|---|---|
+| render-path readers | **0** |
+| non-declaring consumers | **1** — `test/career/mapping-field/neurovisual-e.test.ts:85` |
+
+That one consumer computes E-7's ladder at *"the breath's trough for the breathing field ring"*.
+
+**The field ring does not breathe.** It carries `data-breath` as a **state marker**, by the product's own
+stated design at `:953`: *"The edge carries E-6's state (data-breath); the breath itself is the medium's."*
+It has no `.mf-wave` class and no wave ancestor, and both breath selectors require a `.mf-wave`
+**descendant** of the field root. The two groups that do breathe are the medium's:
+
+| group | mean | depth | sweeps |
+|---|---|---|---|
+| `.mf-wave-ground` | 0.5 | 0.5 | [0.000, 1.000] |
+| `.mf-wave-halo` | 0.8825 | 0.1175 | [0.765, 1.000] |
+
+The halo's figures are **not stored** in the instrument: they are checked to *be* `1 − haloDepth/2` and
+`haloDepth/2`. **A relation verified beats a number stored.**
+
+The ladder under every breath the product could supply, against `bandStep` 1.6:
+
+| hypothesis | mean | amp | best/shelf | trough/best | horizon/min(1,peak) | |
+|---|---|---|---|---|---|---|
+| **as written — `MOTION.breath`** | 0.96 | 0.04 | 3.864 | **1.624** | 1.667 | PASS |
+| the halo's actual breath | 0.8825 | 0.1175 | 3.864 | **1.350** | 1.667 | **FAIL** |
+| the ground's actual breath | 0.5 | 0.5 | 3.864 | **0.000** | 1.667 | **FAIL** |
+| **no breath — the ring as drawn** | 1.0 | 0.0 | 3.864 | **1.765** | 1.667 | PASS |
+
+> **The two hypotheses that fail are exactly the two that name a group which really breathes.** And the rung
+> fed by the dead constant is **the tightest in the ladder**: margins are +141.48 % on `best/shelf`, +4.17 %
+> on `horizon/min(1,peak)`, and **+1.47 % on `trough/best`. The ladder's entire margin sits on the one rung
+> whose value comes from a constant nothing renders.**
+
+**A-G128, three limbs.** (1) Arithmetic: satisfiable — 1.624 passes, 1.350 would fail. (2) A-G268
+enforcement: **the test is the only consumer of the constant it tests against**, so no change to anything
+the product *draws* can move this rung. **ZERO-BY-CONSTRUCTION.** (3) A-G313 motion-mode: the pin names a
+multiplicative modulation of a stroke's own alpha on a ring; the quantity that exists is **group opacity on
+the medium** — 2.94× and 12.50× the named amplitude. **Not the same quantity.**
+
+**Verdict: INCONCLUSIVE BY CONSTRUCTION** (A-G364's state, third instance). **Not a defect in the build.**
+The build is coherent and says so where it draws; the defect is a test and a declaration that phase F's
+migration left behind. **A-G54 read forwards is why it still matters: a figure is a property of a build, and
+0.04 is a property of no build that ships.**
+
+**The root cause is not carelessness, and this is the transferable part.** The test holds its own `CONTRACT`
+copy — the *right* shape, since a test that reads the product's constant cannot fail. But `CONTRACT.breath`
+declares `hz`, `radius` and `opacity` and **no mean**, and two of those three are asserted nowhere at all.
+The clause needed a mean to locate a trough, the contract did not state one, **so the assertion went and
+found one in the product — and found a dead declaration.**
+
+> **Ruled: when a contract is short a figure its own assertion needs, the assertion will supply one from
+> somewhere. The check to run against a pin is therefore not "does the test read a product constant" but
+> "does the contract state every figure the test needs."**
+
+**GRÜN owes three ACTIONS** (A-G403 — a ruling that requires an action is a probe): delete `MOTION.breath`;
+re-point E-7 at the static ladder `best/shelf, field/best, horizon/field`, which clears at 3.864, 1.765 and
+1.667; delete the `:84` docstring, which states a contract nothing executes — **the second docstring this
+phase to quote a figure the product does not use**, after `SEAT_PAD_PX`'s at `:118` in §80.
+
+**PINK owes a probe, not a ruling**, because this lane cannot execute it: E-7 orders **rings** and says
+nothing about the medium behind them. The ground sweeps [0.000, 1.000] over 7 staggered layers with base
+stops 0.075 … 0.018, against a shelf ring at 0.022. At this build the two do not overlap spatially, so it is
+a pixel question. **Raised as the obligation E-7 never stated, and not counted as a defect until measured.**
+
+### The scope extension proper — the denominator, not the numerator
+
+`gelb-product-constants.mjs` now reads **all five files the drawing surface takes a value from**, not one:
+
+| | before §90 | after §90 |
+|---|---|---|
+| files read | 1 | **5** |
+| declarations in scope | 47 | **63** |
+| covered | 16 | **24** |
+| uncovered | 31 | **39** |
+| names imported but unreachable | 7 | **0** |
+
+> **The fraction got worse because it got true.** §89's correction said the real denominator was 54; reading
+> the files rather than counting the import list gives **63**, because a file the audit now reads brings its
+> own declarations with it. **I would rather publish 24 of 63 than 23 of 47.**
+
+All five previously wired instruments verified **byte-identical** against hashes taken from `git HEAD`
+*before* the edit — and this time the check was not vacuous: `pg10` and `pg17-pg19` were confirmed to really
+call `writeFileSync`, which is the thing §88's twentieth error assumed.
+
+### A-G407 · A-G396 removed the detector along with the error class
+
+My wave-class scan printed **1** where it should print **2** — the halo's `className` is written as a
+conditional and my pattern required a quote after the brace. **A-G396 then faithfully interpolated the wrong
+number into the sentence beside it.**
+
+> In §80 through §89 it was precisely a **typed numeral disagreeing with its own adjacent output** that
+> caught twelve defects. **Interpolation made prose and scan agree BY CONSTRUCTION, which removed the
+> detector along with the error class.** A-G396 moved the failure from *"the prose is wrong"* to *"the prose
+> is faithfully wrong"*, which is harder to see, not easier.
+
+**A-G396 stands and gains a second limb: an interpolated count must be accompanied by an INDEPENDENT
+assertion on the same quantity.** Here — wave-carrying *elements* must equal wave *groups* defined in the
+stylesheet, which throws on the old pattern. **A count is not verified by being computed; it is only
+consistent with itself.**
+
+### A-G408 · Three limbs in my own instrument audit, and the third hid the other two
+
+1. **The constant list was twelve hand-written names.** A fork outside the list was invisible. That is
+   GRÜN's *"a declaration the audit cannot extract is unguarded everywhere"* applied to **the audit's own
+   scope**, one level above where §89 fixed it. The scope now follows the module, and broadening it
+   immediately surfaced `HALO_NEAR`, `HALO_FAR`, `RING_LUMINANCE`, `RING_WIDTH_PX`, `GAP_ALPHA_GAIN` and
+   `INK` as shared across instruments.
+2. **The reader detector matched only `import { … }`.** The newest instrument in the directory uses
+   `import * as`, so it appeared in **neither block of the audit**.
+3. **The self-writing detector was `/writeFileSync/` — which matched the audit's own detector source.** So
+   the audit listed **itself** as writing its own output; I ran it with `> /dev/null` on that belief, and
+   then read, quoted and reasoned about an output file written before the newest instrument existed.
+
+> **A DETECTOR THAT MATCHES ITS OWN SOURCE IS NOT A DETECTOR.** The remedy is one this lane already ruled,
+> in §80, when a limb-2 probe was matching comments: **a scan for code must first exclude what is not
+> code.** Second instance of that rule — and this time the non-code form was **a regex literal inside the
+> scanner itself.** Now two-limbed (import *and* call) and asserted against its own source.
+
+### Where this leaves the record
+
+**Five new defects, and I am counting the three limbs separately because counting them as one would have
+been the flattering choice:** A-G406's dead figure and its insensitive assertion (1), A-G407's missing
+second limb (1), and A-G408's three (3). **215 + 1 + 1 + 3 = 220.**
+
+**The credential is no longer the owner's open item.** It is restored, it is behind the unchanged boundary,
+and it is PINK's to certify rather than mine to assert. **Eighteen instruments, forks carrying any number:
+0.** No merge, no deployment, Gemini off.
