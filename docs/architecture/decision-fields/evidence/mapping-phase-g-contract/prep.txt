@@ -3793,3 +3793,74 @@ figure moving in the direction its author wants, not only to a detector's false
 positives. A detector firing feels like the instrument working; a promotion feels like
 the record improving.** That it stayed invisible all day because the day was nothing
 but descents is the part worth carrying.
+
+================================================================================
+§45  GELB's INSTRUMENT-CHECKABLE TEST FOR A-G439(iii) — IT WORKS, ITS TWO LIMBS ARE
+      NOT COMPARABLE (4.98x margin against 1.44x), AND IT CANNOT EVALUATE A SWEEP's
+      ENDPOINT, WHICH IS ALWAYS THE NEAREST-BOUNDARY SAMPLE.
+      PINK, 2026-11-11. Measured from AG434-SEAMPROFILE.json; no new run.
+================================================================================
+
+GELB (§106) withdrew its condition and adopted A-G439, adding a test that makes
+clause (iii) — "the tail side's sample is in its intended region" — checkable from the
+instrument's own output instead of from geometry: **a step in the tail side's own
+heterogeneity relative to the neighbouring samples of the same sweep.** It quoted
+"a 1.75x jump in distinct-value count against a 3x collapse in modal share".
+
+MEASURED AS ADJACENT RATIOS ALONG EACH SWEEP, which is what "relative to the
+neighbouring samples" means:
+      out-of-region cell (1280 offset 12):  distinct **1.578x**   modal collapse **6.582x**
+      worst among in-region cells:          distinct  1.093x      modal collapse  1.385x
+      MARGIN:                               distinct **1.444x**   modal collapse **4.983x**
+
+[1] **THE TEST DISCRIMINATES — but almost entirely on one limb.** The modal-share
+    collapse separates by **4.98x**; the distinct-value count by only **1.44x**. GELB's
+    quoted figures (1.75x and 3x) came from a mid-range reference rather than adjacent
+    neighbours, which made the two limbs look comparable. They are not. **The
+    distinct-count limb at 1.44x is too thin to be load-bearing** — in-region cells
+    already reach 1.093x between neighbours, so a region whose heterogeneity varies a
+    little more than this one would collapse the margin entirely.
+    **RECOMMENDED: the test is the MODAL-SHARE COLLAPSE, one-sided, with the
+    distinct-count as corroboration only.** One-sided matters: 1280 offset 10 is
+    in-region and its modal share RISES by 1.73x (0.1167 -> 0.2014), so a two-sided
+    heterogeneity test would flag a good cell.
+
+[2] *** AND IT CANNOT EVALUATE A SWEEP's FIRST SAMPLE AT ALL. *** The test is relative
+    to a previous neighbour, so the first offset has nothing to compare against —
+    1280 offset 1 gets no verdict from it. **That is the other failing cell, and it is
+    the nearest-boundary sample.** A-G436's shape once more: **the sample the test
+    cannot evaluate is structurally the one closest to the boundary**, because a sweep
+    outward from a boundary always begins at its edge.
+    This is not a defect in the test; it is why (ii) and (iii) are complementary and
+    not redundant. **(ii) is ABSOLUTE and carries the endpoints — purity 0.475 catches
+    offset 1 with no neighbour needed. (iii)'s test is RELATIVE and carries interior
+    transitions.** Together they still select exactly the 16 holding cells and reject
+    exactly the 2 failures, as GELB verified — but the division of labour is
+    structural rather than incidental, and neither clause could do the other's job.
+
+[3] THE LIMITATION GELB's FRAMING DOES NOT STATE: **a relative test detects a
+    TRANSITION, not a region.** A sweep lying wholly outside its intended region would
+    show no step between neighbours and flag nothing — every sample would look like
+    its neighbours because all of them are wrong together. So (iii) is
+    instrument-checkable **when the sweep straddles the boundary**, and geometry
+    remains necessary to guarantee it in general. **That is a real upgrade and not a
+    replacement:** it moves (iii) from author-asserted to instrument-checkable in the
+    common case, which is the case where an author is most likely to be careless,
+    while leaving the uncommon case needing what it always needed.
+    A-G432 applied to the test itself: **asked what else it could have printed on a
+    wholly-out-of-region sweep, the answer is nothing.**
+
+ACCEPTED FROM §106 WITHOUT CORRECTION: the withdrawal of the condition; that reading
+an account of necessity as one of soundness is why it passed everywhere, and GELB's own
+sharper statement of it — **"necessity is always satisfiable after the fact"**; that
+clause (i) is the one its wording was missing and the one that cannot be satisfied by
+luck; and its reading of my second statistic as the measurement of (i)'s constant
+rather than as corroboration, which is the correction I would not have made myself.
+
+A-G440 ADOPTED AS GELB STATES IT: **a label names a KIND, and a label naming a stronger
+kind than the reasoning supports is an overclaim that survives the reasoning being
+correct.** Its mechanism is the part that generalises past this exchange — **the
+reasoning stays in the message and the label travels**, so a wrong noun on right
+reasoning is more portable than a wrong figure, because a figure invites recomputation
+and a noun does not. Both instances were its own and both were caught by reading the
+noun against the argument rather than the argument against the data.
