@@ -300,6 +300,17 @@ export async function unhideAll(page, keep = null) { await clearStyles(page); if
  * One mask per class by DIFFERENTIAL suppression: the pixels a class's own light reaches. Built with the page
  * under reducedMotion:reduce so the breath does not enter the mask (PINK's "eleventh defect" guard).
  * `threshold` 0.001 is PINK's. Returns index arrays, clip-local.
+ *
+ * §95: THIS FUNCTION IS NOT REPRODUCIBLE, and the cause is measured rather than guessed (outputs/
+ * mask-determinism.json). Two captures of an UNCHANGED page differ by ~1000 of 853776 luminance values, so a
+ * membership decided by a strict `>` against a single threshold flips for every pixel whose delta sits inside
+ * that noise. The fixed 340 ms wait in `hide()` was my first suspect and is INNOCENT: the apparent drift after
+ * a hide has the same magnitude and the same random-walk shape as the drift with no hide at all.
+ *
+ * Kept unchanged, because every mask-derived figure already in this record was taken with it and silently
+ * changing it would move committed numbers. New work uses `classMasksStable`, which decides by unanimity over
+ * repeated derivations and REPORTS the pixels it cannot decide. Figures still taken from this function carry
+ * the instability in their statement (GELB §91's ruling, the second of its two options).
  */
 export async function classMasks(page, cdp, clip, N, classes, { threshold = 0.001, keepHidden = null } = {}) {
   const base = await captureLuminance(cdp, clip, N);
@@ -313,6 +324,40 @@ export async function classMasks(page, cdp, clip, N, classes, { threshold = 0.00
     await unhideAll(page, keepHidden);
   }
   return { base, masks, threshold };
+}
+
+/**
+ * §95 — the reproducible mask. Each class is derived `repeats` times, each derivation with its OWN base and
+ * hidden capture, and a pixel is IN only by UNANIMITY. A pixel that some derivations include and others do not
+ * is UNDECIDED and is returned as a population rather than silently pushed to one side, because GELB §91's rule
+ * for the rung applies here for the same reason: a partition without its undecided count cannot be audited.
+ *
+ * The noise floor is MEASURED at the top of every call, on an unchanged state, so the caller can see the
+ * instrument's own contribution beside the figure instead of trusting a constant. A-G415: this is a quantity
+ * the run produces and can be wrong about, not a sentence in a header.
+ */
+export async function classMasksStable(page, cdp, clip, N, classes, { threshold = 0.001, keepHidden = null, repeats = 3 } = {}) {
+  if (!(Number.isInteger(repeats) && repeats >= 2)) throw new Error(`ERR_GRUEN_MASK_REPEATS: unanimity over ${repeats} derivations is not a stability test.`);
+  const n1 = await captureLuminance(cdp, clip, N), n2 = await captureLuminance(cdp, clip, N);
+  let noiseFloorPixels = 0;
+  for (let i = 0; i < N; i += 1) if (n1[i] !== n2[i]) noiseFloorPixels += 1;
+  const masks = {}, undecidedIx = {}, stability = {};
+  for (const cls of classes) {
+    const votes = new Uint8Array(N);
+    for (let r = 0; r < repeats; r += 1) {
+      const base = await captureLuminance(cdp, clip, N);
+      await hide(page, CLASS_SELECTOR[cls]);
+      const hidden = await captureLuminance(cdp, clip, N);
+      await unhideAll(page, keepHidden);
+      for (let i = 0; i < N; i += 1) if (base[i] - hidden[i] > threshold) votes[i] += 1;
+    }
+    const ix = [], un = [];
+    for (let i = 0; i < N; i += 1) { if (votes[i] === repeats) ix.push(i); else if (votes[i] > 0) un.push(i); }
+    masks[cls] = ix; undecidedIx[cls] = un;
+    stability[cls] = { repeats, decidedIn: ix.length, undecided: un.length,
+      undecidedAsPctOfDecided: ix.length === 0 ? null : +(100 * un.length / ix.length).toFixed(4) };
+  }
+  return { masks, undecidedIx, stability, noiseFloorPixels, threshold, noiseFloorAsPctOfClip: +(100 * noiseFloorPixels / N).toFixed(4) };
 }
 
 /** Light removed by suppressing a selector, summed over a mask (the share denominator / numerator unit). */

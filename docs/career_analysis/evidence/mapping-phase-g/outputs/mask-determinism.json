@@ -1,0 +1,227 @@
+{
+ "reading": "GRÜN · §95 — classMasks's non-reproducibility: cause isolated, timing suspect exonerated, reproducible variant measured",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T19:55:28.644Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "clipPixels": 853776,
+ "threshold": 0.001,
+ "whyThisExists": "§94 observed plainGlow 50070 then 50067 across two runs of one page. GELB §91: either the mask becomes reproducible or every figure from that split carries the instability. PF-3's differential is pooled over it.",
+ "control_noStateChange": {
+  "what": "six captures of an unchanged page. THE LIMB THE FIRST DIAGNOSIS LACKED.",
+  "probes": [
+   {
+    "capture": 2,
+    "vsPrevious": 1210,
+    "vsFirst": 1210,
+    "vsFirstSplit": {
+     "insideDisc": 0,
+     "outsideDisc": 1210
+    }
+   },
+   {
+    "capture": 3,
+    "vsPrevious": 962,
+    "vsFirst": 1532,
+    "vsFirstSplit": {
+     "insideDisc": 0,
+     "outsideDisc": 1532
+    }
+   },
+   {
+    "capture": 4,
+    "vsPrevious": 870,
+    "vsFirst": 1688,
+    "vsFirstSplit": {
+     "insideDisc": 0,
+     "outsideDisc": 1688
+    }
+   },
+   {
+    "capture": 5,
+    "vsPrevious": 863,
+    "vsFirst": 1837,
+    "vsFirstSplit": {
+     "insideDisc": 0,
+     "outsideDisc": 1837
+    }
+   },
+   {
+    "capture": 6,
+    "vsPrevious": 961,
+    "vsFirst": 1998,
+    "vsFirstSplit": {
+     "insideDisc": 0,
+     "outsideDisc": 1998
+    }
+   }
+  ]
+ },
+ "afterOneHide": {
+  "what": "the same sequence after one hide(), compared against the control rather than against zero",
+  "fixedWaitInHide": "340 ms",
+  "probes": [
+   {
+    "atMsAfterTheFixedWait": 250,
+    "vsPrevious": 1405,
+    "vsFirstAfterHide": 1405
+   },
+   {
+    "atMsAfterTheFixedWait": 500,
+    "vsPrevious": 1057,
+    "vsFirstAfterHide": 1686
+   },
+   {
+    "atMsAfterTheFixedWait": 750,
+    "vsPrevious": 1036,
+    "vsFirstAfterHide": 1917
+   },
+   {
+    "atMsAfterTheFixedWait": 1000,
+    "vsPrevious": 885,
+    "vsFirstAfterHide": 2060
+   },
+   {
+    "atMsAfterTheFixedWait": 1250,
+    "vsPrevious": 1248,
+    "vsFirstAfterHide": 2196
+   }
+  ]
+ },
+ "settleVerdictOnMyOwnSuspect": {
+  "suspect": "the fixed 340 ms wait in hide() — an assumed settle rather than a checked condition",
+  "exonerated": true,
+  "reading": "EXONERATED. Consecutive-capture differences after a hide (1405, 1057, 1036, 885, 1248) are the same order as with NO hide at all (1210, 962, 870, 863, 961), and the drift from the first capture is 2196 after a hide against 1998 with no hide. The page is not failing to settle; the captures are noisy. My first diagnostic read a random walk as a process because it had no control.",
+  "whyThisMatters": "a longer timeout would have looked like a fix for as long as nobody counted, and would have left the real cause — noise against a strict inequality — in place under a figure that appeared stable."
+ },
+ "captureNoise": {
+  "pixelsDifferingBetweenTwoCapturesOfOneState": 1405,
+  "asPctOfClip": 0.1646,
+  "insideDisc": 0,
+  "outsideDisc": 1405,
+  "luminanceDeltaMagnitude": {
+   "n": 1405,
+   "p50": 0.0001167,
+   "p99": 0.003503,
+   "max": 0.004894
+  },
+  "correctionToWhatIToldGELB": "§94 reported captureChroma bit-exact across captures. That is true over the hue-carrying GLOW (47073 px, 0 differing) and FALSE over the clip (1405 of 853776). I stated a property of one population as a property of the instrument — the same scope error I had just named in GELB's coverage denominator, in the same message."
+ },
+ "theRealCause": {
+  "mechanism": "membership is decided by a strict `base - hidden > 0.001`. ~1405 pixels per capture pair move by a noise delta whose p99 is 0.003503, so every pixel whose true delta sits within that of the threshold flips between derivations.",
+  "whyNoWaitFixesIt": "the noise is present with no state change, so it is not a settling artefact and cannot be waited out."
+ },
+ "theFix_classMasksStable": {
+  "rule": "a pixel is IN only by UNANIMITY over repeated independent derivations; a pixel some derivations include and others do not is UNDECIDED and returned as a population, never pushed silently to one side.",
+  "repeats": 3,
+  "noiseFloorPixelsMeasuredInThatCall": 1372,
+  "noiseFloorAsPctOfClip": 0.1607,
+  "perClass": {
+   "glowsAll": {
+    "repeats": 3,
+    "decidedIn": 97131,
+    "undecided": 153,
+    "undecidedAsPctOfDecided": 0.1575
+   },
+   "bodyOutlines": {
+    "repeats": 3,
+    "decidedIn": 19387,
+    "undecided": 233,
+    "undecidedAsPctOfDecided": 1.2018
+   },
+   "bodyNames": {
+    "repeats": 3,
+    "decidedIn": 2500,
+    "undecided": 1348,
+    "undecidedAsPctOfDecided": 53.92
+   },
+   "arcs": {
+    "repeats": 3,
+    "decidedIn": 3311,
+    "undecided": 2373,
+    "undecidedAsPctOfDecided": 71.6702
+   },
+   "beams": {
+    "repeats": 3,
+    "decidedIn": 1722,
+    "undecided": 1499,
+    "undecidedAsPctOfDecided": 87.0499
+   },
+   "beamGlow": {
+    "repeats": 3,
+    "decidedIn": 4875,
+    "undecided": 402,
+    "undecidedAsPctOfDecided": 8.2462
+   },
+   "travel": {
+    "repeats": 3,
+    "decidedIn": 0,
+    "undecided": 447,
+    "undecidedAsPctOfDecided": null
+   },
+   "nodes": {
+    "repeats": 3,
+    "decidedIn": 881,
+    "undecided": 531,
+    "undecidedAsPctOfDecided": 60.2724
+   },
+   "sectorText": {
+    "repeats": 3,
+    "decidedIn": 2411,
+    "undecided": 367,
+    "undecidedAsPctOfDecided": 15.2219
+   }
+  },
+  "whyUnanimityAndNotAveraging": "averaging K captures lowers the noise but keeps a strict inequality at the end, so it moves the knife edge instead of admitting that one exists. Unanimity makes the instrument state which pixels it cannot decide, which is the quantity a pooled differential needs.",
+  "whatTheUndecidedPixelsAffect": {
+   "why": "GELB §91's own rule, applied to this reading: a share without its denominator cannot be audited. Several classes have undecided fractions above 20 % of their decided sets, which is alarming on its face and says nothing until the affected population is named.",
+   "theOnlyTwoUsesInThisRecord": "glowsAll POSITIVELY, to build the glow populations; the UNION of all classes as an EXCLUSION from the medium.",
+   "glowsAll_undecided": 153,
+   "glowsAll_undecidedInsideDisc": 0,
+   "glowsAll_decided": 97131,
+   "medium_decided": 427197,
+   "medium_atRiskFromAnUndecidedClassPixel": 109,
+   "medium_atRiskPct": 0.0255
+  },
+  "classMasksLeftUnchanged": "every mask-derived figure already committed was taken with the original function; changing it would move committed numbers. It is documented as non-reproducible and new work uses the stable variant."
+ },
+ "finding": "CAUSE ISOLATED, AND MY SUSPECT WAS INNOCENT. I expected the fixed 340 ms wait in hide() to be short, and a first diagnostic agreed: captures after the wait diverged monotonically, 791 to 2542 pixels. The control I had not run — the same sequence with NO HIDE — produces the same magnitudes (1210, 962, 870, 863, 961 between consecutive captures) and the same drift (1998 from the first). A monotonic series away from a fixed reference is what a random walk looks like; it is not evidence of a process.\nTHE CAUSE IS 1405 NOISY PIXELS OF 853776 (0.165 %, 0 inside the disc) MEETING A STRICT INEQUALITY. Membership is `base - hidden > 0.001` and the noise's p99 delta is 0.003503, so pixels near the threshold flip between derivations. No wait removes it, which is why the wrong diagnosis was dangerous rather than merely wrong.\nTHE FIX IS MEASURED, NOT ASSERTED: classMasksStable decides by unanimity over 3 derivations and reports what it cannot decide. For glowsAll that is 97131 decided IN and 153 UNDECIDED (0.1575 % of the decided set). That undecided count is the quantity PF-3's pooled differential needs and the quantity the old function never produced.\nAND IT CORRECTS ME: §94's \"captureChroma is bit-exact\" holds over the hue glow (0 of 47073) and NOT over the clip (1405 of 853776). A property of one population stated as a property of the instrument — the scope error I named in GELB's lane in the same message I made it in mine.\nAND THE ALARMING PERCENTAGES NEED THEIR DENOMINATORS, which is GELB's own §91 rule turned on this reading. bodyNames is 53.92 % undecided and arcs 71.6702 %, and travel is 0 pixel(s) decided against 447 undecided — a mask of nothing, because the travelling light does not render under reducedMotion:reduce. (Those three numerals were TYPED from a previous run when I first wrote this sentence, which is A-G396's own defect class committed in the act of reporting it; they are interpolated now, and the fact that they moved between runs is itself the finding about thin-stroke classes.) But these classes are used in exactly two ways here: glowsAll POSITIVELY (97131 decided, 153 undecided, 0 of them inside the disc) and the UNION as an EXCLUSION from the medium (427197 decided medium pixels, 109 at risk from an undecided class pixel = 0.0255 %). So the thin-stroke and text classes are unstable where they are thinnest and that instability reaches the figures this record actually states at well under one per cent. Both halves belong in the sentence: the masks ARE bad, and the figures taken from them are not.\nNO VERDICT (A-G36 point 2)."
+}
