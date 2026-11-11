@@ -1226,3 +1226,61 @@ NOT CLAIMED: that `BODY_BUDGET` at either level is derived or well-chosen. Neith
 phase's DERIVED list. Only that both removals are unsupported by the cited evidence, that both
 constants are load-bearing at the built value, and that the product change implied by moving `CROWDING`
 to the recorded 0.5 is larger than the owner has been told.
+
+================================================================================================
+§17a  ADDENDUM — TWO ERRORS OF MINE IN §17, ONE OF THEM THE EXACT DEFECT §17 NAMED. AND GRÜN'S
+      DIRECTIONAL ARGUMENT CONFIRMED ON ALL EIGHT ROWS, WHICH RETIRES BOTH REMOVALS WITHOUT A COLUMN.
+================================================================================================
+
+ERROR 1 — MISATTRIBUTED CITATION, AND IT IS §17's OWN RESIDUE LANDING ON §17. I quoted GRÜN's
+`maxIsNotTheCap` field against GELB's *"L1 from 12 to ≤ 7"*. **That warning is not about L1.**
+`impliedCapAt0_5` and `maxIsNotTheCap` both live in `pg16-crowding-at-0.5.json`, whose `perLayout`
+keys are `L0_at_0_3` / `L0_at_0_5` — an **L0** file about an **L0** figure. The L1 caps are in the
+other file. So I cited a warning from one file against a claim about the other, one section after
+writing that a quoted number must carry *"which of that file's cases it belongs to … which file as
+much as which column."* GELB caught it and was right.
+  **What survives, and why the conclusion does not move:** the criticism was that a maximum was
+  quoted where the median is 6, and that holds on the L1 rows by themselves — `L1_at_0_5` =
+  4, 4, 5, 5, 6, 6, 6, 6, 7, max 7, median 6. The point stands on the rows; only my citation for it
+  was wrong. Which is precisely the asymmetry worth recording: **a correct conclusion reached through
+  a misattributed citation is still a defect, because the next reader inherits the citation.**
+
+ERROR 2 — LV03. I wrote that LV02 **and LV03** are absent from
+`summary.layoutsWhereBudgetShrinksAt0_5`. **LV03 is in it** (`{from: 6, to: 4}`). Verified: the list
+has 8 entries — LV03, LV04, LV05, LV08, LV09, LV11, LV12, LV07 — and of the 9 rows with `delta < 0`
+the **only** absent one is `LV02-three-pools-mixed-tiers` (6 → 3). My count of nine losing layouts
+against the summary's eight stands, and the gap is one row, not two. GELB's correction is exact.
+  (My "11 rows carrying L0 data" is confirmed — `LV06-no-roles` has no `L0_at_0_5` key.)
+
+ON `reading_outcome`, WHICH I WILL NOT CLAIM CREDIT FOR. GELB reports that the file's own
+`reading_outcome` field already contained the correction to A-G156 — *"A-G4's cap of seven was set
+against the 0.3 the pin bounds at, NOT against the 0.5 … The effective cap at 0.5 is 5 to 6."* **That
+field was in my own dump of the file and I did not use it.** I computed the same conclusion from the
+rows and reported it as a row-level finding. My independent figure — "effective cap typically 5–6" —
+reproduces GRÜN's stated "5 to 6" exactly, which is a genuine two-route agreement, **but it is
+accidental corroboration, not designed corroboration, and the difference matters.** Had I read the
+field I would have cited it and the finding would have been GRÜN's with my confirmation attached,
+which is what it actually is. GELB's widened rule is right and I adopt it: **read an artifact's own
+account of itself before computing from its data; enumerate the keys; a field named for the reading
+IS the reading.** The file has ten top-level keys. I printed all ten and reasoned from two.
+
+GRÜN'S DIRECTIONAL ARGUMENT — CONFIRMED ON EVERY ROW, AND IT IS STRONGER THAN ANYTHING IN §16 OR §17.
+PHASE_G §11's precedence rule is *"if the budget and the spacing ever disagree, the spacing wins and
+the budget shrinks"* — a **directional** edge: it covers only the case where the spacing is TIGHTER
+than the budget. Checked on all eight layouts where the budget binds at 0.3:
+  LV04 budget 7 vs spacing capacity  9    LV05  7 vs  8    LV08  7 vs 15    LV09  7 vs 10
+  LV11 budget 7 vs spacing capacity  8    LV12  7 vs  9    LV10  7 vs 15    LV07  7 vs 11
+**In all eight the spacing is LOOSER (8…15 against 7), so the budget is the tighter constraint and
+§11's rule says nothing about them.** The derivation cited to retire the constant does not reach a
+single case in which the constant binds.
+  > **A derivation that does not reach the case in which a constant binds cannot retire that
+  > constant, whichever column is read.**
+This retires both removals without reference to 0.3 versus 0.5 at all, and it would have retired them
+at 0.5 too, since the covering of the binding case was never shown there either. It is checkable on
+every future retirement with no measurement. **So §16 and §17 found the right answer by the harder
+route; GRÜN found the reason.** Recorded as GRÜN's, with my confirmation of its eight rows attached.
+
+NET STATE OF THE TWO CONSTANTS, UNCHANGED BY EITHER OF MY ERRORS: `BODY_BUDGET.L0 = 7` and
+`BODY_BUDGET.L1 = 12` are both load-bearing at the built `CROWDING = 0.3`, both removals are
+withdrawn, and moving `CROWDING` to the recorded 0.5 removes bodies on nine of eleven exercised
+layouts at L0 — a visible product change, larger than first reported, and still the owner's call.
