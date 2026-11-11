@@ -12747,6 +12747,16 @@ dark near-neutral ground can leave the ground's own chroma more dominant once re
 non-additivity surfacing in a statistic.** So the corrected requirement is computed over the 64 % where
 the share exists, and *"0 of 30130"* says nothing about the other 16943.
 
+> ### ⚠ CORRECTED 2026-11-11 — THIS CLOSED 64 %, NOT THE POPULATION *(see §102)*
+> **The inequality below is sound wherever `share` EXISTS and empty where it does not.** If the share is
+> undefined, `75.1 / share` is not a quantity, so the bound has nothing to apply to — **a bound applied
+> outside the domain where its own quantity lives, written in the section that named that pattern.** And
+> GRÜN's mechanism is the part this lane missed: **a full-removal differential is not a local derivative.**
+> The breath moves the halo between mean−amp and mean+amp; **it never removes it**, so a pixel with
+> removal differential ≤ 0 can still have non-zero local sensitivity. The 36 % were never *pixels with a
+> small share* — they were **pixels where the proxy was the wrong quantity.** Superseded by GRÜN's direct
+> measurement of the swing itself, which is defined at every pixel.
+
 > *** CLOSED BY ONE INEQUALITY: THE REQUIREMENT IS 75.1 / share, AND share ≤ 1, SO THE REQUIREMENT IS
 > ≥ 75.1 FOR EVERY PIXEL — INCLUDING EVERY PIXEL WHOSE SHARE IS UNDEFINED. ***
 >
@@ -12889,3 +12899,109 @@ resolved; its spatial extent is NOT characterised.** A smaller claim, and the on
 **Three new defects:** PINK's attempt-1 and attempt-2 zero-bit limbs as one class with one remedy; the
 `rings` class's two-regime membership; and this lane's unsupported flatness claim, sent to the owner.
 **297 + 3 = 300.**
+
+---
+
+## §102 A BOUND APPLIED OUTSIDE ITS OWN QUANTITY'S DOMAIN — IN THE SECTION THAT NAMED THAT PATTERN
+
+**Date of this section: 2026-11-11.**
+
+### §100's closure covered 64 % and claimed the population
+
+§100 argued: `requirement = 75.1 / share`, `share ≤ 1`, therefore `requirement ≥ 75.1` **for every pixel,
+including every pixel whose share is undefined.**
+
+> *** IF THE SHARE IS UNDEFINED, `75.1 / share` IS NOT A QUANTITY, SO THE INEQUALITY HAS NOTHING TO APPLY
+> TO. *** A bound applied outside the domain where its own quantity lives — **the fourth instance of that
+> pattern today, after PF-15's limb (b), A-G406's ordering and GRÜN's 36 %, and the only one written in
+> the very section that named the pattern.**
+
+**And GRÜN's mechanism is what this lane missed: A FULL-REMOVAL DIFFERENTIAL IS NOT A LOCAL DERIVATIVE.**
+The breath moves the halo between mean−amp and mean+amp; **it never removes it.** So a pixel whose removal
+differential is ≤ 0 can still have non-zero local sensitivity. **The 36 % were never "pixels with a small
+share" — they were pixels where the proxy was the wrong quantity**, and no bound on `share` could have
+reached them.
+
+### The swing, measured directly — superseding §94, §102-of-GRÜN and §100
+
+GRÜN overrode the halo group's own `--mf-wave-mean` to the breath's trough and then its peak and read
+chroma at each. **Defined at every pixel.**
+
+| requirement `s ≥ 2q/p = 20q` at p = 0.10 | p50 | max | meeting it | best pixel |
+|---|---|---|---|---|
+| **unselected** | 2.825 | 8.820 | **0 of 47073** | **0.8875×** — short by 1.13× |
+| **selected** | 0.846 | 3.445 | **0 of 47073** | **0.3576×** — short by 2.80× |
+
+**Superseded rather than refined: §94's share-free bound and §100's closure were both proxies for this.**
+*One measurement of the right quantity beats two bounds on proxies, even when one of the bounds was this
+lane's and was argued for twice.*
+
+### The guard is the reading, and its absence would have confirmed the hypothesis
+
+> **If the CSS override had silently failed, both captures would be identical, s would be 0 everywhere, and
+> the output would read "the breath is not measurable in chroma" — §94's conclusion, reproduced by a broken
+> instrument.** A-G429's mechanism in its most direct form yet: **the false result would have felt like
+> confirmation.**
+
+So GRÜN reads back the computed opacity of every `.mf-wave-halo` after each override and throws on
+mismatch. **Checked here against the stylesheet rather than accepted:** mean 0.8825, depth 0.1175 → trough
+**0.765**, peak **1.0**; selected depth 0.1175 × 0.35 = 0.041125 → **0.841375**, **0.923625**. **All four
+exact.**
+
+**And the second guard is the one this lane would have missed:** a shelf hue body carries no
+`.mf-wave-halo`, so its swing is zero **by design** under A-F8 — **which reads identically to a resolution
+limit.** Throwing rather than reporting it is the only correct disposal.
+
+### A-G435 · A ratio carries its domain
+
+| domain | ratio |
+|---|---|
+| alpha / opacity, forced by the stylesheet | **1 / selectedGain = 2.857143**, exact |
+| **luminance** | **2.8562–2.8607** — 2.857 to within 0.16 % |
+| **chroma (C\*)** | **3.341** at the median — **17 % away** |
+
+**One stylesheet constant, three numbers.** C\* is a far more curved function of the composite, so the
+wider unselected interval subtends a larger chord than linear scaling predicts; **in luminance the same
+curvature is the +0.024 % to +0.140 % term §95 identified, below the quantisation floor.**
+
+> **RULED: a ratio carries its domain. Stated without it, a ratio is indistinguishable from one stated with
+> it** — this lane's own spread-domain rule applied to a ratio, and **both lanes had been quoting one
+> number across two domains.**
+
+**A-G412 SURVIVES, and the question is determinate: A-G340 limb 1 is a LUMINANCE cell, not a chroma cell.**
+Its threshold is 0.004 in luminance; A-G412's instrument computed through the **WCAG decode** — which *is*
+the nonlinearity — and got 2.857 to 0.16 %; and PINK's confirmation was in the same domain, a pooled
+**encoded green** ratio and a point-prediction of each pixel's **luminance** swing. **Nothing in A-G412
+rests on a chroma ratio.**
+
+### One convention axis is closed and one is open, and the open one flips the sign
+
+GRÜN reported the direction as convention-independent, **and named the axis that is not addressed.**
+Following it:
+
+```
+requirement  s >= 2q/p      = 20q      best unselected pixel  0.8875x   SHORT by 1.13x
+requirement  s >= sqrt(2)q/p = 14.14q  best pixel             1.255x    PASSES
+requirement  s >= 1q/p      = 10q      best pixel             1.775x    PASSES
+```
+
+> **The SWING axis is closed at its favourable end** — peak-to-trough is the widest and most generous
+> convention for the build and it fails on every pixel, which is a genuine upgrade over §94. **But the
+> NOISE-FACTOR axis in the requirement is open and it flips the sign:** 2q is the worst case for
+> differencing two independently quantised readings, √2·q is the RMS, and **either narrower form makes the
+> best pixel clear.**
+>
+> *** RULED: THE UNSELECTED LIMB STAYS INCONCLUSIVE — NOW ON ONE NAMED AXIS rather than a vague factor of
+> two. One question decides it: is the requirement 2q, √2·q, or q, at p = 0.10? *** Justify the factor and
+> the limb resolves in whichever direction the justification points. **It is the last axis, and GRÜN closed
+> the other one.**
+
+**The SELECTED limb is unaffected and remains DECIDED:** 0.3576× is short by 2.80×, and 2.80/2 = 1.40 is
+still short at the most generous factor. **So the conclusion holds on the selected limb alone, as it has
+since §94 — now on a measured swing over the whole population instead of a proxy over 64 %.**
+
+### Where this leaves the record
+
+**Three new defects:** §100's closure claiming a population it covered 64 % of; the full-removal
+differential standing in for a local derivative, which both lanes' proxies rested on; and one ratio quoted
+across two domains. **300 + 3 = 303.**
