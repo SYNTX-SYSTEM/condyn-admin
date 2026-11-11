@@ -25,9 +25,13 @@
  *  [3] s/q adopted, and the 1280-selected finding checked against the model
  */
 const f = (x, n = 5) => Number.isFinite(x) ? x.toFixed(n) : String(x);
-const HALO_DEPTH = 0.235, SELECTED_GAIN = 0.35, HALO_ALPHA = 0.5;
+/* §87 A-G395: these were FORKED copies of product constants with no check. They now come from
+   gelb-product-constants.mjs, which reads the product at a pinned build and THROWS if any of the
+   twelve moved — so this instrument cannot run on a stale constant. The numbers below are
+   unchanged by the wiring, which is the point: a check that moves a figure is a different edit. */
+import { HALO_DEPTH, SELECTED_GAIN, HALO_ALPHA, CYAN } from "./gelb-product-constants.mjs";
 const OP_MEAN = 1 - HALO_DEPTH / 2, OP_DEPTH = HALO_DEPTH / 2;
-const CYAN = [92, 200, 255], D = [6, 12, 17];
+const D = [6, 12, 17];
 const srgbToLin = v => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
 const W = [0.2126, 0.7152, 0.0722];
 const lum = v => v.reduce((a, c, i) => a + W[i] * srgbToLin(c / 255), 0);

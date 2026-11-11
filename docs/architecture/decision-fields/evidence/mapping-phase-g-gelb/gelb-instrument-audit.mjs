@@ -26,7 +26,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURleToPathSafe());
 function fileURleToPathSafe() { return fileURLToPath(import.meta.url); }
-const files = readdirSync(HERE).filter(f => f.endsWith(".mjs")).sort();
+const files = readdirSync(HERE).filter(f => f.endsWith(".mjs") && f !== "gelb-product-constants.mjs").sort();
 const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
 const COMP = "app/components/career/demo/PersonJobMappingField.tsx";
 
@@ -68,7 +68,11 @@ for (const r of rows) {
      sentence and the classifier was right. exact.mjs prints AGREE/DIFFER and CONTINUES. Eighth instance
      this phase of a narrative line refuted by its own adjacent output, and the distinction it hid is the
      useful one: a check that reports inside a 200-line output is a check nobody reads. */
-  const halts = /throw new Error\([^)]*mov|throw new Error\(`UNVERIFIED/.test(r.t);
+  /* a file that IMPORTS gelb-product-constants.mjs cannot run on a stale constant, because that
+     module throws at load. Added when §87's remedy was discharged: without it this classifier would
+     report no improvement after the wiring, which would have been the audit failing to see its own fix. */
+  const importsPinned = /from "\.\/gelb-product-constants\.mjs"/.test(r.t);
+  const halts = importsPinned || /throw new Error\([^)]*mov|throw new Error\(`UNVERIFIED/.test(r.t);
   const reports = !halts && /\bAGREE\b|\bDIFFER\b|UNVERIFIED/.test(r.t);
   const state = halts ? "HALTS   " : reports ? "REPORTS " : "NOTHING ";
   for (const k of has) dup.set(k, [...(dup.get(k) || []), { f: r.f, state: state.trim() }]);
