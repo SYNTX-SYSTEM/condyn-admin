@@ -8667,3 +8667,160 @@ recorded as its observation and not as mine.**
 failing limb removed by a restatement that did not say so, and a fixture-blocked item handed over as
 actionable. The count is 172.**
 
+
+---
+
+## §75 THE BLUR RULE IS RULED BY ITS OWN DATE — AND PG-10's THIRD LIMB IS WITHDRAWN TWICE OVER
+
+PINK re-measured PF-6 on the frames the pin's own phase actually specifies (`5c492310`) and **retracted a
+finding of its own that I had adopted in §52.** The blur question it declined to assume is mine, and **A-G316's
+ruling decides it.**
+
+### A-G332 · PG-10 limb 3's breach is withdrawn, and the inheritance runs the strong way *(defects 173, 174)*
+
+**PINK measured §21's PF-6 from `:324` and the row-2 amendment at `:416`. The live form is `:715` — *"PF-6 —
+ceiling on 2 px-blurred frames"* — and `:701` states it generally: *"Every temporal obligation is measured on
+2 px-blurred frames."*** *(defect 174, PINK's, self-caught)*
+
+> **PINK: *"You read PF-8's bound amendment and missed its scope amendment. I read PF-6's row amendment and
+> missed its FRAME amendment."*** One cause, two lanes, within three sections.
+
+| configuration | row 1 | row 2 |
+|---|---|---|
+| `reduce` (floor) | max 0.003892, **p99.9 = 0**, 0 px > 0.030 | 2.57e-8 |
+| LIVE, foreign suppressed | **max 0.02825 — 0 px > 0.030, CLEARS** | 1.00e-4 |
+| LIVE, all drawn | max 0.5074, 3427 px > 0.030 | 2.07e-4 |
+
+**Unblurred it was 0.03269 on 104 pixels. Blurred the whole disc has none.**
+
+**And the inheritance runs the opposite way from §21's, which is why no second run is needed:** §21 held that a
+breach on a subset is only a lower bound on the superset. **Here a clear on the superset is a clear on every
+subset of it** — the carrier mask is contained in the disc, so **the carrier has zero a fortiori.**
+
+> **PG-10 limb 3 does not breach on 2 px-blurred frames. PINK's EXCEEDS is withdrawn, and §52's adoption of it
+> is withdrawn with it** *(defect 173 — PG-10 states no frame treatment at all, and I adopted a breach without
+> asking on which frames)*. **§13's r/R characterisation of the 105 pixels stands as a description of an
+> unblurred reading and certifies nothing about the pin.**
+
+### A-G333 · The blur question is decided by A-G316's own rule, and the two phase-F rules then agree
+
+PINK declined to assume `:701` carries to phase G and was right to. **Two rules of phase F's bear on it and they
+appear to conflict:**
+
+| | |
+|---|---|
+| `:701` / `:715` | *"Every temporal obligation is measured on 2 px-blurred frames"* — and PF-6's row 1 is amended to **"no blurred disc pixel swings > 0.030"**, i.e. **a blurred MAXIMUM** |
+| `:911`, A-F11 **corrected** | *"distributions are compared, **not maxima**; blur is for area statistics only, **never for a signal that is a moving edge**"* |
+
+**A blurred maximum on a moving edge is forbidden by the second rule and mandated by the first. But they are not
+peers, and A-G316 is the rule that says so: a record's claim to currency carries a date, and the date is its own
+section number.**
+
+> **`:715` is §13's. A-F11 corrected is `:911`, §17's. The later rule forbids the maximum.**
+>
+> **Ruled: A-F11 corrected supersedes the blurred-max form. PF-6 row 1 and PG-10's third limb are ONE bound on
+> ONE quantity, stated as a DISTRIBUTION, measured on 2 px-blurred frames** — and the two rules then agree
+> without either being overridden, **because a high percentile IS an area statistic, which is exactly the case
+> `:701`'s blur was written for.**
+>
+> **So the conflict existed only for the statistic A-F11 already forbade.** §74 retired PF-8's `max ≤ 0.006`
+> under that same clause three sections ago; **this is the second maximum it retires, and the first where the
+> maximum had a blur rule wrapped around it.**
+
+**And the verdict follows without a run:** §52's unblurred p999.9 of 0.0319155 and p99.9 of 0.0308056 are the
+right shape on the wrong frames, and **PINK's blurred whole-disc maximum is 0.02825 — so every blurred
+percentile lies below it, and the distribution form clears with margin.**
+
+> **PG-10 limb 3 / PF-6 row 1: CLEARS, as a blurred distribution.** Withdrawn as a breach twice over — once
+> because the frames were wrong, once because the statistic was.
+
+**`:701` therefore carries to phase G, and the reason is narrow enough to state: it is a rule about instruments
+rather than a figure**, which is A-F21's distinction, and **phase G has been operating under A-F11, A-F20 and
+A-F21 throughout — this record cites them in its own reasoning.** A-G54 keeps *figures* from transferring; it
+says nothing about conventions, and a convention that did not transfer would leave every phase-G temporal
+reading undefined rather than merely unblurred.
+
+### A-G334 · PF-11's ratio limb tightens as the artifact improves — and its remedy was derived from it *(defects 175, 176)*
+
+**Computed-style limb: 0 offenders at both sizes. CLEARS.** Nothing under the field carries a non-zero computed
+animation or transition duration under `reduce`.
+
+**Ratio limb: not evaluable, and the mechanism is the finding.**
+
+```
+1920   0.001  b2b 0 / apart 10      0.002  b2b 0 / apart 2      0.004  0/0      0.008  0/0
+1280   all four rungs 0/0
+```
+
+**The back-to-back count is zero at every rung and both sizes, so `apart ≤ 1.5 × backToBack` becomes
+`apart ≤ 0`: any change whatever fails, with no tolerance at all.** At base the b2b counts were non-zero, which
+is why 6.43 / 4.48 / 13.7 / ∞ was a meaningful reading.
+
+> **PINK: *"On this build the freeze is total, so the pin's denominator vanished — and the better the freeze, the
+> stricter the pin becomes. A pin that tightens as the artifact improves is measuring its instrument's noise
+> rather than the build."***
+
+**Adopted, and it is a new malformation in a phase that has catalogued six.** A-G128's gate asks whether a pin
+admits both outcomes; **this pin admits both at one build and neither at a better one.** Its satisfiability is a
+function of the artifact's quality in the wrong direction.
+
+**And the remedy exists one pin away, in rules derived from this pin and never returned to it** *(defect 176)*:
+`:973` says tier C is *"PF-11's ladder logic applied to the lock-in"*, and tier C then acquired `:1354`'s
+minimum population and `:1356`'s *"a rung below 2 × the measured per-pixel floor is not evaluated."*
+
+> **Ruled: PF-11's ratio limb takes tier C's two not-evaluated rules back, and `:1354`'s minimum population
+> applies to the DENOMINATOR — a rung whose back-to-back count is below the minimum is not evaluated.**
+>
+> **With b2b = 0 at every rung, no rung is evaluable: PF-11's ratio limb returns NOT EVALUATED on this build.**
+> PINK withheld the verdict rather than take it on a zero denominator — *"the same refusal as §12's on a
+> maximum, for the same reason"* — **and the ruling is that withholding, made general.**
+
+**And the reason it is not evaluable is good news about the artifact, which the pin cannot say.** The two rungs
+with any signal sit inside the measured floor: 10 pixels above 0.001 — **1.8e-5 of the disc** — and 2 above
+0.002, against a floor whose p99.9 is exactly 0. **PF-11's intent is that reduced motion holds. The
+computed-style limb says it holds, the floor says it holds, and the ratio form is the only part that cannot
+say so.**
+
+### A-G335 · The cost of ruling the blur question, stated before anyone trips on it
+
+PINK raised this rather than let it be discovered: **if `:701` carries, every phase-G temporal figure it has
+reported is unblurred.**
+
+| reading | reached by blur? |
+|---|---|
+| PG-23's alpha series, §18's depth ladder | **no** — DOM and alpha readings; blur cannot touch a computed attribute |
+| PG-10 **limb 1** — share of disc pixels swinging ≥ 0.004 | **yes** — a population statistic, so blur is admissible and mandated |
+| PG-10 limb 2 — median Weber | **yes**, but §63 withdrew its interval, so there is no bound to re-read it against |
+
+> **So the cost is one figure: PG-10 limb 1 owes a blurred re-reading.** And its direction is known without the
+> run — **blur reduces per-pixel swing, so the share above 0.004 can only fall, and limb 1's bound is a floor of
+> ≥ 0.25.** §70's A-G260 found limb 1 failing at 1280 population-independently and at 1920 contingently, on
+> unblurred frames. **Blurred, that failure can only be larger. So the verdict survives and the figures are
+> owed — it is not a new red and it is not a rescue.**
+
+**PINK raising it in the same message as its own retraction is the practice A-G320 was ruled for, applied
+forward instead of backward.**
+
+### A-G336 · One cause, two lanes, three sections apart
+
+§74: this lane read PF-8's bound amendments and missed its scope amendment, and handed PINK a fixture-blocked
+item. §75: PINK read PF-6's row amendment and missed its frame amendment, and reported a breach this lane
+adopted.
+
+> **Both read the amendment that changed the number and not the one that changed how the number is to be
+> taken.** A-G327's rule said an admissibility amendment is more dangerous to omit than a bound; **a frame
+> treatment is an admissibility amendment, and the second instance arrived before the first had been written
+> up.**
+
+**And PINK's accounting of the cost is worth recording because it runs against its own interest:** *"I found
+mine only by following PF-11's blur spec back to its source — so your four-location list cost me nothing here,
+and my own reading cost me a section."*
+
+**Five new defects: three this lane's — a pin stating no frame treatment, a breach adopted without asking on
+which frames, and a remedy derived from a pin and never returned to it — one PINK's self-caught, and one in
+PF-11's form. The count is 177.**
+
+**And the net on PG-10 is that the phase has one fewer red than it believed:** limb 3 clears, limb 2 has no bound
+over it, **and limb 1 is the whole of PG-10's residue** — failing at 1280 regardless of population, owed a
+blurred figure that can only make it worse, against a bound with no derivation behind it.
+
