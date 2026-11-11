@@ -691,3 +691,140 @@ for PG-10 anyway, and which is not yet measured. Until it is, GELB's sweep is ne
 and 0.00271…0.00310 must not be recorded against it.
   Also: GELB's §46 message attributes 0.0044378 to "your lane's measured". Its own committed output says
   "GRUEN measured 0.0044378". The output is the record and the message is wrong about whose number it is.
+
+================================================================================================
+§10  PG-10 MEASURED IN BOTH STATES ON 3ec8457d — LIMB 1 SPLITS THE STATES, LIMB 2 TURNS ON AN
+     UNDECLARED READING, AND LIMB 3 CANNOT BE VERDICTED AS THE PIN WRITES IT
+================================================================================================
+scripts/pink-pg10-g.mjs · outputs/3ec8457d-tip/PG10.json
+Void first attempt kept for audit: outputs/3ec8457d-tip/PG10-VOID-ATTEMPT1.json
+
+ATTEMPT 1 WAS VOID ON THREE DEFECTS, ALL MINE, AND A-G48's NEGATIVE LIMB IS WHAT CAUGHT THEM:
+  D1  frame-driven window (36 frames = 3.8…8.2 s) against WAVE.periodMs = 10000 — every swing was a
+      max−min over 0.38…0.82 of one cycle. Now time-driven; all four states cover 1.30…1.31 periods.
+  D2  the carrier was a GEOMETRIC annulus, not `.mf-wave-halo`'s own pixels. The three RESTING shelf
+      glows (`animationName: none`, A-F8) returned maxSwing up to 0.7925. A resting element cannot
+      swing, so the negative limb falsified the INSTRUMENT, not the build. Travelling light, beams,
+      arcs and text cross that annulus and their motion was being counted as the breath. Now the
+      carrier is a measured mask — pixels where hiding `.mf-wave-halo` changes the static render,
+      minus pixels where hiding the foreign carriers changes it — derived in a separate static pass
+      so that every element stays drawn in the measured frames (defect nineteen).
+  D3  local ground was sampled over a region still containing foreign light, so it read low and the
+      "≥ 2 × local ground" test admitted 63…79 % of the annulus. Now sampled outside every mask.
+This is the second time this phase that my own rule caught my own instrument (cf. §9's k trap). The
+pattern is worth naming: the limbs a pin adds to catch a BUILD also catch the INSTRUMENT, and they
+catch it first, because an instrument defect usually violates a physical impossibility (a resting
+element swinging) rather than a bound.
+
+MEASURED, field carriers (ranks 1 and 2, the only `.mf-wave-halo` bodies), visible glow:
+                          1920×1080                      1280×800
+  state (a) UNSELECTED LIVE
+    limb 1  frac swing ≥ 0.004   0.54475 / 0.54999        0.55181 / 0.50604     ≥ 0.25  clears
+    limb 2  W_mod                0.2855  / 0.3062         0.2877  / 0.29085     [0.10,0.35] clears
+            W_grd                1.43264 / 1.59202        1.42891 / 1.34532     outside by 4×
+    limb 3  max swing            0.032038 / 0.032688      0.028247 / 0.027908   ≤ 0.030  see below
+    median swing                 0.004779 / 0.004788      0.004797 / 0.004051
+  state (b) CAPABILITY SELECTED, --mf-wave-gain 0.35
+    limb 1  frac swing ≥ 0.004   0.28669 / 0.24345        0.28717 / 0.22313     ≥ 0.25  FAILS on rank 2
+    limb 2  W_mod                0.14325 / 0.13574        0.1398  / 0.13347     [0.10,0.35] clears
+            W_grd                0.68597 / 0.68913        0.68962 / 0.60078     outside by 2×
+    limb 3  max swing            0.013517 / 0.012758      0.011843 / 0.013318   clears
+    median swing                 0.002232 / 0.002008      0.002251 / 0.001748
+
+(1) GELB'S §46 PREDICTION IS HALF CONFIRMED. The selected state does break limb 1 — 0.24345 and
+    0.22313 on rank 2, against ≥ 0.25 — and GELB predicted 20.35 %. But GELB predicted it "FAILS
+    both", and limb 2 does NOT fail: W_mod reads 13.3…14.3 %, inside [10 %, 35 %]. GELB's predicted
+    8.045 % is below the corridor; the measured value is not.
+
+(2) LIMB 2'S VERDICT IS DECIDED BY A READING NOBODY HAS DECLARED, and this is the A-G16 criterion
+    problem again on a different pin. A-G22 states "the median Weber fraction" and gives 20.6 % /
+    22.6 % without ever giving the ratio. Of the four defensible readings, in the SELECTED state:
+        W_mod = (max−min)/mean          0.133…0.143   INSIDE the corridor
+        W_grd = (max−min)/localGround   0.601…0.690   OUTSIDE it by a factor of 2
+    so limb 2 passes or fails on the choice. In the unselected state the split is worse (0.286…0.306
+    vs 1.345…1.592). NEEDED FROM GELB: declare the ratio. I decline to pick one and report a verdict,
+    for the same reason I refused row 36 — a measure with two undeclared readings is not a quantity.
+    Neither reading reproduces A-G22's own 20.6 %/22.6 %, which is itself unexplained.
+
+(3) LIMB 3 IS *NOT RUN* AS THE PIN WRITES IT, AND THE OBJECTION IS MY OWN RULE AGAINST ME. At 1920
+    the max swing reads 0.032038 / 0.032688 against ≤ 0.030 — over the ceiling by 9 %. I am NOT
+    reporting that as a failure. It is a MAXIMUM over 18,659 and 32,801 pixels, and A-F11 is explicit
+    that a verdict is taken on DISTRIBUTIONS, not on maxima, and that every bound carries its own
+    measured noise floor. An extreme-value statistic over ~2·10^4 samples has no stated floor here,
+    and A-G26's own text (PHASE_G §1080) specifies a DISTRIBUTIONAL ceiling. The honest statement is:
+    the max-swing limb as restored by A-G26 is not a measurable bound in this form; the distributional
+    form — the FRACTION of carrier pixels above 0.030 — is the statistic, and I have not computed it.
+    That it reads 0.0279…0.0327 across configurations, straddling the ceiling, is why it matters.
+
+(4) THE CALMED/RESTING SWING RATIO DOES NOT MEASURE selectedGain, and GELB's §49 correction predicts
+    the wrong size of gap. Ratio of median swings, selected ÷ unselected:
+        1920  rank 1  0.002232/0.004779 = 0.4670      rank 2  0.002008/0.004788 = 0.4193
+        1280  rank 1  0.002251/0.004797 = 0.4693      rank 2  0.001748/0.004051 = 0.4315
+    against `selectedGain` = 0.35. Measured 0.419…0.469, i.e. **20…34 % above the constant**, where
+    GELB's §49 predicts +1.17 % from 8-bit compositing. GELB is right that a resolvability floor is
+    required rather than optional; it is understated. At these luminances the median swing in the
+    selected state (0.0017…0.0023) sits within a few 8-bit code steps of the ground, so the ratio is
+    quantisation-limited and the sRGB slope does NOT cancel. The ratio-based limb GRÜN derived to
+    need no new number does need one: the resolvability floor.
+
+(5) THE NEGATIVE LIMB IS *NOT RUN*, AND THE REASON IS A-G49 BITING A THIRD TIME. A-G48 requires the
+    shelf glows' swing to lie within the run's static floor. I cannot mask them: the shelf halo's
+    circle carries NO class at all (`className={b.shelf ? undefined : "mf-wave mf-wave-halo"}`, :670)
+    and sits in the anonymous `<g>` at :884 with no testid, data-* or class. So hiding
+    `.mf-wave-halo` does not hide it, and my carrier mask reaches only 0…43 px near each shelf body —
+    which are field-halo overlap pixels, not shelf carrier pixels. The per-shelf numbers in PG10.json
+    are therefore NOT a measurement of the shelf halos and must not be read as one. The fix is
+    `.mf-halo circle:not(.mf-wave-halo)`, which works today only because the shelf case is the
+    `undefined` branch — a selector that exists by accident, which is A-G49's point exactly.
+
+================================================================================================
+§11  GELB'S DECISIVE QUESTION, ANSWERED — THE OCCLUDER IS r + h FOR EVERY GLOW-CARRYING BODY,
+     SO A-G170 STANDS; AND THE BODY GELB TELLS ME TO SWEEP IS THE ONE ITS OWN ARGUMENT EXEMPTS
+================================================================================================
+scripts/pink-seat-occluder-g.mjs · outputs/3ec8457d-tip/SEAT-OCCLUDER.json
+
+FIRST, A CORRECTION TO THE PREMISE OF THE QUESTION. GELB asks "at 1260 px, does your measured profile
+contain uncovered pixels in the 1.00 … 1.00 + h/r_px band?" and says it "costs no new run" because I
+have already rendered the widths. **My §9 sweep rendered nothing of the kind.** It is a DOM-geometry
+instrument: it reads `data-drawn-radius`, derives k from the field svg's viewBox, and computes the
+extent arithmetically. It never examined a pixel in that band, and it holds no profile. There was no
+masking of dash gaps in it, because there was no mask. So the question needed a new probe and I ran one.
+
+MEASURED, off the live DOM at five widths — line style, the filled seat, and the ring's actual
+`stroke-dasharray`:
+  rank 1  SEMANTIC  line=solid   filled seat r=41.544 fill rgba(0,0,0,1)   dasharray ABSENT
+  rank 2  SEMANTIC  line=solid   filled seat r=52.662 fill rgba(0,0,0,1)   dasharray ABSENT
+  rank 3  LEXICAL   line=dotted  shelf       dasharray 2.825 / 6.122  (at 1260)
+  rank 4  LEXICAL   line=dotted  shelf       dasharray 2.825 / 6.122  (at 1260)
+  rank 5  NONE      line=open    shelf       dasharray 163.313 / 51.572
+
+SO THE ANSWER IS NO, FOR THE BINDING BODY, AND THE REASON IS STRONGER THAN A PIXEL COUNT.
+**Rank 1 carries no `stroke-dasharray` at all** — `line=solid`, so `LINE_DASH.solid` returns
+undefined and the ring is continuous at every azimuth. There are no dash gaps on it to mask or
+mis-mask. The opaque filled seat at r is confirmed exactly as GELB found it (`:696`, r = ρ_drawn in
+user units, `rgba(0, 0, 0, 1)`), and for a solid-ring body it is REDUNDANT: the continuous ring
+already covers r … r + h. **The occluder for rank 1 is r + h, extent is 1.47526 r at the clamp, and
+A-G170 stands.** GELB's `r` convention is correct about the fill and does not reach this body.
+
+AND THE DASH-GAP CASE IS REAL BUT LANDS ONLY ON SHELF BODIES. All three dashed bodies — ranks 3, 4
+(dotted) and 5 (open) — have `shelf=true`. None of them carries `.mf-wave-halo`. So in this fixture
+the set of bodies whose seat has gaps and the set of bodies that carry the breathing glow are
+DISJOINT, and every glow-carrying body is solid-ringed.
+
+WHICH COLLIDES THE TWO HALVES OF GELB'S §48/§49. GELB tells me to re-sweep the smallest body rather
+than rank 1, because ρ_drawn = 34.2 crosses just below 1366. I confirm its arithmetic exactly: at
+1366 that body measures r_device = 18.017 px, margin 0.1 × 18.017 − 1.8 = **+0.0017 px**, and at 1280
+r_device = 15.184 px — which also confirms GELB's reading of GRÜN's sealed minimum to three decimals.
+**But the smallest body IS rank 5, and rank 5 is `line=open`: dasharray 163.313 / 51.572 on a
+circumference of 2π × 34.2 = 214.885 — one dash covering 76.0 % of the azimuth and one gap of 24.0 %.**
+So over a quarter of that body's rim is occluded only to r, where the extent is 1.6 r and cannot fail,
+and over three quarters it is occluded to r + h, where it fails below ≈ 1366. GELB's dash-gap
+argument exempts precisely the body GELB's own re-sweep instruction targets.
+
+So the extent limb is azimuth-dependent on exactly the bodies where it bites hardest, and the pin
+says nothing about azimuth — "a monotone falloff over ≥ 1.5 × the body radius" does not say whether
+that must hold on every ray, on some ray, or on an area statistic. NEEDED FROM GELB, and this is now
+the limiting unknown rather than the occluder convention: (i) PG-17's carrier scope under A-G31 —
+whether the extent limb reaches SHELF halos at all, since they are glows that rest rather than
+glows that breathe; and (ii) the azimuthal quantifier. Under "every ray" the open-line body fails
+24 % of its rim at every width. Under "some ray" it never fails. I will not pick one.
