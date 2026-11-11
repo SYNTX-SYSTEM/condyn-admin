@@ -13,7 +13,8 @@
 import { writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { labOf, chromaQuantumFloor, PROVENANCE } from "./gruen-instrument.mjs";
+import { labOf, chromaQuantumFloor } from "./gruen-colour.mjs";
+import { PROVENANCE } from "./gruen-provenance.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const MEDIUM = [6, 12, 17];          // the medium's modal triple, MEASURED at both sizes

@@ -36,16 +36,12 @@ if (chromium === undefined) throw new Error(`ERR_INSTRUMENT_NO_PLAYWRIGHT:${PW_M
 const sharpNamespace = await import(pathToFileURL(SHARP_MODULE).href);
 export const sharp = sharpNamespace.default ?? sharpNamespace;
 
-/* ── WCAG relative luminance ──────────────────────────────────────────────────────────────────────── */
-const LUT = new Float64Array(256);
-for (let i = 0; i < 256; i += 1) { const c = i / 255; LUT[i] = c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
-export const luminance = (raw, n, channels) => {
-  const L = new Float32Array(n);
-  for (let p = 0, q = 0; p < n; p += 1, q += channels) L[p] = 0.2126 * LUT[raw[q]] + 0.7152 * LUT[raw[q + 1]] + 0.0722 * LUT[raw[q + 2]];
-  return L;
-};
-/** The luminance of one sRGB triple — for recomputing a constant's own contribution (A-G27's method). */
-export const luminanceOfRgb = (r, g, b) => 0.2126 * LUT[r] + 0.7152 * LUT[g] + 0.0722 * LUT[b];
+/**
+ * §62: the pure colour arithmetic lives in `gruen-colour.mjs`, which imports NOTHING, so a derivation can
+ * check a colour figure without being able to start a browser. Re-exported here unchanged.
+ */
+export { luminance, luminanceOfRgb, labOf, chromaQuantumFloor, achievableAlphas, compositeAtCode } from "./gruen-colour.mjs";
+import { labOf } from "./gruen-colour.mjs";
 
 /* ── statistics ───────────────────────────────────────────────────────────────────────────────────── */
 export const pct = (sortedAsc, f) => sortedAsc[Math.min(sortedAsc.length - 1, Math.max(0, Math.floor(f * (sortedAsc.length - 1))))];
@@ -649,29 +645,7 @@ export async function zeroByConstruction(cdp, clip, N, disc) {
  * C* produced by ±1 code at a given triple — so a PG-12 reading can be compared against what is resolvable
  * instead of being believed.
  */
-const LAB_D65 = Object.freeze({ xn: 0.95047, yn: 1.0, zn: 1.08883 });
-const labF = t => (t > 216 / 24389 ? Math.cbrt(t) : (841 / 108) * t + 4 / 29);
-/** One sRGB triple (0…255) → {L*, a*, b*, C*}. */
-export function labOf(r, g, b) {
-  const lin = v => { const c = v / 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
-  const R = lin(r), G = lin(g), B = lin(b);
-  const X = (0.4124564 * R + 0.3575761 * G + 0.1804375 * B) / LAB_D65.xn;
-  const Y = (0.2126729 * R + 0.7151522 * G + 0.0721750 * B) / LAB_D65.yn;
-  const Z = (0.0193339 * R + 0.1191920 * G + 0.9503041 * B) / LAB_D65.zn;
-  const fx = labF(X), fy = labF(Y), fz = labF(Z);
-  const a = 500 * (fx - fy), bb = 200 * (fy - fz);
-  return { L: 116 * fy - 16, a, b: bb, C: Math.hypot(a, bb) };
-}
-/** The C* a ±1 code step produces at a triple — the raster's own chroma resolution there. */
-export function chromaQuantumFloor(r, g, b) {
-  const base = labOf(r, g, b);
-  const steps = [];
-  for (const [dr, dg, db] of [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]]) {
-    const p = labOf(Math.max(0, Math.min(255, r + dr)), Math.max(0, Math.min(255, g + dg)), Math.max(0, Math.min(255, b + db)));
-    steps.push(Math.abs(p.C - base.C));
-  }
-  return { atTriple: [r, g, b], baseC: +base.C.toFixed(4), maxOneCodeDeltaC: +Math.max(...steps).toFixed(4), meanOneCodeDeltaC: +(steps.reduce((x, y) => x + y, 0) / steps.length).toFixed(4) };
-}
+/* §62: LAB_D65, labF, labOf and chromaQuantumFloor moved to gruen-colour.mjs and are re-exported above. */
 /** Per-pixel C* over a region, from the raw RGBA rather than the luminance array. */
 export async function captureChroma(cdp, clip, N) {
   const s = await sharp(Buffer.from(await captureRaw(cdp, clip), "base64")).raw().toBuffer({ resolveWithObject: true });
