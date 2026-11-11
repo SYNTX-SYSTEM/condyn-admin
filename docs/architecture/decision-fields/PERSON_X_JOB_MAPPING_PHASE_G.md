@@ -6791,3 +6791,190 @@ not appear in reports again, and the engineering argument stays readable at A-G2
 wrote between §36 and §45, and the fourth — the census that said two of seventeen — was refuted by the table
 seventeen sections after it, in this document, by its own rule.
 
+
+---
+
+## §63 PINK'S INVERSE PASS FOUND AN AXIS NOBODY SWEPT AND A HOLE IN THE ROUTE I HAD JUST LEANED ON
+
+PINK answered the inverse question with three registers and one finding (`fb412206`), and it arrived one message
+after §62 went out. **Two things in it correct §62 itself, and one of them corrects a mitigation I had already
+offered the owner as the reason a risk was acceptable.**
+
+### A-G260 · PG-10 limb 1's statistic is a property of (build × population) — the pin is defective and the product is not
+
+`depthGain(rank, lastRank)` has two consumers — the halo group's opacity and the body core's — and `.mf-core`
+carries the gain **unmultiplied**, so the ladder reads out exactly. PINK measured it at both stage sizes with
+five self-checks true at each: halo↔core pairing 1 : 1, the ladder matching `1.45^(−t)` to under 5e-6, both
+routes agreeing, `.mf-wave-halo` and `animationName` giving the identical partition, and the halo radius law
+exact at 2.600 / 2.700 / 2.800 / 2.900 / 3.000.
+
+| rank | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| gain | 1.000000 | 0.911293 | 0.830455 | 0.756788 | 0.689655 |
+| breathes | yes | yes | no | no | no |
+
+**The three deepest rungs belong to bodies that never breathe** — shelf bodies take `className={undefined}` and
+no `animationDelay`, per A-F8 — **so the denominator of every breathing body's gain is set by a resting one.**
+
+**Verified, and wider than PINK stated it.** `lastRank = Math.max(1, ...model.bodies.map(b => b.rank))`
+(`4b83414e:677`) ranges over `model.bodies`, not over `shown`, and `shown` is the budget-filtered set
+(`:630`–`:634`). **So the denominator also includes bodies the budget removed from the field entirely — bodies no
+viewer ever sees.** Three populations, one of them invisible: `model.bodies` sets the gain, `shown` receives it,
+and `shown` minus the shelf is what breathes.
+
+**And I rule against PINK's own closing line, which is the one place it has this backwards.** It wrote: *"A
+normalisation that includes bodies the quantity doesn't apply to is a product question, not a pin-scope one."*
+
+> **The product is not defective here, and its own docstring is why.** `:210` reads *"The depth gain of a rank
+> (F-3): monotone non-increasing, 1 at rank 1, **1 / depthRatio at the last rank**."* The code implements exactly
+> that, over the ranking. **Depth-in-the-ranking is a coherent semantic** — rank 5 of 70 is near the front and
+> rank 5 of 5 is at the back — and nothing in F-3 or A-G2's channel table says depth means depth-among-the-drawn.
+
+**And the proposed repair would make the red worse**, which is the reason to distrust wanting it: with `lastRank`
+over the breathing subset, PINK's fixture's two field bodies give t = 0 and 1, rank 2's gain falls from 0.911293
+to 0.689655, and the 1920 reading goes from 0.243 to about 0.184. **A fix that worsens the red it was found
+through is this phase's named error in its fourth instance — moving the artifact to suit a pin.** Declined on
+that ground and not on the arithmetic.
+
+> **What is defective is the pin.** PG-10 limb 1's swing fraction is not a property of the build; it is a
+> property of **(build × population)**, and the pin names no population. **A-G54's form on a new axis: a floor is
+> a property of a build, not of a lane — and a swing fraction measured on "the deepest breathing body" is a
+> property of a build *and a body count*, so a pin that does not name the count is measuring two things at once.**
+
+**PINK's arithmetic is adopted as stated:**
+
+| | gain limb 1 would need | available? |
+|---|---|---|
+| **1920** | 0.937544 | **inside the ladder** — clears at 7 total bodies (0.25064), i.e. two more *resting* bodies |
+| **1280** | 1.021629 | **above the ceiling of 1.0**, which is rank 1 — 12 bodies reaches only 0.23658 |
+
+**So limb 1's failure at 1280 is population-independent and stands, stronger than when it was sent. Its failure
+at 1920 is contingent and is not carried as a build defect without a body count attached.** The flip is derived
+arithmetic from the measured law rather than a measurement, recorded as such, and **PINK declining to fabricate
+the larger-shelf fixture that would test it is correct** — this lane is not asking for one.
+
+**Two consequences, in opposite directions:**
+
+- **`CROWDING` and `BODY_BUDGET` move `shown` and do not move `lastRank`.** So the depth ladder is invariant
+  under §62's A-G255, and that decision costs nothing here. A rare case of a finding confirming that an unrelated
+  decision was cheap.
+- **Limb 1's red cannot drive a product change in either direction.** PG-10's 0.25 is one of §41's underived six,
+  R17 is CITED-WITHOUT-A-NUMBER, and §62's A-G254 took the phase to **zero of seventeen bounds derived from a
+  perceptual finding.** That is limb 1's status, not a reason to stop measuring it.
+
+### A-G261 · PG-10 limb 2's interval is withdrawn — it predates the quantity it bounds *(defect 107)*
+
+PINK's reason, adopted verbatim because it is better than any restatement: **"An interval chosen before the
+quantity was named can't be known to be the interval for the quantity eventually named."**
+
+[10 %, 35 %] was fixed before A-G193 named the denominator. PINK then measured **0.133–0.143** as modulation
+depth, which clears but sits a third off the lower edge, and **0.601–0.690** as spatial Weber, which fails hard.
+**One interval, two quantities, and the record never said which it was for.**
+
+> **Ruled: the interval is withdrawn as a bound. PINK's 0.133–0.143 stands as a measurement with no bound over
+> it, not as a CLEARS carrying a caveat.** Losing the verdict is better than keeping one qualified into
+> meaninglessness — which is A-G111's split between measurability and verdict, applied to a verdict of mine.
+
+### A-G262 · A-G239 is narrowed, it was mine, and it was overstated *(defect 108)*
+
+I wrote that A-G31 and A-G48 leave **three of five bodies "under no obligation any current instrument could
+check"**. **That is wrong.** The shelf halos are addressable today, with no product change: their group carries
+`mf-halo` like every halo and their circle is the one **without** `mf-wave-halo`, so
+`.mf-halo > circle:not(.mf-wave-halo)` selects exactly the three — and **PINK's §15 instrument has been doing it
+since it was written.** §18 adds what makes it trustworthy rather than incidental: **class membership and
+`animationName` partition the five halos identically at both stage sizes.**
+
+> **The real hole is narrower and sharper: no halo carries its body's identity in the DOM.** The React key
+> `halo|${b.key}` is not rendered, so per-body obligations are met today only by geometric inference — PINK pairs
+> halo to core by concentricity under 2 px, 1 : 1 at both sizes. **That works, and it is a method rather than a
+> hook.** It is where A-G194 actually bites, and **A-G49's hook list gains per-body identity on the halo as its
+> own item.**
+
+**And the acceptance standard for the whole hook set is PINK's, adopted because its last clause states A-G36
+better than A-G36 states it:** set equality against the two independent routes that already exist, on the
+rendered page, with no instrument of GRÜN's in the path — *"the difference between verifying a hook and letting
+it certify itself."*
+
+### A-G263 · A-G253's mitigation route does not exist for A-G43 — and I had already offered it as the reason a risk was acceptable *(defect 109)*
+
+§62's A-G253 routed verification of A-G43's re-keying to PINK's rendered-page path, and named that route as what
+made a DOM change under an unrunnable suite acceptable. **PINK answered that the route cannot see it, and the
+mechanism is categorical: React keys are reconciliation inputs and are never emitted to the DOM. A correct
+re-key and a broken one both return "no change", and no DOM or raster instrument can separate them.**
+
+> **Ruled: A-G43's re-keying is held. The do-now list is four items, not five.** A-G49's hooks, A-G48's L2
+> fixture, A-G51's L1 marked-body fixture, A-G206's span declarations in front of both.
+
+**The state this moves to is better than the one it replaces, and that is not a consolation.** A-G43 goes from
+*blocked on a credential for tests that open no database* to **essentially gated on vitest** — a reconciliation
+assertion is exactly what vitest can make and a browser cannot. **§21 recorded that GRÜN held the change out of
+the tree rather than commit it unproven and that I endorsed both halves of that. That judgement is now vindicated
+by a mechanism rather than by caution**, and the right state is the one GRÜN had already chosen on instinct.
+
+**This is new content on an undecided owner item, so it goes to the owner and is not a re-raising of a decided
+one** — the distinction A-G250 turns on.
+
+### A-G264 · Three register items adopted, one of them a correction to how this record reads
+
+**PINK's `GLOW_RAMP` comment finding goes to GRÜN.** The comment records `measured = 1.55 … 1.95 r,
+L0 1920 × 1080`; PINK's sweep over the envelope gives **1.47526 … 1.94996 r.** **One viewport stated as the
+envelope, and a floor wrong by 0.075 r sitting in product code** where whoever next tries to establish that bound
+will inherit it. Comment-only, no executable delta, and **A-G106 reaches a comment as much as a rule — which is
+GRÜN's own extension of it, now applied to GRÜN's comment** *(defect 110, GRÜN's)*.
+
+**Body radius is not monotone in rank — and it is correct by design, which is the finding.** Rank 2 at 52.661788
+against rank 1's 41.544. **A-G2's channel table gives radius to requirement mass and the ladder to fit: two
+channels, deliberately independent.** So the non-monotonicity is the architecture working, and **any text in this
+record that reads as though deeper were smaller is wrong rather than the build being wrong.** PINK caught a
+reading, not a bug, and that is harder to catch.
+
+**PG-1's component table is adopted as non-evidence, on PINK's own motion against PINK's own strongest verdict.**
+The `bodies` term flips sign between stage sizes (−0.098 → +0.103) because suppressing a deliberately dark core
+*adds* light, and the attributions are non-additive both ways. **"The parts are not rows that sum."**
+
+> **Ruled: PG-1's PASSES stands on the region total alone. The component table is not quoted again, by any lane**
+> *(defect 111, PINK's, self-reported)*.
+
+**A lane volunteering that its founding green is the one to distrust first is the single most useful line in the
+message**, and it is the third time in this phase a lane has turned a rule against its own prior claim unasked
+(A-G85, A-G213, this).
+
+### A-G265 · A-G65's statistic was filed as an input by two lanes, and A-G220 is mine *(defect 112)*
+
+GRÜN's tree says it plainly — the PF-15 comment reads *"PINK's contract instrument owns that."* **PINK had it
+filed as an input it was awaiting; I carried it in my own reports as *awaiting GRÜN's mask-based statistic*,
+twice, about an instrument I have never read.** By A-G36 it cannot be GRÜN's and then run by PINK.
+
+**A-G220 is the rule — *do not price work in another lane's instrument; state the question and let the owning
+lane price it* — and A-G220 is mine, and I then broke it on ownership rather than on cost.** PINK volunteered its
+half; this lane's half is the larger one, because a report that tells the owner a lane is blocked on another lane
+makes a false statement about where the work sits.
+
+**PF-15's equivalence is accepted on its own argument:** the only executable delta from `3ec8457d` to `4b83414e`
+is `RING_LUMINANCE.shelf: 0.02 → 0.022`, entering only as a stroke alpha, so a declared live override is
+**provably equivalent to a rebuild for this pin — equivalence by diff rather than by assumption.** PINK is right
+that §62 was right about the code and understated the comments, which is the harmless direction.
+
+### A-G266 · A line number carries its SHA, both ways
+
+PINK's citations sit about forty lines below mine because it reads `3ec8457d` and this lane reads `4b83414e`,
+whose delta is almost entirely comment. **Nothing was miscited and both were right about their own tree.** The
+offset is itself evidence for PINK's diff claim.
+
+**Adopted: a line citation carries its SHA.** It costs four characters and it is the cheapest rule in this record.
+
+### What PINK's registers cost, and the obligation they create
+
+**PINK's stand exercises one fixture: one analysisId, five bodies, 2 field / 3 shelf, at L0.** So every
+rendered-page verification in this phase — including A-G262's hook check — reads *"at this population, at this
+level"*, and PINK said so unprompted rather than letting "verified against the rendered page" carry more than it
+holds.
+
+> **Ruled, as an obligation rather than a caveat on PINK's work: A-G48's L2 fixture and A-G51's L1 fixture also
+> need LV01–LV12 at L0, plus L1 and L2.** Shape and order are GRÜN's, with A-G206's span declaration in front.
+> **Until they exist, every rendered-page verdict in this phase states its population and its level.**
+
+**Seven new defects: five this lane's, one GRÜN's, one PINK's own. The count is 113.** The five include one
+mitigation offered to the owner that did not exist, one census read from one of two tables, and A-G220 broken by
+its author on the axis it does not mention.
+
