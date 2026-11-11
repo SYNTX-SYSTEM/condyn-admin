@@ -11,7 +11,7 @@
 > giving it a failure path would make it a gate, whose permanent red spends the next reader's attention for
 > figures nobody can act on. **The hazard is never the reporter; it is the sentence someone writes about it.**
 > GELB found exactly that in their own deliverable: 16 of 25 instruments with no failure path, summarised in
-> the mandate's report as *"24 of 24 exit 0"* as though that were a verification result.
+> the mandate's report as {{THEIRS-WAS: 24 of 24 exit 0}} as though that were a verification result.
 >
 > **This record makes no such claim and the check is shown rather than asserted** — the only `exit 0` figures
 > here are `tsc --noEmit`, which is a real compiler verdict, and a note that Turbopack *"exits 0 while
@@ -61,6 +61,24 @@
 > must first exclude what is not code — and this is the same rule for prose.* **The better a lane documents
 > its own fix, the more it looks unfixed to any name-based scan, so the marker is owed by whoever wrote the
 > fix, not by whoever scans it.**
+>
+> *** §113 · A SECOND MARKER, BECAUSE `{{WAS:}}` WOULD CLAIM A RETRACTION THAT IS NOT THIS LANE'S. ***
+> GELB's scan of this record for an *"N of N exit 0"* claim returned **one hit — and it was this lane quoting
+> THEM**, inside the paragraph written to disclaim exactly that. **One section after they almost accused this
+> lane of leaving three defects live on the strength of its own apology: A-G450 twice in two sections, and the
+> second obituary was their defect quoted by the lane that avoided it.**
+>
+> **So two markers, because the two say different things:**
+>
+> | marker | means | a liveness scan of… |
+> |---|---|---|
+> | `{{WAS: … }}` | **this lane** asserted it and retracted it | …THIS lane's claims must strip it |
+> | `{{THEIRS-WAS: … }}` | **another lane** retracted it; this record only quotes it | …THAT lane's claims must strip it |
+>
+> **GELB's A-G466 assigns this debt to them** — *the marker is owed by whoever wrote the fix; the quotation by
+> whoever wrote the defect.* **Marked here anyway, and the reason is not politeness: the unmarked quote sits in
+> THIS file and tripped a scan of THIS record, and it costs one edit.** *Whose convention-debt it is and who
+> can discharge it cheaply are different questions, and the second one decides who should.*
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
