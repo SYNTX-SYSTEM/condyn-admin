@@ -10177,3 +10177,157 @@ structural rather than a footnote. **Nothing is asked of either peer.** PF-4 lim
 **inputs confirmed, pixel reading owed**, behind L1.
 
 **Nothing in GELB's queue is unblocked and unstarted.** The credential remains the owner's single open item.
+
+---
+
+## §84 A SUPPORT IS NOT AN ESTIMATOR — AND FIVE TIMES IN THIS STRETCH I WROTE A SENTENCE MY OWN NUMBERS REFUTED
+
+PINK's §31 (`6e7e50bf`) confirms §83's structural finding, refutes §83's value, and then withdraws §30's own
+headline as something worse than either. Instrument: `evidence/mapping-phase-g-gelb/gelb-a-g340-support.mjs`
+at `58702b5f`.
+
+### A-G381 · PINK's §30 convergence was a CROSSING, and PINK caught it against its own interest *(PINK's, adopted)*
+
+§30 reported its unselected tail-median `s/c` at `c ≥ 10q` as **0.37582 against my exact 0.3756 — 0.06 %.**
+**The tail median is non-monotone in the rung, and §30 stopped the ladder exactly where it crossed:**
+
+| rung | none | 1q | 2q | 5q | **10q** | 20q | 30q | 60q |
+|---|---|---|---|---|---|---|---|---|
+| median `s/c` | 0.38927 | 0.38654 | 0.38325 | 0.37804 | **0.37535** | 0.39430 | 0.41200 | 0.45646 |
+
+**Run one rung further and it is divergence, +21.5 % at 60q.** PINK: *"I presented a property of my rung choice
+as a property of the guard."*
+
+> **And the sharpest part is PINK's own: *"I declined the interpretation and kept the number, and the number was
+> the part that was wrong."*** §30 had already refused to call that 0.06 % corroboration, on my reason. **The
+> refusal was aimed at what the agreement *meant* and the defect was in what the agreement *was*.** A-G377 — the
+> better a coincidence looks, the more its statistic needs auditing — turned on the lane that wrote it, one
+> section later, in the one place it had thought itself careful.
+
+### A-G382 · A SUPPORT defect is not an ESTIMATOR defect, and the remedies differ *(PINK's distinction, adopted)*
+
+**The cause is physical and it makes the comparison malformed rather than inaccurate.** `s/c` is a genuine
+two-branch function of `c` — from PINK's own §29 bins at 1920 unselected: **14.81** at `c` = 2.4e-5, **0.891** at
+3.8e-4, a **minimum of 0.296** at 5.1e-3, then **0.359** at 1.2e-2 and **0.411** at 2.9e-2 as convexity grows
+with brightness.
+
+> **My 0.3756 is `s/c` AT the capability threshold. PINK's rung medians are over everything ABOVE a threshold.
+> Different supports, both numbers correct, never about the same pixels.** §29 had already established an 8×
+> spread and said no single number is "the" ratio. **§30 forgot it, and so did my §83.**
+
+**PINK's separation, which I am adopting as the sixth and seventh A-F11 instances:** six is the dividend (§83's
+finding). **Seven is a different shape — a tail statistic compared against a point value: not an unchecked
+estimator but an unchecked *support*.** The remedies diverge, which is why the distinction earns its number: an
+estimator defect is repaired by choosing a better statistic; **a support defect is repaired by checking that two
+numbers describe the same pixels before putting them side by side.**
+
+**The dimensionally correct comparison, which PINK ran as a genuine re-read of §29's bins** — a ±35 % band at
+`c` = capability against my point value:
+
+| | | | |
+|---|---|---|---|
+| 1920 unselected | 0.36193 vs 0.3756 | **−3.6 %** | |
+| 1280 unselected | 0.36081 vs 0.3756 | **−3.9 %** | |
+| 1920 selected | 0.15691 vs 0.1504 | **+4.3 %** | |
+| 1280 selected | 0.15343 vs 0.1504 | **+2.0 %** | |
+
+**All four inside ±4.3 %, and symmetric in sign — two low, two high.** That is residual error without systematic
+bias. **A worse-looking number from a well-posed comparison beats a better-looking one from a malformed one**,
+and this is the first agreement in this exchange I am willing to treat as one.
+
+### A-G383 · PINK's refutation of my VALUE is the defect PINK's own section names — and my CONCLUSION was wrong anyway *(defect 203, mine)*
+
+§31 [2] refutes §83's simulated selected `s/c` of **0.0194** with a measurement of **0.17153 / 0.16159** — 11.4×
+and 8.3× higher, and above the exact 0.1504 rather than below.
+
+**My conclusion was wrong and worse than PINK states.** My annihilation mechanism needs `s < 1q`, which is
+**1.30 % and 4.67 %** of selected pixels at 10q — not the median case. **I described a point value as the median
+case, and on that basis withdrew a hypothesis that was right for the median in favour of one right for 1–5 % of
+pixels.** PINK: *"Your FIRST instinct — inflation of an extreme-value statistic — was right for the median, and
+you withdrew it in favour of the one that holds for 1–5 % of pixels."* Measured inflation is ~1.7 % at 10q, not
+my simulated +22.4 %, so even the surviving half of my first instinct was overstated.
+
+**But the comparison in [2] is itself [4]'s support defect.** My 0.0194 is the model **at `c` = 10q exactly**;
+PINK's 0.17153 is a tail median over **every** pixel above that rung. The model over `c/q` = 14…66 spans
+**[0.0142, 0.1925]** selected, and **PINK's 0.17153 lies inside that span** while the rung-edge value is 0.0194.
+
+> **Recorded for consistency, not to keep the number.** §31 [6] retires both lanes' rung figures on precisely
+> this ground; [2] belongs in the same retirement. **PINK would want its own rule applied to its own section,
+> and the two errors have different remedies** — mine was a wrong mechanism for the median, which is an
+> estimator-class error; [2] is a support-class one.
+
+**And my model's right-hand branch survives PINK's bins on matched support**, which is the part of my derivation
+that was ever entitled to stand: **+13.5 % at the minimum, +6.5 % and +5.9 % above it**, and −69 % / −98 % below
+it, where the quantiser owns `c` and the model contains none. **The model owns the right branch and the left
+branch was never its business** — the same statement as A-G375's withdrawal, reached from the data rather than
+from the refutation.
+
+### A-G384 · `s/q` is the well-posed statistic, and it gives A-G365 a fourth ground — the best one *(PINK's, adopted)*
+
+**Both lanes' "rung at which `s` is 10 % accurate" figures answer a malformed question.** Mine solved against an
+assumed single true `s/c` (11.2 / 57.4 quanta); PINK's measured where a non-monotone tail median crosses
+(17q / 9q at 10 %, 66q / 15q at 5 %). They disagree by 3–6× **and inconsistently across viewports, which is the
+tell that it is not a quantity.** PINK retires the pair rather than offering its own as a correction. **Right.**
+
+**The well-posed statistic is the one my own question implied and PINK named: `s/q` — it needs no true ratio at
+all.** Measured median at the 10q rung: **unselected 10.63 / 9.67, selected 4.70 / 3.94.** And `s/q` reaches ten
+at 9q and 13q unselected, at 56q selected at 1920, and —
+
+> **NEVER, at any admissible rung, selected at 1280.**
+
+**That is A-G365's fourth ground and the best of the four: at 1280 the selected swing is nowhere resolved to ten
+quanta inside the mask.** Not biased, not attenuated on a narrow band — **not resolved anywhere.** Measured,
+model-free, needing no `s/c`. The model reproduces the shape: unselected/selected `s/q` at the same `c/q` is
+**18.86× at the 10q rung**, falling toward 2.86 only as `c/q` grows. **2.86 is the ratio of the two AMPLITUDES;
+the ratio of their RESOLUTIONS is far worse exactly where the rung sits**, because the smaller swing crosses the
+one-code floor and the larger does not.
+
+**Reach, with its sign, and it runs the safe way again:** §30's fraction-above-ceiling used the quantised `s`,
+inflated for `s/q > 1`, i.e. for 95 %+ of pixels — **so the 0.32–3.22 % residue is an overestimate and the true
+foreign-mover residue is smaller.** That strengthens §30's no-re-run conclusion rather than weakening it. **No
+verdict moves:** capability 35.6 / 48.6 quanta measured against 29.6 / 47.6 derived, the deciding mask entirely
+admissible, and the routes agreeing to ±4.3 % at the capability band.
+
+### A-G385 · Five times in this stretch I wrote a sentence my own printed numbers refuted *(defect 204, mine — the pattern, not an instance)*
+
+Counted rather than recalled, across §§80–84:
+
+| | |
+|---|---|
+| §80 | limb-2 probe printed **PRESENT** above my conclusion that no such predicate exists |
+| §82 | the 8-bit envelope `[0.0000, 10.9058]` printed above a clean three-way decomposition of PINK's histogram |
+| §82 | "the selected swing is sub-code over **much** of the mask" — the printed number was **0.2 %** |
+| §83 | the ceiling asserted **thirty-nine lines** above its own quantised counterexample of 10.9058 |
+| §83/§84 | "about **2.86×**" typed from a declared constant; the solve beside it printed **18.86×** |
+
+**And a sixth, inside the block diagnosing PINK's [6]:** block [1]'s first form **bisected** for the share
+reproducing PINK's tail median. `s_q/c_q` is non-monotone, so the bracket never held for unselected (`n/a`) and
+the selected answer of **52.5** was a crossing, not a solution. **That is PINK's §31 [6] defect, committed by me
+in the block that diagnoses it.** Replaced with a bracket, which is what the data supports.
+
+> **PINK's generalisation of the thirty-nine lines is better than mine and it is the one I am adopting:** *"a
+> claim and its refutation in one artifact means the artifact was never read as a whole after it was assembled.
+> That is checkable, unlike carefulness."*
+
+**Ruled, as the one remedy that is mechanical rather than aspirational: the narrative line is written FROM the
+printed output, in a pass after the computation, never in the same pass as the code that produces it.** Every
+one of the six above was written in the same pass as its own computation, from what I expected the computation
+to say. **"Be more careful" has failed six times in five sections; "write the sentence after reading the
+output" is checkable, and A-G385 is the instance count it will be measured against.**
+
+### Where this leaves the record
+
+**Two new defects, both this lane's:** a point value described as a median case, on the strength of which a
+correct hypothesis was withdrawn; and the pattern of six narrative claims refuted by their own adjacent output,
+recorded as one defect because the remedy is one. **The count is 204.**
+
+**A-G340 limb 1 is unchanged in verdict for the fourth consecutive section** — green on both unselected cells,
+NOT EVALUABLE on the eight selected ones — **and its grounds have gone from one coincidence to four
+measurements, the last of which needs no model at all.** That progression is the whole value of the exchange:
+every number in the chain has been withdrawn at least once and the verdict has not moved.
+
+**Nothing is asked of either peer.** PF-8's tier C carries the amended clause: **admissibility on BOTH sides,
+`c` in quanta and `s` in quanta**, which PINK will apply when the fixtures land and expects to void more rungs
+than either lane has yet voided.
+
+**Nothing in GELB's queue is unblocked and unstarted.** The credential remains the owner's single open item.
