@@ -11927,6 +11927,15 @@ static ground is unmodulated**; only the seven wave bands breathe. `:926` stroke
 > page. Outside: INK over **pure black**. The medium fades to its faintest exactly at the boundary — the
 > design plainly intends a soft end — **but a fade cannot be continuous across a discontinuous backdrop.**
 
+> ### ⚠ WITHDRAWN 2026-11-11 — THERE IS NO PROFILE AT ALL *(see §103; §101's correction superseded)*
+> **§101 corrected "flat" to "a 29 % hump peaking at offset 3". That hump is now withdrawn too: it was the
+> LATTICE.** PINK measured the step at nine offsets in both viewports — **median 5.51 quanta at seven of
+> nine in each**, with the modal step jumping between a handful of lattice points. **A difference of two
+> quantised levels is itself lattice-valued, so reading its variation across offsets as spatial structure
+> was A-F11 in the radial direction.** And the inside has **no location statistic**: 165–219 distinct
+> triples per offset at a modal share of 0.099–0.201. **Withdrawn, not corrected — the instrument cannot
+> produce a profile.** The seam's existence survives on a different statistic entirely (§103).
+
 > ### ⚠ CORRECTED 2026-11-11 — THE PROFILE IS NOT FLAT *(see §101)*
 > **The flatness claim below is this lane's and it is not supported by the profile it rests on.** On the
 > shipping build the step reads **2.509 / 3.022 / 3.233 / 2.524 / 2.524 quanta** at offsets 1 / 2 / 3 / 5 / 8
@@ -13005,3 +13014,113 @@ since §94 — now on a measured swing over the whole population instead of a pr
 **Three new defects:** §100's closure claiming a population it covered 64 % of; the full-removal
 differential standing in for a local derivative, which both lanes' proxies rested on; and one ratio quoted
 across two domains. **300 + 3 = 303.**
+
+---
+
+## §103 WITHDRAWN RATHER THAN CORRECTED — AND THE STATISTIC THAT SURVIVES IS NOT THE ONE THAT FELL
+
+**Date of this section: 2026-11-11.**
+
+### The offset-1 hypothesis, confirmed in both viewports to three digits
+
+§101 asked whether the offset-1 pixel is fully covered. PINK measured the shelf-side **modal share** at
+nine offsets:
+
+| offset | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12 |
+|---|---|---|---|---|---|---|---|---|---|
+| 1920 | **0.475** | 0.722 | 0.722 | 0.732 | 0.728 | 0.733 | 0.740 | 0.754 | 0.769 |
+| 1280 | **0.475** | 0.710 | 0.715 | 0.728 | 0.735 | 0.754 | 0.758 | 0.765 | 0.765 |
+
+**0.475 at offset 1 in BOTH viewports, agreeing to three digits, with rgb(3,4,4) at 13.1 %.** Structural,
+not noise. **Offset 1 was never a reading of the band — it was a reading of the band's antialiased inner
+edge against the seat.**
+
+### Withdrawn, not corrected, because there is no corrected profile
+
+> *** §35's "essentially flat across offsets 1 to 8 — so a genuine discontinuity, not a gradient" IS
+> WITHDRAWN ENTIRELY: the flatness, the step-versus-ramp inference it carried, and the per-offset quanta as
+> a profile. So are §37's and §38's restatements. AND §101's OWN CORRECTION OF IT — the "29 % hump" — IS
+> WITHDRAWN TOO. ***
+
+**Two reasons, and the second is the deeper one:**
+
+**The inside has no location statistic.** 165–219 distinct triples per offset at a modal share of
+0.099–0.201. *A region with ~180 values and none above a fifth has no mode worth quoting and only a weak
+median.*
+
+**And the step is LATTICE-VALUED.** Median step **5.51 quanta at seven of nine offsets in each viewport**,
+with the modal step jumping between a handful of lattice points. **A difference of two quantised levels is
+itself lattice-valued, so reading its variation across offsets as spatial structure is A-F11 in the radial
+direction** — and §35 carried the signature all along: **offsets 5 and 8 identical to every digit**, read
+as agreement rather than as quantisation. **A-G421's family too: identical digits looked like precision
+and were the absence of resolution.**
+
+**PINK's own mechanism was refuted in the process.** It predicted bimodality from the `i % 2 === 1` sector
+wedges and found heterogeneity instead — **worse than its hypothesis predicted, not better.** A refuted
+hypothesis reported as refuted, in the same message as the withdrawal it forced.
+
+> **Most of today's corrections replaced a figure with a better figure. This one replaces a claim with
+> nothing, because the instrument cannot produce the quantity.** That is harder to publish than a revised
+> number and it is the only honest output.
+
+### The statistic that survives is better than the one that fell
+
+> **the inside's p05 is 2.50e-3 against the band's own 1.453e-3**
+
+**RULED: the seam's existence rests on the one-sided comparison `inside p05 > band level`, together with
+the band side reading solidly rgb(4,5,5) at 71–77 % from offset 2 outward in both viewports. The step in
+quanta is NOT the evidence and is not quoted as such.**
+
+**It needs no profile, no median of a 180-valued region, no per-offset comparison and no offset-1 sample.**
+If even the dimmest 5 % of the inside exceeds the band's level, **the sign is unambiguous.**
+
+> **And it turns A-G382 on its head in a way worth recording: a tail statistic against a point value is an
+> unchecked SUPPORT when used to estimate a magnitude, and a perfectly sound instrument when used to
+> establish a SIGN.** Same construction, different question, opposite verdict — **A-G432's lesson in a
+> third costume: what a measurement is asked to discriminate decides whether it is sound.**
+
+**Also surviving:** the seat-edge mechanism, derived from source and confirmed by PINK's over-seat /
+over-plate discrimination at 3, 5 and 8 codes — **it never touched the profile.** And §37's and §40's band
+readings, **which survive because of a 3 px inset off both edges that PINK did not choose for that
+reason.** PINK volunteered that it was luck. **So the inset becomes a stated requirement of the method
+rather than a parameter that happened to be right.**
+
+### A-G436 · The tightest margin is often the least licensed sample *(first half this lane's, renumbered)*
+
+Offset 1 carried the smallest step, sat closest to PF-8's 2× floor guard, **and was the one sample in the
+partial-coverage regime.**
+
+> **RULED: when a profile's extreme point is also its nearest-the-boundary point, suspect the boundary
+> before believing the extreme.**
+>
+> **And the corollary, ruled rather than accepted: A-G341 is EXTENDED from masks to any sampled geometry —
+> angular rings, radial offsets, scan lines. An angular sample reports its population per offset, exactly
+> as a mask does.** §35 is what the omission produced: **offset 8 quoted beside offset 1 with no population
+> for either**, while at 1280 offset 12 had already left the region — **333 distinct triples, modal share
+> 0.031, step 137.07 quanta, the ring crossed into bodies and text.** *A sample ring that has left its
+> region is not a noisy reading of that region; it is a reading of somewhere else.*
+>
+> **Checked before ruling: no GELB instrument takes an angular or radial sample at all — they read source
+> and compute — so this lane has no exposure to extend the rule against.** Said plainly rather than
+> implied.
+
+### The owner line, amended upward in the strength of its negative
+
+**Not "spatial extent not characterised" but NOT CHARACTERISABLE BY THIS INSTRUMENT** — the inside has no
+location statistic, the step is lattice-valued, and the offset nearest the boundary is an edge read.
+
+> **The seam's EXISTENCE is firmer than when it was first sent up, and its SHAPE is less knowable.** An
+> unusual pair, and the owner gets both halves.
+
+### On the interval, which is now the sharpest instance
+
+**§41 fenced the partial-coverage regime; §35's offset 1 had been inside that fence since before the fence
+existed; and the rule did not go looking backwards.** A rule written forward does not audit the record
+behind it unless someone runs it backwards — **which is the one thing A-G429's three remedies do not cover,
+and this lane is not inventing a fourth remedy from a single instance.**
+
+### Where this leaves the record
+
+**Four new defects:** §35's withdrawn spatial claim; the lattice-valued step read as spatial structure; the
+1280 offset-12 ring quoted after leaving its region; and A-G341's non-extension from masks to sampled
+geometry. **303 + 4 = 307.**
