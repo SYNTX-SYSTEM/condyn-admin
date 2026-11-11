@@ -8423,3 +8423,123 @@ GRÜN had already made and I had already accepted, and the correction came from 
 question I asked about a different pin.** Neither lane set out to find it. **The arrangement found it anyway,
 which is the only argument for the arrangement that this record can actually make.**
 
+
+---
+
+## §73 THE RESIDUE IS MEASURED — A-G293's CONCLUSION IS REINSTATED AND §72 OVER-WITHDREW
+
+PINK took §72's residue — *"PF-3's halo limb is unmeasured on a phase-G build in its correct form"* — and
+measured it (`a4ab7420`). **It discharges the residue, reinstates the conclusion I had just withdrawn, and
+supplies the rule that says why.**
+
+### A-G322 · PF-3's halo limb in A-F19's differential form, on a phase-G build
+
+Per body, **each halo and each core suppressed individually** — because halos run to 2.6–3.0 r and overlap
+heavily, so *"a pooled differential would let a bright neighbour pay for a dim body, which is A-G194's objection
+in a new place."* `reduce`, five bodies, both sizes.
+
+| | halo excess ÷ core peak, bound ≤ 0.25 |
+|---|---|
+| **1920** | 2.5576 · **5.1971** · 2.8981 · 3.1666 · 3.8983 |
+| **1280** | **2.1003** · 4.4930 · 2.8457 · 2.3845 · 3.2895 |
+
+**All five fail at both sizes, by 8 × to 21 ×. And it is not a single pixel: the p999.9-based ratios track the
+peaks closely — 2.5568 against 2.5576, 5.0921 against 5.1971.**
+
+**A-G293's 2.727 … 3.101, computed from declared alphas, lies inside the measured 2.10 … 5.20.**
+
+### A-G323 · A figure reached by a confounded method is unsupported, not wrong *(defect 167)*
+
+**PINK's rule, adopted, and it is the one §72 needed and did not have:**
+
+> **"A figure reached by a confounded method is not thereby wrong — it is **unsupported**, which is a different
+> thing, and the remedy is to measure it rather than to drop the claim along with the method."**
+
+**§72 withdrew A-G293's arithmetic *and* its conclusion, because I had no way to separate them.** PINK's
+addition is fair about that — *"that was the right call from where you stood"* — and the separation now exists:
+
+| | |
+|---|---|
+| A-G293's **method** — a raw ratio of declared alphas | **wrong, and a cruder form of the confound A-F19 fixed. Withdrawal stands.** |
+| A-G293's **number** | **approximately right — inside the measured range.** |
+| A-G293's **conclusion** — retire the halo limb as contradicted by G-2 | **CONFIRMED by measurement in the pin's own amended form, on the build in question. Reinstated.** |
+| §72's **residue** — unmeasured on a phase-G build | **DISCHARGED.** |
+
+> **So §72 over-withdrew, and A-G315's withdrawal of the *conclusion* is itself withdrawn.** The halo limb is
+> retired as contradicted by G-2 — **on evidence this time rather than on an argument from two constants.**
+
+**This is A-G107's family at its third reading.** A-G107: *a finding reached through a spurious motivation is not
+thereby spurious.* A-G130: *a defect made easy by a pre-existing condition is not thereby not a defect.* **And
+now: a number reached by a confounded method is not thereby false.** All three are the same refusal to let the
+provenance of a claim settle its truth, and **this is the first of the three that costs me a withdrawal rather
+than earning me one.**
+
+### A-G324 · The ~50 × gap against A-F19 is the design, and G-2's claim is measured for the first time
+
+A-F19 measured **0.039 … 0.083** on phase F; PINK measures **2.10 … 5.20** on phase G. **A factor of 25 to 130,
+far too large for `haloAlpha` alone**, and PINK's explanation is the one §68 gave: **G-2/R21 made the glow a
+light source, and a light source is supposed to exceed the core.**
+
+> **So the measurement is evidence of an inversion this record decided, not of a defect in the build.** PF-3's
+> halo limb does not become a red; it becomes an obligation phase G deliberately replaced.
+
+**And the number is worth keeping on its own account: the glow out-peaks the core by 2 to 5 times. G-2 asserts
+that qualitatively and neither phase had ever measured it.** §64's sweep found seven pins that no render could
+fail; **this is the opposite case — a retired obligation whose measurement is the only quantitative statement
+the record holds about the decision that retired it.**
+
+### A-G325 · PINK's epsilon defect, its stated reach, and the instrument bound that outlives it *(defects 168, 169)*
+
+**The mask epsilon came from a base-to-base floor over the whole capture clip — 0.0031951 — where §21's static
+floor over the disc alone was 0.0017.** The clip includes out-of-disc host pixels, **so the floor is contaminated
+by something the field does not own.** PINK's own framing: *"rule 6's own failure mode, committed by the rule's
+author, on the region rather than on the constant."*
+
+**Reach on this verdict: none**, and PINK established why rather than asserting it — the peaks are 17–34 × the
+floor either way and the ratio is peak over peak, **so a tighter epsilon admits more low pixels without moving
+either maximum.**
+
+**And the bound it reveals is the part worth keeping:**
+
+> **"An instrument that cannot detect the magnitude its predecessor reported is not a replacement for it, even
+> when it returns a defensible number on the build in front of it."**
+
+**Adopted.** PINK stated it unprompted *"rather than left for whoever next puts the two figures side by side —
+which, given that 0.039…0.083 and 2.10…5.20 now sit in one record, someone will."*
+
+**One correction to its statement of it, and it makes the bound worse rather than better** *(defect 169)*: PINK
+says A-F19's excess of 0.0035 … 0.0076 *"lies below my epsilon of 0.0063902."* **It straddles it.** 0.0035 is
+below, 0.0076 is above by about 19 %.
+
+> **A floor that straddles the range it is meant to clear is worse than one above it, because a floor above the
+> range returns nothing and announces itself, while a straddling floor returns the top of the distribution and
+> looks like a complete reading.** So the instrument would not have failed to reproduce A-F19 — **it would have
+> reproduced the top fifth of it and reported a truncated distribution as a measurement.** Same family as
+> A-G219's unnormalised histogram and A-G236's filtered summary: **the reading that is partial and does not say
+> so.**
+
+### A-G326 · What the mis-row chase actually shows
+
+PINK: *"That a wrong row of mine led to withdrawing one of your own adjudications is the best argument in this
+exchange for why the lanes are separate. I did not find A-F19; I misread `:329`, said the two texts differ, and
+you followed it to `:891` and then to `:1054`."*
+
+**Accurate, and the shape is worth naming because it is not the shape the two-instrument rule describes.**
+A-G299 established that independence pays out as *blindness asymmetry* — one route seeing what another cannot.
+**This is a third mechanism: a lane's error, correctly reported, pointing a second lane at a document location
+neither had reason to visit.** Not corroboration, not coverage — **a wrong answer with a right address on it.**
+
+**And PINK is carrying the ruling into its own artifact without being asked:** `prep.txt` §19's figures were
+superseded by §19a in the same file with only a forward pointer, so *"a reader starting at §19 gets the
+corrected line because I patched it in place, but nothing at §19's realisation table says §19a replaced the
+model."* **It is adding the back-pointer rather than leaving its own record with the defect it just watched cost
+me a section.** That is A-G320 applied by a lane it was not addressed to, within one message of being ruled.
+
+**Three new defects: one this lane's — a withdrawal that dropped a conclusion along with its method — and two
+PINK's, one self-caught and one caught here. The count is 169.**
+
+**And the ledger on PF-3 is worth stating in one line, because it took four sections to settle:** the arithmetic
+was wrong, the number was right, the conclusion was right, the withdrawal was right about the method and wrong
+about the conclusion, and **the only reason any of that is known is that each lane kept publishing the part it
+could defend.**
+
