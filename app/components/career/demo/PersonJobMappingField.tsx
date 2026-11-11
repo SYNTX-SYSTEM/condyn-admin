@@ -71,17 +71,24 @@ const FLOOR_HEADROOM = 1.002;
 export const STAGE_STRIP_GAP_PX = 8;
 export const STAGE_TOP_PX = 142;
 export const STAGE_GUTTER_PX = 28;
-/** §3, the three motion kinds, the staging and the breath — every number of the phase in one place (P-3 … P-6 read these). */
+/**
+ * §3, the three motion kinds and the staging — every number of the phase in one place (P-3 … P-6 read these). NOT the breath:
+ * that is the medium's, its numbers are WAVE's, and the `breath` key here held four figures with zero render-path readers until
+ * §90 A-G406 deleted it (2026-11-11, build 20a0b131).
+ */
 export const MOTION = Object.freeze({
   query: Object.freeze({ periodMs: 1400, amplitudePx: 1.5 }),
   transient: Object.freeze({ riseMs: 180, decayMs: 600, peak: 1.8 }),
   layout: Object.freeze({ durationMs: 900, easing: "cubic-bezier(0.42, 0, 0.58, 1)" }),
-  stage: Object.freeze({ geometryMs: 420, evidenceFromMs: 420, evidenceMs: 280 }),
-  breath: Object.freeze({ periodMs: 10000, radiusAmplitude: 0.015, opacityMean: 0.96, opacityAmplitude: 0.04 })
+  stage: Object.freeze({ geometryMs: 420, evidenceFromMs: 420, evidenceMs: 280 })
 });
 /**
- * E-7: the four rings, told apart by luminance alone (one ink, no hue), each step ≥ 1.6× — also at the breath's trough, where the
- * field ring is at opacityMean − opacityAmplitude of its value.
+ * E-7: the four rings, told apart by luminance alone (one ink, no hue), each step ≥ 1.6× — the static ladder best/shelf,
+ * field/best, horizon/field, asserted in test/career/mapping-field/neurovisual-e.test.ts.
+ *
+ * §90 A-G406: the field ring does NOT breathe, so there is no trough to hold it at. It carries E-6's STATE as data-breath (see
+ * its render site) and no wave class, and both breath rules select a .mf-wave descendant — the two groups that breathe are
+ * .mf-wave-ground and .mf-wave-halo. The clause deleted here read the trough off MOTION.breath, a declaration nothing rendered.
  */
 // Phase G (§3 "the four rings re-derived", PF-15 inverted): the shelf band is an area, so its alpha is most of the rings' light;
 // 0.05 → 0.02 kept it a step below best-fit (≥ 1.6×, the ladder) while the scaffold stopped out-lighting the content.

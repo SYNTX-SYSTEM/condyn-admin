@@ -80,12 +80,15 @@ describe("MAP-E-NEURO · P-2 / E-1 — the evidence bands (A-3)", () => {
 });
 
 describe("MAP-E-NEURO · E-7 — the four rings by luminance, one ink", () => {
-  it("REPRODUCE: each ring ≥ 1.6× the next, also at the breath's trough for the breathing field ring", () => {
+  // §90 A-G406: the ladder is STATIC — the four rings are drawn at their declared alphas and none of them breathes. This clause
+  // used to hold the field ring at MOTION.breath's trough, which (a) read a dead declaration, (b) made the field/best rung the
+  // tightest in the ladder at +1.47 % while the rung the build draws clears by +10.3 %, and (c) would have FAILED at 1.350 under
+  // the breath that really exists (.mf-wave-halo). No mean, no trough, no borrowed constant: three ratios, one bound.
+  it("REPRODUCE: each ring ≥ 1.6× the next — the static ladder, which is the only one the build draws", () => {
     const { shelf, best, field, horizon } = RING_LUMINANCE;
-    const trough = field * (MOTION.breath.opacityMean - MOTION.breath.opacityAmplitude), peak = field * (MOTION.breath.opacityMean + MOTION.breath.opacityAmplitude);
-    expect(best / shelf).toBeGreaterThanOrEqual(CONTRACT.bandStep);
-    expect(trough / best).toBeGreaterThanOrEqual(CONTRACT.bandStep);
-    expect(horizon / Math.min(1, peak)).toBeGreaterThanOrEqual(CONTRACT.bandStep);
+    expect(best / shelf, "best over shelf").toBeGreaterThanOrEqual(CONTRACT.bandStep);
+    expect(field / best, "field over best").toBeGreaterThanOrEqual(CONTRACT.bandStep);
+    expect(horizon / field, "horizon over field").toBeGreaterThanOrEqual(CONTRACT.bandStep);
   });
 });
 
