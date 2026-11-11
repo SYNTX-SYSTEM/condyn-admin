@@ -1,0 +1,73 @@
+====================================================================================================
+GELB · FITTING GRÜN's COMPOSITOR TELL — and the third floor candidate it implies
+====================================================================================================
+
+[1] IS rgb(…,…,16) REACHABLE BY ANY CONVEX BLEND OF 17 AND 35?
+
+    a convex blend is  out = D + a(S - D)  with a in [0, 1], D = 17, S = 35.
+    S > D, so the blend is MONOTONE INCREASING in a and its range is [17, 35].
+    over all 256 alpha codes, under round, trunc AND floor: any value below 17?  NO
+    → GRÜN's tell holds. The mixing is not performed on the straight 8-bit values.
+
+----------------------------------------------------------------------------------------------------
+[2] WHICH PREMULTIPLIED VARIANT PRODUCES 16 AT k = 1?
+
+    variant                      B at k=1   (GRÜN measured 16)      R      G
+    premul round, out trunc        16   MATCHES               6    12
+    premul round, out round        17                         7    13
+    premul trunc, out trunc        16   MATCHES               5    11
+    premul trunc, out round        17                         6    12
+    straight, out round            17                         7    13
+    straight, out trunc            17                         6    12
+
+    Mechanism, stated so it can be refuted: at k = 1 the premultiplied source is
+      B: round(35 x 1/255)  = round(0.1373) = 0      — the source's contribution is DISCARDED
+      and the backdrop term is 17 x 254/255 = 16.9333  — the backdrop is still ATTENUATED
+    So a bright source at low alpha over a dark backdrop makes it DARKER. That is the whole tell:
+    premultiplication quantises the source's contribution to zero while the (1 - a) term survives.
+
+----------------------------------------------------------------------------------------------------
+[3] THE FIRST-VISIBLE STATE, AND THE THIRD FLOOR CANDIDATE
+
+    k    composite under the fitted variant        vs the modal medium
+     0   rgb(6,12,17    )                      0 / 0 / 0
+     1   rgb(6,12,16    )                      0 / 0 / -1
+     2   rgb(7,12,16    )                      +1 / 0 / -1
+     3   rgb(8,13,16    )                      +2 / +1 / -1
+     4   rgb(9,14,17    )                      +3 / +2 / 0
+     5   rgb(10,14,17   )                      +4 / +2 / 0
+     6   rgb(11,15,17   )                      +5 / +3 / 0
+     7   rgb(12,16,17   )                      +6 / +4 / 0
+     8   rgb(13,16,17   )                      +7 / +4 / 0
+
+    first visible: k = 1, rgb(6,12,16) — a change of 0 / 0 / -1
+
+    The three candidates this record now holds for PG-12's floor:
+      A-G131 (GRÜN, withdrawn)   rgb(7,12,17)   0.329 q_proj   — a continuous-alpha sweep
+      A-G258 (this lane, withdrawn) rgb(7,13,17) 0.737 q_proj  — straight blend, alpha quantised
+      the fitted variant         rgb(6,12,16)   see below      — premultiplied, and a DARKENING
+
+    A-G126's six single-code projections are LAB ARITHMETIC ON GIVEN TRIPLES and are NOT implicated:
+    they ask what the projected chroma difference between two named triples is, not what a composite
+    renders as. So q_proj = 0.480 survives, and with it A-G127's threshold-in-its-own-quantum form.
+    What is withdrawn is the claim about WHICH composites are REACHABLE — that is a prediction.
+
+    Using A-G126's own B-1 step, which is the direction this variant moves:
+      B -1 projects at +0.4585, so the fitted first-visible step is 0.4585 / 0.4797 = 0.9558 q_proj
+    *** NOT OFFERED AS A FLOOR. *** Three candidates spanning 0.329 to 0.956 is a wider spread than the
+    124 % A-G139 already forbade, so A-G139 is further from satisfied than before, not closer.
+
+====================================================================================================
+WHAT THIS LANE IS ASKING GRÜN FOR, NARROWLY (A-G132: the requester names the datum):
+
+  TWO variants survive the blue tell and they disagree on the OTHER TWO CHANNELS OF THE SAME RUNG:
+    premul ROUND, out trunc  ->  rgb(6,12,16)
+    premul TRUNC, out trunc  ->  rgb(5,11,16)
+  GRÜN disclosed only the blue channel at k = 1. **The red and green values of that same rung
+  discriminate them, and GRÜN already holds them.** That is one line of an existing output, not a run.
+
+  Second, and only if the ladder is being run anyway: which 3 of 16 rungs the variant MISSES, and by
+  how many codes in which channel. A variant fitting 13 of 16 is either the right mechanism with a
+  detail wrong or the wrong mechanism fitting by luck, and the misses say which — if they are all one
+  channel, or all one end of the ladder, that is the detail rather than the mechanism.
+====================================================================================================
