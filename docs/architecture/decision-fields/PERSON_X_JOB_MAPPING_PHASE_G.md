@@ -8172,7 +8172,14 @@ case."* **The 455.6 % is mode-independent and is the load-bearing figure; the 21
 
 ### A-G313 · A-G128 gains a third limb: the motion mode
 
-`gelb-gate-motion-mode.mjs` + `.out.txt` (`d2fcb9e5`). **All five anchors unique.** The accommodation is
+`gelb-gate-motion-mode.mjs` + `.out.txt` (**`43f29db6`**). **All five anchors unique.**
+
+> **Correction, same session, and it is numbered: this section first cited `d2fcb9e5` — a SHA this lane
+> never read.** The instrument is `43f29db6`. **A-G243's class in its purest form — a correct conclusion
+> carried by a citation the artifact does not support — committed by the lane that adopted A-G243 against
+> another lane, in the section where it adopted the cheapest of three gate limbs.** *(defect 160)*
+> **And it is the one defect class in this record with a free check: a SHA can be verified by `git cat-file -e`
+> before it is written, which this lane did not do.** The accommodation is
 **exactly three rules and one script hook** — one substitution and two removals:
 
 | | `4b83414e` | |
@@ -8249,7 +8256,7 @@ precision theatre."* **Adopted: the extra decimals are the mechanism, which is w
 a figure printed to fewer places than its mechanism needs hides the mechanism, and one printed to more claims a
 precision it lacks. The test is whether the digits are load-bearing, not how many there are.**
 
-**Four new defects: three this lane's — a pin whose scope decides its verdict and does not state it, two shares
+**Five new defects: four this lane's — a pin whose scope decides its verdict and does not state it, two shares
 that name neither mode nor selection, and a pin with no satisfier in one of two builds — one PINK's. The count
-is 159.**
+is 160.**
 
