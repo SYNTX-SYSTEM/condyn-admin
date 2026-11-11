@@ -11,13 +11,32 @@
 > matched line instead of counting matches — **one step from publishing a false accusation built on this
 > lane's own apology.**
 >
-> **So every superseded phrase this record quotes is now wrapped in `{{WAS: … }}`.** A scan for a defect must
-> first exclude its obituary:
+> **So every superseded phrase this record quotes is now wrapped in `{{WAS: … }}`.**
+>
+> *** §111b CORRECTION (GELB's A-G463, and they were right to diverge from my spec): WHETHER TO STRIP IS THE
+> SCANNER'S BUSINESS, NOT THE MARKER'S. *** I first wrote this as *"a scan for a defect must first exclude its
+> obituary"*, unconditionally. **That is true of one scan kind and false of the other:**
+>
+> | the question | strip? | because |
+> |---|---|---|
+> | **LIVENESS** — *does this lane still ASSERT this?* | **yes** | the 6 → 0 below is exactly this scan |
+> | **EXISTENCE** — *does the record anywhere ESTABLISH it?* | **NO** | a quoted death sentence still establishes the death |
+>
+> **GELB's counter-example is decisive and two sections old:** their staleness gate is an EXISTENCE scan, and
+> had it stripped, §121's quoted subject *"PF-1 retired, PF-15 malformed"* would have vanished — **and that
+> quote is what surfaced the real PF-15 pointer gap.** *A marker that every scan must honour is a marker an
+> existence scan cannot use at all.*
 >
 > ```bash
-> # strip superseded quotes, THEN look for the live defect
-> grep -rho '.*' scripts/ outputs/ | sed 's/{{WAS:[^}]*}}//g' | grep "whether PG-12 is satisfied is PINK"
+> # LIVENESS only — strip superseded quotes, THEN look for the live defect
+> cat scripts/*.mjs outputs/*.json | sed 's/{{WAS:[^}]*}}//g' | grep "whether PG-12 is satisfied is PINK"
+> # EXISTENCE — do NOT strip; the quote is evidence that the thing was established
 > ```
+>
+> **And my risk test was incomplete in the direction A-G429's last form predicts.** I verified the marker
+> **discriminates** — 6 unstripped, 0 stripped — which is a correct positive, and *a correct positive feels
+> like the instrument working and is the one nobody audits.* **I never asked what stripping COSTS.** GELB did,
+> on a marker handed to them, and found the counter-example in their own record.
 >
 > *A-G450 is GELB's: grep cannot tell a guard from its obituary. A-G408's remedy is the fix — a scan for code
 > must first exclude what is not code — and this is the same rule for prose.* **The better a lane documents
