@@ -44,7 +44,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 
 | Prüfebene | Stand | Herkunft |
 |---|---|---|
-| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB |
+| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB. *** Figur aus GRÜNs Lane, deren 69 Ausgaben AUSNAHMSLOS `verdict: NONE` erklären (A-G458). *** |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
 | **GELB-Instrumente** | **24 von 24 Exit 0** | diese Session verifiziert |
 | **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 377.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 379.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -216,6 +216,14 @@ Instruments geht als erstes.* **Die Zahlen überquerten zwei Lanes unversehrt; b
 der ersten Grenze.** *Die Zahl ist, was ein Leser will; das Verdict-Feld sagt ihm, ob er sie haben darf — das
 Relay streift also genau den Teil ab, der den behaltenen Teil regiert.* **Abhilfe: das Verdict-Feld wörtlich
 zitieren oder feststellen, dass es keines gibt.**
+
+**A-G460 (GRÜN)** — *eine Regel, die auf das Artefakt bezogen ist, bindet den Satz ÜBER das Artefakt nicht — und
+der Satz ist das, was zitiert wird.* GRÜN hielt **drei Guards, alle eingehalten** (No-Verdict-Banner, `verdict`-Feld
+in allen 69 Ausgaben, `…_boundForReference`-Konvention) — **keiner erreichte eine Commit-Betreffzeile.** *** EINE
+BETREFFZEILE ÜBERLEBT EIN JSON-FELD, WIRD VON LESERN GESEHEN, DIE `outputs/` NIE ÖFFNEN, UND IST NICHT AN IHREM
+ORT KORRIGIERBAR. *** **Mit A-G458 und §119 ein Defekt in drei Radien: die Ausgabe ist diszipliniert, der Satz
+darüber nicht, und Disziplin pflanzt sich nicht von selbst nach außen fort.** **Auch in dieser Lane gefunden:
+`a50dbccc` schreibt „the full suite is green" in eine dauerhafte Betreffzeile.**
 
 **A-G459 (GRÜN)** — *eine Pin-Zitation trägt den STAND des Pins — lebend, stillgelegt, unerfüllbar,
 unbegonnen-zurückgezogen — nicht nur seinen Namen.* **„Ob X erfüllt ist, entscheidet PINK" setzt voraus, dass

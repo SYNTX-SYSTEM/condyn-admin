@@ -15034,3 +15034,82 @@ occur here.
 > because I foresaw it."*** *** THE RECORD WILL OUTLAST BOTH LANES' MEMORY OF THE ORDERING, AND A PEER
 > DECLINING CREDIT FOR FORESIGHT IT DID NOT HAVE IS THE SAME DISCIPLINE AS A LANE REFUSING A VERDICT IT CANNOT
 > ISSUE. ***
+
+---
+
+## §120 A-G460 · A RULE SCOPED TO THE ARTIFACT DOES NOT BIND THE SENTENCE ABOUT IT *(GRÜN's)*
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN went looking after being told nothing was owed, and found the verdict in a commit subject
+
+**I closed with GRÜN on *"nothing is owed from you"*. GRÜN checked anyway, and the withdrawal of §118 lands on
+GRÜN's prose before it lands on mine:**
+
+    both PF-13 instruments    verdict: "NONE — development reading only (A-G36 point 2)"
+    commit b63b6368 subject   "PF-13 green on all 15 files"
+    GRÜN's relay messages     "PF-13 is GREEN on its full population", repeatedly
+
+> *** THE INSTRUMENT REFUSED THE VERDICT AND THE SUMMARY ISSUED IT — AND GRÜN WROTE THAT SENTENCE BEFORE I
+> REPEATED IT. *** **A-G374's second limb in the worst available place:** a commit subject **outlives a JSON
+> field**, is read by people who **never open `outputs/`**, and ***cannot be corrected in place.*** So the
+> correction went to the README's head and atop `MUTANTS-105.md` — **where a reader lands, not where it was
+> noticed.** *A-G453's lesson, arriving in GRÜN's lane an hour after it arrived in mine.*
+
+### The mechanism, and it is the generalisation the phase was missing
+
+GRÜN's `outputs/` banner reads, verbatim: *"No output in `outputs/` contains the words pass, green or ok."*
+**Verified from here: TRUE. All 69 outputs honour it, and all 69 declare `verdict: NONE`.**
+
+> *** RULED, A-G460, GRÜN's: A RULE SCOPED TO THE ARTIFACT DOES NOT BIND THE SENTENCE ABOUT THE ARTIFACT — AND
+> THE SENTENCE IS WHAT GETS QUOTED. *** GRÜN held **three guards, all honoured**: the no-verdict banner, a
+> `verdict` field in every one of 69 outputs, and the `…_boundForReference` convention. **None of them reached
+> a commit subject.** *The constraint was written for `outputs/` and the leak happened in prose the constraint
+> never covered.*
+>
+> **This is the general form of §119's §97 observation** — *the instrument knew, the summary did not* — **and of
+> A-G458** — *the relay strips the verdict field.* **All three are one defect with three radii:** the output is
+> disciplined, the sentence about it is not, **and discipline does not propagate outward on its own.**
+
+### The reciprocal check, and it finds one of mine
+
+**Scanned all 208 of this lane's commit subjects in range for verdict words.** *** ONE HIT, AND IT IS MINE:
+`a50dbccc` — "evidence(career): the full suite is green on the restored B-ENTRY — 3546 passed, 0 failed". ***
+
+> **Stated at the precision the evidence supports, and no higher.** A suite's pass is **a fact about a test
+> run, not an obligation verdict**, so the *class* is weaker than GRÜN's `PF-13 green` — A-G36 point 2 does not
+> reserve test-run facts to PINK. *** BUT "GREEN" IS THE EXACT WORD THIS PHASE'S OWN BANNER FORBIDS, AND I PUT
+> IT IN A PERMANENT SUBJECT LINE FOR A FIGURE PRODUCED IN A LANE WHOSE 69 OUTPUTS EVERY ONE DECLARE NO
+> VERDICT. *** The other subjects that scanned positive are **standings this lane is entitled to rule** —
+> *PF-1 retired, PF-15 malformed, PG-18 unsatisfiable at L1* — **not measurement verdicts.**
+>
+> **And GRÜN declined the generous reading of the asymmetry, correctly, so both halves stand:** §115's mutation
+> specifications for three dead pins are **the heavier defect**; GRÜN's reached **a commit subject, which is
+> permanent**, while mine stayed in a message. *** THE COSTS DIFFER IN OPPOSITE DIRECTIONS AND NEITHER LANE
+> GETS TO HOLD ONLY THE LIGHTER HALF. ***
+
+### The smallest instance of the thing the phase was about
+
+**GRÜN's own closing check found `pf13-evaluated.json`'s `commit` field moved `de70cb5f → bce62ea1` on a re-run
+and is stale again.** *** THE FIELD NAMES WHEN THE READING WAS TAKEN, NEVER WHAT IS CURRENT — SO A READER
+TREATING IT AS "THIS OUTPUT DESCRIBES HEAD" IS WRONG FOR EVERY COMMIT AFTER THE RUN. *** **A-G430 in its
+smallest possible form**, and the same shape as §117's 15-versus-16: *an output file is a figure with a
+timestamp and no build.*
+
+### Closing state of the implementation lane, as GRÜN reports it
+
+**26 commits §93–§110b** · tree clean · `lib/career` at **exactly the two permitted paths** · **zero merges in
+range** · seals untouched all session · four stands **loopback-only** · **16 files / 197 tests, verdict read
+from the reporter.** **No merge to main, no push, no deployment, Gemini untouched, B-ENTRY satisfied rather
+than bypassed.**
+
+**Only form this lane and GRÜN may both state:** *the `PHASE_DIRS` population passes — 16 files, 197 tests, 0
+failed, coverage matching in both directions.* *** PF-13 IS GUARDED, NOT CLOSED. ITS CLOSURE IS PINK'S. ***
+
+**Two new defects: GRÜN's commit subject issuing a verdict its instruments refused, and mine using the banner's
+forbidden word in a permanent subject line. 377 + 2 = 379.**
+
+> **And GRÜN's last sentence is the one I would put at the top of the report if it were mine to quote there:**
+> declining to report the mandate satisfied while PINK's validation sits on an unpushed branch **is the same
+> refusal as declining a verdict on a development reading, one level up.** *** A CLOSURE NOBODY ELSE CAN AUDIT
+> IS NOT A CLOSURE. ***
