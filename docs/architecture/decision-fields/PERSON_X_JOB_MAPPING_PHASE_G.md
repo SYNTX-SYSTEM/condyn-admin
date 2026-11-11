@@ -7351,3 +7351,133 @@ shipping the same non-observable twice."*
 `cat` away, a model list called exhaustive, a rule applied past the carrier it was measured on, an anchor that
 could only agree with itself, and a pin status contradicted by readings committed before I wrote it.
 
+
+---
+
+## §66 PG-14's TWO PASSES UNDERSHOOT THEIR OWN FIXED POINT — THE PHASE'S FIRST USER-VISIBLE BUILD DEFECT
+
+A-G271 said PG-14's falsifiable content was the convergence of a two-pass solve and that nobody had looked at
+it. **GRÜN looked, and it does not converge** (`b6c4bd84`).
+
+### A-G280 · The frame is sized by one iterate and drawn at the next *(defect 130 — a BUILD defect, the phase's first)*
+
+**Verified here before ruling a product change on it.** `frameWithBodies` (`4b83414e:490`):
+
+```
+let half = base.width / 2;
+for (let pass = 0; pass < 2; pass += 1) {
+  const k = (2 * half) / drawnPx, font = TEXT_MIN_PX * k * FLOOR_HEADROOM;
+  for (const b of bodies) { … half = Math.max(half, …); }
+}
+```
+
+`k` is field units per CSS pixel, so **a wider frame means a larger `k`, a larger `font` in field units, a wider
+label, and a wider required frame.** The map is a **monotone ascent** and two passes land below its fixed point
+whenever it is still climbing. **GRÜN's statement of it is sharper than mine: the frame is emitted with a `k`
+computed from the previous iterate while the bodies are drawn at the final `k`.** 284 of 440 swept cases violate
+containment in exact arithmetic.
+
+**And GRÜN sized the violation against the pixel grid rather than reporting a bare pass/fail, because an exact
+violation below half a device pixel cannot clip a glyph** — which is the distinction that makes this a defect
+rather than an alarm:
+
+| title length | observable? |
+|---|---|
+| 8 chars | sub-pixel everywhere, worst **0.45 px** — not observable |
+| **16 chars** | **4 of 11 layouts** at the component's own 420 px `minWidth`, worst **1.59 px** on LV02 |
+| 24 chars | **7 of 11** at 420 px, worst **6.12 px** — and still **3 of 11 at 1040 px** |
+| 32 chars | worst 13.95 px at 420 px |
+
+> **"Product Manager" is fifteen characters.** PG-14 holds at short names and **clips the label at ordinary role
+> names on a narrow window.** The dominant term is the title: `side` carries `title.length · CHAR_EM · font / 2`
+> with `font = TEXT_MIN_PX · k · FLOOR_HEADROOM`, so the feedback grows linearly with the name's length.
+
+**The golden vectors carry no titles, so GRÜN swept length rather than assuming one — *"the sweep IS the result
+here, not a parameter choice."*** That is why twenty-two sections of golden-vector work never saw it.
+
+**Divergence proper — no fixed point at any pass count — exists only at 64/96/128-character names, and GRÜN
+recorded it as a robustness property and explicitly not as the finding:** *"Those are not role names … I would
+rather hand you a bounded defect than an alarming one."* **Correct, and it is the opposite of the error this
+record has caught six times** — reporting an extremum as the result.
+
+**This is the phase's first defect in the artifact rather than in a pin or an instrument.** Every one of the
+preceding one hundred and twenty-nine was a bound, a carrier, a statistic or a reading.
+
+### A-G281 · The remedy: converge against the observable, not against a larger constant
+
+GRÜN's proposal is *"a convergence criterion, not a larger constant: iterate until `half` stops moving"*, and it
+notes that is one pass at short names. **Adopted, with the tolerance derived rather than chosen, and with the
+pathological case made a disclosure instead of a loop:**
+
+> **Decided — PG-14's solve iterates until `half` grows by less than half a device pixel in field units
+> (`0.5 · k`), under a hard iteration cap; if the cap is reached, the product DISCLOSES that the frame did not
+> converge, in the shape of `mapping-size-floor`.**
+
+**Three reasons this form and not a bigger number:**
+
+1. **The tolerance is the observable.** GRÜN's own pixel-grid sizing establishes that a violation under half a
+   device pixel cannot clip a glyph, so **the loop's exit condition and the defect's definition become the same
+   quantity.** A tolerance chosen in field units would be another underived constant, and §62's A-G254 left this
+   phase with zero of seventeen derived.
+2. **The cap is not timidity — GRÜN proved the map does not always contract.** An unbounded ascent in a render
+   path is a hazard whatever the name lengths are today.
+3. **The disclosure is A-G270's shape on a second pin.** `mapping-size-floor` made PG-3's enforced limb
+   falsifiable on a real build; a non-convergence disclosure does the same for PG-14. **So PG-14 stops being
+   zero-by-construction: the pin becomes "the frame converged", read from an attribute the product emits** —
+   and the §64 sweep's row for it changes category.
+
+**A closed form is available and I am not requiring it.** The required half is a `max` of affine functions of
+`half`, so the fixed point is `max_i a_i/(1 − b_i)` and `b_i ≥ 1` names the pathological case exactly. **But
+`side` carries a `max()` kink, and a kink is precisely where GRÜN's own secant went wrong twice below. An exact
+method whose derivation can be got wrong in a render path is worse than an iteration whose exit condition is the
+observable.**
+
+**This lands, and unlike A-G43 it has two independent routes that need no vitest:** GRÜN's arithmetic sweep, and
+the emitted `viewBox` with label containment measurable on PINK's stand. **A-G36 is satisfied under A-G244's
+condition — one route is a model, the other is a browser.** The suite risk §62's A-G253 accepted is unchanged
+and not re-opened.
+
+**Ownership: the decision is this lane's and the frame is GRÜN's to change.** GRÜN wrote *"that is a product
+delta and belongs to whoever owns the frame"*, which was the right place to stop.
+
+### A-G282 · Two corrections GRÜN made to its own limb, and one is a method worth keeping *(defects 131, 132, GRÜN's)*
+
+**The analytic gradient assumed the size floor binds** *(131)*. At these drawn radii it does not — `r` is the
+body's own constant — so it overstated the feedback coefficient by about **8.4** and would have reported *"no
+fixed point"* for cases that converge in one pass. The gradient is now a **secant of the real map, taken at two
+widths so a `max()` kink cannot be read as a slope.**
+
+**And the secant was first taken on the CLAMPED map** `max(half, demand)` *(132)*, **which returns exactly 1.0
+for any case already at its fixed point — and so reported 222 false divergences.** GRÜN: *"I nearly sent you a
+message saying half the envelope diverges."*
+
+> **Adopted as method: a slope taken on a clamped map is the clamp's slope, not the map's. The clamp belongs to
+> the iteration; the feedback whose slope decides existence is the unclamped map.**
+
+**That is the extremum-versus-achievable family in a new place — the sixth shape was a quantum taken from the
+wrong set, and this is a derivative taken from the wrong function** — and GRÜN caught both before sending,
+leaving them in the file rather than cleaning them out, which it says it took from its own limb C.
+
+### A-G283 · A correct computation carried by a wrong label — the class, named by GRÜN
+
+*"Two instances in one phase of a correct computation carried by a wrong label."* **`firstVisibleInRaster` on a
+continuous sweep, and `spacingOnlyCapacity` on a greedy count.** In both cases the arithmetic was right, the
+field name was wrong, **and the name is what travelled into this record and into another lane's reading.**
+
+> **Recorded as an observation with its instance count attached, and deliberately not numbered as a test
+> (A-G251).** The useful form is a question, not a rule: *does this field's name assert more than the expression
+> that fills it?* — and it is answerable by reading one line of the script that writes it.
+
+**GRÜN's other acceptances, recorded as given:** A-G268 is better placed as a limb of A-G128 than as a finding
+of its own; the L1 correction stands with *"the name did the damage, not the number"*; PG-3's disclosure becomes
+**the first question for every enforced obligation in GRÜN's lane before reaching for a mutant**; and *"five
+held mutants is the right count and I would rather it be five and honest than three and quiet."*
+
+**And one flag GRÜN raised before acting rather than after:** A-G49's hooks will be the first change to grow its
+product delta past the single A-G62 hunk, so **the provenance paragraph PINK checks needs updating in the same
+commit — which is how it found README §6 was lying in the first place.** Noted and endorsed: a delta that stops
+being one hunk changes what the other two lanes are checking, and saying so in advance is what makes the check
+survive the change.
+
+**Three new defects: one in the build, two GRÜN's own, both self-reported before sending. The count is 132.**
+
