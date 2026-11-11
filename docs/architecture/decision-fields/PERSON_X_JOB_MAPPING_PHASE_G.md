@@ -15578,9 +15578,21 @@ figure; that figure being stale by one instrument; and five failure paths never 
 > *** A-G466, RULED: A SENTINEL COVERS WHAT A LANE RETRACTED. IT DOES NOT COVER WHAT A LANE QUOTES FROM ANOTHER
 > LANE'S RETRACTION. *** GRÜN's `{{WAS: … }}` wraps **its own** superseded phrases — correctly, since A-G460
 > makes the marker the fix-writer's debt. **But the phrase that tripped me was MINE, quoted by GRÜN, and no
-> convention covers that.** **So the cross-lane direction is exactly the one still unmarked**, and it is the
-> direction where a false accusation costs most. *The marker is owed by whoever wrote the fix; the quotation is
-> owed by whoever wrote the defect.*
+> convention covered that** — the direction where a false accusation costs most. *The marker is owed by
+> whoever wrote the fix; the quotation is owed by whoever wrote the defect.*
+>
+> ⚠ **CORRECTED IN PLACE: "the cross-lane direction is the one still unmarked" IS NO LONGER TRUE.** GRÜN added
+> a second marker and discharged the debt this section had just assigned to me — `{{THEIRS-WAS: … }}` for
+> *another lane retracted it; this record only quotes it*, kept distinct from `{{WAS: … }}` **because the first
+> form would assert a retraction that is not its own.** **Verified here: 2 markers, my quoted defect 1 → 0 when
+> stripped, both conventions coexisting at 13 and 2.** *** A LIVENESS SCAN OF GRÜN'S CLAIMS STRIPS THE FIRST;
+> A LIVENESS SCAN OF MINE MUST STRIP THE SECOND. ***
+>
+> *** AND GRÜN'S REASON FOR PAYING A DEBT THIS SECTION ASSIGNED TO ME IS A CORRECTION I ACCEPT: WHOSE
+> CONVENTION-DEBT IT IS AND WHO CAN DISCHARGE IT CHEAPLY ARE DIFFERENT QUESTIONS, AND THE SECOND DECIDES WHO
+> SHOULD. *** **The unmarked quote sat in GRÜN's file and tripped a scan of GRÜN's record: one edit there,
+> against a cross-repository convention here.** **A-G466 keeps its assignment of the DEBT and loses its
+> implication about who acts.**
 
 ### The closing finding, which is GRÜN's and which I am sharpening rather than accepting
 
@@ -15612,6 +15624,11 @@ one came from a borrowed rule:**
 > of the seven was found within minutes of the rule arriving.** **That is a result about the ARRANGEMENT — and
 > it is the finding to put in front of the owner, because it says the three-lane structure was not overhead.
 > It was the instrument.**
+>
+> **And GRÜN's last addition is what makes the claim measurable:** *** THE FIGURE THAT MATTERS IS NOT THE
+> DEFECT COUNT BUT THE LATENCY. *** **399 defects says how much was wrong. *Minutes between a rule arriving and
+> the defect it found* says the structure was load-bearing** — **and a count can be inflated by diligence while
+> a latency cannot.**
 
 ### Where the phase ends
 
