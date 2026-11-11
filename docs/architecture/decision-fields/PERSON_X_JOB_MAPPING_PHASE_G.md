@@ -13071,6 +13071,14 @@ hypothesis reported as refuted, in the same message as the withdrawal it forced.
 the band side reading solidly rgb(4,5,5) at 71–77 % from offset 2 outward in both viewports. The step in
 quanta is NOT the evidence and is not quoted as such.**
 
+> ### ⚠ CORRECTED 2026-11-11 — "IMMUNE TO" WAS AN EXCLUSION *(see §104, A-G438)*
+> **The claim below says the statistic needs no offset-1 sample. It is immune to offset 1 only because
+> offset 1 is EXCLUDED — and at 1280 it FAILS there outright, p05 = 1.367875e-3 against 1.453105e-3.** The
+> exclusion is load-bearing, not hygiene. **And "one-sided distributional bound" is the wrong label:**
+> `inside p05 > outside p95` **fails at all eighteen cells**, because the band side's p95 reaches 21.6× and
+> 22.5× the bare band's own level. **It is a tail against a POINT VALUE — the A-G382 construction this lane
+> cited to license it.** The licence holds under a condition stated in §104; the label did not.
+
 **It needs no profile, no median of a 180-valued region, no per-offset comparison and no offset-1 sample.**
 If even the dimmest 5 % of the inside exceeds the band's level, **the sign is unambiguous.**
 
@@ -13124,3 +13132,145 @@ and this lane is not inventing a fourth remedy from a single instance.**
 **Four new defects:** §35's withdrawn spatial claim; the lattice-valued step read as spatial structure; the
 1280 offset-12 ring quoted after leaving its region; and A-G341's non-extension from masks to sampled
 geometry. **303 + 4 = 307.**
+
+---
+
+## §104 THE ONE DIRECTION NOBODY AUDITED — AND A FIGURE CARRIES FOUR FRAMES, NOT ONE
+
+**Date of this section: 2026-11-11.**
+
+### A-G437 · A capability claim carries its quantifier — and that completes a set of four
+
+GRÜN found a hidden scope in its own headline. *"A chroma instrument cannot time the breath"* appeared in
+§94, §102, §103 and four messages, **and it was a PER-PIXEL claim that never said so:**
+
+```
+per pixel,          s >= 2q/p                     0 of 47073 meet it
+pooled, WORST case  every error aligned           relative precision 0.415     FAILS 10%
+pooled, errors decorrelated                       relative precision 0.00196   PASSES by 51x
+```
+
+> *** 212× BETWEEN THE TWO HONEST TREATMENTS OF QUANTISATION ERROR, against the factor of 2 this lane had
+> named as the open axis. *** All three readings are true; the third was stated and left to stand for the
+> question.
+
+**A-G437, RULED: a capability claim carries its quantifier.** And with four instances the general rule is
+worth stating above them:
+
+| | |
+|---|---|
+| **A-G430** | an offset carries its **build** |
+| **A-G435** | a ratio carries its **domain** |
+| **A-G417** | a property carries its **population** |
+| **A-G437** | a capability carries its **quantifier** |
+
+> *** A FIGURE CARRIES THE FRAME IT WAS COMPUTED IN, AND THE FRAME HAS AT LEAST FOUR AXES: BUILD, DOMAIN,
+> POPULATION, QUANTIFIER. A figure stated without one of them is not a weaker figure — it is a DIFFERENT
+> figure, and nothing in it says which. *** Each of the four was found separately today, by three lanes, as
+> if it were a new rule.
+
+### The frame is read off the pin, and the two pins disagree
+
+GRÜN asked whether PG-12's chroma obligation is per-pixel or pooled, **and flagged that it was inferring
+this lane's intent from two adjacent rulings rather than reading the pin.** Read:
+
+> **PG-12:** *"on medium pixels, chroma ≤ 2 % of the chroma on the hue-carrying class."*
+> **PF-10:** *"the measured breath amplitude is ≤ 45 % of its unselected value."*
+
+**PG-12's two sides carry DIFFERENT QUANTIFIERS** — *"on medium pixels"* is per-pixel, *"the chroma on the
+hue-carrying class"* is a class aggregate — **and PG-12 has no measurement convention of its own** (the
+*"trimmed mean per pool"* in the record belongs to **PF-16**; checked rather than carried). **A new defect
+in PG-12.**
+
+**But GRÜN's ceiling does not serve PG-12 at all.** PG-12 is static hue containment; *can a chroma
+instrument time the breath* is an **instrument-capability** question, and **a capability's frame is set by
+the use:**
+
+| use | its quantifier | does the per-pixel ceiling apply? |
+|---|---|---|
+| **A-G340 limb 1** — share of pixels whose swing ≥ a threshold | **per-pixel**, explicitly | **YES**, with the 2q axis open |
+| **PF-10** — *"the measured breath amplitude"*, one quantity | **POOLED**, by its own wording | **NO** — the decorrelation question decides, and it spans 212× |
+
+> **RULED: both frames are legitimate and the pins pick different ones.** The per-pixel ceiling is right for
+> limb 1's kind of question and the wrong frame for PF-10's — **and collapsing them into one ruling would be
+> the same hidden scope GRÜN had just found in its own headline.**
+
+**AND IT LANDS ON SOMETHING ALREADY RULED.** PF-10 was measured **0.39 / 0.388** by two lanes — a *pooled*
+amplitude ratio from 0.00214 → 0.00084 — and §91 ruled that **unsupported rather than wrong**, because a
+noise guard on each operand says nothing about the resolution of their ratio.
+
+> *** GRÜN's 212× SPAN IS THE QUANTITATIVE FORM OF THAT RULING: the pooled precision lies somewhere between
+> 0.2 % and 41.5 % and nothing in the stand says where. *** Same conclusion, reached independently, now with
+> a number on the uncertainty instead of an argument about it.
+
+**And the axis may be closable, offered as an action with its own falsification condition:** render at
+`deviceScaleFactor` 2 and 4 and **downsample** to CSS resolution — averaging 4 or 16 independently quantised
+subpixels gives a higher-precision estimate of the true C\*, against which the scale-1 error and **its
+spatial correlation** are directly measurable. **Its own test first: do the 2× and 4× references agree with
+each other?** If not, the resampling difference exceeds the effect and the axis stays open with a reason.
+**A-G434 applied so the probe is not the thing it tests: the correlation is measured between NEIGHBOURING
+pixels at scale 1, never between one pixel at two scales — that would measure resampling and report it as
+correlation.**
+
+### A-G438 · The one direction nobody audited *(PINK's)*
+
+§103 elevated a passing remark to the load-bearing evidence for the seam. **PINK audited it instead of
+accepting the promotion, and both of this lane's words were wrong.**
+
+**"IMMUNE TO" WAS AN EXCLUSION.** `inside p05 > bare band level` holds **9 of 9 at 1920 and 7 of 9 at
+1280** — and **fails at 1280 offset 1** (p05 = 1.367875e-3 against 1.453105e-3) and at 1280 offset 12.
+**It is immune to offset 1 only because offset 1 is excluded.** *A statistic is not immune to a sample it
+does not look at.* **And both failing cells are the two §42 had already disqualified independently** — the
+antialiased edge at modal share 0.475, and the ring that left its region at 333 triples. **The bound and
+the disqualification agree about which samples are bad, and neither was designed to check the other.**
+
+**"DISTRIBUTIONAL BOUND" WAS THE WRONG LABEL, AND THE WORSE HALF.** `inside p05 > outside p95` **fails at
+all eighteen cells**; the band side's p95 reaches **21.6× and 22.5×** the bare band's level and exceeds the
+inside's p95. **So it is a tail against a POINT VALUE — the A-G382 construction this lane cited to license
+it.** *The licence was real; the label was the error, and the label is what another lane would carry.*
+
+### The condition that makes it sound rather than merely narrow
+
+```
+OUTSIDE   modal L = 1.4531e-3 at EVERY offset in BOTH viewports, share 0.71-0.77   -> STRONG mode
+INSIDE    modal L = 2.87e-3 .. 3.39e-3,                          share 0.099-0.201 -> NO mode
+```
+
+> **The point value is used on the side that HAS a location statistic; the tail on the side that has NONE.
+> The asymmetry of the statistics matches the asymmetry of the populations.**
+>
+> *** RULED, as a CONDITION on A-G382 rather than an exception to it: a tail-against-a-point comparison is
+> UNCHECKED SUPPORT when both sides have distributions, and SOUND when the point side has a strong location
+> statistic and the tail side has none. *** It is not a weaker construction tolerated — **it is the only
+> construction the data admits**, because the inside cannot supply a point and the outside does not need a
+> tail. **A-G382's warning and this licence are one rule read at two data shapes.**
+
+**The statement of record, with its domain and its subject:**
+
+> **At ≥ 95 % of sampled angles the ground side exceeds the bare band's modal level (1.453105e-3), on the
+> in-region off-edge offsets, in both viewports — 9 of 9 at 1920, 7 of 9 at 1280, the two exceptions being
+> the already-disqualified samples. The band side holds rgb(4,5,5) at 71–77 % there.**
+
+**Existence, with a domain and a subject. Not a separation of distributions.** And the subject distinction
+is PINK's: **the seam's subject is the bare band's declared LEVEL** — what E-7 orders and A-F8 holds still —
+**not the pixels in the band's annulus**, whose bright tail is shelf content from the anonymous `<g>` §28
+found. **PINK marked that source-derived rather than measured, with no suppression limb run.**
+
+### And A-G429 generalises, because today has been nothing but descents
+
+> *** A STATISTIC PROMOTED TO LOAD-BEARING BECAUSE IT SURVIVED ONE AUDIT NEEDS THE AUDIT THE OTHERS GOT,
+> AND THE PROMOTION IS EXACTLY WHEN NOBODY RE-RUNS IT. ***
+>
+> **This is the first figure in the entire exchange that was ELEVATED rather than withdrawn.** Every other
+> round, all three lanes audited things on the way **down** — withdrawals, corrections, retractions. **A
+> figure moving up got no audit, for A-G429's exact reason: a detector firing feels like the instrument
+> working, and a promotion feels like the record improving.**
+>
+> *** SO A-G429 GENERALISES: THE SELECTION EFFECT APPLIES TO ANY FIGURE MOVING IN THE DIRECTION ITS AUTHOR
+> WANTS, not only to a detector's false positives. *** Same mechanism, opposite sign, and **invisible all
+> day because the day contained no other ascent.**
+
+### Where this leaves the record
+
+**Four new defects:** this lane's "immune to" exclusion; its "distributional bound" mislabel; PG-12's mixed
+quantifiers; and GRÜN's hidden per-pixel scope. **307 + 4 = 311.**
