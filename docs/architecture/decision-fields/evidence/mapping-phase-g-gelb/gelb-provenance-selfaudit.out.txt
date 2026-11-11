@@ -2,8 +2,8 @@
 GELB · PROVENANCE SELF-AUDIT — does each section name a build for the figures it quotes?
 ========================================================================================================
 
-  sections: 86      quoted measurements: 1489
-  in sections naming a commit or build: 1468  (98.6 %)
+  sections: 92      quoted measurements: 1548
+  in sections naming a commit or build: 1527  (98.6 %)
   in sections naming NEITHER:           21  (1.4 %)
 
   sections with figures and no provenance of any kind — the ones that fail the weakest test:
@@ -23,10 +23,10 @@ GELB · PROVENANCE SELF-AUDIT — does each section name a build for the figures
 THE SHARPER TEST — a provenance token within N lines of the figure itself
 --------------------------------------------------------------------------------------------------------
 
-  within  0 lines:     41 of 1489  (2.8 %)
-  within  2 lines:     68 of 1489  (4.6 %)
-  within  5 lines:    145 of 1489  (9.7 %)
-  within 10 lines:    316 of 1489  (21.2 %)
+  within  0 lines:     41 of 1548  (2.6 %)
+  within  2 lines:     69 of 1548  (4.5 %)
+  within  5 lines:    153 of 1548  (9.9 %)
+  within 10 lines:    332 of 1548  (21.4 %)
 
   *** AT THE FIGURE'S OWN LINE THE SHARE COLLAPSES. *** That is the number A-G389's obligation
   actually describes, and it is the one worth reporting. The section-level 98.6 % was a
@@ -45,7 +45,7 @@ THE SHARPER TEST — a provenance token within N lines of the figure itself
 A-G277 · WHAT THE PG-11 CLOSURE RESTS ON, QUOTED FROM ITS OWN TEXT
 ========================================================================================================
 
-  figures in the closure: 4.58e-05, 9.98e-05, 0.229, 0.499
+  figures in the closure: 4.58e-05, 9.98e-05, 0.229, 0.499, 0.499
 
   A-G30's threshold 0.0002   readings 0.0000458 and 0.0000998
     marginFactor 0.229  — 4.37x below the threshold
