@@ -4,20 +4,20 @@ GELB · PF-8 IN ITS THREE-TIER FORM — A-G128's three limbs over the assembled 
 
 [1] AMENDMENT INVENTORY — located by exact substring
 
-  ok   PHASE_F: 475  BOUND          first bound: p99 ≤ 0.002 AND max ≤ 0.006
-  ok   PHASE_F: 564  SCOPE          restated over sign AND structure pixels
-  ok   PHASE_F: 682  READING        both limbs red at base from antialiasing alone
-  ok   PHASE_F: 774  SCOPE          A-F13: own luminance, NOT contrast against ground
-  ok   PHASE_F: 867  BOUND          REPLACED by two tiers: A pooled mean, B per-pixel p99
-  ok   PHASE_F: 879  BOUND          tier B floor-relative, ≤ 2× the run's decoy floor
-  ok   PHASE_F: 980  METHOD         dof-matched null (3 harmonics vs 3 incommensurate)
-  ok   PHASE_F: 994  BOUND          tier C added: population ladder at 4 rungs, ≤ 1.5× null
-  ok   PHASE_F:1213  SCOPE          per class, each against its OWN bound and OWN null
-  ok   PHASE_F:1307  SCOPE          every level that draws evidence — L0 AND L2
-  ok   PHASE_F:1354  SCOPE          mask is the FULL seat footprint; fringe is inside it
-  ok   PHASE_F:1355  ADMISSIBILITY  tier C: class population ≥ 1000 px or NOT EVALUATED
-  ok   PHASE_F:1359  ADMISSIBILITY  tier C: rung ≥ 2× per-pixel floor or NOT EVALUATED
-  ok   PHASE_F:1513  BOUND          tier B → 0.002 ABSOLUTE; floor-relative demoted to admissibility (floor ≤ 0.0004)
+  ok   PHASE_F: 509  BOUND          first bound: p99 ≤ 0.002 AND max ≤ 0.006
+  ok   PHASE_F: 598  SCOPE          restated over sign AND structure pixels
+  ok   PHASE_F: 716  READING        both limbs red at base from antialiasing alone
+  ok   PHASE_F: 808  SCOPE          A-F13: own luminance, NOT contrast against ground
+  ok   PHASE_F: 901  BOUND          REPLACED by two tiers: A pooled mean, B per-pixel p99
+  ok   PHASE_F: 913  BOUND          tier B floor-relative, ≤ 2× the run's decoy floor
+  ok   PHASE_F:1021  METHOD         dof-matched null (3 harmonics vs 3 incommensurate)
+  ok   PHASE_F:1035  BOUND          tier C added: population ladder at 4 rungs, ≤ 1.5× null
+  ok   PHASE_F:1254  SCOPE          per class, each against its OWN bound and OWN null
+  ok   PHASE_F:1348  SCOPE          every level that draws evidence — L0 AND L2
+  ok   PHASE_F:1395  SCOPE          mask is the FULL seat footprint; fringe is inside it
+  ok   PHASE_F:1396  ADMISSIBILITY  tier C: class population ≥ 1000 px or NOT EVALUATED
+  ok   PHASE_F:1400  ADMISSIBILITY  tier C: rung ≥ 2× per-pixel floor or NOT EVALUATED
+  ok   PHASE_F:1554  BOUND          tier B → 0.002 ABSOLUTE; floor-relative demoted to admissibility (floor ≤ 0.0004)
   ok   PHASE_G: 949  METHOD         A-G32: mask-based, travel DRAWN, travel pixels excluded by own mask
   ok   PHASE_G:1207  METHOD         A-G42: separate pass from PG-11; neither may reuse the other's frames
   ok   PHASE_G:1999  CURRENCY       a shelf alpha change voids every per-class null

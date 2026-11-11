@@ -314,6 +314,40 @@ Nothing in `lib/career/**` changes. The view model, the delta, the focus reducer
 **All of these read rendered pixels.** At 1920 × 1080 and 1280 × 800, variant `default` unless stated. Each must
 be **red-first**: a mutant that removes the mechanism must turn the proof red, and the mutant is recorded.
 
+> ### ⚠ FORWARD POINTER — THESE ARE THE ORIGINALS. NONE OF THEM IS THE CURRENT CONTRACT.
+> *Added 2026-11-11 by GELB, per PHASE_G A-G320. The pointer sits here, at the originals' own location,
+> because a lane that lands on this table by search has no way to learn from the table that it is stale.
+> Each item cites its **amendment ID first** and its line number second: the ID is stable, the number is
+> correct as of 2026-11-11 and is invalidated by any insertion above it. Writing this note invalidated
+> every number in its own draft twice over — which is the argument for leading with the ID.*
+>
+> - **The current statement of every PF pin is assembled, not quoted.** §17 restates them, and §§19–30
+>   amend §17 further. §17's own "this table is the CURRENT contract" is **current as of §17** — see the
+>   dated note at its head. Reading either table alone has produced a wrong bound at least three times
+>   this phase (A-G315 was mine, PF-6's row and PF-8's scope were the others).
+> - **PF-1** is replaced for phase G by **PG-1/PG-2** (PHASE_G §4) and is not measured in this form at all.
+> - **PF-3** — the halo limb is measured as an **EXCESS against a render without it**, never as a raw
+>   window (**A-F19**, §20 `:1095`). A raw ratio of declared alphas is a cruder form of the same confound.
+> - **PF-6 row 1 / PG-10 limb 3** are **one bound on one quantity, stated as a DISTRIBUTION** on 2 px-blurred
+>   frames. **A-F11 corrected (§17 `:955`) forbids the maximum form**; §13's earlier blurred-maximum wording
+>   (`:735`, `:750`) is superseded for this statistic, and only for this one.
+> - **PF-8 is the heaviest.** The one-line firewall below was replaced entirely by the two-tier restatement (§16 `:901`) and is now
+>   **three tiers, per class, per level**, carrying **nineteen amendments in two files** — fourteen here and
+>   **five in PHASE_G** (`PHASE_G:949`, `PHASE_G:1207`, `PHASE_G:1999`, `PHASE_G:8238`, `PHASE_G:8726`). Two of the nineteen are
+>   **admissibility clauses** (**A-F26**, §27 `:1396`, `:1400`) that decide whether a tier is evaluated at all, and they
+>   are the ones most often missed. The assembled form and its gate: PHASE_G §80 and
+>   `evidence/mapping-phase-g-gelb/gelb-gate-pf8-tiers.mjs`.
+> - **PF-8's tier B bound is `p99 ≤ 0.002` ABSOLUTE** (**A-F29**, §29 `:1554`), not the
+>   floor-relative form stated when the tiers were introduced — that form survives **only** as the
+>   admissibility check (floor ≤ 0.0004). The earlier form yields a bound four times stricter than the
+>   physics it stood in for, and one no instrument can ever satisfy A-G139 against.
+> - **PF-11** has **two texts** (A-G320, `PHASE_G:8388`): a lane reading the first measures a different pin.
+> - **PF-16** was widened by **A-F31** (§30 `:1599`) and then **restated in CODES** for phase G by **A-G12**, because A-F31
+>   found ratios meaningless at this level.
+> - **Mode discipline:** several pins below name no motion mode and are **not evaluable under
+>   `prefers-reduced-motion: reduce`** — PF-8 among them, which returns green there with every guard
+>   satisfied (PHASE_G §80). A reading taken in the wrong mode is not a weak reading; it is a different pin.
+
 | # | Obligation |
 |---|---|
 | **PF-1** | The disc carries light: median ∈ [0.006, 0.020]; fraction above 0.005 ≥ 0.55. |
@@ -891,6 +925,13 @@ is checked against the build.
 §7 has been amended by §11, §14, §15 and §16. This table is the **current** contract; where it differs from §7,
 this wins. It exists because four amendment sections are how a lane ends up building against a stale bound — a
 failure I have now caused twice in one phase.
+
+> ### ⚠ "CURRENT" HERE MEANS **CURRENT AS OF §17**. IT IS NOT CURRENT NOW.
+> *Added 2026-11-11 by GELB, per PHASE_G A-G316 — a record's claim to currency carries a date, and the date
+> is its own section number.* §§19–30 amend this table further, and PHASE_G amends it again. **PHASE_G
+> A-G315 is the defect this note prevents:** I read the sentence above as timeless, re-derived PF-3's halo
+> limb from declared alphas, and contradicted a fix (**A-F19**, `:1095`) that I had already accepted —
+> because the word "current" carried no date. The forward pointer at §7 lists the known supersessions.
 
 | # | Obligation (current) | Amended by |
 |---|---|---|
