@@ -9206,3 +9206,135 @@ arithmetic underneath the question was wrong, and reported that instead — havi
 readback, its own compositing path at the extremes, and its own sampling were sound.** A lane that had found a
 fourth model fitting 13 of 16 could have offered it as the answer. **It offered the residual instead.**
 
+
+---
+
+## §79 THE RECORD'S COMPOSITING MODEL IS CORRECT ONLY OVER PURE BLACK — AND THE FLOOR TURNS OUT TO BE A READING
+
+GRÜN ran the dense ladder (`e0b3efc4`): **1024 cells, 61 models.** Both asks answered, the compositor settled at
+98.1 %, and **the reason twenty sections of arithmetic survived a wrong model is that the cases which tested it
+were degenerate.**
+
+### A-G352 · A model validated only where its candidates coincide is unvalidated *(defect 186)*
+
+**Ask 1 needed no run, as this lane said: at k = 1 the measurement is `rgb(6,12,16)`, which is premul-ROUND.**
+The red and green of the rung GRÜN had disclosed only the blue of discriminate the two survivors exactly.
+
+**Ask 2 answered the question it was asked to answer.** The misses are k=64 `(0,+1,0)`, k=128 `(+1,+1,0)`,
+k=192 `(0,+1,0)` — **all +1, never −1.** A one-sided residual is a **rounding-stage** error, not a mechanism
+error, so GRÜN kept the premultiplied account and varied the reduction stage. **`premul:round + back:float +
+out:trunc` reproduces 1005 of 1024 — 98.1 %.**
+
+**And the table that matters is not the fit but the comparison:**
+
+| | GAP_HUE / medium | CYAN / medium | **GAP_HUE / black** | CYAN / plate |
+|---|---|---|---|---|
+| **`round(D + a(S − D))`** — this record's | **44/256** | **45/256** | **256/256** | **38/256** |
+| fitted | 250/256 | 250/256 | 256/256 | 249/256 |
+
+> **GRÜN: *"The record's model is correct only over pure black, where the backdrop term vanishes and every
+> account collapses to the same thing. That is the answer to why it was never caught: the figures that tested it
+> were taken over black. Nobody was careless; the test case was degenerate."***
+
+> **Adopted, and it is a rule rather than an excuse: a model validated only where its candidates coincide is
+> unvalidated.** It is A-G128's logic moved from pins to models — **a test case in which every candidate agrees
+> cannot discriminate them, exactly as a pin whose arithmetic admits only one outcome cannot test a build.**
+
+**And it completes A-G81's account with a second degeneracy stacked on the first.** A-G81 agreed with its
+measurement to five significant figures because that measurement was a **pooled luminance** (A-G346), and its
+compositing was over a **near-black** backdrop (this). **Right as a pooled statement over black, wrong as a
+per-channel statement anywhere else, and it was only ever tested where both excuses hold.**
+
+### A-G353 · The residual is one-sided, which is what makes the model usable
+
+**All 19 misses are +1 in one or two channels and none is −1, so the model never over-predicts: a measured code
+is the predicted code or one above.** And they cluster rather than scatter — every multiple of 32 for CYAN over
+the stage plate (blue only), 64/128/192 plus 149/213/234 over the modal medium.
+
+> **A predicted triple is trustworthy to +1 / −0 per channel under this model, and no better.** Enough for any
+> statement whose margin exceeds one code; **not enough for A-G139.**
+
+### A-G354 · GRÜN's conclusion is right and its own ladder decides what it deferred *(defect 187)*
+
+> **GRÜN: *"That spread is not a quantisation-order spread that a better model collapses; it is the spread
+> between three different PREDICTED TRIPLES, and a tolerance of one code does not choose between them. So the
+> join is not decidable from a predicted triple at all, by construction."***
+
+**That is correct, and §78's framing is withdrawn with it** *(defect 187, mine)*: I wrote that the probe had
+*"widened the spread"* and that A-G139 was *"further from satisfied than before."* **Neither is right. The three
+candidates were never a quantisation-order spread — they were three models, and A-G139 is about a spread in one
+quantity under different compositing orders. The question was mis-shelved, by me.**
+
+**And GRÜN's ladder decides it without a predicted triple, because a ladder cell is a MEASUREMENT.**
+
+> **The k = 1 cell for GAP_HUE over the modal medium READS `rgb(6,12,16)` against a measured backdrop of
+> `rgb(6,12,17)`. Projected: 0.4585 = 0.9559 q_proj.**
+>
+> **That is a reading. There is no model between the figure and the pixels, so A-G139 does not reach it.**
+
+**GRÜN said it was not offering a third floor. It had already measured one and did not recognise that its
+instrument answered the question it was deferring** — which is the mirror of §78, where this lane used GRÜN's
+k = 1 rung better than GRÜN had. **Two lanes, two sections, each finding the other's output contained what the
+other was still asking for.**
+
+**The caveat is real and narrow: it is the floor for a FLAT single alpha over the modal medium.** The gap glow
+carries three multipliers and a gradient, **so the pin's own floor wants the same ladder over the real stack —
+which is the probe GRÜN correctly identified its new permission as decisive for, as distinct from the one it
+reordered the queue for.**
+
+### A-G355 · 0.329 was never a lower bound either — and q_proj is a unit, not a resolution *(defect 188)*
+
+**This lane was about to assert that 0.329 q_proj, whatever else it is not, is at least a lower bound: a visible
+change is at least one code, and the smallest single-code projection is R±1 at 0.1579. `gelb-premultiplied-fit.mjs`
+block [4] (`da4229e4`) checked it before it was written and it is false.**
+
+**The per-channel projections have opposite signs** — R+1 **+0.1579**, G+1 **+0.1955**, B+1 **−0.4797** — **so a
+multi-channel step cancels.** Over all integer deltas in [−3, 3]³:
+
+> **The smallest non-zero |projection| is 0.0060 = 0.0125 q_proj, at delta (3, 0, 1) → `rgb(9,12,18)`.
+> Twenty-six times below 0.329.**
+
+> **So A-G131's figure is not the raster floor, not the metric's resolution limit, and not a lower bound on
+> anything.** A-G258 diagnosed it as the smallest step the **metric** resolves standing in for the smallest the
+> **raster** carries; **it is not even the former.**
+
+**And the deeper error is a category error in the unit, which neither lane had named:**
+
+> **A projection onto one direction is not a distance, so it has no quantum.** A chromatic change orthogonal to
+> the hue direction projects to **zero** — which is the exact mirror of A-G123's own reason for rejecting a hue
+> *angle*, that an angle is undefined at zero chroma. **q_proj is the LARGEST single-code projection, which is
+> what A-G126 computed and said it computed. It is a UNIT for expressing a threshold and was never a
+> RESOLUTION, and A-G131 treated it as one.**
+
+**q_proj = 0.480 therefore stands exactly as §78 rescued it, and stands as less than it was taken for.**
+
+### A-G356 · Two more from the same run
+
+**GRÜN's scoring detector could not have proved its own claim** *(defect 189, GRÜN's)*: the *"does any model fit
+every cell"* check **searched only the top-4 slice each pair keeps for reporting**, so it could not have
+established that none of sixty-one fits. *"It returned the right answer because nothing fit."* **An instrument
+whose reach is narrower than its claim — §64's and §78's shape, and the fourth time this phase the defect was
+the probe rather than the arithmetic.** It now scores every model on every cell.
+
+**And the darkening is confirmed on a pair neither lane had looked at:** **CYAN over the modal medium first
+changes it at A = 1 to `rgb(5,12,17)` — red DOWN by one, with CYAN's red at 92 against the backdrop's 6.**
+GRÜN's note that this lane's statement of the mechanism *"in the direction that matters for this field"* is
+better than its own statement of the tell is recorded, **and the reason it is not a curiosity is G-1: the field
+is dark on purpose, so every low-alpha figure in it sits on the side of the compositor where a bright source
+subtracts.**
+
+### What is now ruled on PG-12, and what is not
+
+> **PG-12's threshold stays stated in q_proj — the unit survives — and its FLOOR is established by measurement
+> rather than by prediction. Neither 0.329 nor 0.737 nor 0.956 may be carried as a modelled figure; the 0.956 is
+> carried as a reading, for a flat alpha over the modal medium, and the pin's own floor is owed from the same
+> ladder over the real three-multiplier stack.**
+>
+> **PINK's factor remains suspended, and for a better reason than before: not because two models disagree, but
+> because the quantity the factor is set against is now known to be measurable and has not yet been measured on
+> the carrier the pin names.**
+
+**Four new defects: three this lane's — a compositing model tested only where it could not fail, a spread
+mis-shelved under A-G139, and a lower bound refuted before it was asserted — and one GRÜN's, self-caught. The
+count is 189.**
+
