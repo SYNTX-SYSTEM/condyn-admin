@@ -1595,3 +1595,74 @@ DECLARED CONSTANT alpha, the carrier A-G81 was measured on.** Adopted; `PF15.jso
 WHAT DID NOT CHANGE. Limb (a) FAILS as measured (0.12442 / 0.13696 at 1920; 0.10208 / 0.10907 at 1280);
 limb (b) CLEARS; A-G66's outer limb FAILS (1.0145 / 1.2264); the admissible alpha regions are disjoint
 and `smallestAlphaClearingBoth` is null. Every band value still lands on its exact 8-bit triple.
+
+
+================================================================================================
+§21  PF-6's TWO ROWS MEASURED — ROW 2 CLEARS, AND ROW 1 IS PG-10 LIMB 3 CONFIRMED FROM THE
+     OPPOSITE DIRECTION: 104 PIXELS AGAINST §12's 105. PF-4 IS A THREE-LIMB CONJUNCTION AND THE
+     RULING CITES ONE. AND MY OWN SOURCE READING OF PF-4's LIMB 3 WAS WRONG.
+================================================================================================
+`scripts/pink-pf6-pf4-g.mjs` -> `outputs/PF6-PF4.json`. 27 frames, 500 ms apart, 13 s window (> one
+WAVE period). Disc = the FIELD ring's outer edge, asserted not assumed (§19's defect). §63: one
+fixture, L0.
+
+ROW 2 — **CLEARS, and it is the first measurement of this row on a phase-G build.**
+    mean |ΔL| per 500 ms over the disc: **2.558e-4** (all drawn) · **1.036e-4** (foreign suppressed)
+    worst single pair 6.292e-4 · bound <= 0.0025 · **static floor under `reduce`: 7.204e-10**
+The bound clears by 4x on the worst individual pair, and the floor sits SIX ORDERS below the signal,
+so A-F11's asymmetric admissibility is satisfied with room to spare. Phase F's 0.0001 for this row
+is **not** what is reported here and was not admissible: rule 1 / A-G54, and A-G17 replaced a lit
+translucent plate with cheap occlusion between `9cc06f84` and `3ec8457d` — precisely the kind of
+change that moves a per-frame difference.
+
+ROW 1 — **IT IS PG-10 LIMB 3, AND TWO OPPOSITE MASKING STRATEGIES NOW AGREE ON IT.**
+    `reduce` (the floor)          max 1.699e-3   ·   0 px > 0.030   ·   p999.9 = 0
+    LIVE, every sign drawn        max **0.6908**  ·  1984 px > 0.030
+    LIVE, foreign suppressed      max **0.03269** ·   **104 px > 0.030**  ·  p999.9 0.03076
+    LIVE, 1280, foreign suppressed max 0.02825   ·     **0 px — CLEARS**
+  > **A max of 0.69 is a pixel going from near-black to near-white, which no translucent breath does.
+  > It is the signature that voided my first PG-10 attempt, where resting glows "swung" 0.7925.** Here
+  > the motion is genuine — travel and beams really do cross those pixels — but it is not the breath.
+  > Suppressing foreign motion collapses the maximum by a factor of **21**, so **~95 % of the disc-wide
+  > breach magnitude is the deliberate travelling light A-G17 and G-4 put in the same disc.**
+  > **PF-6 row 1 says "no pixel" and names no carrier, so as written it cannot tell the breath from the
+  > travel, and a disc-wide reading of it is not a measurement of what its words bound.** Same class as
+  > PG-23's swing form (§14): a bound whose carrier is unstated is unmeasurable wherever the medium and
+  > the signal share pixels.
+  > **AND THE RESIDUE IS MY OWN EARLIER RESULT, REACHED BACKWARDS.** §12 masked IN the carrier and found
+  > max 0.0327 with **105** of 51 289 pixels above 0.030. This masks OUT the foreign and finds max
+  > **0.03269** with **104** pixels. Two different masks, one measurement — and 1280 clears under both.
+  > So GELB's identification is confirmed, and the figure transfers: **one bound, one quantity, breaching
+  > only at 1920, on about a hundred pixels.** A breach inherited from a subset was a LOWER bound on the
+  > superset; measured on the superset it turns out to be the same breach, because nothing else in the
+  > disc breaches once the travel is out of the frame.
+
+PF-4 IS A THREE-LIMB CONJUNCTION (phase F line 322) AND §68's RULING CITES ONE OF THE THREE:
+  limb 1 · depth monotone in rank · **HOLDS** — 1.0 / 0.911293 / 0.830455 / 0.756788 / 0.689655,
+           strictly decreasing, verified at every body count.
+  limb 2 · ratio first : last in [1.5, 3.0] · **FAILS at 1.4500004**, 3.333 % under the floor, and
+           **invariant at lastRank 2, 3, 5, 8, 12 and 70** because `t` is normalised. `depthGain` rounds
+           at 1e-6, so the shortfall is **33 300x** the quantisation-order spread and A-G139 cannot
+           rescue it. GELB's arithmetic confirmed out of §18's own ladder.
+  limb 3 · same-class marks on different bodies differ <= 2 % · **HOLDS, exactly** — grouped by
+           `data-class`: SEMANTIC (n=2), LEXICAL (n=2), NONE (n=1), **spread 0.000 % in both shape
+           opacity and group opacity, strokes byte-identical** (`rgba(205, 240, 255, 0.82)`).
+  > **A pin that fails on one limb and holds exactly on two must be quoted by limb. PF-4's red is limb 2
+  > alone, and limb 3 — the one that says "depth did not touch evidence" — is the limb an unexamined
+  > change to `depthRatio` would be most likely to break.**
+
+AND MY SOURCE READING OF LIMB 3 WAS WRONG, THOUGH THE VERDICT IS NOT. I reported that limb 3 is
+protected because *"the evidence marks live outside the body group entirely."* **Measured: 19 arcs and
+19 beams ARE inside `[data-mapping-body]`.** The real protection is different and narrower: `depthGain`
+is applied to `.mf-core` (`:697`), which is a **SIBLING** of the marks, not an ancestor — and the body
+group's own `opacity` is **1 for every body**, so nothing depth-dependent is inherited.
+  > **Same conclusion, different reason, and the reason is what the next reader inherits (§17a's lesson,
+  > third firing).** "The marks are outside" would survive a change that moved the gain onto the group;
+  > "the gain is on a sibling" names the thing that must not change. **Third time this session that a
+  > measurement has corrected a source reading of mine** — the `k` icon, the horizon disc, and this.
+
+A SECOND MAGIC 0.62, CONFIRMED ON THIS DISK (GELB §69). `CHAR_EM = 0.62` is declared at `:411` and used
+at `:418` for the SECTOR label fit. **`:457` — the frame widen — writes `0.62` as a BARE LITERAL.** So
+the named constant does not govern the frame at all, and changing `CHAR_EM` would silently not move it.
+  > **§20's finding sharpens: the 0.62 that sits 2.9 % from being exhausted is the unnamed duplicate, in
+  > a place nothing controls. A font fallback would exhaust it with no constant to point at.**

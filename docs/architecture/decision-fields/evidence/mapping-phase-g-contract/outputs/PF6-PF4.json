@@ -1,0 +1,369 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "reading": "PINK — PF-6's two rows re-measured on 3ec8457d (GELB §68), each with its own floor; PF-4 limb 3 from the DOM",
+  "note": "PF-6 carries TWO rows under ONE verdict and PF-4 carries THREE limbs under one. Each is reported separately; no single figure is offered for either pin.",
+  "scope": "one fixture, one analysisId, five bodies (2 field / 3 shelf), L0 — §63",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "motion": "reduce",
+      "foreignMotionSuppressed": false,
+      "framesCaptured": 27,
+      "stepMs": 500,
+      "windowMs": 13000,
+      "discRadiusDevicePx": 417.659,
+      "discPixels": 548001,
+      "outermostRing": "field",
+      "row1_perPixelSwing": {
+        "bound": "<= 0.03",
+        "max": 0.001698546,
+        "p999_9": 0,
+        "p99_9": 0,
+        "p99": 0,
+        "p50": 0,
+        "p05": 0,
+        "pixelsAboveCeiling": 0,
+        "fractionAboveCeiling": 0,
+        "clears": true
+      },
+      "row2_meanAbsDeltaPer500ms": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 7.203901e-10,
+        "maxPairMean": 3.836767e-9,
+        "minPairMean": 0,
+        "pairs": 26,
+        "clears": true,
+        "clearsOnMean": true
+      },
+      "PF4_limb3_sameClassMarks": {
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 0.911293,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.830455,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.756788,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.689655,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          }
+        ],
+        "inheritance": {
+          "coreCarriesGain": true,
+          "bodyGroupCarriesGain": false,
+          "marksOutsideBodyGroup": {
+            "arcs": 19,
+            "beams": 19,
+            "nodes": 0
+          }
+        }
+      }
+    },
+    {
+      "viewport": "1920x1080",
+      "motion": "no-preference",
+      "foreignMotionSuppressed": false,
+      "framesCaptured": 27,
+      "stepMs": 500,
+      "windowMs": 13000,
+      "discRadiusDevicePx": 417.659,
+      "discPixels": 548001,
+      "outermostRing": "field",
+      "row1_perPixelSwing": {
+        "bound": "<= 0.03",
+        "max": 0.6907978,
+        "p999_9": 0.666662,
+        "p99_9": 0.5590228,
+        "p99": 0.01855965,
+        "p50": 0.0002871472,
+        "p05": 0,
+        "pixelsAboveCeiling": 1984,
+        "fractionAboveCeiling": 0.0036204,
+        "clears": false
+      },
+      "row2_meanAbsDeltaPer500ms": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 0.0002558349,
+        "maxPairMean": 0.0006292163,
+        "minPairMean": 0.00004034571,
+        "pairs": 26,
+        "clears": true,
+        "clearsOnMean": true
+      },
+      "PF4_limb3_sameClassMarks": {
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 0.911293,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.830455,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.756788,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.689655,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          }
+        ],
+        "inheritance": {
+          "coreCarriesGain": true,
+          "bodyGroupCarriesGain": false,
+          "marksOutsideBodyGroup": {
+            "arcs": 19,
+            "beams": 19,
+            "nodes": 0
+          }
+        }
+      }
+    },
+    {
+      "viewport": "1920x1080",
+      "motion": "no-preference",
+      "foreignMotionSuppressed": true,
+      "framesCaptured": 27,
+      "stepMs": 500,
+      "windowMs": 13000,
+      "discRadiusDevicePx": 417.659,
+      "discPixels": 548001,
+      "outermostRing": "field",
+      "row1_perPixelSwing": {
+        "bound": "<= 0.03",
+        "max": 0.03268835,
+        "p999_9": 0.03076332,
+        "p99_9": 0.02635226,
+        "p99": 0.01606052,
+        "p50": 0.0003005255,
+        "p05": 0,
+        "pixelsAboveCeiling": 104,
+        "fractionAboveCeiling": 0.00018978,
+        "clears": false
+      },
+      "row2_meanAbsDeltaPer500ms": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 0.0001035723,
+        "maxPairMean": 0.0002775422,
+        "minPairMean": 7.723929e-10,
+        "pairs": 26,
+        "clears": true,
+        "clearsOnMean": true
+      },
+      "PF4_limb3_sameClassMarks": {
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 0.911293,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.830455,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.756788,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.689655,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          }
+        ],
+        "inheritance": {
+          "coreCarriesGain": true,
+          "bodyGroupCarriesGain": false,
+          "marksOutsideBodyGroup": {
+            "arcs": 19,
+            "beams": 19,
+            "nodes": 0
+          }
+        }
+      }
+    },
+    {
+      "viewport": "1280x800",
+      "motion": "no-preference",
+      "foreignMotionSuppressed": true,
+      "framesCaptured": 27,
+      "stepMs": 500,
+      "windowMs": 13000,
+      "discRadiusDevicePx": 222.989,
+      "discPixels": 156157,
+      "outermostRing": "field",
+      "row1_perPixelSwing": {
+        "bound": "<= 0.03",
+        "max": 0.0282471,
+        "p999_9": 0.02653887,
+        "p99_9": 0.02129174,
+        "p99": 0.01251562,
+        "p50": 0.0002816123,
+        "p05": 0,
+        "pixelsAboveCeiling": 0,
+        "fractionAboveCeiling": 0,
+        "clears": true
+      },
+      "row2_meanAbsDeltaPer500ms": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 0.00008416643,
+        "maxPairMean": 0.0002157655,
+        "minPairMean": 1.424283e-8,
+        "pairs": 26,
+        "clears": true,
+        "clearsOnMean": true
+      },
+      "PF4_limb3_sameClassMarks": {
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "groupOpacity": 1,
+            "coreOpacity": 0.911293,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.830455,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.756788,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "groupOpacity": 1,
+            "coreOpacity": 0.689655,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "shapeOpacity": 1
+          }
+        ],
+        "inheritance": {
+          "coreCarriesGain": true,
+          "bodyGroupCarriesGain": false,
+          "marksOutsideBodyGroup": {
+            "arcs": 19,
+            "beams": 19,
+            "nodes": 0
+          }
+        }
+      }
+    }
+  ]
+}
