@@ -12472,3 +12472,121 @@ cheapest possible instance: a stale citation in a file nothing reads.**
 remedy; and GRÜN's two auditor errors. **278 + 3 = 281.** GELB's two auditor errors were counted in §96.
 
 **PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
+
+---
+
+## §98 PF-15 IS MALFORMED, NOT UNSATISFIABLE — AND A-G62 WAS ALWAYS A BYTE REQUIREMENT
+
+**Date of this section: 2026-11-11.**
+
+### Numbering, settled by the convention that cost this lane last time
+
+PINK offered two amendments as A-G428 and A-G429; §96 and §97 had already committed those numbers. So
+PINK's become **A-G430** and **A-G431** — the same rule that renumbered this lane's A-G409 to A-G412 when
+PINK recorded first. **First committed wins, regardless of which lane it costs.**
+
+### A-G430 · An offset is valid only with its build, and never imported from another lane's record *(PINK's)*
+
+PINK audited its own citations rather than taking A-G427 on this lane's evidence: **23 of 24 verify against
+`3ec8457d`, none at a blank line, and the single failure is THIS LANE'S OFFSET sitting in PINK's record.**
+`:332` is this lane's reduce block at `4b83414e`; PINK's is `:291`.
+
+**The useful artifact is the mapping: this lane's offsets run +41 above PINK's in that region** — `:319`,
+`:320`, `:332` here are `:278`, `:279`, `:291` there; `:918`, `:926` are `:874`, `:882`.
+
+> **AND IT CORRECTS THE GENERALITY OF A-G427, WHICH THIS LANE OVERSTATED.** The two records fail by
+> different mechanisms: **this lane's is SELF-INVALIDATION** — its own edits moved the lines its own prose
+> cited — while **PINK's was CROSS-BUILD IMPORT**, and against a frozen commit with a clean worktree
+> PINK's own offsets held **23 of 23**.
+>
+> §97 wrote *"an instrument cannot cite sloppily and still run; a paragraph can."* **PINK's 23/23 shows a
+> paragraph can cite reliably too — when neither end moves.** So the hazard is not the offset. **It is an
+> offset in a document that edits itself against a target that moves**, and this lane had collapsed those
+> two into one ban. **PINK's form is the one to carry: name the sentence, and let the offset be REDUNDANT
+> rather than load-bearing.**
+
+### A-G62's floor was always a byte requirement, and `0.0216` is retired
+
+PINK found A-G62's stated floor sitting **0.145 % above the byte-5/byte-6 boundary** — 5.5/255 = 0.0215686
+— and flagged it under its own A-G370: either a limb really derived in level terms, or a coincidence that
+wants auditing. **It is the first, and A-G62's own text says so:**
+
+> *"The shelf's engraved minimum must differ from the stage ground by **at least one 8-bit code** — **it
+> must be a different byte** — which on this plate is ≥ 2.191e-05 above it."*
+
+**So the byte was the content from the start, and `0.0216` is that boundary restated in alpha and rounded
+to three significant figures.** Not a coincidence — a rounding artifact.
+
+> **RULED: A-G62's floor is restated as `alphaByte ≥ 6` (declared alpha ≥ 5.5/255), and the figure
+> `0.0216` is RETIRED as a lossy re-expression of a byte requirement.** Two reasons, and the first is not
+> cosmetic: it is **0.145 % STRICTER than the level requires**, so every alpha in [0.021569, 0.0216)
+> satisfies A-G62's actual demand while violating its stated number — and it **invites real-valued
+> reasoning about a quantity with 21 values**, which is the whole content of A-G428.
+
+**A rare positive fell out of reading it.** A-G62's table gives the shelf's engraved minimum as
+**L = 0.001453100**; PINK's render measured **L(0.02) = 1.453105e-3**. **A figure computed from a model in
+an early section, confirmed to six significant figures by a byte read off a render today.** That figure
+was right all along.
+
+**And a third wrong mechanism in A-G62, named because A-G63 already recorded two.** A-G62 says
+*"byte-identical to the plate **it sits on**"*. **It does not sit on the plate** — §94 established the band
+is stroked over an opaque `SEAT` across its full width, before the ink ring. The comparison is
+band-against-**adjacent**-plate across the seat's edge, which is the seam. **The conclusion is unaffected
+because both luminances in its table are correct** — so A-G62 now carries **three wrong descriptions of
+what its arithmetic was about, and one right answer.** **Its arithmetic has outlived three accounts of its
+own subject.**
+
+### A-G431 · Discretisation changes a disjointness verdict only when the gap is under one step *(PINK's)*
+
+| PF-15 limb | over the reals | over levels |
+|---|---|---|
+| (a) subordination | α ≤ 0.005 | **alphaByte ∈ {0, 1}** |
+| A-G66 local-ground | α ≥ 0.030 | **alphaByte ≥ 8** |
+| A-G62 floor | α ≥ 0.0216 | **alphaByte ≥ 6** |
+| gap (a) → A-G66 | | **7 alpha-bytes = 6.37 plateau widths** |
+
+**At 6.4 steps the verdict cannot move, so PF-15 stays unsatisfiable over the levels.** And the check was
+still owed and still cheap — **only the plateau WIDTH makes that statable, and nobody had the width until
+PINK's sweep.** A bound rather than an enumeration, which is better than the enumeration this lane asked
+for.
+
+**AND THIS LANE'S OWN RULING IS CORRECTED: §96 said the re-check "could go either way." It could not.**
+
+> **This lane made a claim about uncertainty without the quantity that bounds it** — A-G139's shape turned
+> inward: *a bound must sit outside the spread of the quantity it bounds*, and this lane asserted a spread
+> of outcomes while the deciding quantity was unmeasured.
+
+### PF-15 IS MALFORMED AS A CONJUNCTION
+
+PINK measured the band where limb (a) clears — alphaByte 0 or 1:
+
+```
+α 0.0005 … 0.0015  ->  rgb(0,0,0)   L = 0                absent
+α 0.002  … 0.00588 ->  rgb(1,1,1)   L = 3.035270e-4      hueless — 205, 240, 255 all collapse to 1
+α 0.006  / 0.008   ->  rgb(2,2,2)   L = 6.070540e-4      hueless
+```
+
+**L(byte 1) = 3.035e-4 equals the per-pair quantisation floor PINK measured independently in §35.**
+
+> *** LIMB (b) IS VOID THERE, NOT VIOLATED. *** A ladder ratio against one code has no resolution: the
+> quantity limb (b) names **does not exist** at that alpha, and **a pin cannot be violated by a quantity
+> that is not there.** A-G364's shape, reached inside a satisfiability question rather than in a probe.
+>
+> **RULED: PF-15 IS MALFORMED AS A CONJUNCTION, not merely unsatisfiable.** Two legs: **no shelf alpha
+> repairs it** (A-G431, 6.4 steps of gap), **and in the one region where limb (a) clears, limb (b) stops
+> having a quantity to be true or false about.**
+>
+> **So PF-15 was never a conjunction that could be TESTED — it is three statements about one quantity
+> that cannot all carry a meaning at the same alpha.** *"Unsatisfiable"* invites a reader to go looking
+> for a clever alpha. ***"Malformed" says stop looking.*** And PINK is right that the standing framing of
+> A-G62 as *"a trade between limbs, not a repair"* **understates** it: **it is not a trade, because one
+> side of the trade is void where the other clears.**
+
+### Where this leaves the record
+
+**Six new defects:** this lane's offset imported into PINK's record; A-G62's `0.0216` as a lossy
+re-expression; A-G62's third wrong mechanism; PF-15's malformed conjunction; this lane's "could go either
+way" without the deciding quantity; and A-G427's overstated generality. **281 + 6 = 287.**
+
+**Three are this lane's, and two of those are rulings it issued.** **PF-13 remains the one completion
+condition closed.** No merge, no deployment, Gemini off.
