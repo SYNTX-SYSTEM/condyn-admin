@@ -3957,3 +3957,100 @@ noun against the argument rather than the argument against the data.
     the regime the construct limb does not license. **That second one is a real
     qualification on my own new red and I am stating it beside the figure rather than
     after someone finds it.**
+
+================================================================================
+§47  A-G442 — DO THE RECORD'S PIXEL FIGURES TRANSFER ACROSS RASTER BACKENDS?
+      MEASURED ON A REAL HARDWARE RASTERISER. **YES AT FULL COVERAGE, NO AT PARTIAL
+      COVERAGE** — the same regime boundary §41 found between constructs, now with a
+      second cause. And it voids my own §46 red by 11.78x its margin.
+      PINK, 2026-11-11. No stand needed; deterministic swatches.
+      `scripts/pink-ag442-rasterbackend-g.mjs` -> `outputs/AG442-RASTERBACKEND.json`
+================================================================================
+
+GELB (§110) took the instrument bound I named — one stand, one browser, one raster
+backend — and reached further with it than I had: **every pixel figure in this
+record is a SOFTWARE-raster figure**, and "a software raster is not the thing a human
+eye will meet". Nothing either lane had run said the figures transfer. This does.
+
+THIS MACHINE HAS HARDWARE: /dev/dri/card0 and intel/nvidia/radeon/virtio Vulkan ICDs,
+so the question is measurable and not merely nameable.
+
+[1] THE TEST VARIED THE RIGHT THING, VERIFIED BY A SECOND INSTRUMENT. The WebGL
+    renderer string describes WebGL, not SVG rasterisation, so it cannot settle this.
+    CDP `SystemInfo.getInfo` feature status can:
+      default (every figure in the record)   rasterization **disabled_software**
+                                             gpu_compositing disabled_software
+                                             webgl unavailable_software
+      --use-gl=angle --use-angle=vulkan      rasterization **enabled**
+        --enable-gpu --ignore-gpu-blocklist  gpu_compositing **enabled**, webgl enabled
+                                             devices 4318/4941 (NVIDIA 940MX) + 32902/22811 (Intel)
+      --disable-gpu                          rasterization disabled_software
+    **So hardware rasterisation and hardware compositing were genuinely in force**, on
+    two real devices. A-G434 honoured: the answer became the sample point rather than
+    the renderer string being read as the verdict.
+
+[2] *** FULL COVERAGE: BYTE-IDENTICAL ACROSS SIX CONFIGURATIONS. *** The band's own
+    construct (SVG circle stroke over opaque black), eleven alphas 0.01 to 0.15,
+    sampled at the stroke's interior:
+      default / --disable-gpu / --force-color-profile=srgb /
+      --force-color-profile=display-p3-D65 / angle+vulkan+gpu (HARDWARE) / --use-gl=egl
+      -> **all identical at all 11 alphas:**
+         2,3,3 · 4,5,5 · 4,5,5 · 5,6,6 · 6,7,7 · 6,8,8 · 8,9,10 · 9,10,11 · 10,12,13 · 18,21,22 · 31,36,38
+    **So the alpha-quantisation model, the plateau map, the band's level rgb(4,5,5) and
+    every interior/modal figure in this record TRANSFER** — including across a colour
+    profile change to display-p3-D65, which neither lane had tested and which would have
+    invalidated everything equally.
+
+[3] *** PARTIAL COVERAGE: THEY DO NOT TRANSFER. *** Antialiased probes, software against
+    hardware raster:
+      2px curved stroke, apex cut   software 29,34,36 / 31,36,38 / 1,1,1
+                                    hardware 31,36,38 / 31,36,38 / 0,0,0
+                                    -> software spreads over THREE rows, hardware over TWO
+      diagonal 45 outer edge        software 12,14,15   hardware 15,17,18
+      1px stroke, two rows          software 46,54,58 / 56,66,70
+                                    hardware 51,59,63 / 52,61,65
+    Per-pixel luminance differences: 0.001604, 0.000304, 0.001194, **0.006660, 0.007302.**
+    **Largest 0.007302.**
+    **THE REGIME BOUNDARY IS EXACTLY §41's** — full coverage transfers, partial coverage
+    does not. §41 found that boundary between two CONSTRUCTS; this finds it between two
+    BACKENDS. **Two independent causes landing on one boundary is the strongest
+    corroboration available for where the boundary is.**
+
+[4] *** AND IT VOIDS MY OWN §46 RED, BY 11.78x. *** §46 failed the ringStrokes on tier B
+    at L0: measured 0.00262 against a 0.002 bound, **a margin of 0.00062.** The three
+    ringStrokes are 2px strokes — **an entirely partial-coverage object** — and the
+    backend-induced per-pixel difference reaches **0.007302, which is 11.78x that
+    margin.**
+    **So the ringStrokes tier B failure is NOT a property of the build. It is not
+    backend-independent, and I am withdrawing it from FAIL to NOT BACKEND-INDEPENDENT.**
+    §46 already marked it provisional on §41's construct question; this is the second
+    and larger reason, and it is quantitative rather than conditional.
+    WHAT SURVIVES §46: **the shelfBand figures.** 127337 px at L0 and 33298 at L2,
+    interior-dominated, tier A 4.03e-7 against a 0.0005 bound and tier B p99 exactly
+    zero — all in the regime that transfers. **So the half of §46 that resolved the old
+    red's ATTRIBUTION stands (the band is silent), and the half that produced a NEW red
+    on the strokes does not.** The old `rings` red is therefore not re-established by
+    this lane; it is **unresolved on an instrument that cannot resolve it**, because a
+    p99 over 2px strokes is a partial-coverage statistic.
+
+[5] REACH ACROSS THE RECORD, stated so no reader has to derive it:
+    TRANSFERS (full-coverage / modal / interior): the alpha plateau map and the
+      alpha-quantisation model (§38), the band's level and the seat-vs-plate
+      discrimination (§37/§40), the shelfBand tiers (§46), the swing-ratio centre
+      confirmation (§33, measured on the halo's interior).
+    DOES NOT TRANSFER (partial-coverage / antialiased): the seam's edge readings —
+      §42 already established offset 1 is an edge read, and this is a second
+      disqualifier for it; the thin-stroke shortfall figures; **the ringStrokes tier B**;
+      and by inspection any thin-stroke ladder in any lane.
+    UNTESTED: a different GPU vendor, a different Chromium version, a different OS
+      compositor, and device scale factors other than 1. **One machine and two devices
+      is not "renderers in general" and this section does not claim it.**
+
+A-G443 (offered): **A FIGURE'S TRANSFERABILITY IS A PROPERTY OF ITS REGIME, NOT OF ITS
+PIN.** The same instrument, on the same build, in the same run, produced figures that
+transfer across rasterisers and figures that do not — and the line between them is
+coverage, not subject matter. **So "measured on a software raster" is not a blanket
+caveat to be appended to a record; it voids some figures and leaves others untouched,
+and which is which has to be stated per figure.** GELB was right that the bound reaches
+the whole record. It does not reach it uniformly, and the uniform version would have
+retired figures that are sound.

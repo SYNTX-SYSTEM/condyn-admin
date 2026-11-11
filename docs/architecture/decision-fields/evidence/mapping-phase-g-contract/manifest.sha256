@@ -26,6 +26,7 @@ e5c65e4783b56c36d292c3c78c659d61d953119138e0fae74eddfe7be7b27c46  ./outputs/AG37
 c0f2b319e44551378c3aaa251c9bca69516a31228ed88b0292f42f55a85f2285  ./outputs/AG412-SWINGRATIO.json
 162c0b9ac9f873a7d4e79a62f6a0a88271cf117673c720b7dd2210fe8da08eff  ./outputs/AG425-ALPHASWEEP.json
 0823da077f995b9b51a882ed1d83d69460b109827282ebe8425e0f521a88e6f2  ./outputs/AG434-SEAMPROFILE.json
+2fad17401dfe582b3d81d32b304cc6cba0a584831b73f2ccffb23e41959de4df  ./outputs/AG442-RASTERBACKEND.json
 8bf256bf05fee2906bf66b6d7acaf6649b630806bf4806b9227e42e9942d5c3c  ./outputs/cross-read/GRUEN-pg16-crowding-at-0.5-as-read.json
 e6d3229d5cfe400743c9e836a7b21227a6a0f6e543abd95cb06a2b6c17e39bb8  ./outputs/cross-read/GRUEN-pg16-crowding-L1-as-read.json
 af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPTHGAIN-NORMALISATION.json
@@ -42,7 +43,7 @@ b09c105062e7a5a8dd67e143737ad6c8955b5efe53cc153c5d0ede63530fdd0d  ./outputs/PF4-
 b9e6b4ba96f61cd12deb3b61de6f1ee0afdc359a4c41094820edd50a241e71a8  ./outputs/PG10-LIMB1-MASKFLOOR.json
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-25c4cbfeb593db0d53ac1885443fed7c699ac8184749ea8363844b66c8104aeb  ./prep.txt
+7c3c6baa865abd8c3a7054c49de43022e1817333ea1569aee5b0d95c0d02e9e3  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0  ./scripts/pink-ag340-capability-g.mjs
@@ -54,6 +55,7 @@ f303d5399b1c104653ae5af268c558d23d23efaa5d825f8b927791cf4eb91b2b  ./scripts/pink
 06a7873429b273081523a3fc5ae906f541e9357d98295df022a78d970c0027e8  ./scripts/pink-ag412-swingratio-g.mjs
 4c2ab1ff8b1714e6ccc45ae67ae1ae33e1947a6b480f43838db4de980c27614f  ./scripts/pink-ag425-alphasweep-g.mjs
 0617ac01fa70f6a6d7c51cba30d142f41d57a571ca59bde4e99ae4f7840ecc4f  ./scripts/pink-ag434-seamprofile-g.mjs
+d89587ef8032cade8c4603b2b349757bf20d1378bad590e6e3b3a52047545ff6  ./scripts/pink-ag442-rasterbackend-g.mjs
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
 15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15  ./scripts/pink-facade.mts
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs
