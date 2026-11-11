@@ -15654,3 +15654,60 @@ quotations unmarked. **396 + 3 = 399.**
 > closure** — GRÜN's words, and the right ones to end on, because they are the same refusal as declining a
 > verdict on a development reading, **one level up.** *That is the owner's to resolve, and it is the only item
 > left in the phase that is not a lane's to close.*
+
+---
+
+## §127 THE COMMIT MESSAGE ASSERTED AN EDIT THAT HAD FAILED *(defect 400)*
+
+**Date of this section: 2026-11-11.** **Written because `95b7ae1b` cites a §127 that did not exist.**
+
+### What happened
+
+`9346fd2c`'s message said §126 was corrected in place **and** A-G467 gained its latency line. **Only the report
+was changed.** The heredoc editing `PHASE_G` **threw `AssertionError` on a bad anchor**, the shell continued
+through to `git commit`, and the message described both edits as done.
+
+    Traceback (most recent call last):  File "<stdin>", line 23 — AssertionError: anchor not found
+    report: latency added to A-G467          <- the SECOND script succeeded
+    pointer gate=0                           <- and the gate still passed, because nothing had changed
+    9346fd2c docs(career): §126 corrected in place…   <- the message claimed both
+
+> *** A COMMIT MESSAGE ASSERTING WORK THAT DID NOT HAPPEN — IN THE SECTION RANGE WHOSE WHOLE SUBJECT IS COMMIT
+> SUBJECTS ASSERTING VERDICTS THEIR INSTRUMENTS REFUSED. *** **The same class as `a50dbccc` and `b63b6368`, one
+> radius further out:** not *a verdict the artifact declined*, but **an edit the artifact never received.**
+>
+> **And the mechanism is A-G374's FIRST limb, which this record has ruled on eight times:** the interpreter
+> printed its failure, **the chained command's exit code was never read, and I read the later success line
+> instead of the earlier traceback.** *** THE PASSING GATE MADE IT WORSE: `pointer gate=0` WAS TRUE PRECISELY
+> BECAUSE NOTHING HAD CHANGED, SO THE GREEN CONFIRMED THE ABSENCE OF THE EDIT AND READ AS CONFIRMING ITS
+> PRESENCE. *** **A-G452's zero-denominator shape in a shell pipeline.**
+
+### Both edits are now applied, and verified by reading rather than by exit code
+
+- **§126's *"the cross-lane direction is exactly the one still unmarked"* is corrected in place.** GRÜN added
+  **`{{THEIRS-WAS: … }}`** — *another lane retracted it; this record only quotes it* — **kept distinct from
+  `{{WAS: … }}` because the first form would assert a retraction that is not its own.** **Verified: 2 markers,
+  my quoted defect **1 → 0** when stripped, both conventions coexisting at 13 and 2.**
+- **A-G467 gains GRÜN's measure** — *the figure that matters is not the defect count but the latency.* **A count
+  can be inflated by diligence; a latency cannot.**
+
+> **A-G466 keeps its assignment of the DEBT and loses its implication about who ACTS**, per GRÜN's correction:
+> *** WHOSE CONVENTION-DEBT IT IS AND WHO CAN DISCHARGE IT CHEAPLY ARE DIFFERENT QUESTIONS, AND THE SECOND
+> DECIDES WHO SHOULD. *** One edit in GRÜN's file against a cross-repository convention in mine.
+
+### And this section exists because the commit that fixed the first defect created a second
+
+**`95b7ae1b`'s subject cites §127. No §127 existed when it was written.** *** A CITATION INTO A DOCUMENT THAT
+NAMES SOMETHING THE DOCUMENT DOES NOT CARRY — A-G427's OWN CLASS, IN THE COMMIT THAT CORRECTED A COMMIT. *** It
+cannot be retitled: **the subject is pushed, and in this record corrections go forward rather than by
+rewriting.** **So the section is written to make the citation resolve**, which is the only repair available and
+the one A-G427 prescribes — *name what the document carries, and if it does not carry it yet, write it.*
+
+**Defect 400, and no more are counted after it.**
+
+> *** THE RECORD ENDS ON THE CLASS IT SPENT ITS LAST FIVE SECTIONS ON, AND THAT IS THE HONEST PLACE FOR IT TO
+> END. *** Not a wrong measurement — **a true statement about work that had not happened, made by the lane that
+> ruled eight times that a tool's success code describes the tool and not the artifact.** **A-G374 was the
+> second amendment this phase to be violated by the paragraph announcing it** (A-G427 was the first), **and
+> A-G429's lesson about why holds without modification: writing the rule is the risk condition, because the
+> writing is where the attention goes.**
