@@ -4478,3 +4478,191 @@ reading of the words it wrote, and the fix is to state the denominator rather th
 note is the one to keep: ***"a hand-copied table is an unchecked reduction"*** — the same class as the
 max-for-a-cap, in the same commit that recorded that error. **A-G152's pattern now has a fourth level: the
 transcription.**
+
+---
+
+## §45 PG-17 AND PG-19 BOTH DIE — AND THE DEFECT WAS NEVER IN THE PINS, IT WAS IN THE STEP FROM FINDING TO PIN
+
+I owed PG-17 four repairs (A-G136 a word, A-G137 a statistic, A-G138 a derivation, A-G139 a spread constraint)
+and PG-19 a complete re-derivation as a single joint vulnerability index (A-G141). **Neither debt is payable, and
+the gate said so on committed constants before either repair was written.** Both pins are gone, for one reason.
+
+### A-G159 · Forty sections of arithmetic and not one committed instrument — in my own lane *(defect 70)*
+
+**A-G35 says no number without a script, an output and a commit. I wrote it, I have enforced it on both other
+lanes, and I have not once obeyed it.** Every figure in §§24–44 was computed in session and survives only because
+GRÜN re-derived it. That is A-G36 half-met — two instruments, one verdict — with **my instrument missing**, so the
+"two" was GRÜN's probe and my assertion.
+
+**Repaired, and the repair is the reason this section's findings exist.** `gelb-gate-pg17-pg19.mjs` is committed
+with its output beside this record. Its first block is an **anchor**: it reproduces A-G137's five rows and
+A-G139's 4.49 % spread from the constants, and all six match. **Writing the anchor is what exposed everything
+below**, because a script has to state the geometry it assumes and I had three different geometries in my head.
+
+### A-G160 · PG-17's core limb measures the one quantity R21 excludes — struck *(defect 71)*
+
+R21, in the record's own words: the glare effect *"depends on a **critical band of surrounding gradients** that is
+explained by **neither local contrast nor total luminance energy**."*
+
+**PG-17's core limb is a local-contrast bound** — *"the core at ≥ 1.45 × the local ground."*
+
+> **The limb bounds the quantity its own cited mechanism declares non-explanatory.** It is not a weak test of
+> "bodies are glare sources"; it is not a test of that claim at all.
+
+**Struck.** And three of my four debts go with it: **A-G137's missing statistic, A-G138's missing derivation and
+A-G139's spread constraint are all discharged as moot**, since there is no bound left to name a statistic for, to
+derive, or to keep clear of a spread. **The cheapest repair available was deletion, and I had been about to pay
+the expensive one** — invent a statistic, then retrofit a derivation for 1.45, which A-G143 forbids and which
+A-G138 had already called the worse-than-assertion case.
+
+The method that found it is A-G155's, used deliberately this time: **read the finding's own sentence before
+writing a pin that cites it.** A-G155 was luck — R23's arrow happened to be quoted. This was a search.
+
+*(For the record, the instrument also widens A-G137: the `mf-core` gradient's **offset-1 stop**, which A-G137
+omitted, reaches **1.137 ×** at rank 1 and **0.745 ×** at the last rank. So the core's own rim fails the struck
+bound at **every** rank, not only the deepest, and the family spans 0.745 … 4.359 ×.)*
+
+### A-G161 · A-G136 is corrected a third time, in the same place, and this time the flat head is not measurable
+
+`t` at `PersonJobMappingField.tsx:679` is `(b.rank - 1) / (lastRank - 1)`. **It is the rank, not the breath.** So
+the halo circle is **2.6 r at rank 1 and 3.0 r at the last rank**, statically, and `mf-halo` carries no
+`gradientUnits`, so offset 1 is that circle's own radius. The body's rim therefore sits at offset **1/2.6 =
+0.3846** at rank 1 and **1/3.0 = 0.3333** at the last rank — and the **seat**, a stroke centred on `r`, occludes
+out to `r + width/2`, which is offset **0.4093** and **0.3548**.
+
+**`GLOW_RAMP`'s flat head ends at offset 0.33.** Both figures are past it, by **5.78 px** at rank 1 and **2.08 px**
+at the last rank.
+
+> **The flat segment lies behind the body's own seat at every rank. It is never sampled.** So over the measurable
+> domain the ramp is **strictly** decreasing — decrements 0.28, 0.26, 0.22, 0.16, 0.08, all positive — and the one
+> zero is the one piece no instrument can see.
+
+**So A-G136's conclusion is wrong, and it is wrong in the direction that mattered.** A-G136 said *"a strictly
+decreasing test fails by construction and a non-increasing one does not — and the difference is the verdict."*
+**There is no difference.** Both words give the same verdict on the measurable profile. The word still wants
+saying, but **it does not select anything**, and I had made it one of PG-17's four debts.
+
+That is the third statement of this mechanism and the third correction: **§38 blamed the quantised tail (wrong),
+A-G136 blamed the flat head (right about the ramp, wrong about the render), and the head is occluded.** Each
+correction was arithmetic on constants I already had. **What changed each time was which geometry I assumed, and
+I never wrote the geometry down — which is exactly what A-G159 is about.**
+
+### A-G162 · PG-17's extent limb clears by exactly one device pixel — and A-G128 needs a third outcome *(defect 72)*
+
+Measurable extent is `(haloNear + 0.4 t) − 1 − seatHalf/r_px`, and `layout-spec-v1.1.json` guarantees its own
+floor: *"≥ 56 … ≤ 92 px diameter at L0, 1920 × 1080"*, so `r_px ≥ 28`.
+
+| | extent | vs ≥ 1.5 r | margin |
+|---|---|---|---|
+| rank 1, unmarked | 1.54996 r | clears | 1.399 px |
+| **rank 1, marked** | **1.53571 r** | **clears** | **1.000 px** |
+| last rank, unmarked | 1.94996 r | clears | 12.599 px |
+| last rank, marked | 1.93571 r | clears | 12.200 px |
+
+Achievable **1.536 … 1.950 r** against a bound of **1.5 r**. The range does not straddle it, so **the limb cannot
+fail** — A-G128 rejects it, PG-13's defect.
+
+**But the worst case clears by exactly one device pixel, and the arithmetic is exact: `0.1 × 28 − 1.8 = 1.000`.**
+The binding case is the **marked** body — the one under the cursor, the one PG-17 is *for* — at the smallest
+guaranteed drawn size and rank 1. A pin that clears by one pixel of a geometric quantity is not certifying
+anything; it is also not inert.
+
+> **A-G128 gains a third outcome. A pin whose achievable range does not straddle its bound, but clears it by less
+> than the resolution of the quantity it bounds, is a TRIPWIRE: it certifies nothing today and fails the moment
+> the artifact drifts.** It must be labelled as one, never reported as a pass, and never counted among the
+> obligations a phase has met.
+
+**PG-17's extent limb is retained as a tripwire and as nothing else.** It fails if `SEAT_PAD_PX` grows, if
+`STROKE_MIN_PX` grows, if the marked stroke widens past 2 px, or at any viewport where the drawn-diameter floor
+drops below 2 × 18 px. **Those are four real regressions it would catch**, which is why it is retained rather than
+struck — and PG-5's L0 cap in A-G156 is the contrasting case: **inert, so removed.** *Inert and tripwire are not
+the same finding, and A-G156 would have read better if I had had this word.*
+
+### A-G163 · The same extent is stated three ways in two files, and none of the three is the measurable one *(defect 73)*
+
+- `PersonJobMappingField.tsx:146` — *"a ramp over (haloNear … haloFar) − 1 **≥ 1.6 ×** the body radius"*
+- `PersonJobMappingField.tsx:880` — *"a monotone ramp darkening outward over **≥ 1.5 ×** the radius"*
+- §4's PG-17 — *"a monotone falloff over **≥ 1.5 ×** the body radius"*
+- and §13 of this record — *"PG-17's annulus runs **1.1…2.6 r**"*
+
+Line 146 is the rank-1 **rim** figure and it is exactly right as such: `2.6 − 1 = 1.6`. Line 880 and the pin quote
+**1.5** with no stated basis. §13's `1.1` matches nothing — the rim is at `1.0 r` and the seat's edge at
+`1.050 r`. **And the measurable extent, 1.536 r, appears nowhere.**
+
+**This is A-G106's class reaching a code comment: a figure in a comment meets the same standard as a figure in a
+rule.** Two comments on one constant, disagreeing, both written as if quoting the pin. **Neither is wrong about
+the geometry it describes; they describe different geometries and say so in identical language.**
+
+### A-G164 · PG-19 is retired, and A-G141's own prescription turns out to have been underivable *(defect 74)*
+
+A-G141 ruled that PG-19 *"must be re-derived as a single joint vulnerability index over contrast, drawn size and
+eccentricity, bounded once."* **I ran A-G128's gate on my own prescription before writing it, and it fails.**
+
+R25 states exactly one quantity: *"Raising target contrast **halves** the disappearance rate."* That fixes one
+exponent and no more — `rate ∝ C^k` with `2^k = ½`, so **k = −1, derived.** For size and for eccentricity R25
+gives **direction only: no exponent, no threshold.**
+
+> **A joint scalar index needs an exchange rate between its factors. R25 supplies none.** So the index A-G141
+> demanded could only have been written by inventing the exchange rate — **A-G143's retrofit one layer up: a
+> retrofitted derivation for a pin's *form* instead of for its *constant*, which is harder to see and no better.**
+
+**And the escape I would have reached for is A-G150's error exactly.** Bouma's critical spacing (R23, 0.5 per
+A-G156) looks like it fuses size and eccentricity into one dimensionless ratio, which would have reduced three
+factors to two. **It does not: R23's critical spacing is a *flanker-distance* quantity and R25's "small" is a
+*stimulus-extent* quantity.** Fusing them applies R23's number to a relation it is not about — **which is what
+A-G150 did, found two sections ago, and I caught it this time before it reached the record.**
+
+*(The instrument also checks whether a weaker "compensation ordering" would be satisfiable — contrast and relative
+size non-decreasing outward. It is not: drawn size comes from requirement mass and radius comes from fit, so the
+layout makes them **independent on purpose**, and the smallest body at the best-fit ring has `34.2/160 = 0.2138`
+against the largest at the horizon's `54.6/400 = 0.1365`. The ordering fails by construction. **That is a defect
+in the pin, not in the layout.**)*
+
+**So PG-19 is retired, and R25's load is already carried.** R25's own arrow names its two carriers: *"PG-1 is
+therefore physiological, not aesthetic… bright marks… **resist erasure**"* and *"the breath earns a second
+justification: **motion defeats fading**"* — **PG-1, measured 0.639 / 0.733, and PG-10/PG-18.** The third factor,
+size, has a floor from E-7, justified by legibility and not by fading. **PG-19 was a third pin asserting a
+threshold R25 does not contain, and it was never in R25's arrow.**
+
+### A-G165 · The rule both deaths share, and the one pin it predicts next
+
+Five limbs of A-G7 were malformed and I wrote all five. **They do not share a defect in the pins. They share a
+defect in the step from finding to pin**, and it has one form:
+
+> **A pin may be derived from a finding only where the record took a quantity from that finding. Where a finding
+> was cited for its direction, it can justify a design and it cannot certify one.**
+
+Against the phase's four mechanisms:
+
+| finding | quantity the record took from it | what it can carry |
+|---|---|---|
+| **R23** Bouma | **0.5** (A-G156) | **a pin — PG-16, DERIVED** |
+| **R25** Troxler | **one exponent** (the halving, k = −1) | a justification, not a threshold → **PG-19 retired** |
+| **R21** glare | **none** | **generated `GLOW_RAMP`; cannot certify it** → PG-17 struck and tripwired |
+| **R17** calm corridor | **none recorded** (A-G143) | **PG-10's corridor — unresolved** |
+
+> **A finding can be load-bearing for the design and incapable of carrying a pin.** R21 is this phase's *"strongest
+> lever"* and it produced the glow; it cannot verify it, because no number was ever taken from it. **The phase has
+> been reading "firm finding" as if it implied "measurable obligation", and for two of its four mechanisms it does
+> not.**
+
+**And the table predicts the next one.** A-G143 already recorded that PG-10's corridor is justified as *"R17's
+ceiling is what keeps this calm"* with **R17's own numbers never stated** — CITED-WITHOUT-A-NUMBER. **By this rule
+PG-10's corridor bounds are in R21's position, not R23's**, and PINK has PG-10-adjacent work queued. **That is the
+next thing to settle and it is cheap, because the gate runs on constants.**
+
+### A-G166 · GRÜN's PG-17 seal: its purpose has lapsed, so it becomes evidence
+
+GRÜN holds three `SEALED-pg17-*.json` outputs, sealed under A-G109/A-G111 so PINK's independent reading could not
+be contaminated. **PINK will now never read PG-17, so there is nothing left to protect**, and the sealed files are
+the only measured record of the ramp's actual shape.
+
+**Ruled: the seal's purpose is discharged and the reading is re-entered as evidence, not as a verdict.** It is a
+measured profile of the glow at `3ec8457d`, useful and not a certification of anything. **GRÜN publishes it on its
+own judgement and at its own pace** — A-G132 settled that the sealed lane does not have a disclosure boundary
+drawn for it by the requester, and I am asking for nothing from inside it.
+
+**And PINK is relieved of PG-17 entirely.** §37 predicted that running the gate before measurement would save a
+run rather than cost one; **this is the second time it has paid, and the largest** — PG-17 was a three-limb pixel
+measurement at two levels.
+

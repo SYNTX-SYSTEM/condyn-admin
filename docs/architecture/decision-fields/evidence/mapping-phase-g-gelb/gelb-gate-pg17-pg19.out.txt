@@ -1,0 +1,95 @@
+=== GELB gate · PG-17 / PG-19 · constants only ===
+
+[1] ANCHOR — reproduce A-G137's five rows (regression check on the model)
+    rank 1     offset 0     a=0.16000  rgb(33,39,41)  4.359x  want rgb(33,39,41) 4.36x  OK
+    rank 1     offset 0.4   a=0.12480  rgb(26,30,32)  2.822x  want rgb(26,30,32) 2.82x  OK
+    rank 1     offset 0.75  a=0.08800  rgb(18,21,22)  1.629x  want rgb(18,21,22) 1.63x  OK
+    last rank  offset 0     a=0.11034  rgb(23,26,28)  2.264x  want rgb(23,26,28) 2.26x  OK
+    last rank  offset 0.75  a=0.06069  rgb(12,14,15)  0.962x  want rgb(12,14,15) 0.96x  OK
+    anchor: all five rows reproduced
+
+[2] PG-17 core limb — the full stop family, including the offset-1 stop A-G137 omitted
+    rank 1     0                  a=0.16000 rgb(33,39,41)         4.359x  clears 1.45
+    rank 1     0.4                a=0.12480 rgb(26,30,32)         2.822x  clears 1.45
+    rank 1     0.75               a=0.08800 rgb(18,21,22)         1.629x  clears 1.45
+    rank 1     1                  a=0.06720 rgb(14,16,17)         1.137x  FAILS 1.45
+    last rank  0                  a=0.11034 rgb(23,26,28)         2.264x  clears 1.45
+    last rank  0.4                a=0.08607 rgb(18,21,22)         1.629x  clears 1.45
+    last rank  0.75               a=0.06069 rgb(12,14,15)         0.962x  FAILS 1.45
+    last rank  1                  a=0.04634 rgb(10,11,12)         0.745x  FAILS 1.45
+    rank 1     median(t=0.7071)   a=0.09251 rgb(19,23,24)         1.841x  clears 1.45
+    last rank  median(t=0.7071)   a=0.06380 rgb(13,15,16)         1.047x  FAILS 1.45
+    achievable range 0.745x .. 4.359x   straddles 1.45: true
+    => the statistic selects the verdict (A-G137), and the family is wider than A-G137 stated:
+       the offset-1 stop reaches 1.137 / 0.745x, below every value A-G137 listed.
+
+[3] PG-17 ramp GEOMETRY — the measurable domain, which neither A-G136 nor the pin states
+    seat half-width: unmarked 1.4012 px, marked 1.8000 px (device px; k cancels)
+    guaranteed smallest drawn radius: 28 px (spec's own ">= 56 px diameter at L0/1920")
+
+    (a) where does the body rim fall on the gradient's offset axis?
+        rank 1     halo 2.60 r   rim at offset 0.384615   seat edge at offset 0.409341
+                   flat head ends at 0.33  ->  occluded by 0.079341 offset = 5.78 px
+        last rank  halo 3.00 r   rim at offset 0.333333   seat edge at offset 0.354762
+                   flat head ends at 0.33  ->  occluded by 0.024762 offset = 2.08 px
+    => the flat head lies BEHIND the body's own seat at every rank. It is not measurable.
+    => over the measurable domain the ramp is STRICTLY decreasing: decrements
+       [0.00, 0.28, 0.26, 0.22, 0.16, 0.08] -- the only zero is the head, and the head is occluded.
+    => A-G136 CORRECTED: strict does not fail by construction, because the segment that would have
+       failed it is never sampled. Both words give the same verdict, and that verdict is CANNOT FAIL.
+
+[4] PG-17 extent limb — the real margin (A-G128 gate, corrected)
+    measurable extent / r  =  (haloNear + 0.4 t) - 1 - seatHalf/r_px
+    rank 1     unmarked  extent 1.54996 r   vs bound 1.5 r   margin 0.04996 r = 1.399 px  clears
+    rank 1     marked    extent 1.53571 r   vs bound 1.5 r   margin 0.03571 r = 1.000 px  clears
+    last rank  unmarked  extent 1.94996 r   vs bound 1.5 r   margin 0.44996 r = 12.599 px  clears
+    last rank  marked    extent 1.93571 r   vs bound 1.5 r   margin 0.43571 r = 12.200 px  clears
+    achievable range 1.53571 .. 1.94996 r   bound 1.5 r
+    straddles the bound: false  =>  cannot fail on this artifact
+    worst-case margin: 1.000 device px, at the MARKED body (the one being looked at),
+    smallest drawn size, rank 1. Exact: 0.1 x 28 - 1.8 = 1.000 px.
+    => the code's own two comments disagree with each other and with the pin:
+       line 146 says ">= 1.6 x", line 880 says ">= 1.5 x", the pin says ">= 1.5 x".
+       The rim-based extent at rank 1 is exactly 1.6 r, so line 146 quotes the rank-1 rim figure
+       and omits the seat; no statement in the record or the code gives the measurable 1.536 r.
+
+[5] A-G139 — quantisation-order spread, for the record
+    rank 1     offset 0     one-step 4.359x  two-step 4.359x  spread 0.00%
+    rank 1     offset 0.4   one-step 2.822x  two-step 2.822x  spread 0.00%
+    rank 1     offset 0.75  one-step 1.629x  two-step 1.629x  spread 0.00%
+    rank 1     offset 1     one-step 1.137x  two-step 1.137x  spread 0.00%
+    last rank  offset 0     one-step 2.264x  two-step 2.366x  spread 4.49%
+    last rank  offset 0.4   one-step 1.629x  two-step 1.629x  spread 0.00%
+    last rank  offset 0.75  one-step 0.962x  two-step 0.962x  spread 0.00%
+    last rank  offset 1     one-step 0.745x  two-step 0.730x  spread 1.95%
+    max spread 4.49%  (A-G139 recorded 4.49% on last-rank-centre)
+
+[6] PG-19 — what R25 actually quantifies
+    R25, verbatim: "enhanced when the stimulus is small, low-contrast or blurred, and enhanced
+    further from fixation. Raising target contrast halves the disappearance rate."
+    the halving fixes ONE exponent: rate ~ C^k with 2^k = 1/2  =>  k = -1.000000
+    size: direction only, no exponent.   eccentricity: direction only, no exponent.
+    => a joint scalar index needs an exchange rate between factors. R25 supplies none.
+
+[7] PG-19 — is size fusible with eccentricity via Bouma (R23/PG-16)?
+    R23 critical spacing is a FLANKER-DISTANCE quantity; R25 "small" is a STIMULUS-EXTENT
+    quantity. Fusing them is A-G150's class: applying R23's number to the wrong relation.
+    => no derived dimensionless fusion is available.
+
+[8] PG-19 — would a compensation ordering be satisfiable? (size vs eccentricity in the layout)
+    drawn size comes from requirement mass (rho_drawn rule); radius comes from fit. Independent.
+    smallest body at the best-fit ring:  34.2 / 160 = 0.2138 size-per-unit-eccentricity
+    largest  body at the horizon ring:   54.6 / 400 = 0.1365
+    relative size NON-DECREASING outward: false  (ratio 0.639)
+    => an outward-compensation ordering fails by construction, because the layout makes size and
+       eccentricity independent on purpose. Not a defect in the layout; a defect in the pin.
+
+=== VERDICTS ===
+PG-17 core limb    : statistic unnamed, range 0.74x..4.36x straddles the bound; bound UNDERIVED; and R21
+                     states the percept is "explained by neither local contrast nor total luminance
+                     energy" -- so this limb measures a quantity its own mechanism excludes.
+PG-17 monotone limb: cannot fail. Non-increasing holds by construction, and STRICT also holds,
+                     because the one flat segment lies behind the body's own seat and is never sampled.
+PG-17 extent limb  : cannot fail. Achievable 1.536..1.950 r, bound 1.5 r -- but the worst case clears
+                     by exactly 1.000 device px (0.1 x 28 - 1.8). A tripwire, not a test.
+PG-19              : no joint index derivable -- one exponent from R25, no exchange rate, no fusion.
