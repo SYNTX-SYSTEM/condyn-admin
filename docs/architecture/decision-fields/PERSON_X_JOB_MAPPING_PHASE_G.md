@@ -11212,3 +11212,245 @@ second limb (1), and A-G408's three (3). **215 + 1 + 1 + 3 = 220.**
 **The credential is no longer the owner's open item.** It is restored, it is behind the unchanged boundary,
 and it is PINK's to certify rather than mine to assert. **Eighteen instruments, forks carrying any number:
 0.** No merge, no deployment, Gemini off.
+
+---
+
+## §91 THREE BOUNDARIES WERE RED AND SILENT — AND THE GATE I OPENED IS WHAT MADE THEM AUDIBLE
+
+**Date of this section: 2026-11-11.**
+
+§90 said *"a fail-closed gate with nothing behind it is still a fail-closed gate."* GRÜN returned the
+complement and it is the sharper half:
+
+> **It is also a SILENCED gate. Closing B-ENTRY did not only withhold the assertions I wanted to add. It
+> withheld the ones already written, against the lane whose commits they constrain, for 59 commits.**
+
+Three boundaries were red, in three lanes, for between four phases and 59 commits, and **every lane had
+been citing its own as live.** That is the finding of this section; the rest is what they were hiding.
+
+### A-G409 · A value carried in a verdict is not a value checked by it *(PINK's, adopted verbatim)*
+
+PINK took §90's restoration as its first action and found two defects. The second is architectural:
+
+`classifyTestDatabaseUrl` checks the **host** and never the port, and returns `port: url.port || "5432"`
+inside its own ok-verdict. `requireTestDatabaseAdminUrl` likewise checks hostname only. **So
+`postgresql://…@127.0.0.1:5432/postgres` — the owner's shared server — passed every URL guard verbatim.
+What held a test run off it was one character in an untracked env file.**
+
+> **PINK's name for it, and it generalises A-G396's second limb beyond counts: a value CARRIED in a
+> verdict is not a value CHECKED by it.** `port` was computed, named in the verdict type, handed to every
+> caller and asserted nowhere — and it read as protection **because it sat beside the host check that IS
+> protection.**
+
+**The adjacency is the mechanism, and it struck twice in one session at two levels of the stack.**
+`MOTION.breath` looked alive because it sat inside a `MOTION` object whose four other members are read
+every frame. `port` looked protective because it sat inside a verdict whose other fields are enforced.
+**Two dead values, one day, both mistaken for working by what they were next to.**
+
+### A-G410 · The remedy is not a port allowlist — it is positive identification of the SERVER
+
+**Rejected: a port allowlist.** 5432 is a legitimate port for a disposable server, this boundary's own
+`policy.test.ts` is written against `localhost:5432` across 29 assertions, and **a number cannot say which
+server it is.**
+
+**Ruled and implemented:** `assertDisposableServer()` refuses any provisioning basis that holds a protected
+shared database, whatever port it answers on — the same positive-identification pattern this module already
+uses for a *database*. It is read-only, it refuses before anything is created, and it sits in
+`createDisposableTestDatabaseNamed`, the one choke point every creation passes through, so it covers
+`run.ts`, `create.ts` and every integration test at once. The probe is injectable for the same reason
+`CurrentDatabaseProbe` is. **The witness set is derived, not listed** — `SHARED_PROTECTED_DATABASE_NAMES`
+minus `MAINTENANCE_DATABASE_NAMES`, because `postgres`/`template0`/`template1` exist on every server and
+witness nothing — **and if that difference is ever empty the function refuses to report that it holds.**
+
+**And `port` is DELETED, not guarded** (§88's ladder; zero readers, grepped first). 83 isolation tests pass,
+six of them new, and the real create/verify/drop cycle still works — so the limb passed against a real
+server and not only against its mock.
+
+**PINK's first correction, accepted and fixed:** my claim *"no volume, so nothing survives its removal"*
+was **false**. `postgres:17` declares `VOLUME /var/lib/postgresql/data`, so docker made an anonymous volume
+whatever I intended, and the measured precedent was on the host already — **36 of 42 volumes dangling**
+from the same pattern. Recreated with `--tmpfs`, the volume removed, the host at 41, and the credentials
+kept identical so GRÜN's copied line needed no action. **A disposability claim about the estimand resting
+on an untested property of the estimator — A-F11 one layer down, the eighth instance.**
+
+**And PINK's paraphrase correction, accepted exactly as drawn:** I said the role was *"genuinely unable to
+reach anything but `condyn_test_<16 hex>` databases it owns."* `rolcreatedb` carries no name scoping; the
+restriction is application code — *which `provision-role.ts` says in its own docstring the role should not
+have to rely on.* **I widened a true claim about `condyn` into a false claim about everything.** What has
+changed is the harm class: creating databases on the owner's production server is now refused **by fact**
+rather than by the character `3`.
+
+### A-G411 · MAP-C-ARCH had been red since phase C, and its own docstring predicted this
+
+Five protected phase-C files were not byte-identical to the phase-B base. **All five changed in exactly two
+commits — `e360caf9` and `dc674ee1` — and both are the DATABASE-ISOLATION work**, the B-ENTRY boundary
+every lane in this record defers to. Nothing else in the protected set was touched.
+
+The test's own docstring anticipated it: *"A later commit that touches a phase-C file or entry point for
+other reasons is held to this boundary too. **That is the point at which the boundary has to be re-stated
+(a later phase).**"* **It was never re-stated, through D, E, F and G.**
+
+> **Re-stated by COMMIT ATTRIBUTION, not by filename.** A filename whitelist would permanently exempt those
+> five files, so the next unrelated change to them would pass silently — **that is how a boundary becomes a
+> convention.** Every change to a protected path must be attributable to a named, reasoned commit; a new
+> commit touching the same file still fails; **and the authorisation list is asserted to be FULLY CONSUMED,
+> because an exception set never checked for staleness is a whitelist that only grows** (A-G408's lesson).
+
+**The first thing the re-stated boundary did was fail on my own working tree, correctly** — I had edited a
+phase-C file alongside unrelated work, so the whole tree became one change set. Committed in three scoped
+commits; 7 of 7 green. **The boundary constrained its own author within a minute of being restored.**
+
+### The phase-G twin, ruled for GRÜN — the defect is the SELECTOR, not the whitelist
+
+GRÜN found `MAP-G-ARCH` red for 59 commits and **refused to repair it**, because the obvious repair — adding
+the evidence directory to `G_ENTRY` — would be the constrained lane widening its own constraint. That
+refusal was right, and the repair it refused was the wrong one. Read against phase C:
+
+```
+phase G:  const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeSet()];
+phase C:  return sets.filter(set => set.files.some(phaseC));
+```
+
+> **PHASE G LOST THE FILTER.** With none, the assertion is not *"every phase-G change set touches only the
+> entry set"* — it is *"every commit in this repository since the base touches only these 22 paths."* **That
+> is a repository freeze, not a phase boundary**, and it would be red for GELB's and PINK's commits too.
+
+**Ruled, and it adds no path to `G_ENTRY` and widens no product surface by one byte:** fix the selector, so
+an evidence-only commit stops being a phase-G change set at all. **Second half, because a commit carrying a
+ruling *and* its instrument touches both and that is the normal shape of this phase:** the evidence
+directory becomes an owned **category**, as phase C owns a directory — **but with the exclusion made
+checkable rather than trusted**: every path under it must be an instrument or its output, and **no product
+or test file may import anything from it.** Without that second assertion the category is a hole.
+
+### A-G412 · Limb 1's eight selected cells are RETIRED, and 11.2 / 57.4 is withdrawn
+
+§81 ruled the selected cells NOT EVALUABLE *"until the limb states its swing threshold as a fraction of the
+state's own amplitude."* **That is a condition, not an action** — A-G403 — and it sat as a preference for
+ten sections. Executed:
+
+**The swing ratio between the two breath states is `1 / selectedGain` to within 0.16 %**, across the whole
+alpha range and three backdrops — because **both states breathe about the same mean**, so `Δop` is exactly
+proportional to gain and the composite's nonlinearity enters only at second order.
+
+| threshold form | t selected | equivalent unselected bound | what the cell measures |
+|---|---|---|---|
+| absolute, as the pin stands | 0.004 | 0.011429 | **1 / selectedGain — a CSS constant** |
+| fractional by declared gain | 0.0014 | 0.004000 | **the unselected cell again** |
+| fractional by measured ratio | 0.001398 | 0.003995 | **the unselected cell again** |
+
+> **So the condition §81 set for evaluating these cells is the proof that they cannot be evaluated.** I
+> stated it as though meeting it would settle them; meeting it dissolves them. **A-G128's second limb turned
+> on my own remedy — the fourth time** (A-G349, A-G390, §86's separability premise, this).
+
+**RETIRED, not inconclusive.** Limb 1 measures the unselected state. **The selected state has its own pin
+and that pin can fail:** PF-10 requires amplitude ≤ 45 % of unselected and is satisfied at 0.35.
+**Two pins were fighting and one of them was the wrong shape.** This supersedes A-G365 rather than adding to
+it, and A-G384's `s/q` was the best of the four grounds that led here.
+
+**Three ratios, one of which I typed.** The instrument's first narrative said §82's penalty was ~2.50 while
+its own table computed 1.69–1.83. Recomputed rather than cited, there are **three** quantities any of which
+could be called *the capability penalty*: the **swing** ratio 2.857 (clean constant), §82's **c-space**
+threshold ratio **2.439–2.497** (reproduced here independently, which cross-checks §82), and the
+**alpha-space** threshold ratio 1.69–1.83. **Neither figure was ever wrong; the missing thing was the
+sentence saying they answer different questions — the fourth time two correct figures of mine sat together
+without it.**
+
+**And GRÜN refuted my asymmetric rung on the mechanism, which is the right way to lose an argument.**
+`--mf-wave-gain` multiplies the **depth** and leaves the mean alone, so the ratio is forced at 2.857;
+**every convention cancels in a ratio**, so 5.125 is unreachable by any convention choice. GRÜN's
+75.1 / 214.6 follow from **my own §81 identity used correctly**, which I did not do. **Withdrawn as WRONG,
+not as unsupported — and it was refutable from four lines of the stylesheet before I sent it to two peers
+as "derived".**
+
+### GRÜN's real-stack ceiling, adjudicated — the conclusion stands, its support moves
+
+GRÜN measured the hue-carrying glow: best pixel **c/q = 73.20**, requirement **75.1** unselected and
+**214.6** selected, **0 of 47073** pixels qualifying selected.
+
+| limb | reading | verdict |
+|---|---|---|
+| unselected | 73.20 vs 75.1 — short by **2.5 %** | **INCONCLUSIVE** |
+| selected | 73.20 vs 214.6 — short by **2.9×** | **DECIDED** |
+
+> **A-G139 decides the first row: 2.5 % sits INSIDE the spread of its own conventions.** The amplitude
+> convention alone is a factor of two (peak-to-mean against peak-to-trough); `q` against `maxSingleCode`
+> moved 0.3 % here but 1.5× where channels contribute equally; and `classMasks` is **not reproducible** —
+> `plainGlow` read 50070 then 50067. **A ceiling that misses by one part in forty is not a ceiling.**
+>
+> **And it does not matter, because the selected limb carries the whole conclusion alone.** No convention,
+> no `q` definition and no mask instability spans a factor of three — and GRÜN confirmed the structural
+> claim that **the two-state rung is set by the smallest amplitude**, so the selected state is the binding
+> one. *A chroma instrument cannot time the breath* **stands, on the limb that can carry it.**
+
+**Ruled with it:** the rung `c ≥ 10q` evaluates 23301 of 47073 and **drops 50.5 %**, so every figure derived
+at that rung is a figure about that half — **the dropped population travels in the same sentence as the
+figure, not in the methods.**
+
+### A-G413 · The schema bootstrap had drifted from the ORM, and only a database with no history could see it
+
+**27 of the suite's 28 failures were one cluster:** `PostgresError 42703 — column "version" of relation
+"career_policy_versions" does not exist`.
+
+`schema.ts` is what every repository writes through; `client.ts` creates the tables on a database that has
+none. **Two declarations of one schema, with nothing comparing them.** Measured two independent ways that
+agree exactly — a parse of both files, and a live comparison against `information_schema` on a freshly
+bootstrapped disposable database (the second because the first is a parser, and a parser can be the defect):
+
+> **9 of 18 career tables drifted. 10 columns missing, 10 created but undeclared — and ALL TEN extras
+> `NOT NULL`, so each blocked every ORM insert into its table.** The sharpest case: the bootstrap's
+> `career_policy_promotions` body **is the evaluations body**, copied and never updated.
+
+**And it survived because the bootstrap says `CREATE TABLE IF NOT EXISTS`.** On a database that already has
+the table the statement is a no-op, so columns added by hand at some point stay and the disagreement never
+shows. **The bootstrap is the sole author of the schema only on a database with NO history — which is
+exactly what a disposable test database is.**
+
+> **So this defect was not merely unreported while B-ENTRY had nothing behind it. It was UNREACHABLE.** The
+> restoration did not find a defect that was waiting to be found; it created the only instrument that could
+> see this one.
+
+**Two steps, because step 1 alone is a repair:** the bootstrap corrected on all 9 tables, verified at zero
+drift across all 76 live tables; and `CAREER-DB-DRIFT` asserting the agreement every run, both halves, with
+two vacuity guards. **The right end state is one declaration rather than two — generate the DDL from the
+ORM, §88's READS rung — and that is larger than this phase's scope, so the ruling says so instead of
+pretending the test is the whole remedy.** The four files are 36 of 36.
+
+### Three rules, each earned by an instance in this section
+
+**A-G414 · Contract completeness, both halves, one defect.** Every figure a CONTRACT block declares must be
+asserted somewhere, and every figure an assertion needs must come from the contract. `CONTRACT.breath`
+declared three and asserted one; the borrowed mean was the other end of the same hole. **And GRÜN's `radius`
+finding adds the third state: a contract figure can be unasserted because nobody wrote the assertion, or
+because THE QUANTITY DOES NOT EXIST** — the keyframes animate opacity only. **The second is worse and looks
+identical from the test's side.**
+
+**A-G415 · A rule written in a header is not a rule executed by the body.** GRÜN's condition-3 probe
+captured a resting page twice, found zero differing bytes, and *"rejected"* a signal that did not exist —
+with *"a reported zero that was never put at risk is worth nothing"* already in that file's header, written
+by GRÜN, **one run before it earned it.** §62 tested that imports resolved rather than that the path ran.
+A-G407 is my own version: prose agreeing with the thing it was meant to check. **The remedy all three share:
+the rule must be a statement the run can FAIL, in the body, not a sentence the reader can agree with.**
+
+**A-G416 · An infrastructure restoration is a property of a WORKTREE** — exactly as A-G54 says a figure is a
+property of a build. §90 reported GRÜN's five mutants and PF-13 as reachable. **They were not:** `.env.local`
+is untracked, so B-ENTRY stayed fully closed in GRÜN's lane while I reported it open. **I asserted a property
+of my own worktree as a property of the system — the third scope-of-claim error today**, after the one-file
+coverage denominator and §89's right refusal for the wrong reason.
+
+### Where this leaves the record
+
+**Eleven new defects: the unchecked `port` field; my false disposability claim; my widened paraphrase;
+MAP-C-ARCH red since phase C; MAP-G-ARCH's missing filter; my 11.2/57.4 ratio; the bootstrap drift; the
+unclearable orphan window; GRÜN's hollow zero; `classMasks` non-determinism; and A-G416's false reachability
+claim. 220 + 11 = 231.** The bootstrap drift is counted **once**, as one mechanism with one remedy, though
+it has twenty column instances — counting nine would have inflated the number, and A-G408's three limbs were
+counted separately because they were three detectors with three remedies.
+
+**One item goes to the owner and it is the only one:** whether `filter/DOCKER` admits traffic to the
+container's bridge address `172.17.0.2:5432` from a non-docker interface. PINK proved loopback-only for the
+**published** port on two independent instruments and **deliberately left this unverified** rather than
+substitute an assertion for a rule it could not read. `sudo iptables -S DOCKER | grep 5432` settles it.
+**Neither lane has that privilege, and routing it to a peer would be laundering — so it is reported, not
+delegated.**
+
+**No merge, no deployment, Gemini off.**
