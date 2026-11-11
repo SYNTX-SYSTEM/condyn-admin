@@ -52,56 +52,20 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
     SEAT_PAD_PX    4 copies: 0 halt, 2 report, 2 check NOTHING  — gate-pg10, gate-pg17-pg19
     SELECTED_GAIN  2 copies: 1 halt, 1 report, 0 check NOTHING
 
-  *** 4 CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** And the three states matter:
-    HALTS   — gelb-a-g340-capability.mjs asserts haloDepth and selectedGain against the product
-              at a pinned SHA and THROWS "haloDepth moved". That is the only hard stop I own.
-    REPORTS — gelb-a-g340-exact.mjs prints AGREE/DIFFER for seven constants and CONTINUES. It
-              would announce a change in one line of a 200-line output and compute anyway.
-    NOTHING — the rest. gelb-a-g340-support.mjs and gelb-a-g340-ceiling-withdrawn.mjs carry the
-              same four constants with no check of any kind, and they are the instruments
-              carrying §83's and §84's findings.
+  *** 4 CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The three states, with their
+  members LISTED FROM THE SCAN rather than named by hand — the first form of this block named
+  files and went stale the moment §87's remedy landed, which is the tenth instance this phase
+  and the first I had already committed:
 
-  *** AND THE COUNT IN THIS SENTENCE IS COMPUTED, BECAUSE THE FIRST FORM OF IT WAS TYPED AND WRONG.
-  I wrote "absent in nine"; the table above shows 4. *** Ninth instance this phase of a
-  narrative figure disagreeing with its own adjacent output, and the SECOND since A-G385 ruled
-  the remedy — so A-G385's remedy is not working as stated. The failure mode it missed is that
-  I write the sentence after reading the output and then TYPE a numeral into it.
+file:///home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/evidence/mapping-phase-g-gelb/gelb-instrument-audit.mjs:92
+const filesIn = st => Object.entries(byFile).filter(([, v]) => v === st).map(([k]) => short(k));
+                                     ^
 
-  *** RULED, REPLACING A-G385's FORM: no bare numeral appears in a narrative line. Every count,
-  share and ratio is an interpolated variable computed above it. ***
+ReferenceError: Cannot access 'byFile' before initialization
+    at filesIn (file:///home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/evidence/mapping-phase-g-gelb/gelb-instrument-audit.mjs:92:38)
+    at file:///home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/evidence/mapping-phase-g-gelb/gelb-instrument-audit.mjs:98:29
+    at ModuleJob.run (node:internal/modules/esm/module_job:263:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
 
-  AND ONE LIMIT ON THAT RULE, STATED BECAUSE I CALLED IT "GREPPABLE" FIRST AND IT IS NOT A GATE:
-  grepping my own instruments for bare numerals in narrative lines returns 167 of them, and
-  most are legitimate labels — viewport widths, "8-bit", a rung named "10q". *** I cannot
-  mechanically distinguish a LABEL from a DERIVED FIGURE, so the grep is a review aid with
-  false positives and not a check that can fail. *** The rule is still worth having because it
-  names the act rather than the virtue; it is simply not the gate I claimed one sentence ago.
-
-  Instruments by their strongest constant check: HALTS 1, REPORTS 4, NOTHING 4.
-  Copies by state: 2 halt, 12 report, 9 check nothing.
-  So if the product's haloDepth moved: 1 instrument stops, 4 mention it in passing, and the
-  4 whose numbers are in the record keep producing them.
-  *** GRÜN's seal guard went from CONVENTION to REFUSES. Mine is at REFUSES in 1 file of 9. ***
-
-  THAT IS GRÜN'S "A CONVENTION IS NOT A BOUNDARY" IN THIS LANE. My convention is "verify the
-  constants in the instrument where I first read them"; nothing enforces it in any other file,
-  and GLOW_RAMP — the ramp both peers have measured against — appears unverified in three.
-  A constant copied out of the product without a check is not a citation. It is a FORK.
-
-========================================================================================================
-[3] OUTPUT LOCATION — is GRÜN's scatter hazard reachable here, and did it happen?
-========================================================================================================
-
-  instruments that write their own output file: 3 of 17
-    gelb-gate-pg10.mjs                   path from import.meta.url — IMMUNE to a wrong cd
-    gelb-gate-pg17-pg19.mjs              path from import.meta.url — IMMUNE to a wrong cd
-    gelb-instrument-audit.mjs            path from import.meta.url — IMMUNE to a wrong cd
-
-  the other 14 write nothing: their output is captured by SHELL REDIRECTION, whose
-  destination is my working directory at the moment I run them. *** SO THE HAZARD IS REACHABLE
-  FOR 14 OF 17 INSTRUMENTS, and it is reachable through the one mechanism GRÜN's module-load
-  assertion cannot see — a redirection outside the process. ***
-
-  DID IT HAPPEN? every gelb-*.out.txt in both worktrees, outside the canonical root: 0
-  None. The hazard is open and has not been realised — stated in that order, because the
-  second clause is luck and the first is the finding.
+Node.js v20.19.0

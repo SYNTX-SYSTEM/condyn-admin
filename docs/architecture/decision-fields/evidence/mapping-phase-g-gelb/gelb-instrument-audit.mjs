@@ -88,14 +88,20 @@ for (const [k, v] of [...dup].sort()) {
   console.log(`    ${k.padEnd(14)} ${v.length} copies: ${v.filter(x => x.state === "HALTS").length} halt, ${rep.length} report, ${bad.length} check NOTHING` +
               (bad.length ? `  — ${bad.map(x => x.f.replace("gelb-", "").replace(".mjs", "")).join(", ")}` : ""));
 }
-console.log(`\n  *** ${forks} CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** And the three states matter:`);
-console.log(`    HALTS   — gelb-a-g340-capability.mjs asserts haloDepth and selectedGain against the product`);
-console.log(`              at a pinned SHA and THROWS "haloDepth moved". That is the only hard stop I own.`);
-console.log(`    REPORTS — gelb-a-g340-exact.mjs prints AGREE/DIFFER for seven constants and CONTINUES. It`);
-console.log(`              would announce a change in one line of a 200-line output and compute anyway.`);
-console.log(`    NOTHING — the rest. gelb-a-g340-support.mjs and gelb-a-g340-ceiling-withdrawn.mjs carry the`);
-console.log(`              same four constants with no check of any kind, and they are the instruments`);
-console.log(`              carrying §83's and §84's findings.`);
+const short = n => n.replace("gelb-", "").replace(".mjs", "");
+const filesIn = st => Object.entries(byFile).filter(([, v]) => v === st).map(([k]) => short(k));
+const wired = rows.filter(r => /from "\.\/gelb-product-constants\.mjs"/.test(r.t)).map(r => short(r.f));
+console.log(`\n  *** ${forks} CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The three states, with their`);
+console.log(`  members LISTED FROM THE SCAN rather than named by hand — the first form of this block named`);
+console.log(`  files and went stale the moment §87's remedy landed, which is the tenth instance this phase`);
+console.log(`  and the first I had already committed:\n`);
+console.log(`    HALTS    ${filesIn("HALTS").join(", ") || "(none)"}`);
+console.log(`    REPORTS  ${filesIn("REPORTS").join(", ") || "(none)"}`);
+console.log(`    NOTHING  ${filesIn("NOTHING").join(", ") || "(none)"}`);
+console.log(`\n  and ${wired.length} instrument(s) now import gelb-product-constants.mjs, so they declare no constant of`);
+console.log(`  their own and leave this table entirely: ${wired.join(", ") || "(none)"}`);
+console.log(`  That module reads the product at a pinned build and THROWS at load if any of twelve moved, so`);
+console.log(`  an importer cannot run on a stale constant — GRÜN's writeSealed() shape, refusing not reporting.`);
 const BARE = (() => {
   let n = 0;
   for (const r of rows) for (const m of r.t.match(/console\.log\(`[^`]*`\)/g) || [])
