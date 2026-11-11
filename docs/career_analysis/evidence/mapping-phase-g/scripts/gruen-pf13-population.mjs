@@ -71,6 +71,27 @@ const resolveCitation = n => {
 };
 const exceptions = CITED.map(resolveCitation);
 
+/* ── §108: THE RESTATED SET, DERIVED FROM TITLES ACROSS THE WHOLE POPULATION ─────────────────────────
+   GELB §116 found what this instrument had already computed and then NARRATED: it reported
+   "2 of the 3 titles say restated" as a statistic about a citation list. That is not a statistic — it is the
+   finding, in the voice of a measurement. A-G374's second limb inside this very file: reading the artifact
+   fixed what it REPORTED, not what it DID. It threw on TITLE_NOT_UNIQUE and on CONVERSION_UNFAITHFUL, both
+   correct, and declined to throw on the one limb that was red.
+   Derived over every test file in the population, not just neurovisual-e, and not hand-listed. */
+const restatedInPopulation = [];
+for (const rel of population) {
+  const src = readFileSync(join(ROOT, rel), "utf8").split("\n");
+  src.forEach((line, i) => {
+    if (!/^\s*it\(/.test(line)) return;
+    const title = (/it\(\s*["'`](.*?)["'`]\s*,/.exec(line) ?? [null, line.trim()])[1];
+    if (/restated/i.test(title)) restatedInPopulation.push({ file: rel, itLine: i + 1, title });
+  });
+}
+const restatedHere = restatedInPopulation.filter(r => r.file === NVE).map(r => r.itLine).sort((a, b) => a - b);
+const exemptedHere = [...new Set(exceptions.map(e => e.itLine))].sort((a, b) => a - b);
+const exemptedNotRestated = exceptions.filter(e => !restatedHere.includes(e.itLine));
+const restatedNotExempted = restatedInPopulation.filter(r => r.file === NVE && !exemptedHere.includes(r.itLine));
+
 /* ── the RULED fix: the exception list names TITLES. A title is only a citation if it is UNIQUE, so that is
    asserted rather than hoped, and the title-based list is cross-checked against the line-based one so the
    conversion is proven faithful instead of merely plausible. A citation into a mutable file must name
@@ -130,6 +151,16 @@ const out = {
       note: "kept so the pin's own wording stays traceable, and demoted because at this commit two of the three sit 0 and 1 lines inside their own it()."
     }
   },
+  restatedSetDerivedFromTitles: {
+    why: "GELB §116: the exempted set and the restated set must both be DERIVED from the titles, neither hand-listed, and their disagreement must THROW rather than be narrated.",
+    scannedOverTheWholePopulation: restatedInPopulation.length,
+    inThisFile: restatedInPopulation.filter(r => r.file === NVE),
+    restatedItLines: restatedHere,
+    exemptedItLines: exemptedHere,
+    agree: exemptedHere.length === restatedHere.length && exemptedHere.every((v, i) => v === restatedHere[i]),
+    exemptedButNotRestated: exemptedNotRestated.map(e => ({ citedLine: e.citedLine, itLine: e.itLine, title: e.title })),
+    restatedButNotExempted: restatedNotExempted.map(r => ({ itLine: r.itLine, title: r.title }))
+  },
   finding: null
 };
 out.finding =
@@ -141,9 +172,26 @@ NO VERDICT (A-G36 point 2): this names a population and resolves a citation. Whe
 
 const { writeFileSync } = await import("node:fs");
 writeFileSync(resolve(OUT, "pf13-population.json"), JSON.stringify(out, null, 1));
+
+/* ── the two limbs that must THROW, and they throw AFTER the output is written ────────────────────────
+   A-G421 in this lane's own words: refusing to publish a FIGURE is not the same as refusing to publish the
+   READING. An instrument that throws before writing reports nothing at all, so the reading lands first and
+   the run then fails. Both, not either. */
+const problems = [];
+if (!out.restatedSetDerivedFromTitles.agree) {
+  problems.push(`ERR_GRUEN_PF13_EXEMPTION_MISMATCH: the exempted set ${JSON.stringify(exemptedHere)} is not the restated set ${JSON.stringify(restatedHere)}. `
+    + `Exempted but NOT restated: ${JSON.stringify(exemptedNotRestated.map(e => e.itLine))} — the pin forgives a test that does not claim restatement. `
+    + `Restated but NOT exempted: ${JSON.stringify(restatedNotExempted.map(r => r.itLine))} — the pin withholds forgiveness from one that does. `
+    + `Both errors are invisible while every test passes and they have OPPOSITE signs: the first keeps PF-13 green when it should be red, the second turns it red when the record says it should not be.`);
+}
+if (fragile.length > 0) {
+  problems.push(`ERR_GRUEN_PF13_CITATION_FRAGILE: ${JSON.stringify(fragile.map(e => ({ cited: e.citedLine, headroom: e.headroomLines })))} sit fewer than ${MIN_HEADROOM} lines inside their own it(). `
+    + `A citation one edit from naming a different test is what the title conversion exists to retire, and this instrument recorded it as prose for three sections.`);
+}
 console.log(`PHASE_DIRS (read): ${JSON.stringify(PHASE_DIRS)}`);
 console.log(`population: ${population.length} test files`);
 for (const p of population) console.log(`   ${p}`);
 console.log(`\nexception list, resolved:`);
 for (const e of exceptions) console.log(`   :${e.citedLine} -> it() at :${e.itLine} (+${e.headroomLines} lines, next it() in ${e.linesToNextIt})  restated-in-title=${e.selfIdentifiesAsRestated}\n      "${e.title}"`);
 console.log(`\n${out.finding}`);
+if (problems.length > 0) { console.error(`\n${problems.join("\n\n")}`); process.exitCode = 1; }
