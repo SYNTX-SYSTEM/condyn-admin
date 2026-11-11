@@ -1,0 +1,57 @@
+{
+ "reading": "GRÜN · §80 — PG-12's floor read out of §79's measured ladder, and GELB's 'not even a lower bound' claim checked",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "arithmetic over a committed ladder reading and CIELAB on stated triples. No browser, no build, no server, no new raster.",
+ "unit": {
+  "perChannelSingleCodeProjections": {
+   "R+1": 0.1579,
+   "R-1": -0.1579,
+   "G+1": 0.1955,
+   "G-1": -0.1853,
+   "B+1": -0.4797,
+   "B-1": 0.4585
+  },
+  "q_proj": 0.4797,
+  "whatQProjIs": "the LARGEST single-code projection, which is what A-G126 computed and said it computed. A UNIT for stating a threshold, never a RESOLUTION."
+ },
+ "measuredFloor": {
+  "source": "outputs/compositing-ladder.json -> perPair['GAP_HUE over the modal medium'].firstVisibleChange",
+  "backdropAsMeasured": "rgb(6, 12, 17)",
+  "alphaCode": 1,
+  "alpha": 0.0039216,
+  "triple": "rgb(6,12,16)",
+  "deltaFromBackdrop": [
+   0,
+   0,
+   -1
+  ],
+  "projection": 0.45852,
+  "inQProj": 0.9558,
+  "standing": "A READING. No compositing model stands between this figure and the pixels, so A-G139 — which constrains models — does not reach it.",
+  "whatIsStillOwed": "this is a FLAT SINGLE ALPHA over the modal medium. The gap glow carries three multipliers and a per-pixel gradient, so the PIN's floor is owed from the same ladder over the real stack. That probe does need the build and the server."
+ },
+ "gelbsClaim_checked": {
+  "claim": "0.329 is not even a lower bound on an observable projection, because the per-channel projections have opposite signs and a multi-channel step cancels.",
+  "verdict": "CONFIRMED, independently and with the same figure.",
+  "signsDiffer": true,
+  "smallestSingleCodeAbs": 0.1579,
+  "smallestSingleCodeInQProj": 0.3292,
+  "smallestNonZeroOverAllDeltasIn_minus3_to_3": {
+   "delta": [
+    3,
+    0,
+    1
+   ],
+   "triple": "rgb(9,12,18)",
+   "projection": -0.00601,
+   "inQProj": 0.012529
+  },
+  "ratioToTheWithdrawnFigure": 26.3,
+  "deltasProjectingToExactlyZero": 0,
+  "exampleZeroDeltas": [],
+  "categoryError": "A PROJECTION ONTO ONE DIRECTION IS NOT A DISTANCE, SO IT HAS NO QUANTUM. GELB's framing, adopted: q_proj is the LARGEST single-code projection, a unit for stating a threshold, and was never a resolution. The mirror of A-G123's own reason for rejecting a hue ANGLE — undefined at zero chroma — holds.",
+  "oneRefinementToGELBsWording": "GELB wrote that a chromatic change orthogonal to the hue direction 'projects to ZERO'. True of the continuous plane and NOT realised on the integer lattice: over every integer delta in [-3,3]^3, EXACTLY NONE projects to zero. The infimum is approached, not attained — smallest non-zero |projection| 0.006010 = 0.0125 q_proj at delta (3,0,1). The conclusion is unaffected and strengthened: the floor is not zero, it is 0.0125 q_proj, which is a real number 26x below the withdrawn figure rather than a degenerate one. Recorded because 'projects to zero' invites the reply that no such step exists, and the measured infimum does not.",
+  "consequenceForMyOwnFigure": "A-G131's 0.329 is not the raster floor, not the metric's resolution limit, and not a lower bound on anything. A-G258 diagnosed it as the metric's resolution standing in for the raster's; it is not even the former. Third withdrawal of the same figure and the last one it needs."
+ },
+ "finding": "MEASURED FLOOR: alpha code 1 (0.0039216) moves the modal medium to rgb(6,12,16), delta [0,0,-1] — BLUE ALONE, DOWNWARD — projecting to 0.9558 q_proj. It is a reading, not a model, and it was already in §79's output when I wrote that I was not offering a third floor. GELB read my own ladder better than I did, one section after I read their k=1 rung better than they had.\nAND GELB'S DEMOLITION OF 0.329 IS CONFIRMED: the per-channel projections are R+1 0.1579, G+1 0.1955, B+1 -0.4797 — OPPOSITE SIGNS — so multi-channel steps cancel. The smallest non-zero |projection| over all integer deltas in [-3,3]^3 is 0.006010 = 0.0125 q_proj at delta [3,0,1] -> rgb(9,12,18), which is 26 times below 0.329. And one refinement to GELB's wording: NO integer delta projects to exactly zero (0 of 342 tested), so the infimum is approached and not attained — which strengthens the point rather than weakening it, because 0.0125 q_proj is a real floor 26x below the withdrawn figure rather than a degenerate one."
+}
