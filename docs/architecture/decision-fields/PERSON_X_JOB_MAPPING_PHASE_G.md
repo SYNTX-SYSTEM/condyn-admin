@@ -12237,3 +12237,146 @@ GRÜN's and this lane's. **260 + 11 = 271.**
 
 **Four are this lane's.** **PF-13 is the first of the owner's two stated completion conditions to close
 cleanly.** No merge, no deployment, Gemini off.
+
+---
+
+## §96 THE SHELF ALPHA IS NOT A DIAL, AND NO CITATION IN THIS RECORD CAN BE VERIFIED
+
+**Date of this section: 2026-11-11.**
+
+### A-G427 · A citation names what the document carries, never an offset
+
+GRÜN verifies this lane's citations as a matter of course now, and found the sharpest instance of the
+phase's recurring shape: **the note written to RULE AGAINST line-number citations cited two line numbers
+that the same edit had invalidated — four lines below the rule, in one paragraph.**
+
+So the remedy was an instrument rather than two edits. `gelb-citation-verifier.mjs` resolves every
+line-number citation in both decision records against the files as they now stand:
+
+| | |
+|---|---|
+| citations found | **318** — 248 into these documents, 70 into code |
+| point at a **blank line** or table rule | **65** — stale by construction; nothing was ever written there |
+| carry a quotation sitting elsewhere in the target | 11 — candidates for a human to read |
+| carry no subject at all | **172 — unverifiable, permanently, by anyone** |
+| **can be verified** | **0 of 248** |
+
+> **That is sharper than any count of stale citations would have been.** A citation carrying only an offset
+> is not *weakly* verifiable; **it cannot be checked by any means this instrument or any other has,
+> because the record does not say what it was meant to name.**
+>
+> **RULED: a citation into a document names what the document CARRIES — a quoted sentence, a pin id, an
+> amendment id, a section number — and a line number may ACCOMPANY it but never replace it.** GRÜN's §98
+> form transferred to prose: *name the sentence, not the offset.* **The asymmetry is the whole argument: a
+> quoted sentence that moves is still findable; a line number that moves is silently wrong, with nothing
+> in the citation to signal it.** Eighteen targets are already HEADINGS, which shows the cheap fix is in
+> use — though citing an amendment by the line that names it survives an edit above it only by luck,
+> while citing it by its ID survives everything.
+
+**TWO DEFECTS IN THE VERIFIER'S OWN FIRST FORM, both inflating the finding, both recorded rather than
+quietly fixed.** It counted a HEADING target as impossible and reported **83** — but `PHASE_F:330` cites
+the line reading `### A-F18 · A range test must prove its range is not empty`, **the most precise citation
+available, not a broken one.** And its quote limb reported **53 citations "PROVEN stale"** by searching
+the whole target file and taking the first occurrence — **which is very often the CITING line itself,
+because the citing sentence contains the quote it just wrote.**
+
+> *** A CHECK THAT LOCATES A QUOTE IN THE SENTENCE QUOTING IT HAS MEASURED NOTHING — AND IT PRODUCED THE
+> LARGEST NUMBER IN THE OUTPUT. *** Fourth instrument of this lane today to produce an alarming figure by
+> misclassification, and the first caught before publication. **The honest replacement verifies and never
+> accuses: zero verified is the finding, and it needed no accusation at all.**
+
+**GRÜN's third text is recorded because it strengthens A-G426's proof:** **B-F2, in §4**, carries *"Every
+phase-D and phase-E test passes unchanged. If a phase-E test goes red, phase F is wrong"* — so
+**unchanged is load-bearing in TWO independent statements**, and the proof no longer rests on one
+sentence that could itself have been a slip.
+
+### A-G425 confirmed by sweep — and the model was already in PINK's record, buried
+
+PINK swept 16 alphas from 0.010 to 0.085 with **two constructs side by side, a div background and an SVG
+circle STROKE** — and the second limb is what licenses the first, because the band is a stroke and a
+swatch agreeing with a stroke is a test rather than an assumption:
+
+| | |
+|---|---|
+| constructs agree | **16 / 16** |
+| alpha-quantised model correct | **16 / 16** |
+| naive float model correct | 8 / 16 |
+| where the two models **disagree** | 8 points |
+| alpha-quantised there | **8 / 8** · naive there **0 / 8** |
+
+**All three ends are now measurements:** L(0.02) = 1.453105e-3, L(0.022) = 1.756632e-3,
+L(0.05) = 3.565321e-3. **The 2.030× this lane computed is upheld by PINK's instrument rather than by this
+lane's arithmetic, which is the only way it should be upheld**, and PINK's 2.316× is withdrawn.
+
+> **AND THE ATTRIBUTION IS CORRECTED AGAINST THIS LANE. §95 presented the model as newly identified. It is
+> A-G81 in PINK's own record** — *"alpha→byte FIRST, then channels against the effective alpha"*, with the
+> float method **explicitly marked superseded**. **This lane re-derived a named amendment from first
+> principles, independently and correctly, and it was not new.**
+>
+> **PINK's own reading of its half is harsher than this lane would have put it, and it is the fourth and
+> worst-fitting dress of the day's shape: not a forgotten rule but a superseded method re-run after
+> writing its obituary.** A-G422 was an hour after its rule; GRÜN's within-run spread four sections;
+> PINK's rounding model three; **this one the record had already buried.**
+
+### A-G428 · The shelf alpha is not a continuous dial, and a change inside a plateau is not a change
+
+Because alpha quantises to 8 bits **before** compositing, declared alphas collapse into levels:
+
+```
+alphaByte  5  <- declared 0.0180 .. 0.0215   rgb(4,5,5)     L = 1.453105e-3
+alphaByte  6  <- declared 0.0220 .. 0.0250   rgb(5,6,6)     L = 1.756632e-3
+alphaByte  7  <- declared 0.0255 .. 0.0290   rgb(6,7,7)     L = 2.060159e-3
+alphaByte 13  <- declared 0.0495 .. 0.0525   rgb(10,12,13)  L = 3.565321e-3
+```
+
+**(a) A-G62's change had an effect ONLY because it crossed a plateau boundary.** 0.02 is byte 5, 0.022 is
+byte 6. **Had it gone 0.02 → 0.021, the render would not have changed at all** — same byte, same triple,
+same luminance — and **nothing in the pin's statement, the commit message or any test would have revealed
+that a constant had been changed to no effect.**
+
+> **RULED: a proposed constant change is checked for being a NO-OP before it is argued about.** Mechanical
+> against the plateau map. **A change inside a plateau is not a small change; it is not a change.**
+
+**(b) RULED, AND IT RE-OPENS A STANDING FINDING: PF-15's unsatisfiability is a statement about ATTAINABLE
+LEVELS, not about alphas.** The record carries PF-15 as unsatisfiable as a conjunction, **derived over the
+reals.** The feasible set is a union of intervals mapping onto roughly **21 attainable levels** between
+0.010 and 0.090, so a real-valued solution is indistinguishable from every other alpha in its plateau, and
+**three limbs whose regions are disjoint over the reals may or may not be disjoint over 21 points.** Owed,
+and **it can go either way**: discretisation can collapse nearby requirements onto one level, making a
+conjunction easier, or remove the point that would have satisfied it, making it impossible. Neither is
+predictable without the check.
+
+**And PINK's standing rule gets its reason:** *sweep the constant, never solve for it* was stated as
+caution. **The plateau map is why it is true — solving returns a point in a continuum the renderer does
+not have.**
+
+**The knee, bounded:** red's byte at 0.05 is 10, linear by 0.000064 — **0.16 % of the knee** — and the next
+attainable alpha byte, 14, puts red at 11, above it. **"Two of three channels above the knee" is exactly
+one alpha byte from "three of three"**, and the plateau map is what makes *one alpha byte* a well-defined
+distance.
+
+### Computable is not applicable — and PINK moved in the direction almost nobody moves
+
+PINK withdrew its own *barred* because the conversion became computable at ×2.02963 and ×2.45359 —
+**and then declined to use it**, because converting a tier-B figure is not converting a luminance: the tier
+statistic is a coherent amplitude over a bracketed null, and nothing measured says how that transforms
+under a backdrop change.
+
+> **So the rings re-take stands on A-G424 — a mask's name is not its population — and not on arithmetic.
+> PINK traded a justification that had just become available for one that sounded weaker and was actually
+> load-bearing.** Same discipline as reporting the ladder whole instead of naming the rung that lands best.
+
+**And PINK withdrew a blocker it had escalated**: measuring α = 0.05 does not need a production build of
+`9cc06f84`, because *"what bytes does this renderer emit for this colour"* is a **renderer property**, four
+minutes, no build. **It never reached this lane's owner report, so nothing needs retracting there** — and
+the failure mode is worth the name PINK gave it: **reaching for the heavier instrument is a failure that
+looks like rigour.**
+
+### Where this leaves the record
+
+**Seven new defects:** this lane's stale citations inside the anti-stale rule; the 65 blank-target
+citations as one class with one remedy; the verifier's heading misclassification; its quote limb; PINK's
+reach past A-G81; PINK's escalated non-blocker; and PF-15's unsatisfiability derived over the reals.
+**271 + 7 = 278.** **Four are this lane's.**
+
+**PF-13 remains the one completion condition closed.** No merge, no deployment, Gemini off.
