@@ -13748,6 +13748,14 @@ what else could the verdict have been?*
 validated independently came from **one stand, one browser, one raster backend — SwiftShader SOFTWARE raster
 — two viewports.** *No amount of pin coverage widens that.*
 
+> ### ⚠ CORRECTED 2026-11-11 — THE BOUND IS REGIME-DEPENDENT, NOT UNIFORM *(see §109, A-G443)*
+> **PINK measured it on a real hardware rasteriser and the blanket form below is wrong.** At **FULL
+> COVERAGE** the bytes are **identical across six configurations and eleven alphas** — including
+> `--force-color-profile=display-p3-D65` — so the alpha-quantisation model, the plateau map, the band's
+> level and every interior/modal figure **TRANSFER.** At **PARTIAL COVERAGE** they do not, by up to
+> **0.007302** per-pixel luminance. **The uniform caveat below would have retired figures that are sound,
+> including the seam's own interior comparison.**
+
 > *** EVERY PIXEL FIGURE IN THIS RECORD IS A SOFTWARE-RASTER FIGURE *** — the seam, the chroma ceiling, the
 > masks, the plateau map, the alpha sweep, GRÜN's ladders. **A GPU rasteriser is a different compositor with
 > different rounding and nothing either lane has run says the figures transfer.** It goes to the owner in
@@ -13764,3 +13772,92 @@ request that the validator define its own scope. **317 + 7 = 324.**
 > **ALL FIVE HELD MUTANTS ARE CLOSED.** A-G43, PG-20, PG-5 and PG-16 **killed and proven**; PG-15 closed as
 > a **finding**. **GRÜN's queue is empty. The rings re-take has landed.** The last item in the phase is
 > PINK's system-level statement.
+
+---
+
+## §109 THE SOFTWARE-RASTER BOUND, MEASURED — AND IT DOES NOT REACH THE RECORD UNIFORMLY
+
+**Date of this section: 2026-11-11.**
+
+### A-G443 · A figure's transferability is a property of its REGIME, not of its pin *(PINK's)*
+
+§108 told the owner that *"every pixel figure in this record is a software-raster figure … nothing says the
+figures transfer."* **PINK tested it on this machine's hardware — `/dev/dri/card0`, NVIDIA 940MX and Intel
+devices — and the blanket form is wrong.**
+
+**And the test varied the right thing.** The WebGL renderer string describes **WebGL, not SVG
+rasterisation**; reading it as the verdict would have been A-G434. `SystemInfo.getInfo` feature status
+instead:
+
+```
+default (every figure in this record)   rasterization disabled_software · gpu_compositing disabled_software
+angle+vulkan+enable-gpu                 rasterization ENABLED          · gpu_compositing ENABLED
+```
+
+| | |
+|---|---|
+| **FULL COVERAGE** | **byte-identical across SIX configurations and ELEVEN alphas** — default, `--disable-gpu`, `srgb`, **`display-p3-D65`**, hardware angle/vulkan, `--use-gl=egl` |
+| **PARTIAL COVERAGE** | software spreads a 2 px stroke apex over **three** rows, hardware over **two**; per-pixel luminance differences to **0.007302** |
+
+> *** RULED, PINK's: a figure's transferability is a property of its REGIME, not of its pin. *** The same
+> instrument, same build, same run produced figures that transfer and figures that do not, **and the line is
+> COVERAGE, not subject matter.** So *"measured on a software raster"* is **not a caveat to append to a
+> record** — **the uniform version this lane sent the owner would have retired the band's level, the plateau
+> map, the alpha sweep and the seam's own interior comparison, all of which are byte-identical on hardware.**
+
+**And the colour-profile limb yields more than it was asked for.** `display-p3-D65` byte-identical to sRGB
+across all eleven alphas means **the SVG content is rasterised in sRGB and the profile applies at DISPLAY
+time, not at RASTER time.**
+
+> **So A-G81 is no longer "the model this renderer uses" — it is a property of the sRGB compositing
+> pipeline, established across six configurations, two rasterisation backends and two colour profiles.** It
+> was validated against one renderer this afternoon. **A materially stronger status, out of a limb run to
+> look for a disqualifier.**
+
+### The regime boundary now has two independent causes landing on one line
+
+**§41 found it between two CONSTRUCTS** — curved stroke against straight rect, diverging only at partial
+coverage. **§47 finds it between two BACKENDS.**
+
+> **Neither was designed to check the other, and that is the strongest corroboration available for where a
+> line sits. A boundary found twice from unrelated directions is not a parameter of either instrument.**
+
+### §46's new red is withdrawn — and the old one is not re-established
+
+§46 failed `ringStrokes` on tier B at **0.00262 against 0.002 — a margin of 0.00062.** The backend
+difference reaches **0.007302, which is 11.78× that margin.** §108 recorded it as provisional on §41's
+construct question; **this is larger, independent and quantitative rather than conditional.**
+
+| | | |
+|---|---|---|
+| **shelfBand** | tier A **1240× under**, tier B p99 **exactly zero**, 127337 / 33298 px | **PASSES, and transfers** |
+| **ringStrokes** | a p99 over 2 px strokes — a partial-coverage statistic | **UNRESOLVED on an instrument that cannot resolve it** |
+
+> **§46's resolution of the old red's ATTRIBUTION stands — the band is silent — and §46's new red does
+> not.** The old `rings` red is **not re-established by this lane**: weaker than §46 claimed, and honest.
+>
+> **A-G424's split was still worth making:** without it the class carried one red **and no way to see that
+> its two halves sit in different regimes and admit different verdicts.**
+
+### The owner line, corrected in the direction that matters
+
+§108's caveat read as a qualification on the seam. **It is not one:**
+
+> **The seam's EXISTENCE rests on the interior comparison — the band's modal level against the ground's p05
+> — and that regime is byte-identical on hardware raster. *** SO THE SEAM TRANSFERS. *** Its EXTENT was
+> never characterisable (§103: no location statistic, lattice-valued step, offset 1 an edge read) **and is
+> now additionally backend-dependent where it was measured at all.**
+>
+> **This lane had the caveat pointed at the half that transfers and silent about the half that does not.**
+
+**And PINK's untested list is what keeps the result usable:** another GPU vendor, another Chromium version,
+another OS compositor, device scale factors other than 1. **One machine and two devices is not "renderers in
+general"** — A-G437, and this claim's quantifier is *two devices on one machine.*
+
+### Where this leaves the record
+
+**Two new defects:** this lane's blanket software-raster caveat, uniform where the bound is regime-dependent;
+and §46's tier-B red reported as a FAIL. **324 + 2 = 326.**
+
+**PINK's system-level statement is the last item in the phase**, and §47 makes it the section that tells a
+reader **which** of the record's pixel figures they may rely on.
