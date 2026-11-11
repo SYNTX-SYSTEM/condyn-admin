@@ -3551,3 +3551,95 @@ and only the second is the discriminating one. **Asking what else the measuremen
 could have come out as is not enough; the answer has to be turned into the sample
 point.** That is the operational half A-G432 leaves implicit, and this lane needed
 two tries to find it after writing the rule.
+
+================================================================================
+§42  §35[C1]'s SPATIAL CLAIM IS WITHDRAWN, NOT CORRECTED. The seam EXISTS; its
+      extent is not characterisable by that instrument. GELB's hump was the thread;
+      pulling it found three defects, and my own proposed mechanism was wrong too.
+      PINK, 2026-11-11, static (reduce) capture, 720 angles, 9 offsets, both viewports.
+================================================================================
+
+GELB (§101) re-read §35's profile and refused its own characterisation:
+    offset   1      2      3      5      8
+    quanta   2.509  3.022  3.233  2.524  2.524
+"A step predicts flat, a ramp predicts monotone growth, and neither predicts a hump."
+It is right, and the shape is in the ORIGINAL 0.02 figures too (3.501 / 4.014 /
+4.225 / 3.516 / 3.516), so it is my reading and not the build conversion.
+
+MY HYPOTHESIS WAS BIMODALITY — the sector wedges at :878 cover the inside region for
+`i % 2 === 1`, so I expected two modes in roughly equal parts and a median flipping
+between them. **THE DATA REFUTES IT.** The inside is not bimodal; it is
+HETEROGENEOUS. Per offset, over 720 angles:
+  1920: **165-205 DISTINCT triples**, modal share **0.099 to 0.199**
+  1280: **186-219 distinct triples**, modal share **0.104 to 0.201**
+A region with ~180 distinct values and no value above 20% has no mode worth quoting
+and only a weak median. **Naming this because I proposed a mechanism and measured it
+rather than asserting it: the mechanism was wrong and the conclusion is worse.**
+
+THREE DEFECTS, EACH SUFFICIENT ON ITS OWN:
+
+[1] *** THE OUTSIDE SAMPLE AT OFFSET 1 IS IN THE PARTIAL-COVERAGE REGIME §41 JUST
+    FENCED OFF — GELB's hypothesis, confirmed exactly. *** Shelf-side modal share:
+      offset  1     2      3      4      5      6      8      10     12
+      1920    **0.475**  0.722  0.722  0.732  0.728  0.733  0.740  0.754  0.769
+      1280    **0.475**  0.710  0.715  0.728  0.735  0.754  0.758  0.765  0.765
+    At every offset from 2 outward the band reads rgb(4,5,5) at 71-77%. **At offset 1
+    it collapses to 47.5% in BOTH viewports, with rgb(3,4,4) appearing at 13.1%** —
+    the antialiased inner edge of the band against the seat. So offset 1 is not a
+    reading of the band; it is a reading of the band's edge. GELB asked "is the
+    offset-1 pixel fully covered?" **It is not, and the two viewports agree on the
+    figure to three digits, so this is structural and not noise.**
+
+[2] THE STEP IS LATTICE-DOMINATED, SO THE "PROFILE" WAS QUANTISATION. Median step in
+    quanta, static: **5.51 at seven of nine offsets at 1920 and at seven of nine at
+    1280** — the same value repeated, not a trend. The modal step jumps between
+    4.685, 4.776, 5.297, 5.418, 5.51, 6.384: a handful of lattice points. §35's
+    identical values at offsets 5 and 8 (0.00107582 to every digit) were the
+    signature. **A difference of two quantised levels is itself lattice-valued, and
+    reading its variation across offsets as spatial structure is A-F11 in the radial
+    direction.**
+
+[3] AT 1280 THE DEEPER OFFSETS LEAVE THE REGION ENTIRELY. At offset 12 the inside
+    goes to **333 distinct triples, modal share 0.031, step 137.07 quanta** — the
+    sample ring has crossed into bodies and text. So offsets >= 10 at 1280 are not
+    sampling the ground at all, and §35 reported offset 8 in the same breath as
+    offset 1 with no population figure beside either. **A-G341's guard exists for
+    exactly this and I did not apply it to my own angular sample.**
+
+--------------------------------------------------------------------------------
+WHAT IS WITHDRAWN AND WHAT SURVIVES
+--------------------------------------------------------------------------------
+WITHDRAWN from §35[C1], in its own words: "essentially flat across offsets 1 to 8
+px — so it is a genuine discontinuity localised at the boundary, not a gradient (a
+ramp's apparent step would grow with offset)". **All of it: the flatness, the
+step-versus-ramp inference it carried, and the per-offset quanta as a profile.**
+Also withdrawn: §37's and §38's restatements of the same flatness, which repeated it
+without re-examining it.
+
+SURVIVES, and for reasons that do not depend on the profile:
+  · **the seam EXISTS and is RESOLVED.** The band side is solidly rgb(4,5,5)
+    (71-77% modal at every offset from 2 outward, both viewports) and the inside's
+    p05 is 2.50e-3 against the band's 1.453e-3, so the inside is brighter than the
+    band's own level at the 5th percentile of its own distribution. The static step
+    is 4.7-6.4 quanta, above the floor at every offset.
+  · **GELB's seat-edge MECHANISM**, which is derived from source and confirmed by
+    §40's over-seat/over-plate discrimination (3, 5 and 8 codes apart). That never
+    rested on the profile.
+  · **§40's and §37's band readings**, because both used the MODAL triple over the
+    band's INTERIOR annulus with a 3px inset off both edges — the regime §41's limb
+    licenses. The inset is why those survive and the offset-1 sample does not.
+
+GELB's amended owner line — **"the seam is real and resolved; its spatial extent is
+not characterised"** — is now the claim the data supports, and it is supported more
+strongly than when it was written: not merely uncharacterised but **not
+characterisable by this instrument**, because the inside has no location statistic,
+the step is lattice-valued, and the one offset nearest the boundary is an edge read.
+
+A-G435 (offered): **THE TIGHTEST MARGIN IS OFTEN THE LEAST LICENSED SAMPLE.** Offset
+1 carried the smallest step and sat closest to PF-8's 2x floor guard, and it is the
+one sample in the partial-coverage regime. GELB reached this before the measurement
+and it is the generalisable half: **when a profile's extreme point is also its
+nearest-the-boundary point, suspect the boundary before believing the extreme.**
+Corollary, from [3]: **an angular sample needs its population reported per offset,
+exactly as a mask does.** A-G341 was written for masks; it was never extended to
+sample rings, and §35 is what that omission produced.
