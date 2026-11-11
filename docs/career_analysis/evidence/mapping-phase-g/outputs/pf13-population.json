@@ -2,7 +2,7 @@
  "reading": "GRÜN · §98 — PF-13's population named, and its exception list resolved from line numbers to test identities",
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "scope": "pure arithmetic over committed files. No browser, no build, no server, no database, no test executed here — this names WHAT PF-13 covers; the run is reported separately.",
- "commit": "c2f5317d",
+ "commit": "80f0dcaf",
  "pin": {
   "statement": "PF-13: every phase-D and phase-E test passes, except the three restated in writing: neurovisual-e :156, :174, :140.",
   "citedReferences": "§12, A-F15",
@@ -50,7 +50,8 @@
     "linesToNextIt": 17,
     "title": "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous",
     "resolved": true,
-    "selfIdentifiesAsRestated": false
+    "selfIdentifiesAsRestated": false,
+    "titleIsUniqueInFile": true
    },
    {
     "citedLine": 174,
@@ -60,7 +61,8 @@
     "linesToNextIt": 31,
     "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
     "resolved": true,
-    "selfIdentifiesAsRestated": true
+    "selfIdentifiesAsRestated": true,
+    "titleIsUniqueInFile": true
    },
    {
     "citedLine": 140,
@@ -70,7 +72,8 @@
     "linesToNextIt": 16,
     "title": "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign",
     "resolved": true,
-    "selfIdentifiesAsRestated": true
+    "selfIdentifiesAsRestated": true,
+    "titleIsUniqueInFile": true
    }
   ],
   "distinctTestsNamed": 3,
@@ -90,5 +93,32 @@
   "theRisk": "a citation 2 lines or fewer inside its own it() is one edit away from naming the PREVIOUS test, and nothing signals the crossing. §93 shifted this file by +3 and all three still resolve — checked, not assumed — but that is luck rather than design.",
   "theRemedy": "two of the three titles self-identify ('position half restated, phase F §12/A-F15' and 'restated, phase F §12 and phase G §8'), which matches the pin's own cited §12/A-F15. An exception list should name those titles; a line number cannot survive an edit to the file it points into."
  },
- "finding": "PF-13's POPULATION IS 15 TEST FILES over 2 directories (test/career/mapping-field/, test/career/mapping-spec/), read out of architecture.test.ts's own phase-D predicate rather than restated here.\nAND IT CORRECTS MY OWN REPORT: I quoted \"170/170 on test/career/mapping-field\" as PF-13's population. That is ONE of the two directories PHASE_DIRS names; 2 test files under test/career/mapping-spec/ were never in the number.\nTHE EXCEPTION LIST RESOLVES, AND IT IS FRAGILE. The pin's three line numbers each fall inside one it() — :156 -> it() at :156 (+0), :174 -> it() at :173 (+1), :140 -> it() at :136 (+4) — naming 3 distinct tests. 2 of the 3 titles say \"restated\" in the title itself, matching the pin's cited §12/A-F15. But 2 citation(s) sit 2 lines or fewer inside their own it(), and §93 shifted this file by +3 — all three still resolve, which I checked rather than assumed, and which is luck rather than design.\nNO VERDICT (A-G36 point 2): this names a population and resolves a citation. Whether the population passes is a RUN, reported separately, and whether PF-13 is satisfied is PINK's."
+ "canonicalExceptionList": {
+  "ruledBy": "GELB §95: PF-13's exception list names TEST TITLES, not line numbers — a line number into a file still being edited is the only kind of citation that can come to mean something else with no edit to the citation itself.",
+  "form": "file + test title",
+  "file": "test/career/mapping-field/neurovisual-e.test.ts",
+  "titles": [
+   "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous",
+   "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
+   "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign"
+  ],
+  "eachTitleUniqueInThatFile": true,
+  "conversionProvenFaithful": true,
+  "howItWasProven": "each title was resolved back to an it() line and compared against the line the ORIGINAL number resolved to. Both forms name the same three tests, so this is a conversion and not a new list. The instrument throws if a title is not unique in the file, because an ambiguous title is no better than a drifting number.",
+  "legacyCitation": {
+   "byLineNumber": [
+    156,
+    174,
+    140
+   ],
+   "stillResolvesAtThisCommit": true,
+   "headroomLines": [
+    0,
+    1,
+    4
+   ],
+   "note": "kept so the pin's own wording stays traceable, and demoted because at this commit two of the three sit 0 and 1 lines inside their own it()."
+  }
+ },
+ "finding": "PF-13's POPULATION IS 15 TEST FILES over 2 directories (test/career/mapping-field/, test/career/mapping-spec/), read out of architecture.test.ts's own phase-D predicate rather than restated here.\nAND IT CORRECTS MY OWN REPORT: I quoted \"170/170 on test/career/mapping-field\" as PF-13's population. That is ONE of the two directories PHASE_DIRS names; 2 test files under test/career/mapping-spec/ were never in the number.\nTHE EXCEPTION LIST IS NOW NAMED BY TITLE (GELB §95, ruled), and the conversion is PROVEN rather than asserted: each title resolves back to the same it() line its original NUMBER resolved to, each title is unique in the file, and the instrument throws on either failure. The line numbers are kept as a legacy citation so the pin's own wording stays traceable.\nTHE LEGACY CITATION RESOLVES, AND IT IS FRAGILE. The pin's three line numbers each fall inside one it() — :156 -> it() at :156 (+0), :174 -> it() at :173 (+1), :140 -> it() at :136 (+4) — naming 3 distinct tests. 2 of the 3 titles say \"restated\" in the title itself, matching the pin's cited §12/A-F15. But 2 citation(s) sit 2 lines or fewer inside their own it(), and §93 shifted this file by +3 — all three still resolve, which I checked rather than assumed, and which is luck rather than design.\nNO VERDICT (A-G36 point 2): this names a population and resolves a citation. Whether the population passes is a RUN, reported separately, and whether PF-13 is satisfied is PINK's."
 }

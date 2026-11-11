@@ -70,6 +70,22 @@ const resolveCitation = n => {
   };
 };
 const exceptions = CITED.map(resolveCitation);
+
+/* ── the RULED fix: the exception list names TITLES. A title is only a citation if it is UNIQUE, so that is
+   asserted rather than hoped, and the title-based list is cross-checked against the line-based one so the
+   conversion is proven faithful instead of merely plausible. A citation into a mutable file must name
+   something the file CARRIES, not a position in it. */
+const titleOccurrences = t => nveSrc.filter(l => l.includes(t)).length;
+for (const e of exceptions) {
+  if (!e.resolved) continue;
+  const n = titleOccurrences(e.title);
+  if (n !== 1) throw new Error(`ERR_GRUEN_PF13_TITLE_NOT_UNIQUE: the title for :${e.citedLine} occurs ${n} times in ${NVE}, so naming it would be as ambiguous as naming a line. Title: ${e.title.slice(0, 80)}`);
+  e.titleIsUniqueInFile = true;
+}
+/* the cross-check: resolving by TITLE must land on the same it() lines the NUMBERS landed on */
+const byTitle = exceptions.map(e => ({ title: e.title, itLine: nveSrc.findIndex(l => l.includes(e.title)) + 1 }));
+const sameTests = byTitle.every((t, i) => t.itLine === exceptions[i].itLine);
+if (!sameTests) throw new Error(`ERR_GRUEN_PF13_CONVERSION_UNFAITHFUL: title-based resolution lands on ${JSON.stringify(byTitle.map(t => t.itLine))} where the line-based resolution landed on ${JSON.stringify(exceptions.map(e => e.itLine))}. The new citation form must name the same three tests or it is not a conversion.`);
 const unresolved = exceptions.filter(e => !e.resolved);
 if (unresolved.length > 0) throw new Error(`ERR_GRUEN_PF13_CITATION_UNRESOLVED: ${JSON.stringify(unresolved)}`);
 const fragile = exceptions.filter(e => e.headroomLines < MIN_HEADROOM);
@@ -101,12 +117,26 @@ const out = {
     theRisk: `a citation ${MIN_HEADROOM} lines or fewer inside its own it() is one edit away from naming the PREVIOUS test, and nothing signals the crossing. §93 shifted this file by +3 and all three still resolve — checked, not assumed — but that is luck rather than design.`,
     theRemedy: "two of the three titles self-identify ('position half restated, phase F §12/A-F15' and 'restated, phase F §12 and phase G §8'), which matches the pin's own cited §12/A-F15. An exception list should name those titles; a line number cannot survive an edit to the file it points into."
   },
+  canonicalExceptionList: {
+    ruledBy: "GELB §95: PF-13's exception list names TEST TITLES, not line numbers — a line number into a file still being edited is the only kind of citation that can come to mean something else with no edit to the citation itself.",
+    form: "file + test title",
+    file: NVE,
+    titles: exceptions.map(e => e.title),
+    eachTitleUniqueInThatFile: exceptions.every(e => e.titleIsUniqueInFile === true),
+    conversionProvenFaithful: sameTests,
+    howItWasProven: "each title was resolved back to an it() line and compared against the line the ORIGINAL number resolved to. Both forms name the same three tests, so this is a conversion and not a new list. The instrument throws if a title is not unique in the file, because an ambiguous title is no better than a drifting number.",
+    legacyCitation: { byLineNumber: CITED, stillResolvesAtThisCommit: true,
+      headroomLines: exceptions.map(e => e.headroomLines),
+      note: "kept so the pin's own wording stays traceable, and demoted because at this commit two of the three sit 0 and 1 lines inside their own it()."
+    }
+  },
   finding: null
 };
 out.finding =
 `PF-13's POPULATION IS ${population.length} TEST FILES over ${PHASE_DIRS.length} directories (${PHASE_DIRS.join(", ")}), read out of architecture.test.ts's own phase-D predicate rather than restated here.
 AND IT CORRECTS MY OWN REPORT: I quoted "170/170 on test/career/mapping-field" as PF-13's population. That is ONE of the two directories PHASE_DIRS names; ${population.filter(p => p.startsWith(PHASE_DIRS[1] ?? "\u0000")).length} test files under ${PHASE_DIRS[1] ?? "(none)"} were never in the number.
-THE EXCEPTION LIST RESOLVES, AND IT IS FRAGILE. The pin's three line numbers each fall inside one it() — ${exceptions.map(e => `:${e.citedLine} -> it() at :${e.itLine} (+${e.headroomLines})`).join(", ")} — naming ${distinct.size} distinct tests. ${exceptions.filter(e => e.selfIdentifiesAsRestated).length} of the 3 titles say "restated" in the title itself, matching the pin's cited §12/A-F15. But ${fragile.length === 0 ? "none sits inside the fragility limit" : `${fragile.length} citation(s) sit ${MIN_HEADROOM} lines or fewer inside their own it()`}, and §93 shifted this file by +3 — all three still resolve, which I checked rather than assumed, and which is luck rather than design.
+THE EXCEPTION LIST IS NOW NAMED BY TITLE (GELB §95, ruled), and the conversion is PROVEN rather than asserted: each title resolves back to the same it() line its original NUMBER resolved to, each title is unique in the file, and the instrument throws on either failure. The line numbers are kept as a legacy citation so the pin's own wording stays traceable.
+THE LEGACY CITATION RESOLVES, AND IT IS FRAGILE. The pin's three line numbers each fall inside one it() — ${exceptions.map(e => `:${e.citedLine} -> it() at :${e.itLine} (+${e.headroomLines})`).join(", ")} — naming ${distinct.size} distinct tests. ${exceptions.filter(e => e.selfIdentifiesAsRestated).length} of the 3 titles say "restated" in the title itself, matching the pin's cited §12/A-F15. But ${fragile.length === 0 ? "none sits inside the fragility limit" : `${fragile.length} citation(s) sit ${MIN_HEADROOM} lines or fewer inside their own it()`}, and §93 shifted this file by +3 — all three still resolve, which I checked rather than assumed, and which is luck rather than design.
 NO VERDICT (A-G36 point 2): this names a population and resolves a citation. Whether the population passes is a RUN, reported separately, and whether PF-13 is satisfied is PINK's.`;
 
 const { writeFileSync } = await import("node:fs");
