@@ -1,0 +1,113 @@
+{
+ "reading": "GRÜN · A-G156 point 4 — PG-5's L1 cap of 12 recomputed at PG-16 = 0.5",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "arithmetic on committed golden vectors and the spaced() rule, per pool as the component applies it at L1. No render, no gate.",
+ "budget_L1": 12,
+ "perPool": [
+  {
+   "layout": "LV03-equal-fit-ties",
+   "pool": "pool-a",
+   "poolBodies": 12,
+   "L1_at_0_3": 6,
+   "L1_at_0_5": 4,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 6,
+   "cap05": 4
+  },
+  {
+   "layout": "LV04-crowded-60",
+   "pool": "pool-a",
+   "poolBodies": 31,
+   "L1_at_0_3": 9,
+   "L1_at_0_5": 5,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 9,
+   "cap05": 5
+  },
+  {
+   "layout": "LV05-capacity-exceeded-overflow",
+   "pool": "pool-a",
+   "poolBodies": 37,
+   "L1_at_0_3": 8,
+   "L1_at_0_5": 5,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 8,
+   "cap05": 5
+  },
+  {
+   "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+   "pool": "pool-a",
+   "poolBodies": 70,
+   "L1_at_0_3": 12,
+   "L1_at_0_5": 6,
+   "bind03": "BUDGET",
+   "bind05": "SPACING",
+   "cap03": 15,
+   "cap05": 6
+  },
+  {
+   "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "pool": "pool-a",
+   "poolBodies": 37,
+   "L1_at_0_3": 10,
+   "L1_at_0_5": 6,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 10,
+   "cap05": 6
+  },
+  {
+   "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "pool": "pool-a",
+   "poolBodies": 22,
+   "L1_at_0_3": 8,
+   "L1_at_0_5": 6,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 8,
+   "cap05": 6
+  },
+  {
+   "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "pool": "pool-a",
+   "poolBodies": 24,
+   "L1_at_0_3": 9,
+   "L1_at_0_5": 6,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 9,
+   "cap05": 6
+  },
+  {
+   "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "pool": "pool-a",
+   "poolBodies": 71,
+   "L1_at_0_3": 12,
+   "L1_at_0_5": 7,
+   "bind03": "BUDGET",
+   "bind05": "SPACING",
+   "cap03": 15,
+   "cap05": 7
+  },
+  {
+   "layout": "LV07-real-shape-73",
+   "pool": "pool-c",
+   "poolBodies": 24,
+   "L1_at_0_3": 7,
+   "L1_at_0_5": 4,
+   "bind03": "SPACING",
+   "bind05": "SPACING",
+   "cap03": 7,
+   "cap05": 4
+  }
+ ],
+ "summary": {
+  "poolsExercisingTheCap": 9,
+  "drawingFewerAt0_5": 9,
+  "budgetStillBindsAt0_5": 0
+ },
+ "note": "A-G156 point 4 recorded the L1 cap as untested at 0.5. This is that computation; the decision on BODY_BUDGET.L1 is GELB's."
+}

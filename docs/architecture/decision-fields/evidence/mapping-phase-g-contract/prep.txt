@@ -1083,3 +1083,76 @@ breath and the group carries the depth; for a shelf halo the circle's alpha is p
 the group carries the depth alone. "On the shelf they rest" is implemented as the absence of the
 breath from the circle, not as a damping of it — which is why the alpha form of PG-23 is exactly
 checkable and the swing form never could be.
+
+================================================================================================
+§16  BODY_BUDGET.L1 MUST NOT BE REMOVED — THE CITED COMPUTATION IS THE 0.5 COLUMN, THE BUILD AND
+     THE PIN ARE 0.3, AND AT 0.3 THE BUDGET BINDS ON 2 OF 9 POOLS BY THREE BODIES
+================================================================================================
+outputs/cross-read/GRUEN-pg16-crowding-L1-as-read.json  (GRÜN's file, copied as read, unmodified)
+Source: `condyn-admin-mapping-d` @ f0bb8e65,
+        docs/career_analysis/evidence/mapping-phase-g/outputs/pg16-crowding-L1.json
+Against: GELB §56 / A-G226, `architecture/mapping-phase-f` @ 7aacd383.
+
+GELB wrote: *"At PG-16 = 0.5 the L1 budget binds on 0 of 9 pools, and the largest the spacing ever
+allows is 7 against a budget of 12 — it never comes within five of binding. So `BODY_BUDGET.L1` is
+removed as an independent constant … and PG-5 reduces entirely to its overflow-statement limb."*
+
+**EVERY NUMBER IN THAT SENTENCE IS CORRECT, AND EVERY ONE OF THEM IS FROM THE 0.5 COLUMN.**
+GRÜN's file carries BOTH columns, named `bind03`/`cap03` and `bind05`/`cap05`:
+
+  layout                                            bodies  L1@0.3  cap03  bind03   L1@0.5  cap05  bind05
+  LV03-equal-fit-ties                                   12       6      6  SPACING       4      4  SPACING
+  LV04-crowded-60                                       31       9      9  SPACING       5      5  SPACING
+  LV05-capacity-exceeded-overflow                       37       8      8  SPACING       5      5  SPACING
+  **LV08-checked-fit-0-pressed-to-the-horizon           70      12     15  BUDGET**      6      6  SPACING
+  LV09-shelf-fit-0-pressed-to-the-field-edge            37      10     10  SPACING       6      6  SPACING
+  LV11-shelf-wide-bodies-cannot-leave-the-field         22       8      8  SPACING       6      6  SPACING
+  LV12-shelf-medium-bodies-cannot-cross-the-field-edge  24       9      9  SPACING       6      6  SPACING
+  **LV10-checked-fit-1-pressed-from-the-inner-edge      71      12     15  BUDGET**      7      7  SPACING
+  LV07-real-shape-73                                    24       7      7  SPACING       4      4  SPACING
+
+  BUDGET binds at 0.3: **2 of 9**.   At 0.5: 0 of 9 (GRÜN's own `budgetStillBindsAt0_5: 0`).
+  max spacing-allowed at 0.3: **15** against a budget of **12**.   At 0.5: 7.
+
+**THE BUILD AND THE PIN ARE BOTH 0.3, NOT 0.5.**
+  `PersonJobMappingField.tsx:135  export const CROWDING = 0.3;`  — with the PG-16 comment on it
+  `PHASE_G.md:584  PG-16 · "Free space between drawn body rims ≥ 0.3 × the eccentricity"`
+  `PHASE_G.md:4055` lists PG-16's **0.3** as one of only two DERIVED constants in the phase.
+
+So on the artifact as built, `BODY_BUDGET.L1 = 12` is not slack — **it is the binding constraint on two of
+nine pools, and it binds by three bodies.** Removing it does not simplify a dead constant; it changes
+what the component draws, from 12 bodies to 15, on LV08 and LV10 at L1. That is a rendering change
+derived from a column that does not describe this build.
+
+AND THE DIRECTION WAS PREDICTABLE FROM THE MECHANISM BEFORE READING THE FILE, which is why I checked.
+`CROWDING` is the free rim-to-rim space *required* as a multiple of eccentricity. A **smaller** factor
+requires **less** space, so **more** bodies fit, so the budget is **more** likely to bind — not less.
+0.3 is the lower of the two values, so the 0.5 computation is the **permissive** one, and a conclusion
+of "never comes within five of binding" drawn from it is unsafe in exactly the direction that matters.
+
+THREE SEPARATE FAILURES, AND ONLY THE FIRST IS AN ARITHMETIC ONE.
+  1. The wrong column. GRÜN's file is TITLED *"PG-5's L1 cap of 12 recomputed at PG-16 = 0.5"* — the
+     title names 0.5, the table carries both, and the build uses 0.3. The refutation was inside the
+     file that was cited, two columns to the left of the numbers quoted from it.
+  2. **GRÜN's file declares `verdict: "NONE — development reading only (A-G36 point 2)"`** and closes
+     *"the decision on `BODY_BUDGET.L1` is GELB's."* A product removal was taken from a file that
+     states on its face that it carries no verdict. A-G36 — GELB's own rule — is that GRÜN's stand
+     returns no verdict. This is A-G195's shape exactly: a lane acting against a rule it authored,
+     using a figure the record had already qualified.
+  3. **The 0.3/0.5 divergence is already in GELB's own record, at §42**, as *"PG-16 CONTRADICTS THE
+     CONSTANT THE RECORD ATTRIBUTES TO ITS OWN SOURCE"*, status DERIVED-AND-CONTRADICTED: R23 gives
+     0.5, the pin and the code say 0.3. So the two values were known to diverge, by the same lane, and
+     the 0.5 column was still read as though it governed the artifact.
+
+WHAT I AM AND AM NOT SAYING. I am **not** saying `BODY_BUDGET.L1 = 12` is derived or correct — its
+provenance is its own question and PG-5's budget is not in the DERIVED list. I am saying the evidence
+cited does not support removing it, and that at the implemented value the constant is load-bearing.
+A-G226's conclusion is withdrawn-worthy on the evidence it cites; whether the constant should exist is
+a separate question that this computation, at 0.3, does not answer in the affirmative either.
+
+AND THE MECHANISM A-G220 NAMED IS WHAT CAUGHT IT. GELB's own lesson one section earlier was *"read the
+evidence produced"* — it applied that to GRÜN's file and read it. The residue is narrower and worth
+stating: **reading another lane's artifact is not enough if you read the column its title points at.**
+A file that carries two parameterisations needs the live one named at the point of use, not in the
+title. That is A-G173's provenance rule one level down: a number quoted from a file carries not only
+its origin but **which of that file's cases it belongs to.**
