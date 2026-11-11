@@ -5941,3 +5941,134 @@ groups, and a composite that carries motion the carrier does not produce.
 mask, so it is the only version of this obligation the phase can actually carry — **and A-G49's missing
 selector stops being a prerequisite, because a DOM check can name the element without one.**
 
+
+---
+
+## §56 PG-23 CLEARS, AND APPLYING GRÜN'S LAST OBSERVATION TO MY OWN LANE FOUND A DECISION HANDED TO ME FOUR SECTIONS AGO
+
+GRÜN delivered PG-23's source limb (`f0bb8e65`) and PINK its alpha measurement (`4377427f`), both **without the
+credential, a build or a server** — and GRÜN's closing observation about its own queue turned out to apply to
+mine.
+
+### A-G225 · The two ends of a pin, stated as a pair rather than as an irony — GRÜN's form
+
+**A-G203** was a carrier named in the renderer's vocabulary; **A-G223** was a quantity that is not a property of
+its carrier. GRÜN: *"Those are the same error at two different joints: **once the carrier was wrong for the
+subject, once the subject was wrong for the carrier.**"*
+
+> **A pin has two ends and must get both right. Name the subject, name the carrier, then ask whether the
+> quantity is a property of the subject or of the composite.** PG-23's raster form fails the third question;
+> its alpha form passes it.
+
+**That is checkable where my "irony" was only rueful**, and the record has now failed each end once within two
+sections, each time while fixing the other.
+
+**And GRÜN's distinction about A-G216 is recorded here as promised rather than given a section:** *"I described
+my failure as a rate complaint. Yours is structural: there was no rule to check it against. **Those have
+different remedies, and only one of them is fixable.**"* A rate complaint's only remedy is slowing down, and
+slowing down was not available — **the gap was at production and invisible from inside a family of rules that
+all covered transport.**
+
+### A-G226 · GRÜN computed `BODY_BUDGET.L1` and handed me the decision; I recorded it as "untested" for four sections *(defect 94)*
+
+GRÜN's last point was about its own queue: *"it was available all along and I had filed it behind the credential
+without checking whether it belonged there… a label did the thinking."* **Run against my own lane, it finds
+this:**
+
+`docs/career_analysis/evidence/mapping-phase-g/outputs/pg16-crowding-L1.json`, committed in GRÜN's tree, ends:
+*"A-G156 point 4 recorded the L1 cap as untested at 0.5. **This is that computation; the decision on
+`BODY_BUDGET.L1` is GELB's.**"*
+
+**It has been sitting there since A-G156, and A-G156 is mine.**
+
+| | budget | pools exercising it | budget binds at **0.3** | budget binds at **0.5** | spacing caps at 0.5 |
+|---|---|---|---|---|---|
+| **L1** | 12 | 9 | 2 (LV08, LV10 — spacing allows 15) | **0** | 4, 4, 5, 5, 6, 6, 6, 6, **7** |
+
+> **At PG-16 = 0.5 the L1 budget binds on none of the nine pools, and the largest the spacing ever allows is 7
+> against a budget of 12.** So `BODY_BUDGET.L1` does not merely fail to bind alone — **it never comes within
+> five of binding.** It is inert, and more plainly so than the L0 cap, which at least ties at 7.
+
+**Decided: `BODY_BUDGET.L1` is removed as an independent constant, exactly as A-G156 removed the seven.** It
+becomes a derived consequence of the spacing. **PG-5 therefore reduces entirely to its overflow-statement limb**
+— both caps gone, both for the same reason, the second one four sections later than it needed to be.
+
+**A-G156's own words were *"PG-5's L1 cap of 12 is marked untested at 0.5."* Marking something untested is not a
+status; it is a request with no addressee**, and the lane that could answer it did, in the same commit window,
+and said so in the artifact. **I did not read the artifact I had asked for.** That is A-G35's discipline failing
+from the other side: I have been enforcing *produce the evidence* and not practising *read the evidence
+produced.*
+
+### A-G227 · PG-23 clears, and PINK widened the pin's quantity correctly
+
+| | circle opacity | group opacity | rendered alpha | |
+|---|---|---|---|---|
+| shelf × 3 | 1, range 0 | 0.830 / 0.757 / 0.690, range 0 | **range 0, 1 distinct** | **INVARIANT** |
+| field × 2 (control) | 0.7653 … 0.9998, 33 distinct | 1.000 / 0.911, range 0 | range 0.2345 / 0.2130 | VARIES |
+
+DOM only, 33 samples over 1.33 breath periods, **identical to six decimal places at both viewports.** No
+animation on the shelf circle *or* its group. GRÜN's source limb independently establishes *why*: of the ten
+animation rules — **found rather than listed, so a new one cannot be added without the check noticing** — the
+three that animate opacity are `.mf-wave` (the shelf branch gives the circle no className), `.mf-travel`
+(strokes only) and `[data-stage-part="EVIDENCE"]` (shelf halos render outside it).
+
+**And PINK corrected my restatement.** A halo's rendered alpha is **circle × group**, set in two places —
+`:670` the circle, `:669` the group — so **a constant circle under a modulated group would have read as
+resting.** PG-23 says ***rendered* alpha**, not *"its computed opacity"*, and the verdict is taken on the
+product with a series on both.
+
+**The control is folded into the pin, not left to the instrument:** *a statistic reporting "constant" must be
+able to report "not constant"*, so the field halos are sampled identically and **required** to vary. **That is
+my own two-limb discipline turned on the instrument**, and had the field halos read constant too the shelf
+result would have meant nothing.
+
+### A-G228 · The constant every lane has been reasoning from is now a measurement
+
+**`WAVE.haloDepth = 0.235` and `0.8825 ± 0.1175` have been computed as *constants* through §10, §12, §46 and my
+own gate.** The field circle's opacity range measures **0.233488 … 0.234515** — the constant, 0.6 % low, which
+is 33 samples not landing on the extremes of a 10 s cycle.
+
+And the depth ladder: group opacities **1.000 / 0.911 / 0.830 / 0.757 / 0.690** against `depthGain = 1.45^(−t)`
+with t = (rank−1)/4 → **1, 0.9107, 0.8305, 0.7563, 0.6897. All five match to printed precision.**
+
+> **An independent DOM-side confirmation of `VOLUME.depthRatio` and of the breath model** — the thing A-G81's
+> alpha arithmetic, A-G137's core family and both my gates have assumed without ever having been measured.
+> **A-G215 in the good direction: the width of the evidence under this phase's arithmetic just went from zero
+> measurements to two.**
+
+### A-G229 · `depthGain` scales the breath itself, so PG-10's limb 1 fails on the deepest rank by construction *(defect 95)*
+
+Rank 1's rendered alpha swings **0.2345**; rank 2's only **0.2130** — because the group's depth gain of 0.911
+scales **the breath as well as the resting level.** The deeper body therefore breathes with **9.2 % less
+absolute amplitude by construction.**
+
+> **That is the mechanism for §50's limb-1 split**, which I recorded as a per-body fact without a cause: at 1920
+> selected, rank 1's fraction is 0.28669 and clears, rank 2's is 0.24345 and fails. **PG-10 bounds a quantity
+> that `depthGain` monotonically shrinks, and nothing in PG-10 says so.**
+
+**Fourth unquantified scope on one pin**, beside A-G95's motion mode, A-G188's interaction state and A-G194's
+per-body/aggregate. **And it changes what the breach means: the failure is not a property of "rank 2" but of
+"the deepest rank present"** — a fixture with more bodies would **relocate** it, not fix it, and A-G192's span
+rule says this fixture has five.
+
+**Structurally, A-F8 in one line, and it is why the alpha form works:** a field halo's circle carries the breath
+and its group the depth; **a shelf halo's circle is pinned at exactly 1 and the group carries the depth alone.**
+*"On the shelf they rest"* is implemented as the **absence** of the breath from the circle, not as a damping of
+it — **which is exactly why "rests" is checkable on alpha and never could be on swing.**
+
+### A-G230 · PINK's argument for its own branch is new, and it is A-G35's
+
+PINK, on its 79 unpushed commits: *"By your own A-G35 that's a **cross-catching** question, not a storage one —
+this exchange is the evidence, since almost every finding in it came from one lane reading another's committed
+numbers."*
+
+**That is the strongest case made for it and it is correct on the record's own terms.** §§45–56 ran on exactly
+that mechanism: GRÜN's `pg16-crowding-L1.json` carried the decision in A-G226; its sealed profiles carried
+erratum 4; PINK's `data-line` table closed A-G184; **and A-G226 is a case of a lane *failing* to read another's
+committed numbers, which is the same mechanism failing.** Every one of those files was reachable because it was
+committed **somewhere a peer could read it** — and PINK's are reachable only because all three lanes are on one
+disk.
+
+**Recorded as an engineering argument rather than a request**, because the authorisation is the owner's and has
+been declined; **what is new is that this is no longer a backup question.**
+
