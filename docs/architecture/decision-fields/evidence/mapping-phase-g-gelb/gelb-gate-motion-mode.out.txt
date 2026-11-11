@@ -1,0 +1,72 @@
+========================================================================================================
+GELB · A-G128's MOTION-MODE LIMB — what the accommodation substitutes, and which pins it reaches
+========================================================================================================
+
+[1] THE ACCOMMODATION, IN FULL. It is three rules and one script hook — nothing else.
+
+  [ok] app/components/career/demo/PersonJobMappingField.tsx:330 the block itself
+  [ok] app/components/career/demo/PersonJobMappingField.tsx:331 REMOVES all animation and transition
+  [ok] app/components/career/demo/PersonJobMappingField.tsx:332 REMOVES the travelling light entirely
+  [ok] app/components/career/demo/PersonJobMappingField.tsx:333 SUBSTITUTES a static opacity for the motion cue
+  [ok] app/components/career/demo/PersonJobMappingField.tsx:336 the E-5 geometry tween asks the same query and cuts
+
+  all anchors unique
+
+  So the accommodation makes exactly ONE substitution and TWO removals. Everything below follows from
+  which pins' quantities ride the substituted channel or the removed ones.
+
+--------------------------------------------------------------------------------------------------------
+[2] THE SUBSTITUTION: group opacity 0.32 on an unlit in-pool body.
+
+  It is a GROUP opacity on [data-mapping-body], and PINK measured that 19 arcs and 19 beams are INSIDE
+  that group — so it multiplies every mark, arc, beam, node and text the body draws, not just the body.
+  ratio between a lit and an unlit body's same-class mark: (1 / 0.32) = 3.1250 ×, i.e. 212.5 %
+
+  pin              obligation                                              what the 0.32 does
+  PF-4 limb 3      same-class marks on different bodies differ ≤ 2 %      212.5 % — MEASURED by PINK at 212.5 %, PCAP_PG only
+  PF-2             adjacent evidence bands' ratio ≥ 1.6 at their closest points 3.125 × > 1.6 — so a 0.32 factor EXCEEDS the whole band separation
+  PG-1             semantic share of the field's light ≥ 0.50 (DERIVED) + 0.05 every dimmed body contributes 0.32 × its light — the share MOVES
+  PG-6             relations' share of the semantic light ≥ 0.15          beams are inside the body group, so dimmed beams move the numerator
+
+  THE SHARPEST OF THESE IS PF-2, AND IT IS A DERIVATION THIS LANE CANNOT MEASURE:
+    PF-2 bounds ADJACENT BANDS at ≥ 1.6 ×. The dim factor is 3.125 ×, which is LARGER than the
+    separation the pin protects. So under `reduce`, with a capability selected, a band-i mark on a LIT
+    body and a band-j mark on an UNLIT body can inhabit the wrong order — the dimming is worth more than
+    one whole band step.
+    Phase E's recorded separations are 1.814 and 1.940 (PF-2's own anchor). Against those:
+      separation 1.814 ×  →  dimmed upper band / lit lower band = 0.5805 ×  *** INVERTED ***
+      separation 1.940 ×  →  dimmed upper band / lit lower band = 0.6208 ×  *** INVERTED ***
+      separation 1.600 ×  →  dimmed upper band / lit lower band = 0.5120 ×  *** INVERTED ***
+    All three invert. Whether PF-2's comparison is scoped WITHIN a body or ACROSS bodies decides whether
+    this is a violation or a non-question — and PF-2 does not say. A-G137's defect exactly: the verdict is
+    selected by a word the pin does not define.
+
+--------------------------------------------------------------------------------------------------------
+[3] THE REMOVALS: no animation, and `.mf-travel` hidden.
+
+  PG-18  "at least one of the field's motions is self-propelled from rest and contingent on another
+         object — the travelling light departing on a coupling. The breath alone does not satisfy PG-18."
+         → under `reduce` the travelling light is `visibility: hidden` and the breath is `animation: none`,
+           so PG-18's ONLY named satisfier does not exist and the breath is excluded by the pin itself.
+           PG-18 has NO satisfier under `reduce`, and PG-18 names no motion mode.
+           §64 classified it CONSTANT-ONLY with A-G144's disjunction hazard; it is also mode-dependent,
+           and this is the one place where its disjunction having no satisfier is not a hazard but a fact.
+
+  PG-11  the travel must out-salience the breath → both are gone; vacuous under `reduce`.
+  PG-7   the travel stops with the breath → both stopped; vacuous.
+  PF-8   every sign pixel swings ≤ 0.002 → nothing swings; passes vacuously, which PF-9 already states.
+  PF-6/PG-10 limb 3  PINK's LIVE max of 0.6908 was the travel; hidden under `reduce`, so the breach is
+         a LIVE-only breach. Consistent with §21, and it means the breach and the accommodation are
+         mutually exclusive — the build breaches in the mode where it is allowed to move.
+
+========================================================================================================
+THE LIMB, STATED FOR A-G128:
+  > Before a pin is measured: in WHICH MOTION MODE, and does the accommodation substitute a static
+  > channel for the motion channel the pin's quantity lives in? `prefers-reduced-motion: reduce` is not
+  > a variant of the build — it is a second build with a different channel assignment, and A-G2's
+  > channel table has no column for it.
+
+  It is a source reading of ONE css block, so it is the cheapest of A-G128's three limbs, and it reaches
+  four pins by substitution and five by removal. E-1 is the obligation underneath: under `reduce` the
+  group opacity carries BOTH evidence class and focus, which is one channel answering two questions.
+========================================================================================================
