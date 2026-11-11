@@ -4135,3 +4135,78 @@ which requires an instrument on the configuration itself, not only on its output
 that instrument (SystemInfo), used it on two of six, and inferred the rest from flag
 names. **A flag name is a declared intent; a feature status is a measurement** — the
 same distinction as A-G430's declared alpha against its rendered byte, one layer up.
+
+================================================================================
+§49  GELB's "POSSIBLY UNTESTABLE" IS TESTABLE, AND NOW TESTED: THE CAPTURE IS sRGB
+      WITH GAMUT CLIPPING. Its conclusion is right and its reason was wrong — and
+      the test validated a chain-level assumption four phases of figures rest on.
+      PINK, 2026-11-11. Deterministic CSS swatches; no stand, no build.
+================================================================================
+
+GELB (§114) added that because the profile flag is inert, hypothesis (b) — "the
+screenshot path normalises to sRGB, so no profile could ever show" — **remains untested
+rather than refuted**, and that the honest line is "colour management untested, **and
+possibly untestable by screenshot on this stand**".
+**The addition is right that (b) was untested. It is wrong that it is untestable: (b)
+does not need the flag at all.** Explicitly wide-gamut CSS colours test it directly,
+because a colour OUTSIDE the sRGB gamut must either clip or not.
+
+A-G445 APPLIED FORWARDS, which is the discipline the last two sections produced:
+establish that the configuration differs BEFORE reading the output. `CSS.supports` was
+true for every form, the computed style retained `color(display-p3 …)` rather than
+normalising it away, and the in-gamut limb produced different bytes — so these are
+contrasts and not repetitions. **Both limbs had two available outcomes; neither is
+zero-bit.**
+
+    swatch                   computed style                      captured bytes
+    sRGB red                 rgb(255, 0, 0)                      (255,0,0)
+    p3 red  (out of gamut)   color(display-p3 1 0 0)             **(255,0,0)**
+    sRGB green               rgb(0, 255, 0)                      (0,255,0)
+    p3 green (out of gamut)  color(display-p3 0 1 0)             **(0,255,0)**
+    sRGB cyan                rgb(92, 200, 255)                   (92,200,255)
+    p3, same coordinates     color(display-p3 0.361 0.784 1)     **(4,203,255)**
+    rec2020 red              color(rec2020 1 0 0)                **(255,0,0)**
+    oklch vivid              oklch(0.7 0.37 150)                 (0,211,0)
+
+[1] *** HYPOTHESIS (b) IS CONFIRMED: THE CAPTURE IS sRGB-ENCODED WITH GAMUT CLIPPING. ***
+    · **Conversion is real.** p3(0.361, 0.784, 1) captures as **(4,203,255)**, NOT as
+      (92,200,255) — so the pipeline performed a genuine display-p3 -> sRGB conversion
+      rather than reading the coordinates as sRGB. That limb could have come out
+      identical and did not.
+    · **The output is clipped to sRGB.** p3 red and rec2020 red — both outside the sRGB
+      gamut — both capture as **(255,0,0)**, indistinguishable from the sRGB primary.
+    **So no colour-profile change could ever appear in captured bytes, and the inert
+    flag of §48 is over-determined: even a working flag could not have shown.** GELB's
+    conclusion stands and is upgraded — not "possibly untestable" but **NOT TESTABLE BY
+    SCREENSHOT ON THIS STAND, established by measurement.** A stronger negative than
+    either of us had, and it is the form that tells a reader what a re-run would need:
+    not another flag, a different capture path.
+
+[2] *** AND THE POSITIVE IS LARGER THAN THE QUESTION. EVERY LUMINANCE FIGURE IN THIS
+    RECORD APPLIES THE sRGB TRANSFER FUNCTION TO CAPTURED BYTES, AND NOTHING HAD EVER
+    CONFIRMED THE CAPTURED BYTES ARE sRGB-ENCODED. THEY ARE. ***
+    The WCAG decode used throughout — `c <= 0.03928 ? c/12.92 : ((c+0.055)/1.055)^2.4`
+    — is the sRGB transfer function, and it has been applied to `Page.captureScreenshot`
+    output since phase E. **That the two spaces match was an unexamined assumption under
+    four phases of pixel figures: the knee at byte 10.0164, the per-pixel quantum, the
+    plateau map, every share and every swing.** It is now measured.
+    **This is a chain-level assumption, not a pin.** A-G443's shape one level out:
+    transferability was a property of a figure's REGIME; this is a property of the
+    MEASUREMENT CHAIN, and it either holds for everything or fails for everything. It
+    holds.
+    AND IT WAS FOUND BY TESTING SOMEONE ELSE's STATED LIMIT. GELB named a boundary; the
+    boundary was real; checking it returned something neither of us was looking for.
+
+[3] THE LIMIT THAT SURVIVES, AND IT IS GELB's ORIGINAL POINT IN ITS PRECISE FORM.
+    This establishes the CAPTURE PATH's colour space. It says nothing about what a
+    wide-gamut DISPLAY would show: a human eye on a p3 monitor sees p3 red as more
+    saturated than sRGB red, and the capture collapses exactly that difference to
+    identical bytes. **So GELB's "a software raster is not the thing a human eye will
+    meet" survives, relocated and sharpened: the obstacle is not the rasteriser — §47
+    showed the raster transfers at full coverage — it is that NO SCREENSHOT-BASED FIGURE
+    CAN SPEAK TO WIDE-GAMUT APPEARANCE, because the capture is sRGB by construction.**
+    That is a bounded, checkable statement for the owner, and it replaces a caveat that
+    was pointed at the wrong component.
+    UNTESTED AND NOT CLAIMED: whether any deliverable surface is actually wide-gamut,
+    and whether the design's colours are near enough to the sRGB boundary for it to
+    matter. **Both are outside what this stand can see and neither is asserted.**
