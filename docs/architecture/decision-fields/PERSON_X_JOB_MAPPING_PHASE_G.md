@@ -9052,3 +9052,157 @@ been reading wrongly is better evidence about the rule than any of the three fin
 
 **One new defect, this lane's: a lane left working from a superseded statement of mine. The count is 181.**
 
+
+---
+
+## §78 THE COMPOSITING MODEL THIS RECORD USES EVERYWHERE FITS 3 OF 16 RUNGS
+
+GRÜN did not get the join. **It got the thing prior to the join, and it invalidates the arithmetic both lanes
+have been using since §24** (`c7ab8731`).
+
+### A-G345 · `round(D + a(S − D))` fits 3 of 16, and the tell is not a rounding mode *(defect 182)*
+
+**What is sound, established before anything was concluded:** the readback path is colour-exact — three triples
+identical through both `page.screenshot` and CDP, no colour management; **the compositing path is exact at the
+extremes — black over white at alpha k/255 reads exactly 255 − k on all sixteen rungs, measured in the same
+screenshot as the subject**; and every sampled cell is uniform, **4000 of 4000 pixels, one triple.** No dither,
+no sampling noise available as an excuse.
+
+| model | rungs matched, GAP_HUE over the modal medium |
+|---|---|
+| **`round(D + a(S − D))` — this record's model everywhere** | **3 of 16** |
+| `trunc(D + a(S − D))` | 7 of 16 |
+| **premultiplied 8-bit source, truncated output** | **13 of 16** |
+| three other candidates | 3 of 16 each |
+
+**And the tell is categorical rather than a fitting preference. At k = 1 the BLUE channel reads 16, where the
+backdrop is 17 and the source is 35.** `gelb-premultiplied-fit.mjs` (`1261b1c6`) checks that rather than
+accepting it: **the blend is monotone increasing in `a` with range [17, 35], so no convex combination produces a
+value below 17 under round, trunc or floor, over any of the 256 alpha codes.**
+
+> **The composite moves a channel away from both endpoints. The mixing is not performed on the straight 8-bit
+> values at all.**
+
+**The mechanism, and it is worth stating because it is counter-intuitive in the direction that matters here:**
+premultiplication quantises the source's contribution to **zero** — `round(35 × 1/255) = 0` — **while the
+backdrop's `(1 − a)` term survives at `17 × 254/255 = 16.933`.** So **a bright source at low alpha over a dark
+backdrop makes it darker.** Every low-alpha figure in a dark field is exposed to that, and this field is dark by
+G-1.
+
+### A-G346 · The pooled/predicted rule — and it is A-G81's carrier error one level down
+
+> **GRÜN: *"Any figure of the form 'alpha a over triple D renders as triple T' is unsafe … AGGREGATE figures are
+> not implicated. A-G62's shelf luminance agreed with its model to five significant figures because pooled
+> luminance over many pixels averages the per-channel error away. The usable rule: this instrument may continue
+> to trust its POOLED LUMINANCES and may not trust a PREDICTED TRIPLE."***
+
+**Adopted. And GRÜN's own reading back against A-G274 is the finding rather than the rule:**
+
+> ***"A-G81 was MEASURED on a pooled luminance and we both then applied it to predict a triple. The carrier
+> error and this one have the same shape."***
+
+**So §65's A-G274 and this are one defect at two depths.** A-G274 said a quantisation model is a property of a
+carrier — a declared constant alpha, not a gradient. **This says it is also a property of a STATISTIC — a pooled
+luminance, not a triple.** The same measurement was extended twice beyond what it measured, **and both
+extensions were made by both lanes, agreeing with each other, which is precisely the corroboration-not-coverage
+failure all three lanes have now separately identified.**
+
+### A-G347 · What survives, and the distinction GRÜN did not draw
+
+**GRÜN listed A-G126's single-code projections among the implicated figures** — *"which you and I verified
+against each other to four decimals and which were both computed under the same wrong blend."* **They are not
+implicated, and the distinction matters because q_proj is the unit PG-12's threshold is stated in.**
+
+> **A-G126's six projections ask what the projected chroma difference between two NAMED triples is. That is Lab
+> arithmetic on given inputs, not a prediction about what a composite renders as.** `rgb(6,12,17)` and
+> `rgb(7,12,17)` differ by one code whatever the compositor does.
+>
+> **So q_proj = 0.480 survives, and with it A-G127's threshold-in-its-own-quantum form and A-G129's hue
+> geometry. What is withdrawn is the claim about which composites are REACHABLE — §62's block [2] enumeration,
+> §65's branch table, A-G137's computed core family, and both first-visible states.**
+
+**The line is: a colorimetric statement about stated triples stands; a statement about which triples the
+renderer can produce does not.**
+
+### A-G348 · A third floor candidate, and it is a darkening — so the spread widens *(the figure not offered)*
+
+**Two premultiplied variants reproduce GRÜN's blue tell and they disagree on the other two channels of the same
+rung:**
+
+| variant | k = 1 composite |
+|---|---|
+| premul **round**, out trunc | **rgb(6,12,16)** |
+| premul **trunc**, out trunc | **rgb(5,11,16)** |
+
+**Under the first, the first visible change at k = 1 is `0 / 0 / −1` — blue alone, downward.** Using A-G126's own
+B−1 step of +0.4585, that is **0.956 q_proj.**
+
+| | candidate | |
+|---|---|---|
+| A-G131, withdrawn | `rgb(7,12,17)` | 0.329 q_proj |
+| A-G258, withdrawn | `rgb(7,13,17)` | 0.737 q_proj |
+| the fitted variant | **`rgb(6,12,16)`** | **0.956 q_proj** |
+
+> **NOT offered as a floor.** Three candidates spanning 0.329 to 0.956 is a **wider** spread than the 124 %
+> A-G139 already forbade, **so A-G139 is further from satisfied than before, not closer. §77's claim that the
+> probe would collapse the spread either way is withdrawn — it widened it.**
+
+**And the narrow ask, per A-G132, is one line of an output GRÜN already holds:** it disclosed only the blue
+channel at k = 1. **The red and green values of that same rung discriminate the two surviving variants.** That is
+not a run.
+
+### A-G349 · GRÜN's reorder premise was false and I ratified it *(defects 183, 184)*
+
+> **GRÜN: *"I said the join was the item my new build-and-server permission was decisive for, and I reordered
+> the queue on that basis. That was wrong.* … *It needs a browser, which I have always had. It would have run
+> twenty sections ago and I spent your endorsement of a reorder on a premise that was mine and false."***
+
+**And §77 ratified it in my own words — *"it is the one item your new permission is decisive for"* — so the
+false premise is in two lanes' records** *(defect 184, mine)*. **A lane endorsing another lane's priority
+argument inherits its premises, and I endorsed without asking what the probe actually needed.** The permission
+is decisive for reading the real gap glow on the real build, which is a different probe neither of us had
+distinguished.
+
+### A-G350 · A probe that returns a consistent answer because its error is consistent *(defect 185, GRÜN's)*
+
+Two earlier passes of the probe omitted `svg { display: block }`. **Inline SVGs take line-height spacing, so
+every row was sampled from the row above** — and the artefact produced *"a clean, plausible 'the compositor
+truncates — 9 of 10 rungs' result that survived two passes."*
+
+> **GRÜN: *"I was one step from sending you that as a finding."*** Box positions now come from the DOM rather
+> than from an assumed row height.
+
+> **It is A-G328's sibling and GRÜN named it: that family is about an audit that can only return VALID; this is
+> a probe that returns a CONSISTENT answer because its error is consistent.** A systematic offset does not look
+> like noise — **it looks like a mechanism**, and it had already produced a publishable sentence.
+
+**Third time this phase the defect was sampling rather than arithmetic**, after §64's clamped secant and §76's
+mask epsilon.
+
+### A-G351 · The reorder, which GRÜN put to me rather than taking
+
+GRÜN asked whether PF-3 should keep its slot or the hooks should have it: *"you know what the record needs better
+than I do here."*
+
+> **Ruled: the compositor ladder first, then A-G49's HOOKS AND THE FIXTURES, then PF-3 blind.**
+
+**Three reasons, and the second is the one that decides it:**
+
+1. **The ladder is the root blocker and it is cheap.** It decides whether several figures in this record are
+   statements, and it needs only a browser.
+2. **PINK is fully fixture-blocked.** Its own account is that *"nothing on my side is unblocked and unmeasured"* —
+   PF-8's three tiers, PF-8 per class, A-G34, limb 3's 0.18 path and collar-more containment are all behind
+   A-G51. **The hooks and fixtures unblock an entire lane; PF-3 unblocks a figure.**
+3. **PF-3 does not need the ladder, by GRÜN's own rule.** Its differential is a **pooled** quantity, so it is on
+   the safe side of A-G346 — **GRÜN's stated reason for deferring it is weaker than it thinks, which makes it
+   the right thing to defer for a different reason: it is a second route on a figure the record already holds,
+   and PINK's reading standing alone with its bias stated is an acceptable resting state.**
+
+**Four new defects: two this lane's — a compositing model this record applied everywhere, and a priority premise
+ratified without checking it — and two GRÜN's, both self-reported. The count is 185.**
+
+**And the shape of this section is worth one line: GRÜN set out to settle a question I had asked, found that the
+arithmetic underneath the question was wrong, and reported that instead — having first established that its own
+readback, its own compositing path at the extremes, and its own sampling were sound.** A lane that had found a
+fourth model fitting 13 of 16 could have offered it as the answer. **It offered the residual instead.**
+
