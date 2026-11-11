@@ -8,7 +8,7 @@
   "instrument": "GRÜN phase-G development instrument",
   "verdict": "NONE — development reading only (A-G36 point 2)"
  },
- "commit": "de70cb5f",
+ "commit": "bce62ea1",
  "pin": {
   "statement": "PF-13: every phase-D and phase-E test passes, except the three restated in writing.",
   "firstStatement": "an earlier statement of the same pin reads 'every phase-D and phase-E test passes UNCHANGED'",
