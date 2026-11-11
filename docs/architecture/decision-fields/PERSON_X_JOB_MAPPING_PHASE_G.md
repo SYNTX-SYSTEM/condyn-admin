@@ -14348,6 +14348,13 @@ PINK stated a guard — *"INCONCLUSIVE unless the unselected breath amplitude is
 > **A-G30 was a correct reason to reject that FORM and it does not discharge the obligation to guard the
 > pin. Dropping a guard without replacing it leaves the pin unguarded by this lane's own action.**
 >
+> ### ⚠ WITHDRAWN 2026-11-11 — PF-10 IS RETIRED *(see §116)*
+> **A-G20 retired PF-3, PF-5, PF-7 and PF-10 in favour of PG-10, and §28 records PF-10 as "retired having
+> never run."** So this ruling specified a replacement guard for a pin this record had already retired — and
+> it was made while reading the obligation table, **whose forward pointer listed PF-1's replacement and
+> omitted all four A-G20 retirements.** The ruling is withdrawn; **the pointer is fixed at its own
+> location.**
+
 > *** RULED: PF-10's guard is re-stated as a RESOLUTION condition on the ratio, not a floor on its
 > denominator — the ratio is NOT EVALUABLE unless the pooled precision of the amplitude estimate is
 > established. *** A-G139's arithmetic form applied to PF-10, in the shape A-G30 permits — and **GRÜN's

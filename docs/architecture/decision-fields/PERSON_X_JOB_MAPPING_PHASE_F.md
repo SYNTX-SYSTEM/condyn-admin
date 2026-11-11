@@ -326,6 +326,14 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   dated note at its head. Reading either table alone has produced a wrong bound at least three times
 >   this phase (A-G315 was mine, PF-6's row and PF-8's scope were the others).
 > - **PF-1** is replaced for phase G by **PG-1/PG-2** (PHASE_G §4) and is not measured in this form at all.
+> - *** AND **PF-3, PF-5, PF-7 and PF-10** ARE ALL RETIRED BY **A-G20** (PHASE_G §21), IN FAVOUR OF **PG-10**
+>   — *"the breath has moved from the medium to the glows, and an obligation must follow the thing it
+>   measures."* PHASE_G §28 records their states at retirement: **PF-3 never measured** (its cited 2.5…3.8
+>   reading has no recorded provenance), **PF-5 and PF-7 retired WHILE RED**, **PF-10 retired having never
+>   run.** ***
+>   **This pointer omitted all four until §116, and the omission cost two lanes a round:** PINK measured
+>   PF-5 and PF-7 as live pins and this lane specified a replacement guard for PF-10 in §114. **The note
+>   built to stop a lane reading a stale pin listed one replacement and missed four retirements.**
 > - **PF-3** — the halo limb is measured as an **EXCESS against a render without it**, never as a raw
 >   window (**A-F19**, §20 `:1095`). A raw ratio of declared alphas is a cruder form of the same confound.
 > - **PF-6 row 1 / PG-10 limb 3** are **one bound on one quantity, stated as a DISTRIBUTION** on 2 px-blurred
@@ -380,13 +388,17 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 | | ⚠ **RETIRED for phase G** *(§114)* — replaced by **PG-1/PG-2** and *not measured in this form at all*. A lane reading this row alone measures a pin phase G does not carry. |
 | **PF-2** | **The evidence survives the light.** The E-1/A-3 band separation holds at the pixel level — adjacent bands' ratio **≥ 1.6 at their closest points** (floor of the upper band vs. ceiling of the lower, PHASE_E §12). Measured on rendered pixels, not computed styles. |
 | **PF-3** | Bodies are volumes: footprint ≥ 6 × outline footprint; halo peak ≤ 0.25 × core peak. |
+| | ⚠ **RETIRED by **A-G20** in favour of PG-10 — **never measured**; its cited 2.5…3.8 reading has no recorded provenance.** *(§116)* |
 | **PF-4** | Depth is monotone in rank, ratio rank 1 : last ∈ [1.5, 3.0]; **and** same-class marks on different bodies differ by ≤ 2 % — i.e. depth did not touch evidence. |
 | **PF-5** | Breath floor: ≥ 25 % of disc pixels swing ≥ 0.004 over one period. |
+| | ⚠ **RETIRED by **A-G20** in favour of PG-10 — **retired WHILE RED**. Its historical green of **0.647** was measured over the GLOW while this row says **disc pixels**; over the disc the share is **0.0492**, and the attainable ceiling over the disc is **6.65 %** (the glow's own fraction) against a bound of 25 %. **The denominators differ by 15×.**** *(§116)* |
 | **PF-6** | Breath ceiling: no pixel swings > 0.030; stage mean \|Δframe\| ≤ 0.0025 at 20 fps. |
 | **PF-7** | It is a wave, not a blink: the phase of the swing is monotone in radius, total spread 1 200 ms ± 300. |
+| | ⚠ **RETIRED by **A-G20** in favour of PG-10 — **retired WHILE RED**. And it states no DIRECTION for *monotone in radius*; PINK's §53 shows a per-pixel phase fit cannot recover the per-layer lag at all, because `:876` draws all seven ground layers at the SAME radius.** *(§116)* |
 | **PF-8** | **The firewall.** Over a full period, every arc, tick, beam, node and text pixel swings ≤ 0.002. |
 | **PF-9** | Pending is still: with `data-breath="STILL"`, every pixel's swing over a full period ≤ 0.002. |
 | **PF-10** | Query owns the motion: with a capability selected, the measured breath amplitude is ≤ 45 % of its unselected value. |
+| | ⚠ **RETIRED by **A-G20** in favour of PG-10 — **retired having never run**. §114 specified a replacement guard for it; that ruling was made on a retired pin and is withdrawn (§116).** *(§116)* |
 | **PF-11** | **Reduced motion, at pixel level.** Two renders ≥ 2 s apart with no interaction: every pixel identical. Plus phase E's half (a): no element carries a non-zero computed animation or transition duration. |
 | **PF-12** | Nothing phase F adds is interactive: no new element in the a11y tree, none focusable, none hit-testable; tab order unchanged. |
 | **PF-13** | Every phase-D and phase-E test passes unchanged. |
