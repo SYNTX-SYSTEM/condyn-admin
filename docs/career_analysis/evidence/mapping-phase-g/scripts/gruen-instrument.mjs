@@ -700,15 +700,28 @@ export const BOUNDS = Object.freeze({
   "PG-3.drawnDiameterPx":    { value: [56, 92], origin: "DERIVED — layout-spec-v1.1.json body.drawn 34.2…54.6 units at L0 1920x1080, A-G1/A-G24",
                                                   parents: [{ node: "layout-spec-v1.1.json", quote: "rho_drawn = drawn.min + (rho - body.min) / (body.max - body.min) * (drawn.max - drawn.min) … 34.2 … 54.6 field units: ≥ 56 … ≤ 92 px diameter at L0, 1920 × 1080, with the frame widened to hold every drawn body whole (PG-14)." }] },
   /**
-   * A-G156 point 2: RETIRED as non-discriminating, on A-G29's treatment and for A-G29's reason — a bound that
-   * cannot bind is not a bound. At 0.5 the budget binds on exactly ONE layout (LV10) and there the spacing
-   * gives 7 as well, so the two agree and the cap never binds alone. A-G4's seven is not corrected to 5 or 6;
-   * it is REMOVED, and BODY_BUDGET.L0 becomes a derived consequence of the spacing rather than an independent
-   * constant. The two constants also swap which pin does the work: at 0.3 PG-5 is load-bearing and PG-16
-   * mostly is not; at 0.5 it reverses — so the claim that PG-16 DERIVES PG-5 was false in a third way, a
-   * derivation whose consequent does no work being a replacement.
+   * §57: A-G156 point 2's retirement is REVERTED with A-G226. **The build is CROWDING = 0.3** and both
+   * retirements ruled from the 0.5 column.
+   *
+   * At the BUILT value, from outputs/pg16-crowding-at-0.5.json's own 0.3 figures:
+   *   0.3 → the budget BINDS on 8 of the 10 layouts that can exercise it, cutting a spacing capacity of up
+   *         to 15 (LV08, LV10) down to 7 — not merely load-bearing but DOMINANT
+   *   0.5 → it binds on LV10 alone and ties there, which is A-G156's "never binds alone"
+   *
+   * **And the superseded text below said so.** "The two constants also swap which pin does the work: at 0.3
+   * PG-5 is load-bearing and PG-16 mostly is not; at 0.5 it reverses." I wrote that in this entry and
+   * retired the bound anyway. Fourth instance in this phase of one shape: the correct fact recorded one line
+   * above the wrong conclusion drawn from it — and the first where both lines are mine.
+   *
+   * **The deeper reason the retirement could not stand, beyond the column.** The parent edge's own words are
+   * DIRECTIONAL: "if the budget and the spacing ever disagree, the spacing wins and the budget shrinks."
+   * That describes only the case where the spacing is TIGHTER than the budget. At the built 0.3 the spacing
+   * is LOOSER on 8 of 10 layouts — it permits up to 15 where the budget allows 7 — so the claimed
+   * derivation is silent in exactly the regime where the constant does its work. **A derivation that does
+   * not reach the case in which a constant binds cannot retire that constant**, whichever column is read.
    */
-  "PG-5.bodiesAtL0":         { value: null,  origin: "RETIRED — A-G156 point 2, non-discriminating at 0.5: the cap never binds alone. Superseded local status was ARGUED (PHASE_G §2 G-2, 'the existing CAPABILITY FIELD draws six' — a comparison). BODY_BUDGET.L0 = 7 remains in the code; the constant is GELB's.",
+  "PG-5.bodiesAtL0":         { value: 7,     conditionalOn: "CROWDING", liveAt: 0.3, inertAt: 0.5,
+                                                  origin: "ARGUED — §57, and LIVE at the built CROWDING = 0.3. PHASE_G §2 G-2 offers only 'the existing CAPABILITY FIELD draws six', a comparison, so the seven has no derivation. It is DOMINANT at the built value: the budget binds on 8 of 10 exercising layouts (outputs/pg16-crowding-at-0.5.json), cutting up to 15 bodies to 7. It is near-inert at the RECORDED bound of 0.5, binding on LV10 alone and tying there — which is what A-G156 point 2 ruled from and why that ruling is withdrawn. Per A-G233 this entry says which artifact each clause is about: the first is the build, the second is the record. BODY_BUDGET.L0 = 7 remains in the code; the constant is GELB's.",
                                                   parents: [{ node: "PG-16.crowding", quote: "This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks." }] },
   "PG-6.relationShare":      { value: 0.15,   origin: "UNDERIVED — PHASE_G §2 G-3 states >= 15 % with no derivation recorded" },
   "PG-10.swingFraction":     { value: 0.25,   origin: "CITED — A-G22 rests it on 'R17's ceiling is what keeps this calm' while the record never states R17's own numbers; it also restates a measurement of a tree A-G41 later voided. A mechanism is named and no quantity is taken from it." },
@@ -726,20 +739,19 @@ export const BOUNDS = Object.freeze({
    * the post-hoc derivation A-G143 forbids.
    */
   /**
-   * §56 A-G226: decided, on this lane's own committed computation, four sections after it was handed over.
-   * `outputs/pg16-crowding-L1.json` ends "the decision on BODY_BUDGET.L1 is GELB's" and sat as "untested".
+   * §57 A-G226 WITHDRAWN, and the retirement I made in §56 is reverted. **The build is CROWDING = 0.3**
+   * (PersonJobMappingField.tsx, `export const CROWDING = 0.3`), and A-G226 ruled from the 0.5 column.
    *
-   * **Marking something untested is not a status; it is a request with no addressee.** This lane produced
-   * the evidence and then stopped at the label too — the same habit as reading "does not carry" instead of
-   * the radii under it (§47), and as filing PG-23's free limb behind a credential it never needed (§55).
-   *
-   * And the figures make it the L0 result repeating rather than a new one: at 0.3 the budget BINDS on two
-   * layouts (LV08, LV10, both wanting 15 against 12); at 0.5 it binds on **0 of 9** pools and the largest
-   * the spacing ever allows is **7 against 12**, never within five of binding. So at PG-16 = 0.5 the spacing
-   * rule subsumes the budget cap at EVERY level, and `BODY_BUDGET` stops being an independent constraint
-   * anywhere. PG-5 reduces entirely to its overflow-statement limb.
+   * At the BUILT value, from this lane's own outputs/pg16-crowding-L1.json:
+   *   0.3 → the budget BINDS on 2 of 9 pools (LV08, LV10, both wanting 15 against 12) — LOAD-BEARING
+   *   0.5 → it binds on 0 of 9 and the spacing's maximum is 7 against 12 — inert
+   * I stated the first clause plainly in §56 and then let it be read as corroboration of the second. My own
+   * falsifiability condition fired on it: "if a layout is ever found where the spacing permits more than the
+   * budget at any level, the subsumption breaks and both caps come back." LV08 and LV10 are those layouts,
+   * at the built value, in the file.
    */
-  "PG-5.bodiesAtL1":         { value: null,   origin: "RETIRED — §56 A-G226, on A-G29's treatment and for A-G156 point 2's reason: a bound that cannot bind is not a bound. At 0.5 the L1 budget binds on 0 of 9 pools (outputs/pg16-crowding-L1.json, budgetStillBindsAt0_5: 0) and the spacing's maximum is 7 against 12. BODY_BUDGET.L1 = 12 remains in the code; the constant is GELB's. Superseded local status was UNDERIVED — A-G156 point 4: untested at 0.5 and not to be read as surviving.",
+  "PG-5.bodiesAtL1":         { value: 12,     conditionalOn: "CROWDING", liveAt: 0.3, inertAt: 0.5,
+                                                  origin: "UNDERIVED — §57, and LIVE at the built CROWDING = 0.3. A-G50 records no derivation for the 12. It is load-bearing at the built value: the budget binds on 2 of 9 pools (outputs/pg16-crowding-L1.json), cutting a spacing capacity of 15 down to 12 on LV08 and LV10. It is inert at the RECORDED bound of 0.5, where it binds on 0 of 9 — which is what A-G226 ruled from and why that ruling is withdrawn. Per A-G233 this entry says which artifact each clause is about: the first is the build, the second is the record.",
                                                   parents: [{ node: "PG-16.crowding", quote: "This *derives* PG-5's budget; if the budget and the spacing ever disagree, the spacing wins and the budget shrinks." }] },
   "PG-5.overflowStatement":  { value: null,  origin: "ARGUED — A-G156 point 3: PG-5's overflow-statement limb stands on A-G3, which made it its own statement. A copy obligation, not a count bound, so no numeric provenance applies." },
   "PG-16.crowding":          { value: 0.5,    recordedInCodeAs: 0.3, origin: "DERIVED — A-G156 point 1: PG-16 bounds at 0.5, the figure the record states AND applies (R23's arrow, 'free space between bodies at the rim'). The contradiction A-G145 found is RESOLVED rather than recorded. NOTE: CROWDING in PersonJobMappingField.tsx is still 0.3 — the product constant is GELB's and this registry records the bound, not the code. Superseded reasoning kept: A-G145: a quantity IS taken from R23 and it is not the quantity the record states R23 gives. §10 says 'Critical spacing is roughly half the target\'s eccentricity (as free space, in Bouma\'s original form)'; §11 bounds at 0.3. A 40 % relaxation of the cited law, written eight minutes apart in one document. No reading of the paper was required — and A-G153 records that this lane missed it by going to the literature instead of to the record's own statement.",
