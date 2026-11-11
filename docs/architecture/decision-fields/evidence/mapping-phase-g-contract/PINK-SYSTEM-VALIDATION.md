@@ -245,10 +245,29 @@ same artifact did not survive the relay:
   left the disagreement behind.
 
 **Neither is a criticism of GRÜN**, which recorded both honestly where a reader of the
-artifact would find them. **PF-13's state as this lane can establish it: a derived
-population, a 197/197 suite with coverage matched both ways, no verdict by its own
-declaration, and a recorded contradiction with the wording under which it was reported
-closed.** Much better than "no guard"; not "closed".
+artifact would find them. GELB has since withdrawn "closed" and carried GRÜN's verdict
+string verbatim into its report.
+
+*** AND IT HANDED PF-13's CLOSURE TO THIS LANE, WHICH DECLINES TO ISSUE IT (§56). *** Three
+grounds, none of them caution: **this lane did not run it** — verifying a figure in another
+lane's output is not measuring a pin, which is the line §55 drew against GELB and it applies
+here identically; **the instrument declares `verdict: NONE` under A-G36 point 2**, GELB's own
+rule against reinstating an obligation on a development reading, and **an obligation cannot
+be discharged on one either** — a lane accepting closure here would do with a green what
+A-G36 forbids with a red; and **it is outside this venue**, PF-13 being a meta-pin over the
+vitest population, needing the test harness and a disposable database, while this lane
+measures pixels on a façade.
+
+**WHAT WOULD DISCHARGE IT, so the declination is not a dead end:** GRÜN re-issues its
+evaluation **with a verdict** — the figures are already there and only the verdict field is
+missing — or a lane that holds the venue runs it and states one. **Neither is work this lane
+can do; neither is blocked on anything but the decision to issue.**
+
+**PF-13's FINAL STATE FROM THIS LANE:** population **derived** rather than listed; suite
+**197/197** with coverage matched both ways and zero missing or extra; **no verdict by its
+own instrument**; a recorded contradiction with its first relayed wording; **and no lane has
+issued its closure, this one included.** A well-evidenced pin without a verdict — **neither
+"unguarded" nor "closed"**, which is a real state and the honest one.
 
 **PG-19's three burials and PF-5/PF-7's retirement remain taken on report** — they live in
 `PHASE_G*.md`, which this lane cannot read. That is not the same
@@ -331,5 +350,26 @@ audit neither author gave** — the mechanism, not the count, is the finding.
 
 ---
 
+---
+
+## 11. HOW THIS CONDITION STANDS, REPORTED BY THE OTHER LANE
+
+GELB's consolidated closing report is committed and pushed at `9b07d616`. This lane cannot
+verify its contents — `PHASE_G*.md` remains unreadable here.
+
+*** IT DOES NOT REPORT CONDITION 4 AS SATISFIED. *** Its terms: this lane's validation
+**"exists, is good, and cannot be read by anyone but you."**
+
+**That is the concrete cost of the unpushed branch, and it is stated by the lane writing the
+closing report rather than by the lane that wants the push.** The decision is the owner's and
+this lane has not asked for it again. It is recorded here because a reader of this document
+should know that the document's own existence does not discharge the condition it was written
+for — **and that the reason is readability, not content.**
+
+---
+
 *PINK. Validation only — never implementation, never integration. No merge, no push, no
 production deployment. Gemini disabled throughout.*
+
+*Thirty-odd sections of this phase ended in a withdrawal, a declination, or a figure handed
+back smaller than it arrived. That is what the lane is for.*
