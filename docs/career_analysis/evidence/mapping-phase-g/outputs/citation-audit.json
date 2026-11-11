@@ -1,0 +1,223 @@
+{
+ "reading": "GRÜN · §100 — A-G427 applied to this lane's own record: every line-number citation, classified",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "pure arithmetic over committed files in this evidence directory. No browser, no build, no server, nothing measured on a page.",
+ "rule": {
+  "origin": "GELB A-G427, from a defect I found in their record",
+  "statement": "a citation names what a document CARRIES — a quoted sentence, a pin id, a section — and a line number may accompany it but never replace it.",
+  "asymmetry": "a quoted sentence that moves is still findable; a line number that moves is silently wrong with nothing to signal it."
+ },
+ "sourcesScanned": 47,
+ "selfExcluded": {
+  "file": "gruen-citation-audit.mjs",
+  "why": "the first form of this audit scanned its own header, which lists example citations, and counted them as findings. A-G408."
+ },
+ "classification": {
+  "BARE_OFFSET": 68,
+  "TARGET_NAMED": 15,
+  "PHASE_DOC_NAMED": 3,
+  "PORT_OR_ADDRESS": 6
+ },
+ "portsExcludedAndWhy": {
+  "count": 6,
+  "why": "a bare grep for :\\d{2,4} counts the README's port map (:3017, :3020, :3120, :3121) as citations. CLASSIFIED rather than filtered, because a number removed without a name is a number nobody can audit — and an inflated denominator would make this record look more careless than it is, which is the direction GELB's first verifier erred in too."
+ },
+ "totals": {
+  "citations": 86,
+  "carryingASubjectOnTheSameLine": 69,
+  "bareOffsetWithNoSubject": 17,
+  "pctCarryingASubject": 80.2
+ },
+ "intoTheProductComponent": {
+  "note": "the component is the one cited target this lane EDITS. §93 moved it by +7 lines net, so citations past that point are stale by my own hand.",
+  "count": 8,
+  "landingOnATrivialLine": 1,
+  "rows": [
+   {
+    "source": "scripts/gruen-glow.mjs",
+    "sourceLine": 57,
+    "citedLine": 670,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "* (PersonJobMappingField.tsx:670) — the shelf is a still ring (A-F8), so a shelf glow cannot swing by design.",
+    "targetLine": "// PG-14: L0 and L1 frame the bodies they draw whole (the budget's bodies of the level; L1's context bodies ar",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-pf3-blind.mjs",
+    "sourceLine": 16,
+    "citedLine": 835,
+    "classification": "BARE_OFFSET",
+    "carriesSubject": true,
+    "context": "* body group at the component's :835 carries `data-mapping-body data-rank`, and `.mf-core` and the outline sit",
+    "targetLine": "data-halo-radius={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))}",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-pg14-convergence.mjs",
+    "sourceLine": 21,
+    "citedLine": 501,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "*     for (let pass = 0; pass < 2; pass += 1) { ... }          // PersonJobMappingField.tsx:501",
+    "targetLine": "",
+    "landsOnTrivialLine": true
+   },
+   {
+    "source": "scripts/gruen-pg16-satisfiability.mjs",
+    "sourceLine": 12,
+    "citedLine": 479,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "*      `spaced()` at PersonJobMappingField.tsx:479 evaluates THAT EXPRESSION and does not push the body:",
+    "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-pg16-satisfiability.mjs",
+    "sourceLine": 181,
+    "citedLine": 479,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "filterPredicate: \"sep(o,b) - r_o - r_b >= CROWDING * max(ecc_o, ecc_b)   [PersonJobMappingField.tsx:479]\",",
+    "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-pg17-gate.mjs",
+    "sourceLine": 12,
+    "citedLine": 857,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "* `mf-core` (PersonJobMappingField.tsx:857) stops at offsets 0 / 0.4 / 0.75 / 1 with",
+    "targetLine": "<line data-testid={`mapping-trail-${testKey(b)}`} data-mapping-trail x1={fixed(move.from.x - b.x)} y1={fixed(m",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-pg23-computed.mjs",
+    "sourceLine": 24,
+    "citedLine": 711,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "* the one WITHOUT `mf-wave-halo` (PersonJobMappingField.tsx:711, `b.shelf ? undefined : \"mf-wave mf-wave-halo\"`).",
+    "targetLine": "return () => { cancelAnimationFrame(frame); svg.setAttribute(\"viewBox\", boxKey); };",
+    "landsOnTrivialLine": false
+   },
+   {
+    "source": "scripts/gruen-rings.mjs",
+    "sourceLine": 119,
+    "citedLine": 96,
+    "classification": "TARGET_NAMED",
+    "carriesSubject": true,
+    "context": "note: \"A-G39(a): PersonJobMappingField.tsx:96–100 still records the pre-inversion ladder at shelf alpha 0.05. GELB's instruction is to correct that co",
+    "targetLine": "// §23 A-G62: 0.02 → 0.022, because A-G5 over-corrected. The shelf ring is stroked over its OWN opaque black s",
+    "landsOnTrivialLine": false
+   }
+  ]
+ },
+ "bareOffsets": [
+  {
+   "source": "scripts/gruen-facade.mts",
+   "sourceLine": 10,
+   "citedLine": 3120,
+   "context": "* :3120/:3121 are untouched; :3017 (the DLL owner demo) is not started."
+  },
+  {
+   "source": "scripts/gruen-facade.mts",
+   "sourceLine": 10,
+   "citedLine": 3121,
+   "context": "* :3120/:3121 are untouched; :3017 (the DLL owner demo) is not started."
+  },
+  {
+   "source": "scripts/gruen-facade.mts",
+   "sourceLine": 10,
+   "citedLine": 3017,
+   "context": "* :3120/:3121 are untouched; :3017 (the DLL owner demo) is not started."
+  },
+  {
+   "source": "scripts/gruen-fixture-states.mjs",
+   "sourceLine": 29,
+   "citedLine": 695,
+   "context": "*     body outside the focused pool as a DERIVATION from two source lines wanting a reading. `:695` is"
+  },
+  {
+   "source": "scripts/gruen-fixture-states.mjs",
+   "sourceLine": 68,
+   "citedLine": 798,
+   "context": "* (:798), so it only fires for events INSIDE the field — with focus on <body> the key never reaches it,"
+  },
+  {
+   "source": "scripts/gruen-fixture-states.mjs",
+   "sourceLine": 199,
+   "citedLine": 3122,
+   "context": "* declined to route it and was right about the premise — PINK is on 3ec8457d at :3122, its own build, and"
+  },
+  {
+   "source": "scripts/gruen-instrument.mjs",
+   "sourceLine": 214,
+   "citedLine": 670,
+   "context": "/** The glows that BREATHE: only non-shelf halo circles carry mf-wave-halo (:670) — the shelf is a still ring"
+  },
+  {
+   "source": "scripts/gruen-instrument.mjs",
+   "sourceLine": 269,
+   "citedLine": 689,
+   "context": "* (:689) wrapping the opaque black seat and the dark core TOGETHER WITH the body shape, the collar and the"
+  },
+  {
+   "source": "scripts/gruen-pg17-reanchor.mjs",
+   "sourceLine": 33,
+   "citedLine": 143,
+   "context": "const haloNear = 2.6, haloFar = 3.0;                                   // :143 VOLUME"
+  },
+  {
+   "source": "scripts/gruen-pg17-reanchor.mjs",
+   "sourceLine": 34,
+   "citedLine": 124,
+   "context": "const SEAT_PAD_PX = 1.6, STROKE_MIN_PX = 1.2, FLOOR_HEADROOM = 1.002;  // :124 :61 :64"
+  },
+  {
+   "source": "scripts/gruen-pg17-reanchor.mjs",
+   "sourceLine": 34,
+   "citedLine": 61,
+   "context": "const SEAT_PAD_PX = 1.6, STROKE_MIN_PX = 1.2, FLOOR_HEADROOM = 1.002;  // :124 :61 :64"
+  },
+  {
+   "source": "scripts/gruen-pg17-reanchor.mjs",
+   "sourceLine": 34,
+   "citedLine": 64,
+   "context": "const SEAT_PAD_PX = 1.6, STROKE_MIN_PX = 1.2, FLOOR_HEADROOM = 1.002;  // :124 :61 :64"
+  },
+  {
+   "source": "scripts/gruen-pg17-reanchor.mjs",
+   "sourceLine": 35,
+   "citedLine": 714,
+   "context": "// :714 — the seat ring is a stroke CENTRED on r, so it occludes to r + width/2. No body is marked in a"
+  },
+  {
+   "source": "scripts/gruen-pg22-seats.mjs",
+   "sourceLine": 7,
+   "citedLine": 926,
+   "context": "* 3.6 / 3.6 px (`:926`, `:928`, `:930`) — a factor of sixteen, and they do NOT shrink with the stage. At 1280"
+  },
+  {
+   "source": "scripts/gruen-pg22-seats.mjs",
+   "sourceLine": 7,
+   "citedLine": 928,
+   "context": "* 3.6 / 3.6 px (`:926`, `:928`, `:930`) — a factor of sixteen, and they do NOT shrink with the stage. At 1280"
+  },
+  {
+   "source": "scripts/gruen-pg22-seats.mjs",
+   "sourceLine": 7,
+   "citedLine": 930,
+   "context": "* 3.6 / 3.6 px (`:926`, `:928`, `:930`) — a factor of sixteen, and they do NOT shrink with the stage. At 1280"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 292,
+   "citedLine": 3020,
+   "context": "first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,"
+  }
+ ],
+ "finding": "A-G427 ON MY OWN RECORD: 86 line-number citations across 47 scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying 6 port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.\n69 of 86 (80.2 %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. 17 carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.\nINTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: 8 citations, of which 1 now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.\nNO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation."
+}
