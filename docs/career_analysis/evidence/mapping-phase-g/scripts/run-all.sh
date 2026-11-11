@@ -50,6 +50,9 @@ if curl -s -o /dev/null --max-time 3 http://127.0.0.1:3230/ 2>/dev/null; then
     printf '\n=== gruen-hooks-verify @ %s (HOOKED stand :3230) ===\n' "$size"
     GRUEN_BASE=http://127.0.0.1:3230 GRUEN_WT=/home/codi/Entwicklung/condyn-admin-mapping-d-hooks \
       node gruen-hooks-verify.mjs || printf '!! gruen-hooks-verify FAILED at %s (exit %s)\n' "$size" "$?"
+    printf '\n=== gruen-fixture-states @ %s (HOOKED stand :3230) ===\n' "$size"
+    GRUEN_BASE=http://127.0.0.1:3230 GRUEN_WT=/home/codi/Entwicklung/condyn-admin-mapping-d-hooks \
+      node gruen-fixture-states.mjs || printf '!! gruen-fixture-states FAILED at %s (exit %s)\n' "$size" "$?"
   done
 else
   printf '\n(hooked stand :3230 not up — gruen-hooks-verify skipped; see README 6b)\n'

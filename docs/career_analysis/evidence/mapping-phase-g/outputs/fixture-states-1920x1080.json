@@ -1,0 +1,145 @@
+{
+ "reading": "GRÜN · §84 — A-G48's L2 and A-G51's L1 as navigated STATES of the served fixture, with A-G206's span declaration",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "rendered-page interaction and computed style on a loopback build. No raster, no luminance, no sealed datum, NO NEW FIXTURE DATA.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "47e34329c8b749e712fb9bfee8d7f475a27cd9e4",
+  "headShort": "47e34329",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "UTiHc2G2tn-Nh1fyJ6vFH",
+  "measuredAt": "2026-11-11T15:49:28.141Z"
+ },
+ "viewport": "1920x1080",
+ "motion": "reducedMotion:reduce — these are structural states, not breath readings",
+ "A_G206_spanDeclaration": {
+  "one_whatThisSpans": "Four focus states of ONE served fixture (UTiHc2G2tn-Nh1fyJ6vFH): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
+  "two_whatThisDoesNotSpan": "It spans ONE POPULATION — the five bodies of the shared ranking, 2 field and 3 shelf. It is NOT LV01-LV12: the twelve layout inputs exist as existing test data in test/support/mapping/vectors.ts (so B-7 permits them), but the façade serves one job-ranking payload and reaching the other eleven populations needs the façade to serve a chosen vector, which is a façade change and is NOT in this reading. It also does not span L3, a requirement open, or any raster quantity.",
+  "three_whatWouldWidenIt": "A façade route that serves `layoutInputs()[name]` as the job-ranking for a requested vector name. That is a transformation of existing test data rather than new data, so B-7 permits it; it is the next step and it is not pretended to be done here."
+ },
+ "openObservation_coordinateClick": {
+  "what": "page.click() on the pool chip, with a body marked, reported success and left data-level at L0; el.click() on the same selector reached L1. Reproduced in isolation.",
+  "whatIsNotKnown": "whether a REAL pointer is obstructed. Playwright's hit-testing refuses a click whose target is not the topmost element at the point, and it is stricter than a browser; it may also have clicked a stale position. This probe does not resolve it and does not claim a product defect.",
+  "howToSettle": "read `document.elementFromPoint` at the chip's centre while a body is marked, and compare with the chip itself — a one-line check on a rendered page, and the right shape because it asks what is ON TOP rather than what a click does.",
+  "whyItIsRecorded": "a click that succeeds and changes nothing is the same family as Turbopack exiting 0 with no build and `next start` reporting 200 on a LAN-exposed port — three today. The generalisable part is that a tool's success code describes the tool, not the artifact."
+ },
+ "statesAttempted": 4,
+ "statesReached": 4,
+ "statesNotReached": [],
+ "states": [
+  {
+   "name": "L0 · resting",
+   "want": {
+    "level": "L0",
+    "markedCount": 0
+   },
+   "reached": true,
+   "driveError": null,
+   "level": "L0",
+   "pool": "",
+   "role": "",
+   "bodies": 5,
+   "markedCount": 0,
+   "readings": {}
+  },
+  {
+   "name": "L0 · a body MARKED by focus",
+   "want": {
+    "level": "L0",
+    "markedCount": "<predicate>"
+   },
+   "reached": true,
+   "driveError": null,
+   "level": "L0",
+   "pool": "",
+   "role": "",
+   "bodies": 5,
+   "markedCount": 1,
+   "readings": {
+    "markedBody": {
+     "rank": 1,
+     "shelf": false,
+     "marked": true,
+     "inPool": true,
+     "lit": true,
+     "named": true,
+     "opacity": 1,
+     "testid": "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform"
+    },
+    "note": "MARK_ROLE is dispatched on onFocus/onMouseEnter and cleared on blur, so this reading is taken while focus is held"
+   }
+  },
+  {
+   "name": "L1 · a pool open (A-G51)",
+   "want": {
+    "level": "L1",
+    "pool": "<predicate>"
+   },
+   "reached": true,
+   "driveError": null,
+   "level": "L1",
+   "pool": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "role": "",
+   "bodies": 5,
+   "markedCount": 0,
+   "readings": {
+    "PF4_limb3_0_18_path": {
+     "inPoolBodies": 3,
+     "outOfPoolBodies": 2,
+     "inPoolOpacity": {
+      "min": 1,
+      "max": 1
+     },
+     "outOfPoolOpacity": {
+      "min": 0.18,
+      "max": 0.18
+     },
+     "ratio": 5.5556,
+     "sourceLine": ":695 const opacity = inPoolNow ? 1 : 0.18",
+     "note": "§70 scoped limb 3 to ONE focus state. This reading is what the 455.6 % derivation was waiting for: it is a reading of the FOCUS path, and §70's scoping is what keeps the limb from firing on it."
+    },
+    "collarMore": {
+     "found": 0,
+     "elements": [],
+     "budgetFrom_A_G296": "0.850 … 1.338 characters over PG-3's radius range, because the label is LEFT-ANCHORED at the collar's right edge and needs its full width beyond it",
+     "note": "none rendered in this state — :784 renders the span only when `floored > 0`, and §67 records that a disclosure conditional on being non-zero cannot be told from a removed one"
+    }
+   }
+  },
+  {
+   "name": "L2 · a FIELD body open (A-G48)",
+   "want": {
+    "level": "L2",
+    "role": "<predicate>"
+   },
+   "reached": true,
+   "driveError": null,
+   "level": "L2",
+   "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "role": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "bodies": 1,
+   "markedCount": 0,
+   "readings": {
+    "openRole": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "bodiesDrawn": 1,
+    "reachedBy": "two clicks on the same body — L0 opens its pool, L1 opens the role (:682)",
+    "note": "A-G48 asked for an L2 fixture WITH A FIELD BODY so PG-10 finally has a breathing carrier; the body opened here is non-shelf by construction (data-shelf=false), which is the condition A-G48 names"
+   }
+  }
+ ],
+ "discovery": {
+  "poolChips": [
+   "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  ],
+  "fieldBodyUsed": "mapping-body-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform"
+ },
+ "finding": "All 4 states reached and confirmed from the product's own disclosure (data-level / data-pool / data-role / data-marked) before anything was measured in them. A-G48's L2 with a field body and A-G51's L1 are therefore STATES, not data — which is why B-7 was never actually in conflict with them, and the span declaration says exactly what is still owed: LV01-LV12 needs a façade route serving layoutInputs(), a transformation of existing test data rather than an invention."
+}
