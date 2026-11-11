@@ -7683,3 +7683,131 @@ claimed completeness over 23 of 41 pins, a product delta recorded as a repair wh
 contamination diagnosis that was a sampling artefact, and a remedy that reads the disclosure of a different
 obligation.
 
+
+---
+
+## §68 THE HALF §64 MISSED: PF-4's RATIO LIMB FAILS BY CONSTRUCTION, AND PF-3 IS CONTRADICTED BY A DECISION THIS RECORD MADE
+
+`gelb-gate-sweep-pf.mjs` + `.out.txt`, committed at `58085031`, runs A-G128 over PF-1 … PF-18 against the
+restated table in `PHASE_F.md` (A-F7 … A-F15), with the same exact-substring discipline as §64's sweep. **No
+row came back UNVERIFIED. Four findings no measurement would have produced, all arithmetic or a source reading.**
+
+### A-G292 · PF-4's ratio limb fails by construction — 1.45 against a floor of 1.5 *(defect 140)*
+
+PF-4: *"depth monotone in rank, ratio first : last ∈ **[1.5, 3.0]**."*
+
+**`depthGain(rank, lastRank) = round(depthRatio^(−t) × 1e6)/1e6` with `t` normalised to [0, 1], so the ratio
+first : last IS `depthRatio` itself — exactly, at any rank count ≥ 2, at every population and every viewport.**
+
+| | |
+|---|---|
+| `depthGain(1)` | 1.000000 |
+| `depthGain(last)` | 0.689655 |
+| **ratio** | **1.45000** |
+| PF-4's band | **[1.5, 3.0]** |
+| shortfall | **0.05000 — 3.33 % under the floor** |
+
+> **PF-4's ratio limb is failed by construction by this build, and it has never been reported.** Monotonicity
+> holds; the ratio does not. Nothing in the product can move it except the constant.
+
+**And the data was already in hand.** PINK's §18 measured the ladder exactly — 1.000 / 0.911293 / 0.830455 /
+0.756788 / 0.689655 — and reported it against `1.45^(−t)`, **which is the quantity PF-4's band was never
+compared to.** Two lanes had the number and neither had the pin.
+
+**Ruled: the product does not move.** `depthRatio: 1.45` sits in `VOLUME` beside `haloNear` and `haloFar` and may
+well have been chosen for the glow's ramp rather than for PF-4; **PF-4's [1.5, 3.0] has no provenance in this
+record, and §62's A-G254 left this phase at zero of seventeen bounds derived from a finding.** Moving a product
+constant by 3.33 % to satisfy an unexamined bound is A-G255's rule in reverse and the owner's own *"keine
+Neuentwicklung aus Vermutungen"*. **And it would not be free: it lowers `depthGain(last)` to 0.6667, which makes
+PG-10 limb 1 worse, invalidates PINK's ladder and moves A-G137's whole core family.**
+
+> **PF-4's ratio limb is a live red, population- and viewport-independent, and its bound's provenance is owed
+> before anything moves.** A-G139 does not rescue it: `depthGain` rounds at 1e-6, so 3.33 % is far outside any
+> quantisation-order spread.
+
+### A-G293 · PF-3 is contradicted by a decision this record adopted — §4 restated PF-1 and carried PF-3 *(defect 141)*
+
+PF-3: *"body footprint ≥ 6 × outline footprint; **halo peak ≤ 0.25 × core peak**."*
+
+Core peak alpha is `coreAlpha` = 0.16. The halo's declared peak is `haloAlpha` = 0.5, flat to offset 0.33, and
+the opaque seat at exactly `r` occludes it out to `1/haloMult` — so **the first halo alpha a viewer can see is
+0.43628 at rank 1 and 0.49611 at the last rank: 2.727 × and 3.101 × the core's peak, against a bound of
+≤ 0.25 ×. Ten to twelve times the bound.**
+
+**But PF-3 is not a red, and calling it one would be the error.** §4 of this record inverted the light budget and
+**replaced PF-1** with PG-1/PG-2 because *"the disc must now be dark, and the semantics must carry the light"*.
+G-2 and R21 then made the glow **a light source** — *"full at the body's rim … the profile that is seen as
+self-luminous."*
+
+> **"Halo peak ≤ 0.25 × core peak" is the opposite obligation. §4 restated PF-1 and carried PF-3 unchanged, so
+> this phase has been carrying a phase-F obligation that a phase-G decision of its own contradicts.**
+>
+> **Ruled: PF-3's halo limb is retired as superseded by G-2, and the retirement is recorded as a conflict
+> between two adopted decisions rather than as a measurement.** Its footprint limb is untouched and unmeasured.
+
+**This is the cost of A-G165's rule read forwards.** A-G165 held that a finding cited for its direction can
+justify a design and not certify one. **The mirror case is this: an obligation written before an architectural
+inversion cannot survive it unexamined, and §4 proved the point by restating exactly one of the two pins that
+needed it.**
+
+### A-G294 · PF-6's ceiling and PG-10's third limb are one bound under two names *(defect 142)*
+
+PF-6: *"no disc pixel swings > **0.030**."* PG-10 limb 3: *"max swing ≤ **0.030**."* **The same bound on the same
+quantity over the same disc.**
+
+§52 measured it **breached at 1920** — max 0.0327, p999.9 0.0319155, 105 of 51 289 pixels — **and reported it as
+PG-10's.** So **PF-6's ceiling is also breached and has never been reported as breached.** One measurement, two
+pins, one report; and a reader checking PF-6 would find it unmeasured.
+
+> **Ruled: PG-10's third limb is PF-6's ceiling and is recorded as such. PF-6's second row — mean |ΔL| per 500 ms
+> ≤ 0.0025 — is independent, is not PG-10's, and is unmeasured.**
+
+### A-G295 · PF-11 is a four-way conjunction with two carriers under one verdict *(defect 143)*
+
+*"… ≤ 1.5 × the back-to-back count **at every threshold**"* over 0.001 / 0.002 / 0.004 / 0.008 — **a four-way
+conjunction, and A-G144 governs it: a conjunctive pin is only as weak as its strongest requirement and it fails
+the innocent.** At base it read 6.43 / 4.48 / 13.7 / **∞**, so the verdict was carried by its worst threshold and
+**the pin cannot report which regime moved.**
+
+**And the second clause — *"no element with a non-zero computed animation or transition duration"* — is a
+computed-style read.** So **PF-11 fuses a raster distribution and a DOM assertion under one name**: two carriers,
+one verdict, which is A-G31's defect in a pin rather than in an instrument. **Third pin in this phase to carry
+A-G144's hazard unflagged, after PG-19 and PG-18.**
+
+### A-G296 · PF-13 is the name of the risk A-G253 accepted *(defect 144)*
+
+PF-13: *"every phase-D and phase-E test passes, except the three restated in writing."*
+
+**PF-13 *is* the suite.** It is not incidentally gated on B-ENTRY — **it is unverifiable without it, and no
+instrument of any lane can stand in for it**, which is the same categorical argument PINK made for A-G43's
+re-keying, one level up.
+
+> **So the regression risk §62's A-G253 accepted has a name in this record. A-G253 called it *"stated and
+> currently unverifiable"*. PF-13 is the obligation that states it — and it has been carried as "carries over"
+> since §4 without ever being marked HELD.**
+>
+> **Ruled: PF-13 is HELD ON B-ENTRY, in the same bucket as the five mutants, and it is the sixth and largest
+> item in it.** Naming it does not change the decision §62 took; it changes what that decision is called, and a
+> risk with a pin number attached can be reported to an owner in one line.
+
+### A-G297 · PF-16 holds, and its product comment is exactly right
+
+`WEDGE_WASH = 0.009` over `rgb(6,12,17)` renders **`rgb(7,13,19)` — +1/+1/+2 codes**, and the product's own
+comment claims *"+1/+1…2/+2 in R/G/B"*. **It matches, and PF-16's band is [1, 3] codes, so the limb holds.**
+
+**Recorded deliberately.** Two product comments were corrected this week — `GLOW_RAMP`'s floor and the ring
+docstring — and **a lane that reports only the comments that are wrong is not auditing, it is prosecuting.**
+This is the third comment checked and the first that needed nothing.
+
+### And one defect in this section's own instrument, caught before it shipped
+
+The PF-3 block's first draft printed *"the visible ratio is 2.8–3.4 ×, i.e. 11–13 × the bound"* **as typed prose
+beside the computed figures 2.727 and 3.101 immediately above it.** The line is now computed. **A-G283's class —
+a correct computation carried by wrong words — in a sentence of this lane's own, one section after adopting it as
+a question to ask.** The note stays in the instrument rather than being cleaned out, per the habit GRÜN
+established in its limb C.
+
+**Five new defects, all five this lane's: four pins carried into phase G without the gate, and one risk carried
+for sixty-four sections without its name. The count is 144. A-G128's score since §37 is six prospective
+firings.**
+
