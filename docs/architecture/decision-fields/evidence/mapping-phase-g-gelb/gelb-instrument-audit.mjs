@@ -24,6 +24,7 @@ import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { READ } from "./gelb-product-constants.mjs";
 const HERE = dirname(fileURleToPathSafe());
 function fileURleToPathSafe() { return fileURLToPath(import.meta.url); }
 const files = readdirSync(HERE).filter(f => f.endsWith(".mjs") && f !== "gelb-product-constants.mjs").sort();
@@ -56,8 +57,12 @@ console.log(`  from quoting a SHA for citation, not from a decision about stalen
 console.log("\n" + "=".repeat(104));
 console.log("[2] CONSTANT PROVENANCE — GRÜN's defect in this lane's shape");
 console.log("=".repeat(104));
-const NAMES = ["HALO_DEPTH", "SELECTED_GAIN", "HALO_ALPHA", "CORE_ALPHA", "DEPTH_RATIO", "WEDGE_WASH",
-               "CHAR_EM", "SEAT_PAD_PX", "CROWDING", "GLOW_RAMP", "CYAN", "GAP_HUE"];
+/* §90 A-G408, LIMB 1. This was a HAND-WRITTEN LIST OF 12 NAMES, so a constant forked across my
+   instruments but absent from the list was invisible — "a declaration the audit cannot extract is
+   unguarded everywhere" (GRÜN, §89) applied to the AUDIT'S OWN SCOPE, which is one level above the
+   level §89 fixed. The scope now follows the module: every value gelb-product-constants.mjs parses is
+   in scope automatically, so adding a constant there cannot silently leave it unwatched here. */
+const NAMES = Object.keys(READ);
 console.log("");
 const dup = new Map();
 for (const r of rows) {
@@ -65,8 +70,16 @@ for (const r of rows) {
      entirely and the READS row printed "(none)" while the line below it named two readers. That is
      GRÜN's §89 defect two — "the moment the fix landed, the detector called the fix the defect" — in my
      code, after being told about it. Imported names are collected so a reader appears in its own table. */
-  const imported = (r.t.match(/import \{([^}]*)\} from "\.\/gelb-product-constants\.mjs"/) || [, ""])[1]
-    .split(",").map(x => x.trim()).filter(x => NAMES.includes(x));
+  /* §90 A-G408, LIMB 2: this matched only `import { … } from`, so gelb-e7-breath-mode.mjs — which uses
+     `import * as P from` — was skipped by the `continue` below and appeared NOWHERE in this audit, in
+     neither block, while being the newest instrument in the directory. Both import forms now count,
+     and a namespace import is resolved through its own alias. */
+  const ns = (r.t.match(/import \* as (\w+) from "\.\/gelb-product-constants\.mjs"/) || [, null])[1];
+  const imported = [
+    ...(r.t.match(/import \{([^}]*)\} from "\.\/gelb-product-constants\.mjs"/) || [, ""])[1]
+      .split(",").map(x => x.trim()).filter(x => NAMES.includes(x)),
+    ...(ns ? NAMES.filter(k => new RegExp(`\\b${ns}\\.${k}\\b`).test(r.t)) : []),
+  ];
   const declared = NAMES.filter(k => new RegExp(`\\b${k}\\s*=`).test(r.t));
   const has = [...new Set([...declared, ...imported])];
   if (!has.length) continue;
@@ -123,7 +136,12 @@ const PCM = readFileSync(join(HERE, "gelb-product-constants.mjs"), "utf8");
 const parsed = (PCM.match(/^export const [A-Z][A-Z0-9_]*\s*=/gm) || []).length;
 const holds = /^export const [A-Z][A-Z0-9_]*\s*=\s*[0-9.\[]/m.test(PCM);
 console.log(`\n  ${wired.length} instrument(s) READ gelb-product-constants.mjs: ${wired.join(", ") || "(none)"}`);
-console.log(`  That module PARSES ${parsed} values out of the product at a pinned build and holds`);
+/* §90 A-G407's second limb applied here: TWO independent computations of the same quantity, printed
+   together with the reason they differ, instead of one number that is merely consistent with itself. */
+const inREAD = Object.keys(READ).length;
+if (parsed < inREAD) throw new Error(`the module exports ${parsed} UPPER_CASE constants but READ names ${inREAD} — READ cannot exceed the exports`);
+console.log(`  That module exports ${parsed} UPPER_CASE constants and gathers ${inREAD} of them into READ`);
+console.log(`  (the gap of ${parsed - inREAD} is SHA, SOURCES and the aliases, which are not product figures), and holds`);
 console.log(`  ${holds ? "AT LEAST ONE LITERAL OF ITS OWN — which would make it HALTS, not READS" : "NO literal of its own"}, so there is nothing in it to go stale. It refuses rather than`);
 console.log(`  reports if a declaration is missing, duplicated or malformed — GRÜN's writeSealed() shape,`);
 console.log(`  and GRÜN's §89 rung above the HALTS form I first built.`);
@@ -165,7 +183,19 @@ console.log(`  A constant copied out of the product without a check is not a cit
 console.log("\n" + "=".repeat(104));
 console.log("[3] OUTPUT LOCATION — is GRÜN's scatter hazard reachable here, and did it happen?");
 console.log("=".repeat(104));
-const selfWriting = rows.filter(r => /writeFileSync/.test(r.t));
+/* §90 A-G408, LIMB 3 — AND THIS ONE HID THE OTHER TWO FOR HALF AN HOUR. The filter was
+   /writeFileSync/.test(r.t), which matched THIS FILE, because this file contains that literal inside
+   the detector. So the audit listed ITSELF as writing its own output; I then ran it with `> /dev/null`
+   on that belief and read, quoted and reasoned about an output file written before the newest
+   instrument existed. *** A DETECTOR THAT MATCHES ITS OWN SOURCE IS NOT A DETECTOR. *** The remedy is
+   one this lane already ruled once, in §80, when a PRESENT/PRESENT limb-2 probe was matching comments:
+   a scan for CODE must first exclude the forms that are not code. Second instance of that rule, and
+   this time the non-code form was a regex literal inside the scanner itself.
+   TWO LIMBS, because either alone can be fooled: the file must IMPORT the function AND CALL it. */
+const callsWrite = t => /import \{[^}]*\bwriteFileSync\b/.test(t) && /\bwriteFileSync\s*\(/.test(t);
+const selfWriting = rows.filter(r => callsWrite(r.t));
+if (callsWrite(readFileSync(join(HERE, "gelb-instrument-audit.mjs"), "utf8")) !== false)
+  throw new Error("the self-writing detector still matches this audit, which does not write its own output");
 console.log(`\n  instruments that write their own output file: ${selfWriting.length} of ${rows.length}`);
 for (const r of selfWriting) {
   const abs = /import\.meta\.url/.test(r.t);

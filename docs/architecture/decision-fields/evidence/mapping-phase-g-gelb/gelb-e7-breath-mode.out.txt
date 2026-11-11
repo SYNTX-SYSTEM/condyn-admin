@@ -1,0 +1,164 @@
+========================================================================================================
+GELB · §90 A-G406 — E-7's BREATH TROUGH. Product @ 4b83414e, cross-checked at HEAD 20a0b131
+========================================================================================================
+
+[1] THE BREATH GROUPS THAT EXIST IN THE PRODUCT — read from the stylesheet, not assumed
+
+  the keyframe's law, read from the product:  opacity: calc(var(--mf-wave-mean) + var(--mf-wave-depth) * var(--mf-wave-gain, 1) * ${w})
+  waveAt returns w ∈ [−1, 1], so each group sweeps mean ± depth:
+
+    group              mean        depth       trough      peak        peak-to-peak
+    .mf-wave-ground   0.5000      0.5000      0.0000      1.0000      1.0000
+    .mf-wave-halo     0.8825      0.1175      0.7650      1.0000      0.2350
+
+  *** 2 GROUPS BREATHE AND NEITHER IS A RING. *** The halo's mean is not stored here: it is
+  checked to BE 1 − haloDepth/2 = 0.8825 and its depth to BE haloDepth/2 = 0.1175, from
+  WAVE.haloDepth = 0.235. A relation verified beats a number stored (§88).
+========================================================================================================
+[2] MOTION.breath — DECLARED, AND READ BY EXACTLY ONE CONSUMER IN THE WHOLE TREE
+========================================================================================================
+
+  MOTION.breath as the product declares it: {"periodMs":10000,"radiusAmplitude":0.015,"opacityMean":0.96,"opacityAmplitude":0.04}
+
+  @ 4b83414e:  3 hit(s) — 2 in the drawing surface (declaration + its own docstring), 1 in test, 0 elsewhere
+      app/components/career/demo/PersonJobMappingField.tsx:80
+      app/components/career/demo/PersonJobMappingField.tsx:84
+      test/career/mapping-field/neurovisual-e.test.ts:85
+    render-path readers: 0      non-declaring consumers: 1
+  @ HEAD:  3 hit(s) — 2 in the drawing surface (declaration + its own docstring), 1 in test, 0 elsewhere
+      app/components/career/demo/PersonJobMappingField.tsx:80
+      app/components/career/demo/PersonJobMappingField.tsx:84
+      test/career/mapping-field/neurovisual-e.test.ts:85
+    render-path readers: 0      non-declaring consumers: 1
+
+  every MOTION sub-object the tree mentions: MOTION.breath, MOTION.layout, MOTION.query, MOTION.stage, MOTION.transient
+  the ones the DRAWING SURFACE reads:        MOTION.layout, MOTION.query, MOTION.stage, MOTION.transient
+
+  *** 1 SUB-OBJECT(S) OF MOTION ARE READ BY NO RENDER PATH: MOTION.breath ***
+========================================================================================================
+[3] THE FIELD RING DOES NOT BREATHE — and the product says so in its own words
+========================================================================================================
+
+  the ring, at :959 —
+      carries data-breath:            true
+      carries a .mf-wave class:       false
+      sits under an .mf-wave group:   false
+
+  every CSS rule the breath state drives (2):
+      :317  [data-testid="mapping-field"][data-breath="LIVE"] .mf-wave { animation: mappingFieldWave ${WAVE.
+      :320  [data-testid="mapping-field"][data-breath="LIVE"] .mf-travel { opacity: 1; animation: mappingFie
+
+  every element that carries a wave class (2):
+      :711  mf-wave-halo   (written as a conditional — the form the first scan missed)
+      :920  mf-wave-ground   (a plain string literal)
+
+  AND THE ARCHITECTURE IS NOT AMBIGUOUS — the product states it at :953:
+      "best-fit ring, the horizon, the field's edge. The edge carries E-6's state (data-breath); the breath itself is the medium's. */}"
+
+  *** SO data-breath ON THE RING IS A STATE MARKER, BY DESIGN. *** Both selectors require a
+  .mf-wave DESCENDANT of the field root; the ring is neither a descendant of itself nor a
+  wave element. 2 element(s) breathe — halo, ground — and the ring's alpha is static.
+
+  *** A-G407, AND IT IS ABOUT A-G396 RATHER THAN ABOUT THE PRODUCT. *** The first form of the scan above
+  printed 1 where it now prints 2, because the halo's class is written as a CONDITIONAL and my pattern
+  required a quote right after the brace. A-G396 says every numeral in a narrative line must be an
+  interpolated variable, so the sentence beside it printed the same wrong number — and in §80 through §89
+  it was precisely a TYPED numeral DISAGREEING with its own adjacent output that caught twelve defects.
+  *** INTERPOLATION MADE THE NARRATIVE AGREE WITH THE SCAN BY CONSTRUCTION, WHICH REMOVED THE DETECTOR
+  ALONG WITH THE ERROR CLASS. *** A-G396 moved the failure from "the prose is wrong" to "the prose is
+  faithfully wrong", which is harder to see, not easier. THE RULE STANDS AND GAINS A SECOND LIMB: an
+  interpolated count must be accompanied by an INDEPENDENT ASSERTION on the same quantity — above, that
+  the number of wave-carrying ELEMENTS equals the number of wave GROUPS the stylesheet defines, which is
+  the throw one line up and which fails loudly on the old pattern. A count with no second opinion is not
+  verified by being computed; it is only consistent with itself.
+========================================================================================================
+[4] THE LADDER UNDER EVERY BREATH THE PRODUCT COULD SUPPLY — and the rung that is tightest
+========================================================================================================
+
+  RING_LUMINANCE, read from the product: {"shelf":0.022,"best":0.085,"field":0.15,"horizon":0.25}
+  CONTRACT.bandStep, read from the test:  1.6   (= LUMINANCE_STEP_MIN 1.6 in the model file: true)
+
+  the three rungs E-7 asserts, as the test computes them:
+      best/shelf ≥ bandStep        trough/best ≥ bandStep        horizon/min(1,peak) ≥ bandStep
+  where trough = field × (mean − amp) and peak = field × (mean + amp).
+
+    hypothesis                      mean      amp       trough    peak      r1      r2      r3      verdict
+    AS WRITTEN — MOTION.breath      0.9600    0.0400    0.1380    0.1500    3.864   1.624   1.667   PASS
+    the halo's actual breath        0.8825    0.1175    0.1148    0.1500    3.864   1.350   1.667   FAIL
+    the ground's actual breath      0.5000    0.5000    0.0000    0.1500    3.864   0.000   1.667   FAIL
+    NO BREATH — the ring as drawn   1.0000    0.0000    0.1500    0.1500    3.864   1.765   1.667   PASS
+
+  2 of 4 hypotheses FAIL, and they are exactly the 2 that name a group that really breathes:
+      the halo's actual breath        fails r2 trough/best = 1.350 < 1.6
+      the ground's actual breath      fails r2 trough/best = 0.000 < 1.6
+
+  AND THE RUNG MEASURED AGAINST THE DEAD CONSTANT IS THE TIGHTEST ONE IN THE LADDER:
+      trough/best           1.6235  = bandStep × 1.0147   margin +1.47 %
+      horizon/min(1,peak)   1.6667  = bandStep × 1.0417   margin +4.17 %
+      best/shelf            3.8636  = bandStep × 2.4148   margin +141.48 %
+
+  *** THE LADDER'S WHOLE MARGIN SITS ON trough/best AT 1.47 %, AND THAT IS THE ONLY RUNG
+  WHOSE VALUE COMES FROM A CONSTANT NOTHING RENDERS. *** Under the halo's real breath the same
+  rung reads 1.350 against 1.6 — short by 15.6 %. The static ring, which is what the
+  product paints, clears every rung: 3.864, 1.765, 1.667.
+========================================================================================================
+[5] A-G128 ON E-7's BREATH CLAUSE — can the product make this rung fail?
+========================================================================================================
+
+  LIMB 1, arithmetic: the rung admits a pass and a fail — 1.624 passes, 1.350 would fail. SATISFIABLE.
+  LIMB 2, A-G268 enforcement: does the PRODUCT evaluate this predicate? The only reader of
+      MOTION.breath.opacityMean outside its own declaration is:
+        test/career/mapping-field/neurovisual-e.test.ts:85
+      — the assertion itself. *** THE TEST IS THE ONLY CONSUMER OF THE CONSTANT IT TESTS AGAINST. ***
+      No change to anything the product DRAWS can move this rung; only editing the constant can,
+      and the constant is read by the test that reads it. ZERO-BY-CONSTRUCTION, in the §80 sense:
+      the rung cannot report a defect in the drawn output because it never reads the drawn output.
+  LIMB 3, A-G313 motion-mode: the pin names a MULTIPLICATIVE MODULATION OF A STROKE'S OWN ALPHA on
+      the field ring. The quantity that exists is GROUP OPACITY on the medium. Different subject,
+      different mode, different magnitude — amp 0.0400 named, 0.1175 and 0.5000 real
+      (2.94× and 12.50× the named figure). NOT THE SAME QUANTITY.
+
+  AND THE ROOT CAUSE, WHICH IS NOT CARELESSNESS: the test holds its OWN contract copy — the right
+  shape, since a test that reads the product's constant cannot fail. CONTRACT.breath declares
+  3 figures (hz 0.1, radius 0.015, opacity 0.04) and asserts 1 of them (hz).
+  *** IT DECLARES NO MEAN. *** The clause needs a mean to locate a trough, the contract does not
+  state one, so the test reached into the product for it — and reached a dead declaration.
+  2 of the contract's own breath figures (radius, opacity) are asserted nowhere.
+========================================================================================================
+[6] VERDICT, AND WHAT EACH LANE OWES
+========================================================================================================
+
+  A-G406, RULED. E-7's breath clause is INCONCLUSIVE BY CONSTRUCTION (A-G364's state, third instance):
+  the instrument resolves perfectly and resolves something the pin does not name. The ladder's STATIC
+  three rungs hold on the shipping build with margin — 3.864, 1.765, 1.667 against 1.6 — and that is the
+  ladder E-7 should assert, because the ring E-7 orders is static BY THE PRODUCT'S OWN DESIGN (:953).
+
+  NOT A DEFECT IN THE BUILD. The build is coherent: the breath migrated to the medium in phase F and the
+  component says so where it draws. The defect is a TEST and a DECLARATION left behind by that migration,
+  and A-G54 read forwards is why it matters — a figure is a property of a build, and 0.0400 is a property
+  of no build that ships.
+
+  GRÜN OWES, and it is an ACTION rather than an argument (A-G403):
+    1. DELETE MOTION.breath from the drawing surface. The constant-provenance ladder (§88) says the right
+       move for a dead VALUE is to delete the copy, not to guard it. Deleting it BREAKS the test, which is
+       how the defect surfaces — that is the remedy working, not the remedy failing.
+    2. RE-POINT E-7 at the static ladder: best/shelf, field/best, horizon/field, each ≥ bandStep. No mean,
+       no trough, no borrowed constant.
+    3. The docstring at :84 goes with it. It states a contract ("field ring is at opacityMean −
+       opacityAmplitude of its value") that nothing executes, and it is the SECOND docstring this phase to
+       quote a figure the product does not use — SEAT_PAD_PX's at :118 was the first (§80).
+
+  PINK OWES A PROBE, not a ruling, because this lane cannot execute it (A-G393): the ground group sweeps
+  its opacity over [0.0000, 1.0000] across 7 staggered layers, with base stops 0.075 … 0.06 … 0.042 … 0.026 … 0.018.
+  E-7 orders RINGS and says nothing about the medium behind them. *** IS THE GROUND AT ITS BREATH PEAK
+  EVER ≥ bandStep-ordered against the shelf ring at 0.022? *** The two do not overlap spatially at this
+  build (the ground discs stop at shelfNear, the shelf band starts there), so this is a PIXEL question on
+  the real stack and not a source question. It is raised as the open obligation E-7 never stated, and it
+  is NOT counted as a defect until measured.
+
+========================================================================================================
+CONSTANT PROVENANCE OF THIS INSTRUMENT: every product value above is READ from
+gelb-product-constants.mjs (35 values parsed at 4b83414e, no literal held). This file holds no copy.
+That module's scope after §90: 63 declarations across 5 files, 24 covered, 39 not.
+Names the drawing surface IMPORTS and this module cannot reach: 0 — §89's scope defect discharged.
+========================================================================================================

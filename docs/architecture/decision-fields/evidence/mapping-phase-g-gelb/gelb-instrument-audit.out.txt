@@ -8,6 +8,7 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   SELF-CONTAINED   gelb-a-g340-ceiling-withdrawn.mjs    e5d207cb
   PINNED+READS     gelb-a-g340-exact.mjs                4b83414e 3ec8457d
   SELF-CONTAINED   gelb-a-g340-support.mjs              
+  READS-UNPINNED   gelb-e7-breath-mode.mjs              
   PINNED+READS     gelb-gate-motion-mode.mjs            4b83414e
   PINNED+READS     gelb-gate-pf8-tiers.mjs              4b83414e 9cc06f84 93c47e03
   SELF-CONTAINED   gelb-gate-pg10.mjs                   
@@ -22,7 +23,7 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   SELF-CONTAINED   gelb-premultiplied-fit.mjs           c7ab8731
   SELF-CONTAINED   gelb-provenance-selfaudit.mjs        7910845b 3ec8457d
 
-  PINNED+READS 7   READS-UNPINNED 1   SELF-CONTAINED 9
+  PINNED+READS 7   READS-UNPINNED 2   SELF-CONTAINED 9
 
   No instrument reads HEAD. The 7 that read the product name the build they read, so their
   outputs are build-stable by construction — the property GRÜN's seals needed a guard to get,
@@ -37,12 +38,13 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   READS    gelb-a-g340-ceiling-withdrawn.mjs    HALO_DEPTH SELECTED_GAIN HALO_ALPHA CYAN
   REPORTS  gelb-a-g340-exact.mjs                HALO_DEPTH SELECTED_GAIN HALO_ALPHA CYAN
   READS    gelb-a-g340-support.mjs              HALO_DEPTH SELECTED_GAIN HALO_ALPHA CYAN
-  REPORTS  gelb-gate-pf8-tiers.mjs              SEAT_PAD_PX
+  READS    gelb-e7-breath-mode.mjs              HALO_DEPTH WAVE_LAYERS RING_LUMINANCE GROUND_STOPS MOTION_BREATH WAVE_GROUPS LUMINANCE_STEP_MIN
+  REPORTS  gelb-gate-pf8-tiers.mjs              SEAT_PAD_PX RING_LUMINANCE
   READS    gelb-gate-pg10.mjs                   SEAT_PAD_PX CYAN GLOW_RAMP
-  READS    gelb-gate-pg12.mjs                   GLOW_RAMP GAP_HUE HALO_ALPHA
-  READS    gelb-gate-pg17-pg19.mjs              SEAT_PAD_PX GLOW_RAMP
-  REPORTS  gelb-gate-sweep-a-g128.mjs           SEAT_PAD_PX
-  REPORTS  gelb-gate-sweep-pf.mjs               HALO_ALPHA CORE_ALPHA DEPTH_RATIO WEDGE_WASH GLOW_RAMP CYAN
+  READS    gelb-gate-pg12.mjs                   GAP_ALPHA_GAIN GAP_HUE GLOW_RAMP HALO_ALPHA HALO_NEAR HALO_FAR
+  READS    gelb-gate-pg17-pg19.mjs              SEAT_PAD_PX INK GLOW_RAMP
+  REPORTS  gelb-gate-sweep-a-g128.mjs           SEAT_PAD_PX RING_WIDTH_PX
+  REPORTS  gelb-gate-sweep-pf.mjs               HALO_ALPHA CORE_ALPHA DEPTH_RATIO HALO_NEAR HALO_FAR WEDGE_WASH CYAN GLOW_RAMP
   NOTHING  gelb-pg14-side-allowance.mjs         CHAR_EM
 
   constants in more than one instrument, by the state of each copy (reads / halts / reports / none):
@@ -50,7 +52,10 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
     CYAN           5 copies: 3 read, 0 halt, 2 report, 0 NONE
     GLOW_RAMP      4 copies: 3 read, 0 halt, 1 report, 0 NONE
     HALO_ALPHA     5 copies: 3 read, 0 halt, 2 report, 0 NONE
-    HALO_DEPTH     4 copies: 2 read, 1 halt, 1 report, 0 NONE
+    HALO_DEPTH     5 copies: 3 read, 1 halt, 1 report, 0 NONE
+    HALO_FAR       2 copies: 1 read, 0 halt, 1 report, 0 NONE
+    HALO_NEAR      2 copies: 1 read, 0 halt, 1 report, 0 NONE
+    RING_LUMINANCE 2 copies: 1 read, 0 halt, 1 report, 0 NONE
     SEAT_PAD_PX    4 copies: 2 read, 0 halt, 2 report, 0 NONE
     SELECTED_GAIN  4 copies: 2 read, 1 halt, 1 report, 0 NONE
 
@@ -59,13 +64,14 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   files and went stale the moment §87's remedy landed, which is the tenth instance this phase
   and the first I had already committed:
 
-    READS    a-g340-ceiling-withdrawn, a-g340-support, gate-pg12, gate-pg10, gate-pg17-pg19   <- holds no copy; strictly strongest
+    READS    a-g340-ceiling-withdrawn, a-g340-support, e7-breath-mode, gate-pg12, gate-pg10, gate-pg17-pg19   <- holds no copy; strictly strongest
     HALTS    a-g340-capability
     REPORTS  a-g340-exact, gate-sweep-pf, gate-pf8-tiers, gate-sweep-a-g128
     NOTHING  pg14-side-allowance
 
-  5 instrument(s) READ gelb-product-constants.mjs: a-g340-ceiling-withdrawn, a-g340-support, gate-pg10, gate-pg12, gate-pg17-pg19
-  That module PARSES 25 values out of the product at a pinned build and holds
+  7 instrument(s) READ gelb-product-constants.mjs: a-g340-ceiling-withdrawn, a-g340-support, e7-breath-mode, gate-pg10, gate-pg12, gate-pg17-pg19, instrument-audit
+  That module exports 40 UPPER_CASE constants and gathers 35 of them into READ
+  (the gap of 5 is SHA, SOURCES and the aliases, which are not product figures), and holds
   NO literal of its own, so there is nothing in it to go stale. It refuses rather than
   reports if a declaration is missing, duplicated or malformed — GRÜN's writeSealed() shape,
   and GRÜN's §89 rung above the HALTS form I first built.
@@ -80,17 +86,17 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
   share and ratio is an interpolated variable computed above it. ***
 
   AND ONE LIMIT ON THAT RULE, STATED BECAUSE I CALLED IT "GREPPABLE" FIRST AND IT IS NOT A GATE:
-  grepping my own instruments for bare numerals in narrative lines returns 166 of them, and
+  grepping my own instruments for bare numerals in narrative lines returns 180 of them, and
   most are legitimate labels — viewport widths, "8-bit", a rung named "10q". *** I cannot
   mechanically distinguish a LABEL from a DERIVED FIGURE, so the grep is a review aid with
   false positives and not a check that can fail. *** The rule is still worth having because it
   names the act rather than the virtue; it is simply not the gate I claimed one sentence ago.
 
   Instruments by their strongest constant check: HALTS 1, REPORTS 4, NOTHING 1.
-  Copies by state: 2 halt, 12 report, 1 check nothing.
+  Copies by state: 2 halt, 16 report, 1 check nothing.
   So if the product's haloDepth moved: 1 instrument stops, 4 mention it in passing, and the
   1 whose numbers are in the record keep producing them.
-  *** GRÜN's seal guard went from CONVENTION to REFUSES. Mine is at REFUSES in 1 file of 11. ***
+  *** GRÜN's seal guard went from CONVENTION to REFUSES. Mine is at REFUSES in 1 file of 12. ***
 
   THAT IS GRÜN'S "A CONVENTION IS NOT A BOUNDARY" IN THIS LANE. My convention is "verify the
   constants in the instrument where I first read them"; nothing enforces it in any other file,
@@ -101,14 +107,13 @@ GELB · INSTRUMENT AUDIT — pinning, output location, constant provenance
 [3] OUTPUT LOCATION — is GRÜN's scatter hazard reachable here, and did it happen?
 ========================================================================================================
 
-  instruments that write their own output file: 3 of 17
+  instruments that write their own output file: 2 of 18
     gelb-gate-pg10.mjs                   path from import.meta.url — IMMUNE to a wrong cd
     gelb-gate-pg17-pg19.mjs              path from import.meta.url — IMMUNE to a wrong cd
-    gelb-instrument-audit.mjs            path from import.meta.url — IMMUNE to a wrong cd
 
-  the other 14 write nothing: their output is captured by SHELL REDIRECTION, whose
+  the other 16 write nothing: their output is captured by SHELL REDIRECTION, whose
   destination is my working directory at the moment I run them. *** SO THE HAZARD IS REACHABLE
-  FOR 14 OF 17 INSTRUMENTS, and it is reachable through the one mechanism GRÜN's module-load
+  FOR 16 OF 18 INSTRUMENTS, and it is reachable through the one mechanism GRÜN's module-load
   assertion cannot see — a redirection outside the process. ***
 
   DID IT HAPPEN? every gelb-*.out.txt in both worktrees, outside the canonical root: 0
