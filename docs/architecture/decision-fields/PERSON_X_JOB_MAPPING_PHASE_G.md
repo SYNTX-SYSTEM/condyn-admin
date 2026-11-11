@@ -6978,3 +6978,173 @@ holds.
 mitigation offered to the owner that did not exist, one census read from one of two tables, and A-G220 broken by
 its author on the axis it does not mention.
 
+
+---
+
+## §64 SEVEN OF TWENTY-THREE PINS CANNOT BE FAILED BY ANY RENDER — AND THE GATE THAT FINDS THEM IS A SOURCE READING, NOT A MEASUREMENT
+
+GRÜN answered §62's A-G128 question on PG-16 in four limbs (`outputs/pg16-satisfiability-at-0.3.json`). **Its
+limb A is the largest structural finding of the phase, and it generalises to a question nobody had asked
+generally.** This section is that answer, the question generalised, and the sweep that follows from it.
+
+### A-G267 · PG-16 is unfalsifiable by construction — the pin predicate and the product's filter are one expression *(defect 114)*
+
+GRÜN's limb A, and the product's own docstring is the evidence:
+
+> `4b83414e:470` — ***"PG-5 / PG-16:** the bodies a level draws — by rank, at most `budget`, and only while
+> every drawn pair keeps free rim-to-rim space of CROWDING × the eccentricity … A body that would crowd one
+> already drawn is left to the list, like the ones beyond the budget: the spacing wins, the budget shrinks."*
+
+**§11's pin predicate and `spaced()`'s filter predicate at `:479` are the same expression over the same
+operands.** The product declines to draw any body that would violate the pin, so **no layout in the exercised set
+can fail PG-16 — at 0.3, at 0.5, or at any value.** GRÜN's own statement of the consequence: *"the obstruction is
+the shared expression and not the number in it."*
+
+**And GRÜN drew the line this lane needed drawn and would have been tempted to blur:** *"restoring the bound to
+0.3 does NOT give you a derived bound on an unfalsifiable pin by some accident of the number — the pin is
+unfalsifiable by construction and was equally so at 0.5. A-G156 did not make it unfalsifiable and withdrawing
+A-G156 will not make it falsifiable. The two questions are independent."* **So §62's A-G255 stands unchanged and
+inherits no new defect, provided the registry entry says what the pin can and cannot do.** It now does.
+
+**Limb B — on 5 of 11 layouts with a subject the spacing removes not one body at 0.3.** There the budget alone
+fixes the drawn set and **PG-16 is inert, not merely unfalsifiable.**
+
+**Limb C came out the opposite way from how GRÜN had pre-written it, and GRÜN withdrew its own prediction in the
+file rather than deleting it.** It expected 0.3 to sit in a wide dead zone where the value could not matter.
+
+| | |
+|---|---|
+| layouts whose drawn set changes somewhere in (0.3, 0.5] | **10 of 11** |
+| 0.3 interior to its invariance interval | 11 of 11 — no layout sits *at* a boundary |
+| tightest interval (LV10, pressed from the inner edge) | **(0.298531, 0.317636)** — 0.3 is **0.001469** from a change |
+
+**The asymmetry is the finding, and it is GRÜN's sentence:** *"the field is very sensitive to the constant's
+VALUE and entirely insensitive to whether the PIN holds, because the product enforces the pin and reports the
+constant only through which bodies survive."* **That strengthens §62's restoration of the derived number rather
+than weakening it** — and it is why limb A is not a technicality.
+
+**Limb D is an erratum GRÜN raised against its own earlier file, and both lanes had quoted the number.**
+`pg16-crowding-at-0.5.json` carries a field named `spacingOnlyCapacity` computed as `spaced(byRank, Infinity, c)`
+— **a greedy count, not a capacity.** On 7 of 11 layouts the rank-greedy filter admits **fewer** bodies than the
+crowding constraint alone permits (exhaustively verified): LV05 8 vs 11, LV08 15 vs 18, LV09 10 vs 12, LV10 15 vs
+18, LV07 11 vs 14, LV12 9 vs 11, LV11 8 vs 9.
+
+> **"The drawn count is therefore a function of the RANK ORDER as well as of the constant, and 'spacing-only
+> capacity' is not a capacity."**
+
+**GRÜN's containment of its own erratum is correct and I have checked it:** the figures are right **as drawn
+counts**, because `spaced()` is greedy and greedy is what the product draws; **no layout's BUDGET/SPACING
+classification flips** under the true maximum, since both fall on the same side of the budget. So §57's
+conclusions stand. **The erratum is confined to the name of one field and to any capacity reading of it.**
+
+**And I made the capacity reading.** §62's A-G255 says *"the L1 cap binds on LV08/LV10 by three against a spacing
+capacity of 15."* **The 15 is the greedy count. The true maximum is 18, so the L1 budget of 12 binds by six, not
+by three** *(defect 115)*. The conclusion is unharmed and in fact stronger — the budget is **more** load-bearing
+than I reported — but **A-G236/A-G237 already ruled that an aggregate computed by another lane is that lane's
+interpretation and the rows are the measurement, and I adopted that rule and then quoted an aggregate again.**
+Second instance, mine, against a rule four sections old.
+
+### A-G268 · A-G128 gains a limb, and it is GRÜN's: does the product evaluate the pin's own predicate?
+
+> **Before a pin is measured: does the PRODUCT ITSELF evaluate this pin's predicate and decline to emit a
+> counterexample? If it does, the pin is ZERO-BY-CONSTRUCTION — no build and no constant can fail it, and what
+> is falsifiable is the PRESENCE AND CORRECTNESS OF THE ENFORCEMENT, not the output's compliance.**
+
+**It is cheaper than A-G128's arithmetic limb, because it is a source reading rather than a computation**, and it
+fires on pins no quantity of measurement would ever have cleared. **The remedy shape is uniform and is GRÜN's:**
+*"Delete line 479's clearance test and a layout must visibly gain a crowded body. That is a mutant, it is cheap,
+and it is exactly the shape A-F11 asks for."*
+
+**GRÜN flagged rather than quietly did the thing that follows, and the flagging is the discipline:** a mutant is a
+vitest assertion, so it lands in §62's held-on-B-ENTRY bucket with the other two.
+
+### A-G269 · The gate swept over all twenty-three pins: seven cannot be failed by any render *(defect 116, 117, 118)*
+
+**A-G128 was adopted in §37 and states that it stands before every measurement. Every pin measured before §37
+therefore never passed through it** — including **PG-1**, the phase's founding obligation, which PINK declared
+GREEN, and **PG-6**, the phase's live red. `gelb-gate-sweep-a-g128.mjs` + `.out.txt`, committed at `dbd1370d`,
+closes that omission.
+
+**Its construction is the part worth defending.** A source reading asserted in a section cannot be checked by the
+next reader, so **every claim in it names an exact substring of the committed source at `4b83414e`, and a row
+whose substring is absent or occurs more than once is reported UNVERIFIED and its verdict does not stand.** On
+the first run **two rows were UNVERIFIED — PG-20's and PG-22's anchors were ambiguous** — which is the instrument
+catching a loose reading of mine before it became a sentence. Both are now pinned to unique sites.
+
+| pin | verdict | why |
+|---|---|---|
+| **PG-5** | **ZERO-BY-CONSTRUCTION** | `if (out.length >= budget) break;` — the drawn count cannot exceed the budget for any build |
+| **PG-14** | **ZERO-BY-CONSTRUCTION**, with a residue | `frameWithBodies` *widens* the frame to the union with every drawn body's extent |
+| **PG-15** | **ZERO-BY-CONSTRUCTION** | SVG paints in document order; the rings precede `mapping-glows` and the bodies |
+| **PG-16** | **ZERO-BY-CONSTRUCTION** | A-G267 |
+| **PG-4** | **OWNER LEVER** | `BODY_NAMES_AT_L0 \|\| isMarked \|\| …` is unconditionally true at L0 while the constant is true |
+| **PG-7** | **CONSTANT-ONLY** | a relation between two source constants, both 10000 ms |
+| **PG-18** | **CONSTANT-ONLY + A-G144 HAZARD** | *"at least one"* is a disjunction, and the qualifying motion's profile is a source constant |
+
+> **Seven of twenty-three pins are not falsifiable by any render.** Four because the product enforces them, one
+> because it states that an owner's lever is set, two because they compare constants.
+
+**Three of these are new defects of this lane's, and they are defects in the step from obligation to pin —
+A-G165's class, in a shape A-G165 did not name:**
+
+- *(defect 116)* **PG-5, PG-14, PG-15 and PG-16 took the product's own enforcement for a property of the
+  artifact.** One defect in four instances: *an obligation the product implements as a filter cannot be a pin
+  over the filter's output.*
+- *(defect 117)* **PG-4 is a pin on an owner lever, reported as an obligation on the build.** §8 recorded that
+  `BODY_NAMES_AT_L0` is one of PHASE_E §5's reversible levers and that I was *"taking that decision and reporting
+  it to him as a decision taken on his lever"*. **A pin that passes exactly when a lever is set is a statement
+  about the lever, and PG-4 has been reported as a verdict about the render.**
+- *(defect 118)* **PG-18 carries A-G144's disjunction hazard, and A-G144 is mine.** *"A disjunctive pin is only
+  as strong as its weakest escape — it cannot fail."* **PG-18 says "at least one of the field's motions", which
+  is that structure exactly, and nobody applied A-G144 to it** — including me, in the section where I wrote
+  A-G144 and applied it to PG-19.
+
+### A-G270 · PG-3 splits, and the product's disclosure is a better remedy than a mutant
+
+**PG-3's `≥ 56 px` limb is enforced** — `sizeFloor(b.drawnRadius, k)` lifts any radius under the floor — **but
+the product DISCLOSES the lift**: `data-testid="mapping-size-floor"` with a `data-count` of how many bodies were
+floored. **So a falsifiable quantity exists and is already addressable: read the disclosure, not the radius.**
+
+> **Ruled: PG-3's lower limb is restated on the disclosure — *how many bodies required the floor* — and its
+> `≤ 92 px` limb stays a live render test.** A pin that reads the artifact's own report of where it had to
+> intervene is better than a mutant, because **it fails on a real build rather than on a sabotaged one.**
+
+**This is the one zero-by-construction case in the phase with a remedy that costs no vitest**, and it is worth
+naming as the preferred shape: **where the product enforces an obligation, look first for a disclosure of the
+enforcement; reach for a mutant only when there is none.**
+
+### A-G271 · PG-14 hides a live, unmeasured obligation inside a pin that reads as trivially satisfied
+
+**The containment holds by construction. The *solve* does not.** The product's own comment at `4b83414e:486`:
+*"the extent is in screen px (k), so it is solved twice against the frame it widens"* — and the code is
+`for (let pass = 0; pass < 2; pass += 1)`.
+
+> **PG-14's falsifiable content is the CONVERGENCE OF THAT TWO-PASS FIXED POINT, not the containment** — and no
+> instrument in this phase, in any lane, has tested it.
+
+**A frame that widens changes `k`, which changes the extent in screen px, which changes how much the frame must
+widen.** Two passes is a choice, not a proof, and nothing establishes that two suffice at every level and every
+population. **This is a coverage hole rather than a defect** — PG-14 is not a wrong statement, it is a true
+statement with the interesting part underneath it — and **it is the second hole this phase has found by asking
+what a pin would be testing if it were not testing the obvious thing.** The first was A-G239's.
+
+**It is also cheap: it is arithmetic on the layout spec and the fixtures, needs no render and no credential, and
+it belongs to whichever lane reaches it first.** I am stating it rather than assigning it.
+
+### What this costs the phase, and the one rule that is paying prospectively
+
+**The credential block is larger and better understood than it was, not smaller.** Three mutants now sit behind
+B-ENTRY instead of two — PG-5's, PG-15's and PG-16's — plus A-G43's and PG-20's. **That is a worse position
+honestly stated, and it arrived by asking a cheap question rather than by spending a run.**
+
+**And A-G128 is now the one rule in this record with substantial prospective value.** §37 scored it four-for-four
+retrospectively. **Since then it has fired prospectively twice: GRÜN ran it on PG-16 before any measurement was
+spent, and this sweep ran it on twenty-three pins and returned seven.** §61 named A-G239 as the interesting
+case — three confirmations, zero prospective firings. **A-G128 is its opposite, and the difference between them
+is that A-G128 asks a question about the pin and A-G239 asks for a habit.** A question can be run; a habit can
+only be remembered.
+
+**Five new defects: four this lane's, one GRÜN's. The count is 118.** Four of the five are in the step from
+obligation to pin, which is now this phase's dominant defect class by a wide margin — ahead of the carrier
+errors, ahead of the extremum-versus-distribution family, and all of them in pins this lane wrote.
+
