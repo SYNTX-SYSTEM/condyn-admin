@@ -89,7 +89,6 @@ export async function applyCareerDbSchema(targetSql: postgres.Sql): Promise<void
         id TEXT PRIMARY KEY,
         decision_id TEXT NOT NULL REFERENCES career_decisions(id),
         timestamp TEXT NOT NULL,
-        actor TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
@@ -97,7 +96,6 @@ export async function applyCareerDbSchema(targetSql: postgres.Sql): Promise<void
         id TEXT PRIMARY KEY,
         commitment_id TEXT NOT NULL REFERENCES career_commitments(id),
         timestamp TEXT NOT NULL,
-        actor TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
@@ -105,7 +103,6 @@ export async function applyCareerDbSchema(targetSql: postgres.Sql): Promise<void
         id TEXT PRIMARY KEY,
         action_id TEXT NOT NULL REFERENCES career_actions(id),
         timestamp TEXT NOT NULL,
-        observer TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
@@ -121,40 +118,43 @@ export async function applyCareerDbSchema(targetSql: postgres.Sql): Promise<void
         id TEXT PRIMARY KEY,
         feedback_id TEXT NOT NULL REFERENCES career_feedback(id),
         timestamp TEXT NOT NULL,
-        actor TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_policy_versions (
         id TEXT PRIMARY KEY,
-        timestamp TEXT NOT NULL,
+        version REAL NOT NULL,
+        parent_version REAL,
+        created_at TEXT NOT NULL,
+        created_by TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_policy_families (
         id TEXT PRIMARY KEY,
         active_policy_version_id TEXT NOT NULL REFERENCES career_policy_versions(id),
-        revision INTEGER NOT NULL
+        revision INTEGER NOT NULL,
+        updated_at TEXT NOT NULL
       );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_policy_promotions (
         id TEXT PRIMARY KEY,
         policy_family_id TEXT NOT NULL REFERENCES career_policy_families(id),
-        candidate_policy_id TEXT NOT NULL REFERENCES career_policy_versions(id),
-        baseline_policy_id TEXT NOT NULL REFERENCES career_policy_versions(id),
-        timestamp TEXT NOT NULL,
+        from_policy_version_id TEXT REFERENCES career_policy_versions(id),
+        to_policy_version_id TEXT NOT NULL REFERENCES career_policy_versions(id),
+        actor TEXT NOT NULL,
+        promoted_at TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_learning_proposals (
         id TEXT PRIMARY KEY,
+        feedback_id TEXT NOT NULL REFERENCES career_feedback(id),
         timestamp TEXT NOT NULL,
-        actor TEXT NOT NULL,
         payload_hash TEXT NOT NULL,
         payload JSONB NOT NULL
       );`,
       targetSql`CREATE TABLE IF NOT EXISTS career_policy_evaluations (
         id TEXT PRIMARY KEY,
-        proposal_id TEXT NOT NULL REFERENCES career_learning_proposals(id),
         candidate_policy_id TEXT NOT NULL REFERENCES career_policy_versions(id),
         baseline_policy_id TEXT NOT NULL REFERENCES career_policy_versions(id),
         timestamp TEXT NOT NULL,
