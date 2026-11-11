@@ -1,0 +1,104 @@
+========================================================================================================
+GELB · THE s/c CEILING, WITHDRAWN AS A BOUND ON THE RATIO — and what survives of it
+========================================================================================================
+
+[1] WHAT THE CEILING DOES AND DOES NOT BOUND
+
+  SURVIVES — a bound on the NUMERATOR. Rounding cannot manufacture swing the opacity range
+    does not contain, so s <= 0.5503 x c_true. That is physics and PINK agrees with it.
+  WITHDRAWN — a bound on the RATIO as measured. c is a difference of two 8-bit luminances, so
+    measured c can fall below c_true by up to one quantum and inflate s/c without limit.
+  WITHDRAWN — "p95 at 1.567 and 14.59 are foreign movers, derived". They are the quantiser.
+    §82's A-G372 is wrong on that sentence and the correction is PINK's, not mine.
+
+  THE CORRECT FORM OF MY OWN TEST IS THE ONE PINK BUILT: a ceiling on s/c is a test only where
+  c is resolved, i.e. stated with an admissibility rung in units of the pixel's own quantum.
+  PINK's ladder IS my test, repaired. I asked for a fraction and was handed the guard my test
+  was missing.
+
+========================================================================================================
+[2] A SECOND CANDIDATE FOR THE SELECTED NON-CONVERGENCE — and it is PINK's own rule
+========================================================================================================
+
+  PINK's s is `max L - min L` over frames. *** THAT IS AN EXTREME-VALUE STATISTIC. *** A-F11
+  retired maxima for the measured quantity; A-G366 (PINK's) bound the ESTIMATOR; §30 applied it
+  to the DIVISOR. It has not been applied to s itself, and quantisation noise inflates a
+  max-minus-min by a roughly FIXED ABSOLUTE amount — so it bites small signals proportionally
+  harder, which is the exact shape of the asymmetry PINK reports.
+
+  Simulated at the share where each state's TRUE c equals 10 quanta — PINK's strictest rung:
+
+    state        share    c_true     s_true     s_quant   s_q/s_t   s_true/c  s_q/c_q   exact s/c
+    unselected   0.0725  2.160e-3  6.530e-4  7.993e-4  1.2241   0.3024   0.3654    0.3756
+    selected     0.0725  2.160e-3  2.285e-4  4.239e-5  0.1855   0.1058   0.0194    0.1504
+
+  QUANTISATION INFLATES THE MAX-MINUS-MIN BY 22.4 % UNSELECTED AND -81.5 % SELECTED.
+  PINK measures the median s/c at c >= 10q as 0.37582 unselected (exact 0.3756, +0.06 %)
+  and 0.16919 selected (exact 0.1504, +12.5 %).
+
+  *** MY HYPOTHESIS IS REFUTED BY MY OWN SIMULATION, AND I AM WRITING THAT HERE RATHER THAN
+  RESHAPING THE SENTENCE. *** I predicted an UPWARD bias in both states, larger for selected.
+  Unselected is +22.4 %, upward as predicted. Selected is -81.5 % — DOWNWARD, and not slightly.
+  Quantisation does not inflate the selected max-minus-min; it DESTROYS it. The selected swing
+  at this rung spans under a code, so rounding collapses it toward zero and s/c reads 0.0194
+  against the exact 0.1504 — eight times too LOW, in the opposite direction from PINK's +12.5 %.
+
+  SO PINK'S ATTRIBUTION STANDS AND MINE IS WITHDRAWN. Residual movement remains the explanation
+  for the selected non-convergence, and §83 records that this lane proposed a mechanism with the
+  wrong sign — A-G368's own rule turned on me, one section after I ruled it: I predicted a sign
+  for a quantity that does not admit one, because quantisation inflates a max-minus-min when the
+  swing spans many codes and annihilates it when the swing spans less than one.
+
+  BUT THE SIMULATION FOUND SOMETHING ELSE, AND IT IS WORTH MORE THAN THE HYPOTHESIS IT KILLED.
+  *** PINK'S 10q RUNG RESOLVES THE DENOMINATOR AND NOT THE NUMERATOR. *** At c_true = 10 quanta
+  the selected s is attenuated to 18.5 % of its true value while c is resolved to 10 %.
+  An admissibility clause on c does not make s measurable, and nothing in the ladder checks s.
+
+  That is the FIFTH instance of A-F11 / A-G366 in four sections, and the cleanest: the rule has
+  now been applied to the measured quantity (A-F11), to the noise floor (PINK's §29), to the
+  divisor (PINK's §30) and to my envelope's region (A-G372) — and not once to the DIVIDEND.
+
+  WHAT RUNG WOULD RESOLVE s? Solved below rather than guessed:
+    s within 10 % of true: unselected  needs c >=   11.2 quanta  (share 0.0824)
+    s within 10 % of true: selected    needs c >=   57.4 quanta  (share 0.6047)
+    s within 5 % of true: unselected  needs c >=   29.2 quanta  (share 0.2607)
+    s within 5 % of true: selected    needs c >=   57.9 quanta  (share 0.6082)
+
+  *** AND THERE IS THE ASYMMETRY, DERIVED RATHER THAN OBSERVED: the selected state needs a
+  STRICTER rung than the unselected one for the same numerator accuracy — 5.14x stricter at a
+  10 % tolerance and 1.98x at 5 %. *** The ratio is NOT 1/selectedGain and NOT a constant:
+  I wrote 2.86x here first, from the amplitude ratio, and the solve says 5.14 and 1.98. The
+  tolerance and the quantiser both enter, so a single number does not describe it — which is
+  A-G368 a second time in one block, and the reason the figures above are solved and not typed.
+  A single rung applied to both states cannot be right for both. *** This is A-G365's
+  resolution ground arriving from the opposite direction to PINK's, and it is no longer the
+  0.2 % footnote I recorded in §82 — it is a structural property of the ladder.
+
+  WHAT WOULD SEPARATE THE TWO MECHANISMS IF ANYONE EVER NEEDS TO: a max-minus-min versus a
+  FITTED AMPLITUDE at the breath's frequency over the same frames. Quantisation noise is
+  incoherent and a fit rejects it; a foreign mover at another frequency is rejected too, but
+  one AT the breath's frequency survives — which is A-G42's collision, already in the record.
+  Not asked for: it moves no verdict, per block [3].
+
+========================================================================================================
+[3] DOES ANY VERDICT MOVE? — the question that decides whether this is worth a run
+========================================================================================================
+
+  The capability rung, in quanta, at the modal medium:
+
+    unselected   t* = 0.01065  at share 0.2590  = 29.6 quanta  -> ADMISSIBLE at PINK's 10q rung
+    selected     t* = 0.02659  at share 0.4750  = 47.6 quanta  -> ADMISSIBLE at PINK's 10q rung
+
+  PINK reaches the same place from its own bytes: 0.01125 and 0.01147 are 35.6 and 48.6 quanta.
+  *** SO THE MASK THAT DECIDES LIMB 1 IS ENTIRELY ADMISSIBLE AND NO VERDICT MOVES. *** The
+  quantiser population lives in the loose rungs only, and PINK states its direction there with
+  the sign attached: tiny c means tiny s, so those pixels land in the denominator and not the
+  numerator, DEPRESSING the loose-rung shares. Excluding them raises those shares, which moves
+  a clear further into the clear.
+
+  BY MY OWN SEQUENCING CRITERION, THEREFORE: the residue above the ceiling is 1.35 / 0.32 / 3.22 /
+  0.48 %, that is small, the medians stand, and *** THE FOREIGN-SUPPRESSED RE-RUN DOES NOT EARN
+  ITS COST. *** I set that criterion before the answer and I am held to it.
+  The ONE thing I would still spend a run on is block [2]'s discriminator, and only because it
+  decides whether A-G366 has a fifth instance or PINK has a travel at the shared harmonics —
+  and neither of those moves a verdict either, so it is not asked for.
