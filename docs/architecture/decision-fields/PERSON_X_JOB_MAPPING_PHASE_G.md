@@ -5538,3 +5538,120 @@ artifact, and the name of the quantity — or it is not sent.** A-G173 stated th
 to goodwill; **this gives it a place to live.** It costs one clause per number and it has now cost two lanes
 several sections each.
 
+
+---
+
+## §52 A-G195 REVERTED A DECISION I HAD ALREADY MADE — AND PG-10's THIRD LIMB IS MEASURED, BREACHED AT 1920
+
+I told PINK *"do not compute it."* **PINK did not take that at face value, checked it against the record, and
+was right.** §12 at `b76f8234`.
+
+### A-G208 · A-G195 is withdrawn in full — three errors, all of them already answered in this record *(defect 89)*
+
+**A-G59, which I wrote**, says verbatim:
+
+> *"**Decided: A-G26's suspension is lifted and PG-10's max-swing limb returns as written (≤ 0.030).** The
+> distributional ceiling specified in A-G26 is retired as unnecessary… A-G54's general rule is confirmed by both
+> lanes and stands: **a floor is a property of a build, not of a lane.**"*
+
+So:
+
+1. **The limb is not withdrawn. I restored it.** A-G26's suspension lasted until A-G59 lifted it.
+2. **0.030 is the live bound, not a withdrawn constant**, and A-G26's p999.9 is the **retired** statistic — I had
+   the live and the dead exactly inverted.
+3. **The 0.031872 floor is a `9cc06f84` whole-region figure.** A-G59's own table prints `3ec8457d` at **disc max
+   0.000000 and whole-region max 0.005939 / 0.006077.** **I carried a dead build's floor onto a live build's
+   measurement — precisely what A-G54 forbids, in the section where I confirmed A-G54.**
+
+**And A-G59 named the one thing still missing, as binding:** *"the per-run floor must be measured on the carrier
+mask, not on the disc, or the limb inherits a floor it was never measured against."* **PINK has now measured
+exactly that.** The work A-G195 told it not to do is the work A-G59 required of it.
+
+> **This is the worst error in this run and it is not close.** I reverted my own decision, using a figure my own
+> decision had retired, in violation of a rule my own decision had confirmed, and instructed the measuring lane
+> not to check it. **Every one of the three corrections was already written above my own signature.**
+
+### A-G209 · An adjudication that contradicts the record loses to the record — binding
+
+PINK's words: *"I want to be straight that this is me not taking 'do not compute it' at face value."*
+
+> **An instruction from this lane that contradicts the record is void, and the record governs.** A lane that
+> checks an instruction against the record before obeying it is doing its job, not overstepping — and **the
+> architecture lane has now demonstrated that it can issue instructions which revert its own decisions.**
+
+**Binding on all three lanes, and the asymmetry is deliberate: a lane may decline an instruction by citing the
+record, and may not decline one by preferring its own judgement.** PINK cited `PHASE_G.md:1650-1669`. That is
+the form.
+
+### A-G210 · The carrier-mask floor, and the statistic A-G59 retired becomes necessary again
+
+| | 1920 × 1080 | 1280 × 800 |
+|---|---|---|
+| carrier mask px | 51 289 | 13 574 |
+| **static floor** p99.9 / p99.99 / max | 0.000296 / 0.002368 / **0.004145** | 0.002665 / 0.003041 / **0.003208** |
+| **live swing** p99 / p99.9 / p999.9 | 0.026499 / **0.030806** / **0.031916** | 0.022425 / 0.026904 / 0.027908 |
+| fraction > 0.030 | **0.205 %** (105 of 51 289) | 0 |
+
+**The floor is 0.0032 … 0.0041 — eight to ten times smaller than the figure A-G195 used — and the ceiling sits
+7.2 … 9.4 × above it**, so the bound is admissible by asymmetric admissibility.
+
+**But A-G59's justification for permitting a *maximum* was *"a floor five orders under the bound."*** On the
+carrier mask the margin is **7.2 ×, not five orders.** So A-G59's reason for retiring the distributional
+statistic *"as unnecessary"* has been measured away, and **PINK's original A-F11 objection revives.**
+
+**Decided: the statistic is p99.9 on the carrier mask, with the threshold from the run's own measured floor and
+never below it** — A-G26's form, restored for the reason A-G59 used to retire it, now inverted by measurement.
+**A-G54 again: the statistic is a property of the floor, and the floor is a property of the build.**
+
+**And the verdict is the same under either statistic, which is the strongest form this finding could take:**
+
+> **1920: max 0.0327, p999.9 0.0319155, p99.9 0.0308056 — all three exceed 0.030. 1280: p999.9 0.0279076,
+> clears.** 105 carrier pixels sit above the ceiling and **8 × above the floor's own extreme**, so it is not a
+> floor artefact and not a max artefact.
+
+*(The 1280 clear is **reported, not relied on**: PINK flags that its carrier mask reaches r/R = 1.647 there,
+which field-body geometry does not account for — non-shelf bodies sit in [bestFit, horizon − ρ] with
+haloR ≤ 3 ρ, so ≈ 1.0 R is the expectation and 1.075 at 1920 is what A-G59's caveat anticipates. **The
+load-bearing result is the 1920 breach, whose mask stays inside 1.075 R.** The 1.647 figure is recorded as
+open.)*
+
+### A-G211 · A measured breach of an underived bound is a finding against the pair
+
+**0.030 is UNDERIVED**, and PINK's framing is adopted exactly as sent: **this is a measured breach of an underived
+bound — a finding against the pair, not a certification of either.** What it is not is unmeasurable, which is
+what A-G195 claimed.
+
+**So what I can decide, I have, and what I cannot, I am not going to pretend to.** I cannot order a product
+change on a bound with no origin — A-G140 requires bounds to carry derivations and A-G143 forbids inventing one
+after the fact, and R17 supplies no figure (A-G143 again). **And I cannot dismiss a sound measurement.** The
+breach stands recorded with its bound's provenance attached, and **the product question goes to the owner**: at
+1920, 0.205 % of carrier pixels swing above 0.030, eight times clear of the instrument's floor. **Acceptable or
+not is not a question this record can answer, because nothing in it says where 0.030 came from.**
+
+**One narrow measurement would sharpen it and PINK already holds the data.** A-G59's caveat predicted that glow
+pixels at r/R > 0.98 sit on a raised floor, because A-G8 accepted a shelf body's drawn rim reaching ≈ 546 past
+the field ring at 500 — and A-G59's own disc measurement found **every non-zero static swing at r/R > 0.98.**
+
+> **So: what is the r/R distribution of the 105 pixels above 0.030?** If they lie beyond 0.98, the breach is in
+> the region A-G59 flagged and the finding is about the field's outer edge, not about the breath. If they are
+> spread through the annulus, it is about the breath. **Two different findings, one histogram, no new run.**
+
+### A-G212 · PINK's fix falsified its own hypothesis, and gave A-G97 a raster-side proof
+
+PINK's first revision omitted A-G97's seat exclusion. It expected the near-body ring — halo under the body's
+bright outline — to be driving the maximum, re-ran, and **the exclusion removed 43 px of 51 332 and moved no
+percentile.**
+
+**The reason is the result:** *"bodies are painted after the glow group, so the opaque seat at r already covers
+the halo beneath it, and the measured carrier mask starts outside the seat by itself."*
+
+> **That is an independent, purely raster-side confirmation of A-G97's occluder and of §49's `r + h` boundary —
+> reached from pixels rather than from source, and agreeing with it.** A-G36 asks for two instruments and one
+> verdict; this is two *kinds* of instrument, source-side and raster-side, converging on a boundary that three
+> lanes had read three ways in §49.
+
+**And it was found by a fix that falsified the finder's own hypothesis**, which is the second time in this phase
+a lane has reported the hypothesis it lost rather than only the result it kept. **A-G140's provenance discipline
+has an analogue here that nothing in this record had stated: a result arrived at by discarding a hypothesis is
+stronger than the same result arrived at by confirming one, and only the author can report which it was.**
+
