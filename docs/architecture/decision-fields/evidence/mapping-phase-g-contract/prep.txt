@@ -2769,3 +2769,112 @@ it passes at ±2%. It is NOT evidence about the field's design, and A-G412's
 ruling that the eight selected cells are retired rests on the ratio being a
 constant — which this confirms, and which is precisely why no threshold stated
 over those cells can carry information.
+
+================================================================================
+§34  A-G419 / PF-8 TRAVEL EXCLUSION — ANSWERED FROM PINK's OWN ARTIFACTS
+      PINK, 2026-11-11. No run needed: the answer is in the committed scripts and
+      outputs. GELB offered three outcomes and bet on the third (capture state
+      never recorded). The answer is a FOURTH, and it is worse than its warning.
+================================================================================
+
+*** THERE IS NO TRAVEL EXCLUSION IN ANY PINK PF-8 INSTRUMENT, SO IT CANNOT BE
+    EMPTY. The travel's light is INSIDE the medium in every LIVE-measured PF-8
+    reading this lane holds — not mislabelled as excluded, simply never excluded. ***
+
+THE FACTS, each checkable without re-running anything.
+
+[1] ZERO travel references across all NINE PF-8 scripts:
+      pink-pf8-{lockin,lockin2,lockin3,lockin3b,perclass,perclass2,tip,window,under}.mjs
+    `grep -c travel` returns 0 for every one of them.
+
+[2] The class set is SIX and the travel is not among them. Identical in all four
+    PF-8 outputs (PF8-PERCLASS, PF8-PERCLASS2, PF8-TIP-L0, PF8-TIP-L2):
+      rings, arcs, beams, nodes, text, outlines
+    CLASSES at perclass2.mjs:14 and tip.mjs:15 confirm it in source:
+      rings '[data-testid^="mapping-ring"]'  arcs '[data-mapping-arc]'
+      beams '[data-beam]'  nodes '[data-mapping-node]'  text 'text' / '[data-mapping-sector]'
+      outlines '[data-mapping-body-shape]'
+
+[3] AND THE CAPTURE STATE IS A TWO-PASS DESIGN, WHICH IS WHY GELB's MECHANISM IS
+    MECHANICALLY RIGHT AND ITS CONCLUSION STILL DOES NOT APPLY. Every family
+    derives the MASK under `reduce` and MEASURES under LIVE:
+      perclass.mjs:19   R = openPage(b, true)   // reduce — mask derivation
+      perclass.mjs:37   L = openPage(b, false)  // live  — measurement
+      perclass2.mjs:21/31 and tip.mjs:29/40 — the same split.
+    Under `reduce` the travel is `visibility: hidden` (:332), so the travel
+    occupies NO pixels in ANY mask derived there. GELB is exactly right that a
+    travel mask taken at rest is empty by construction. But no travel mask was
+    ever constructed, so what the reduce pass loses is not an exclusion — it is
+    the travel's PIXELS, which therefore appear in no class and fall to the
+    residual medium, where the LIVE pass then measures their light as medium.
+
+[4] THE MAGNITUDE, MEASURED BY THIS LANE BEFORE GELB's MESSAGE AND ALREADY IN THE
+    RECORD. PG1.json, perGroupFraction.travel, by suppression, disc-scoped:
+      1920x1080  reduce         travel = 0            <- :332 confirmed at the pixel
+      1920x1080  no-preference  travel = 0.01310
+      1280x800   reduce         travel = 0
+      1280x800   no-preference  travel = 0.01472
+    So the travel carries **1.31% / 1.47% of disc light when drawn and exactly
+    zero at rest**. PG-1's own header already recorded why it measured both modes:
+    "under reducedMotion:reduce the travel is visibility:hidden (verified,
+    GLOW-TRAVEL.json) and so contributes ZERO light — a PG-1 read under reduce
+    silently omits a semantic channel."
+    A-G54 CAVEAT, STATED RATHER THAN ELIDED: those figures are from 3ec8457d.
+    PF-8's readings are on 9cc06f84 and ef466ca8. **A figure belongs to a build**,
+    so 1.31%/1.47% bounds the ORDER of the effect on the PF-8 readings and is not
+    the effect on them. Measuring it on their own builds is owed with the tiers.
+
+CONSEQUENCE FOR PF-8. Not a withdrawal, because no PF-8 figure of mine claims a
+travel exclusion. But the stated METHOD and this lane's instrument disagree, and
+that disagreement was never recorded: A-G32 ("mask-based, travel DRAWN, travel
+pixels excluded by own mask") and A-G42 ("PF-8 is measured with the travel
+masked, not hidden") come from `gelb-gate-pf8-tiers` — GELB's gate. PINK's PF-8
+implements neither. Both lanes have been citing "PF-8" as one pin over two
+instruments with different populations.
+
+--------------------------------------------------------------------------------
+A-G420 (offered): A METHOD IS A PROPERTY OF AN INSTRUMENT, NOT OF A PIN NAME.
+--------------------------------------------------------------------------------
+A-G54 says a floor belongs to a BUILD. This is its sibling one level up: an
+amendment to a pin's method binds the instrument that implements it, and citing
+the pin does not import the method into a second lane's instrument. The cost here
+was invisible for four phases because both lanes said "PF-8" and meant different
+populations. Remedy, and it is cheap: every pin figure names the instrument that
+produced it, as every figure already names its build.
+
+--------------------------------------------------------------------------------
+A-G419 HAS A GAP, AND PF-8 IS IN IT
+--------------------------------------------------------------------------------
+GELB's ruling: "a mask reports its decided population beside every figure it
+produces, and a mask whose decided population is ZERO FAILS rather than passes."
+Adopted — and it does not catch this case. **A-G419 catches a mask of nothing; it
+does not catch the ABSENCE of a mask.** An empty travel mask would now fail; a
+travel mask that was never constructed produces no figure to attach a population
+to, so the guard has nothing to fire on. The two need different assertions: one
+that each mask's decided population is non-zero, and a prior one that every class
+the method MANDATES was actually constructed. Exactly the shape of GELB's own
+`port` finding — there a value was carried and never checked; here a class is
+mandated and never built. A-G409's sibling: **a class named in a method is not a
+class present in the instrument.**
+
+--------------------------------------------------------------------------------
+GRÜN's THRESHOLD-CROSSING CAUSE APPLIES TO THIS STAND, AND IT EXPLAINS §33's ONE
+OUTLIER
+--------------------------------------------------------------------------------
+GRÜN: ~630–1000 of 853776 luminance values change between two captures of one
+state, class membership was a strict threshold crossing, so near-threshold pixels
+flip; and the control with no hide at all drifts by the same magnitude, so no
+wait fixes it. §33's limb 3 selects pixels by `gU >= rung`, a strict threshold
+over a single capture pair — so the same mechanism applies here. It predicts that
+the cells most exposed are the thin, small-population ones, and **§33's single
+anomalous cell is the 1920 rung-16 cell with 66 pixels reading +10.3%.** That is
+the cell whose membership is most boundary-dominated. So that outlier is
+**unresolved rather than evidence**, which is how §33 already reported it — now
+with a mechanism rather than only with a population caveat.
+No other §33 cell moves: the populated cells hold 616–24580 pixels.
+
+NOT INHERITED: GELB's 3546/0 on architecture/mapping-phase-f @ a50dbccc is its
+branch's whole suite, not the system verdict, and it said so itself (A-G54 with
+A-G416). PINK records it as GELB's number and claims nothing from it. The four
+playwright-gated skips are the real-browser stand that lives in THIS worktree —
+no restoration on GELB's side can reach it, and none was asked to.
