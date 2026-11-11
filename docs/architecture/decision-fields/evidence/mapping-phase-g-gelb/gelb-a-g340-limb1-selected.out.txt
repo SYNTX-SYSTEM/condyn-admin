@@ -1,0 +1,176 @@
+========================================================================================================
+GELB · §91 A-G412 — LIMB 1'S SELECTED CELLS. Product @ 4b83414e
+========================================================================================================
+
+  THE PIN. Limb 1 asks: what share of the mask's pixels swing at least 0.004 in luminance over one
+  breath? §81 decided the two UNSELECTED cells (both clear, one by monotonicity from PINK's own sweep) and
+  left the EIGHT SELECTED cells NOT EVALUABLE, because a fixed absolute threshold applied to a state whose
+  amplitude is deliberately reduced to selectedGain = 0.35 of itself penalises the build for complying
+  with PF-10. The stated condition for evaluating them was a FRACTIONAL threshold. Here it is, executed.
+========================================================================================================
+[1] THE STATE-TO-STATE SWING RATIO — the quantity the fractional form needs, and it is a CONSTANT
+========================================================================================================
+
+  Both states breathe about the SAME mean (0.8825); only the depth differs, by the factor gain. So for a
+  pixel of halo alpha a, the two swings are s(a, 1) and s(a, 0.35), and the fractional form needs their ratio.
+  If that ratio is a constant, the fractional threshold is well-posed. Computed, not assumed:
+
+  PINK's deep dark  rgb(3,5,8)        a       s(unselected)   s(selected)     ratio
+                                  0.005   6.2847e-5      2.1997e-5      2.85714
+                                  0.010   1.2577e-4      4.4034e-5      2.85616
+                                  0.020   2.5492e-4      8.9221e-5      2.85716
+                                  0.050   7.7046e-4      2.6963e-4      2.85752
+                                  0.100   2.2030e-3      7.7083e-4      2.85796
+                                  0.200   7.5437e-3      2.6387e-3      2.85884
+                                  0.350   2.2828e-2      7.9831e-3      2.85951
+                                  0.500   4.8299e-2      1.6888e-2      2.85990
+                                  0.700   1.0040e-1      3.5101e-2      2.86022
+                                  0.850   1.5452e-1      5.4021e-2      2.86038
+                                  1.000   2.2263e-1      7.7829e-2      2.86049
+                                 ratio over 11 alphas: min 2.85616  max 2.86049  spread 0.152 %
+
+  the modal medium  rgb(6,12,17)        a       s(unselected)   s(selected)     ratio
+                                    0.005   7.1664e-5      2.5082e-5      2.85715
+                                    0.010   1.4905e-4      5.2166e-5      2.85716
+                                    0.020   3.2138e-4      1.1248e-4      2.85719
+                                    0.050   9.8602e-4      3.4508e-4      2.85733
+                                    0.100   2.6568e-3      9.2969e-4      2.85776
+                                    0.200   8.3820e-3      2.9324e-3      2.85843
+                                    0.350   2.3896e-2      8.3580e-3      2.85910
+                                    0.500   4.8992e-2      1.7133e-2      2.85953
+                                    0.700   9.9382e-2      3.4750e-2      2.85990
+                                    0.850   1.5116e-1      5.2853e-2      2.86009
+                                    1.000   2.1591e-1      7.5486e-2      2.86023
+                                   ratio over 11 alphas: min 2.85715  max 2.86023  spread 0.108 %
+
+  pure black        rgb(0,0,0)        a       s(unselected)   s(selected)     ratio
+                                  0.005   6.4556e-5      2.2595e-5      2.85714
+                                  0.010   1.2911e-4      4.5189e-5      2.85714
+                                  0.020   2.5822e-4      9.0379e-5      2.85714
+                                  0.050   6.5033e-4      2.2761e-4      2.85719
+                                  0.100   1.8767e-3      6.5658e-4      2.85837
+                                  0.200   6.8932e-3      2.4109e-3      2.85925
+                                  0.350   2.1967e-2      7.6810e-3      2.85989
+                                  0.500   4.7687e-2      1.6673e-2      2.86022
+                                  0.700   1.0105e-1      3.5326e-2      2.86048
+                                  0.850   1.5694e-1      5.4864e-2      2.86061
+                                  1.000   2.2762e-1      7.9567e-2      2.86070
+                                 ratio over 11 alphas: min 2.85714  max 2.86070  spread 0.124 %
+
+  over all 33 (alpha, backdrop) pairs:  min 2.85616   max 2.86070   spread 0.159 %
+  1 / selectedGain = 2.85714
+  worst departure from 1/selectedGain: 0.124 %
+
+  *** THE RATIO IS 1 / selectedGain TO WITHIN 0.16 %, ACROSS THE WHOLE ALPHA RANGE AND ALL
+  3 BACKDROPS. *** And the reason is not luck: both states swing about the same mean, so to first
+  order s = (dL/dop) × Δop and Δop is EXACTLY proportional to gain. The encoded composite and the WCAG
+  decode are both nonlinear, but they are evaluated at the same operating point in both states, so the
+  nonlinearity enters only at second order — which is the 0.16 % residual and nothing more.
+========================================================================================================
+[2] AND THIS IS NOT THE 2.50x OF §82 — THREE QUANTITIES IN THREE SPACES, ONE OF WHICH I TYPED
+========================================================================================================
+
+  §82's exact solve reported a "capability penalty" and block [1] reports 2.8571x. The first form of this
+  paragraph TYPED 2.50 as the threshold ratio and the table below computed 1.69–1.83 — so the paragraph
+  disagreed with its own adjacent output, which is A-G407's family in the section that rules A-G407's
+  second limb. Recomputed here rather than cited, and the answer is that there are THREE ratios in three
+  spaces, all of which could be called "the capability penalty":
+
+    backdrop                        min alpha    min alpha   alpha    §82's c-space      swing
+                                    unselected   selected    ratio    threshold ratio    ratio
+    PINK's deep dark  rgb(3,5,8)     0.141560     0.248185    1.7532   2.4925             2.8599
+    the modal medium  rgb(6,12,17)   0.129512     0.237483    1.8337   2.4970             2.8595
+    pure black        rgb(0,0,0)     0.151412     0.256612    1.6948   2.4390             2.8602
+
+    SWING ratio, luminance swing of a GIVEN pixel          2.8562 … 2.8607   = 1/selectedGain
+    §82's C-SPACE threshold ratio, halo contribution       2.4390 … 2.4970   bent by convexity in a
+    ALPHA-SPACE threshold ratio, the gradient's own alpha  1.6948 … 1.8337   bent twice over
+
+  *** THREE QUANTITIES, THREE ANSWERS, AND §82's 2.50 IS THE MIDDLE ONE — reproduced here independently at
+  2.439–2.497, which agrees with §82 and so cross-checks both. *** The pin's own question decides which one
+  is wanted: the fractional threshold rescales the pin's SWING BOUND, so it needs the swing ratio, and the
+  swing ratio is the one that is a clean constant. §82 needed the c-space ratio because it was deriving a
+  MASK threshold, and a mask selects on contribution rather than on swing. Neither figure was ever wrong;
+  what was missing was the sentence saying they answer different questions — and this is the fourth time
+  in this record that two correct figures of mine sat together without it.
+========================================================================================================
+[3] THE THREE FORMS THE THRESHOLD COULD TAKE, AND WHAT EACH ONE MEASURES
+========================================================================================================
+
+  A selected pixel clears threshold t_sel exactly when its UNSELECTED swing clears t_sel × (swing ratio).
+  So every form of the selected predicate is equivalent to an unselected predicate at some bound — and the
+  only question is WHICH bound. Limb 1's own unselected bound is 0.004.
+
+    form                             t_selected    equivalent unselected bound    vs 0.004        what it measures
+    ABSOLUTE — as the pin stands     0.004000      0.011429                       2.8571x      measures the DECLARED GAIN
+    FRACTIONAL by declared gain      0.001400      0.004000                       1.0000x      measures THE UNSELECTED CELL AGAIN
+    FRACTIONAL by measured ratio     0.001398      0.003995                       0.9988x      measures THE UNSELECTED CELL AGAIN
+
+  *** 2 OF THE 3 FORMS COLLAPSE ONTO LIMB 1'S OWN UNSELECTED PREDICATE, within 2 %. ***
+
+  READ THE TABLE DOWNWARD AND THE PIN HAS NO INFORMATIVE OPTION:
+    · ABSOLUTE keeps the selected cell distinct, but what distinguishes it is the factor 2.857 — which is
+      1 / selectedGain, a CSS constant. The cell reports the value of a declaration. It cannot fail for any
+      reason to do with the glow, and it cannot pass for one either.
+    · FRACTIONAL, in either flavour, makes the selected predicate the unselected predicate. The cell then
+      cannot DISAGREE with the unselected cell by more than the 0.16 % residual — which is far below any
+      share resolution PINK's stand can deliver, since a share is a count over a mask of finite pixels.
+
+  *** SO THE CONDITION §81 SET FOR EVALUATING THESE CELLS IS THE PROOF THAT THEY CANNOT BE EVALUATED. ***
+  I stated that condition as though meeting it would settle the eight cells. Meeting it dissolves them.
+  That is A-G128's second limb — "does the product evaluate the predicate and decline to emit a
+  counterexample" — applied to MY OWN REMEDY, which is the test I have failed most often in this record
+  (A-G349, A-G390, §86's separability premise, and now this one makes four).
+========================================================================================================
+[4] WHAT §81's WITHDRAWN CORROBORATION LOOKS LIKE NOW — right number, wrong reason
+========================================================================================================
+
+  §81 corroborated the derived threshold by noting that PINK's measured sel/none SHARE ratio had mean
+  0.3244 against selectedGain 0.35, and A-G370 withdrew that corroboration because the ratio was computed
+  from the per-state construction I diagnosed as broken four paragraphs later. The withdrawal stands. But
+  block [1] now says something sharper about it:
+
+  *** THE SWING RATIO REALLY IS selectedGain, TO 0.16 %. THE SHARE RATIO IS NOT THE SWING RATIO. ***
+
+  A share is the measure of a set defined by a THRESHOLD CROSSING, and the map from "every swing halves"
+  to "the share of swings above a fixed bound halves" is not the identity — it depends on the swing
+  distribution near the bound. So §81's 0.3244 was not a measurement of selectedGain that happened to be
+  confounded; it was a DIFFERENT QUANTITY that happened to land near selectedGain. A-G370 withdrew it for
+  the right reason, and had the reason been wrong the conclusion would still have been right —
+  which is the only kind of luck worth recording.
+========================================================================================================
+[5] RULED
+========================================================================================================
+
+  A-G412. THE EIGHT SELECTED CELLS ARE RETIRED FROM A-G340 LIMB 1 — not inconclusive, not pending a
+  form, RETIRED. There is no statement of limb 1's threshold under which the selected state carries
+  information about the glow: absolute, the cell reports 1 / selectedGain; fractional, the cell reports the
+  unselected cell. A pin with no informative reading is not a pin that needs a better instrument.
+
+  LIMB 1 MEASURES THE UNSELECTED STATE. Its two unselected cells were decided in §81 and stay decided.
+
+  THE SELECTED STATE IS NOT UNMEASURED — IT HAS ITS OWN PIN, AND THAT PIN CAN FAIL. PF-10: "with a
+  capability selected, the measured breath amplitude is at most 45 % of its unselected value." That is a
+  statement about the RATIO, which is the quantity that actually changes between the states, and it is
+  satisfied with margin at 0.35 against 0.45. Limb 1 was measuring PF-10's compliance badly; PF-10
+  measures it well. *** TWO PINS WERE FIGHTING AND ONE OF THEM WAS THE WRONG SHAPE. ***
+
+  AND PINK GETS A BETTER PROBE OUT OF THE RETIREMENT, which is an ACTION and not an argument (A-G403):
+  block [1] is a falsifiable prediction about the real stack. Measure the sel/unsel SWING ratio — not the
+  share ratio — on actual bytes, at any pixel, on any backdrop. *** IT MUST BE 2.8571 TO WITHIN ABOUT
+  0.16 %, AND IF IT IS NOT, SOMETHING OTHER THAN selectedGain IS MODULATING THE SELECTED STATE. ***
+  That is a cheap check with a sharp failure mode, it needs no mask and no threshold, and it is well-posed
+  in A-G384's sense: it needs no true ratio to compare against, only the product's own two states.
+
+  A-G139 CHECKED BEFORE STATING THE TOLERANCE: the 0.16 % band is a property of the DOUBLE-PRECISION
+  model above. A real 8-bit capture quantises luminance, and at the small swings in block [1] that
+  quantisation is the dominant term by orders of magnitude — so PINK must set the tolerance from its own
+  quantisation floor and NOT from this band. *** THIS LANE DOES NOT HAND DOWN THAT TOLERANCE, BECAUSE A
+  BOUND MUST SIT OUTSIDE THE QUANTISATION-ORDER SPREAD OF THE QUANTITY IT BOUNDS AND ONLY PINK'S STAND
+  KNOWS ITS OWN SPREAD. *** What this lane hands down is the CENTRE: 2.8571.
+
+========================================================================================================
+CONSTANT PROVENANCE: 35 values parsed from the product at 4b83414e; this file holds no copy.
+The pin figure 0.004 and the bound 0.45 are CONTRACT figures, not product constants — they live in
+PHASE_F/PHASE_G, not in the drawing surface, so they are stated here and cannot be read from it.
+========================================================================================================
