@@ -412,7 +412,10 @@ function arcSign({ arc, cx, cy, r, k, testId, emphasis = false, change = null, i
   };
   return (
     <React.Fragment key={key}>
-    <g className="mf-seat" aria-hidden="true" pointerEvents="none">{parts(true)}</g>
+    {/* §81: named, but note what it is — a GROUP whose drawn marks are its CHILDREN. Selecting this element
+        does not select a painted mark, which is the A-G31 / A-G51 / PF-2 shape. An instrument wanting the
+        marks must descend, or mask, rather than measure this node. */}
+    <g className="mf-seat" data-mapping-seat="arc-marks" data-seat-is-group="true" aria-hidden="true" pointerEvents="none">{parts(true)}</g>
     <g
       key={key} data-testid={testId} data-mapping-arc data-change={change === null ? undefined : "EVIDENCE"} data-requirement={arc.poolRequirementId} data-state={arc.state} data-class={arc.class} data-line={s.arcLine} data-fill={s.arcFill}
       data-beam={s.beam} data-phase-locked={String(s.phaseLocked)} data-mark={s.mark} data-luminance={s.luminance} data-evidence-step={EVIDENCE_STEP[s.class]} data-evidence-luminance={luminanceOf(s)}
@@ -715,7 +718,17 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
     (b.shelf ? shelfHalos : fieldHalos).push(
       <g key={change === "EVIDENCE" ? `halo|${b.key}#${pair.seq}` : `halo|${b.key}`} className={layoutShift ? "mf-halo mf-layout" : "mf-halo"}
         opacity={fixed(opacity * depthGain(b.rank, lastRank))} style={{ transform: `translate(${b.x}px, ${b.y}px)` }}>
+        {/* §81 A-G49: the halo's own identity, ON THE DRAWN CIRCLE and deliberately NOT on the group above it.
+            The group is where A-G31, A-G51 and PINK's PF-2 instrument each went wrong — attributes on a <g>
+            while the drawn mark is a child — so an instrument selecting `[data-mapping-halo]` gets the thing
+            that has pixels. The React key `halo|${b.key}` is NOT rendered (PINK established that keys are
+            reconciliation inputs and never reach the DOM), so per-body obligations were being met by
+            geometric inference: PINK pairs halo to core by concentricity under 2 px. These attributes replace
+            that inference with a read. `data-required-gaps` mirrors the body's own and names which halo
+            carries the ONE HUE, which PG-12's carrier previously had to infer from proximity. */}
         <circle className={b.shelf ? undefined : "mf-wave mf-wave-halo"} r={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))} fill={requiredGaps > 0 ? "url(#mf-halo-gap)" : "url(#mf-halo)"}
+          data-mapping-halo data-rank={b.rank} data-shelf={String(b.shelf)} data-required-gaps={requiredGaps}
+          data-halo-radius={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))}
           style={b.shelf ? undefined : { animationDelay: waveDelay(Math.hypot(b.x, b.y), g.shelfNear) }} />
       </g>
     );
@@ -741,9 +754,9 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
               stroke={`rgba(${INK}, 0.45)`} strokeWidth={structure} strokeDasharray={`${2 * k} ${2 * k}`} />
           )}
           {/* F-2 / F-3: the volume's core — the same form on every body, its depth gain only; no state. */}
-          <circle className="mf-seat" aria-hidden="true" pointerEvents="none" r={r} fill={SEAT} />
+          <circle className="mf-seat" data-mapping-seat="body-disc" aria-hidden="true" pointerEvents="none" r={r} fill={SEAT} />
           <circle className="mf-core" aria-hidden="true" pointerEvents="none" r={r} fill="url(#mf-core)" opacity={depthGain(b.rank, lastRank)} />
-          <circle className="mf-seat" aria-hidden="true" pointerEvents="none" r={r} fill="none" stroke={SEAT} strokeWidth={(isMarked ? 2 * k : structure) + SEAT_PAD_PX * k} strokeDasharray={dashOf(b.line, k, circumference)} strokeLinecap={b.line === "dotted" ? "round" : "butt"} />
+          <circle className="mf-seat" data-mapping-seat="body-ring" aria-hidden="true" pointerEvents="none" r={r} fill="none" stroke={SEAT} strokeWidth={(isMarked ? 2 * k : structure) + SEAT_PAD_PX * k} strokeDasharray={dashOf(b.line, k, circumference)} strokeLinecap={b.line === "dotted" ? "round" : "butt"} />
           <circle
             data-mapping-body-shape r={r} fill={`rgba(${CYAN}, ${isMarked ? 0.32 : 0.14})`} stroke={`rgba(${INK}, ${isMarked ? 1 : 0.82})`}
             strokeWidth={isMarked ? 2 * k : structure} strokeDasharray={dashOf(b.line, k, circumference)} strokeLinecap={b.line === "dotted" ? "round" : "butt"}
@@ -930,7 +943,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         </g>
 
         {/* E-7 shelf band, on its black seat: a still ring (A-F8) under the sectors, so the sectors stay its hit targets. */}
-        <circle aria-hidden="true" pointerEvents="none" r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={SEAT} strokeWidth={g.fieldRadius - g.shelfNear} />
+        <circle data-mapping-seat="shelf-band" aria-hidden="true" pointerEvents="none" r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={SEAT} strokeWidth={g.fieldRadius - g.shelfNear} />
         <circle data-testid="mapping-ring-shelf" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.shelf} r={(g.shelfNear + g.fieldRadius) / 2} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.shelf})`} strokeWidth={g.fieldRadius - g.shelfNear} />
         <g aria-hidden="true" pointerEvents="none">{shelfHalos}</g>
         {openBody === null && model.sectors.map((s: FieldSector) => {
@@ -958,11 +971,11 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         {/* The rings (E-7: one ink, told apart by luminance), each on its black seat (A-F6/A-F8: structure is still), drawn over the
             sectors so no sector edge lies on a ring (PF-15): the shelf band, the
             best-fit ring, the horizon, the field's edge. The edge carries E-6's state (data-breath); the breath itself is the medium's. */}
-        <circle aria-hidden="true" pointerEvents="none" r={g.bestFit} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.best + SEAT_PAD_PX) * k)} />
+        <circle data-mapping-seat="ring-best-fit" aria-hidden="true" pointerEvents="none" r={g.bestFit} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.best + SEAT_PAD_PX) * k)} />
         <circle data-testid="mapping-ring-best" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.best} r={g.bestFit} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.best})`} strokeWidth={fixed(RING_WIDTH_PX.best * k)} />
-        <circle aria-hidden="true" pointerEvents="none" r={g.horizon} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.horizon + SEAT_PAD_PX) * k)} />
+        <circle data-mapping-seat="ring-horizon" aria-hidden="true" pointerEvents="none" r={g.horizon} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.horizon + SEAT_PAD_PX) * k)} />
         <circle data-testid="mapping-ring-horizon" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.horizon} r={g.horizon} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.horizon})`} strokeWidth={fixed(RING_WIDTH_PX.horizon * k)} />
-        <circle aria-hidden="true" pointerEvents="none" r={g.fieldRadius} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.field + SEAT_PAD_PX) * k)} />
+        <circle data-mapping-seat="ring-field" aria-hidden="true" pointerEvents="none" r={g.fieldRadius} fill="none" stroke={SEAT} strokeWidth={fixed((RING_WIDTH_PX.field + SEAT_PAD_PX) * k)} />
         <circle data-testid="mapping-ring-field" pointerEvents="none" data-ring-luminance={RING_LUMINANCE.field} data-breath={breathLive ? "LIVE" : "STILL"} r={g.fieldRadius} fill="none" stroke={`rgba(${INK}, ${RING_LUMINANCE.field})`} strokeWidth={fixed(RING_WIDTH_PX.field * k)} />
         <circle data-testid="mapping-pending-outline" r={g.fieldRadius + 6 * k} fill="none" stroke={`rgba(${CYAN}, 0.5)`} strokeWidth={structure} strokeDasharray={`${4 * k} ${4 * k}`} />
         {/* A-5: a due continuation keeps its sign as a still outline — dotted, outside the pending one, never a pulse. */}
@@ -976,7 +989,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
             every role it couples (reverse view) and sets them into the query motion (E-3). */}
         <g data-testid="mapping-person" data-capabilities={model.view.constellation.length} data-overflow={model.constellation.overflowCount}>
           <circle aria-hidden="true" pointerEvents="none" r={g.personRadius} fill="url(#mf-person-seat)" />
-          <circle aria-hidden="true" pointerEvents="none" r={g.personRadius} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
+          <circle data-mapping-seat="ring-person" aria-hidden="true" pointerEvents="none" r={g.personRadius} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
           <circle r={g.personRadius} fill={`rgba(${CYAN}, 0.04)`} stroke={`rgba(${INK}, 0.28)`} strokeWidth={structure}><title>{c.person}</title></circle>
           {model.constellation.nodes.map(n => {
             const isSelected = selected?.key === n.key;
@@ -992,7 +1005,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
                 style={{ cursor: "pointer" }}
               >
                 <circle cx={n.x} cy={n.y} r={g.nodeRadius + 3} fill="rgba(0, 0, 0, 0)" />
-                <circle aria-hidden="true" pointerEvents="none" cx={n.x} cy={n.y} r={fixed(g.nodeRadius + (isSelected ? structure / 2 : 0) + SEAT_PAD_PX * k / 2)} fill={SEAT} />
+                <circle data-mapping-seat="node" data-capability={n.key} aria-hidden="true" pointerEvents="none" cx={n.x} cy={n.y} r={fixed(g.nodeRadius + (isSelected ? structure / 2 : 0) + SEAT_PAD_PX * k / 2)} fill={SEAT} />
                 <circle cx={n.x} cy={n.y} r={g.nodeRadius} fill={`rgba(${INK}, ${isSelected ? 0.95 : 0.55})`} stroke={isSelected ? `rgba(${INK}, 1)` : "none"} strokeWidth={isSelected ? structure : 0} />
                 <text data-testid={`mapping-capability-name-${n.key}`} x={fixed(lx)} y={fixed(ly)} textAnchor={anchor} dominantBaseline={Math.sin(radial) > 0.35 ? "hanging" : Math.sin(radial) < -0.35 ? "auto" : "middle"}
                   fontSize={fontSize} fill={`rgba(${INK}, ${isSelected ? 1 : 0.85})`} fontFamily={SANS} {...textSeat(k)}>{n.name}</text>
@@ -1054,7 +1067,7 @@ export function PersonJobMappingField({ locale, projection, ranking, watch }: Pe
         {/* L2/L3: the open role's ring — the very arcs of its collar, at the ring's radius. */}
         {openBody !== null && (
           <g key={`ring|${stageKey}`} data-testid="mapping-ring" data-role={testKey(openBody)} data-arcs={openBody.arcs.length} data-radius={ringR} data-stage-part="EVIDENCE">
-            <circle aria-hidden="true" pointerEvents="none" cx={openBody.x} cy={openBody.y} r={ringR} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
+            <circle data-mapping-seat="open-body-ring" aria-hidden="true" pointerEvents="none" cx={openBody.x} cy={openBody.y} r={ringR} fill="none" stroke={SEAT} strokeWidth={structure + SEAT_PAD_PX * k} />
             <circle cx={openBody.x} cy={openBody.y} r={ringR} fill="none" stroke={`rgba(${INK}, 0.14)`} strokeWidth={structure} />
             {openBody.arcs.map(arc => {
               const isOpen = view.arc?.poolRequirementId === arc.poolRequirementId;

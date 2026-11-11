@@ -38,9 +38,21 @@ const TRACKED = ["STAGE_GROUND_ALPHA", "STROKE_MIN_PX", "TEXT_MIN_PX", "RING_LUM
 const PRODUCT = ["app/components/career/demo/PersonJobMappingField.tsx"];
 
 /** extract `export const NAME = <rest>;` verbatim, so a value change shows as a string difference */
+/**
+ * §81 DEFECT 11 — this audit compared the seal's commit against HEAD, and HEAD IS NOT WHAT GETS SERVED. A
+ * product change in the working tree is invisible to `git show HEAD:path`, so a reading taken against an
+ * uncommitted change would be compared with the committed file and pass. Found by adding the A-G49 hooks and
+ * watching the audit report eight VALID seals while the halo circle had just grown four attributes. "WORKTREE"
+ * now means the file on disk, which is the one `next build` compiles.
+ */
+const WORKTREE = "WORKTREE";
+function srcAt(sha, path) {
+  if (sha === WORKTREE) { try { return readFileSync(resolve(ROOT, path), "utf8"); } catch { return null; } }
+  try { return git(`show ${sha}:${path}`); } catch { return null; }
+}
 function constantsAt(sha, path) {
-  let src;
-  try { src = git(`show ${sha}:${path}`); } catch { return null; }
+  const src = srcAt(sha, path);
+  if (src === null) return null;
   const found = {};
   for (const name of TRACKED) {
     const m = new RegExp(`^export const ${name}(?::[^=]*)? = (.*);\\s*$`, "m").exec(src);
@@ -74,6 +86,24 @@ function stripComments(src) {
   while (i < n) {
     const c = src[i], d = src[i + 1];
     if (mode === "CODE") {
+      /* §81: a JSX comment is `{/* … *\/}` and stripping only the inner block leaves a bare `{` and `}`
+         behind. Those braces then show up as changed lines and defeated the attribute-only test on nothing
+         but punctuation. The wrapper is consumed as part of the comment. */
+      if (c === "{") {
+        let j = i + 1;
+        while (j < n && /\s/.test(src[j])) j += 1;
+        if (src[j] === "/" && src[j + 1] === "*") {
+          const end = src.indexOf("*/", j + 2);
+          if (end !== -1) {
+            let k = end + 2;
+            while (k < n && /\s/.test(src[k])) k += 1;
+            if (src[k] === "}") {
+              for (let q = i; q <= k; q += 1) if (src[q] === "\n") out += "\n";
+              i = k + 1; continue;
+            }
+          }
+        }
+      }
       if (c === "/" && d === "/") { mode = "LINE"; i += 2; continue; }
       if (c === "/" && d === "*") { mode = "BLOCK"; i += 2; continue; }
       if (c === "'") { mode = "SQ"; out += c; i += 1; continue; }
@@ -124,16 +154,45 @@ function stripComments(src) {
   return { code: out.split("\n").map(l => l.trim()).filter(Boolean).join("\n"), regexLiterals };
 }
 
+/**
+ * §81 — strip every `data-*` attribute as well as every comment. An ADDED ATTRIBUTE CANNOT MOVE A PIXEL,
+ * but only if nothing styles it, and this record has three instances of an attribute being load-bearing
+ * (`[data-lit="false"]`, `[data-in-pool="true"]`, `[data-mapping-body]` all carry declarations). So the
+ * exemption is CONDITIONAL and the condition is checked, not assumed: every attribute name that appears at
+ * the later revision and not at the seal's is looked up against the CSS attribute selectors actually present
+ * in the file, comment lines excluded. If any added name is selected, the exemption is refused.
+ */
+const DATA_ATTR = /\s+data-[a-zA-Z0-9-]+(?:=(?:"[^"]*"|\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}))?/g;
+const attrNames = src => new Set([...src.matchAll(/\sdata-([a-zA-Z0-9-]+)/g)].map(m => m[1]));
+const cssAttrSelectors = src => new Set([...src.split("\n")
+  .filter(l => { const t = l.trim(); return !(t.startsWith("*") || t.startsWith("//") || t.startsWith("/*") || t.startsWith("{/*") || t.endsWith("*/}")); })
+  .filter(l => l.includes("[data-") && l.includes("{") && l.includes("}") && l.includes(":"))
+  .join("\n").matchAll(/\[data-([a-zA-Z0-9-]+)/g)].map(m => m[1]));
+
 /** exact: identical AFTER comment-stripping means no behavioural line moved */
 function changedLinesAreCommentOnly(sha, path) {
-  let before, now;
-  try { before = git(`show ${sha}:${path}`); now = git(`show HEAD:${path}`); } catch { return { commentOnly: false, why: "a revision of the product file could not be read" }; }
+  const before = srcAt(sha, path), now = srcAt(WORKTREE, path);
+  if (before === null || now === null) return { commentOnly: false, why: "a revision of the product file could not be read" };
   const a = stripComments(before), b = stripComments(now);
   /* the strip must not leave comment openers behind, or it did not do its job */
   /* a surviving block-comment opener means the stripper did not do its job; '//' is allowed through because
      it occurs legitimately inside string literals (URLs), which the stripper preserves on purpose */
   if (b.code.includes("/*") || a.code.includes("/*"))
     return { commentOnly: false, why: "a block-comment opener survived the strip — the stripper cannot be trusted on this revision, so the seal is treated as stale" };
+  /* the attribute-only case, checked rather than asserted */
+  const aNoAttr = stripComments(before.replace(DATA_ATTR, "")), bNoAttr = stripComments(now.replace(DATA_ATTR, ""));
+  const added = [...attrNames(now)].filter(n => !attrNames(before).has(n));
+  const styled = cssAttrSelectors(now);
+  const addedAndStyled = added.filter(n => styled.has(n));
+  const attributeOnly = a.code !== b.code && aNoAttr.code === bNoAttr.code && addedAndStyled.length === 0;
+  if (attributeOnly) return {
+    commentOnly: true, attributeOnly: true, attributesAdded: added, addedAttributesThatAreStyled: [],
+    why: `the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (${added.join(", ") || "none"}), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands.`
+  };
+  if (a.code !== b.code && aNoAttr.code === bNoAttr.code && addedAndStyled.length > 0) return {
+    commentOnly: false, attributeOnly: false, attributesAdded: added, addedAttributesThatAreStyled: addedAndStyled,
+    why: `the product file differs only in comments and added attributes, BUT ${addedAndStyled.join(", ")} IS STYLED by a CSS attribute selector in the same file, so the addition can change what is rendered. The exemption is refused.`
+  };
   return {
     commentOnly: a.code === b.code,
     strippedLinesAtSeal: a.code.split("\n").length,
@@ -158,7 +217,7 @@ const head = git("rev-parse HEAD");
 const BASE = "3ec8457d";
 const selfTest = (() => {
   const a = constantsAt(BASE, PRODUCT[0]), b = constantsAt(head, PRODUCT[0]);
-  if (a === null || b === null) throw new Error(`self-test: the product file is unreadable at ${BASE} or HEAD`);
+  if (a === null || b === null) throw new Error(`self-test: the product file is unreadable at ${BASE} or in the working tree`);
   const unextractable = TRACKED.filter(n => a[n] === null || b[n] === null);
   if (unextractable.length > 0) throw new Error(`self-test: these tracked constants no longer extract — the audit would pass silently: ${unextractable.join(", ")}`);
   const moved = TRACKED.filter(n => a[n] !== b[n]);
@@ -178,7 +237,7 @@ for (const file of seals) {
 
   const moved = [];
   for (const path of PRODUCT) {
-    const before = constantsAt(sealHead, path), now = constantsAt(head, path);
+    const before = constantsAt(sealHead, path), now = constantsAt(WORKTREE, path);
     if (before === null || now === null) { moved.push({ path, constant: "(whole file)", note: "absent at one of the two commits" }); continue; }
     for (const name of TRACKED) {
       /* TWO NULLS COMPARE EQUAL. A constant that was renamed, reformatted onto two lines, or lost its
@@ -194,7 +253,8 @@ for (const file of seals) {
   }
   const strips = PRODUCT.map(p => ({ path: p, ...changedLinesAreCommentOnly(sealHead, p) }));
   const commentOnly = strips.every(x => x.commentOnly);
-  const anyProductDiff = PRODUCT.some(p => { try { return git(`diff --name-only ${sealHead} HEAD -- ${p}`).length > 0; } catch { return true; } });
+  /* compare against the WORKING TREE, which is what a build compiles, not against HEAD */
+  const anyProductDiff = PRODUCT.some(p => { try { return git(`diff --name-only ${sealHead} -- ${p}`).length > 0; } catch { return true; } });
 
   rows.push({
     file, sealHead, sealHeadShort: sealHead.slice(0, 8), commitsBehindHead: Number(git(`rev-list --count ${sealHead}..HEAD`)),
@@ -205,7 +265,7 @@ for (const file of seals) {
     status: moved.length > 0 ? "STALE" : !anyProductDiff ? "VALID" : commentOnly ? "VALID" : "STALE",
     why: moved.length > 0 ? `a tracked constant moved since the seal: ${moved.map(m => m.constant).join(", ")}`
        : !anyProductDiff ? "the product file is byte-identical to the seal's commit"
-       : commentOnly ? "the product file changed since the seal, but with every comment removed it is IDENTICAL at both commits, so no behavioural line moved and no reading can have moved"
+       : commentOnly ? strips.map(x => x.why).join("; ")
        : `the product file changed behaviourally since the seal: ${strips.filter(x => !x.commentOnly).map(x => x.why).join("; ")}`
   });
 }
@@ -219,7 +279,8 @@ const out = {
   head, headShort: head.slice(0, 8),
   selfTest,
   method: {
-    exact: `named-constant comparison at the seal's commit vs HEAD, over ${TRACKED.length} constants: ${TRACKED.join(", ")}`,
+    subject: "the WORKING TREE, which is what `next build` compiles — not HEAD. §81 defect 11: this audit used to compare against HEAD, so an uncommitted product change was invisible to it.",
+    exact: `named-constant comparison at the seal's commit vs the WORKING TREE, over ${TRACKED.length} constants: ${TRACKED.join(", ")}`,
     secondCheck: "the product file is compared at both commits AFTER removing every comment with a character state machine, so 'only comments changed' is decided exactly; the stripper reports its own residue and regex-literal risk and downgrades to stale if either appears",
     whatAValidResultDoesNotMean: "VALID means the product the reading was taken from has not moved. It says nothing about whether the reading was correct, whether its carrier was the right carrier, or whether its pin is falsifiable."
   },
