@@ -1925,3 +1925,70 @@ PF-8's ASSEMBLED CURRENT FORM, so no future reader has to do this again:
   > class — which is where I already had PF-8 per class queued, without having noticed that the
   > three-tier form is blocked by the same line.** Reported rather than measured, and the queue is
   > corrected: PF-11 at `:907` is the only PF item on my side that this stand can actually finish.
+
+
+================================================================================================
+§26  PF-6 ON ITS LIVE (BLURRED) FORM — BOTH ROWS CLEAR, AND §21's FIGURES ARE WITHDRAWN. WHICH
+     ALSO RETRACTS PG-10 LIMB 3's BREACH, A FINDING OF MINE GELB ADOPTED. AND PF-11's RATIO FORM
+     IS DEGENERATE ON A BUILD WHOSE FREEZE IS TOTAL: THE BETTER THE FREEZE, THE STRICTER THE PIN.
+================================================================================================
+`scripts/pink-pf11-pf6-blurred-g.mjs` -> `outputs/PF11-PF6-BLURRED.json`. Blur is `sharp(png).blur(2)`,
+byte-identical to my phase-F call so the figures compare to that lane's and not merely to each other.
+Disc = field ring's outer edge; floors measured over the DISC (§24's defect corrected). §63: L0.
+
+§21's DEFECT, MINE, AND IT IS THE THIRD INSTANCE OF ONE CLASS IN THIS EXCHANGE. §21 measured PF-6 from
+`:324` and its row-2 amendment at `:416`. **The live form is `:715`: *"PF-6 — ceiling on 2 px-blurred
+frames: no blurred disc pixel swings > 0.030; mean |ΔL| per 500 ms ≤ 0.0025."*** And `:701` states the
+general rule: *"Every temporal obligation is measured on 2 px-blurred frames."* **§21's figures are on
+UNBLURRED frames and are withdrawn.**
+  > **GELB read PF-8's bound amendment and missed its scope amendment; I read PF-6's row amendment and
+  > missed its FRAME amendment. One cause, two lanes, and I found mine only by following PF-11's blur
+  > spec back to its source.** The amendment that changes what you point the instrument at is the one
+  > both of us walked past.
+
+PF-6 RE-MEASURED, BLURRED, AND BOTH ROWS CLEAR:
+    reduce (the floor)            row1 max 0.003892 · p99.9 **0** · 0 px > 0.030   row2 mean 2.57e-8
+    LIVE, foreign suppressed      row1 max **0.02825** · p999.9 0.02650 · **0 px > 0.030 — CLEARS**
+    LIVE, every sign drawn        row1 max 0.5074 · **3427 px > 0.030**            row2 mean 2.07e-4
+  Row 2 clears in every configuration (worst pair 5.44e-4 against 0.0025), as expected: it is an area
+  mean and blur moves it little. **Row 1 is where the blur decides the verdict** — unblurred it read max
+  0.03269 with 104 breaching pixels; blurred it reads 0.02825 with **none**.
+
+  > **AND THAT RETRACTS A FINDING OF MINE THAT GELB ADOPTED.** §21 established that PF-6 row 1 and
+  > PG-10 limb 3 are **one bound on one quantity**, and that the carrier mask is a SUBSET of the disc.
+  > §12/§13 measured limb 3 on the carrier at max 0.0327 with 105 of 51 289 pixels above 0.030 and I
+  > reported **EXCEEDS**; GELB adopted it, and §13 went further and characterised the breach as the
+  > breath. **All of that was unblurred.** Blurred, the WHOLE DISC has zero pixels above 0.030 — and
+  > since the carrier is contained in the disc, the carrier has zero too, a fortiori.
+  > **So PG-10 limb 3 does not breach on 2 px-blurred frames, and my EXCEEDS is withdrawn.**
+  > The inheritance runs the other way from §21's: there I said a breach on a subset is a lower bound on
+  > the superset. **Here a CLEAR on the superset is a clear on every subset of it, which is the stronger
+  > direction and needs no second run.** §13's r/R characterisation of the 105 pixels stands as a
+  > description of an unblurred reading and certifies nothing about the pin.
+  > **Whether `:701`'s blur rule governs phase G is GELB's to rule and I am not assuming it.** It is a
+  > rule about instruments rather than a figure, so A-F21's distinction says it should carry where A-G54
+  > says figures do not — but PG-10 never states a frame treatment, and that silence is the defect
+  > underneath both readings. **Either way one of my two numbers is not a verdict, and the record should
+  > not keep both.**
+
+PF-11 AT ITS LIVE FORM — THE COMPUTED-STYLE LIMB CLEARS AND THE RATIO LIMB IS NOT EVALUABLE.
+Reported separately, per GELB's ask, because the conjunction is the defect:
+    **computed-style limb: 0 offenders at both sizes — CLEARS.** No element under the field carries a
+    non-zero computed animation or transition duration under `reduce`.
+    ratio limb, 1920:  t=0.001 b2b **0** / apart 10 · t=0.002 b2b **0** / apart 2 · t=0.004 0/0 · t=0.008 0/0
+    ratio limb, 1280:  **all four rungs 0/0**
+  > **THE BACK-TO-BACK COUNT IS ZERO AT EVERY RUNG AND BOTH SIZES, AND THAT BREAKS THE FORM.** PF-11
+  > bounds `apart <= 1.5 x backToBack`. With `backToBack = 0` the bound becomes `apart <= 0`: **any
+  > change whatever fails, with no tolerance at all.** At base the b2b counts were non-zero, which is why
+  > 6.43 / 4.48 / 13.7 / ∞ was a meaningful reading. **On this build the freeze is total, so the pin's
+  > denominator vanished — and the better the freeze, the stricter the pin becomes.** A pin that tightens
+  > as the artifact improves is measuring its own instrument's noise, not the build.
+  > **And the two rungs with any signal sit inside the measured floor.** Under `reduce` the same
+  > instrument reads max 0.003892 with p99.9 exactly 0, so 10 pixels above 0.001 (1.8e-5 of the disc) and
+  > 2 above 0.002 are at the raster floor. **GELB's own remedy already exists for this: PF-8 tier C's
+  > `:1356` — *a rung below 2x the measured per-pixel floor is not evaluated* — and `:1354`'s minimum
+  > population. PF-11 is the pin those rules were derived FROM (`:973` cites "PF-11's ladder logic") and
+  > it never received them back.**
+  > **So PF-11's ratio limb is neither cleared nor failed here: it is unmeasurable in its ratio form on a
+  > build this static, and the fix is already in the record one pin away.** Verdict withheld rather than
+  > taken on a denominator of zero — the same refusal as §12's on a maximum, and the same reason.
