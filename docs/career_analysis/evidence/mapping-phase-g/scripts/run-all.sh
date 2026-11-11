@@ -26,6 +26,12 @@ for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha 
   node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
 done
 export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs}"
+
+# Needs a BROWSER but no build, no server and no façade: it renders its own controlled stack with
+# page.setContent. Kept separate from the server probes for exactly that reason, and viewport-independent.
+printf '\n=== gruen-compositing-model (browser only, no server) ===\n'
+node gruen-compositing-model.mjs >/dev/null || printf '!! gruen-compositing-model FAILED (exit %s)\n' "$?"
+
 for size in "${SIZES[@]}"; do
   export VW="${size%x*}" VH="${size#*x}"
   for probe in gruen-pg23-computed gruen-floor gruen-light gruen-rings gruen-bodies gruen-glow gruen-pg1-live gruen-discriminator gruen-pg22 gruen-pg20 gruen-option3 gruen-pg22-seats; do

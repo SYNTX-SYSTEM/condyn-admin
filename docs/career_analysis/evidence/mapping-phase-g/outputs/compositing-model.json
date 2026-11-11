@@ -1,0 +1,740 @@
+{
+ "reading": "GRÜN · §74 — fitting the compositor's actual blend arithmetic, after the join probe failed its own calibration",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "a flat-filled rect at one alpha over a known backdrop, rendered with page.setContent and block-sampled. NO build, NO server, NO façade, NO product page.",
+ "correctionToMyOwnClaim": "I told GELB the join question was what the new build-and-server permission was decisive for. It needs a browser only, which this lane has always had.",
+ "soundnessChecks": {
+  "readbackIsColourExact": "declared rgb(6,12,17) / rgb(128,64,32) / rgb(255,255,255) read back identically through page.screenshot and CDP Page.captureScreenshot",
+  "compositingPathExactAtExtremes": true,
+  "pathCheckMeaning": "black over white at alpha k/255 must read exactly 255 - k; measured on every rung in the same screenshot as the subject",
+  "everyCellUniform": true,
+  "uniformityMeaning": "no dither to average away and no sampling noise to blame for the mismatch below"
+ },
+ "samplingDefectFoundAndFixed": "two earlier passes of this probe omitted `svg{display:block}`, so inline SVGs took line-height spacing and each row was sampled from the row above. That artefact produced a clean-looking 'the compositor truncates' result that survived two passes. Box positions are now read from the DOM instead of computed from an assumed row height.",
+ "rungs": [
+  {
+   "k": 1,
+   "alpha": 0.0039216,
+   "exactFloat": [
+    6.9373,
+    12.6039,
+    17.0706
+   ],
+   "measured": "rgb(6, 12, 16)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 254,
+    "expected": 254,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(7, 13, 17)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(6, 12, 17)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(7, 13, 17)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(6, 12, 16)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(5, 11, 16)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(7, 13, 17)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 2,
+   "alpha": 0.0078431,
+   "exactFloat": [
+    7.8745,
+    13.2078,
+    17.1412
+   ],
+   "measured": "rgb(7, 12, 16)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 253,
+    "expected": 253,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(8, 13, 17)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(7, 13, 17)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(8, 13, 17)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(7, 12, 16)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(6, 12, 16)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(8, 13, 17)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 3,
+   "alpha": 0.0117647,
+   "exactFloat": [
+    8.8118,
+    13.8118,
+    17.2118
+   ],
+   "measured": "rgb(8, 13, 16)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 252,
+    "expected": 252,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(9, 14, 17)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(8, 13, 17)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(9, 14, 17)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(8, 13, 16)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(7, 12, 16)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(9, 14, 17)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 4,
+   "alpha": 0.0156863,
+   "exactFloat": [
+    9.749,
+    14.4157,
+    17.2824
+   ],
+   "measured": "rgb(9, 14, 17)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 251,
+    "expected": 251,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(10, 14, 17)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(9, 14, 17)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(10, 15, 18)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(9, 14, 17)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(8, 13, 16)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(10, 15, 18)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 6,
+   "alpha": 0.0235294,
+   "exactFloat": [
+    11.6235,
+    15.6235,
+    17.4235
+   ],
+   "measured": "rgb(11, 15, 17)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 249,
+    "expected": 249,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(12, 16, 17)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(11, 15, 17)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(12, 16, 18)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(11, 15, 17)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(10, 14, 16)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(12, 16, 18)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 8,
+   "alpha": 0.0313725,
+   "exactFloat": [
+    13.498,
+    16.8314,
+    17.5647
+   ],
+   "measured": "rgb(13, 16, 17)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 247,
+    "expected": 247,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(13, 17, 18)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(13, 16, 17)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(14, 17, 17)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(13, 16, 17)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(12, 16, 17)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(14, 17, 17)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 12,
+   "alpha": 0.0470588,
+   "exactFloat": [
+    17.2471,
+    19.2471,
+    17.8471
+   ],
+   "measured": "rgb(17, 19, 18)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 243,
+    "expected": 243,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(17, 19, 18)",
+     "matches": true
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(17, 19, 17)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(18, 19, 18)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(17, 19, 18)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(16, 18, 17)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(18, 19, 18)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 16,
+   "alpha": 0.0627451,
+   "exactFloat": [
+    20.9961,
+    21.6627,
+    18.1294
+   ],
+   "measured": "rgb(20, 21, 17)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 239,
+    "expected": 239,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(21, 22, 18)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(20, 21, 18)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(21, 21, 18)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(20, 21, 17)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(20, 21, 17)",
+     "matches": true
+    },
+    "premulRound+int255": {
+     "triple": "rgb(21, 21, 18)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 24,
+   "alpha": 0.0941176,
+   "exactFloat": [
+    28.4941,
+    26.4941,
+    18.6941
+   ],
+   "measured": "rgb(28, 26, 18)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 231,
+    "expected": 231,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(28, 26, 19)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(28, 26, 18)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(28, 27, 18)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(28, 26, 18)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(28, 25, 18)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(28, 27, 18)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 32,
+   "alpha": 0.1254902,
+   "exactFloat": [
+    35.9922,
+    31.3255,
+    19.2588
+   ],
+   "measured": "rgb(36, 31, 18)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 223,
+    "expected": 223,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(36, 31, 19)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(35, 31, 19)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(36, 31, 19)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(36, 31, 18)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(35, 30, 18)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(36, 31, 19)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 48,
+   "alpha": 0.1882353,
+   "exactFloat": [
+    50.9882,
+    40.9882,
+    20.3882
+   ],
+   "measured": "rgb(50, 40, 20)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 207,
+    "expected": 207,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(51, 41, 20)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(50, 40, 20)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(51, 41, 21)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(50, 40, 20)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(50, 40, 19)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(51, 41, 21)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 64,
+   "alpha": 0.2509804,
+   "exactFloat": [
+    65.9843,
+    50.651,
+    21.5176
+   ],
+   "measured": "rgb(65, 51, 21)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 191,
+    "expected": 191,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(66, 51, 22)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(65, 50, 21)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(65, 51, 22)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(65, 50, 21)",
+     "matches": false
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(65, 49, 20)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(65, 51, 22)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 96,
+   "alpha": 0.3764706,
+   "exactFloat": [
+    95.9765,
+    69.9765,
+    23.7765
+   ],
+   "measured": "rgb(95, 69, 23)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 159,
+    "expected": 159,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(96, 70, 24)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(95, 69, 23)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(96, 69, 24)",
+     "matches": false
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(95, 69, 23)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(95, 69, 23)",
+     "matches": true
+    },
+    "premulRound+int255": {
+     "triple": "rgb(96, 69, 24)",
+     "matches": false
+    }
+   }
+  },
+  {
+   "k": 128,
+   "alpha": 0.5019608,
+   "exactFloat": [
+    125.9686,
+    89.302,
+    26.0353
+   ],
+   "measured": "rgb(126, 89, 26)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 127,
+    "expected": 127,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(126, 89, 26)",
+     "matches": true
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(125, 89, 26)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(126, 89, 26)",
+     "matches": true
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(125, 88, 26)",
+     "matches": false
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(124, 88, 25)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(126, 89, 26)",
+     "matches": true
+    }
+   }
+  },
+  {
+   "k": 192,
+   "alpha": 0.7529412,
+   "exactFloat": [
+    185.9529,
+    127.9529,
+    30.5529
+   ],
+   "measured": "rgb(185, 128, 30)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 63,
+    "expected": 63,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(186, 128, 31)",
+     "matches": false
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(185, 127, 30)",
+     "matches": false
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(185, 128, 30)",
+     "matches": true
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(185, 127, 30)",
+     "matches": false
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(185, 126, 30)",
+     "matches": false
+    },
+    "premulRound+int255": {
+     "triple": "rgb(185, 128, 30)",
+     "matches": true
+    }
+   }
+  },
+  {
+   "k": 255,
+   "alpha": 1,
+   "exactFloat": [
+    245,
+    166,
+    35
+   ],
+   "measured": "rgb(245, 166, 35)",
+   "uniform": true,
+   "distinct": 1,
+   "pathCheck": {
+    "measured": 0,
+    "expected": 0,
+    "exact": true
+   },
+   "models": {
+    "round(D+a(S-D))": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    },
+    "trunc(D+a(S-D))": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    },
+    "premulRound+outRound": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    },
+    "premulRound+outTrunc": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    },
+    "premulTrunc+outTrunc": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    },
+    "premulRound+int255": {
+     "triple": "rgb(245, 166, 35)",
+     "matches": true
+    }
+   }
+  }
+ ],
+ "modelFit": [
+  {
+   "model": "premulRound+outTrunc",
+   "matches": 13,
+   "of": 16
+  },
+  {
+   "model": "trunc(D+a(S-D))",
+   "matches": 7,
+   "of": 16
+  },
+  {
+   "model": "round(D+a(S-D))",
+   "matches": 3,
+   "of": 16
+  },
+  {
+   "model": "premulRound+outRound",
+   "matches": 3,
+   "of": 16
+  },
+  {
+   "model": "premulTrunc+outTrunc",
+   "matches": 3,
+   "of": 16
+  },
+  {
+   "model": "premulRound+int255",
+   "matches": 3,
+   "of": 16
+  }
+ ],
+ "modelsMatchingEveryRung": [],
+ "finding": "NO MODEL FITS ALL 16 RUNGS. The best is \"premulRound+outTrunc\" at 13/16, and this record's round(D + a(S-D)) manages 3/16. At the lowest rungs the BLUE channel reads below the backdrop while the source is above it, which no convex blend of the two endpoints can produce at any rounding — so the mixing is not performed on the straight 8-bit values. The mechanism is named (a premultiplied 8-bit source) and not yet computable.",
+ "consequence": "Any figure of the form 'alpha a over triple D renders as triple T' is unsafe, and this record is built on them — this lane's first-visible-state arithmetic, GELB's rgb(7,13,17), A-G137's computed core family, A-G126's single-code projections. AGGREGATE figures are NOT implicated: A-G62's shelf luminance agreed with its model to five significant figures because pooled luminance averages the per-channel error away, and it stands. This instrument may continue to trust its POOLED LUMINANCES and may not trust a PREDICTED TRIPLE.",
+ "joinQuestion": "STILL OPEN. A-G139 is NOT satisfied and both withdrawn floors — this lane's 0.329 and GELB's 0.737 — stay withdrawn. The join cannot be read off a predicted triple while the single-alpha triple itself is not predictable."
+}

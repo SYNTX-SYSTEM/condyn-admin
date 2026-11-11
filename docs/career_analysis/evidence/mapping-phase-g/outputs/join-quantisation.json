@@ -1,0 +1,275 @@
+{
+ "reading": "GRÜN · §74 — the compositor's rounding mode, fitted; then whether the alpha join is quantised",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "a controlled constant-alpha gradient inside a group opacity, rendered with page.setContent and read back as pixels. NO build, NO server, NO façade, NO product page.",
+ "correctionToMyOwnClaim": "I told GELB this item was the one the new build-and-server permission was decisive for. It is not — it needs a browser only, which this lane has always had. The permission remains decisive for reading the REAL gap glow on the real build, which is a separate probe.",
+ "firstAttemptFailed": "The first version assumed round() and hard-coded its discriminating pairs against that assumption. Its calibration mismatched on all eight rungs, each measured triple equalling the prediction for the rung below. Under the fitted mode, seven of those eight hand-picked pairs collapse to agreement — including the build's own 0.0030 x 0.8825 — so a discriminator chosen under the wrong model does not discriminate. The mode is now fitted first and the pairs searched afterwards.",
+ "backdrop": "rgb(6, 12, 17)",
+ "source": "rgb(245, 166, 35)",
+ "gradientIsConstant": "two stops, same colour, same stop-opacity, so every pixel inside the circle carries ONE alpha and per-pixel interpolation cannot contribute",
+ "phase1_compositingMode": {
+  "candidates": [
+   "round",
+   "truncate",
+   "ceil",
+   "premulRound",
+   "premulTrunc"
+  ],
+  "samplingNote": "each cell is an 8x8 block, reported as its distinct triples and modal triple. The first two attempts read ONE pixel and were not reproducible across screen positions.",
+  "uniformity": {
+   "flatCellsUniform": 10,
+   "gradientCellsUniform": 0,
+   "of": 10,
+   "flatWorstDistinct": 1,
+   "gradientWorstDistinct": 4
+  },
+  "fitOnFlatFill": [
+   {
+    "mode": "round",
+    "rungsMatched": "0/10"
+   },
+   {
+    "mode": "truncate",
+    "rungsMatched": "2/10"
+   },
+   {
+    "mode": "ceil",
+    "rungsMatched": "0/10"
+   },
+   {
+    "mode": "premulRound",
+    "rungsMatched": "0/10"
+   },
+   {
+    "mode": "premulTrunc",
+    "rungsMatched": "0/10"
+   }
+  ],
+  "fitOnGradient": [
+   {
+    "mode": "round",
+    "rungsMatched": "6/10"
+   },
+   {
+    "mode": "truncate",
+    "rungsMatched": "0/10"
+   },
+   {
+    "mode": "ceil",
+    "rungsMatched": "3/10"
+   },
+   {
+    "mode": "premulRound",
+    "rungsMatched": "6/10"
+   },
+   {
+    "mode": "premulTrunc",
+    "rungsMatched": "0/10"
+   }
+  ],
+  "fittedOnFlat": null,
+  "fittedOnGradient": null,
+  "flatAndGradientAgree": false,
+  "fit": [
+   {
+    "mode": "round",
+    "rungsMatched": "6/10"
+   },
+   {
+    "mode": "truncate",
+    "rungsMatched": "0/10"
+   },
+   {
+    "mode": "ceil",
+    "rungsMatched": "3/10"
+   },
+   {
+    "mode": "premulRound",
+    "rungsMatched": "6/10"
+   },
+   {
+    "mode": "premulTrunc",
+    "rungsMatched": "0/10"
+   }
+  ],
+  "fitted": null,
+  "ladderFlat": [
+   {
+    "k": 1,
+    "measured": "rgb(6, 12, 16)",
+    "predicted": "rgb(7, 13, 17)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 2,
+    "measured": "rgb(7, 12, 16)",
+    "predicted": "rgb(8, 13, 17)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 3,
+    "measured": "rgb(8, 13, 16)",
+    "predicted": "rgb(9, 14, 17)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 5,
+    "measured": "rgb(10, 14, 17)",
+    "predicted": "rgb(11, 15, 17)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 8,
+    "measured": "rgb(13, 16, 17)",
+    "predicted": "rgb(13, 17, 18)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 13,
+    "measured": "rgb(17, 19, 18)",
+    "predicted": "rgb(18, 20, 18)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 21,
+    "measured": "rgb(25, 25, 18)",
+    "predicted": "rgb(26, 25, 18)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 34,
+    "measured": "rgb(38, 32, 19)",
+    "predicted": "rgb(38, 33, 19)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 55,
+    "measured": "rgb(57, 45, 21)",
+    "predicted": "rgb(58, 45, 21)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   },
+   {
+    "k": 89,
+    "measured": "rgb(89, 65, 23)",
+    "predicted": "rgb(89, 66, 23)",
+    "uniform": true,
+    "distinct": 1,
+    "ok": false
+   }
+  ],
+  "ladderGradient": [
+   {
+    "k": 1,
+    "measured": "rgb(7, 13, 17)",
+    "predicted": "rgb(7, 13, 17)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": true
+   },
+   {
+    "k": 2,
+    "measured": "rgb(8, 13, 17)",
+    "predicted": "rgb(8, 13, 17)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": true
+   },
+   {
+    "k": 3,
+    "measured": "rgb(9, 14, 17)",
+    "predicted": "rgb(9, 14, 17)",
+    "uniform": false,
+    "distinct": 3,
+    "ok": true
+   },
+   {
+    "k": 5,
+    "measured": "rgb(11, 15, 18)",
+    "predicted": "rgb(11, 15, 17)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": false
+   },
+   {
+    "k": 8,
+    "measured": "rgb(14, 17, 18)",
+    "predicted": "rgb(13, 17, 18)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": false
+   },
+   {
+    "k": 13,
+    "measured": "rgb(18, 20, 18)",
+    "predicted": "rgb(18, 20, 18)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": true
+   },
+   {
+    "k": 21,
+    "measured": "rgb(26, 25, 19)",
+    "predicted": "rgb(26, 25, 18)",
+    "uniform": false,
+    "distinct": 3,
+    "ok": false
+   },
+   {
+    "k": 34,
+    "measured": "rgb(38, 33, 20)",
+    "predicted": "rgb(38, 33, 19)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": false
+   },
+   {
+    "k": 55,
+    "measured": "rgb(58, 45, 21)",
+    "predicted": "rgb(58, 45, 21)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": true
+   },
+   {
+    "k": 89,
+    "measured": "rgb(89, 66, 23)",
+    "predicted": "rgb(89, 66, 23)",
+    "uniform": false,
+    "distinct": 4,
+    "ok": true
+   }
+  ],
+  "finding": "NO MODE FITS all 10 rungs, so the compositor does something none of the five candidates describes and everything below is VOID.",
+  "consequenceForTheRecord": "the record's use of round() is consistent with the fitted mode."
+ },
+ "phase2_theJoin": {
+  "models": {
+   "floatProduct": "a_eff = a1 · a2",
+   "stopQuantised": "a_eff = q8(a1) · a2",
+   "bothQuantised": "a_eff = q8(q8(a1) · q8(a2))"
+  },
+  "pairsSearchedUnderFittedMode": 0,
+  "cases": [],
+  "tally": [],
+  "modelsMatchingEveryCase": []
+ },
+ "finding": "VOID — no compositing mode fits the calibration ladder, so no claim is made about the join."
+}
