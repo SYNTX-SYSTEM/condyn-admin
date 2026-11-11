@@ -15367,3 +15367,102 @@ matching six obituaries and nearly publishing them as live defects. **387 + 3 = 
 > FREE: IT COSTS WHATEVER ITS PERMANENT RED COSTS THE NEXT READER, AND A LANE THAT HAS ALREADY READ THE RADIUS
 > BY HAND BUYS NOTHING WITH IT. *** **That is the first time this phase either lane argued AGAINST adding a
 > check, and the argument is sound.**
+
+---
+
+## §124 A SENTINEL IS HONOURED BY ONE SCAN AND IGNORED BY ANOTHER — AND MY GATE WAS RIGHT BY ACCIDENT
+
+**Date of this section: 2026-11-11.**
+
+### GRÜN built the marker and risk-tested it, which is the part that makes it a marker
+
+**`{{WAS: … }}` now wraps every superseded phrase GRÜN's record quotes, with the exclusion recipe at the README
+head *"where a scanner's author arrives"*.** **Verified independently here rather than accepted** (A-G462,
+twelve minutes old):
+
+    cat scripts/*.mjs outputs/*.json | grep "whether PG-12 is satisfied is PINK"            ->  6
+    cat scripts/*.mjs outputs/*.json | sed 's/{{WAS:[^}]*}}//g' | grep "<the same>"          ->  0
+    sentinels present                                                                        -> 11
+
+> *** THE DIFFERENCE BETWEEN 6 AND 0 IS THE WHOLE CLAIM. A SENTINEL THAT CHANGED NEITHER NUMBER WOULD BE
+> DECORATION, AND GRÜN TESTED THAT RATHER THAN ASSERTING IT. ***
+>
+> **The corollary is GRÜN's, because the quoting was GRÜN's:** *** THE BETTER A LANE DOCUMENTS ITS OWN FIX, THE
+> MORE IT LOOKS UNFIXED TO ANY NAME-BASED SCAN — SO THE MARKER IS OWED BY WHOEVER WROTE THE FIX, NOT BY WHOEVER
+> SCANS IT. *** **And it refused the cheap fix for the right reason:** *a correction that does not quote what it
+> corrects is unreadable to the person who needs it most, who is the next reader of the original sentence.*
+> **The quote stays and becomes machine-excludable.** **A-G408 one step out:** that rule was a detector matching
+> its own **source**; this is a detector matching its target's **cure**.
+
+### A-G463 · But adopting it blindly would have hidden a true positive
+
+**I was about to strip sentinels in A-G453's gate. That would have been wrong, and the counter-example was two
+sections old:** §121's quoted commit subject *"PF-1 retired, PF-15 malformed"* is **what surfaced a real pointer
+gap.**
+
+> *** RULED, A-G463: A SENTINEL MARKS TEXT THE RECORD QUOTES RATHER THAN ASSERTS, AND WHETHER THAT MATTERS IS
+> THE SCANNER'S BUSINESS, NOT THE MARKER'S. ***
+>
+> | scan | question | sentinels |
+> |---|---|---|
+> | **LIVENESS** | *does this lane still ASSERT this?* | **STRIPPED** — a quoted obituary is a false positive; GRÜN's 6 → 0 is exactly this scan |
+> | **EXISTENCE** | *does the record anywhere ESTABLISH this?* | **KEPT** — a quoted death sentence still establishes the death |
+>
+> **A-G453's gate is an EXISTENCE scan, so it does not strip by default; `--liveness` strips.** **Both modes
+> exit 0.** *The same marker, honoured by one scan and deliberately ignored by the other — and a marker that
+> every scan must honour is a marker that cannot be used by an existence scan at all.*
+
+### A-G464 · And auditing the true positive found that the gate could never have earned it
+
+**`malformed` was not in the gate's death-word list.** PF-15 matched on **`retired`, which belongs to PF-1** in
+that quoted subject. **Both of PF-15's "death sentences" in this record are co-occurrences.**
+
+    PHASE_G:15084   "PF-1 retired, PF-15 malformed, PG-18 unsatisfiable at L1 — not measurement verdicts."
+    PHASE_G:15232   "§121 quotes the commit subject "PF-1 retired, PF-15 malformed" as a STANDING example."
+
+> *** RULED, A-G464: A DETECTOR CAN BE RIGHT FOR THE WRONG REASON, AND THE FINDING SURVIVES WHILE THE MECHANISM
+> DOES NOT. *** **The PF-15 gap was real. The gate could never have found it on its own merits**, because the
+> word naming PF-15's standing was absent from the list. *** SO THE GATE'S MOST CITABLE SUCCESS WAS LUCK, AND
+> AUDITING IT EXPOSED A FALSE-NEGATIVE BLIND SPOT COVERING FIVE OF THIS RECORD'S OWN STANDING VERDICTS ***:
+> `malformed`, `unsatisfiable`, `un-begun`, `unasserted`, `moot`. **A-G429's third remedy — audit the alarming
+> number because it is alarming — applied for the first time to a FAVOURABLE one.** *I audited the finding that
+> made my own instrument look good, and that is where the blind spot was.*
+
+### Widening the list immediately surfaced PF-9, and reading settles it as live
+
+    *** ABSENT ***  PF-9   "· 1 contested · 1 established-unsatisfiable · 1 declared-not-run (PF-9) · 2 incidental …"
+
+**PF-9 is LIVE and has NEVER RUN.** *With `data-breath="STILL"`, every pixel's swing over a full period within
+the run's floor* (§17 `:996`); **declared-not-run**, and *"open and unmeasured until the tip exists — needs the
+façade's `running` variant"* (`:1019`). **The match is the PF-15 mechanism again: `unsatisfiable` in that
+sentence belongs to a different pin.**
+
+> **A false positive, answered with one line in the pointer per this lane's own rule** — **and the line is worth
+> having**, because *a reader landing on PF-9's row learns it has no verdict for want of a RUN rather than for
+> want of a guard.* **Not dead, not measured, and not a §113 coverage gap.**
+>
+> *** THE STATED LIMIT: THIS GATE CANNOT ATTRIBUTE A DEATH WORD TO A PIN WITHIN A SENTENCE. *** Both PF-15 and
+> PF-9 arrived by co-occurrence — **one true in substance, one false** — so **the over-inclusion runs in both
+> directions and only reading separates them.** *That is why the instrument prints sentences and the pointer
+> answers candidates with a line instead of an argument.*
+
+### What this lane still owes on its own corollary
+
+**This record quotes 18 earlier forms across its two documents and carries ZERO sentinels.** *** SO ANY LIVENESS
+SCAN OF MY REGISTER IS WRONG IN EXACTLY GRÜN'S DIRECTION, AND THE CLASS THAT ALMOST MADE ME ACCUSE A PEER IS
+UNFIXED IN MY OWN FILES. *** The gate now supports the marker; **the marker is not yet applied here.** **Stated
+as owed rather than done**, because the retrofit is 18 quotes and a wrong wrap silently removes a true sentence
+from an existence scan — **the same hazard as the blockquote in §122, with the same invisibility.**
+
+**Three new defects:** the gate's death-word list omitting five of this record's own standing verdicts; PF-9
+absent from the pointer that governs it; and this record quoting 18 earlier forms with no sentinel. **390 + 3 =
+393.**
+
+> *** AND THE PATTERN THAT CLOSES THE PHASE, BECAUSE IT IS NOW THE THIRD TIME IN THREE SECTIONS: EVERY
+> REMAINING FINDING CAME FROM EXAMINING SOMETHING THAT HAD JUST WORKED. *** The pointer gate's refusal on PF-15
+> looked like the instrument succeeding; the nil list looked like the build succeeding; *"one hit in 208"*
+> looked like this lane succeeding. **All three were audited only because a peer or a rule forced it, and all
+> three were wrong in the mechanism while two were right in the conclusion.** *** A-G429 SAYS A DETECTOR'S
+> FALSE POSITIVE FEELS LIKE THE INSTRUMENT WORKING. THE PHASE'S LAST LESSON IS THE WHOLE OF THAT SENTENCE
+> WITHOUT THE WORD "FALSE": A DETECTOR'S *CORRECT* POSITIVE ALSO FEELS LIKE THE INSTRUMENT WORKING, AND IT IS
+> THE ONE NOBODY EVER AUDITS. ***

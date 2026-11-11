@@ -22,8 +22,21 @@ const DOC = {
   PHASE_F: "PERSON_X_JOB_MAPPING_PHASE_F.md",
   PHASE_G: "PERSON_X_JOB_MAPPING_PHASE_G.md",
 };
+// ---- A-G463: A SENTINEL IS HONOURED BY A LIVENESS SCAN AND IGNORED BY AN EXISTENCE SCAN ------
+// GRÜN's {{WAS: … }} marks text the record QUOTES rather than ASSERTS. Whether that matters is the
+// SCANNER'S business, not the marker's:
+//   LIVENESS  ("does this lane still defer PG-12 to PINK?")  -> STRIP. A quoted obituary is a
+//             false positive, and GRÜN's 6 -> 0 is exactly this scan.
+//   EXISTENCE ("does the record anywhere establish this pin is dead?") -> DO NOT STRIP. A quoted
+//             death sentence still establishes the death. §121's quoted commit subject "PF-1
+//             retired, PF-15 malformed" is what surfaced a REAL pointer gap — stripping would
+//             have hidden a true positive.
+// This instrument is an EXISTENCE scan, so it does not strip by default. `--liveness` strips, and
+// the two modes are risk-tested against each other at the foot of this file.
+const LIVENESS = process.argv.includes("--liveness");
+const strip = (t) => (LIVENESS ? t.replace(/\{\{WAS:[^}]*\}\}/g, "") : t);
 const text = Object.fromEntries(
-  Object.entries(DOC).map(([k, f]) => [k, readFileSync(resolve(DOCS, f), "utf8")])
+  Object.entries(DOC).map(([k, f]) => [k, strip(readFileSync(resolve(DOCS, f), "utf8"))])
 );
 
 const fail = (m) => { console.error(`\nREFUSED: ${m}\n`); process.exit(1); };
@@ -54,7 +67,13 @@ const pins = (s) => {
 const pointerPins = pins(pointerText);
 
 // ---- retirement sentences, over the record with the pointer cut out --------------------------
-const DEATH = /\b(retired|retires|retire|RETIRED|killed|superseded|struck|withdrawn|replaced by|replaces)\b/;
+// A-G464: THIS LIST WAS AUDITED BECAUSE IT PRODUCED A TRUE POSITIVE, AND IT HAD A BLIND SPOT.
+// PF-15 was flagged and the gap was real — but the matching word was "retired", belonging to PF-1
+// in the quoted subject "PF-1 retired, PF-15 malformed". *** "malformed" WAS NOT IN THIS LIST, SO
+// THE GATE COULD NEVER HAVE FOUND PF-15 ON ITS OWN MERITS. *** A detector can be right for the
+// wrong reason, and the finding survives while the mechanism does not. The standing words this
+// record actually uses in its own verdicts are now all here.
+const DEATH = /\b(retired|retires|retire|RETIRED|killed|superseded|struck|withdrawn|replaces|replaced by|malformed|unsatisfiable|un-?begun|unasserted|moot|suspended)\b/;
 const LIMBISH = /\b(limb|ratio limb|cap|row \d|clause|wording|statistic|form)\b/i;
 
 const corpus = [
@@ -123,7 +142,7 @@ for (const must of ["PF-3", "PF-5", "PF-7", "PF-10"]) {
 
 const bar = "=".repeat(104);
 const show = (ps) => ps.join(" ") || "none";
-console.log(`${bar}\nGELB · A-G453 (PINK's) — IS A FORWARD POINTER COMPLETE? ONE PER DOMAIN.\n${bar}`);
+console.log(`${bar}\nGELB · A-G453 (PINK's) — IS A FORWARD POINTER COMPLETE? ONE PER DOMAIN.\n  mode: ${LIVENESS ? "LIVENESS (sentinels STRIPPED — asks what the record still ASSERTS)" : "EXISTENCE (sentinels KEPT — asks what the record ESTABLISHES)"}\n${bar}`);
 console.log(`
   the pointer is located by its HEADING, never by a line number, and runs ${pEnd - pStart} lines.
   pins it names:  ${show([...pointerPins].sort((a, b) => a.localeCompare(b, "en", { numeric: true })))}

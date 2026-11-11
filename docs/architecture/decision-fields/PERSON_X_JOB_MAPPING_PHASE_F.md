@@ -334,6 +334,12 @@ be **red-first**: a mutant that removes the mechanism must turn the proof red, a
 >   **This pointer omitted all four until §116, and the omission cost two lanes a round:** PINK measured
 >   PF-5 and PF-7 as live pins and this lane specified a replacement guard for PF-10 in §114. **The note
 >   built to stop a lane reading a stale pin listed one replacement and missed four retirements.**
+> - **PF-9 IS LIVE AND HAS NEVER RUN.** *With `data-breath="STILL"`, every pixel's swing over a full period
+>   within the run's floor* (§17 `:996`). The record carries it as **DECLARED-NOT-RUN** and as *"open and
+>   unmeasured until the tip exists— needs the façade's `running` variant"* (`:1019`). **Not dead, not
+>   measured, and not a coverage gap in the §113 sense — it has no verdict because it has no run.**
+>   *Added §124: A-G453's gate flagged PF-9 after its death-word list was widened, and reading settles it as
+>   a CO-OCCURRENCE — "unsatisfiable" in that sentence belongs to another pin. One line, per the rule.*
 > - **PF-15 IS MALFORMED AS A CONJUNCTION, NOT MERELY UNSATISFIABLE** (**§98**, `PHASE_G:12669`) — two legs:
 >   *no shelf alpha can satisfy both separations*. **A malformed pin needs no guard and admits no satisfier**, so
 >   it is not a gap. **But its unsatisfiability was derived OVER THE REALS**, and `PHASE_G:12434` re-opens that:
