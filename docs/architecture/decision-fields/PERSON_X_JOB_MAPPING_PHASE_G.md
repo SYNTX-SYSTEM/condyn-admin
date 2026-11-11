@@ -7075,7 +7075,7 @@ catching a loose reading of mine before it became a sentence. Both are now pinne
 |---|---|---|
 | **PG-5** | **ZERO-BY-CONSTRUCTION** | `if (out.length >= budget) break;` — the drawn count cannot exceed the budget for any build |
 | **PG-14** | **ZERO-BY-CONSTRUCTION**, with a residue | `frameWithBodies` *widens* the frame to the union with every drawn body's extent |
-| **PG-15** | **ZERO-BY-CONSTRUCTION** | SVG paints in document order; the rings precede `mapping-glows` and the bodies |
+| **PG-15** | ~~ZERO-BY-CONSTRUCTION~~ → **UNASSERTED** *(§108)* | SVG paints in document order; the rings precede `mapping-glows` and the bodies — **but NO test asserts it. GRÜN's mutant moved the ring in front of every body and all 16 files and 196 tests passed.** Zero-by-construction means a test exists and cannot fail; **this is no test at all**, and the two have different remedies |
 | **PG-16** | **ZERO-BY-CONSTRUCTION** | A-G267 |
 | **PG-4** | **OWNER LEVER** | `BODY_NAMES_AT_L0 \|\| isMarked \|\| …` is unconditionally true at L0 while the constant is true |
 | **PG-7** | **CONSTANT-ONLY** | a relation between two source constants, both 10000 ms |
@@ -13592,3 +13592,175 @@ mutations. **315 + 2 = 317.**
 
 **GRÜN's queue is PG-5, PG-15, PG-16 — three.** A-G43 and PG-20 are both **CLOSED and proven**, the first two
 of the five held mutants, and the gate they were held on was B-ENTRY.
+
+---
+
+## §108 ALL FIVE MUTANTS RUN — FOUR KILLED, AND THE FIFTH FOUND THAT THERE WAS NOTHING TO KILL
+
+**Date of this section: 2026-11-11.**
+
+```
+A-G43 sensitivity  implementation reverted to mark-keyed        KILLED
+PG-20 robustness   sign table: DIFFERENT.mark -> "none"         KILLED  (green new, red old)
+PG-5               budget's `break` removed, BODY_BUDGET kept   KILLED  "expected 9 <= 7"
+PG-15              field ring moved in FRONT of every body      *** SURVIVED ***
+PG-16              filter loosened to 0.2, CROWDING kept 0.3    KILLED  "Role 002/Role 006"
+```
+
+Each applied to the working tree, run, reverted, **with `git status --porcelain` verified clean after every
+one**, and recorded with every exact edit in `MUTANTS-§105.md` at `6d537f2e`.
+
+### PG-15 is UNASSERTED, not zero-by-construction — and that is a correction to this lane's own table
+
+GRÜN answered the discrimination question with a third answer better than either offered: **there is no
+assertion to convert.** Confirmed statically — every ring assertion in the population covers the ring, its
+seat, its `data-breath`, or arcs inside the requirement ring, **and none compares a ring's position to a
+body's** — and empirically, by moving the ring to the last SVG child and watching nothing fail.
+
+> *** RULED: PG-15 is UNASSERTED. §63's table called it ZERO-BY-CONSTRUCTION and those are different
+> states. ***
+>
+> | | |
+> |---|---|
+> | zero-by-construction | a test exists and **cannot fail** |
+> | **unasserted** | **no test exists at all** |
+>
+> **The enforcement is real and the pin HOLDS in the shipped build** — document order does put the rings
+> first. **What is absent is the assertion.** And the distinction has different remedies: *a
+> zero-by-construction pin needs a better test; an unasserted one needs a test.* **This lane's table told
+> its readers PG-15 had a guard that could not fire. It has no guard.**
+
+**Remedy in two parts, the second keeping it honest:** a **document-order assertion** should exist — one
+line, and it would have killed the mutation. *This lane earlier called such an assertion "proof only that
+the test reads the DOM", which was right for DISCRIMINATING an existing test and wrong as a reason not to
+have one.* **And it must be labelled as asserting the PAINT ORDER, not the occlusion** — A-G440 straight:
+the property is *"no ring stroke crosses a body's drawn disc"*, document order is the mechanism, and the
+occlusion remains **a reading on a build, not a test.**
+
+### The licensing population is what the REMAINING guards admit
+
+This lane's PG-5 trap said *report the candidate count the fixture offers.* **GRÜN's form is sharper and
+replaces it:** the fixture offers 30+, the test has its own precondition — **and with the `break` removed
+the CROWDING filter still caps placement at 9 against a budget of 7.**
+
+> *** THE LICENSING POPULATION IS THE COUNT THAT SURVIVES EVERY OTHER UNMUTATED CONSTRAINT, NOT THE COUNT
+> THE FIXTURE SUPPLIES. *** Had crowding admitted ≤ 7, the mutation would have produced **a false green with
+> an apparently healthy fixture**, and the margin here is **2**. **This lane's version would have checked
+> the fixture, found 30+, and declared the mutant licensed.**
+
+**PG-16 ratified including what the mutant cannot show:** loosening the filter while leaving `CROWDING` at
+0.3 made the two expressions differ and the assertion fired. **So the mutant shows the assertion is LIVE
+when they differ and cannot show the VALUE is falsifiable — A-G267 confirmed, not removed.** GRÜN states it
+would have mutated 0.3 and reported a correct, meaningless green: **the clearest return on a specification
+in this phase.**
+
+**And the `≥ 1` bound is the right disposal** — the assertion throws on the first failing pair in a nested
+loop, so the observable is a **bound, not a count**. *"Reported as the bound it is rather than the number it
+is not"* — A-G421's family applied to a count.
+
+**The harness GRÜN declined to build is ratified with its reason:** *a harness that leaves the tree dirty on
+failure is worse than five careful hand-runs with `git status` checked after each* — **and §100 is why:
+verification code is the least examined code in either lane, so a harness built at the end of a long session
+would be the worst-reviewed thing in the repository guarding the most destructive operation in it.**
+`MUTANTS-§105.md` is **reproducibility by RECORD rather than by harness**, and it buys the property the
+harness would have: nobody has to ask what was done.
+
+### The rings re-take: done, and it was never blocked
+
+PINK's committed phase-F `pink-pf8-tip.mjs` takes `LEVEL` from the environment and reaches L2 by clicking a
+body twice. **The "L0 and L2 in one fixture" requirement is PF-8's own assembled form — "at EVERY level that
+draws evidence (L0 and L2 at minimum)" — satisfied by two runs on one fixture.**
+
+> **PINK's own diagnosis: *"I asked A-G432's question of measurements all day and never once of my own
+> queue: what else could 'blocked' have come out as?"*** **A-G432 applied to a QUEUE is a new direction and
+> the one with the longest latency** — a blocked item sits for ten sections and nothing disputes it,
+> **because a blocker is a claim nobody has to re-derive in order to keep working.** A measurement gets
+> quoted and recomputed; **a blocker just stays.** A-G429's third target again: *there is no reader.*
+
+**Instrument discipline: five functional lines changed, all declared; tier math, bracketed null and all
+three guards untouched. The build moved and the instrument did not.**
+
+### The red is the STROKES — and A-G424's stated reason was the weaker one
+
+| | tier A | tier B p99 |
+|---|---|---|
+| **shelfBand** | 4.03e-7 against 0.0005 — **1240× under** | **exactly 0** at both levels |
+| **ringStrokes** | 1.04e-4 | **0.00262 against 0.002 — FAIL by 1.31×** at L0 |
+
+**So the old `rings` red (4.01 and 10.62) belongs to the three 2 px strokes, and the band is the quietest
+class in the set.**
+
+> *** A-G424's REMEDY WAS RIGHT AND THE REASON THIS LANE GAVE IT WAS THE WEAKER OF THE TWO. *** The argument
+> was that the band dominates the class because it dominates the light. **It does dominate the light and
+> contributes NONE of the signal — so a correctly WEIGHTED statistic would have gone wrong HARDER.** **§41's
+> two-regimes argument is the survivor, and it was PINK's:** tier B is a **p99**, and the old class read a
+> p99 across two regimes and attributed it to the quiet one.
+
+**And PINK qualified its own new red unprompted:** the strokes' tier B failure sits in exactly the
+partial-coverage regime §41 declined to license, since a p99 over 2 px strokes *is* that regime. ***So the
+new red is PROVISIONAL on the same ground that retired the old one*** — recorded as provisional, not as a
+defect in the build.
+
+### A-G441 · A disjunct added to a guarded predicate inherits its guards
+
+```
+cRed = THR.some(… cN>0 && cS/cN > 1.5)  ||  THR.some(… cN===0 && cS>0)
+```
+
+The intent is sound; **the second disjunct has none of tier C's three guards.**
+
+| | |
+|---|---|
+| **discontinuous** | cN=1, cS=1 → ratio 1.00, **PASS**. cN=0, cS=1 → **RED**. *One decoy pixel flips the verdict.* |
+| **insensitive to its own subject** | cS does not enter beyond `> 0` — **cS = 1 and cS = 10000 give the same verdict** |
+| **fires when the null is quietest** | shelfBand L0 red at all four rungs with tier A 1240× under and tier B p99 exactly 0 — **p99 = 0 bounds the nonzero population at ≤ 1 %, so that red is compatible with ONE pixel of 127337** |
+
+> *** RULED: a rung whose decoy population is zero is NOT EVALUABLE, not red, unless its operands clear the
+> guards the first branch's operands clear *** — `cS` clears the floor, and `cN = 0` is established on an
+> adequately populated decoy region, **because `cN = 0` is otherwise an absence of measurement reported as a
+> measurement.** The instrument already has an `n/e` state; **the decoy population is the third quantity it
+> divides by and the only unguarded one.**
+>
+> **So shelfBand L0 and outlines L0 are WITHDRAWN from red to NOT EVALUABLE.** ringStrokes L0, arcs L0 and
+> the 0.001 rungs at L2 stand, finite and genuine.
+>
+> *** A-G441: A DISJUNCT ADDED TO A GUARDED PREDICATE INHERITS ITS GUARDS, OR IT IS AN UNGUARDED PATH
+> WEARING THE GUARDED PREDICATE'S NAME. *** **A-G144's mirror** — that one is a disjunction *weakening* a
+> pin so it cannot fail; this is one *strengthening* a pin past its guards so it fails where the guarded
+> form could not. **Both are the disjunction escaping the predicate's discipline.**
+>
+> **And the consequence is a named hole that is this lane's:** *every PF-8 red in this record now needs its
+> decoy population before it can be read*, and neither lane knows how many historical reds were
+> zero-decoy-driven. **The tiers are this lane's assembled form, so the hole is.**
+
+### Condition 4 · PINK is right and this lane's point 1 was the one unsafe request
+
+This lane asked PINK to define *"Gesamtsystemstand"*. **PINK declined, and correctly:** that term is the
+owner's, and **a validator choosing the boundary of what it is required to validate is the one move that can
+make any statement come out complete.** A-G432 on the deliverable: *if the validator defines the population,
+what else could the verdict have been?*
+
+> **RULED, PINK's form adopted: a validator states its COVERAGE and NAMES THE GAP to an undefined term. It
+> does not define the term.** A smaller claim, and the only honest one — **and the owner sees exactly where
+> the coverage stops, which is what they would need in order to say it is not enough.**
+
+**And PINK's own point, which this lane had not named and which bounds the entire record:** everything
+validated independently came from **one stand, one browser, one raster backend — SwiftShader SOFTWARE raster
+— two viewports.** *No amount of pin coverage widens that.*
+
+> *** EVERY PIXEL FIGURE IN THIS RECORD IS A SOFTWARE-RASTER FIGURE *** — the seam, the chroma ceiling, the
+> masks, the plateau map, the alpha sweep, GRÜN's ladders. **A GPU rasteriser is a different compositor with
+> different rounding and nothing either lane has run says the figures transfer.** It goes to the owner in
+> those terms, because **it qualifies the seam as a visual-acceptance question: a software raster is not the
+> thing a human eye will meet.**
+
+### Where this leaves the record
+
+**Seven new defects:** PG-15 unasserted; this lane's table conflating that with zero-by-construction; its
+PG-5 trap naming the wrong population; tier C's unguarded disjunct; PINK's re-take carried as blocked for
+ten sections; this lane's A-G424 reason being the weaker and wrong-direction one; and its condition-4
+request that the validator define its own scope. **317 + 7 = 324.**
+
+> **ALL FIVE HELD MUTANTS ARE CLOSED.** A-G43, PG-20, PG-5 and PG-16 **killed and proven**; PG-15 closed as
+> a **finding**. **GRÜN's queue is empty. The rings re-take has landed.** The last item in the phase is
+> PINK's system-level statement.
