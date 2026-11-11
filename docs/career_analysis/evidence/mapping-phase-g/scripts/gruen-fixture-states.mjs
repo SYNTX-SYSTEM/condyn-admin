@@ -53,8 +53,12 @@ try {
       lit: b.getAttribute("data-lit") === "true", named: b.getAttribute("data-named") === "true",
       opacity: Number(getComputedStyle(b).opacity), testid: b.getAttribute("data-testid")
     }));
+    /* §86: PG-14's solve discloses its own convergence unconditionally. Read at every state, so a level that
+       needs more passes than another is visible rather than inferred. */
+    const viewBox = document.querySelector("svg[viewBox]")?.getAttribute("viewBox") ?? null;
     return { level: f.getAttribute("data-level"), pool: f.getAttribute("data-pool"), role: f.getAttribute("data-role"),
-             bodies, markedCount: bodies.filter(b => b.marked).length };
+             framePasses: f.getAttribute("data-frame-passes"), frameConverged: f.getAttribute("data-frame-converged"),
+             viewBox, bodies, markedCount: bodies.filter(b => b.marked).length };
   }, field);
 
   /**
@@ -124,6 +128,7 @@ try {
     const reached = driveError === null && st !== null && Object.entries(want).every(([k, v]) => (typeof v === "function" ? v(st[k]) : st[k] === v));
     states.push({ name, want: Object.fromEntries(Object.entries(want).map(([k, v]) => [k, typeof v === "function" ? "<predicate>" : v])),
       reached, driveError, level: st?.level ?? null, pool: st?.pool ?? null, role: st?.role ?? null,
+      framePasses: st?.framePasses ?? null, frameConverged: st?.frameConverged ?? null, viewBox: st?.viewBox ?? null,
       bodies: st?.bodies.length ?? 0, markedCount: st?.markedCount ?? 0,
       readings: reached ? await extra(st) : { skipped: "state NOT REACHED — nothing is measured in a state the probe did not reach" } });
   };
@@ -252,6 +257,12 @@ try {
       howToSettle: "read `document.elementFromPoint` at the chip's centre while a body is marked, and compare with the chip itself — a one-line check on a rendered page, and the right shape because it asks what is ON TOP rather than what a click does.",
       whyItIsRecorded: "a click that succeeds and changes nothing is the same family as Turbopack exiting 0 with no build and `next start` reporting 200 on a LAN-exposed port — three today. The generalisable part is that a tool's success code describes the tool, not the artifact."
     },
+    pg14Disclosure: {
+      present: states.every(s => !s.reached || (s.framePasses !== null && s.frameConverged !== null)),
+      perState: states.map(s => ({ state: s.name, reached: s.reached, framePasses: s.framePasses, frameConverged: s.frameConverged, viewBox: s.viewBox })),
+      note: "§86: data-frame-passes and data-frame-converged are emitted UNCONDITIONALLY, so `present` is a real check — a build without the fix returns null for both and this reports it rather than passing.",
+      allConverged: states.filter(s => s.reached).every(s => s.frameConverged === "true")
+    },
     statesAttempted: states.length, statesReached: reached.length,
     statesNotReached: missed.map(s => ({ name: s.name, driveError: s.driveError, levelSeen: s.level })),
     states,
@@ -267,7 +278,7 @@ try {
 
 console.log(`served BUILD_ID ${out.provenance.buildId} · ${out.statesReached}/${out.statesAttempted} states reached\n`);
 for (const s of out.states) {
-  console.log(`${s.reached ? "REACHED " : "MISSED  "} ${s.name.padEnd(34)} level=${String(s.level).padEnd(3)} pool=${String(s.pool ?? "-").slice(0, 14).padEnd(14)} role=${String(s.role ?? "-").slice(0, 16).padEnd(16)} bodies=${s.bodies} marked=${s.markedCount}`);
+  console.log(`${s.reached ? "REACHED " : "MISSED  "} ${s.name.padEnd(34)} level=${String(s.level).padEnd(3)} bodies=${s.bodies} marked=${s.markedCount} framePasses=${String(s.framePasses)} converged=${String(s.frameConverged)}`);
   if (s.driveError) console.log(`         drive error: ${s.driveError}`);
 }
 const l1 = out.states.find(s => s.name.startsWith("L1"));

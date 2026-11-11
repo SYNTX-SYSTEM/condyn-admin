@@ -2,8 +2,8 @@
  "reading": "GRÜN · §62 — seal-staleness audit: does each SEALED reading still describe the product at HEAD?",
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "scope": "git object reads and string comparison only. No render, no server, no build, no browser, nothing written outside this file.",
- "head": "839623e81f80ad5606d964bd39b9f5ba3ce62945",
- "headShort": "839623e8",
+ "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+ "headShort": "fb4632da",
  "selfTest": {
   "base": "3ec8457d",
   "constantsExtracted": 12,
@@ -21,219 +21,228 @@
  },
  "summary": {
   "seals": 8,
-  "valid": 8,
-  "stale": 0,
+  "valid": 0,
+  "stale": 8,
   "unknown": 0
  },
- "staleSeals": [],
+ "staleSeals": [
+  {
+   "file": "SEALED-pg11-ratio-L0-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg11-ratio-L0-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg11-ratio-L2-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg12-ratio-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg12-ratio-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg17-L0-1280x800.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg17-L0-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  },
+  {
+   "file": "SEALED-pg17-L2-1920x1080.json",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved",
+   "movedConstants": []
+  }
+ ],
  "perSeal": [
   {
    "file": "SEALED-pg11-ratio-L0-1280x800.json",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 33,
+   "commitsBehindHead": 37,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg11-ratio-L0-1920x1080.json",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 33,
+   "commitsBehindHead": 37,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg11-ratio-L2-1920x1080.json",
    "sealHead": "d04d96aa2b1455373647e8b495e35168299ced27",
    "sealHeadShort": "d04d96aa",
-   "commitsBehindHead": 33,
+   "commitsBehindHead": 37,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg12-ratio-1280x800.json",
    "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
    "sealHeadShort": "5c3ca5d9",
-   "commitsBehindHead": 32,
+   "commitsBehindHead": 36,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg12-ratio-1920x1080.json",
    "sealHead": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
    "sealHeadShort": "5c3ca5d9",
-   "commitsBehindHead": 32,
+   "commitsBehindHead": 36,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg17-L0-1280x800.json",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
-   "commitsBehindHead": 34,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg17-L0-1920x1080.json",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
-   "commitsBehindHead": 34,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   },
   {
    "file": "SEALED-pg17-L2-1920x1080.json",
    "sealHead": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
    "sealHeadShort": "8d62028c",
-   "commitsBehindHead": 34,
+   "commitsBehindHead": 38,
    "trackedConstantsThatMoved": [],
    "productFileTouchedSinceSeal": true,
-   "changedLinesAreCommentOnly": true,
+   "changedLinesAreCommentOnly": false,
    "commentStrip": [
     {
      "path": "app/components/career/demo/PersonJobMappingField.tsx",
-     "commentOnly": true,
-     "attributeOnly": true,
-     "attributesAdded": [
-      "mapping-seat",
-      "seat-is-group",
-      "mapping-halo",
-      "halo-radius"
-     ],
-     "addedAttributesThatAreStyled": [],
-     "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+     "commentOnly": false,
+     "strippedLinesAtSeal": 816,
+     "strippedLinesAtHead": 837,
+     "regexLiteralsAtSeal": 2,
+     "regexLiteralsAtHead": 2,
+     "why": "the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
     }
    ],
-   "status": "VALID",
-   "why": "the product file differs only in COMMENTS and ADDED data-* ATTRIBUTES (mapping-seat, seat-is-group, mapping-halo, halo-radius), and no CSS attribute selector in the file matches any added name, so nothing it does can move a pixel. The seal's raster reading stands."
+   "status": "STALE",
+   "why": "the product file changed behaviourally since the seal: the product file differs at the seal's commit and at HEAD after removing every comment, so a behavioural line moved"
   }
  ],
  "standingGap": "This audit is a derivation and so it runs in every routine pass. It does NOT re-measure anything and it cannot: re-measuring a sealed reading needs a build, a server and the façade, and A-G109 keeps the sealed probes out of a routine pass so a pass cannot overwrite a seal. So the audit's job is to make a stale seal LOUD rather than to repair it. A STALE line here is an instruction to re-run that one probe deliberately, under the owner's build permission, and to re-seal it."

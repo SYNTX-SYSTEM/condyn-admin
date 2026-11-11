@@ -4,8 +4,8 @@
  "scope": "rendered-page interaction and computed style on a loopback build. No raster, no luminance, no sealed datum, NO NEW FIXTURE DATA.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
-  "head": "47e34329c8b749e712fb9bfee8d7f475a27cd9e4",
-  "headShort": "47e34329",
+  "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+  "headShort": "fb4632da",
   "branch": "HEAD",
   "treeClean": false,
   "productTreeClean": true,
@@ -14,21 +14,95 @@
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
-  "buildId": "UTiHc2G2tn-Nh1fyJ6vFH",
-  "measuredAt": "2026-11-11T15:49:34.445Z"
+  "buildId": "TKZRoMo0_1Ro-svJrokkW",
+  "measuredAt": "2026-11-11T16:15:29.482Z"
  },
  "viewport": "1280x800",
  "motion": "reducedMotion:reduce — these are structural states, not breath readings",
  "A_G206_spanDeclaration": {
-  "one_whatThisSpans": "Four focus states of ONE served fixture (UTiHc2G2tn-Nh1fyJ6vFH): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
+  "one_whatThisSpans": "Four focus states of ONE served fixture (TKZRoMo0_1Ro-svJrokkW): L0 resting, L0 with a body marked by focus, L1 with a pool open, L2 with a FIELD body open. Within each, every drawn body's rank, shelf, in-pool, lit, named, marked and computed opacity, plus the two targets A-G51 was given.",
   "two_whatThisDoesNotSpan": "It spans ONE POPULATION — the five bodies of the shared ranking, 2 field and 3 shelf. It is NOT LV01-LV12: the twelve layout inputs exist as existing test data in test/support/mapping/vectors.ts (so B-7 permits them), but the façade serves one job-ranking payload and reaching the other eleven populations needs the façade to serve a chosen vector, which is a façade change and is NOT in this reading. It also does not span L3, a requirement open, or any raster quantity.",
   "three_whatWouldWidenIt": "A façade route that serves `layoutInputs()[name]` as the job-ranking for a requested vector name. That is a transformation of existing test data rather than new data, so B-7 permits it; it is the next step and it is not pretended to be done here."
+ },
+ "resolved_coordinateClick": {
+  "question": "with a body marked, is the pool chip actually covered — or was Playwright's hit-test merely stricter than a browser's?",
+  "instrument": "document.elementFromPoint at the chip's centre, in both states, on the same stand that produced the anomaly",
+  "unmarked": {
+   "state": "L0, nothing marked",
+   "chip": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "point": [
+    105,
+    474
+   ],
+   "box": [
+    43,
+    464,
+    124,
+    20
+   ],
+   "topAtPoint": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "topIsChipOrInsideIt": true,
+   "inViewport": true
+  },
+  "marked": {
+   "state": "L0, a body MARKED by focus",
+   "chip": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "point": [
+    105,
+    474
+   ],
+   "box": [
+    43,
+    464,
+    124,
+    20
+   ],
+   "topAtPoint": "button#mapping-pool-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+   "topIsChipOrInsideIt": true,
+   "inViewport": true
+  },
+  "verdict": "NOT OBSTRUCTED: the chip is the topmost element at its own centre in BOTH states, so nothing covers it and a real pointer reaches it. The §84 anomaly was Playwright's, not the product's, and the open observation is closed on the instrument side."
  },
  "openObservation_coordinateClick": {
   "what": "page.click() on the pool chip, with a body marked, reported success and left data-level at L0; el.click() on the same selector reached L1. Reproduced in isolation.",
   "whatIsNotKnown": "whether a REAL pointer is obstructed. Playwright's hit-testing refuses a click whose target is not the topmost element at the point, and it is stricter than a browser; it may also have clicked a stale position. This probe does not resolve it and does not claim a product defect.",
   "howToSettle": "read `document.elementFromPoint` at the chip's centre while a body is marked, and compare with the chip itself — a one-line check on a rendered page, and the right shape because it asks what is ON TOP rather than what a click does.",
   "whyItIsRecorded": "a click that succeeds and changes nothing is the same family as Turbopack exiting 0 with no build and `next start` reporting 200 on a LAN-exposed port — three today. The generalisable part is that a tool's success code describes the tool, not the artifact."
+ },
+ "pg14Disclosure": {
+  "present": true,
+  "perState": [
+   {
+    "state": "L0 · resting",
+    "reached": true,
+    "framePasses": "3",
+    "frameConverged": "true",
+    "viewBox": "-7 -7 14 14"
+   },
+   {
+    "state": "L0 · a body MARKED by focus",
+    "reached": true,
+    "framePasses": "3",
+    "frameConverged": "true",
+    "viewBox": "-7 -7 14 14"
+   },
+   {
+    "state": "L1 · a pool open (A-G51)",
+    "reached": true,
+    "framePasses": "3",
+    "frameConverged": "true",
+    "viewBox": "-7 -7 14 14"
+   },
+   {
+    "state": "L2 · a FIELD body open (A-G48)",
+    "reached": true,
+    "framePasses": "0",
+    "frameConverged": "true",
+    "viewBox": "-7 -7 14 14"
+   }
+  ],
+  "note": "§86: data-frame-passes and data-frame-converged are emitted UNCONDITIONALLY, so `present` is a real check — a build without the fix returns null for both and this reports it rather than passing.",
+  "allConverged": true
  },
  "statesAttempted": 4,
  "statesReached": 4,
@@ -45,6 +119,9 @@
    "level": "L0",
    "pool": "",
    "role": "",
+   "framePasses": "3",
+   "frameConverged": "true",
+   "viewBox": "-7 -7 14 14",
    "bodies": 5,
    "markedCount": 0,
    "readings": {}
@@ -60,6 +137,9 @@
    "level": "L0",
    "pool": "",
    "role": "",
+   "framePasses": "3",
+   "frameConverged": "true",
+   "viewBox": "-7 -7 14 14",
    "bodies": 5,
    "markedCount": 1,
    "readings": {
@@ -87,6 +167,9 @@
    "level": "L1",
    "pool": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
    "role": "",
+   "framePasses": "3",
+   "frameConverged": "true",
+   "viewBox": "-7 -7 14 14",
    "bodies": 5,
    "markedCount": 0,
    "readings": {
@@ -124,6 +207,9 @@
    "level": "L2",
    "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
    "role": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "framePasses": "0",
+   "frameConverged": "true",
+   "viewBox": "-7 -7 14 14",
    "bodies": 1,
    "markedCount": 0,
    "readings": {

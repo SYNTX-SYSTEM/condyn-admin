@@ -229,12 +229,25 @@ written to. Verified afterwards, not assumed — the preserved `BUILD_ID` file w
 | | **preserved stand** | **hooked stand** |
 |---|---|---|
 | worktree | `condyn-admin-mapping-d` | `condyn-admin-mapping-d-hooks` (detached at the same commit) |
-| `BUILD_ID` | `HRYkeEpbpndI3UEE7ceeC` | `UTiHc2G2tn-Nh1fyJ6vFH` |
+| `BUILD_ID` | `HRYkeEpbpndI3UEE7ceeC` — never rebuilt | **`TKZRoMo0_1Ro-svJrokkW`** at `fb4632da` (was `UTiHc2G2tn-Nh1fyJ6vFH` at `47e34329`) |
 | carries A-G49's hooks | **no** — predates them | **yes** — 4 `data-mapping-halo`, 30 `data-mapping-seat`, 3 each of `data-halo-radius` / `data-seat-is-group` in the compiled bundle |
 | prod server | `127.0.0.1:3221` | `127.0.0.1:3231` |
 | fixture façade | `127.0.0.1:3220` | `127.0.0.1:3230` |
 | façade log | `outputs/facade.log` | the hooked worktree's `outputs/facade-hooks.log` |
-| what it is for | the eight `SEALED-*` readings and every figure quoted from them | PINK's independent verification of the hooks, and any reading that needs them |
+| what it is for | the eight `SEALED-*` readings and every figure quoted from them | the CURRENT source: PINK's independent verification, and any reading that needs the hooks or the §86 frame |
+
+**The current stand is rebuilt as source moves; the preserved stand never is.** That asymmetry is the whole
+arrangement: a sealed figure belongs to a build (A-G54), so the build it belongs to is kept, and the stand
+that tracks HEAD is allowed to move. Each rebuild re-runs `gruen-hooks-verify` and `gruen-fixture-states`
+against the new `BUILD_ID`, so no committed reading cites a build that is no longer on disk.
+
+> **§86 CONSEQUENCE, AND IT IS THE LARGEST ONE SO FAR: the eight sealed readings are now STALE against HEAD.**
+> `gruen-seal-staleness.mjs` reports 8 stale at `fb4632da`, and it is right — PG-14's new solve changes the
+> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain
+> exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`, which is why that build is preserved; they no longer
+> describe current source. **Any figure quoted from them must now name the build.** Re-sealing is a
+> deliberate act on a deliberate build and has not been done.
+
 
 **All four ports are bound to `127.0.0.1` and nothing else.** `next start` binds `0.0.0.0` by default and the
 first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,

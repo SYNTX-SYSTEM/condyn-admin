@@ -5,8 +5,8 @@
  "standard": "PINK's, adopted by GELB for the whole hook set: set equality against class membership and animationName, on the rendered page. This probe never asks whether an attribute exists; it asks whether the partition it induces is the same SET as two older independent routes induce.",
  "provenance": {
   "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
-  "head": "47e34329c8b749e712fb9bfee8d7f475a27cd9e4",
-  "headShort": "47e34329",
+  "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+  "headShort": "fb4632da",
   "branch": "HEAD",
   "treeClean": false,
   "productTreeClean": true,
@@ -15,8 +15,8 @@
    "app/components/career/demo/PersonJobMappingField.tsx"
   ],
   "untrackedProductFiles": [],
-  "buildId": "UTiHc2G2tn-Nh1fyJ6vFH",
-  "measuredAt": "2026-11-11T16:02:08.503Z"
+  "buildId": "TKZRoMo0_1Ro-svJrokkW",
+  "measuredAt": "2026-11-11T16:15:36.790Z"
  },
  "viewport": "1920x1080",
  "motion": "LIVE — route 3 needs the animation running to be a route",
