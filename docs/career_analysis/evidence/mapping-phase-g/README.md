@@ -248,6 +248,45 @@ against the new `BUILD_ID`, so no committed reading cites a build that is no lon
 > describe current source. **Any figure quoted from them must now name the build.** Re-sealing is a
 > deliberate act on a deliberate build and has not been done.
 
+### §96 · the seals' BYTE integrity, with the formulation that checks it
+
+Staleness and integrity are different questions and only the first had a mechanism. `gruen-seal-staleness.mjs`
+answers "do these readings still describe current source"; nothing recorded "are these the same bytes". The
+authoritative check is git, and it is cheap:
+
+```bash
+git log --oneline <last-known-good>..HEAD -- outputs/SEALED-\*.json   # must print nothing
+git diff --stat HEAD -- outputs/SEALED-\*.json                        # must print nothing
+```
+
+**WHY THIS IS WRITTEN DOWN AT ALL.** This lane carried an aggregate digest for the eight seals
+(`420bd3a826cdbbbc0c692c1dc15c5c03`) across sessions as if it were verified. At §96 it reproduced under NONE of
+four formulations — concatenated contents, `md5sum` lines, sorted hashes, git blob ids — and the string appears
+nowhere in `outputs/`, `scripts/` or this file. It was a number without its derivation, carried forward as
+though checked: A-G140's defect class, committed by the instrument's own author against the instrument's own
+record. The figure is **WITHDRAWN**. The seals are intact, and that is established by git above rather than by
+the withdrawn digest.
+
+So the digest is recorded here per file, which needs no formulation to be checkable:
+
+| seal | md5 |
+|---|---|
+| `SEALED-pg11-ratio-L0-1280x800.json` | `636d2256b6ac65440218efc752872ffb` |
+| `SEALED-pg11-ratio-L0-1920x1080.json` | `2b12adc5ede285ae76bb04d59e0b20f5` |
+| `SEALED-pg11-ratio-L2-1920x1080.json` | `ea4b34f601d263c501bcb909822960c6` |
+| `SEALED-pg12-ratio-1280x800.json` | `32536398ebbf0920250e3c977c25ea4d` |
+| `SEALED-pg12-ratio-1920x1080.json` | `0f04567d30a0359567fadfa3f438854e` |
+| `SEALED-pg17-L0-1280x800.json` | `224398e0600441c712bc0ea659b65c75` |
+| `SEALED-pg17-L0-1920x1080.json` | `a0f091a6157fa1411db5182152e30bc4` |
+| `SEALED-pg17-L2-1920x1080.json` | `d906c06269149382a73185722c42c783` |
+
+Aggregate, **with its formulation named** so it can be reproduced rather than trusted —
+`md5sum outputs/SEALED-*.json | awk '{print $1}' | sort | md5sum`:
+
+```
+7fbc281dd2e89ceb10009bb6f27604d8
+```
+
 
 **All four ports are bound to `127.0.0.1` and nothing else.** `next start` binds `0.0.0.0` by default and the
 first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,
