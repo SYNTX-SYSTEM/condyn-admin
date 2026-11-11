@@ -1,0 +1,222 @@
+{
+ "reading": "GRÜN · A-G147 — PG-5's budget recomputed at PG-16 = 0.5 (R23 as the record states it) against 0.3 (as the pin bounds it)",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "arithmetic on committed constants: layout-golden-vectors-v1.1.json and the spaced() rule. No render, no gate, no sealed datum.",
+ "constants": {
+  "BODY_BUDGET_L0": 7,
+  "BODY_BUDGET_L1": 12,
+  "PG16_asBounded": 0.3,
+  "R23_asRecordStatesIt": 0.5
+ },
+ "precedenceRule": "PHASE_G §11: 'if the budget and the spacing ever disagree, the spacing wins and the budget shrinks.'",
+ "perLayout": [
+  {
+   "layout": "LV01-single-role",
+   "nonOverflowBodies": 1,
+   "L0_at_0_3": 1,
+   "L0_at_0_5": 1,
+   "delta": 0,
+   "bindingAt0_3": "SPACING",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 1,
+    "at0_5": 1
+   }
+  },
+  {
+   "layout": "LV02-three-pools-mixed-tiers",
+   "nonOverflowBodies": 6,
+   "L0_at_0_3": 6,
+   "L0_at_0_5": 3,
+   "delta": -3,
+   "bindingAt0_3": "SPACING",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 6,
+    "at0_5": 3
+   }
+  },
+  {
+   "layout": "LV03-equal-fit-ties",
+   "nonOverflowBodies": 12,
+   "L0_at_0_3": 6,
+   "L0_at_0_5": 4,
+   "delta": -2,
+   "bindingAt0_3": "SPACING",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 6,
+    "at0_5": 4
+   }
+  },
+  {
+   "layout": "LV04-crowded-60",
+   "nonOverflowBodies": 31,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 5,
+   "delta": -2,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 9,
+    "at0_5": 5
+   }
+  },
+  {
+   "layout": "LV05-capacity-exceeded-overflow",
+   "nonOverflowBodies": 37,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 5,
+   "delta": -2,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 8,
+    "at0_5": 5
+   }
+  },
+  {
+   "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+   "nonOverflowBodies": 70,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 6,
+   "delta": -1,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 15,
+    "at0_5": 6
+   }
+  },
+  {
+   "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "nonOverflowBodies": 37,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 6,
+   "delta": -1,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 10,
+    "at0_5": 6
+   }
+  },
+  {
+   "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "nonOverflowBodies": 22,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 6,
+   "delta": -1,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 8,
+    "at0_5": 6
+   }
+  },
+  {
+   "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "nonOverflowBodies": 24,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 6,
+   "delta": -1,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 9,
+    "at0_5": 6
+   }
+  },
+  {
+   "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "nonOverflowBodies": 71,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 7,
+   "delta": 0,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "BUDGET",
+   "spacingOnlyCapacity": {
+    "at0_3": 15,
+    "at0_5": 7
+   }
+  },
+  {
+   "layout": "LV06-no-roles",
+   "bodies": 0,
+   "note": "no roles"
+  },
+  {
+   "layout": "LV07-real-shape-73",
+   "nonOverflowBodies": 36,
+   "L0_at_0_3": 7,
+   "L0_at_0_5": 5,
+   "delta": -2,
+   "bindingAt0_3": "BUDGET",
+   "bindingAt0_5": "SPACING",
+   "spacingOnlyCapacity": {
+    "at0_3": 11,
+    "at0_5": 5
+   }
+  }
+ ],
+ "summary": {
+  "layoutsWithAtLeastBudgetBodies": 9,
+  "layoutsWhereBudgetBindsAt0_3": [
+   "LV04-crowded-60",
+   "LV05-capacity-exceeded-overflow",
+   "LV08-checked-fit-0-pressed-to-the-horizon",
+   "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "LV07-real-shape-73"
+  ],
+  "layoutsWhereBudgetShrinksAt0_5": [
+   {
+    "layout": "LV03-equal-fit-ties",
+    "from": 6,
+    "to": 4
+   },
+   {
+    "layout": "LV04-crowded-60",
+    "from": 7,
+    "to": 5
+   },
+   {
+    "layout": "LV05-capacity-exceeded-overflow",
+    "from": 7,
+    "to": 5
+   },
+   {
+    "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+    "from": 7,
+    "to": 6
+   },
+   {
+    "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+    "from": 7,
+    "to": 6
+   },
+   {
+    "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+    "from": 7,
+    "to": 6
+   },
+   {
+    "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+    "from": 7,
+    "to": 6
+   },
+   {
+    "layout": "LV07-real-shape-73",
+    "from": 7,
+    "to": 5
+   }
+  ],
+  "maxDrawnAt0_5_acrossExercisedLayouts": 7,
+  "impliedCapAt0_5": 7
+ },
+ "reading_outcome": "the budget SHRINKS. On 8 of the 9 layouts that carry at least 7 non-overflow bodies, the spacing at 0.5 admits FEWER than 7 — typically 5 or 6, and 4 on LV03. The cap of seven is reached on exactly ONE layout (LV10, whose spacing-only capacity is 7). At 0.3 the budget binds on 8 layouts and the spacing on 3; at 0.5 the spacing binds on 8 of 9 and the budget on 1. So by §11's own precedence rule — the spacing wins and the budget shrinks — A-G4's cap of seven was set against the 0.3 the pin bounds at, NOT against the 0.5 the record attributes to R23. The effective cap at 0.5 is 5 to 6.",
+ "maxIsNotTheCap": "impliedCapAt0_5 reports the MAXIMUM across layouts (7) and that is driven by one case, LV10. The max is not the cap a reader should take from this: 8 of 9 exercised layouts fall below 7, so the max overstates what the spacing generally permits. Recorded because the first version of this probe printed the max as the conclusion and it read as 'no change'.",
+ "bothBranchesWerePredetermined": "A-G147 states the outcome is predetermined in one direction only: either the budget shrinks and A-G4's cap came from the contradicted constant, or 0.3 is not load-bearing for PG-5 and the claimed derivation is false in a second way. This run says which."
+}

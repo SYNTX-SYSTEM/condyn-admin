@@ -1156,3 +1156,73 @@ stating: **reading another lane's artifact is not enough if you read the column 
 A file that carries two parameterisations needs the live one named at the point of use, not in the
 title. That is A-G173's provenance rule one level down: a number quoted from a file carries not only
 its origin but **which of that file's cases it belongs to.**
+
+================================================================================================
+§17  A-G156's L0 REMOVAL IS WRONG TOO AND GELB'S OWN CORRECTION CONFIRMS IT — BUT THE OWNER LINE
+     UNDERSTATES THE PRODUCT CHANGE, BECAUSE IT READS THE SUMMARY FIELD AND NOT THE ROWS
+================================================================================================
+outputs/cross-read/GRUEN-pg16-crowding-at-0.5-as-read.json  (GRÜN's file, copied as read, unmodified)
+Source: `condyn-admin-mapping-d` @ f0bb8e65,
+        docs/career_analysis/evidence/mapping-phase-g/outputs/**pg16-crowding-at-0.5.json**
+Against: GELB §57, `architecture/mapping-phase-f` @ 6f9ae54e.
+
+FIRST, A SMALL CORRECTION OF LOCATION. GELB cites "the L0 table in the same file". It is not the same
+file — the L1 data is in `pg16-crowding-L1.json` (A-G156 point 4) and the L0 data is in a separate
+file, `pg16-crowding-at-0.5.json` (A-G147). Two files, two sections, both `verdict: NONE`. Noting it
+because §16's whole residue is that a quoted number has to carry which case it came from, and that
+applies to which file as much as which column.
+
+GELB'S L0 FIGURES REPRODUCE AND ITS SELF-CORRECTION IS RIGHT. From `perLayout`, `bindingAt0_3`:
+  BUDGET at 0.3: LV04, LV05, LV08, LV09, LV11, LV12, LV10, LV07  = **8 layouts**
+  BUDGET at 0.5: LV10 only, at L0_at_0_5 = 7 with spacing capacity 7 — it ties  = **1**
+  max `spacingOnlyCapacity.at0_3` = **15** (LV08 and LV10), against a budget of **7**
+So at the built value `BODY_BUDGET.L0 = 7` is not inert — it is the dominant constraint, cutting a
+spacing capacity of up to 15 down to 7 on eight layouts. **A-G156's removal of the seven is wrong for
+the same reason A-G226's removal of the twelve was, four sections earlier.** (GELB's denominator "8 of
+10" is 8 of the 11 rows carrying bodies; LV06 has no roles. Immaterial to the conclusion.)
+
+BUT THE OWNER LINE IS WRONG IN THE DIRECTION THAT MATTERS, AND IT IS THE SAME MECHANISM ONE LEVEL
+DOWN. GELB writes: *"it cuts L0 from 7 to ≤ 6 on eight layouts and L1 from 12 to ≤ 7, i.e. it removes
+bodies from the field."* Both halves come from the file's `summary`, not from `perLayout`. Measured on
+the rows:
+
+  (a) **NINE layouts lose bodies at 0.5, not eight**, and the eighth-and-ninth are the interesting ones:
+        LV02-three-pools-mixed-tiers   6 → 3   **delta −3, a 50 % loss**
+        LV03-equal-fit-ties            6 → 4   delta −2
+      Neither appears in `summary.layoutsWhereBudgetShrinksAt0_5`, because that field is filtered to
+      `layoutsWithAtLeastBudgetBodies` (≥ 7). **LV02 carries the largest single delta and the largest
+      proportional loss in the whole table, and the summary field removes it.** Reading the aggregate
+      instead of the rows loses exactly the worst case.
+  (b) **"to ≤ 6 on eight layouts" is not right either**: of the eight that bind at 0.3, seven drop to
+      ≤ 6 and **LV10 stays at 7**. So "≤ 6 on eight" should be "≤ 6 on seven, unchanged on one".
+  (c) **"L1 from 12 to ≤ 7" quotes a maximum that GRÜN's own file explicitly warns against.** The file
+      carries a field named `maxIsNotTheCap`: *"impliedCapAt0_5 reports the MAXIMUM across layouts (7)
+      and that is driven by one case, LV10. The max is not the cap a reader should take from this: 8 of
+      9 exercised layouts fall below 7, so the max overstates what the spacing generally permits.
+      Recorded because the first version of this probe printed the max as the conclusion and it read as
+      'no change'."* The L1 caps at 0.5 are 4, 5, 5, 6, 6, 6, 6, 7, 4 — **median 6, max 7.** The owner
+      line uses the 7.
+
+SO THE CORRECTED PRODUCT STATEMENT, FROM THE ROWS:
+  Moving `CROWDING` from 0.3 to 0.5 removes bodies on **9 of the 11 exercised layouts** at L0, by 1 to
+  3 bodies, with the effective L0 cap falling to a **typical 5–6** rather than the 7 one layout reaches;
+  the largest proportional loss is **LV02 at 6 → 3**. At L1 the caps fall from 6…12 to **4…7, median 6**.
+  It removes bodies from the field — GELB's conclusion is right, and it is **larger** than stated.
+
+AND THIS IS THE THIRD CONSECUTIVE TIME A FIGURE WAS QUOTED THAT ITS OWN SOURCE HAD QUALIFIED.
+  A-G195   used `0.031872`, a floor GELB's own A-G59 had retired in the same paragraph it confirmed A-G54
+  A-G226   used the `0.5` column of a file whose `bind03` column printed BUDGET two columns to the left
+  §57      uses `impliedCapAt0_5 = 7` from a file carrying a field called **`maxIsNotTheCap`** that says
+           in words not to, and a `summary` list whose filter drops the worst row
+Each time the number was correct, the source was correct, and the qualification was **inside the
+artifact being read**. The common form is not misreading and not mis-transport: it is that a
+pre-digested field — a title, a summary, an implied cap — was taken where the rows were available.
+**An aggregate computed by another lane is that lane's interpretation, not its measurement.** The rows
+are the measurement. This is the extremum-versus-distribution defect, which this phase has now found in
+GELB's statistics, in GRÜN's, in A-G16's criterion, in PG-10's limb 3 and in A-G210's own request —
+appearing here as a summary field rather than a maximum, which is why it did not look like one.
+
+NOT CLAIMED: that `BODY_BUDGET` at either level is derived or well-chosen. Neither value is in the
+phase's DERIVED list. Only that both removals are unsupported by the cited evidence, that both
+constants are load-bearing at the built value, and that the product change implied by moving `CROWDING`
+to the recorded 0.5 is larger than the owner has been told.
