@@ -1397,3 +1397,94 @@ a one-constant delta and that constant entering only as a stroke alpha, a live o
 existing build is provably equivalent to a rebuild FOR THIS PIN — equivalence by diff, not by
 assumption. My 3ec8457d stand therefore stays valid for every phase-G pin except PF-15, and valid for
 PF-15 too under a declared override.
+
+
+================================================================================================
+§19  PF-15 INVERTED, MEASURED ON A-G65's MASKED STATISTIC. LIMB (a) FAILS AND A-G65's HOPE IS NOT
+     BORNE OUT — THE MASKED STATISTIC REPRODUCES THE RED. A-G66's LIMB ALSO FAILS AT 0.022, AND
+     THE TWO LIMBS ARE JOINTLY UNSATISFIABLE IN THE SHELF ALPHA. PLUS PG-3's DISCLOSURE, WHICH
+     DOES NOT MEASURE PG-3. AND AN INSTRUMENT DEFECT OF MINE, CAUGHT BEFORE REPORTING.
+================================================================================================
+`scripts/pink-pf15-g.mjs` -> `outputs/PF15.json`; `scripts/pink-pf15-shelf-alpha-sweep-g.mjs` ->
+`outputs/PF15-SHELF-ALPHA-SWEEP.json`; `scripts/pink-pg3-sizefloor-g.mjs` -> `outputs/PG3-SIZEFLOOR.json`.
+Declared override: `RING_LUMINANCE.shelf 0.02 -> 0.022`, equivalence by diff (the sole executable delta
+`3ec8457d..4b83414e`; the other 53 inserted lines are comment). reducedMotion: reduce. ONE fixture, L0.
+
+THE STATISTIC. A-G65 asked for: every sign drawn, sign and seat pixels excluded BY MASK, a ROBUST CENTRAL
+statistic over what no mark covers. Built as: hide one ring, difference, and the ring's own contribution
+vanishes exactly where a mark covers it -- **the mask falls out of the measurement instead of being drawn by
+hand.** Values are ABSOLUTE (off the base frame), the diff is ONLY the mask; mixing them would compare a
+contribution against a luminance. Both routes agree within 5 % at every ring (A-G176's disagreement detector).
+Epsilon MEASURED from two consecutive base frames, never a constant (rule 6). The negative limb is in the
+sweep: at alpha 0 the mask rejects all 720 angles and the statistic returns "no band here", which is the
+report an instrument must be able to make before its numbers mean anything (A-G197).
+
+  > **A-G65's CONTAMINATION SIGNATURE DOES NOT APPEAR, AND A-G65's HOPE IS NOT BORNE OUT.** `p05 == p25 == min`
+  > is FALSE at every ring and size, and no unmasked minimum is pure black -- min 1.112e-3 at the 1920 shelf,
+  > not 0. I did not reproduce A-G65's "pure black at over 1 % of angles", and the reason is sampling geometry:
+  > I sample the band's CENTRE RADIUS at 720 angles; the earlier reading swept the band's radial extent, where
+  > shelf BODIES' opaque seats cross. Both are legitimate, mine is the one A-G65's wording asks for, and the
+  > difference is declared rather than presented as a correction. **But limb (a)'s red SURVIVES the masked
+  > statistic (below), so A-G45/A-G65's expectation that the red was an instrument artefact is not borne out.**
+
+LIMB (a) SUBORDINATION — **FAILS at every configuration**, and it gets WORSE at GRÜN's new constant:
+    1920 as built 0.12442 · 1920 at 0.022 **0.13696** · 1280 as built 0.10208 · 1280 at 0.022 0.10907
+    (rings' share of disc light / semantic share, bound <= 0.08)
+The withdrawn figures were 0.141 / 0.115 (PINK) and 0.1396 / 0.1113 (GRÜN). **Mine land in the same family.**
+LIMB (b) THE RING LADDER — **CLEARS everywhere.** shelf->best 4.396 (3.636 at 0.022), best->field 1.941,
+field->horizon 2.678, all >= 1.6. **So GRÜN's "the ladder holds, best/shelf = 3.86" is correct and is a
+DIFFERENT LIMB from the one that fails.** A pin with limbs that disagree needs the limb named, every time.
+A-G66's LOCAL-GROUND LIMB — **FAILS**, on the outer side A-G66 itself declared the verdict-carrying one:
+    shelf band / outer ground = **1.0145 as built, 1.2264 at 0.022**, bound >= 1.6.
+  GRÜN's own comment computed **1.208 x the ground** at 0.022; I measure 1.2264 by raster -- **two lanes, two
+  instruments, 1.5 % apart.** And my outer ground 1.4324e-3 reproduces A-G66's own quoted 1.4324e-3 EXACTLY.
+  The inner/outer ratio is **2.144**, wider than A-G66's recorded 1.92, which strengthens A-G66's own point.
+  Every band value lands on an exact 8-bit triple: **rgb(4,5,5) at 0.02 -> 1.45311e-3** (GRÜN: 0.0014531) and
+  **rgb(5,6,6) at 0.022 -> 1.75663e-3** (GRÜN: 0.0017566). Five figures, independently.
+
+  > **THE TWO LIMBS ARE JOINTLY UNSATISFIABLE IN THE SHELF ALPHA — MEASURED, TEN ALPHAS, NOT MODELLED.**
+  >   alpha      0      0.005   0.01    0.02    0.022   0.026   0.030   0.034   0.040   0.044
+  >   A-G66    n/a     0.212   0.591   1.015   1.226   1.438  *1.605* *1.666* *1.877* *2.090*   (>= 1.6)
+  >   limb (a) *0.065* *0.077*  0.099   0.124   0.137   0.150   0.160   0.163   0.176   0.189   (<= 0.08)
+  > (* = clears.) **limb (a) clears only at alpha <= 0.005; A-G66 only from alpha >= 0.030. The admissible
+  > regions are DISJOINT, with a factor of six between them, and `smallestAlphaClearingBoth` is null.**
+  > And **limb (a) fails even with the shelf band entirely dark** -- 0.065 at alpha 0 against 0.08 leaves 19 %
+  > of headroom for the other three rings, so no shelf constant can rescue it. **This is not a value to be
+  > chosen. Two limbs of one obligation pull opposite ways on one constant, and A-G62 moved it to satisfy the
+  > limb that was checked.** Reported as a measured range; the constant is GRÜN's and the bound is GELB's.
+
+THE PRODUCT DOCSTRING'S CLAIM IS TRUE FOR ONE RING IN FOUR. *"Each ring is drawn solid and wide enough that
+its centre pixel is fully covered at every angle, so it renders at its alpha's own luminance."* Measured /
+ideal-over-black: **shelf band 1.025 · best 0.920 · field 0.733 · horizon 0.770**. The 58 px band realises its
+alpha; the 2 px strokes reach 73-92 % of it, because a thin stroke centred on a non-integer radius antialiases
+whatever its nominal width. The shortfall is ~6 code steps, an order above the quantisation model's own known
+one-code error, so it does not rest on that model. **Any arithmetic that converts a thin ring's alpha to a
+luminance, or back, is wrong by up to 27 % on three of the four rings.** My own `strokeFullyCoversCentrePixel`
+flag reads TRUE for field and horizon at 1280 while their realisation is 0.77 / 0.75 -- the flag is a bad
+predictor and the realisation ratio is the measurement; recorded so the flag is not read as one.
+
+AN INSTRUMENT DEFECT OF MINE, CAUGHT BEFORE REPORTING, AND IT IS RULE 5's FAMILY AGAIN. Limb (a) first used a
+disc of the HORIZON ring's radius, on the assumption that "horizon" is the outermost ring. **It is not.**
+Measured radii in user units: best 160, horizon 400, shelf band 465 +/- 35, **field 500 — the field ring is
+the outermost.** So the disc excluded the shelf band AND the field ring, and limb (a) was a share of two inner
+rings over an inner disc. **The tell was decisive and cost nothing to see: the rings' share was bit-identical
+to five decimals at ten different shelf alphas while the band's own median tracked every one of them.** A
+quantity that does not move when its input moves is not a measurement of that input.
+  > **A name is not a geometry. "Horizon" sounds outermost and is the second-innermost of four.** The disc is
+  > now the field ring's outer edge, which is what PG-1 has always used, and both instruments assert the
+  > ordering they depend on (`outermostRing`) instead of assuming it.
+
+PG-3's DISCLOSURE (GELB §64 item 1) — READ, AND IT DOES NOT MEASURE PG-3. Three corrections:
+  1. **`sizeFloor` enforces `SIZE_FLOOR_PX = 12` px of diameter (`mapping-field.ts:441/:443`), not PG-3's 56.**
+     A floor 4.7x below the bound. **Demonstrated, not argued: at 1280 all five bodies are below PG-3's 56 px
+     (30.37 px at the smallest, 25.63 px under) and `data-size-floors` still reads 0**, because none is under
+     12. A `data-count` of 0 is fully consistent with every body on screen violating the bound.
+  2. The span at `:784` renders only `floored > 0`, so its absence is ambiguous between "none floored" and
+     "renamed or never rendered". **`:736` carries `data-size-floors={floored}` UNCONDITIONALLY** — same
+     number, defined reading at zero. That is the hook to read, and it is already in the product. Both were
+     read and they agree at all three viewports.
+  3. At PG-3's STATED condition (L0, 1920x1080 — layout-spec-v1.1.json:26, the conditioning A-G162 turned on)
+     the bodies are **87.77 / 69.24 / 67.96 / 63.52 / 57.00 px: WITHIN 56...92, margin 1.00 px at the
+     smallest.** 1280 and 1024 are reported as out-of-condition context, not as failures. **The limb holds at
+     its condition and holds by layout arithmetic, with nothing enforcing it** — the floor that looks like its
+     guard is set almost five times lower and never fires.
