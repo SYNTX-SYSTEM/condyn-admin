@@ -2048,3 +2048,108 @@ TWO DEFECTS OF MY OWN, AND THEY POINT THE SAME WAY — BOTH FLATTER THE BUILD.
   > headroom than stated** — the direction a validation lane must declare, because the error does not threaten
   > the red, it threatens the greens. §24 said an instrument's blind spot must be stated with its reach; this
   > states it with its SIGN, which is the part that tells a reader which of my numbers to distrust.
+
+
+=== §28 · A-G340: LIMB 1 ON A DISC-SCOPED FLOOR — THE CONTROL FAILED, AND THAT IS THE FINDING ======
+
+Instrument: scripts/pink-pg10-limb1-maskfloor-g.mjs   Output: outputs/PG10-LIMB1-MASKFLOOR.json
+Stand: PINK :3122, commit 3ec8457d, BUILD_ID xCD8LBxdjnP97-2Gjs5yr — **the same build as §10 and §27.**
+
+WHY NOT THE HOOKED STAND. A-G339 offers GRÜN's hooked build (839623e8, :3230), where `data-halo-radius`
+would give the disc scope without a radius heuristic. **Declined, on A-G54's own reasoning.** This run
+exists to correct figures produced on 3ec8457d by changing ONE thing — the floor's region and the mask's
+threshold. Moving the build at the same time would make any difference from §27 unattributable between
+*the floor was wrong* and *the build changed*, and the control below only works if the build is held.
+This instrument also never used the concentricity heuristic the hook retires: it enumerates `.mf-halo`
+groups and reads each circle's own bbox. **For this measurement the hook buys nothing.** A-G54 says say
+which stand a number came from; it also says a figure is a property of a build, and that cuts both ways.
+
+THE CONTROL, AND IT DID NOT HOLD. The mask threshold was swept with §27's own whole-clip floor as one rung.
+If that rung reproduces §27, the delta is attributable to the floor; if not, nothing here may be cited
+against §27. It reproduced on **one of four** (deepest breathing body, blurred):
+
+    1920 none   §27 B=0.7588   re-run B=0.8096   |Δ|=0.0508   maskPx 16813  -> 15877
+    1920 sel    §27 B=0.2394   re-run B=0.2383   |Δ|=0.0011   maskPx 24885  -> 25819
+    1280 none   §27 B=0.7108   re-run B=0.8528   |Δ|=0.1420   maskPx 4222   -> 3437
+    1280 sel    §27 B=0.1956   re-run B=0.1769   |Δ|=0.0187   maskPx 6964   -> 7688
+
+THE CAUSE IS IN THE DATA, NOT A GUESS. **The old threshold is `2 × max |base1 − base2|` over the whole
+clip — a MAXIMUM over ~850 000 noisy pixels, i.e. an extreme-value statistic, the least stable estimator
+available.** Across eight runs of ONE build it spans **1.79×**:
+    §27 four runs:      0.00700567  0.00685001  0.006325  0.00701704
+    A-G340 four runs:  0.0077205  0.00607115  0.00871987  0.0048657
+    min 0.0048657   max 0.00871987   **spread 1.792×** on one build, one statistic
+The mask size moves with it (4222 -> 3437 px at 1280 unselected, a 19 % swing), and the share moves with
+the mask. **So §27's figures are not reproducible even by §27's own instrument.**
+  > **I applied A-F11 to the signal and never once to my own instrument's noise floor. The floor WAS a
+  > maximum.** Every epsilon I have published this phase was a max over a region, and §24 and §27 caught
+  > the REGION being wrong twice while the ESTIMATOR was wrong the whole time. A floor is a distribution
+  > statistic over the region it governs, or it is not a floor.
+
+INSIDE THE DISC THE JITTER IS EXACTLY ZERO — all four runs, both viewports, both selection states:
+    1920 none   jitter whole clip 0.00386025    jitter disc 0       disc 545417/853776 px
+    1920 sel    jitter whole clip 0.00303558    jitter disc 0       disc 545417/853776 px
+    1280 none   jitter whole clip 0.00435993    jitter disc 0       disc 154765/270400 px
+    1280 sel    jitter whole clip 0.00243285    jitter disc 0       disc 154765/270400 px
+Two static captures under `reduce` are **bit-identical inside the disc**. So the whole-clip floor was not
+merely inflated — it was **100 % foreign**, sourced entirely from host pixels outside the field (text,
+beams, travel at the margins). `floorRegionShrankBy: 1.0000`. There is no noise inside the disc to floor
+against: under `reduce` the carrier is deterministic, and the honest threshold is the smallest positive.
+
+THE SWEEP. Deepest breathing body (group opacity 0.911293 = §18's ladder rung 2), BLURRED, against
+**>= 0.25**. Two field halos only (A-G48/A-G31), per body, never pooled (A-G194):
+
+    mask threshold                            1920 none      1920 sel       1280 none      1280 sel
+    old whole-clip floor (CONTROL)            0.8096         0.2383 *       0.8528         0.1769 *       
+    t = 0.004  (the limb's own threshold)     0.6135         0.2139 *       0.5852         0.1664 *       
+    t = 0.002                                 0.5312         0.1935 *       0.4847         0.1491 *       
+    t = 0.001                                 0.4455         0.1689 *       0.3638         0.1216 *       
+    disc floor -> 1e-9 (every reached px)     0.3739         0.1478 *       0.2251 *       0.0739 *       
+                                              (* = below the 0.25 floor, i.e. FAILS)
+
+WHAT SURVIVES EVERY RUNG — and is therefore now FIRMER than §27's marginal reading:
+  · **Selected FAILS at both viewports at all five rungs, 10 of 10 measurements.** Rung-independent.
+    At the limb's own threshold the margin is **0.0361 (1920)** and **0.0836 (1280)** — against §27's
+    0.0106 and 0.0544. **The failure is deeper than §27 reported, exactly the direction §27 warned of.**
+  · **1920 unselected CLEARS at every rung** (0.3739 … 0.8096). Robust.
+
+WHAT TURNS ON THE RUNG — and I am not going to pick it silently:
+  · **1280 unselected clears at t >= 0.001 (0.3638) and FAILS at the disc floor (0.2251).** A green goes
+    red on the mask question alone. This is §27's warning materialising: *the error does not threaten the
+    red, it threatens the greens* — and it threatened this one.
+  The two defensible readings of PG-10's *"on the visible glow"* disagree:
+    (a) **t = 0.004, self-consistent.** A pixel whose ENTIRE halo contribution is below 0.004 cannot swing
+        0.004; excluding it applies the limb's own threshold to its own denominator rather than cherry-
+        picking. Under (a) 1280 unselected clears at 0.5852.
+    (b) **every pixel the glow reaches.** Admits contributions down to one LSB, which are *reached* but
+        arguably not *visible*, and which can never swing. Under (b) 1280 unselected fails at 0.2251.
+  > **A-G340 asked for `<= 0.004` and BOTH readings satisfy that, so the amendment does not adjudicate its
+  > own question.** Which set is "the visible glow" is a CONTRACT reading, not a measurement choice, and it
+  > is GELB's to make. Both figures are above; the selected verdict is the same either way, so only 1280
+  > unselected waits on it.
+
+WITHDRAWN FROM §27, BY ME, UNPROMPTED:
+  1. **Every figure in §27's and §10's limb-1 tables.** Not re-stated at a different value — *withdrawn as
+     irreproducible*, because the threshold that produced them is an unstable estimator. §27 called them
+     overestimates and that was right about the SIGN and wrong about the KIND of defect: a biased figure
+     can be corrected, an irreproducible one has to be re-measured.
+  2. **"Blur RAISES the share in all eight measurements."** On the honest mask the sign is MIXED:
+       1920 none   U=0.3582  B=0.3739  Δ=+0.0157  RAISED
+       1920 sel    U=0.1381  B=0.1478  Δ=+0.0097  RAISED
+       1280 none   U=0.2264  B=0.2251  Δ=-0.0013 lowered
+       1280 sel    U=0.0859  B=0.0739  Δ=-0.012  lowered
+     **My §27 REASONING predicted this** — *"the two states may move in opposite directions, and a single
+     predicted sign cannot be right for both"* — and my §27 MEASUREMENT contradicted my own reasoning,
+     because the biased mask kept only the bright core, where spreading always wins. The mechanism in
+     rule 10 stands; **its absolute form was an artefact of the defect it was written beside.**
+  3. **§18's population threshold for 1920 (7 bodies unblurred, 9 blurred).** It was arithmetic on the
+     withdrawn shares, so it withdraws with them. I am NOT substituting a fresh number by the same
+     arithmetic: the share-to-gain relation was assumed linear and never measured. If that threshold
+     matters it needs a real gain sweep, which is a measurement I can run and have not run.
+
+WHAT DOES NOT CHANGE. PG-10's residue is still limb 1, now with a FIRMER red: **selected fails at both
+viewports under every mask rung**, where §27 had 1920 sitting 0.0106 from the bound. 1280 was already
+population-independent and nothing here touches that. Limb 3 still clears (§26); limb 2 still has no bound
+over it (§63). **The 0.25 bound remains UNDERIVED, as `PHASE_G:5620` says of 0.030, and a red against an
+underived floor is a question for the contract, not a defect in the build.**
+

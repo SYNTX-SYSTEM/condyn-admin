@@ -28,9 +28,10 @@ e903011c39e3ecd7a018f6e4ae77488b3f0a5c80f1a09113ffd741e08c81c422  ./outputs/PF3-
 b09c105062e7a5a8dd67e143737ad6c8955b5efe53cc153c5d0ede63530fdd0d  ./outputs/PF4-LIMB3-FOCUS.json
 914296c48f0548ca6dd3bc57105ccfccee0e61218b7769be1a18cb876cf97b8e  ./outputs/PF6-PF4.json
 0190e87174fab430b54467ae393f437249ed19048df3e5c17068f3ae07271dc3  ./outputs/PG10-LIMB1-BLUR.json
+b9e6b4ba96f61cd12deb3b61de6f1ee0afdc359a4c41094820edd50a241e71a8  ./outputs/PG10-LIMB1-MASKFLOOR.json
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-70eee5a73a8b868a61bf7b56ec461d5c47686946443b276f14ff8983d1547982  ./prep.txt
+9b0477201503f2a4eb2ecd993b5e4e887c7aa287c689c57e316ca2d5e488c588  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
@@ -47,6 +48,7 @@ ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink
 6bc97ed47f5787803bb323f9426fdf69c3dcb4c1a112c459d9dbceefddf7e492  ./scripts/pink-pf6-pf4-g.mjs
 d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0  ./scripts/pink-pg10-g.mjs
 41670eb2077613fdaa315c86bf61fbbf8e5d60b72961ed1eb43432755f30d097  ./scripts/pink-pg10-limb1-blur-g.mjs
+5582460d49fdb482893cc813b73afaec4e126d91ea0d818754207b71e6d8b2aa  ./scripts/pink-pg10-limb1-maskfloor-g.mjs
 39325cbde6028d9dd3ea2a554ca244604d1dc57e1cfd8976b2c0d2d78f4c9a3c  ./scripts/pink-pg10-limb3-g.mjs
 d9ebd477bdd71500f4d652831f699a5c51418f9508e8372e2bec7b3caeac3059  ./scripts/pink-pg10-radial-pg23-g.mjs
 9033168194c9ccbc976fedb04c06495bd3b1a4ef60fe682a1bab98915af44357  ./scripts/pink-pg14-label-containment-g.mjs
