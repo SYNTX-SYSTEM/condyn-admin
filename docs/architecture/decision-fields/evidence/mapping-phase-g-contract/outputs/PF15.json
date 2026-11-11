@@ -20,8 +20,8 @@
       "shelfAlphaMode": "as built 0.02",
       "appliedOverride": null,
       "k": 0.833318,
-      "measuredRepeatFloor": 0,
-      "maskEpsilon": 1e-9,
+      "measuredRepeatFloor": 5.8191e-7,
+      "maskEpsilon": 0.00000116382,
       "perRing": {
         "shelf": {
           "alpha": 0.02,
@@ -70,9 +70,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00141833,
-          "realisation_measuredOverIdeal": 1.0245,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00145311,
+          "idealTriple_AG81": [
+            4,
+            5,
+            5
+          ],
+          "realisation_measuredOverIdeal_AG81": 1,
+          "strokeWidthDevicePx_forRealisation": 58.332
         },
         "best": {
           "alpha": 0.085,
@@ -121,9 +126,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00694351,
-          "realisation_measuredOverIdeal": 0.9199,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00722856,
+          "idealTriple_AG81": [
+            18,
+            21,
+            22
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.8837,
+          "strokeWidthDevicePx_forRealisation": 2.4
         },
         "field": {
           "alpha": 0.15,
@@ -172,9 +182,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0169075,
-          "realisation_measuredOverIdeal": 0.7332,
-          "strokeFullyCoversCentrePixel": false
+          "idealLuminanceOverBlack_AG81": 0.01693,
+          "idealTriple_AG81": [
+            31,
+            36,
+            38
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7322,
+          "strokeWidthDevicePx_forRealisation": 2
         },
         "horizon": {
           "alpha": 0.25,
@@ -223,9 +238,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0430936,
-          "realisation_measuredOverIdeal": 0.7703,
-          "strokeFullyCoversCentrePixel": false
+          "idealLuminanceOverBlack_AG81": 0.0430569,
+          "idealTriple_AG81": [
+            51,
+            60,
+            64
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7709,
+          "strokeWidthDevicePx_forRealisation": 2
         }
       },
       "ground": {
@@ -255,9 +275,9 @@
         }
       },
       "limb_a_subordination": {
-        "ringsShareOfDisc": 0.07751,
+        "ringsShareOfDisc": 0.07752,
         "semanticShareOfDisc": 0.62307,
-        "ratio": 0.12441,
+        "ratio": 0.12442,
         "bound": "<=0.08",
         "clears": false
       },
@@ -369,9 +389,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00156017,
-          "realisation_measuredOverIdeal": 1.1259,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00175663,
+          "idealTriple_AG81": [
+            5,
+            6,
+            6
+          ],
+          "realisation_measuredOverIdeal_AG81": 1,
+          "strokeWidthDevicePx_forRealisation": 58.332
         },
         "best": {
           "alpha": 0.085,
@@ -420,9 +445,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00694351,
-          "realisation_measuredOverIdeal": 0.9199,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00722856,
+          "idealTriple_AG81": [
+            18,
+            21,
+            22
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.8837,
+          "strokeWidthDevicePx_forRealisation": 2.4
         },
         "field": {
           "alpha": 0.15,
@@ -471,9 +501,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0169075,
-          "realisation_measuredOverIdeal": 0.7332,
-          "strokeFullyCoversCentrePixel": false
+          "idealLuminanceOverBlack_AG81": 0.01693,
+          "idealTriple_AG81": [
+            31,
+            36,
+            38
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7322,
+          "strokeWidthDevicePx_forRealisation": 2
         },
         "horizon": {
           "alpha": 0.25,
@@ -522,9 +557,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0430936,
-          "realisation_measuredOverIdeal": 0.7703,
-          "strokeFullyCoversCentrePixel": false
+          "idealLuminanceOverBlack_AG81": 0.0430569,
+          "idealTriple_AG81": [
+            51,
+            60,
+            64
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7709,
+          "strokeWidthDevicePx_forRealisation": 2
         }
       },
       "ground": {
@@ -615,8 +655,8 @@
       "shelfAlphaMode": "as built 0.02",
       "appliedOverride": null,
       "k": 0.443977,
-      "measuredRepeatFloor": 0.00000129717,
-      "maskEpsilon": 0.00000259434,
+      "measuredRepeatFloor": 0.0000354669,
+      "maskEpsilon": 0.0000709337,
       "perRing": {
         "shelf": {
           "alpha": 0.02,
@@ -626,18 +666,18 @@
           "rDevicePx": 206.449,
           "strokeWidthDevicePx": 31.078,
           "anglesSampled": 720,
-          "anglesKept": 674,
-          "coverage": 0.9361,
-          "maskedOutByCrossingMarks": 46,
+          "anglesKept": 669,
+          "coverage": 0.9292,
+          "maskedOutByCrossingMarks": 51,
           "absoluteKept": {
-            "n": 674,
+            "n": 669,
             "min": 0.000611446,
-            "p01": 0.00143355,
+            "p01": 0.00142993,
             "p05": 0.00145311,
             "p25": 0.00145311,
             "p50": 0.00145311,
             "p75": 0.00145311,
-            "p95": 0.0208019,
+            "p95": 0.0188691,
             "max": 0.259092
           },
           "absoluteUnmasked_FOR_CONTRAST_ONLY": {
@@ -652,321 +692,27 @@
             "max": 0.48037
           },
           "ownContributionKept": {
-            "n": 674,
-            "min": 0.00000294774,
-            "p01": 0.000103649,
-            "p05": 0.00143582,
+            "n": 669,
+            "min": 0.0000719919,
+            "p01": 0.000504233,
+            "p05": 0.00144859,
             "p25": 0.00145311,
             "p50": 0.00145311,
             "p75": 0.00145311,
-            "p95": 0.0029182,
+            "p95": 0.00292036,
             "max": 0.00519758
           },
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00141833,
-          "realisation_measuredOverIdeal": 1.0245,
-          "strokeFullyCoversCentrePixel": true
-        },
-        "best": {
-          "alpha": 0.085,
-          "breath": null,
-          "rUserUnits": 160,
-          "strokeWidthUserUnits": 5.406,
-          "rDevicePx": 71.036,
-          "strokeWidthDevicePx": 2.4,
-          "anglesSampled": 720,
-          "anglesKept": 708,
-          "coverage": 0.9833,
-          "maskedOutByCrossingMarks": 12,
-          "absoluteKept": {
-            "n": 708,
-            "min": 0.00199133,
-            "p01": 0.00476115,
-            "p05": 0.00513864,
-            "p25": 0.00586996,
-            "p50": 0.00671887,
-            "p75": 0.00704513,
-            "p95": 0.0484553,
-            "max": 0.436574
-          },
-          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
-            "n": 720,
-            "min": 0.00199133,
-            "p01": 0.00476934,
-            "p05": 0.0051436,
-            "p25": 0.00587897,
-            "p50": 0.00674129,
-            "p75": 0.00706463,
-            "p95": 0.107745,
-            "max": 0.436574
-          },
-          "ownContributionKept": {
-            "n": 708,
-            "min": 0.00000688965,
-            "p01": 0.00039903,
-            "p05": 0.00482785,
-            "p25": 0.00575386,
-            "p50": 0.00657489,
-            "p75": 0.00701362,
-            "p95": 0.00722856,
-            "max": 0.02598
-          },
-          "twoRoutesAgree_absVsContribution": true,
-          "AG65_contaminationSignature_unmasked": false,
-          "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00694351,
-          "realisation_measuredOverIdeal": 0.9676,
-          "strokeFullyCoversCentrePixel": true
-        },
-        "field": {
-          "alpha": 0.15,
-          "breath": "LIVE",
-          "rUserUnits": 500,
-          "strokeWidthUserUnits": 4.505,
-          "rDevicePx": 221.988,
-          "strokeWidthDevicePx": 2,
-          "anglesSampled": 720,
-          "anglesKept": 706,
-          "coverage": 0.9806,
-          "maskedOutByCrossingMarks": 14,
-          "absoluteKept": {
-            "n": 706,
-            "min": 0.00603858,
-            "p01": 0.00901889,
-            "p05": 0.00976584,
-            "p25": 0.011417,
-            "p50": 0.0130141,
-            "p75": 0.0151925,
-            "p95": 0.0165,
-            "max": 0.335008
-          },
-          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
-            "n": 720,
-            "min": 0.00603858,
-            "p01": 0.00902126,
-            "p05": 0.0097708,
-            "p25": 0.0114716,
-            "p50": 0.013149,
-            "p75": 0.0152957,
-            "p95": 0.0166358,
-            "max": 0.39802
-          },
-          "ownContributionKept": {
-            "n": 706,
-            "min": 0.000112289,
-            "p01": 0.00289804,
-            "p05": 0.00956695,
-            "p25": 0.0113393,
-            "p50": 0.0129552,
-            "p75": 0.0151407,
-            "p95": 0.0164191,
-            "max": 0.01693
-          },
-          "twoRoutesAgree_absVsContribution": true,
-          "AG65_contaminationSignature_unmasked": false,
-          "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0169075,
-          "realisation_measuredOverIdeal": 0.7697,
-          "strokeFullyCoversCentrePixel": true
-        },
-        "horizon": {
-          "alpha": 0.25,
-          "breath": null,
-          "rUserUnits": 400,
-          "strokeWidthUserUnits": 4.505,
-          "rDevicePx": 177.591,
-          "strokeWidthDevicePx": 2,
-          "anglesSampled": 720,
-          "anglesKept": 682,
-          "coverage": 0.9472,
-          "maskedOutByCrossingMarks": 38,
-          "absoluteKept": {
-            "n": 682,
-            "min": 0.00435974,
-            "p01": 0.0145341,
-            "p05": 0.0195475,
-            "p25": 0.0261068,
-            "p50": 0.0321883,
-            "p75": 0.0390946,
-            "p95": 0.0568649,
-            "max": 0.480932
-          },
-          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
-            "n": 720,
-            "min": 0.00435974,
-            "p01": 0.0139316,
-            "p05": 0.0192137,
-            "p25": 0.0254613,
-            "p50": 0.0319594,
-            "p75": 0.0392045,
-            "p95": 0.0588086,
-            "max": 0.480932
-          },
-          "ownContributionKept": {
-            "n": 682,
-            "min": 0.00000822952,
-            "p01": 0.000218573,
-            "p05": 0.0107406,
-            "p25": 0.0251476,
-            "p50": 0.0314988,
-            "p75": 0.0381375,
-            "p95": 0.0438136,
-            "max": 0.0581397
-          },
-          "twoRoutesAgree_absVsContribution": true,
-          "AG65_contaminationSignature_unmasked": false,
-          "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0430936,
-          "realisation_measuredOverIdeal": 0.7469,
-          "strokeFullyCoversCentrePixel": true
-        }
-      },
-      "ground": {
-        "innerRadiusDevicePx": 186.91,
-        "outerRadiusDevicePx": 228.989,
-        "inner_litMedium_boundaryContrastOnly": {
-          "n": 720,
-          "min": 0.00183109,
-          "p01": 0.00261256,
-          "p05": 0.00274504,
-          "p25": 0.00292024,
-          "p50": 0.00311043,
-          "p75": 0.00485047,
-          "p95": 0.0916578,
-          "max": 0.608873
-        },
-        "outer_fieldDarkSpace_CARRIES_VERDICT": {
-          "n": 720,
-          "min": 0.000703553,
-          "p01": 0.00115079,
-          "p05": 0.00115079,
-          "p25": 0.0014324,
-          "p50": 0.0014324,
-          "p75": 0.00254823,
-          "p95": 0.0420718,
-          "max": 0.355001
-        }
-      },
-      "limb_a_subordination": {
-        "ringsShareOfDisc": 0.07339,
-        "semanticShareOfDisc": 0.71894,
-        "ratio": 0.10208,
-        "bound": "<=0.08",
-        "clears": false
-      },
-      "limb_b_ladder": {
-        "orderedByMeasuredValue": [
-          "shelf=1.4531e-3",
-          "best=6.7189e-3",
-          "field=1.3014e-2",
-          "horizon=3.2188e-2"
-        ],
-        "adjacentRatios": [
-          {
-            "pair": "shelf->best",
-            "ratio": 4.6238,
-            "bound": ">=1.6",
-            "clears": true
-          },
-          {
-            "pair": "best->field",
-            "ratio": 1.9369,
-            "bound": ">=1.6",
-            "clears": true
-          },
-          {
-            "pair": "field->horizon",
-            "ratio": 2.4733,
-            "bound": ">=1.6",
-            "clears": true
-          }
-        ],
-        "allClear": true
-      },
-      "AG66_localGround_shelf": {
-        "side": "outer (A-G66's declaration)",
-        "shelfP50": 0.00145311,
-        "outerGroundP50": 0.0014324,
-        "ratio": 1.0145,
-        "bound": ">=1.6",
-        "clears": false,
-        "innerGroundP50_reportedNotVerdict": 0.00311043,
-        "innerOuterRatio_AG66s_1_92": 2.1715
-      }
-    },
-    {
-      "viewport": "1280x800",
-      "motion": "reduce",
-      "radiiOrderingDevicePx": {
-        "shelf": 206.45,
-        "best": 71.04,
-        "field": 221.99,
-        "horizon": 177.59
-      },
-      "outermostRing": "field",
-      "discRadiusDevicePx": 222.989,
-      "discIsFieldRingOuterEdge": true,
-      "shelfAlphaMode": "override 0.022",
-      "appliedOverride": {
-        "before": "rgba(205, 240, 255, 0.02)",
-        "after": "rgba(205, 240, 255, 0.022)"
-      },
-      "k": 0.443977,
-      "measuredRepeatFloor": 0.0000154601,
-      "maskEpsilon": 0.0000309203,
-      "perRing": {
-        "shelf": {
-          "alpha": 0.022,
-          "breath": null,
-          "rUserUnits": 465,
-          "strokeWidthUserUnits": 70,
-          "rDevicePx": 206.449,
-          "strokeWidthDevicePx": 31.078,
-          "anglesSampled": 720,
-          "anglesKept": 672,
-          "coverage": 0.9333,
-          "maskedOutByCrossingMarks": 48,
-          "absoluteKept": {
-            "n": 672,
-            "min": 0.000850778,
-            "p01": 0.00173403,
-            "p05": 0.00175663,
-            "p25": 0.00175663,
-            "p50": 0.00175663,
-            "p75": 0.00175663,
-            "p95": 0.0209287,
-            "max": 0.259167
-          },
-          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
-            "n": 720,
-            "min": 0.000850778,
-            "p01": 0.00175663,
-            "p05": 0.00175663,
-            "p25": 0.00175663,
-            "p50": 0.00175663,
-            "p75": 0.00175663,
-            "p95": 0.0328912,
-            "max": 0.48037
-          },
-          "ownContributionKept": {
-            "n": 672,
-            "min": 0.0000438106,
-            "p01": 0.000178414,
-            "p05": 0.00175204,
-            "p25": 0.00175663,
-            "p50": 0.00175663,
-            "p75": 0.00175663,
-            "p95": 0.00360317,
-            "max": 0.00663638
-          },
-          "twoRoutesAgree_absVsContribution": true,
-          "AG65_contaminationSignature_unmasked": false,
-          "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00156017,
-          "realisation_measuredOverIdeal": 1.1259,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00145311,
+          "idealTriple_AG81": [
+            4,
+            5,
+            5
+          ],
+          "realisation_measuredOverIdeal_AG81": 1,
+          "strokeWidthDevicePx_forRealisation": 31.078
         },
         "best": {
           "alpha": 0.085,
@@ -1015,9 +761,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.00694351,
-          "realisation_measuredOverIdeal": 0.9675,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.00722856,
+          "idealTriple_AG81": [
+            18,
+            21,
+            22
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.9293,
+          "strokeWidthDevicePx_forRealisation": 2.4
         },
         "field": {
           "alpha": 0.15,
@@ -1057,7 +808,7 @@
             "min": 0.000112289,
             "p01": 0.00289804,
             "p05": 0.00956695,
-            "p25": 0.0113395,
+            "p25": 0.0113393,
             "p50": 0.0129552,
             "p75": 0.0151407,
             "p95": 0.0164191,
@@ -1066,9 +817,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0169075,
-          "realisation_measuredOverIdeal": 0.7697,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.01693,
+          "idealTriple_AG81": [
+            31,
+            36,
+            38
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7687,
+          "strokeWidthDevicePx_forRealisation": 2
         },
         "horizon": {
           "alpha": 0.25,
@@ -1117,9 +873,14 @@
           "twoRoutesAgree_absVsContribution": true,
           "AG65_contaminationSignature_unmasked": false,
           "unmaskedMinIsPureBlack": false,
-          "idealLuminanceOverBlack": 0.0430936,
-          "realisation_measuredOverIdeal": 0.747,
-          "strokeFullyCoversCentrePixel": true
+          "idealLuminanceOverBlack_AG81": 0.0430569,
+          "idealTriple_AG81": [
+            51,
+            60,
+            64
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7477,
+          "strokeWidthDevicePx_forRealisation": 2
         }
       },
       "ground": {
@@ -1143,7 +904,326 @@
           "p05": 0.00115079,
           "p25": 0.0014324,
           "p50": 0.0014324,
-          "p75": 0.00259003,
+          "p75": 0.00254823,
+          "p95": 0.0420718,
+          "max": 0.355001
+        }
+      },
+      "limb_a_subordination": {
+        "ringsShareOfDisc": 0.07339,
+        "semanticShareOfDisc": 0.71894,
+        "ratio": 0.10208,
+        "bound": "<=0.08",
+        "clears": false
+      },
+      "limb_b_ladder": {
+        "orderedByMeasuredValue": [
+          "shelf=1.4531e-3",
+          "best=6.7176e-3",
+          "field=1.3014e-2",
+          "horizon=3.2192e-2"
+        ],
+        "adjacentRatios": [
+          {
+            "pair": "shelf->best",
+            "ratio": 4.6229,
+            "bound": ">=1.6",
+            "clears": true
+          },
+          {
+            "pair": "best->field",
+            "ratio": 1.9373,
+            "bound": ">=1.6",
+            "clears": true
+          },
+          {
+            "pair": "field->horizon",
+            "ratio": 2.4737,
+            "bound": ">=1.6",
+            "clears": true
+          }
+        ],
+        "allClear": true
+      },
+      "AG66_localGround_shelf": {
+        "side": "outer (A-G66's declaration)",
+        "shelfP50": 0.00145311,
+        "outerGroundP50": 0.0014324,
+        "ratio": 1.0145,
+        "bound": ">=1.6",
+        "clears": false,
+        "innerGroundP50_reportedNotVerdict": 0.00311043,
+        "innerOuterRatio_AG66s_1_92": 2.1715
+      }
+    },
+    {
+      "viewport": "1280x800",
+      "motion": "reduce",
+      "radiiOrderingDevicePx": {
+        "shelf": 206.45,
+        "best": 71.04,
+        "field": 221.99,
+        "horizon": 177.59
+      },
+      "outermostRing": "field",
+      "discRadiusDevicePx": 222.989,
+      "discIsFieldRingOuterEdge": true,
+      "shelfAlphaMode": "override 0.022",
+      "appliedOverride": {
+        "before": "rgba(205, 240, 255, 0.02)",
+        "after": "rgba(205, 240, 255, 0.022)"
+      },
+      "k": 0.443977,
+      "measuredRepeatFloor": 0.000030312,
+      "maskEpsilon": 0.0000606241,
+      "perRing": {
+        "shelf": {
+          "alpha": 0.022,
+          "breath": null,
+          "rUserUnits": 465,
+          "strokeWidthUserUnits": 70,
+          "rDevicePx": 206.449,
+          "strokeWidthDevicePx": 31.078,
+          "anglesSampled": 720,
+          "anglesKept": 670,
+          "coverage": 0.9306,
+          "maskedOutByCrossingMarks": 50,
+          "absoluteKept": {
+            "n": 670,
+            "min": 0.000850778,
+            "p01": 0.00173247,
+            "p05": 0.00175663,
+            "p25": 0.00175663,
+            "p50": 0.00175663,
+            "p75": 0.00175663,
+            "p95": 0.0203739,
+            "max": 0.259167
+          },
+          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
+            "n": 720,
+            "min": 0.000850778,
+            "p01": 0.00175663,
+            "p05": 0.00175663,
+            "p25": 0.00175663,
+            "p50": 0.00175663,
+            "p75": 0.00175663,
+            "p95": 0.0328912,
+            "max": 0.48037
+          },
+          "ownContributionKept": {
+            "n": 670,
+            "min": 0.0000728049,
+            "p01": 0.000279553,
+            "p05": 0.00175663,
+            "p25": 0.00175663,
+            "p50": 0.00175663,
+            "p75": 0.00175663,
+            "p95": 0.00360344,
+            "max": 0.00663638
+          },
+          "twoRoutesAgree_absVsContribution": true,
+          "AG65_contaminationSignature_unmasked": false,
+          "unmaskedMinIsPureBlack": false,
+          "idealLuminanceOverBlack_AG81": 0.00175663,
+          "idealTriple_AG81": [
+            5,
+            6,
+            6
+          ],
+          "realisation_measuredOverIdeal_AG81": 1,
+          "strokeWidthDevicePx_forRealisation": 31.078
+        },
+        "best": {
+          "alpha": 0.085,
+          "breath": null,
+          "rUserUnits": 160,
+          "strokeWidthUserUnits": 5.406,
+          "rDevicePx": 71.036,
+          "strokeWidthDevicePx": 2.4,
+          "anglesSampled": 720,
+          "anglesKept": 705,
+          "coverage": 0.9792,
+          "maskedOutByCrossingMarks": 15,
+          "absoluteKept": {
+            "n": 705,
+            "min": 0.00199133,
+            "p01": 0.0047591,
+            "p05": 0.0051374,
+            "p25": 0.0058668,
+            "p50": 0.00671762,
+            "p75": 0.00704172,
+            "p95": 0.0342661,
+            "max": 0.225371
+          },
+          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
+            "n": 720,
+            "min": 0.00199133,
+            "p01": 0.00476934,
+            "p05": 0.0051436,
+            "p25": 0.00587897,
+            "p50": 0.00674129,
+            "p75": 0.00706463,
+            "p95": 0.107745,
+            "max": 0.436574
+          },
+          "ownContributionKept": {
+            "n": 705,
+            "min": 0.000135049,
+            "p01": 0.000849796,
+            "p05": 0.00486081,
+            "p25": 0.00577451,
+            "p50": 0.00658639,
+            "p75": 0.00701441,
+            "p95": 0.00722856,
+            "max": 0.02598
+          },
+          "twoRoutesAgree_absVsContribution": true,
+          "AG65_contaminationSignature_unmasked": false,
+          "unmaskedMinIsPureBlack": false,
+          "idealLuminanceOverBlack_AG81": 0.00722856,
+          "idealTriple_AG81": [
+            18,
+            21,
+            22
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.9293,
+          "strokeWidthDevicePx_forRealisation": 2.4
+        },
+        "field": {
+          "alpha": 0.15,
+          "breath": "LIVE",
+          "rUserUnits": 500,
+          "strokeWidthUserUnits": 4.505,
+          "rDevicePx": 221.988,
+          "strokeWidthDevicePx": 2,
+          "anglesSampled": 720,
+          "anglesKept": 705,
+          "coverage": 0.9792,
+          "maskedOutByCrossingMarks": 15,
+          "absoluteKept": {
+            "n": 705,
+            "min": 0.00603858,
+            "p01": 0.00901872,
+            "p05": 0.00976548,
+            "p25": 0.0114129,
+            "p50": 0.0130137,
+            "p75": 0.0151882,
+            "p95": 0.0164953,
+            "max": 0.335008
+          },
+          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
+            "n": 720,
+            "min": 0.00603858,
+            "p01": 0.00902126,
+            "p05": 0.0097708,
+            "p25": 0.0114716,
+            "p50": 0.013149,
+            "p75": 0.0152957,
+            "p95": 0.0166358,
+            "max": 0.39802
+          },
+          "ownContributionKept": {
+            "n": 705,
+            "min": 0.000112289,
+            "p01": 0.00360973,
+            "p05": 0.00957256,
+            "p25": 0.0113456,
+            "p50": 0.0129579,
+            "p75": 0.0151425,
+            "p95": 0.0164195,
+            "max": 0.01693
+          },
+          "twoRoutesAgree_absVsContribution": true,
+          "AG65_contaminationSignature_unmasked": false,
+          "unmaskedMinIsPureBlack": false,
+          "idealLuminanceOverBlack_AG81": 0.01693,
+          "idealTriple_AG81": [
+            31,
+            36,
+            38
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7687,
+          "strokeWidthDevicePx_forRealisation": 2
+        },
+        "horizon": {
+          "alpha": 0.25,
+          "breath": null,
+          "rUserUnits": 400,
+          "strokeWidthUserUnits": 4.505,
+          "rDevicePx": 177.591,
+          "strokeWidthDevicePx": 2,
+          "anglesSampled": 720,
+          "anglesKept": 679,
+          "coverage": 0.9431,
+          "maskedOutByCrossingMarks": 41,
+          "absoluteKept": {
+            "n": 679,
+            "min": 0.00435974,
+            "p01": 0.014505,
+            "p05": 0.0196424,
+            "p25": 0.0261141,
+            "p50": 0.0321924,
+            "p75": 0.0390877,
+            "p95": 0.0568739,
+            "max": 0.480932
+          },
+          "absoluteUnmasked_FOR_CONTRAST_ONLY": {
+            "n": 720,
+            "min": 0.00435974,
+            "p01": 0.0139316,
+            "p05": 0.0192137,
+            "p25": 0.0254613,
+            "p50": 0.0319594,
+            "p75": 0.0392045,
+            "p95": 0.0588086,
+            "max": 0.480932
+          },
+          "ownContributionKept": {
+            "n": 679,
+            "min": 0.0000885122,
+            "p01": 0.000294366,
+            "p05": 0.0113692,
+            "p25": 0.0251721,
+            "p50": 0.0315291,
+            "p75": 0.0381585,
+            "p95": 0.0438504,
+            "max": 0.0581397
+          },
+          "twoRoutesAgree_absVsContribution": true,
+          "AG65_contaminationSignature_unmasked": false,
+          "unmaskedMinIsPureBlack": false,
+          "idealLuminanceOverBlack_AG81": 0.0430569,
+          "idealTriple_AG81": [
+            51,
+            60,
+            64
+          ],
+          "realisation_measuredOverIdeal_AG81": 0.7477,
+          "strokeWidthDevicePx_forRealisation": 2
+        }
+      },
+      "ground": {
+        "innerRadiusDevicePx": 186.91,
+        "outerRadiusDevicePx": 228.989,
+        "inner_litMedium_boundaryContrastOnly": {
+          "n": 720,
+          "min": 0.00183109,
+          "p01": 0.00261256,
+          "p05": 0.00274504,
+          "p25": 0.00292024,
+          "p50": 0.00311043,
+          "p75": 0.00485047,
+          "p95": 0.0916578,
+          "max": 0.608873
+        },
+        "outer_fieldDarkSpace_CARRIES_VERDICT": {
+          "n": 720,
+          "min": 0.000703553,
+          "p01": 0.00115079,
+          "p05": 0.00115079,
+          "p25": 0.0014324,
+          "p50": 0.0014324,
+          "p75": 0.0025853,
           "p95": 0.0420718,
           "max": 0.355001
         }
@@ -1151,7 +1231,7 @@
       "limb_a_subordination": {
         "ringsShareOfDisc": 0.07804,
         "semanticShareOfDisc": 0.71554,
-        "ratio": 0.10907,
+        "ratio": 0.10906,
         "bound": "<=0.08",
         "clears": false
       },
@@ -1171,7 +1251,7 @@
           },
           {
             "pair": "best->field",
-            "ratio": 1.9373,
+            "ratio": 1.9372,
             "bound": ">=1.6",
             "clears": true
           },

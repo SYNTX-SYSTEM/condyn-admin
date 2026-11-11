@@ -66,8 +66,16 @@ const ALL_RINGS = '[data-testid^="mapping-ring"]';
 // claim and it is checked: `realisation` is measured / ideal, and a thin stroke at k < 1 cannot reach 1.
 const INK_RGB = INK.split(",").map(v => Number(v.trim()));
 const lin = v => { const c = v / 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
-const idealLum = alpha => { const [r, g, b] = INK_RGB.map(c => c * alpha);
+// A-G81's quantisation, which SUPERSEDES the float-alpha method (§23): the alpha is quantised to a BYTE
+// first, and the channels are rounded against that effective alpha -- not against the declared float.
+// It matters: at 0.022 the float method predicts rgb(5,5,6) and A-G81 predicts rgb(5,6,6), and Chrome
+// renders rgb(5,6,6). A-G274 does not touch this, because these rings carry a DECLARED CONSTANT alpha,
+// which is exactly the carrier A-G81 was measured on.
+const idealLum = alpha => { const aByte = Math.round(alpha * 255), eff = aByte / 255;
+  const [r, g, b] = INK_RGB.map(c => Math.round(c * eff));
   return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b); };
+const idealTriple = alpha => { const eff = Math.round(alpha * 255) / 255;
+  return INK_RGB.map(c => Math.round(c * eff)); };
 
 const pct = (a, p) => { if (!a.length) return null; const s = [...a].sort((x, y) => x - y);
   const i = (s.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i);
@@ -160,9 +168,13 @@ async function run(VW, VH, applyOverride) {
       // A-G65's own cheap diagnostic, on the UNMASKED series: a single contaminated angle does not do this.
       AG65_contaminationSignature_unmasked: dAll.min !== null && dAll.p05 === dAll.min && dAll.p25 === dAll.min,
       unmaskedMinIsPureBlack: dAll.min === 0,
-      idealLuminanceOverBlack: +idealLum(geo.rings[key].alpha).toExponential(5),
-      realisation_measuredOverIdeal: dAbs.p50 === null ? null : +(dAbs.p50 / idealLum(geo.rings[key].alpha)).toFixed(4),
-      strokeFullyCoversCentrePixel: rDev[key].w >= 2.0 };
+      idealLuminanceOverBlack_AG81: +idealLum(geo.rings[key].alpha).toExponential(5),
+      idealTriple_AG81: idealTriple(geo.rings[key].alpha),
+      realisation_measuredOverIdeal_AG81: dAbs.p50 === null ? null : +(dAbs.p50 / idealLum(geo.rings[key].alpha)).toFixed(4),
+      // The 58 px BAND is the control for this ratio: on it the A-G81 model is exact (1.0000 at both 0.02
+      // and 0.022, five figures). So a shortfall on the 2 px strokes is a property of THIN STROKES, not of
+      // the model -- which is what makes the realisation finding stand rather than dissolve.
+      strokeWidthDevicePx_forRealisation: +rDev[key].w.toFixed(3) };
   }
 
   // A-G66: the shelf's two sides, both measured, only `outer` carrying the verdict.

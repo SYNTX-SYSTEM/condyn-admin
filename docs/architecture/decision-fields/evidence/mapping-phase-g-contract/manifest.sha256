@@ -20,11 +20,11 @@ d25c90c00a512788e6b74f7a49a3ae331df93ca7045d6f22e5d1e826b7385131  ./outputs/3ec8
 8bf256bf05fee2906bf66b6d7acaf6649b630806bf4806b9227e42e9942d5c3c  ./outputs/cross-read/GRUEN-pg16-crowding-at-0.5-as-read.json
 e6d3229d5cfe400743c9e836a7b21227a6a0f6e543abd95cb06a2b6c17e39bb8  ./outputs/cross-read/GRUEN-pg16-crowding-L1-as-read.json
 af895233749cf56f500fec0f3c14ae384f7238b8d17e93b8817efd02108b00ea  ./outputs/DEPTHGAIN-NORMALISATION.json
-96e2a05c5a629654fb67f3d9e7e2000ca10f7b0272db0d173980ed8e8770ef6a  ./outputs/PF15.json
+69be4bcf38b5e06b1ceba215d94c74362daaa7ad771442dc9054c695a51a66c9  ./outputs/PF15.json
 90f8534b390dcf7c725fc1a4d213604e5a55696699f1313b1daf610c711e31ca  ./outputs/PF15-SHELF-ALPHA-SWEEP.json
 71c1ed03a9a9093f9b7ca8fdc4dffd46691208ef71db808e8523181a9a921db9  ./outputs/PG14-LABEL-CONTAINMENT-BEFORE.json
 77b6dc8b833eb239a702dab2589a5dfec54618a1158967f8fad41435221390a4  ./outputs/PG3-SIZEFLOOR.json
-6fe3bf654efacb77ed4ebe57507b76342a18039a8e37dbd20f120c1d420f380c  ./prep.txt
+bbd48f359ed1810da6fdb227477c8b0e12909fcd715774223b90aedfbe122324  ./prep.txt
 64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104  ./scripts/pink-ag16-criterion.py
 db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink-ag16-ledger.py
 253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb  ./scripts/pink-depthgain-normalisation-g.mjs
@@ -32,7 +32,7 @@ db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4  ./scripts/pink
 fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174  ./scripts/pink-floor-g.mjs
 ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8  ./scripts/pink-glow-travel.mjs
 80b933bc1d410501a6694409f5315bb4f6b7cea7389eb5f77dfb9815cd7f1887  ./scripts/pink-halo-mask.mjs
-4aa9cb38b773e7d9d5a534a6f0820632d2a1063748084c48082d435267e7b9c7  ./scripts/pink-pf15-g.mjs
+3005a474b0fa4bdba5fac7d982969c98d6407bf77a410d98793b7ae05308108c  ./scripts/pink-pf15-g.mjs
 948b78f3c62671da41116b3000e52d77ab0e672f6525b8469e7321d74e87586d  ./scripts/pink-pf15-shelf-alpha-sweep-g.mjs
 d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0  ./scripts/pink-pg10-g.mjs
 39325cbde6028d9dd3ea2a554ca244604d1dc57e1cfd8976b2c0d2d78f4c9a3c  ./scripts/pink-pg10-limb3-g.mjs

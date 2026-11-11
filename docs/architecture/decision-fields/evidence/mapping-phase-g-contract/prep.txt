@@ -1448,8 +1448,11 @@ A-G66's LOCAL-GROUND LIMB — **FAILS**, on the outer side A-G66 itself declared
   >   limb (a) *0.065* *0.077*  0.099   0.124   0.137   0.150   0.160   0.163   0.176   0.189   (<= 0.08)
   > (* = clears.) **limb (a) clears only at alpha <= 0.005; A-G66 only from alpha >= 0.030. The admissible
   > regions are DISJOINT, with a factor of six between them, and `smallestAlphaClearingBoth` is null.**
-  > And **limb (a) fails even with the shelf band entirely dark** -- 0.065 at alpha 0 against 0.08 leaves 19 %
-  > of headroom for the other three rings, so no shelf constant can rescue it. **This is not a value to be
+  > And at alpha 0 -- the band entirely dark -- **limb (a) CLEARS at 0.065 against 0.08.** (§19a corrects this
+  > line, which first said "fails": the number is a clear, my own table marked it clearing, and the clause
+  > after the dash said so. See §19a -- the corrected reading is STRONGER, because it identifies the lever.)
+  > **The three thin rings alone consume 81 % of limb (a)'s budget**, so the 58 px band cannot be the cause of
+  > a red it only completes, and no shelf constant can rescue it. **This is not a value to be
   > chosen. Two limbs of one obligation pull opposite ways on one constant, and A-G62 moved it to satisfy the
   > limb that was checked.** Reported as a measured range; the constant is GRÜN's and the bound is GELB's.
 
@@ -1547,3 +1550,48 @@ TWO DEFECTS OF MINE IN THIS INSTRUMENT, BOTH CAUGHT BY INVARIANCE RATHER THAN BY
      already inside the ratio. Corrected to 0.5632 mean / 0.602 worst.
   > **Rule 9 turned on its author. The free test is to name a quantity's invariance and check it holds;
   > both defects were visible in my own first printout and neither was visible in my reasoning.**
+
+
+================================================================================================
+§19a  ADDENDUM — ONE ERROR OF MINE IN §19, AND IT WAS THE STRONGER CLAIM. PLUS A-G81's
+      QUANTISATION ADOPTED: EXACT ON THE BAND, AND THE THIN RINGS' SHORTFALL SURVIVES IT.
+================================================================================================
+ERROR 1 · I WROTE "FAILS" ABOUT A CLEAR, AND IT WAS THE LOAD-BEARING SENTENCE. §19 read *"limb (a)
+fails even with the shelf band entirely dark -- 0.065 at alpha 0 against 0.08"*. **0.065 <= 0.08. It
+CLEARS.** My own sweep table marked that cell as clearing and the clause after my own dash said so.
+GELB caught it. The corrected line is in §19 above.
+  > **And the correction is not cosmetic in the direction I would have preferred — the true reading is
+  > STRONGER than the false one.** "Limb (a) fails with the band dark" would mean the rings' share is
+  > irreparable by any ring constant. What is actually true: **limb (a) is SATISFIABLE with 19 % of its
+  > budget unspent, and the three thin rings alone consume 81 % of it.** That identifies the lever.
+  > `best`, `field` and `horizon` are where limb (a)'s red lives; the 58 px band only completes it.
+  > A pin whose red I attributed to the wrong carrier would have sent the next change to the wrong
+  > constant. **Eighth time in this phase that a correct computation has been carried by wrong words,
+  > and the first time it was mine in a sentence I had already sent.**
+
+ERROR 2 · MY QUANTISATION MODEL WAS THE SUPERSEDED ONE, AND GELB NAMED THE REPLACEMENT. §19's
+`realisation` ideal rounded each channel against the DECLARED FLOAT alpha (§23's method). **A-G81
+quantises the ALPHA to a byte first** and rounds the channels against the effective alpha:
+    0.022 -> alpha byte 6 -> effective 0.0235294 -> **rgb(5,6,6)**, L = 1.75663e-3.
+Chrome renders exactly that, and it is my own measured band value to five figures. The float method
+predicted rgb(5,5,6) — the one-code error I flagged. **A-G274 does not touch this: these rings carry a
+DECLARED CONSTANT alpha, the carrier A-G81 was measured on.** Adopted; `PF15.json` re-run.
+
+  > **THE PREDICTION HOLDS FOR THE BAND AND FAILS FOR THE RINGS, AND THAT IS THE RESULT.** GELB
+  > expected A-G81 to make `realisation` exact. Measured, with A-G81's model, at both sizes:
+  >    shelf band (58.3 px stroke)  **1.0000** at 0.02 AND at 0.022 — exact, five figures
+  >    best       ( 2.4 px stroke)  0.8837   (0.9199 under the old model — slightly WORSE than I reported)
+  >    field      ( 2.0 px stroke)  0.7322
+  >    horizon    ( 2.0 px stroke)  0.7709
+  > **So the shortfall is not a model artefact, and the band is now the CONTROL that proves it.** On the
+  > one ring wide enough to cover its centre pixel the model is exact; on the three that are not it falls
+  > 12-27 % short. That is a property of thin strokes — a 2 px stroke centred on a non-integer radius
+  > antialiases whatever its nominal width — and §19's finding stands on a model that is now exact
+  > wherever it can be checked. **A model proved exact on one carrier is worth more than a model never
+  > tested: the band's 1.0000 is what makes the rings' 0.73 a measurement instead of a residual.**
+  > §19's conclusion is unchanged and better founded: **any arithmetic converting a thin ring's alpha to
+  > a luminance, or back, is wrong by up to 27 % on three of the four rings.**
+
+WHAT DID NOT CHANGE. Limb (a) FAILS as measured (0.12442 / 0.13696 at 1920; 0.10208 / 0.10907 at 1280);
+limb (b) CLEARS; A-G66's outer limb FAILS (1.0145 / 1.2264); the admissible alpha regions are disjoint
+and `smallestAlphaClearingBoth` is null. Every band value still lands on its exact 8-bit triple.
