@@ -1,15 +1,21 @@
 /**
- * GELB · THE ONE PLACE A PRODUCT CONSTANT IS READ, AND IT HALTS.
+ * GELB · PRODUCT CONSTANTS, READ OUT OF THE PRODUCT. NO COPY IS HELD.
  *
- * §87 A-G395: six product constants were duplicated across my instruments with at least one copy that
- * checked nothing — HALTS in 1 file, REPORTS in 4, NOTHING in 6, and the NOTHING six included the two
- * instruments carrying §83's and §84's findings. A constant copied out of the product without a check is
- * not a citation; it is a fork. This is the check, in the form GRÜN's writeSealed() took: it REFUSES
- * rather than reports.
+ * §87 A-G395 found six product constants forked across my instruments and I built this module to fix it —
+ * by HOLDING a copy and THROWING if the copy disagreed. GRÜN's §89 shows that is one rung below the
+ * available remedy, and it is right:
  *
- * Every export below is asserted against the committed product at a PINNED build. If a constant moved,
- * the import throws and the importing instrument does not run. That is the difference between HALTS and
- * REPORTS, and §87 found I only had the latter where it mattered.
+ *   > HALTS means "holds a copy and throws if the copy disagrees". A file that holds NO copy has nothing
+ *   > to disagree. READS is strictly stronger, because eliminating a duplicate beats checking one.
+ *
+ * So this module no longer declares a single product value. Every export is PARSED out of the committed
+ * product at a pinned build, and the parse throws if a declaration is missing, duplicated or malformed —
+ * which is a weaker failure mode than a stale copy, because there is no copy to go stale.
+ *
+ * GRÜN's second rule from the same section is also honoured: "a declaration the audit cannot extract is
+ * one it cannot check anywhere — a hole in the audit before it is a hole in any instrument." So the
+ * module reports its own COVERAGE: which product constants it extracts, and which exported constants of
+ * the product it does not. A constant absent from this list is unguarded everywhere, silently.
  */
 import { execFileSync } from "node:child_process";
 export const SHA = "4b83414e";
@@ -17,39 +23,58 @@ const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const src = execFileSync("git", ["-C", TREE, "show", `${SHA}:${FILE}`], { encoding: "utf8" });
 
-/* each entry: the exported value, and the EXACT substring of the product that must contain it */
-const PINS = [
-  ["HALO_DEPTH",    0.235,  "haloDepth: 0.235"],
-  ["SELECTED_GAIN", 0.35,   "selectedGain: 0.35"],
-  ["HALO_ALPHA",    0.5,    "haloAlpha: 0.5"],
-  ["CORE_ALPHA",    0.16,   "coreAlpha: 0.16"],
-  ["DEPTH_RATIO",   1.45,   "depthRatio: 1.45"],
-  ["SEAT_PAD_PX",   1.6,    "export const SEAT_PAD_PX = 1.6;"],
-  ["CHAR_EM",       0.62,   "const CHAR_EM = 0.62;"],
-  ["CROWDING",      0.3,    "export const CROWDING = 0.3;"],
-  ["WEDGE_WASH",    0.009,  "export const WEDGE_WASH = 0.009;"],
-];
-const STRINGS = [
-  ["CYAN",    "92, 200, 255",   'const CYAN = "92, 200, 255";'],
-  ["GAP_HUE", "245, 166, 35",   'export const GAP_HUE = "245, 166, 35";'],
-];
-const RAMP = [[0, 1], [0.33, 1], [0.45, 0.72], [0.58, 0.46], [0.72, 0.24], [0.86, 0.08], [1, 0]];
-const RAMP_NEEDLE = "[[0, 1], [0.33, 1], [0.45, 0.72], [0.58, 0.46], [0.72, 0.24], [0.86, 0.08], [1, 0]]";
+const fail = m => { throw new Error(`ERR_GELB_PRODUCT_CONSTANT_UNREADABLE at ${SHA}:${FILE}\n  ${m}\n  REFUSING to export: an instrument must not run on a value this module could not read from the product.`); };
+/** one capture group, exactly one match, or throw */
+const one = (re, what) => {
+  const m = [...src.matchAll(re)];
+  if (m.length !== 1) fail(`${what}: expected exactly 1 match of ${re}, found ${m.length}`);
+  return m[0][1];
+};
+const num = (re, what) => { const v = Number(one(re, what)); if (!Number.isFinite(v)) fail(`${what}: not a finite number`); return v; };
+const triple = (re, what) => {
+  const s = one(re, what), p = s.split(",").map(x => Number(x.trim()));
+  if (p.length !== 3 || p.some(x => !Number.isInteger(x) || x < 0 || x > 255)) fail(`${what}: "${s}" is not an rgb triple`);
+  return p;
+};
 
-const bad = [];
-const occurs = needle => { const n = src.split(needle).length - 1; return n; };
-for (const [name, , needle] of [...PINS, ...STRINGS, ["GLOW_RAMP", null, RAMP_NEEDLE]]) {
-  const n = occurs(needle);
-  if (n !== 1) bad.push(`${name}: expected exactly 1 occurrence of \`${needle}\`, found ${n}`);
-}
-if (bad.length) {
-  throw new Error(
-    `ERR_GELB_PRODUCT_CONSTANT_MOVED at ${SHA}:${FILE}\n  ` + bad.join("\n  ") +
-    `\n  REFUSING to export. An instrument importing this module must not run on a stale constant.` +
-    `\n  Fix: re-read the product, update this module, and re-run every instrument that imports it.`);
-}
+/* ── every value PARSED, none held ── */
+export const HALO_DEPTH    = num(/haloDepth:\s*([0-9.]+)/g, "WAVE.haloDepth");
+export const SELECTED_GAIN = num(/selectedGain:\s*([0-9.]+)/g, "WAVE.selectedGain");
+export const WAVE_PEAK     = num(/peakAlpha:\s*([0-9.]+)/g, "WAVE.peakAlpha");
+export const HALO_ALPHA    = num(/haloAlpha:\s*([0-9.]+)/g, "VOLUME.haloAlpha");
+export const CORE_ALPHA    = num(/coreAlpha:\s*([0-9.]+)/g, "VOLUME.coreAlpha");
+export const DEPTH_RATIO   = num(/depthRatio:\s*([0-9.]+)/g, "VOLUME.depthRatio");
+export const HALO_NEAR     = num(/haloNear:\s*([0-9.]+)/g, "VOLUME.haloNear");
+export const HALO_FAR      = num(/haloFar:\s*([0-9.]+)/g, "VOLUME.haloFar");
+export const SEAT_PAD_PX   = num(/export const SEAT_PAD_PX = ([0-9.]+);/g, "SEAT_PAD_PX");
+export const TEXT_SEAT_PX  = num(/export const TEXT_SEAT_PX = ([0-9.]+);/g, "TEXT_SEAT_PX");
+export const CHAR_EM       = num(/const CHAR_EM = ([0-9.]+);/g, "CHAR_EM");
+export const CROWDING      = num(/export const CROWDING = ([0-9.]+);/g, "CROWDING");
+export const WEDGE_WASH    = num(/export const WEDGE_WASH = ([0-9.]+);/g, "WEDGE_WASH");
+export const GAP_ALPHA_GAIN = num(/export const GAP_ALPHA_GAIN = ([0-9.]+);/g, "GAP_ALPHA_GAIN");
+export const CYAN          = triple(/const CYAN = "([^"]+)";/g, "CYAN");
+export const INK           = triple(/const INK = "([^"]+)";/g, "INK");
+export const GAP_HUE       = triple(/export const GAP_HUE = "([^"]+)";/g, "GAP_HUE");
+export const RING_SHELF    = num(/RING_LUMINANCE = Object\.freeze\(\{ shelf: ([0-9.]+)/g, "RING_LUMINANCE.shelf");
+export const GLOW_RAMP = (() => {
+  const body = one(/export const GLOW_RAMP[^=]*=\s*Object\.freeze\(\[([\s\S]*?)\]\s*as const\)/g, "GLOW_RAMP");
+  const pairs = [...body.matchAll(/\[\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\]/g)].map(m => [Number(m[1]), Number(m[2])]);
+  if (pairs.length < 3) fail(`GLOW_RAMP: parsed ${pairs.length} stops`);
+  if (pairs[0][0] !== 0 || pairs[pairs.length - 1][0] !== 1) fail(`GLOW_RAMP: offsets do not span [0,1]`);
+  return pairs;
+})();
 
-export const HALO_DEPTH = 0.235, SELECTED_GAIN = 0.35, HALO_ALPHA = 0.5, CORE_ALPHA = 0.16;
-export const DEPTH_RATIO = 1.45, SEAT_PAD_PX = 1.6, CHAR_EM = 0.62, CROWDING = 0.3, WEDGE_WASH = 0.009;
-export const CYAN = [92, 200, 255], GAP_HUE = [245, 166, 35], GLOW_RAMP = RAMP;
-export const VERIFIED = PINS.length + STRINGS.length + 1;
+export const READ = {
+  HALO_DEPTH, SELECTED_GAIN, WAVE_PEAK, HALO_ALPHA, CORE_ALPHA, DEPTH_RATIO, HALO_NEAR, HALO_FAR,
+  SEAT_PAD_PX, TEXT_SEAT_PX, CHAR_EM, CROWDING, WEDGE_WASH, GAP_ALPHA_GAIN, CYAN, INK, GAP_HUE,
+  RING_SHELF, GLOW_RAMP,
+};
+
+/** GRÜN's rule: a declaration the audit cannot extract is unguarded everywhere. So report the gap. */
+export function coverage() {
+  const declared = [...src.matchAll(/^(?:export )?const ([A-Z][A-Z0-9_]+)\s*(?::[^=]+)?=/gm)].map(m => m[1]);
+  const covered = new Set(["HALO_DEPTH", "SELECTED_GAIN", "WAVE_PEAK", "HALO_ALPHA", "CORE_ALPHA", "DEPTH_RATIO",
+    "HALO_NEAR", "HALO_FAR", "SEAT_PAD_PX", "TEXT_SEAT_PX", "CHAR_EM", "CROWDING", "WEDGE_WASH",
+    "GAP_ALPHA_GAIN", "CYAN", "INK", "GAP_HUE", "RING_SHELF", "GLOW_RAMP", "WAVE", "VOLUME", "RING_LUMINANCE"]);
+  return { declared: [...new Set(declared)].sort(), uncovered: [...new Set(declared)].filter(n => !covered.has(n)).sort() };
+}

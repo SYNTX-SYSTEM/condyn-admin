@@ -61,7 +61,14 @@ const NAMES = ["HALO_DEPTH", "SELECTED_GAIN", "HALO_ALPHA", "CORE_ALPHA", "DEPTH
 console.log("");
 const dup = new Map();
 for (const r of rows) {
-  const has = NAMES.filter(k => new RegExp(`\\b${k}\\s*=`).test(r.t));
+  /* a file that READS the module declares no constant with `=`, so a DECLARATION-ONLY filter skipped it
+     entirely and the READS row printed "(none)" while the line below it named two readers. That is
+     GRÜN's §89 defect two — "the moment the fix landed, the detector called the fix the defect" — in my
+     code, after being told about it. Imported names are collected so a reader appears in its own table. */
+  const imported = (r.t.match(/import \{([^}]*)\} from "\.\/gelb-product-constants\.mjs"/) || [, ""])[1]
+    .split(",").map(x => x.trim()).filter(x => NAMES.includes(x));
+  const declared = NAMES.filter(k => new RegExp(`\\b${k}\\s*=`).test(r.t));
+  const has = [...new Set([...declared, ...imported])];
   if (!has.length) continue;
   /* THREE states, not two. The first form of this block had two and its own narrative then claimed
      gelb-a-g340-exact.mjs "THROWS if either moved" — the classifier printed FORKS two lines above that
@@ -71,21 +78,28 @@ for (const r of rows) {
   /* a file that IMPORTS gelb-product-constants.mjs cannot run on a stale constant, because that
      module throws at load. Added when §87's remedy was discharged: without it this classifier would
      report no improvement after the wiring, which would have been the audit failing to see its own fix. */
-  const importsPinned = /from "\.\/gelb-product-constants\.mjs"/.test(r.t);
-  const halts = importsPinned || /throw new Error\([^)]*mov|throw new Error\(`UNVERIFIED/.test(r.t);
-  const reports = !halts && /\bAGREE\b|\bDIFFER\b|UNVERIFIED/.test(r.t);
-  const state = halts ? "HALTS   " : reports ? "REPORTS " : "NOTHING ";
+  /* FOUR states, per GRÜN's §89. HALTS = holds a copy and throws if the copy disagrees. READS = holds
+     NO copy, so there is nothing to disagree — strictly stronger, because eliminating a duplicate beats
+     checking one. My own gelb-product-constants.mjs was at HALTS when I built it and is now at READS,
+     and a three-state classifier could not have scored that change. */
+  const reads = /from "\.\/gelb-product-constants\.mjs"/.test(r.t);
+  const halts = !reads && /throw new Error\([^)]*mov|throw new Error\(`UNVERIFIED/.test(r.t);
+  const reports = !reads && !halts && /\bAGREE\b|\bDIFFER\b|UNVERIFIED/.test(r.t);
+  const state = reads ? "READS   " : halts ? "HALTS   " : reports ? "REPORTS " : "NOTHING ";
   for (const k of has) dup.set(k, [...(dup.get(k) || []), { f: r.f, state: state.trim() }]);
   console.log(`  ${state} ${r.f.padEnd(36)} ${has.join(" ")}`);
 }
-console.log(`\n  constants appearing in more than one instrument, and whether every copy is verified:\n`);
+console.log(`\n  constants in more than one instrument, by the state of each copy (reads / halts / reports / none):\n`);
 let forks = 0;
 for (const [k, v] of [...dup].sort()) {
   if (v.length < 2) continue;
   const bad = v.filter(x => x.state === "NOTHING");
   const rep = v.filter(x => x.state === "REPORTS");
   if (bad.length) forks += 1;
-  console.log(`    ${k.padEnd(14)} ${v.length} copies: ${v.filter(x => x.state === "HALTS").length} halt, ${rep.length} report, ${bad.length} check NOTHING` +
+  const rd = v.filter(x => x.state === "READS").length, ht = v.filter(x => x.state === "HALTS").length;
+  const sum = rd + ht + rep.length + bad.length;
+  if (sum !== v.length) throw new Error(`state tally for ${k} sums to ${sum}, not ${v.length}`);
+  console.log(`    ${k.padEnd(14)} ${v.length} copies: ${rd} read, ${ht} halt, ${rep.length} report, ${bad.length} NONE` +
               (bad.length ? `  — ${bad.map(x => x.f.replace("gelb-", "").replace(".mjs", "")).join(", ")}` : ""));
 }
 const short = n => n.replace("gelb-", "").replace(".mjs", "");
@@ -96,17 +110,23 @@ const stateOf = {};
 for (const [, v] of dup) for (const x of v) stateOf[x.f] = x.state;
 const filesIn = st => Object.entries(stateOf).filter(([, v]) => v === st).map(([k]) => short(k));
 const wired = rows.filter(r => /from "\.\/gelb-product-constants\.mjs"/.test(r.t)).map(r => short(r.f));
-console.log(`\n  *** ${forks} CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The three states, with their`);
+const STATES = ["READS", "HALTS", "REPORTS", "NOTHING"];
+console.log(`\n  *** ${forks} CONSTANTS HAVE AT LEAST ONE COPY THAT CHECKS NOTHING. *** The ${STATES.length} states, with their`);
 console.log(`  members LISTED FROM THE SCAN rather than named by hand — the first form of this block named`);
 console.log(`  files and went stale the moment §87's remedy landed, which is the tenth instance this phase`);
 console.log(`  and the first I had already committed:\n`);
+console.log(`    READS    ${filesIn("READS").join(", ") || "(none)"}   <- holds no copy; strictly strongest`);
 console.log(`    HALTS    ${filesIn("HALTS").join(", ") || "(none)"}`);
 console.log(`    REPORTS  ${filesIn("REPORTS").join(", ") || "(none)"}`);
 console.log(`    NOTHING  ${filesIn("NOTHING").join(", ") || "(none)"}`);
-console.log(`\n  and ${wired.length} instrument(s) now import gelb-product-constants.mjs, so they declare no constant of`);
-console.log(`  their own and leave this table entirely: ${wired.join(", ") || "(none)"}`);
-console.log(`  That module reads the product at a pinned build and THROWS at load if any of twelve moved, so`);
-console.log(`  an importer cannot run on a stale constant — GRÜN's writeSealed() shape, refusing not reporting.`);
+const PCM = readFileSync(join(HERE, "gelb-product-constants.mjs"), "utf8");
+const parsed = (PCM.match(/^export const [A-Z][A-Z0-9_]*\s*=/gm) || []).length;
+const holds = /^export const [A-Z][A-Z0-9_]*\s*=\s*[0-9.\[]/m.test(PCM);
+console.log(`\n  ${wired.length} instrument(s) READ gelb-product-constants.mjs: ${wired.join(", ") || "(none)"}`);
+console.log(`  That module PARSES ${parsed} values out of the product at a pinned build and holds`);
+console.log(`  ${holds ? "AT LEAST ONE LITERAL OF ITS OWN — which would make it HALTS, not READS" : "NO literal of its own"}, so there is nothing in it to go stale. It refuses rather than`);
+console.log(`  reports if a declaration is missing, duplicated or malformed — GRÜN's writeSealed() shape,`);
+console.log(`  and GRÜN's §89 rung above the HALTS form I first built.`);
 const BARE = (() => {
   let n = 0;
   for (const r of rows) for (const m of r.t.match(/console\.log\(`[^`]*`\)/g) || [])
