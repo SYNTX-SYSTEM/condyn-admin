@@ -1,0 +1,239 @@
+{
+ "reading": "GRÜN · §73 — PG-23 (restated), computed-style limb: is each shelf halo's OWN opacity time-invariant on a real browser?",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "getComputedStyle sampling on a rendered page. No raster, no luminance, no mask, no sealed datum. Loopback build and server only.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "b6c4bd84d1213fbfd4ed17711943124e7f3b7342",
+  "headShort": "b6c4bd84",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-11T09:01:45.343Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "viewport": "1920x1080",
+ "motion": "LIVE — reducedMotion NOT set, because the breath must be running for the discriminator to fire",
+ "sampling": {
+  "samples": 45,
+  "intervalMs": 250,
+  "spanMs": 11051,
+  "wavePeriodMs": 10000,
+  "coversAFullPeriod": true
+ },
+ "carriers": {
+  "shelfHalos": ".mf-halo > circle:not(.mf-wave-halo)   — PINK's selector, adopted (§62 corrected this lane's claim that none existed)",
+  "fieldHalos": ".mf-wave-halo                          — control, MUST move",
+  "waveGround": ".mf-wave-ground                        — control, MUST move; this is the layer whose swing the raster form mistakes for the glow's"
+ },
+ "counts": {
+  "shelfHalos": 3,
+  "fieldHalos": 2,
+  "waveGround": 7
+ },
+ "discriminator": {
+  "fired": true,
+  "fieldHalosThatMove": 2,
+  "waveGroundThatMoves": 7,
+  "meaning": "the instrument can see the breath on this page, so a constant shelf reading is informative"
+ },
+ "shelfHalos": [
+  {
+   "index": 0,
+   "own": {
+    "min": 1,
+    "max": 1,
+    "range": 0,
+    "distinctValues": 1
+   },
+   "effective": {
+    "min": 0.83,
+    "max": 0.83,
+    "range": 0,
+    "distinctValues": 1
+   }
+  },
+  {
+   "index": 1,
+   "own": {
+    "min": 1,
+    "max": 1,
+    "range": 0,
+    "distinctValues": 1
+   },
+   "effective": {
+    "min": 0.757,
+    "max": 0.757,
+    "range": 0,
+    "distinctValues": 1
+   }
+  },
+  {
+   "index": 2,
+   "own": {
+    "min": 1,
+    "max": 1,
+    "range": 0,
+    "distinctValues": 1
+   },
+   "effective": {
+    "min": 0.69,
+    "max": 0.69,
+    "range": 0,
+    "distinctValues": 1
+   }
+  }
+ ],
+ "fieldHalos": [
+  {
+   "index": 0,
+   "own": {
+    "min": 0.765556,
+    "max": 0.999818,
+    "range": 0.234262,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.765556,
+    "max": 0.999818,
+    "range": 0.234262,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 1,
+   "own": {
+    "min": 0.765032,
+    "max": 0.999885,
+    "range": 0.234853,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.696944,
+    "max": 0.910895,
+    "range": 0.213951,
+    "distinctValues": 45
+   }
+  }
+ ],
+ "waveGround": [
+  {
+   "index": 0,
+   "own": {
+    "min": 0.002572,
+    "max": 0.998861,
+    "range": 0.996289,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.002572,
+    "max": 0.998861,
+    "range": 0.996289,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 1,
+   "own": {
+    "min": 0.001717,
+    "max": 0.998005,
+    "range": 0.996288,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.001717,
+    "max": 0.998005,
+    "range": 0.996288,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 2,
+   "own": {
+    "min": 0.000861,
+    "max": 0.998698,
+    "range": 0.997837,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.000861,
+    "max": 0.998698,
+    "range": 0.997837,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 3,
+   "own": {
+    "min": 0.000006,
+    "max": 0.998715,
+    "range": 0.998709,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.000006,
+    "max": 0.998715,
+    "range": 0.998709,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 4,
+   "own": {
+    "min": 0.001904,
+    "max": 0.999431,
+    "range": 0.997527,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.001904,
+    "max": 0.999431,
+    "range": 0.997527,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 5,
+   "own": {
+    "min": 0.002574,
+    "max": 0.998576,
+    "range": 0.996002,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.002574,
+    "max": 0.998576,
+    "range": 0.996002,
+    "distinctValues": 45
+   }
+  },
+  {
+   "index": 6,
+   "own": {
+    "min": 0.001718,
+    "max": 0.997721,
+    "range": 0.996003,
+    "distinctValues": 45
+   },
+   "effective": {
+    "min": 0.001718,
+    "max": 0.997721,
+    "range": 0.996003,
+    "distinctValues": 45
+   }
+  }
+ ],
+ "finding": "Each of the 3 shelf halos holds ONE distinct computed opacity across 45 samples spanning 11051 ms (> one 10000 ms breath period), while 2 field halos and 7 wave-ground layers moved over the same samples. So the shelf halo's OWN opacity is time-invariant on a real browser, which is what the source limb predicted from the stylesheet and what the raster form cannot see. Its EFFECTIVE opacity is constant too, so no ancestor animates it either."
+}
