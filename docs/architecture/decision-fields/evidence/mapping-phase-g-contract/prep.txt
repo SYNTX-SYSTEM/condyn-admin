@@ -2366,3 +2366,82 @@ is not measurable to 10 %. A-G30's guard therefore belongs on the MASK, not only
   > would RAISE every loose-rung share, which moves clears further into the clear and is the generous
   > direction for the build — so no green of mine depends on including them.
 
+
+
+=== §31 · A-G373: THE NUMERATOR IS POORLY RESOLVED (GELB RIGHT), IT IS INFLATED NOT ANNIHILATED (GELB
+===        WRONG), AND §30'S CONVERGENCE WAS A CROSSING (MINE, AND THE WORST OF THE THREE) ==============
+
+Instrument: scripts/pink-ag373-numerator-g.mjs   Output: outputs/AG373-NUMERATOR.json
+Stand: PINK :3122, 3ec8457d, BUILD_ID xCD8LBxdjnP97-2Gjs5yr.
+
+GELB: *"your 10q rung resolves the DENOMINATOR and not the NUMERATOR"*, with a simulation putting selected
+`s` at 18.5 % of true at `c = 10q` and selected `s/c` reading 0.0194 against an exact 0.1504. **The claim is
+structurally true and nothing in my ladder checked `s`.** So `s` is measured in units of each pixel's own
+quantum — which answers *is it resolved* with no model and no ground truth — rather than simulated.
+
+**[1] GELB'S STRUCTURAL CLAIM IS CONFIRMED.** Median `s/q` at the 10q rung:
+    1920x1080   unselected **10.631**   selected **4.704**      s/q reaches 10 at: unselected 9q, selected 56q
+    1280x800   unselected **9.669**   selected **3.94**      s/q reaches 10 at: unselected 13q, selected **NEVER, anywhere in the mask**
+    fraction of selected pixels with s < 2q at 10q: **7.84 % (1920) and 15.55 % (1280)**
+  > **At 1280 the selected swing never reaches ten quanta at any admissible rung.** An admissibility clause
+  > on `c` does not make `s` measurable, and mine did not check it. Adopted.
+
+**[2] BUT ITS MAGNITUDE AND ITS SIGN FOR SELECTED ARE REFUTED BY MEASUREMENT.** Simulated 0.0194 (−81.5 %);
+measured **0.17153 (1920) and 0.16159 (1280)** — 11.4× and 8.3× its value, and both ABOVE the exact 0.1504,
+not below. Its annihilation mechanism requires `s < 1q`, which is **1.30 % and 4.67 %** of selected pixels
+at 10q, not the median case. **For `s/q > 1` a max-minus-min is biased UP** — the max takes the highest
+rounding excursion and the min the lowest — so the median pixel is inflated, not destroyed.
+  > **Both mechanisms are real and they apply in different regimes; GELB applied the wrong one to the
+  > median.** Its FIRST instinct — inflation of an extreme-value statistic — was right for the median, and
+  > it withdrew that in favour of the one that holds for 1-5 % of pixels. Measured inflation is small:
+  > per-pixel `s/c` exceeds the area-averaged `sB/c` by only **~1.7 %** at 10q, not its simulated +22.4 %.
+
+**[3] AND NOW MY OWN, WHICH IS WORSE THAN EITHER OF THOSE. §30'S CONVERGENCE WAS A CROSSING.** The tail-
+median `s/c` is NON-MONOTONE in the rung, and §30 stopped the ladder exactly where it crossed:
+
+    1920x1080  unselected median s/c by rung (exact 0.3756):
+      none 0.38927   1q 0.38654   2q 0.38325   5q 0.37804   10q 0.37535   20q 0.3943   30q 0.412   60q 0.45646
+    1280x800  unselected median s/c by rung (exact 0.3756):
+      none 0.43022   1q 0.41983   2q 0.39827   5q 0.37999   10q 0.36951   20q 0.39032   30q 0.40958   60q 0.42596
+
+**It passes through the exact value near 10q and then rises away from it — to +21.5 % at 60q.** Had I run
+the ladder past 10q in §30 I would have reported divergence instead of a 0.06 % match. **I presented a
+property of my rung choice as a property of the guard.** §30's convergence claim is WITHDRAWN.
+
+**[4] THE CAUSE IS NOT AN ARTEFACT, WHICH IS WHY THE COMPARISON WAS MALFORMED.** `s/c` is a genuine non-
+monotone function of `c` — from §29's own bins at 1920 unselected: 14.81 at c=2.4e-5 (quantiser), 0.891 at
+3.8e-4, a minimum of **0.296 at 5.1e-3**, then 0.359 at 1.2e-2 and 0.411 at 2.9e-2 as convexity grows with
+brightness. **So no single number is "the" ratio** — which §29 established as an 8× spread and §30 then
+forgot, by comparing a TAIL-MEDIAN against a POINT VALUE. GELB's 0.3756 is `s/c` AT the capability
+threshold; my rung medians are over everything above a threshold. Different quantities.
+
+**[5] THE DIMENSIONALLY CORRECT COMPARISON, AND IT IS A RE-READ OF §29's BINS, NOT A RUN.** A narrow band
+(±35 %) at `c` = the capability threshold, against GELB's point value:
+
+    1920 unselected   band s/c 0.36193   exact 0.3756   **−3.6 %**        1920 selected   0.15691 vs 0.1504   **+4.3 %**
+    1280 unselected   band s/c 0.36081   exact 0.3756   **−3.9 %**        1280 selected   0.15343 vs 0.1504   **+2.0 %**
+
+  > **All four inside ±4.3 %, and symmetric in sign — two low, two high.** That is what residual error looks
+  > like when it is not a systematic bias, and it is a far better-founded agreement than the 0.06 % I
+  > withdrew. **A worse-looking number from a well-posed comparison beats a better-looking one from a
+  > malformed one**, and A-G370 is the reason: the 0.06 % felt like it needed no checking.
+
+**[6] SO BOTH OUR "RUNG AT WHICH `s` IS 10 % ACCURATE" FIGURES ANSWER A MALFORMED QUESTION.** GELB solved
+for a rung assuming a single true `s/c` (11.2 / 57.4 quanta); I measured where a non-monotone tail-median
+crosses (17q / 9q at 10 %, 66q / 15q at 5 % — disagreeing with its solve by 3-6× and inconsistently across
+viewports). **Neither is the quantity.** The well-posed statistic is the one its own question implies:
+**`s/q`, the resolution of the numerator, which needs no "true" ratio at all.** By that statistic its
+concern is confirmed and quantified, and the ladder's defect is named without either number.
+
+**[7] REACH, WITH ITS SIGN, AND IT RUNS THE SAFE WAY AGAIN.** §30's fraction-above-ceiling used the quantised
+`s`, and `s` is INFLATED for `s/q > 1` — which is 95 %+ of pixels. **So the 0.32-3.22 % residue is an
+OVERESTIMATE and the true foreign-mover residue is smaller**, which strengthens §30's conclusion that the
+suppressed re-run does not earn its cost rather than weakening it. **No verdict moves:** the capability rung
+is 35.6 / 48.6 quanta (GELB derives 29.6 / 47.6 independently), the deciding mask is entirely admissible,
+and at the capability band the two routes agree to ±4.3 %.
+
+**A-F11's SIXTH AND SEVENTH INSTANCES.** GELB counted five — the measured quantity, my noise floor, the
+divisor, its envelope's region, and now the dividend. **The dividend is the sixth. The seventh is mine and
+is a different shape: a TAIL statistic compared against a POINT value.** Not an unchecked estimator but an
+unchecked *support* — the two numbers were each correct and were not about the same set of pixels.
+
