@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 408.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 418.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -134,6 +134,26 @@ unfähig sein.*
 **5. 0 von 241 Zeilennummer-Zitaten im Register sind verifizierbar**; 63 zeigen auf eine Leerzeile oder
 Tabellenlinie; **25 von 25 Zitaten in die Zeichenfläche benennen keinen Build.** A-G427 ist entschieden, die
 Altlast ist nicht zurückgebaut.
+
+**6. PG-14 ist an einem Build verifiziert, den es nicht mehr gibt.** *(§129, Defekt 409 — der folgenreichste
+Befund dieses Mandats.)* `gelb-gate-sweep-a-g128` meldet PG-14s **ZERO-BY-CONSTRUCTION** als `[ok]` bei
+`4b83414e` und als *** UNVERIFIED *** beim aktuellen Build: der Anker
+`for (let pass = 0; pass < 2; pass += 1)` wurde von **§86s `frameWithBodies`-Neuschreibung entfernt.**
+**Der Pin liest grün nur am veralteten Build.** Nicht zurückgebaut — die Neuverifikation von PG-14 an einem
+erreichbaren Build ist **offen**.
+
+**7. `4b83414e` war niemals ein Produktstand** *(§129, A-G470, Defekt 410)*. Es ist ein `docs(`-Commit, ändert
+**genau eine Datei** (`OWNER-DECISIONS-OPEN.md`, 83 Zeilen) und berührt die Komponente **überhaupt nicht**;
+sein Baum trägt §51s Zustand. **9 Instrumente pinnen es, das Register zitiert es 19×.** Von den 9: **5
+Befunde stabil** (nur Offsets verschoben), **3 ändern sich**, **1 verweigert** (`MOTION`, §93s Löschung — der
+Guard ist richtig, die Folge harmlos). *** EINE ZITATION BENENNT EINEN BUILD, OB DIE ZITIERENDE LANE EINEN
+PINNEN WOLLTE ODER NICHT. ***
+
+**8. Die unabhängige Rekonstruktion trägt heute 10 von 27 Instrumenten** *(§129, A-G469)*. Aus einem echten
+`origin`-Clone, ohne Pfadumschreibung: **10 laufen, 16 erreichen ihre Quelle nicht, 1 verweigert als Bauart.**
+**Mit GRÜNs 90 und PINKs 105 veröffentlicht: 26 von 27, 0 unerreichbar** — gemessen, nicht geschätzt (beide
+lokalen Branches über einen Dateipfad in den Prüf-Clone geholt, **nichts gepusht**). **Der Relokationsfix ist
+5 wert, die Veröffentlichung 16.**
 
 ---
 
@@ -180,6 +200,29 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 > BUILD. *** PINKs eigener §0 benennt das als Defekt des Ergebnisses, nicht als Fußnote. **Der Push dieses
 > Branches ist eine Eigentümerentscheidung (A-G250) und ich erbitte sie hier nicht erneut; ich stelle fest,
 > dass Bedingung 4 ohne sie unlesbar bleibt.**
+
+> ### NACHTRAG ZU BEDINGUNG 4 — DAS MANDAT „SFE PHASE-G VALIDATION PROVENANCE", §§128–129
+>
+> **Der Eigentümer hat PINKs Branch-Push ausdrücklich autorisiert.** A-G250 ist damit **durch den Eigentümer
+> entschieden**, nicht durch eine Lane. Die Autorisierung ist PINK **wörtlich mit Provenienz** zugestellt.
+>
+> *** UND DIE PRÜFUNG, DIE DIESE AUTORISIERUNG ERST MÖGLICH MACHTE, HAT BEDINGUNG 4 GRÖSSER GEMACHT, NICHT
+> KLEINER. *** Aus einem echten Clone von `origin` gemessen: **10 von 27 Instrumenten laufen, 16 erreichen
+> ihre Quelle nicht.** **PINKs Push ist NOTWENDIG UND NICHT HINREICHEND.** PINKs *eigene Messungen* ruhen auf
+> einem **veröffentlichten** Build und PINKs eigenen Instrumenten — sie reisen, sobald der Branch reist. Was
+> **nicht** reist, ist die **lane-übergreifende Nachrechnung**: dieses Register pinnt 9 Instrumente auf
+> `4b83414e` und zitiert **20 `gruen-*`-Dateien**, von denen am veröffentlichten Stand **0 von 20** auflösen.
+>
+> **Gemessen, was die Entscheidung kauft** (beide lokalen Branches über einen Dateipfad in den Prüf-Clone
+> geholt, **nichts gepusht**): **mit GRÜNs 90 und PINKs 105 veröffentlicht laufen 26 von 27, 0 unerreichbar.**
+> **Die verbleibende Lücke ist eine Eigentümerentscheidung über Veröffentlichung** — benannt mit ihren Zahlen,
+> nicht seitlich über eine Peer-Lane geleitet.
+>
+> **PINKs Commitzahl ist nicht abgeglichen und wird in keiner Form in den Abschluss getragen:** gemessen
+> **105** (`1f9117db..b6490e86`, Fast-Forward, 0 zurück), von GRÜN unabhängig ebenso; **`PINK-SYSTEM-VALIDATION.md`
+> liest „119 commits, UNPUSHED".** **Weder GRÜN noch ich haben die Befugnis, PINKs Zahl zu ändern, und keiner
+> hat es getan.** Ein Abschluss, der dem Eigentümer 105 nennt, während das Artefakt 119 sagt, scheitert an der
+> Abgleichklausel des Mandats bei der ersten Zahl, die jemand prüft.
 
 ---
 

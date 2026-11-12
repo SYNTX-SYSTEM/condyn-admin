@@ -15901,3 +15901,135 @@ true "cannot tell" reads like a defect in the run.**
 > `validation/hr-decision-loop-pink`**, and publishing them is an **owner decision**, reported with its
 > figures and not routed sideways through a peer.
 
+
+---
+
+## §129 A-G470 · A CITATION NAMES A BUILD WHETHER OR NOT THE CITING LANE INTENDED TO PIN ONE — AND PG-14 IS VERIFIED AT A BUILD THAT NO LONGER EXISTS *(defects 409–418)*
+
+§128 established that `4b83414e` is reachable from no `origin` ref. **GRÜN then asked the question I had not:
+is it the right build at all.** It is not, and the answer reaches a pin.
+
+### 1 · `4b83414e` IS A `docs(` COMMIT AND WAS NEVER A PRODUCT STAND *(defect 410)*
+
+Verified here before GRÜN's report was relied on. `4b83414e` changes **exactly one file** —
+`docs/.../OWNER-DECISIONS-OPEN.md`, **83 insertions** — and **does not touch
+`PersonJobMappingField.tsx` at all.** The last component change at or before it is **`e9cd21af` (§51)**. Six
+commits changed the component afterwards, **+166 / −29**. And the single sharpest check: **`FRAME_EM_PER_CHAR`
+and `FRAME_PASS_CAP` have ZERO occurrences at `4b83414e`** and 3 and 2 at GRÜN's close. *** TWO INSTRUMENTS
+NAMED FOR PG-14 PINNED A BUILD IN WHICH PG-14'S OWN CONSTANTS DO NOT EXIST. ***
+
+> *** RULED, A-G470, GRÜN'S MECHANISM IN ITS WORDING: A SHA WHOSE SUBJECT BEGINS `docs(` READS AS A NEUTRAL
+> ANCHOR. *** It is not one. It names a **tree**, and a tree is a **product state**. **A citation names a
+> build whether or not the citing lane intended to pin one** — so A-G430's build axis spent this phase hiding
+> behind a commit-type prefix, in nine instruments and nineteen citations, in plain sight.
+
+### 2 · AND MY FIRST MEASUREMENT OF THE DAMAGE WAS INFLATED *(defect 411)*
+
+I ran every instrument pinning `4b83414e` at that SHA and again at `3231f52c` and diffed. The first figure
+was **"6 of 9 build-sensitive"**, and **I nearly sent it.** `gate-sweep-a-g128`'s 54 differing lines are
+almost entirely **line numbers** — `:639` becoming `:761` — while **every verdict reads `[ok]` at both.**
+
+> *** A DIFF THAT COUNTS MOVED OFFSETS AS CHANGED FINDINGS MEASURES THE FILE'S LENGTH, NOT ITS CONTENT. ***
+> A-G429's third remedy applied to my own alarming number: audit it **because** it is alarming. Offsets
+> normalised away, the honest split is:
+
+| | instruments |
+|---|---|
+| **FINDING STABLE** — only offsets moved | `a-g340-capability`, `a-g340-exact`, `gate-motion-mode`, `gate-sweep-pf`, `pg14-side-allowance` **(5)** |
+| **FINDING CHANGES** | `gate-sweep-a-g128`, `gate-pf8-tiers`, `pg14-frame-corpus` **(3)** |
+| **REFUSES** | `product-constants` **(1)** |
+
+### 3 · THE ONE THAT IS LOAD-BEARING: PG-14 *(defect 409)*
+
+```
+ @ 4b83414e   PG-14  ZERO-BY-CONSTRUCTION (with a falsifiable residue)
+              [ok] PersonJobMappingField.tsx:N  "for (let pass = 0; pass < 2; pass += 1)"
+              23 pins. 0 rows UNVERIFIED.
+
+ @ 3231f52c   PG-14  ZERO-BY-CONSTRUCTION (with a falsifiable residue)   *** UNVERIFIED ***
+              [!!] NOT FOUND                    "for (let pass = 0; pass < 2; pass += 1)"
+              23 pins. 1 rows UNVERIFIED.
+```
+
+> *** PG-14'S ZERO-BY-CONSTRUCTION CLAIM IS ANCHORED TO A TWO-PASS LOOP THAT §86'S `frameWithBodies` REWRITE
+> REMOVED. THE PIN READS `[ok]` ONLY AT THE STALE BUILD. *** GRÜN predicted the direction and named
+> `pg14-frame-corpus` first; the damage is one layer over — frame-corpus merely picks up `FRAME_EM_PER_CHAR`
+> in place of the old `above/below/side` line (2 lines), while **the sweep is where a verdict flips**, and
+> `pg14-side-allowance` is build-**insensitive**. Recorded that way because half a correct prediction is
+> worth more to a peer than a confirmation.
+
+**`product-constants` REFUSES on `MOTION`** — §93's deletion — and **the guard is right while the
+consequence is benign**, because the record already carries §93's finding that the key was dead (0 of 47 073
+pixels swung). Stated in that order on purpose. `gate-pf8-tiers`'s three changed lines are a comment-stripped
+character count, one lost case-variant match (`"amplitude, Amplitude"` → `"amplitude"`) and a date; **none
+touches a bound.**
+
+### 4 · CLAUSE 4, DISCHARGED IN GELB'S HALF AND QUANTIFIED IN THE OTHER
+
+**14 of 26 instruments declared an absolute path to a worktree on one machine.** The hazard's shape is why no
+same-machine check could see it: *** AN ABSOLUTE PATH STILL RESOLVES ON THE MACHINE THAT WROTE IT, SO THE
+INSTRUMENT SUCCEEDS THERE WHILE READING THE ORIGINAL WORKTREE RATHER THAN THE CHECKOUT IT WAS LAUNCHED
+FROM. *** New `gelb-paths.mjs` derives the roots from its own location and **refuses** at import if the
+derived root holds no `.git` — a wrong root that reports is worse than no root, because it reads a
+neighbouring tree and calls the result a measurement. Verified by moving the module out of the tree.
+
+**AND MY OWN REMEDY REPEATED THE SHAPE ONE LAYER IN** *(defect 412)*. **A path to a repository is not one
+thing.** `git -C <root> show <sha>:<path>` is **worktree-INDEPENDENT**; every clone holding the object answers
+identically. But `<root>/<path>` read off disk, and `rev-parse HEAD`, are **worktree-DEPENDENT**. Substituting
+a derived root silently converted two instruments from *the peer's lane* to *my own*, **and both still ran**:
+`pin-assertion-scan` threw, so it was safe; **`e7-breath-mode` did NOT throw — it cross-checked against MY
+head and labelled it the product's.** Both now resolve a **named** peer ref and read git **objects** at it,
+refusing rather than falling back: a peer read that silently degrades to the local lane is A-G469 one layer
+in. Its raster venue was the same defect with a worse sign *(defect 414)*: read off disk, the venue's **size**
+depended on which branch a neighbour had checked out, and **a venue that shrinks moves pins from "named in a
+raster instrument" into "named nowhere"** — inflating the alarming number, A-G429's direction again.
+
+**TRANSPORT PROVEN:** 26 instruments run before and after, **22 byte-identical**, exits identical, **0
+absolute paths remaining**; every one of the differing lines inspected is a label — a ref name, a tree
+basename, a path separator — or `instrument-audit` correctly counting the new 26th file. **No measurement
+moved.**
+
+| CLAUSE 4, measured from a genuine clone of `origin`, no path rewriting | |
+|---|---|
+| before the relocation fix | **5 of 26** would run on another machine |
+| **today, from `origin` alone** | **10 of 27 run · 16 cannot reach their source · 1 refuses by design** |
+| **with GRÜN's 90 and PINK's 105 published** | **26 of 27 run · 0 unreachable · 1 refuses by design** |
+
+The last row is **measured, not estimated** — both local branches were fetched into the scratch clone over a
+local filesystem path, **nothing pushed anywhere** — so the owner receives what the decision buys. **The
+relocation fix is worth 5; publication is worth 16.**
+
+### 5 · GRÜN'S CORRECTION, AND THREE MORE OF MINE *(defects 413, 415–418)*
+
+**`refs/remotes/origin/*` IS A CACHE, NOT THE REMOTE** *(defect 413)*. GRÜN's correction, accepted. I had run
+`git fetch origin` first, so the cache was warm and **the six-of-thirteen figure stands — for the fourth time
+this phase, right for a reason I had not measured (A-G464).** The direction is the dangerous one: *** A STALE
+MIRROR FAILS OPEN, REPORTING COMMITS REACHABLE THAT ARE NOT — THE DIRECTION THAT MAKES THE RECORD LOOK
+PUBLISHABLE. *** Same family as `@{u}`: a local command answering a question about remote state. Remedy taken:
+an `ls-remote` comparison in front of it.
+
+- *(415)* **My build-sensitivity harness ran its SHA-swapped copies in a scratch directory**, so
+  `gelb-paths.mjs` refused — correctly — and I read nine refusals as *"BREAKS at the newer build."* **A-G452
+  again: the mutant tested my harness, not the pin**, and it would have reported eight instruments broken by
+  a build change that had not been applied to them. Re-run in place.
+- *(416)* Stripping `PHASE_DIRS`' trailing separator broke the `dir + name` join into `mapping-fieldfield-f.test.tsx`.
+- *(417)* An `ls-tree` probe **whose miss is an expected outcome** printed `fatal:` into an evidence file.
+- *(418)* My clause-4 harness looped over an **empty glob** and printed `RUNS 0 · CANNOT 0 · BY-DESIGN 0` —
+  **a zero denominator rendering as a clean table.** The same class as 401, in a harness written to measure
+  the consequences of 401. It now refuses below 20 instruments.
+
+**GRÜN'S OWN SWEEP, RECORDED AS GRÜN'S AND NOT RE-DERIVED HERE** — it is that lane's artifact and its
+digests: 30 distinct commits pinned in its evidence, **24 unreachable**; and **all eight `SEALED-*` artifacts
+pin a local-only commit**, plus a Next.js `buildId` with **no repository referent at all**. The seals are
+intact and verify. *** A SEAL PROVES A READING WAS NOT EDITED; IT CANNOT PROVE THE BUILD IT NAMES EXISTS FOR
+THE READER — AND SEALING IS STRUCTURALLY BLIND TO REACHABILITY, BECAUSE EVERY CHECK A SEAL RUNS IS A CHECK IT
+CAN RUN LOCALLY. *** That last clause is GRÜN's and it is the better half of the axis.
+
+### 6 · ONE FIGURE HELD OPEN RATHER THAN CLOSED
+
+**PINK's validation stand measures 105 unpushed** (`1f9117db..b6490e86`, clean fast-forward, 0 behind) **and
+`PINK-SYSTEM-VALIDATION.md` reads "119 commits, UNPUSHED".** GRÜN measures 105 independently. **Neither of us
+has standing to amend PINK's figure and neither has.** Asked of PINK; **not carried into the close in either
+form until PINK settles it**, because a close that hands the owner 105 while the artifact a reader opens says
+119 fails the mandate's reconciliation clause on the first number anyone checks.
+
