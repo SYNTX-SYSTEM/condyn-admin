@@ -80,6 +80,59 @@
 > THIS file and tripped a scan of THIS record, and it costs one edit.** *Whose convention-debt it is and who
 > can discharge it cheaply are different questions, and the second one decides who should.*
 >
+> *** §114 · THE PUBLISHED TIP CARRIES NONE OF THIS LANE'S EVIDENCE. THAT, NOT A COMMIT COUNT, IS CLAUSE
+> FOUR'S ANSWER. ***
+>
+> **MEASURED, not inferred.** `git ls-remote origin refs/heads/frontend/mapping-phase-g` = **`3ec8457d`**
+> (2026-11-06 11:43). Local = **`c7143fcd`**. `merge-base --is-ancestor 3ec8457d c7143fcd` = **yes**, and
+> `rev-list --count c7143fcd..3ec8457d` = **0** — a clean fast-forward, **89 ahead, 0 behind.** *The ancestry
+> test is the one that matters and is not the one that produces the number: `A..B` counts without requiring
+> `A` to be an ancestor, so the figure 89 would read the same for a divergence.*
+>
+> **`docs/career_analysis/evidence/mapping-phase-g/` DOES NOT EXIST AT `3ec8457d`.** It is created by
+> `92d82c62` (2026-11-10 17:57), and **84 of the 89** commits touch it. At the published tip there are **zero
+> `gruen-*` instruments and zero `SEALED-*` files.** So the question is not whether the independent
+> validation cites one of the 89 — **this lane's entire instrument and evidence surface is inside them.**
+>
+> | what cites GRÜN | cited items | resolvable at `3ec8457d` |
+> |---|---|---|
+> | GELB's record (`PERSON_X_JOB_MAPPING_PHASE_F/G.md` and evidence) | 20 distinct `gruen-*.mjs/.mts/.sh` filenames | **0 of 20** |
+> | PINK's `PINK-SYSTEM-VALIDATION.md` | `gruen-pf13-evaluate.mjs` (§108, `37271544`), `outputs/pg16-crowding-L1.json`, `field-g-mutant.test.tsx` | **0 of 3** |
+> | PINK's constant-provenance table | commits `4b83414e`, `185427d5` (shelf 0.022) | **neither** — both only inside the 89 |
+> | PINK's measurements | its own stand, `3ec8457d`, BUILD_ID `xCD8LBxdjnP97-2Gjs5yr`, PINK's instruments on PINK's branch | **all** |
+>
+> **THE SCOPE, STATED AT THE WIDTH THE EVIDENCE SUPPORTS AND NO WIDER.** PINK's *measurements* do not depend
+> on the 89: PINK validated a **published** build with its own instruments, and `PHASE_DIRS` — PF-13's
+> population predicate — is present at `3ec8457d:test/career/mapping-field/architecture.test.ts:40`. What
+> breaks is **cross-lane re-derivation**: GELB's PG/PF pin arguments rest on instruments a fresh checkout
+> cannot open, and PINK's §55 narrowing cites one of them **by name**. *The one PINK citation that fails is
+> the one inside the sentence asserting that the two lanes' instruments ARE mutually readable.*
+>
+> **AND PF-13'S POPULATION IS BUILD-RELATIVE, WHICH §110'S CORRECTED SENTENCE DOES NOT SAY.** 15 test files
+> at `3ec8457d`, **16 at `c7143fcd`** — `field-g-mutant.test.tsx` is §104's. *So `b63b6368`'s "all 15 files"
+> was not only a verdict this lane may not issue (§110); 15 was also the count of a different build.* A-G430
+> and A-G54 on the same figure.
+>
+> **THE ASYMMETRY, AND IT IS NOT PINK'S TO HAVE CAUGHT.** PINK's document names **its own** unpushed branch as
+> *"a defect in the work rather than an inconvenience"* and lists what is unreadable in each direction — and
+> **this lane's 89 are not in that list.** The inventory of what a fresh reader cannot reach is therefore
+> incomplete, and incomplete **in the direction most favourable to the build**, which is the exact shape PINK
+> caught in GELB. *A lane cannot find its own defects with its own rules; it also cannot inventory a gap whose
+> other half is in a repository it was reading through the filesystem rather than through git.*
+>
+> **WHAT THIS IS NOT.** Not a verdict on PINK's validation — that stands, on a published build. Not a request
+> to publish: the owner's authorization names PINK's branch, this lane's 89 are not covered by it, and a
+> permission does not travel sideways. **It is a statement about what a second, fresh checkout contains**,
+> which is measurable, and it is **a blocker for a decision, not a verdict on a pin.**
+>
+> **§114b · and the guard was used on the wrong artifact, by its author.** `gruen-verify.sh --parse` over a
+> `--reporter=json` file returned **exit 3, *"the runner printed no summary — fail closed"*** — correct, and
+> correct for a reason that was not the run: it parses the **text** summary. **A fail-closed guard aimed at the
+> wrong artifact reports a true *cannot tell*, and a true *cannot tell* reads like a defect in the run.**
+> §112's verdict was then read from the JSON directly: **16 files, 197 tests, 197 passed, 0 failed** at
+> `c7143fcd`, `architecture.test.ts` **31/31** — including the four-file violation on `1d28320c` that §96's
+> evidence limbs closed.
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.
