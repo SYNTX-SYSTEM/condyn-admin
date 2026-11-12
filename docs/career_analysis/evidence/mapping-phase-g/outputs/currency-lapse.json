@@ -1,0 +1,81 @@
+{
+ "instrument": "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-currency-lapse.mjs",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
+ "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
+ "head": "f80425ed",
+ "referents": {
+  "test-population": {
+   "sha": "3231f52c",
+   "when": "2026-11-12T23:12:38+01:00",
+   "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+  }
+ },
+ "quotationCharsExcluded": 6823,
+ "control": {
+  "currentIsReachable": true,
+  "lapsedIsReachable": true
+ },
+ "counts": {
+  "matched": 6,
+  "LAPSED": 0,
+  "CURRENT": 1,
+  "SCOPED": 3,
+  "UNDATABLE": 2,
+  "UNDATED": 0
+ },
+ "rows": [
+  {
+   "line": 132,
+   "kind": "test-population",
+   "text": "> §112's verdict was then read from the JSON directly: **16 files, 197 tests, 197 passed, 0 failed** at",
+   "status": "SCOPED",
+   "why": "the claim's own paragraph names a build, so it is a DATED measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 150,
+   "kind": "product-pixels",
+   "text": "> | `7b8fc7f5` | §93 | `MOTION.breath` **deleted** (dead — 0 of 47 073 pixels swung in either state) | a constants-reader finds the key **missing** |",
+   "status": "SCOPED",
+   "why": "the claim's own paragraph names a build, so it is a DATED measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 204,
+   "kind": "test-population",
+   "text": "> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.",
+   "writtenAt": {
+    "sha": "3231f52c",
+    "when": "2026-11-12T23:12:38+01:00",
+    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   },
+   "referent": {
+    "sha": "3231f52c",
+    "when": "2026-11-12T23:12:38+01:00",
+    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 545,
+   "kind": "stand-liveness",
+   "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
+   "status": "UNDATABLE",
+   "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
+  },
+  {
+   "line": 662,
+   "kind": "readings-corpus",
+   "text": "> `gruen-seal-staleness.mjs` reports 8 stale at `fb4632da`, and it is right — PG-14's new solve changes the",
+   "status": "SCOPED",
+   "why": "the claim's own paragraph names a build, so it is a DATED measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 710,
+   "kind": "stand-liveness",
+   "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
+   "status": "UNDATABLE",
+   "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
+  }
+ ],
+ "detectorLimit": "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
+}

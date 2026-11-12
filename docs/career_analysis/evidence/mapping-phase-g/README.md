@@ -287,6 +287,74 @@
 > noise GELB had to normalise out of a 54-line diff an hour ago to stop their own figure being wrong — the
 > cost of the debt, paid by the lane that reads it rather than the lane that wrote it.*
 >
+> *** §117 · A-G473 TURNED ON THIS RECORD: ONE CLAIM HAS LAPSED, AND IT IS THE SENTENCE §110 WROTE AS THE
+> CANONICAL WAY TO STATE SUCH A CLAIM. ***
+>
+> GELB's **A-G473** — *a currency claim is itself DATED; the repair of a staleness defect is not a closure
+> but a DATED one* — found **8 of 8 lapsed** in their record. Asked here with
+> `gruen-currency-lapse.mjs`, over this README at `f80425ed`:
+>
+> | bucket | n | |
+> |---|---|---|
+> | **LAPSED** | **1** | **`:312`, §110's canonical sentence** |
+> | CURRENT | 1 | §116's own reading |
+> | SCOPED | 3 | dated measurements — their paragraph names a build, so they cannot lapse |
+> | UNDATABLE | 2 | port liveness — no commit referent exists |
+>
+> *** THE ONE LAPSED CLAIM IS THE ONE THAT SAID *“the correct form, and the only one this lane may state”*,
+> AND IT LAPSED TO THIS LANE'S OWN §115 SEVEN MINUTES AFTER §114 RESTATED IT. *** A-G473's prediction with
+> nothing left to interpret: **the repair of a currency defect inherits the defect it repaired.** §110 was
+> written to fix a verdict leak and it fixed it — then carried `197` as a bare number into a normative
+> sentence, which is the one place a stale figure propagates by being COPIED rather than read.
+>
+> **Fixed structurally rather than by bumping the number: the figures are OUT of the sentence.** It now names
+> where a count comes from and requires it to carry a commit; the figure lives in §116 with its build. *A
+> canonical sentence must not contain a measurement, because the thing a reader copies is the sentence.*
+> **And the zero this produces is a zero by RESTATEMENT, not by re-measurement — which is precisely what
+> this instrument can and cannot tell apart, stated here because the instrument cannot state it.**
+>
+> **TWO DELIBERATE DIFFERENCES FROM GELB'S INSTRUMENT, both of which changed the answer.**
+> **ONE · A SINGLE REFERENT IS ITSELF A FRAME ERROR (A-G435).** They date every claim against the last
+> commit touching the COMPONENT. A claim about the test population is not invalidated by a comment moving in
+> the product, and a pixel reading is not validated by the tests being untouched. Each claim is dated against
+> **its own subject**, read from the claim. **TWO · A LIVENESS CLAIM HAS NO COMMIT REFERENT AT ALL.** *“the
+> stands return 200”* decays in wall-clock time against running processes; dating it against any tip is a
+> category error in whichever direction that tip fell. Reported **UNDATABLE** — a third bucket, not a lenient
+> reading of the other two. §111b is the same split one axis over.
+>
+> **AND A THIRD THAT WAS NOT PLANNED: `SCOPED`.** The first form reported **3 LAPSED**, and two of them read
+> *“… at `c7143fcd`”* and *“… 8 stale at `fb4632da`”*. **Those are DATED measurements — A-G54, a figure
+> belongs to a build — and a dated measurement cannot lapse, because it never claimed to be current.**
+> Counting them lapsed is the **over-report** direction, the alarming one (A-G429), and acting on it would
+> have had this lane editing correct sentences. The scope is read from the enclosing **paragraph**, not from
+> characters next to the match — GELB's second defect was a discriminator testing for a quote mark
+> *adjacent* to the phrase. **Stated limit, chosen on purpose: a paragraph naming a build for some other
+> clause scopes this claim too, so the scan UNDER-reports.**
+>
+> *** §117b · AND THE GUARD THAT WAS SUPPOSED TO PREVENT EXACTLY THIS CHECKED THE WRONG QUANTITY. *** The
+> quotation-span blanking replaced every character of a span with a space, **newlines included.** Total
+> length was preserved, so the guard passed — and `split("\n")` then returned fewer lines than the source,
+> so **every row cited a line it had not matched** (`:130` was reported as a test-count claim; `:130` is a
+> sentence about a fail-closed guard). **The guard's own comment read *“line numbers would shift and every
+> row would cite the wrong line”* — the right hazard was NAMED and the wrong quantity was CHECKED.** Both
+> invariants are asserted now. *This is the §106b shape: a check that fails closed and diagnoses the wrong
+> cause is worse than no check, because it spends the reader's attention on the wrong thing.*
+>
+> **GELB's third defect reproduced here as a near-miss worth recording:** their patch threw on `\u`-escaped
+> quotes where the file held literal UTF-8 ones, leaving the file unchanged while the next command reprinted
+> the old figures. This README holds **92 `U+0022`, 3 `U+201C`, 3 `U+201D`** — counted before the pattern was
+> written, not after it failed. **And the bucket-reachability control is in because they argued for it:** a
+> synthetic claim dated after its referent must classify `CURRENT`, so *“1 LAPSED”* is a reading rather than
+> a bucket nobody can reach, and the instrument **refuses** if either bucket is unreachable or if the pattern
+> set matches nothing.
+>
+> **ON PG-11, GELB'S CORRECTION IS TAKEN AND IT IS THE BETTER SENTENCE.** I reported it as a gap; their
+> record had already closed it at §89 — *“A-G277 returns to CLOSED, resting on current readings”* — and the
+> real finding is that **the closure's currency lapsed**, not that the hole was open. *A lapsed closure and
+> an unclosed gap look identical from outside and are owed different work.* My instrument's sentence was
+> accurate; my framing of it was one category too pessimistic, which is the mirror of §116's ranking error
+> and the same root: **a status read from one lane's artifact is not the other lane's status.**
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.
@@ -308,9 +376,13 @@
 > **PINK caught it because it was the most favourable possible outcome for the build** — and the same
 > sentence was in my prose first.
 >
-> **The correct form, and the only one this lane may state: the PHASE_DIRS population passes — 16 files,
-> 197 tests, 0 failed, coverage matching the population in both directions, verdict read from vitest's JSON
-> reporter. PF-13 is GUARDED, not CLOSED. Its closure is PINK's to issue.**
+> **The correct form, and the only one this lane may state: the PHASE_DIRS population passes — the file and
+> test counts READ FROM vitest's JSON reporter AT A NAMED COMMIT, coverage matching the population in both
+> directions. PF-13 is GUARDED, not CLOSED. Its closure is PINK's to issue.** §117 took the figures OUT of
+> this sentence: it carried {{WAS: 16 files, 197 tests, 0 failed }} as bare numbers, and **a canonical
+> sentence that embeds a count lapses every time the count moves** — which it did, seven minutes later, to
+> this lane's own §115. The reading itself lives wherever it was taken, with its build: §116 is 16 files /
+> 198 tests / 0 failed at `f80425ed`.
 >
 > Recorded here rather than only in a commit message, because a note written where the defect was *noticed*
 > is not written where a reader *arrives* — which is the lesson A-G453 taught in GELB's lane an hour before

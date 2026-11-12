@@ -13,6 +13,13 @@ set -uo pipefail
 cd "$(dirname "$0")"
 SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 
+# §117: EVERY FAILURE IS NAMED AT THE END AND THE PASS EXITS NON-ZERO. §116b found gruen-pg14-frame-fixed
+# dead for nine sections: it threw, the `|| printf` below turned the throw into one `!!` line among forty,
+# and a reader who scrolled to the last line saw a pass. The loop still CONTINUES on a failure, which is
+# right — one dead instrument must not hide the other thirty-nine — but the pass no longer ENDS quietly.
+FAILED=()
+note_failure() { FAILED+=("$1"); }
+
 # Derivations first: these render NOTHING and need no build, no server and no façade, so they run on a bare
 # checkout and they fail loudly if a product constant moves under a figure that was derived from it. None
 # writes to a SEALED-* file. The sealed probes themselves stay OUT of this script on purpose — a routine pass
@@ -21,9 +28,9 @@ SIZES=("$@"); [ ${#SIZES[@]} -eq 0 ] && SIZES=(1920x1080 1280x800)
 # gruen-seal-staleness is the counterweight to that exclusion: keeping the sealed probes out of a pass also
 # removed the only thing that would have noticed a seal going stale, so this audit re-checks every SEALED-*
 # file against HEAD on every pass and exits non-zero if any is stale. It re-measures nothing and cannot.
-for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha gruen-pg16-satisfiability gruen-seal-staleness gruen-pg12-alpha-quantisation gruen-pg14-frame-fixed gruen-pg12-floor-measured gruen-vector-expressibility gruen-constant-forks; do
+for derivation in gruen-ag36-pg17-geometry gruen-pg17-reanchor gruen-pg23-alpha gruen-pg16-satisfiability gruen-seal-staleness gruen-pg12-alpha-quantisation gruen-pg14-frame-fixed gruen-pg12-floor-measured gruen-vector-expressibility gruen-constant-forks gruen-currency-lapse; do
   printf '\n=== %s (derivation, no render) ===\n' "$derivation"
-  node "$derivation.mjs" >/dev/null || printf '!! %s FAILED (exit %s)\n' "$derivation" "$?"
+  node "$derivation.mjs" >/dev/null || { rc=$?; printf '!! %s FAILED (exit %s)\n' "$derivation" "$rc"; note_failure "$derivation (exit $rc)"; }
 done
 export CONDYN_PLAYWRIGHT_MODULE="${CONDYN_PLAYWRIGHT_MODULE:-/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs}"
 
@@ -69,3 +76,17 @@ else
 fi
 
 printf '\nreadings in %s\n' "$(cd ../outputs && pwd)"
+
+# §117, and it is A-G465's shape: the exit code of a reporter is not a verdict, so this one describes the
+# PASS and nothing else. gruen-seal-staleness and gruen-currency-lapse exit non-zero to report a FINDING
+# about the record, not a failure of themselves — both appear below, and the distinction is the reader's to
+# make from the named list, which is why the list is named rather than counted.
+if [ ${#FAILED[@]} -eq 0 ]; then
+  printf '\nALL DERIVATIONS AND PROBES RETURNED 0. That is a statement about the TOOLS, not about any pin (A-G374).\n'
+else
+  printf '\n!! %s NON-ZERO, NAMED RATHER THAN COUNTED:\n' "${#FAILED[@]}"
+  for f in "${FAILED[@]}"; do printf '!!   %s\n' "$f"; done
+  printf '!! A non-zero here may be a DEAD INSTRUMENT or a LIVE FINDING. gruen-seal-staleness and\n'
+  printf '!! gruen-currency-lapse report findings this way by design; read their output, not their code.\n'
+  exit 1
+fi
