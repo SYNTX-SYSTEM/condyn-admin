@@ -70,6 +70,13 @@ console.log(`\n  ORM tables parsed from ${SCHEMA}: ${orm.size}`);
 console.log(`  bootstrap tables parsed from ${CLIENT}: ${boot.size}\n`);
 const onlyOrm = [...orm.keys()].filter(t => !boot.has(t));
 const onlyBoot = [...boot.keys()].filter(t => !orm.has(t));
+/* A-G480: the denominator belongs in the BLOCK the zero is printed in, not two blocks above. And the first
+   form of THIS LINE read `Object.keys(orm).length` on a Map, printing "compared over 0 ORM tables" beside a
+   real 18 — *** THE EXACT ZERO-DENOMINATOR FAILURE IT WAS ADDED TO REPAIR, INTRODUCED BY THE REPAIR, AND
+   CAUGHT ONLY BY RE-MEASURING AFTER IT. *** A-G429's third remedy is audit the alarming number; this is its
+   pair: re-measure after the fix, because a fix is a change of input. */
+if (orm.size === 0 || boot.size === 0) throw new Error("REFUSE: parsed 0 tables on one side — a drift of 0 over an empty corpus is not a measurement (A-G452/A-G480)");
+console.log(`  compared over ${orm.size} ORM tables and ${boot.size} bootstrap tables`);
 console.log(`  declared in the ORM and never created by the bootstrap: ${onlyOrm.length}${onlyOrm.length ? " — " + onlyOrm.join(", ") : ""}`);
 console.log(`  created by the bootstrap and absent from the ORM:       ${onlyBoot.length}${onlyBoot.length ? " — " + onlyBoot.join(", ") : ""}`);
 
@@ -120,7 +127,7 @@ rule();
 console.log(`[3] THE REMEDY, AND WHY IT IS NOT "ADD THE FOUR COLUMNS"`);
 rule();
 console.log(`
-  Adding the missing columns by hand closes ${nMissing} holes and leaves the MECHANISM intact: two
+  ${nMissing ? `Adding the missing columns by hand closes ${nMissing} holes and leaves` : `There are no missing columns to add RIGHT NOW, and that does not touch`} the MECHANISM: two
   declarations of one schema, with nothing comparing them. The next column added to the ORM drifts again,
   silently, and is caught only by whoever next runs the suite on a fresh database.
 

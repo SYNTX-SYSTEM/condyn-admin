@@ -59,15 +59,26 @@ console.log("[2] IS THERE A CORPUS FOR THE WORST CASE? — the check that change
 console.log("=".repeat(104));
 const FIXT = ["test/support/mapping/vectors.ts", "test/support/mapping/layout-reference.ts", "test/support/mapping/write-vectors.ts"];
 console.log("");
-let anyTitle = 0;
+/* GRÜN'S §121 QUESTION, ANSWERED ON THIS BLOCK: it was the only one in 28 instruments printing a BARE zero —
+   a zero with no non-zero figure anywhere in its own output block and no control in its file. The three
+   fixtures DO exist at the pinned build (7729 / 10174 / 108 bytes) and genuinely contain no "title", so the
+   zeros were true. *** BUT THE OUTPUT WAS BYTE-IDENTICAL TO WHAT A BROKEN GREP OR A WRONG PATH WOULD HAVE
+   PRINTED, WHICH IS THE WHOLE HAZARD. *** So each zero now carries its DENOMINATOR — the bytes and lines it
+   was measured over — and a refusal if a fixture reads empty.
+   *** RULED, A-G480: A ZERO NEEDS A WITNESS, AND THE CHEAPEST WITNESS IS A DENOMINATOR IN ITS OWN OUTPUT
+   BLOCK. A CONTROL IS ONLY NEEDED FOR A ZERO THAT CANNOT BE GIVEN ONE. *** Measured across 28 instruments:
+   463 of 471 printed zeros were already witnessed this way, by accident rather than by rule. */
+let anyTitle = 0, anyBytes = 0, anyLines = 0;
 for (const p of FIXT) {
   let t = "";
   try { t = sh("git", "show", `${SHA}:${p}`); } catch { console.log(`  ${p}  <absent at ${SHA}>`); continue; }
+  if (t.length === 0) throw new Error(`REFUSE: ${p} reads empty at ${SHA} — a zero over an empty corpus is not a measurement (A-G452)`);
   const hits = (t.match(/\btitle\b/g) || []).length;
-  anyTitle += hits;
-  console.log(`  ${p.padEnd(44)} occurrences of "title": ${hits}`);
+  const lines = t.split("\n").length;
+  anyTitle += hits; anyBytes += t.length; anyLines += lines;
+  console.log(`  ${p.padEnd(44)} occurrences of "title": ${hits}   over ${String(t.length).padStart(6)} bytes / ${String(lines).padStart(4)} lines`);
 }
-console.log(`\n  total across the three layout fixtures: ${anyTitle}`);
+console.log(`\n  total across the three layout fixtures: ${anyTitle}   over ${anyBytes} bytes / ${anyLines} lines read at ${SHA}`);
 const roleType = sh("git", "show", `${SHA}:test/support/mapping/layout-reference.ts`).match(/LayoutRole[^\n]*=\s*\{[^}]*\}/s);
 console.log(`\n  and the shape the vectors actually carry, from the product's own constructor:`);
 const ctor = sh("git", "show", `${SHA}:test/support/mapping/vectors.ts`).split("\n").find(l => l.includes("const role = ("));

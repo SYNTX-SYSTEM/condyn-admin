@@ -206,12 +206,15 @@ console.log(`\n  the other ${rows.length - selfWriting.length} write nothing: th
 console.log(`  destination is my working directory at the moment I run them. *** SO THE HAZARD IS REACHABLE`);
 console.log(`  FOR ${rows.length - selfWriting.length} OF ${rows.length} INSTRUMENTS, and it is reachable through the one mechanism GRÜN's module-load`);
 console.log(`  assertion cannot see — a redirection outside the process. ***`);
-let strays = [];
+let strays = [], examined = 0;                 // A-G480: the zero needs its denominator in its own block
 for (const root of [TREE, REPO_ROOT]) {
   const out = execFileSync("find", [root, "-name", "gelb-*.out.txt", "-not", "-path", "*/node_modules/*"], { encoding: "utf8" }).trim();
-  for (const p of out ? out.split("\n") : []) if (dirname(p) !== HERE) strays.push(p);
+  const found = out ? out.split("\n").filter(Boolean) : [];
+  examined += found.length;
+  for (const p of found) if (dirname(p) !== HERE) strays.push(p);
 }
-console.log(`\n  DID IT HAPPEN? every gelb-*.out.txt in both worktrees, outside the canonical root: ${strays.length}`);
+if (examined === 0) throw new Error("REFUSE: the find located 0 gelb-*.out.txt files in either worktree — a zero over an empty corpus is not a measurement (A-G452/A-G480)");
+console.log(`\n  DID IT HAPPEN? every gelb-*.out.txt in both worktrees, outside the canonical root: ${strays.length} of ${examined} examined`);
 strays.forEach(p => console.log(`    STRAY ${p}`));
 console.log(`  ${strays.length === 0 ? "None. The hazard is open and has not been realised — stated in that order, because the" : "Strays found — listed above."}`);
 console.log(`  ${strays.length === 0 ? "second clause is luck and the first is the finding." : ""}`);

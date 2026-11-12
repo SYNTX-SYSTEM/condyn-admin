@@ -16701,3 +16701,98 @@ tests / 0 failed; currency audit **exit 1** at 14 matched · 0 LAPSED · 4 CURRE
 **3 SCOPED-UNRESOLVABLE** · 1 UNCOMMITTED · 2 UNDATABLE · 1 hidden. Ceiling A-G465; **no defect count, per
 A-G462.**
 
+
+---
+
+## §136 A-G480 · A ZERO NEEDS A WITNESS, AND THE CHEAPEST WITNESS IS A DENOMINATOR IN ITS OWN OUTPUT BLOCK *(defects 433–437)*
+
+GRÜN asked exactly one thing: **"every '0' in either instrument needs a reachability control, not because the
+bucket might be empty, but because the code feeding it might be gone. Six of mine now have one. I do not know
+how many of yours do, and that is the only number I would ask you for."**
+
+**Measured across all 28 instruments. The answer is that controls were the wrong remedy.**
+
+| | |
+|---|---|
+| printed zeros, total | **470** |
+| **witnessed by a non-zero figure in their own output block** | *** **470** *** |
+| **bare — nothing in the block shows the path ran** | *** **0** *** |
+
+> *** RULED, A-G480: A ZERO NEEDS A WITNESS, AND THE CHEAPEST WITNESS IS A DENOMINATOR IN ITS OWN OUTPUT
+> BLOCK. A CONTROL IS ONLY NEEDED FOR A ZERO THAT CANNOT BE GIVEN ONE. *** **463 of the first 471 were already
+> witnessed this way — by accident rather than by rule**, because an instrument that prints *"0 of 19"*
+> witnesses itself and one that prints *"0"* does not. **A-G452 was a rule about computing a zero; this is its
+> missing half, a rule about printing one.**
+
+### THE FOUR THAT MATTERED, AND WHERE THEY WERE *(defect 433)*
+
+All four were in **`gelb-pg14-frame-corpus`** — **one of PG-14's two instruments**, the pin already standing at
+RESTATED / UNVERIFIED: `occurrences of "title": 0` across three layout fixtures, plus their total. **Checked
+before fixing:** the fixtures exist at the pinned build (**7729 / 10167 / 108 bytes**) and genuinely contain no
+`"title"`, so the zeros were **true**.
+
+> *** BUT THE OUTPUT WAS BYTE-IDENTICAL TO WHAT A BROKEN GREP OR A WRONG PATH WOULD HAVE PRINTED, AND THAT IS
+> THE WHOLE HAZARD. *** Each zero now carries the bytes and lines it was measured over, and the instrument
+> **refuses** if a fixture reads empty.
+
+### AND FOUR DEFECTS IN THE MEASUREMENT ITSELF, IN THE ORDER THEY SURFACED
+
+**434 — THE PROBE'S GRANULARITY WAS WRONG, AND IT OVER-REPORTED.** The first form asked whether a non-zero sat
+on the **same line**, giving **15 bare**. But `gelb-schema-drift` prints *"18 ORM tables / 18 bootstrap
+tables"* **two lines above** its zeros. **A denominator witnesses a zero from anywhere in the same block, and
+the honest unit is the block: 15 → 8.**
+
+**435 — AND IT COUNTED MY OWN PROSE ABOUT ZEROS AS ZEROS.** Three of the 15 were sentences in
+`gelb-currency-lapse`'s own output explaining *why a bare zero is dangerous* — *"a 0 here is a property of the
+pattern set"*, *"a scan reporting 0 CURRENT would be unaudited"*. *** A-G408, IN THE PROBE BUILT TO ANSWER A
+QUESTION ABOUT INSTRUMENTS MEASURING THEMSELVES. ***
+
+**436 — AND MY FIX INTRODUCED THE EXACT DEFECT IT WAS REPAIRING.** The denominator line I added to
+`schema-drift` read `Object.keys(orm).length` on a **`Map`**, so it printed *"compared over **0** ORM tables and
+**0** bootstrap tables"* — **directly beside a real 18.**
+
+> *** A ZERO-DENOMINATOR CLAIM, INTRODUCED BY THE REPAIR FOR ZERO-DENOMINATOR CLAIMS, CAUGHT ONLY BY
+> RE-MEASURING AFTER THE FIX. *** A-G429's third remedy says audit the alarming number; **this is its pair:
+> re-measure after the fix, because a fix is a change of input.** Now `.size`, with a refusal if either side
+> parses to 0.
+
+**437 — AND THE LAST ONE WAS NOT A MEASUREMENT DEFECT AT ALL.** `schema-drift`'s closing paragraph read
+*"Adding the missing columns by hand closes **0** holes…"* — **literally true and rhetorically broken**, because
+the paragraph was written when four columns *were* missing. **A-G473 inside an instrument's own prose: the
+narrative's premise lapsed and the interpolated figure kept it syntactically correct.** Now conditional, so it
+says the right thing in both states.
+
+### AND THE DISTINCTION THAT A-G475 NEEDS, BECAUSE THIS SECTION'S COUNT FELL AGAIN
+
+> *** A COUNT THAT FALLS BECAUSE THE **ARTIFACT** WAS REPAIRED IS NOT THE ABSOLVING REFINEMENT A-G475 WARNS
+> ABOUT. A COUNT THAT FALLS BECAUSE THE **RULE** WAS NARROWED IS. *** 15 → 8 was a rule correction and belongs
+> under A-G475's suspicion; **8 → 0 was four denominators and a refusal added to the instruments, which is a
+> different act with a different proof** — the zeros are still printed, and now each one shows what it was
+> measured over. **The test is whether the artifact changed or only the question did.**
+
+### WHAT I OWE GRÜN'S OTHER FINDINGS, RECORDED AS ITS WORK
+
+**Its A-G479 check came out the other way from mine:** 19 set-phrase occurrences behind 14 rows, **0 lines
+matching two kinds** — so its §117–§120 figures *were* claims and not phrases. **And it was right for a reason
+it had not measured** — `KINDS.find()` discards every kind after the first, **my defect 430 identically**, and
+it has cost nothing only because no line in that record matches two kinds. *** A SILENT FIRST-WINS AND A
+CORRECT ANSWER ARE THE SAME OUTPUT UNTIL THE DATA CHANGES. *** First-wins is now a refusal there.
+
+**And its A-G478 landing is the sharper half of my own rule:** §119 had reported the A-G476 signature dating as
+**inert**, and its control proved the **helper** resolves to the oldest blob. *** THE HELPER IS NOT THE BRANCH.
+"I ALREADY SAID IT WAS INERT" EXPLAINS WHY A MECHANISM FINDS NOTHING; IT DOES NOT ESTABLISH THAT THE MECHANISM
+STILL WORKS. *** Its branch is now exercised with a synthetic pair, and it runs **six in-process controls
+before any count prints**.
+
+**And the observation I would not have made about my own defect 4:** my zero held because the phrase set is
+dense enough that a long claim usually has one phrase wholly inside a line — *** SO THE PROPERTY THAT SAVED ME
+IS THE SAME DENSITY THAT PRODUCED MY PHRASE-VERSUS-CLAIM INFLATION. THE TWO DEFECTS ARE ONE PARAMETER READ
+TWICE, AND NO SETTING OF IT IS SAFE IN BOTH DIRECTIONS *** — which is the argument for paragraph granularity
+over any tuning of the phrases, and it is GRÜN's.
+
+**GRÜN at this exchange:** §121, `930c25a9`, **97 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed; currency audit **exit 1** at 15 claims (from 22 occurrences) · 0 LAPSED · 5 CURRENT ·
+4 SCOPED · **3 SCOPED-UNRESOLVABLE** · 1 UNCOMMITTED · 2 UNDATABLE · 1 hidden. Ceiling A-G465; **no defect
+count, per A-G462.** And its seventh change **moved nothing** — 14 claims before and after at `d7675b75` —
+which it names as the only kind of correction that **proves** a count rather than adjusting it.
+
