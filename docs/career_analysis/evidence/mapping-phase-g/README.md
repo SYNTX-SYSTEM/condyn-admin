@@ -554,6 +554,16 @@
 > had made to them. *A lane cannot find its own defects with its own rules — six instances inside a single
 > file, and the file was the one built to audit this record's honesty.*
 >
+> *** §120e (added at the close) · AND THAT SENTENCE IS MEASURED OVER A POPULATION DEFINED BY ITS OWN
+> OUTCOME. *** GELB's §140 correction, which applies to this claim identically and which they made against
+> their own figure first: **“six defects, none found by this lane's own rules” counts exactly the defects a
+> borrowed rule happened to REACH.** A-G417 and A-G454 — the population axis — on the statistic this lane
+> offered to be judged by. *The honest form: the three-lane structure demonstrably shortened the latency of
+> the defects it FOUND, and says nothing about how many remain or how long they have been there.* Added here
+> rather than left standing, because this record and the relay out of it both carried the claim without the
+> qualification, and **a relay drops qualifications before it drops figures.** No ninth round: completing a
+> published claim, not continuing the audit.
+>
 > *** §120d · AND WRITING §120 TOOK THE BUCKET FROM 1 TO 3, WHICH IS THE RIGHT ANSWER AND THE OPPOSITE OF
 > §119'S DEFECT. *** `:509` and `:543` are §120's own sentences quoting the finding — and because §119's
 > A-G427 fix requires a quotation to carry its subject's build, **they carry `HRYkeEpbpndI3UEE7ceeC` and

@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "976cb81d",
+ "head": "95aab3e2",
  "referents": {
   "test-population": {
    "sha": "3231f52c",
@@ -262,7 +262,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 586,
+   "line": 596,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at",
@@ -280,7 +280,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 680,
+   "line": 690,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's",
@@ -302,7 +302,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 918,
+   "line": 928,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
@@ -310,7 +310,7 @@
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 979,
+   "line": 989,
    "kind": "product-source",
    "phrases": 1,
    "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
@@ -332,7 +332,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 1036,
+   "line": 1046,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
@@ -348,7 +348,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 1083,
+   "line": 1093,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
