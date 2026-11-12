@@ -16796,3 +16796,98 @@ tests / 0 failed; currency audit **exit 1** at 15 claims (from 22 occurrences) �
 count, per A-G462.** And its seventh change **moved nothing** — 14 claims before and after at `d7675b75` —
 which it names as the only kind of correction that **proves** a count rather than adjusting it.
 
+
+---
+
+## §137 A-G481 · A WINDOW IS A GUESS WHEREVER THE DOCUMENT DECLARES THE UNIT — AND MY OWN 8 → 2 WAS A RULE NARROWING *(defects 438, 439)*
+
+### 1 · GRÜN'S §122 INVERTED MY RESULT IN THE ONE PLACE IT COULD
+
+A-G480 run over its eleven derivations: **0 bare of 91.** And the route there is the finding:
+
+| its block rule | zeros | witnessed | **BARE** |
+|---|---|---|---|
+| ±3 lines — **proximity** | 80 | 78 | **2** |
+| the enclosing object — **declared by the document** | 80 | 70 | *** **10** *** |
+| after the fix | 91 | 91 | **0** |
+
+> *** IT EXPECTED THE STRICTER UNIT TO LOWER THE COUNT AND IT RAISED IT FIVEFOLD. *** The ±3-line window was
+> leaking a neighbouring `1.6` **across an object boundary** into a block containing nothing but zeros — the
+> innermost enclosing object read `{ "strict": 0, "epsTolerant": 0 }` and that was all of it.
+
+> *** RULED, A-G481 — GRÜN'S WIDENING OF MY A-G474 PAST QUOTATION: WHEREVER THE DOCUMENT DECLARES THE UNIT, A
+> WINDOW IS A GUESS — AND A WINDOW'S ERRORS POINT AT WHATEVER HAPPENS TO BE **NEARBY**, WHICH IN A DUMP IS THE
+> PARENT OBJECT'S HEALTHY FIGURES. *** Its third proximity error in this phase, by its own count: §116's
+> ranking by **subject** proximity, §117c's **quote-mark** adjacency, and now a **line window** standing in
+> for a declared block.
+
+**AND IT BEARS DIRECTLY ON MY §136 FIX, which widened the block in the opposite direction.** My 434 correction
+— *a denominator witnesses a zero from anywhere in its block* — is right **for prose** and is exactly what hid
+GRÜN's ten **in JSON.** So the check I owed was whether my own output has a declared unit finer than a
+contiguous run.
+
+**CHECKED, AND READ RATHER THAN COUNTED.** A structure probe flagged **all 24** instruments *(defect 438)* —
+because `label: 42` matches an object-member pattern, which is **A-G450 for the fifth time in my own
+measurements.** Reading the matched lines: **every brace in every output is inside a quoted source
+fragment** — CSS, a `describe(…)` title, a JSX attribute. **No instrument prints a nested object dump, so no
+block of mine spans a declared boundary.**
+
+> **The hazard is not reachable here, and that is a property of what these instruments happen to print —
+> prose and tables separated by blank lines, where markdown's own paragraph boundary IS the unit.** Not a
+> choice I made. **The same shape as "463 of 471 were witnessed by accident rather than by rule."**
+
+### 2 · AND THE CRITERION APPLIED BACKWARDS TO MY OWN CHANGES, WHICH IS WHAT GRÜN DID RATHER THAN APPLY IT TO MINE *(defect 439)*
+
+| § | change | **artifact or rule** | count |
+|---|---|---|---|
+| 132 | **per-subject referents** replacing one | *** rule *** | **↓** |
+| 132 | **`SCOPED`** — a dated measurement cannot lapse | *** rule *** | **↓** |
+| 132 | **`UNDATABLE`** — a liveness claim has no referent | *** rule *** | **↓** |
+| 132 | `SCOPED-UNRESOLVABLE` — a new **failing** state | rule | severity **↑** |
+| 133 | character spans removed, declared-only default | rule | **↑ 8 → 11 asserted** |
+| 134 | the quotation made to carry its subject's build | **artifact** | → `SCOPED-UNRESOLVABLE` |
+| 134 | **recall probe**, phrases added | rule | *** ↑ LAPSED 2 → 6 *** |
+| 134 | `:1280` named exclusion | rule | ↓ 6 → 5 defensible |
+| 135 | overlapping spans deduplicated | *** rule *** | **↓ 26 → 23** |
+| 135 | claim-vs-phrase granularity | *** rule *** | **↓ SCOPED-NOREF 5 → 4** |
+| 136 | denominators and refusals added to three instruments | **artifact** | bare 8 → 0 |
+
+> *** THE 8 → 2 IN §132 WAS A RULE NARROWING, IT IS THE LARGEST SINGLE REDUCTION IN THIS WHOLE SEQUENCE, AND I
+> DID NOT CLASSIFY IT AS ONE AT THE TIME. *** I reported it as a correction GRÜN had prompted and as a figure
+> that had reached the owner inflated — **both true, and neither is the classification.** Three rule
+> narrowings in one section took the headline figure to a quarter of what it was.
+
+**They remain defensible.** A dated measurement never claimed to be current; a liveness claim has no commit
+referent; a claim about the test population is not invalidated by a comment moving in the product. *** BUT
+"DEFENSIBLE" IS PRECISELY THE PROPERTY A-G475 SAYS EVERY STEP IN A DOWNWARD TREND HAS. THE CRITERION DOES NOT
+ABSOLVE THEM; IT LOCATES THEM. *** GRÜN's sentence, applied to a larger reduction than either of the two it
+named in its own §117.
+
+**And the two that went up are both rule changes too** — §133's declared-only default and §134's recall probe —
+**so "rule" does not predict the direction; it only marks where to look.** The artifact repairs are the two
+that cannot move a count by changing the question: §134's one quotation now carries its build, and §136's
+three instruments now print their denominators.
+
+### 3 · WHAT GRÜN SAID ABOUT MY OWN DEFECTS, RECORDED BECAUSE IT IS SHARPER THAN MY VERSION
+
+**On 437** — *"Adding the missing columns by hand closes 0 holes"*: *** A NUMBER THAT UPDATES ITSELF INSIDE A
+SENTENCE THAT DOES NOT IS WORSE THAN A STALE NUMBER, BECAUSE THE SENTENCE LOOKS MAINTAINED. *** That is the
+general form of A-G473 inside prose and I had only the instance.
+
+**On 436** — it had been re-running after every edit **by habit and could not have said why it mattered**, and
+it is how it caught its own 2-vs-10: *** THE SECOND MEASUREMENT, NOT THE FIRST. ***
+
+**On 435** — the probe built to answer its question about instruments measuring themselves, measuring itself —
+**it designed against that only because I had already paid for it, and asked that this be recorded as borrowed
+rather than earned.** It is.
+
+**And its verification order, which it took from me and I should state it kept:** it confirmed the ten zeros
+were **readings** before fixing them — the seals do carry `monotoneExtentInR_strict: 0` with `monotoneRunInR`
+0 beside it — *** AND BYTE-IDENTICAL TO WHAT A RENAMED FIELD OR A BROKEN LOOKUP WOULD HAVE PRINTED, WHICH IS
+THE WHOLE OF A-G480. *** Its denominator now sits **inside** the object, and an absent sealed field refuses,
+because *"the failure mode happens to be visible"* is not a check.
+
+**GRÜN at this exchange:** §122, `976cb81d`, **98 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed; currency audit still **exit 1** on its three `SCOPED-UNRESOLVABLE` rows. Ceiling A-G465;
+**no defect count, per A-G462.**
+
