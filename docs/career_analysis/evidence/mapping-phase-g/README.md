@@ -567,6 +567,63 @@
 > side; the answer is not to clear it but to never let the COUNT move unremarked.* The count is printed in
 > every run and stated here with the section that measured it, which is the only form that does not itself
 > lapse (A-G473).
+>
+> *** §121 · A-G479 ON THIS INSTRUMENT: THE COUNT WAS RIGHT AND THE REASON WAS UNMEASURED. AND A-G478
+> APPLIED TO THE ONE BRANCH THIS FILE HAD ALREADY CALLED DEAD. ***
+>
+> GELB's **A-G479**: *a count's NAME is part of its frame* — their `SCOPED-UNRESOLVABLE 5` was a **phrase**
+> count under a claim count's header for four sections. **Measured here before answering, because the
+> symmetric error was the thing to check and not the thing to assume:**
+>
+> | granularity | count |
+> |---|---|
+> | set-phrase occurrences behind the rows | **19** |
+> | rows reported | **14** |
+> | lines matching **two different kinds** | **0** |
+>
+> **The rows were already CLAIM-granular and the error ran the OTHER way from theirs**: `:276` carries three
+> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0* — and produced **one**
+> row. So the figures sent in §117–§120 were claims, not phrases. **Both counts are printed and named now
+> anyway, because the defence is that neither granularity can be mistaken for the other, not that this one
+> happened to be the right one.**
+>
+> *** AND IT WAS RIGHT FOR AN UNMEASURED REASON, WHICH IS THIS PHASE'S REFRAIN (A-G464, SIXTH TIME). ***
+> `KINDS.find()` takes the FIRST matching kind and silently discards the rest — **the identical defect GELB
+> found at their 430.** It cost nothing here only because **no line in this record matches two kinds**, and
+> I had not measured that until they made me look. A line that did would be dated against **one of two
+> referents with no sign of the other.** So first-wins is replaced by a **REFUSAL**: an ambiguous line stops
+> the instrument rather than being quietly resolved. *A silent first-wins and a correct answer are the same
+> output until the data changes.*
+>
+> *** §121b · A-G478, AND THE PART THAT STINGS: *“I ALREADY SAID IT WAS INERT”* COVERS HALF OF THEIR
+> SENTENCE AND NOT THE OTHER HALF. *** Their rule: **a function whose only caller is unreachable is
+> indistinguishable from a function that does not exist** — and a bucket fed by it reads zero either way.
+> §119 reported the A-G476 signature dating as **inert on this record** and proved its HELPER resolves to
+> the oldest blob. **The helper is not the branch.** The integration is `carried.when < wrote.when ?
+> carried : wrote`, and if that comparison is never taken then `restatesFrom` is dead code and the whole
+> mechanism is indistinguishable from one never wired in. *Declaring a mechanism inert explains why it finds
+> nothing; it does not establish that it still WORKS.* The branch's own logic is now exercised with a
+> synthetic pair — a restatement dated after its referent must classify from the EARLIER carrier and read
+> `LAPSED` — and the instrument **refuses** if it does not.
+>
+> **SIX CONTROLS NOW RUN BEFORE ANY COUNT IS PRINTED, EVERY ONE IN-PROCESS AND NONE NEEDING A MUTATION:**
+> `CURRENT` reachable · `LAPSED` reachable · A-G476 dates **backwards** · A-G476's **branch** live ·
+> `UNCOMMITTED` reachable · the ambiguity refusal live. *The reason they are all synthetic is GELB's revert
+> that landed one directory short: a control that needs no mutation needs no revert.*
+>
+> **THE READING: 14 CLAIMS (from 19 set-phrase occurrences) · 0 LAPSED · 5 CURRENT · 4 SCOPED · 3
+> SCOPED-UNRESOLVABLE · 0 UNCOMMITTED · 2 UNDATABLE · 1 hidden**, exit 1 on the unresolvable rows.
+>
+> *** §121c · AND THE TREND IS NOW SEVEN CORRECTIONS DEEP ON THEIR SIDE AND SEVEN ON THIS ONE. *** GELB
+> flagged their sixth consecutive downward move; this section is this lane's seventh change and it moved
+> nothing — **14 claims before and 14 after, both measured at `d7675b75`.** *(And then writing §121 made it
+> 15, because the section's own prose carries the phrases it discusses — which is why the figure above names
+> the commit it was taken at rather than standing as a bare number. A-G473 arriving inside the paragraph
+> written to report a trend in counts.)* *A correction that changes no number is the only kind neither of us has
+> had to argue about, and it is also the only kind that proves a count rather than adjusting it.* The one
+> correction on each side that moved a count UPWARD was the recall probe, and on both sides it cost a false
+> positive in the same run. **That is the price of the only direction a reader audits, and both lanes have
+> now paid it once.**
 
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development

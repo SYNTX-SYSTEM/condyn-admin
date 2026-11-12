@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "5c8f7fc9",
+ "head": "d7675b75",
  "referents": {
   "test-population": {
    "sha": "3231f52c",
@@ -48,10 +48,20 @@
  "uncommittedControl": {
   "reachable": true
  },
+ "ambiguityControl": {
+  "reachable": true
+ },
+ "restatementControl": {
+  "branchTaken": true,
+  "wouldRead": "LAPSED"
+ },
+ "granularity": "rows are CLAIMS (one per claim-starting line); `phrases` totals the set-phrase occurrences behind them (A-G479)",
  "counts": {
-  "matched": 14,
+  "claims": 15,
+  "phrases": 22,
+  "matched": 15,
   "LAPSED": 0,
-  "CURRENT": 4,
+  "CURRENT": 5,
   "SCOPED": 4,
   "SCOPED-UNRESOLVABLE": 3,
   "UNCOMMITTED": 1,
@@ -62,6 +72,7 @@
   {
    "line": 132,
    "kind": "test-population",
+   "phrases": 1,
    "text": "> §112's verdict was then read from the JSON directly: **16 files, 197 tests, 197 passed, 0 failed** at",
    "scope": {
     "shas": [
@@ -81,6 +92,7 @@
   {
    "line": 150,
    "kind": "product-pixels",
+   "phrases": 1,
    "text": "> | `7b8fc7f5` | §93 | `MOTION.breath` **deleted** (dead — 0 of 47 073 pixels swung in either state) | a constants-reader finds the key **missing** |",
    "scope": {
     "shas": [
@@ -100,6 +112,7 @@
   {
    "line": 204,
    "kind": "test-population",
+   "phrases": 1,
    "text": "> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.",
    "writtenAt": {
     "sha": "3231f52c",
@@ -121,6 +134,7 @@
   {
    "line": 239,
    "kind": "product-pixels",
+   "phrases": 2,
    "text": "> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |",
    "writtenAt": {
     "sha": "f80425ed",
@@ -142,6 +156,7 @@
   {
    "line": 276,
    "kind": "readings-corpus",
+   "phrases": 3,
    "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87. *** Not one reading in",
    "writtenAt": {
     "sha": "f80425ed",
@@ -163,6 +178,7 @@
   {
    "line": 374,
    "kind": "readings-corpus",
+   "phrases": 3,
    "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
    "scope": {
     "shas": [
@@ -180,6 +196,7 @@
   {
    "line": 375,
    "kind": "readings-corpus",
+   "phrases": 1,
    "text": "> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is",
    "scope": {
     "shas": [
@@ -197,6 +214,7 @@
   {
    "line": 509,
    "kind": "seal-corpus",
+   "phrases": 1,
    "text": "> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is th",
    "scope": {
     "shas": [],
@@ -212,18 +230,29 @@
   {
    "line": 531,
    "kind": "seal-corpus",
+   "phrases": 1,
    "text": "> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly",
-   "status": "UNCOMMITTED",
-   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "writtenAt": {
+    "sha": "d7675b75",
+    "when": "2026-11-13T00:14:43+01:00",
+    "subject": "fix(career): mapping phase G · §120 — probed outside my own pattern set: six defects in this instrument, five of them flattering"
+   },
+   "effectiveAt": {
+    "sha": "d7675b75",
+    "when": "2026-11-13T00:14:43+01:00",
+    "subject": "fix(career): mapping phase G · §120 — probed outside my own pattern set: six defects in this instrument, five of them flattering"
+   },
    "referent": {
     "sha": "bb30e826",
     "when": "2026-11-10T20:02:44+01:00",
     "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
-   }
+   },
+   "status": "CURRENT"
   },
   {
    "line": 543,
    "kind": "seal-corpus",
+   "phrases": 1,
    "text": "> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build",
    "scope": {
     "shas": [],
@@ -237,15 +266,30 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 759,
+   "line": 585,
+   "kind": "readings-corpus",
+   "phrases": 3,
+   "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0* — and produced **one**",
+   "status": "UNCOMMITTED",
+   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "referent": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   }
+  },
+  {
+   "line": 816,
    "kind": "stand-liveness",
+   "phrases": 1,
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
    "status": "UNDATABLE",
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 820,
+   "line": 877,
    "kind": "product-source",
+   "phrases": 1,
    "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
    "writtenAt": {
     "sha": "f82c35a9",
@@ -265,8 +309,9 @@
    "status": "CURRENT"
   },
   {
-   "line": 877,
+   "line": 934,
    "kind": "seal-corpus",
+   "phrases": 1,
    "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
    "scope": {
     "shas": [],
@@ -280,8 +325,9 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 924,
+   "line": 981,
    "kind": "stand-liveness",
+   "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
    "status": "UNDATABLE",
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"

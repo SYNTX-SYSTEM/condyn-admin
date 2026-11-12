@@ -291,14 +291,36 @@ const windowAt = i => (sameParagraph(i, i + 1) ? `${lines[i]} ${lines[i + 1]}` :
 const rows = [];
 lines.forEach((line, i) => {
   if (line.trim() === "") return;
-  const kind = KINDS.find(k => k.re.test(line)) ?? KINDS.find(k => k.re.test(windowAt(i)));
+  /**
+   * §121 · A-G479 (GELB's): A COUNT'S NAME IS PART OF ITS FRAME. Their `SCOPED-UNRESOLVABLE 5` was a PHRASE
+   * count under a claim count's header for four sections. Measured here before answering: this record has
+   * **35 phrase occurrences** behind **14 rows**, because one sentence carries up to three set phrases
+   * (`:276` — "38 STALE UNSEALED READINGS", "8 STALE SEALS", "`valid` IS NOW 0" — one claim, three phrases).
+   * So this instrument's rows were already claim-granular and the error ran the OTHER way from theirs. Both
+   * counts are now printed and named, because the defence is that neither granularity can be mistaken for
+   * the other, not that this one happened to be the right one.
+   *
+   * AND IT WAS RIGHT FOR AN UNMEASURED REASON (A-G464, this phase's refrain). `KINDS.find()` takes the FIRST
+   * matching kind and silently discards the rest — exactly the `CLAIMS.find()` defect GELB found at their
+   * 430. It has cost nothing here only because **no line in this record matches two kinds**, which was not
+   * measured until now. A line that did would be dated against ONE of two referents with no sign of the
+   * other, so first-wins is replaced by a REFUSAL: an ambiguous line stops the instrument instead of being
+   * quietly resolved. Proven reachable in-process at the foot, since a guard whose branch no data reaches is
+   * indistinguishable from one that is not there (A-G478, GELB's 431).
+   */
+  const onLine = KINDS.filter(k => k.re.test(line));
+  const onWindow = onLine.length > 0 ? onLine : KINDS.filter(k => k.re.test(windowAt(i)));
+  if (onWindow.length > 1)
+    throw new Error(`ERR_GRUEN_CURRENCY_AMBIGUOUS_KIND: line ${i + 1} matches ${JSON.stringify(onWindow.map(k => k.kind))}. Its status would be computed against ONE referent with no sign of the other — first-wins is not a resolution (A-G479).`);
+  const kind = onWindow[0];
   if (kind === undefined) return;
+  const phrasesHere = (windowAt(i).match(new RegExp(kind.re.source, kind.re.flags.includes("i") ? "gi" : "g")) ?? []).length;
   /* §120c: the first attribution rule was BACKWARDS and produced a duplicate row dated to the wrong commit —
      :743 ("comment-only ...") was credited with :744's "now reads" claim and read LAPSED at 47e34329, eleven
      hours before the claim existed. A window hit belongs to the line the claim STARTS on, so a window hit on
      line i is dropped when line i+1 carries the claim by itself. */
   if (!kind.re.test(line) && sameParagraph(i, i + 1) && kind.re.test(lines[i + 1])) return;
-  const row = { line: i + 1, kind: kind.kind, text: rawLines[i].trim().slice(0, 150) };
+  const row = { line: i + 1, kind: kind.kind, phrases: phrasesHere, text: rawLines[i].trim().slice(0, 150) };
   if (!kind.undatable) {
     /* §120d: SCOPE FROM THE NARROWEST TEXT CARRYING THE CLAIM. The seals' reproducibility claim is scoped to
        `HRYkeEpbpndI3UEE7ceeC`, which resolves to nothing — but its PARAGRAPH also names `fb4632da` for a
@@ -376,12 +398,41 @@ const mechanismControl = (() => {
   const found = firstBlobCarrying(sig);
   return { datesBackwards: found !== null && found.sha === oldest.sha, resolvedTo: found, oldestBlob: oldest.sha };
 })();
+/**
+ * §121b · A-G478 (GELB's 431) TURNED ON THE ONE BRANCH THIS FILE ALREADY KNEW WAS DEAD. §119 reported the
+ * A-G476 signature dating as INERT on this record, and `mechanismControl` proves the HELPER resolves to the
+ * oldest blob — but the helper is not the branch. The integration is `carried !== null && carried.when <
+ * wrote.when ? carried : wrote`, and if that comparison is never taken, `restatesFrom` is dead code and the
+ * whole mechanism is indistinguishable from one that was never wired in. *** A FUNCTION WHOSE ONLY CALLER IS
+ * UNREACHABLE IS INDISTINGUISHABLE FROM A FUNCTION THAT DOES NOT EXIST, AND "I ALREADY SAID IT WAS INERT"
+ * COVERS THE FIRST HALF OF THAT SENTENCE AND NOT THE SECOND. *** So the branch's own logic is exercised
+ * with a synthetic pair: a restatement dated after its referent must still classify from the EARLIER
+ * carrier and read LAPSED. In-process, no corpus mutation, therefore no revert step to get wrong.
+ */
+const restatementControl = (() => {
+  const ref = lastCommitFor(["test/career/mapping-field", "test/career/mapping-spec"]);
+  const wrote = { sha: "0000000a", when: new Date(Date.parse(ref.when) + 60_000).toISOString() };
+  const carried = { sha: "0000000b", when: new Date(Date.parse(ref.when) - 60_000).toISOString() };
+  const effective = carried !== null && Date.parse(carried.when) < Date.parse(wrote.when) ? carried : wrote;
+  return { branchTaken: effective === carried, wouldRead: Date.parse(effective.when) >= Date.parse(ref.when) ? "CURRENT" : "LAPSED" };
+})();
+if (!restatementControl.branchTaken || restatementControl.wouldRead !== "LAPSED")
+  throw new Error(`ERR_GRUEN_CURRENCY_RESTATEMENT_BRANCH_DEAD: ${JSON.stringify(restatementControl)} — the A-G476 integration cannot reach its earlier-carrier branch, so the mechanism is indistinguishable from one that was never wired in (A-G478).`);
+
+const ambiguityControl = (() => {
+  /* two kinds over one synthetic line: the refusal above must be able to fire, or a 0 ambiguous-lines record
+     is indistinguishable from a guard that is not wired in (A-G478). No corpus mutation, so no revert. */
+  const line = "16 files, 198 tests, 0 failed and 38 STALE UNSEALED READINGS";
+  return { reachable: KINDS.filter(k => k.re.test(line)).length > 1 };
+})();
 const uncommittedControl = (() => {
   const absent = introducedBy("a sentence that has never been written into this record: " + "x".repeat(40));
   return { reachable: absent === null };
 })();
 if (mechanismControl.datesBackwards === false)
   throw new Error(`ERR_GRUEN_CURRENCY_DATING_INERT: a signature from the OLDEST blob did not resolve to it (${JSON.stringify(mechanismControl)}) — the A-G476 dating cannot reach back and would silently never fire.`);
+if (!ambiguityControl.reachable)
+  throw new Error("ERR_GRUEN_CURRENCY_AMBIGUITY_GUARD_DEAD: a line carrying two kinds did not match two kinds, so the ambiguity refusal can never fire and a record with no ambiguous line is indistinguishable from an unwired guard (A-G478).");
 if (!uncommittedControl.reachable)
   throw new Error("ERR_GRUEN_CURRENCY_UNCOMMITTED_UNREACHABLE: a line that was never written resolved to a commit, so UNCOMMITTED is a bucket nothing can enter and a 0 there would be vacuous (A-G453).");
 if (!control.currentIsReachable || !control.lapsedIsReachable)
@@ -403,20 +454,23 @@ const out = {
   control,
   mechanismControl,
   uncommittedControl,
-  counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, "SCOPED-UNRESOLVABLE": by("SCOPED-UNRESOLVABLE").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
+  ambiguityControl,
+  restatementControl,
+  granularity: "rows are CLAIMS (one per claim-starting line); `phrases` totals the set-phrase occurrences behind them (A-G479)",
+  counts: { claims: rows.length, phrases: rows.reduce((n, r) => n + (r.phrases ?? 0), 0), matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, "SCOPED-UNRESOLVABLE": by("SCOPED-UNRESOLVABLE").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
   rows,
   detectorLimit: "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
 };
 
 console.log(`\nA-G473 over ${RECORD} at ${out.head}`);
 console.log(`referents: ${Object.entries(out.referents).map(([k, v]) => `${k}=${v.sha} ${v.when.slice(0, 16)}`).join(" · ")}`);
-console.log(`control: CURRENT=${control.currentIsReachable} LAPSED=${control.lapsedIsReachable} A-G476-dates-backwards=${mechanismControl.datesBackwards} UNCOMMITTED-reachable=${uncommittedControl.reachable} · quotation chars excluded: ${quotedChars} · CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${hiddenByExclusion}\n`);
+console.log(`control: CURRENT=${control.currentIsReachable} LAPSED=${control.lapsedIsReachable} A-G476-dates-backwards=${mechanismControl.datesBackwards} UNCOMMITTED-reachable=${uncommittedControl.reachable} ambiguity-guard-live=${ambiguityControl.reachable} A-G476-branch-live=${restatementControl.branchTaken} · quotation chars excluded: ${quotedChars} · CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${hiddenByExclusion}\n`);
 for (const r of rows) {
   const dated = r.writtenAt === undefined ? "" : ` written ${r.writtenAt.sha} ${r.writtenAt.when.slice(0, 16)} vs ${r.referent.sha} ${r.referent.when.slice(0, 16)}`;
   console.log(`${r.status.padEnd(10)} :${String(r.line).padEnd(4)} ${r.kind.padEnd(17)}${dated}`);
   console.log(`           ${r.text}`);
 }
-console.log(`\nmatched ${out.counts.matched} · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · SCOPED-UNRESOLVABLE ${out.counts["SCOPED-UNRESOLVABLE"]} · UNCOMMITTED ${out.counts.UNCOMMITTED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
+console.log(`\nCLAIMS ${out.counts.claims} (from ${out.counts.phrases} set-phrase occurrences) · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · SCOPED-UNRESOLVABLE ${out.counts["SCOPED-UNRESOLVABLE"]} · UNCOMMITTED ${out.counts.UNCOMMITTED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
 console.log(out.detectorLimit);
 
 const { writeFileSync } = await import("node:fs");
