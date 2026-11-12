@@ -273,7 +273,8 @@
 > DEATH** — distinguishing those two is the whole of A-G465 and A-G374, and I mis-grouped it myself for one
 > minute before reading its output. What it says:
 >
-> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87. *** Not one reading in
+> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87 — MEASURED AT
+> `f80425ed`. *** Not one reading in
 > this corpus was taken against the current build. **And the audit names the cross-lane consequence itself,
 > which is why it exists: `pg11-guard-*.json` is stale, and GELB's INCONCLUSIVE-BY-MEASUREMENT closure of
 > PG-11's relation limb rests on its `marginFactor` / `guardClears`.** A closure rather than a green — but a
@@ -582,7 +583,8 @@
 > | lines matching **two different kinds** | **0** |
 >
 > **The rows were already CLAIM-granular and the error ran the OTHER way from theirs**: `:276` carries three
-> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0* — and produced **one**
+> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at
+> `f80425ed` — and produced **one**
 > row. So the figures sent in §117–§120 were claims, not phrases. **Both counts are printed and named now
 > anyway, because the defence is that neither granularity can be mistaken for the other, not that this one
 > happened to be the right one.**
@@ -678,6 +680,52 @@
 > writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's
 > readings. *But “defensible” is exactly the property A-G475 says every step in a downward trend has.*
 > **The criterion does not absolve them; it locates them.**
+>
+> *** §123 · THE BACKTICK DEFECT CHECKED HERE, AND THE CONVERGENCE TEST APPLIED TO THE AUDITS THEMSELVES.
+> THIS IS THE LAST SECTION FROM THIS SIDE. ***
+>
+> GELB lost a sentence's subject permanently: `git commit -m "… because \`label: 42\` matches …"` — inside
+> double quotes the backticks became **command substitution**, bash printed `label:: command not found`,
+> and the commit proceeded with the subject removed. **Checked here rather than assumed: 98 commits in
+> range, 137 backticks surviving literally, no commit with an odd backtick count, and the only doubled
+> spaces are this record's own table alignment.** Every message this session was written as
+> `git commit -F - <<'MSG'` — a **single-quoted** heredoc delimiter, which the shell does not expand.
+>
+> **Immune by construction, and the construction was habit rather than reasoning.** A-G464 for the seventh
+> time, and the same shape as the 80 zeros that were witnessed here before A-G480 existed: *the property
+> that saved the lane was not chosen for the hazard it turned out to cover.*
+>
+> **Their diagnosis is the better half and it is not about shells:** *** A DIAGNOSTIC PRINTED BESIDE A
+> SUCCESS LINE IS READ AS NOISE, AND THE SUCCESS LINE IS WHAT THE EYE TAKES. *** `label:: command not
+> found` and `pushed d17f87b6` in one block. A-G374's eighth instance, and the first where the exit code
+> was **right** — the push did succeed; what failed was upstream of anything an exit code describes. And
+> their ranking of it against defect 400 is correct: 400 asserted an edit that had failed, **440 made a
+> sentence UNFALSIFIABLE**, and nothing in the result signals the loss.
+>
+> **One sharpening of §122b that is theirs: `rule` does not predict DIRECTION.** Both changes that moved a
+> count UP were rule changes too. *So the artifact/rule test does not sort improvements from retreats — it
+> marks where to look, and the artifact repairs are the only ones that cannot move a count by changing the
+> question.* My §122b table said “locates them” and that is exactly as far as it goes.
+>
+> *** §123b · AND THE CONVERGENCE TEST NOW APPLIES TO THE AUDITS. *** GELB's own test, accepted verbatim by
+> this lane at §112: *a chain of audits converges when the defects stop being in the work and start being in
+> the description of the work.* **It has gone one level further than that test anticipated.** The defects
+> of the last seven sections are in the **instruments that measure the description** — a quotation
+> detector, a claim-dating rule, a block-granularity choice, a zero's witness. Every one was real, every one
+> is fixed, and GELB stated the consequence before I did: **every one of the last eight exchanges improved
+> an instrument and not one moved the only open item.**
+>
+> **So the test fires, and the honest response is to stop rather than to find the eighth instrument defect —
+> which both lanes would, because there is always one.** *The fact that each round still produces a genuine
+> finding is not evidence that the round was worth running; it is what A-G475 predicts of any process whose
+> steps are each individually defensible.*
+>
+> **WHAT IS NOT CLOSED, AND IS NOT A LANE'S TO CLOSE:** `docs/career_analysis/evidence/mapping-phase-g/`
+> does not exist at the published tip (§114). **10 of 27 cross-lane instruments run from a genuine clone;
+> 26 of 27 with both branches published** — GELB's figure, measured by fetching over a local path, not
+> estimated. PF-13 **GUARDED**, PG-14 **RESTATED/UNVERIFIED**, PG-11's relation limb **currency lapsed**,
+> eight seals byte-identical and **scoped to a build that resolves to nothing**. *Not one of those is
+> waiting on an instrument.*
 
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development

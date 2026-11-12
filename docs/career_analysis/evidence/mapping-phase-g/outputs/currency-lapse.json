@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "930c25a9",
+ "head": "976cb81d",
  "referents": {
   "test-population": {
    "sha": "3231f52c",
@@ -15,15 +15,15 @@
    "when": "2026-11-11T22:13:56+01:00",
    "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
   },
-  "readings-corpus": {
-   "sha": "f80425ed",
-   "when": "2026-11-12T23:26:43+01:00",
-   "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
-  },
   "seal-corpus": {
    "sha": "bb30e826",
    "when": "2026-11-10T20:02:44+01:00",
    "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
+  },
+  "readings-corpus": {
+   "sha": "976cb81d",
+   "when": "2026-11-13T00:40:51+01:00",
+   "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
   },
   "product-source": {
    "sha": "fd45f45f",
@@ -57,12 +57,12 @@
  },
  "granularity": "rows are CLAIMS (one per claim-starting line); `phrases` totals the set-phrase occurrences behind them (A-G479)",
  "counts": {
-  "claims": 15,
-  "phrases": 22,
-  "matched": 15,
+  "claims": 16,
+  "phrases": 23,
+  "matched": 16,
   "LAPSED": 0,
-  "CURRENT": 6,
-  "SCOPED": 4,
+  "CURRENT": 5,
+  "SCOPED": 6,
   "SCOPED-UNRESOLVABLE": 3,
   "UNCOMMITTED": 0,
   "UNDATABLE": 2,
@@ -157,26 +157,22 @@
    "line": 276,
    "kind": "readings-corpus",
    "phrases": 3,
-   "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87. *** Not one reading in",
-   "writtenAt": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00",
-    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87 — MEASURED AT",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
    },
-   "effectiveAt": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00",
-    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
-   },
-   "referent": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00",
-    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
-   },
-   "status": "CURRENT"
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 374,
+   "line": 375,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
@@ -194,7 +190,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 375,
+   "line": 376,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is",
@@ -212,7 +208,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 509,
+   "line": 510,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is th",
@@ -228,7 +224,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 531,
+   "line": 532,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly",
@@ -250,7 +246,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 543,
+   "line": 544,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build",
@@ -266,33 +262,47 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 585,
+   "line": 586,
    "kind": "readings-corpus",
    "phrases": 3,
-   "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0* — and produced **one**",
+   "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 680,
+   "kind": "readings-corpus",
+   "phrases": 1,
+   "text": "> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's",
    "writtenAt": {
-    "sha": "930c25a9",
-    "when": "2026-11-13T00:26:42+01:00",
-    "subject": "fix(career): mapping phase G · §121 — A-G479: the count was right and the reason was unmeasured; A-G478 on the one branch already called dead"
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
-   "restatesFrom": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00"
-   },
-   "note": "A-G476: dated from the oldest version of the record carrying these figures, not from the line that restates them",
    "effectiveAt": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00"
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
    "referent": {
-    "sha": "f80425ed",
-    "when": "2026-11-12T23:26:43+01:00",
-    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
    "status": "CURRENT"
   },
   {
-   "line": 816,
+   "line": 918,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
@@ -300,7 +310,7 @@
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 877,
+   "line": 979,
    "kind": "product-source",
    "phrases": 1,
    "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
@@ -322,7 +332,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 934,
+   "line": 1036,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
@@ -338,7 +348,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 981,
+   "line": 1083,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
