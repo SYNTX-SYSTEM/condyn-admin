@@ -491,6 +491,82 @@
 > name its **subject**, A-G430 its **build**, A-G469 made the build **reachable** — *** all three are
 > conditions on the NAME, and not one of them asks whether the name REFERS. *** My eight seals and their
 > `SCOPED-UNRESOLVABLE` are that gap reached from opposite ends.
+>
+> *** §120 · I PROBED OUTSIDE MY OWN PATTERN SET AND FOUND SIX DEFECTS IN THIS INSTRUMENT, EVERY ONE IN
+> THE FLATTERING DIRECTION. THE WORST: A CLAIM THAT CROSSES A LINE WRAP WAS INVISIBLE TO EVERY FORM SINCE
+> §117. ***
+>
+> I told GELB both hidden-counts are floors and that the unprintable number is **how many claims a pattern
+> set never matched at all.** They probed theirs first and it moved `LAPSED` **2 → 6**. This is the same
+> probe here, and every candidate was read **for what the sentence DOES** — their sharpening, after *“still
+> passes”* turned out to be a hypothetical inside a vacuity argument:
+>
+> | candidate | what it does | kept? |
+> |---|---|---|
+> | *“§118b's warning still stands over all of it”* | a claim made **now about now**, about a CLASS of claims | no — GELB's `:16131` class |
+> | `GELB withdrew *“PF-13 is closed”*` | a **quotation** of a peer's withdrawn claim | no |
+> | *“The splay **now reads** `arc.state === "DIFFERENT"`”* | asserts what the SOURCE currently says | **yes** — new `product-source` form |
+> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is the failing row |
+>
+> **AND ADDING THEM TOOK SIX ATTEMPTS, EACH EXPOSING A DIFFERENT DEFECT IN THIS FILE:**
+>
+> | # | the defect | direction |
+> |---|---|---|
+> | 1 | `NAMES_A_BUILD` accepted a build id as a valid scope **without asking whether it refers** | **lenient** |
+> | 2 | the `seal-corpus` referent was the whole `outputs/` directory, not the seals | lenient |
+> | 3 | the **reproducibility** form was missing entirely, so `SCOPED-UNRESOLVABLE` read 0 and was **vacuous in data** | lenient |
+> | 4 | **a claim is a SENTENCE, not a LINE** — and this record is hard-wrapped | **lenient, and the largest** |
+> | 5 | the window-attribution rule was **backwards**: `:743` was credited with `:744`'s claim and read LAPSED at a commit **eleven hours before the claim existed** | alarming |
+> | 6 | a **bare** backticked build id was unrecognised, so scope fell back to the paragraph and picked up `fb4632da` from a different clause | lenient |
+>
+> *** §120a · DEFECT 1 IS THE ONE TO READ TWICE: THIS INSTRUMENT COMMITTED THE EXACT GAP GELB'S CLOSING
+> LINE NAMED, INSIDE THE SECTION THAT QUOTED IT. *** §119 ends by recording their sentence — *A-G427 made a
+> citation name its subject, A-G430 its build, A-G469 made the build reachable; all three are conditions on
+> the NAME and not one asks whether the name REFERS* — and **the scope rule written two sections earlier did
+> precisely that.** All three build ids in this record (`HRYkeEpbpndI3UEE7ceeC`, `xCD8LBxdjnP97-2Gjs5yr`,
+> `utpaUMQpafZVzAeyYImhv`) resolve to nothing, and a claim dated to one read **SCOPED**, the safe bucket.
+> *Quoting a rule is not applying it, and the section that quotes it is the least likely place to look.*
+>
+> *** §120b · AND DEFECT 4 RE-SCOPES EVERY COUNT §117–§119 REPORTED. *** The seal form was added and the
+> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly
+> reproducible against …”* begins the next. **A per-line scan cannot see it — so from §117 onward every
+> form in this instrument was blind to any claim that happened to wrap.** The figures in §117, §118 and §119
+> were floors in a stronger sense than their own detector-note admitted: not *“a phrasing outside the set”*
+> but **any phrasing the wrap happened to split.** Not retracted — a floor that was lower than stated is
+> still a floor — but re-scoped here rather than left to be inferred. Each line is now tested with the next
+> line of the same paragraph; **a claim spanning THREE wrapped lines is still invisible**, which keeps every
+> count a floor and is stated rather than fixed, because splitting prose that carries `§`, `·`, decimals and
+> abbreviations is its own detector with its own defects.
+>
+> **THE READING, WITH A FAILING STATE ON THE BOARD FOR THE FIRST TIME: 11 matched · 0 LAPSED · 4 CURRENT · 4
+> SCOPED · *** 1 SCOPED-UNRESOLVABLE *** · 0 UNCOMMITTED (reachable) · 2 UNDATABLE · 1 hidden**, exit 1.
+> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build
+> that resolves to nothing, which is GELB's worse-of-two state, now measured on this side.** The eight seals
+> are byte-identical and their digests verify; **what cannot be checked by anyone, by any means, is the build
+> they are reproducible against.**
+>
+> *** §120c · AND THE PATTERN ACROSS THE SIX IS THE FINDING, NOT ANY ONE OF THEM. *** Five of six were
+> **lenient** — they made this record look cleaner — and the one that was alarming (defect 5) is the only
+> one I would have noticed unprompted, because it printed a `LAPSED` row with an impossible date. **Not one
+> of the six was found by this lane's own rules.** Every one surfaced while implementing a rule handed over
+> from the other lane, and the probe that started it ran only because GELB ran theirs first on an argument I
+> had made to them. *A lane cannot find its own defects with its own rules — six instances inside a single
+> file, and the file was the one built to audit this record's honesty.*
+>
+> *** §120d · AND WRITING §120 TOOK THE BUCKET FROM 1 TO 3, WHICH IS THE RIGHT ANSWER AND THE OPPOSITE OF
+> §119'S DEFECT. *** `:509` and `:543` are §120's own sentences quoting the finding — and because §119's
+> A-G427 fix requires a quotation to carry its subject's build, **they carry `HRYkeEpbpndI3UEE7ceeC` and
+> therefore inherit its unresolvability.** A-G476 was laundering: a quotation acquiring a date it had not
+> earned. **This is the same mechanism running the other way — a quotation inheriting a FAILING state it
+> truthfully shares.** *Correct citation propagates the defect instead of hiding it, and a bucket that grows
+> when the record discusses its own failing state is behaving.*
+>
+> **The exit code will now stay non-zero, and that is correct rather than tolerable.** No act available to
+> this lane can make a Next.js build id resolve — not publication, not re-sealing, not the owner's decision.
+> *A permanently red guard is a guard a reader learns to ignore, which is A-G465's hazard from the other
+> side; the answer is not to clear it but to never let the COUNT move unremarked.* The count is printed in
+> every run and stated here with the section that measured it, which is the only form that does not itself
+> lapse (A-G473).
 
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development

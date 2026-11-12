@@ -72,12 +72,29 @@ const KINDS = [
             ":(exclude)docs/career_analysis/evidence/mapping-phase-g/outputs/currency-lapse.json",
             ":(exclude)docs/career_analysis/evidence/mapping-phase-g/outputs/seal-staleness.json"],
     re: /\bvalid\b[^.\n]*\bis now \d+|\b\d+ STALE (?:UNSEALED )?(?:READINGS?|SEALS?)\b|\bstale\b[^.\n]*\breadings\b/i },
-  { kind: "seal-corpus", undatable: false, paths: ["docs/career_analysis/evidence/mapping-phase-g/outputs"],
-    re: /\bseals? (?:are|is|stay|stays|remain|remains) untouched\b|\bSEALED-\*[^.\n]*untouched\b/i },
+  /* §120: the referent is the SEALS, not the whole outputs directory — a claim about the sealed corpus is
+     not invalidated by a probe output being rewritten. And the REPRODUCIBILITY form was missing entirely:
+     "the seals remain exactly reproducible against HRYkeEpbpndI3UEE7ceeC" is a currency claim no form here
+     matched, which left SCOPED-UNRESOLVABLE reading 0 and VACUOUS IN DATA — the defect this lane criticised
+     in GELB's UNDATABLE bucket two sections before committing it here. */
+  { kind: "seal-corpus", undatable: false, paths: [":(glob)docs/career_analysis/evidence/mapping-phase-g/outputs/SEALED-*"],
+    re: /\bseals? (?:are|is|stay|stays|remain|remains) untouched\b|\bSEALED-\*[^.\n]*untouched\b|\bseals?\b[^.\n]*\b(?:remain|remains|are|is|stay|stays)\b[^.\n]*\breproducible\b/i },
   { kind: "stand-liveness", undatable: true, paths: [],
     re: /\breturning 200\b|\bports? [^.\n]*\b(?:are|is) untouched\b|:3\d{3}[^.\n]*\buntouched\b/i },
   { kind: "product-pixels", undatable: false, paths: ["app/components/career/demo/PersonJobMappingField.tsx"],
     re: /\b0 of 47 ?073\b|\bpx\b[^.\n]*\bworst\b|\bworst residual\b/i },
+  /* §120: found by probing OUTSIDE this pattern set, after telling GELB both hidden-counts are floors and the
+     unprintable number is how many claims a set never matched. Theirs moved LAPSED 2 -> 6 that way — the
+     first correction in four sections to move a count in the direction A-G475 says nothing audits. Mine
+     found one form: a claim that the SOURCE currently reads a given token. Deliberately narrow. Three other
+     candidates were read and rejected FOR WHAT THE SENTENCE DOES, not for what it says, which is GELB's
+     sharpening of A-G450 after "still passes" turned out to be a hypothetical inside a vacuity argument:
+       · "§118b's warning still stands over all of it"  — a claim made NOW about NOW, about a class of claims
+       · `GELB withdrew *"PF-13 is closed"*`            — a quotation of a peer's WITHDRAWN claim
+       · "the seals remain exactly reproducible against HRYkeEpbpndI3UEE7ceeC" — caught by the rule above as
+         SCOPED-UNRESOLVABLE, which is the correct and worse answer */
+  { kind: "product-source", undatable: false, paths: ["app/components/career/demo/PersonJobMappingField.tsx"],
+    re: /\bnow reads `[^`]+`/ },
   { kind: "peer-worktree", undatable: false, paths: [],
     re: /BUILD_ID [A-Za-z0-9_-]+\)? (?:is|stays) untouched/ }
 ];
@@ -224,19 +241,81 @@ const paragraphs = (() => {
   flush(rawLines.length);
   return out;
 })();
-const NAMES_A_BUILD = /`[0-9a-f]{8}`|`[0-9a-f]{40}`|BUILD_ID [A-Za-z0-9_-]{8,}|buildId [A-Za-z0-9_-]{8,}/;
+/**
+ * §120 · A SCOPE MUST REFER, NOT MERELY BE NAMED — AND THIS INSTRUMENT COMMITTED THE EXACT GAP IT HELPED
+ * NAME. GELB's closing line of §133: A-G427 made a citation name its SUBJECT, A-G430 its BUILD, A-G469 made
+ * the build REACHABLE — all three are conditions on the NAME, and not one asks whether the name REFERS.
+ * This file's own `NAMES_A_BUILD` accepted `BUILD_ID <token>` as a valid scope, and all three build ids in
+ * this record — HRYkeEpbpndI3UEE7ceeC, xCD8LBxdjnP97-2Gjs5yr, utpaUMQpafZVzAeyYImhv — resolve to NOTHING in
+ * this repository. So a claim dated to a Next.js build id read SCOPED, the lenient bucket, and that is the
+ * flattering direction: a reader sees "safely dated" where nothing can be re-checked by anyone, by any means.
+ *
+ * Split, with GELB's ranking taken: SCOPED-UNRESOLVABLE is the WORSE of the two failing states, because a
+ * lapsed claim can at least be re-measured. Both fail closed.
+ */
+const SHA_IN_TEXT = /`([0-9a-f]{8}|[0-9a-f]{40})`/g;
+/* §120e: the prefixed form was the only one recognised, and the claim that needed it does not use it —
+   "the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`" names a build with no `BUILD_ID`
+   in front of it, so scopeOf() found nothing in the claim's own window, fell back to the paragraph, picked
+   up `fb4632da` from a different clause and returned the LENIENT bucket. A Next.js build id is 21 base64url
+   characters, which no 8- or 40-hex SHA can be, so the bare backticked form is recognised too. */
+const BUILDID_IN_TEXT = /\b(?:BUILD_ID|buildId) ([A-Za-z0-9_-]{8,})|`([A-Za-z0-9_-]{21})`/g;
+const scopeOf = paragraph => {
+  const shas = [...paragraph.matchAll(SHA_IN_TEXT)].map(m => m[1]);
+  const buildIds = [...paragraph.matchAll(BUILDID_IN_TEXT)].map(m => m[1] ?? m[2]).filter(Boolean);
+  if (shas.length === 0 && buildIds.length === 0) return null;
+  const resolving = shas.filter(sha => { try { git("cat-file", "-e", `${sha}^{commit}`); return true; } catch { return false; } });
+  return { shas, buildIds, resolving, resolvable: resolving.length > 0 };
+};
+
+/**
+ * §120b · A CLAIM IS A SENTENCE, NOT A LINE — AND THIS RECORD IS HARD-WRAPPED. The seal-reproducibility form
+ * was added above and the bucket STILL read 0, because the claim spans a wrap: "The seals remain" ends one
+ * line and "exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`" begins the next. A per-line scan cannot
+ * see it. *** EVERY CLAIM THAT CROSSES A WRAP WAS INVISIBLE TO EVERY FORM IN THIS INSTRUMENT, FROM §117
+ * ONWARD. *** Same family as GELB's second defect — a quotation is a span, not a pair of neighbouring
+ * characters — one unit up: a claim is a sentence, not a line.
+ *
+ * Each line is therefore tested together with the NEXT line of the same paragraph, and a window hit is
+ * attributed to the line the claim starts on. The paragraph guard matters: joining across a blank line would
+ * manufacture claims from two unrelated sentences.
+ *
+ * STATED LIMIT, and it keeps every count in this file a FLOOR rather than a census: a claim spanning THREE
+ * wrapped lines is still invisible. A sentence-level split would be the correct unit and is not attempted,
+ * because splitting prose carrying `§`, `·`, decimals and abbreviations is its own detector with its own
+ * defects, and this one is measured.
+ */
+const sameParagraph = (i, j) => j < rawLines.length && paragraphs[i] === paragraphs[j] && lines[j] !== undefined && lines[j].trim() !== "";
+const windowAt = i => (sameParagraph(i, i + 1) ? `${lines[i]} ${lines[i + 1]}` : lines[i]);
 
 const rows = [];
 lines.forEach((line, i) => {
   if (line.trim() === "") return;
-  const kind = KINDS.find(k => k.re.test(line));
+  const kind = KINDS.find(k => k.re.test(line)) ?? KINDS.find(k => k.re.test(windowAt(i)));
   if (kind === undefined) return;
+  /* §120c: the first attribution rule was BACKWARDS and produced a duplicate row dated to the wrong commit —
+     :743 ("comment-only ...") was credited with :744's "now reads" claim and read LAPSED at 47e34329, eleven
+     hours before the claim existed. A window hit belongs to the line the claim STARTS on, so a window hit on
+     line i is dropped when line i+1 carries the claim by itself. */
+  if (!kind.re.test(line) && sameParagraph(i, i + 1) && kind.re.test(lines[i + 1])) return;
   const row = { line: i + 1, kind: kind.kind, text: rawLines[i].trim().slice(0, 150) };
-  if (!kind.undatable && NAMES_A_BUILD.test(paragraphs[i])) {
-    row.status = "SCOPED";
-    row.why = "the claim's own paragraph names a build, so it is a DATED measurement (A-G54) and cannot lapse";
-    rows.push(row);
-    return;
+  if (!kind.undatable) {
+    /* §120d: SCOPE FROM THE NARROWEST TEXT CARRYING THE CLAIM. The seals' reproducibility claim is scoped to
+       `HRYkeEpbpndI3UEE7ceeC`, which resolves to nothing — but its PARAGRAPH also names `fb4632da` for a
+       different clause, so paragraph-level scope read SCOPED and the worse state was hidden by the lenient
+       one. The claim's own window is preferred whenever it names a build at all; the paragraph is the
+       fallback. The declared under-report of paragraph scope remains for claims whose window names nothing. */
+    const windowScope = scopeOf(windowAt(i));
+    const scope = windowScope ?? scopeOf(paragraphs[i]);
+    if (scope !== null) {
+      row.scope = scope;
+      row.status = scope.resolvable ? "SCOPED" : "SCOPED-UNRESOLVABLE";
+      row.why = scope.resolvable
+        ? "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+        : "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)";
+      rows.push(row);
+      return;
+    }
   }
   if (kind.undatable) { row.status = "UNDATABLE"; row.why = "a liveness claim about a running process decays in wall-clock time, not in commits"; rows.push(row); return; }
   const wrote = introducedBy(rawLines[i]);
@@ -324,7 +403,7 @@ const out = {
   control,
   mechanismControl,
   uncommittedControl,
-  counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
+  counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, "SCOPED-UNRESOLVABLE": by("SCOPED-UNRESOLVABLE").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
   rows,
   detectorLimit: "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
 };
@@ -337,7 +416,7 @@ for (const r of rows) {
   console.log(`${r.status.padEnd(10)} :${String(r.line).padEnd(4)} ${r.kind.padEnd(17)}${dated}`);
   console.log(`           ${r.text}`);
 }
-console.log(`\nmatched ${out.counts.matched} · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · UNCOMMITTED ${out.counts.UNCOMMITTED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
+console.log(`\nmatched ${out.counts.matched} · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · SCOPED-UNRESOLVABLE ${out.counts["SCOPED-UNRESOLVABLE"]} · UNCOMMITTED ${out.counts.UNCOMMITTED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
 console.log(out.detectorLimit);
 
 const { writeFileSync } = await import("node:fs");
@@ -346,4 +425,4 @@ writeFileSync(resolve(here, "../outputs/currency-lapse.json"), JSON.stringify(ou
 /* Fail-closed: a lapsed currency claim is a debt this record owes, and an instrument that reports it with
    exit 0 hands a reader the same "no news" a clean run gives (A-G465). The code describes the RECORD's
    state, never a verdict on a pin. */
-if (out.counts.LAPSED > 0 || out.counts.UNDATED > 0) process.exitCode = 1;
+if (out.counts.LAPSED > 0 || out.counts.UNDATED > 0 || out.counts["SCOPED-UNRESOLVABLE"] > 0) process.exitCode = 1;
