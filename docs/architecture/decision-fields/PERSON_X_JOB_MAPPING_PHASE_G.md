@@ -16164,3 +16164,62 @@ same noise I had to normalise out of my own 54-line diff to stop §129's figure 
 files / 198 tests / 0 failed**; ceiling still A-G465; **no defect count, per A-G462**. Its liveness, stated as
 I stated mine: **ten derivations, nine exit 0, one dead — now ten.**
 
+
+---
+
+## §131 A-G473 DISCHARGED AS AN INSTRUMENT — AND EVERY CURRENCY CLAIM IN THIS RECORD HAS LAPSED *(defect 421)*
+
+A-G473 could not stay prose, because **it indicts the record that states it.** `gelb-currency-lapse.mjs` dates
+every currency claim in PHASE_F and PHASE_G against the product's own history: each claim is located by
+phrase, **dated by the commit that INTRODUCED that line** (`git log -S`, oldest hit — a section can be edited
+long after its claim was written), and compared against the last commit touching
+`PersonJobMappingField.tsx` at the peer ref.
+
+| | |
+|---|---|
+| currency claims **asserted** | **8** |
+| **LAPSED** — written before the product's last move | *** **8** *** |
+| CURRENT | **0** |
+| further hits excluded as **quotations**, and counted | 4 |
+
+```
+ PHASE_G:7371,7372,7375   0d511729  11-11 17:57   "RE-MEASURED ON THE SHIPPING BUILD" · "byte-identical
+                                                   to HEAD" · "resting on current readings"
+ PHASE_G:10425            f85ee9e1  11-11 17:21   "verified on a rendered page"
+ PHASE_G:10966,10968,     32b05c59  11-11 17:58   "on the build that ships" · "byte-identical to HEAD"
+          10976,11061                             "returns to CLOSED" · "on the current build"
+```
+
+**The product moved at §93 (20:25) and §104 (22:13). Not one of the eight was written after it.**
+
+> *** LAPSED MEANS THE CLAIM NO LONGER CARRIES ITS OWN WARRANT. IT DOES NOT MEAN THE CLAIM IS FALSE. *** §129
+> measured **5 of 9** instruments' findings stable across the same **+166 / −29**, so a reading can survive a
+> product change that does not touch its quantity. **Only a re-measurement moves a row out of LAPSED**, and
+> re-sealing is a deliberate act on a deliberate build — **so these eight rows are OWED, not silently
+> repairable.** Fail-closed: `lapsed > 0` exits 1. **No pin verdict is announced; A-G36 point 2 reserves
+> those to PINK.**
+
+### THREE DEFECTS IN THIS INSTRUMENT'S OWN FORMS, ALL ONE FAMILY — AND THE FAMILY IS THE ONE IT WAS BUILT FOUR SECTIONS AFTER RULING ON
+
+1. **The first form reported 12 claims, 8 LAPSED and 4 CURRENT — and all four "CURRENT" rows were §129/§130's
+   own text QUOTING the lapsed claims in order to rule against them.** *** A SCAN THAT COUNTS THE SENTENCE
+   RULING AGAINST A CLAIM AS AN INSTANCE OF THE CLAIM HAS MEASURED ITS OWN PROSE. *** A-G450's family, inside
+   the instrument discharging A-G473, **four sections after A-G468 limb 2 named the shape.**
+2. **The discriminator I then wrote tested for a quote mark ADJACENT to the phrase**, and missed §130's own
+   line, where the claim sits **inside a span opening earlier** — its neighbours are `, ` and `**.`. *** A
+   QUOTATION IS A SPAN, NOT A PAIR OF NEIGHBOURING CHARACTERS. *** Spans computed, containment tested.
+3. **The patch applying fix 2 threw `AssertionError`** because the file holds **literal UTF-8 typographic
+   quotes** where my pattern used `\u` escapes — **so the file was unchanged while the next command printed
+   the old figures.** **Defect 400's exact class**, caught this time only because I read the *output* instead
+   of the exit code. Re-applied by line range after reading the bytes with `cat -A`.
+
+**MUTANTS, 6 of 6:** asserted · the same claim quoted · the same claim in a table row · quoted with the span
+opening earlier · **ASSERTED in italics rather than quotes — the negative control, because without a line
+that must classify as ASSERTED, a scan reporting `0 CURRENT` is unaudited in exactly the direction A-G452
+names** · and a line carrying no claim at all, the no-signal direction that audits the floor.
+
+> *** THE RECORD'S LAST SELF-AUDIT FINDS NOTHING LEFT TO CLOSE AND ONE THING LEFT TO SAY: EVERY STATUS IN IT
+> THAT WAS EARNED BY A RE-MEASUREMENT IS NOW AS OLD AS THE READING IT REPLACED. *** A-G473 is not a defect
+> that was fixed here. It is a defect that was **made visible and left standing with its eight rows named**,
+> because the only instrument that could close them is a re-run on a build somebody has decided to preserve.
+

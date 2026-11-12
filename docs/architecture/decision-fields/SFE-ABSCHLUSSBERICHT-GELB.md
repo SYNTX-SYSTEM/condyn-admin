@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 420.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 421.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -162,6 +162,12 @@ sein Baum trägt §51s Zustand. **9 Instrumente pinnen es, das Register zitiert 
 Befunde stabil** (nur Offsets verschoben), **3 ändern sich**, **1 verweigert** (`MOTION`, §93s Löschung — der
 Guard ist richtig, die Folge harmlos). *** EINE ZITATION BENENNT EINEN BUILD, OB DIE ZITIERENDE LANE EINEN
 PINNEN WOLLTE ODER NICHT. ***
+
+**10. Alle 8 Währungsaussagen des Registers sind abgelaufen** *(§131, Defekt 421)*. `gelb-currency-lapse.mjs`
+datiert jede Aussage über den Commit, der **ihre Zeile einführte**, gegen die letzte Produktänderung:
+**8 behauptet, 8 LAPSED, 0 CURRENT**, 4 weitere Treffer als **Zitate** ausgeschlossen und gezählt. **LAPSED
+heißt: die Aussage trägt ihren eigenen Beleg nicht mehr — nicht, dass sie falsch ist.** Nur eine Neumessung
+bewegt eine Zeile heraus. **Die acht Zeilen sind geschuldet, nicht still reparierbar.**
 
 **9. PG-11s Relationsglied ruht auf einer abgelaufenen Währungsaussage** *(§130, A-G473, Defekte 419/420)*.
 A-G277 wurde bei **§89 (`32b05c59`, 17:58)** erneut geschlossen, mit dem Satz *„resting on current readings"*.
