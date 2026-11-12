@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 418.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 420.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -139,8 +139,22 @@ Altlast ist nicht zurückgebaut.
 Befund dieses Mandats.)* `gelb-gate-sweep-a-g128` meldet PG-14s **ZERO-BY-CONSTRUCTION** als `[ok]` bei
 `4b83414e` und als *** UNVERIFIED *** beim aktuellen Build: der Anker
 `for (let pass = 0; pass < 2; pass += 1)` wurde von **§86s `frameWithBodies`-Neuschreibung entfernt.**
-**Der Pin liest grün nur am veralteten Build.** Nicht zurückgebaut — die Neuverifikation von PG-14 an einem
-erreichbaren Build ist **offen**.
+**Der Pin liest grün nur am veralteten Build.**
+
+> ⚠ **UND §130 HAT DIE ZEITEN NACHGETRAGEN, DIE DEN DEFEKTTYP ÄNDERN.** Der Anker ist **bei §64 noch
+> vorhanden** — und §64 (`b6c4bd84`, 09:00) ist der Abschnitt, der **gemessen hat, dass die Zwei-Pass-Lösung
+> nicht konvergiert** (1.59 px auf 4 von 11 Layouts bei 420 px, 6.12 px bei 24 Zeichen). §86 entfernte die
+> Schleife **acht Stunden später**. *** VON 09:00 BIS 17:12 WAR DER ANKER VORHANDEN, DER SWEEP LAS `[ok]`, UND
+> DIE WIDERLEGENDE MESSUNG LAG SCHON IM REGISTER. *** **A-G471 (GRÜNs): ein Pin veraltet nicht nur, indem er
+> seinen Referenten verliert — er kann einen Referenten behalten, der inzwischen widerlegt ist, und das liest
+> grüner als ein fehlender.** Weder eine Erreichbarkeits- noch eine Frischeprüfung hätte es markiert: der
+> String war da und die Datei war da.
+>
+> **PG-14 ist NEU FORMULIERT, NICHT ALS ERFÜLLT AUSGEWIESEN.** GRÜNs Sweep über **440 Fälle**: *over while
+> claiming convergence* = **0**; §64s Hüllfall von **1.59 px auf 0.1068 px**; bei ≤ 32 Zeichen schlimmstenfalls
+> **0.2557 px**. Die Konstruktion ist jetzt *bis zu einer deklarierten Obergrenze iterieren und offenlegen* —
+> also **nicht mehr zero-by-construction**, sondern: *** KEIN FALL BEHAUPTET KONVERGENZ UND VERFEHLT DIE
+> EINHALTUNG. *** **Status: NEU FORMULIERT, UNVERIFIZIERT** — das Urteil steht PINK zu (A-G36 Punkt 2).
 
 **7. `4b83414e` war niemals ein Produktstand** *(§129, A-G470, Defekt 410)*. Es ist ein `docs(`-Commit, ändert
 **genau eine Datei** (`OWNER-DECISIONS-OPEN.md`, 83 Zeilen) und berührt die Komponente **überhaupt nicht**;
@@ -148,6 +162,15 @@ sein Baum trägt §51s Zustand. **9 Instrumente pinnen es, das Register zitiert 
 Befunde stabil** (nur Offsets verschoben), **3 ändern sich**, **1 verweigert** (`MOTION`, §93s Löschung — der
 Guard ist richtig, die Folge harmlos). *** EINE ZITATION BENENNT EINEN BUILD, OB DIE ZITIERENDE LANE EINEN
 PINNEN WOLLTE ODER NICHT. ***
+
+**9. PG-11s Relationsglied ruht auf einer abgelaufenen Währungsaussage** *(§130, A-G473, Defekte 419/420)*.
+A-G277 wurde bei **§89 (`32b05c59`, 17:58)** erneut geschlossen, mit dem Satz *„resting on current readings"*.
+Die Komponente änderte sich **danach zweimal**: §93 (20:25) und §104 (22:13). *** DIE AUSSAGE WAR ZWEI STUNDEN
+UND SIEBENUNDZWANZIG MINUTEN WAHR UND IST SEIT SECHZEHN STUNDEN FALSCH *** — im Präsens geschrieben, ohne
+Verfallsmarke. **A-G473: eine Währungsaussage ist selbst datiert; die Reparatur eines Veraltungsdefekts ist
+keine Schließung, sondern eine datierte.** Und sie ist **nicht nachprüfbar**: §89s Build ist
+`utpaUMQpafZVzAeyYImhv`, eine Next.js-`buildId` **ohne jeden Repository-Referenten**. **Status: von CLOSED auf
+CURRENCY LAPSED.** Nicht neu gemessen — Neuversiegelung ist ein bewusster Akt auf einem bewussten Build.
 
 **8. Die unabhängige Rekonstruktion trägt heute 10 von 27 Instrumenten** *(§129, A-G469)*. Aus einem echten
 `origin`-Clone, ohne Pfadumschreibung: **10 laufen, 16 erreichen ihre Quelle nicht, 1 verweigert als Bauart.**

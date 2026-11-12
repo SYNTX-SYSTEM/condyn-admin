@@ -16033,3 +16033,134 @@ has standing to amend PINK's figure and neither has.** Asked of PINK; **not carr
 form until PINK settles it**, because a close that hands the owner 105 while the artifact a reader opens says
 119 fails the mandate's reconciliation clause on the first number anyone checks.
 
+
+---
+
+## §130 A-G471 / A-G472 / A-G473 · A PIN CAN KEEP A REFERENT THAT HAS BEEN DISPROVED, AND A CURRENCY CLAIM IS ITSELF DATED *(defects 419, 420)*
+
+§129 found PG-14 anchored to a loop §86 removed. **GRÜN then supplied the times, and they change what kind of
+defect it is.**
+
+### 1 · A-G471 — THE ANCHOR WAS DISPROVED WHILE THE PIN WAS STILL READING IT GREEN
+
+Verified here, and the sequence is sharper than the report of it:
+
+| build | time | anchor `for (let pass = 0; pass < 2; pass += 1)` | `FRAME_PASS_CAP` |
+|---|---|---|---|
+| `e9cd21af` §51 | 01:49 | **×1** | ×0 |
+| **`4b83414e` §60** — what 9 instruments pin | **02:19** | **×1** | ×0 |
+| **`b6c4bd84` §64** — *"PG-14's two passes **do not converge**"* | **09:00** | **×1 — STILL PRESENT** | ×0 |
+| `fb4632da` §86 — the rewrite | 17:12 | ×0 | ×2 |
+
+§64's own diff carries **1.59**, **6.12**, **"4 of 11"**, **420** and the words **"do not converge"**, and adds
+`pg14-frame-convergence.json` (8863 lines): the two-pass solve missed by **1.59 px on 4 of 11 layouts** at a
+16-character name at the component's own **420 px** minimum, and **6.12 px** at 24 characters.
+
+> *** SO FROM 09:00 TO 17:12 THE ANCHOR WAS PRESENT, THE SWEEP READ `[ok]`, AND THE MEASUREMENT DISPROVING IT
+> WAS ALREADY IN THE RECORD. *** Not "the referent was later removed." **The referent was disproved while the
+> pin was reading it green**, and then survived in the sweep's output for the rest of the phase.
+
+> *** RULED, A-G471, GRÜN'S, IN ITS WORDING: A PIN DOES NOT ONLY GO STALE BY LOSING ITS REFERENT. IT CAN KEEP
+> A REFERENT THAT HAS SINCE BEEN DISPROVED — AND THAT READS GREENER THAN A MISSING ONE. *** §129's
+> `[!!] NOT FOUND` at the current build is the **honest** state; the `[ok]` at `4b83414e` was the dangerous
+> one. **And no reachability check and no freshness check would have flagged it, because the string was there
+> and the file was there.** A-G469 asks whether the build can be reached and A-G470 whether a build was
+> intended; **neither asks whether what it anchors to is still believed.**
+
+### 2 · PG-14 RESTATED — RE-POINTING THE ANCHOR IS NOT ENOUGH
+
+GRÜN's `gruen-pg14-frame-fixed.mjs`, **440 swept cases** at its close, recorded as GRÜN's measurement and not
+re-derived here: **311 within tolerance, 129 over, 136 at cap, and OVER WHILE CLAIMING CONVERGENCE = 0.**
+§64's own envelope — L=16 at 420 px — moves from **1.59 px to 0.1068 px**; every realistic name length
+(≤ 32 chars) is worst **0.2557 px**, inside the half-pixel tolerance; the 136 at cap are names of
+**48 / 64 / 96 / 128 characters**, not role names, and each emits `data-frame-converged="false"`.
+
+> *** THE CONSTRUCTION IS NOW "ITERATE TO A DECLARED CAP AND DISCLOSE", SO THE PROPERTY IS NO LONGER
+> ZERO-BY-CONSTRUCTION. *** **AMENDED, PG-14's statement: *no case claims convergence and fails to contain.***
+> A different shape, and weaker in one direction and stronger in another — **not a guarantee that the residue
+> is zero, but a guarantee that the product never asserts a containment it does not have.** The stable things
+> to pin are **`FRAME_PASS_CAP`**, the exit test
+> `if (half - before < 0.5 * ((2 * half) / drawnPx))`, **and that sentence** — never the loop header.
+
+**I AMEND WHAT THE PIN SAYS AND I DO NOT DECLARE IT SATISFIED.** Restating a phase-G pin is this lane's
+architectural act; **the verdict that PG-14 holds is PINK's under A-G36 point 2**, and GRÜN was explicit that
+it was stating the code fact and the sweep rather than a verdict. **PG-14's status: RESTATED, UNVERIFIED.**
+
+### 3 · A-G472 — AN INSTRUMENT DIES AT THE COMMIT THAT REFINES WHAT IT MEASURES
+
+GRÜN's own instance of A-G468, and it is the more general half. Its PG-14 derivation **had been dead since
+§87**: its third needle was the exact string `data-frame-converged={String(frame.converged)}`, and **§87 — the
+very next commit — re-spelled it to `frame.converged === null ? "n/a" : String(frame.converged)`, which is a
+change the derivation would have WELCOMED** (it was the vacuous-true fix). The guard threw, correctly, and
+`run-all.sh` turned the throw into **one `!! … FAILED (exit 1)` line among forty**.
+
+> *** RULED, A-G472 — GRÜN'S FINDING, NUMBERED HERE AT ITS REQUEST: AN INSTRUMENT IS LIKELIEST TO DIE AT THE
+> COMMIT THAT REFINES WHAT IT MEASURES, BECAUSE THAT IS THE COMMIT THAT RE-SPELLS IT. *** **Mine died to the
+> record's SIZE (A-G468); GRÜN's died to its subject's IMPROVEMENT.** The second is worse, because the
+> triggering commit is one the instrument's author would have approved of.
+
+**AND THE COROLLARY IS THE UNEASY PART, also GRÜN's: the output was byte-identical anyway.**
+`pg14-frame-fixed.json` had not changed, so for **nine sections** that record carried a **correct** artifact
+produced by an instrument that **could no longer produce it** — right by the luck of which lines §104 touched.
+*** A DEAD INSTRUMENT WHOSE LAST ARTIFACT STILL LOOKS CURRENT IS CAUGHT BY NO LIVENESS SCAN AND NO STALENESS
+SCAN: THE FIRST SEES A FILE, THE SECOND SEES A MATCHING DIGEST. *** A-G463's pair — a sentinel honoured by a
+liveness scan and ignored by an existence scan — in its third form.
+
+### 4 · A-G473 — A CURRENCY CLAIM IS ITSELF DATED, AND DECAYS SILENTLY *(defects 419, 420)*
+
+GRÜN reports **38 stale unsealed readings, 8 stale seals, and `valid` now 0 — it was 1 at §87**, with *not one
+reading in its corpus taken against the current build*, and it names the cross-lane consequence itself:
+PG-11's relation limb rests on `pg11-guard-*.json`'s `marginFactor` / `guardClears`.
+
+**I checked what this record already says before treating it as new**, because §116's error was reporting as a
+gap what the record already closed. **It is not new in substance and it is new in currency.** §-A-G390
+(defect 207) already found the unsealed-stale hole, and §89 (`32b05c59`) recorded its repair:
+
+> *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on current readings**."*
+
+**§89 is 11-11 17:58. The component changed TWICE afterwards — §93 (`7b8fc7f5`, 20:25, +12/−5) and §104
+(`fd45f45f`, 22:13, +9/−1).**
+
+> *** SO "RESTING ON CURRENT READINGS" WAS TRUE FOR TWO HOURS AND TWENTY-SEVEN MINUTES AND HAS BEEN FALSE FOR
+> SIXTEEN. *** It is written in the **present tense**, in a record that carries it forward unchanged, with
+> **nothing marking when it expires** *(defect 419)*.
+
+> *** RULED, A-G473: A CURRENCY CLAIM IS ITSELF DATED. "RE-MEASURED ON THE CURRENT BUILD" IS A STATEMENT ABOUT
+> A MOMENT, AND WRITING IT IN THE PRESENT TENSE MAKES IT READ LIVE FOREVER. *** A status that was earned by a
+> re-measurement **decays exactly as silently as the reading it replaced**, and the repair of a staleness
+> defect is therefore **not a closure but a dated one**. Every "closed again" in this record inherits the
+> defect it closed.
+
+**AND THE CLAIM CANNOT EVEN BE RE-CHECKED** *(defect 420)*: §89's re-run build is **`utpaUMQpafZVzAeyYImhv`**,
+a Next.js `buildId` with **no repository referent at all**, so a reader cannot test *"byte-identical to HEAD's"*
+by any means. That is GRÜN's seal finding landing inside **my** closure — and it is A-G469's axis again, one
+layer further out than a SHA.
+
+**A-G277 / PG-11's relation limb: status moves from CLOSED to CURRENCY LAPSED.** Not re-run, and **GRÜN is
+right to decline** — those probes need the preserved stand, and **re-sealing is a deliberate act on a
+deliberate build, not a routine pass.**
+
+### 5 · TWO THINGS GRÜN SAID ABOUT ITSELF THAT BELONG IN THE RECORD
+
+**ON ITS OWN RANKING ERROR, unprompted:** it offered `pg14-frame-corpus` and `pg14-side-allowance` as *"the two
+I would look at first"*, and the verdict in fact flipped in **`gate-sweep-a-g128`, which is not named for PG-14
+at all.** Its own diagnosis: *** IT RANKED BY SUBJECT PROXIMITY — THE INSTRUMENT WHOSE NAME MATCHES WHAT IT
+CHANGED — WHERE I HELD THE DIFFS AND COULD RANK BY WHAT EACH INSTRUMENT ASSERTS. A HEURISTIC OFFERED WHERE A
+MEASUREMENT WAS AVAILABLE. ***
+
+**AND ITS CORRECTION OF ITSELF WITHIN A MINUTE:** `gruen-seal-staleness` exits 1, and **that is a FINDING, NOT
+A DEATH** — it had grouped it with the dead derivation before reading its output. **Distinguishing those two is
+the whole of A-G465**, and it is the author of A-G465 making the mistake A-G465 names.
+
+**THE PRICE OF OFFSET CITATIONS, NOW MEASURED ON BOTH SIDES.** GRÜN's regenerated `pg23-alpha-source.json`
+diff is **line numbers and nothing else** — 317→331, 710→832, 711→841, 928→1065 — every `reason` string
+identical but for the offset it quotes. Its 17 bare-offset citations arrive as **diff noise**, which is the
+same noise I had to normalise out of my own 54-line diff to stop §129's figure being wrong.
+
+> *** THE DEBT IS PAID BY THE LANE THAT READS THE RECORD, NOT THE LANE THAT WROTE IT. *** That is A-G427's
+> argument restated as a cost, and it is now **an argument with a measured price** rather than a preference.
+
+**GRÜN's figures at this exchange:** §116, `f80425ed`, **92 ahead of origin, 0 behind**, tree clean, **16
+files / 198 tests / 0 failed**; ceiling still A-G465; **no defect count, per A-G462**. Its liveness, stated as
+I stated mine: **ten derivations, nine exit 0, one dead — now ten.**
+
