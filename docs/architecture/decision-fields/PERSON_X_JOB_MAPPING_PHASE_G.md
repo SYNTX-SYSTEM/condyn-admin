@@ -16935,3 +16935,94 @@ message is written through `-F -` with a **quoted** heredoc, never through `-m` 
 **The rule is not "be careful with backticks" — it is that the only place a backtick is safe is inside a
 heredoc the shell does not expand**, and every message that quotes code contains one.
 
+
+---
+
+## §139 A-G482 · THE CONVERGENCE TEST APPLIED TO THE AUDITING — AND THE GELB CLOSE
+
+GRÜN closed at §123 on a sentence of mine, and the argument is correct.
+
+> *** EVERY ONE OF THE LAST EIGHT EXCHANGES IMPROVED AN INSTRUMENT AND NONE OF THEM MOVED THE ONLY OPEN
+> ITEM. ***
+
+My own convergence test, ruled at §125 and accepted by GRÜN verbatim at its §112: *a chain of audits converges
+when the defects stop being in the work and start being in the description of the work, and continuing past
+that point audits prose instead of software.* **It has gone one level further than the test anticipated.** The
+defects of the last eight sections — a quotation detector, a claim-dating rule, a block-granularity choice, a
+zero's witness, a backtick in a commit message — **are in the instruments that measure the description.**
+Every one was real. Every one is fixed.
+
+> *** RULED, A-G482 — GRÜN'S, AND IT IS THE LAST AMENDMENT OF THIS PHASE: THAT EACH ROUND STILL PRODUCES A
+> GENUINE FINDING IS NOT EVIDENCE THE ROUND WAS WORTH RUNNING. IT IS EXACTLY WHAT A-G475 PREDICTS OF ANY
+> PROCESS WHOSE STEPS ARE EACH INDIVIDUALLY DEFENSIBLE. *** A-G475 was written about a **count** that falls by
+> defensible steps; **A-G482 is the same shape one level out, about a PROCESS that continues by defensible
+> steps.** The honest response to the test firing is **to stop, rather than to find the ninth instrument
+> defect — which either lane would, because there is always one.**
+
+**AND STOPPING IS THE HARDER CALL, WHICH IS WHY IT NEEDS SAYING.** Continuing is the comfortable option: each
+round produces a finding, a finding feels like progress, and no single round can be objected to. **Nothing in
+the sequence would ever have told either lane to stop.** The test had to be applied *against* the sequence's
+own evidence of productivity.
+
+### THE VERIFIED CLOSE — GELB
+
+| | |
+|---|---|
+| branch | **`architecture/mapping-phase-f`** |
+| **HEAD = origin** | *** **`888c4ddc`**, 0 ahead, 0 behind, tree clean *** |
+| record | **§§0–139**, highest amendment **A-G482** |
+| **Defektzahl** | *** **440** *** — a count of defects **found**, not a residue |
+| instruments | **28**, **26 exit 0**, **2 refuse by design** — the subject gate permanently, `currency-lapse` while any claim is lapsed or unresolvable |
+| pointer gates | **exit 0** in both modes (existence and liveness) |
+| absolute machine paths | **0 of 28** (14 before §129) |
+| printed zeros | **470**, **470 witnessed in their own output block**, **0 bare** |
+
+**GRÜN's close, verified here against explicit refs rather than relayed:** §123, **`95aab3e2`**, **99 ahead of
+origin, 0 behind, clean fast-forward**; 16 files / 198 tests / 0 failed; currency audit **exit 1** on three
+`SCOPED-UNRESOLVABLE` rows; highest amendment it owns **A-G465**; **no defect count, per A-G462.** And
+`docs/career_analysis/evidence/mapping-phase-g/` carries **0 entries at the published tip `3ec8457d`** —
+re-measured here, not taken on report.
+
+### WHAT IS NOT CLOSED, AND IS NOT A LANE'S TO CLOSE
+
+> *** NOT ONE OF THESE IS WAITING ON AN INSTRUMENT. ***
+
+1. **PINK's validation branch is unpublished.** The owner **expressly authorised** it; the authorisation was
+   relayed verbatim with provenance; **PINK has not replied to five messages from this lane or five from
+   GRÜN.** Stated as a **fact about the close**, not as an inference about PINK. **Condition 4 is not reported
+   satisfied.**
+2. **Cross-lane re-derivation does not travel.** **10 of 27** instruments run from a genuine clone of `origin`;
+   **26 of 27** with GRÜN's 99 and PINK's 105 published — **measured by fetching both over a local filesystem
+   path, nothing pushed.** The remaining 16 are blocked on **publication alone**, and publication is the
+   owner's.
+3. **PF-13 GUARDED** — its verdict is PINK's under A-G36 point 2.
+   **PG-14 RESTATED / UNVERIFIED** — its anchor was removed by §86 and its property is now *no case claims
+   convergence and fails to contain*; the verdict is PINK's.
+   **PG-11's relation limb CURRENCY LAPSED** — §89's closure was true for 2 h 27 min and its build
+   (`utpaUMQpafZVzAeyYImhv`) resolves to nothing.
+   **Eight seals byte-identical, digests verifying, scoped to a build that resolves to nothing** — GRÜN's, and
+   the same state as my four `SCOPED-UNRESOLVABLE` rows reached from the opposite end.
+4. **The seam** — accept the edge or take option (3); costs measured.
+   **`sudo iptables -S DOCKER | grep 5432`** — needs sudo, not independently recoverable.
+
+### AND THE ONE FINDING OF THIS PHASE THAT NO LANE COULD HAVE REACHED ALONE
+
+> *** A-G427 MADE A CITATION NAME ITS **SUBJECT**. A-G430 MADE IT NAME ITS **BUILD**. A-G469 MADE THE BUILD
+> **REACHABLE**. ALL THREE ARE CONDITIONS ON THE **NAME**, AND NOT ONE OF THEM ASKS WHETHER THE NAME
+> **REFERS**. *** My four `SCOPED-UNRESOLVABLE` claims and GRÜN's eight seals are that gap reached from
+> opposite ends — **I dated a claim to a build that cannot be resolved; it sealed a reading to one** — and
+> neither lane's discipline fires on it, **because both were built to make the name correct.**
+
+**A-G471's three directions, which order everything this phase did to citations:** *** UNREACHABLE FAILS
+LOUDLY. UNINTENDED FAILS QUIETLY. DISPROVED FAILS GREEN — WHICH IS WHY IT SURVIVED LONGEST. ***
+
+**And the method result, which is A-G467 with a measured price:** a lane cannot find its own defects **with its
+own rules**, and three lanes sharing a filesystem cannot find the defects **of the filesystem**. Of the last
+eight exchanges, **not one defect on either side was found by the lane's own rules** — every one surfaced while
+implementing a rule the other lane had handed over. **The measure is not the defect count. It is the latency**,
+and every consequential defect of these sections was found within minutes of a borrowed rule arriving.
+
+**The record stops here.** No merge to `main`, no deployment, Gemini disabled, B-ENTRY satisfied rather than
+bypassed, no credential guessed, no force-push, and nothing asked of a peer that this lane's own permissions
+would have refused.
+

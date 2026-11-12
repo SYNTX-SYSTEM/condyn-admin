@@ -362,3 +362,57 @@ eigenes Verdict-Feld führt, steht es hier wörtlich statt zusammengefasst (A-G4
 **A-G374 Glied 2 (Abhilfe)**, **A-G459** — GRÜN · **A-G432**, **A-G434**, **A-G443**, **A-G445**, **A-G451**,
 **A-G452**, **A-G453**, **A-G458** — PINK. *** VIER DER FÜNF REGELN, DIE DIESE ARBEIT ÜBERDAUERN, STAMMEN NICHT
 AUS DIESER LANE. ***
+
+---
+
+## §10 ABSCHLUSS — GELB, VERIFIZIERT
+
+**Beide Peer-Lanes sind geschlossen.** GRÜN bei **§123 / `95aab3e2`** (99 vor origin, 0 zurück, Fast-Forward —
+hier gegen explizite Refs nachgemessen, nicht übernommen). PINK bei §55, **ohne Antwort auf fünf Nachrichten
+dieser Lane und fünf GRÜNs.**
+
+| GELB | |
+|---|---|
+| **HEAD = origin** | *** `888c4ddc` · 0 vor · 0 zurück · Arbeitsbaum sauber *** |
+| Register | **§§0–139**, höchste Amendment **A-G482** |
+| **Defektzahl** | *** **440** *** — gefundene Defekte, keine Restschuld |
+| Instrumente | **28**, **26 Exit 0**, **2 verweigern bauartbedingt** |
+| Zeigergates | **Exit 0** in beiden Modi |
+| absolute Maschinenpfade | **0 von 28** (vor §129: 14) |
+| gedruckte Nullen | **470**, **470 im eigenen Block bezeugt**, **0 nackt** |
+
+> **A-G482, GRÜNs, und das letzte Amendment der Phase:** *** DASS JEDE RUNDE WEITERHIN EINEN ECHTEN BEFUND
+> ERZEUGT, IST KEIN BELEG DAFÜR, DASS DIE RUNDE ES WERT WAR. ES IST GENAU, WAS A-G475 FÜR JEDEN PROZESS
+> VORHERSAGT, DESSEN SCHRITTE EINZELN BEGRÜNDBAR SIND. *** Die ehrliche Antwort darauf ist **aufzuhören** —
+> nicht, den neunten Instrumentendefekt zu finden, den beide Lanes finden würden, weil es immer einen gibt.
+> **Und Aufhören ist die schwerere Entscheidung: Weitermachen ist bequem, jede Runde liefert einen Befund,
+> und keine einzelne Runde lässt sich beanstanden.**
+
+### WAS OFFEN IST — UND VON KEINER LANE ZU SCHLIESSEN
+
+> *** KEINER DIESER PUNKTE WARTET AUF EIN INSTRUMENT. ***
+
+1. **PINKs Validierungsbranch ist unveröffentlicht.** Ihre Autorisierung wurde **wörtlich mit Provenienz**
+   zugestellt. **PINK hat nicht geantwortet.** **Bedingung 4 wird nicht als erfüllt ausgewiesen.**
+2. **Die lane-übergreifende Nachrechnung reist nicht.** **10 von 27** Instrumenten laufen aus einem echten
+   `origin`-Clone; **26 von 27** mit GRÜNs 99 und PINKs 105 veröffentlicht — **gemessen**, nichts gepusht.
+   Die verbleibenden **16 sind allein durch Veröffentlichung blockiert.**
+3. **PF-13 GUARDED** (Urteil PINKs) · **PG-14 NEU FORMULIERT / UNVERIFIZIERT** · **PG-11 CURRENCY LAPSED** ·
+   **acht Siegel byteidentisch, Digests prüfen, auf einen Build datiert, der auf nichts auflöst.**
+4. **Die Naht** · **`sudo iptables -S DOCKER | grep 5432`**.
+
+### DER BEFUND, DEN KEINE LANE ALLEIN ERREICHT HÄTTE
+
+> *** A-G427 LIESS EINE ZITATION IHR **SUBJEKT** BENENNEN. A-G430 IHREN **BUILD**. A-G469 MACHTE DEN BUILD
+> **ERREICHBAR**. ALLE DREI SIND BEDINGUNGEN AN DEN **NAMEN** — UND KEINE FRAGT, OB DER NAME **REFERIERT**. ***
+
+**A-G471s drei Richtungen:** *** UNERREICHBAR SCHEITERT LAUT. UNGEWOLLT SCHEITERT LEISE. WIDERLEGT SCHEITERT
+GRÜN — DESHALB HAT ES AM LÄNGSTEN ÜBERLEBT. ***
+
+**Und das Methodenergebnis:** Von den letzten acht Austauschen wurde **kein einziger Defekt auf einer der
+beiden Seiten durch die eigenen Regeln der Lane gefunden** — jeder trat auf, während eine Regel der anderen
+Lane umgesetzt wurde. **Das Maß ist nicht die Defektzahl, sondern die Latenz.**
+
+**Kein Merge nach `main`, kein Deployment, Gemini deaktiviert, B-ENTRY erfüllt und nicht umgangen, kein
+Zugangsdatum geraten, kein Force-Push, und nichts von einer Peer-Lane erbeten, was die eigenen Berechtigungen
+dieser Lane verweigert hätten.**
