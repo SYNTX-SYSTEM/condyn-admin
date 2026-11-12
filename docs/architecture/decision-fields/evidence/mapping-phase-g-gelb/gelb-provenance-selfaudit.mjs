@@ -15,7 +15,8 @@
  * so a section failing THIS fails any stricter test.
  */
 import { readLines } from "./gelb-read.mjs"; // A-G468: this read died of ENOBUFS when §125 pushed PHASE_G past 1 MiB
-const DOC = "/home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_G.md";
+import { PHASE_G } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const DOC = PHASE_G;
 const lines = readLines(DOC); // was execFileSync("cat", …); its spawnSync result carried status:0 while the pipe overflowed
 const f = (x, n = 1) => x.toFixed(n);
 

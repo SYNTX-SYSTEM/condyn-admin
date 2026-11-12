@@ -23,8 +23,9 @@
  * `node -e "import(...).then(m => m.coverage())"` prints, never a figure typed into prose.
  */
 import { execFileSync } from "node:child_process";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 export const SHA = "4b83414e";
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+const TREE = REPO_ROOT;
 
 /** every file the drawing surface takes a product VALUE from, by the import block at :3–:16. */
 export const SOURCES = Object.freeze({

@@ -14,7 +14,8 @@
  *      to my own pending ruling.
  */
 import { execFileSync } from "node:child_process";
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const TREE = REPO_ROOT;
 const sh = (...a) => execFileSync(a[0], a.slice(1), { cwd: TREE, encoding: "utf8" });
 const SHA = "4b83414e", FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const src = sh("git", "show", `${SHA}:${FILE}`).split("\n");

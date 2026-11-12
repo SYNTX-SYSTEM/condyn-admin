@@ -25,10 +25,11 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { READ } from "./gelb-product-constants.mjs";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 const HERE = dirname(fileURleToPathSafe());
 function fileURleToPathSafe() { return fileURLToPath(import.meta.url); }
 const files = readdirSync(HERE).filter(f => f.endsWith(".mjs") && f !== "gelb-product-constants.mjs").sort();
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+const TREE = REPO_ROOT;
 const COMP = "app/components/career/demo/PersonJobMappingField.tsx";
 
 console.log("=".repeat(104));
@@ -206,7 +207,7 @@ console.log(`  destination is my working directory at the moment I run them. ***
 console.log(`  FOR ${rows.length - selfWriting.length} OF ${rows.length} INSTRUMENTS, and it is reachable through the one mechanism GRÜN's module-load`);
 console.log(`  assertion cannot see — a redirection outside the process. ***`);
 let strays = [];
-for (const root of [TREE, "/home/codi/Entwicklung/condyn-admin-hr-integration"]) {
+for (const root of [TREE, REPO_ROOT]) {
   const out = execFileSync("find", [root, "-name", "gelb-*.out.txt", "-not", "-path", "*/node_modules/*"], { encoding: "utf8" }).trim();
   for (const p of out ? out.split("\n") : []) if (dirname(p) !== HERE) strays.push(p);
 }

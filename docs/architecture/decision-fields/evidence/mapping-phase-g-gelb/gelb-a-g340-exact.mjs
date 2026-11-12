@@ -21,7 +21,8 @@
  * decoding of this halo can exceed.
  */
 import { execFileSync } from "node:child_process";
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const TREE = REPO_ROOT;
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const at = sha => execFileSync("git", ["-C", TREE, "show", `${sha}:${FILE}`], { encoding: "utf8" });
 const MINE = "4b83414e", PINKS = "3ec8457d";

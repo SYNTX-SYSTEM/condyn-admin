@@ -21,9 +21,10 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { REPO_ROOT, peerRef } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 
 const DOCS = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
-const GRUEN = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+const GRUEN = REPO_ROOT;
 const rule = () => console.log("=".repeat(104));
 const f = (x, n = 1) => Number(x).toFixed(n);
 
@@ -39,24 +40,35 @@ function pins() {
 }
 
 /* ── the test population, read from PHASE_DIRS rather than named, per A-G426 ── */
+/* A-G469: the peer lane is read as OBJECTS at a NAMED ref, never off a sibling worktree's disk. The
+   first form read `join(GRUEN, …)`, which is worktree-dependent — repointing GRUEN at a derived root
+   changed it from GRÜN's lane to this one, and it threw rather than lying only by luck. */
+const PEER = peerRef(REPO_ROOT);
+const pgit = (...a) => execFileSync("git", ["-C", REPO_ROOT, ...a], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+/* probes whose MISS is an expected outcome, not an error — stderr suppressed so a normal absence does not
+   print `fatal:` into an evidence file. The throw is still caught; only git's chatter is dropped. */
+const pgitQuiet = (...a) => execFileSync("git", ["-C", REPO_ROOT, ...a], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
 function population() {
-  const arch = join(GRUEN, "test/career/mapping-field/architecture.test.ts");
-  if (!existsSync(arch)) throw new Error(`cannot read GRÜN's architecture test at ${arch}`);
-  const m = /PHASE_DIRS\s*=\s*\[([^\]]+)\]/.exec(readFileSync(arch, "utf8"));
+  let src;
+  try { src = pgit("show", `${PEER.sha}:test/career/mapping-field/architecture.test.ts`); }
+  catch { throw new Error(`cannot read GRÜN's architecture test at ${PEER.ref} (${PEER.sha})`); }
+  const m = /PHASE_DIRS\s*=\s*\[([^\]]+)\]/.exec(src);
   if (!m) throw new Error("PHASE_DIRS not found — the population must be READ, not named (A-G426)");
-  const dirs = [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]);
+  const dirs = [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1].replace(/\/+$/, "")); // PHASE_DIRS entries carry a trailing separator
   const files = [];
   for (const d of dirs) {
-    const abs = join(GRUEN, d);
-    if (!existsSync(abs)) { console.log(`  NOTE: ${d} does not exist in this worktree`); continue; }
-    for (const name of readdirSync(abs)) if (/\.(ts|tsx)$/.test(name)) files.push({ dir: d, name, abs: join(abs, name) });
+    let listing;
+    try { listing = pgitQuiet("ls-tree", "--name-only", `${PEER.sha}:${d}`).trim(); }
+    catch { console.log(`  NOTE: ${d} does not exist at ${PEER.sha}`); continue; }
+    for (const name of listing.split("\n").filter(Boolean))
+      if (/\.(ts|tsx)$/.test(name)) files.push({ dir: d + "/", name, rev: `${PEER.sha}:${d}/${name}` });
   }
   return { dirs, files };
 }
 
 const PINS = pins();
 const { dirs, files } = population();
-const HEAD = execFileSync("git", ["-C", GRUEN, "rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
+const HEAD = PEER.sha;
 
 rule();
 console.log(`GELB · §112 A-G446 — PIN NAMES IN THE TEST POPULATION. GRÜN @ ${HEAD}`);
@@ -67,7 +79,7 @@ console.log(`
   test files in the population:       ${files.length}
 `);
 
-const text = Object.fromEntries(files.map(x => [x.dir + x.name, readFileSync(x.abs, "utf8")]));
+const text = Object.fromEntries(files.map(x => [x.dir + x.name, pgit("show", x.rev)]));
 
 /* *** THE FIRST FORM OF THIS INSTRUMENT REPORTED "17 of 32 PINS NAMED NOWHERE" AND THAT NUMBER WAS AN
    ARTEFACT. *** Most of the 17 are PIXEL pins — PF-2…PF-10, PG-11, PG-12, PG-17…PG-19, PG-22 — measured on
@@ -76,13 +88,17 @@ const text = Object.fromEntries(files.map(x => [x.dir + x.name, readFileSync(x.a
    alarming. The classification is now by VENUE, and only "named in no venue this lane can read" is a
    candidate. */
 const rasterDirs = ["docs/career_analysis/evidence/mapping-phase-g", "docs/career_analysis/evidence/mapping-phase-f"];
+/* A-G469: read at the NAMED peer ref, not off a sibling worktree's disk. The disk form made this venue's
+   size depend on which branch a neighbouring checkout happened to have out, and a venue that shrinks
+   silently moves pins from "named in a raster instrument" into "named nowhere" — inflating the alarming
+   number, which is the exact direction A-G429 says nothing in the build loop pushes back on. */
 const raster = {};
 for (const d of rasterDirs) {
-  const abs = join(GRUEN, d);
-  if (!existsSync(abs)) continue;
-  for (const name of readdirSync(abs)) {
+  let listing;
+  try { listing = pgitQuiet("ls-tree", "--name-only", `${PEER.sha}:${d}`).trim(); } catch { continue; }
+  for (const name of listing.split("\n").filter(Boolean)) {
     if (!/\.(mjs|mts|js|ts|md|json)$/.test(name)) continue;
-    try { raster[d + "/" + name] = readFileSync(join(abs, name), "utf8"); } catch { /* unreadable */ }
+    try { raster[d + "/" + name] = pgit("show", `${PEER.sha}:${d}/${name}`); } catch { /* unreadable */ }
   }
 }
 const hits = {};

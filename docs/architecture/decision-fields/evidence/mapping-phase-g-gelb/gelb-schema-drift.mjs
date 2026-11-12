@@ -17,8 +17,9 @@
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 
-const ROOT = "/home/codi/Entwicklung/condyn-admin-hr-integration";
+const ROOT = REPO_ROOT;
 const SCHEMA = "lib/career/db/schema.ts";
 const CLIENT = "lib/career/db/client.ts";
 const read = p => readFileSync(`${ROOT}/${p}`, "utf8");

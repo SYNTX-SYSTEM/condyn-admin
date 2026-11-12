@@ -17,7 +17,8 @@
  * Everything else here is read from the committed product, not from a render.
  */
 import { execFileSync } from "node:child_process";
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d", SHA = "4b83414e";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const TREE = REPO_ROOT, SHA = "4b83414e";
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const src = execFileSync("git", ["-C", TREE, "show", `${SHA}:${FILE}`], { encoding: "utf8" });
 const lines = src.split("\n");

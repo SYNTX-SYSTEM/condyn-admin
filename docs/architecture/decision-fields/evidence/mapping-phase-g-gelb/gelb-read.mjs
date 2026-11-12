@@ -46,6 +46,7 @@
  */
 import { readFileSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { PHASE_G, REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 
 export const MAXBUF = 64 * 1024 * 1024;
 export const NEAR = 0.9;
@@ -92,7 +93,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const { tmpdir } = await import("node:os");
   const { join } = await import("node:path");
   const d = mkdtempSync(join(tmpdir(), "gelb-read-"));
-  const DOC = "/home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_G.md";
+  const DOC = PHASE_G;
   let pass = 0, fail = 0;
   const must = (name, fn, expect) => {
     try { fn(); console.log(`  ✗ ${name} — DID NOT REFUSE`); fail++; }
@@ -117,7 +118,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   /* The proximity limb only fires between NEAR*buf and buf — above buf, ENOBUFS gets there first. So the
      mutant must be sized INTO that band, and the first form of this test was not: `git log -500` overshot
      4096 and the limb was never reached. It is measured here rather than guessed. */
-  const REPO = "/home/codi/Entwicklung/condyn-admin-hr-integration";
+  const REPO = REPO_ROOT;
   const probe = _git(REPO, ["log", "--format=%H", "-200"], MAXBUF);
   const n = Buffer.byteLength(probe, "utf8");
   const inBand = Math.ceil(n / 0.95);                  // n sits at ~95% of this declared buffer
@@ -133,7 +134,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log(`      PHASE_G is ${statSync(DOC).size} bytes = ${(statSync(DOC).size / 1048576 * 100).toFixed(1)}% of the 1 MiB default that broke them`);
   mustNot("readDoc(PHASE_G) — the exact read that threw spawnSync cat ENOBUFS", () => readDoc(DOC));
   mustNot("readLines(PHASE_G)", () => readLines(DOC));
-  mustNot("git() on a normal invocation still works", () => git("/home/codi/Entwicklung/condyn-admin-hr-integration", "rev-parse", "--short", "HEAD"));
+  mustNot("git() on a normal invocation still works", () => git(REPO_ROOT, "rev-parse", "--short", "HEAD"));
 
   console.log("\n" + "=".repeat(104));
   console.log(`  pass ${pass}   fail ${fail}`);

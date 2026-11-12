@@ -14,7 +14,8 @@
  * ambiguous anchor is reported UNVERIFIED and its row does not stand.
  */
 import { execFileSync } from "node:child_process";
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d", SHA = "4b83414e";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const TREE = REPO_ROOT, SHA = "4b83414e";
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const src = execFileSync("git", ["-C", TREE, "show", `${SHA}:${FILE}`], { encoding: "utf8" }).split("\n");
 const loc = n => { const h = []; src.forEach((l, i) => l.includes(n) && h.push(i + 1)); return { h, ok: h.length === 1 }; };

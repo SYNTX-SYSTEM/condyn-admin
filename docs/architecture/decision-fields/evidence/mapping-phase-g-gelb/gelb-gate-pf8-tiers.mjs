@@ -33,7 +33,8 @@
  */
 import { execFileSync } from "node:child_process";
 import { readLines, git as gitBuf } from "./gelb-read.mjs"; // A-G468: the cat read below died of ENOBUFS when §125 pushed PHASE_G past 1 MiB
-const DIR = "/home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields";
+import { RECORD_DIR, REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
+const DIR = RECORD_DIR;
 const F = `${DIR}/PERSON_X_JOB_MAPPING_PHASE_F.md`, G = `${DIR}/PERSON_X_JOB_MAPPING_PHASE_G.md`;
 const read = p => readLines(p); // was execFileSync("cat", …) — no subprocess, so no inherited 1 MiB cap (A-G468)
 const SRC = { F: read(F), G: read(G) };
@@ -186,7 +187,7 @@ console.log(`    unsupported, not wrong. Three of four rungs are unsupported; th
 console.log("\n" + "=".repeat(110));
 console.log("[3] A-G128 LIMB 2 — does the product evaluate PF-8's predicate and decline to emit a counterexample?");
 console.log("=".repeat(110));
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d", SHA = "4b83414e";
+const TREE = REPO_ROOT, SHA = "4b83414e";
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
 const raw = gitBuf(TREE, "show", `${SHA}:${FILE}`);
 /* comments out, so a docstring quoting PF-8's own readings cannot answer for the code */

@@ -27,8 +27,9 @@
  */
 
 import { execFileSync } from "node:child_process";
+import { REPO_ROOT } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+const TREE = REPO_ROOT;
 const SHA  = "4b83414e";
 const FILES = {
   field: "app/components/career/demo/PersonJobMappingField.tsx",

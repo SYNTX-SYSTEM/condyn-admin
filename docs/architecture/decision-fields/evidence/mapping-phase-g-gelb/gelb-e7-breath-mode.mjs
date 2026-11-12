@@ -11,8 +11,9 @@
  */
 import { execFileSync } from "node:child_process";
 import * as P from "./gelb-product-constants.mjs";
+import { REPO_ROOT, peerRef } from "./gelb-paths.mjs"; // A-G469: derived, never declared
 
-const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d";
+const TREE = REPO_ROOT;
 const FIELD = P.SOURCES.FIELD;
 const TEST = "test/career/mapping-field/neurovisual-e.test.ts";
 const git = (...a) => execFileSync("git", ["-C", TREE, ...a], { encoding: "utf8" });
@@ -20,10 +21,10 @@ const grep = (pat, rev) => { try { return git("grep", "-n", "-E", pat, rev, "--"
 const show = (rev, path) => git("show", `${rev}:${path}`);
 const f = (x, n = 4) => Number(x).toFixed(n);
 const rule = (c = "=") => console.log(c.repeat(104));
-const HEAD = git("rev-parse", "--short", "HEAD").trim();
+const PEER = peerRef(TREE); const HEAD = PEER.sha; // was "HEAD" of a sibling worktree; now a NAMED peer ref (A-G469)
 
 rule();
-console.log(`GELB · §90 A-G406 — E-7's BREATH TROUGH. Product @ ${P.SHA}, cross-checked at HEAD ${HEAD}`);
+console.log(`GELB · §90 A-G406 — E-7's BREATH TROUGH. Product @ ${P.SHA}, cross-checked at ${PEER.ref} ${HEAD}`);
 rule();
 
 /* ────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -46,7 +47,7 @@ console.log(`[2] MOTION.breath — DECLARED, AND READ BY EXACTLY ONE CONSUMER IN
 rule();
 console.log(`\n  MOTION.breath as the product declares it: ${JSON.stringify(P.MOTION_BREATH)}\n`);
 const pat = 'MOTION\\.breath|opacityMean|opacityAmplitude';
-for (const rev of [P.SHA, "HEAD"]) {
+for (const rev of [P.SHA, PEER.sha]) {
   const hits = grep(pat, rev).map(l => l.replace(`${rev}:`, ""));
   const decl = hits.filter(h => h.startsWith(FIELD));
   const tests = hits.filter(h => h.startsWith("test/"));
