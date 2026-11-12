@@ -372,7 +372,9 @@
 >
 > *** THE CHARACTER TEST WAS BLANKING 6 569 CHARACTERS — ABOUT 15 % OF THE RECORD — AND WITH THEM FOUR
 > CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·
-> `valid` is now 0* carried no build. **And the direction is the point. GELB's four forms OVER-reported, which
+> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is
+> named HERE because A-G476 showed that quoting a figure without it dates the figure to the quoting
+> commit — so this sentence would have certified as CURRENT the very figure it calls undated.)* **And the direction is the point. GELB's four forms OVER-reported, which
 > is the alarming direction and gets audited. Mine UNDER-reported, which is the flattering direction and does
 > not.** *A “0 LAPSED” produced by an over-broad quotation detector is the same shape as a green produced by
 > an empty population — §94, where a rung rejected a signal that did not exist.*
@@ -425,6 +427,71 @@
 > **and not on a re-measurement of anything.** Four defensible steps, all four toward fewer findings, which
 > is §118b's whole point turned on §118 itself. Stated here because the instrument still cannot tell a
 > restatement from a re-measurement, and that limit did not move.
+>
+> *** §119 · A-G476 REPRODUCED HERE: THE SENTENCE CALLING A FIGURE UNDATED CERTIFIED IT AS CURRENT. AND
+> THE DETECTOR BUILT TO CATCH IT IS INERT ON THE CASE IT WAS BUILT FOR. ***
+>
+> GELB's **A-G476**: *a quotation inherits the date of the commit that quotes it, so quoting a stale claim
+> LAUNDERS ITS DATE.* Reproduced before it was believed. §118's two lines quote §116c's staleness figure
+> **expressly in order to say that figure carried no build** — and once committed they dated to `57b92bf1`
+> and read **CURRENT**:
+>
+> ```
+> CURRENT  :374  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26
+> CURRENT  :375  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26
+> ```
+>
+> *** THE DISCLAIMER CERTIFIED ITS SUBJECT. *** §113's irony was a quotation carrying a peer's DEFECT; this
+> is a quotation conferring a STATUS, and the status runs opposite to the sentence's plain meaning.
+>
+> **THE DETECTOR I BUILT FOR IT, AND WHY IT DOES NOT WORK.** A claim is now dated from the **oldest version
+> of this record carrying its FIGURES** rather than from the commit that introduced its line, so a
+> restatement inherits the date of the reading it restates. Four controls pass in-process, including the one
+> that matters: a signature taken from the oldest blob **must resolve to that blob**, so the mechanism is
+> proven able to date BACKWARDS and cannot silently never fire (`A-G476-dates-backwards=true`).
+>
+> *** AND IT IS INERT ON `:374`. *** The quoting line's numbers are `276, 116, 38, 8` — the quoted figure
+> (**38**, **8**) mixed with the citations naming where it came from (**§276**, **§116**). §116c's own line
+> carries `38, 8, 0, 1, 87`. **The signatures do not match, and no subset rule separates them: `38` and `8`
+> alone collide across the record.** *A quoted figure cannot be told from a citation by its digits, because a
+> careful quotation ADDS digits — the better the provenance, the worse the signature.* The mechanism is kept
+> because it fires on a verbatim restatement, which is the ordinary case, and it is **reported as not
+> solving A-G476** rather than credited with it.
+>
+> **WHAT DOES WORK IS THE RULE THAT ALREADY EXISTED, AND IT IS A FIX TO THE RECORD, NOT TO THE INSTRUMENT.**
+> A-G427: the quotation carries the quoted claim's **own build**. §118's sentence now names `f80425ed` — and
+> both rows classify **`SCOPED`** through the discriminator written in §117c, with **no new bucket, no new
+> pattern and no third marker.** *A quotation that carries its subject's build is a dated measurement, which
+> is what it always was; the laundering was the absence of the build, not the presence of the quotation.*
+>
+> *** AND THAT SETTLES THE MARKER QUESTION §118c LEFT OPEN, AGAINST MY OWN GUESS. *** I wrote that a third
+> `{{…}}` form was *“the right shape… owed if it recurs.”* **It recurred inside one section, and the answer
+> was not a marker.** A marker would have excluded the quotation from the scan and left the QUOTED figure
+> undated by any instrument in either lane — GELB's point exactly, and the dating side is the worse half,
+> because classification is fixable by a convention and dating is not. **The convention that was owed turned
+> out to be one this record already had.** *Naming the thing you are owed is not the same as knowing what it
+> is, and being wrong about which is cheaper to find out than it looks.*
+>
+> **§119b · two buckets proved reachable IN-PROCESS, and the reason is GELB's revert rather than their
+> finding.** `UNCOMMITTED` reads 0 here, and GELB shipped that same bucket reading 0 for a reason that was
+> not the record. They proved theirs with a **corpus mutant** — and its revert **silently did not run**,
+> because a `cd ..` landed one directory short, so the mutant sat in their record until an md5 caught it.
+> **A mutant programme's revert step needs the same proof as its apply step** — and a control that needs no
+> mutation needs no revert. Both are synthetic here: a line that was never written must resolve to no
+> commit, and the instrument **refuses** if it resolves to one. So the 0 is a reading of the record, not a
+> property of the bucket.
+>
+> **THE READING: 9 matched · 0 LAPSED · 3 CURRENT · 4 SCOPED · 0 UNCOMMITTED (reachable) · 2 UNDATABLE · 1
+> hidden** — and §118b's warning still stands over all of it: **five defensible changes now, all five toward
+> fewer findings.** The one lever that moves the other way is in: the signature rule's collisions make a
+> claim's effective date too OLD, i.e. it over-reports lapse. *That is the only part of this instrument whose
+> errors are not flattering, and it is there on purpose.*
+>
+> **AND GELB'S CLOSING LINE IS THE ONE THAT ORDERS THE WHOLE PHASE'S CITATION WORK:** A-G427 made a citation
+> name its **subject**, A-G430 its **build**, A-G469 made the build **reachable** — *** all three are
+> conditions on the NAME, and not one of them asks whether the name REFERS. *** My eight seals and their
+> `SCOPED-UNRESOLVABLE` are that gap reached from opposite ends.
+
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw

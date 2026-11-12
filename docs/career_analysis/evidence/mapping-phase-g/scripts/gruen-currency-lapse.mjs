@@ -140,6 +140,49 @@ const hiddenByExclusion = (() => {
 const lines = blanked.split("\n");
 const rawLines = src.split("\n");
 
+/**
+ * §119 · A-G476 (GELB's): A QUOTATION INHERITS THE DATE OF THE COMMIT THAT QUOTES IT, SO QUOTING A STALE
+ * CLAIM LAUNDERS ITS DATE. Reproduced here before it was believed: §118's two lines quoting §116c's
+ * staleness figure — written expressly to say that figure carried NO BUILD — were dated to §118's own
+ * commit and read CURRENT. *** THE SENTENCE DISCLAIMING A FIGURE'S CURRENCY CERTIFIED IT. *** Worse than
+ * §113's irony, because there the quotation carried a defect and here it carries a STATUS.
+ *
+ * So a claim is dated from the OLDEST version of this record that already contained its FIGURES, not from
+ * the commit that introduced its line. Every blob of the record is read once, oldest first, and a claim
+ * matches a blob when some line of that blob carries all of the claim's numbers. A restatement then
+ * inherits the date of the reading it restates, which is A-G427's ruling — the quotation carries the quoted
+ * claim's build — enforced by the instrument instead of left to a convention.
+ *
+ * DETECTOR LIMITS, both deliberate:
+ *   · a claim with fewer than two numbers has no signature and keeps its line date; a single number collides
+ *     across unrelated sentences, and a false EARLIER date would make a current claim read lapsed, which is
+ *     the alarming direction but still wrong.
+ *   · a different sentence that happens to carry the same numbers will match. That makes the effective date
+ *     too OLD, i.e. it over-reports lapse. Chosen on purpose: §118b's finding is that every refinement here
+ *     has moved the count toward fewer findings, and this is the one lever that moves it the other way.
+ */
+const recordBlobs = (() => {
+  const shas = git("log", "--format=%H%x1f%cI", "--reverse", "--", RECORD).split("\n").filter(Boolean);
+  return shas.map(row => {
+    const [sha, when] = row.split("\u001f");
+    let body = "";
+    try { body = execFileSync("git", ["show", `${sha}:${RECORD}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 26 }); } catch { body = ""; }
+    return { sha: sha.slice(0, 8), when, numbersByLine: body.split("\n").map(l => (l.match(/\d[\d.]*/g) ?? [])) };
+  });
+})();
+if (recordBlobs.length === 0) throw new Error("ERR_GRUEN_CURRENCY_NO_HISTORY: the record has no committed history, so no claim can be dated.");
+
+const signatureOf = line => (line.match(/\d[\d.]*/g) ?? []).filter(n => n.length > 0);
+const firstBlobCarrying = sig => {
+  if (sig.length < 2) return null;
+  for (const blob of recordBlobs)
+    for (const nums of blob.numbersByLine) {
+      if (nums.length < sig.length) continue;
+      if (sig.every(n => nums.includes(n))) return { sha: blob.sha, when: blob.when };
+    }
+  return null;
+};
+
 /** The commit that INTRODUCED a line, not the one that last touched the file: a section can be edited long
  *  after its claim was written, and `git log -S` oldest hit is the date the claim entered the record. */
 const introducedBy = text => {
@@ -221,9 +264,13 @@ lines.forEach((line, i) => {
     return;
   }
   if (ref === null) { row.status = "UNDATABLE"; row.why = "the claim's subject is not a path in this repository"; rows.push(row); return; }
+  const carried = firstBlobCarrying(signatureOf(rawLines[i]));
+  const effective = carried !== null && Date.parse(carried.when) < Date.parse(wrote.when) ? carried : wrote;
   row.writtenAt = wrote;
+  if (effective !== wrote) { row.restatesFrom = carried; row.note = "A-G476: dated from the oldest version of the record carrying these figures, not from the line that restates them"; }
+  row.effectiveAt = effective;
   row.referent = ref;
-  row.status = Date.parse(wrote.when) >= Date.parse(ref.when) ? "CURRENT" : "LAPSED";
+  row.status = Date.parse(effective.when) >= Date.parse(ref.when) ? "CURRENT" : "LAPSED";
   rows.push(row);
 });
 
@@ -237,6 +284,27 @@ const control = (() => {
   const classify = wrote => (Date.parse(wrote.when) >= Date.parse(ref.when) ? "CURRENT" : "LAPSED");
   return { currentIsReachable: classify(after) === "CURRENT", lapsedIsReachable: classify(before) === "LAPSED" };
 })();
+/* §119b: TWO MORE BUCKETS PROVED REACHABLE IN-PROCESS, because GELB shipped an UNCOMMITTED bucket that
+   read 0 for a reason that was not the record, and because a dating mechanism that changes no number on
+   this record is unaudited in exactly the way §94 names. No corpus mutant: their revert step silently did
+   not run (a `cd ..` landed one directory short) and the mutant sat in the record until an md5 caught it.
+   A mutant programme's revert needs the same proof as its apply, and a control that needs no mutation
+   needs no revert. */
+const mechanismControl = (() => {
+  const oldest = recordBlobs[0];
+  const sig = oldest.numbersByLine.find(nums => nums.length >= 2);
+  if (sig === undefined) return { datesBackwards: null, why: "the oldest blob has no line with two numbers" };
+  const found = firstBlobCarrying(sig);
+  return { datesBackwards: found !== null && found.sha === oldest.sha, resolvedTo: found, oldestBlob: oldest.sha };
+})();
+const uncommittedControl = (() => {
+  const absent = introducedBy("a sentence that has never been written into this record: " + "x".repeat(40));
+  return { reachable: absent === null };
+})();
+if (mechanismControl.datesBackwards === false)
+  throw new Error(`ERR_GRUEN_CURRENCY_DATING_INERT: a signature from the OLDEST blob did not resolve to it (${JSON.stringify(mechanismControl)}) — the A-G476 dating cannot reach back and would silently never fire.`);
+if (!uncommittedControl.reachable)
+  throw new Error("ERR_GRUEN_CURRENCY_UNCOMMITTED_UNREACHABLE: a line that was never written resolved to a commit, so UNCOMMITTED is a bucket nothing can enter and a 0 there would be vacuous (A-G453).");
 if (!control.currentIsReachable || !control.lapsedIsReachable)
   throw new Error(`ERR_GRUEN_CURRENCY_BUCKET_UNREACHABLE: ${JSON.stringify(control)} — a classifier that cannot reach both buckets has not measured anything.`);
 
@@ -254,6 +322,8 @@ const out = {
   quotationCharsExcluded: quotedChars,
   claimLinesHiddenByExclusion: hiddenByExclusion,
   control,
+  mechanismControl,
+  uncommittedControl,
   counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
   rows,
   detectorLimit: "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
@@ -261,7 +331,7 @@ const out = {
 
 console.log(`\nA-G473 over ${RECORD} at ${out.head}`);
 console.log(`referents: ${Object.entries(out.referents).map(([k, v]) => `${k}=${v.sha} ${v.when.slice(0, 16)}`).join(" · ")}`);
-console.log(`control: CURRENT reachable=${control.currentIsReachable} LAPSED reachable=${control.lapsedIsReachable} · quotation chars excluded: ${quotedChars} · CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${hiddenByExclusion}\n`);
+console.log(`control: CURRENT=${control.currentIsReachable} LAPSED=${control.lapsedIsReachable} A-G476-dates-backwards=${mechanismControl.datesBackwards} UNCOMMITTED-reachable=${uncommittedControl.reachable} · quotation chars excluded: ${quotedChars} · CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${hiddenByExclusion}\n`);
 for (const r of rows) {
   const dated = r.writtenAt === undefined ? "" : ` written ${r.writtenAt.sha} ${r.writtenAt.when.slice(0, 16)} vs ${r.referent.sha} ${r.referent.when.slice(0, 16)}`;
   console.log(`${r.status.padEnd(10)} :${String(r.line).padEnd(4)} ${r.kind.padEnd(17)}${dated}`);
