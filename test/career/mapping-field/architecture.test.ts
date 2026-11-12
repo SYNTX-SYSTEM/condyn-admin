@@ -1,8 +1,7 @@
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ROOT, assertRange, changedInRange, git, phaseDBase, phaseEBase, phaseFBase, phaseGBase } from "./phase-base";
+import { DIFF_MAX_BUFFER_DEFAULT, ROOT, assertRange, changedInRange, git, gitDiff, phaseDBase, phaseEBase, phaseFBase, phaseGBase } from "./phase-base";
 
 /**
  * MAP-D-ARCH · the phase-D boundary (PERSON_X_JOB_MAPPING_PHASE_D.md §5.2, D-1 … D-7, held by PINK). The guarantees are bound to
@@ -17,7 +16,7 @@ import { ROOT, assertRange, changedInRange, git, phaseDBase, phaseEBase, phaseFB
  *  D-6 the model is pure; D-7 the model, the component and the copy read only — no write, no URL, no storage, no job scope.
  * "Staged" includes a change that is only in the index (PINK F-FIN-1): the index is compared against the base as well.
  */
-const diffLines = (file: string, sign: "+" | "-") => execFileSync("git", ["diff", "-U0", phaseDBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+const diffLines = (file: string, sign: "+" | "-") => gitDiff("-U0", phaseDBase(), "--", file)
   .filter(line => line.startsWith(sign) && !line.startsWith(`${sign}${sign}${sign} `)).map(line => line.slice(1).trim());
 const code = (file: string) => readFileSync(join(ROOT, file), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'])\/\/.*$/gm, "$1");
 
@@ -246,7 +245,7 @@ function phaseEChangeSets(): Array<{ commit: string; files: string[] }> {
   return commitSets(`${phaseEBase()}..${phaseFBase()}`);
 }
 /** The lines phase E added to a file, against the base (committed, staged and unstaged together). */
-const addedSinceE = (file: string) => execFileSync("git", ["diff", "-U0", phaseEBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+const addedSinceE = (file: string) => gitDiff("-U0", phaseEBase(), "--", file)
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes", () => {
@@ -317,7 +316,7 @@ const changedSinceF = (...paths: string[]) => [...new Set([
   ...git("diff", "--name-only", "--no-renames", "--cached", phaseFBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseFBase(), "--", ...paths),
   ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
 ])].sort();
-const addedSinceF = (file: string) => execFileSync("git", ["diff", "-U0", phaseFBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+const addedSinceF = (file: string) => gitDiff("-U0", phaseFBase(), "--", file)
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes", () => {
@@ -348,7 +347,7 @@ describe("MAP-F-ARCH · B-F5 / B-F8 — the change set, and no script motion", (
   });
 
   it("B-F5 / PF-14: phase F adds no script motion and no reach — no frame clock, timer, Web Animation, SMIL, window or document member", () => {
-    const added = execFileSync("git", ["diff", "-U0", phaseFBase(), phaseGBase(), "--", COMPONENT], { cwd: ROOT, encoding: "utf8" }).split("\n").filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1)).join("\n");
+    const added = gitDiff("-U0", phaseFBase(), phaseGBase(), "--", COMPONENT).filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1)).join("\n");
     expect(added.length).toBeGreaterThan(0);
     expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
   });
@@ -376,7 +375,7 @@ const changedSinceG = (...paths: string[]) => [...new Set([
   ...git("diff", "--name-only", "--no-renames", "--cached", phaseGBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseGBase(), "--", ...paths),
   ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
 ])].sort();
-const addedSinceG = (file: string) => execFileSync("git", ["diff", "-U0", phaseGBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
+const addedSinceG = (file: string) => gitDiff("-U0", phaseGBase(), "--", file)
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
@@ -388,7 +387,7 @@ describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves
     expect(changedSinceG("lib/career")).toEqual(["lib/career/mapping/layout.ts", MODEL].sort());
     // Exactly: every line the view model adds is, once its V1.1 tokens are taken out, a line it removed — or a comment, or the one
     // new field declaration. Nothing else in the model may move.
-    const diff = execFileSync("git", ["diff", "-U0", phaseGBase(), "--", MODEL], { cwd: ROOT, encoding: "utf8" }).split("\n");
+    const diff = gitDiff("-U0", phaseGBase(), "--", MODEL);
     const removed = new Set(diff.filter(l => l.startsWith("-") && !l.startsWith("--- ")).map(l => l.slice(1).trim()));
     const added = diff.filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1).trim());
     expect(added.length).toBeGreaterThan(0);
@@ -431,6 +430,27 @@ describe("MAP-G-ARCH · the change set, and no script motion", () => {
     expect(sets.length, "the selector selected NO change set, so the assertion below would pass over nothing").toBeGreaterThan(0);
     for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p) && !isEvidence(p)), set.commit).toEqual([]);
     expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..HEAD`)).toEqual([]);
+  });
+
+  it("§115 A-G468: the gate's diff capture has a DECLARED limit, and an overflow says it COULD NOT LOOK rather than that an assertion failed", () => {
+    /* GELB's A-G468: an instrument that reads the record takes the record's SIZE as an undeclared input, and
+       the sign is wrong — a throw inside a test reads as "the assertion failed" when it means "the input was
+       never read". MEASURED headroom when this was written: the widest capture here, the component against
+       PHASE_D_BASE, is 120 028 bytes against node's inherited 1 MiB default — 11.4 %, with the component up
+       77 529 -> 105 716 bytes in phase G alone. Both limbs run, because a guard that only ever throws and a
+       guard that can never throw are the same defect seen from two sides (§94, A-G452). */
+    const before = process.env.CONDYN_GATE_DIFF_MAXBUFFER;
+    try {
+      process.env.CONDYN_GATE_DIFF_MAXBUFFER = "1024";
+      expect(() => gitDiff("-U0", phaseDBase(), "--", COMPONENT), "an overflowing capture must name itself as an unread input").toThrow(/ERR_GATE_COULD_NOT_READ/);
+      process.env.CONDYN_GATE_DIFF_MAXBUFFER = "not-a-number";
+      expect(() => gitDiff("-U0", phaseDBase(), "--", COMPONENT), "an unreadable limit must refuse rather than fall back").toThrow(/ERR_GATE_DIFF_MAXBUFFER_MALFORMED/);
+    } finally {
+      if (before === undefined) delete process.env.CONDYN_GATE_DIFF_MAXBUFFER; else process.env.CONDYN_GATE_DIFF_MAXBUFFER = before;
+    }
+    const lines = gitDiff("-U0", phaseDBase(), "--", COMPONENT);
+    expect(lines.length, "at the declared default the same capture must SUCCEED — otherwise the limb above proves nothing").toBeGreaterThan(0);
+    expect(lines.join("\n").length, "headroom: the capture that matters must stay well inside the declared limit").toBeLessThan(DIFF_MAX_BUFFER_DEFAULT / 4);
   });
 
   it("§95 limb 1: every path in the evidence category is an instrument or an output — the category admits no product surface", () => {

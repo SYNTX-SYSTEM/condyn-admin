@@ -133,6 +133,76 @@
 > `c7143fcd`, `architecture.test.ts` **31/31** — including the four-file violation on `1d28320c` that §96's
 > evidence limbs closed.
 >
+> *** §115 · GELB'S PRODUCT STAND IS A DOCS COMMIT, AND 24 OF THE 30 COMMITS THIS RECORD PINS ARE
+> LOCAL-ONLY — THE SEALS AMONG THEM. ***
+>
+> **1 · `4b83414e` IS NOT THIS LANE'S PRODUCT STAND, AND NOT BY A LITTLE.** GELB reports nine instruments
+> and 19 `PHASE_G` citations pinning it as the build they read the product at. **`4b83414e` does not touch
+> the product file at all** — it is §60, a docs commit; the product state its tree carries is §51's
+> (`e9cd21af`). **Six commits have changed the component since, +166/−29 lines:**
+>
+> | commit | section | what moved | consequence for a measurement pinned at `4b83414e` |
+> |---|---|---|---|
+> | `b6c4bd84` | §64 | **comments only** — the extent-envelope attribution | none |
+> | `28161e77` | §81 | the A-G49 hooks: `data-mapping-seat`, `data-seat-is-group`, halo identity **on the drawn circle, not the `<g>`** | **every selector-based instrument resolves differently** |
+> | `fb4632da` | §86 | `frameWithBodies` rewritten (+95/−12), `FRAME_EM_PER_CHAR`, `FRAME_PASS_CAP` | **the viewBox changes → all geometry moves** |
+> | `c84ab292` | §87 | `converged: boolean → boolean \| null`, `data-frame-converged="n/a"` | the vacuous true; a reader of that attribute sees a third value |
+> | `7b8fc7f5` | §93 | `MOTION.breath` **deleted** (dead — 0 of 47 073 pixels swung in either state) | a constants-reader finds the key **missing** |
+> | `fd45f45f` | §104 | A-G43: splay keys on `arc.state === "DIFFERENT"`, was `s.mark === "counterTick"` | **drawn geometry of DIFFERENT arcs changes** |
+>
+> **The sharpest two are `pg14-frame-corpus` and `pg14-side-allowance`: §86/§87 rewrote `frameWithBodies`,
+> which IS PG-14's subject. Those instruments pin the build from BEFORE the ruling they exist to measure.**
+> *A SHA whose subject says `docs(...)` looks like a neutral anchor. It names a tree, and a tree is a product
+> state — A-G430's build axis hidden behind a commit-type prefix.* Which of the nine are affected is GELB's
+> to decide; the diff is theirs to read, and this lane classifies it rather than ruling on it.
+>
+> **2 · THE SAME SWEEP, TURNED ON THIS RECORD, IS WORSE HERE.** Every hex token in the evidence directory,
+> filtered to real commits via `cat-file -e <t>^{commit}`, then `for-each-ref --contains <sha>
+> refs/remotes/origin`: **30 distinct commits pinned, 24 unreachable from origin.** Reachable: `10eb4030`,
+> `32c63c2b`, `39d50bae`, `3ec8457d`, `93c47e03`, `9cc06f84` — all phase E/F or earlier.
+>
+> *** AND ALL EIGHT `SEALED-*` ARTIFACTS PIN A LOCAL-ONLY COMMIT. *** `d04d96aa` (pg17 ×3), `5c3ca5d9`
+> (pg12 ×2), `8d62028c` (pg11 ×3) — none on origin — plus `buildId HRYkeEpbpndI3UEE7ceeC`, a Next.js
+> build id with **no repository referent at all**. **A-G109's sealing discipline exists so that a reading
+> belongs to a named build. The names are intact, the digests verify, and from outside this machine not one
+> of them resolves.** *A seal proves a reading was not edited. It cannot prove the build it names exists for
+> the reader — so REACHABILITY is a seventh frame axis beside build, domain, population, quantifier, phase
+> and standing, and the sealing discipline is structurally blind to it, because every check a seal runs is a
+> check it can run locally.*
+>
+> **3 · THE INSTRUMENT BEHIND BOTH ANSWERS READS A CACHE.** `refs/remotes/origin/*` is a local mirror, not
+> the remote. Verified against `ls-remote` for all three lane branches on this run — `3ec8457d`, `7576262e`,
+> `1f9117db`, all three **SAME** — so the figures stand. *But they stand because of a recent fetch, not
+> because of the instrument: a local command answering a question about remote state, which is the family
+> `@{u}` belongs to.* PINK's gap measured here: `1f9117db..b6490e86` = **105**, fast-forward, 0 behind —
+> GELB's figure confirmed, and **`PINK-SYSTEM-VALIDATION.md` says *"119 commits, UNPUSHED"*,** so the
+> document a reader arrives at carries the other number.
+>
+> **§115b · A-G468 REACHES THIS LANE TOO, AND IN THE GATE RATHER THAN A REPORTER.** The record itself is
+> safe — `README.md` is 42 437 bytes, 4 % of 1 MiB, and the two instruments that read it use `readFileSync`,
+> *immune by accident and not by design.* **The gate was not.** `architecture.test.ts` captured six
+> `git diff -U0` runs on node's inherited 1 MiB default, **no `maxBuffer` declared anywhere in the lane**,
+> and the widest — the component against `PHASE_D_BASE` — is **120 028 bytes, 11.4 %**, while the component
+> grew **77 529 → 105 716 bytes in phase G alone**. *** AND THE SIGN IS WRONG THE SAME WAY: an overflow
+> throws inside a test, and a throw inside a test reads as a FAILED ASSERTION when it means THE INPUT WAS
+> NEVER READ. *** A-G374's seventh instance was this confusion in the other direction.
+>
+> Repaired at the source, not at six call sites: one `gitDiff` helper in `phase-base.ts` with the limit
+> **declared and injectable** (`CONDYN_GATE_DIFF_MAXBUFFER`, read per call), `ENOBUFS` translated to
+> `ERR_GATE_COULD_NOT_READ: … the gate never saw its input`, and a malformed limit **refused rather than
+> defaulted**. The error code is **measured, not guessed** — `execFileSync` with `maxBuffer: 1024` over that
+> diff yields `code: "ENOBUFS"`, `status: null`; *a guard written against a guessed code is dead code that
+> reads as protection* (A-G465). Proven in **three limbs in one test**: overflow throws, malformed refuses,
+> and the same capture **succeeds at the default** — *a guard that can never fire and a guard that always
+> fires are one defect seen from two sides* (§94, A-G452).
+>
+> **`spawnSync` is the nastier form and GELB's case shows why: their `cat` exited `status: 0` while the pipe
+> overflowed.** `execFileSync` throws; `spawnSync` hands back a successful child and a truncated buffer. *The
+> success code described the subprocess, and the subprocess was not the measurement* — A-G374, now with a
+> second subject.
+>
+> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.

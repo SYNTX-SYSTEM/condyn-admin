@@ -24,6 +24,39 @@ export const PHASE_D_BASE = "e360caf9dcc7b7359d13e2a09884ff4ce09211a8";
 export const git = (...args: string[]) => execFileSync("git", ["-c", "core.quotePath=false", ...args], { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).split("\n").filter(Boolean);
 
 /**
+ * §115 (A-G468, GELB's rule aimed here): A CAPTURED SUBPROCESS TAKES ITS OWN OUTPUT SIZE AS AN UNDECLARED
+ * INPUT. Every `git diff` capture in this gate ran on node's 1 MiB `execFileSync` default. MEASURED, not
+ * assumed: `git diff -U0 PHASE_D_BASE -- <component>` is 120 028 bytes, 11.4 % of that limit, and the
+ * component grew 77 529 -> 105 716 bytes in phase G alone. So the limit is now STATED rather than inherited.
+ *
+ * The sign matters more than the headroom. An overflow throws INSIDE a test, and a throw inside a test reads
+ * as "the assertion failed" when it means "the input was never read" — A-G374's seventh instance was this
+ * same confusion in the other direction. `ENOBUFS` is therefore translated into a message that says the gate
+ * COULD NOT LOOK. The code branched on is measured (`execFileSync` with `maxBuffer: 1024` over that diff
+ * yields `code === "ENOBUFS"`, `status === null`), not guessed — a guard written against a guessed error
+ * code is dead code that reads as protection (A-G465).
+ */
+export const DIFF_MAX_BUFFER_DEFAULT = 1 << 26;
+/** Read per call, not at module load, so the limit is an INJECTABLE input and the guard below is provable in-process. */
+export const diffMaxBuffer = (): number => {
+  const raw = process.env.CONDYN_GATE_DIFF_MAXBUFFER;
+  if (raw === undefined) return DIFF_MAX_BUFFER_DEFAULT;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n <= 0) throw new Error(`ERR_GATE_DIFF_MAXBUFFER_MALFORMED: ${JSON.stringify(raw)} — a capture limit that cannot be read must not fall back to a default.`);
+  return n;
+};
+export const gitDiff = (...args: string[]): string[] => {
+  const limit = diffMaxBuffer();
+  try {
+    return execFileSync("git", ["-c", "core.quotePath=false", "diff", ...args], { cwd: ROOT, encoding: "utf8", maxBuffer: limit, stdio: ["ignore", "pipe", "pipe"] }).split("\n");
+  } catch (error) {
+    if ((error as { code?: string }).code === "ENOBUFS")
+      throw new Error(`ERR_GATE_COULD_NOT_READ: \`git diff ${args.join(" ")}\` exceeded the declared ${limit}-byte capture. THIS IS NOT A FAILED ASSERTION — the gate never saw its input.`);
+    throw error;
+  }
+};
+
+/**
  * The base, resolved when a test asks for it (not at module load), so the tests that need no history still run. In a clone without
  * the commit (a shallow CI checkout) every history test fails with this message — nothing is skipped and nothing is hidden (O-RC-3).
  */
