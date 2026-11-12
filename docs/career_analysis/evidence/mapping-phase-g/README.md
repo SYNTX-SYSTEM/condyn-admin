@@ -355,6 +355,77 @@
 > accurate; my framing of it was one category too pessimistic, which is the mirror of §116's ranking error
 > and the same root: **a status read from one lane's artifact is not the other lane's status.**
 >
+> *** §118 · A-G474 FALSIFIED THIS LANE'S OWN SCAN: THE QUOTATION DETECTOR WAS HIDING FOUR CLAIMS, ONE OF
+> THEM LAPSED. §117'S ZERO WAS PRODUCED BY THE DETECTOR, NOT BY THE RECORD. ***
+>
+> GELB's **A-G474**: *when a distinction is carried by the document's own structure, read the structure — a
+> test that re-derives it from characters re-derives it wrongly and goes on failing in NEW ways after each
+> repair.* They reached it after four forms, each repair narrower than the next failure.
+>
+> **MEASURED HERE RATHER THAN ACCEPTED,** by running the scan with the two CHARACTER-inferred spans removed
+> and only the document-DECLARED markers kept:
+>
+> | form | matched | LAPSED |
+> |---|---|---|
+> | §117 as committed (characters + declared) | 6 | **0** |
+> | declared markers only | **10** | **2** |
+>
+> *** THE CHARACTER TEST WAS BLANKING 6 569 CHARACTERS — ABOUT 15 % OF THE RECORD — AND WITH THEM FOUR
+> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·
+> `valid` is now 0* carried no build. **And the direction is the point. GELB's four forms OVER-reported, which
+> is the alarming direction and gets audited. Mine UNDER-reported, which is the flattering direction and does
+> not.** *A “0 LAPSED” produced by an over-broad quotation detector is the same shape as a green produced by
+> an empty population — §94, where a rung rejected a signal that did not exist.*
+>
+> **Repaired as A-G474 says, not with a better regex: only DECLARED markers remain** (`{{WAS:}}`,
+> `{{THEIRS-WAS:}}`). The consequence is accepted rather than engineered around — **a peer's sentence quoted
+> without a marker now counts as this lane's own claim**, which over-reports, which is the direction a reader
+> audits. The remedy for a false hit is a marker on the quotation, which is a convention this record already
+> has.
+>
+> **TWO FURTHER DEFECTS THE SAME RUN EXPOSED, both in the readings-corpus form.** Its referent was the whole
+> `outputs/` directory **including the audits' own output files**, so §117 writing `currency-lapse.json`
+> dated §116's staleness claim stale — *the claim dated itself stale, one turn of the same screw A-G473
+> names.* The referent now excludes both audits' outputs. And `\b\d+ STALE\b` matched prose about a PEER's
+> citations being *“+20 stale”*, so the staleness forms now require a corpus noun. **Both were
+> false-positive sources, i.e. the honest direction, and both are fixed anyway — a detector that is wrong in
+> the safe direction is still wrong, and §116's own ranking error came from accepting one.**
+>
+> *** §118b · AND THE THING NEITHER LANE'S INSTRUMENT MEASURES: EVERY CORRECTION TO THESE SCANS HAS MOVED
+> ITS COUNT THE SAME WAY. *** GELB's **8 → 2**. This lane's **3 → 1 → 0**. Each step individually correct,
+> each defensible on its own evidence, and every one toward **fewer findings**. **A-G462 says a conclusion
+> against yourself gets no audit because it feels like rigour; the symmetric case is a REFINEMENT THAT
+> ABSOLVES, which feels like precision.** The A-G474 falsification was a one-off and a one-off does not
+> survive the next broadening of an exclusion set.
+>
+> So the cost of excluding anything is now **printed in every run**: `CLAIM LINES HIDDEN BY THE EXCLUSION
+> SET`. It reads **1** — §110's own `{{WAS: … }}` figure, which is exactly what a declared retraction should
+> hide — down from **4** under the character form. *A zero there would mean the markers do nothing; a number
+> that grows without a section explaining it is the flattering direction arriving unannounced.*
+>
+> *** §118c · AND WRITING THIS SECTION BROKE THE INSTRUMENT IMMEDIATELY, WHICH IS THE SHORTEST VERSION OF
+> A-G472 EITHER LANE HAS. *** The paragraph above quotes §116c's staleness figure in order to RULE about it.
+> With the character spans gone, that quotation counts as a claim — the accepted consequence — and
+> `git log -S` cannot date a line that is not committed yet, so the scan returned **two `UNDATED` debts
+> against the section being written at that moment** and exited 1. **An uncommitted line is dated NOW by
+> construction and cannot be stale; treating “not yet committed” as “not dated” is §94's shape inverted — a
+> debt reported against something no change has had the chance to invalidate.** Classified `UNCOMMITTED`.
+>
+> **The residual is named and NOT engineered around: this scan cannot tell a claim from a sentence ABOUT a
+> claim** (A-G460 — a rule scoped to the artifact does not bind the sentence about the artifact), which is
+> GELB's defect-1 family in its **fourth** appearance across the two lanes. The structural remedy is a marker
+> on the quotation. **One is not invented here.** `{{WAS:}}` and `{{THEIRS-WAS:}}` both say *retracted*, and
+> §116c's figure is not retracted — so a third form would be the right shape, and *a convention earned by one
+> instance is a convention invented for none.* It is owed if it recurs, and named so the next reader does not
+> have to rediscover why two markers were not three.
+>
+> **The current reading, with the chain stated rather than the figure alone: 9 matched · 0 LAPSED · 3 CURRENT
+> · 2 SCOPED · 2 UNCOMMITTED · 2 UNDATABLE · 1 hidden.** The zero rests on four changes — §117's
+> restatement of §110, the referent narrowing, the pattern narrowing, and the UNCOMMITTED classification —
+> **and not on a re-measurement of anything.** Four defensible steps, all four toward fewer findings, which
+> is §118b's whole point turned on §118 itself. Stated here because the instrument still cannot tell a
+> restatement from a re-measurement, and that limit did not move.
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.

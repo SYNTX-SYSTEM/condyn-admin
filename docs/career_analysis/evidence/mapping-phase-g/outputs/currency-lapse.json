@@ -3,24 +3,36 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "f80425ed",
+ "head": "df8ffd61",
  "referents": {
   "test-population": {
    "sha": "3231f52c",
    "when": "2026-11-12T23:12:38+01:00",
    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+  },
+  "product-pixels": {
+   "sha": "fd45f45f",
+   "when": "2026-11-11T22:13:56+01:00",
+   "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+  },
+  "readings-corpus": {
+   "sha": "f80425ed",
+   "when": "2026-11-12T23:26:43+01:00",
+   "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
   }
  },
- "quotationCharsExcluded": 6823,
+ "quotationCharsExcluded": 177,
+ "claimLinesHiddenByExclusion": 1,
  "control": {
   "currentIsReachable": true,
   "lapsedIsReachable": true
  },
  "counts": {
-  "matched": 6,
+  "matched": 9,
   "LAPSED": 0,
-  "CURRENT": 1,
-  "SCOPED": 3,
+  "CURRENT": 3,
+  "SCOPED": 2,
+  "UNCOMMITTED": 2,
   "UNDATABLE": 2,
   "UNDATED": 0
  },
@@ -56,21 +68,70 @@
    "status": "CURRENT"
   },
   {
-   "line": 545,
+   "line": 239,
+   "kind": "product-pixels",
+   "text": "> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |",
+   "writtenAt": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   },
+   "referent": {
+    "sha": "fd45f45f",
+    "when": "2026-11-11T22:13:56+01:00",
+    "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 276,
+   "kind": "readings-corpus",
+   "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87. *** Not one reading in",
+   "writtenAt": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   },
+   "referent": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 374,
+   "kind": "readings-corpus",
+   "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
+   "status": "UNCOMMITTED",
+   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "referent": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   }
+  },
+  {
+   "line": 375,
+   "kind": "readings-corpus",
+   "text": "> `valid` is now 0* carried no build. **And the direction is the point. GELB's four forms OVER-reported, which",
+   "status": "UNCOMMITTED",
+   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "referent": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   }
+  },
+  {
+   "line": 616,
    "kind": "stand-liveness",
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
    "status": "UNDATABLE",
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 662,
-   "kind": "readings-corpus",
-   "text": "> `gruen-seal-staleness.mjs` reports 8 stale at `fb4632da`, and it is right — PG-14's new solve changes the",
-   "status": "SCOPED",
-   "why": "the claim's own paragraph names a build, so it is a DATED measurement (A-G54) and cannot lapse"
-  },
-  {
-   "line": 710,
+   "line": 781,
    "kind": "stand-liveness",
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
    "status": "UNDATABLE",

@@ -63,8 +63,15 @@ const lastCommitFor = paths => {
 const KINDS = [
   { kind: "test-population", undatable: false, paths: ["test/career/mapping-field", "test/career/mapping-spec"],
     re: /\b\d+ files?, \d+ tests\b|\b\d+ tests, (?:\d+ passed, )?\d+ failed\b|architecture\.test\.ts\*{0,2} \*{0,2}\d+\/\d+/ },
-  { kind: "readings-corpus", undatable: false, paths: ["docs/career_analysis/evidence/mapping-phase-g/outputs"],
-    re: /\bvalid\b[^.\n]*\bis now \d+|\b\d+ STALE\b|\bstale\b[^.\n]*\breadings\b/i },
+  /* §118: the referent EXCLUDES the two audits' own outputs. A claim about the readings corpus cannot be
+     invalidated by the audit that describes the corpus writing its own file — that is the claim dating
+     itself stale, one turn of the same screw A-G473 names. And `\d+ STALE` alone matched prose about a
+     PEER's citations being "+20 stale", so the staleness forms now require a corpus noun. */
+  { kind: "readings-corpus", undatable: false,
+    paths: ["docs/career_analysis/evidence/mapping-phase-g/outputs",
+            ":(exclude)docs/career_analysis/evidence/mapping-phase-g/outputs/currency-lapse.json",
+            ":(exclude)docs/career_analysis/evidence/mapping-phase-g/outputs/seal-staleness.json"],
+    re: /\bvalid\b[^.\n]*\bis now \d+|\b\d+ STALE (?:UNSEALED )?(?:READINGS?|SEALS?)\b|\bstale\b[^.\n]*\breadings\b/i },
   { kind: "seal-corpus", undatable: false, paths: ["docs/career_analysis/evidence/mapping-phase-g/outputs"],
     re: /\bseals? (?:are|is|stay|stays|remain|remains) untouched\b|\bSEALED-\*[^.\n]*untouched\b/i },
   { kind: "stand-liveness", undatable: true, paths: [],
@@ -77,12 +84,26 @@ const KINDS = [
 
 const src = readFileSync(resolve(ROOT, RECORD), "utf8");
 
-/** Quotation SPANS, stripped before any claim is matched. Both quote families are literal, never escaped. */
+/**
+ * §118 · A-G474 (GELB's), AND THE FALSIFICATION THAT MADE IT MINE. Their rule: when a distinction is carried
+ * by the document's own structure, READ THE STRUCTURE — a test that re-derives it from characters re-derives
+ * it wrongly and goes on failing in NEW ways after each repair. They reached it after four forms.
+ *
+ * MEASURED HERE rather than accepted: this scan was run with the two CHARACTER-inferred spans removed and
+ * only the document-DECLARED ones kept, and the row set changed from 6 matched / 0 LAPSED to 10 matched /
+ * 2 LAPSED. *** SO THE CHARACTER TEST WAS HIDING FOUR CLAIMS, ONE OF THEM GENUINELY LAPSED. *** GELB's four
+ * forms OVER-reported, which is the alarming direction and gets audited; mine UNDER-reported, which is the
+ * flattering direction and does not. A "0 LAPSED" produced by an over-broad quotation detector is the same
+ * shape as a green produced by an empty population (§94).
+ *
+ * So only DECLARED markers remain. The consequence is accepted rather than engineered around: a peer's
+ * sentence quoted WITHOUT a marker now counts as this lane's own claim. That over-reports, which is the
+ * direction a reader audits, and the remedy is a marker on the quotation (§111/§113's forms) rather than a
+ * cleverer regex — which is exactly what A-G474 says.
+ */
 const QUOTE_SPANS = [
   /\{\{WAS:[\s\S]*?\}\}/g,          // §111 — this lane asserted it and retracted it
-  /\{\{THEIRS-WAS:[\s\S]*?\}\}/g,   // §113 — another lane retracted it; this record only quotes it
-  /\*["“][\s\S]*?["”]\*/g,          // an emphasised quotation, the form this record uses for a peer's sentence
-  /["“][^"”\n]{12,}["”]/g           // a plain quoted sentence on one line
+  /\{\{THEIRS-WAS:[\s\S]*?\}\}/g    // §113 — another lane retracted it; this record only quotes it
 ];
 /**
  * §117b: THE FIRST FORM OF THIS BLANKING REPLACED EVERY CHARACTER OF A SPAN WITH A SPACE, NEWLINES INCLUDED.
@@ -97,6 +118,24 @@ const blanked = QUOTE_SPANS.reduce((acc, re) => acc.replace(re, blankSpan), src)
 if (blanked.length !== src.length) throw new Error("ERR_GRUEN_CURRENCY_BLANKING_CHANGED_LENGTH: the span blanking changed the file's length.");
 if (blanked.split("\n").length !== src.split("\n").length) throw new Error("ERR_GRUEN_CURRENCY_BLANKING_CHANGED_LINES: line numbers would shift and every row would cite a line it did not match.");
 const quotedChars = src.length - blanked.replace(/ /g, "").length - (src.length - src.replace(/ /g, "").length);
+
+/**
+ * §118b · WHAT THE EXCLUSION SET COSTS, REPORTED IN EVERY RUN RATHER THAN PROVED ONCE.
+ *
+ * The A-G474 falsification above was a one-off: run with the character spans removed, see the row set grow
+ * from 6 to 10. A one-off does not survive the next broadening of the set — and both lanes' corrections to
+ * these instruments moved their counts the SAME way, GELB's 8 -> 2 and this lane's 3 -> 1 -> 0, each step
+ * individually correct and every step toward fewer findings. *** THAT IS THE DIRECTION A-G462 SAYS GETS NO
+ * AUDIT: not only a conclusion against oneself, but a refinement that ABSOLVES, when each move is
+ * defensible on its own. *** So the cost of excluding anything is a number printed every time: how many
+ * claim-matching lines the exclusion set removes from view. A zero here means the markers are doing nothing;
+ * a number that grows without a section explaining it is the flattering direction arriving unannounced.
+ */
+const hiddenByExclusion = (() => {
+  const unblanked = src.split("\n");
+  const count = ls => ls.reduce((n, line) => n + (line.trim() !== "" && KINDS.some(k => k.re.test(line)) ? 1 : 0), 0);
+  return count(unblanked) - count(blanked.split("\n"));
+})();
 
 const lines = blanked.split("\n");
 const rawLines = src.split("\n");
@@ -159,7 +198,28 @@ lines.forEach((line, i) => {
   if (kind.undatable) { row.status = "UNDATABLE"; row.why = "a liveness claim about a running process decays in wall-clock time, not in commits"; rows.push(row); return; }
   const wrote = introducedBy(rawLines[i]);
   const ref = referentFor(kind);
-  if (wrote === null) { row.status = "UNDATED"; row.why = "the line could not be dated by `git log -S` (uncommitted, or rewritten since)"; rows.push(row); return; }
+  /**
+   * §118c: AN UNCOMMITTED LINE IS NOT AN UNDATED CLAIM. The first form returned `UNDATED` for a claim
+   * `git log -S` could not find, and fail-closed on it — so writing §118 made this instrument report two
+   * debts against a section that was being written at that moment. A line in the working tree is dated NOW
+   * by construction and cannot be stale; treating "not yet committed" as "not dated" is the §94 shape
+   * inverted, a debt reported against something no change has had the chance to invalidate.
+   *
+   * KNOWN LIMIT, named rather than engineered around: the two rows that exposed this are §118's own prose
+   * QUOTING §116c's figure in order to rule about it. A-G460 — a rule scoped to the artifact does not bind
+   * the sentence about the artifact — and this scan cannot tell a claim from a sentence about a claim. That
+   * is GELB's defect 1 family in its fourth appearance across the two lanes, and the only structural remedy
+   * is a marker on the quotation. One is NOT invented here: the UNCOMMITTED fix makes these rows correct,
+   * and a convention earned by one instance is a convention invented for none.
+   */
+  if (wrote === null) {
+    const ref2 = referentFor(kind);
+    row.status = ref2 === null ? "UNDATABLE" : "UNCOMMITTED";
+    row.why = "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim";
+    if (ref2 !== null) row.referent = ref2;
+    rows.push(row);
+    return;
+  }
   if (ref === null) { row.status = "UNDATABLE"; row.why = "the claim's subject is not a path in this repository"; rows.push(row); return; }
   row.writtenAt = wrote;
   row.referent = ref;
@@ -192,21 +252,22 @@ const out = {
   head: git("rev-parse", "--short=8", "HEAD"),
   referents: Object.fromEntries([...referentCache]),
   quotationCharsExcluded: quotedChars,
+  claimLinesHiddenByExclusion: hiddenByExclusion,
   control,
-  counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
+  counts: { matched: rows.length, LAPSED: by("LAPSED").length, CURRENT: by("CURRENT").length, SCOPED: by("SCOPED").length, UNCOMMITTED: by("UNCOMMITTED").length, UNDATABLE: by("UNDATABLE").length, UNDATED: by("UNDATED").length },
   rows,
   detectorLimit: "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
 };
 
 console.log(`\nA-G473 over ${RECORD} at ${out.head}`);
 console.log(`referents: ${Object.entries(out.referents).map(([k, v]) => `${k}=${v.sha} ${v.when.slice(0, 16)}`).join(" · ")}`);
-console.log(`control: CURRENT reachable=${control.currentIsReachable} LAPSED reachable=${control.lapsedIsReachable} · quotation chars excluded: ${quotedChars}\n`);
+console.log(`control: CURRENT reachable=${control.currentIsReachable} LAPSED reachable=${control.lapsedIsReachable} · quotation chars excluded: ${quotedChars} · CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${hiddenByExclusion}\n`);
 for (const r of rows) {
   const dated = r.writtenAt === undefined ? "" : ` written ${r.writtenAt.sha} ${r.writtenAt.when.slice(0, 16)} vs ${r.referent.sha} ${r.referent.when.slice(0, 16)}`;
   console.log(`${r.status.padEnd(10)} :${String(r.line).padEnd(4)} ${r.kind.padEnd(17)}${dated}`);
   console.log(`           ${r.text}`);
 }
-console.log(`\nmatched ${out.counts.matched} · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
+console.log(`\nmatched ${out.counts.matched} · LAPSED ${out.counts.LAPSED} · CURRENT ${out.counts.CURRENT} · SCOPED ${out.counts.SCOPED} · UNCOMMITTED ${out.counts.UNCOMMITTED} · UNDATABLE ${out.counts.UNDATABLE} · UNDATED ${out.counts.UNDATED}`);
 console.log(out.detectorLimit);
 
 const { writeFileSync } = await import("node:fs");
