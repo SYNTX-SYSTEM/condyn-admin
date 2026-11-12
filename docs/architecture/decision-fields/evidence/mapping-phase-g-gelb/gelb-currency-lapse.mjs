@@ -170,55 +170,99 @@ console.log(`\n  A claim written BEFORE ITS OWN SUBJECT'S TIP no longer carries 
 console.log(`  same as being wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29.`);
 
 const rel = (f) => f.replace(`${REPO_ROOT}/`, "");
+
+/* ───────── GRÜN'S §120 DEFECT 4, THE ONE IT TOLD ME TO CHECK FIRST: A CLAIM IS A SENTENCE, NOT A LINE ─────────
+   My records are hard-wrapped and this scan was per-line, so any claim split by a wrap was invisible. Measured
+   before fixing: 4 occurrences in PHASE_G are visible only when unwrapped. *** AND ALL FOUR BELONG TO CLAIMS
+   THE PER-LINE SCAN ALREADY CAUGHT VIA A DIFFERENT PHRASE ON ONE OF THE TWO LINES, SO 0 DISTINCT CLAIMS WERE
+   HIDDEN — AND THAT ZERO IS LUCK, NOT DESIGN. *** It holds only because the phrase set is dense enough that a
+   long claim usually has one phrase landing wholly inside a line; it would not survive a sparser set or a
+   different wrap. A-G464 for the fifth time this phase.
+   So paragraphs are joined and an OFFSET→LINE map is carried, because GRÜN's defect 5 was the attribution
+   going backwards — a line credited with the next line's claim and LAPSED at a commit eleven hours before the
+   claim existed. A match's start offset names its line; nothing is credited to a neighbour.
+   STATED LIMIT, not fixed: a claim spanning THREE lines whose middle line carries no phrase fragment is still
+   found, since the whole paragraph is joined — but sentence SPLITTING is not attempted at all. Prose carrying
+   §, ·, decimals and abbreviations is its own detector with its own defects, and GRÜN declined it for that
+   reason. The paragraph is the unit here, which is coarser than a sentence and never finer than a line. */
+const paragraphsOf = (lines) => {
+  const out = []; let cur = []; let inFence = false;
+  const flush = () => { if (cur.length) out.push(cur); cur = []; };
+  lines.forEach((l, i) => {
+    if (/^\s*```/.test(l)) { flush(); inFence = !inFence; return; }
+    if (/^[>\s]*$/.test(l)) { flush(); return; }
+    cur.push({ text: l, ln: i + 1, fenced: inFence });
+  });
+  flush();
+  return out.map((rows) => {
+    let joined = ""; const owner = [];
+    rows.forEach((row, k) => {
+      const t = row.text.replace(/^\s*>\s?/, "").trimEnd();
+      if (k) { joined += " "; owner.push(row.ln); }
+      joined += t;
+      for (let c = 0; c < t.length; c++) owner.push(row.ln);
+    });
+    return { joined, owner, rows, byLine: Object.fromEntries(rows.map((r) => [r.ln, r])) };
+  });
+};
+
 const rows = [], quoted = [];
 for (const file of [PHASE_G, PHASE_F]) {
   const lines = readLines(file);
-  let inFence = false;
-  lines.forEach((l, i) => {
-    if (/^\s*```/.test(l)) { inFence = !inFence; return; }
-    const hit = CLAIMS.find((c) => l.includes(c));
-    if (!hit) return;
-    /* A FENCED BLOCK IS VERBATIM QUOTED MATERIAL, NOT AN ASSERTION. §131's own listing of the lapsed
-       phrases sat inside one, and the span rule did not save it: the line reads
-         to HEAD" · "resting on current readings"
-       and the regex paired `" · "` as a span, leaving the phrase OUTSIDE any span. Fourth correction in
-       this instrument and the same family every time — but this one is structural rather than textual,
-       which is why it is the one that holds: a fence is declared by the document, not inferred from
-       punctuation. *** EVERY TEXTUAL TEST FOR "IS THIS QUOTED" HAS FAILED HERE; THE MARKUP-LEVEL ONE DID
-       NOT. *** */
-    if (inFence) { quoted.push({ file: rel(file), ln: i + 1, phrase: hit, why: "in a fenced block" }); return; }
-    if (QUOTED(l, hit)) { quoted.push({ file: rel(file), ln: i + 1, phrase: hit, why: "quoted span / table row" }); return; }
-    const para = paragraphAt(lines, i);
-    rows.push({
-      file: rel(file).split("/").pop().replace("PERSON_X_JOB_MAPPING_", ""),
-      ln: i + 1, phrase: hit, text: l.trim(),
-      subject: subjectOf(l), liveness: LIVENESS.test(l), builds: buildsIn(para),
-      intro: introducedBy(rel(file), l),
-    });
-  });
+  const short = rel(file).split("/").pop().replace("PERSON_X_JOB_MAPPING_", "");
+  const builds = {};                                    // one resolve-check per paragraph, cached
+  for (const para of paragraphsOf(lines)) {
+    /* COLLECT EVERY MATCH AS A SPAN, THEN DROP ANY SPAN CONTAINED IN ANOTHER. The pattern set has
+       overlapping phrases — "resting on current readings" CONTAINS "on current readings" — and the previous
+       per-line loop used CLAIMS.find(), which silently took only the first match per line and so never
+       exposed the overlap. Replacing it with "every occurrence" took the asserted count 15 -> 26, and the
+       extra 11 were the SAME claims counted once per contained substring. *** A COUNT THAT RISES WHEN A
+       SCAN STOPS DISCARDING MATCHES IS NOT A FINDING UNTIL THE MATCHES ARE SHOWN TO BE DISTINCT. ***
+       Over-reporting, so it is the direction a reader audits — and still wrong. */
+    const hits = [];
+    for (const c of CLAIMS) {
+      let from = 0, i;
+      while ((i = para.joined.indexOf(c, from)) !== -1) { hits.push({ i, end: i + c.length, c }); from = i + 1; }
+    }
+    const kept = hits.filter((h) => !hits.some((o) => o !== h && o.i <= h.i && o.end >= h.end && (o.end - o.i) > (h.end - h.i)));
+    {
+      for (const { i, c } of kept) {
+        const ln = para.owner[i];                        // the line the phrase STARTS on — never a neighbour
+        const row = para.byLine[ln];
+        if (row.fenced) { quoted.push({ file: short, ln, phrase: c, why: "in a fenced block" }); continue; }
+        if (QUOTED(row.text, c) || /^\s*\|/.test(row.text)) {
+          quoted.push({ file: short, ln, phrase: c, why: "quoted span / table row" }); continue;
+        }
+        if (!(para.joined in builds)) builds[para.joined] = buildsIn(para.joined);
+        rows.push({
+          file: short, ln, phrase: c, text: row.text.trim(),
+          subject: subjectOf(para.joined), liveness: LIVENESS.test(para.joined), para: para.joined.slice(0, 120),
+          builds: builds[para.joined], intro: introducedBy(rel(file), row.text),
+        });
+      }
+    }
+  }
 }
 
-/** is this line already in HEAD? distinguishes "undatable" from "not committed yet" */
+/** is this line already in HEAD? distinguishes "undatable" from "not committed yet".
+ *  THE FULL LINE, NOT A PREFIX: the first form compared text.slice(0, 60), so a line EDITED in place whose
+ *  opening 60 characters were unchanged read as "already in HEAD" and landed in UNDATABLE instead of
+ *  UNCOMMITTED — GRÜN's §117b shape, the right hazard named and the wrong quantity checked. */
 const headCache = {};
 const inHead = (shortName, text) => {
   const path = shortName.includes("PHASE_F") ? rel(PHASE_F) : rel(PHASE_G);
   if (!(path in headCache)) { try { headCache[path] = git(REPO_ROOT, "show", `HEAD:${path}`); } catch { headCache[path] = ""; } }
-  /* THE FULL LINE, NOT A PREFIX. The first form compared text.slice(0, 60), so a line EDITED in place whose
-     opening 60 characters were unchanged read as "already in HEAD" and landed in UNDATABLE instead of
-     UNCOMMITTED — which is exactly GRÜN's §117b shape: the right hazard named, the wrong quantity checked.
-     Found by applying A-G427 to one quoted line and watching UNDATABLE go 0 -> 1. */
   return headCache[path].includes(text);
 };
 /* REVIEWED EXCLUSIONS — NAMED, NOT FILTERED. The §134 recall probe widened the pattern set and LAPSED went
-   2 -> 6, the first upward move this instrument has made. I then read all four new rows and ONE IS A FALSE
-   POSITIVE: PHASE_G:1280's "still passes" sits inside a HYPOTHETICAL — "…while a test asserting
-   'counterTick ⟹ splay' still passes" — which is a vacuity argument, not an assertion that anything
-   currently passes. *** I HAD JUST DECLARED ALL THREE PROBE HITS GENUINE AFTER READING THEM, SO READING THE
-   MATCHED LINE WAS NOT ENOUGH: THE SENTENCE HAD TO BE READ FOR WHAT IT DOES, NOT ONLY FOR WHAT IT SAYS. ***
-   A-G450 one level in.
-   It is excluded HERE, BY NAME, AND STILL PRINTED, because a number removed without a name is a number
-   nobody can audit (A-G429 remedy 1) — and NOT given a bucket, because a convention earned by one instance
-   is a convention invented for none (GRÜN's §119). Both figures are reported. */
+   2 -> 6, the first upward move this instrument had made. Reading all four new rows found ONE FALSE POSITIVE:
+   PHASE_G:1280's "still passes" sits inside a HYPOTHETICAL — "…while a test asserting 'counterTick ⟹ splay'
+   still passes" — a vacuity argument, not an assertion that anything currently passes. *** I HAD JUST
+   DECLARED ALL THREE PROBE HITS GENUINE AFTER READING THEM, SO READING THE MATCHED LINE WAS NOT ENOUGH: THE
+   SENTENCE HAD TO BE READ FOR WHAT IT DOES, NOT ONLY FOR WHAT IT SAYS. *** A-G450 one level in.
+   Excluded HERE, BY NAME, AND STILL PRINTED, because a number removed without a name cannot be audited
+   (A-G429 remedy 1) — and NOT given a bucket, because a convention earned by one instance is a convention
+   invented for none (GRÜN's §119). Both figures are reported. */
 const REVIEWED = {
   "PHASE_G.md:1280": "hypothetical — 'a test asserting X still passes' inside a vacuity argument, not a status claim",
 };
@@ -256,12 +300,26 @@ for (const r of rows) {
 
 const lapsed = B.LAPSED.length;
 console.log(`\n${bar}\n[2] WHAT THIS BOUNDS\n${bar}\n`);
-console.log(`  currency claims ASSERTED:  ${rows.length}`);
+/* *** THIS ROW MODEL HAS COUNTED PHRASE OCCURRENCES AND CALLED THEM "CLAIMS" SINCE §131. *** One sentence
+   carrying two phrases from the set ("returns to CLOSED" and "resting on current readings") has always
+   produced two rows, and paragraph-joining made that visible by finding more phrases per claim: 15 -> 23.
+   A mislabel inflates nothing, but it makes a figure mean something other than what its name says — which is
+   the whole of A-G437's quantifier axis. BOTH are reported, and the distinct figure is the one to quote. */
+const distinct = new Set(rows.map((r) => `${r.file}|${r.para}`)).size;
+console.log(`  phrase occurrences ASSERTED:        ${rows.length}`);
+console.log(`  DISTINCT CLAIMS (one per paragraph): ${distinct}   <- the figure to quote`);
 console.log(`  quotations of a claim, excluded and counted: ${quoted.length}  <- §129/§130 ruling against them`);
 for (const q of quoted) console.log(`      quoted   ${q.file.split("/").pop()}:${String(q.ln).padStart(5)}  ${(q.why ?? "").padEnd(24)} "${q.phrase}"`);
 console.log(``);
+/* BUCKETS AT BOTH GRANULARITIES. The phrase figure is what the rows show; the CLAIM figure is what the
+   record actually asserts. *** AND THE CLAIM FIGURE IS SMALLER, WHICH MAKES THIS THE SIXTH CORRECTION IN A
+   ROW TO MOVE A COUNT DOWNWARD — A-G475's direction, flagged here rather than left for a reader to notice,
+   because the defensible reason for each reduction is exactly what makes the trend invisible. *** The one
+   correction this session that went UP was the recall probe, and it cost a false positive immediately. */
+const claimsIn = (k) => new Set(B[k].map((r) => `${r.file}|${r.para}`)).size;
+console.log(`    ${"bucket".padEnd(21)} ${"phrases".padStart(8)} ${"CLAIMS".padStart(7)}`);
 for (const k of ["LAPSED", "CURRENT", "SCOPED", "SCOPED-UNRESOLVABLE", "UNDATABLE", "UNCOMMITTED"])
-  console.log(`    ${k.padEnd(21)} ${String(B[k].length).padStart(2)}`);
+  console.log(`    ${k.padEnd(21)} ${String(B[k].length).padStart(8)} ${String(claimsIn(k)).padStart(7)}`);
 const reviewedOut = B.LAPSED.filter((r) => REVIEWED[`${r.file}:${r.ln}`]);
 if (reviewedOut.length) {
   console.log(`\n  REVIEWED EXCLUSIONS — named, still printed above, not filtered and not bucketed:`);
@@ -306,6 +364,23 @@ console.log(bar);
 
 
 /* ───────────── A-G452: prove each state can fire, on synthetic lines, printing every outcome ───────────── */
+/* THESE TWO WERE SILENTLY DELETED BY AN EDIT AND NO RUN REVEALED IT, because the only branch using them
+   (!r.intro) is unreachable in the current data — so UNCOMMITTED read 0 by CRASH-ON-USE rather than by
+   measurement, and a definition-diff against a backup caught it, not the instrument. *** A FUNCTION WHOSE
+   ONLY CALLER IS UNREACHABLE IS INDISTINGUISHABLE FROM A FUNCTION THAT DOES NOT EXIST. *** GRÜN's in-process
+   control, which needs no mutation and therefore no revert: exercise them directly, and refuse if either the
+   positive or the negative direction is unreachable. */
+{
+  const posIn  = inHead("PHASE_G.md", "## §89");
+  const negIn  = inHead("PHASE_G.md", "a line that was never written anywhere in this record at all");
+  const ok = posIn === true && negIn === false;
+  console.log(`\n${bar}\n[2c] inHead() CONTROL — the branch that uses it is unreachable in this data\n${bar}\n`);
+  console.log(`  in HEAD, text that is present:  ${posIn}   (must be true)`);
+  console.log(`  in HEAD, text that is absent:   ${negIn}   (must be false)`);
+  console.log(`  ${ok ? "both directions reachable" : "*** REFUSING: inHead is not discriminating ***"}`);
+  if (!ok) process.exitCode = 1;
+}
+
 console.log(`\n${bar}\n[3] MUTANTS — each classification proven reachable (A-G452)\n${bar}\n`);
 {
   const cases = [

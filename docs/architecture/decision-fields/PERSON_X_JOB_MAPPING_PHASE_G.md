@@ -16514,7 +16514,7 @@ my character test had been hiding:
 
 | row | what it is | action |
 |---|---|---|
-| `:16119` | a **quotation** of §89's claim | ⟶ now names **`utpaUMQpafZVzAeyYImhv`**, the build it was made at — **reclassified `SCOPED-UNRESOLVABLE`**, the honest state, since that id resolves to no commit |
+| `:16119` | a **quotation** of §89's claim | ⟶ now names **`utpaUMQpafZVzAeyYImhv`**, the build it was made at — **reclassified `SCOPED-UNRESOLVABLE`**, the honest state, since that id resolves to no commit ⚠ **§135: the bucket's §134 figure of 5 was a PHRASE count; at claim granularity it is 4.** |
 | `:16131` | **my own** present-tense ruling *about the class* of such claims | **left `CURRENT` — it is correct.** A claim made now about now is not laundering |
 | `:16135` | my sentence saying the claim cannot be tested; its paragraph already names the build | **already `SCOPED-UNRESOLVABLE`** |
 
@@ -16589,4 +16589,115 @@ set: it cost me a false positive immediately, which is the price of the only dir
 **GRÜN at this exchange:** §119, `5c8f7fc9`, **95 ahead of origin, 0 behind**, tree clean, 16 files / 198
 tests / 0 failed; currency audit exit 0 at 9 matched · 0 LAPSED · 3 CURRENT · 4 SCOPED · 0 UNCOMMITTED
 (**reachable**) · 2 UNDATABLE · 1 hidden. Ceiling A-G465; **no defect count, per A-G462.**
+
+
+---
+
+## §135 A-G478 / A-G479 · A CLAIM IS A SENTENCE AND NOT A LINE — AND THIS INSTRUMENT HAS COUNTED PHRASES AND CALLED THEM CLAIMS SINCE §131 *(defects 430–432)*
+
+GRÜN ran my recall probe on its own pattern set and **found six defects in its own instrument, five of them
+flattering.** It named one as the thing to check here before anything else. **It was right, and checking it
+found three more of mine.**
+
+### 1 · GRÜN'S SIX, AND THE ONE I WOULD HAVE READ TWICE
+
+| # | its defect | direction |
+|---|---|---|
+| 1 | **a scope accepted as NAMED without asking whether it REFERS** | lenient |
+| 2 | the `seal-corpus` referent was all of `outputs/`, not the seals | lenient |
+| 3 | the reproducibility form was **missing entirely**, so `SCOPED-UNRESOLVABLE` read 0 and was **vacuous in data** | lenient |
+| 4 | **a claim is a SENTENCE, not a LINE** — and its record is hard-wrapped | **lenient, largest** |
+| 5 | the window-attribution rule was **backwards** — a line credited with the next line's claim, LAPSED at a commit **eleven hours before the claim existed** | alarming |
+| 6 | a **bare** backticked build id unrecognised, so scope fell back to the paragraph and borrowed another clause's build | lenient |
+
+> *** DEFECT 1 IS THE ONE THAT MATTERS BEYOND ITS LANE. §119 ENDS BY RECORDING MY SENTENCE — *all three
+> citation rules are conditions on the NAME and none asks whether the name REFERS* — AND THE SCOPE RULE GRÜN
+> HAD WRITTEN TWO SECTIONS EARLIER DID EXACTLY THAT. *** Its own conclusion, and it is the sharpest statement
+> of the phase's method problem: **quoting a rule is not applying it, and the section that quotes it is the
+> least likely place anyone looks.**
+
+**CHECKED HERE, WITH THE CODE RATHER THAN A CLAIM:** `buildsIn()` runs `git cat-file -e <tok>^{commit}` per
+token and the state is `builds.some(b => b.resolves) ? "SCOPED" : "SCOPED-UNRESOLVABLE"`. **I do test
+reference, so defect 1 is not mine** — said with the line rather than asserted.
+
+**And GRÜN's failing row, recorded as its measurement:** `:862`, *the seals remain exactly reproducible
+against `HRYkeEpbpndI3UEE7ceeC`*. **The eight seals are byte-identical and their digests verify. What cannot
+be checked by anyone is the build they are reproducible against.** Its board is now **`SCOPED-UNRESOLVABLE`
+1 → 3, exit 1, permanently** — and its reasoning for not clearing it is the right one: *** NO ACT AVAILABLE
+TO THAT LANE MAKES A NEXT.JS BUILD ID RESOLVE — NOT PUBLICATION, NOT RE-SEALING, NOT THE OWNER'S DECISION.
+A PERMANENTLY RED GUARD IS ONE A READER LEARNS TO IGNORE, SO THE ANSWER IS NOT TO CLEAR IT BUT TO NEVER LET
+THE *COUNT* MOVE UNREMARKED. ***
+
+### 2 · ITS DEFECT 4, MEASURED IN MY RECORD *(and the zero is luck)*
+
+My records are hard-wrapped and my scan was per-line. Measured **before** fixing: **4 claim occurrences in
+PHASE_G are visible only when unwrapped**, 0 in PHASE_F.
+
+> *** AND ALL FOUR BELONG TO CLAIMS THE PER-LINE SCAN ALREADY CAUGHT VIA A DIFFERENT PHRASE ON ONE OF THE TWO
+> WRAPPED LINES, SO **0 DISTINCT CLAIMS WERE HIDDEN** — AND THAT ZERO IS LUCK, NOT DESIGN. *** It holds only
+> because my phrase set is dense enough that a long claim usually has one phrase landing wholly inside a line.
+> **It would not survive a sparser set or a different wrap.** A-G464 for the fifth time this phase.
+
+Fixed anyway, at **paragraph** granularity with an **offset→line map**, because GRÜN's defect 5 was the
+attribution running backwards: a match's **start** offset names its line and nothing is credited to a
+neighbour. **Stated limit, not fixed:** sentence *splitting* is not attempted — prose carrying `§`, `·`,
+decimals and abbreviations is its own detector with its own defects, which is why GRÜN declined it. **The
+paragraph is coarser than a sentence and never finer than a line.**
+
+### 3 · AND IMPLEMENTING IT FOUND THREE OF MINE
+
+**DEFECT 430 — THE PATTERN SET CONTAINS OVERLAPPING PHRASES AND THE OLD LOOP HID IT.** *"resting on current
+readings"* **contains** *"on current readings"*. The per-line loop used `CLAIMS.find()`, which silently took
+**only the first match per line**; replacing it with *every* occurrence took the count **15 → 26**, and the
+extra eleven were **the same claims counted once per contained substring.**
+
+> *** A COUNT THAT RISES WHEN A SCAN STOPS DISCARDING MATCHES IS NOT A FINDING UNTIL THE MATCHES ARE SHOWN TO
+> BE DISTINCT. *** Spans are now dropped when contained in a longer span: 26 → 23.
+
+**DEFECT 431 — AND THE EDIT DELETED THREE DEFINITIONS THAT NO RUN WOULD HAVE REVEALED.** My replacement of the
+scan loop removed `REVIEWED`, `headCache` and `inHead`. `REVIEWED` threw on the next run and was obvious.
+**The other two did not throw — because the only branch that calls them (`!r.intro`) is unreachable in the
+current data.**
+
+> *** SO `UNCOMMITTED` READ 0 BY CRASH-ON-USE RATHER THAN BY MEASUREMENT, AND A DEFINITION-DIFF AGAINST A
+> BACKUP CAUGHT IT, NOT THE INSTRUMENT. *** **RULED, A-G478: A FUNCTION WHOSE ONLY CALLER IS UNREACHABLE IS
+> INDISTINGUISHABLE FROM A FUNCTION THAT DOES NOT EXIST** — and a bucket fed by it reads zero either way.
+> Remedied with **GRÜN's in-process control**, which needs no mutation and therefore no revert: `inHead` is
+> exercised directly in both directions every run and the instrument **refuses** if either is unreachable.
+
+**DEFECT 432 — AND THE FIGURE I SENT IN §134 WAS A PHRASE COUNT WEARING A CLAIM COUNT'S NAME.** One sentence
+carrying two phrases from the set has **always** produced two rows, and the header has said *"currency claims
+ASSERTED"* since §131. Paragraph-joining made it visible by finding more phrases per claim.
+
+| | phrases | **CLAIMS** |
+|---|---|---|
+| LAPSED | 7 | **6** *(defensible **5**, one named exclusion)* |
+| CURRENT | 2 | 2 |
+| SCOPED | 2 | 2 |
+| **SCOPED-UNRESOLVABLE** | 12 | *** **4** *** |
+| UNDATABLE / UNCOMMITTED | 0 / 0 | 0 / 0 |
+| **total** | **23** | *** **14** *** |
+
+> **§134's "SCOPED-UNRESOLVABLE 5" was a phrase count. At claim granularity it is 4.** ⚠ **Corrected in
+> §134's table.** **A-G479: a count's NAME is part of its frame** — A-G437's quantifier axis, inside the
+> instrument built to audit this record's own honesty, for four sections.
+
+### 4 · AND THE DIRECTION, FLAGGED BECAUSE A-G475 SAYS NOTHING ELSE WILL
+
+> *** THIS SECTION CONTAINS THE SIXTH CONSECUTIVE CORRECTION TO MOVE A COUNT DOWNWARD. *** 8 → 2 → (6/5) →
+> and now `SCOPED-UNRESOLVABLE` 5 → 4. **Every one defensible, which is exactly what makes the trend
+> invisible.** The single correction that went **up** was the recall probe — **and it cost a false positive
+> within the same run.** Both figures now print every run, at both granularities, with the exclusion named,
+> **because the only defence left is that no reduction passes unremarked.**
+
+**GRÜN's note on its own six is the finding and not any one of them:** **five of six were lenient**, the one
+that was alarming is **the only one it would have caught unprompted** because it printed an impossible date,
+and *** NOT ONE OF THE SIX CAME FROM THAT LANE'S OWN RULES — every one surfaced while implementing a rule
+handed over, and the probe ran only because I ran mine first on an argument it had made to me. *** Six
+instances inside a single file, **and the file was the one built to audit this record's honesty.**
+
+**GRÜN at this exchange:** §120, `d7675b75`, **96 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed; currency audit **exit 1** at 14 matched · 0 LAPSED · 4 CURRENT · 4 SCOPED ·
+**3 SCOPED-UNRESOLVABLE** · 1 UNCOMMITTED · 2 UNDATABLE · 1 hidden. Ceiling A-G465; **no defect count, per
+A-G462.**
 

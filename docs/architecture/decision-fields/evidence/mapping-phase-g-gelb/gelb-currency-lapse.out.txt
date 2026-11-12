@@ -2,17 +2,15 @@
 GELB · §131 A-G473 — CURRENCY CLAIMS, EACH DATED AGAINST ITS OWN SUBJECT
 ============================================================================================================
 
-  peer ref   frontend/mapping-phase-g -> 5c8f7fc9
+  peer ref   frontend/mapping-phase-g -> d7675b75
 
   SUBJECT TIPS — a single referent is itself a frame error (A-G435, GRÜN's §117 correction):
     component    fd45f45f  11-11 22:13 feat(career): mapping phase G · §104 — A
     tests        3231f52c  11-12 23:12 feat(career): mapping phase G · §115 — G
-    peer-record  5c8f7fc9  11-13 00:03 fix(career): mapping phase G · §119 — A-
+    peer-record  d7675b75  11-13 00:14 fix(career): mapping phase G · §120 — pr
 
   A claim written BEFORE ITS OWN SUBJECT'S TIP no longer carries its own warrant. That is NOT the
   same as being wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29.
-fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
-fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
@@ -26,13 +24,25 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
                "counterTick ⟹ splay" still passes.
   *** LAPSED   PHASE_G.md: 3141  subj=component   96aec6c2 11-10 19:35  vs fd45f45f  "still stands"
                The bound is unchanged: core ≥ 1.45 × the local ground, monotone falloff over ≥ 1.5 r. **A-G33
-  SCOPED-NOREF PHASE_G.md: 7371  subj=component   0d511729 11-11 17:57  vs fd45f45f  "RE-MEASURED ON THE SHIPPING BUILD"
+  SCOPED-NOREF PHASE_G.md: 7375  subj=component   0d511729 11-11 17:57  vs fd45f45f  "resting on current readings"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
-               > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+               > ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1
+  SCOPED-NOREF PHASE_G.md: 7374  subj=component   0d511729 11-11 17:57  vs fd45f45f  "on the build that ships"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > **0.229 → 0.227** (−0.9 %), L2 1920 **0.499 → 0.557** (+11.6 %). **So limb (a) holds on the 
   SCOPED-NOREF PHASE_G.md: 7372  subj=component   0d511729 11-11 17:57  vs fd45f45f  "byte-identical to HEAD"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
                > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to 
-  SCOPED-NOREF PHASE_G.md: 7375  subj=component   0d511729 11-11 17:57  vs fd45f45f  "resting on current readings"
+  SCOPED-NOREF PHASE_G.md: 7372  subj=component   0d511729 11-11 17:57  vs fd45f45f  "re-ran all three cells"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to 
+  SCOPED-NOREF PHASE_G.md: 7371  subj=component   0d511729 11-11 17:57  vs fd45f45f  "RE-MEASURED ON THE SHIPPING BUILD"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+  SCOPED-NOREF PHASE_G.md: 7371  subj=component   0d511729 11-11 17:57  vs fd45f45f  "SUSPENSION LIFTED"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+  SCOPED-NOREF PHASE_G.md: 7375  subj=component   0d511729 11-11 17:57  vs fd45f45f  "returns to CLOSED"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
                > ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1
   *** LAPSED   PHASE_G.md: 8161  subj=component   49ee0540 11-11 09:22  vs fd45f45f  "currently holds"
@@ -45,12 +55,20 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
   SCOPED-NOREF PHASE_G.md:10968  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "byte-identical to HEAD"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
                All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
+  *** LAPSED   PHASE_G.md:10976  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "resting on current readings"
+               **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resti
   *** LAPSED   PHASE_G.md:10976  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "returns to CLOSED"
                **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resti
-  SCOPED       PHASE_G.md:11061  subj=peer-record 32b05c59 11-11 17:58  vs 5c8f7fc9  "on the current build"
+  SCOPED       PHASE_G.md:11061  subj=peer-record 32b05c59 11-11 17:58  vs d7675b75  "on the current build"
                builds named in its paragraph: 4b83414e
                GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two 
-  UNCOMMITTED  PHASE_G.md:16119  subj=component     not locatable   vs fd45f45f  "resting on current readings"
+  SCOPED-NOREF PHASE_G.md:16119  subj=component   c6ec84cb 11-13 00:09  vs fd45f45f  "resting on current readings"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on curre
+  SCOPED-NOREF PHASE_G.md:16119  subj=component   c6ec84cb 11-13 00:09  vs fd45f45f  "on the build that ships"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on curre
+  SCOPED-NOREF PHASE_G.md:16119  subj=component   c6ec84cb 11-13 00:09  vs fd45f45f  "returns to CLOSED"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
                > *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on curre
   CURRENT      PHASE_G.md:16131  subj=component   22a1d9b1 11-12 23:30  vs fd45f45f  "closed again"
@@ -58,6 +76,8 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
   SCOPED-NOREF PHASE_G.md:16135  subj=tests       22a1d9b1 11-12 23:30  vs 3231f52c  "byte-identical to HEAD"
                builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
                a Next.js `buildId` with **no repository referent at all**, so a reader cannot test *"byte-ide
+  CURRENT      PHASE_G.md:16552  subj=component   c6ec84cb 11-13 00:09  vs fd45f45f  "still passes"
+               carriers vanish together, **while a test asserting "counterTick ⟹ splay" still passes**."*
   *** LAPSED   PHASE_F.md:  492  subj=component   fdf54b39 11-06 07:51  vs fd45f45f  "still clears"
                ±9 % and still clears the floor by 2.5×. This is R14 arriving in practice: once the area is la
 
@@ -65,38 +85,45 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 [2] WHAT THIS BOUNDS
 ============================================================================================================
 
-  currency claims ASSERTED:  15
-  quotations of a claim, excluded and counted: 9  <- §129/§130 ruling against them
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:15827  quoted span / table row  "verified on a rendered page"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16193  in a fenced block        "RE-MEASURED ON THE SHIPPING BUILD"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16194  in a fenced block        "resting on current readings"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16195  in a fenced block        "verified on a rendered page"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16196  in a fenced block        "on the build that ships"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16197  in a fenced block        "returns to CLOSED"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16413  in a fenced block        "resting on current readings"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16414  in a fenced block        "closed again"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16415  in a fenced block        "byte-identical to HEAD"
+  phrase occurrences ASSERTED:        23
+  DISTINCT CLAIMS (one per paragraph): 14   <- the figure to quote
+  quotations of a claim, excluded and counted: 14  <- §129/§130 ruling against them
+      quoted   PHASE_G.md:15827  quoted span / table row  "verified on a rendered page"
+      quoted   PHASE_G.md:16194  in a fenced block        "resting on current readings"
+      quoted   PHASE_G.md:16196  in a fenced block        "on the build that ships"
+      quoted   PHASE_G.md:16196  in a fenced block        "byte-identical to HEAD"
+      quoted   PHASE_G.md:16193  in a fenced block        "RE-MEASURED ON THE SHIPPING BUILD"
+      quoted   PHASE_G.md:16197  in a fenced block        "returns to CLOSED"
+      quoted   PHASE_G.md:16195  in a fenced block        "verified on a rendered page"
+      quoted   PHASE_G.md:16197  in a fenced block        "on the current build"
+      quoted   PHASE_G.md:16413  in a fenced block        "resting on current readings"
+      quoted   PHASE_G.md:16415  in a fenced block        "byte-identical to HEAD"
+      quoted   PHASE_G.md:16414  in a fenced block        "closed again"
+      quoted   PHASE_G.md:16540  in a fenced block        "still passes"
+      quoted   PHASE_G.md:16541  in a fenced block        "still stands"
+      quoted   PHASE_G.md:16542  in a fenced block        "currently holds"
 
-    LAPSED                 6
-    CURRENT                1
-    SCOPED                 2
-    SCOPED-UNRESOLVABLE    5
-    UNDATABLE              0
-    UNCOMMITTED            1
+    bucket                 phrases  CLAIMS
+    LAPSED                       7       6
+    CURRENT                      2       2
+    SCOPED                       2       2
+    SCOPED-UNRESOLVABLE         12       4
+    UNDATABLE                    0       0
+    UNCOMMITTED                  0       0
 
   REVIEWED EXCLUSIONS — named, still printed above, not filtered and not bucketed:
       PHASE_G.md:1280  hypothetical — 'a test asserting X still passes' inside a vacuity argument, not a status claim
 
-  *** LAPSED READS 6; THE DEFENSIBLE FIGURE IS 5. BOTH ARE REPORTED. ***
+  *** LAPSED READS 7; THE DEFENSIBLE FIGURE IS 6. BOTH ARE REPORTED. ***
 
-  *** 6 OF 15 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
+  *** 7 OF 23 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
   THE FIRST FORM OF THIS INSTRUMENT SAID 8, by dating every claim against one referent and folding
   SCOPED and UNDATABLE into LAPSED. GRÜN warned that an inflated figure was about to reach the owner
   and it was: a DATED measurement never claimed to be current, so counting it lapsed is the
   over-report direction — the alarming one — and acting on it would have me editing correct
   sentences. 2 row(s) are SCOPED and not owed.
 
-  AND ONE STATE NEITHER LANE HAD: 5 row(s) are scoped to a build with NO REPOSITORY
+  AND ONE STATE NEITHER LANE HAD: 12 row(s) are scoped to a build with NO REPOSITORY
   REFERENT. The scoping is NOMINAL — a reader cannot test the claim by any means, so the row is
   neither safely dated nor merely owed a re-run. A-G469's axis one layer out from a SHA.
 
@@ -110,16 +137,21 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 [2b] WHAT THE EXCLUSION SET COSTS — GRÜN's §118 line, printed every run
 ============================================================================================================
 
-  CLAIM LINES HIDDEN BY THE EXCLUSION SET: 9
-      quoted span / table row  PERSON_X_JOB_MAPPING_PHASE_G.md:15827
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16193
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16194
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16195
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16196
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16197
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16413
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16414
-      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16415
+  CLAIM LINES HIDDEN BY THE EXCLUSION SET: 14
+      quoted span / table row  PHASE_G.md:15827
+      in a fenced block        PHASE_G.md:16194
+      in a fenced block        PHASE_G.md:16196
+      in a fenced block        PHASE_G.md:16196
+      in a fenced block        PHASE_G.md:16193
+      in a fenced block        PHASE_G.md:16197
+      in a fenced block        PHASE_G.md:16195
+      in a fenced block        PHASE_G.md:16197
+      in a fenced block        PHASE_G.md:16413
+      in a fenced block        PHASE_G.md:16415
+      in a fenced block        PHASE_G.md:16414
+      in a fenced block        PHASE_G.md:16540
+      in a fenced block        PHASE_G.md:16541
+      in a fenced block        PHASE_G.md:16542
 
   *** EVERY CORRECTION TO THIS SCAN HAS MOVED ITS COUNT THE SAME WAY: 8 -> 2. GRÜN'S WENT 3 -> 1 -> 0.
   EACH STEP INDIVIDUALLY CORRECT, EACH DEFENSIBLE ON ITS OWN EVIDENCE, EVERY ONE TOWARD FEWER
@@ -142,6 +174,14 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 
   NO PIN VERDICT IS ANNOUNCED HERE. A-G36 point 2 reserves those to PINK.
 ============================================================================================================
+
+============================================================================================================
+[2c] inHead() CONTROL — the branch that uses it is unreachable in this data
+============================================================================================================
+
+  in HEAD, text that is present:  true   (must be true)
+  in HEAD, text that is absent:   false   (must be false)
+  both directions reachable
 
 ============================================================================================================
 [3] MUTANTS — each classification proven reachable (A-G452)
