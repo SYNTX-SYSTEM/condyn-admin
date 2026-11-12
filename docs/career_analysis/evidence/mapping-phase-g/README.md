@@ -203,6 +203,90 @@
 >
 > **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.
 >
+> *** §116 · PG-14'S PIN WAS ANCHORED TO THE LOOP WHOSE FAILURE CAUSED IT TO BE REPLACED — AND THIS
+> LANE'S OWN PG-14 DERIVATION HAD BEEN DEAD FOR NINE SECTIONS, KILLED BY §87. ***
+>
+> **GELB'S FINDING, VERIFIED HERE INDEPENDENTLY.** `for (let pass = 0; pass < 2; pass += 1)`: **×1** at
+> `4b83414e` and at `e9cd21af`, **×0** from `fb4632da` (§86) onward. `FRAME_PASS_CAP` and
+> `FRAME_EM_PER_CHAR`: ×0 at `4b83414e`, ×2 and ×3 at the close. Their `gate-sweep-a-g128` reads **`[ok]`
+> for “PG-14 ZERO-BY-CONSTRUCTION” at the stale build and `[!!] NOT FOUND` at the current one.
+>
+> *** AND THERE IS A LAYER UNDER IT THAT NEITHER LANE HAD NAMED. *** The anchor is not merely stale. **§64
+> (`b6c4bd84`, 09:00) MEASURED that the fixed two-pass solve does not converge** — containment fails
+> observably, **1.59 px on 4 of 11 layouts at a 16-character name at the component's own 420 px minimum**,
+> 6.12 px at 24 characters; *“Product Manager” is fifteen characters.* §86 replaced the loop **because of
+> that measurement**. `4b83414e` is 02:19 the same morning. **So the pin was anchored seven hours before the
+> defect in its anchor was measured, and went on reading `[ok]` against the code shape whose failure is the
+> reason the shape no longer exists.** *A pin does not go stale only by losing its referent; it can keep a
+> referent that has since been disproved, and that reads greener than a missing one.*
+>
+> **THE CORRECTION TO THIS LANE'S OWN RANKING, TAKEN.** I named `pg14-frame-corpus` and
+> `pg14-side-allowance` as “the two I would look at first.” GELB measured instead of reasoning:
+> `side-allowance` is build-**INSENSITIVE**, `frame-corpus` moves by 2 lines, and the verdict flips in
+> `gate-sweep-a-g128`, which is not named for PG-14 at all. **I ranked by SUBJECT PROXIMITY — the instrument
+> whose name matches what I changed — and the thing that actually asserts the property was somewhere else.**
+> *A ranking heuristic presented where a measurement was available.* They also caught their own inflation
+> first: 6-of-9 became 3-of-9 once line offsets were normalised away, which is A-G429's third remedy applied
+> to one's own alarming number.
+>
+> **THE RE-ANCHOR, MEASURED AND RUNNABLE WITHOUT A RENDER.** `gruen-pg14-frame-fixed.mjs` over 440 swept
+> cases at the close:
+>
+> | | |
+> |---|---|
+> | cases within tolerance | 311 of 440; **129 over, 136 at the cap** |
+> | *** over while claiming convergence *** | *** 0 *** |
+> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |
+> | every realistic name length (≤ 32 chars) | worst **0.2557 px**, all under the half-pixel tolerance |
+> | the 136 at cap | names of 48/64/96/128 characters — not role names — each emitting `data-frame-converged="false"` |
+>
+> **So PG-14's claim is no longer ZERO-BY-CONSTRUCTION, and re-pointing the anchor is not enough — the
+> WORDING has to change with it.** The construction is now *iterate to a declared cap and disclose*, and the
+> property it supports is **NO CASE CLAIMS CONVERGENCE AND FAILS TO CONTAIN.** That is a different shape of
+> claim: not a guarantee that the residue is zero, but a guarantee that the product never asserts
+> containment it does not have. Stable things to pin instead of a line: the constant `FRAME_PASS_CAP`, the
+> exit test `if (half - before < 0.5 * ((2 * half) / drawnPx))`, and that sentence. **Which is PINK's and
+> GELB's to rule on; this lane states the code fact and the sweep.**
+>
+> *** §116b · AND THE INSTRUMENT THAT PROVES ALL OF THAT HAD BEEN DEAD SINCE §87. *** Its third needle was
+> the exact string `data-frame-converged={String(frame.converged)}` — and **§87, the very next commit,
+> re-spelled that expression to `frame.converged === null ? "n/a" : String(frame.converged)`, for a reason
+> this derivation would have welcomed** (the vacuous true). The guard threw, which is right; `run-all.sh`
+> turned the throw into **one `!! … FAILED (exit 1)` line among forty**, and §112 is the section that says
+> what a clean pass does not mean. **GELB'S A-G468 IN THIS LANE'S OWN SHAPE, AND WORSE-AIMED: an instrument
+> is likeliest to die at the commit that REFINES what it measures, because that is the commit that re-spells
+> it.** Theirs died to the record's size; mine died to its subject's improvement.
+>
+> **The output was byte-identical anyway — and that is the part to be uneasy about.** `pg14-frame-fixed.json`
+> had not changed, so for nine sections the record carried a correct artifact produced by an instrument that
+> could no longer produce it. *Right by the luck of which lines §104 touched, not by design.* **A dead
+> instrument whose last artifact still looks current is the one combination no liveness scan and no staleness
+> scan catches: the first sees a file, the second sees a matching digest.**
+>
+> Re-pinned to the **property** rather than the spelling — both attributes, adjacent, any value expression —
+> with the **detector limit stated in the file**: it proves emission, **not** unconditionality, since a
+> sibling `{cond && <g data-frame-… />}` would satisfy it. The unconditional claim is carried where it can
+> be: `gruen-fixture-states.mjs`, which reads the rendered DOM in every fixture state.
+>
+> *** §116c · THE LIVENESS COUNT FOR THIS LANE, STATED THE WAY GELB STATED THEIRS. *** Ten derivations:
+> **nine exit 0, one dead** (now ten). **`gruen-seal-staleness` exits 1, and that is a FINDING, NOT A
+> DEATH** — distinguishing those two is the whole of A-G465 and A-G374, and I mis-grouped it myself for one
+> minute before reading its output. What it says:
+>
+> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87. *** Not one reading in
+> this corpus was taken against the current build. **And the audit names the cross-lane consequence itself,
+> which is why it exists: `pg11-guard-*.json` is stale, and GELB's INCONCLUSIVE-BY-MEASUREMENT closure of
+> PG-11's relation limb rests on its `marginFactor` / `guardClears`.** A closure rather than a green — but a
+> live status resting on a stale reading, named here rather than left to be noticed.
+>
+> **§116d · the regenerations, and one of them is nothing but the debt already on the books.**
+> `constant-forks.json`: the corpus genuinely grew (`NO CONSTANT` 17→22, `HALTS` 5→7, a new `REPORTS`
+> category for §103 and §94). `seal-staleness.json`: head and counts. **`pg23-alpha-source.json`: line
+> numbers and nothing else** — 317→331, 710→832, 711→841, 928→1065, every `reason` string identical but for
+> the offset it quotes. *That is the 17 bare-offset citations arriving as diff noise, and it is the same
+> noise GELB had to normalise out of a 54-line diff an hour ago to stop their own figure being wrong — the
+> cost of the debt, paid by the lane that reads it rather than the lane that wrote it.*
+>
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
 > readings** only. They may enter an engineering record as GRÜN's own measurement with the script and its raw
 > output committed (**A-G35**), and they may **never** constitute a pass, a GO, or grounds for closing a pin.

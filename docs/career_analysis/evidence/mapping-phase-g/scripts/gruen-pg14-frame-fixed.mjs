@@ -49,11 +49,30 @@ const CROWDING = num(/^export const CROWDING = ([\d.]+);/m, "CROWDING");
 const PASS_CAP = num(/^const FRAME_PASS_CAP = (\d+);/m, "FRAME_PASS_CAP");
 const EM_SANS = num(/^const FRAME_EM_PER_CHAR = Object\.freeze\(\{ sans: ([\d.]+)/m, "FRAME_EM_PER_CHAR.sans");
 const EM_MONO = num(/FRAME_EM_PER_CHAR = Object\.freeze\(\{ sans: [\d.]+, mono: ([\d.]+)/, "FRAME_EM_PER_CHAR.mono");
+/**
+ * §116: THIS BLOCK WAS DEAD FOR NINE SECTIONS AND NOTHING IN THE LOOP SAID SO. The third needle was the
+ * EXACT string `data-frame-converged={String(frame.converged)}` — and §87, the very next commit, changed
+ * that expression to `frame.converged === null ? "n/a" : String(frame.converged)` for a reason this
+ * derivation would have welcomed. So the guard threw, `run-all.sh` turned the throw into one
+ * `!! … FAILED (exit 1)` line among forty, and the derivation stopped running at the moment its subject
+ * was improved. GELB's A-G468 in this lane's own shape: *the instrument is likeliest to die at the commit
+ * that refines what it measures, because that is the commit that re-spells it.*
+ *
+ * A needle now pins the PROPERTY and tolerates the SPELLING: both attributes present, adjacent, and with
+ * any value expression. DETECTOR LIMIT, stated rather than implied: this proves the attributes are EMITTED
+ * on that element and that they are not spelled away. It does NOT prove they are unconditional — a sibling
+ * `{cond && <g data-frame-… />}` would still satisfy it. The unconditional claim is carried by
+ * `gruen-fixture-states.mjs`, which reads the rendered DOM in every fixture state and records
+ * `present: states.every(…)`; this derivation renders nothing and cannot establish it.
+ */
 for (const [needle, what] of [
   ["if (half - before < 0.5 * ((2 * half) / drawnPx)) { converged = true; break; }", "the half-device-pixel convergence test"],
   ["const moreRight = b.collarMore === null ? 0 : collarR + 3 * k + b.collarMore.length * FRAME_EM_PER_CHAR.mono * font;", "the collar-more right-hand reservation"],
-  ["data-frame-passes={frame.passes} data-frame-converged={String(frame.converged)}", "the unconditional convergence disclosure"]
-]) if (!src.includes(needle)) throw new Error(`${what} moved — this derivation is written against it`);
+  [/data-frame-passes=\{frame\.passes\}\s+data-frame-converged=\{[^}]*\}/, "the convergence disclosure, on the element and under any spelling"]
+]) {
+  const found = typeof needle === "string" ? src.includes(needle) : needle.test(src);
+  if (!found) throw new Error(`${what} moved — this derivation is written against it`);
+}
 const LABEL_BAND_PX = TEXT_MIN_PX + 4, FIELD_RADIUS = spec.field.radius;
 
 const l0Margin = drawnPx => { const c = (2 * LABEL_BAND_PX) / drawnPx; return Math.ceil(((LABEL_GAP + c * FIELD_RADIUS) / (1 - c)) * 1000) / 1000; };

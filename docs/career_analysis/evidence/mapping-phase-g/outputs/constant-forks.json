@@ -113,9 +113,10 @@
  },
  "census": {
   "NOTHING": 11,
-  "NO CONSTANT": 17,
+  "NO CONSTANT": 22,
+  "REPORTS": 2,
   "READS": 7,
-  "HALTS": 5
+  "HALTS": 7
  },
  "byState": {
   "NOTHING": [
@@ -133,12 +134,17 @@
   ],
   "NO CONSTANT": [
    "gruen-bodies.mjs",
+   "gruen-citation-audit.mjs",
    "gruen-colour.mjs",
    "gruen-discriminator.mjs",
    "gruen-fixture-states.mjs",
    "gruen-floor.mjs",
    "gruen-hooks-verify.mjs",
    "gruen-light.mjs",
+   "gruen-mask-determinism.mjs",
+   "gruen-pf13-evaluate.mjs",
+   "gruen-pf13-population.mjs",
+   "gruen-pf3-spread.mjs",
    "gruen-pg1-live.mjs",
    "gruen-pg11.mjs",
    "gruen-pg16-crowding.mjs",
@@ -149,6 +155,10 @@
    "gruen-provenance.mjs",
    "gruen-rank5-check.mjs",
    "gruen-raster-smoke.mjs"
+  ],
+  "REPORTS": [
+   "gruen-breath-swing-direct.mjs",
+   "gruen-pg12-realstack-ladder.mjs"
   ],
   "READS": [
    "gruen-compositing-ladder.mjs",
@@ -161,6 +171,8 @@
   ],
   "HALTS": [
    "gruen-constant-forks.mjs",
+   "gruen-halo-chroma-share.mjs",
+   "gruen-pf3-blind.mjs",
    "gruen-pg14-convergence.mjs",
    "gruen-pg14-frame-fixed.mjs",
    "gruen-pg16-satisfiability.mjs",
@@ -188,6 +200,24 @@
    "file": "gruen-bodies.mjs",
    "state": "NO CONSTANT",
    "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-breath-swing-direct.mjs",
+   "state": "REPORTS",
+   "readsProduct": true,
+   "throwsOnMove": false,
+   "constants": [
+    "WAVE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-citation-audit.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": true,
    "throwsOnMove": false,
    "constants": [],
    "byValueOnly": []
@@ -285,6 +315,16 @@
    "byValueOnly": []
   },
   {
+   "file": "gruen-halo-chroma-share.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "WAVE"
+   ],
+   "byValueOnly": []
+  },
+  {
    "file": "gruen-hooks-verify.mjs",
    "state": "NO CONSTANT",
    "readsProduct": false,
@@ -323,6 +363,14 @@
    "byValueOnly": []
   },
   {
+   "file": "gruen-mask-determinism.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
    "file": "gruen-option3.mjs",
    "state": "NOTHING",
    "readsProduct": false,
@@ -331,6 +379,41 @@
     "SEAT",
     "RING_LUMINANCE"
    ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pf13-evaluate.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pf13-population.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pf3-blind.mjs",
+   "state": "HALTS",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [
+    "CYAN",
+    "VOLUME"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pf3-spread.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": false,
+   "throwsOnMove": false,
+   "constants": [],
    "byValueOnly": []
   },
   {
@@ -386,6 +469,16 @@
    "throwsOnMove": false,
    "constants": [
     "GAP_HUE"
+   ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-pg12-realstack-ladder.mjs",
+   "state": "REPORTS",
+   "readsProduct": true,
+   "throwsOnMove": false,
+   "constants": [
+    "WAVE"
    ],
    "byValueOnly": []
   },
@@ -589,5 +682,5 @@
    "byValueOnly": []
   }
  ],
- "finding": "40 instruments scanned. 5 HALT, 0 REPORT, 11 do NOTHING, 17 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
+ "finding": "49 instruments scanned. 7 HALT, 2 REPORT, 11 do NOTHING, 22 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
 }
