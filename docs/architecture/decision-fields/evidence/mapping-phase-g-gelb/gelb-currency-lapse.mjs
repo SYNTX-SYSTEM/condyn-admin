@@ -131,10 +131,23 @@ const quotedSpans = (line) => {
   while ((m = re.exec(line)) !== null) spans.push([m.index, m.index + m[0].length]);
   return spans;
 };
+/* GRÜN'S §118 FALSIFICATION, APPLIED HERE. It ran its scan with the character-inferred spans removed and
+   the declared markers only: 6 matched / 0 LAPSED became 10 matched / 2 LAPSED. The character test had been
+   blanking 6 569 characters — ~15 % of its record — and four claim lines with them, one genuinely lapsed.
+   *** AND THE DIRECTION IS THE FINDING: MY FOUR FORMS OVER-REPORTED, WHICH IS THE ALARMING DIRECTION, WHICH
+   GETS AUDITED, WHICH IS WHY I CAUGHT THEM. GRÜN'S UNDER-REPORTED, WHICH IS THE FLATTERING DIRECTION, AND
+   NOTHING AUDITS THAT. *** A-G474's own rule says a character-inferred test re-derives wrongly what the
+   document declares, so --declared-only drops it and keeps the markup-level tests (a fence, a table row). */
+/* DECLARED-ONLY IS NOW THE DEFAULT, and the consequence is ACCEPTED rather than engineered around: a
+   peer's sentence quoted without a marker counts as my own claim. Over-reporting is the direction a reader
+   audits, and the remedy for a false hit is a MARKER, not a cleverer pattern. GRÜN made the same choice on
+   the same reasoning. --infer-spans restores the character test, for the comparison only. */
+const DECLARED_ONLY = !process.argv.includes("--infer-spans");
 const QUOTED = (line, phrase) => {
   const i = line.indexOf(phrase);
   if (i < 0) return false;
-  if (/^\s*\|/.test(line)) return true;                 // a table row citing it
+  if (/^\s*\|/.test(line)) return true;                 // a table row — DECLARED by the markup
+  if (DECLARED_ONLY) return false;
   return quotedSpans(line).some(([a, b]) => i >= a && i + phrase.length <= b);
 };
 
@@ -177,10 +190,24 @@ for (const file of [PHASE_G, PHASE_F]) {
   });
 }
 
-const B = { LAPSED: [], CURRENT: [], SCOPED: [], "SCOPED-UNRESOLVABLE": [], UNDATABLE: [] };
+/** is this line already in HEAD? distinguishes "undatable" from "not committed yet" */
+const headCache = {};
+const inHead = (shortName, text) => {
+  const path = shortName.includes("PHASE_F") ? rel(PHASE_F) : rel(PHASE_G);
+  if (!(path in headCache)) { try { headCache[path] = git(REPO_ROOT, "show", `HEAD:${path}`); } catch { headCache[path] = ""; } }
+  return headCache[path].includes(text.slice(0, 60));
+};
+const B = { LAPSED: [], CURRENT: [], SCOPED: [], "SCOPED-UNRESOLVABLE": [], UNDATABLE: [], UNCOMMITTED: [] };
 for (const r of rows) {
   if (r.liveness) { r.state = "UNDATABLE"; }
-  else if (!r.intro) { r.state = "UNDATABLE"; }
+  else if (!r.intro) {
+    /* GRÜN'S §118, WHICH BROKE ITS INSTRUMENT WITHIN FOUR MINUTES OF WRITING THE SECTION: `git log -S`
+       cannot date a line that is not committed yet, so a section being WRITTEN reports UNDATED debts against
+       itself. *** AN UNCOMMITTED LINE IS DATED NOW BY CONSTRUCTION AND CANNOT BE STALE; TREATING "NOT YET
+       COMMITTED" AS "NOT DATED" REPORTS A DEBT AGAINST SOMETHING NO CHANGE HAS HAD THE CHANCE TO
+       INVALIDATE. *** Distinguished by asking whether the line exists in HEAD at all. */
+    r.state = inHead(r.file, r.text) ? "UNDATABLE" : "UNCOMMITTED";
+  }
   else if (r.builds.length) {
     /* A dated measurement cannot lapse — unless the build it names resolves for nobody, in which case the
        scoping is NOMINAL: §89's utpaUMQpafZVzAeyYImhv is a Next.js buildId with no repository referent, so
@@ -194,7 +221,8 @@ for (const r of rows) {
 console.log(`\n${bar}\n[1] EVERY CURRENCY CLAIM, ITS SUBJECT, ITS DATE AND ITS STATE\n${bar}\n`);
 for (const r of rows) {
   const tag = { LAPSED: "*** LAPSED  ", CURRENT: "CURRENT     ", SCOPED: "SCOPED      ",
-                "SCOPED-UNRESOLVABLE": "SCOPED-NOREF", UNDATABLE: "UNDATABLE   " }[r.state];
+                "SCOPED-UNRESOLVABLE": "SCOPED-NOREF", UNDATABLE: "UNDATABLE   ",
+                UNCOMMITTED: "UNCOMMITTED " }[r.state];
   console.log(`  ${tag} ${r.file}:${String(r.ln).padStart(5)}  subj=${r.subject.padEnd(11)} ` +
     `${r.intro ? `${r.intro.sha} ${r.intro.date}` : "  not locatable "}  vs ${TIPS[r.subject].sha}  "${r.phrase}"`);
   if (r.builds.length) console.log(`               builds named in its paragraph: ${r.builds.map((b) => `${b.tok}${b.resolves ? "" : " (NO REPOSITORY REFERENT)"}`).join(", ")}`);
@@ -207,7 +235,7 @@ console.log(`  currency claims ASSERTED:  ${rows.length}`);
 console.log(`  quotations of a claim, excluded and counted: ${quoted.length}  <- §129/§130 ruling against them`);
 for (const q of quoted) console.log(`      quoted   ${q.file.split("/").pop()}:${String(q.ln).padStart(5)}  ${(q.why ?? "").padEnd(24)} "${q.phrase}"`);
 console.log(``);
-for (const k of ["LAPSED", "CURRENT", "SCOPED", "SCOPED-UNRESOLVABLE", "UNDATABLE"])
+for (const k of ["LAPSED", "CURRENT", "SCOPED", "SCOPED-UNRESOLVABLE", "UNDATABLE", "UNCOMMITTED"])
   console.log(`    ${k.padEnd(21)} ${String(B[k].length).padStart(2)}`);
 console.log(`\n  *** ${lapsed} OF ${rows.length} CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***`);
 console.log(`  THE FIRST FORM OF THIS INSTRUMENT SAID 8, by dating every claim against one referent and folding`);
@@ -223,6 +251,18 @@ console.log(`  for some OTHER clause scopes this claim too — this UNDER-report
 console.log(`  (b) LAPSED means the warrant is older than its subject, NOT that the claim is false. (c) Only a`);
 console.log(`  re-measurement moves a row out of LAPSED, and re-sealing is a deliberate act on a deliberate`);
 console.log(`  build — so these rows are OWED, not silently repairable.`);
+console.log(`\n${bar}\n[2b] WHAT THE EXCLUSION SET COSTS — GRÜN's §118 line, printed every run\n${bar}\n`);
+console.log(`  CLAIM LINES HIDDEN BY THE EXCLUSION SET: ${quoted.length}`);
+for (const q of quoted) console.log(`      ${(q.why ?? "").padEnd(24)} ${q.file.split("/").pop()}:${q.ln}`);
+console.log(`\n  *** EVERY CORRECTION TO THIS SCAN HAS MOVED ITS COUNT THE SAME WAY: 8 -> 2. GRÜN'S WENT 3 -> 1 -> 0.`);
+console.log(`  EACH STEP INDIVIDUALLY CORRECT, EACH DEFENSIBLE ON ITS OWN EVIDENCE, EVERY ONE TOWARD FEWER`);
+console.log(`  FINDINGS. *** A-G462 says a conclusion AGAINST yourself gets no audit because it feels like`);
+console.log(`  rigour; the symmetric case is a REFINEMENT THAT ABSOLVES, which feels like precision — and there`);
+console.log(`  is no step to object to. So the cost of excluding anything is printed here in every run: a 0`);
+console.log(`  would mean the exclusions do nothing, and a number that GROWS without a section explaining it`);
+console.log(`  is the flattering direction arriving unannounced. GRÜN's line, adopted (A-G475).`);
+console.log(`\n  Run with --declared-only to drop the CHARACTER-INFERRED span test and keep only what the markup`);
+console.log(`  declares. A-G474's own rule demands that comparison be available, not argued.`);
 console.log(`\n  AND ONE BUCKET IS VACUOUS, DECLARED RATHER THAN REPORTED AS A FINDING (A-G453): UNDATABLE reads 0`);
 console.log(`  because NO PHRASE IN THIS PATTERN SET IS A LIVENESS CLAIM, and this record makes none. Verified`);
 console.log(`  rather than assumed: a grep for "is up"/"returns 200"/"ports untouched" over both records gives`);

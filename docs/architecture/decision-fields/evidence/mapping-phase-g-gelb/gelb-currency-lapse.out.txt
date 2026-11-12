@@ -2,15 +2,16 @@
 GELB · §131 A-G473 — CURRENCY CLAIMS, EACH DATED AGAINST ITS OWN SUBJECT
 ============================================================================================================
 
-  peer ref   frontend/mapping-phase-g -> df8ffd61
+  peer ref   frontend/mapping-phase-g -> 57b92bf1
 
   SUBJECT TIPS — a single referent is itself a frame error (A-G435, GRÜN's §117 correction):
     component    fd45f45f  11-11 22:13 feat(career): mapping phase G · §104 — A
     tests        3231f52c  11-12 23:12 feat(career): mapping phase G · §115 — G
-    peer-record  df8ffd61  11-12 23:41 feat(career): mapping phase G · §117 — A
+    peer-record  57b92bf1  11-12 23:53 fix(career): mapping phase G · §118 — A-
 
   A claim written BEFORE ITS OWN SUBJECT'S TIP no longer carries its own warrant. That is NOT the
   same as being wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29.
+fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
@@ -39,40 +40,45 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
                All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
   *** LAPSED   PHASE_G.md:10976  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "returns to CLOSED"
                **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resti
-  SCOPED       PHASE_G.md:11061  subj=peer-record 32b05c59 11-11 17:58  vs df8ffd61  "on the current build"
+  SCOPED       PHASE_G.md:11061  subj=peer-record 32b05c59 11-11 17:58  vs 57b92bf1  "on the current build"
                builds named in its paragraph: 4b83414e
                GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two 
+  CURRENT      PHASE_G.md:16119  subj=component   22a1d9b1 11-12 23:30  vs fd45f45f  "resting on current readings"
+               > *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on curre
+  CURRENT      PHASE_G.md:16131  subj=component   22a1d9b1 11-12 23:30  vs fd45f45f  "closed again"
+               > defect is therefore **not a closure but a dated one**. Every "closed again" in this record i
+  SCOPED-NOREF PHASE_G.md:16135  subj=tests       22a1d9b1 11-12 23:30  vs 3231f52c  "byte-identical to HEAD"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               a Next.js `buildId` with **no repository referent at all**, so a reader cannot test *"byte-ide
 
 ============================================================================================================
 [2] WHAT THIS BOUNDS
 ============================================================================================================
 
-  currency claims ASSERTED:  8
-  quotations of a claim, excluded and counted: 9  <- §129/§130 ruling against them
+  currency claims ASSERTED:  11
+  quotations of a claim, excluded and counted: 6  <- §129/§130 ruling against them
       quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:15827  quoted span / table row  "verified on a rendered page"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16119  quoted span / table row  "resting on current readings"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16131  quoted span / table row  "closed again"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16135  quoted span / table row  "byte-identical to HEAD"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16186  in a fenced block        "RE-MEASURED ON THE SHIPPING BUILD"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16187  in a fenced block        "resting on current readings"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16188  in a fenced block        "verified on a rendered page"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16189  in a fenced block        "on the build that ships"
-      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16190  in a fenced block        "returns to CLOSED"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16193  in a fenced block        "RE-MEASURED ON THE SHIPPING BUILD"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16194  in a fenced block        "resting on current readings"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16195  in a fenced block        "verified on a rendered page"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16196  in a fenced block        "on the build that ships"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16197  in a fenced block        "returns to CLOSED"
 
     LAPSED                 2
-    CURRENT                0
+    CURRENT                2
     SCOPED                 2
-    SCOPED-UNRESOLVABLE    4
+    SCOPED-UNRESOLVABLE    5
     UNDATABLE              0
+    UNCOMMITTED            0
 
-  *** 2 OF 8 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
+  *** 2 OF 11 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
   THE FIRST FORM OF THIS INSTRUMENT SAID 8, by dating every claim against one referent and folding
   SCOPED and UNDATABLE into LAPSED. GRÜN warned that an inflated figure was about to reach the owner
   and it was: a DATED measurement never claimed to be current, so counting it lapsed is the
   over-report direction — the alarming one — and acting on it would have me editing correct
   sentences. 2 row(s) are SCOPED and not owed.
 
-  AND ONE STATE NEITHER LANE HAD: 4 row(s) are scoped to a build with NO REPOSITORY
+  AND ONE STATE NEITHER LANE HAD: 5 row(s) are scoped to a build with NO REPOSITORY
   REFERENT. The scoping is NOMINAL — a reader cannot test the claim by any means, so the row is
   neither safely dated nor merely owed a re-run. A-G469's axis one layer out from a SHA.
 
@@ -81,6 +87,29 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
   (b) LAPSED means the warrant is older than its subject, NOT that the claim is false. (c) Only a
   re-measurement moves a row out of LAPSED, and re-sealing is a deliberate act on a deliberate
   build — so these rows are OWED, not silently repairable.
+
+============================================================================================================
+[2b] WHAT THE EXCLUSION SET COSTS — GRÜN's §118 line, printed every run
+============================================================================================================
+
+  CLAIM LINES HIDDEN BY THE EXCLUSION SET: 6
+      quoted span / table row  PERSON_X_JOB_MAPPING_PHASE_G.md:15827
+      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16193
+      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16194
+      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16195
+      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16196
+      in a fenced block        PERSON_X_JOB_MAPPING_PHASE_G.md:16197
+
+  *** EVERY CORRECTION TO THIS SCAN HAS MOVED ITS COUNT THE SAME WAY: 8 -> 2. GRÜN'S WENT 3 -> 1 -> 0.
+  EACH STEP INDIVIDUALLY CORRECT, EACH DEFENSIBLE ON ITS OWN EVIDENCE, EVERY ONE TOWARD FEWER
+  FINDINGS. *** A-G462 says a conclusion AGAINST yourself gets no audit because it feels like
+  rigour; the symmetric case is a REFINEMENT THAT ABSOLVES, which feels like precision — and there
+  is no step to object to. So the cost of excluding anything is printed here in every run: a 0
+  would mean the exclusions do nothing, and a number that GROWS without a section explaining it
+  is the flattering direction arriving unannounced. GRÜN's line, adopted (A-G475).
+
+  Run with --declared-only to drop the CHARACTER-INFERRED span test and keep only what the markup
+  declares. A-G474's own rule demands that comparison be available, not argued.
 
   AND ONE BUCKET IS VACUOUS, DECLARED RATHER THAN REPORTED AS A FINDING (A-G453): UNDATABLE reads 0
   because NO PHRASE IN THIS PATTERN SET IS A LIVENESS CLAIM, and this record makes none. Verified
@@ -98,12 +127,12 @@ fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 ============================================================================================================
 
   ✓ an asserted claim                hit="resting on current readings" -> ASSERTED
-  ✓ the same claim QUOTED            hit="resting on current readings" -> QUOTED
+  ✗ the same claim QUOTED            hit="resting on current readings" -> ASSERTED
   ✓ the same claim in a TABLE ROW    hit="verified on a rendered page" -> QUOTED
-  ✓ QUOTED, span opens earlier       hit="resting on current readings" -> QUOTED
+  ✗ QUOTED, span opens earlier       hit="resting on current readings" -> ASSERTED
   ✓ ASSERTED in italics not quotes   hit="byte-identical to HEAD" -> ASSERTED
   ✓ a line with no claim at all      hit=none -> NOT A CLAIM
 
-  mutants: 6 pass, 0 fail. The LAST is the no-signal direction and the one before it is the
+  mutants: 4 pass, 2 fail. The LAST is the no-signal direction and the one before it is the
   negative control: without a line that must classify as ASSERTED, a scan reporting 0 CURRENT would be
   unaudited in exactly the direction A-G452 names.

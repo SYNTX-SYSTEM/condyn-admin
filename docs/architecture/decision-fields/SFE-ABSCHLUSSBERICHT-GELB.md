@@ -109,7 +109,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 424.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 426.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -168,8 +168,9 @@ PINNEN WOLLTE ODER NICHT. ***
 **10. Alle 8 Währungsaussagen des Registers sind abgelaufen** *(§131, Defekt 421)*. `gelb-currency-lapse.mjs`
 datiert jede Aussage über den Commit, der **ihre Zeile einführte**, gegen **den Stand ihres eigenen
 Subjekts** (§132, GRÜNs Korrektur — ein einziger Referent ist selbst ein Rahmenfehler, A-G435):
-**8 behauptet · LAPSED 2 · SCOPED 2 · SCOPED-UNRESOLVABLE 4 · CURRENT 0 · UNDATABLE 0 (vakuant) · 9 Zitate
-ausgeschlossen.** ⚠ **Die erste Form dieser Zeile las „8 LAPSED" und war aufgebläht** — eine **datierte**
+**11 behauptet · LAPSED 2 · SCOPED 2 · SCOPED-UNRESOLVABLE 5 · CURRENT 2 · UNDATABLE 0 (vakuant) ·
+UNCOMMITTED 0 (durch Mutant als feuerfähig belegt) · 6 Zitate ausgeschlossen** — §133, nachdem GRÜNs
+Falsifikation von A-G474 zeigte, dass mein **zeichen**-basierter Zitattest drei Anspruchszeilen verbarg. ⚠ **Die erste Form dieser Zeile las „8 LAPSED" und war aufgebläht** — eine **datierte**
 Messung kann nicht verfallen, weil sie nie Gegenwärtigkeit behauptet hat. **LAPSED heißt: die Aussage trägt
 ihren eigenen Beleg nicht mehr — nicht, dass sie falsch ist.** *** UND VIER ZEILEN SIND AUF EINEN BUILD OHNE
 REPOSITORY-REFERENTEN DATIERT (`utpaUMQpafZVzAeyYImhv`): DIE DATIERUNG IST NOMINELL, DIE AUSSAGE IST VON

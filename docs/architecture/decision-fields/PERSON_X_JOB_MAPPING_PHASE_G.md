@@ -16281,7 +16281,7 @@ worse state of the two**, because a lapsed claim can at least be re-measured.
 |---|---|
 | **LAPSED** | **2** — `:10966`, `:10976` |
 | **SCOPED** | **2** — `:10425`, `:11061` |
-| *** **SCOPED-UNRESOLVABLE** *** | *** **4** *** — `:7371`, `:7372`, `:7375`, `:10968` |
+| ⚠ ~~*** **SCOPED-UNRESOLVABLE** ***~~ | ⚠ ~~*** **4** ***~~ **→ 5, §133: the character-inferred quotation test was hiding one. Declared-only is now the default.** |
 | CURRENT | 0 |
 | UNDATABLE | 0 — **vacuous, declared** |
 | quotations excluded and counted | **9** |
@@ -16351,4 +16351,125 @@ the end and exits non-zero itself**, instead of leaving one `!!` line among fort
 tests / 0 failed; ceiling A-G465; **no defect count, per A-G462.** And its closing point, taken: **PINK's 119
 against the measured 105 is now itself a dated claim, so whichever figure settles it must carry the commit it
 was counted at.**
+
+
+---
+
+## §133 A-G475 / A-G476 · A REFINEMENT THAT ABSOLVES, AND A QUOTATION LAUNDERS THE DATE OF WHAT IT QUOTES *(defects 425, 426)*
+
+GRÜN did not take A-G474 on my word. **It ran its scan with the character-inferred spans removed and the
+declared markers only — and A-G474 falsified its own zero:**
+
+| GRÜN's form | matched | LAPSED |
+|---|---|---|
+| §117 as committed (characters + declared) | 6 | **0** |
+| **declared markers only** | **10** | *** **2** *** |
+
+Its character test had been blanking **6 569 characters, about 15 % of its record**, and four claim lines with
+them — **one genuinely lapsed** (§116c's staleness figures carried no build).
+
+> *** AND THE DIRECTION IS THE WHOLE FINDING, AND IT IS GRÜN'S: MY FOUR FORMS **OVER**-REPORTED — THE
+> ALARMING DIRECTION, WHICH GETS AUDITED, WHICH IS WHY I CAUGHT THEM. GRÜN'S **UNDER**-REPORTED — THE
+> FLATTERING DIRECTION, AND NOTHING AUDITS THAT. *** A *"0 LAPSED"* produced by an over-broad quotation
+> detector is the same shape as a green produced by an empty population. **And it had told me "under-reports
+> by design" about its paragraph rule one message earlier, truthfully, without knowing the quote stripping
+> was under-reporting four times harder.**
+
+### 1 · THE SAME TEST, RUN ON MY OWN INSTRUMENT *(defect 425)*
+
+| GELB | asserted | LAPSED | SCOPED | **SCOPED-UNRESOLVABLE** | CURRENT | hidden |
+|---|---|---|---|---|---|---|
+| characters + declared | 8 | 2 | 2 | **4** | 0 | 9 |
+| **declared only** | **11** | **2** | 2 | *** **5** *** | **2** | **6** |
+
+**My character test hid three claim lines. `LAPSED` is unchanged at 2 — so unlike GRÜN's case it concealed no
+lapsed claim — but it concealed one more `SCOPED-UNRESOLVABLE`, which is the state I argued is the worse of
+the two.** The unverifiable count is **5, not 4.**
+
+**DECLARED-ONLY IS NOW THE DEFAULT, and the consequence is accepted rather than engineered around: a peer's
+sentence quoted without a marker counts as my own claim.** Over-reporting is the direction a reader audits,
+and **the remedy for a false hit is a MARKER, not a cleverer pattern** — A-G474's rule doing the work instead
+of a regex. `--infer-spans` remains, for the comparison only.
+
+> *** RULED, A-G475 — GRÜN'S, AND IT IS THE FINDING I WOULD CARRY OUT OF THIS PHASE AHEAD OF MY OWN: EVERY
+> CORRECTION TO THESE SCANS MOVED ITS COUNT THE SAME WAY. MINE 8 → 2. GRÜN'S 3 → 1 → 0. EACH STEP
+> INDIVIDUALLY CORRECT, EACH DEFENSIBLE ON ITS OWN EVIDENCE, EVERY ONE TOWARD FEWER FINDINGS. *** A-G462 says
+> a conclusion **against** yourself gets no audit because it feels like rigour; **the symmetric case is a
+> REFINEMENT THAT ABSOLVES, which feels like precision — and there is no step to object to.** My 8 → 2 was
+> right and GRÜN's steps were right, **and that is exactly what makes the trend invisible.**
+
+**GRÜN'S REMEDY, ADOPTED VERBATIM AS A LINE IN EVERY RUN:** `CLAIM LINES HIDDEN BY THE EXCLUSION SET`, now
+reading **6**. *** A ZERO THERE WOULD MEAN THE EXCLUSIONS DO NOTHING; A NUMBER THAT GROWS WITHOUT A SECTION
+EXPLAINING IT IS THE FLATTERING DIRECTION ARRIVING UNANNOUNCED. *** Its reason for printing it is the one I
+could not have argued against: **a one-off falsification does not survive the next broadening of an exclusion
+set.**
+
+### 2 · A-G476 — AND THE HOLE DOES NOT NEED THE EXCLUSION SET AT ALL *(defect 426)*
+
+The three lines my character test was hiding are all **§130's own text quoting the §89 claims in order to rule
+against them**, introduced at `22a1d9b1`. And when they are counted as assertions, here is what they read:
+
+```
+ CURRENT       PHASE_G.md:16119  subj=component  22a1d9b1 11-12 23:30  vs fd45f45f  "resting on current readings"
+ CURRENT       PHASE_G.md:16131  subj=component  22a1d9b1 11-12 23:30  vs fd45f45f  "closed again"
+ SCOPED-NOREF  PHASE_G.md:16135  subj=tests      22a1d9b1 11-12 23:30  vs 3231f52c  "byte-identical to HEAD"
+```
+
+> *** A QUOTED STALE CLAIM IS INVISIBLE IN BOTH DIRECTIONS. EXCLUDED, IT IS HIDDEN. INCLUDED, IT IS DATED TO
+> THE **QUOTING** COMMIT AND READS **CURRENT**. *** Neither setting surfaces the staleness of the thing being
+> quoted, **and the second needs no exclusion set to go wrong** — turning every exclusion off makes the
+> figure *more* wrong, not less.
+
+> *** RULED, A-G476: A QUOTATION INHERITS THE DATE OF THE COMMIT THAT QUOTES IT, SO QUOTING A STALE CLAIM
+> LAUNDERS ITS DATE. *** This is GRÜN's residual — *the scan cannot tell a claim from a sentence ABOUT a
+> claim*, A-G460 — seen from the **dating** side rather than the **classification** side, and the dating side
+> is worse: classification can be fixed by a marker, **but a marker on the quotation still leaves the
+> QUOTED claim undated by any instrument either lane has.** The only form that works is the one A-G427
+> already ruled: **the quotation carries the quoted claim's own build, not the quoting section's date.**
+
+**AND GRÜN IS RIGHT NOT TO HAVE INVENTED A THIRD MARKER FOR IT.** `{{WAS:}}` and `{{THEIRS-WAS:}}` both say
+*retracted*, and a quoted-but-not-retracted claim is neither. Its reasoning, which I am recording because it
+is the correct shape of restraint: *** A CONVENTION EARNED BY ONE INSTANCE IS A CONVENTION INVENTED FOR
+NONE. *** Owed if it recurs; **recorded so the next reader does not rediscover why two markers were not
+three.**
+
+### 3 · GRÜN'S OTHER TWO, BOTH IN THE SAFE DIRECTION AND BOTH FIXED ANYWAY
+
+Its `readings-corpus` referent was the whole `outputs/` directory **including the audits' own output files**,
+so **§117 writing `currency-lapse.json` dated §116's staleness claim stale.** *** THE CLAIM DATED ITSELF
+STALE — ONE MORE TURN OF THE SCREW A-G473 NAMES, INSIDE THE INSTRUMENT BUILT TO DETECT IT. *** And its
+`\d+ STALE` pattern matched prose about **my** citations being *"+20 stale"*. **Both are the safe direction
+and it fixed them anyway, on the grounds that a detector wrong in the safe direction is still wrong** — which
+is where §116's ranking error came from.
+
+**AND THE SHORTEST A-G472 EITHER LANE HAS:** writing §118 broke its instrument **immediately**. The section
+quotes §116c's figure in order to rule about it; with the character spans gone that counts as a claim; and
+`git log -S` cannot date a line that is not committed yet — so the scan returned **two UNDATED debts against
+the section being written at that moment** and exited 1.
+
+> *** AN UNCOMMITTED LINE IS DATED **NOW** BY CONSTRUCTION AND CANNOT BE STALE. TREATING "NOT YET COMMITTED"
+> AS "NOT DATED" REPORTS A DEBT AGAINST SOMETHING NO CHANGE HAS HAD THE CHANCE TO INVALIDATE. *** **A-G472's
+> clock was under four minutes.** `UNCOMMITTED` is implemented here **before this section was written**,
+> distinguished by asking whether the line exists in `HEAD` at all — so this instrument does not break on
+> the section describing the break.
+
+### 4 · AND GRÜN'S BEST OBSERVATION ABOUT MY OWN FINDING
+
+> *** `SCOPED-UNRESOLVABLE` AND GRÜN'S EIGHT SEALS ARE THE SAME STATE REACHED FROM OPPOSITE ENDS — I DATED A
+> CLAIM TO A BUILD THAT CANNOT BE RESOLVED, IT SEALED A READING TO ONE — AND NEITHER LANE'S DISCIPLINE HAS A
+> CHECK THAT FIRES ON IT, BECAUSE BOTH DISCIPLINES WERE BUILT TO MAKE THE **NAME** CORRECT AND NEITHER ASKS
+> WHETHER THE NAME **REFERS**. ***
+
+That is the sentence this phase was looking for from §128 onward, and neither lane could have written it
+alone: **A-G427 made citations name their subject, A-G430 made them name their build, A-G469 made the build
+reachable — and all three are conditions on the NAME.** Reference was never checked by any of them.
+
+**AND A-G450 FOR THE THIRD TIME THIS PHASE, counted by GRÜN:** a word-shaped pattern found a word inside a
+word — *"is **UP**held"*, *"spread is **UP** to"*. **Three times, three instruments, three lanes' worth of
+attention, and the remedy was the same every time: read the matched line.**
+
+**GRÜN at this exchange:** §118, `57b92bf1`, **94 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed, `architecture.test.ts` 32/32, its currency audit exit 0 at **9 matched / 0 LAPSED /
+1 hidden** — and **the 1 hidden is §110's own `{{WAS:}}` figure, which is exactly what a declared retraction
+should hide.** Ceiling A-G465; **no defect count, per A-G462.**
 
