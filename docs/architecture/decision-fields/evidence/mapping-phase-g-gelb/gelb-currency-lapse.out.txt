@@ -1,53 +1,94 @@
 ============================================================================================================
-GELB · §131 A-G473 — CURRENCY CLAIMS, DATED AGAINST THE PRODUCT'S OWN HISTORY
+GELB · §131 A-G473 — CURRENCY CLAIMS, EACH DATED AGAINST ITS OWN SUBJECT
 ============================================================================================================
 
-  product            app/components/career/demo/PersonJobMappingField.tsx
-  peer ref           frontend/mapping-phase-g -> f80425ed
-  last product move  fd45f45f  11-11 22:13 feat(career): mapping phase G · §104 — A-G43 imp
+  peer ref   frontend/mapping-phase-g -> df8ffd61
 
-  A claim written BEFORE fd45f45f no longer carries its own warrant. That is not the same as being
-  wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29 on this file.
+  SUBJECT TIPS — a single referent is itself a frame error (A-G435, GRÜN's §117 correction):
+    component    fd45f45f  11-11 22:13 feat(career): mapping phase G · §104 — A
+    tests        3231f52c  11-12 23:12 feat(career): mapping phase G · §115 — G
+    peer-record  df8ffd61  11-12 23:41 feat(career): mapping phase G · §117 — A
+
+  A claim written BEFORE ITS OWN SUBJECT'S TIP no longer carries its own warrant. That is NOT the
+  same as being wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29.
+fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
+fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
+fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
+fatal: Not a valid object name utpaUMQpafZVzAeyYImhv^{commit}
 
 ============================================================================================================
-[1] EVERY CURRENCY CLAIM, WITH ITS DATE AND ITS STATE
+[1] EVERY CURRENCY CLAIM, ITS SUBJECT, ITS DATE AND ITS STATE
 ============================================================================================================
 
-  *** LAPSED  PHASE_G.md: 7371  0d511729 11-11 17:57  "RE-MEASURED ON THE SHIPPING BUILD"
-              > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
-  *** LAPSED  PHASE_G.md: 7372  0d511729 11-11 17:57  "byte-identical to HEAD"
-              > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HE
-  *** LAPSED  PHASE_G.md: 7375  0d511729 11-11 17:57  "resting on current readings"
-              > ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-192
-  *** LAPSED  PHASE_G.md:10425  f85ee9e1 11-11 17:21  "verified on a rendered page"
-              **verified on a rendered page: the solve takes THREE passes and used to run two.** It then puts 
-  *** LAPSED  PHASE_G.md:10966  32b05c59 11-11 17:58  "on the build that ships"
-              ### A-G401 · Limb (a) holds on the build that ships — and the direction confirms the mechanism
-  *** LAPSED  PHASE_G.md:10968  32b05c59 11-11 17:58  "byte-identical to HEAD"
-              All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
-  *** LAPSED  PHASE_G.md:10976  32b05c59 11-11 17:58  "returns to CLOSED"
-              **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resting
-  *** LAPSED  PHASE_G.md:11061  32b05c59 11-11 17:58  "on the current build"
-              GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two la
+  SCOPED-NOREF PHASE_G.md: 7371  subj=component   0d511729 11-11 17:57  vs fd45f45f  "RE-MEASURED ON THE SHIPPING BUILD"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+  SCOPED-NOREF PHASE_G.md: 7372  subj=component   0d511729 11-11 17:57  vs fd45f45f  "byte-identical to HEAD"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to 
+  SCOPED-NOREF PHASE_G.md: 7375  subj=component   0d511729 11-11 17:57  vs fd45f45f  "resting on current readings"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               > ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1
+  SCOPED       PHASE_G.md:10425  subj=component   f85ee9e1 11-11 17:21  vs fd45f45f  "verified on a rendered page"
+               builds named in its paragraph: fb4632da, 7910845b
+               **verified on a rendered page: the solve takes THREE passes and used to run two.** It then put
+  *** LAPSED   PHASE_G.md:10966  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "on the build that ships"
+               ### A-G401 · Limb (a) holds on the build that ships — and the direction confirms the mechanism
+  SCOPED-NOREF PHASE_G.md:10968  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "byte-identical to HEAD"
+               builds named in its paragraph: utpaUMQpafZVzAeyYImhv (NO REPOSITORY REFERENT)
+               All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
+  *** LAPSED   PHASE_G.md:10976  subj=component   32b05c59 11-11 17:58  vs fd45f45f  "returns to CLOSED"
+               **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resti
+  SCOPED       PHASE_G.md:11061  subj=peer-record 32b05c59 11-11 17:58  vs df8ffd61  "on the current build"
+               builds named in its paragraph: 4b83414e
+               GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two 
 
 ============================================================================================================
 [2] WHAT THIS BOUNDS
 ============================================================================================================
 
   currency claims ASSERTED:  8
-  quotations of a claim, excluded and counted: 4  <- §129/§130 ruling against them
-    LAPSED — written before the product's last move:  8
-    CURRENT:                                          0
-    UNDATABLE by this method:                         0
+  quotations of a claim, excluded and counted: 9  <- §129/§130 ruling against them
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:15827  quoted span / table row  "verified on a rendered page"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16119  quoted span / table row  "resting on current readings"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16131  quoted span / table row  "closed again"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16135  quoted span / table row  "byte-identical to HEAD"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16186  in a fenced block        "RE-MEASURED ON THE SHIPPING BUILD"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16187  in a fenced block        "resting on current readings"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16188  in a fenced block        "verified on a rendered page"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16189  in a fenced block        "on the build that ships"
+      quoted   PERSON_X_JOB_MAPPING_PHASE_G.md:16190  in a fenced block        "returns to CLOSED"
 
-  *** 8 OF 8 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
-  Every one is written in the PRESENT TENSE and none carries an expiry. That is A-G473, and the
-  record that rules it is the record it indicts.
+    LAPSED                 2
+    CURRENT                0
+    SCOPED                 2
+    SCOPED-UNRESOLVABLE    4
+    UNDATABLE              0
 
-  AND THE LIMIT, STATED RATHER THAN IMPLIED: this says nothing about whether any lapsed claim is
-  FALSE. It says the claim's warrant is older than the thing it claims about. A re-measurement is
-  the only thing that can move a row out of LAPSED, and re-sealing is a deliberate act on a
-  deliberate build — so these rows are OWED, not silently repairable.
+  *** 2 OF 8 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
+  THE FIRST FORM OF THIS INSTRUMENT SAID 8, by dating every claim against one referent and folding
+  SCOPED and UNDATABLE into LAPSED. GRÜN warned that an inflated figure was about to reach the owner
+  and it was: a DATED measurement never claimed to be current, so counting it lapsed is the
+  over-report direction — the alarming one — and acting on it would have me editing correct
+  sentences. 2 row(s) are SCOPED and not owed.
+
+  AND ONE STATE NEITHER LANE HAD: 4 row(s) are scoped to a build with NO REPOSITORY
+  REFERENT. The scoping is NOMINAL — a reader cannot test the claim by any means, so the row is
+  neither safely dated nor merely owed a re-run. A-G469's axis one layer out from a SHA.
+
+  LIMITS, STATED: (a) SCOPED is decided from the enclosing PARAGRAPH, so a paragraph naming a build
+  for some OTHER clause scopes this claim too — this UNDER-reports, which is the right direction.
+  (b) LAPSED means the warrant is older than its subject, NOT that the claim is false. (c) Only a
+  re-measurement moves a row out of LAPSED, and re-sealing is a deliberate act on a deliberate
+  build — so these rows are OWED, not silently repairable.
+
+  AND ONE BUCKET IS VACUOUS, DECLARED RATHER THAN REPORTED AS A FINDING (A-G453): UNDATABLE reads 0
+  because NO PHRASE IN THIS PATTERN SET IS A LIVENESS CLAIM, and this record makes none. Verified
+  rather than assumed: a grep for "is up"/"returns 200"/"ports untouched" over both records gives
+  four hits and all four are "is UPheld" or "spread is UP to" — A-G450, read the matched line. So
+  the bucket is reachable in CODE and unreachable in DATA. It exists because GRÜN's record HAS such
+  claims; a 0 here is a property of the pattern set, not of the record, and reporting it as a
+  finding would be the vacuity A-G453 was written for.
 
   NO PIN VERDICT IS ANNOUNCED HERE. A-G36 point 2 reserves those to PINK.
 ============================================================================================================

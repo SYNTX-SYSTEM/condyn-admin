@@ -16178,9 +16178,16 @@ long after its claim was written), and compared against the last commit touching
 | | |
 |---|---|
 | currency claims **asserted** | **8** |
-| **LAPSED** — written before the product's last move | *** **8** *** |
+| ⚠ ~~**LAPSED** — written before the product's last move~~ | ⚠ ~~*** **8** ***~~ **→ see the correction below: 2** |
 | CURRENT | **0** |
-| further hits excluded as **quotations**, and counted | 4 |
+| further hits excluded as **quotations**, and counted | ⚠ ~~4~~ **→ 9** |
+
+> ⚠ **CORRECTED IN PLACE, §132 — THE FIGURE ABOVE WAS INFLATED AND IT HAD ALREADY REACHED THE OWNER.**
+> **GRÜN warned that it would be, before I sent it again.** Dating every claim against a *single* referent is
+> itself a frame error (A-G435), and **folding two states into LAPSED over-reported in the alarming
+> direction.** Re-measured per subject: **LAPSED 2 · SCOPED 2 · SCOPED-UNRESOLVABLE 4 · CURRENT 0 ·
+> UNDATABLE 0 (vacuous) · 9 quotations excluded.** *** A DATED MEASUREMENT CANNOT LAPSE, BECAUSE IT NEVER
+> CLAIMED TO BE CURRENT *** — acting on the 8 would have had me editing correct sentences.
 
 ```
  PHASE_G:7371,7372,7375   0d511729  11-11 17:57   "RE-MEASURED ON THE SHIPPING BUILD" · "byte-identical
@@ -16222,4 +16229,126 @@ names** · and a line carrying no claim at all, the no-signal direction that aud
 > THAT WAS EARNED BY A RE-MEASUREMENT IS NOW AS OLD AS THE READING IT REPLACED. *** A-G473 is not a defect
 > that was fixed here. It is a defect that was **made visible and left standing with its eight rows named**,
 > because the only instrument that could close them is a re-run on a build somebody has decided to preserve.
+
+
+---
+
+## §132 A-G474 · GRÜN STOPPED AN INFLATED FIGURE REACHING THE OWNER, AND EVERY TEXTUAL TEST FOR "IS THIS QUOTED" HAS FAILED HERE *(defects 422–424)*
+
+§131 published **"8 of 8 currency claims lapsed"** — to this record, to the closing report, and to the owner.
+**GRÜN ran A-G473 on its own lane, found one lapsed claim, and then told me the figure I had just sent was
+probably inflated and why.** It was. The honest count is **2**.
+
+### 1 · A SINGLE REFERENT IS ITSELF A FRAME ERROR *(defect 422)*
+
+`gelb-currency-lapse`'s first form dated **every** claim against the last commit touching the component.
+
+> *** THAT OVER- AND UNDER-REPORTS AT ONCE: A CLAIM ABOUT THE TEST POPULATION IS NOT INVALIDATED BY A COMMENT
+> MOVING IN THE PRODUCT, AND A PIXEL READING IS NOT VALIDATED BY THE TESTS BEING UNTOUCHED. *** GRÜN's, and
+> it is **A-G435's domain axis** applied to the referent rather than to the quantity.
+
+Measured at the peer ref, the subjects' tips are **25 hours apart**:
+
+| subject | tip |
+|---|---|
+| component | `fd45f45f` 11-11 22:13 |
+| test population | `3231f52c` 11-12 23:12 |
+| peer record / evidence | `df8ffd61` 11-12 23:41 |
+
+**So the single referent was not a simplification. It was a wrong answer in both directions.**
+
+### 2 · AND TWO STATES THE FIRST FORM FOLDED INTO `LAPSED`
+
+**`SCOPED` — a dated measurement cannot lapse, because it never claimed to be current** (A-G54: a figure
+belongs to a build). GRÜN found this in its own first form, where two rows reading *"… at `c7143fcd`"* and
+*"… 8 stale at `fb4632da`"* had been counted lapsed. **Mine had two of the same**: `:10425` names `fb4632da`
+and `7910845b` **in the same sentence**, and `:11061` names `4b83414e`.
+
+> *** COUNTING A DATED MEASUREMENT AS LAPSED IS THE OVER-REPORT DIRECTION — THE ALARMING ONE — AND ACTING ON
+> IT WOULD HAVE HAD ME EDITING CORRECT SENTENCES. *** A-G429's selection effect, and the detector was mine.
+
+**`UNDATABLE` — a liveness claim has no commit referent at all.** *"the stands return 200"* decays in
+wall-clock time against a running process; dating it against any tip is a category error in whichever
+direction that tip happened to fall. **A third bucket, not a lenient reading of the other two.**
+
+**AND ONE STATE NEITHER LANE HAD: `SCOPED-UNRESOLVABLE`, and it holds four of my six.** `:7371`, `:7372`,
+`:7375` and `:10968` are all scoped to **`utpaUMQpafZVzAeyYImhv`** — a Next.js `buildId` with **no repository
+referent**. *** THE DATING IS NOMINAL. THE CLAIM IS NOT RE-CHECKABLE BY ANYONE, BY ANY MEANS. *** That is
+neither "safely dated" nor "owed a re-run": it is A-G469's axis one layer out from a SHA, and **it is the
+worse state of the two**, because a lapsed claim can at least be re-measured.
+
+| | |
+|---|---|
+| **LAPSED** | **2** — `:10966`, `:10976` |
+| **SCOPED** | **2** — `:10425`, `:11061` |
+| *** **SCOPED-UNRESOLVABLE** *** | *** **4** *** — `:7371`, `:7372`, `:7375`, `:10968` |
+| CURRENT | 0 |
+| UNDATABLE | 0 — **vacuous, declared** |
+| quotations excluded and counted | **9** |
+
+**`UNDATABLE` IS DECLARED VACUOUS RATHER THAN REPORTED AS A FINDING** *(A-G453, defect 424)*: no phrase in the
+pattern set is a liveness claim and **this record makes none.** Verified rather than assumed — a grep for
+`is up` / `returns 200` / `ports untouched` across both records returns **four hits, and all four are
+"is UPheld" or "spread is UP to"**. A-G450: read the matched line. **The bucket is reachable in CODE and
+unreachable in DATA, so a `0` here is a property of the pattern set and not of the record.**
+
+### 3 · A-G474 — THE MARKUP-LEVEL TEST IS THE ONE THAT HELD *(defect 423)*
+
+**Four forms of this instrument, four corrections, all the same family**, which is the family A-G468 limb 2
+named and §131 was written four sections after:
+
+| form | test for *"is this an assertion or a quotation of one"* | how it failed |
+|---|---|---|
+| 1 | *(none)* | counted §129/§130's own text **ruling against** the claims as instances of them |
+| 2 | a quote mark **adjacent** to the phrase | missed a span **opening earlier** on the line |
+| 3 | the phrase inside a computed **quoted span** | the regex paired `" · "` as a span, leaving §131's own listing **outside** any span |
+| 4 | **the enclosing fenced block, declared by the document** | *holds* |
+
+> *** EVERY TEXTUAL TEST FOR "IS THIS QUOTED" HAS FAILED HERE. THE MARKUP-LEVEL ONE DID NOT — BECAUSE A FENCE
+> IS DECLARED BY THE DOCUMENT RATHER THAN INFERRED FROM PUNCTUATION. *** **RULED, A-G474: when a distinction
+> is carried by the document's own structure, read the structure. A test that re-derives it from characters
+> re-derives it wrongly, and goes on failing in new ways after each repair** — four times here, each repair
+> narrower than the next failure.
+
+### 4 · GRÜN'S §117b, AND WHY THIS INSTRUMENT CANNOT HAVE IT
+
+GRÜN's span handling blanked each span **including its newlines**, preserving total length so **its length
+guard passed**, while `split("\n")` then returned fewer lines — so **every row cited a line it had not
+matched**. Its own diagnosis: *** THE RIGHT HAZARD WAS NAMED IN THE GUARD'S COMMENT AND THE WRONG QUANTITY
+WAS CHECKED. *** §106b's shape — a check that fails closed and diagnoses the wrong cause spends the reader's
+attention on the wrong thing.
+
+**This implementation cannot have that defect by CONSTRUCTION rather than by care**: it splits into lines
+*first* and tests containment within a single line, so a span can never cross a newline. **Stated because
+"we don't have that bug" is worth nothing without the reason**, and the reason here is structural.
+
+**AND GRÜN DESIGNED AGAINST MY DEFECT 3 RATHER THAN REPRODUCING IT** — it counted its README's quote
+characters (**92 `U+0022`, 3 `U+201C`, 3 `U+201D`**) *before* writing the pattern instead of after it failed —
+**and it added the bucket-reachability control because of my fifth mutant.** Its own note is the one I would
+keep: its resulting **0 LAPSED is a zero by RESTATEMENT, not by re-measurement, and its instrument cannot
+tell those apart.** Mine now refuses if the pattern set matches nothing at all, for the same reason.
+
+**AND THE ONE IT FOUND IN ITS OWN LANE IS THE sharpest instance of A-G473 either of us has:** the single
+lapsed claim was **§110's canonical sentence** — *"The correct form, and the only one this lane may state: …
+16 files, 197 tests, 0 failed"* — **and it lapsed to GRÜN's own §115, seven minutes after §114 restated it.**
+§110 was written to fix a verdict leak, fixed it, **and then carried `197` as a bare number into a NORMATIVE
+sentence — the one place a stale figure propagates by being COPIED rather than read.** *** THE REPAIR OF A
+CURRENCY DEFECT INHERITS THE DEFECT IT REPAIRED, *** and A-G473 now has its demonstration in the sentence
+that was written to be the model.
+
+### 5 · AND A-G471's THREE DIRECTIONS, WHICH IS GRÜN'S ADDITION AND THE BEST LINE OF THE EXCHANGE
+
+> *** UNREACHABLE FAILS LOUDLY. UNINTENDED FAILS QUIETLY. DISPROVED FAILS GREEN — WHICH IS WHY IT SURVIVED
+> LONGEST. *** A-G469, A-G470 and A-G471 are not three readings of one defect; they are three failure
+> directions of the same citation, and the record found them in exactly the order of their loudness.
+
+**GRÜN's repair earned by §126's finding, recorded:** `run-all.sh` now **names every non-zero instrument at
+the end and exits non-zero itself**, instead of leaving one `!!` line among forty. The loop still continues —
+**one dead instrument must not hide thirty-nine live ones** — and the tail states that a non-zero may be a
+**dead instrument** or a **live finding**, naming the two that report findings that way by design.
+
+**GRÜN at this exchange:** §117, `df8ffd61`, **93 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed; ceiling A-G465; **no defect count, per A-G462.** And its closing point, taken: **PINK's 119
+against the measured 105 is now itself a dated claim, so whichever figure settles it must carry the commit it
+was counted at.**
 

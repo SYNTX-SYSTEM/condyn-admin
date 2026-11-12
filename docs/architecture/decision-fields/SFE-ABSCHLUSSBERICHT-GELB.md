@@ -109,7 +109,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 421.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 424.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---
@@ -166,10 +166,14 @@ Guard ist richtig, die Folge harmlos). *** EINE ZITATION BENENNT EINEN BUILD, OB
 PINNEN WOLLTE ODER NICHT. ***
 
 **10. Alle 8 Währungsaussagen des Registers sind abgelaufen** *(§131, Defekt 421)*. `gelb-currency-lapse.mjs`
-datiert jede Aussage über den Commit, der **ihre Zeile einführte**, gegen die letzte Produktänderung:
-**8 behauptet, 8 LAPSED, 0 CURRENT**, 4 weitere Treffer als **Zitate** ausgeschlossen und gezählt. **LAPSED
-heißt: die Aussage trägt ihren eigenen Beleg nicht mehr — nicht, dass sie falsch ist.** Nur eine Neumessung
-bewegt eine Zeile heraus. **Die acht Zeilen sind geschuldet, nicht still reparierbar.**
+datiert jede Aussage über den Commit, der **ihre Zeile einführte**, gegen **den Stand ihres eigenen
+Subjekts** (§132, GRÜNs Korrektur — ein einziger Referent ist selbst ein Rahmenfehler, A-G435):
+**8 behauptet · LAPSED 2 · SCOPED 2 · SCOPED-UNRESOLVABLE 4 · CURRENT 0 · UNDATABLE 0 (vakuant) · 9 Zitate
+ausgeschlossen.** ⚠ **Die erste Form dieser Zeile las „8 LAPSED" und war aufgebläht** — eine **datierte**
+Messung kann nicht verfallen, weil sie nie Gegenwärtigkeit behauptet hat. **LAPSED heißt: die Aussage trägt
+ihren eigenen Beleg nicht mehr — nicht, dass sie falsch ist.** *** UND VIER ZEILEN SIND AUF EINEN BUILD OHNE
+REPOSITORY-REFERENTEN DATIERT (`utpaUMQpafZVzAeyYImhv`): DIE DATIERUNG IST NOMINELL, DIE AUSSAGE IST VON
+NIEMANDEM NACHPRÜFBAR *** — ein Zustand, den keine Lane vorher hatte. **Die 2 + 4 Zeilen sind geschuldet.**
 
 **9. PG-11s Relationsglied ruht auf einer abgelaufenen Währungsaussage** *(§130, A-G473, Defekte 419/420)*.
 A-G277 wurde bei **§89 (`32b05c59`, 17:58)** erneut geschlossen, mit dem Satz *„resting on current readings"*.
