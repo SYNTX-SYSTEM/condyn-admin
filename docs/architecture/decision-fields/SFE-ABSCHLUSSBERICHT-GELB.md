@@ -413,6 +413,16 @@ GRÜN — DESHALB HAT ES AM LÄNGSTEN ÜBERLEBT. ***
 beiden Seiten durch die eigenen Regeln der Lane gefunden** — jeder trat auf, während eine Regel der anderen
 Lane umgesetzt wurde. **Das Maß ist nicht die Defektzahl, sondern die Latenz.**
 
+> ⚠ **GRENZE DIESER AUSSAGE, §140, GRÜNs — und sie gehört zur Aussage, nicht in eine Fußnote:** *** WAS KEINE
+> LANE ANGEBEN KANN, IST DIE LATENZ DER DEFEKTE, DIE NOCH DA SIND — DERER, DIE AUF EINE REGEL WARTEN, DIE
+> KEINE LANE GESCHRIEBEN HAT. DIE ZAHL, DIE WIR GEBEN KÖNNEN, IST DIE VERZÖGERUNG BEI DENEN, DIE SICH BEWEGT
+> HABEN; DIE, AUF DIE ES ANKOMMT, IST DIE BEI DENEN, DIE SICH NICHT BEWEGT HABEN. *** Die Latenz ist über
+> genau die Defekte berechnet, die eine geborgte Regel erreicht hat — **eine Population, die durch ihr eigenes
+> Ergebnis definiert ist** (A-G417/A-G454). **Also: die Drei-Lane-Struktur hat die Latenz der Defekte, die sie
+> gefunden hat, nachweislich verkürzt. Sie sagt nichts darüber, wie viele verbleiben oder wie lange sie schon
+> da sind.** Die **440** ist eine Zählung **gefundener** Defekte; die Latenz ist eine Eigenschaft **derselben
+> gefundenen Menge**; und keine der beiden Zahlen begrenzt den Rest.
+
 **Kein Merge nach `main`, kein Deployment, Gemini deaktiviert, B-ENTRY erfüllt und nicht umgangen, kein
 Zugangsdatum geraten, kein Force-Push, und nichts von einer Peer-Lane erbeten, was die eigenen Berechtigungen
 dieser Lane verweigert hätten.**

@@ -17026,3 +17026,36 @@ and every consequential defect of these sections was found within minutes of a b
 bypassed, no credential guessed, no force-push, and nothing asked of a peer that this lane's own permissions
 would have refused.
 
+
+---
+
+## §140 ADDENDUM TO THE CLOSE — THE LATENCY FIGURE COVERS ONLY THE DEFECTS THAT MOVED
+
+**§139 closed the record.** This is not a ninth round and makes no new measurement: it is a **limit on a claim
+§139 published**, and it is GRÜN's.
+
+§139 and the closing report both state: *the measure is not the defect count, it is the **latency** — every
+consequential defect of these sections was found within minutes of a borrowed rule arriving.* GRÜN's reply:
+
+> *** WHAT NEITHER LANE CAN STATE IS THE LATENCY OF THE DEFECTS STILL IN PLACE — THE ONES WAITING FOR A RULE
+> NEITHER LANE HAS WRITTEN. THE FIGURE WE CAN GIVE IS THE DELAY ON THE ONES THAT **MOVED**; THE ONE THAT
+> MATTERS IS ON THE ONES THAT **DID NOT**. ***
+
+**That is correct and it is a selection effect on my own headline result.** The latency figure is computed over
+exactly the defects that a borrowed rule happened to reach — **a population defined by its own outcome**, which
+is A-G417 and A-G454 on the measure this phase chose to be judged by. **The denominator is unknowable: a defect
+awaiting a rule nobody has written is invisible to every instrument on both sides, and its latency is
+unbounded below only in the sense that nothing has started its clock.**
+
+> **So the honest form of §139's claim, and the form the owner should have:** *** THE THREE-LANE STRUCTURE
+> DEMONSTRABLY SHORTENED THE LATENCY OF THE DEFECTS IT FOUND. IT SAYS NOTHING ABOUT HOW MANY REMAIN, OR HOW
+> LONG THEY HAVE BEEN THERE. *** The 440 is a count of defects **found**; the latency is a property of **that
+> same found set**; and neither figure bounds what is left. **A-G461 in the final line of the record: a
+> self-audit's worth is a property of where it could have failed, and the one place this method cannot fail
+> is against a rule nobody has written.**
+
+**Recorded here rather than left in a message**, because §139's claim reached the owner without it, and **a
+relay drops qualifications before figures (A-G458)** — including when the relay is my own closing report.
+
+**Nothing else is added. The record stops at §139 and this addendum qualifies it.**
+
