@@ -113,7 +113,7 @@
  },
  "census": {
   "NOTHING": 11,
-  "NO CONSTANT": 22,
+  "NO CONSTANT": 23,
   "REPORTS": 2,
   "READS": 7,
   "HALTS": 7
@@ -136,6 +136,7 @@
    "gruen-bodies.mjs",
    "gruen-citation-audit.mjs",
    "gruen-colour.mjs",
+   "gruen-currency-lapse.mjs",
    "gruen-discriminator.mjs",
    "gruen-fixture-states.mjs",
    "gruen-floor.mjs",
@@ -278,6 +279,14 @@
     "FRAME_PASS_CAP",
     "SIZE_FLOOR_PX"
    ],
+   "byValueOnly": []
+  },
+  {
+   "file": "gruen-currency-lapse.mjs",
+   "state": "NO CONSTANT",
+   "readsProduct": true,
+   "throwsOnMove": true,
+   "constants": [],
    "byValueOnly": []
   },
   {
@@ -682,5 +691,5 @@
    "byValueOnly": []
   }
  ],
- "finding": "49 instruments scanned. 7 HALT, 2 REPORT, 11 do NOTHING, 22 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
+ "finding": "50 instruments scanned. 7 HALT, 2 REPORT, 11 do NOTHING, 23 carry no product constant.\nTHE FORKS (NOTHING or partly-read): gruen-ag36-pg17-geometry.mjs, gruen-glow.mjs, gruen-instrument.mjs, gruen-option3.mjs, gruen-pg16-crowding-L1.mjs, gruen-pg17-gate.mjs, gruen-pg17-reanchor.mjs, gruen-pg22-seats.mjs, gruen-pg23-alpha.mjs, gruen-rings.mjs, gruen-vector-expressibility.mjs. Of these, 0 carry numbers that are in the record and go first: none.\nEvery product constant in the list was extractable, so a NOTHING verdict below is about the instrument and not about this scan's reach."
 }

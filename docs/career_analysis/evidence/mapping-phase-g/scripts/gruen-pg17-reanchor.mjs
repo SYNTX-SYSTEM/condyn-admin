@@ -90,9 +90,28 @@ for (const f of files) {
       measurableFromFirstCleanBandInR: clean.length ? +(glowEdgeInR - clean[0].uFrom).toFixed(4) : null,
       monotoneRunFromFirstCleanBandInR: fromClean.run, brokeAtFromFirstCleanBand: fromClean.brokeAt,
       monotoneRunFromFirstCleanBandEpsTolerantInR: fromCleanEps.run, brokeAtEpsTolerant: fromCleanEps.brokeAt,
-      sealedStatistic: { strict: b.monotoneExtentInR_strict, epsTolerant: b.monotoneExtentInR_epsTolerant },
+      /* §122 · A-G480 (GELB's): A ZERO NEEDS A WITNESS, AND THE CHEAPEST WITNESS IS A DENOMINATOR IN ITS OWN
+         OUTPUT BLOCK. `sealedStatistic` was the only block in this lane's eleven derivations that printed a
+         bare zero: the INNERMOST enclosing object read `{ "strict": 0, "epsTolerant": 0 }` and contained
+         nothing else, so five bodies across the covered files printed ten zeros with nothing beside them
+         showing the comparison had run. VERIFIED TRUE BEFORE BEING FIXED, which is GELB's order: the seals
+         do carry `monotoneExtentInR_strict: 0` for one body per file, and `monotoneRunInR` is 0 there too,
+         so the zeros are readings and not a failed lookup. They were also byte-identical to what a broken
+         lookup would print, which is the whole of A-G480.
+         The denominator goes INSIDE the object, because the block is the one the document declares (A-G474)
+         and a figure three lines up in the parent object is a proximity heuristic, not a witness. */
+      sealedStatistic: {
+        strict: b.monotoneExtentInR_strict, epsTolerant: b.monotoneExtentInR_epsTolerant,
+        comparedAgainstRunInR: run, overBandsInMeasurableAnnulus: bands.length, nullBandsAmongThem: nulls
+      },
       sealedOverstatesBy: +(b.monotoneExtentInR_strict - run).toFixed(2) };
   });
+  /* §122: a renamed sealed field would make `b.monotoneExtentInR_strict` undefined — JSON drops the key and
+     `sealedOverstatesBy` becomes null, so the shape changes rather than the value. Named explicitly anyway,
+     because "the failure mode happens to be visible" is not a check (A-G465). */
+  for (const r of rows)
+    if (typeof r.sealedStatistic.strict !== "number" || typeof r.sealedStatistic.epsTolerant !== "number")
+      throw new Error(`ERR_GRUEN_PG17_SEALED_FIELD_ABSENT: rank ${r.rank} in ${f} has no numeric sealed statistic, so no comparison against the seal was made and none may be reported.`);
   report.files.push({ file: f, viewport: src.viewport, level: src.level, carries: src.carries, lastRank, perBody: rows });
 }
 const path = join(OUT, "pg17-seal-reanchor.json");

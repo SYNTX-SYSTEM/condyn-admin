@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "d7675b75",
+ "head": "930c25a9",
  "referents": {
   "test-population": {
    "sha": "3231f52c",
@@ -61,10 +61,10 @@
   "phrases": 22,
   "matched": 15,
   "LAPSED": 0,
-  "CURRENT": 5,
+  "CURRENT": 6,
   "SCOPED": 4,
   "SCOPED-UNRESOLVABLE": 3,
-  "UNCOMMITTED": 1,
+  "UNCOMMITTED": 0,
   "UNDATABLE": 2,
   "UNDATED": 0
  },
@@ -270,13 +270,26 @@
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0* — and produced **one**",
-   "status": "UNCOMMITTED",
-   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "writtenAt": {
+    "sha": "930c25a9",
+    "when": "2026-11-13T00:26:42+01:00",
+    "subject": "fix(career): mapping phase G · §121 — A-G479: the count was right and the reason was unmeasured; A-G478 on the one branch already called dead"
+   },
+   "restatesFrom": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00"
+   },
+   "note": "A-G476: dated from the oldest version of the record carrying these figures, not from the line that restates them",
+   "effectiveAt": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00"
+   },
    "referent": {
     "sha": "f80425ed",
     "when": "2026-11-12T23:26:43+01:00",
     "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
-   }
+   },
+   "status": "CURRENT"
   },
   {
    "line": 816,

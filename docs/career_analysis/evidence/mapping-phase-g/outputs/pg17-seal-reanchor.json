@@ -34,7 +34,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 0,
-      "epsTolerant": 0
+      "epsTolerant": 0,
+      "comparedAgainstRunInR": 1.5,
+      "overBandsInMeasurableAnnulus": 30,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": -1.5
     },
@@ -61,7 +64,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 0,
-      "epsTolerant": 0
+      "epsTolerant": 0,
+      "comparedAgainstRunInR": 1.6,
+      "overBandsInMeasurableAnnulus": 32,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": -1.6
     },
@@ -88,7 +94,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 0,
-      "epsTolerant": 0
+      "epsTolerant": 0,
+      "comparedAgainstRunInR": 0,
+      "overBandsInMeasurableAnnulus": 34,
+      "nullBandsAmongThem": 2
      },
      "sealedOverstatesBy": 0
     },
@@ -115,7 +124,10 @@
      "brokeAtEpsTolerant": "1.6 r",
      "sealedStatistic": {
       "strict": 0,
-      "epsTolerant": 0
+      "epsTolerant": 0,
+      "comparedAgainstRunInR": 0,
+      "overBandsInMeasurableAnnulus": 36,
+      "nullBandsAmongThem": 1
      },
      "sealedOverstatesBy": 0
     },
@@ -142,7 +154,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 2,
-      "epsTolerant": 2
+      "epsTolerant": 2,
+      "comparedAgainstRunInR": 1.9,
+      "overBandsInMeasurableAnnulus": 38,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.1
     }
@@ -178,7 +193,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 1.85,
-      "epsTolerant": 1.85
+      "epsTolerant": 1.85,
+      "comparedAgainstRunInR": 1.55,
+      "overBandsInMeasurableAnnulus": 31,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.3
     },
@@ -205,7 +223,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 1.75,
-      "epsTolerant": 1.75
+      "epsTolerant": 1.75,
+      "comparedAgainstRunInR": 1.65,
+      "overBandsInMeasurableAnnulus": 33,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.1
     },
@@ -232,7 +253,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 0,
-      "epsTolerant": 0
+      "epsTolerant": 0,
+      "comparedAgainstRunInR": 0,
+      "overBandsInMeasurableAnnulus": 35,
+      "nullBandsAmongThem": 1
      },
      "sealedOverstatesBy": 0
     },
@@ -259,7 +283,10 @@
      "brokeAtEpsTolerant": null,
      "sealedStatistic": {
       "strict": 2,
-      "epsTolerant": 2
+      "epsTolerant": 2,
+      "comparedAgainstRunInR": 1.85,
+      "overBandsInMeasurableAnnulus": 37,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.15
     },
@@ -286,7 +313,10 @@
      "brokeAtEpsTolerant": "2.75 r",
      "sealedStatistic": {
       "strict": 1.7,
-      "epsTolerant": 1.75
+      "epsTolerant": 1.75,
+      "comparedAgainstRunInR": 1.65,
+      "overBandsInMeasurableAnnulus": 39,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.05
     }
@@ -322,7 +352,10 @@
      "brokeAtEpsTolerant": "2.8 r",
      "sealedStatistic": {
       "strict": 1.8,
-      "epsTolerant": 1.8
+      "epsTolerant": 1.8,
+      "comparedAgainstRunInR": 1.75,
+      "overBandsInMeasurableAnnulus": 39,
+      "nullBandsAmongThem": 0
      },
      "sealedOverstatesBy": 0.05
     }

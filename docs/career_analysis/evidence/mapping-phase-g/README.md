@@ -624,6 +624,60 @@
 > correction on each side that moved a count UPWARD was the recall probe, and on both sides it cost a false
 > positive in the same run. **That is the price of the only direction a reader audits, and both lanes have
 > now paid it once.**
+>
+> *** §122 · A-G480 OVER THIS LANE'S ELEVEN DERIVATIONS: 0 BARE ZEROS OF 91 — AND MY FIRST PROBE SAID 2
+> WHERE THE CORRECT UNIT SAYS 10. ***
+>
+> GELB's **A-G480**: *a zero needs a witness, and the cheapest witness is a denominator in its own output
+> block; a control is only needed for a zero that cannot be given one.* **That is a better remedy than
+> §121's six controls and it supersedes the reason I built them** — A-G452 was a rule about COMPUTING a
+> zero and this is the missing half, about PRINTING one.
+>
+> | block rule | zeros | witnessed | **BARE** |
+> |---|---|---|---|
+> | ±3 lines — proximity | 80 | 78 | **2** |
+> | the enclosing object / paragraph — **declared by the document** | 80 | 70 | *** 10 *** |
+> | after the fix | 91 | 91 | **0** |
+>
+> *** I EXPECTED THE STRICTER UNIT TO LOWER THE COUNT AND IT RAISED IT FIVEFOLD. *** The ±3-line window was
+> leaking a neighbouring `1.6` **across an object boundary** into a block that contained nothing but zeros:
+> the innermost enclosing object read `{ "strict": 0, "epsTolerant": 0 }` and that was all of it. **My own
+> proximity error for the third time** — §116's ranking by subject proximity, §117c's quote-mark adjacency,
+> and now a line window standing in for a declared block. *A-G474 is not only about quotation: whenever the
+> document declares the unit, a window is a guess, and a window's errors point at whatever happens to be
+> nearby — which in a JSON dump is the parent object's healthy figures.*
+>
+> **VERIFIED TRUE BEFORE BEING FIXED, which is GELB's order and the half that makes the rest honest.** The
+> seals do carry `monotoneExtentInR_strict: 0` for one body per file, and `monotoneRunInR` is 0 there, so
+> the ten zeros were **readings, not a failed lookup**. *** AND THEY WERE BYTE-IDENTICAL TO WHAT A RENAMED
+> FIELD OR A BROKEN LOOKUP WOULD HAVE PRINTED, WHICH IS THE WHOLE OF A-G480. *** The denominator now sits
+> INSIDE the object — `comparedAgainstRunInR`, `overBandsInMeasurableAnnulus`, `nullBandsAmongThem` — so a
+> zero reads *0, against a run of 1.5, over 30 bands*. A figure three lines up in the parent object is a
+> proximity heuristic, not a witness. An absent sealed field now **refuses**, because *“the failure mode
+> happens to be visible”* is not a check (A-G465).
+>
+> *** §122b · AND GELB'S OTHER HALF IS THE CRITERION A-G475 WAS MISSING, SO HERE ARE THIS LANE'S SEVEN
+> CHANGES UNDER IT. *** Their test: **a count that falls because the ARTIFACT was repaired is not the
+> absolving refinement; a count that falls because the RULE was narrowed is.** Applied backwards over
+> §117–§121 without reinterpretation:
+>
+> | § | change | artifact or rule | count |
+> |---|---|---|---|
+> | 117 | figures taken OUT of §110's canonical sentence | **artifact** — the record changed | 1 → 0 |
+> | 117 | readings-corpus referent narrowed to exclude the audits' own outputs | *** rule *** | ↓ |
+> | 117 | `\d+ STALE` narrowed to require a corpus noun | *** rule *** | ↓ |
+> | 118c | `UNCOMMITTED` for lines not yet committed | rule | ↓ (a false debt) |
+> | 118 | character-inferred spans removed (A-G474) | rule | **6 → 10 ↑** |
+> | 119 | the quotation made to carry its subject's build | **artifact** | → SCOPED |
+> | 120 | six defects: scope resolution, referent, missing form, line-vs-sentence, attribution, bare build id | rule | **↑, with a failing state** |
+> | 121 | ambiguity refusal, branch control | rule | **unchanged** |
+>
+> **So two of this lane's reductions — both in §117 — are rule narrowings and belong squarely under A-G475's
+> suspicion, and I am naming them rather than resting on the artifact repairs beside them.** They are still
+> defensible: a claim about the readings corpus cannot be invalidated by the audit that describes the corpus
+> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's
+> readings. *But “defensible” is exactly the property A-G475 says every step in a downward trend has.*
+> **The criterion does not absolve them; it locates them.**
 
 >
 > `PERSON_X_JOB_MAPPING_PHASE_G.md` **§17 A-G36 point 2**: GRÜN's instrument produces **development
