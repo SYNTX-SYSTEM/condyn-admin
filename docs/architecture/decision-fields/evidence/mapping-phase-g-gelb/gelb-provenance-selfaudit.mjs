@@ -14,9 +14,9 @@
  * Crude on purpose: a section-level attribution is the weakest form that could discharge the obligation,
  * so a section failing THIS fails any stricter test.
  */
-import { execFileSync } from "node:child_process";
+import { readLines } from "./gelb-read.mjs"; // A-G468: this read died of ENOBUFS when §125 pushed PHASE_G past 1 MiB
 const DOC = "/home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_G.md";
-const lines = execFileSync("cat", [DOC], { encoding: "utf8" }).split("\n");
+const lines = readLines(DOC); // was execFileSync("cat", …); its spawnSync result carried status:0 while the pipe overflowed
 const f = (x, n = 1) => x.toFixed(n);
 
 /* sections */

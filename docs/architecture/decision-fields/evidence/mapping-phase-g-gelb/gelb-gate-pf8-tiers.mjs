@@ -32,13 +32,32 @@
  * string the instrument cannot show.
  */
 import { execFileSync } from "node:child_process";
+import { readLines, git as gitBuf } from "./gelb-read.mjs"; // A-G468: the cat read below died of ENOBUFS when §125 pushed PHASE_G past 1 MiB
 const DIR = "/home/codi/Entwicklung/condyn-admin-hr-integration/docs/architecture/decision-fields";
 const F = `${DIR}/PERSON_X_JOB_MAPPING_PHASE_F.md`, G = `${DIR}/PERSON_X_JOB_MAPPING_PHASE_G.md`;
-const read = p => execFileSync("cat", [p], { encoding: "utf8" }).split("\n");
+const read = p => readLines(p); // was execFileSync("cat", …) — no subprocess, so no inherited 1 MiB cap (A-G468)
 const SRC = { F: read(F), G: read(G) };
+/* A-G468 LIMB 2, found when this gate was revived: the needle below went AMBIGUOUS (x2) because §80
+   cites PHASE_G:1999 and — correctly, per A-G427 — QUOTES THE CLAUSE alongside the offset. A-G427's own
+   remedy wrote the sentence a second time into the corpus this locator searches, and a locator that
+   requires h.length === 1 then reports UNVERIFIED for a clause that is present and cited properly.
+   *** THE SIGN IS WRONG AGAIN: UNV reads as "missing or moved" when the cause was the citation discipline
+   being FOLLOWED. *** So this classifies instead of counting, per A-G429's first remedy, on exactly the
+   assertion/citation line A-G466 drew for sentinels: a table row carrying an offset is a CITATION of the
+   clause, not an instance of it. And CITED-ONLY is now a reachable state and a worse one than ABSENT —
+   the clause surviving only inside a quotation of itself is A-G450's family. */
+const classifyHit = (text) =>
+  (/^\s*\|/.test(text) && /`PHASE_[FG]:\d+`|`:\d+`/.test(text)) ? "CITATION" : "ASSERTION";
 const locate = (file, needle) => {
-  const h = []; SRC[file].forEach((l, i) => l.includes(needle) && h.push(i + 1));
-  return { hits: h, ok: h.length === 1, line: h.length === 1 ? h[0] : null };
+  const h = [];
+  SRC[file].forEach((l, i) => l.includes(needle) && h.push({ line: i + 1, kind: classifyHit(l) }));
+  const asserts = h.filter(x => x.kind === "ASSERTION"), cites = h.filter(x => x.kind === "CITATION");
+  return {
+    hits: h, asserts, cites,
+    ok: asserts.length === 1,
+    citedOnly: asserts.length === 0 && cites.length > 0,
+    line: asserts.length === 1 ? asserts[0].line : null,
+  };
 };
 const f = (x, n = 5) => Number.isFinite(x) ? x.toFixed(n) : String(x);
 
@@ -76,8 +95,10 @@ for (const [file, needle, kind, gloss] of AMEND) {
   const r = locate(file, needle);
   if (!r.ok) unver += 1; else byFile[file] += 1;
   byKind[kind] = (byKind[kind] || 0) + 1;
-  const where = r.ok ? `PHASE_${file}:${String(r.line).padStart(4)}` : `PHASE_${file}:${r.hits.length === 0 ? "ABSENT" : "x" + r.hits.length}`;
-  console.log(`  ${r.ok ? "ok  " : "UNV "} ${where}  ${kind.padEnd(14)} ${gloss}`);
+  const where = r.ok ? `PHASE_${file}:${String(r.line).padStart(4)}`
+    : `PHASE_${file}:${r.hits.length === 0 ? "ABSENT" : r.citedOnly ? "CITED-ONLY" : "x" + r.asserts.length}`;
+  const tail = r.cites.length ? `  (+${r.cites.length} cited at ${r.cites.map(c => c.line).join(",")})` : "";
+  console.log(`  ${r.ok ? "ok  " : r.citedOnly ? "CITE" : "UNV "} ${where}  ${kind.padEnd(14)} ${gloss}${tail}`);
 }
 console.log(`\n  located ${AMEND.length - unver} of ${AMEND.length}   UNVERIFIED ${unver}`);
 console.log(`  by file:  PHASE_F ${byFile.F}   PHASE_G ${byFile.G}`);
@@ -167,7 +188,7 @@ console.log("[3] A-G128 LIMB 2 — does the product evaluate PF-8's predicate an
 console.log("=".repeat(110));
 const TREE = "/home/codi/Entwicklung/condyn-admin-mapping-d", SHA = "4b83414e";
 const FILE = "app/components/career/demo/PersonJobMappingField.tsx";
-const raw = execFileSync("git", ["-C", TREE, "show", `${SHA}:${FILE}`], { encoding: "utf8" });
+const raw = gitBuf(TREE, "show", `${SHA}:${FILE}`);
 /* comments out, so a docstring quoting PF-8's own readings cannot answer for the code */
 const code = raw.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:])\/\/[^\n]*/g, "$1 ");
 const stripped = raw.split("\n").length;
@@ -239,9 +260,9 @@ console.log("[5] THE CURRENCY CLAUSE — \"a shelf alpha change invalidates the 
 console.log("=".repeat(110));
 const shelfAt = sha => {
   try {
-    const t = execFileSync("git", ["-C", TREE, "show", `${sha}:${FILE}`], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    const t = gitBuf(TREE, "show", `${sha}:${FILE}`);
     const m = t.match(/RING_LUMINANCE = Object\.freeze\(\{ shelf: ([0-9.]+)/);
-    const d = execFileSync("git", ["-C", TREE, "log", "-1", "--format=%ad|%s", "--date=short", sha], { encoding: "utf8" }).trim();
+    const d = gitBuf(TREE, "log", "-1", "--format=%ad|%s", "--date=short", sha).trim();
     return { shelf: m ? Number(m[1]) : null, date: d.split("|")[0], subj: d.split("|").slice(1).join("|").slice(0, 52) };
   } catch { return null; }
 };
