@@ -46,7 +46,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 |---|---|---|
 | **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB. *** Figur aus GRÜNs Lane, deren 69 Ausgaben AUSNAHMSLOS `verdict: NONE` erklären (A-G458). *** |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
-| **GELB-Instrumente** | *** 25 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). | diese Session, Mutanten heute gefahren |
+| **GELB-Instrumente** | *** 26 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). **UND DIE FORM DANACH LAS „25 Instrumente, 22 Exit 0“, OHNE DIE DREI ZU BENENNEN — zwei von ihnen waren seit §125 an `ENOBUFS` TOT und konnten überhaupt nicht hinsehen (§128, A-G468, Defekte 402/403).** Heute: 26 (neu `gelb-read.mjs`), 25 laufen, 1 verweigert dauerhaft als Bauart (Subject-Gate). | diese Session, Mutanten heute gefahren |
 | **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
 | **Typprüfung** | `tsc --noEmit` sauber | GRÜN |
 | **PG-1 (semantischer Lichtanteil)** | **0.6431 / 0.7397 gegen ≥ 0.55** | `3ec8457d` |
@@ -107,7 +107,7 @@ PF-13-Mutanten getötet**, A-G453s Prüfung rot-zuerst bewiesen.
   INCONCLUSIVE, **die Ringe-Neuaufnahme**, **die Pin-Guard-Frage**.
 - **Die Kettenannahme** — sRGB-Codierung der erfassten Bytes, erstmals gemessen.
 
-**Defektzahl: 400.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
+**Defektzahl: 408.** Sie ist eine **Zählung gefundener Defekte, keine Restschuld** — die überwiegende Mehrheit
 ist behoben oder entschieden; jeder trägt seinen Ort im Register.
 
 ---

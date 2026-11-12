@@ -15711,3 +15711,193 @@ the one A-G427 prescribes — *name what the document carries, and if it does no
 > second amendment this phase to be violated by the paragraph announcing it** (A-G427 was the first), **and
 > A-G429's lesson about why holds without modification: writing the rule is the risk condition, because the
 > writing is where the attention goes.**
+
+---
+
+## §128 A-G468 / A-G469 · THE RECORD IS AN INPUT TO ITS OWN INSTRUMENTS, AND A NAMED BUILD IS NOT PROVENANCE UNLESS IT IS REACHABLE *(defects 401–408)*
+
+**Owner mandate, GELB :: SFE PHASE-G VALIDATION PROVENANCE.** PINK's validation branch is expressly
+authorised for publication on `origin`, unchanged and with its commit history; no test artifact may be
+overwritten, no seal altered, no finding retroactively reinterpreted; the independent validation must then be
+**reconstructable and readable from a second, fresh checkout**; the three lanes reconcile their **actual**
+commit states and closing findings; phase G closes **only with the status the independent results actually
+carry**; PF-13 stays shown as **guarded** while its closure conditions are unmet. No merge to `main`, no
+production deployment, Gemini stays disabled.
+
+This section is what the fourth clause found. It is not a bookkeeping result.
+
+### 1 · THE FIRST MEASUREMENT OF THE MANDATE WAS WRONG *(defect 401)*
+
+I measured each lane's unpushed count with `git log @{u}.. --oneline | wc -l` and printed **`unpushed: 0`**
+for two lanes. **Neither branch has an upstream configured.** The command therefore *fails*, prints nothing,
+and `wc -l` returns **0**. A zero denominator reading green — **PINK's A-G452** — in the first three tool
+calls of a mandate whose entire subject is whether published state matches actual state.
+
+> *** AND THE SECOND HALF IS A-G464. *** The same broken instrument printed `0` for GELB, and GELB genuinely
+> *is* at `origin` (`7576262e` both sides). **So my previous session's closing verification block was right,
+> and right for a reason it had not measured.** Re-measured against explicit `git ls-remote` refs with no
+> `@{u}` anywhere: GELB 0, GRÜN **90**, and a third stand — `validation/hr-decision-loop-pink` — **105**.
+
+### 2 · TWO INSTRUMENTS HAD BEEN DEAD SINCE §125, AND §125 IS WHAT KILLED THEM *(defects 402, 403)*
+
+`PERSON_X_JOB_MAPPING_PHASE_G.md` crossed **1 MiB** at commit **`4ef3f1c2`**, 2026-11-11 23:49. That commit is
+**§125** — the section that declared the audit chain converged, and whose own ruled sentence is *"a correct
+conclusion is not evidence of a correct instrument."* 1 MiB is node's **default** `child_process` maxBuffer,
+exactly. `gelb-gate-pf8-tiers.mjs:37` and `gelb-provenance-selfaudit.mjs:19` read the record with
+`execFileSync("cat", …)`, and both have thrown **`spawnSync cat ENOBUFS`** from that commit onward.
+
+**Neither failed because its subject broke. Both failed because the record they audit got bigger.** Three
+commits landed after the breakage; none noticed. And the closing verification block reported
+**"25 instruments, 22 exit 0"** — a figure that is arithmetically true and names none of the three, while two
+of its members could not look at all *(defect 403, and it is the reporting defect, separate from the
+engineering one)*.
+
+> *** RULED, A-G468, LIMB 1: AN INSTRUMENT THAT READS THE RECORD TAKES THE RECORD'S **SIZE** AS AN INPUT IT
+> NEVER DECLARED. *** An audit whose subject is its own documentation has a feedback path from output back to
+> input. A limit on that path fails at whatever section happens to cross it, bearing no relation to the
+> subject under audit — and **the crossing section is selected by LENGTH, so it is likelier to be a late
+> one.** The closing sections of a long audit are exactly where its instruments are most likely to stop
+> working, and exactly where attention has already moved to the summary.
+
+**AND THE SIGN OF THE FAILURE IS WRONG, which is why four commits missed it.** A gate exiting 1 reads as *the
+gate caught something*. Here exit 1 means **the gate could not look**. That is **A-G374 at a radius it had
+never been stated for**: the exit code described neither the tool nor the artifact — **it described the
+TRANSPORT.** `provenance-selfaudit` makes it literal: its `spawnSync` result carried **`status: 0`**. The
+`cat` **succeeded**. The *pipe* overflowed. Three layers disagreed, and the only one a caller normally reads
+is the one that said the read was fine.
+
+**THE REMEDY IS NOT A BIGGER BUFFER.** Raising a limit moves a cliff and leaves the next crossing to be
+discovered the same way. New `gelb-read.mjs`, in the **REFUSES** form the instrument audit says this lane
+reaches *"in 1 file of 13"* — GRÜN's rule that a convention is not a boundary:
+
+| | |
+|---|---|
+| `readDoc()` | **fs, no subprocess** — for a document the class is **removed**, not widened. There was never a reason to spawn `cat`. |
+| `_git()` | buffer **injected and declared**, refusing at **90 %** rather than failing at 100 %, so the limit announces its approach and can never silently truncate for a caller reading `.stdout` without `.error` — the failure `status: 0` proves reachable |
+| 0-byte read | **refused**, not returned as an empty corpus (A-G452's zero denominator) |
+| self-test | **9 of 9**: every refusal proven to fire, plus the no-signal direction |
+
+**TRANSPORT PROVEN IDENTITY-PRESERVING BEFORE EITHER INSTRUMENT WAS REPOINTED**, because the mandate forbids
+reinterpreting a finding: `readDoc()` **=== `execFileSync("cat")` byte-for-byte** on live PHASE_F and on
+PHASE_G at `4ef3f1c2^`, the last state `cat` could read. **2 of 2.** No finding was changed. Two were
+**revealed**: `pf8-tiers` now locates **19 of 19**, and `provenance-selfaudit` moved with the record from 92
+sections / 98.6 % to **128 sections / 90.4 %** — a share its own output already calls *the defect, not the
+finding*, because the test cannot fail. **The finding is 179 quoted figures in §95–§127 naming neither commit
+nor build.**
+
+**TWO DEFECTS IN MY OWN SELF-TEST, BOTH FOUND BY IT** *(defects 404, 405)*: the proximity mutant drove
+`git log -500` against a 4096-byte buffer, which **overshoots into ENOBUFS**, so the limb it claimed to test
+was never reached — it tested the instrument's *other* limb. And it exercised a **hand-copied twin** of the
+guard rather than the guard. *** A MUTANT THAT TESTS A COPY OF THE GUARD HAS TESTED NOTHING *** — A-G452 on
+A-G408's shape. Hence the injected buffer: the test now drives `_git` itself, and the band is **measured**
+(8200 B against a declared 8632 B = 95 %) rather than guessed.
+
+### 3 · A-G468 LIMB 2 — A-G427'S REMEDY BROKE THE INSTRUMENT THAT LOCATES BY QUOTATION *(defect 406)*
+
+The moment `pf8-tiers` was revived it reported **`UNV PHASE_G:x2`** for its CURRENCY needle. Cause: **§80
+cites `PHASE_G:1999` and — correctly, per A-G427 — quotes the clause beside the offset.** A-G427's own remedy
+wrote the sentence a **second time into the corpus this locator searches**, and `ok: h.length === 1` then
+reports UNVERIFIED for a clause that is present and cited properly.
+
+> *** THE SIGN IS WRONG AGAIN: `UNV` READS AS "MISSING OR MOVED" WHEN THE CAUSE WAS THE CITATION DISCIPLINE
+> BEING **FOLLOWED**. *** So the record's **CONTENT** is an undeclared input too, not only its size. **RULED,
+> A-G468 LIMB 2: A REMEDY THAT WRITES INTO THE CORPUS ITS OWN INSTRUMENTS READ IS A CHANGE OF INPUT, AND
+> MUST BE CHECKED AS ONE.**
+
+`locate()` now **classifies instead of counting** — A-G429's first remedy — on exactly the assertion/citation
+line **A-G466** drew for sentinels: *a table row carrying an offset is a CITATION of a clause, not an
+instance of it.* **`CITED-ONLY` is now reachable and is worse than `ABSENT`** — a clause surviving only
+inside a quotation of itself is A-G450's family. Citations are **printed, never dropped**:
+`ok PHASE_G:2059 (+1 cited at 9450)`. Mutant programme, **mutating the corpus so the real instrument runs
+each time**: CONTROL `ok`, **CITED-ONLY, x2 and ABSENT each killed with a distinct state**, no-signal control
+steady at 19 of 19.
+
+### 4 · A-G469 — A NAMED BUILD IS NOT PROVENANCE UNLESS IT IS REACHABLE *(defect 408)*
+
+The mandate's fourth clause asks whether the validation reconstructs **from a fresh checkout**. So I took
+every 8-character SHA pinned in any GELB instrument — 13 of them — and asked, for each, whether **any**
+`refs/remotes/origin/*` ref contains it. **Six do not.**
+
+| SHA | what it is | where it actually lives |
+|---|---|---|
+| **`4b83414e`** | **the product build** — pinned by **9 of 26** GELB instruments, cited **19×** in PHASE_G and **2×** in the closing report | inside GRÜN's 90 unpushed |
+| `185427d5` | A-G62 · `RING_LUMINANCE.shelf` 0.02 | inside GRÜN's 90 |
+| `839623e8` | §82 · the hooks verified | inside GRÜN's 90 |
+| `c7ab8731` | §74 · the join probe | inside GRÜN's 90 |
+| `7910845b` | §86 · verified on a rendered page | inside GRÜN's 90 |
+| `d133f400` | PG-17's extent limb | inside `validation/hr-decision-loop-pink`'s **105** unpushed |
+
+> *** A FRESH CLONE OF `origin` TODAY CANNOT RE-DERIVE A SINGLE PRODUCT MEASUREMENT IN THIS RECORD. *** Not a
+> weak citation — **no referent at all.** A-G427 EXTENDED said *a citation into a file that changes names its
+> BUILD as well as its subject*, and that rule turns out to have had an **unstated precondition**.
+
+> *** RULED, A-G469: A NAMED BUILD IS PROVENANCE ONLY IF IT IS **REACHABLE**. A SHA THAT EXISTS IN ONE
+> WORKTREE IS NOT A CITATION BUT A **LOCAL ALIAS** — it resolves for its author, for every lane sharing that
+> filesystem, and for nobody else, ever. *** **Reachability is a seventh frame axis**, beside build (A-G430),
+> domain (A-G435), population (A-G417), quantifier (A-G437), phase (A-G456) and standing (A-G459).
+
+**AND THE SAME SWEEP RUN AGAINST THE OTHER DIRECTION, independently of GRÜN's own:** this record cites **20
+distinct `gruen-*` instrument filenames**. At the published tip `3ec8457d`: **0 of 20 resolve.** At GRÜN's
+local close `1fb9d0fe`: **20 of 20.** `git ls-tree -r 3ec8457d` carries **0** `gruen-*` files and **0**
+`SEALED-*` files; `1fb9d0fe` carries **51** and **8**. GRÜN reported this first and measured it as *its entire
+instrument and evidence surface being inside the unpushed range*; I re-derived the GELB-citing half rather
+than relay it, and the two figures agree.
+
+> *** AND THIS IS THE DEFECT NO LANE'S OWN RULES COULD HAVE FOUND, which is GRÜN's formulation and I am
+> adopting it: A LANE CANNOT FIND ITS OWN DEFECTS WITH ITS OWN RULES, AND **THREE LANES SHARING A FILESYSTEM
+> CANNOT FIND THE DEFECTS OF THE FILESYSTEM.** *** Every lane's citations resolved for every lane — because
+> every lane resolved them **through the filesystem** rather than through the published history. The error is
+> invisible from inside any lane *and* from inside the set of lanes. **A-G467 held that a third rule-set was
+> needed; A-G469 shows a third *checkout* is needed too, and that no amount of cross-reading substitutes for
+> it.**
+
+### 5 · GRÜN'S CORRECTION TO MY REPLACEMENT INSTRUMENT, ACCEPTED *(defect 407)*
+
+I replaced the `@{u}` count with `git rev-list --count 3ec8457d..c7143fcd` and reported **89 ahead**. GRÜN:
+`A..B` counts *commits reachable from B and not from A* and **does not require A to be an ancestor of B** — so
+**the same 89 would print for a divergence.** Verified here: `rev-list --count 1fb9d0fe..3ec8457d` = **0** and
+`merge-base --is-ancestor 3ec8457d 1fb9d0fe` = **yes**, a clean fast-forward.
+
+> *** SO THE REPLACEMENT FIXED THE ZERO DENOMINATOR AND KEPT A NUMBER THAT DOES NOT CARRY THE CLAIM I NEEDED
+> IT TO CARRY. *** A-G464 for the third time this phase, and the second time inside an instrument built to
+> repair an A-G464. **The ancestry claim needs `merge-base --is-ancestor`; a two-dot count never implies it.**
+
+### 6 · THE THREE-LANE RECONCILIATION — ACTUAL STATES, AS THE MANDATE REQUIRES
+
+| | GELB | GRÜN | PINK |
+|---|---|---|---|
+| branch | `architecture/mapping-phase-f` | `frontend/mapping-phase-g` | **reported by PINK, not assumed here** |
+| local close | **`a6c3ce13`** | **`1fb9d0fe`** (was `c7143fcd` in this record) | unreported at time of writing |
+| on `origin` | **`7576262e`, fast-forward, 1 behind local** | **`3ec8457d`, 90 behind, clean FF** | **absent entirely** |
+| highest section | **§128** | **§114** (was §113 here) | §55 |
+| highest amendment owned | **A-G469** | **A-G465** | A-G458 |
+| defect count | **408** | **none kept — see below** | — |
+
+**GRÜN DECLINES TO GIVE A DEFECT COUNT, AND THE REASON IS A-G462**: its lane keeps no counter, the numbering
+is this ledger's, and *a figure invented now for a tally of its own faults is exactly what A-G462 names — a
+conclusion against yourself feels like rigour, so the number assigning it gets no audit.* Recorded as asked:
+**GRÜN maintains no defect count; its defects are numbered in GELB's ledger.**
+
+**ONE ATTRIBUTION DISCREPANCY, RECORDED RATHER THAN RESOLVED.** GRÜN lists as its own: A-G429, A-G459,
+A-G460, A-G462, A-G465. **This record also attributes A-G461 and A-G467 to GRÜN** (§15132: *"RULED, A-G461,
+GRÜN's"*; §126: *"GRÜN'S FINDING, SHARPENED"*). Neither appears in GRÜN's list. I am not picking a side in a
+lane's own attribution, and A-G467's case is genuinely shared. **The discrepancy is the entry.**
+
+**AND TWO OF GRÜN'S OWN FINDINGS THAT BEAR ON THIS CLOSE**, relayed with their qualifications attached per
+A-G458: (i) PF-13's population is **build-relative** — 15 test files at `3ec8457d`, 16 at `1fb9d0fe` — so
+`b63b6368`'s *"all 15 files"* was not only a verdict that lane may not issue, **15 was the count of a
+different build** (A-G430 and A-G54 on one figure); **PF-13 stays GUARDED.** (ii) `gruen-verify.sh --parse`
+returned exit 3 *"no summary — fail closed"* against a `--reporter=json` file, correctly and for a reason
+that was not the run: **a fail-closed guard aimed at the wrong artifact reports a true "cannot tell", and a
+true "cannot tell" reads like a defect in the run.**
+
+### 7 · WHAT CLAUSE FOUR ACTUALLY CARRIES, STATED AS THE MANDATE REQUIRES
+
+> *** PUBLISHING PINK'S BRANCH IS NECESSARY FOR CLAUSE FOUR AND IT IS NOT SUFFICIENT. *** PINK's own
+> *measurements* rest on a published build (`3ec8457d`) and its own instruments, so they travel the moment its
+> branch does. **What does not travel is cross-lane re-derivation:** this record's PG/PF pin arguments rest on
+> 9 instruments pinned to `4b83414e` and cite 20 `gruen-*` files, and **none of those is reachable from any
+> `origin` ref.** The remaining gap is **90 commits on `frontend/mapping-phase-g`** and **105 on
+> `validation/hr-decision-loop-pink`**, and publishing them is an **owner decision**, reported with its
+> figures and not routed sideways through a peer.
+
