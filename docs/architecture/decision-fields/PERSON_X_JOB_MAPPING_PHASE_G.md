@@ -16891,3 +16891,47 @@ because *"the failure mode happens to be visible"* is not a check.
 tests / 0 failed; currency audit still **exit 1** on its three `SCOPED-UNRESOLVABLE` rows. Ceiling A-G465;
 **no defect count, per A-G462.**
 
+
+---
+
+## §138 THE SHELL ATE THE SUBJECT OF A SENTENCE IN `d17f87b6`'S COMMIT MESSAGE *(defect 440)*
+
+§137's commit message was meant to read:
+
+> *"because `` `label: 42` `` matches an object-member pattern — A-G450 for the fifth time in my own
+> measurements."*
+
+**What `d17f87b6` actually carries, permanently:**
+
+```
+because  matches an object-member pattern — A-G450 for the fifth time in my own measurements.
+```
+
+**Cause, and it is entirely mechanical.** Every long commit message this phase has been written through
+`git commit -F -` **with a quoted heredoc**, precisely so the shell interprets nothing. This one was written
+with `git commit -q -m "…"` — and inside a **double-quoted** argument the backticks around `` `label: 42` ``
+became **command substitution.** `bash` printed `label:: command not found`, substituted the empty string, and
+**the commit proceeded with the sentence's subject removed.**
+
+> *** THE SECOND COMMIT-MESSAGE DEFECT OF THIS PHASE, AND THE SAME RADIUS AS DEFECT 400: NOT A WRONG
+> MEASUREMENT, BUT A PERMANENT RECORD THAT DOES NOT SAY WHAT THE WORK DID. *** 400 asserted an edit that had
+> failed; **440 removed the subject of a sentence about a pattern, so the message now states that something
+> unnamed matches an object-member pattern.** The claim is not false — **it is unfalsifiable, which is worse,
+> because nothing in it signals the loss.**
+
+**AND THE SHELL TOLD ME.** `label:: command not found` was printed in the same output as `pushed d17f87b6`.
+*** A DIAGNOSTIC PRINTED BESIDE A SUCCESS LINE IS READ AS NOISE, AND THE SUCCESS LINE IS WHAT THE EYE TAKES.
+*** A-G374's family one more time: the push genuinely succeeded, and the exit code described the push and not
+the message. **It was caught only because I read the output rather than the exit code — the same reason
+defect 421's `AssertionError` was caught, and the third time this phase that habit has been the only thing
+between a mangled artifact and a clean report.**
+
+**Not amended.** `d17f87b6` is pushed, corrections go forward, and **no force-push** — the standing rule for
+this branch and the reason §127 exists in the same form. **The correct sentence is above; the commit is
+wrong and stays wrong, with this section as the thing a reader lands on.**
+
+**RULED, mechanically and without a new amendment, because A-G385's form already covers it:** *a long commit
+message is written through `-F -` with a **quoted** heredoc, never through `-m` with a double-quoted string.*
+**The rule is not "be careful with backticks" — it is that the only place a backtick is safe is inside a
+heredoc the shell does not expand**, and every message that quotes code contains one.
+
