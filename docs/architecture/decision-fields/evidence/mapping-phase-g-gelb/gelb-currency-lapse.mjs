@@ -36,6 +36,14 @@ const CLAIMS = [
   "resting on current readings", "on current readings", "re-measured on the shipping build",
   "on the build that ships", "byte-identical to HEAD", "re-ran all three cells",
   "RE-MEASURED ON THE SHIPPING BUILD", "SUSPENSION LIFTED", "returns to CLOSED",
+  /* ADDED IN §134 BY A RECALL PROBE, AND THIS IS THE FIRST CORRECTION TO THIS INSTRUMENT THAT CAN MOVE THE
+     COUNT UPWARD. GRÜN: both lanes' "hidden by the exclusion set" numbers are FLOORS, and the number neither
+     lane can print is how many claims the PATTERN SET never matched at all. So I probed for present-tense
+     status language outside the set and read every match (A-G450) rather than counting them: three, and all
+     three are genuine claims — `"counterTick ⟹ splay" still passes` (:1280), `A-G33 still stands` (:3141),
+     `it currently holds exactly` (:8161). The first is about the very predicate §104 replaced. */
+  "still passes", "still stands", "still holds", "still clears", "still green",
+  "currently holds", "remains closed", "unchanged since", "has not moved since", "holds today",
   "closed again", "CLOSED AGAIN", "verified on a rendered page", "on the current build",
 ];
 
@@ -195,7 +203,24 @@ const headCache = {};
 const inHead = (shortName, text) => {
   const path = shortName.includes("PHASE_F") ? rel(PHASE_F) : rel(PHASE_G);
   if (!(path in headCache)) { try { headCache[path] = git(REPO_ROOT, "show", `HEAD:${path}`); } catch { headCache[path] = ""; } }
-  return headCache[path].includes(text.slice(0, 60));
+  /* THE FULL LINE, NOT A PREFIX. The first form compared text.slice(0, 60), so a line EDITED in place whose
+     opening 60 characters were unchanged read as "already in HEAD" and landed in UNDATABLE instead of
+     UNCOMMITTED — which is exactly GRÜN's §117b shape: the right hazard named, the wrong quantity checked.
+     Found by applying A-G427 to one quoted line and watching UNDATABLE go 0 -> 1. */
+  return headCache[path].includes(text);
+};
+/* REVIEWED EXCLUSIONS — NAMED, NOT FILTERED. The §134 recall probe widened the pattern set and LAPSED went
+   2 -> 6, the first upward move this instrument has made. I then read all four new rows and ONE IS A FALSE
+   POSITIVE: PHASE_G:1280's "still passes" sits inside a HYPOTHETICAL — "…while a test asserting
+   'counterTick ⟹ splay' still passes" — which is a vacuity argument, not an assertion that anything
+   currently passes. *** I HAD JUST DECLARED ALL THREE PROBE HITS GENUINE AFTER READING THEM, SO READING THE
+   MATCHED LINE WAS NOT ENOUGH: THE SENTENCE HAD TO BE READ FOR WHAT IT DOES, NOT ONLY FOR WHAT IT SAYS. ***
+   A-G450 one level in.
+   It is excluded HERE, BY NAME, AND STILL PRINTED, because a number removed without a name is a number
+   nobody can audit (A-G429 remedy 1) — and NOT given a bucket, because a convention earned by one instance
+   is a convention invented for none (GRÜN's §119). Both figures are reported. */
+const REVIEWED = {
+  "PHASE_G.md:1280": "hypothetical — 'a test asserting X still passes' inside a vacuity argument, not a status claim",
 };
 const B = { LAPSED: [], CURRENT: [], SCOPED: [], "SCOPED-UNRESOLVABLE": [], UNDATABLE: [], UNCOMMITTED: [] };
 for (const r of rows) {
@@ -237,6 +262,12 @@ for (const q of quoted) console.log(`      quoted   ${q.file.split("/").pop()}:$
 console.log(``);
 for (const k of ["LAPSED", "CURRENT", "SCOPED", "SCOPED-UNRESOLVABLE", "UNDATABLE", "UNCOMMITTED"])
   console.log(`    ${k.padEnd(21)} ${String(B[k].length).padStart(2)}`);
+const reviewedOut = B.LAPSED.filter((r) => REVIEWED[`${r.file}:${r.ln}`]);
+if (reviewedOut.length) {
+  console.log(`\n  REVIEWED EXCLUSIONS — named, still printed above, not filtered and not bucketed:`);
+  for (const r of reviewedOut) console.log(`      ${r.file}:${r.ln}  ${REVIEWED[`${r.file}:${r.ln}`]}`);
+  console.log(`\n  *** LAPSED READS ${lapsed}; THE DEFENSIBLE FIGURE IS ${lapsed - reviewedOut.length}. BOTH ARE REPORTED. ***`);
+}
 console.log(`\n  *** ${lapsed} OF ${rows.length} CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***`);
 console.log(`  THE FIRST FORM OF THIS INSTRUMENT SAID 8, by dating every claim against one referent and folding`);
 console.log(`  SCOPED and UNDATABLE into LAPSED. GRÜN warned that an inflated figure was about to reach the owner`);

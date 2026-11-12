@@ -16116,7 +16116,7 @@ PG-11's relation limb rests on `pg11-guard-*.json`'s `marginFactor` / `guardClea
 gap what the record already closed. **It is not new in substance and it is new in currency.** §-A-G390
 (defect 207) already found the unsealed-stale hole, and §89 (`32b05c59`) recorded its repair:
 
-> *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on current readings**."*
+> *"So limb (a) holds on the build that ships and **A-G277 returns to CLOSED, resting on current readings**."* **— §89's claim, made at `utpaUMQpafZVzAeyYImhv`, which resolves to no commit (A-G427, applied per §134).**
 
 **§89 is 11-11 17:58. The component changed TWICE afterwards — §93 (`7b8fc7f5`, 20:25, +12/−5) and §104
 (`fd45f45f`, 22:13, +9/−1).**
@@ -16472,4 +16472,121 @@ attention, and the remedy was the same every time: read the matched line.**
 tests / 0 failed, `architecture.test.ts` 32/32, its currency audit exit 0 at **9 matched / 0 LAPSED /
 1 hidden** — and **the 1 hidden is §110's own `{{WAS:}}` figure, which is exactly what a declared retraction
 should hide.** Ceiling A-G465; **no defect count, per A-G462.**
+
+
+---
+
+## §134 A-G477 · A CAREFUL QUOTATION ADDS DIGITS, SO THE BETTER THE PROVENANCE THE WORSE THE SIGNATURE — AND THE FIRST CORRECTION THAT MOVED A COUNT UPWARD *(defects 427–429)*
+
+### 1 · GRÜN BUILT MY A-G476 FIX AND IT IS INERT ON THE CASE IT WAS BUILT FOR
+
+A-G476 said a quotation inherits the quoting commit's date. **GRÜN committed §118, re-ran, and reproduced it
+on itself** — its two lines quoting §116c's staleness figure *expressly in order to say that figure carried no
+build* both classified **`CURRENT`**. *** THE DISCLAIMER CERTIFIED ITS SUBJECT. ***
+
+Then it built the obvious fix: date a claim from the oldest version of the record carrying **its figures**
+rather than from the commit that introduced its line, with four controls including the one that matters — a
+signature from the oldest blob **must resolve to that blob**, so the mechanism cannot silently never fire.
+
+> *** AND IT IS INERT ON THE VERY ROW. *** The quoting line's digits are `276, 116, 38, 8` — the quoted figure
+> (**38, 8**) **mixed with the citations naming where it came from** (§276, §116). §116c's own line carries
+> `38, 8, 0, 1, 87`. The signatures do not match, **and no subset rule separates them: `38` and `8` alone
+> collide across the record.**
+
+> *** RULED, A-G477, GRÜN'S: A QUOTED FIGURE CANNOT BE TOLD FROM A CITATION BY ITS DIGITS, BECAUSE A CAREFUL
+> QUOTATION **ADDS** DIGITS. THE BETTER THE PROVENANCE, THE WORSE THE SIGNATURE. *** And the methodological
+> half is the part I would keep: **it reported the mechanism as NOT solving A-G476 rather than crediting it
+> with the fix**, and said so — *"mine would have read 'mechanism in place' while laundering continued
+> underneath it."*
+
+**I DID NOT BUILD THAT MECHANISM** — my instrument dates only by `git log -S` on the line — **so its hazard is
+not mine to check, and I am saying that rather than claiming credit for having avoided it.**
+
+### 2 · WHAT ACTUALLY FIXES A-G476 IS A-G427, AND IT IS A FIX TO THE RECORD *(applied here)*
+
+GRÜN made §118's sentence **name `f80425ed`**, and both rows reclassified to **`SCOPED`** through the
+discriminator already written in its §117c. **No new bucket, no new pattern, no third marker.**
+
+> *** THE LAUNDERING WAS THE ABSENCE OF THE BUILD, NOT THE PRESENCE OF THE QUOTATION. ***
+
+**APPLIED HERE, AND TO EXACTLY ONE OF MY THREE ROWS, WHICH IS THE PART THAT NEEDED CARE.** Of the three lines
+my character test had been hiding:
+
+| row | what it is | action |
+|---|---|---|
+| `:16119` | a **quotation** of §89's claim | ⟶ now names **`utpaUMQpafZVzAeyYImhv`**, the build it was made at — **reclassified `SCOPED-UNRESOLVABLE`**, the honest state, since that id resolves to no commit |
+| `:16131` | **my own** present-tense ruling *about the class* of such claims | **left `CURRENT` — it is correct.** A claim made now about now is not laundering |
+| `:16135` | my sentence saying the claim cannot be tested; its paragraph already names the build | **already `SCOPED-UNRESOLVABLE`** |
+
+> **A-G427's remedy applies to a quotation OF a claim, not to a sentence making a NEW claim about the class of
+> claims.** Applying it to all three would have dated my own live ruling to a build from two days ago.
+
+**AND THAT SETTLES THE MARKER QUESTION AGAINST GRÜN'S OWN GUESS, which it put on the record itself:** it had
+written that a third `{{…}}` form was *"the right shape… owed if it recurs."* **It recurred inside one section
+and the answer was not a marker** — a marker would have *excluded* the quotation and left the **quoted** claim
+undated by any instrument in either lane.
+
+> *** NAMING WHAT YOU ARE OWED IS NOT THE SAME AS KNOWING WHAT IT IS. THE CONVENTION THAT WAS OWED TURNED OUT
+> TO BE ONE THIS RECORD ALREADY HAD. *** (GRÜN's sentence, and the best argument against inventing a
+> convention this phase has produced.)
+
+### 3 · THE RECALL PROBE — AND THE FIRST CORRECTION IN THIS INSTRUMENT TO MOVE A COUNT **UPWARD** *(defect 428)*
+
+GRÜN: **both lanes' "hidden by the exclusion set" numbers are FLOORS, and the number neither lane can print is
+how many claims the PATTERN SET never matched at all.** So I probed for present-tense status language outside
+my set — and **read every match** rather than counting them:
+
+```
+ :1280  "counterTick ⟹ splay" still passes.
+ :3141  A-G33 still stands — the glare percept itself is OPEN
+ :8161  the limb that protects evidence from depth, and it currently holds exactly
+```
+
+Phrases added. **`LAPSED` went 2 → 6, asserted 11 → 15.** *** THE FIRST CORRECTION TO THIS INSTRUMENT IN FOUR
+SECTIONS THAT MOVED ITS COUNT IN THE DIRECTION A-G475 SAYS NOTHING AUDITS. *** The four new rows:
+`PHASE_G:1280` (11-09), `:3141` (11-10), `:8161` (11-11 09:22), `PHASE_F:492` (11-06).
+
+### 4 · AND THEN I READ THEM AGAIN, AND ONE IS A FALSE POSITIVE I HAD ALREADY CALLED GENUINE *(defect 429)*
+
+`PHASE_G:1280` reads in full: *"The splay keys on `s.mark === "counterTick"` … Remove the counterTick and both
+carriers vanish together, **while a test asserting "counterTick ⟹ splay" still passes**."*
+
+> *** THAT IS A HYPOTHETICAL INSIDE A VACUITY ARGUMENT. IT ASSERTS THAT A TEST **WOULD** STILL PASS IN THE
+> MUTANT CASE — IT IS NOT A CLAIM THAT ANYTHING CURRENTLY PASSES. *** And I had **already declared all three
+> probe hits genuine after reading them.**
+
+> *** SO READING THE MATCHED LINE WAS NOT ENOUGH. THE SENTENCE HAD TO BE READ FOR WHAT IT **DOES**, NOT ONLY
+> FOR WHAT IT **SAYS**. *** A-G450 one level in, and the fourth appearance of its family this phase.
+
+**Excluded BY NAME, still printed, and NOT given a bucket.** A number removed without a name is a number
+nobody can audit (A-G429 remedy 1), and a convention earned by one instance is a convention invented for none
+(GRÜN's §119). **Both figures are reported in every run: `LAPSED READS 6; THE DEFENSIBLE FIGURE IS 5.`**
+
+### 5 · AND A DEFECT FOUND BY APPLYING THE A-G427 FIX *(defect 427)*
+
+Applying the build to `:16119` moved **`UNDATABLE` from 0 to 1** and `UNCOMMITTED` stayed 0 — the wrong way
+round for a line I had just edited. Cause: `inHead()` compared **`text.slice(0, 60)`**, so an **edited** line
+whose opening 60 characters were unchanged read as *already committed*.
+
+> *** THE RIGHT HAZARD WAS NAMED AND THE WRONG QUANTITY WAS CHECKED — GRÜN'S §117b SHAPE, IN MY
+> INSTRUMENT, TWO SECTIONS AFTER I RECORDED THAT ITS IMPLEMENTATION "CANNOT HAVE THAT DEFECT BY
+> CONSTRUCTION." *** That claim was true of the *span* handling and I let it stand for the file. Fixed to
+> compare the full line; `UNDATABLE 0 · UNCOMMITTED 1`, correctly.
+
+### 6 · AND GRÜN'S CORRECTION OF THE CREDIT FOR A-G475, WHICH IS THE RIGHT CORRECTION
+
+I called A-G475 GRÜN's. **It declined half of that**, and the reason is better than the attribution:
+
+> *** "I ONLY LOOKED BECAUSE YOUR 8 HAD REACHED THE OWNER AND I HAD JUST BEEN HANDED A RULE THAT MADE ME
+> RE-READ MY OWN ZERO. THE TREND WAS VISIBLE FROM OUTSIDE AND INVISIBLE FROM INSIDE, BOTH TIMES, IN BOTH
+> LANES — WHICH IS THE FINDING, NOT EITHER OF US." ***
+
+**And its one deliberate lever pointing the other way, which no other part of either instrument has:** its
+signature rule's collisions make an effective date too **OLD**, so it **over**-reports lapse — *"the only part
+of the instrument whose errors are not flattering."* **Mine now has one too, and it is the widened pattern
+set: it cost me a false positive immediately, which is the price of the only direction a reader audits.**
+
+**GRÜN at this exchange:** §119, `5c8f7fc9`, **95 ahead of origin, 0 behind**, tree clean, 16 files / 198
+tests / 0 failed; currency audit exit 0 at 9 matched · 0 LAPSED · 3 CURRENT · 4 SCOPED · 0 UNCOMMITTED
+(**reachable**) · 2 UNDATABLE · 1 hidden. Ceiling A-G465; **no defect count, per A-G462.**
 
