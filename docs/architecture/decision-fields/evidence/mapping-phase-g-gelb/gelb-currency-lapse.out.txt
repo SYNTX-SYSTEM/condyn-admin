@@ -1,0 +1,68 @@
+============================================================================================================
+GELB · §131 A-G473 — CURRENCY CLAIMS, DATED AGAINST THE PRODUCT'S OWN HISTORY
+============================================================================================================
+
+  product            app/components/career/demo/PersonJobMappingField.tsx
+  peer ref           frontend/mapping-phase-g -> f80425ed
+  last product move  fd45f45f  11-11 22:13 feat(career): mapping phase G · §104 — A-G43 imp
+
+  A claim written BEFORE fd45f45f no longer carries its own warrant. That is not the same as being
+  wrong — §129 measured 5 of 9 instruments' findings stable across +166/-29 on this file.
+
+============================================================================================================
+[1] EVERY CURRENCY CLAIM, WITH ITS DATE AND ITS STATE
+============================================================================================================
+
+  *** LAPSED  PHASE_G.md: 7371  0d511729 11-11 17:57  "RE-MEASURED ON THE SHIPPING BUILD"
+              > ### ✅ SUSPENSION LIFTED 2026-11-11 — RE-MEASURED ON THE SHIPPING BUILD *(see §89, A-G401)*
+  *** LAPSED  PHASE_G.md: 7372  0d511729 11-11 17:57  "byte-identical to HEAD"
+              > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HE
+  *** LAPSED  PHASE_G.md: 7375  0d511729 11-11 17:57  "resting on current readings"
+              > ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-192
+  *** LAPSED  PHASE_G.md:10425  f85ee9e1 11-11 17:21  "verified on a rendered page"
+              **verified on a rendered page: the solve takes THREE passes and used to run two.** It then puts 
+  *** LAPSED  PHASE_G.md:10966  32b05c59 11-11 17:58  "on the build that ships"
+              ### A-G401 · Limb (a) holds on the build that ships — and the direction confirms the mechanism
+  *** LAPSED  PHASE_G.md:10968  32b05c59 11-11 17:58  "byte-identical to HEAD"
+              All three cells re-read on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's:
+  *** LAPSED  PHASE_G.md:10976  32b05c59 11-11 17:58  "returns to CLOSED"
+              **`guardClears: false` in every cell, on both builds.** So **A-G277 returns to CLOSED**, resting
+  *** LAPSED  PHASE_G.md:11061  32b05c59 11-11 17:58  "on the current build"
+              GRÜN's PG-14 work, and **47 + 2 = 49 matches GRÜN's count on the current build exactly.** Two la
+
+============================================================================================================
+[2] WHAT THIS BOUNDS
+============================================================================================================
+
+  currency claims ASSERTED:  8
+  quotations of a claim, excluded and counted: 4  <- §129/§130 ruling against them
+    LAPSED — written before the product's last move:  8
+    CURRENT:                                          0
+    UNDATABLE by this method:                         0
+
+  *** 8 OF 8 CURRENCY CLAIMS IN THIS RECORD NO LONGER CARRY THEIR OWN WARRANT. ***
+  Every one is written in the PRESENT TENSE and none carries an expiry. That is A-G473, and the
+  record that rules it is the record it indicts.
+
+  AND THE LIMIT, STATED RATHER THAN IMPLIED: this says nothing about whether any lapsed claim is
+  FALSE. It says the claim's warrant is older than the thing it claims about. A re-measurement is
+  the only thing that can move a row out of LAPSED, and re-sealing is a deliberate act on a
+  deliberate build — so these rows are OWED, not silently repairable.
+
+  NO PIN VERDICT IS ANNOUNCED HERE. A-G36 point 2 reserves those to PINK.
+============================================================================================================
+
+============================================================================================================
+[3] MUTANTS — each classification proven reachable (A-G452)
+============================================================================================================
+
+  ✓ an asserted claim                hit="resting on current readings" -> ASSERTED
+  ✓ the same claim QUOTED            hit="resting on current readings" -> QUOTED
+  ✓ the same claim in a TABLE ROW    hit="verified on a rendered page" -> QUOTED
+  ✓ QUOTED, span opens earlier       hit="resting on current readings" -> QUOTED
+  ✓ ASSERTED in italics not quotes   hit="byte-identical to HEAD" -> ASSERTED
+  ✓ a line with no claim at all      hit=none -> NOT A CLAIM
+
+  mutants: 6 pass, 0 fail. The LAST is the no-signal direction and the one before it is the
+  negative control: without a line that must classify as ASSERTED, a scan reporting 0 CURRENT would be
+  unaudited in exactly the direction A-G452 names.
