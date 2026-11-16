@@ -270,8 +270,12 @@ describe("MAP-E-ARCH · B-4 … B-8 — the change set", () => {
     expect(git("log", "--merges", "--format=%H", `${phaseEBase()}..${phaseFBase()}`)).toEqual([]);
   });
 
-  it("B-7: existing test data only — no fixture or support module added or changed", () => {
-    expect(changedSinceE("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+  /* §131f · A-G505: the CATEGORY, not three literals — minus what phase F's and phase G's entry sets
+     disclose. B-7 is open-ended from PHASE_E_BASE, so it measures later phases' changes too; forbidding one
+     a later entry set authorises would make it a freeze rather than a boundary (§95). See the ruling and its
+     named residual beside `AUTHORISED_FIXTURE_CHANGES`. */
+  it("§131f (A-G505) · B-7: existing test data only — no fixture or support module added or changed, except where phase F's or phase G's entry set discloses one", () => {
+    expect(fixtureCategoryViolations(changedSinceE, F_ENTRY, G_ENTRY)).toEqual([]);
   });
 
   it("B-6: no provider and no API in anything phase E added", () => {
@@ -330,8 +334,10 @@ describe("MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting change
     expect(changedSinceF("test/career/mapping-field/selector-d.test.tsx", "test/career/mapping-field/selector-keys-d.test.tsx")).toEqual([]);
   });
 
-  it("B-F7: existing fixtures only; no provider and no API in anything phase F added", () => {
-    expect(changedSinceF("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+  /* §131f · A-G505, as on B-7 one section above; B-F7 is open-ended from PHASE_F_BASE, so only phase G is
+     later than it and only `G_ENTRY` is subtracted. */
+  it("§131f (A-G505) · B-F7: existing fixtures only, except where phase G's entry set discloses one; no provider and no API in anything phase F added", () => {
+    expect(fixtureCategoryViolations(changedSinceF, G_ENTRY)).toEqual([]);
     for (const file of F_ENTRY.filter(f => f !== "test/career/mapping-field/architecture.test.ts")) for (const line of addedSinceF(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
   });
 });
@@ -422,6 +428,57 @@ const G_FIXTURE_CATEGORY = [
 const G_FIXTURE_LITERALS = ["test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts"];
 /** F-G9: support modules phase G's entry set authorises. Exempt BECAUSE they are in G_ENTRY, and that is asserted. */
 const G_FIXTURE_EXEMPT = ["test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts"];
+/**
+ * §131f · A-G505 (GELB's ruling, this lane's implementation) · AN ONGOING PROTECTION MAY FORBID A CHANGE NO
+ * LATER PHASE'S ENTRY SET AUTHORISES; IT MAY NOT FORBID ONE THAT A LATER PHASE'S ENTRY SET DOES.
+ *
+ * §131 widened phase G's limb alone and reported E's `B-7` and F's `B-F7` as not this phase's to amend,
+ * offering two wordings: close their fixtures limb to their own range, or exclude `test/support/mapping/**`.
+ * GELB took NEITHER and the grounds are better than both of mine. Closing them to their range converts an
+ * ONGOING PROTECTION into a measurement of a finished phase, which A-G485's own comment deliberately
+ * declined. Excluding the directory blinds the category to a place that genuinely holds mapping fixtures —
+ * worse than the hole F-G9 found. The third option is §95's principle, which §131 cited one paragraph
+ * earlier in the OTHER direction: a limb that forbids what a later entry set authorises is not a boundary,
+ * it is a repository freeze wearing a boundary's name.
+ *
+ * SO ALL THREE LIMBS GUARD THE SAME CATEGORY, AND EACH SUBTRACTS WHAT A LATER PHASE DISCLOSED:
+ *   `B-7`  (open-ended from PHASE_E_BASE) — minus `F_ENTRY` and `G_ENTRY`
+ *   `B-F7` (open-ended from PHASE_F_BASE) — minus `G_ENTRY`
+ *   phase G's own                         — minus its own declared exemption, which must be in `G_ENTRY`
+ *
+ * MEASURED BEFORE IT WAS WRITTEN: from all three bases the widened category sees EXACTLY
+ * `test/support/mapping/layout-reference.ts` and `test/support/mapping/vectors.ts` — nothing else, committed,
+ * staged, unstaged or untracked — and both are in `G_ENTRY`. So the amendment reddens nothing that stands.
+ *
+ * *** AND THE RESIDUAL, NAMED RATHER THAN LEFT FOR A READER TO FIND: AUTHORISATION HERE IS SELF-GRANTING. ***
+ * `G_ENTRY` is a literal in this same file, and the phase-G change-set limb asserts that change sets are a
+ * SUBSET of it — coverage, not minimality. Nothing stops a later hand adding `support-g.ts` to `G_ENTRY` and
+ * turning all three limbs green again. **A-G505 therefore buys DISCLOSURE, not prohibition** — which is
+ * strictly more than the three literals bought (invisibility) and strictly less than a prohibition, and it
+ * is the `AUTHORISED_CROSSINGS` shape the record already accepts. GELB says so; I am recording that I agree
+ * rather than letting the stronger reading stand by omission.
+ *
+ * WHAT CLOSES PART OF THAT RESIDUAL, AT THE COST OF ONE LINE: the authorised set is also DECLARED here, and
+ * the declaration is checked BOTH WAYS (A-G452). An entry-set authorisation that is not declared fails; a
+ * declaration that no longer describes a real authorised change fails as stale. So granting a new one takes
+ * two deliberate edits in two places, and the second is the one that has to carry a reason.
+ */
+const AUTHORISED_FIXTURE_CHANGES = ["test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts"];
+/**
+ * The category's own checks, run before any limb trusts it — a mistyped glob makes ALL THREE limbs vacuous,
+ * which is the failure F-G5 itself was. Returns the violations: category paths changed since `base` that no
+ * named entry set authorises.
+ */
+function fixtureCategoryViolations(changedSince: (...paths: string[]) => string[], ...authorising: ReadonlyArray<readonly string[]>): string[] {
+  const covered = git("ls-files", "--", ...G_FIXTURE_CATEGORY);
+  expect(covered.length, "the fixture category resolves to no tracked file, so every limb over it would pass over nothing").toBeGreaterThan(0);
+  expect(G_FIXTURE_LITERALS.filter(p => !covered.includes(p)), "the category must COVER the literals the limbs named before §131, or it is a narrowing dressed as a widening").toEqual([]);
+  const changed = changedSince(...G_FIXTURE_CATEGORY);
+  const authorised = changed.filter(p => authorising.some(set => set.includes(p)));
+  expect(authorised.filter(p => !AUTHORISED_FIXTURE_CHANGES.includes(p)), "a fixture change an entry set authorises but AUTHORISED_FIXTURE_CHANGES does not declare — the entry set alone is not a reason").toEqual([]);
+  expect(AUTHORISED_FIXTURE_CHANGES.filter(p => !authorised.includes(p)), "AUTHORISED_FIXTURE_CHANGES declares a change that is no longer authorised or no longer happening — a stale declaration is an exemption nobody is asking for").toEqual([]);
+  return changed.filter(p => !authorised.includes(p));
+}
 
 describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
   it("V1 stays phase B's record (range closed at PHASE_INT_BASE): layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical through phase G", () => {
@@ -445,12 +502,10 @@ describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves
   });
 
   it("§131 (F-G5 / F-G9): existing fixtures only — the CATEGORY, not three literals; no provider and no API in anything phase G added", () => {
-    // The category is checked before it is trusted, or this limb could pass by looking in the wrong place.
-    const covered = git("ls-files", "--", ...G_FIXTURE_CATEGORY);
-    expect(covered.length, "the fixture category resolves to no tracked file, so the limb below would pass over nothing").toBeGreaterThan(0);
-    expect(G_FIXTURE_LITERALS.filter(p => !covered.includes(p)), "the category must COVER the literals the limb named before §131, or it is a narrowing dressed as a widening").toEqual([]);
+    // The category's own checks live in ONE place (§131f), so a mistyped glob cannot go vacuous in one limb
+    // and loud in another. Phase G subtracts its OWN declared exemption, and that it is in G_ENTRY is asserted.
     expect(G_FIXTURE_EXEMPT.filter(p => !G_ENTRY.includes(p)), "an exemption the phase-G entry set does not authorise would be a hole, not a disclosure").toEqual([]);
-    expect(changedSinceG(...G_FIXTURE_CATEGORY).filter(p => !G_FIXTURE_EXEMPT.includes(p))).toEqual([]);
+    expect(fixtureCategoryViolations(changedSinceG, G_FIXTURE_EXEMPT)).toEqual([]);
     for (const file of G_ENTRY.filter(f => !f.endsWith("architecture.test.ts") && !f.endsWith(".json"))) for (const line of addedSinceG(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
   });
 });
