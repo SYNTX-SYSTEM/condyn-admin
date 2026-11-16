@@ -13,8 +13,8 @@ in dem sie berechnet wurde — **Build (A-G430), Domäne (A-G435), Population (A
 
 | | |
 |---|---|
-| **Drei Lanes, drei Branches, keine gemeinsame Lesbarkeit** | GELB `architecture/mapping-phase-f`, GRÜN `Frontend`, PINK `Implementation` |
-| **GELB kann PINKs Validierungsbericht nicht lesen** | `PINK-SYSTEM-VALIDATION.md`, **124 Commits ungepusht** — von außen bestätigt: der Pfad existiert auf keinem lesbaren Branch |
+| **Drei Lanes, drei Branches, keine gemeinsame Lesbarkeit** — ***DIESE ZEILE IST SEIT 2026-11-16 ABGELAUFEN (§13.3): alle drei Branches liegen auf `origin`; die gemeinsame Lesbarkeit besteht.*** | GELB `architecture/mapping-phase-f`, GRÜN `Frontend`, PINK `Implementation` |
+| **GELB kann PINKs Validierungsbericht nicht lesen** | `PINK-SYSTEM-VALIDATION.md`, **124 Commits ungepusht** — von außen bestätigt: der Pfad existiert auf keinem lesbaren Branch — ***ABGELAUFEN SEIT 2026-11-16 (§13.3/§13.5): der Branch liegt als `b6490e86` auf `origin`, der Pfad ist lesbar, und die 124 ist eine von VIER korrekten Zahlen in verschiedenen Rahmen — siehe §13.5.*** |
 | **PINK kann GELBs Pflichtenregister nicht lesen** | `PHASE_F*.md` / `PHASE_G*.md` existieren in **keinem** der vier Worktrees, die PINK öffnen kann — ***DIESE ZEILE IST ALS AUSSAGE ÜBER LESBARKEIT FALSCH UND IN §11.7 WIDERRUFEN: SIE WAR DIE GANZE ZEIT AUF `origin`.*** |
 
 > *** DARAUS FOLGT DIE WICHTIGSTE EINSCHRÄNKUNG DIESES BERICHTS, UND SIE IST ENGER ALS ZUERST GESCHRIEBEN:
@@ -201,9 +201,9 @@ keine Schließung, sondern eine datierte.** Und sie ist **nicht nachprüfbar**: 
 `utpaUMQpafZVzAeyYImhv`, eine Next.js-`buildId` **ohne jeden Repository-Referenten**. **Status: von CLOSED auf
 CURRENCY LAPSED.** Nicht neu gemessen — Neuversiegelung ist ein bewusster Akt auf einem bewussten Build.
 
-**8. Die unabhängige Rekonstruktion trägt heute 10 von 27 Instrumenten** *(§129, A-G469)*. Aus einem echten
+**8. Die unabhängige Rekonstruktion trägt heute 10 von 28 Instrumenten** *(⚠ KORRIGIERT 2026-11-16, §13.3 F-R4: hier und an fünf weiteren Stellen stand „von 27“; §11.14s eigene Tabelle und eine Nachzählung geben 28. ⚠ UND DER NENNER IST GELBS EIGENE POPULATION — über alle drei Spuren sind es **77 von 164**, §13.6.)* *(§129, A-G469)*. Aus einem echten
 `origin`-Clone, ohne Pfadumschreibung: **10 laufen, 16 erreichen ihre Quelle nicht, 1 verweigert als Bauart.**
-**Mit GRÜNs 90 und PINKs 105 veröffentlicht: 26 von 27, 0 unerreichbar** — gemessen, nicht geschätzt (beide
+**Mit GRÜNs 90 und PINKs 105 veröffentlicht: 26 von 28, 0 unerreichbar** — gemessen, nicht geschätzt (beide
 lokalen Branches über einen Dateipfad in den Prüf-Clone geholt, **nichts gepusht**). **Der Relokationsfix ist
 5 wert, die Veröffentlichung 16.**
 
@@ -261,18 +261,20 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 
 > ### NACHTRAG ZU BEDINGUNG 4 — DAS MANDAT „SFE PHASE-G VALIDATION PROVENANCE", §§128–129
 >
+> ⚠ ***DIESER NACHTRAG BESCHREIBT DIE WELT VOR DER VERÖFFENTLICHUNG UND IST IN ZWEI PUNKTEN ABGELAUFEN (§13.3):*** sein Abgleichsdefekt „105 gegen 119“ ist in **§11.13** aufgelöst (und dort als „zu hart“ zurückgenommen), vollständig ausgezählt in **§13.5**; seine Veröffentlichungszahlen sind in **§11.14** über `origin` neu gemessen. **Er bleibt als historischer Stand stehen; für den aktuellen Stand gilt §13.**
+>
 > **Der Eigentümer hat PINKs Branch-Push ausdrücklich autorisiert.** A-G250 ist damit **durch den Eigentümer
 > entschieden**, nicht durch eine Lane. Die Autorisierung ist PINK **wörtlich mit Provenienz** zugestellt.
 >
 > *** UND DIE PRÜFUNG, DIE DIESE AUTORISIERUNG ERST MÖGLICH MACHTE, HAT BEDINGUNG 4 GRÖSSER GEMACHT, NICHT
-> KLEINER. *** Aus einem echten Clone von `origin` gemessen: **10 von 27 Instrumenten laufen, 16 erreichen
+> KLEINER. *** Aus einem echten Clone von `origin` gemessen: **10 von 28 Instrumenten laufen, 16 erreichen
 > ihre Quelle nicht.** **PINKs Push ist NOTWENDIG UND NICHT HINREICHEND.** PINKs *eigene Messungen* ruhen auf
 > einem **veröffentlichten** Build und PINKs eigenen Instrumenten — sie reisen, sobald der Branch reist. Was
 > **nicht** reist, ist die **lane-übergreifende Nachrechnung**: dieses Register pinnt 9 Instrumente auf
 > `4b83414e` und zitiert **20 `gruen-*`-Dateien**, von denen am veröffentlichten Stand **0 von 20** auflösen.
 >
 > **Gemessen, was die Entscheidung kauft** (beide lokalen Branches über einen Dateipfad in den Prüf-Clone
-> geholt, **nichts gepusht**): **mit GRÜNs 90 und PINKs 105 veröffentlicht laufen 26 von 27, 0 unerreichbar.**
+> geholt, **nichts gepusht**): **mit GRÜNs 90 und PINKs 105 veröffentlicht laufen 26 von 28, 0 unerreichbar.**
 > **Die verbleibende Lücke ist eine Eigentümerentscheidung über Veröffentlichung** — benannt mit ihren Zahlen,
 > nicht seitlich über eine Peer-Lane geleitet.
 >
@@ -418,11 +420,17 @@ dieser Lane und fünf GRÜNs.**
 
 1. **PINKs Validierungsbranch ist unveröffentlicht.** Ihre Autorisierung wurde **wörtlich mit Provenienz**
    zugestellt. **PINK hat nicht geantwortet.** **Bedingung 4 wird nicht als erfüllt ausgewiesen.**
-2. **Die lane-übergreifende Nachrechnung reist nicht.** **10 von 27** Instrumenten laufen aus einem echten
-   `origin`-Clone; **26 von 27** mit GRÜNs 99 und PINKs 105 veröffentlicht — **gemessen**, nichts gepusht.
+   > ⚠ ***ABGELAUFEN (§11.14, §13.3).*** Der Branch liegt als `b6490e86` auf `origin`. **Der GRUND, den dieser
+   > Punkt für Bedingung 4 angibt, ist entfallen** — PINKs eigene Spur hat das 2026-11-16 unabhängig
+   > festgestellt (L-1). **Bedingung 4 bleibt dennoch nicht als erfüllt ausgewiesen, jetzt aber aus einem
+   > anderen Grund: §13.7.**
+2. **Die lane-übergreifende Nachrechnung reist nicht.** *(⚠ ABGELAUFEN für GELBs 28 — §11.14 misst 26/28, 0 unerreichbar. **ÜBER ALLE DREI LANES GEMESSEN IST DER BEFUND ABER VIEL SCHLECHTER: §13.6.**)* **10 von 28** Instrumenten laufen aus einem echten
+   `origin`-Clone; **26 von 28** mit GRÜNs 99 und PINKs 105 veröffentlicht — **gemessen**, nichts gepusht.
    Die verbleibenden **16 sind allein durch Veröffentlichung blockiert.**
 3. **PF-13 GUARDED** (Urteil PINKs) · **PG-14 NEU FORMULIERT / UNVERIFIZIERT** · **PG-11 CURRENCY LAPSED** ·
    **acht Siegel byteidentisch, Digests prüfen, auf einen Build datiert, der auf nichts auflöst.**
+   > ⚠ ***TEILWEISE ABGELAUFEN (§13.3):*** PG-11s Währungsaussage ist in §89 datiert; `4b83414e` liegt auf
+   > einem `origin`-Ref und löst auf. **PF-13 und PG-14 stehen unverändert offen.**
 4. **Die Naht** · **`sudo iptables -S DOCKER | grep 5432`**.
 
 ### DER BEFUND, DEN KEINE LANE ALLEIN ERREICHT HÄTTE
@@ -833,7 +841,7 @@ Instrumentenlauf, derselbe reine `origin`-Clone, nur ein `git fetch` später:
 | PIN-UNRESOLVABLE | 16 | *** 0 *** |
 | REFUSE-BY-DESIGN | 2 | 2 |
 
-> *** §4 PUNKT 8s VORHERSAGE — „mit GRÜNs und PINKs Commits veröffentlicht laufen 26 von 27, 0 unerreichbar“ —
+> *** §4 PUNKT 8s VORHERSAGE — „mit GRÜNs und PINKs Commits veröffentlicht laufen 26 von 28, 0 unerreichbar“ —
 > IST AUF DIE ZAHL EINGETROFFEN. *** Sie war damals über einen **Dateipfad** in den Prüf-Clone gemessen, also
 > eine Simulation der Veröffentlichung; jetzt ist sie über `origin` gemessen, also die Sache selbst. **Die
 > lane-übergreifende Nachrechnung reist.** §10 Punkt 1 und Punkt 2 sind damit **erledigt**, und zwar durch
@@ -1535,3 +1543,206 @@ die perzeptuelle Frage genau dort lässt, wo A-G94 sie gelassen hat: offen, und 
 Head **aus dem bedienten Worktree** (`servedProvenance`) statt sie zu hartkodieren, also labeln die Re-Run-
 Ausgaben sich korrekt als `7ffaeb40` / `d66mAV-ZQ1OcInLuwst57`. *** AUF DIESER ACHSE IST GRÜNS INSTRUMENT
 BESSER GEBAUT ALS PINKS — UND DAS IST DIE LANE, DEREN REGEL ES IST. ***
+
+---
+
+## §13 MANDAT „SFE AUTONOMOUS SYSTEM RECOVERY" — DER ABGEGLICHENE DREI-SPUREN-ZUSTAND
+
+**Rahmen des Mandats:** Rekonstruktion und Abgleich, **keine Features, keine Produktänderungen.** Eingehalten:
+die einzigen Schreibvorgänge dieses Mandats sind dieser Abschnitt, die Währungsmarker in §0/§7/§10 und die
+Nennerkorrektur. **Kein Produktpfad (`lib`, `app`, `scripts`) berührt, kein Merge nach `main`, kein Deployment,
+Gemini aus, kein Siegel verändert, kein Worktree eines Peers beschrieben.**
+
+### §13.1 DIE DREI SPUREN — HERGESTELLT, UND WAS SIE WIRKLICH SIND
+
+**GELB** (diese Session) · **GRÜN** und **PINK** als zwei beauftragte Spuren mit eigenem Kontext, eigenen
+Messungen, eigenem Bericht. ***Und wie in §12.3: strukturell unabhängig, nicht provenienz-unabhängig — von der
+Lane instruiert, die sie prüfen. Ich weise das nicht als gleichwertig aus.***
+
+**Beide haben zuerst ihr eigenes Briefing widerlegt, und zwar an derselben Stelle:** ich habe beiden einen
+Worktree zugewiesen, in dem sie nicht liefen. *(`/proc/$$/cwd` → beide in `condyn-admin-hr-integration`, GELBs
+Registerbranch.)* **GRÜNs Checkout trug 9 von 19 seiner eigenen Mapping-Testdateien; PINKs Artefakte lagen
+nicht dort, wo PINK sie laut Briefing lesen sollte.** Beide haben die Zuweisung verworfen und über `ref`
+gelesen. ***Hätten beide dem Briefing gehorcht, hätte diese Rekonstruktion zwei falsche Messungen produziert —
+genau die, vor der mein eigener Briefing-Absatz warnt.*** Das ist A-G486 ein zweites Mal, und diesmal habe ich
+den Fehler gemacht, nicht geerbt.
+
+### §13.2 DER PRODUKTZUSTAND — DREIFACH UNABHÄNGIG BESTÄTIGT
+
+| | GELB | GRÜN | PINK |
+|---|---|---|---|
+| Produktdateien `origin/main` ↔ `7ffaeb40` | **12** | **12** | — |
+| ≡ GRÜN | **9** | **9** | 9 |
+| ≡ GELB `eb75fd02` | **3** | **3** | 3 |
+| ***≡ keinem Elternteil*** | ***0*** | ***0*** | ***0*** |
+| `7ffaeb40` Vorfahre von `origin/main`? | **nein** | **nein** | **nein (exit 1)** |
+| Eltern von `4f4534c5` | `eb75fd02`+`a0475f13` | bestätigt | bestätigt |
+
+**Drei Spuren, drei Methoden** (ich per `sha256sum` je Datei, GRÜN zusätzlich in der *Spiegelrichtung* — nichts
+fiel weg —, PINK über Blob-Identität und Zeilenzahl). ***Die reine Vereinigung hält am aktuellen Tip.***
+**MAP-INT-ARCH 7/7, exit 0, Wegwerf-DB verifiziert und gelöscht, B-ENTRY nicht umgangen.**
+
+**Der Mapping-Kern, gemessen:** `PersonJobMappingField.tsx` 244 → **1243**, `view-model/mapping-field.ts` 198 →
+**471**, `mapping/layout.ts` 143 → **164**. **Nur 2 von 20 `lib/`-Modulen haben sich in Phase G bewegt** — genau
+was `architecture.test.ts:390` pinnt. *(Anmerkung zum Rahmen: „das Hauptfeldmodul" bezeichnet in GRÜNs Bericht
+das View-Model, in PINKs die Komponente. Beide Zahlen sind richtig; es sind zwei Dateien.)*
+
+### §13.3 SECHS BEFUNDE GEGEN DIESE LANE, ZWEI DAVON GEGEN IHRE EIGENEN PRÜFSTÄNDE
+
+**F-R1 · MAP-INT-ARCHs Nachher-Glied ist blind für Merge-Commits.** Es prüft mit
+`git show --name-only --format= <commit> -- lib app scripts` und überspringt bei leerer Ausgabe. ***Git gibt für
+einen Merge standardmäßig keinen Diff aus.*** Bewiesen: `6bdf2628` hat `phase-base.ts` nachweislich geändert —
+`git diff 1472ccf1 6bdf2628 --` nennt die Datei, `git show --name-only --format= 6bdf2628 --` gibt **leer**
+zurück. **Der Integrationsbranch enthält genau so einen Merge.** Das Urteil ist heute richtig, weil dieser
+Merge **0 Produktpfade** trägt — ***richtig durch Inhalt, nicht durch die Prüfung.*** Reparatur benannt und
+verifiziert: `--diff-merges=first-parent`. **NICHT ANGEWENDET**, Grund in §13.8. Dieselbe Klasse wie A-G492s
+F-C3: eine Prüfung, die fragt *„was ist aufgeführt?"* statt *„was kann diese Aufzählung nie erreichen?"*
+
+**F-R2 · `lens-owner-bfe0d27` ist kein gebrochenes Siegel, sondern ein falsches Basisverzeichnis.** Ich hatte
+„ein Siegel, das nie verifiziert hat, nicht reparierbar ohne Fälschung" berichtet. Genau gemessen: das Manifest
+präfixt 13 seiner 14 Einträge mit `owner-bfe0d27/`, **ein Verzeichnis dieses Namens existiert nirgends**; **5
+der benannten Artefakte liegen im Verzeichnis selbst und alle 5 hashen byteidentisch**; 9 fehlen wirklich; eine
+vorhandene Datei steht in keinem Manifest. **PINK hat unabhängig denselben Befund und zwei Dinge ergänzt, die
+ich nicht hatte:** es ist **PINK-authored, §3.15 Lens-Field-Ära**, und der Verzeichnisbaum ist **auf
+`origin/main` byteidentisch** (gleiches Tree-Objekt `9f7a2106`) — ***das Manifest war schon falsch, als es
+geschrieben wurde, und ist auf `main` seit jeher falsch. Keine Regression, nicht vom Mapping verursacht.***
+**Und:** mein „28 scheiternde Einträge" war mein eigener Doppelzähler (`sha256sum` gibt zwei Zeilen je
+unlesbarer Datei). **Richtig: 14 Einträge, 0 verifiziert.**
+
+**F-R3 · Kopf und Abschluss dieses Berichts beschrieben die Welt VOR der Veröffentlichung.** §0 Zeilen 1–2, §7s
+Nachtrag und §10 Punkte 1–3 standen ohne Vorwärtsmarker, während §11/§12 den veröffentlichten Zustand
+beschreiben. ***Ein Leser in Leserichtung bekam den überholten Stand zweimal, bevor er die Korrektur erreichte.***
+Alle vier Stellen sind jetzt datiert markiert; **keine Originalaussage gelöscht.** §0 Zeile 3 trug ihren
+Widerruf bereits — dort hat die Disziplin funktioniert.
+
+**F-R4 · Die Veröffentlichungszahl stand gegen zwei Nenner, und einer war falsch.** Sechs Stellen lasen
+„von 27", zwei „von 28". ***§11.14s eigene Tabelle entscheidet: 10+16+2 = 28 und 26+0+2 = 28, derselbe Lauf.***
+Unabhängig nachgezählt: **28 Instrumente existieren.** Sechs Stellen korrigiert.
+
+**F-R5 · Mein Briefing hat die Evidenzwurzel falsch benannt — und das versteckt jedes Siegel.** Ich habe
+GRÜN und PINK auf `docs/architecture/decision-fields/evidence/` eingegrenzt. **GRÜNs Evidenz liegt unter
+`docs/career_analysis/evidence/` — 1240 Dateien am Integrationstip, und dort liegen ALLE 8 `SEALED-*.json`.**
+PINK sagt es unverblümt: ***„Hätte ich den Scope des Briefings wörtlich befolgt, hätte ich dem Eigentümer
+berichtet, es existieren keine Siegel."*** Mein eigener Siegelsweep hat denselben Fehler in anderer Form: mein
+Muster suchte `SEALED-*.sha256`, nicht `SEALED-*.json`, **und er lief in meinem Arbeitsbaum, wo `mapping-phase-g`
+gar nicht existiert** — `SEALED-*.json` am eigenen Ref: **0**, an `7ffaeb40`: **8**. ***Meine „69 Manifeste /
+1308 Einträge" sind korrekt für meinen Ref und als Aussage über das Vorhaben unvollständig.*** PINK misst an
+seinem Ref **99 Manifeste, 1652 Zeilen, 1638 OK, 98 von 99 verifizieren** — und: ***alle Siegel von
+`mapping-phase-{a,b,c,d,e,f,g}` verifizieren, 0 Fehler.***
+
+**F-R6 · §17(a) ist stale, nicht der Code** *(GRÜNs Befund, von mir nachgelesen)*. Mein Register verlangt von
+GRÜN, eine Leiter zu korrigieren, die **A-G39(a) längst durch gemessene Werte ersetzt hat**;
+`PersonJobMappingField.tsx:103` liest `shelf: 0.022`. **Die Anweisung in meinem Register ist der abgelaufene
+Teil.**
+
+### §13.4 WAS DIE ANDEREN BEIDEN AN SICH SELBST GEFUNDEN HABEN
+
+**PINK gegen PINK (zwei tragende Aussagen, beide abgelaufen):** *(L-1)* `PINK-SYSTEM-VALIDATION.md` Zeile 4
+liest **„119 commits, UNPUSHED"** — ***der Branch ist veröffentlicht.*** PINK stellt ausdrücklich fest, dass
+damit **der Grund entfällt, mit dem §11 Bedingung 4 für unerfüllt erklärt hat**, und überlässt die Bedingung
+selbst dem Eigentümer. *(L-2)* PINKs Aussage, `PHASE_G*.md` existiere in keinem lesbaren Worktree, war
+***eine Verwechslung von Dateisystem-Reichweite mit Objekt-Reichweite*** — PINK hat das Dokument in dieser
+Session gelesen. ***Das heißt: PINKs ganze „auf Bericht hin"-Stufe war selbst auferlegt und ist jetzt
+einlösbar.*** PINK hat sie nicht eingelöst, weil Registeredition keine Rekonstruktion ist. **Richtig.**
+
+**GRÜN gegen GRÜN:** sein erster Lauf ergab `28 failed / 170 passed`. **Alle 28 waren
+`fatal: not a git repository` / `ERR_PHASE_G_BASE_MISSING`** — `git archive` liefert kein `.git`. GRÜN hat den
+Lauf **als Artefakt protokolliert statt ihn zu verwerfen** und benennt den Nenner 198 in beiden Läufen als die
+Gegenprobe, dass die Population sich nicht bewegte. ***Ein falsches Rot, das als falsches Rot berichtet wird.***
+GRÜN nennt außerdem eine Population, die mein Briefing **und sein eigenes Instrument** übersehen:
+`test/career/mapping/layout-v1_1.test.ts` — eine Datei, die seine Lane hinzugefügt hat, außerhalb von
+`PHASE_DIRS`. Separat gemessen: **7 Dateien, 64/64, exit 0.**
+
+### §13.5 VIER ZAHLEN FÜR EINEN BRANCH — UND ALLE VIER SIND RICHTIG
+
+An `origin/validation/hr-decision-loop-pink` = `b6490e86` jetzt gemessen:
+
+| Zahl | was sie zählt |
+|---|---|
+| **105** | `1f9117db..b6490e86` — die **Push-Spanne** |
+| **119** | PINKs eigene Commits ab `a94593d8` **im Augenblick des Schreibens** (sein eigener Commit machte 120, §11.13) |
+| **124** | was GELB beim Schreiben von §0/§7 gemessen hat |
+| **128** | `a94593d8..b6490e86` **heute**, identisch mit „nicht von `origin/main` erreichbar" |
+
+***Keine der vier ist falsch. Keine trug in §0/§7 ihren Rahmen.*** A-G417/A-G430 in Reinform — und damit ist die
+„unerklärte 124" als **Rahmenauslassung** erledigt, nicht als Fehler. **GRÜNs Zahl ebenso: 115 linear, 0 Merges
+— und der nackte Ref `main` ist hier 8 Commits alt und liefert 123.**
+
+### §13.6 ***DIE REKONSTRUKTION AUS `origin` IST VIEL SCHLECHTER, ALS DIESER BERICHT SAGTE — UND DER GRUND IST EIN FREMDES REPOSITORY***
+
+Meine „26 von 28" waren **GELBs 28**. PINK hat die Frage über **alle drei Spuren** gestellt und aus einem
+frischen `origin`-Clone gemessen:
+
+| Spur | rekonstruierbar |
+|---|---|
+| GELB | **26 / 28** |
+| GRÜN | **49 / 53** |
+| ***PINK*** | ***2 / 83*** |
+| **gesamt** | ***77 / 164*** |
+
+***Der Grund, und ich habe ihn selbst nachgemessen: 75 der 83 PINK-Instrumente importieren Playwright aus
+`/home/codi/Entwicklung/nquiry/node_modules/` — und `nquiry` ist ein ANDERES REPOSITORY
+(`SYNTX-SYSTEM/NQUIRY.git`), das `origin` nicht enthält.*** **Und es ist nicht eine Spur:** **47 von GRÜNs
+Ausgabedateien** nennen denselben Pfad; `pf13-evaluated.json` trägt ihn in seinem `instrument`-Feld. **Die
+Instrumentenschranke ist also nicht „eine Maschine", sondern eine Maschine PLUS ein Schwesterrepository.**
+
+> ***UND DIE FALLE IST GENAU DIE AUS A-G469, EINE EBENE TIEFER: alle diese Pfade EXISTIEREN auf dieser Maschine.
+> Die 84 Instrumente LAUFEN aus einem frischen Clone HIER DURCH und scheitern überall sonst. Ein
+> Frischcheckout auf derselben Maschine kann das prinzipiell nicht entdecken.*** PINK hat außerdem ein
+> GRÜN-Instrument benannt, das **in den Worktree einer Peer-Lane schreibt** (`gruen-pg16-crowding-L1.mjs`,
+> Schreibziel mtime 2026-11-16 04:20). **Gemeldet, nicht adjudiziert.**
+
+**Das ist die schlechteste Zahl dieses Mandats, sie stammt von der prüfenden Spur, und sie richtet sich gegen
+die prüfende Spur selbst.**
+
+### §13.7 DIE 197 GEGEN DIE 198 — UND WARUM DIESE AUFLÖSUNG DIE BESTE DES MANDATS IST
+
+PINKs Pin-Tabelle führt PF-13 mit **„16 Dateien, 197 Tests, 197 passed"**. GRÜN hat **198/198** gemessen,
+zweimal. ***Ich habe es im Artefakt nachgelesen, statt eine Spur zu glauben:*** `pf13-evaluated.json` liest
+`"passed": 198`, und `AG485-CLOSURE.md:67` sagt es selbst —
+
+> *„The figure moved from **197** (`bce62ea1`) to **198** because one test was added: §115 A-G468
+> (`3231f52c`)."*
+
+**Beide Zahlen sind in ihrem Build-Rahmen richtig.** Und die 197-Fassung ist in GRÜNs eigenem
+`currency-lapse.json` **als abgelaufene Zeile erfasst** (`kind: "test-population"`). ***Also: die unabhängige
+Prüfspur hat eine abgelaufene Zahl als aktuelle zitiert — und der Detektor der geprüften Spur hatte sie längst
+markiert.*** Dieselbe Zahl steht als historischer Anker im Mandat des Eigentümers; sie war zu ihrer Zeit richtig.
+
+> *** DAS IST DIE REGEL DIESES MANDATS, DRITTES MAL BESTÄTIGT UND DIESMAL GEGEN DEN VALIDATOR:
+> WER EINE ZAHL WEITERGIBT, HAT SIE IM ARTEFAKT GELESEN — ODER ER GIBT EIN GERÜCHT WEITER. ***
+
+### §13.8 ZWEI ADJUDIKATIONEN, DIE MIR ZUSTEHEN
+
+**1 · PINKs Befund (d) — „die Integration enthält den Bericht nicht, der sie zertifiziert" — ist richtig
+beobachtet und KEIN DEFEKT. Er ist erzwungen.** 9 Commits von `4f551f89`, reine Docs, liegen außerhalb von
+`7ffaeb40`, darunter §12.12, das die Suite **dieses Tips** behauptet. ***Läge §12.12 in `7ffaeb40`, wäre
+`7ffaeb40` ein anderer Commit, und die Aussage beschriebe ihren eigenen Vorfahren.*** Ein Zertifikat über
+Commit X kann nicht in Commit X liegen. **Die Konsistenz, die das Mandat verlangt, ist deshalb nicht
+„alles in einen Commit", sondern „alle drei Aufzeichnungen von `origin` erreichbar" — und das ist gemessen
+wahr.** Deshalb: **kein Merge der Registerbranches in die Integration.**
+
+**2 · F-R1 wird BENANNT UND NICHT ANGEWENDET, und der Grund ist derselbe.** Jeder weitere Commit auf den
+Integrationsbranch verschiebt den Tip — und **§12.12s 3688/0 beschriebe dann einen Vorfahren statt den Tip**,
+also genau die Rahmenlücke (A-G430), gegen die diese Phase ihre Methode gebaut hat. ***Die Reparatur ist
+richtig und gehört mit einem neuen Volllauf zusammen, nicht allein.*** Sie liegt fertig vor.
+
+### §13.9 DER ABGEGLICHENE ZUSTAND, EINMAL KANONISCH
+
+| | |
+|---|---|
+| `origin/main` | **`e360caf9`**, unverändert · **die Integration ist KEIN Vorfahre** (dreifach geprüft) |
+| Integration | **`7ffaeb40`**, reine und **vollständige** Vereinigung, MAP-INT-ARCH **7/7** |
+| GRÜN | **`9b57319d`**, veröffentlicht, sauber, **115 linear**, **16 Dateien / 198 Tests / 198 passed**, zweimal · `architecture.test.ts` **32/32** · **+64/64** in der übersehenen Population |
+| PINK | **`b6490e86`**, veröffentlicht, sauber, **128** gegen `origin/main` · Siegel **98/99**, Mapping-Siegel **0 Fehler** |
+| GELB | **`4f551f89`**, veröffentlicht, sauber · Siegel am eigenen Ref **1308 OK / 69** |
+| Worktrees | **17**, 16 HEADs von `origin` erreichbar; der eine nicht: `condyn-admin` @ `59076c0d`, Vor-Mapping-Ära |
+| Prüfstände | **8 erhalten und bedienend**; fünf konservierte BUILD_IDs unverändert — `xCD8LBxdjnP97-2Gjs5yr` @ `3ec8457d` **bestätigt PINKs eigene Rahmenangabe** |
+| Auflösbarkeit | **alle 19 zitierten `gruen-*.mjs` und alle 9 gepinnten Commits liegen auf einem `origin`-Ref** |
+| ***Instrumenten-Rekonstruktion*** | ***77 / 164 über alle drei Spuren — PINK 2/83*** |
+
+**Offen und keiner Lane zuzuordnen:** **F-A2** · **PG-20s Schranke** *(PINK hat sie erneut verweigert, und das
+ist das Ergebnis, nicht die Lücke)* · **PF-13s Closure** · **PG-14** · **PF-6 Zeile 1 / PF-11 / PF-2** ·
+**A-G48/A-G51/A-G206** *(aufgeschoben)* · **die Naht** · **`sudo iptables -S DOCKER | grep 5432`** · **der
+Merge nach `main`** · **die Instrumenten-Provenienz aus §13.6, die jetzt eine benannte Größe hat statt einer
+Vermutung.**
