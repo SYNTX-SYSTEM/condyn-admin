@@ -525,6 +525,78 @@ it. GELB's own principle — bind against the module's own constant — is **not
 it available is a product change this lane may not make. **Recommended to whoever owns `lib/`: export the
 legacy stage-id set once and have all four sites and the tests read it.**
 
+### GELB's diagnostic, and the one attribution in it that is wrong
+
+GELB instrumented its own file and read the rendered shells in the same walk state:
+
+```
+DIAG stage shell counts: {"01":1,"02":1,"03":0,"04":0,"05":0,"06":0}   total: 5
+ids: [ …-01, …-02, …-syntx-org_nordlicht, …-syntx-org_rheinwerk, …-syntx-org_alpendata ]
+DIAG observation-kind: FIELD
+```
+
+**This confirms half of my account and adds the half I had missed** — the legacy orbits are gone *and*
+there is one shell per organisation, keyed `syntx-<pool organization id>`. GELB also corrected itself
+properly: its earlier "the product still renders all six" was the stage-id *vocabulary*, not the rendering.
+
+*** BUT GELB ATTRIBUTES THE ABSENCE TO `ca117947`, AND THAT IS NOT WHAT REMOVES 03–06. *** Two independent
+mechanisms in two components, and the distinction is checkable:
+
+| what | where | commit |
+|---|---|---|
+| 03–06 **absent** | `SemanticCareerIntelligenceField.tsx:613` + the `.filter` at `:864`, gated on `legacyHidden` | **`afcf89f6`** (owner G1) |
+| `syntx-<org>` shells **present** | `SyntxField.tsx:824-826`, `stageId={`syntx-${organization.id}`}` | **`ca117947`** (semiotic transfer) |
+
+**The decisive test of this was GELB's own file.** `job-pool-workflow.e2e.test.ts` contains **no
+`PERSON_X_JOB` and no investigation mode at all** — so on GELB's reading `legacyHidden` would be false
+there and all six should render, yet GELB measured `03…06` as zero. The resolution is one line:
+
+```
+lib/career/job-pool/investigation-mode.ts:17
+  export const DEFAULT_INVESTIGATION_MODE: InvestigationMode = "PERSON_X_JOB";
+```
+
+`SemanticCareerIntelligenceField.tsx:340` falls back to it when no mode is given. **So GELB's suite is in
+PERSON_X_JOB by default and `legacyHidden` is true there too.** That is the single cause GELB was looking
+for across two independently authored suites — and it is `afcf89f6`, not `ca117947`. `ca117947` explains
+the *replacement*, which is a different assertion.
+
+### My first repair was incomplete, and GELB's recipe fixed it
+
+My initial version asserted only that 03–06 are absent. **A product that dropped the organisation shells
+entirely would have passed it** — the vacuity shape this errata spends §4 on, in my own repair. GELB's
+recipe is adopted, with two deliberate departures:
+
+- **the two mechanisms are asserted separately**, not folded into one total, so a change to either says
+  which one moved;
+- **the per-organisation half is asserted only at `:440`**, where GELB has directly observed the state.
+  At `:915` the SYNTX field is exited (`root.count() === 0`, focus `CAPABILITY`) so `SyntxField` is
+  unmounted; **I pass `null` there rather than guess a count I have not observed in that state.**
+
+Derived from the fixture, not hardcoded: the ids come from `view.canonicalMapping.organizations`, the GET
+oracle this walk already asserts `data-organization-count` against at `:393`. Vacuity-guarded
+(`organizationIds.length > 0`), and the total pinned at `2 + organizations.length` so a silent return to
+the pre-transfer model also fails. `tsc`: **0 diagnostics in this file.**
+
+### A refinement to GELB's point 2, because it over-reaches
+
+GELB writes that *"every figure either of them produced before today was taken while the suite did not
+execute"* and that such a suite *"cannot have measured anything either."* **For the batch figure that is
+exactly right.** For PINK's own recorded runs it is not, and the reason is in the gate's first line:
+
+```ts
+const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;
+if (explicit !== undefined && explicit.length > 0) return explicit;
+```
+
+**The gate honours `CONDYN_PLAYWRIGHT_MODULE` before it tries package resolution.** So these suites were
+runnable all along for an operator who exported it, which is how `§3.43` recorded `syntx-walk` at **3/3
+twice** on `9e86d44`. **The defect is conditional, not absolute: the suite executed when the variable was
+exported and skipped silently when it was not** — and the certified `3688 / 0 / 20` batch is the second
+case. So Q-12's historical standing at `9e86d44` is not void; what is void is any claim that the batch
+exercised it. **That distinction is the difference between "unmeasured" and "measured, then aged", and
+Q-12 is the second.**
+
 ### What I did NOT do, and why
 
 **I did not run it, and I will not claim it green.** `npx tsc --noEmit` gives **0 diagnostics in this
