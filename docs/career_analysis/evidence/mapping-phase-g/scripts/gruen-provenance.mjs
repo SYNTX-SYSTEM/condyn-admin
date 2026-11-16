@@ -17,14 +17,55 @@
  * that every existing probe keeps working with no edit. Nothing about any reading changes.
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+/**
+ * §130 — the ONE dependency this module now has, and why it does not reopen §62 DEFECT 10.
+ *
+ * The docstring above says "WITH NO DEPENDENCIES AT ALL", and the point of that was never the import count:
+ * it was that a DERIVATION — arithmetic over committed JSON, no render, no build, no server — must not
+ * inherit a hard requirement on Playwright to obtain one frozen string. `gruen-paths.mjs` imports node
+ * builtins only. It touches neither Playwright nor sharp at import, so every build-free check still runs on a
+ * bare checkout, which is the property §62 bought and this keeps.
+ *
+ * What it buys: the two machine-absolute paths below are gone. `PW_MODULE` named a file inside
+ * /home/codi/Entwicklung/nquiry — a DIFFERENT repository (SYNTX-SYSTEM/NQUIRY.git) that origin does not
+ * contain — and 47 of this lane's output files carry that path. README §5's risk I-2, measured.
+ */
+import { EVIDENCE_ROOT as DERIVED_EVIDENCE_ROOT, resolveToolModule, launchProvenance } from "./gruen-paths.mjs";
 
-export const PW_MODULE = process.env.CONDYN_PLAYWRIGHT_MODULE ?? "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
-export const SHARP_MODULE = process.env.CONDYN_SHARP_MODULE ?? new URL("../../../../../node_modules/sharp/lib/index.js", import.meta.url).pathname;
+/**
+ * RESOLUTION IS LAZY AND IT REFUSES RATHER THAN GUESSING.
+ *
+ * `resolveToolModule` throws ERR_GRUEN_TOOL_UNRESOLVED naming every candidate it tried. Calling it eagerly
+ * here would make that throw happen at the import of this module — i.e. in every derivation — which is
+ * exactly the coupling §62 removed. So the attempt is made eagerly but the FAILURE is deferred: a derivation
+ * that never renders gets `null` and a recorded reason; a probe that needs a browser calls
+ * `playwrightModuleOrThrow()` and gets the full candidate list.
+ *
+ * MEASURED on frontend/mapping-phase-g at 9b57319d: sharp resolves by BARE_IMPORT at 0.34.5 (transitively,
+ * under next@16.2.4 — present but UNDECLARED, which is its own fragility and is reported as such), and
+ * playwright does NOT resolve bare and lands on the documented fallback at 1.63.0. GELB declared both as
+ * exact devDependencies at 430741fc on the integration branch; once that reaches this branch, both resolve by
+ * BARE_IMPORT and `npm ci` from a fresh clone is enough.
+ */
+const _tool = name => { try { return { ...resolveToolModule(name), error: null }; } catch (e) { return { path: null, version: null, how: "UNRESOLVED", error: String(e.message).split("\n")[0] }; } };
+const _pw = _tool("playwright"), _sharp = _tool("sharp");
+
+export const PW_MODULE = _pw.path;
+export const SHARP_MODULE = _sharp.path;
+export function playwrightModuleOrThrow() { if (_pw.path === null) resolveToolModule("playwright"); return _pw.path; }
+export function sharpModuleOrThrow() { if (_sharp.path === null) resolveToolModule("sharp"); return _sharp.path; }
+
 export const BASE = process.env.GRUEN_BASE ?? "http://127.0.0.1:3220";
 export const ANALYSIS = "CAN_00000000000000000000000000000002";
 export const FIELD_URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${ANALYSIS}`;
 export const PROVENANCE = Object.freeze({
   playwrightModule: PW_MODULE, sharpModule: SHARP_MODULE, base: BASE,
+  /* §130: a figure now records WHICH BUILD of its tool produced it and HOW that tool was found, so a reading
+     taken against an out-of-repository fallback is distinguishable from one taken against the declared
+     devDependency. The old block recorded a path and nothing else, and a path is not a version. */
+  playwright: Object.freeze({ resolvedBy: _pw.how, version: _pw.version, path: _pw.path, unresolvedReason: _pw.error }),
+  sharp: Object.freeze({ resolvedBy: _sharp.how, version: _sharp.version, path: _sharp.path, unresolvedReason: _sharp.error }),
+  ...launchProvenance(),
   instrument: "GRÜN phase-G development instrument", verdict: "NONE — development reading only (A-G36 point 2)"
 });
 
@@ -49,18 +90,26 @@ export const PROVENANCE = Object.freeze({
  * overrides it for a deliberate second store; otherwise a probe run from any other worktree FAILS LOUD
  * rather than writing where no one will look.
  */
-const CANONICAL_EVIDENCE_ROOT = process.env.GRUEN_EVIDENCE_ROOT ?? "/home/codi/Entwicklung/condyn-admin-mapping-d";
-const _hereDir = new URL(".", import.meta.url).pathname;
-const _worktreeOfScript = _hereDir.replace(/\/docs\/career_analysis\/evidence\/mapping-phase-g\/scripts\/?$/, "");
-if (_worktreeOfScript !== CANONICAL_EVIDENCE_ROOT) {
-  throw new Error(
-    `ERR_GRUEN_WRONG_EVIDENCE_WORKTREE: this probe lives in ${_worktreeOfScript} but evidence belongs in ` +
-    `${CANONICAL_EVIDENCE_ROOT}. Run the canonical worktree's copy of the script (absolute path), or set ` +
-    `GRUEN_EVIDENCE_ROOT deliberately. A reading written into a build host is invisible to the staleness ` +
-    `audit and collides by name with the canonical one.`
-  );
-}
-export const EVIDENCE_ROOT = CANONICAL_EVIDENCE_ROOT;
+/**
+ * §130 — THE FIX ABOVE WAS RIGHT ABOUT THE DEFECT AND WRONG ABOUT THE REMEDY, and the difference matters.
+ *
+ * The §88 remedy asserted equality against an ABSOLUTE canonical root. That closed the scatter and created a
+ * machine lock: from a fresh clone of origin the assertion throws, so this module — imported by 25 of this
+ * lane's instruments — could not be imported anywhere but on one machine. *** A GUARD THAT CANNOT RUN FROM A
+ * FRESH CLONE IS NOT A GUARD, IT IS A MACHINE LOCK, *** and it is A-G469's filesystem clause committed by the
+ * instrument written to respect it.
+ *
+ * The invariant §88 actually needs is already structural and was never the absolute path's doing: every probe
+ * resolves its output as `resolve(here, "../outputs/…")`, so a probe WRITES INTO THE TREE IT WAS LAUNCHED
+ * FROM, full stop. What was missing was not a pin but a LABEL — §88's symptom was two same-named readings in
+ * two worktrees with nothing in either naming its tree. `launchProvenance()` is now folded into PROVENANCE,
+ * so every reading names its own tree and HEAD and a misplaced one says so.
+ *
+ * `GRUEN_EVIDENCE_ROOT` therefore changes meaning, deliberately and narrowly: unset it is no longer a
+ * hardcoded machine path but the DERIVED root; set, it is enforced as a deliberate pin and still throws on a
+ * mismatch (gruen-paths.mjs). The trade is stated here rather than hidden in a default.
+ */
+export const EVIDENCE_ROOT = DERIVED_EVIDENCE_ROOT;
 
 /**
  * §88 · A-G109 ENFORCED IN CODE RATHER THAN BY CONVENTION.

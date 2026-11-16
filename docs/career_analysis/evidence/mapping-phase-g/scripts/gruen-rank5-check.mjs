@@ -22,7 +22,7 @@
  * contradicting each other.
  */
 import { chromium, openField, probeGeometry, clipOf, discMask, cdpSession, captureLuminance, hide, unhideAll,
-         signAndSeatMask } from "/home/codi/Entwicklung/condyn-admin-mapping-d/docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-instrument.mjs";
+         signAndSeatMask } from "./gruen-instrument.mjs";
 const b = await chromium.launch();
 const { ctx, page } = await openField(b, { reduce: true, vw: 1280, vh: 800 });
 const geo = await probeGeometry(page), clip = clipOf(geo, 1280, 800), geom = discMask(clip, geo);

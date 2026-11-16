@@ -2,7 +2,7 @@
  "reading": "GRÜN · §98 — PF-13's population named, and its exception list resolved from line numbers to test identities",
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "scope": "pure arithmetic over committed files. No browser, no build, no server, no database, no test executed here — this names WHAT PF-13 covers; the run is reported separately.",
- "commit": "de70cb5f",
+ "commit": "9b57319d",
  "pin": {
   "statement": "PF-13: every phase-D and phase-E test passes, except the three restated in writing: neurovisual-e :156, :174, :140.",
   "citedReferences": "§12, A-F15",
@@ -14,6 +14,17 @@
    "test/career/mapping-field/",
    "test/career/mapping-spec/"
   ],
+  "venuesDeclared": [
+   {
+    "dir": "test/career/mapping-field/",
+    "resolved": true
+   },
+   {
+    "dir": "test/career/mapping-spec/",
+    "resolved": true
+   }
+  ],
+  "venuesUnresolved": [],
   "testFiles": [
    "test/career/mapping-field/architecture.test.ts",
    "test/career/mapping-field/field-d.test.tsx",

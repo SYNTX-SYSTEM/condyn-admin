@@ -72,11 +72,61 @@ refuses it (`ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER`). GELB measured that ref
 
 **Why 3, 4 and 7 are not simply "next".** A new fixture collides with MAP-G-ARCH's fixtures limb, *"existing
 fixtures only; no provider and no API in anything phase G added"*. That limb was deliberately left
-**open-ended** under A-G485, as an ongoing invariant (GELB accepted it on that ground on 2026-11-16). And any
-new fixture would now be committed **after** `PHASE_INT_BASE`, which is outside every phase range (A-G487:
-closing phase G ended its guard). So these three need **a ruling, not a credential**: whether they are still
-wanted after integration, and if so, under which boundary (a MAP-INT-ARCH or an explicit crossing). **GELB
-first; the owner if GELB routes it.**
+**open-ended** under A-G485, as an ongoing invariant (GELB accepted it on that ground on 2026-11-16). So these
+three need **a ruling, not a credential**: whether they are still wanted after integration, and if so, under
+which boundary (a MAP-INT-ARCH or an explicit crossing). **GELB first; the owner if GELB routes it.**
+
+### §130 · the boundary question, WORKED BY MEASUREMENT RATHER THAN BY READING — and one sentence of mine above was wrong
+
+~~And any new fixture would now be committed **after** `PHASE_INT_BASE`, which is outside every phase range
+(A-G487: closing phase G ended its guard).~~ **WITHDRAWN IN PLACE 2026-11-16. That sentence is false, and it
+is false in the direction that would have let a fixture through.** It conflates two limbs with different
+ranges. The change-set limb uses `changedInG` = `changedInRange(phaseGBase(), phaseIntBase(), …)`, which is
+**closed** and indeed cannot see a post-base commit. The *fixtures* limb uses `changedSinceG`, which is
+**open-ended** — `git diff <base> -- <paths>` against the **working tree** plus
+`git ls-files --others` — so it sees a new fixture **immediately, before any commit at all**. The commit
+range is irrelevant to it.
+
+**MEASURED, not reasoned.** Build `9b57319d`, clean tree, disposable database on `127.0.0.1:5433` via
+`npm run -s test:isolated`, `architecture.test.ts` run alone, two peer lanes active:
+
+| experiment | what was added | result |
+|---|---|---|
+| baseline | nothing | **32/32 passed**, exit 0 |
+| 1 | an A-G48-shaped fixture appended to `test/career/mapping-field/support.ts`, **uncommitted** | **3 limbs FAIL** |
+| 2 | an A-G51-shaped fixture in a **new** file `test/career/mapping-field/support-g.ts`, uncommitted | **32/32 passed** |
+
+**The answer is (b), and the collision is wider than this file claimed.** A fixture added where this lane's
+fixtures actually live trips **three** assertions, not one — all with `expected [ Array(1) ] to deeply equal []`:
+
+- `MAP-E-ARCH · B-7: existing test data only — no fixture or support module added or changed`
+- `MAP-F-ARCH · B-F7: existing fixtures only; no provider and no API in anything phase F added`
+- `MAP-G-ARCH · existing fixtures only; no provider and no API in anything phase G added` (`architecture.test.ts:406`)
+
+The tripping assertion is the **first** limb of each, the path-set comparison at `:407`
+(`changedSinceG("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts",
+"test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")`). The *second* limb — the
+provider/API scan over added lines — is not implicated: a fixture adds no provider and no API. **The authority
+needed is therefore an amendment to the path set of all three limbs, or an explicit crossing that exempts the
+named file; and E's and F's limbs are not phase G's to amend.** That is a wider authority than this file
+previously described, and it is GELB's to route, not this lane's to take.
+
+**GELB has already ruled, and the ruling stands unaffected by the above:** *deferred until PINK's verdict is
+in*, so the shared ground truth does not move during an in-flight validation (see the table below). The
+measurement does not reopen that; it corrects **why**, and it means the fixtures could not have been added
+quietly even if nobody had ruled.
+
+**AND IT NAMES A GAP NOBODY LISTED — F-G5, outcome (c) holding at the same time as (b).** Experiment 2 passed
+**32/32**: the three limbs guard a **path list**, not the category *"a fixture"*. A fixture placed in a new
+file beside the existing ones — `support-g.ts`, or any name not matching those three literals or
+`test/**/fixtures/**` — is **invisible to every one of them**, uncommitted or committed. So the boundary that
+blocks A-G48/A-G51 blocks the honest placement and not the evasive one, and it reads as a clean pass. This is
+reported, not exploited: the fixtures are **not** being added by that route. Closing it means widening the
+limbs to the directory (`:(glob)test/career/mapping-field/support*.ts`, or the category as `§95` does for the
+evidence directory) and that is the owning lane's amendment to make, not this lane's.
+
+**NO VERDICT** (A-G36 point 2): the figures above are development readings from this lane's own gate run.
+PINK holds the verdict, and nothing here closes a pin.
 
 ### 3 · a local build and server: PERMITTED IN PRACTICE since 2026-11-10
 

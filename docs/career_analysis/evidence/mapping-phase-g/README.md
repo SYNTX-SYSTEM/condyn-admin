@@ -201,7 +201,25 @@
 > success code described the subprocess, and the subprocess was not the measurement* — A-G374, now with a
 > second subject.
 >
-> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.
+> ~~**16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.~~
+> **WITHDRAWN IN PLACE 2026-11-16 (§130).** `currency-lapse.json` read this line LAPSED, and it was
+> right: the referent moved to `980c77bf` while the claim was carried from `3231f52c`. The cause is not
+> that the quantity changed — it did not — but that **the claim named no build**, so nothing in it could
+> follow the population forward. A-G54: a figure belongs to a build, and this one did not name one.
+>
+> **RE-MEASURED, AND NOW CARRYING ITS REFERENT.** At build `9b57319d` (`frontend/mapping-phase-g`, clean
+> tree, disposable database on `127.0.0.1:5433` via `npm run -s test:isolated`, two peer lanes active at
+> load average 1.52, population `PHASE_DIRS` = `test/career/mapping-field/` + `test/career/mapping-spec/`,
+> run alone and in this order): **16 test files, 198 passed, 0 failed**, duration 18.98 s; and
+> `architecture.test.ts` **32 of 32** in a separate run of its own, 1.94 s. The quantity is unchanged from
+> the withdrawn line; what is new is that it now names the build it was taken at, which is the property
+> whose absence made the original lapse.
+>
+> **NOTE ON WHAT THIS DOES NOT DO (A-G476, measured not assumed).** A restatement of the SAME figures
+> would still have read LAPSED: `gruen-currency-lapse.mjs:368` dates a claim from the oldest blob
+> carrying its numeric signature, deliberately, so that re-typing a figure cannot refresh it. This line
+> reads CURRENT only because naming the build is new information rather than a restatement. **NO VERDICT**
+> (A-G36 point 2): these are development readings. PINK holds the verdict, and none of this closes a pin.
 >
 > *** §116 · PG-14'S PIN WAS ANCHORED TO THE LOOP WHOSE FAILURE CAUSED IT TO BE REPLACED — AND THIS
 > LANE'S OWN PG-14 DERIVATION HAD BEEN DEAD FOR NINE SECTIONS, KILLED BY §87. ***
@@ -689,6 +707,20 @@
 > defensible: a claim about the readings corpus cannot be invalidated by the audit that describes the corpus
 > writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's
 > readings. *But “defensible” is exactly the property A-G475 says every step in a downward trend has.*
+>
+> **MARKED IN PLACE 2026-11-16 (§130) — AND THIS ROW IS NOT A LAPSED CLAIM.** `currency-lapse.json`
+> reports this line LAPSED as `readings-corpus`. It is a **false positive of the class the detector
+> itself documents**: A-G460, *“this scan cannot tell a claim from a sentence about a claim”*. The
+> sentence asserts nothing about this lane's corpus — it DENIES being such a claim, in those words.
+>
+> **AND IT LOCATES AN INCOMPLETE REPAIR, WHICH IS THE PART WORTH HAVING (F-G6).** §118 narrowed the
+> staleness forms to require a corpus noun precisely because a bare `\d+ STALE` had matched this very
+> prose. The narrowing does not hold: `readings-corpus`'s surviving form `/\bstale\b[^.\n]*\breadings\b/i`
+> is evaluated over `windowAt(i)`, not over one line, so **“stale” on this line and “readings” on the
+> next satisfy the corpus-noun requirement across the line break** — and the sentence that explains the
+> exclusion is caught by the exclusion. The claim is therefore withdrawn as a claim, in place; the
+> detector's count is a FLOOR in one direction and carries at least this one false positive in the
+> other, which its own `detectorLimit` does not yet say. **NO VERDICT** (A-G36 point 2).
 > **The criterion does not absolve them; it locates them.**
 >
 > *** §123 · THE BACKTICK DEFECT CHECKED HERE, AND THE CONVERGENCE TEST APPLIED TO THE AUDITS THEMSELVES.

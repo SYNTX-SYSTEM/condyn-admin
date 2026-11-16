@@ -3,13 +3,8 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "a0475f13",
+ "head": "9b57319d",
  "referents": {
-  "test-population": {
-   "sha": "980c77bf",
-   "when": "2026-11-16T03:27:42+01:00",
-   "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
-  },
   "product-pixels": {
    "sha": "fd45f45f",
    "when": "2026-11-11T22:13:56+01:00",
@@ -21,9 +16,9 @@
    "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
   },
   "readings-corpus": {
-   "sha": "a0475f13",
-   "when": "2026-11-16T03:30:43+01:00",
-   "subject": "docs(career): mapping phase G · A-G485 readings (red, green, vacuity) and PF-13 measured at 980c77bf"
+   "sha": "8c46089b",
+   "when": "2026-11-16T04:31:40+01:00",
+   "subject": "docs(career): mapping phase G · OWNER-DECISIONS-OPEN — GELB's two rulings recorded"
   },
   "product-source": {
    "sha": "fd45f45f",
@@ -57,14 +52,14 @@
  },
  "granularity": "rows are CLAIMS (one per claim-starting line); `phrases` totals the set-phrase occurrences behind them (A-G479)",
  "counts": {
-  "claims": 16,
-  "phrases": 23,
-  "matched": 16,
-  "LAPSED": 2,
+  "claims": 17,
+  "phrases": 24,
+  "matched": 17,
+  "LAPSED": 1,
   "CURRENT": 3,
-  "SCOPED": 6,
+  "SCOPED": 7,
   "SCOPED-UNRESOLVABLE": 3,
-  "UNCOMMITTED": 0,
+  "UNCOMMITTED": 1,
   "UNDATABLE": 2,
   "UNDATED": 0
  },
@@ -113,26 +108,24 @@
    "line": 204,
    "kind": "test-population",
    "phrases": 1,
-   "text": "> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.",
-   "writtenAt": {
-    "sha": "3231f52c",
-    "when": "2026-11-12T23:12:38+01:00",
-    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   "text": "> ~~**16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.~~",
+   "scope": {
+    "shas": [
+     "980c77bf",
+     "3231f52c"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "980c77bf",
+     "3231f52c"
+    ],
+    "resolvable": true
    },
-   "effectiveAt": {
-    "sha": "3231f52c",
-    "when": "2026-11-12T23:12:38+01:00",
-    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
-   },
-   "referent": {
-    "sha": "980c77bf",
-    "when": "2026-11-16T03:27:42+01:00",
-    "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
-   },
-   "status": "LAPSED"
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 239,
+   "line": 257,
    "kind": "product-pixels",
    "phrases": 2,
    "text": "> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |",
@@ -154,7 +147,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 276,
+   "line": 294,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87 — MEASURED AT",
@@ -172,7 +165,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 375,
+   "line": 393,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
@@ -190,7 +183,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 376,
+   "line": 394,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is",
@@ -208,7 +201,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 510,
+   "line": 528,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is th",
@@ -224,7 +217,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 532,
+   "line": 550,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly",
@@ -246,7 +239,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 544,
+   "line": 562,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build",
@@ -262,7 +255,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 596,
+   "line": 614,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at",
@@ -280,7 +273,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 690,
+   "line": 708,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's",
@@ -295,14 +288,27 @@
     "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
    "referent": {
-    "sha": "a0475f13",
-    "when": "2026-11-16T03:30:43+01:00",
-    "subject": "docs(career): mapping phase G · A-G485 readings (red, green, vacuity) and PF-13 measured at 980c77bf"
+    "sha": "8c46089b",
+    "when": "2026-11-16T04:31:40+01:00",
+    "subject": "docs(career): mapping phase G · OWNER-DECISIONS-OPEN — GELB's two rulings recorded"
    },
    "status": "LAPSED"
   },
   {
-   "line": 928,
+   "line": 719,
+   "kind": "readings-corpus",
+   "phrases": 1,
+   "text": "> is evaluated over `windowAt(i)`, not over one line, so **“stale” on this line and “readings” on the",
+   "status": "UNCOMMITTED",
+   "why": "the line is in the working tree, so it is dated NOW by construction and cannot be stale; it is not yet a committed claim",
+   "referent": {
+    "sha": "8c46089b",
+    "when": "2026-11-16T04:31:40+01:00",
+    "subject": "docs(career): mapping phase G · OWNER-DECISIONS-OPEN — GELB's two rulings recorded"
+   }
+  },
+  {
+   "line": 960,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
@@ -310,7 +316,7 @@
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 989,
+   "line": 1021,
    "kind": "product-source",
    "phrases": 1,
    "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
@@ -332,7 +338,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 1046,
+   "line": 1078,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
@@ -348,7 +354,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 1162,
+   "line": 1194,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",

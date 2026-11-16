@@ -109,5 +109,12 @@
   "drawingFewerAt0_5": 9,
   "budgetStillBindsAt0_5": 0
  },
- "note": "A-G156 point 4 recorded the L1 cap as untested at 0.5. This is that computation; the decision on BODY_BUDGET.L1 is GELB's."
+ "note": "A-G156 point 4 recorded the L1 cap as untested at 0.5. This is that computation; the decision on BODY_BUDGET.L1 is GELB's.",
+ "provenance": {
+  "launchedFrom": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "launchedFromHead": "9b57319d",
+  "evidenceRootPinned": null,
+  "input": "/home/codi/Entwicklung/condyn-admin-mapping-d/docs/architecture/decision-fields/mapping-spec/layout-golden-vectors-v1.1.json",
+  "inputResolution": "DERIVED from this module's own location (§130); own-lane read, in MAP-G-ARCH G_ENTRY"
+ }
 }

@@ -7,31 +7,31 @@
   "statement": "a citation names what a document CARRIES — a quoted sentence, a pin id, a section — and a line number may accompany it but never replace it.",
   "asymmetry": "a quoted sentence that moves is still findable; a line number that moves is silently wrong with nothing to signal it."
  },
- "sourcesScanned": 47,
+ "sourcesScanned": 52,
  "selfExcluded": {
   "file": "gruen-citation-audit.mjs",
   "why": "the first form of this audit scanned its own header, which lists example citations, and counted them as findings. A-G408."
  },
  "classification": {
-  "BARE_OFFSET": 68,
-  "TARGET_NAMED": 15,
+  "BARE_OFFSET": 101,
+  "TARGET_NAMED": 17,
   "PHASE_DOC_NAMED": 3,
-  "PORT_OR_ADDRESS": 6
+  "PORT_OR_ADDRESS": 7
  },
  "portsExcludedAndWhy": {
-  "count": 6,
+  "count": 7,
   "why": "a bare grep for :\\d{2,4} counts the README's port map (:3017, :3020, :3120, :3121) as citations. CLASSIFIED rather than filtered, because a number removed without a name is a number nobody can audit — and an inflated denominator would make this record look more careless than it is, which is the direction GELB's first verifier erred in too."
  },
  "totals": {
-  "citations": 86,
-  "carryingASubjectOnTheSameLine": 69,
-  "bareOffsetWithNoSubject": 17,
-  "pctCarryingASubject": 80.2
+  "citations": 121,
+  "carryingASubjectOnTheSameLine": 95,
+  "bareOffsetWithNoSubject": 26,
+  "pctCarryingASubject": 78.5
  },
  "intoTheProductComponent": {
   "note": "the component is the one cited target this lane EDITS. §93 moved it by +7 lines net, so citations past that point are stale by my own hand.",
   "count": 8,
-  "landingOnATrivialLine": 1,
+  "landingOnATrivialLine": 0,
   "rows": [
    {
     "source": "scripts/gruen-glow.mjs",
@@ -40,7 +40,7 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "* (PersonJobMappingField.tsx:670) — the shelf is a still ring (A-F8), so a shelf glow cannot swing by design.",
-    "targetLine": "// PG-14: L0 and L1 frame the bodies they draw whole (the budget's bodies of the level; L1's context bodies ar",
+    "targetLine": "}, [drawable]);",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -51,7 +51,7 @@
     "classification": "BARE_OFFSET",
     "carriesSubject": true,
     "context": "* body group at the component's :835 carries `data-mapping-body data-rank`, and `.mf-core` and the outline sit",
-    "targetLine": "data-halo-radius={fixed(r * (VOLUME.haloNear + (VOLUME.haloFar - VOLUME.haloNear) * t))}",
+    "targetLine": "while the drawn mark is a child — so an instrument selecting `[data-mapping-halo]` gets the thing",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -62,8 +62,8 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "*     for (let pass = 0; pass < 2; pass += 1) { ... }          // PersonJobMappingField.tsx:501",
-    "targetLine": "",
-    "landsOnTrivialLine": true,
+    "targetLine": "const out: T[] = [];",
+    "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
    {
@@ -73,7 +73,7 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "*      `spaced()` at PersonJobMappingField.tsx:479 evaluates THAT EXPRESSION and does not push the body:",
-    "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
+    "targetLine": "export function l0Margin(drawnPx: number, fieldRadius: number): number {",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -84,7 +84,7 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "filterPredicate: \"sep(o,b) - r_o - r_b >= CROWDING * max(ecc_o, ecc_b)   [PersonJobMappingField.tsx:479]\",",
-    "targetLine": "/** The rim arc a sector's name runs on: clockwise over the top half, counter-clockwise under it (so it never ",
+    "targetLine": "export function l0Margin(drawnPx: number, fieldRadius: number): number {",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -95,7 +95,7 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "* `mf-core` (PersonJobMappingField.tsx:857) stops at offsets 0 / 0.4 / 0.75 / 1 with",
-    "targetLine": "<line data-testid={`mapping-trail-${testKey(b)}`} data-mapping-trail x1={fixed(move.from.x - b.x)} y1={fixed(m",
+    "targetLine": "onClick={() => openFromBody(b)}",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -106,7 +106,7 @@
     "classification": "TARGET_NAMED",
     "carriesSubject": true,
     "context": "* the one WITHOUT `mf-wave-halo` (PersonJobMappingField.tsx:711, `b.shelf ? undefined : \"mf-wave mf-wave-halo\"`).",
-    "targetLine": "return () => { cancelAnimationFrame(frame); svg.setAttribute(\"viewBox\", boxKey); };",
+    "targetLine": "svg.setAttribute(\"viewBox\", from);",
     "landsOnTrivialLine": false,
     "namesABuildWithinTwoLines": false
    },
@@ -129,6 +129,11 @@
    "notNamingABuild": 8,
    "whyThisLaneLooksTheWayItDoes": "every INSTRUMENT here pins its build in code — servedProvenance() and PROVENANCE record the served BUILD_ID and the worktree SHA on every reading, and a probe that failed to would not run. The PROSE has no such forcing function. GELB's sentence, and it is exactly right: an instrument cannot cite sloppily and still run; a paragraph can. So the unpinned citations are all in the prose, in both lanes, and that is a property of where enforcement reaches rather than of anyone's care."
   }
+ },
+ "sources": {
+  "declared": 52,
+  "scanned": 52,
+  "unresolvedAndSkipped": []
  },
  "bareOffsets": [
   {
@@ -169,15 +174,27 @@
   },
   {
    "source": "scripts/gruen-instrument.mjs",
-   "sourceLine": 214,
+   "sourceLine": 217,
    "citedLine": 670,
    "context": "/** The glows that BREATHE: only non-shelf halo circles carry mf-wave-halo (:670) — the shelf is a still ring"
   },
   {
    "source": "scripts/gruen-instrument.mjs",
-   "sourceLine": 269,
+   "sourceLine": 272,
    "citedLine": 689,
    "context": "* (:689) wrapping the opaque black seat and the dark core TOGETHER WITH the body shape, the collar and the"
+  },
+  {
+   "source": "scripts/gruen-paths.mjs",
+   "sourceLine": 14,
+   "citedLine": 20,
+   "context": "* 2026-11-16 04:20 regardless of where it was launched. Run from a second checkout it would have reported"
+  },
+  {
+   "source": "scripts/gruen-pg16-crowding-L1.mjs",
+   "sourceLine": 19,
+   "citedLine": 20,
+   "context": "* it did at 2026-11-16 04:20. A second checkout would have reported success and deposited the reading where"
   },
   {
    "source": "scripts/gruen-pg17-reanchor.mjs",
@@ -229,10 +246,52 @@
   },
   {
    "source": "README.md",
-   "sourceLine": 292,
+   "sourceLine": 459,
+   "citedLine": 374,
+   "context": "> CURRENT  :374  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 459,
+   "citedLine": 53,
+   "context": "> CURRENT  :374  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 459,
+   "citedLine": 26,
+   "context": "> CURRENT  :374  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 460,
+   "citedLine": 375,
+   "context": "> CURRENT  :375  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 460,
+   "citedLine": 53,
+   "context": "> CURRENT  :375  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 460,
+   "citedLine": 26,
+   "context": "> CURRENT  :375  readings-corpus  written 57b92bf1 2026-11-12T23:53  vs f80425ed 2026-11-12T23:26"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 613,
+   "citedLine": 276,
+   "context": "> **The rows were already CLAIM-granular and the error ran the OTHER way from theirs**: `:276` carries three"
+  },
+  {
+   "source": "README.md",
+   "sourceLine": 1193,
    "citedLine": 3020,
    "context": "first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,"
   }
  ],
- "finding": "A-G427 ON MY OWN RECORD: 86 line-number citations across 47 scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying 6 port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.\n69 of 86 (80.2 %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. 17 carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.\nINTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: 8 citations, of which 1 now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.\nA-G427 EXTENDED, ON MY OWN COMPONENT CITATIONS: 0 of 8 name a build within two lines. The drawing surface changed repeatedly across the builds this record quotes, so a bare line number into it is not a weak citation — it is a citation to nothing in particular. Every INSTRUMENT here pins its build in code because a probe that did not would not run; the prose has no such forcing function, which is where both lanes' unpinned citations live.\nNO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation."
+ "finding": "A-G427 ON MY OWN RECORD: 121 line-number citations across 52 scanned files (52 declared, 0 unresolved and NAMED rather than dropped — F-G2) (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying 7 port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.\n95 of 121 (78.5 %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. 26 carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.\nINTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: 8 citations, of which 0 now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.\nA-G427 EXTENDED, ON MY OWN COMPONENT CITATIONS: 0 of 8 name a build within two lines. The drawing surface changed repeatedly across the builds this record quotes, so a bare line number into it is not a weak citation — it is a citation to nothing in particular. Every INSTRUMENT here pins its build in code because a probe that did not would not run; the prose has no such forcing function, which is where both lanes' unpinned citations live.\nNO VERDICT (A-G36 point 2): this counts and classifies. It accuses nobody, including me — zero verified would be a finding that needs no accusation."
 }
