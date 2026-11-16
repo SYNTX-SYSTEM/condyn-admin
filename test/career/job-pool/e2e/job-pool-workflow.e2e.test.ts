@@ -22,7 +22,11 @@ import { decodeAnalysisSources } from "../../../../lib/career/job-pool/analysis-
 import { SIL_COPY } from "../../../../lib/career/view-model/sil-language";
 import { createJobPoolPostgresWorld, JOB_POOL_E2E_SOURCE, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, samplePoolJobScope, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
 
-const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/job-pool");
+// F-R10: the venue is NAMED BY THE BUILD it describes, as PINK's syntx-walk and job-scope-gate already
+// are. Unset it keeps the canonical name, which is how this suite has always behaved; set JOB_POOL_TIP to
+// YOUR tip and the run stops overwriting another build's evidence with your own measurements (A-G498).
+const EVIDENCE_TIP = process.env.JOB_POOL_TIP ?? "";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/career_analysis/evidence/job-pool${EVIDENCE_TIP === "" ? "" : `-${EVIDENCE_TIP}`}`);
 
 function resolvePlaywright(): string | null {
   const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;

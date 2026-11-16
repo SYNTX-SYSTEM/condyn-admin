@@ -21,7 +21,11 @@ import { HR_DECISION_LOOP_REGION_NAMES } from "../../../../lib/career/hr-decisio
 import { createHrLoopPostgresWorld, HR_LOOP_DECIDER, HR_LOOP_G3_PAYLOAD_MARKER, type HrLoopWorld } from "../fixtures/hr-loop-postgres-world";
 
 const PRINCIPAL_HEADERS = { "x-condyn-principal-issuer": "LOCAL_DEVELOPMENT_SELF_DECLARED", "x-condyn-principal-subject": HR_LOOP_DECIDER };
-const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/hr-decision-loop");
+// F-R10: the venue is NAMED BY THE BUILD it describes, as PINK's syntx-walk and job-scope-gate already
+// are. Unset it keeps the canonical name, which is how this suite has always behaved; set HR_LOOP_TIP to
+// YOUR tip and the run stops overwriting another build's evidence with your own measurements (A-G498).
+const EVIDENCE_TIP = process.env.HR_LOOP_TIP ?? "";
+const EVIDENCE_DIR = resolve(process.cwd(), `docs/career_analysis/evidence/hr-decision-loop${EVIDENCE_TIP === "" ? "" : `-${EVIDENCE_TIP}`}`);
 
 function resolvePlaywright(): string | null {
   const explicit = process.env.CONDYN_PLAYWRIGHT_MODULE;

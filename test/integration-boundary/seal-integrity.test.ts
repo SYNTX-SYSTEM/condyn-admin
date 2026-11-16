@@ -51,6 +51,24 @@ describe("seal integrity · no run may rewrite a sealed evidence venue (F-R10)",
       "these paths with `git checkout -- <path>` rather than committing them (F-R10)").toEqual([]);
   });
 
+  /**
+   * A-G498's full form. The sealed venues are the loud case; the SAME overwrite happens in UNSEALED evidence
+   * venues and nothing noticed. The final run of this mandate left 13 tracked files modified under
+   * `career_analysis/evidence/{job-pool,hr-decision-loop}` — overwritten historical evidence, simply without a
+   * manifest to make it obvious. Both venues are now build-named too (JOB_POOL_TIP / HR_LOOP_TIP), so the
+   * invariant is stated over ALL tracked evidence rather than only where a seal happens to sit.
+   */
+  it("no tracked file under any evidence venue is modified or deleted in the working tree", () => {
+    const venues = [...new Set(git("ls-files", "--", "docs/*/evidence/*", "docs/*/*/evidence/*")
+      .map(f => f.slice(0, f.indexOf("/evidence/") + "/evidence".length)))].sort();
+    expect(venues.length, "no evidence venue found — this limb would pass over nothing").toBeGreaterThan(0);
+    const dirty = git("status", "--porcelain=v1", "--", ...venues).filter(l => !l.startsWith("?? ")).map(l => l.trim());
+    expect(dirty,
+      "a run overwrote tracked evidence. Name your build — SYNTX_WALK_TIP / JOB_SCOPE_TIP / JOB_POOL_TIP / " +
+      "HR_LOOP_TIP — so the venue is named for YOUR tip, and restore these with `git checkout --` rather than " +
+      "committing them (A-G498/F-R10)").toEqual([]);
+  });
+
   it("every sealed manifest is itself unmodified", () => {
     const manifests = git("ls-files", "--", "*manifest.sha256");
     expect(manifests.length).toBeGreaterThan(20);
