@@ -2575,3 +2575,31 @@ Digest-Zeilen** geprüft, und ein Manifest mit Digests, das zu nichts parst, ist
 einer leeren Menge — denn genau so sah dieser Defekt von innen aus: **Stille, die sich als „hier ist nichts
 versiegelt" liest.** Nach der Reparatur: Zensus **1746**, und meine eigene Shell-Schätzung von 1747 war die
 ungenaue.
+
+### §15.17 DER SCHLUSSSTAND — EINE ZAHL, EIN RAHMEN, EIN TIP
+
+Vollständiger Lauf am Integrations-Tip **`22e3f0e2`**, nicht an einem früheren mit nachgeschobenem Delta:
+
+```
+Test Files  528 passed |  9 skipped (537)        0 fehlgeschlagen
+     Tests  3734 passed |  9 skipped (3743)      0 fehlgeschlagen
+RUNNER_EXIT=0 · 1024.96 s (17m05s)
+```
+
+**Rahmen, vollständig:** Wegwerf-Datenbank über `test:isolated` auf dem Wegwerf-Container `127.0.0.1:5433`,
+B-ENTRY unumgangen · **alle vier Evidenzorte auf `22e3f0e2` benannt** (`SYNTX_WALK_TIP`, `JOB_SCOPE_TIP`,
+`JOB_POOL_TIP`, `HR_LOOP_TIP`) · Exit-Code ungepipet gelesen · Arithmetik geprüft: 3731 am Vorgänger-Tip
+plus F-R14s drei Glieder = **3734**.
+
+**Alle vier Browser-Suiten liefen:** `job-scope-gate` 1/1 (250,2 s), `syntx-walk` 3/3 (132,5 s),
+`job-pool-workflow` 10/10 (84,5 s), `hr-decision-loop-frontend` 7/7 (43,1 s).
+
+***Verfolgte Evidenz verändert: 0.*** Der Lauf hat vier **neue, auf den Tip benannte** Orte angelegt statt
+historische zu überschreiben — F-R10s Reparatur im Ernstfall, und der Beweis, dass A-G498 nicht nur
+aufgeschrieben, sondern eingebaut ist. Die vier wurden danach entfernt.
+
+**Alle neun übersprungenen Tests sind Richtlinienentscheidungen**, namentlich: acht Gemini-Suiten plus
+`live-browser-workflow.e2e` (der Live-Gemini-Browser-Walk). **Kein einziger ist ein fehlendes Werkzeug.**
+
+**Siegel am Schlussstand:** **101 Manifeste, 1746 Einträge**, davon **1732 OK**, **0 Inhaltsabweichungen**
+und **14 unauflösbare** — alle in `lens-owner-bfe0d27`, vorbestehend, deklariert, außer Scope (§15.16).
