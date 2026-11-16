@@ -8,8 +8,15 @@ import { describe, expect, it } from "vitest";
  *
  * WHAT HAPPENED. Two browser suites carried, in their file docstrings:
  *
- *     "Playwright is not a dependency of this repository. Point CONDYN_PLAYWRIGHT_MODULE at a
- *      `playwright` package directory to run the browser section"
+ *     [WITHDRAWN F-R11 2026-11-16] "Playwright is not a dependency of this repository."
+ *     ...and: "Point CONDYN_PLAYWRIGHT_MODULE at a `playwright` package directory to run the browser section"
+ *
+ * *** THAT MARKER ON THE QUOTATION IS NOT DECORATION: WITHOUT IT THIS FILE FAILS ITS OWN LIMB. *** A guard
+ * that scans text is INSIDE ITS OWN POPULATION, and quoting the defect it was written to catch re-arms it
+ * against the evidence of its own finding. It happened three times in one sitting — here, in both repaired
+ * docstrings, and in a Python comment that kept a dead path alive by naming it. The resolution is the same
+ * every time and it is the one PINK's forward pointers need too: a withdrawn sentence stays readable and
+ * carries an ATTRIBUTABLE, DATED mark on its own line, so it is quotable without being re-read as live.
  *
  * *** THAT SENTENCE WAS TRUE WHEN WRITTEN AND FALSE AT THE TIP, BECAUSE I MADE IT FALSE. *** Closing F-R8
  * meant declaring `playwright: 1.63.0` as an exact devDependency, after which the package resolves bare and

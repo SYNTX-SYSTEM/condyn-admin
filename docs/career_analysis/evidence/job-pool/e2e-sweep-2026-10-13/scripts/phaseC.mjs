@@ -2,6 +2,7 @@
  * path), deep link and refresh. */
 import { readFileSync } from "node:fs";
 import { chromium, BASE, DIR, rec, closeOnboarding, shot, getJson } from "./common.mjs";
+import { repoFile } from "../../../support/evidence-tools.mjs";
 const A = JSON.parse(readFileSync(`${DIR}/state-A.json`, "utf8"));
 const PAIRS = [["DLL_JOBPOOL_ENGINEERING", "ENG"], ["DLL_JOBPOOL_AI_DATA", "AI"]];
 const browser = await chromium.launch({ headless: true });
@@ -12,7 +13,7 @@ const level = (page, kind, id) => page.locator(`[data-testid="syntx-field"][data
 const clickOwned = async (page, locator) => { for (let i = 0; i < 12; i += 1) { const p = await locator.evaluate(e => { const r = e.getBoundingClientRect(); const x = r.left + r.width / 2, y = r.top + r.height / 2; const h = document.elementFromPoint(x, y); return { x, y, own: h !== null && (e === h || e.contains(h)) }; }); if (p.own) { await page.mouse.click(p.x, p.y); return true; } await page.waitForTimeout(250); } return false; };
 for (const [poolName, key] of PAIRS) {
   const uploadId = A.uploads[poolName], analysisId = A.analyses[key].analysisId, tag = `${poolName}×${key}`;
-  const file = JSON.parse(readFileSync(`/home/codi/Entwicklung/condyn-admin-e2e/docs/examples/job-pool-tests/${poolName}.json`, "utf8"));
+  const file = JSON.parse(readFileSync(repoFile(`docs/examples/job-pool-tests/${poolName}.json`), "utf8"));
   const m = (await getJson(`/api/career/job-pools/${uploadId}/matches?analysisId=${analysisId}`)).body; const sup = supportOf(m);
   const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } }); const errors = []; page.on("pageerror", e => errors.push(String(e)));
   // 1 · explicit selection from the POOLS panel (analysis from the URL)

@@ -1,7 +1,8 @@
 /* DE locale and 1280x720, multi variant (LAB-ONLY browser augmentation), focus on each red orbit; plus reduced motion check. */
 import { resolve } from "node:path";
 import { analyzedField } from "./common.mjs";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
+import { playwright } from "../../../../support/evidence-tools.mjs";
+const chromium = await playwright();
 const [outDir, tag] = process.argv.slice(2);
 const browser = await chromium.launch({ headless: true });
 const aug = async (page) => page.route(/\/api\/career\/analyses\/[^/?]+$/, async (route) => { const response = await route.fetch(); const body = await response.json(); const walk = o => { if (!o || typeof o !== "object") return; if (Array.isArray(o)) return o.forEach(walk); if ("strategies" in o && "organizations" in o) { o.strategies = []; o.organizations = []; o.roles = []; } Object.values(o).forEach(walk); }; walk(body); await route.fulfill({ response, json: body }); });

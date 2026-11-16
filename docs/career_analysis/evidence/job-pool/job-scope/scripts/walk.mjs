@@ -1,4 +1,5 @@
-import { chromium } from "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
+import { playwright } from "../../../support/evidence-tools.mjs";
+const chromium = await playwright();
 const OUT = process.argv[2];
 const B = "http://127.0.0.1:41803/career/demo";
 const POOL = "JPOOL_30F7145E21F34BEF0FCE510DFC75837B", ROLE = "role_fullstack";

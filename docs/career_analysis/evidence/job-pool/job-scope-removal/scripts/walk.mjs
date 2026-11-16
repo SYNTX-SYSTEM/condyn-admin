@@ -2,7 +2,8 @@
 // disposable DB, mock worker, no Gemini). Every POST /api/career/analyze is intercepted and aborted: nothing is executed.
 // argv: <out dir> <lab state.json>
 import { readFileSync } from "node:fs";
-import { chromium } from "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs";
+import { playwright } from "../../../support/evidence-tools.mjs";
+const chromium = await playwright();
 const [OUT, STATE] = process.argv.slice(2);
 const state = JSON.parse(readFileSync(STATE, "utf8"));
 const BASE = "http://127.0.0.1:41803";

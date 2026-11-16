@@ -2,7 +2,8 @@
  * the real intake upload in the browser (plus a duplicate upload). Writes $DIR/state-A.json with the ids. */
 import { readFileSync, writeFileSync } from "node:fs";
 import { chromium, BASE, DIR, rec, closeOnboarding, shot, getJson } from "./common.mjs";
-const PDFS = [{ key: "ENG", path: "/home/codi/Entwicklung/condyn-admin-e2e/docs/examples/cv.synthetic.pdf" }, { key: "AI", path: `${DIR}/cv-ai-data.synthetic.pdf` }];
+import { repoFile } from "../../../support/evidence-tools.mjs";
+const PDFS = [{ key: "ENG", path: repoFile("docs/examples/cv.synthetic.pdf") }, { key: "AI", path: `${DIR}/cv-ai-data.synthetic.pdf` }];
 const POOLS = ["DLL_JOBPOOL_ENGINEERING", "DLL_JOBPOOL_AI_DATA", "DLL_JOBPOOL_ENTERPRISE_SCALE"];
 const EXPECTED_IDS = { DLL_JOBPOOL_ENGINEERING: "JPOOL_B94850C439974E27496FE3B1A9A076B5", DLL_JOBPOOL_AI_DATA: "JPOOL_0DCDB34AE9F8FF8A3D335BA26C9F16C2", DLL_JOBPOOL_ENTERPRISE_SCALE: "JPOOL_D39ADA99F34A60B982ADE5F929276294" };
 const state = { analyses: {}, uploads: {} };
@@ -42,7 +43,7 @@ for (const [i, pdf] of PDFS.entries()) {
   await page.getByTestId("job-pool-upload").waitFor({ state: "visible", timeout: 10000 });
   const toUpload = i === 0 ? POOLS : ["DLL_JOBPOOL_AI_DATA"];
   for (const pool of toUpload) {
-    await page.getByTestId("job-pool-file-input").setInputFiles(`/home/codi/Entwicklung/condyn-admin-e2e/docs/examples/job-pool-tests/${pool}.json`);
+    await page.getByTestId("job-pool-file-input").setInputFiles(repoFile(`docs/examples/job-pool-tests/${pool}.json`));
     await page.getByTestId("job-pool-actor-input").fill("GRUEN_E2E_SWEEP");
     await page.locator('[data-testid="job-pool-upload-btn"]:not([disabled])').waitFor({ timeout: 10000 });
     const u0 = Date.now();

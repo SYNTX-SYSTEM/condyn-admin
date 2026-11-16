@@ -2,9 +2,11 @@
  * written), persisted-but-unselected (the lab's real list), selected (normal cosmos), REDUCED, DE. Usage: node shots.mjs <outDir> <tag> */
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
+import { playwright, OUT_DIR } from "../../../../support/evidence-tools.mjs";
+import { join } from "node:path";
+const chromium = await playwright();
 const [outDir, tag] = process.argv.slice(2); mkdirSync(outDir, { recursive: true });
-const st = JSON.parse(readFileSync("/tmp/claude-1000/-home-codi-Entwicklung-condyn-admin-hr-dock/9dcc4453-2a41-4995-9a96-3a0c05b242a5/scratchpad/lab/state.json", "utf8"));
+const st = JSON.parse(readFileSync(join(OUT_DIR, "lab/state.json"), "utf8"));
 const BASE = st.base;
 const browser = await chromium.launch({ headless: true });
 const out = {};

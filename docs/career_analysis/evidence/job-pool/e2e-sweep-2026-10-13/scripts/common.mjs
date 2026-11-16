@@ -1,7 +1,9 @@
 import { appendFileSync, mkdirSync } from "node:fs";
-export const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
+import { playwright, OUT_DIR } from "../../../support/evidence-tools.mjs";
+import { join } from "node:path";
+export const chromium = await playwright();
 export const BASE = process.env.E2E_BASE ?? "http://127.0.0.1:41821";
-export const DIR = "/tmp/claude-1000/-home-codi-Entwicklung-condyn-admin-hr-dock/9dcc4453-2a41-4995-9a96-3a0c05b242a5/scratchpad/e2e";
+export const DIR = join(OUT_DIR, "e2e");
 export const RESULTS = `${DIR}/results.jsonl`;
 mkdirSync(`${DIR}/shots`, { recursive: true });
 /** One check: step (1-10), id, pass, detail, kind REAL (real worker / real upload path) | FIXTURE | DERIVED */

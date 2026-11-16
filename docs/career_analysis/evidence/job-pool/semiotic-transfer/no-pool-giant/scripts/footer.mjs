@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
-const st = JSON.parse(readFileSync("/tmp/claude-1000/-home-codi-Entwicklung-condyn-admin-hr-dock/9dcc4453-2a41-4995-9a96-3a0c05b242a5/scratchpad/lab/state.json", "utf8"));
+import { playwright, OUT_DIR } from "../../../../support/evidence-tools.mjs";
+import { join } from "node:path";
+const chromium = await playwright();
+const st = JSON.parse(readFileSync(join(OUT_DIR, "lab/state.json"), "utf8"));
 const browser = await chromium.launch({ headless: true });
 for (const [w, h] of [[1600, 1000], [1280, 720]]) {
   const page = await browser.newPage({ viewport: { width: w, height: h } });

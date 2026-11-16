@@ -1,7 +1,9 @@
 import { readFileSync } from "node:fs";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
-const sharp = (await import("/home/codi/Entwicklung/condyn-admin-job-field/node_modules/sharp/lib/index.js")).default;
-const st = JSON.parse(readFileSync("/tmp/claude-1000/-home-codi-Entwicklung-condyn-admin-hr-dock/9dcc4453-2a41-4995-9a96-3a0c05b242a5/scratchpad/lab/state.json", "utf8"));
+import { playwright, sharpModule, OUT_DIR } from "../../../../support/evidence-tools.mjs";
+import { join } from "node:path";
+const chromium = await playwright();
+const sharp = await sharpModule();
+const st = JSON.parse(readFileSync(join(OUT_DIR, "lab/state.json"), "utf8"));
 const lum = ([r, g, b]) => { const f = c => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
 const browser = await chromium.launch({ headless: true });
 for (const [w, h] of [[1600, 1000], [1280, 720]]) {

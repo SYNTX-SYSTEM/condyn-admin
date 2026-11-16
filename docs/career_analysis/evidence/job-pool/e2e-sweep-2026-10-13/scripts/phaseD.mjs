@@ -2,11 +2,12 @@
  * relative only), organization body overlap at FIELD, role cards at the largest organization (overlap, inside the viewport). */
 import { readFileSync, writeFileSync } from "node:fs";
 import { chromium, BASE, DIR, rec, closeOnboarding, shot } from "./common.mjs";
+import { repoFile } from "../../../support/evidence-tools.mjs";
 const A = JSON.parse(readFileSync(`${DIR}/state-A.json`, "utf8"));
 const anl = A.analyses.ENG.analysisId; const rows = [];
 const browser = await chromium.launch({ headless: true });
 for (const pool of ["DLL_JOBPOOL_ENGINEERING", "DLL_JOBPOOL_AI_DATA", "DLL_JOBPOOL_ENTERPRISE_SCALE"]) {
-  const up = A.uploads[pool]; const file = JSON.parse(readFileSync(`/home/codi/Entwicklung/condyn-admin-e2e/docs/examples/job-pool-tests/${pool}.json`, "utf8"));
+  const up = A.uploads[pool]; const file = JSON.parse(readFileSync(repoFile(`docs/examples/job-pool-tests/${pool}.json`), "utf8"));
   const t = []; for (let i = 0; i < 3; i += 1) { const s = Date.now(); const r = await fetch(`${BASE}/api/career/job-pools/${up}/matches?analysisId=${anl}`); await r.arrayBuffer(); t.push(Date.now() - s); }
   for (const vp of [[1600, 1000], [1280, 720]]) {
     const page = await browser.newPage({ viewport: { width: vp[0], height: vp[1] } }); const errors = []; page.on("pageerror", e => errors.push(String(e)));

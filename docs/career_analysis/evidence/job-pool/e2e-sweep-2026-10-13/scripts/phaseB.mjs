@@ -1,12 +1,13 @@
 /* Phase B (DERIVED from the REAL runs): file ⇄ API ⇄ analysis ⇄ PDF text, inverse. Per pool × analysis. */
 import { readFileSync, writeFileSync } from "node:fs";
 import { DIR, rec, getJson } from "./common.mjs";
+import { repoFile } from "../../../support/evidence-tools.mjs";
 const A = JSON.parse(readFileSync(`${DIR}/state-A.json`, "utf8"));
 const norm = s => s.replace(/[‐-―]/g, "-").replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, " ").trim().toLowerCase();
 const TEXT = { ENG: norm(readFileSync(`${DIR}/cv-eng.txt`, "utf8")), AI: norm(readFileSync(`${DIR}/cv-ai.txt`, "utf8")) };
 const summary = [];
 for (const [poolName, uploadId] of Object.entries(A.uploads)) {
-  const file = JSON.parse(readFileSync(`/home/codi/Entwicklung/condyn-admin-e2e/docs/examples/job-pool-tests/${poolName}.json`, "utf8"));
+  const file = JSON.parse(readFileSync(repoFile(`docs/examples/job-pool-tests/${poolName}.json`), "utf8"));
   const pool = await getJson(`/api/career/job-pools/${uploadId}`);
   const p = pool.body;
   rec(4, `B4.${poolName} counts file = API (orgs/roles/requirements)`, p.organizationCount === file.organizations.length && p.roleCount === file.roles.length && p.requirementCount === file.requirements.length, `${p.organizationCount}/${p.roleCount}/${p.requirementCount} vs ${file.organizations.length}/${file.roles.length}/${file.requirements.length}`, "DERIVED");

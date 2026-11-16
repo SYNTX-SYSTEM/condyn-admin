@@ -4,8 +4,9 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { analyzedField } from "./common.mjs";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
-const sharp = (await import("/home/codi/Entwicklung/condyn-admin-job-field/node_modules/sharp/lib/index.js")).default;
+import { playwright, sharpModule } from "../../../../support/evidence-tools.mjs";
+const chromium = await playwright();
+const sharp = await sharpModule();
 const [outDir, tag] = process.argv.slice(2); mkdirSync(outDir, { recursive: true });
 const browser = await chromium.launch({ headless: true });
 const result = {};

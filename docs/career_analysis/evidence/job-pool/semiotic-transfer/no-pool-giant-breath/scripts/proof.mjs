@@ -3,10 +3,12 @@
  * (3) REDUCED: no running animation, static base. Usage: node proof.mjs <outDir> */
 import { readFileSync, mkdirSync, renameSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-const { chromium } = await import("/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs");
-const sharp = (await import("/home/codi/Entwicklung/condyn-admin-job-field/node_modules/sharp/lib/index.js")).default;
+import { playwright, sharpModule, OUT_DIR } from "../../../../support/evidence-tools.mjs";
+import { join } from "node:path";
+const chromium = await playwright();
+const sharp = await sharpModule();
 const [outDir] = process.argv.slice(2); mkdirSync(resolve(outDir, "v"), { recursive: true });
-const st = JSON.parse(readFileSync("/tmp/claude-1000/-home-codi-Entwicklung-condyn-admin-hr-dock/9dcc4453-2a41-4995-9a96-3a0c05b242a5/scratchpad/lab/state.json", "utf8"));
+const st = JSON.parse(readFileSync(join(OUT_DIR, "lab/state.json"), "utf8"));
 const url = `${st.base}/career/demo?focus=FIELD&analysisId=${st.analysisId}`;
 const open = async (page) => { await page.goto(url, { waitUntil: "domcontentloaded" }); try { await page.getByTestId("guided-onboarding-overlay").waitFor({ timeout: 15000 }); await page.getByTestId("onboarding-close-btn").click(); await page.getByTestId("guided-onboarding-overlay").waitFor({ state: "detached", timeout: 15000 }); } catch {} await page.locator('[data-testid="syntx-field"][data-field-state="NO_POOL"]').waitFor({ timeout: 120000 }); await page.mouse.move(1595, 995); await page.waitForTimeout(1500); };
 const sample = (page) => page.evaluate(() => { const q = s => document.querySelector(s); const g = q('[data-testid="syntx-no-pool"]'); const text = g.lastElementChild.getBoundingClientRect(); const cs = s => getComputedStyle(q(s)); const sc = s => { const m = cs(s).transform.match(/matrix\(([\d.]+)/); return m ? Number(m[1]) : 1; }; return { aura: Number(cs("[data-sx-giant-aura]").opacity), auraScale: sc("[data-sx-giant-aura]"), seam: Number(cs("[data-sx-giant-seam]").opacity), membrane: sc("[data-sx-giant-membrane]"), ring: sc("[data-sx-giant-ring]"), text: [text.left, text.top, text.width, text.height].map(v => Math.round(v * 10) / 10) }; });

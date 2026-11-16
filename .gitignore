@@ -54,3 +54,7 @@ output_test.pdf
 
 # HR Decision Looper local manual environment state (disposable database id, ports)
 /.hr-loop-local/
+
+# bytecode from the evidence Python helpers (F-R12)
+__pycache__/
+*.pyc
