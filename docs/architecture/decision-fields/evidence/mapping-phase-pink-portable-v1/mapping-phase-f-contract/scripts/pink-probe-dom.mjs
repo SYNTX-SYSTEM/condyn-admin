@@ -1,6 +1,6 @@
 import { playwright } from "../../../mapping-phase-pink-tools/pink-tools.mjs";
 const chromium = await playwright();
-const BASE = "http://127.0.0.1:3120";
+const BASE = process.env.PINK_BASE ?? "http://127.0.0.1:3120";
 const AN = "CAN_00000000000000000000000000000002";
 const URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 const b = await chromium.launch();

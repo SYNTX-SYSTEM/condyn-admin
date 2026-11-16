@@ -12,7 +12,7 @@ import { resolve } from "node:path";
 const chromium = await playwright();
 const sharp = await sharpModule();
 const PINK_PROV_9cc06f84 = await provenance({ declaredCommit: "9cc06f84" });
-const BASE = "http://127.0.0.1:3120";
+const BASE = process.env.PINK_BASE ?? "http://127.0.0.1:3120";
 const AN = "CAN_00000000000000000000000000000002";
 const URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 const VW = Number(process.env.VW ?? 1920), VH = Number(process.env.VH ?? 1080);

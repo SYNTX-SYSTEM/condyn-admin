@@ -1,6 +1,6 @@
 # PINK — PORTABLE EVIDENCE LAYER V1 · GENERATION RECORD
 
-Generated `2026-11-16T12:22:16.405Z` from `validation/hr-decision-loop-pink` @ `aafeae46`.
+Generated `2026-11-16T12:31:48.807Z` from `validation/hr-decision-loop-pink` @ `188d9cad`.
 
 ## What this layer is, and what it is not
 
@@ -38,7 +38,7 @@ generated for; `--verify` re-derives that depth rather than trusting it.
 | in the historical seal | 83 |
 | rewritten into this layer | 80 |
 | unchanged (nothing to repair) | 3 |
-| change sites | 222 |
+| change sites | 251 |
 | historical seal entries, before and after | 167 |
 
 ## Verifying this layer
@@ -69,31 +69,31 @@ node ../mapping-phase-pink-tools/pink-layer-build.mjs --verify <layer>   # prove
 | `mapping-phase-e-contract/scripts/pink-pending-breath.mjs` | `2717d7ebac74` | `2717d7ebac74` | MATCHES SEAL | `3345df123df6` | 2 |
 | `mapping-phase-e-contract/scripts/pink-prep2.mjs` | `26b387a31b01` | `26b387a31b01` | MATCHES SEAL | `6cb44f332b3b` | 2 |
 | `mapping-phase-e-contract/scripts/pink-static-mutants.mjs` | `0d95052650af` | `0d95052650af` | MATCHES SEAL | `a6e38c06ad4b` | 2 |
-| `mapping-phase-f-contract/scripts/pink-breath-vs-floor.mjs` | `f6ffc1c54b0b` | `f6ffc1c54b0b` | MATCHES SEAL | `5f863f7a9734` | 3 |
-| `mapping-phase-f-contract/scripts/pink-class-probe.mjs` | `b134c7b559ab` | `b134c7b559ab` | MATCHES SEAL | `e9f956eb831a` | 1 |
-| `mapping-phase-f-contract/scripts/pink-continuity.mjs` | `d13dd5cd3132` | `d13dd5cd3132` | MATCHES SEAL | `5587842db9a3` | 2 |
-| `mapping-phase-f-contract/scripts/pink-continuity2.mjs` | `8c07e007f897` | `8c07e007f897` | MATCHES SEAL | `e1d4b95af4a7` | 2 |
+| `mapping-phase-f-contract/scripts/pink-breath-vs-floor.mjs` | `f6ffc1c54b0b` | `f6ffc1c54b0b` | MATCHES SEAL | `19aacf5c313a` | 4 |
+| `mapping-phase-f-contract/scripts/pink-class-probe.mjs` | `b134c7b559ab` | `b134c7b559ab` | MATCHES SEAL | `23ce44829312` | 2 |
+| `mapping-phase-f-contract/scripts/pink-continuity.mjs` | `d13dd5cd3132` | `d13dd5cd3132` | MATCHES SEAL | `831f1c92e0f9` | 3 |
+| `mapping-phase-f-contract/scripts/pink-continuity2.mjs` | `8c07e007f897` | `8c07e007f897` | MATCHES SEAL | `9087e5e58539` | 3 |
 | `mapping-phase-f-contract/scripts/pink-facade.mts` | `15c0d0d669f3` | `15c0d0d669f3` | MATCHES SEAL | `a1cc975c848b` | 1 |
-| `mapping-phase-f-contract/scripts/pink-floor-regions.mjs` | `900b8510db22` | `900b8510db22` | MATCHES SEAL | `8c0c5904e996` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs` | `611af804462e` | `611af804462e` | MATCHES SEAL | `4e826b2ec08d` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs` | `c77c70f02fc1` | `c77c70f02fc1` | MATCHES SEAL | `72538211ae56` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs` | `b55c1d2cc69c` | `b55c1d2cc69c` | MATCHES SEAL | `a4543fba823d` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs` | `a708875a17e3` | `a708875a17e3` | MATCHES SEAL | `22c40a9e95d6` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs` | `11d77e279f03` | `11d77e279f03` | MATCHES SEAL | `16b93519436c` | 4 |
-| `mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs` | `2f79541f31d1` | `2f79541f31d1` | MATCHES SEAL | `241ceebcbe43` | 4 |
-| `mapping-phase-f-contract/scripts/pink-pf8-tip.mjs` | `507a0575e7e8` | `507a0575e7e8` | MATCHES SEAL | `0ba2a2b546e9` | 4 |
-| `mapping-phase-f-contract/scripts/pink-pf8-under.mjs` | `a4b7ffa3197c` | `a4b7ffa3197c` | MATCHES SEAL | `05aeb9768222` | 2 |
-| `mapping-phase-f-contract/scripts/pink-pf8-window.mjs` | `3c501fbf8dce` | `3c501fbf8dce` | MATCHES SEAL | `855013a85e4a` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pg1-attr.mjs` | `4ea03b3d9198` | `4ea03b3d9198` | MATCHES SEAL | `3e81444afa5a` | 2 |
-| `mapping-phase-f-contract/scripts/pink-pg1.mjs` | `9b72681e85cc` | `9b72681e85cc` | MATCHES SEAL | `2bceb761e502` | 3 |
-| `mapping-phase-f-contract/scripts/pink-pixels-floor.mjs` | `82a810cd6032` | `82a810cd6032` | MATCHES SEAL | `78ccbdb4b97d` | 2 |
-| `mapping-phase-f-contract/scripts/pink-pixels.mjs` | `44caa40ea60f` | `44caa40ea60f` | MATCHES SEAL | `2a2675293b36` | 4 |
-| `mapping-phase-f-contract/scripts/pink-probe-dom.mjs` | `5e667c8d877f` | `5e667c8d877f` | MATCHES SEAL | `a509411bf4f5` | 1 |
-| `mapping-phase-f-contract/scripts/pink-probe-rings.mjs` | `cd00e8292ea5` | `cd00e8292ea5` | MATCHES SEAL | `1cf77c98ffd2` | 1 |
-| `mapping-phase-f-contract/scripts/pink-rings-pixels.mjs` | `246b935dc910` | `246b935dc910` | MATCHES SEAL | `4b3648e2b161` | 3 |
-| `mapping-phase-f-contract/scripts/pink-shot-timing.mjs` | `576903e32419` | `576903e32419` | MATCHES SEAL | `b2763c17d9d9` | 2 |
-| `mapping-phase-f-contract/scripts/pink-tip-probe.mjs` | `0d1be70dda9d` | `0d1be70dda9d` | MATCHES SEAL | `770dae8f3553` | 1 |
-| `mapping-phase-f-contract/scripts/pink-tip-timing.mjs` | `9a73d062c9c5` | `9a73d062c9c5` | MATCHES SEAL | `c9a8512fccce` | 2 |
+| `mapping-phase-f-contract/scripts/pink-floor-regions.mjs` | `900b8510db22` | `900b8510db22` | MATCHES SEAL | `fa15135cdb95` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs` | `611af804462e` | `611af804462e` | MATCHES SEAL | `a324aa38458c` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs` | `c77c70f02fc1` | `c77c70f02fc1` | MATCHES SEAL | `98e70f6eed3a` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs` | `b55c1d2cc69c` | `b55c1d2cc69c` | MATCHES SEAL | `515166040b6d` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs` | `a708875a17e3` | `a708875a17e3` | MATCHES SEAL | `e05d8451c05d` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs` | `11d77e279f03` | `11d77e279f03` | MATCHES SEAL | `39142fb43e4a` | 5 |
+| `mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs` | `2f79541f31d1` | `2f79541f31d1` | MATCHES SEAL | `26e4e298915b` | 5 |
+| `mapping-phase-f-contract/scripts/pink-pf8-tip.mjs` | `507a0575e7e8` | `507a0575e7e8` | MATCHES SEAL | `cab43dffbd0e` | 5 |
+| `mapping-phase-f-contract/scripts/pink-pf8-under.mjs` | `a4b7ffa3197c` | `a4b7ffa3197c` | MATCHES SEAL | `926d81740fa3` | 3 |
+| `mapping-phase-f-contract/scripts/pink-pf8-window.mjs` | `3c501fbf8dce` | `3c501fbf8dce` | MATCHES SEAL | `d40e5ab56e49` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pg1-attr.mjs` | `4ea03b3d9198` | `4ea03b3d9198` | MATCHES SEAL | `d27b23516504` | 3 |
+| `mapping-phase-f-contract/scripts/pink-pg1.mjs` | `9b72681e85cc` | `9b72681e85cc` | MATCHES SEAL | `d4c81a6e59e6` | 4 |
+| `mapping-phase-f-contract/scripts/pink-pixels-floor.mjs` | `82a810cd6032` | `82a810cd6032` | MATCHES SEAL | `12982eb789b7` | 3 |
+| `mapping-phase-f-contract/scripts/pink-pixels.mjs` | `44caa40ea60f` | `44caa40ea60f` | MATCHES SEAL | `55085d7a6a33` | 5 |
+| `mapping-phase-f-contract/scripts/pink-probe-dom.mjs` | `5e667c8d877f` | `5e667c8d877f` | MATCHES SEAL | `72d39ec37b85` | 2 |
+| `mapping-phase-f-contract/scripts/pink-probe-rings.mjs` | `cd00e8292ea5` | `cd00e8292ea5` | MATCHES SEAL | `5e0daa5caf8a` | 2 |
+| `mapping-phase-f-contract/scripts/pink-rings-pixels.mjs` | `246b935dc910` | `246b935dc910` | MATCHES SEAL | `3edf288060be` | 4 |
+| `mapping-phase-f-contract/scripts/pink-shot-timing.mjs` | `576903e32419` | `576903e32419` | MATCHES SEAL | `8a7b412e6931` | 3 |
+| `mapping-phase-f-contract/scripts/pink-tip-probe.mjs` | `0d1be70dda9d` | `0d1be70dda9d` | MATCHES SEAL | `101f228e1b37` | 2 |
+| `mapping-phase-f-contract/scripts/pink-tip-timing.mjs` | `9a73d062c9c5` | `9a73d062c9c5` | MATCHES SEAL | `100b956e88fd` | 3 |
 | `mapping-phase-g-contract/scripts/pink-ag16-criterion.py` | `64f1d4fdc418` | `64f1d4fdc418` | MATCHES SEAL | `—` | — |
 | `mapping-phase-g-contract/scripts/pink-ag16-ledger.py` | `db2b1c292479` | `db2b1c292479` | MATCHES SEAL | `—` | — |
 | `mapping-phase-g-contract/scripts/pink-ag340-capability-g.mjs` | `9d76fd6f7a91` | `9d76fd6f7a91` | MATCHES SEAL | `edb5ea0ceeda` | 4 |
@@ -109,8 +109,8 @@ node ../mapping-phase-pink-tools/pink-layer-build.mjs --verify <layer>   # prove
 | `mapping-phase-g-contract/scripts/pink-depthgain-normalisation-g.mjs` | `253515580af1` | `253515580af1` | MATCHES SEAL | `9cf932a83577` | 2 |
 | `mapping-phase-g-contract/scripts/pink-facade.mts` | `15c0d0d669f3` | `15c0d0d669f3` | MATCHES SEAL | `a1cc975c848b` | 1 |
 | `mapping-phase-g-contract/scripts/pink-floor-g.mjs` | `fdef87ae8088` | `fdef87ae8088` | MATCHES SEAL | `49f92f790c74` | 4 |
-| `mapping-phase-g-contract/scripts/pink-glow-travel.mjs` | `ed3c20dd3961` | `ed3c20dd3961` | MATCHES SEAL | `f18a8d6ac380` | 3 |
-| `mapping-phase-g-contract/scripts/pink-halo-mask.mjs` | `80b933bc1d41` | `80b933bc1d41` | MATCHES SEAL | `017666aa452c` | 3 |
+| `mapping-phase-g-contract/scripts/pink-glow-travel.mjs` | `ed3c20dd3961` | `ed3c20dd3961` | MATCHES SEAL | `0e05910f7b18` | 4 |
+| `mapping-phase-g-contract/scripts/pink-halo-mask.mjs` | `80b933bc1d41` | `80b933bc1d41` | MATCHES SEAL | `806e946213e3` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pf11-pf6-blurred-g.mjs` | `9401e6c52ee9` | `9401e6c52ee9` | MATCHES SEAL | `9e69fbe67f36` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pf15-g.mjs` | `3005a474b0fa` | `3005a474b0fa` | MATCHES SEAL | `dfeed1afc899` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pf15-shelf-alpha-sweep-g.mjs` | `948b78f3c626` | `948b78f3c626` | MATCHES SEAL | `7ee21b496aeb` | 4 |
@@ -127,14 +127,14 @@ node ../mapping-phase-pink-tools/pink-layer-build.mjs --verify <layer>   # prove
 | `mapping-phase-g-contract/scripts/pink-pg10-limb3-g.mjs` | `39325cbde602` | `39325cbde602` | MATCHES SEAL | `e5bee978dda2` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pg10-radial-pg23-g.mjs` | `d9ebd477bdd7` | `d9ebd477bdd7` | MATCHES SEAL | `7ba14967fabf` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pg14-label-containment-g.mjs` | `9033168194c9` | `9033168194c9` | MATCHES SEAL | `d4608024d15f` | 3 |
-| `mapping-phase-g-contract/scripts/pink-pg17-extent-g.mjs` | `f29a9a2f6258` | `f29a9a2f6258` | MATCHES SEAL | `044872aadab4` | 3 |
-| `mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs` | `cb2aee3d88b0` | `cb2aee3d88b0` | MATCHES SEAL | `47fd7338b173` | 3 |
+| `mapping-phase-g-contract/scripts/pink-pg17-extent-g.mjs` | `f29a9a2f6258` | `f29a9a2f6258` | MATCHES SEAL | `77174f5bd79a` | 4 |
+| `mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs` | `cb2aee3d88b0` | `cb2aee3d88b0` | MATCHES SEAL | `424eefbf3bd7` | 4 |
 | `mapping-phase-g-contract/scripts/pink-pg23-alpha-g.mjs` | `de6b5c41102a` | `de6b5c41102a` | MATCHES SEAL | `174640c0bf87` | 3 |
 | `mapping-phase-g-contract/scripts/pink-pg23-diag-g.mjs` | `f0a673bedc59` | `f0a673bedc59` | MATCHES SEAL | `128f0014ed2e` | 2 |
 | `mapping-phase-g-contract/scripts/pink-pg3-sizefloor-g.mjs` | `71966ec2b602` | `71966ec2b602` | MATCHES SEAL | `2bea7dce3bb5` | 3 |
 | `mapping-phase-g-contract/scripts/pink-seat-occluder-g.mjs` | `2a8455133834` | `2a8455133834` | MATCHES SEAL | `cadf7efc6e17` | 1 |
 | `mapping-phase-g-contract/scripts/pink-shelf-g.mjs` | `f10253648efc` | `f10253648efc` | MATCHES SEAL | `823dd65960e5` | 4 |
-| `mapping-phase-g-contract/scripts/pink-taxonomy-g.mjs` | `b74ef75e6ba4` | `b74ef75e6ba4` | MATCHES SEAL | `90a8c42a3801` | 3 |
+| `mapping-phase-g-contract/scripts/pink-taxonomy-g.mjs` | `b74ef75e6ba4` | `b74ef75e6ba4` | MATCHES SEAL | `dadc56d2c764` | 4 |
 | `mapping-phase-g-contract/scripts/pink-tip-timing-g.mjs` | `d90963f6d1a3` | `d90963f6d1a3` | MATCHES SEAL | `d5c8f3f537d7` | 4 |
 | `mapping-phase-g-contract/scripts/pink-v11-reference.py` | `e766ac834b3f` | `e766ac834b3f` | MATCHES SEAL | `—` | — |
 

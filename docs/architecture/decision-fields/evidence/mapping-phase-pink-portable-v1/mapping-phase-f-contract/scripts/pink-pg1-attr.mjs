@@ -1,7 +1,7 @@
 import { playwright, sharpModule } from "../../../mapping-phase-pink-tools/pink-tools.mjs";
 const chromium = await playwright();
 const sharp = await sharpModule();
-const BASE="http://127.0.0.1:3120",AN="CAN_00000000000000000000000000000002";const URL=`${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
+const BASE=process.env.PINK_BASE ?? "http://127.0.0.1:3120",AN="CAN_00000000000000000000000000000002";const URL=`${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 const LUT=new Float64Array(256);for(let i=0;i<256;i++){const c=i/255;LUT[i]=c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);}
 const groups={bodies:'[data-mapping-body]',arcs:'[data-mapping-arc]',beams:'[data-beam]',nodes:'[data-mapping-node]',text:'[data-mapping-sector]',rings:'[data-testid^="mapping-ring"]'};
 const b=await chromium.launch();const ctx=await b.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1,reducedMotion:"reduce"});const page=await ctx.newPage();

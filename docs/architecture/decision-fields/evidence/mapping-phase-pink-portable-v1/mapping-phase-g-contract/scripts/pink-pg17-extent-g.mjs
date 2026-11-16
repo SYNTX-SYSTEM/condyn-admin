@@ -23,7 +23,7 @@
 import { playwright, provenance } from "../../../mapping-phase-pink-tools/pink-tools.mjs";
 const PINK_PROV_3ec8457d = await provenance({ declaredCommit: "3ec8457d", declaredBuildId: "xCD8LBxdjnP97-2Gjs5yr" });
 const chromium = await playwright();
-const BASE = "http://127.0.0.1:3122", AN = "CAN_00000000000000000000000000000002";
+const BASE = process.env.PINK_BASE ?? "http://127.0.0.1:3122", AN = "CAN_00000000000000000000000000000002";
 const URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 
 const SEAT_PAD_PX = 1.6, STROKE_MIN_PX = 1.2, FLOOR_HEADROOM = 1.002, SIZE_FLOOR_PX = 12;

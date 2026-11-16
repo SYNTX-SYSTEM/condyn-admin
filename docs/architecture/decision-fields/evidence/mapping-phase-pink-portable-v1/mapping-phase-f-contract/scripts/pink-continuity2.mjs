@@ -5,7 +5,7 @@
 import { playwright, sharpModule } from "../../../mapping-phase-pink-tools/pink-tools.mjs";
 const chromium = await playwright();
 const sharp = await sharpModule();
-const BASE="http://127.0.0.1:3120",AN="CAN_00000000000000000000000000000002";
+const BASE=process.env.PINK_BASE ?? "http://127.0.0.1:3120",AN="CAN_00000000000000000000000000000002";
 const URL=`${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 const TAG=process.env.TAG||"?",VW=+(process.env.VW||1920),VH=+(process.env.VH||1080);
 const LUT=new Float64Array(256);for(let i=0;i<256;i++){const c=i/255;LUT[i]=c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);}

@@ -7,7 +7,7 @@ import { playwright, sharpModule, provenance } from "../../../mapping-phase-pink
 const chromium = await playwright();
 const sharp = await sharpModule();
 const PINK_PROV_9cc06f84 = await provenance({ declaredCommit: "9cc06f84" });
-const BASE = "http://127.0.0.1:3120", AN = "CAN_00000000000000000000000000000002";
+const BASE = process.env.PINK_BASE ?? "http://127.0.0.1:3120", AN = "CAN_00000000000000000000000000000002";
 const URL = `${BASE}/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=${AN}`;
 const LUT = new Float64Array(256); for (let i = 0; i < 256; i++) { const c = i / 255; LUT[i] = c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
 const lum = (raw, n, ch) => { const L = new Float32Array(n); for (let p = 0, q = 0; p < n; p++, q += ch) L[p] = 0.2126 * LUT[raw[q]] + 0.7152 * LUT[raw[q + 1]] + 0.0722 * LUT[raw[q + 2]]; return L; };

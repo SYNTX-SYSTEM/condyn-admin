@@ -152,6 +152,7 @@ const SH_USE    = /const sharp = \(await import\(SHARP\)\)\.default;[ \t]*/;
 const DEAD_STR  = /"\/tmp\/claude-1000\/-home-codi-Entwicklung\/a060e5e1-d3f6-49b1-ab41-8710c6e835d7\/scratchpad\/[^"]*"/g;
 const DEAD_TPL  = /`\/tmp\/claude-1000\/-home-codi-Entwicklung\/a060e5e1-d3f6-49b1-ab41-8710c6e835d7\/scratchpad\/([^`]*)`/g;
 const ABS_WT    = /"\/home\/codi\/Entwicklung\/condyn-admin-pink-visual-[eg]"/g;
+const BARE_BASE = /\b([A-Za-z_$][A-Za-z0-9_$]*)(\s*=\s*)("http:\/\/127\.0\.0\.1:[0-9]+")/g;
 const COMMIT_F  = /\bcommit\s*:\s*"([0-9a-f]{7,40})"/g;
 const BUILDID_F = /\bbuildId\s*:\s*"([A-Za-z0-9_-]{8,})"/g;
 const PF8_OUT   = /writeFileSync\(`outputs\/(PF8-RINGS-RETAKE-\$\{LEVEL\}\.json)`/;
@@ -184,6 +185,18 @@ function rewrite(src) {
   if (PF8_OUT.test(out)) {
     out = out.replace(PF8_OUT, (_, tail) => "writeFileSync(resolve(OUT_DIR, `" + tail + "`)");
     changes.push("E cwd-relative outputs/ write -> OUT_DIR");
+  }
+
+  // G — THE STAND PORT. 29 instruments (24 phase-f, 5 phase-g) declared the stand as a bare literal with
+  // no escape hatch, so they can only ever address one port on one machine. *** THE DECLARED PORT IS KEPT
+  // AS THE DEFAULT. *** Two ports are in use across the population (:3120 and :3122) and collapsing them
+  // onto one would change what an instrument measures, which is a re-measurement and not a repair. The
+  // rewrite only adds the override, in the exact form the OTHER 42 instruments already use — so unlike the
+  // provenance half, this limb does have a demonstrated in-tree shape to generalise.
+  const nBase = (out.match(BARE_BASE) ?? []).length;
+  if (nBase) {
+    out = out.replace(BARE_BASE, (_, name, eq, lit) => `${name}${eq}process.env.PINK_BASE ?? ${lit}`);
+    changes.push(`G ${nBase} bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>`);
   }
 
   // F — PROVENANCE. The emitted label becomes the OBSERVED identity; the declared literal is kept in

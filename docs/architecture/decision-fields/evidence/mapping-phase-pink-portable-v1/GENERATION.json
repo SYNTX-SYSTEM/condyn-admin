@@ -3,10 +3,10 @@
   "layerVersion": "v1",
   "what": "A separately versioned, portable regeneration of the 83 PINK instruments sealed in mapping-phase-{e,f,g}-contract. The historical seal is unchanged; this layer is additive.",
   "ownerDecision": "Integrate PINK's portability repair over a new, separately versioned evidence layer. Keep all 167 historical seal entries unchanged.",
-  "generatedAtUTC": "2026-11-16T12:22:16.405Z",
+  "generatedAtUTC": "2026-11-16T12:31:48.807Z",
   "generator": {
     "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-layer-build.mjs",
-    "digest": "3adf929039dc16b973f60b509903a34060e514af8141da250bb171f8ee11f5df"
+    "digest": "c9e985772102164080d061f5e0c6f6c0bbad48658eb24f78ff7a67be065bffbe"
   },
   "resolver": {
     "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-tools.mjs",
@@ -17,7 +17,7 @@
     "whyNotCopied": "pink-tools.mjs derives REPO_ROOT five levels up from its own directory. A copy at <layer>/mapping-phase-pink-tools/ is one level too deep, derives REPO_ROOT=<repo>/docs, finds no .git and THROWS AT IMPORT by its own guard. Measured, not reasoned. One canonical copy also cannot drift."
   },
   "sourceRef": {
-    "commit": "aafeae46c6e5bc676c423e9efc53790dee23ebe6",
+    "commit": "188d9cad6d8821d7968cb7dcfcba5b79e18c8c5e",
     "branch": "validation/hr-decision-loop-pink"
   },
   "historicalSeal": {
@@ -47,7 +47,7 @@
     "unsealed": [],
     "rewritten": 80,
     "unchanged": 3,
-    "changeSites": 222
+    "changeSites": 251
   },
   "instruments": [
     {
@@ -291,6 +291,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -298,7 +299,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-breath-vs-floor.mjs",
-      "outputDigest": "5f863f7a97340d8dee4cdfa03c450247051a4fd555293c695711d40b31fb918e"
+      "outputDigest": "19aacf5c313a3e02509eac38023ad67c69ad52e53f0311c9199352fa4874975d"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-class-probe.mjs",
@@ -306,12 +307,13 @@
       "sourceDigestRecomputed": "b134c7b559ab4168eb5b657474c9f282eebb5604dfba0248cb75030be37f1065",
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
-        "A playwright direct import -> resolver"
+        "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-class-probe.mjs",
-      "outputDigest": "e9f956eb831a22f7e4d29bd1df581f4f4b51de72fa7e4080b99d21aab94bd7ec"
+      "outputDigest": "23ce44829312b57e1e66e51d99efe02ad2493886665df2f75d0f122f8fa40c3b"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-continuity.mjs",
@@ -320,12 +322,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-continuity.mjs",
-      "outputDigest": "5587842db9a33e3d123f644c028872452a6bc021a43a404d1528e23f79f52206"
+      "outputDigest": "831f1c92e0f923425a8bea9def4d940933396881781d6f955c0606aa636d3e1c"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-continuity2.mjs",
@@ -334,12 +337,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-continuity2.mjs",
-      "outputDigest": "e1d4b95af4a799304e89632cf5dfc17fc05e3d17594452f80b60ef83183a4bad"
+      "outputDigest": "9087e5e585393b65eb329ec918f32c57a54ba9f1d7fd7c93e3fa91496ef42c6c"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-facade.mts",
@@ -362,6 +366,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -369,7 +374,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-floor-regions.mjs",
-      "outputDigest": "8c0c5904e996e84bdf65d7907a40f5843399330eebbbeaf5739e21840c8d8bb7"
+      "outputDigest": "fa15135cdb95497baf41d5fb57b05a26ab3c1e9438e0691eff3de458a673c394"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs",
@@ -379,6 +384,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -386,7 +392,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs",
-      "outputDigest": "4e826b2ec08d8db0c7beaf4a7fae7332702d0c6bf1c14042cfca4b5f1e012c0b"
+      "outputDigest": "a324aa38458c914164428d8018ce71733a80731efb471442dbfefa38242529fa"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs",
@@ -396,6 +402,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -403,7 +410,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs",
-      "outputDigest": "72538211ae56fc6526a99be6fedc3e9aad1d95a02cc705834dc48427bebfcef4"
+      "outputDigest": "98e70f6eed3afc097f939463921ce20a0b1dd764f98f3b205e677f7fd3d4d067"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs",
@@ -413,6 +420,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -420,7 +428,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs",
-      "outputDigest": "a4543fba823d61b4fb457ed77260ebb48aae2f77eb76467fdae8f89f8e6bf901"
+      "outputDigest": "515166040b6d3bdb226de4770b3b2e4262b8bc96e6dbcef56a846e59179cadd2"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs",
@@ -430,6 +438,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -437,7 +446,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs",
-      "outputDigest": "22c40a9e95d6cf926e4e8a887a6db25e12d098f72b26fe414c5d708bcf57d8f1"
+      "outputDigest": "e05d8451c05d666a6b64c031dc14c1cc42b5584c1d38f8fe04f145a34a18a688"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs",
@@ -448,6 +457,7 @@
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
         "1 dead-session scratch path(s) -> OUT_DIR",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -455,7 +465,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs",
-      "outputDigest": "16b93519436cde2afd3930196618b7b727ef0e821dd70b58a5722acb38203e73"
+      "outputDigest": "39142fb43e4a0bdbea6209573b1599e764ce73932762dad313d1048cd00ce72e"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs",
@@ -466,6 +476,7 @@
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
         "1 dead-session scratch path(s) -> OUT_DIR",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -473,7 +484,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs",
-      "outputDigest": "241ceebcbe4376187e03eac83077ee02b7093115926d0d71f8219f4026c6d3be"
+      "outputDigest": "26e4e298915b6ef8cc22d3921fdba3537e7f4fd6fe81fcc31369f42564b7abea"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-tip.mjs",
@@ -484,6 +495,7 @@
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
         "1 dead-session scratch path(s) -> OUT_DIR",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared ef466ca8)"
       ],
       "declaredCommits": [
@@ -491,7 +503,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-tip.mjs",
-      "outputDigest": "0ba2a2b546e99a898c1dcccd27238d3c96a85502b7f44a5f7914b8e7ccbeb3ca"
+      "outputDigest": "cab43dffbd0e3a52bf06e49f1189ad4e9af6e466866ba96c53cd23cc5f1a4d88"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-under.mjs",
@@ -500,12 +512,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-under.mjs",
-      "outputDigest": "05aeb97682224f05af3f8eacc6a9654e316835b805a427a6c728e6a01aeb72b7"
+      "outputDigest": "926d81740fa3d1e5f8a9445dd375f19283d54ed4523af68a3cd01c682ea8452c"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pf8-window.mjs",
@@ -515,6 +528,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -522,7 +536,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pf8-window.mjs",
-      "outputDigest": "855013a85e4a5767fd9c7bc10be37d636652431fe5ce484d62cc268f051a03aa"
+      "outputDigest": "d40e5ab56e49f417afc3a2e9b5ccece7138b56b62f3ed4574874b0244ccbb806"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pg1-attr.mjs",
@@ -531,12 +545,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pg1-attr.mjs",
-      "outputDigest": "3e81444afa5aed021db51d452ae0bfded3b108c045e9c45236a1b201720c633b"
+      "outputDigest": "d27b235165043bc92ed0e539b77a9b45dc33a57ce4313b3e5e911041e4b12515"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pg1.mjs",
@@ -546,6 +561,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 93c47e03)"
       ],
       "declaredCommits": [
@@ -553,7 +569,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pg1.mjs",
-      "outputDigest": "2bceb761e502898ce03ba1bfdd5e666e8536d15c4071cddfa3a3fb861a25dc25"
+      "outputDigest": "d4c81a6e59e6bc7d0190c80cb7283b62891de76f5d8b7dcc0b161b7486c0a982"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pixels-floor.mjs",
@@ -562,12 +578,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pixels-floor.mjs",
-      "outputDigest": "78ccbdb4b97d441597fe3584c66714f33987a16b428e46e977e5449cf411fbdb"
+      "outputDigest": "12982eb789b731b9dca144532f36575420d4060b429a41593684eba51f33ffe3"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-pixels.mjs",
@@ -578,6 +595,7 @@
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
         "1 dead-session scratch path(s) -> OUT_DIR",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -585,7 +603,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-pixels.mjs",
-      "outputDigest": "2a2675293b3699316c8fc6760ebbfffefabe6cdd90224eb645939f2a4de124cc"
+      "outputDigest": "55085d7a6a338ea9bc5366bae40da03b0484b23eabe95d9947973031d1fddde3"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-probe-dom.mjs",
@@ -593,12 +611,13 @@
       "sourceDigestRecomputed": "5e667c8d877feb7bdc05cd6a66ac6708ecda5b329f2e36d6d54cf6c1c8ddaa56",
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
-        "A playwright direct import -> resolver"
+        "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-probe-dom.mjs",
-      "outputDigest": "a509411bf4f53fac9fce423fc422a2264a6b63df62cbbb9b40bc365a4132b951"
+      "outputDigest": "72d39ec37b85690c91da760d259fa800606999792d390b1d7f3ad3d8b201deed"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-probe-rings.mjs",
@@ -606,12 +625,13 @@
       "sourceDigestRecomputed": "cd00e8292ea5f03df05f886c5dbc721a24e41fc0fddd5339e822fa642a1912d0",
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
-        "A playwright direct import -> resolver"
+        "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-probe-rings.mjs",
-      "outputDigest": "1cf77c98ffd2c25a177f7b755f0c155f6e698d40f9d4d0820019b1a98dfc3877"
+      "outputDigest": "5e0daa5caf8a3f618b69f3debecb8483e97fc4dcbeb56206ce8bcbd329b1bed1"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-rings-pixels.mjs",
@@ -621,6 +641,7 @@
       "changeClasses": [
         "A playwright direct import -> resolver",
         "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
       ],
       "declaredCommits": [
@@ -628,7 +649,7 @@
       ],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-rings-pixels.mjs",
-      "outputDigest": "4b3648e2b161a4fc99620bfd3b9aa00246c4a1e5ccb01aa9c2e572dcf6d6cb8b"
+      "outputDigest": "3edf288060be0443eb7c83214171daaef848acfa0376e8546602bf95de11b741"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-shot-timing.mjs",
@@ -637,12 +658,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-shot-timing.mjs",
-      "outputDigest": "b2763c17d9d90127090325a0ce39835da21e41b1cb6c8f0ba7deceb242fdadbb"
+      "outputDigest": "8a7b412e693143f7bc5a1688f215169bced6ff23def0f1971e77b48bfbc5ce16"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-tip-probe.mjs",
@@ -650,12 +672,13 @@
       "sourceDigestRecomputed": "0d1be70dda9d76cd920a84bb9b717291e214f164add369c15947e68ecf65a068",
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
-        "A playwright direct import -> resolver"
+        "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-tip-probe.mjs",
-      "outputDigest": "770dae8f355374e3266dff3c1a6fa5f6240499858dd29416f2410c7b87256f5f"
+      "outputDigest": "101f228e1b379bed3cf68bb4287b8a64386b11b6e51670d2f3b366065f62b00f"
     },
     {
       "source": "mapping-phase-f-contract/scripts/pink-tip-timing.mjs",
@@ -664,12 +687,13 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
-        "C sharp direct import -> resolver"
+        "C sharp direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>"
       ],
       "declaredCommits": [],
       "declaredBuildIds": [],
       "output": "mapping-phase-f-contract/scripts/pink-tip-timing.mjs",
-      "outputDigest": "c9a8512fccce351c1eae9676659b62b8e998d60227fe31db25d0260dd7c2b2fc"
+      "outputDigest": "100b956e88fd0f0c5f981b48b87793a06b62364acbca6864cdf1153576bfb1a2"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-ag16-criterion.py",
@@ -925,6 +949,7 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
         "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
       ],
@@ -935,7 +960,7 @@
         "xCD8LBxdjnP97-2Gjs5yr"
       ],
       "output": "mapping-phase-g-contract/scripts/pink-glow-travel.mjs",
-      "outputDigest": "f18a8d6ac380d241ea1aab35cc5d8e211ed8e1dc9251a26da2450a191eb5be10"
+      "outputDigest": "0e05910f7b1861602a10876588e8c329f6719151ddb2eb2fd350dc28897181c3"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-halo-mask.mjs",
@@ -944,6 +969,7 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
         "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
       ],
@@ -954,7 +980,7 @@
         "xCD8LBxdjnP97-2Gjs5yr"
       ],
       "output": "mapping-phase-g-contract/scripts/pink-halo-mask.mjs",
-      "outputDigest": "017666aa452c57e74c4bb1b6923efb29c44818150d609278991a700d0b8fc089"
+      "outputDigest": "806e946213e39ae40e65639c395df48b1eea490ebe290f005b1a309a31b2ea0a"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-pf11-pf6-blurred-g.mjs",
@@ -1276,6 +1302,7 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
         "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
       ],
@@ -1286,7 +1313,7 @@
         "xCD8LBxdjnP97-2Gjs5yr"
       ],
       "output": "mapping-phase-g-contract/scripts/pink-pg17-extent-g.mjs",
-      "outputDigest": "044872aadab481ac254c14cb89ce4fe5a7b8c8651e313bd47685bff5a2c2ef8b"
+      "outputDigest": "77174f5bd79a6a04f4ad1ccad485cd1a3a4b1ca0c2496eb50e18d1ee8ec7447e"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs",
@@ -1295,6 +1322,7 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
         "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
       ],
@@ -1305,7 +1333,7 @@
         "xCD8LBxdjnP97-2Gjs5yr"
       ],
       "output": "mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs",
-      "outputDigest": "47fd7338b173fa0531133c6dd8ce3daac9ae2507e1f789c83ea8826a33cafe29"
+      "outputDigest": "424eefbf3bd7b5721a5a7e0583b93676fe8964cb3c6d7ecda0bb4a8f9a10b48b"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-pg23-alpha-g.mjs",
@@ -1399,6 +1427,7 @@
       "sourceIntegrity": "MATCHES SEAL",
       "changeClasses": [
         "A playwright direct import -> resolver",
+        "G 1 bare stand declaration(s) -> PINK_BASE ?? <declared port, unchanged>",
         "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
         "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
       ],
@@ -1409,7 +1438,7 @@
         "xCD8LBxdjnP97-2Gjs5yr"
       ],
       "output": "mapping-phase-g-contract/scripts/pink-taxonomy-g.mjs",
-      "outputDigest": "90a8c42a38016c4451b1bfe18c6f15526529816a7ace0acbf789a6a62ca9c0c6"
+      "outputDigest": "dadc56d2c764e19f26e6b8ed83ed8abf7b46573cfafcd0578a85192dd1624bf9"
     },
     {
       "source": "mapping-phase-g-contract/scripts/pink-tip-timing-g.mjs",
