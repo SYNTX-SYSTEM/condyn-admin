@@ -1,0 +1,97 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_65971f662b2928a5
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-int3
+
+[database-isolation] verified disposable test database condyn_test_65971f662b2928a5
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stdout | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > mutating the persisted RCP row makes the same POST fail; deleting the RCP turns it into 422; malformed JSON is 400
+[P3 E2E] GREEN database=condyn_test_a12318532cdec8e1 port=43979 readiness=404 post=201 tampered=500 restored=201 absent=422 malformed=400
+
+stdout | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP
+[P3 CLEANUP] dropped=condyn_test_a12318532cdec8e1 before=condyn_test_65971f662b2928a5,condyn_test_a12318532cdec8e1 after=condyn_test_65971f662b2928a5 basisPreserved=true
+
+ ✓ test/decision-integration/g2-g3-vertical-proof.test.ts (63 tests) 8293ms
+   ✓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > POST 201 == stored payload == GET; RCP payload sentinel absent from the DREV  868ms
+   ✓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > mutating the persisted RCP row makes the same POST fail; deleting the RCP turns it into 422; malformed JSON is 400  386ms
+stdout | test/decision-integration/hr-decision-loop-p7.test.ts > P7 inverse: fresh process walks child DREV to root by exact ids only > reaches COVD, CORD, ASCAD, SCD, AOC, ECTXREV, EAGR, HCOM, DAINT, DCR, DCTXREV, the binding, the RCP and the DAR without any search
+[P7 INVERSE] GREEN pid=3196125 child=DREV_3EE337BD3F770F6C39405B03 root=DREV_A29C055D99E878D5654C2663 steps=16
+
+stdout | test/decision-integration/hr-decision-loop-p7.test.ts
+[P7 CLEANUP] dropped=condyn_test_a552fedcd8b56e81 before=condyn_test_65971f662b2928a5,condyn_test_a552fedcd8b56e81 after=condyn_test_65971f662b2928a5 basisPreserved=true
+
+ ✓ test/decision-integration/hr-decision-loop-p7.test.ts (7 tests) 11020ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > creates the root DREV over the real local HTTP path from persisted G3 state (R1, R2, R3)  918ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > runs the HR decision path over PostgreSQL: DCR per admissible class, DAINT, HCOM, EAGR, ECTXREV, AOC, SCD, ASCAD, CORD, COVD for all four valences (P6)  1546ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > resolves AOC, SCD, ASCAD, CORD and COVD through the bound resolvers against the live repositories (R1 reachability, R5)  499ms
+   ✓ P7 inverse: fresh process walks child DREV to root by exact ids only > reaches COVD, CORD, ASCAD, SCD, AOC, ECTXREV, EAGR, HCOM, DAINT, DCR, DCTXREV, the binding, the RCP and the DAR without any search  2834ms
+stdout | test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts > R5 Local HTTP -> Authority -> Decision Core -> PostgreSQL -> HTTP > proves the real local vertical path, authority rejection, malformed JSON handling, exact persistence equality, and no legacy lifecycle provisioning
+[R5 E2E] FINAL HARDENED R5 RUN: GREEN database=condyn_r5_af42b6ce552933c2925a port=34623 readiness=404 markerSeeded=PASS markerAbsentPost=PASS stored=exact markerAbsentGet=PASS GET=200 authority=422 malformed=400 legacyLifecycleTables=absent
+
+ ✓ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts (1 test) 2570ms
+
+ Test Files  3 passed (3)
+      Tests  71 passed (71)
+   Start at  03:40:13
+   Duration  26.14s (transform 1.73s, setup 45ms, collect 3.48s, tests 21.88s, environment 1ms, prepare 188ms)
+
+[test-db] dropped condyn_test_65971f662b2928a5

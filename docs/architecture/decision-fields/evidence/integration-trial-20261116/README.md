@@ -61,5 +61,20 @@ the peer's instrument — the MAP-C-ARCH precedent (§2 AUTHORITY, `AUTHORISED_C
 ## Boundaries kept
 
 No merge to `main`, nothing pushed, `test/job-pool-validation/*` and PINK's worktree untouched,
-B-ENTRY unchanged and unbypassed (database created, verified, dropped), Gemini off. The trial
-worktree used a symlinked `node_modules`; that affects nothing asserted here.
+B-ENTRY unchanged and unbypassed (database created, verified, dropped), Gemini off.
+
+> ⚠ **CORRECTED 2026-11-16, AND THE FIRST FORM OF THIS LINE WAS FALSE.** It read: *"The trial
+> worktree used a symlinked `node_modules`; that affects nothing asserted here."* **It affects nothing
+> in the mapping-population and G1 readings above — neither boots Next — and it breaks every suite that
+> does.** Measured: the full suite on the trial tree reported **4 failed files** where only **1** was
+> real. The other three (`g2-g3-vertical-proof`, `hr-decision-loop-p7`,
+> `local-decision-context-http.e2e`) each died on
+> `TurbopackInternalError: Symlink [project]/node_modules is invalid, it points out of the filesystem
+> root`, and 12 of their tests were skipped rather than run. Replaced with a hard-link copy
+> (`cp -al`, a real directory): *** 3 files passed, 71 of 71 tests, exit 0. ***
+>
+> *** SO I WROTE A BLANKET "AFFECTS NOTHING" ABOUT MY OWN HARNESS AND IT LATER MISLED ME INTO READING
+> THREE OF MY OWN ARTEFACTS AS INTEGRATION FAILURES. *** A-G483's lesson in its third costume today:
+> an assurance about the measuring apparatus is itself a claim, and it needs the same scope statement
+> as any figure. **The correct form names the population it holds over — here: every reading that does
+> not boot Next.**

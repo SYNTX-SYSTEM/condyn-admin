@@ -915,3 +915,52 @@ Prüfung); statisch über die 16 Populationsdateien **197 bei `bce62ea1` → 198
 > Nachfolgephase mit eigener Grenze. **Wenn auf diesem Stand weitergearbeitet wird, braucht es ein
 > MAP-INT-ARCH; wird nur noch integriert und validiert, braucht es keines.** Benannt, nicht stillschweigend
 > offen gelassen — und es ist eine Entscheidung, keine Aufgabe.
+### §11.17 DER VOLLLAUF DES INTEGRIERTEN BAUMS — UND DREI „FEHLER“, DIE MEIN EIGENER SYMLINK WAREN
+
+Volllauf auf dem Integrationsversuch **vor** A-G485, Wegwerf-DB, echter Exit-Code 1:
+
+```
+Test Files  4 failed | 516 passed | 11 skipped (531)
+     Tests  2 failed | 3667 passed | 32 skipped (3701)
+```
+
+**Die 2 roten Tests sind das MAP-G-ARCH-Paar** — durch `980c77bf` behoben, von mir auf demselben Baum zu
+198/198 nachgemessen (§11.16). **Aber vier Dateien scheiterten, nicht eine.** Die drei anderen —
+`g2-g3-vertical-proof`, `hr-decision-loop-p7`, `local-decision-context-http.e2e` — **scheiterten auf
+Dateiebene**, mit *„Next server did not reach the Decision endpoint“*.
+
+**Isoliert nachgefahren: dieselben drei, wieder rot.** Also keine Kollision mit meinen anderen Läufen — und
+dann die Ursache aus der Meldung gelesen statt vermutet:
+
+```
+Error [TurbopackInternalError]: Symlink [project]/node_modules is invalid,
+                                it points out of the filesystem root
+```
+
+*** ES WAR MEIN EIGENER SYMLINK. *** Ich hatte dem Trial-Worktree `node_modules` per `ln -s` gegeben.
+Turbopack verweigert ein `node_modules`, das aus der Projektwurzel hinauszeigt, **also bootet kein
+Next-Server, also erreicht keine dieser Suiten ihren Endpunkt.** Ersetzt durch eine Hardlink-Kopie
+(`cp -al`, ein echtes Verzeichnis): *** 3 Dateien bestanden, 71 von 71 Tests, exit 0. ***
+
+> ⚠ **UND DAMIT WIDERRUFE ICH EINEN SATZ IN MEINER EIGENEN GESIEGELTEN EVIDENZ.** `README.md` des
+> Trial-Verzeichnisses schrieb: *„The trial worktree used a symlinked `node_modules`; that affects nothing
+> asserted here.“* **Für die Mapping-Population und die G1-Suiten stimmt das — keine von beiden bootet
+> Next. Für jede Suite, die es tut, ist es falsch.** Korrigiert, mit der Messung, und das Manifest neu
+> gesiegelt (12/12).
+>
+> *** ICH HABE EINE PAUSCHALE UNBEDENKLICHKEITSERKLÄRUNG ÜBER MEINEN EIGENEN MESSAUFBAU GESCHRIEBEN, UND SIE
+> HAT MICH DANN DAZU GEBRACHT, DREI MEINER EIGENEN ARTEFAKTE ALS INTEGRATIONSFEHLER ZU LESEN. *** A-G483 im
+> dritten Kostüm an einem Tag: **eine Zusicherung über das Messgerät ist selbst eine Behauptung und braucht
+> dieselbe Rahmenangabe wie jede Zahl.** Die richtige Form nennt die Population, über der sie gilt — hier:
+> *jede Messung, die Next nicht startet*.
+>
+> **Die Bilanz dieser Sitzung in dieser Hinsicht, ungeschminkt: VIER Befunde von mir waren mein eigener
+> Messaufbau** — der Exit-Code (A-G483), die 3546-Übereinstimmung (A-G484), der verwaiste Dev-Server, und
+> jetzt der Symlink. **Jeder sah zuerst wie ein Systemdefekt aus, jeder war plausibel, und keiner wurde von
+> einer Regel dieser Lane gefunden** — drei davon fielen auf, weil ich den nächsten Schritt messen wollte
+> und das Instrument nicht mitspielte. *** DAS IST DAS STARKE ARGUMENT FÜR A-G483 ALS REGEL UND NICHT ALS
+> ANEKDOTE: DER MESSAUFBAU IST DER UNGEPRÜFTESTE TEIL JEDER MESSUNG, WEIL ER DER TEIL IST, DEN NIEMAND
+> BESTELLT HAT. ***
+
+**Der definitive Volllauf** — integriert, **mit** A-G485 und echtem `node_modules` — läuft; seine Zahl ist
+die erste, die Bedingung 1 über das Mapping überhaupt aussagen kann.

@@ -1,0 +1,288 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_4e41a89d4c0babc6
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-int3
+
+[database-isolation] verified disposable test database condyn_test_4e41a89d4c0babc6
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stdout | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP
+[P3 CLEANUP] dropped=condyn_test_9cdfe8574d74f34d before=condyn_test_4e41a89d4c0babc6,condyn_test_9cdfe8574d74f34d after=condyn_test_4e41a89d4c0babc6 basisPreserved=true
+
+ ❯ test/decision-integration/g2-g3-vertical-proof.test.ts (63 tests | 4 skipped) 34871ms
+   ✓ G2/G3 vertical integration proof > P0 provisioning order > is proven in hr-decision-loop-postgres.test.ts (unified registration, post-decision chain, no cross-field FK) 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RCP: accepts persisted exact artifact as a detached clone 6ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RCP: rejects missing, non-recomputing, mismatched, and foreign-pair references 9ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RCP: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > EIS: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > EIS: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > EIS: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TSN: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TSN: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TSN: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RRL: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RRL: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > RRL: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRQREV: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRQREV: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRQREV: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRPREV: accepts persisted exact artifact as a detached clone 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRPREV: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TRPREV: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TOREV: accepts persisted exact artifact as a detached clone 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TOREV: rejects missing, non-recomputing, mismatched, and foreign-pair references 6ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > TOREV: keeps the bound read live for append-only growth 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ORL: accepts persisted exact artifact as a detached clone 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ORL: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ORL: keeps the bound read live for append-only growth 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRRES: accepts persisted exact artifact as a detached clone 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRRES: rejects missing, non-recomputing, mismatched, and foreign-pair references 6ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRRES: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > AOC: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > AOC: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > AOC: keeps the bound read live for append-only growth 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > SCD: accepts persisted exact artifact as a detached clone 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > SCD: rejects missing, non-recomputing, mismatched, and foreign-pair references 5ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > SCD: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ASCAD: accepts persisted exact artifact as a detached clone 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ASCAD: rejects missing, non-recomputing, mismatched, and foreign-pair references 4ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > ASCAD: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CORD: accepts persisted exact artifact as a detached clone 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CORD: rejects missing, non-recomputing, mismatched, and foreign-pair references 11ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CORD: keeps the bound read live for append-only growth 2ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVD: accepts persisted exact artifact as a detached clone 3ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVD: rejects missing, non-recomputing, mismatched, and foreign-pair references 12ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVD: keeps the bound read live for append-only growth 1ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVFCR: accepts persisted exact artifact as a detached clone 143ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVFCR: rejects missing, non-recomputing, mismatched, and foreign-pair references 82ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > COVFCR: keeps the bound read live for append-only growth 73ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation 40ms
+   ✓ G2/G3 vertical integration proof > P1 resolver local proof per G3 family > every contract id names the artifact's own established state literally and never PHASE4_VERIFIED 5ms
+   ✓ G2/G3 vertical integration proof > P2 reader composition and namespace > binds capability and all G3 resolvers; unknown and duplicate pairs fail 101ms
+   ✓ G2/G3 vertical integration proof > P2 reader composition and namespace > 24-hex DAINT_ under the G3 pair and 32-hex DAINT_ under any G2 pair both fail 7ms
+   ✓ G2/G3 vertical integration proof > P2 reader composition and namespace > no resolver accepts an id by prefix alone 13ms
+   ↓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > HR context layer builds OPTION items with AUTHORITATIVE_STATE provenance to the RCP
+   ↓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > POST 201 == stored payload == GET; RCP payload sentinel absent from the DREV
+   ↓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > mutating the persisted RCP row makes the same POST fail; deleting the RCP turns it into 422; malformed JSON is 400
+   ↓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > API v1 contract freeze test remains unchanged and green
+   ✓ G2/G3 vertical integration proof > P4 decision context binding (R4) > is proven in g3-decision-context-binding-vertical.test.ts (DCDRB over PostgreSQL, idempotence, conflict, replay, falsifiers) 0ms
+   ✓ G2/G3 vertical integration proof > P5 claims from G3 declarations (R5) > 8B and 8C1 preserve AOC/SCD references exactly and call no resolver 3ms
+   ✓ G2/G3 vertical integration proof > P5 claims from G3 declarations (R5) > 8C2, 8C3, 8D1 accept AUTHORITATIVE_STATE provenance to ASCAD, CORD, COVD 4ms
+   ✓ G2/G3 vertical integration proof > P5 claims from G3 declarations (R5) > adapter-level reachability probe resolves the same references 60ms
+   ✓ G2/G3 vertical integration proof > P6 HR decision path in G3 against a bound context > is proven in hr-decision-loop-postgres.test.ts (DCTXREV producer, DCDRB, one DCR, declarant and window falsifiers) 0ms
+   ✓ G2/G3 vertical integration proof > P7 full loop root DREV to child DREV through G3 > is proven in hr-decision-loop-p7.test.ts (forward, inverse, sealed 8D5 boundary) 0ms
+   ✓ G2/G3 vertical integration proof > P8 preservation and regression > decision-core 38 files, capability-core 37 files, runtime 7 plus adapters 1 files; sealed suites and runtime files unchanged 18ms
+   ✓ G2/G3 vertical integration proof > P8 preservation and regression > lib/decision-core production files byte-identical to the 8E2 seal; import boundary tests green 10ms
+stdout | test/decision-integration/hr-decision-loop-p7.test.ts
+[P7 CLEANUP] dropped=condyn_test_d76e335775c4da9d before=condyn_test_4e41a89d4c0babc6,condyn_test_d76e335775c4da9d after=condyn_test_4e41a89d4c0babc6 basisPreserved=true
+
+ ❯ test/decision-integration/hr-decision-loop-p7.test.ts (7 tests | 7 skipped) 31616ms
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > creates the root DREV over the real local HTTP path from persisted G3 state (R1, R2, R3)
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > binds a persisted DCTXREV to the exact root DREV through the reader-backed binder (R4, D4)
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > runs the HR decision path over PostgreSQL: DCR per admissible class, DAINT, HCOM, EAGR, ECTXREV, AOC, SCD, ASCAD, CORD, COVD for all four valences (P6)
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > resolves AOC, SCD, ASCAD, CORD and COVD through the bound resolvers against the live repositories (R1 reachability, R5)
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > returns the COVD-provenanced observation: 8B/8C1 from AOC/SCD, 8C2/8C3/8D1, governed 8D2 to 8D4B, sealed 8D5 refuses the COVD reference (Case-3 boundary); the D2-shaped child DREV is formed directly outside the governed path; lineage reconstructs child to root
+   ↓ P7 forward: root DREV to child DREV through the G3 chain > drives the governed 8D2 to 8D10 path over the real root for an observation whose provenance the root inventory already names (sibling child)
+   ↓ P7 inverse: fresh process walks child DREV to root by exact ids only > reaches COVD, CORD, ASCAD, SCD, AOC, ECTXREV, EAGR, HCOM, DAINT, DCR, DCTXREV, the binding, the RCP and the DAR without any search
+ ❯ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts (1 test | 1 skipped) 20554ms
+   ↓ R5 Local HTTP -> Authority -> Decision Core -> PostgreSQL -> HTTP > proves the real local vertical path, authority rejection, malformed JSON handling, exact persistence equality, and no legacy lifecycle provisioning
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP
+Error: P3 Next server did not reach the Decision endpoint. Output:
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://127.0.0.1:42877
+- Network:       http://127.0.0.1:42877
+✓ Ready in 770ms
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to /tmp/next-panic-5d6ca91cfb311bfd117a9905dc2f1dd8.log.
+
+To help make Turbopack better, report this error by ]8;;https://bugs.nextjs.org/search?category=turbopack-error-report&title=Turbopack%20Error%3A%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root&body=Turbopack%20version%3A%20%60e0739832%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ASymlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%0ADebug%20info%3A%0A-%20Execution%20of%20get_entrypoints_with_issues_operation%20failed%0A-%20Execution%20of%20EntrypointsOperation%3A%3Anew%20failed%0A-%20Execution%20of%20Project%3A%3Aentrypoints_with_app_route_filter%20failed%0A-%20Execution%20of%20AppProject%3A%3Aroutes_with_filter%20failed%0A-%20Execution%20of%20directory_tree_to_entrypoints_internal%20failed%0A-%20Execution%20of%20directory_tree_to_loader_tree%20failed%0A-%20Execution%20of%20try_get_next_package%20failed%0A-%20Execution%20of%20%2AResolveResult%3A%3Afirst_source%20failed%0A-%20Execution%20of%20resolve%20failed%0A-%20Execution%20of%20resolve_internal%20failed%0A-%20Execution%20of%20find_package%20failed%0A-%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace\clicking here.]8;;\
+-----
+
+Error [TurbopackInternalError]: Symlink [project]/node_modules is invalid, it points out of the filesystem root
+
+Debug info:
+- Execution of get_entrypoints_with_issues_operation failed
+- Execution of EntrypointsOperation::new failed
+- Execution of Project::entrypoints_with_app_route_filter failed
+- Execution of AppProject::routes_with_filter failed
+- Execution of directory_tree_to_entrypoints_internal failed
+- Execution of directory_tree_to_loader_tree failed
+- Execution of try_get_next_package failed
+- Execution of *ResolveResult::first_source failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of find_package failed
+- Symlink [project]/node_modules is invalid, it points out of the filesystem root
+    at ignore-listed frames {
+  location: undefined
+}
+[?25h
+
+ ❯ waitForDecisionEndpoint test/decision-integration/g2-g3-vertical-proof.test.ts:342:13
+    340|         await delay(250);
+    341|       }
+    342|       throw new Error(`P3 Next server did not reach the Decision endpo…
+       |             ^
+    343|     }
+    344|     async function stopServer(): Promise<void> {
+ ❯ test/decision-integration/g2-g3-vertical-proof.test.ts:369:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  test/decision-integration/hr-decision-loop-p7.test.ts [ test/decision-integration/hr-decision-loop-p7.test.ts ]
+Error: P7 Next server did not reach the Decision endpoint. Output:
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://127.0.0.1:35259
+- Network:       http://127.0.0.1:35259
+✓ Ready in 360ms
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to /tmp/next-panic-d8585b172ecc41f0dd77b66f7ac66434.log.
+
+To help make Turbopack better, report this error by ]8;;https://bugs.nextjs.org/search?category=turbopack-error-report&title=Turbopack%20Error%3A%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root&body=Turbopack%20version%3A%20%60e0739832%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ASymlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%0ADebug%20info%3A%0A-%20Execution%20of%20get_entrypoints_with_issues_operation%20failed%0A-%20Execution%20of%20EntrypointsOperation%3A%3Anew%20failed%0A-%20Execution%20of%20Project%3A%3Aentrypoints_with_app_route_filter%20failed%0A-%20Execution%20of%20AppProject%3A%3Aroutes_with_filter%20failed%0A-%20Execution%20of%20directory_tree_to_entrypoints_internal%20failed%0A-%20Execution%20of%20directory_tree_to_loader_tree%20failed%0A-%20Execution%20of%20try_get_next_package%20failed%0A-%20Execution%20of%20%2AResolveResult%3A%3Afirst_source%20failed%0A-%20Execution%20of%20resolve%20failed%0A-%20Execution%20of%20resolve_internal%20failed%0A-%20Execution%20of%20find_package%20failed%0A-%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace\clicking here.]8;;\
+-----
+
+Error [TurbopackInternalError]: Symlink [project]/node_modules is invalid, it points out of the filesystem root
+
+Debug info:
+- Execution of get_entrypoints_with_issues_operation failed
+- Execution of EntrypointsOperation::new failed
+- Execution of Project::entrypoints_with_app_route_filter failed
+- Execution of AppProject::routes_with_filter failed
+- Execution of directory_tree_to_entrypoints_internal failed
+- Execution of directory_tree_to_loader_tree failed
+- Execution of try_get_next_package failed
+- Execution of *ResolveResult::first_source failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of find_package failed
+- Symlink [project]/node_modules is invalid, it points out of the filesystem root
+    at ignore-listed frames {
+  location: undefined
+}
+[?25h
+
+ ❯ waitForDecisionEndpoint test/decision-integration/hr-decision-loop-p7.test.ts:110:9
+    108|     await delay(250);
+    109|   }
+    110|   throw new Error(`P7 Next server did not reach the Decision endpoint.…
+       |         ^
+    111| }
+    112| async function stopServer(): Promise<void> {
+ ❯ test/decision-integration/hr-decision-loop-p7.test.ts:140:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts [ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts ]
+Error: R5 Next server did not reach the Decision endpoint. Output:
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://127.0.0.1:35813
+- Network:       http://127.0.0.1:35813
+✓ Ready in 358ms
+
+-----
+[1m[31mFATAL[39m[0m: An unexpected Turbopack error occurred. A panic log has been written to /tmp/next-panic-e966771ed0192f5ebf5b9ae305f3db96.log.
+
+To help make Turbopack better, report this error by ]8;;https://bugs.nextjs.org/search?category=turbopack-error-report&title=Turbopack%20Error%3A%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root&body=Turbopack%20version%3A%20%60e0739832%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0ASymlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%0ADebug%20info%3A%0A-%20Execution%20of%20get_entrypoints_with_issues_operation%20failed%0A-%20Execution%20of%20EntrypointsOperation%3A%3Anew%20failed%0A-%20Execution%20of%20Project%3A%3Aentrypoints_with_app_route_filter%20failed%0A-%20Execution%20of%20AppProject%3A%3Aroutes_with_filter%20failed%0A-%20Execution%20of%20directory_tree_to_entrypoints_internal%20failed%0A-%20Execution%20of%20directory_tree_to_loader_tree%20failed%0A-%20Execution%20of%20try_get_next_package%20failed%0A-%20Execution%20of%20%2AResolveResult%3A%3Afirst_source%20failed%0A-%20Execution%20of%20resolve%20failed%0A-%20Execution%20of%20resolve_internal%20failed%0A-%20Execution%20of%20find_package%20failed%0A-%20Symlink%20%5Bproject%5D%2Fnode_modules%20is%20invalid%2C%20it%20points%20out%20of%20the%20filesystem%20root%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace\clicking here.]8;;\
+-----
+
+Error [TurbopackInternalError]: Symlink [project]/node_modules is invalid, it points out of the filesystem root
+
+Debug info:
+- Execution of get_entrypoints_with_issues_operation failed
+- Execution of EntrypointsOperation::new failed
+- Execution of Project::entrypoints_with_app_route_filter failed
+- Execution of AppProject::routes_with_filter failed
+- Execution of directory_tree_to_entrypoints_internal failed
+- Execution of directory_tree_to_loader_tree failed
+- Execution of try_get_next_package failed
+- Execution of *ResolveResult::first_source failed
+- Execution of resolve failed
+- Execution of resolve_internal failed
+- Execution of find_package failed
+- Symlink [project]/node_modules is invalid, it points out of the filesystem root
+    at ignore-listed frames {
+  location: undefined
+}
+[?25h
+
+ ❯ waitForDecisionEndpoint test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts:117:9
+    115|     await delay(250);
+    116|   }
+    117|   throw new Error(`R5 Next server did not reach the Decision endpoint.…
+       |         ^
+    118| }
+    119| 
+ ❯ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts:184:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  59 passed | 12 skipped (71)
+   Start at  03:38:14
+   Duration  91.71s (transform 2.00s, setup 45ms, collect 3.87s, tests 87.04s, environment 1ms, prepare 191ms)
+
+[test-db] dropped condyn_test_4e41a89d4c0babc6
