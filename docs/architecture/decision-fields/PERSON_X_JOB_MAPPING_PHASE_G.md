@@ -389,7 +389,12 @@ reference implementation computing both. One algorithm, one set of meanings, two
 >
 > **AND THESE ARE LIVE BUT NOT AS DECLARED BELOW:**
 >
-> - **PG-1** excludes the rings from "semantic" (`:257`); measured **0.6431 / 0.7397 against ≥ 0.55** at phase G.
+> - **PG-1** excludes the rings from "semantic" (`:257`); *** CORRECTED 2026-11-16 (D-PP-2): AS BUILT it is
+>   **0.63906 / 0.73663** against ≥ 0.55 (`option3-*.json` `A_asBuilt`, head `76ae9043`), and at the
+>   integration tip `4f4534c5` PINK-PIXEL measured **0.62183 / 0.63471** (1920 reduce/live) and
+>   **0.71841 / 0.72938** (1280). *** This line read **0.6431 / 0.7397**, which is condition
+>   `C_ringAndSeatHidden` — *"ring and its seat both gone"* — **a counterfactual, correctly labelled as such
+>   at `:2891`, `:12034` and `:13563` and stripped of its label only here and in the closing report's §1.**
 > - **PG-3** amended to drawn diameter **∈ [56, 92] px** at 1920, monotone in `weightSum` (`:221`).
 > - **PG-5** **reduces entirely to its overflow-statement limb** (`:5999`); the rest is **ZERO-BY-CONSTRUCTION**
 >   via `if (out.length >= budget) break;` (`:7082`), and its **L0 numeric cap is retired as non-discriminating**

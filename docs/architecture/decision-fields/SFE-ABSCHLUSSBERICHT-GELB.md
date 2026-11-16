@@ -1283,3 +1283,32 @@ dieses Builds.** E-7s Leiter klart auf gerenderter Luminanz (4.1150 / 2.3421 / 2
 > Freigabe**, eine Maschine, ein Chromium, ein Backend, dSF 1 — **die Zahlen reisen zu keinem anderen
 > Renderer.** PG-20, dessen Prädikat sich als einzige substantielle Geometrieänderung bewegt hat, ist
 > **nicht gemessen.** **Und die Provenienz ist abhängig: von der Lane beauftragt, die geprüft wird.**
+### §12.9 D-PP-2 AUSGEZÄHLT — ***DER DEFEKT SITZT IN DER ZUSAMMENFASSUNG, NICHT IN DER MESSUNG***
+
+Nach PINK-PIXELs Befund habe ich **jede** Fundstelle der Zahl geprüft statt pauschal zu korrigieren — weil
+dieselbe Zahl in einem Option-(3)-Kontext **richtig** ist und in einem As-built-Kontext **falsch**:
+
+| Fundstelle | Kontext | Urteil |
+|---|---|---|
+| `PHASE_G:2891` | listet **alle drei** Bedingungen: 0.63906 → 0.66383 → 0.64313 | **RICHTIG** |
+| `PHASE_G:12034` | *„condition C, ring and seat both gone“* ausgeschrieben | **RICHTIG** |
+| `PHASE_G:13563` | *„condition C with the ring **and the seat** both gone“* ausgeschrieben | **RICHTIG** |
+| `PHASE_G:392` | *„**measured** 0.6431 / 0.7397 … at phase G“* — als Messung des lebenden Pins | *** FALSCH, korrigiert *** |
+| `ABSCHLUSSBERICHT §1` | als Zustand des Builds | *** FALSCH, korrigiert *** |
+| `ABSCHLUSSBERICHT §5` | Kosten von Option (3) | **RICHTIG, jetzt geschützt** |
+
+> *** DREI VON VIER REGISTERSTELLEN TRAGEN DAS ETIKETT KORREKT. DIE ZWEI FALSCHEN SIND BEIDE
+> ZUSAMMENFASSUNGEN. *** Das Register hat gemessen, beschriftet und unterschieden; **die Bedingung ist beim
+> Verdichten verloren gegangen** — einmal in §392s Live-Pin-Liste, einmal in §1s Standtabelle.
+>
+> **Das ist PINKs A-G458 in einer neuen Richtung.** A-G458 verlangte, das **`verdict`-Feld** wörtlich
+> mitzunehmen, weil der Relay genau den Teil abschneidet, der den behaltenen Teil regiert. **Hier war es
+> nicht das Verdict, sondern die BEDINGUNG** — und sie ist nicht einmal ein Feld im Artefakt, sondern ein
+> **Schlüsselname** (`A_asBuilt` / `B_ringHidden` / `C_ringAndSeatHidden`). *** EIN RAHMEN, DER NUR ALS
+> SCHLÜSSELNAME EXISTIERT, WIRD BEIM ZITIEREN MIT SICHERHEIT ABGESTREIFT, WEIL DAS ZITAT DEN WERT NIMMT UND
+> DEN SCHLÜSSEL STEHEN LÄSST. ***
+>
+> **A-G491:** zu Build (A-G430), Domäne (A-G435), Population (A-G417), Quantor (A-G437) und Phase (A-G456)
+> tritt **BEDINGUNG** — und eine Zahl, die aus einem Artefakt mit mehreren Bedingungen stammt, trägt den
+> Bedingungsnamen **im Satz**, nicht in der Quelldatei. **Mein eigener §0 zählt fünf Rahmen auf; es sind
+> sechs, und der sechste hat diesen Bericht an seiner sichtbarsten Zahl erwischt.**
