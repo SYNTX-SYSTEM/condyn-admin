@@ -120,19 +120,31 @@ export function phaseGBase(): string {
  * HEAD became an integration merge MAP-G-ARCH forbade the merge it exists to protect (GELB's trial integration/mapping-trial-20261116
  * @ 0f94fed3: 2 failed | 30 passed in this file, both from the open range — reproduced by GRÜN on that commit before this change).
  *
- * PHASE_INT_BASE is 7b4d5852, GRÜN's phase-G delivery: the tip published to origin/frontend/mapping-phase-g on 2026-11-16 and the
- * commit that trial merged. Every MAP-G range ends here, exactly as D/E/F end at the next phase's base; an integration merge then
- * sits OUTSIDE phase G's range rather than inside it by exemption, and no path is whitelisted (A-G411).
+ * PHASE_INT_BASE is a0475f13, the phase-G parent the integration merge actually took: origin/integration/pxj-complete-20261116 @
+ * 4f4534c5 = eb75fd02 (GELB) + a0475f13 (GRÜN). Every MAP-G range ends here, as D/E/F end at the next phase's base. An integration
+ * merge then sits OUTSIDE phase G's range rather than inside it by exemption, and no path is whitelisted (A-G411).
  *
- * The commit that declares this necessarily lies after it — a commit cannot name its own sha — and changes only this file and
- * architecture.test.ts. It is therefore examined by review (GELB's, as adjudicator), not by the range it closes. That is stated
- * here so the gap is read rather than discovered.
+ * F-C4 (PINK-STRUCT, adjudicated by GELB, 2026-11-16): first declared as 7b4d5852 in 980c77bf, which left the two commits actually
+ * merged after the base, 980c77bf (this file + architecture.test.ts, both G_ENTRY) and a0475f13 (evidence only). Closing at the
+ * tip actually merged is strictly tighter and still green (PINK-STRUCT's control at a0475f13: 32/32).
+ *
+ * The commit that declares this still lies after it, because a commit cannot name its own sha. That is now ONE commit, it changes
+ * only this file, and it is examined by review, not by the range it closes.
+ *
+ * WHAT CLOSING ENDED (F-C1 … F-C3), stated so it is read rather than discovered. For D/E/F the next phase's gate took over the
+ * open-ended duty. PHASE_INT_BASE is not a phase, so for G that duty was ENDED, not handed over. Past this base, MAP-G-ARCH no longer
+ * checks:
+ *   F-C1  the working tree against the entry set;
+ *   F-C2  PF-14's no-script-motion over the component;
+ *   F-C3  the lib/career scope (through which GELB's lib/career/db/client.ts passed unexamined).
+ * GELB re-homes each one's invariant shadow in MAP-INT-ARCH. They are deliberately NOT re-asserted here, so that one duty has one
+ * place.
  */
-export const PHASE_INT_BASE = "7b4d5852aa411485aa849348208e6181a20f3ac5";
+export const PHASE_INT_BASE = "a0475f13958128a71e7615a825f65a4dd33e8749";
 export function phaseIntBase(): string {
   let sha: string | undefined;
   try { sha = git("rev-parse", "--verify", "--quiet", `${PHASE_INT_BASE}^{commit}`)[0]; } catch { sha = undefined; }
-  if (sha === undefined) throw new Error(`ERR_PHASE_INT_BASE_MISSING: MAP-G-ARCH closes phase G at commit ${PHASE_INT_BASE} (A-G485, GRÜN's phase-G delivery), and this clone does not have it.`);
+  if (sha === undefined) throw new Error(`ERR_PHASE_INT_BASE_MISSING: MAP-G-ARCH closes phase G at commit ${PHASE_INT_BASE} (A-G485 / F-C4, the phase-G parent of the integration merge), and this clone does not have it.`);
   return sha;
 }
 /** Paths changed between two commits (committed changes only — a closed range has no working tree). A-F18: the range is asserted first. */

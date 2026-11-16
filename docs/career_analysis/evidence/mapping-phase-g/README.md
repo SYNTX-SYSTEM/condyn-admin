@@ -1087,6 +1087,75 @@ Aggregate, **with its formulation named** so it can be reproduced rather than tr
 7fbc281dd2e89ceb10009bb6f27604d8
 ```
 
+### §96c · 2026-11-16 · the seals' REFERENT, rebuilt from published commits, and the limit that remains
+
+**Decision: no re-seal.** The referent is made reproducible, and the remaining limit is written here.
+- A re-seal on a new build would be a **new reading**, not the same seal.
+- PG-17's seal is already released (§45).
+- PINK's pixel trace is reading the integrated tip `4f4534c5` independently, which is where a current
+  reading belongs.
+
+**1 · The commits.** Every commit a seal names as its HEAD (`8d62028c`, `d04d96aa`, `5c3ca5d9`), every commit
+that holds a `SEALED-*` file (`d04d96aa`, `5c3ca5d9`, `bb30e826`), and both build sources below have been on
+`origin/frontend/mapping-phase-g` since 2026-11-16. That closes §114's half of the gap.
+
+**2 · The preserved build's source is `185427d5`, NOT the HEAD it was built at. A finding.**
+`HRYkeEpbpndI3UEE7ceeC` was built 2026-11-10 18:22:08, when HEAD was `0698bf83`. **But its bundle carries
+`shelf:.022`**: `.next/static/chunks/00u146-0.fj5b.js` and the SSR chunk both read
+`Object.freeze({shelf:.022,best:.085,field:.15`. So the A-G62 edit (0.02 → 0.022) was **in the working tree
+and uncommitted** at build time, and was committed eight minutes later as `185427d5` (18:30:54). The only
+non-comment product line between `0698bf83` and `185427d5` is that one, so the build's product source is
+`185427d5`. **A seal's `head` field names the HEAD when it was read. It does not name the build's source.**
+
+**3 · Reproduced, by comparison rather than by argument.** `git archive 185427d5`, with `node_modules`
+copied by `cp -a` (not symlinked, see AG485-CLOSURE.md) and the same `package-lock.json`, then
+`npm run build`:
+- Result: exit 0, BUILD_ID `C2zKjkGt56PmpMBor8JTC`.
+- Against the preserved `.next`, with each build's id string normalised: **537 / 537 files**. 532 are
+  identical in path and content; 3 are identical in content and differ only because their directory is
+  named after the BUILD_ID (`_buildManifest`, `_clientMiddlewareManifest`, `_ssgManifest`).
+- The remaining 2 (`server-reference-manifest.{js,json}`) are identical once `encryptionKey` is removed.
+  That is Next's random per-build server-action key; it is not printed here.
+- **The chunk that carries the field, `00u146-0.fj5b.js`, is byte-identical.**
+
+The hooked build `utpaUMQpafZVzAeyYImhv` (worktree `condyn-admin-mapping-d-hooks`, clean, at `c84ab292`) was
+checked the same way. Rebuilt as `BjTMxEKVUoFUileYJsvvw`, **498 / 498 files are identical** once the id is
+normalised, and the manifest is equal once the key is removed.
+
+**So any reader can rebuild what these seals were read against from origin. What they cannot recreate, and
+what the seals therefore still do NOT certify for them:**
+1. **The BUILD_ID string and the server-action key.** Both are random per build. The id in a seal is a
+   **label**, not a content address. The content behind it is what reproduces.
+2. **The renderer.** The readings are pixels: Playwright 1.63.0 from
+   `/home/codi/Entwicklung/nquiry/node_modules`, with this machine's Chromium, fonts and GPU path. A
+   reader can rebuild the **input** byte for byte, but must **re-measure** to compare readings. The seals'
+   digests prove the readings were not edited, not that another renderer gives the same pixels.
+3. **A fresh `npm ci`.** Both reproductions used a copy of this machine's installed tree with an identical
+   lockfile. That a clean install produces the same bundle is **not measured**.
+
+**And staleness is unchanged by any of this:** the 8 seals describe `185427d5`'s field, not HEAD's and not
+the integration tip's (`gruen-seal-staleness`: 8 stale). *Reproducible* and *current* are different
+properties, and only the first one moved.
+
+**4 · PG-11's relation limb, DATED rather than present-tense** (GELB §89 had *"resting on current
+readings"*).
+- **The guard readings:** `pg11-guard-L0-1920x1080`, `-L0-1280x800` and `-L2-1920x1080` were taken
+  **2026-11-11 16:49–16:52Z** on the hooked build `utpaUMQpafZVzAeyYImhv`, source **`c84ab292`**
+  (reproducible, above). Results: `guardClears: false` on all three, `marginFactor` **0.259 / 0.227 /
+  0.557**.
+- **The sealed ratio** (`SEALED-pg11-ratio-*`) was read on the preserved build at HEAD `8d62028c`, so its
+  source is `185427d5`.
+- **The component changed in code twice after those readings.** `7b8fc7f5` (§93) and `fd45f45f` (§104,
+  A-G43's splay re-keying) both change the component once comments are stripped. The integration tip's
+  component is code-identical to `fd45f45f`.
+
+**The dated form:** *PG-11's relation limb was closed INCONCLUSIVE-BY-MEASUREMENT on readings of 2026-11-11
+at `c84ab292` (guard) and 2026-11-10 at `185427d5` (sealed ratio). It does not describe `4f4534c5`.*
+
+**Not re-measured, and why.** `gruen-pg11.mjs` writes the SEALED relation-limb file as well as the guard file
+(`:187`), so a re-measure is a re-seal, and A-G109 makes that a deliberate act. The sentence in GELB's record
+is GELB's to re-date; this lane supplies the date.
+
 
 **All four ports are bound to `127.0.0.1` and nothing else.** `next start` binds `0.0.0.0` by default and the
 first attempt did; it was found, released and rebound, and the LAN address now refuses. GELB's `:3020`,

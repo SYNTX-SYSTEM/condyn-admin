@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "980c77bf",
+ "head": "a0475f13",
  "referents": {
   "test-population": {
    "sha": "980c77bf",
@@ -21,9 +21,9 @@
    "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
   },
   "readings-corpus": {
-   "sha": "976cb81d",
-   "when": "2026-11-13T00:40:51+01:00",
-   "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+   "sha": "a0475f13",
+   "when": "2026-11-16T03:30:43+01:00",
+   "subject": "docs(career): mapping phase G · A-G485 readings (red, green, vacuity) and PF-13 measured at 980c77bf"
   },
   "product-source": {
    "sha": "fd45f45f",
@@ -60,8 +60,8 @@
   "claims": 16,
   "phrases": 23,
   "matched": 16,
-  "LAPSED": 1,
-  "CURRENT": 4,
+  "LAPSED": 2,
+  "CURRENT": 3,
   "SCOPED": 6,
   "SCOPED-UNRESOLVABLE": 3,
   "UNCOMMITTED": 0,
@@ -295,11 +295,11 @@
     "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
    "referent": {
-    "sha": "976cb81d",
-    "when": "2026-11-13T00:40:51+01:00",
-    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+    "sha": "a0475f13",
+    "when": "2026-11-16T03:30:43+01:00",
+    "subject": "docs(career): mapping phase G · A-G485 readings (red, green, vacuity) and PF-13 measured at 980c77bf"
    },
-   "status": "CURRENT"
+   "status": "LAPSED"
   },
   {
    "line": 928,
@@ -348,7 +348,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 1093,
+   "line": 1162,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
