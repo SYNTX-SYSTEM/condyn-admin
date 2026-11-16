@@ -29,7 +29,7 @@
  */
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { dirname, resolve } from "node:path";
+import { dirname, relative, resolve } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -47,24 +47,77 @@ export const GOLDEN_VECTORS_V11 = resolve(REPO_ROOT, "docs/architecture/decision
 /**
  * "A checkout of THIS repository", not "a directory with a .git in it". A .git-only check passes in any
  * clone of anything, so the identity is pinned by a commit this repository contains and by the two paths the
- * repaired instruments actually read. PHASE_G_BASE is MAP-G-ARCH's own base (test/career/mapping-field/
- * phase-base.ts), so a tree that cannot name it is not a tree these readings may be taken from.
+ * repaired instruments actually read.
+ *
+ * *** §131d · F-R13 · THE ANCHOR WAS BRANCH-LOCAL, AND THE GUARD REFUSED A GENUINE CHECKOUT OF THIS VERY
+ * BRANCH. REPRODUCED BEFORE IT WAS CHANGED. *** It was pinned on PHASE_G_BASE `93c47e03`, which is
+ * MAP-G-ARCH's own base and is contained in **7 of this repository's 267 refs** and is **not an ancestor of
+ * `main`**. In a `git clone --no-local --depth 1 --single-branch --branch frontend/mapping-phase-g` of this
+ * repository — this lane's own branch, this lane's own instruments present — the object is ABSENT and every
+ * build-free derivation died with *"This is not this repository, and a reading taken here would describe a
+ * different product"*. A guard that refuses the thing it exists to admit is A-G494 with its polarity
+ * reversed. GELB found the class on `gelb-paths.mjs`; this is the measurement on mine.
+ *
+ * GELB's REMEDY IS ADOPTED IN PART, AND THE PART I DECLINE IS DECLINED ON A MEASUREMENT.
+ *
+ *   ADOPTED · the identity moves to the repository's ROOT COMMIT `29266f9c`. Measured: contained in
+ *   **all 267 refs**, an ancestor of `main`, and still unforgeable — `git init` plus `touch` cannot produce
+ *   that object. It is strictly stronger than the branch-local anchor because it survives this evidence
+ *   landing on a branch that does not descend from the phase-G base, which is exactly where the integration
+ *   is heading.
+ *
+ *   DECLINED AS A SUFFICIENT FIX · GELB's stated proof was *"in a clone --single-branch --branch main the
+ *   commit is ABSENT, so the guard refuses a genuine checkout"*. MEASURED: neither `gelb-paths.mjs` nor this
+ *   file exists on `main` (0 paths matching `evidence/mapping-phase-g` in `origin/main`). **In that clone the
+ *   instrument is absent and the guard never runs, so that scenario cannot exhibit the defect.** The
+ *   conclusion is right; the given reason is not reachable.
+ *
+ *   AND THE CASE THAT IS REACHABLE TODAY DEFEATS BOTH ANCHORS · in the shallow clone above, `29266f9c` is
+ *   **ABSENT TOO**. Moving the anchor alone would have turned a false "wrong repository" into a false
+ *   "wrong repository" with a different sha in it. So shallowness is detected FIRST and named as what it is,
+ *   with the remedy, matching the convention `phase-base.ts` already set with `git fetch --unshallow`.
+ *
+ * PHASE_G_BASE KEEPS ITS OTHER JOB. It was doing double duty as identity AND as the phase's reference point.
+ * It stays the reference point and is verified only where it CAN be — a deep checkout — so a tree that has
+ * the history and lacks the phase base still says so, and a shallow one is not accused of it.
  */
+const REPO_ROOT_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4";
 const PHASE_G_BASE = "93c47e03bc01f06f34f7b9f9411ca9a1460b561d";
+const hasObject = sha => {
+  try {
+    execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "--verify", "--quiet", `${sha}^{commit}`],
+      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
+    return true;
+  } catch { return false; }
+};
 function refuseIfNotThisRepository() {
   if (!existsSync(resolve(REPO_ROOT, ".git")))
     throw new Error(`ERR_GRUEN_ROOT_NOT_A_CHECKOUT: derived REPO_ROOT ${REPO_ROOT} holds no .git — refusing to ` +
       `read a tree that is not a checkout of this repository rather than reporting a measurement taken from one.`);
   for (const [n, p] of [["COMPONENT", COMPONENT], ["EVIDENCE_DIR", EVIDENCE_DIR]])
     if (!existsSync(p)) throw new Error(`ERR_GRUEN_ROOT_INCOMPLETE: ${n} is not at the derived ${p}.`);
-  try {
-    execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "--verify", "--quiet", `${PHASE_G_BASE}^{commit}`],
-      { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] });
-  } catch {
-    throw new Error(`ERR_GRUEN_ROOT_WRONG_REPOSITORY: the derived REPO_ROOT ${REPO_ROOT} is a git checkout but ` +
-      `does not contain ${PHASE_G_BASE}, MAP-G-ARCH's phase-G base. This is not this repository, and a reading ` +
-      `taken here would describe a different product. Refusing rather than measuring.`);
+  const shallow = (() => {
+    try { return execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "--is-shallow-repository"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() === "true"; }
+    catch { return false; }
+  })();
+  if (!hasObject(REPO_ROOT_COMMIT)) {
+    // A-G468's sign rule: say "I could not look", with the remedy, rather than "this is the wrong repository".
+    if (shallow)
+      throw new Error(`ERR_GRUEN_ROOT_SHALLOW: ${REPO_ROOT} is a SHALLOW checkout, so the repository's root ` +
+        `commit ${REPO_ROOT_COMMIT} is absent and this module CANNOT ESTABLISH the repository's identity — ` +
+        `which is not the same as establishing that it is the wrong one. Remedy: \`git fetch --unshallow\` ` +
+        `(the convention test/career/mapping-field/phase-base.ts already uses). Refusing rather than guessing.`);
+    throw new Error(`ERR_GRUEN_ROOT_WRONG_REPOSITORY: the derived REPO_ROOT ${REPO_ROOT} is a git checkout with ` +
+      `full history and does not contain ${REPO_ROOT_COMMIT}, this repository's root commit. This is not this ` +
+      `repository, and a reading taken here would describe a different product. Refusing rather than measuring.`);
   }
+  /* The phase's reference point, checked only where it can be. A deep checkout of this repository that does
+     not carry MAP-G-ARCH's base is a real condition and says so under its own name; a shallow one is not
+     accused of it, because the absence there carries no information. */
+  if (!shallow && !hasObject(PHASE_G_BASE))
+    throw new Error(`ERR_GRUEN_PHASE_G_BASE_MISSING: ${REPO_ROOT} is this repository (root commit present) but ` +
+      `does not contain ${PHASE_G_BASE}, MAP-G-ARCH's phase-G base — so these readings have no reference point ` +
+      `to be taken against. Remedy: fetch the branch that carries it. Refusing rather than measuring.`);
 }
 refuseIfNotThisRepository();
 
@@ -230,4 +283,42 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     try { const r = resolveToolModule(t); console.log(`  ${t.padEnd(11)} ${r.how} ${r.version} -> ${r.path}`); }
     catch (e) { console.log(`  ${t.padEnd(11)} REFUSED, and names every candidate:\n${String(e.message).split("\n").map(l => `      ${l}`).join("\n")}`); }
   }
+}
+
+/**
+ * §131c · A DERIVATION'S BUILD IS THE IDENTITY OF WHAT IT READ.
+ *
+ * MEASURED FIRST: 13 of the 70 files in `../outputs/` carry no build, no commit and no sha anywhere —
+ * `pg14-frame-fixed.json` among them, which is PG-14's live evidence and whose headline figure (worst
+ * residual 0.1068 px at a 16-character name at 420 px) is quoted in this record. A figure without its build
+ * is the defect class that caused this round's worst error, and it is cheapest to close exactly where the
+ * figure is a pure function of committed files.
+ *
+ * AND IT IS DELIBERATELY NOT A HEAD SHA, for two reasons that both cut the same way:
+ *   · §119's class — a HEAD sha dates a figure by commits that did not touch it, so the figure churns and
+ *     every reader must then decide whether the change was real. The blob identity of the inputs moves if
+ *     and only if the figure can have moved.
+ *   · the byte-for-byte reproducibility check this lane relies on (`gruen-pg16-crowding` reproducing its
+ *     committed output) would be destroyed by a stamp that changes on every unrelated commit. An input-blob
+ *     stamp PRESERVES it and states its precondition inside the artefact instead of in prose elsewhere.
+ *
+ * `lastChangedAt` is the newest commit that touched the path — a reader's anchor, redundant with the blob by
+ * construction, and it is the blob that is load-bearing.
+ */
+export function inputFrame(derivationFile, inputPaths, extra = {}) {
+  const rel = p => relative(REPO_ROOT, resolve(p));
+  const hash = p => { try { return execFileSync("git", ["-c", "core.quotePath=false", "hash-object", resolve(p)], { cwd: REPO_ROOT, encoding: "utf8" }).trim(); } catch { return null; } };
+  const lastChange = p => { try { return execFileSync("git", ["-c", "core.quotePath=false", "log", "-1", "--format=%h %cI", "--", rel(p)], { cwd: REPO_ROOT, encoding: "utf8" }).trim() || null; } catch { return null; } };
+  const inputs = inputPaths.map(p => ({ path: rel(p), blob: hash(p), lastChangedAt: lastChange(p) }));
+  const unreadable = inputs.filter(i => i.blob === null).map(i => i.path);
+  if (unreadable.length > 0) throw new Error(`ERR_GRUEN_FRAME_UNIDENTIFIED: ${JSON.stringify(unreadable)} could not be hashed, so this figure cannot state what it is a function of. Refusing to emit an unframed figure.`);
+  if (inputs.length === 0) throw new Error("ERR_GRUEN_FRAME_EMPTY: a frame over no input states nothing — name the files the derivation reads.");
+  return {
+    phase: "G",
+    whatThisIs: "A DERIVATION over committed files: no render, no server, no build, no browser, no credential.",
+    build: "the identity of the inputs below — NOT a HEAD sha. A HEAD sha would date this figure by commits that did not touch it (§119) and would break the byte-for-byte reproducibility check this lane relies on.",
+    derivation: { path: rel(derivationFile), blob: hash(derivationFile) },
+    inputs,
+    ...extra
+  };
 }

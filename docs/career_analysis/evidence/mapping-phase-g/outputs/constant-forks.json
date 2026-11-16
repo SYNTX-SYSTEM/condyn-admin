@@ -395,7 +395,7 @@
    "file": "gruen-paths.mjs",
    "state": "NO CONSTANT",
    "readsProduct": true,
-   "throwsOnMove": false,
+   "throwsOnMove": true,
    "constants": [],
    "byValueOnly": []
   },
