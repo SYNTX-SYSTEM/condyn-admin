@@ -15,7 +15,7 @@ in dem sie berechnet wurde — **Build (A-G430), Domäne (A-G435), Population (A
 |---|---|
 | **Drei Lanes, drei Branches, keine gemeinsame Lesbarkeit** | GELB `architecture/mapping-phase-f`, GRÜN `Frontend`, PINK `Implementation` |
 | **GELB kann PINKs Validierungsbericht nicht lesen** | `PINK-SYSTEM-VALIDATION.md`, **124 Commits ungepusht** — von außen bestätigt: der Pfad existiert auf keinem lesbaren Branch |
-| **PINK kann GELBs Pflichtenregister nicht lesen** | `PHASE_F*.md` / `PHASE_G*.md` existieren in **keinem** der vier Worktrees, die PINK öffnen kann |
+| **PINK kann GELBs Pflichtenregister nicht lesen** | `PHASE_F*.md` / `PHASE_G*.md` existieren in **keinem** der vier Worktrees, die PINK öffnen kann — ***DIESE ZEILE IST ALS AUSSAGE ÜBER LESBARKEIT FALSCH UND IN §11.7 WIDERRUFEN: SIE WAR DIE GANZE ZEIT AUF `origin`.*** |
 
 > *** DARAUS FOLGT DIE WICHTIGSTE EINSCHRÄNKUNG DIESES BERICHTS, UND SIE IST ENGER ALS ZUERST GESCHRIEBEN:
 > PIN-DEFINITIONEN UND STILLLEGUNGEN SIND LANE-ÜBERGREIFEND „AUF BERICHT HIN" ÜBERNOMMEN — MESSUNGEN NICHT. ***
@@ -130,6 +130,21 @@ Nennerfrage bleibt als Befund über das Register bestehen.**
 **3. PG-6s 0.15 bleibt UNDERIVED**, PG-17 ist **für Provenienz gestrichen und mit Tripwire versehen**, PG-10s
 **R17-Korridor ist unaufgelöst** — A-G165: *ein Befund kann für das Design tragend und zur Zertifizierung
 unfähig sein.*
+
+**3a. DREI PINS, DIE DIESES REGISTER FÜHRT UND DIESER BERICHT NICHT TRUG** *(§11.8, 2026-11-16)*. Gefunden
+durch Abgleich mit PINKs §8, nicht durch eine eigene Regel — **PF-9 32×, PF-10 32×, PG-18 31× im Register,
+0× in diesem Bericht.**
+
+| Pin | Stand, aus dem Register gelesen |
+|---|---|
+| **PF-9** | *** LIVE UND NIE GELAUFEN. *** `declared-not-run`; *„open and unmeasured until the tip exists — needs the façade's `running` variant“* (`:1019`). **Nicht tot, nicht gemessen, keine Deckungslücke** — ihm fehlt ein LAUF, nicht ein Guard. |
+| **PF-10** | **RETIRED HAVING NEVER RUN** (§28, A-G20). §114s Ersatz-Guard war auf einem **toten Pin** spezifiziert und ist bei `265ac7f1` **an seiner Stelle widerrufen**. PINKs §8 führt ihn als **CONTESTED**, weil PINK den Widerruf nicht gelesen hat — siehe §11.7, der Grund dafür war kein Zugang, sondern eine ungenutzte Technik. |
+| **PG-18** | **ESTABLISHED UNSATISFIABLE** — kein Erfüller bei L1 (F-G3). Kein Messurteil, sondern eine Formfeststellung. |
+
+> *** EIN BERICHT, DER DREI LEBENDE PINS SEINES EIGENEN REGISTERS NICHT NENNT, LIEST GESCHLOSSENER ALS SEINE
+> QUELLE — UND DER EINE, DER AM MEISTEN WEHTUT, IST PF-9: ER HAT KEIN URTEIL, WEIL NIEMAND IHN GEFAHREN HAT. ***
+> Es ist A-G438 am eigenen Erzeugnis: die günstige Richtung ist die, die kein Audit bekommt. **Die Zählung
+> „fünf benannte Ausnahmen“ in §7 Bedingung 2 war damit zu klein; sie ist jetzt acht.**
 
 **4. 39 der 63 Produktkonstanten sind von keinem Instrument gedeckt.** Obergrenze, keine Zählung.
 
@@ -426,3 +441,158 @@ Lane umgesetzt wurde. **Das Maß ist nicht die Defektzahl, sondern die Latenz.**
 **Kein Merge nach `main`, kein Deployment, Gemini deaktiviert, B-ENTRY erfüllt und nicht umgangen, kein
 Zugangsdatum geraten, kein Force-Push, und nichts von einer Peer-Lane erbeten, was die eigenen Berechtigungen
 dieser Lane verweigert hätten.**
+---
+
+## §11 RECOVERY-MANDAT 2026-11-16 — WAS DIE WIEDERHERSTELLUNG GEMESSEN HAT
+
+**Mandat:** „GELB :: SFE FULL SYSTEM RECOVERY & CONTINUATION“. **Branch `architecture/mapping-phase-f`,
+HEAD bei Eingang `4f80421a`, Arbeitsbaum sauber, 0 vor / 0 zurück gegen LIVE `origin` nach `git fetch --prune`.**
+
+### §11.1 Drei Prämissen des Mandats halten nicht — gemessen, nicht vermutet
+
+| Prämisse | Befund |
+|---|---|
+| „Der Rechner wurde neu gestartet.“ | ***FALSCH.*** Boot `2026-11-07 14:55`, Uptime 1 Woche 1 Tag — **Tage vor** PINKs letztem Artefakt (11-11 23:25) und meinem (11-13 00:52). **Es ist nichts verloren gegangen.** Der Testdb-Container läuft seit 4 Tagen, die Rollen-Credentials sind intakt. |
+| „Alle drei SFE-Sessions sind wieder geöffnet.“ | ***FALSCH.*** Zwei Peers. **PINK existiert als Session nicht.** Die dritte, vom Eigentümer *pink gefärbte* Session sitzt in **MEINEM** Worktree auf **MEINEM** Branch und hat die PINK-Rolle korrekt verweigert. **Farbe ist nicht Lane.** |
+| „`TEST_DATABASE_ADMIN_URL` war noch offen.“ | ***HISTORISCH, GESCHLOSSEN.*** Zugang verifiziert. |
+
+**Und GRÜNs „32 Commits“ sind 100.** Keine Basisdivergenz: `origin/main` (`e360caf9`) **ist** Vorfahre von
+`architecture/mapping-phase-f`; nur der *lokale* `main`-Ref ist 8 Commits veraltet. Mein erster Merge-Base-Lesung
+galt dem veralteten lokalen Ref — **ein Ref ist kein Zustand, und ein Fetch ist der Unterschied.**
+
+### §11.2 PINKs Branch ist veröffentlicht — und die zwei Pushes kaufen VERSCHIEDENES
+
+`1f9117db..b6490e86`, **Fast-Forward, 105 Commits.** Eigentümer-autorisiert (§7-Nachtrag, mit Provenienz) und
+in diesem Mandat erneut benannt. **Nichts von PINK umgeschrieben:** origins Spitze war Vorfahre, PINKs eigener
+Ref unverändert gepusht, **PINKs Worktree nicht betreten.** Gegenprobe: PINKs Statement ist jetzt aus einem
+frischen `origin`-Clone lesbar — eine Stunde vorher unmöglich.
+
+### §11.3 DIE REKONSTRUKTION AUS EINEM FRISCHEN `origin`-CLONE — DER MECHANISMUS, NICHT NUR DIE ZAHL
+
+```
+FRISCHER ORIGIN-CLONE @ 4f80421a   (PINK veröffentlicht, GRÜN nicht)
+  OK                = 10
+  PIN-UNRESOLVABLE  = 16   ← ALLE 16 an EINEM Fehler: fatal: invalid object name '4b83414e'
+  REFUSE-BY-DESIGN  =  2
+                     ----
+                       28
+```
+
+> *** SECHZEHN VON ACHTUNDZWANZIG INSTRUMENTEN SCHEITERN AN EINEM EINZIGEN UNVERÖFFENTLICHTEN OBJEKT. ***
+> `4b83414e` liegt **auf keinem `origin`-Ref** — es steckt in GRÜNs 100 ungepushten Commits (`git branch -r
+> --contains` ist leer, `--is-ancestor` gegen GRÜNs Spitze trifft). §4 Punkt 8 hat die **16 richtig gezählt**
+> und als „erreichen ihre Quelle nicht“ beschrieben. Die Ursache ist präziser und besser: **ein Push, 16
+> Instrumente.** Und §4 Punkt 7 wird dadurch schärfer, nicht milder: `4b83414e` war **nie ein Produktstand**
+> *und* ist **nie veröffentlicht worden** — ein Pin, der beides ist, liest auf der schreibenden Maschine grün
+> und existiert für jeden anderen Leser nicht.
+
+**PINKs Push hat die Instrumentenzahl NICHT verändert (10 bleibt 10).** Das ist der Befund, der die beiden
+Entscheidungen trennt: **PINKs Push kauft Bedingung 4s Lesbarkeit, GRÜNs Push kauft die lane-übergreifende
+Nachrechnung.** Sie waren vier Phasen lang als eine Frage behandelt worden.
+
+### §11.4 Siegel — erhalten, und eines, das nie verifiziert hat
+
+**PINK: 91 von 91 byteidentisch** (`manifest.sha256`, read-only in PINKs Worktree geprüft, nichts geschrieben).
+**GELB: 71 Manifeste geprüft, 70 vollständig OK.**
+
+**Das eine, das fällt — und es ist keine Beschädigung durch die Wiederherstellung:**
+`evidence/lens-owner-bfe0d27/manifest.sha256`, **14 Einträge, 0 verifizieren wie geschrieben.**
+
+| Anatomie | |
+|---|---|
+| Pfadpräfix | das Manifest schreibt jeden Eintrag unter `owner-bfe0d27/`; committet wurde **flach** — **also scheitern auch die intakten Dateien** |
+| Präfix abgezogen | **5 von 14 OK, byteidentisch** — die vorhandenen Bytes sind unversehrt |
+| fehlend | **9 von 14 existieren im Repository nicht**, auf keinem Branch |
+| darunter | ***`lens-proof.mjs` — DAS INSTRUMENT, DAS DEN BEWEIS ERZEUGT HAT, WURDE NIE COMMITTET*** (`git log --all` leer) |
+| ungesiegelt | eine committete PNG (`owner-6b1a7b4-612-pending-row.png`) steht in **keinem** Manifesteintrag |
+| Datum | 2026-10-11, Job-Field-Ära — **außerhalb der Mapping-Phasen D–G** |
+
+> **A-G471s Taxonomie, bestätigt an einem Fall, den keine Lane gesucht hat:** dieses Siegel **scheitert laut**,
+> also hat es niemanden mit einem falschen Grün getäuscht — **und genau deshalb hat 36 Tage niemand hingesehen.**
+> §96bs Byte-Integritätsprüfung deckte die Phase-G-Siegel, **nicht den Evidenzbaum**. *** EIN MANIFEST, DESSEN
+> PFADE NICHT REFERIEREN, IST KEIN SCHWACHES SIEGEL, SONDERN KEINES — UND DIE DIGESTS DARIN KÖNNEN KORREKT SEIN,
+> WIE FÜNF VON IHNEN HIER. *** **Nicht repariert, mit Grund:** außerhalb des Mapping-Scopes, und die 9
+> fehlenden sind Eigentümer-Abnahmebilder aus einem Labor, das nicht mehr läuft — sie **nachzuerzeugen wäre
+> eine Fälschung**, kein Fix. Als Befund geführt, das Siegelverzeichnis unverändert.
+
+### §11.5 Der Runbook-Defekt, der DIESE Lane gestellt hat
+
+Ich habe die Gesamtsuite auf dem dokumentierten Weg gestartet — `set -a; . ~/.config/condyn/test-db-role.env;
+set +a` aus `DATABASE_SAFETY_ARCHITECTURE.md` §4 Punkt 2 — und **B-ENTRY hat verweigert:**
+
+```
+ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER: this server holds the protected database condyn,
+so it is the shared server and never a provisioning basis
+```
+
+**Die Rollen-Env-Datei nennt `localhost:5432`** — den **geteilten** Server, der `condyn` hält. Die
+Bereitstellungsbasis ist seit der Wiederherstellung der Wegwerf-Container auf `127.0.0.1:5433`, dessen Admin-URL
+die eine Zeile in `.env.local` ist. *** DIE ANWEISUNG WAR BEI NIEDERSCHRIFT RICHTIG; DIE BASIS IST UNTER IHR
+WEGGEZOGEN, UND DER ALTE NAME ANTWORTETE WEITER AUF SEINEM PORT. *** **A-G471s dritte Richtung in der
+Infrastrukturschicht: der Name auflöste, also schlug nichts laut fehl.**
+
+**Zwei Dinge, die hier zusammengehören.** Erstens: **die Grenze hat es gefangen, nicht die Dokumentation** —
+B-ENTRY verweigerte korrekt und unumgangen. Zweitens, und unangenehmer: *** DER RUNNER BEENDETE SICH MIT
+EXIT 0, OBWOHL KEIN EINZIGER TEST GELAUFEN WAR. *** Eine Verweigerung, die als Erfolg zurückkehrt, ist genau die
+Form, gegen die dieses Register seit §107 argumentiert. **§4 Punkt 2 und §5 sind korrigiert** (2026-11-16, mit
+Provenienz und ohne den alten Wortlaut zu tilgen); **der Exit-Code ist als Befund offen und gehört in die
+Runner-Schicht, nicht in die Dokumentation.**
+
+### §11.6 Verwaiste Wegwerf-Datenbanken
+
+**18 auf dem geteilten Server `:5432`, zusammen 285 MB**, aus der Zeit, als dieser Server noch Basis war — plus
+**6 auf dem Container**, zwei davon aus **meinen eigenen** abgebrochenen Läufen heute. **Nicht gelöscht:**
+Datenbanken auf dem geteilten Server zu verwerfen ist destruktiv und die Fremden sind nicht meine. **Meine
+eigenen räume ich auf; die 18 sind eine Eigentümerentscheidung.**
+### §11.7 ***DIE GEGENSEITIGE UNLESBARKEIT WAR NIE GEGENSEITIG***
+
+§0 dieses Berichts trägt als zweitwichtigste Schranke: *„PINK kann GELBs Pflichtenregister nicht lesen —
+`PHASE_F*.md` / `PHASE_G*.md` existieren in keinem der vier Worktrees, die PINK öffnen kann.“* **Der
+Nebensatz ist wahr. Die Schlussfolgerung ist falsch.**
+
+| gemessen | |
+|---|---|
+| `PHASE_G.md` bei `9b07d616` | ***VORHANDEN, 1 014 809 Bytes*** |
+| `9b07d616` | genau der Commit, den **PINKs eigener §11** als *„committed and pushed“* führt |
+| Vorfahre von `origin/architecture/mapping-phase-f` | **JA** |
+| im frischen `origin`-Clone auf Platte | **vorhanden, 1 154 483 Bytes** |
+
+> *** GELBS REGISTER WAR DIE GANZE ZEIT AUF `origin`. EIN EINZIGES
+> `git show origin/architecture/mapping-phase-f:<pfad>` AUS PINKS EIGENEM WORKTREE HÄTTE ES GELIEFERT. ***
+> Es war eine **Worktree**-Schranke, nie eine **Lesbarkeits**-Schranke — und beide Lanes haben vier Phasen lang
+> „unlesbar“ geschrieben, wo „nicht ausgecheckt“ stand.
+
+**Und jetzt die Stelle, an der es wirklich weh tut:** das ist **wörtlich A-G469s Abhilfe**, und sie steht
+**ausgeschrieben im Kopf meines eigenen `gelb-paths.mjs`**: *„stop reading the peer through a filesystem
+neighbour at all: resolve a NAMED ref and read git objects at it. That is relocatable, pinned, and it REFUSES
+instead of falling back.“* *** DIESE LANE HAT DIE TECHNIK FÜR DAS LESEN EINER FREMDEN LANE GEBAUT, IN EIN
+INSTRUMENT EINGEBAUT, IHREN NUTZEN GEMESSEN — UND SIE AUF DAS LESBARKEITSPROBLEM, DAS SIE IN JEDEM ABSCHNITT
+BESCHRIEB, NIE ANGEWANDT. ***
+
+**Was das an den Befunden ändert, in beide Richtungen:**
+
+1. **Die Asymmetrie wird benannt statt gemittelt.** PINKs Seite war **echt** unlesbar — ihr Branch war
+   ungepusht, das war messbar und ist heute behoben. **GELBs Seite war es nie.** §7s Analyse von Bedingung 4
+   behandelte beide Richtungen als eine Anordnungseigenschaft; **die Hälfte davon war ein unbenutzter Befehl.**
+2. **Die „auf Bericht hin“-Stufe schrumpft einseitig.** PG-19s drei Beerdigungen und die A-G20-Stilllegungen
+   von PF-5/PF-7 standen PINK **zur eigenen Prüfung offen**; sie blieben „auf Bericht hin“, **weil niemand
+   den Ref gelesen hat**, nicht weil es keinen Zugang gab. **Ich korrigiere die Einstufung nicht nachträglich
+   — eine ungenutzte Möglichkeit ist keine durchgeführte Prüfung**, und PINK ist die einzige Lane, die PINKs
+   Stufen ändern darf. **Aber der GRUND war falsch angegeben, und der Grund ist das, was der Eigentümer liest.**
+3. **Es erklärt PF-10s CONTESTED** (§4 Punkt 3a) restlos: PINK führt einen Guard als bestritten, dessen
+   Widerruf bei `265ac7f1` auf `origin` lag.
+
+> **Die Regel, und sie ist die bittere Schwester von A-G471:** *** EINE SCHRANKE, DIE EINE LANE SICH SELBST
+> AUSSTELLT, WIRD VON NIEMANDEM AUDITIERT — SIE KOSTET NICHTS, SIE KLINGT WIE SORGFALT, UND SIE IST DIE EINZIGE
+> ART VON BEFUND, DIE DURCH WIEDERHOLUNG GLAUBWÜRDIGER WIRD STATT NACHPRÜFBARER. *** Dreizehn Abschnitte haben
+> die Unlesbarkeit zitiert. **Keiner hat sie getestet.**
+
+### §11.8 Drei Pins, die dieser Bericht nicht trug
+
+Beim Abgleich mit PINKs §8: **PF-9, PF-10 und PG-18 kommen im Register 12/32/31-mal vor und in diesem Bericht
+überhaupt nicht.** In §4 als Punkt 3a nachgetragen, mit ihrem gelesenen Stand. **PF-9 ist LIVE UND NIE
+GELAUFEN** — ihm fehlt ein Lauf, nicht ein Guard. **§7 Bedingung 2 sprach von fünf benannten Ausnahmen; es
+sind acht.**
+
+> **Und der Mechanismus ist derselbe wie bei §11.7:** gefunden hat es **der Abgleich mit der anderen Lane**,
+> nicht eine Regel dieser Lane — **genau das Methodenergebnis aus §10, an diesem Bericht selbst bestätigt.**

@@ -51,7 +51,10 @@ disposable databases and fail closed otherwise.
 ## 4. Owner checklist (in order)
 
 1. DONE 2026-10-10 (authorized): `TEST_DATABASE_PROVISIONER_URL=postgresql://postgres:<pw>@localhost:5432/postgres TEST_DATABASE_ROLE_PASSWORD=<24+ chars> npx tsx scripts/test-db/provision-role.ts` (idempotent; prints the `TEST_DATABASE_ADMIN_URL`). Password kept outside the repository.
-2. Switch every runner invocation to that `TEST_DATABASE_ADMIN_URL` (`set -a; . ~/.config/condyn/test-db-role.env; set +a`); `test/database-isolation/least-privilege-role.test.ts` then proves layer 4 on every run.
+2. Switch every runner invocation to that `TEST_DATABASE_ADMIN_URL`; `test/database-isolation/least-privilege-role.test.ts` then proves layer 4 on every run.
+   > ⚠ **STALE AS WRITTEN, CORRECTED 2026-11-16 (GELB).** This step used to read `set -a; . ~/.config/condyn/test-db-role.env; set +a`. **That file names `localhost:5432`, which is the SHARED server — it holds the protected database `condyn`.** Sourcing it and running the suite is refused, correctly, by `assertDisposableServer()`:
+   > `ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER: this server holds the protected database condyn, so it is the shared server and never a provisioning basis`.
+   > *** THE INSTRUCTION WAS NOT WRONG WHEN WRITTEN; THE BASIS MOVED UNDER IT. *** The provisioning basis is now the disposable `postgres:17` container on `127.0.0.1:5433`, and its admin URL is the one line in `.env.local` (mode 600, gitignored). **The runbook kept pointing at the old basis for as long as the old basis still answered on its port** — A-G471's third direction in the infrastructure layer: the name still resolved, so nothing failed loudly. **The boundary is what caught it, not the documentation.**
 3. DONE by GELB on `integration/hr-decision-loop`: `run.ts` and `create.ts` call `assertLeastPrivilegeAdmin` and refuse a superuser admin unless `TEST_DATABASE_ALLOW_SUPERUSER` is exactly `1` (verified on the maintenance connection).
 4. Inside `condyn`, only after the separate approval: option H1 of `CONDYN_PRIVILEGE_HARDENING_ASSESSMENT.md` (`REVOKE CONNECT, TEMPORARY ON DATABASE condyn FROM PUBLIC`, with explicit grants for the application roles). `REVOKE CREATE ON SCHEMA public` is a no-op in `condyn` and is dropped from this list.
 5. Server: `log_connections=on`, `log_statement=ddl`.
@@ -59,11 +62,14 @@ disposable databases and fail closed otherwise.
 ## 5. How to run tests now
 
 ```
-TEST_DATABASE_ADMIN_URL=postgresql://<admin>:<pw>@localhost:5432/postgres npm run -s test:isolated -- <vitest args>
+# the basis is the DISPOSABLE server on 127.0.0.1:5433, never the shared server on :5432
+export TEST_DATABASE_ADMIN_URL="$(grep '^TEST_DATABASE_ADMIN_URL=' .env.local | cut -d= -f2-)"
+npm run -s test:isolated -- <vitest args>
 ```
 
 Creates a marked `condyn_test_<16 hex>` database, runs vitest against it, drops it. A plain `npx vitest run`
 without a verified `DATABASE_URL` aborts before any test. Never pass a URL naming `condyn`.
+**And never pass an admin URL naming a server that HOLDS `condyn`** — the host/port guards cannot tell a shared server from a disposable one, which is why the server itself is identified. `localhost:5432` is the shared server here and is refused as a basis (§4 item 2).
 
 ## 6. Top-down reconstruction of the integration tip candidate (read-only, 2026-10-10)
 
