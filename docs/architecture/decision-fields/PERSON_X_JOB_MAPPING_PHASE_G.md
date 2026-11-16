@@ -7372,12 +7372,24 @@ the record has no name for it:**
 > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's.*
 > **`guardClears: false` in every cell, on both builds.** L0 1920 **0.253 → 0.259** (+2.4 %), L0 1280
 > **0.229 → 0.227** (−0.9 %), L2 1920 **0.499 → 0.557** (+11.6 %). **So limb (a) holds on the build that
-> ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1920x1080.json`,
+> ships and A-G277 returns to CLOSED** — `outputs/pg11-guard-L0-1920x1080.json`,
 > `outputs/pg11-guard-L0-1280x800.json`, `outputs/pg11-guard-L2-1920x1080.json`, cited by file per A-G392.
 > **The margin narrowed from 2.00× to 1.80×**, so the concern was well founded and the move was a tenth of
 > what would have flipped it. **And the direction confirms the mechanism rather than leaving it assumed:
 > the two L0 cells barely moved while L2 — which frames ONE body, so its viewBox is the one the new frame
 > solve changes most — moved 11.6 %. The cell most exposed moved most.**
+>
+> ⚠ ***RE-DATED 2026-11-16 BY GELB (A-G473, §11.13; GRÜNs Reproduzierbarkeitsbefund).*** Dieser Absatz
+> schrieb *„resting on current readings“* im Präsens und ohne Verfallsmarke; die Wendung ist **gestrichen**,
+> weil sie sechzehn Stunden nach ihrer Niederschrift falsch war. **Die Messungen selbst stehen — datiert:**
+> Guard-Zellen **2026-11-11 16:49–16:52Z** auf `utpaUMQpafZVzAeyYImhv`, das **seit GRÜNs Rebuild als
+> `c84ab292` auflöst** und damit nicht mehr referentenlos ist; die gesiegelte Ratio auf dem konservierten
+> Build **2026-11-10 = `185427d5`**. **Die Komponente hat sich danach zweimal geändert** (§93 `7b8fc7f5`,
+> §104 `fd45f45f`). *** DIESE ZAHLEN BESCHREIBEN DEN INTEGRATIONSSTAND `4f4534c5` NICHT. *** A-G277s Stand,
+> ausgeschrieben: **CLOSED INCONCLUSIVE-BY-MEASUREMENT auf den genannten Daten und Builds**, nicht auf dem
+> heutigen. **Nicht neu gemessen, mit Grund:** `gruen-pg11.mjs:187` schreibt die **gesiegelte** Datei, eine
+> Neumessung wäre also eine Neuversiegelung unter A-G109 — ein bewusster Akt auf einem bewussten Build, und
+> der Pixel-Trace liest `4f4534c5` ohnehin gerade.
 
 > **Consequence: PINK's factor task is void for PG-11 outright, and suspended for PG-12 until the compositing
 > join is measured. A-G115 made them one factor, so there is now nothing for PINK to set in either place, and I

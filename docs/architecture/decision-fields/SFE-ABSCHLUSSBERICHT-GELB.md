@@ -1078,3 +1078,83 @@ gelesen, bevor ich meinen Probe-Worktree gebaut habe.**
 > WAR VERÖFFENTLICHT, UND ICH HABE GEMESSEN STATT ZU LESEN. *** A-G483 hat mich die Ursache finden lassen;
 > **eine Minute im veröffentlichten Record hätte den Fehler verhindert.** Und mein Hardlink in `int3` ist aus
 > PINKs zweitem Grund ebenfalls riskant — benannt, und für beide PINK-Stände ist `cp -a` vorgeschrieben.
+### §12.5 ZWEI ADJUDIKATIONEN, DIE MIR ZUSTEHEN — UND GRÜNS SIEGELBEFUND
+
+**GRÜN hat Queue 1–4 geliefert und dabei einen Defekt gefunden, der die ganze Siegelklasse betrifft:**
+
+> *** DER KONSERVIERTE BUILD `HRYkeEpbpndI3UEE7ceeC` IST NICHT AUS DEM HEAD GEBAUT, DEN ER FÜHRT. *** Gebaut
+> 18:22 bei HEAD `0698bf83`, aber sein Bundle trägt `shelf:.022` — die A-G62-Änderung lag **uncommitted** im
+> Baum und wurde 8 Minuten später als `185427d5` committet. **A-G489 (GRÜNs): das `head`-Feld eines Siegels
+> hält fest, WANN die Messung genommen wurde, nicht WORAUS der Build kompiliert wurde.** Ein Siegel kann
+> byteintegr sein, seinen Build korrekt benennen **und trotzdem auf den falschen Commit zeigen.**
+
+**Und GRÜN hat daraus das Richtige gemacht statt neu zu siegeln:** Rebuild aus `origin` bei `185427d5`,
+**537 Dateien — 532 identisch, 3 nur im BUILD_ID-Verzeichnisnamen, 2 nur im zufälligen `encryptionKey`;
+der Chunk des Feldes byteidentisch.** Der Referent ist damit **reproduzierbar**, und die Restgrenze steht
+geschrieben: **der Renderer ist nicht reproduziert** (Playwright, Chromium, Fonts, GPU dieser Maschine), ein
+`npm ci` ist nicht gemessen. *** REPRODUZIERBAR UND AKTUELL SIND VERSCHIEDENE EIGENSCHAFTEN — DIE 8 SIEGEL
+BLEIBEN GEGEN HEAD STALE, UND DAS IST JETZT EINE AUSSAGE STATT EINER LÜCKE. ***
+
+#### ADJUDIKATION 1 — ***CROWDING BLEIBT 0.3***
+
+| GRÜNs Messung bei 0.5 | |
+|---|---|
+| Rollen-tragende Layouts, die **weniger** Bodies zeichnen | **9 von 11**; **keines zeichnet mehr** |
+| L0 / L1 | 6…7 → 4…7 (Median 6) / 6…12 → 4…7 |
+| LV02 | **6 → 3**, allein durch Spacing |
+| L0-Budget bindet | **8 von 10 Layouts bei 0.3** · **1 von 10 bei 0.5** |
+| beide Viewports | **identisch per Konstruktion** — `spaced()` wählt in Feldeinheiten, der 12-px-Boden greift **nach** der Auswahl |
+
+*** DER DEFEKT WAR NIE, DASS 0.3 FALSCH IST. *** Er war, dass **PG-5s Budget-Urteile bei 0.5 abgeleitet
+wurden, während der Build 0.3 fährt** — ein **Rahmenfehler im Urteil**, keine falsche Konstante. Und GRÜNs
+Zahlen entscheiden die Sache beim **tatsächlichen** Wert: **bei 0.3 bindet das L0-Budget auf 8 von 10
+Layouts.** Also ist es **LEBENDIG, nicht inert.** §56s Stilllegung von PG-5s L1-Budget als „inert“ war bei
+0.5 gerechnet und ist bei 0.3 **nichtig durch Rahmen**; §57s Widerruf ist damit **auf der Messung
+bestätigt**, nicht nur wiederhergestellt.
+
+> **Zwei Gründe, die hinzukommen und die ich nicht verschweige:** ein Wechsel auf 0.5 wäre eine **sichtbare
+> Produktänderung**, die niemand bestellt hat (9 von 11 Layouts zeichnen weniger, LV02 halbiert sich), **und
+> er würde die Pixelvalidierung entwerten, die gerade läuft.** Die 0.5-Spalte bleibt als **aufgezeichnete
+> Sensitivitätsanalyse** erhalten — *** NIE WIEDER ALS GRUNDLAGE EINES URTEILS. ***
+>
+> **Offen und benannt, GRÜNs Vorbehalt:** die **gerenderten** Rim-Abstände in px sind nicht gemessen, und
+> dort kann der 12-px-Boden in die Feldeinheiten-Freiheit hineinfressen. **Das ist die eine Stelle, an der
+> „per Konstruktion identisch“ endet.**
+
+#### ADJUDIKATION 2 — A-G48, A-G51, A-G206: ***ZURÜCKGESTELLT MIT BEDINGUNG, NICHT FALLEN GELASSEN***
+
+Alle drei brauchen **neue Fixtures**. MAP-G-ARCHs Fixtures-Glied (*„existing fixtures only“*) ist eine
+**laufende Invariante**, keine Phasenmessung (§11.16) — und B-7s Fixtures sind die **gemeinsame
+Grundwahrheit, gegen die PINK in diesem Augenblick mißt.**
+
+> *** DIE GEMEINSAME GRUNDWAHRHEIT WÄHREND EINER LAUFENDEN UNABHÄNGIGEN VALIDIERUNG ZU ÄNDERN MACHT DIE
+> VALIDIERUNG WERTLOS. *** Das ist kein Terminproblem, sondern ein Reihenfolgeproblem.
+
+**Ruling:** zurückgestellt bis PINKs Urteil vorliegt. Danach, falls weiter gewollt, liegen sie **nach
+`PHASE_INT_BASE`** und damit **unter MAP-INT-ARCH** — jede, die Produktcode berührt, braucht einen Eintrag in
+`AUTHORISED_CROSSINGS`. **Von den sieben sind 1 (A-G43), 2 (A-G49) und 5 (PG-20-Mutant) erledigt, 6 (Option 3)
+ruht ohne PINK-Abruf** — bleiben genau diese drei.
+
+### §12.6 ***DREI LANES PARALLEL AUF EINER MASCHINE LASSEN DIE TIMEOUTS FEUERN — UND EIN TIMEOUT SIEHT IN DER SUMMENZEILE AUS WIE EIN DEFEKT***
+
+Volllauf auf `4f4534c5`, während **beide PINK-Agenten bauten und testeten**:
+
+```
+Test Files  8 failed | 512 passed | 11 skipped (531)
+     Tests  10 failed | 3671 passed | 20 skipped (3701)     exit 1 · 1262.77 s
+```
+
+**Gegen die Probe ohne Nebenlast: 3681 / 0 bei 573.85 s.** *** ALLE ZEHN FEHLER SIND `Timeout` /
+`timed out` / `exceeded` — KEINE EINZIGE ASSERTION, UND KEINER IN DEN MAPPING- ODER ARCHITEKTURTESTS. ***
+Dauer **2,2×**.
+
+**Nicht behauptet, sondern geprüft:** dieselben 8 Dateien einzeln nachgefahren, **noch unter Last
+(loadavg 5.09)**: *** 8 Dateien, 73 von 73 Tests, exit 0, 82 s. *** **Unter Last zu bestehen ist der
+schlüssige Beweis** — hätten sie einen Defekt, würde die Last ihn nicht heilen.
+
+> **A-G490: ein Timeout und ein Defekt sind in der Summenzeile identisch, und Nebenlast erzeugt den einen,
+> nicht den anderen.** Eine Suite-Zahl braucht **die Maschinenlast** in ihrem Rahmen, neben Build, Population
+> und Quantor. *** UND DIESE NEBENLAST HABE ICH SELBST ERZEUGT, INDEM ICH ZWEI AGENTEN STARTETE UND
+> GLEICHZEITIG DIE SUITE FUHR. *** **Fünfter falscher Alarm dieser Sitzung aus meinem eigenen Messaufbau —
+> der erste, der aus einer Orchestrierungsentscheidung stammt und nicht aus einem Kommando.** Die saubere
+> Zahl für `4f4534c5` wird bei ruhiger Maschine genommen.
