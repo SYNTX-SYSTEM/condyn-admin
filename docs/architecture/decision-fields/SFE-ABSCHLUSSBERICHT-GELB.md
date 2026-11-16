@@ -2601,5 +2601,18 @@ aufgeschrieben, sondern eingebaut ist. Die vier wurden danach entfernt.
 **Alle neun übersprungenen Tests sind Richtlinienentscheidungen**, namentlich: acht Gemini-Suiten plus
 `live-browser-workflow.e2e` (der Live-Gemini-Browser-Walk). **Kein einziger ist ein fehlendes Werkzeug.**
 
-**Siegel am Schlussstand:** **101 Manifeste, 1746 Einträge**, davon **1732 OK**, **0 Inhaltsabweichungen**
-und **14 unauflösbare** — alle in `lens-owner-bfe0d27`, vorbestehend, deklariert, außer Scope (§15.16).
+**Siegel am Schlussstand, und diese Zahl habe ich zweimal schreiben müssen:** **101 Manifeste, 1747
+Einträge**, davon ***1733 OK, 0 Inhaltsabweichungen*** und **14 unauflösbare** — alle in
+`lens-owner-bfe0d27`, vorbestehend, deklariert, außer Scope (§15.16).
+
+> ⚠ **Beim ersten Schreiben stand hier „1746 Einträge, davon 1732 OK".** Beides war **abgeleitet statt
+> gemessen**: ich hatte 1746 aus dem Zensus des Rewriters genommen und 1732 daraus zurückgerechnet. Der
+> Verifizierer sagt 1733, und 1733 + 14 = **1747**. *** DIE DIFFERENZ IST KEIN FEHLER DES SIEGELS, SONDERN
+> EINE SET-GRENZE MEINES EIGENEN INSTRUMENTS: *** der Rewriter hält eine Menge **distinkter Pfade**, und
+> `budget-boundary-fcf1084/verdicts.txt` ist in seinem Manifest **zweimal gelistet** — gleicher Pfad,
+> gleicher Digest, und er stimmt mit der Datei überein. Harmlos, aber 1747 Einträge sind 1746 distinkte
+> Pfade, und ein Bericht, der beide Zahlen „1746" nennt, verwechselt zwei Messungen. **Nachgeprüft: jedes
+> einzelne Manifest stimmt zwischen „was `sha256sum` prüft" und „was mein Regex parst" überein — 1747
+> gegen 1747, kein einziges Abweichen.** Das ist in dieser Sitzung die dritte Zahl über mein eigenes
+> Siegelinstrument, die beim Nachmessen nicht hielt (nach der `…-FAILED-….jpg`-Datei und F-R14/F-R15), und
+> die erste, die ich gefunden habe, **weil zwei meiner eigenen Zahlen nicht zueinander passten.**
