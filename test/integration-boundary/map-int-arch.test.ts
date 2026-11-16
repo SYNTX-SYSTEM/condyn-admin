@@ -47,7 +47,17 @@ const PRODUCT = ["lib", "app", "scripts"];
  * The MAP-C-ARCH pattern (AUTHORISED_CROSSINGS): every crossing is attributable AND the list is consumed in
  * full, so a stale entry is a failure rather than a permanent exemption.
  */
-const AUTHORISED_CROSSINGS: Array<{ commit: string; reason: string }> = [];
+const AUTHORISED_CROSSINGS: Array<{ commit: string; reason: string }> = [
+  {
+    commit: "fddc32053bd69d41ae473a2dbfddd2507a949d37",
+    reason:
+      "GELB · F-A2 (2026-11-16). lib/database-isolation/{policy,verification}.ts gain SUITE_OWNED_DATABASE_PATTERNS " +
+      "and isSuiteOwnedDatabase, read by the FOREIGN_PAYLOAD limb ONLY. The limb was classifying this suite's own " +
+      "condyn_r5_ database as a stranger's payload, so two concurrent runs destroyed each other and four tests " +
+      "became 'skipped' silently. The basis pattern is deliberately NOT widened — a mutant that widens it fails " +
+      "test/database-isolation/shared-server.test.ts. Red-first; 91/91; tsc 0.",
+  },
+];
 
 const resolve = (rev: string) => {
   const out = git("rev-parse", "--verify", "--quiet", `${rev}^{commit}`);
