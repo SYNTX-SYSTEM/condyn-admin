@@ -62,17 +62,28 @@ describe("MAP-D-SIGNS · §8.1 sign fidelity, §8.2 – §8.4", () => {
 
   it("§8.4: a name relation is never phase locked, never fully filled, never solid — on every arc of every level's ring", () => {
     const m = model();
-    for (const ring of m.rings) for (const arc of ring.arcs.filter(a => a.class === "LEXICAL")) {
+    /* §131: both populations are DERIVED by a class predicate. A re-keyed class name empties them and the
+       two limbs then assert a property of nothing — which is the shape §105's surviving mutant had. */
+    const lexicalArcs = m.rings.flatMap(ring => ring.arcs.filter(a => a.class === "LEXICAL"));
+    expect(lexicalArcs.length, "no LEXICAL arc on any ring, so the limb below would pass over nothing").toBeGreaterThan(0);
+    for (const arc of lexicalArcs) {
       expect([arc.sign.phaseLocked, arc.sign.arcFill <= 0.5, arc.sign.arcLine !== "solid"], arc.poolRequirementId).toEqual([false, true, true]);
     }
     const l2 = run([{ type: "OPEN_POOL", jobPoolUploadId: POOL_A }, { type: "OPEN_ROLE", role: ALL }]);
-    for (const beam of levelBeams(l2, m).filter(b => b.arc.class === "LEXICAL")) expect([beam.phaseLocked, beam.beam === "solid"], beam.id).toEqual([false, false]);
+    const lexicalBeams = levelBeams(l2, m).filter(b => b.arc.class === "LEXICAL");
+    expect(lexicalBeams.length, "no LEXICAL beam at L2, so the limb below would pass over nothing").toBeGreaterThan(0);
+    for (const beam of lexicalBeams) expect([beam.phaseLocked, beam.beam === "solid"], beam.id).toEqual([false, false]);
   });
 });
 
 describe("MAP-D-SIGNS · §8.6 recursion identity — the collar and the ring are one output (D-Q3)", () => {
   it("REPRODUCE: a body's collar IS its ring (the same frozen array), in layoutRequirementArcs' order and geometry, one sign per requirement", () => {
     const m = model();
+    /* §131: two floors, and the per-BODY one would be a false red — `role_empty` is a deliberate fixture with
+       no requirements, and its empty ring is part of what this proof covers. So the floor is the AGGREGATE:
+       some ring must carry an arc, or the per-arc sign check inside the walk asserts nothing anywhere. */
+    expect(m.bodies.length, "§131: the model draws no body, so the identity below would be walked over nothing").toBeGreaterThan(0);
+    expect(m.rings.reduce((n, r) => n + r.arcs.length, 0), "§131: no ring carries an arc, so the per-arc sign check inside the walk is vacuous for every body").toBeGreaterThan(0);
     for (const body of m.bodies) {
       const ring = m.rings.find(r => r.key === body.key)!;
       expect(body.arcs, body.key).toBe(ring.arcs);

@@ -223,7 +223,12 @@ describe("MAP-E-NEURO · P-6 — reduced motion collapses everything (WCAG 2.3.3
     const all = reduced.find(r => r.selector === '[data-testid="mapping-field"], [data-testid="mapping-field"] *');
     expect(all?.body).toBe("animation: none !important; transition: none !important;");
     // Every moving rule outside the block selects inside the field, so the one rule reaches it; none is !important, so none escapes it.
-    for (const r of rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /(animation|transition):/.test(r.body))) {
+    /* §131: the moving rules are DERIVED by a predicate over the stylesheet. A shorthand or a renamed
+       property makes the predicate match nothing and this loop iterate zero times — and the limb then
+       reports "none escapes the reduced-motion rule" about an empty set. Counted before it is walked. */
+    const moving = rules(MAPPING_FIELD_CSS).filter(r => !r.reduced && /(animation|transition):/.test(r.body));
+    expect(moving.length, "no rule outside the reduced-motion block moves, so the loop below would pass over nothing").toBeGreaterThan(0);
+    for (const r of moving) {
       expect(r.selector.startsWith('[data-testid="mapping-field"]'), r.selector).toBe(true);
       expect(r.body.includes("!important") ? /: none !important/.test(r.body) : true, r.selector).toBe(true);
     }
