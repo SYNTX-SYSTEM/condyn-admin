@@ -1158,3 +1158,41 @@ schlüssige Beweis** — hätten sie einen Defekt, würde die Last ihn nicht hei
 > GLEICHZEITIG DIE SUITE FUHR. *** **Fünfter falscher Alarm dieser Sitzung aus meinem eigenen Messaufbau —
 > der erste, der aus einer Orchestrierungsentscheidung stammt und nicht aus einem Kommando.** Die saubere
 > Zahl für `4f4534c5` wird bei ruhiger Maschine genommen.
+### §12.7 MAP-INT-ARCH — die Integrationsgrenze, rot-zuerst gegen zwei Mutanten
+
+A-G487s Entscheidung ist **umgesetzt statt notiert**: `test/integration-boundary/map-int-arch.test.ts` auf
+`integration/pxj-complete-20261116` (`450bb346`, veröffentlicht).
+
+**Was sie schützt, bewusst schmal:** nicht den Konflikt — *** EIN KONFLIKT SCHEITERT LAUT *** — sondern
+**im Merge erfundenen Produktinhalt**, den kein Elternteil je gesehen hat, der zu keiner Lane gehört, in
+keinem Lane-Bereich auftaucht und sich wie „nur der Merge“ liest.
+
+**Vier Zusicherungen über `lib/ app/ scripts/`:** der deklarierte Merge existiert und hat **genau die zwei
+deklarierten Eltern** · jede Produktdatei darin ist **byteidentisch zu einem von beiden** · er erfindet keine
+Datei und verliert keine, die beide Eltern hielten · **kein Commit danach berührt die Produktfläche außer
+durch `AUTHORISED_CROSSINGS`, und die Liste wird vollständig verbraucht** — ein veralteter Eintrag ist ein
+Fehlschlag, keine ständige Ausnahme (MAP-C-ARCHs Muster). **Die Vakuitätsklausel steht vor der Union:**
+unterschieden sich die Eltern in keiner Produktdatei, liefe die Zusicherung über nichts.
+
+**Wo sie liegt, ist nicht beliebig** — *** NICHT unter `test/career/mapping-field/` oder `mapping-spec/`,
+WEIL PF-13s POPULATION AUS GENAU DIESEN ZWEI VERZEICHNISSEN ABGELEITET IST *** (`PHASE_DIRS`). Eine Datei
+dort verschiebt **still** PF-13s Population und Testzahl — die Kopplung, die dieses Register immer wieder
+findet. **Nach dem Ablegen geprüft: Population unverändert 16 Dateien.** **Eine Grenze, die den Nenner
+eines anderen Pins beschädigt, um sich zu installieren, ist nicht wert, gebaut zu werden.**
+
+**ROT-ZUERST, zwei Mutanten, beide getötet und beide mit exakter Benennung:**
+
+| Mutant | Ergebnis |
+|---|---|
+| **A** — ein Merge, der Produktinhalt **erfindet** (per Plumbing gebaut, kein Worktree berührt) | *** ROT: *** `product content in the merge that matches NEITHER parent: [ 'lib/career/mapping/layout.ts' ]` |
+| **B** — eine **unautorisierte** Produktänderung nach dem Merge | *** ROT: *** `product changes after the integration merge with no named authority: [ '6c8dd5ed -> lib/career/mapping/layout.ts' ]` |
+
+Grün bei `4f4534c5` **vor und nach** den Mutanten: **4 von 4**. Beide Mutanten sind nach dem Reset
+unreferenziert und wurden **nie gepusht**.
+
+> **Und ein sechster Messaufbau-Fehler, drei Zeilen nachdem ich A-G490 geschrieben hatte:** mein erster Lauf
+> der Pin scheiterte an `ERR_TEST_DATABASE_ADMIN_URL_MISSING`, weil ich `grep … | cut … || fallback`
+> geschrieben hatte. *** DAS `||` BINDET AN DIE PIPELINE, UND DEREN STATUS IST DER VON `cut` — ALSO 0, ALSO
+> LIEF DER FALLBACK NIE UND DIE VARIABLE WAR LEER. *** Dieselbe Mechanik wie A-G483, in derselben Sitzung, in
+> dem Kommando, mit dem ich die Regel durchsetzen wollte. **A-G483 ist damit keine Anekdote mehr, sondern
+> gemessen: sechs von sechs.**
