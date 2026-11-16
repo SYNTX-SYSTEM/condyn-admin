@@ -92,15 +92,48 @@ const rasterDirs = ["docs/career_analysis/evidence/mapping-phase-g", "docs/caree
    size depend on which branch a neighbouring checkout happened to have out, and a venue that shrinks
    silently moves pins from "named in a raster instrument" into "named nowhere" — inflating the alarming
    number, which is the exact direction A-G429 says nothing in the build loop pushes back on. */
+/**
+ * F-R7 (2026-11-16) — THIS LOOP USED TO DO `catch { continue }`, AND IT SWALLOWED A VENUE THAT RESOLVES
+ * NOWHERE. `docs/career_analysis/evidence/mapping-phase-f` exists on 0 of 61 origin refs. So one of the two
+ * venues below contributed nothing, silently, and the comment three lines above says exactly why that is the
+ * dangerous direction: *** A VENUE THAT SHRINKS SILENTLY MOVES PINS FROM "named in a raster instrument" INTO
+ * "named nowhere" AND INFLATES THE ALARMING NUMBER. *** The instrument documented the hazard and then
+ * implemented it.
+ *
+ * Now every venue must RESOLVE or be DECLARED absent with a reason, and the declaration is consumed in full —
+ * a stale entry is a failure, not a standing exemption (the AUTHORISED_CROSSINGS pattern). A shrunken
+ * population that reports is worse than a refusal.
+ */
+const KNOWN_ABSENT_VENUES = {
+  "docs/career_analysis/evidence/mapping-phase-f":
+    "GRÜN never created a phase-F evidence directory under career_analysis; phase F's evidence lives under " +
+    "docs/architecture/decision-fields/evidence/. Verified absent on all 61 origin refs on 2026-11-16.",
+};
 const raster = {};
+const venueState = [];
 for (const d of rasterDirs) {
   let listing;
-  try { listing = pgitQuiet("ls-tree", "--name-only", `${PEER.sha}:${d}`).trim(); } catch { continue; }
+  try { listing = pgitQuiet("ls-tree", "--name-only", `${PEER.sha}:${d}`).trim(); }
+  catch {
+    const why = KNOWN_ABSENT_VENUES[d];
+    if (why === undefined)
+      throw new Error(`REFUSE gelb-pin-assertion-scan: venue ${d} does not resolve at ${PEER.ref} ${PEER.sha} and is ` +
+        `not declared in KNOWN_ABSENT_VENUES. Refusing rather than reporting a population silently missing a venue (F-R7).`);
+    venueState.push(`${d} — ABSENT, DECLARED: ${why}`);
+    continue;
+  }
+  venueState.push(`${d} — resolved, ${listing.split("\n").filter(Boolean).length} entr(ies)`);
   for (const name of listing.split("\n").filter(Boolean)) {
     if (!/\.(mjs|mts|js|ts|md|json)$/.test(name)) continue;
     try { raster[d + "/" + name] = pgit("show", `${PEER.sha}:${d}/${name}`); } catch { /* unreadable */ }
   }
 }
+for (const [d, why] of Object.entries(KNOWN_ABSENT_VENUES))
+  if (raster && Object.keys(raster).some(k => k.startsWith(d + "/")))
+    throw new Error(`REFUSE gelb-pin-assertion-scan: venue ${d} is declared absent (${why}) but it RESOLVED. ` +
+      `A stale declaration is a failure, not an exemption (F-R7).`);
+console.log("\n  VENUES, stated rather than assumed (F-R7):");
+for (const v of venueState) console.log(`    ${v}`);
 const hits = {};
 for (const p of PINS) {
   const re = new RegExp(`\\b${p}\\b`, "g");

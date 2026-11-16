@@ -389,7 +389,12 @@ reference implementation computing both. One algorithm, one set of meanings, two
 >
 > **AND THESE ARE LIVE BUT NOT AS DECLARED BELOW:**
 >
-> - **PG-1** excludes the rings from "semantic" (`:257`); measured **0.6431 / 0.7397 against ≥ 0.55** at phase G.
+> - **PG-1** excludes the rings from "semantic" (`:257`); *** CORRECTED 2026-11-16 (D-PP-2): AS BUILT it is
+>   **0.63906 / 0.73663** against ≥ 0.55 (`option3-*.json` `A_asBuilt`, head `76ae9043`), and at the
+>   integration tip `4f4534c5` PINK-PIXEL measured **0.62183 / 0.63471** (1920 reduce/live) and
+>   **0.71841 / 0.72938** (1280). *** This line read **0.6431 / 0.7397**, which is condition
+>   `C_ringAndSeatHidden` — *"ring and its seat both gone"* — **a counterfactual, correctly labelled as such
+>   at `:2891`, `:12034` and `:13563` and stripped of its label only here and in the closing report's §1.**
 > - **PG-3** amended to drawn diameter **∈ [56, 92] px** at 1920, monotone in `weightSum` (`:221`).
 > - **PG-5** **reduces entirely to its overflow-statement limb** (`:5999`); the rest is **ZERO-BY-CONSTRUCTION**
 >   via `if (out.length >= budget) break;` (`:7082`), and its **L0 numeric cap is retired as non-discriminating**
@@ -1169,6 +1174,24 @@ constant two lines above now reads `shelf: 0.02`. Verified. This is the file's o
 **the obligation that is measured RED at 0.23 against 0.08** — the next lane to re-derive the ladder would read
 the pre-inversion numbers as current. GRÜN to correct the comment with the shelf's new rendered luminance when
 the measurement produces it, not before: an invented number would be worse than a stale one.
+
+> ### ✅ DISCHARGED — AND THIS ITEM WAS CONTRADICTED BY THIS VERY REGISTER, 677 LINES LATER (2026-11-16, F-R6)
+>
+> **GRÜN found it, GELB verified it in the component.** `A-G39(a)` was carried out long ago: the component at
+> `9b57319d` reads `export const RING_LUMINANCE = Object.freeze({ shelf: 0.022, … })` and the comment beneath
+> it states *"the pre-inversion ladder this comment used to quote (0.0036 · 0.0069 · 0.0169 · 0.0431 …) **was
+> stale** from the moment the shelf moved, and **is replaced by MEASURED values** rather than by arithmetic"* —
+> followed by the four measured luminances against the stage plate, each labelled a DEVELOPMENT reading under
+> A-G36 point 2. **The instruction above was followed exactly as written, including its refusal to invent.**
+>
+> *** AND THE STALE PART WAS NEVER THE CODE — IT WAS THIS ITEM. *** It still says the constant "now reads
+> `shelf: 0.02`", while **this same register records `RING_LUMINANCE.shelf = 0.022` at lines 1848 and 1955.**
+> So the open item and its own resolution sat 677 lines apart in one document, and the item was the one that
+> had lapsed. **A register long enough to contradict itself needs its currency measured, not its length
+> admired** — which is precisely what A-G473/A-G476 built the lapse detector for, and the detector does not
+> read prose obligations like this one. **That gap is the finding, not the ladder.**
+>
+> The sentence above is kept rather than deleted: an instruction that was carried out is evidence that it was.
 
 **(b) The specification authority is single-homed on this branch.** GRÜN's §0: `PHASE_{D,E,F,G}.md` exist **only**
 in `condyn-admin-hr-integration`; GRÜN's tree carries `PHASE_C` and the `SPEC` only, and no `A-G*` identifier
@@ -7372,12 +7395,24 @@ the record has no name for it:**
 > *GRÜN re-ran all three cells on `utpaUMQpafZVzAeyYImhv`, whose product is byte-identical to HEAD's.*
 > **`guardClears: false` in every cell, on both builds.** L0 1920 **0.253 → 0.259** (+2.4 %), L0 1280
 > **0.229 → 0.227** (−0.9 %), L2 1920 **0.499 → 0.557** (+11.6 %). **So limb (a) holds on the build that
-> ships and A-G277 returns to CLOSED, resting on current readings** — `outputs/pg11-guard-L0-1920x1080.json`,
+> ships and A-G277 returns to CLOSED** — `outputs/pg11-guard-L0-1920x1080.json`,
 > `outputs/pg11-guard-L0-1280x800.json`, `outputs/pg11-guard-L2-1920x1080.json`, cited by file per A-G392.
 > **The margin narrowed from 2.00× to 1.80×**, so the concern was well founded and the move was a tenth of
 > what would have flipped it. **And the direction confirms the mechanism rather than leaving it assumed:
 > the two L0 cells barely moved while L2 — which frames ONE body, so its viewBox is the one the new frame
 > solve changes most — moved 11.6 %. The cell most exposed moved most.**
+>
+> ⚠ ***RE-DATED 2026-11-16 BY GELB (A-G473, §11.13; GRÜNs Reproduzierbarkeitsbefund).*** Dieser Absatz
+> schrieb *„resting on current readings“* im Präsens und ohne Verfallsmarke; die Wendung ist **gestrichen**,
+> weil sie sechzehn Stunden nach ihrer Niederschrift falsch war. **Die Messungen selbst stehen — datiert:**
+> Guard-Zellen **2026-11-11 16:49–16:52Z** auf `utpaUMQpafZVzAeyYImhv`, das **seit GRÜNs Rebuild als
+> `c84ab292` auflöst** und damit nicht mehr referentenlos ist; die gesiegelte Ratio auf dem konservierten
+> Build **2026-11-10 = `185427d5`**. **Die Komponente hat sich danach zweimal geändert** (§93 `7b8fc7f5`,
+> §104 `fd45f45f`). *** DIESE ZAHLEN BESCHREIBEN DEN INTEGRATIONSSTAND `4f4534c5` NICHT. *** A-G277s Stand,
+> ausgeschrieben: **CLOSED INCONCLUSIVE-BY-MEASUREMENT auf den genannten Daten und Builds**, nicht auf dem
+> heutigen. **Nicht neu gemessen, mit Grund:** `gruen-pg11.mjs:187` schreibt die **gesiegelte** Datei, eine
+> Neumessung wäre also eine Neuversiegelung unter A-G109 — ein bewusster Akt auf einem bewussten Build, und
+> der Pixel-Trace liest `4f4534c5` ohnehin gerade.
 
 > **Consequence: PINK's factor task is void for PG-11 outright, and suspended for PG-12 until the compositing
 > join is measured. A-G115 made them one factor, so there is now nothing for PINK to set in either place, and I
