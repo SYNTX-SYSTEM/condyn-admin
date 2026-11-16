@@ -95,6 +95,40 @@ async function availablePort(): Promise<number> {
 interface SignRecord { testId: string | null; id: string; source: string; relation: string; state: string; manifestation: string; interaction: string; transition: string; proof: Record<string, string> }
 interface Report { tip: string; recordedAt: string; database: string; analysisId: string; jobPoolUploadId: string; scenarios: Record<string, { verdict: "PASS" | "BOUNDARY-MATCH" | "FAIL"; finding?: string; note?: string; counts?: Record<string, number> }> }
 
+/**
+ * Q1 — the owner's PERSON × JOB rule, asserted as its precondition plus both of its halves.
+ *
+ * *** THIS REPLACES AN ASSERTION THAT WAS STALE BY SEVEN DAYS AND COULD NOT GO RED. *** Both call sites
+ * previously read `for (const stage of ["01" … "06"]) expect(count).toBe(1)`. Under PERSON × JOB the product
+ * deliberately does NOT draw the legacy orbits — 03 resonance, 04 roles, 05 tension, 06 evolution — so that
+ * loop asserted the opposite of a documented product rule:
+ *
+ *   `legacyHidden = investigationMode === "PERSON_X_JOB"` and the stage list filtered by it
+ *   — app/components/career/demo/SemanticCareerIntelligenceField.tsx:612-613 and :864,
+ *   with `withoutLegacyOrbits` at lib/career/view-model/pxj-first-screen.ts:106.
+ *
+ * The rule arrived in `afcf89f6` (owner G1) on 2026-10-22; this walk was last rebound in `916e884e` on
+ * 2026-10-15. **It aged because it could not run: `playwright` was undeclared, so `describe.skipIf` skipped
+ * the file and a test that cannot run cannot go red.** The fixture declares PERSON_X_JOB at the seeded job,
+ * and this walk never checked that the product received it — so the MODE is asserted first, as the rule's
+ * precondition, and a product that silently dropped PERSON_X_JOB now fails here instead of passing quietly.
+ *
+ * All six stages are reported together. The previous `for` loop named only the earliest absent stage, which
+ * is why the original failure read `expected +0 to be 1` without saying which shell was missing.
+ *
+ * NOTE ON VENUE: this binds the rule, not a product generation, so it requires a checkout at or after
+ * `afcf89f6`. On an older surface (which draws all six) it fails by design — that is the assertion working.
+ */
+async function expectQ1LegacyOrbitsHidden(page: any): Promise<void> {
+  const fieldRoot = page.locator('[data-testid="semantic-career-intelligence-field"]');
+  expect(await fieldRoot.count()).toBe(1);
+  expect(await fieldRoot.getAttribute("data-investigation-mode")).toBe("PERSON_X_JOB");
+  const shells: Record<string, number> = {};
+  for (const stage of ["01", "02", "03", "04", "05", "06"]) shells[stage] = await page.getByTestId(`focus-transition-stage-shell-${stage}`).count();
+  expect(shells).toEqual({ "01": 1, "02": 1, "03": 0, "04": 0, "05": 0, "06": 0 });
+}
+
+
 describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures", () => {
   let browser: any;
   const pageErrors: string[] = [];
@@ -437,7 +471,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     await page.keyboard.press("Escape");
     await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await root.getAttribute("data-observation-kind")).toBe("FIELD");
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    await expectQ1LegacyOrbitsHidden(page);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-01.png") });
@@ -912,7 +946,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await root.count()).toBe(0);
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    await expectQ1LegacyOrbitsHidden(page);
     // Re-entry after the reload: a click before hydration completes is lost in headless Chromium (not a field behaviour), so the click is repeated until the field answers.
     for (let attempt = 0; attempt < 12; attempt += 1) {
       await page.getByTestId("job-pool-panel-toggle").click();
