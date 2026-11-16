@@ -2500,3 +2500,78 @@ lassen und mit `rm -rf` begonnen; später verschwand der Arbeitsbaum seines eige
 Befehlen. **Spuren dürfen keinen Scratchpad-Namensraum ohne Spur-Präfix teilen.** Ich habe meine
 Experimente danach konsequent als `gelb-*` benannt. Diese Aufzeichnung hat acht Harness-Fehler gezählt;
 dies ist der erste, den eine **Fremdspur an sich selbst** gemeldet hat, bevor er jemandem geschadet hat.
+
+### §15.15 A-G505 — DIE NOVELLE, DIE GRÜN AN MICH ROUTIERTE, UND DER MUTANT, DER MICH WIDERLEGT HÄTTE
+
+GRÜN hat `B-7` und `B-F7` als **grün über zwei Support-Modulen** gemessen, die ihre eigenen Sätze verbieten,
+und zwei Formulierungen angeboten: die Glieder auf ihren Bereich schließen (wie §8(6)) oder
+`test/support/mapping/**` aus der Kategorie ausnehmen. **Ich habe keine von beiden genommen.**
+
+Schließen widerspricht einer schon getroffenen Entscheidung — A-G485s eigener Kommentar sagt, diese Glieder
+seien bewusst offen gelassen *„als laufende Schutzmaßnahmen statt als Messungen der Phase"*. Ausnehmen
+blendet die Kategorie dauerhaft für ein Verzeichnis, das echte Mapping-Fixtures hält — ein schlimmeres Loch
+als F-G9.
+
+**Die dritte Antwort kommt aus §95, das GRÜN einen Absatz vorher für den umgekehrten Zweck zitiert hatte:**
+
+> **A-G505:** ***Eine laufende Schutzmaßnahme darf eine Änderung verbieten, die kein späteres Phase-Entry-Set
+> autorisiert. Sie darf keine Änderung verbieten, die ein späteres Entry-Set autorisiert — das ist keine
+> Grenze, das ist ein Einfrieren.***
+
+Also: alle drei Glieder wächtern die Kategorie, `B-7` subtrahiert `F_ENTRY ∪ G_ENTRY`, `B-F7` subtrahiert
+`G_ENTRY`. **GRÜN hat angewendet statt abgelehnt und fünf Mutanten gefahren, darunter den, um den ich
+ausdrücklich gebeten hatte — den, der mich widerlegt hätte:** eine weitere Änderung an der durch `G_ENTRY`
+autorisierten `vectors.ts` bleibt **32/32 grün**. Eine unautorisierte Fixture in einer **neuen** Datei macht
+**drei Glieder rot**, wo dieselbe Datei vorher 32/32 passierte. `vectors.ts` aus `G_ENTRY` entzogen → **vier
+Glieder rot**: die Subtraktion arbeitet.
+
+**Und GRÜN hat präzisiert, was ich lose gesagt hatte.** `G_ENTRY` ist **selbstgewährend** — das
+Änderungssatz-Glied prüft Teilmenge, nicht Minimalität. ***A-G505 kauft also OFFENLEGUNG, NICHT VERBOT:***
+mehr als die drei Literale kauften (Unsichtbarkeit), weniger als ein Verbot. GRÜN hat das in die Datei und
+in beide Dokumente geschrieben, **damit die stärkere Lesart nicht durch Auslassung stehen bleibt**, und ein
+`AUTHORISED_FIXTURE_CHANGES`-Verzeichnis daneben gestellt, in beide Richtungen geprüft — eine neue
+Autorisierung kostet jetzt zwei bewusste Edits, und der zweite muss den Grund tragen.
+
+**Und GRÜNs eigener Satz darüber ist der schärfste des Austauschs:** es hatte §95 in der Hand und hat es
+**einmal** benutzt.
+
+### §15.16 F-R14 UND F-R15 — ***EIN SIEGEL, DAS NIE EIN BYTE GEPRÜFT HAT, UND MEIN ZÄHLER WAR FÜR 62% BLIND***
+
+**F-R14.** `lens-owner-bfe0d27`s Manifest listet **14 Einträge, und keiner existiert**: es benennt sie unter
+`owner-bfe0d27/`, während die **sieben** verfolgten Dateien der Venue in deren Wurzel liegen. *** SHA256SUM
+-C HAT DORT NIE EIN BYTE GEPRÜFT, UND SEIN EXIT-CODE SIEHT AUS WIE BEI EINER MANIPULIERTEN DATEI. ***
+
+Gefunden, weil ich meinem **eigenen** Zähler misstraut habe: `sha256sum` schreibt `": FAILED"` bei
+Byte-Abweichung und `": FAILED open or read"` bei einer Datei, die es nicht findet. **Ich habe das zweite
+zweimal in diesem Mandat als das erste gemeldet** — „14 genuinely failed". Richtig gemessen: ***null
+Inhaltsabweichungen im ganzen Repository***, und alle 14 Einträge unauflösbar.
+
+**Das ist A-G499s Dual.** A-G499 sagt, eine Prüfsumme beantworte *„ist diese Venue in sich konsistent?"* und
+niemals *„beschreibt sie den Build, den sie behauptet?"*. F-R14 ist die Stufe davor: **eine Prüfsumme, die
+ihre Dateien nicht findet, beantwortet gar nichts und verweigert trotzdem wie ein Verdikt.** Und der Grund
+meines Fehlers ist genau die Regel, die GRÜN und PINK mir in dieser Runde gegeben haben: *„FAILED open or
+read"* ist **kann nicht festgestellt werden**, nicht **ist falsch** (A-G503/A-G504). *** ICH HABE IHRE REGEL
+AUF IHREN CODE ANGEWANDT UND NICHT AUF MEINEN EIGENEN ZÄHLER. ***
+
+Reparatur ist außer Scope — sie heißt: ein gefrorenes Manifest editieren. Also ist die Venue eine
+**deklarierte, datierte Ausnahme mit ihren gemessenen Fakten**, vollständig verbraucht: wird sie je
+repariert, wird die Deklaration **rot**.
+
+**F-R15, und das ist der schwerere Befund.** Das neue Glied war rot — *aus dem richtigen Grund auf dem
+falschen Weg*: mein Parser verlangte das `./`-Präfix, der Parse ergab für diese Venue **null** Einträge, und
+**`[].every(...)` ist vakuant wahr**, weshalb das Veraltungsglied eine kaputte Venue für **repariert**
+erklärte.
+
+Dem Rot nachzugehen fand denselben Regex in `portable-rewrite.mjs` — ***wo er die VERWEIGERUNGSMENGE FÜR
+VERSIEGELTE DATEIEN baut.*** Gemessen: **1082 von 1746 Einträgen in 63 von 101 Manifesten stehen ohne
+`./`**. Die Menge enthielt **665**. *** MEIN REWRITER WAR FÜR 62% JEDES SIEGELS IM REPOSITORY BLIND, ZWEI
+INSTRUMENTE IN SEINER EIGENEN POPULATION EINGESCHLOSSEN. *** Der `--apply`-Lauf hat kein versiegeltes
+Instrument angefasst — aber nur, weil keines der beiden einen maschinenlokalen Pfad in einer Form trägt, die
+der Rewriter matcht. **Glück, keine Wache.**
+
+**Es ist GRÜNs F-G5 noch einmal, in meinem eigenen Code:** der Mechanismus wächterte eine **Form**, wo sein
+Satz eine **Kategorie** nannte. Beide Formen werden jetzt akzeptiert, der Parse wird **gegen die Zahl der
+Digest-Zeilen** geprüft, und ein Manifest mit Digests, das zu nichts parst, ist eine **Verweigerung** statt
+einer leeren Menge — denn genau so sah dieser Defekt von innen aus: **Stille, die sich als „hier ist nichts
+versiegelt" liest.** Nach der Reparatur: Zensus **1746**, und meine eigene Shell-Schätzung von 1747 war die
+ungenaue.
