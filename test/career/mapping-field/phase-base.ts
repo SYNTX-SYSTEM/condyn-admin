@@ -114,6 +114,27 @@ export function phaseGBase(): string {
   if (sha === undefined) throw new Error(`ERR_PHASE_G_BASE_MISSING: MAP-G-ARCH compares against commit ${PHASE_G_BASE} (PERSON_X_JOB_MAPPING_PHASE_G.md, Base), and this clone does not have it.`);
   return sha;
 }
+/**
+ * A-G485 (GELB's adjudication, 2026-11-16): PHASE G HAS NO SUCCESSOR BASE, SO THE INTEGRATION BASE CLOSES IT. D, E and F each had
+ * an open-ended range and PHASE_G §8 (6) closed each at the following phase's base; phase G's stayed open to HEAD, so the moment
+ * HEAD became an integration merge MAP-G-ARCH forbade the merge it exists to protect (GELB's trial integration/mapping-trial-20261116
+ * @ 0f94fed3: 2 failed | 30 passed in this file, both from the open range — reproduced by GRÜN on that commit before this change).
+ *
+ * PHASE_INT_BASE is 7b4d5852, GRÜN's phase-G delivery: the tip published to origin/frontend/mapping-phase-g on 2026-11-16 and the
+ * commit that trial merged. Every MAP-G range ends here, exactly as D/E/F end at the next phase's base; an integration merge then
+ * sits OUTSIDE phase G's range rather than inside it by exemption, and no path is whitelisted (A-G411).
+ *
+ * The commit that declares this necessarily lies after it — a commit cannot name its own sha — and changes only this file and
+ * architecture.test.ts. It is therefore examined by review (GELB's, as adjudicator), not by the range it closes. That is stated
+ * here so the gap is read rather than discovered.
+ */
+export const PHASE_INT_BASE = "7b4d5852aa411485aa849348208e6181a20f3ac5";
+export function phaseIntBase(): string {
+  let sha: string | undefined;
+  try { sha = git("rev-parse", "--verify", "--quiet", `${PHASE_INT_BASE}^{commit}`)[0]; } catch { sha = undefined; }
+  if (sha === undefined) throw new Error(`ERR_PHASE_INT_BASE_MISSING: MAP-G-ARCH closes phase G at commit ${PHASE_INT_BASE} (A-G485, GRÜN's phase-G delivery), and this clone does not have it.`);
+  return sha;
+}
 /** Paths changed between two commits (committed changes only — a closed range has no working tree). A-F18: the range is asserted first. */
 export function changedInRange(older: string, newer: string, ...paths: string[]): string[] {
   assertRange(older, newer);

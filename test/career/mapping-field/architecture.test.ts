@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { DIFF_MAX_BUFFER_DEFAULT, ROOT, assertRange, changedInRange, git, gitDiff, phaseDBase, phaseEBase, phaseFBase, phaseGBase } from "./phase-base";
+import { DIFF_MAX_BUFFER_DEFAULT, ROOT, assertRange, changedInRange, git, gitDiff, phaseDBase, phaseEBase, phaseFBase, phaseGBase, phaseIntBase } from "./phase-base";
 
 /**
  * MAP-D-ARCH · the phase-D boundary (PERSON_X_JOB_MAPPING_PHASE_D.md §5.2, D-1 … D-7, held by PINK). The guarantees are bound to
@@ -233,8 +233,6 @@ function commitSets(range: string): Array<{ commit: string; files: string[] }> {
   }
   return sets;
 }
-/** The working tree (index, unstaged, untracked) as one pending change set. */
-const workingTreeSet = () => ({ commit: "WORKING_TREE", files: [...new Set([...git("diff", "--name-only", "--no-renames", "--cached", "HEAD"), ...git("diff", "--name-only", "--no-renames", "HEAD"), ...git("ls-files", "--others", "--exclude-standard")])] });
 /**
  * Every phase-E change set: each non-merge commit in phase E's OWN range, PHASE_E_BASE..PHASE_F_BASE (PHASE_F §20: the open-ended
  * form measured every later phase as if it were phase E — PINK's F-PC-1 / O-RC-1 recurring). A-F18: the range is asserted non-empty
@@ -377,17 +375,23 @@ const changedSinceG = (...paths: string[]) => [...new Set([
 ])].sort();
 const addedSinceG = (file: string) => gitDiff("-U0", phaseGBase(), "--", file)
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+/* A-G485: phase G's OWN closed range, PHASE_G_BASE..PHASE_INT_BASE. Closed in kind exactly where §8 (6) closed D/E/F — the engine and
+   spec record (D-1 / B-1 / §6), the change set and its merge clause (B-8 / B-F8), the script motion (B-F5) — and left open where
+   D/E/F left theirs open (B-F6's host, B-F7's fixtures), which stay ongoing protections rather than measurements of the phase. */
+const changedInG = (...paths: string[]) => changedInRange(phaseGBase(), phaseIntBase(), ...paths);
+const addedInG = (file: string) => gitDiff("-U0", phaseGBase(), phaseIntBase(), "--", file)
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
 describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
-  it("V1 stays phase B's record: layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical to the base", () => {
-    expect(changedSinceG(`${SPEC_DIR}/layout-spec.json`, `${SPEC_DIR}/layout-golden-vectors.json`, `${SPEC_DIR}/real-shape-73.json`, `${SPEC_DIR}/sign-table.json`, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+  it("V1 stays phase B's record (range closed at PHASE_INT_BASE): layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical through phase G", () => {
+    expect(changedInG(`${SPEC_DIR}/layout-spec.json`, `${SPEC_DIR}/layout-golden-vectors.json`, `${SPEC_DIR}/real-shape-73.json`, `${SPEC_DIR}/sign-table.json`, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
   });
 
-  it("in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change; signs, view, delta and focus are untouched", () => {
-    expect(changedSinceG("lib/career")).toEqual(["lib/career/mapping/layout.ts", MODEL].sort());
+  it("in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change in phase G (range closed at PHASE_INT_BASE); signs, view, delta and focus are untouched", () => {
+    expect(changedInG("lib/career")).toEqual(["lib/career/mapping/layout.ts", MODEL].sort());
     // Exactly: every line the view model adds is, once its V1.1 tokens are taken out, a line it removed — or a comment, or the one
     // new field declaration. Nothing else in the model may move.
-    const diff = gitDiff("-U0", phaseGBase(), "--", MODEL);
+    const diff = gitDiff("-U0", phaseGBase(), phaseIntBase(), "--", MODEL);
     const removed = new Set(diff.filter(l => l.startsWith("-") && !l.startsWith("--- ")).map(l => l.slice(1).trim()));
     const added = diff.filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1).trim());
     expect(added.length).toBeGreaterThan(0);
@@ -425,11 +429,14 @@ const EVIDENCE_DIR = "docs/career_analysis/evidence/mapping-phase-g";
 const isEvidence = (p: string) => p.startsWith(`${EVIDENCE_DIR}/`);
 
 describe("MAP-G-ARCH · the change set, and no script motion", () => {
-  it("every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit after the base", () => {
-    const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeSet()].filter(set => set.files.some(p => G_ENTRY.includes(p)));
+  it("every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit inside phase G's own closed range (A-G485)", () => {
+    // A-G485: PHASE_G_BASE..PHASE_INT_BASE, as B-8 / B-F8 run over PHASE_E_BASE..PHASE_F_BASE / PHASE_F_BASE..PHASE_G_BASE. A closed
+    // range has no working tree; an integration merge after PHASE_INT_BASE is outside the range, not exempted inside it.
+    expect(assertRange(phaseGBase(), phaseIntBase()), "A-F18: phase G has at least one commit").toBeGreaterThan(0);
+    const sets = commitSets(`${phaseGBase()}..${phaseIntBase()}`).filter(set => set.files.some(p => G_ENTRY.includes(p)));
     expect(sets.length, "the selector selected NO change set, so the assertion below would pass over nothing").toBeGreaterThan(0);
     for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p) && !isEvidence(p)), set.commit).toEqual([]);
-    expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..HEAD`)).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..${phaseIntBase()}`)).toEqual([]);
   });
 
   it("§115 A-G468: the gate's diff capture has a DECLARED limit, and an overflow says it COULD NOT LOOK rather than that an assertion failed", () => {
@@ -476,8 +483,8 @@ describe("MAP-G-ARCH · the change set, and no script motion", () => {
     expect(importers, "a product or test file imports from the evidence category").toEqual([]);
   });
 
-  it("PF-14 / PG-7: phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member", () => {
-    const added = addedSinceG(COMPONENT).join("\n");
+  it("PF-14 / PG-7 (range closed at PHASE_INT_BASE): phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member", () => {
+    const added = addedInG(COMPONENT).join("\n");
     expect(added.length).toBeGreaterThan(0);
     expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
   });
