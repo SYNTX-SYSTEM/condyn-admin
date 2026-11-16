@@ -1011,3 +1011,70 @@ DER DAS MAPPING ENTHÄLT, UND SIE IST GRÜN. *** §11.9s Lauf konnte das nicht s
 > Messobjekt, **weil keine Lane ihn besitzt.** §4 Punkt 8s 16 unerreichbare Instrumente, §0s
 > „Unlesbarkeit“, GRÜNs geerbte 27 und mein 3546/0 sind **vier Gesichter derselben Sache**: jede Lane hat
 > das gemessen, was sie halten konnte, und die Vereinigung hat niemand gehalten.
+---
+
+## §12 MANDAT „AUTONOMOUS FULL COMPLETION“ — DER INTEGRIERTE STAND IST GESICHERT
+
+**Eigentümermandat 2026-11-16:** vollständige autonome Fertigstellung, Agenten-Sessions selbständig
+herstellen, `de065a24` rekonstruieren und auf einem eigenen Integrationsbranch sichern, PINK den
+**tatsächlich integrierten** Stand validieren lassen. Unverändert: kein Merge nach `main`, kein
+Deployment, Gemini aus, bestehende Prüfstände und Siegel erhalten, keine Gate-Umgehung.
+
+### §12.1 Der Integrationsbranch — kanonisch rekonstruiert, nicht konserviert
+
+`de065a24` war eine **Probe**: GELB-Basis `385214f9` plus Cherry-pick. **Beide Seiten sind seither
+weitergelaufen** — GELB 6 Commits, GRÜN 2. Also **nicht konserviert, sondern kanonisch neu gezogen:**
+
+| | |
+|---|---|
+| Branch | `integration/pxj-complete-20261116` |
+| Tip | *** `4f4534c5` — echter Merge, zwei Eltern `eb75fd02` + `a0475f13` *** |
+| veröffentlicht | `origin/integration/pxj-complete-20261116` |
+| Konflikte | **einer**, wieder `architecture.test.ts`, aufgelöst zu GRÜNs geschlossener Form (nachgeprüft: `phaseIntBase` in Gebrauch, `PHASE_INT_BASE` deklariert, `workingTreeSet` abwesend) |
+| `main` | ***unberührt bei `e360caf9`*** |
+
+**Nebenwirkung, die ein Defekt war und jetzt keiner mehr ist:** GRÜNs `980c77bf` und `a0475f13` sind als
+**Vorfahren des Integrationstips veröffentlicht**. Ihr Branch-Ref stand noch auf `7b4d5852` — *** EIN REF,
+DER „NICHT VERÖFFENTLICHT“ SAGT, WÄHREND DER INHALT ÖFFENTLICH IST, IST SCHLIMMER ALS EIN UNGEPUSHTER
+COMMIT. *** An GRÜN zur Ref-Hygiene zugewiesen.
+
+### §12.2 ***DIE PIXELSCHICHT DES INTEGRIERTEN FELDES IST UNVALIDIERT***
+
+| `PersonJobMappingField.tsx` | Zeilen | sha256 |
+|---|---|---|
+| `3ec8457d` — **PINKs validierter Stand** | 1062 | `a959566b4846a880` |
+| `7b4d5852` (GRÜNs Tip) | 1243 | `ef3ce06a27f9f8a1` |
+| `4f4534c5` (Integration) | 1243 | ***`ef3ce06a27f9f8a1` — identisch*** |
+
+> *** PINKS PIXELBEFUNDE GELTEN BEI `3ec8457d`, UND DAS FELD IST DORT 218 ZEILEN JÜNGER. SIE ÜBERTRAGEN SICH
+> NICHT. *** Das ist der Befund, den §11.18 noch nicht benennen konnte, weil die Suite grün war und die Suite
+> die Pixelschicht nicht berührt. **Begrenzend und gut:** der Merge ändert am Feld **nichts** — byteidentisch
+> zu GRÜNs Tip —, also beschreiben neue Messungen GRÜNs Phase-G-Feld und nicht ein Merge-Artefakt. **Zur
+> Prüfung gegeben, nicht unterstellt.**
+
+### §12.3 Die PINK-Spur hergestellt — und was sie ist, ohne Beschönigung
+
+Die historische PINK-Session ist nie wieder geöffnet worden. Auf das Mandat hin habe ich **zwei
+Validierungs-Agenten in eigenen Worktrees** konstituiert: **PINK-STRUCT** (Suite, der
+Integrationsanspruch, A-G485 als Guard mit eigenen Mutanten, B-ENTRY, PF-13 *measure only*) und
+**PINK-PIXEL** (eigener Production-Build, eigener Stand auf 3460/3461, PINKs **veröffentlichte**
+Instrumente am neuen Tip, zwei Viewports, Raster-Backend deklariert).
+
+> *** SIE SIND STRUKTURELL UNABHÄNGIG UND NICHT PROVENIENZ-UNABHÄNGIG: EIGENE WORKTREES, EIGENE BUILDS,
+> EIGENE MESSUNGEN — ABER VON DER LANE INSTRUIERT, DIE SIE PRÜFEN. *** Das ist schwächer als die historische
+> PINK und ich weise es nicht als gleichwertig aus. **Beide Briefings sagen ausdrücklich: GELBs Behauptungen
+> angreifen, nicht bestätigen.** Und was PINK **schon entschieden hat** — PF-13s Verweigerung, PG-14s
+> Vorbehalt — **bleibt PINKs; kein Agent überschreibt ein bestehendes Urteil.**
+
+### §12.4 Eine Korrektur, die ich dem Protokoll schulde
+
+§11.17 führte den Turbopack-Symlink-Defekt als **meinen** Befund. *** ER IST NICHT NEU. *** PINKs `prep.txt`
+trägt ihn wörtlich — dieselbe Fehlerzeichenkette — **samt der Begründung für `cp -a` gegen Symlink *und*
+Hardlink** (ein Hardlink lässt einen Build in den Quellbaum zurückschreiben und beschädigt den konservierten
+Zustand). **Dieses Dokument ist seit meinem Push heute Morgen auf `origin` lesbar, und ich habe es nicht
+gelesen, bevor ich meinen Probe-Worktree gebaut habe.**
+
+> *** §11.7s LEHRE EIN ZWEITES MAL AM SELBEN TAG, UND DIESMAL GEGEN MICH SELBST ANGEWANDT: DIE INFORMATION
+> WAR VERÖFFENTLICHT, UND ICH HABE GEMESSEN STATT ZU LESEN. *** A-G483 hat mich die Ursache finden lassen;
+> **eine Minute im veröffentlichten Record hätte den Fehler verhindert.** Und mein Hardlink in `int3` ist aus
+> PINKs zweitem Grund ebenfalls riskant — benannt, und für beide PINK-Stände ist `cp -a` vorgeschrieben.
