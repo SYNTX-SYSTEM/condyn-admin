@@ -7723,6 +7723,22 @@ disclosure of the enforcement* — **and check that the disclosure discloses THA
 second half, which is its own finding: **`:784`'s span renders only when `floored > 0`, so its absence cannot be
 told from a rename, while `:736` carries `data-size-floors` unconditionally.**
 
+> ⚠ **KORREKTUR 2026-11-16 · F-G10 (GRÜN), von mir im Produkt selbst nachgeprüft.** Der widerrufene Satz
+> bleibt oben stehen:
+>
+> [WITHDRAWN F-G10 2026-11-16] "`:784`'s span renders only when `floored > 0`"
+>
+> **Die Bedingung ist `level === "L1" && collar !== null && collar.hidden > 0 && inPoolNow`, bei `:884`** in
+> `app/components/career/demo/PersonJobMappingField.tsx` — von mir gelesen, nicht übernommen. `floored`
+> zählt bei `:783` die Körper, die auf den 12-px-Größenboden gehoben wurden (`data-size-floors`);
+> `collar.hidden` kommt aus `collarSplit` (`data-collar-hidden`). *** DIE ZWEI GRÖSSEN SIND UNVERWANDT, UND
+> KEINE IMPLIZIERT DIE ANDERE. *** **Der Schluss, den beide Spuren gezogen haben — „kein Körper verdeckt
+> eine Collar-Anforderung" — ist richtig; die Größe, mit der er begründet wurde, war es nicht.** GRÜN hat
+> es beim Entwurf einer Assertion gefangen, die den Fehler gerade wiederholen wollte, und liest jetzt
+> `data-collar-hidden`. Auch die Zeilennummer war falsch: `:784` statt `:884` — dieselbe Klasse wie meine
+> beiden A-G20-Zeiger, die PINK widerlegt hat, und ein weiteres Argument für Zitate per Anker.
+
+
 > **Adopted: a disclosure conditional on being non-zero cannot be distinguished from a removed one. A disclosure
 > an instrument is to read must have a defined reading at zero.** That is a constraint on A-G270's whole
 > preference and it came from reading both sites rather than the first.
@@ -10020,6 +10036,9 @@ open, L2 field body open — at both viewports, each confirmed from the product'
   character budget cannot be read here at all** — and §67's point has its concrete case: **a disclosure
   conditional on being non-zero cannot be distinguished from a removed one.** This is the strongest argument
   yet for LV01–LV12, and it is an argument GRÜN's run produced rather than asserted.
+
+> ⚠ **KORREKTUR 2026-11-16 · F-G10.** Siehe die Korrektur bei A-G373: die Bedingung ist `collar.hidden > 0` bei `:884`, nicht `floored > 0` bei `:784`. Der *Nullbefund* hält; die begründende Größe war die falsche.
+
 
 **A-G206's span, as declared:** four focus states of **one** population (five bodies, 2 field, 3 shelf). **Does
 not span** LV01–LV12, L3, or any raster quantity. **What widens it:** a façade route serving
