@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { withdrawalOn } from "./withdrawn";
 
 /**
  * INSTRUMENT PORTABILITY · F-R12 / F-R13 (GELB, 2026-11-16)
@@ -120,11 +121,17 @@ describe("instrument portability · no machine-local path, no undocumented siste
 
     const pins: string[] = [];
     for (const file of population) {
-      for (const m of reads(file).matchAll(/IDENTITY_COMMIT\s*[:=]\s*"([0-9a-f]{40})"/g))
-        if (m[1] !== roots[0])
-          pins.push(`${file} pins identity on ${m[1].slice(0, 8)}, which is not this repository's root commit ` +
-            `${roots[0].slice(0, 8)}. If that object is unreachable from a branch, a legitimate clone of THAT ` +
-            `branch is refused as foreign (F-R13).`);
+      // A line carrying an attributable, dated withdrawal mark is a QUOTATION of a corrected anchor, not a
+      // live one — the fourth instance of a text guard flagging the record of its own finding (see
+      // ./withdrawn.ts). A bare mark does not qualify and falls back to being live.
+      for (const line of reads(file).split("\n")) {
+        if (withdrawalOn(line) !== null) continue;
+        for (const m of line.matchAll(/IDENTITY_COMMIT\s*[:=]\s*"([0-9a-f]{40})"/g))
+          if (m[1] !== roots[0])
+            pins.push(`${file} pins identity on ${m[1].slice(0, 8)}, which is not this repository's root commit ` +
+              `${roots[0].slice(0, 8)}. If that object is unreachable from a branch, a legitimate clone of THAT ` +
+              `branch is refused as foreign (F-R13).`);
+      }
     }
     expect(pins,
       "an identity guard is anchored on a commit that not every clone of this repository holds").toEqual([]);

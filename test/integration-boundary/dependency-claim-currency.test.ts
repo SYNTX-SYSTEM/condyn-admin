@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { withdrawalOn } from "./withdrawn";
 
 /**
  * DEPENDENCY-CLAIM CURRENCY · F-R11 (GELB, 2026-11-16) — and the defect is mine, caused by my own repair.
@@ -71,14 +72,7 @@ const CLAIM_ABSENT = new RegExp(`${NAME} is not a dependency of this repository`
 type Claim = { file: string; line: number; pkg: string; written: string; kind: "declared" | "absent";
                withdrawn: string | null; field?: string; version?: string };
 
-/**
- * A WITHDRAWN CLAIM MUST STAY READABLE WITHOUT BEING RE-READ AS LIVE, AND THE MARK MUST NOT BE A BLANKET
- * ESCAPE HATCH. The record's discipline is to correct in place and never delete the original sentence, so
- * the falsified sentence still stands in both docstrings — which re-armed this guard against the very
- * quotation of the defect it found. The mark is therefore ATTRIBUTABLE AND DATED on the claim's own line:
- * a finding id and an ISO date, checked below. A bare "WITHDRAWN" silences nothing.
- */
-const WITHDRAWAL = /\[WITHDRAWN (F-[A-Z0-9-]+|[A-Z]-G\d+) (20\d\d-\d\d-\d\d)\]/;
+/** The mark is defined once, in ./withdrawn.ts, which records why four guards needed it. */
 
 function claims(): Claim[] {
   const found: Claim[] = [];
@@ -90,8 +84,7 @@ function claims(): Claim[] {
     if (!text.includes("of this repository")) continue;
     const lines = text.split("\n");
     lines.forEach((text_, i) => {
-      const mark = text_.match(WITHDRAWAL);
-      const withdrawn = mark === null ? null : `${mark[1]} ${mark[2]}`;
+      const withdrawn = withdrawalOn(text_);
       for (const m of text_.matchAll(CLAIM_DECLARED))
         found.push({ file, line: i + 1, pkg: m[1].toLowerCase(), written: m[1], kind: "declared", withdrawn, field: m[2], version: m[3] });
       for (const m of text_.matchAll(CLAIM_ABSENT))
