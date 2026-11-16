@@ -1,0 +1,134 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_d1140830abe9ba67
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-int-trial
+
+[database-isolation] verified disposable test database condyn_test_d1140830abe9ba67
+ ✓ test/career/mapping-spec/layout.test.ts (15 tests) 5936ms
+   ✓ LAYOUT · golden vectors > the committed vectors are exactly what the reference produces now (no drift between spec, oracle and file)  459ms
+   ✓ LAYOUT · golden vectors > DETERMINISM: the same input gives the same output, byte for byte, in any call order and with shuffled input lists  1133ms
+   ✓ LAYOUT · promises on every vector > NO OVERLAP: placed bodies keep their gap; bodies beyond capacity are counted, never drawn over others  2374ms
+   ✓ LAYOUT · promises on every vector > HORIZON: a checked role lies inside the horizon, a name-only role beyond it, none outside the field  415ms
+   ✓ LAYOUT · promises on every vector > SECTORS: each pool keeps to its own sector; sectors are ordered by pool name and never overlap; a pool without roles still has its sector  404ms
+   ✓ LAYOUT · promises on every vector > FIT IS DISTANCE: an undisplaced body sits exactly where its fit puts it; a better fit is never farther out in its tier  368ms
+   ✓ LAYOUT · promises on every vector > BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactly (horizon - rho, field - rho) and never cross them or the inner edge  360ms
+   ✓ LAYOUT · promises on every vector > CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit completely; only the stress vector overflows  365ms
+ ✓ test/career/mapping-field/field-interaction.test.tsx (11 tests) 1388ms
+   ✓ MAP-C-FOCUS-UI · L0 ⇄ L1 > REPRODUCE: pool button → L1 (its view box, its title, an up button); up → L0; Escape → L0; nothing read, written or navigated  348ms
+ ✓ test/career/mapping-field/field-d.test.tsx (13 tests) 996ms
+   ✓ MAP-D-FIELD · L0 → L3 by the field's own controls > REPRODUCE: pool → role (its full ring, the open role at the centre) → arc (its evidence, verbatim); ↑ and Escape go back level by level  326ms
+ ❯ test/career/mapping-field/architecture.test.ts (32 tests | 2 failed) 1251ms
+   ✓ MAP-D-ARCH · D-1, D-2, D-4 — nothing protected changes > D-1 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical from the base through phase F 20ms
+   ✓ MAP-D-ARCH · D-1, D-2, D-4 — nothing protected changes > D-2 / D-4: orbits, planetarium, Job Field, investigation boundary, B2, the automatic reads, the ranking panel and the backend are as in the base 27ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-3: every phase-D change set (its commits after the base, and the working tree once it touches phase D) changes only phase-D files 41ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-5: the dashboard — exactly the two type widenings, the shell mark untouched 20ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-5: the layout — the clearance over both lines, one intake rule with two conditions on one variable, the stack-tier order 20ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-Q13 (b): every rule that places the intake panel below a gate line reads the one variable; the stylesheet holds one such rule per fixed tier 20ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-5 (c), scoped to FIELD's direct children: mapping-gate is the only added `${FIELD} > [data-sx-shell=…]` rule, at order 4; no existing such order changed 10ms
+   ✓ MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered > D-5: the host — the panel's field prop removed, the MAPPING stage mounted, the third focus and its gate wired; nothing else 25ms
+   ✓ MAP-D-ARCH · D-6, D-7 — the model is pure, the field reads only > D-6: the model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no window; engine and spec only 2ms
+   ✓ MAP-D-ARCH · D-6, D-7 — the model is pure, the field reads only > D-7: the model, the component and the copy — no fetch, no POST, no URL or history write, no storage, no job scope, no model call 5ms
+   ✓ MAP-D-ARCH · D-6, D-7 — the model is pure, the field reads only > D-7: phase D admits the focus machine's full action set — the boundary is the absence of a scope, not a whitelist 13ms
+   ✓ MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes > B-1 / P-9 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical through phase F; the twelve golden vectors with them 43ms
+   ✓ MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes > B-2 / B-3: orbits, planetarium, Job Field, job scope, Capability Field, the selector (C-1 … C-11), host, dashboard, layout, URL, every API route and job-pool module are as at the base 51ms
+   ✓ MAP-E-ARCH · B-4 … B-8 — the change set > B-8 / §6 (range closed, phase F §20): every phase-E change set touches only the phase-E entry set; no merge commit in phase E 37ms
+   ✓ MAP-E-ARCH · B-4 … B-8 — the change set > B-7: existing test data only — no fixture or support module added or changed 23ms
+   ✓ MAP-E-ARCH · B-4 … B-8 — the change set > B-6: no provider and no API in anything phase E added 124ms
+   ✓ MAP-E-ARCH · B-4 … B-8 — the change set > B-4: the stage's new runtime reach is its own box (and the focus strip's edge, E-8c) — measure, observe, resize, the motion preference, a frame clock; nothing that reads or writes outside 13ms
+   ✓ MAP-E-ARCH · B-4 … B-8 — the change set > B-5: no invented semantics — the model's additions name only the table's classes, the delta's two movement kinds and their forms 27ms
+   ✓ MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes > §6 (range closed at PHASE_G_BASE): nothing in lib/career/** changed in phase F; the engine's specification and the twelve golden vectors are byte-identical; the copy too 28ms
+   ✓ MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes > B-F6: the host is not touched — orbits, planetarium, Job Field, scope, selector, host, dashboard, layout, URL, API routes 46ms
+   ✓ MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes > B-F7: existing fixtures only; no provider and no API in anything phase F added 87ms
+   ✓ MAP-F-ARCH · B-F5 / B-F8 — the change set, and no script motion > B-F8 / §20: every phase-F change set touches only the phase-F entry set; no merge commit after the base (A-F18: the base is HEAD's ancestor) 35ms
+   ✓ MAP-F-ARCH · B-F5 / B-F8 — the change set, and no script motion > B-F5 / PF-14: phase F adds no script motion and no reach — no frame clock, timer, Web Animation, SMIL, window or document member 12ms
+   ✓ MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > V1 stays phase B's record: layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical to the base 21ms
+   × MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change; signs, view, delta and focus are untouched 35ms
+     → expected [ 'lib/career/db/client.ts', …(2) ] to deeply equal [ Array(2) ]
+   ✓ MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > B-F6 holds: the host is not touched — orbits, planetarium, Job Field, scope, selector, host, dashboard, layout, URL, API routes 30ms
+   ✓ MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > existing fixtures only; no provider and no API in anything phase G added 203ms
+   × MAP-G-ARCH · the change set, and no script motion > every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit after the base 103ms
+     → WORKING_TREE: expected [ …(16) ] to deeply equal []
+   ✓ MAP-G-ARCH · the change set, and no script motion > §115 A-G468: the gate's diff capture has a DECLARED limit, and an overflow says it COULD NOT LOOK rather than that an assertion failed 28ms
+   ✓ MAP-G-ARCH · the change set, and no script motion > §95 limb 1: every path in the evidence category is an instrument or an output — the category admits no product surface 5ms
+   ✓ MAP-G-ARCH · the change set, and no script motion > §95 limb 2: nothing in the product or the tests imports from the evidence category — an instrument cannot become a dependency through the back door 81ms
+   ✓ MAP-G-ARCH · the change set, and no script motion > PF-14 / PG-7: phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member 10ms
+ ✓ test/career/mapping-field/field-e.test.tsx (22 tests) 1616ms
+ ✓ test/career/mapping-field/model.test.ts (22 tests) 227ms
+ ✓ test/career/mapping-field/field-g.test.tsx (10 tests) 584ms
+ ✓ test/career/mapping-field/neurovisual-e.test.ts (15 tests) 22ms
+ ✓ test/career/mapping-field/field-f.test.tsx (9 tests) 455ms
+ ✓ test/career/mapping-field/field-render.test.tsx (10 tests) 570ms
+ ✓ test/career/mapping-field/field-wiring.test.tsx (4 tests) 413ms
+ ✓ test/career/mapping-field/selector-keys-d.test.tsx (2 tests) 46ms
+ ✓ test/career/mapping-field/selector-d.test.tsx (7 tests) 50ms
+ ✓ test/career/mapping-field/signs-d.test.ts (15 tests) 41ms
+ ✓ test/career/mapping-field/field-g-mutant.test.tsx (2 tests) 125ms
+ ✓ test/career/mapping-spec/sign-table.test.ts (9 tests) 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/career/mapping-field/architecture.test.ts > MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change; signs, view, delta and focus are untouched
+AssertionError: expected [ 'lib/career/db/client.ts', …(2) ] to deeply equal [ Array(2) ]
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[31m+   "lib/career/db/client.ts",[39m
+[2m    "lib/career/mapping/layout.ts",[22m
+[2m    "lib/career/view-model/mapping-field.ts",[22m
+[2m  ][22m
+
+ ❯ test/career/mapping-field/architecture.test.ts:387:41
+    385| 
+    386|   it("in lib/career only layout.ts (V1.1 beside V1) and the view model…
+    387|     expect(changedSinceG("lib/career")).toEqual(["lib/career/mapping/l…
+       |                                         ^
+    388|     // Exactly: every line the view model adds is, once its V1.1 token…
+    389|     // new field declaration. Nothing else in the model may move.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/career/mapping-field/architecture.test.ts > MAP-G-ARCH · the change set, and no script motion > every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit after the base
+AssertionError: WORKING_TREE: expected [ …(16) ] to deeply equal []
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- [][39m
+[31m+ [[39m
+[31m+   "app/components/career/demo/CareerIntelligenceDashboard.tsx",[39m
+[31m+   "app/components/career/demo/SemanticCareerIntelligenceField.tsx",[39m
+[31m+   "app/components/career/demo/SyntxFieldSelector.tsx",[39m
+[31m+   "app/components/career/demo/career-demo-layout.ts",[39m
+[31m+   "lib/career/ui/career-demo-url.ts",[39m
+[31m+   "test/career/job-pool/job-scope-ssr.test.tsx",[39m
+[31m+   "test/career/mapping-field/field-wiring.test.tsx",[39m
+[31m+   "test/career/mapping-field/selector-d.test.tsx",[39m
+[31m+   "test/career/mapping-field/selector-keys-d.test.tsx",[39m
+[31m+   "test/career/mapping-field/signs-d.test.ts",[39m
+[31m+   "test/career/mapping-field/support-d.ts",[39m
+[31m+   "test/career/pxj-first-screen/fixtures/person-markup-49e2bc6.sha256.json",[39m
+[31m+   "test/career/pxj-first-screen/person-markup.test.tsx",[39m
+[31m+   "test/job-pool-validation/job-scope-gate.e2e.test.ts",[39m
+[31m+   "test/job-pool-validation/support/syntx-readonly-walk.mjs",[39m
+[31m+   "test/job-pool-validation/syntx-walk.e2e.test.ts",[39m
+[31m+ ][39m
+
+ ❯ test/career/mapping-field/architecture.test.ts:431:111
+    429|     const sets = [...commitSets(`${phaseGBase()}..HEAD`), workingTreeS…
+    430|     expect(sets.length, "the selector selected NO change set, so the a…
+    431|     for (const set of sets) expect(set.files.filter(p => !G_ENTRY.incl…
+       |                                                                                                               ^
+    432|     expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..HEA…
+    433|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 15 passed (16)
+      Tests  2 failed | 196 passed (198)
+   Start at  03:07:34
+   Duration  19.55s (transform 1.57s, setup 166ms, collect 2.53s, tests 13.73s, environment 3ms, prepare 1.09s)
+
+[test-db] dropped condyn_test_d1140830abe9ba67

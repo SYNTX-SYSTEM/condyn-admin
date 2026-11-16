@@ -696,3 +696,56 @@ hält dieser Branch **7**. *** NICHT DIE CREDENTIALS FEHLEN, SONDERN DIE POPULAT
 > als ersten Guard trägt (*„numTotalTests: 0, numFailedTests: 0 — a green-looking JSON body with a zero
 > denominator“*) — **und ich wäre eine Ebene höher hineingelaufen: nicht mit einem leeren Filter, sondern mit
 > einem halben Branch.**
+### §11.11 DER INTEGRATIONSVERSUCH — ***DIE PHASE-G-GRENZE VERBIETET IHRE EIGENE INTEGRATION***
+
+§11.10 benannte die Lücke. **Dieser Abschnitt hat sie bezahlt statt geschätzt:** eigener Worktree, eigener
+Branch `integration/mapping-trial-20261116`, Basis `architecture/mapping-phase-f` @ `385214f9`, gemerged
+`frontend/mapping-phase-g` @ `7b4d5852`. **Lokal, nie gepusht, keine Integration — eine Messung.**
+
+| | |
+|---|---|
+| sauber gemerged | **166 Dateien** |
+| Produkt (`lib/` `app/`) | **9 Dateien, +1809 / −257** |
+| Konflikte | *** GENAU EINER *** |
+
+> *** DER EINE KONFLIKT IST `test/career/mapping-field/architecture.test.ts` — DER WÄCHTER, DESSEN AUFGABE ES
+> IST ZU ENTSCHEIDEN, WAS SICH ÄNDERN DARF. *** Beide Lanes hatten ihn unabhängig neu geschrieben. **Das
+> Einzige, was beim Zusammenführen zweier Lanes kollidiert, ist die Regel darüber, was kollidieren darf.**
+
+**Aufgelöst zu GRÜNs Form, und zwar aus einem Prinzip, nicht wegen Aktualität:** GRÜNs Fassung schließt
+jeden Phasenbereich am Basis-Commit der nächsten Phase, womit spätere Commits **bauartbedingt** herausfallen.
+Das ist genau, was **meine eigene A-G411-Docstring verlangte** — *„NOT BY WIDENING THE FILENAME SET“* — nur
+strukturell gelöst statt in Prosa.
+
+**Dann gemessen, auf Wegwerf-DB, echter Exit-Code 1:**
+
+```
+test/career/mapping-field + test/career/mapping-spec
+  Test Files  1 failed | 15 passed (16)
+       Tests  2 failed | 196 passed (198)
+```
+
+*** 196 VON 198 BESTEHEN. BEIDE FEHLER SIND MAP-G-ARCH, UND BEIDE HABEN EINE URSACHE. ***
+
+1. *„every phase-G change set … **no merge commit after the base**“* — mit der wörtlichen Zusicherung
+   `expect(git("log","--merges","--format=%H", \`${phaseGBase()}..HEAD\`)).toEqual([])`.
+2. *„the layout bump is a bump, and nothing else in lib moves“* — der **offene** Bereich
+   `phaseGBase()..HEAD` enthält nach dem Merge die Commits der anderen Lane, also lesen zu Recht geänderte
+   Dateien als Verletzung.
+
+> *** DIE GRENZE IST NICHT VERLETZT — SIE FEUERT KORREKT, UND SIE VERBIETET DEN MERGE, FÜR DEN SIE GEBAUT
+> WURDE. *** Kein Defekt in GRÜNs Arbeit: der Wächter tut genau seine Arbeit. Er wurde für eine
+> **einspurige** Phase geschrieben, und die Phase muss jetzt zusammengeführt werden. **Eine Grenze, die der
+> Merge nicht überschreiten kann, zu dessen Schutz sie existiert, hat ihren Bereich überlebt — sie ist nicht
+> gebrochen.**
+
+**A-G485, die Adjudikation, und sie ist meine:** Phase D, E und F hatten dieselbe Offenheit, und GRÜNs
+§8 (6) hat jede am Basis-Commit der Folgephase geschlossen. **Phase G hat keine Folgephase — also wird die
+Integrationsbasis sie.** Die Regel: Phase Gs Bereich an einem deklarierten `PHASE_INT_BASE` schließen, genau
+wie D/E/F; die Merge-Klausel neu fassen als *kein Merge-Commit **innerhalb** von Phase Gs geschlossenem
+Bereich*, damit der Integrationsmerge **legitim außerhalb** liegt statt per Ausnahme drin; **keine
+Dateinamen-Whitelist**, aus dem Grund, den A-G411 selbst nennt.
+
+**Die Umsetzung ist GRÜNs, in GRÜNs Datei.** Diese Lane adjudiziert den Pin und schreibt das Instrument der
+Peer-Lane nicht um — der MAP-C-ARCH-Präzedenzfall (§2 AUTHORITY, `AUTHORISED_CROSSINGS`). **Evidenz:**
+`evidence/integration-trial-20261116/`, 4 Dateien mit Manifest.
