@@ -1680,6 +1680,29 @@ frischen `origin`-Clone gemessen:
 | ***PINK*** | ***2 / 83*** → *siehe §14.1; die Wurzel ist beseitigt, die Neumessung ist PINKs* |
 | **gesamt** | ***77 / 164*** — ⚠ ***DIESE ZAHL IST SEIT 2026-11-16 ÜBERHOLT (§14.1): `playwright` und `sharp` sind jetzt deklariert, und GRÜN misst 4 von 53 → 0 von 53 absolute Pfade in Auflösungsposition*** |
 
+> ⚠ **KORREKTUR 2026-11-16, §15.3 — DIE NENNER SELBST SIND NACHGEMESSEN, UND ZWEI STIMMEN NICHT.** Population
+> ausdrücklich definiert, weil sie vorher nirgends stand: verfolgte `.mjs`/`.mts`/`.py`/`.js` der drei
+> Spurenverzeichnisse, je am Ref der Spur, Kriterium A = kein maschinenlokaler Pfad.
+>
+> | Spur | Ref | Population | Kriterium A |
+> |---|---|---|---|
+> | PINK | `d85df734` | **83** | **3 / 83** (die drei `.py`) |
+> | GRÜN | `7ad75af8` | ***52, nicht 53*** | **50 / 52** |
+> | GELB | `9cf29f09` | **28** | ***28 / 28*** |
+> | **gesamt** | | ***163, nicht 164*** | ***81 / 163*** |
+>
+> [WITHDRAWN A-G502 2026-11-16] "GRÜN 49 / 53" — *der Nenner ist 52 an GRÜNs eigenem Ref; die 53 ist nicht
+> reproduzierbar und wird nicht weitergetragen.* **Und PINKs 3/83 ist PINKs Zahl, von mir unabhängig
+> bestätigt — die „2 / 83" dieses Berichts ist zurückgezogen: PINK hat sie nie erzeugt und korrekt
+> abgelehnt, sie zu übernehmen.** *** DAMIT IST AUCH DIE ZAHL DES AUFTRAGS SELBST KORRIGIERT: ES SIND 163
+> PRÜFWERKZEUGE, NICHT 164, UND DAS IST DIE FÜNFTE WEITERGEGEBENE ZAHL DIESER RUNDE, DIE BEIM NACHMESSEN
+> NICHT HIELT. *** Die vier davor hat PINK an mir gefunden; diese habe ich selbst gefunden, was der erste
+> Fall dieser Art in diesem Bericht ist.
+>
+> **Kriterium A in der Integration statt am Spuren-Ref** — und der Unterschied ist die Naht (§15.5): GRÜN
+> misst dort **48 / 51**, weil `gruen-paths.mjs`, das Modul, das GRÜNs reparierte Instrumente importieren,
+> **im integrierten Stand überhaupt nicht liegt.**
+
 ***Der Grund, und ich habe ihn selbst nachgemessen: 75 der 83 PINK-Instrumente importieren Playwright aus
 `/home/codi/Entwicklung/nquiry/node_modules/` — und `nquiry` ist ein ANDERES REPOSITORY
 (`SYNTX-SYSTEM/NQUIRY.git`), das `origin` nicht enthält.*** **Und es ist nicht eine Spur:** **47 von GRÜNs
