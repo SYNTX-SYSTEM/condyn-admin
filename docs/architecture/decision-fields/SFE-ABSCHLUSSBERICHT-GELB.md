@@ -2290,6 +2290,21 @@ ein fremdes Repository **weiter mit Exit 1** ab. Ein flacher Klon wird mit dem M
 Repository schon kennt (`git fetch --unshallow`, wie `ERR_PHASE_C_BASE_MISSING`). Als Invariante über **alle**
 Instrumente gewächtert, den Wurzel-Commit aus dem Repository abgeleitet statt hartkodiert.
 
+> ⚠ **KORREKTUR 2026-11-16 · F-G11 (GRÜN), von mir nachgeprüft — DIESER ABSCHNITT HAT DEN RICHTIGEN SCHLUSS
+> MIT DEM FALSCHEN GRUND GEZOGEN.** Der Satz bleibt oben stehen:
+>
+> [WITHDRAWN F-G11 2026-11-16] "In einem `git clone --no-local --single-branch --branch main` ist es ABWESEND."
+>
+> Das stimmt — und ***das Szenario kann den Defekt nicht zeigen***: `main` trägt **null** Pfade unter
+> `evidence/mapping-phase-g-gelb`, das Modul liegt in jenem Klon also gar nicht und der Wächter läuft nie.
+> **Der erreichbare Fall ist ein FLACHER Klon eines Branches, der das Modul trägt — und dort fehlt der
+> Wurzel-Commit EBENFALLS.** Gemessen: `--depth 1 --single-branch`, `rev-list --count HEAD` = 1, beide
+> Objekte abwesend. *** DAS UMANKERN ALLEIN HAT ALSO EIN FALSCHES „IST NICHT DIESES REPOSITORY" DURCH EIN
+> ANDERES MIT ANDERER SHA ERSETZT. *** Die Reparatur ist ein **Vorzeichen**, kein Anker (A-G468): Flachheit
+> wird zuerst erkannt und getrennt als *„kann nicht festgestellt werden"* benannt. Der Wurzel-Commit bleibt
+> der bessere Anker — er ist von `main` erreichbar, der Phase-G-Anker nicht —, aber er war nicht die
+> Reparatur. **Ich habe eine falsche Begründung beim Korrigieren einer falschen Begründung erzeugt.**
+
 ### §15.5 DIE INTEGRATIONSNAHT, ZUM ERSTEN MAL ALS MESSBARE TATSACHE
 
 §14.12 hat die Naht als Abwägung ausgewiesen, nicht als technische Frage. **Das war unvollständig.** Gemessen:
@@ -2341,3 +2356,147 @@ bleiben, ohne als lebend gelesen zu werden. Die Antwort ist in beiden Fällen di
 
 **Stand nach diesem Abschnitt:** Integration `9cf29f09`, Register `7f10c45f`, `test/integration-boundary`
 **27/27**, fünf Mutanten getötet, jeder vom vorgesehenen Glied. `origin/main` unverändert.
+
+### §15.8 ENTSCHEIDUNG 1 ERLEDIGT — DIE NEUE EBENE, UND KEIN VERSIEGELTES BYTE HAT SICH BEWEGT
+
+PINK hat `mapping-phase-pink-portable-v1/` erzeugt: **83 Dateien, eigenes Manifest mit 82 Einträgen, 80
+regenerierte Instrumente** (die drei `.py` brauchen nichts), **251 Änderungsstellen**, von
+`pink-layer-build.mjs` erzeugt und nie von Hand — ein zweiter Checkout reproduziert 80/251/82 exakt.
+
+**Die Bedingung des Owners, zweimal gemessen statt behauptet:** vorher `33+43+91 = 167 OK / 0 FAILED`,
+nachher `33+43+91 = 167 OK / 0 FAILED`, Exit 0 je Verzeichnis; `git diff` auf den drei versiegelten
+Verzeichnissen leer; kein historisches Manifest neu geschrieben; `--in-place` ungenutzt,
+`PINK_SEAL_OVERRIDE` ungehoben. **Von mir im integrierten Stand unabhängig nachgemessen: 33 OK / 43 OK /
+91 OK.**
+
+***UND DIE EBENE IST AN DAS SIEGEL GEBUNDEN, NICHT NUR IN SICH KONSISTENT.*** `GENERATION.json` trägt je
+Instrument den Quelldigest **wie aus der historischen Manifestzeile gelesen**, den **von Platte neu
+berechneten** und den Ausgabedigest. Ein Byte an ein versiegeltes Instrument angefügt → **Exit 4, 0 Dateien
+geschrieben**, Datei mit beiden Digests benannt. **Das ist die erste Konstruktion in dieser Aufzeichnung,
+die A-G499 beantwortet statt sie einzuräumen:** das Manifest der Ebene beweist innere Konsistenz, der
+Generationsnachweis beweist Herkunft aus den gefrorenen Bytes.
+
+**Und PINK hat meine Auftragsprämisse widerlegt, mit Messung.** Ich hatte geschrieben, die Resolver-Kopie
+mache den Import *innerhalb* der Ebene auflösbar — abgeschrieben aus dem Docstring von
+`pink-portable-rewrite.mjs`, ohne es zu prüfen. **Falsch für jede Ebene unterhalb von `evidence/`:**
+`pink-tools.mjs` leitet `REPO_ROOT` fünf Ebenen hoch ab, eine Kopie liegt eine Ebene zu tief, leitet
+`REPO_ROOT=<repo>/docs` ab, findet kein `.git` und **wirft beim Import durch die eigene Wache**. Der
+Spezifizierer löst auf und das Modul verweigert — jedes Instrument einer solchen Ebene ist bei Ankunft tot.
+PINK hat eine kanonische Resolver-Instanz über `../../../` gewählt und die Tiefe im `--verify` nachgeprüft.
+
+### §15.9 ENTSCHEIDUNG 2 ERLEDIGT — DIE VORWÄRTSVERWEISE, UND SIE SCHEITERN, WENN SIE VERALTEN
+
+`mapping-phase-g-contract/ERRATA-FORWARD.json`, Schema `pink.errata-forward/1`, menschlicher Zwilling als
+`.md`, **in keinem Manifest gelistet** — in situ nachgewiesen: **91 OK / Exit 0** mit beiden Dateien
+vorhanden, **1 FAILED / Exit 1**, sobald eine *gelistete* Datei ein Byte bekommt. 3 Verweise, 8 versiegelte
+Vorkommen, 4 abhängige Passagen; W-1 trägt alle vier, weil PINK sich geweigert hat, eine Prämisse
+zurückzuziehen und ihre Schlüsse stehen zu lassen.
+
+`test/integration-boundary/errata-forward.test.ts` wächtert das **dort, wo gelaufen wird** — PINKs eigene
+Suiten laufen im integrierten Stand nicht. Es **schaltet auf PINKs Prüfer durch** statt die
+Zitat-an-Zeile-Logik zu verdoppeln (zwei Implementierungen derselben Regel driften, und die nicht gelaufene
+ist die falsche) und ergänzt die zwei Richtungen, die PINKs Prüfer von innen nicht abdecken kann: **die 167,
+hier gemessen und mit gepinnter Eintragszahl** (ein neu erzeugtes Manifest verifiziert gegen seinen eigenen
+neuen Inhalt — A-G499), und **die Errata-Richtung aus der Prosa der Errata gelesen** statt aus PINKs
+abgeleitetem JSON, sonst stimmt das Dokument nur mit sich selbst überein.
+
+**Vier Mutanten getötet:** ein Byte an eine gelistete versiegelte Datei; eine **vierte** Widerrufung ohne
+Verweis (rot an meinem Glied **und** an PINKs Prüfer); W-1s vier abhängige Passagen entfernt; die
+Verweisdatei im gefrorenen Manifest gelistet.
+
+### §15.10 PINKS FÜNF BEFUNDE GEGEN MICH — UND EINER IST DIE SECHSTE WEITERGEGEBENE ZAHL
+
+1. ***MEIN LAUFDESIGN BEWEIST NICHT, WAS ES BEHAUPTET.*** Ich hatte vier Umgebungsvariablen leeren lassen,
+   damit bare Auflösung „beweisbar feuert". **PINK hat gemessen: in einem Klon ohne `node_modules` und mit
+   allen vier ungesetzt lösten beide Werkzeuge weiter auf — über die maschinenlokalen Fallbacks.** Leeren
+   beweist nichts, solange Fallbacks leben. PINK hat es per **Modul-Identität** entschieden. *** ICH HABE
+   DIESELBE METHODE FÜR MEINE EIGENE DEKLARATION ÜBERNOMMEN: `pink-tools.playwright()` liefert ein Objekt
+   `===` dem baren Import des deklarierten `playwright@1.63.0`, dito `sharp` — die sechs Fallbacks werden
+   im integrierten Stand nicht erreicht. ***
+2. **Die Resolver-Kopie-Prämisse war falsch** (§15.8).
+3. ***„60 von 80 hartkodieren ein Commit-Literal GEGEN 27, die `buildId` vom laufenden Stand lesen" — die
+   60 stimmt, der Rest nicht.*** Alle 27 tragen **ebenfalls** ein Commit-Literal (Teilmenge, nicht
+   Gegenteil), und **alle 27 hartkodieren `buildId` als dasselbe String-Literal**. ***0 VON 83 LESEN EINE
+   BUILD-IDENTITÄT DURCH IRGENDEINEN MECHANISMUS VON EINEM STAND.*** Mein Satz „27 Instrumente führen die
+   Gestalt schon vor" war falsch: **es gab keine Gestalt zu verallgemeinern, PINK hat eine gebaut.** Das ist
+   die **sechste** weitergegebene Zahl dieser Runde, die beim Nachmessen nicht hielt.
+4. **Mein Auftrag wiederholte PINKs eigenen „§8-Asymmetrie"-Fehler.** Die Stelle ist §5 `:161–:169`, und es
+   sind vier Abhängige über **drei** Sektionen. Ich hatte die Fehlstelle aus der Errata übernommen, ohne sie
+   nachzulesen — **die Klasse, die ich in §14.1 selbst benannt habe, auf die Errata angewandt, die sie
+   benennt.**
+5. ***A-G502 ÜBERTRÄGT NICHT GANZ.*** Meine fehlenden Commits bedeuteten, dass der integrierte Stand
+   **unrepariertes Codeausführte**. **Nichts im integrierten Stand führt PINKs 83 Instrumente aus** — sie
+   sind Evidenzartefakte. Die Lücke dort ist **Lesbarkeit und Wächterabdeckung**, nicht „eine Reparatur, die
+   als angewendet verbucht und nicht angewendet ist". Der Merge bleibt richtig, aus dem **schwächeren wahren
+   Grund**. A-G502 gilt nur, wo der Zustand den Gegenstand *ausführt*.
+
+### §15.11 GRÜNS DREI BEFUNDE GEGEN MICH
+
+**F-G11** — §15.4s Grund war unerreichbar, und der erreichbare Fall schlägt meinen Anker. Oben als dated
+correction eingetragen, der widerrufene Satz steht markiert.
+
+**F-G12** — ***meine Deklaration maß den integrierten Stand und schrieb ihn GRÜNS SPUR ZU.*** An GRÜNs Tip
+haben `gruen-pg16-crowding-L1.mjs` und `gruen-rank5-check.mjs` **null** Treffer; die 2/1/2, die ich
+gemessen hatte, sind die des **älteren Refs** und der Integration. **Von meinem eigenen Glied an echter
+Historie bestätigt:** nach GRÜNs Merge wurden zwei der drei Deklarationen **rot als veraltet** und mussten
+entfernt werden. *** DIE SELBSTAUFRÄUMENDE DEKLARATION HAT GENAU DEN FEHLER GEFANGEN, DEN SIE EINGEHÜLLT
+HAT, UND ZWAR GEGEN IHREN AUTOR. ***
+
+**F-G10** — A-G373 nennt die falsche Größe: die Emit-Bedingung ist `collar.hidden > 0` bei `:884`, nicht
+`floored > 0` bei `:784`. **Von mir im Produkt selbst gelesen, nicht übernommen.** `floored` zählt Körper am
+12-px-Größenboden, `collar.hidden` kommt aus `collarSplit`; unverwandt. **Der Nullbefund beider Spuren hält,
+die Begründung nicht.** Beide Zitatstellen in PHASE_G korrigiert, Wortlaut markiert erhalten.
+
+### §15.12 PINKS SCHÄRFSTER BEFUND IST ÜBER PINK — UND ER TRAF MEINEN CODE GENAUSO
+
+*** PINKS REPARATUR FÜR F-R13 HATTE F-R13. *** Sie verwechselte *„git hat nein gesagt"* mit *„git konnte
+nicht gefragt werden"*: ohne `git` auf `PATH` **verweigerte sie einen echten Checkout und behauptete dabei,
+er sei „ein Checkout von ETWAS ANDEREM"** — schlimmer als der Defekt, den sie ersetzte, weil ein falsches
+Verdikt mit Diagnose mehr Schaden anrichtet als ein verfehltes. PINK hat es eine Sektion nach der Kritik
+derselben Gestalt in meiner Spur geschrieben und nur deshalb nicht ausgeliefert, weil es eine Umgebung
+getestet hat, für die es nicht entworfen war.
+
+> **A-G503 (PINKs Regel):** ***Eine Wache darf auf eine negative Antwort verweigern und niemals auf eine
+> fehlende. Eine unbeantwortbare Frage ist kein fehlgeschlagener Test.***
+
+**Und genau das stand in meinem Code**, in `gelb-paths.mjs`, `evidence-tools.mjs` und `evidence_tools.py`:
+jedes `try { git … } catch { refuse }`. Alle drei sind jetzt dreiwertig — ein Nicht-Null-Exit ist eine
+Antwort, ein Spawn-Fehler nicht. **Wo ich von PINK abweiche, mit Grund und von PINK überstimmbar:**
+`UNVERIFIABLE` verweigert bei mir weiter, weil Fortfahren bei unerstellter Identität genau A-G494
+wiederherstellt; richtig ist PINK beim **Verdikt**, nicht bei der Verweigerung. Vier Zustände belegt:
+echter Checkout läuft (Exit 0) · git fehlt → *„unanswerable, not answered no"* (Exit 1) · fremdes
+Repository → weiter *„NOT of this repository"* (Exit 1) · flacher Klon → *„CANNOT ESTABLISH … SHALLOW"*
+(Exit 1).
+
+> **A-G504 (GRÜNs Vorzeichenregel, A-G468 auf Identität angewandt):** ***Flachheit ist „kann nicht
+> festgestellt werden", nicht „ist falsch".*** Drei Verweigerungen, drei Ursachen, keine zwei in den Worten
+> der anderen.
+
+### §15.13 EIN NEGATIVES ERGEBNIS, GEMESSEN STATT VERSCHWIEGEN
+
+Ich habe die Vakuitätsklasse jagen wollen, nachdem sie meinen eigenen Wächter im ersten Lauf erwischt hatte
+(null Behauptungen, zwei grüne Glieder über der leeren Menge). Ein Scan zählte **38 Testdateien**, die eine
+Population aus dem Repository ableiten und dann „keine Verstöße" behaupten, davon viele „ohne
+Vakuitätsglied".
+
+***DAS WAR MEIN DETEKTOR, NICHT DER BEFUND.*** Er zählte nur `toBeGreaterThan`, während dieses Repository
+`toContain("<benanntes Mitglied>")` benutzt — **das stärkere Mittel**. Entschieden durch Injektion statt
+durch grep: ein barer Gemini-SDK-Aufruf in einer **neuen** Datei und eine Shared-Server-URL in einer
+**neuen** Datei wurden beide gefangen, namentlich. **Die Klasse ist hier nicht vorhanden**, und ein per
+grep gemeldeter Verdacht wäre der siebte weitergegebene Befund gewesen.
+
+### §15.14 DIE NAHT GESCHLOSSEN, UND EIN RISIKO, DAS GRÜN AN SICH SELBST GEMELDET HAT
+
+Vier Merges in die Integration, kein Merge nach `main`: der Register-Branch (zweimal, inklusive F-G11),
+GRÜNs Tip `3a1d3c0f` (bringt `gruen-paths.mjs`, das im integrierten Stand **fehlte**) und PINKs Tip
+`65fd25ed`. **PINKs Ebene als GANZER Tip genommen, auf PINKs eigene Messung hin:** die Ebene ohne
+`mapping-phase-pink-tools/` scheitert mit `ERR_MODULE_NOT_FOUND` am ersten Instrument, und ohne die
+versiegelte Generation kann `--verify` gar nicht laufen (Exit 2) — **also genau der gut versiegelte
+Waisenzustand, gegen den der Generationsnachweis existiert.**
+
+**GRÜN hat ein Risiko gemeldet, das es selbst erzeugt hat, und das ist das richtige Verhalten:** es hat
+seine Klon-Experimente im **geteilten** Session-Scratchpad unter dem generischen Namen `shallow` laufen
+lassen und mit `rm -rf` begonnen; später verschwand der Arbeitsbaum seines eigenen Klons zwischen zwei
+Befehlen. **Spuren dürfen keinen Scratchpad-Namensraum ohne Spur-Präfix teilen.** Ich habe meine
+Experimente danach konsequent als `gelb-*` benannt. Diese Aufzeichnung hat acht Harness-Fehler gezählt;
+dies ist der erste, den eine **Fremdspur an sich selbst** gemeldet hat, bevor er jemandem geschadet hat.
