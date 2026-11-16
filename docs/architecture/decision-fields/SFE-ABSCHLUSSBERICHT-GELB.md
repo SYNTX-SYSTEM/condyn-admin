@@ -2128,3 +2128,41 @@ drei**, also war nichts zu verallgemeinern.
 > SPUR DIE REGEL EINER ANDEREN ANWANDTE — KEINER WURDE VON DER EIGENEN REGEL DER EIGENEN LANE GEFUNDEN. *** Das
 > ist dasselbe Methodenergebnis wie in §10, zum zweiten Mal, und es sagt weiterhin **nichts** über die Defekte,
 > auf die noch keine geborgte Regel gezeigt hat.
+
+### §14.19 ***DER INTEGRIERTE STAND IST GRÜN, UND ERSTMALS LÄUFT DIE GANZE PRÜFEBENE MIT***
+
+Integrationsstand **`5dacec16`**, auf `origin` veröffentlicht. **Ruhige Maschine (Last 0.42), Wegwerf-DB,
+B-ENTRY unverändert und unumgangen, alle vier Evidenzorte nach dem Build benannt, Exit-Code ohne Pipe:**
+
+```
+Test Files  525 passed |  9 skipped (534)        0 fehlgeschlagen
+     Tests  3713 passed |  9 skipped (3722)      0 fehlgeschlagen
+exit 0 · 17m00s
+```
+
+**Arithmetische Kohärenz geprüft, nicht unterstellt:** voriger Lauf 3711 bestanden + 1 fehlgeschlagen + 9
+übersprungen = 3721; jetzt **3711 + 1** (der Fehlschlag besteht) **+ 1** (PINKs Assertion in einen Test mehr
+geteilt) **= 3713** ✓, und 3713 + 9 = **3722** ✓.
+
+**Und was diese Zahl von allen vorherigen unterscheidet — es ist nicht ihre Höhe:**
+
+| | vor diesem Mandat | jetzt |
+|---|---|---|
+| übersprungene Tests | **20** | **9** |
+| davon per Mandat (Gemini aus) | 8 | ***9 — also alle*** |
+| davon durch eine **nicht deklarierte Abhängigkeit** | ***12*** | ***0*** |
+| Browser-Suiten, die tatsächlich liefen | 0 von 4 | ***4 von 4*** |
+| versiegelte Orte vom Lauf berührt | ungemessen | ***0, gewächtert*** |
+
+> *** ERSTMALS IST JEDER ÜBERSPRUNGENE TEST EINE RICHTLINIENENTSCHEIDUNG UND KEIN FEHLENDES WERKZEUG. *** Die
+> vier Browser-Suiten liefen durch: `syntx-walk` **3/3** (122,7 s), `job-scope-gate` **1/1** (261,2 s),
+> `job-pool-workflow` **10/10** (84,6 s), `hr-decision-loop-frontend` **7/7** (42,2 s). **PINKs eigene
+> Bemerkung dazu gehört in diesen Abschnitt:** *„wenn die Suite jetzt bei `syntx-walk` grün wird, ist das das
+> erste Mal, dass Q-12 in einem Batch tatsächlich ausgeübt wurde und nicht nur unter einem exportierten
+> `CONDYN_PLAYWRIGHT_MODULE`."* **Sie ist grün geworden.**
+
+**Was die Zahl weiterhin NICHT ist**, und das gehört genauso dazu wie 2026-11-16 früher am Tag: sie ist **nicht
+in `main`** (`e360caf9`, unverändert, und die Integration ist nachweislich kein Vorfahre), sie ist **nicht die
+Pixelschicht** (PF-2/PF-6/PF-11/PG-20 stehen offen mit ihren Grenzen), und **PINKs 83 Instrumente bleiben an
+einem gefrorenen Siegel gebunden** — die Reparatur liegt gebaut und bewiesen daneben, hinter einer
+Eigentümerentscheidung.
