@@ -615,6 +615,70 @@ under contention.** So: the verdict stands on the product source, the dates and 
 session; **the green run is owed by whoever holds an idle Q1 venue, and the one assertion I have not
 observed is `fieldRoot.count() === 1` at `:440`, where the SYNTX field is open over the semantic field.**
 
+### The third stale assertion, and it is the sharpest thing in this record
+
+With `:440` and `:915` repaired the walk advanced and failed at **`:966`**:
+
+```
+AssertionError: expected 3 to be 2
+  expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2);
+```
+
+**The product's own contract is the witness**, at `app/components/career/demo/SyntxFieldSelector.tsx:16-18`,
+read at `ba2dd8ac`:
+
+> *Contract (PERSON_X_JOB_MAPPING_PHASE_D.md §5.1, C-1 … C-11): `field-focus-strip` … holding **exactly
+> three buttons**, `field-focus-capability-btn`, `field-focus-mapping-btn` and `job-pool-panel-toggle`,
+> each with `data-field-focus-active` and `aria-pressed`.*
+
+and the header above it: *"One system, three fields … **MAPPING in the middle, because it is the relation
+between the two it separates**."*
+
+**Provenance, counted by me at both refs rather than relayed:**
+
+| ref | `MAPPING` in the selector |
+|---|---|
+| `origin/main` `e360caf9` | **0** (the file exists; the option does not) |
+| `7ffaeb40` / `ba2dd8ac` | **25** |
+
+*** SO THE THIRD BUTTON IS THE PERSON × JOB MAPPING ITSELF. This walk asserted a TWO-FIELD SHELL — the
+product from before the mapping existed — while being the independent validation of the mapping's
+integration. *** It could not go red because `describe.skipIf` skipped the file for want of a declared
+`playwright`. **GELB is right to call this F-R8's class at its sharpest, and the sharpest part is the
+direction: the lane whose job is to find what the product lost was itself asserting the absence of the
+product's central new object, for as long as nobody exported one environment variable.**
+
+**The question GELB left open, answered:** `options` is a **literal array of three with no filter**
+(`:140-144`); `isGated` only *disables* (`:145`, `:231-232`). **So the strip is these same three in every
+focus**, and the repair needs no per-focus special case.
+
+**Repaired by name, not by count**, per GELB's reasoning and one further ground it did not give: a count
+of 3 also passes when a button is replaced by an unrelated one, **and `job-scope-indicator` is itself a
+`<button>` which the contract deliberately keeps *outside* the strip** — so a descendant count is exactly
+what would drift quietly if it ever moved in. The assertion now pins all four things the contract names:
+the three testids each present once, the total at three, **the DOM order `CAPABILITY, MAPPING, FIELD`**,
+and `data-field-focus-active` *and* `aria-pressed` on each. It also replaced the two loose
+`page.getByTestId(...)` reads above it with strip-scoped ones, and **`field-focus-mapping-btn` had never
+been asserted anywhere in this file.** `tsc`: 0 diagnostics in this file.
+
+### GELB's F-R10, verified independently — and nothing of mine was lost
+
+GELB reports that running my two browser suites rewrote the **sealed** venues `syntx-walk-9e86d44/` and
+`job-scope-gate-cb3d33f/`, both `manifest.sha256` files included, and that it reverted them.
+**Checked against my own untouched branch rather than taken on report:** `git diff --name-only e7b60061
+<ref>` over both venues gives **0 differing paths** at `7ffaeb40`, at `origin/integration/pxj-complete-20261116`
+and at `ba2dd8ac`; both manifests verify here at **37/37** and **14/14**, and the mapping seals at
+**167/167**. **The revert is real and my evidence is byte-identical.**
+
+*** AND GELB'S OWN READING OF IT IS THE RIGHT ONE: the danger was that NO SEAL BROKE. *** A regenerated
+manifest verifies perfectly against its own new content, so `sha256sum -c` — the check this mandate
+leans on throughout, including everywhere in §3 above — **cannot detect a venue that was re-measured and
+re-sealed in one step.** It proves internal consistency, not provenance. **That is a real limit on every
+"167/167 OK" in this document**, and the thing that actually caught it was the build-naming convention
+(`syntx-walk-${SYNTX_WALK_TIP}`) plus a human noticing 67 evidence paths in a `git add -A`. GELB's new
+`test/integration-boundary/seal-integrity.test.ts` (17/17, mutant red) closes it as a class, and that
+guard is worth more to this lane than the repair it came from.
+
 ### And the answer to GELB's wider question
 
 *"Worth a look at whether any of your other pins rest on a suite in that state."* **Measured:** the same

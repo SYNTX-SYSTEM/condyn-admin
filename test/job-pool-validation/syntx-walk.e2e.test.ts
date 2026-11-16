@@ -961,9 +961,37 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(params(page).get("jobPoolUploadId")).toBe(uploadId);
     expect(params(page).get("jobRoleId")).toBeNull();
     expect(params(page).get("jobOrganizationId")).toBeNull();
-    expect(await page.getByTestId("field-focus-capability-btn").getAttribute("data-field-focus-active")).toBe("true");
-    expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("false");
-    expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2);
+    // THE FIELD-FOCUS STRIP — contract C-1 … C-11 (PERSON_X_JOB_MAPPING_PHASE_D.md §5.1), quoted in the
+    // product at app/components/career/demo/SyntxFieldSelector.tsx:16-18: `field-focus-strip` holds
+    // EXACTLY THREE buttons — field-focus-capability-btn, field-focus-mapping-btn and
+    // job-pool-panel-toggle — each carrying data-field-focus-active and aria-pressed, in the order
+    // CAPABILITY, MAPPING, FIELD ("MAPPING in the middle, because it is the relation between the two it
+    // separates"). `options` is a literal array of three with no filter (:140-144), so the strip is these
+    // same three in EVERY focus; a gated option is disabled, never removed.
+    //
+    // *** THIS ASSERTION USED TO READ `.toBe(2)`, AND THE THIRD BUTTON IS THE PERSON × JOB MAPPING ITSELF. ***
+    // Counted at both refs: the selector carries 0 mentions of MAPPING at origin/main `e360caf9` and 25 at
+    // the integration tip. So this walk asserted a two-field shell — the product from before the mapping
+    // existed — while being the independent validation of the mapping's integration, and it could not go
+    // red because `describe.skipIf` skipped the whole file for want of a declared `playwright`.
+    //
+    // Named by testid rather than counted: a count of 3 would also pass if one button were replaced by an
+    // unrelated one. The total is pinned as well, because `job-scope-indicator` is itself a <button> that
+    // the contract deliberately keeps OUTSIDE the strip — so a descendant count is exactly the thing that
+    // would drift quietly if it ever moved in.
+    const strip = page.locator('[data-testid="field-focus-strip"]');
+    const STRIP_BUTTONS = ["field-focus-capability-btn", "field-focus-mapping-btn", "job-pool-panel-toggle"] as const;
+    const stripPresent: Record<string, number> = {};
+    for (const id of STRIP_BUTTONS) stripPresent[id] = await strip.locator(`[data-testid="${id}"]`).count();
+    expect(stripPresent).toEqual({ "field-focus-capability-btn": 1, "field-focus-mapping-btn": 1, "job-pool-panel-toggle": 1 });
+    expect(await strip.locator("button").count()).toBe(3);
+    expect(await strip.locator("button").evaluateAll((nodes: Element[]) => nodes.map((node) => node.getAttribute("data-testid")))).toEqual([...STRIP_BUTTONS]);
+    // CAPABILITY is the active field here; the other two are lit as inactive on both attributes the contract names.
+    for (const id of STRIP_BUTTONS) {
+      const expected = id === "field-focus-capability-btn" ? "true" : "false";
+      expect(await strip.locator(`[data-testid="${id}"]`).getAttribute("data-field-focus-active")).toBe(expected);
+      expect(await strip.locator(`[data-testid="${id}"]`).getAttribute("aria-pressed")).toBe(expected);
+    }
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await root.count()).toBe(0);
