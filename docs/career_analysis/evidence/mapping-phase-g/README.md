@@ -41,8 +41,20 @@
 > **F-G9 is the same hole with a COMMITTED instance:** `test/support/mapping/vectors.ts` and
 > `layout-reference.ts` are support modules, both changed since all three bases, named by no limb's path
 > list. Phase G's limb now guards the category — with the category itself checked three ways, because a
-> widening that cannot be falsified is the same defect in a larger font. E's and F's are NOT widened, and
-> the reason is a measurement: widening them reddens on a change phase G's entry set authorises.
+> widening that cannot be falsified is the same defect in a larger font.
+>
+> **§131f · AND GELB RULED E's AND F's LIMBS WITH A THIRD OPTION I HAD NOT OFFERED, WHICH IS BETTER THAN
+> EITHER OF MINE.** I routed them as *not this phase's to amend* with two wordings — close their fixtures
+> limb to its own range, or exclude `test/support/mapping/**`. **A-G505 takes neither:** closing them
+> converts an *ongoing protection* into a measurement of a finished phase, which A-G485's own comment
+> deliberately declined, and excluding the directory blinds the category to a place that genuinely holds
+> mapping fixtures. The ruling is §95's principle turned the other way — *an ongoing protection may forbid a
+> change no later phase's entry set authorises; it may not forbid one that a later phase's entry set does.*
+> **I cited §95 one paragraph earlier for the converse and did not see that it answered this.** All three
+> limbs now guard the category and each subtracts what a later phase disclosed; five mutants in both
+> directions, including the one GELB asked for in case the ruling was wrong — a further change to the
+> authorised `vectors.ts` stays **32/32 green**, so it is not. **Residual, named: `G_ENTRY` is self-granting,
+> so A-G505 buys DISCLOSURE and not prohibition** — more than invisibility, less than a prohibition.
 >
 > **PG-14 was RESTATED/UNVERIFIED because its falsifiable content needs a render and nothing rendered
 > asserted it.** `gruen-pg14-frame-fixed.mjs` says so in its own words — *"this derivation renders nothing

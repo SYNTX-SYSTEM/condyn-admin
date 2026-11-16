@@ -172,12 +172,30 @@ is now satisfied and that nothing has acted on. **Boundary: both need Playwright
 rebuilding `.next` in this worktree is forbidden** (it destroys the `BUILD_ID` every phase-G figure is framed
 on). The cost is one build in a disposable worktree plus two probes at two viewports; it is not a decision.
 
-**AND ONE THING §130's TABLE DID BLOCK HONESTLY IS NOW CLOSED (F-G5, F-G9).** The three fixtures limbs guarded
-three literal paths while their sentences name a category, so the honest placement failed and the evasive one
-passed 32/32. Phase G's limb now guards the category with the category itself checked three ways; E's and F's
-are not widened, and the reason is measured rather than jurisdictional — widening them reddens on
-`test/support/mapping/vectors.ts`, which phase G's entry set authorises and phase E and phase F never ruled on.
-See `test/career/mapping-field/architecture.test.ts` §131 and README §131.
+**AND ONE THING §130's TABLE DID BLOCK HONESTLY IS NOW CLOSED IN ALL THREE LIMBS (F-G5, F-G9, A-G505).** The
+three fixtures limbs guarded three literal paths while their sentences name a category, so the honest
+placement failed and the evasive one passed 32/32. §131 widened phase G's limb and routed E's and F's to GELB
+with two possible wordings. **GELB ruled A-G505 and took neither of mine, on better grounds:** closing their
+limb to its own range would convert an *ongoing protection* into a measurement of a finished phase, which
+A-G485 deliberately declined; excluding `test/support/mapping/**` would blind the category to a directory that
+genuinely holds mapping fixtures. The third option is §95's principle turned the other way —
+***an ongoing protection may forbid a change no later phase's entry set authorises, and may not forbid one
+that a later phase's entry set does; the latter is a freeze wearing a boundary's name.***
+
+**Applied and proven (§131f).** All three limbs guard the category; `B-7` subtracts `F_ENTRY ∪ G_ENTRY`,
+`B-F7` subtracts `G_ENTRY`, phase G subtracts its own declared exemption. Measured first: from all three
+bases the category sees exactly `test/support/mapping/{vectors,layout-reference}.ts` and both are in
+`G_ENTRY`, so nothing that stands reddens. **Five mutants, in both directions:** an unauthorised fixture in a
+new file turns **all three** limbs red and names it; a *further* change to the authorised `vectors.ts` stays
+**32/32 green**; withdrawing `vectors.ts` from `G_ENTRY` turns the change back into a violation in four limbs;
+an undeclared or stale authorisation fails; a mistyped glob goes loud in all three instead of vacuous in two.
+
+**Residual, named rather than left (this lane's, and GELB agrees):** `G_ENTRY` is a literal in the same file
+and the change-set limb asserts change sets are a *subset* of it — coverage, not minimality. **So A-G505 buys
+DISCLOSURE, not prohibition**: more than the three literals bought (invisibility), less than a prohibition,
+and it is the `AUTHORISED_CROSSINGS` shape the record already accepts. The declaration check narrows it —
+granting a new authorisation now takes two deliberate edits in two places, and the second has to carry a
+reason. See `test/career/mapping-field/architecture.test.ts` §131/§131f and README §131.
 
 ### 3 · a local build and server: PERMITTED IN PRACTICE since 2026-11-10
 
