@@ -19,6 +19,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { decodeJobPoolMatchPresentation, decodeJobPoolUploadView, describeRanking } from "../../../../lib/career/job-pool/frontend-presentation";
 import { fetchJobPoolMatches, listJobPools, readJobPoolUpload, uploadJobPool } from "../../../../lib/career/ui/useJobPool";
 import { decodeAnalysisSources } from "../../../../lib/career/job-pool/analysis-sources";
+import { SIL_COPY } from "../../../../lib/career/view-model/sil-language";
 import { createJobPoolPostgresWorld, JOB_POOL_E2E_SOURCE, JOB_POOL_E2E_TARGET as T, JOB_POOL_E2E_UPLOADER, samplePoolJobScope, type JobPoolWorld } from "../fixtures/job-pool-postgres-world";
 
 const EVIDENCE_DIR = resolve(process.cwd(), "docs/career_analysis/evidence/job-pool");
@@ -343,7 +344,11 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await result.waitFor({ timeout: 60_000 });
     const newId = (await result.getAttribute("data-upload-id")) ?? "";
     expect(newId).toMatch(/^JPOOL_[0-9A-F]{32}$/);
-    expect((await result.textContent()) ?? "").toContain("UPLOADED != SELECTED");
+    // F-R8: this line read the literal "UPLOADED != SELECTED" and was STALE FOR 23 DAYS — the copy moved in
+    // 44f9eede ("one word, one meaning", UX-07) on 2026-10-23 and nothing went red, because playwright was
+    // undeclared and this whole suite skipped itself. Asserted against the language module's own constant now:
+    // a test that hardcodes copy ages the moment the copy moves, and this one could not even report it.
+    expect((await result.textContent()) ?? "").toContain(SIL_COPY.en.jobPool.uploadNotSelected);
     expect([uploadedId, draftUploadId]).not.toContain(newId);
     await page.locator('[data-testid="job-pool-list"][data-pool-count="3"]').waitFor({ timeout: 60_000 });
     expect(await field(page).getAttribute("data-selected-pool")).toBe("");
@@ -423,7 +428,20 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await page.getByTestId("job-pool-non-claims").textContent()).toContain("COVERED != SCORED");
     // Preservation: planetarium geometry rendered underneath; no dock without an exact DCTXREV.
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    // F-R8: this line asserted SIX fixed numeric stage shells, 01…06, and had been STALE since ca117947
+    // ("SYNTX semiotic transfer — the Job Field rendered from the Capability Field's own manifestation
+    // grammar", owner GO, variant A). It never went red because playwright was undeclared and this suite
+    // skipped itself. MEASURED, not assumed: the field renders shell-01, shell-02 and then ONE SHELL PER
+    // ORGANISATION, keyed `syntx-<org id>` — {"01":1,"02":1,"03":0,"04":0,"05":0,"06":0}, total 5, ids
+    // [01, 02, syntx-org_nordlicht, syntx-org_rheinwerk, syntx-org_alpendata]. A deliberate product change,
+    // so the TEST was the stale half. Derived from the fixture rather than hardcoded, and the two numeric
+    // stages that were REPLACED are asserted ABSENT, so a silent return to the old model also fails.
+    expect(world.samplePool.organizations.length, "no organisations in the fixture — this limb would pass over nothing").toBeGreaterThan(0);
+    for (const stage of ["01", "02"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count(), `stage shell ${stage}`).toBe(1);
+    for (const stage of ["03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count(), `stage shell ${stage} was replaced by an organisation-keyed shell in ca117947 and must not return silently`).toBe(0);
+    for (const organization of world.samplePool.organizations)
+      expect(await page.getByTestId(`focus-transition-stage-shell-syntx-${organization.id}`).count(), `organisation shell for ${organization.id}`).toBe(1);
+    expect(await page.locator('[data-testid^="focus-transition-stage-shell-"]').count(), "the shell population is exactly the two fixed stages plus one per organisation").toBe(2 + world.samplePool.organizations.length);
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "22-syntx-field-pool-containment.png") });

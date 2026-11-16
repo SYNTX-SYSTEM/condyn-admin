@@ -228,6 +228,44 @@ describe("MAP-INT-ARCH · the invariants A-G485 ended rather than handed over", 
       `script motion added to ${COMPONENT} after the integration merge`).toEqual([]);
   });
 
+  /**
+   * F-G5 (GRUEN's finding, 2026-11-16) — THE FIXTURES LIMBS GUARD A PATH LIST, NOT THE CATEGORY "A FIXTURE".
+   *
+   * MAP-E-ARCH B-7, MAP-F-ARCH B-F7 and MAP-G-ARCH all compare a CHANGED-PATH SET against a declared entry
+   * set. GRUEN measured what that costs, by experiment rather than by reading: a fixture appended to the
+   * existing support.ts trips all three (3 limbs FAIL, with no commit at all), while *** THE SAME FIXTURE
+   * PLACED IN A NEW FILE BESIDE IT PASSES 32/32. *** So the boundary blocks the honest placement and waves
+   * through the evasive one, and reads as a clean pass while doing it.
+   *
+   * Two reasons this limb lives here and not there. First, E's and F's limbs belong to closed phases and are
+   * not phase G's to amend — a wider authority than any lane holds alone. Second, this is A-G492's division
+   * again: a phase MEASUREMENT over a closed range stays closed, while its INVARIANT SHADOW continues here.
+   *
+   * So the shadow is stated as a CATEGORY: the set of non-test helper files in the two phase directories is
+   * pinned by name. A new helper — which is where a fixture would go to stay invisible — fails until it is
+   * declared. Test files are deliberately NOT pinned here: PF-13 derives its population from these two
+   * directories, so pinning .test.ts names would duplicate PF-13's denominator inside another boundary, and
+   * this file exists precisely because that coupling has bitten this record before.
+   */
+  const PHASE_DIRS = ["test/career/mapping-field", "test/career/mapping-spec"];
+  const DECLARED_HELPERS: Record<string, string> = {
+    "test/career/mapping-field/phase-base.ts": "GRUEN · the per-phase bases and the shared git helper",
+    "test/career/mapping-field/support.ts": "GRUEN · the phase D-G fixture set",
+    "test/career/mapping-field/support-d.ts": "GRUEN · phase D's own fixtures",
+  };
+
+  it("F-G5: every non-test helper in the phase directories is DECLARED, so a fixture cannot hide in a new file", () => {
+    const helpers = git("ls-files", "--", ...PHASE_DIRS).filter(f => !/\.test\.tsx?$/.test(f)).sort();
+    expect(helpers.length, "no helper files found at all — the limb would pass over nothing").toBeGreaterThan(0);
+    expect(helpers.filter(f => DECLARED_HELPERS[f] === undefined),
+      "undeclared helper file(s) in the phase directories: a fixture placed here is invisible to MAP-E/F/G-ARCH, which compare path sets (F-G5)").toEqual([]);
+    expect(Object.keys(DECLARED_HELPERS).filter(f => !helpers.includes(f)).sort(),
+      "DECLARED_HELPERS naming a file that no longer exists — a stale declaration is a failure, not an exemption").toEqual([]);
+    // and the working tree too, because GRUEN's experiment needed no commit to evade the other three limbs
+    const untracked = git("ls-files", "--others", "--exclude-standard", "--", ...PHASE_DIRS).filter(f => !/\.test\.tsx?$/.test(f));
+    expect(untracked, "untracked helper file(s) in the phase directories — F-G5's evasion needs no commit").toEqual([]);
+  });
+
   it("F-C1: the working tree holds no product change, unless a WORKING_TREE authority is declared and consumed", () => {
     const pending = [...new Set([
       ...git("diff", "--name-only", "--no-renames", "--cached", "HEAD", "--", ...PRODUCT),

@@ -1,0 +1,50 @@
+{
+  "ids": [
+    "field-focus-capability-btn",
+    "field-focus-mapping-btn",
+    "job-pool-panel-toggle"
+  ],
+  "strip": {
+    "left": 409.4765625,
+    "right": 870.5234375,
+    "top": 70,
+    "bottom": 120
+  },
+  "membrane": {
+    "left": 885,
+    "right": 1101,
+    "top": 77,
+    "bottom": 111
+  },
+  "indicator": {
+    "left": 28,
+    "right": 309.40625,
+    "top": 74,
+    "bottom": 114
+  },
+  "capabilityLine": {
+    "left": 1032,
+    "right": 1252,
+    "top": 128,
+    "bottom": 257.78125
+  },
+  "mappingLine": {
+    "left": 1032,
+    "right": 1252,
+    "top": 266,
+    "bottom": 346.6875
+  },
+  "intake": {
+    "left": 0,
+    "right": 0,
+    "top": 0,
+    "bottom": 0
+  },
+  "mappingButton": {
+    "disabled": true,
+    "gate": "NOT_PERSON",
+    "describedBy": "mapping-gate-reason"
+  },
+  "mappingText": "PERSON × JOB ⟶ ◇ MAPPINGMAPPING reads a PERSON analysis against all pools.→ choose PERSON",
+  "mappingVisible": true
+}
