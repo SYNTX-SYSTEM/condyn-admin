@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, afterAll } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach, afterAll } from "vitest";
 import { execSync } from "child_process";
-import { db } from "../lib/career/db/client";
+import { db, initDbSchema } from "../lib/career/db/client";
 import { careerAnalysisJobs } from "../lib/career/db/schema";
 import { JobRepository } from "../lib/career/orchestration/job-repository";
 import { createJob } from "../lib/career/orchestration/job";
@@ -8,6 +8,23 @@ import { eq } from "drizzle-orm";
 
 describe("Worker Configuration Validation", () => {
   const repo = new JobRepository(db);
+
+  /**
+   * F-A1 (PINK-STRUCT, 2026-11-16): this file had NO schema bootstrap of its own and its `beforeEach`
+   * deleted from `career_analysis_jobs` directly, so it passed only when some earlier file in the same run
+   * happened to have applied the schema to the run's shared database. *** IT PASSED IN THREE OF GELB'S FULL
+   * RUNS AND FAILED IN TWO INDEPENDENT CLEAN ONES, AND IT FAILS ALONE ON EVERY COMMIT MEASURED (e360caf9,
+   * eb75fd02, a0475f13, 4f4534c5) WITH 42P01 relation "career_analysis_jobs" does not exist. *** That made
+   * the suite's "0 failed" accidental rather than reproducible.
+   *
+   * The fix is to remove the dependency rather than to find which earlier file was supplying the table:
+   * a test that needs a schema provisions it. `initDbSchema()` applies the same DDL to the same singleton
+   * connection this file already uses, and it is idempotent (CREATE TABLE IF NOT EXISTS), so it costs
+   * nothing when an earlier file has already run it.
+   */
+  beforeAll(async () => {
+    await initDbSchema();
+  }, 120_000);
 
   beforeEach(async () => {
     await db.delete(careerAnalysisJobs);
