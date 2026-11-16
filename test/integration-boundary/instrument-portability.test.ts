@@ -51,21 +51,36 @@ const PINK_CONTRACT = /^docs\/architecture\/decision-fields\/evidence\/mapping-p
  * Files that may name a machine-local path, each with the reason it must. Consumed in full below.
  */
 const AUTHORISED_CROSSINGS: Record<string, string> = {
-  "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-pg16-crowding-L1.mjs":
-    "GRUEN's authority, handed over 2026-11-16 with the measurement. GELB does not edit another lane's " +
-    "instruments — I ordered a wrong edit of GRUEN's once this round and GRUEN refused it with grounds, " +
-    "correctly. When GRUEN repairs these three, the limb below turns this declaration red as stale and " +
-    "forces its removal, so the hand-over cannot quietly become a permanent exemption.",
-  "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-provenance.mjs":
-    "GRUEN's authority, handed over 2026-11-16. Carries BOTH an absolute playwright default behind " +
-    "CONDYN_PLAYWRIGHT_MODULE and an absolute GRUEN_EVIDENCE_ROOT default.",
-  "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-rank5-check.mjs":
-    "GRUEN's authority, handed over 2026-11-16. Imports a sibling module through an absolute worktree path.",
   "docs/career_analysis/evidence/support/evidence-tools.mjs":
     "GELB · the resolver's own docstring records WHICH paths were removed and from where. Deleting that " +
     "provenance to satisfy a scanner would trade the repair's record for a green limb.",
   "docs/career_analysis/evidence/support/portable-rewrite.mjs":
     "GELB · the rewriter must contain the literals it MATCHES, or it cannot find them.",
+  "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-portable-rewrite.mjs":
+    "PINK · same reason as GELB's rewriter: it carries the patterns it matches, in regex-escaped form. " +
+    "(The escaped form is why MACHINE_LOCAL above has a second alternative — a plain grep for the prefix " +
+    "misses `\\/home\\/codi\\/` entirely, and these two files are the proof that it would.)",
+  "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-layer-build.mjs":
+    "PINK · the layer generator, same reason: it matches the literals it rewrites.",
+  "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-tools.mjs":
+    "PINK · six DOCUMENTED machine-local fallbacks in resolution position — the only live ones in this " +
+    "repository. Resolution order is bare import -> PINK_* -> CONDYN_*_MODULE -> documented fallback -> " +
+    "THROW, so a fallback is reached only when the declared dependency is absent. MEASURED HERE BY MODULE " +
+    "IDENTITY, which is PINK's method and not mine: `pink-tools.playwright()` returns an object `===` the " +
+    "bare import of the declared playwright@1.63.0, and the same for sharp — so in the integrated state " +
+    "the fallbacks are NOT REACHED. *** PINK's finding against my brief was exactly this: unsetting the " +
+    "four environment variables does NOT prove bare resolution, because the fallbacks stay live; identity " +
+    "comparison does. *** Removing them would disable the lane's only browser route on branches that do " +
+    "not declare the dependency, and dependency-claim-currency.test.ts guards that declaration in both " +
+    "directions, so this reason cannot rot unnoticed.",
+  "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-paths.mjs":
+    "GRUEN · two sites, named by GRUEN itself as its one live residual: a docstring recording the risk, and " +
+    "one documented playwright fallback. It is NOT silent — every reading records `how` as BARE_IMPORT / " +
+    "ENV_OVERRIDE / DOCUMENTED_FALLBACK, so a fallback resolution is visible in the artefact rather than " +
+    "indistinguishable from a declared one. GRUEN's stated remedy was the devDependency declaration " +
+    "reaching its branch, which this integration now carries.",
+  "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-provenance.mjs":
+    "GRUEN · one site, inside a docstring describing the historical risk.",
 };
 
 const instruments = (): string[] =>

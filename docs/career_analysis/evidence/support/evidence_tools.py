@@ -18,17 +18,44 @@ IDENTITY_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4"
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[4]
 
 
+def _probe_git(args: list) -> str:
+    """VERIFIED / REFUSED / UNVERIFIABLE. A non-zero exit is an answer; a missing git is not.
+
+    PINK's rule (errata §11.1), found in PINK's own repair and true of mine as written: a guard may refuse
+    on a negative answer and must never refuse on a missing one. An unanswerable question is not a failed
+    test, and a false verdict carrying a confident diagnosis is worse than a missed one.
+    """
+    try:
+        subprocess.run(["git", *args], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return "VERIFIED"
+    except FileNotFoundError:
+        return "UNVERIFIABLE"
+    except PermissionError:
+        return "UNVERIFIABLE"
+    except subprocess.CalledProcessError:
+        return "REFUSED"
+
+
 def _assert_this_repository() -> None:
     if not (REPO_ROOT / ".git").exists():
         raise SystemExit(f"REFUSE evidence_tools: derived REPO_ROOT {REPO_ROOT} holds no .git — refusing to read a "
                          "tree that is not a checkout of this repository rather than reporting a measurement from one.")
+    if _probe_git(["-C", str(REPO_ROOT), "rev-parse", "--git-dir"]) == "UNVERIFIABLE":
+        raise SystemExit(f"REFUSE evidence_tools: CANNOT ESTABLISH whether {REPO_ROOT} is a checkout of this "
+                         "repository — `git` could not be run at all. THE QUESTION WAS UNANSWERABLE, NOT ANSWERED NO.")
     try:
-        subprocess.run(["git", "-C", str(REPO_ROOT), "cat-file", "-e", f"{IDENTITY_COMMIT}^{{commit}}"],
-                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except subprocess.CalledProcessError:
+        shallow = subprocess.run(["git", "-C", str(REPO_ROOT), "rev-parse", "--is-shallow-repository"],
+                                 check=True, capture_output=True, text=True).stdout.strip() == "true"
+    except Exception:
+        shallow = False
+    if shallow:
+        raise SystemExit(f"REFUSE evidence_tools: CANNOT ESTABLISH identity — {REPO_ROOT} is a SHALLOW clone, so the "
+                         f"root commit {IDENTITY_COMMIT[:8]} is absent whether or not this is the right repository "
+                         "(F-G11). `git fetch --unshallow` and run again.")
+    if _probe_git(["-C", str(REPO_ROOT), "cat-file", "-e", f"{IDENTITY_COMMIT}^{{commit}}"]) == "REFUSED":
         raise SystemExit(f"REFUSE evidence_tools: {REPO_ROOT} is a git checkout but NOT of this repository — it does "
-                         f"not hold the root commit {IDENTITY_COMMIT[:8]}. A shallow clone lacks it too: "
-                         "`git fetch --unshallow` and run again.")
+                         f"not hold the root commit {IDENTITY_COMMIT[:8]}. Shallowness and an unrunnable git are "
+                         "ruled out above, so this verdict really is \"wrong repository\".")
 
 
 def repo_file(relative_path: str) -> str:
@@ -39,10 +66,7 @@ def repo_file(relative_path: str) -> str:
         raise SystemExit(f"REFUSE evidence_tools: declared input {relative_path} is absent at {absolute}. It is a "
                          "tracked file of this repository, so a checkout missing it is incomplete — fetch rather "
                          "than substitute (F-R12).")
-    try:
-        subprocess.run(["git", "-C", str(REPO_ROOT), "ls-files", "--error-unmatch", relative_path],
-                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    except subprocess.CalledProcessError:
+    if _probe_git(["-C", str(REPO_ROOT), "ls-files", "--error-unmatch", relative_path]) == "REFUSED":
         raise SystemExit(f"REFUSE evidence_tools: {relative_path} exists but is NOT git-tracked here — presence is "
                          "satisfied by touch, and an untracked input makes the run unreproducible.")
     return str(absolute)

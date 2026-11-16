@@ -65,14 +65,44 @@ const IDENTITY_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4";
 if (!existsSync(resolve(REPO_ROOT, ".git")))
   throw new Error(`REFUSE evidence-tools: derived REPO_ROOT ${REPO_ROOT} holds no .git — refusing to read a tree ` +
     `that is not a checkout of this repository rather than reporting a measurement taken from one (A-G494).`);
-try {
-  execFileSync("git", ["-C", REPO_ROOT, "cat-file", "-e", `${IDENTITY_COMMIT}^{commit}`], { stdio: "ignore" });
-} catch {
-  throw new Error(`REFUSE evidence-tools: ${REPO_ROOT} is a git checkout but NOT of this repository — it does not ` +
-    `hold the root commit ${IDENTITY_COMMIT.slice(0, 8)}. A .git alone proves only that something is version-controlled. ` +
-    `A SHALLOW CLONE lacks the root commit too: fetch the history (\`git fetch --unshallow\`) and run again — the same ` +
-    `refusal and the same remedy as ERR_PHASE_C_BASE_MISSING in test/career/mapping-field/phase-base.ts.`);
+/**
+ * THREE REFUSALS, THREE CAUSES, NO TWO WEARING EACH OTHER'S WORDS — F-G11 (GRUEN) AND PINK's errata §11.1.
+ *
+ * `try { git … } catch { refuse }` conflates TWO different failures. PINK found it in PINK's own F-R13 fix
+ * and it was true of mine as written: with no `git` on `PATH` the catch declared a genuine checkout to be
+ * "a checkout of something else" — *** A FALSE VERDICT CARRYING A CONFIDENT DIAGNOSIS, WHICH IS WORSE THAN
+ * A MISSED ONE. *** PINK's rule: **a guard may refuse on a negative answer and must never refuse on a
+ * missing one; an unanswerable question is not a failed test.**
+ *
+ * And GRUEN measured the second cause: a SHALLOW clone holds no root commit either, so the anchor F-R13
+ * moved to cannot answer there — it is "cannot establish", not "wrong repository" (A-G468's sign rule).
+ *
+ * A non-zero exit is an answer. A spawn failure is not. Each cause gets its own verdict and its own remedy.
+ */
+function probeGit(args) {
+  try { execFileSync("git", args, { stdio: ["ignore", "pipe", "ignore"] }); return "VERIFIED"; }
+  catch (error) {
+    if (error.code === "ENOENT" || error.code === "EACCES" || error.status === undefined) return "UNVERIFIABLE";
+    return "REFUSED";
+  }
 }
+
+if (probeGit(["-C", REPO_ROOT, "rev-parse", "--git-dir"]) === "UNVERIFIABLE")
+  throw new Error(`REFUSE evidence-tools: CANNOT ESTABLISH whether ${REPO_ROOT} is a checkout of this repository — ` +
+    `\`git\` could not be run at all. THE QUESTION WAS UNANSWERABLE, NOT ANSWERED NO (PINK, errata §11.1). ` +
+    `Install git, or run this instrument where git is available.`);
+
+let isShallow = false;
+try { isShallow = execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "--is-shallow-repository"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() === "true"; } catch { isShallow = false; }
+if (isShallow)
+  throw new Error(`REFUSE evidence-tools: CANNOT ESTABLISH identity — ${REPO_ROOT} is a SHALLOW clone, so the root ` +
+    `commit ${IDENTITY_COMMIT.slice(0, 8)} is absent whether or not this is the right repository (F-G11). Fetch the ` +
+    `history (\`git fetch --unshallow\`) — the same remedy as ERR_PHASE_C_BASE_MISSING in phase-base.ts.`);
+
+if (probeGit(["-C", REPO_ROOT, "cat-file", "-e", `${IDENTITY_COMMIT}^{commit}`]) === "REFUSED")
+  throw new Error(`REFUSE evidence-tools: ${REPO_ROOT} is a git checkout but NOT of this repository — it does not ` +
+    `hold the root commit ${IDENTITY_COMMIT.slice(0, 8)}. Shallowness and an unrunnable git are both ruled out ` +
+    `above, so this verdict really is "wrong repository" and not "cannot establish" (F-G11).`);
 
 async function resolveModule(pkg, envName, pick) {
   const tried = [];
@@ -107,8 +137,7 @@ export function repoFile(relativePath) {
   if (!existsSync(absolute))
     throw new Error(`REFUSE evidence-tools: declared input ${relativePath} is absent at ${absolute}. It is a ` +
       `tracked file of this repository, so a checkout missing it is incomplete — fetch rather than substitute (F-R12).`);
-  try { execFileSync("git", ["-C", REPO_ROOT, "ls-files", "--error-unmatch", relativePath], { stdio: "ignore" }); }
-  catch {
+  if (probeGit(["-C", REPO_ROOT, "ls-files", "--error-unmatch", relativePath]) === "REFUSED") {
     throw new Error(`REFUSE evidence-tools: ${relativePath} exists but is NOT git-tracked here — existsSync is ` +
       `satisfied by touch, and an untracked input makes the run unreproducible (F-R9's shape, F-R12's site).`);
   }
