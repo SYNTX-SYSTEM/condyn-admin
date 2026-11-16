@@ -1,0 +1,360 @@
+{
+ "instrument": "docs/career_analysis/evidence/mapping-phase-g/scripts/gruen-currency-lapse.mjs",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
+ "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
+ "head": "980c77bf",
+ "referents": {
+  "test-population": {
+   "sha": "980c77bf",
+   "when": "2026-11-16T03:27:42+01:00",
+   "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
+  },
+  "product-pixels": {
+   "sha": "fd45f45f",
+   "when": "2026-11-11T22:13:56+01:00",
+   "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+  },
+  "seal-corpus": {
+   "sha": "bb30e826",
+   "when": "2026-11-10T20:02:44+01:00",
+   "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
+  },
+  "readings-corpus": {
+   "sha": "976cb81d",
+   "when": "2026-11-13T00:40:51+01:00",
+   "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+  },
+  "product-source": {
+   "sha": "fd45f45f",
+   "when": "2026-11-11T22:13:56+01:00",
+   "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+  }
+ },
+ "quotationCharsExcluded": 177,
+ "claimLinesHiddenByExclusion": 1,
+ "control": {
+  "currentIsReachable": true,
+  "lapsedIsReachable": true
+ },
+ "mechanismControl": {
+  "datesBackwards": true,
+  "resolvedTo": {
+   "sha": "92d82c62",
+   "when": "2026-11-10T17:57:10+01:00"
+  },
+  "oldestBlob": "92d82c62"
+ },
+ "uncommittedControl": {
+  "reachable": true
+ },
+ "ambiguityControl": {
+  "reachable": true
+ },
+ "restatementControl": {
+  "branchTaken": true,
+  "wouldRead": "LAPSED"
+ },
+ "granularity": "rows are CLAIMS (one per claim-starting line); `phrases` totals the set-phrase occurrences behind them (A-G479)",
+ "counts": {
+  "claims": 16,
+  "phrases": 23,
+  "matched": 16,
+  "LAPSED": 1,
+  "CURRENT": 4,
+  "SCOPED": 6,
+  "SCOPED-UNRESOLVABLE": 3,
+  "UNCOMMITTED": 0,
+  "UNDATABLE": 2,
+  "UNDATED": 0
+ },
+ "rows": [
+  {
+   "line": 132,
+   "kind": "test-population",
+   "phrases": 1,
+   "text": "> §112's verdict was then read from the JSON directly: **16 files, 197 tests, 197 passed, 0 failed** at",
+   "scope": {
+    "shas": [
+     "c7143fcd",
+     "1d28320c"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "c7143fcd",
+     "1d28320c"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 150,
+   "kind": "product-pixels",
+   "phrases": 1,
+   "text": "> | `7b8fc7f5` | §93 | `MOTION.breath` **deleted** (dead — 0 of 47 073 pixels swung in either state) | a constants-reader finds the key **missing** |",
+   "scope": {
+    "shas": [
+     "7b8fc7f5",
+     "fd45f45f"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "7b8fc7f5",
+     "fd45f45f"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 204,
+   "kind": "test-population",
+   "phrases": 1,
+   "text": "> **16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.",
+   "writtenAt": {
+    "sha": "3231f52c",
+    "when": "2026-11-12T23:12:38+01:00",
+    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   },
+   "effectiveAt": {
+    "sha": "3231f52c",
+    "when": "2026-11-12T23:12:38+01:00",
+    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   },
+   "referent": {
+    "sha": "980c77bf",
+    "when": "2026-11-16T03:27:42+01:00",
+    "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
+   },
+   "status": "LAPSED"
+  },
+  {
+   "line": 239,
+   "kind": "product-pixels",
+   "phrases": 2,
+   "text": "> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |",
+   "writtenAt": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   },
+   "effectiveAt": {
+    "sha": "f80425ed",
+    "when": "2026-11-12T23:26:43+01:00",
+    "subject": "fix(career): mapping phase G · §116 — PG-14's pin anchors the loop whose failure replaced it; this lane's PG-14 derivation had been dead since §87"
+   },
+   "referent": {
+    "sha": "fd45f45f",
+    "when": "2026-11-11T22:13:56+01:00",
+    "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 276,
+   "kind": "readings-corpus",
+   "phrases": 3,
+   "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87 — MEASURED AT",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 375,
+   "kind": "readings-corpus",
+   "phrases": 3,
+   "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 376,
+   "kind": "readings-corpus",
+   "phrases": 1,
+   "text": "> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 510,
+   "kind": "seal-corpus",
+   "phrases": 1,
+   "text": "> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is th",
+   "scope": {
+    "shas": [],
+    "buildIds": [
+     "HRYkeEpbpndI3UEE7ceeC"
+    ],
+    "resolving": [],
+    "resolvable": false
+   },
+   "status": "SCOPED-UNRESOLVABLE",
+   "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
+  },
+  {
+   "line": 532,
+   "kind": "seal-corpus",
+   "phrases": 1,
+   "text": "> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly",
+   "writtenAt": {
+    "sha": "d7675b75",
+    "when": "2026-11-13T00:14:43+01:00",
+    "subject": "fix(career): mapping phase G · §120 — probed outside my own pattern set: six defects in this instrument, five of them flattering"
+   },
+   "effectiveAt": {
+    "sha": "d7675b75",
+    "when": "2026-11-13T00:14:43+01:00",
+    "subject": "fix(career): mapping phase G · §120 — probed outside my own pattern set: six defects in this instrument, five of them flattering"
+   },
+   "referent": {
+    "sha": "bb30e826",
+    "when": "2026-11-10T20:02:44+01:00",
+    "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 544,
+   "kind": "seal-corpus",
+   "phrases": 1,
+   "text": "> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build",
+   "scope": {
+    "shas": [],
+    "buildIds": [
+     "HRYkeEpbpndI3UEE7ceeC"
+    ],
+    "resolving": [],
+    "resolvable": false
+   },
+   "status": "SCOPED-UNRESOLVABLE",
+   "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
+  },
+  {
+   "line": 596,
+   "kind": "readings-corpus",
+   "phrases": 3,
+   "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at",
+   "scope": {
+    "shas": [
+     "f80425ed"
+    ],
+    "buildIds": [],
+    "resolving": [
+     "f80425ed"
+    ],
+    "resolvable": true
+   },
+   "status": "SCOPED",
+   "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
+  },
+  {
+   "line": 690,
+   "kind": "readings-corpus",
+   "phrases": 1,
+   "text": "> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's",
+   "writtenAt": {
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+   },
+   "effectiveAt": {
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+   },
+   "referent": {
+    "sha": "976cb81d",
+    "when": "2026-11-13T00:40:51+01:00",
+    "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 928,
+   "kind": "stand-liveness",
+   "phrases": 1,
+   "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
+   "status": "UNDATABLE",
+   "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
+  },
+  {
+   "line": 989,
+   "kind": "product-source",
+   "phrases": 1,
+   "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
+   "writtenAt": {
+    "sha": "f82c35a9",
+    "when": "2026-11-11T22:15:11+01:00",
+    "subject": "docs(career): mapping phase G · §104b — the delta table had gone stale twice over, and it is the one PINK checks"
+   },
+   "effectiveAt": {
+    "sha": "f82c35a9",
+    "when": "2026-11-11T22:15:11+01:00",
+    "subject": "docs(career): mapping phase G · §104b — the delta table had gone stale twice over, and it is the one PINK checks"
+   },
+   "referent": {
+    "sha": "fd45f45f",
+    "when": "2026-11-11T22:13:56+01:00",
+    "subject": "feat(career): mapping phase G · §104 — A-G43 implemented and PROVEN; PG-20's splay keys on the state"
+   },
+   "status": "CURRENT"
+  },
+  {
+   "line": 1046,
+   "kind": "seal-corpus",
+   "phrases": 1,
+   "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
+   "scope": {
+    "shas": [],
+    "buildIds": [
+     "HRYkeEpbpndI3UEE7ceeC"
+    ],
+    "resolving": [],
+    "resolvable": false
+   },
+   "status": "SCOPED-UNRESOLVABLE",
+   "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
+  },
+  {
+   "line": 1093,
+   "kind": "stand-liveness",
+   "phrases": 1,
+   "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
+   "status": "UNDATABLE",
+   "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
+  }
+ ],
+ "detectorLimit": "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
+}

@@ -1,0 +1,266 @@
+{
+ "reading": "GRÜN · §85 — whether layoutInputs() can be served as a ranking payload, counted against the contract's own tables",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "arithmetic over test/support/mapping/vectors.ts and the tables read from lib/career/job-pool/role-ranking.ts. No browser, no build, no server.",
+ "correctionToMyOwnSpanDeclaration": "§84's A-G206 declaration said a façade route serving layoutInputs() 'would widen' the fixture and that B-7 permits it. B-7 does permit it; the CONTRACT does not, for three of the twelve. The declaration was mine and is corrected here with a count rather than withdrawn wholesale — nine of twelve ARE servable, which is the useful half.",
+ "contractTables": {
+  "NECESSITY_WEIGHT": {
+   "REQUIRED": 3,
+   "PREFERRED": 2,
+   "OPTIONAL": 1,
+   "UNKNOWN": 1
+  },
+  "SEMANTIC_VALUE": {
+   "EQUIVALENT": 1,
+   "COVERS": 1,
+   "PARTIAL": 0.5,
+   "DIFFERENT": 0,
+   "UNCLEAR": 0
+  },
+  "LEXICAL_VALUE": {
+   "NAME_EXACT": 0.5,
+   "NAME_ALIAS": 0.5,
+   "NAME_COMPOSITE_CONSTITUENT": 0,
+   "WEAK_TOKEN_CONTAINMENT": 0
+  },
+  "consequence": "weight ∈ {1, 2, 3} and value ∈ {0, 0.5, 1} semantic / {0, 0.5} lexical, so weightSum is a positive integer and fit × weightSum must be a non-negative multiple of 0.5 at most weightSum. A LEXICAL_ONLY role cannot exceed fit 0.5."
+ },
+ "summary": {
+  "vectors": 12,
+  "servable": 9,
+  "blocked": 3,
+  "totalRoles": 1412,
+  "inexpressibleRoles": 61
+ },
+ "servable": [
+  "LV01-single-role",
+  "LV03-equal-fit-ties",
+  "LV05-capacity-exceeded-overflow",
+  "LV08-checked-fit-0-pressed-to-the-horizon",
+  "LV09-shelf-fit-0-pressed-to-the-field-edge",
+  "LV11-shelf-wide-bodies-cannot-leave-the-field",
+  "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+  "LV10-checked-fit-1-pressed-from-the-inner-edge",
+  "LV06-no-roles"
+ ],
+ "blocked": [
+  {
+   "name": "LV02-three-pools-mixed-tiers",
+   "inexpressibleRoles": 1,
+   "poolBlocked": true,
+   "why": [
+    "uses 3 pools; the shared POOL_NAMES defines 2, and decodeRoleRanking refuses a rank whose role.poolName does not match its pool's entry",
+    "role-002: fit 0.4 x weightSum 14 = 5.6, not a multiple of 0.5 — every value is one of 0/0.5/1"
+   ]
+  },
+  {
+   "name": "LV04-crowded-60",
+   "inexpressibleRoles": 56,
+   "poolBlocked": false,
+   "why": [
+    "role-017: fit 0.9 x weightSum 23 = 20.7, not a multiple of 0.5 — every value is one of 0/0.5/1",
+    "role-014: fit 0.868421 x weightSum 26 = 22.578946, not a multiple of 0.5 — every value is one of 0/0.5/1"
+   ]
+  },
+  {
+   "name": "LV07-real-shape-73",
+   "inexpressibleRoles": 4,
+   "poolBlocked": true,
+   "why": [
+    "uses 3 pools; the shared POOL_NAMES defines 2, and decodeRoleRanking refuses a rank whose role.poolName does not match its pool's entry",
+    "role-000: fit 0.729167 x weightSum 24 = 17.500008, not a multiple of 0.5 — every value is one of 0/0.5/1",
+    "role-001: fit 0.535714 x weightSum 14 = 7.499996, not a multiple of 0.5 — every value is one of 0/0.5/1"
+   ]
+  }
+ ],
+ "perVector": [
+  {
+   "name": "LV01-single-role",
+   "roles": 1,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV02-three-pools-mixed-tiers",
+   "roles": 6,
+   "pools": 3,
+   "poolIds": [
+    "pool-a",
+    "pool-b",
+    "pool-c"
+   ],
+   "inexpressibleRoles": 1,
+   "firstReasons": [
+    {
+     "roleId": "role-002",
+     "why": "fit 0.4 x weightSum 14 = 5.6, not a multiple of 0.5 — every value is one of 0/0.5/1"
+    }
+   ],
+   "poolBlocked": true,
+   "poolBlockReason": "uses 3 pools; the shared POOL_NAMES defines 2, and decodeRoleRanking refuses a rank whose role.poolName does not match its pool's entry",
+   "servable": false
+  },
+  {
+   "name": "LV03-equal-fit-ties",
+   "roles": 12,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV04-crowded-60",
+   "roles": 60,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 56,
+   "firstReasons": [
+    {
+     "roleId": "role-017",
+     "why": "fit 0.9 x weightSum 23 = 20.7, not a multiple of 0.5 — every value is one of 0/0.5/1"
+    },
+    {
+     "roleId": "role-014",
+     "why": "fit 0.868421 x weightSum 26 = 22.578946, not a multiple of 0.5 — every value is one of 0/0.5/1"
+    }
+   ],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": false
+  },
+  {
+   "name": "LV05-capacity-exceeded-overflow",
+   "roles": 320,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV08-checked-fit-0-pressed-to-the-horizon",
+   "roles": 200,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "roles": 260,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "roles": 120,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "roles": 200,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "roles": 160,
+   "pools": 1,
+   "poolIds": [
+    "pool-a"
+   ],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV06-no-roles",
+   "roles": 0,
+   "pools": 0,
+   "poolIds": [],
+   "inexpressibleRoles": 0,
+   "firstReasons": [],
+   "poolBlocked": false,
+   "poolBlockReason": null,
+   "servable": true
+  },
+  {
+   "name": "LV07-real-shape-73",
+   "roles": 73,
+   "pools": 3,
+   "poolIds": [
+    "pool-b",
+    "pool-c",
+    "pool-a"
+   ],
+   "inexpressibleRoles": 4,
+   "firstReasons": [
+    {
+     "roleId": "role-000",
+     "why": "fit 0.729167 x weightSum 24 = 17.500008, not a multiple of 0.5 — every value is one of 0/0.5/1"
+    },
+    {
+     "roleId": "role-001",
+     "why": "fit 0.535714 x weightSum 14 = 7.499996, not a multiple of 0.5 — every value is one of 0/0.5/1"
+    }
+   ],
+   "poolBlocked": true,
+   "poolBlockReason": "uses 3 pools; the shared POOL_NAMES defines 2, and decodeRoleRanking refuses a rank whose role.poolName does not match its pool's entry",
+   "servable": false
+  }
+ ],
+ "whatThisMeansForTheFixtureQueue": [
+  "NINE of twelve vectors are servable exactly: LV01, LV03, LV05, LV08, LV09, LV11, LV12, LV10, LV06. They include every crowded and shelf-pressed case, so the populations that bear on CROWDING, PG-5's budget, PG-14's frame and the shelf/field split are all reachable.",
+  "THREE are not, each for a stated reason: LV04 because 56 of its 60 fits are arbitrary reals from its own generator; LV02 and LV07 because they need a third pool AND carry inexpressible roles.",
+  "What the route still needs, and it is NOT clerical: each servable role's (fit, weightSum) has to be COMPOSED from a multiset of (necessity, state) pairs — weightSum requirements of weight 1, of which floor(fit × weightSum) carry value 1 and one carries 0.5 when the product is a half-integer. Plus decodeRequirement's text rules: a SEMANTIC requirement needs capabilityName, explanation and evidenceLimitation as text and quotes unless its state is DIFFERENT or UNCLEAR; a LEXICAL one needs explanation and evidenceLimitation null and capabilityName null exactly when its state is NONE.",
+  "So the route is a day's careful work rather than a transformation, and it must be verified by comparing rendered body geometry against layout-golden-vectors-v1.1.json's expected x / y / drawnRadius per rank — which is possible exactly, and is the only thing that would make a served vector worth calling by its name."
+ ],
+ "finding": "9 of 12 vectors are servable through the ranking contract; 3 are not, and 61 of 1412 roles across all twelve cannot be expressed at all. The blocker is not B-7 and not the façade: it is that the twelve are LAYOUT-MODULE inputs stating fit as a free real, while the ranking contract derives fit from weights {1,2,3} and values {0,0.5,1}. Both lanes had assumed the transformation was clerical; it is not, and I found out by writing it and being refused by the product's own decoder — which is the decoder doing its job."
+}

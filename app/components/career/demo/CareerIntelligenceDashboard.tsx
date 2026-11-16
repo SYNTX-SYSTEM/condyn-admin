@@ -14,7 +14,7 @@ export interface CareerIntelligenceDashboardProps {
   decisionContextRevisionId?: string;
   analysisId?: string;
   jobPoolUploadId?: string;
-  fieldFocus?: "CAPABILITY" | "FIELD";
+  fieldFocus?: "CAPABILITY" | "MAPPING" | "FIELD";
   jobOrganizationId?: string;
   jobRoleId?: string;
   jobRequirementId?: string;
@@ -38,7 +38,7 @@ export interface CareerIntelligenceDashboardProps {
 export function CareerIntelligenceDashboard({ data, canonicalSilAssociationId, careerDecisionContextRevisionId, decisionContextRevisionId, analysisId, jobPoolUploadId, fieldFocus, jobOrganizationId, jobRoleId, jobRequirementId, jobScopePoolUploadId, jobScopeRoleId, investigationMode, analysisJobId, discoveryPoolUploadIds, roleInvestigationId }: CareerIntelligenceDashboardProps) {
   /* The brand surface follows the active field: Decision Loop Labs in the Job Field context; the Capability context is unchanged.
      Job Pool first: the Job Field is active until the field reports a VALID job scope and an entered Capability Field. */
-  const [activeField, setActiveField] = useState<"CAPABILITY" | "FIELD">("FIELD");
+  const [activeField, setActiveField] = useState<"CAPABILITY" | "MAPPING" | "FIELD">("FIELD");
   /** O-PXJ-720 (PINK V-01 … V-03): the viewport tier and the planetarium's fit, written on this root (career-demo-layout.ts). */
   const rootRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {

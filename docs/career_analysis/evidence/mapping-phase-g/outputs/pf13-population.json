@@ -1,0 +1,170 @@
+{
+ "reading": "GRÜN · §98 — PF-13's population named, and its exception list resolved from line numbers to test identities",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "pure arithmetic over committed files. No browser, no build, no server, no database, no test executed here — this names WHAT PF-13 covers; the run is reported separately.",
+ "commit": "de70cb5f",
+ "pin": {
+  "statement": "PF-13: every phase-D and phase-E test passes, except the three restated in writing: neurovisual-e :156, :174, :140.",
+  "citedReferences": "§12, A-F15",
+  "source": "PERSON_X_JOB_MAPPING_PHASE_F.md :950 — a document NOT present in this worktree; it lives on architecture/mapping-phase-f. Recorded because a pin this lane reports against is read from another lane's branch."
+ },
+ "population": {
+  "derivedFrom": "test/career/mapping-field/architecture.test.ts -> PHASE_DIRS, read rather than restated",
+  "phaseDirs": [
+   "test/career/mapping-field/",
+   "test/career/mapping-spec/"
+  ],
+  "testFiles": [
+   "test/career/mapping-field/architecture.test.ts",
+   "test/career/mapping-field/field-d.test.tsx",
+   "test/career/mapping-field/field-e.test.tsx",
+   "test/career/mapping-field/field-f.test.tsx",
+   "test/career/mapping-field/field-g-mutant.test.tsx",
+   "test/career/mapping-field/field-g.test.tsx",
+   "test/career/mapping-field/field-interaction.test.tsx",
+   "test/career/mapping-field/field-render.test.tsx",
+   "test/career/mapping-field/field-wiring.test.tsx",
+   "test/career/mapping-field/model.test.ts",
+   "test/career/mapping-field/neurovisual-e.test.ts",
+   "test/career/mapping-field/selector-d.test.tsx",
+   "test/career/mapping-field/selector-keys-d.test.tsx",
+   "test/career/mapping-field/signs-d.test.ts",
+   "test/career/mapping-spec/layout.test.ts",
+   "test/career/mapping-spec/sign-table.test.ts"
+  ],
+  "testFileCount": 16,
+  "nonTestHelpersInThoseDirs": [
+   "test/career/mapping-field/phase-base.ts",
+   "test/career/mapping-field/support-d.ts",
+   "test/career/mapping-field/support.ts"
+  ],
+  "correctionToMyOwnEarlierReport": "I reported '170/170 on test/career/mapping-field' and called it PF-13's population. PHASE_DIRS has TWO entries and that is the first. The second, test/career/mapping-spec/, was never in the number I quoted."
+ },
+ "exceptionList": {
+  "citedBy": "LINE NUMBER, which A-G54 makes a property of a build.",
+  "resolved": [
+   {
+    "citedLine": 156,
+    "itLine": 156,
+    "headroomLines": 0,
+    "nextItLine": 173,
+    "linesToNextIt": 17,
+    "title": "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous",
+    "resolved": true,
+    "selfIdentifiesAsRestated": false,
+    "titleIsUniqueInFile": true
+   },
+   {
+    "citedLine": 174,
+    "itLine": 173,
+    "headroomLines": 1,
+    "nextItLine": 205,
+    "linesToNextIt": 31,
+    "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
+    "resolved": true,
+    "selfIdentifiesAsRestated": true,
+    "titleIsUniqueInFile": true
+   },
+   {
+    "citedLine": 140,
+    "itLine": 136,
+    "headroomLines": 4,
+    "nextItLine": 156,
+    "linesToNextIt": 16,
+    "title": "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign",
+    "resolved": true,
+    "selfIdentifiesAsRestated": true,
+    "titleIsUniqueInFile": true
+   }
+  ],
+  "distinctTestsNamed": 3,
+  "allThreeResolveToDistinctTests": true,
+  "fragileCitations": [
+   {
+    "citedLine": 156,
+    "headroomLines": 0,
+    "title": "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous"
+   },
+   {
+    "citedLine": 174,
+    "headroomLines": 1,
+    "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's"
+   }
+  ],
+  "theRisk": "a citation 2 lines or fewer inside its own it() is one edit away from naming the PREVIOUS test, and nothing signals the crossing. §93 shifted this file by +3 and all three still resolve — checked, not assumed — but that is luck rather than design.",
+  "theRemedy": "two of the three titles self-identify ('position half restated, phase F §12/A-F15' and 'restated, phase F §12 and phase G §8'), which matches the pin's own cited §12/A-F15. An exception list should name those titles; a line number cannot survive an edit to the file it points into."
+ },
+ "canonicalExceptionList": {
+  "ruledBy": "GELB §95: PF-13's exception list names TEST TITLES, not line numbers — a line number into a file still being edited is the only kind of citation that can come to mean something else with no edit to the citation itself.",
+  "form": "file + test title",
+  "file": "test/career/mapping-field/neurovisual-e.test.ts",
+  "titles": [
+   "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous",
+   "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
+   "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign"
+  ],
+  "eachTitleUniqueInThatFile": true,
+  "conversionProvenFaithful": true,
+  "howItWasProven": "each title was resolved back to an it() line and compared against the line the ORIGINAL number resolved to. Both forms name the same three tests, so this is a conversion and not a new list. The instrument throws if a title is not unique in the file, because an ambiguous title is no better than a drifting number.",
+  "legacyCitation": {
+   "byLineNumber": [
+    156,
+    174,
+    140
+   ],
+   "stillResolvesAtThisCommit": true,
+   "headroomLines": [
+    0,
+    1,
+    4
+   ],
+   "note": "kept so the pin's own wording stays traceable, and demoted because at this commit two of the three sit 0 and 1 lines inside their own it()."
+  }
+ },
+ "restatedSetDerivedFromTitles": {
+  "why": "GELB §116: the exempted set and the restated set must both be DERIVED from the titles, neither hand-listed, and their disagreement must THROW rather than be narrated.",
+  "scannedOverTheWholePopulation": 5,
+  "inThisFile": [
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 136,
+    "title": "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign"
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 173,
+    "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's"
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 205,
+    "title": "no other ambient motion (restated, phase F §12): nothing animates infinitely but rules keyed on LIVE and the user's own query"
+   }
+  ],
+  "restatedItLines": [
+   136,
+   173,
+   205
+  ],
+  "exemptedItLines": [
+   136,
+   156,
+   173
+  ],
+  "agree": false,
+  "exemptedButNotRestated": [
+   {
+    "citedLine": 156,
+    "itLine": 156,
+    "title": "REPRODUCE: geometry 420 ms, evidence from 420 ms — never simultaneous"
+   }
+  ],
+  "restatedButNotExempted": [
+   {
+    "itLine": 205,
+    "title": "no other ambient motion (restated, phase F §12): nothing animates infinitely but rules keyed on LIVE and the user's own query"
+   }
+  ]
+ },
+ "finding": "PF-13's POPULATION IS 16 TEST FILES over 2 directories (test/career/mapping-field/, test/career/mapping-spec/), read out of architecture.test.ts's own phase-D predicate rather than restated here.\nAND IT CORRECTS MY OWN REPORT: I quoted \"170/170 on test/career/mapping-field\" as PF-13's population. That is ONE of the two directories PHASE_DIRS names; 2 test files under test/career/mapping-spec/ were never in the number.\nTHE EXCEPTION LIST IS NOW NAMED BY TITLE (GELB §95, ruled), and the conversion is PROVEN rather than asserted: each title resolves back to the same it() line its original NUMBER resolved to, each title is unique in the file, and the instrument throws on either failure. The line numbers are kept as a legacy citation so the pin's own wording stays traceable.\nTHE LEGACY CITATION RESOLVES, AND IT IS FRAGILE. The pin's three line numbers each fall inside one it() — :156 -> it() at :156 (+0), :174 -> it() at :173 (+1), :140 -> it() at :136 (+4) — naming 3 distinct tests. 2 of the 3 titles say \"restated\" in the title itself, matching the pin's cited §12/A-F15. But 2 citation(s) sit 2 lines or fewer inside their own it(), and §93 shifted this file by +3 — all three still resolve, which I checked rather than assumed, and which is luck rather than design.\nNO VERDICT (A-G36 point 2): this names a population and resolves a citation. Whether the population passes is a RUN, reported separately, and whether PF-13 is satisfied is PINK's."
+}

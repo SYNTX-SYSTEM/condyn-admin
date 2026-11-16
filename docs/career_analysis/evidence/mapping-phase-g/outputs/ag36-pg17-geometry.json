@@ -1,0 +1,188 @@
+{
+ "instrument": "GRÜN phase-G · A-G36 re-derivation of §45",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "basis": "product constants only; nothing rendered, nothing read from GELB's instrument",
+ "figures": {
+  "1 · body rim on the gradient's offset axis": {
+   "note": "the gradient declares no gradientUnits, so objectBoundingBox applies and offset 1 is the drawn circle's own radius",
+   "rank1": 0.384615,
+   "lastRank": 0.333333,
+   "gelb": [
+    0.384615,
+    0.333333
+   ]
+  },
+  "2 · the seat's occluding edge": {
+   "seatHalfPx": {
+    "marked": 1.8,
+    "unmarked": 1.4012
+   },
+   "gelbSeatHalfPx": [
+    1.8,
+    1.4012
+   ],
+   "offsetMarkedAtRFloor": {
+    "rank1": 0.409341,
+    "lastRank": 0.354762
+   },
+   "gelb": [
+    0.409341,
+    0.354762
+   ]
+  },
+  "3 · measurable extent": {
+   "formula": "(haloNear + 0.4t) - 1 - seatHalfPx / r_px",
+   "atRFloor": {
+    "rank1_marked": 1.535714,
+    "lastRank_unmarked": 1.949957
+   },
+   "gelb": [
+    1.53571,
+    1.94996
+   ],
+   "oneCorrection": "the UPPER figure is the value AT r_px = 28, not the supremum over r_px >= 28, which is 2.0 and not attained. The lower figure IS the infimum, so the interval is right where it is load-bearing."
+  },
+  "4 · worst-case margin against the pin's 1.5 r": {
+   "formula": "(R(0) - 1 - h/r) - 1.5 = 0.1 - h/r_px, times r_px",
+   "px": 1,
+   "gelb": 1,
+   "againstTheRimFigureOf1_6": "-1.8 px, i.e. the measurable extent FAILS the 1.6 by exactly the seat's half-width — which is A-G163's point"
+  }
+ },
+ "flatHead": {
+  "question": "A-G136's verdict inverts on this",
+  "infimumOfSeatOffset": {
+   "value": 0.333333,
+   "reason": "h/r_px -> 0 as r_px grows, and t = 1 maximises the denominator",
+   "exceedsFlatEnd": true
+  },
+  "answer": "OCCLUDED AT EVERY RANK AND EVERY RADIUS. 0.33 < 1/haloFar = 0.333333 is pure constant arithmetic — it needs no radius, no mark and no measurement.",
+  "strongerThanTheSeatRing": {
+   "note": "the seat's opaque FILL alone reaches r, and the flat head's outer radius at the worst rank is 0.33 * haloFar = 0.99 r < 1, so the ring is not even required",
+   "fillOnlyMarginPx": 0.28,
+   "caveat": "the seat RING carries the body's own dash pattern (LINE_DASH dotted/open/broken), so through a dash gap the guaranteed occluder is the fill alone and the margin is this sub-pixel figure, not the ring's 1.68 px. The CONCLUSION is unaffected; the MARGIN is."
+  },
+  "consequence": "the flat head is never sampled, so the observable ramp is strictly decreasing and strict-versus-non-increasing is not a difference.",
+  "strictnessUnmeasurableInTail": {
+   "status": "STANDS — §53 A-G181, reinstated after my own §51 withdrawal was shown wrong",
+   "quantisationModel": "A-G81: alpha quantised to 8 bits BEFORE compositing, so one alpha steps all three channels together",
+   "alphaLevels": 11,
+   "distinctColours": 10,
+   "tailPx": 11.76,
+   "pixelSamples": 12,
+   "pigeonholeHolds": true,
+   "supersededCount": "23 triples, computed as if alpha were continuous — the model, not the arithmetic, was wrong",
+   "note": "so a re-formed pin demanding MEASURED strict decrease would be unsatisfiable on compliant content, which is PG-19's shape and available from constants before any run."
+  },
+  "rows": [
+   {
+    "t": 0,
+    "mark": "marked",
+    "rpx": 28,
+    "seatOffset": 0.409341,
+    "occludesFlatHead": true,
+    "clearancePx": 5.776,
+    "maxMeasurableShareOfPeak": 0.814872
+   },
+   {
+    "t": 0,
+    "mark": "marked",
+    "rpx": 56,
+    "seatOffset": 0.396978,
+    "occludesFlatHead": true,
+    "clearancePx": 9.752,
+    "maxMeasurableShareOfPeak": 0.843718
+   },
+   {
+    "t": 0,
+    "mark": "unmarked",
+    "rpx": 28,
+    "seatOffset": 0.403863,
+    "occludesFlatHead": true,
+    "clearancePx": 5.3772,
+    "maxMeasurableShareOfPeak": 0.827654
+   },
+   {
+    "t": 0,
+    "mark": "unmarked",
+    "rpx": 56,
+    "seatOffset": 0.394239,
+    "occludesFlatHead": true,
+    "clearancePx": 9.3532,
+    "maxMeasurableShareOfPeak": 0.850109
+   },
+   {
+    "t": 0.5,
+    "mark": "marked",
+    "rpx": 28,
+    "seatOffset": 0.380102,
+    "occludesFlatHead": true,
+    "clearancePx": 3.928,
+    "maxMeasurableShareOfPeak": 0.883095
+   },
+   {
+    "t": 0.5,
+    "mark": "marked",
+    "rpx": 56,
+    "seatOffset": 0.368622,
+    "occludesFlatHead": true,
+    "clearancePx": 6.056,
+    "maxMeasurableShareOfPeak": 0.909881
+   },
+   {
+    "t": 0.5,
+    "mark": "unmarked",
+    "rpx": 28,
+    "seatOffset": 0.375015,
+    "occludesFlatHead": true,
+    "clearancePx": 3.5292,
+    "maxMeasurableShareOfPeak": 0.894964
+   },
+   {
+    "t": 0.5,
+    "mark": "unmarked",
+    "rpx": 56,
+    "seatOffset": 0.366079,
+    "occludesFlatHead": true,
+    "clearancePx": 5.6572,
+    "maxMeasurableShareOfPeak": 0.915815
+   },
+   {
+    "t": 1,
+    "mark": "marked",
+    "rpx": 28,
+    "seatOffset": 0.354762,
+    "occludesFlatHead": true,
+    "clearancePx": 2.08,
+    "maxMeasurableShareOfPeak": 0.942222
+   },
+   {
+    "t": 1,
+    "mark": "marked",
+    "rpx": 56,
+    "seatOffset": 0.344048,
+    "occludesFlatHead": true,
+    "clearancePx": 2.36,
+    "maxMeasurableShareOfPeak": 0.967222
+   },
+   {
+    "t": 1,
+    "mark": "unmarked",
+    "rpx": 28,
+    "seatOffset": 0.350014,
+    "occludesFlatHead": true,
+    "clearancePx": 1.6812,
+    "maxMeasurableShareOfPeak": 0.9533
+   },
+   {
+    "t": 1,
+    "mark": "unmarked",
+    "rpx": 56,
+    "seatOffset": 0.341674,
+    "occludesFlatHead": true,
+    "clearancePx": 1.9612,
+    "maxMeasurableShareOfPeak": 0.972761
+   }
+  ]
+ }
+}

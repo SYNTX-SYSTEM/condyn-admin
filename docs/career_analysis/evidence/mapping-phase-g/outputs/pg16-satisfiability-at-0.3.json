@@ -1,0 +1,756 @@
+{
+ "reading": "GRÜN · §62 — A-G128 satisfiability of PG-16 at the derived bound 0.3, in four limbs",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "arithmetic on committed constants: layout-golden-vectors-v1.1.json and spaced() as committed. No render, no server, no gate, no sealed datum.",
+ "question": "GELB §62: at the bound the record derived, is the pin satisfiable — can a layout in the exercised set pass it AND can one fail it?",
+ "constants": {
+  "CROWDING": 0.3,
+  "BODY_BUDGET_L0": 7,
+  "layoutsInSet": 12,
+  "layoutsWithASubject": 11,
+  "layoutsExercisingTheCap": 9
+ },
+ "limbA_predicate": {
+  "pinPredicate": "sep(o,b) - r_o - r_b >= CROWDING * max(ecc_o, ecc_b)   [PHASE_G §11, and the spaced() doc comment]",
+  "filterPredicate": "sep(o,b) - r_o - r_b >= CROWDING * max(ecc_o, ecc_b)   [PersonJobMappingField.tsx:479]",
+  "identical": true,
+  "docCommentQuote": "A body that would crowd one already drawn is left to the list, like the ones beyond the budget: the spacing wins, the budget shrinks.",
+  "canAnyLayoutFail": false,
+  "finding": "NO layout in the exercised set can fail PG-16, and none could at any other value of the constant either. The product evaluates the pin's own predicate and declines to draw the counterexample, so the drawn set satisfies the pin by construction. PG-16 as a pin over the RENDERED FIELD is a zero-by-construction channel: it is not falsifiable at 0.3, and restoring the bound to 0.3 does not make it falsifiable, because the obstruction is the shared expression and not the number in it.",
+  "whatThisDoesNotSay": "It does NOT say PG-16 is worthless or that the bound should not be restored. It says the pin's subject has to change, not its constant: what is falsifiable is whether the FILTER IS PRESENT AND CORRECT (a mutant that deletes line 479's clearance test must be caught), not whether its output satisfies it. A-G128 is a question about the pin, and this is the pin failing it, not the bound."
+ },
+ "limbB_activity": {
+  "layoutsWhereSpacingRemovesABody": [
+   {
+    "layout": "LV03-equal-fit-ties",
+    "dropped": 6
+   },
+   {
+    "layout": "LV04-crowded-60",
+    "dropped": 16
+   },
+   {
+    "layout": "LV05-capacity-exceeded-overflow",
+    "dropped": 12
+   },
+   {
+    "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+    "dropped": 10
+   },
+   {
+    "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+    "dropped": 21
+   },
+   {
+    "layout": "LV07-real-shape-73",
+    "dropped": 11
+   }
+  ],
+  "layoutsWhereSpacingIsInert": [
+   "LV01-single-role",
+   "LV02-three-pools-mixed-tiers",
+   "LV08-checked-fit-0-pressed-to-the-horizon",
+   "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "LV12-shelf-medium-bodies-cannot-cross-the-field-edge"
+  ],
+  "finding": "At 0.3 the spacing actually removes at least one body on 6 of 11 layouts that have a subject. On the rest the budget alone determines the drawn set and PG-16 is inert — it is not merely unfalsifiable there, it is doing nothing."
+ },
+ "limbC_measurability": {
+  "convention": "the clearance test is satisfied iff c <= sep/maxEcc, so a lower c is looser; the drawn set equals the drawn set at 0.3 exactly on the OPEN interval (above, below) reported per layout.",
+  "perLayoutInterval": [
+   {
+    "layout": "LV01-single-role",
+    "unchangedAbove": 0,
+    "unchangedBelow": null,
+    "nearestBoundaryDistance": 0.3,
+    "distinguishes_0_3_from_0_5": false
+   },
+   {
+    "layout": "LV02-three-pools-mixed-tiers",
+    "unchangedAbove": 0,
+    "unchangedBelow": 0.473663,
+    "nearestBoundaryDistance": 0.173663,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV03-equal-fit-ties",
+    "unchangedAbove": 0.208587,
+    "unchangedBelow": 0.444382,
+    "nearestBoundaryDistance": 0.091413,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV04-crowded-60",
+    "unchangedAbove": 0.289578,
+    "unchangedBelow": 0.331249,
+    "nearestBoundaryDistance": 0.010422,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV05-capacity-exceeded-overflow",
+    "unchangedAbove": 0.118165,
+    "unchangedBelow": 0.316553,
+    "nearestBoundaryDistance": 0.016553,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+    "unchangedAbove": 0,
+    "unchangedBelow": 0.318909,
+    "nearestBoundaryDistance": 0.018909,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+    "unchangedAbove": 0,
+    "unchangedBelow": 0.356409,
+    "nearestBoundaryDistance": 0.056409,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+    "unchangedAbove": 0.271409,
+    "unchangedBelow": 0.318834,
+    "nearestBoundaryDistance": 0.018834,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+    "unchangedAbove": 0,
+    "unchangedBelow": 0.336103,
+    "nearestBoundaryDistance": 0.036103,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+    "unchangedAbove": 0.298531,
+    "unchangedBelow": 0.317636,
+    "nearestBoundaryDistance": 0.001469,
+    "distinguishes_0_3_from_0_5": true
+   },
+   {
+    "layout": "LV07-real-shape-73",
+    "unchangedAbove": 0.233382,
+    "unchangedBelow": 0.444399,
+    "nearestBoundaryDistance": 0.066618,
+    "distinguishes_0_3_from_0_5": true
+   }
+  ],
+  "layoutsWhereMovingTheBoundTo0_5ChangesTheDrawnSet": [
+   "LV02-three-pools-mixed-tiers",
+   "LV03-equal-fit-ties",
+   "LV04-crowded-60",
+   "LV05-capacity-exceeded-overflow",
+   "LV08-checked-fit-0-pressed-to-the-horizon",
+   "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "LV07-real-shape-73"
+  ],
+  "tightestLayout": {
+   "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "interval": {
+    "above": 0.298531,
+    "below": 0.317636
+   },
+   "nearestBoundaryDistance": 0.001469
+  },
+  "finding": "0.3 is interior to the invariance interval on 11 of 11 layouts, so no layout in the set is exactly AT a decision boundary. But the intervals are NARROW where the spacing is active: the tightest is LV10-checked-fit-1-pressed-from-the-inner-edge at (0.298531, 0.317636), which puts 0.3 only 0.001469 from a value that changes the drawn set. And 10 of 11 layouts change their drawn set somewhere in (0.3, 0.5].",
+  "whyThisMatters": "I pre-wrote this limb expecting it to say that 0.3 sits in a wide dead zone and is therefore underdetermined by any rendered reading. THE RUN SAYS THE OPPOSITE and the pre-written text is withdrawn. The constant's VALUE is sharply observable: the 0.3-vs-0.5 divergence changes the drawn set on 10 of 11 layouts, and on the tightest layout a shift of ~0.0015 is already visible. So PG-16's bound is both derived AND consequential — which is precisely why limb A matters rather than being a technicality. The field is highly sensitive to the constant and completely insensitive to whether the pin holds, because the product enforces the pin and reports the constant only through which bodies survive."
+ },
+ "limbD_maximality": {
+  "layoutsWhereGreedyIsNotMaximum": [
+   {
+    "layout": "LV05-capacity-exceeded-overflow",
+    "greedy": 8,
+    "maximum": 11,
+    "shortfall": 3,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+    "greedy": 15,
+    "maximum": 18,
+    "shortfall": 3,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+    "greedy": 10,
+    "maximum": 12,
+    "shortfall": 2,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+    "greedy": 8,
+    "maximum": 9,
+    "shortfall": 1,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+    "greedy": 9,
+    "maximum": 11,
+    "shortfall": 2,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+    "greedy": 15,
+    "maximum": 18,
+    "shortfall": 3,
+    "exhaustive": true
+   },
+   {
+    "layout": "LV07-real-shape-73",
+    "greedy": 11,
+    "maximum": 14,
+    "shortfall": 3,
+    "exhaustive": true
+   }
+  ],
+  "allExhaustive": true,
+  "finding": "On 7 of 11 layouts the rank-greedy filter admits FEWER bodies than the crowding constraint alone permits. The drawn count is therefore a function of the RANK ORDER as well as of the constant, and \"spacing-only capacity\" is not a capacity.",
+  "errataPropagation": {
+   "bindingClassificationsThatFlipUnderTheTrueMaximum": [],
+   "drawnCountsAffected": false,
+   "drawnCountsWhyNot": "L0_at_0_3 / L0_at_0_5 / delta in the earlier file are greedy counts because `spaced()` is greedy — they are what the product actually draws, so greediness is not an error in them. Only the quantity labelled a CAPACITY is wrong, plus any inference drawn from it.",
+   "conclusionAffected": "NO — no layout's BUDGET/SPACING classification flips when the greedy count is replaced by the true maximum, because on every layout the two fall on the same side of the budget. So the earlier file's conclusions, including 'the budget binds on 8 at 0.3' and 'the effective cap at 0.5 is 4-7', stand as written. The erratum is confined to the NAME of one field and to any reading of it as a capacity."
+  },
+  "erratumAgainstMyOwnEarlierReading": "outputs/pg16-crowding-at-0.5.json reports a field named `spacingOnlyCapacity` computed as spaced(byRank, Infinity, c).length. That is a greedy count, not a capacity, and on the layouts listed here it understates the maximum. The figures in that file are correct AS DRAWN COUNTS — they are what the product draws — but the NAME is wrong and the 'capacity' reading of them is wrong. Both lanes quoted those numbers."
+ },
+ "answerToGELB": [
+  "Direct answer: NO. At 0.3 the pin is satisfiable in the trivial sense — every layout passes — and falsifiable on NONE, so A-G128 fails on PG-16 and it fails for a reason the bound cannot fix.",
+  "Limb A is the whole of it: PHASE_G §11's pin predicate and spaced()'s filter predicate at line 479 are the same expression over the same operands. The product declines to draw any body that would violate the pin. So there is no layout in the exercised set that can fail it, at 0.3 or at any other value.",
+  "That means restoring the bound to 0.3 does NOT give you a derived bound on an unfalsifiable pin by some accident of the number — the pin is unfalsifiable by construction and was equally so at 0.5. A-G156 did not make it unfalsifiable and withdrawing A-G156 will not make it falsifiable. The two questions are independent, which I think is good news for your write-up: you can restore the derived bound without inheriting a new defect, provided the entry says what the pin can and cannot do.",
+  "Limb B adds that on 5 of 11 layouts with a subject the spacing does not remove a single body at 0.3 — there the budget alone fixes the drawn set and PG-16 is inert, not just unfalsifiable.",
+  "Limb C came out the OPPOSITE WAY from how I had written it before running it, and the prediction is withdrawn in the file rather than deleted. I expected 0.3 to sit in a wide dead zone where the value could not matter. It does not: the 0.3-vs-0.5 divergence changes the drawn set on 10 of 11 layouts, and on LV10-checked-fit-1-pressed-from-the-inner-edge the invariance interval is only (0.298531, 0.317636) — 0.3 is 0.001469 from a value that removes or adds a body. So the constant is sharply consequential. That strengthens the case for restoring the derived number rather than weakening it, and it is also why limb A is not a technicality: the field is very sensitive to the constant's VALUE and entirely insensitive to whether the PIN holds.",
+  "What IS falsifiable, and what I would pin instead or in addition: the PRESENCE and CORRECTNESS of the filter. Delete line 479's clearance test and a layout must visibly gain a crowded body. That is a mutant, it is cheap, and it is exactly the shape A-F11 asks for. It is also — and I am flagging this rather than quietly doing it — a vitest assertion, so it lands in the held-on-B-ENTRY bucket with the other two mutants, written red-first and not executed.",
+  "One erratum of my own falls out of limb D and I would rather you have it before you quote the file again: see limbD.erratumAgainstMyOwnEarlierReading."
+ ],
+ "perLayout": [
+  {
+   "layout": "LV01-single-role",
+   "nonOverflowBodies": 1,
+   "drawnAtBound": 1,
+   "binding": "SPACING",
+   "limbB": {
+    "spacingActive": false,
+    "bodiesDroppedByCrowdingBeforeBudget": 0,
+    "crowdingDrops": []
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0,
+     "below": null
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.3,
+    "marginAboveBound": null,
+    "nearestBoundaryDistance": 0.3,
+    "distinguishes_0_3_from_0_5": false
+   },
+   "limbD": {
+    "greedyUncapped": 1,
+    "maximumIndependentSet": 1,
+    "exhaustive": true,
+    "conflictEdges": 0,
+    "greedyIsMaximum": true,
+    "shortfall": 0
+   }
+  },
+  {
+   "layout": "LV02-three-pools-mixed-tiers",
+   "nonOverflowBodies": 6,
+   "drawnAtBound": 6,
+   "binding": "SPACING",
+   "limbB": {
+    "spacingActive": false,
+    "bodiesDroppedByCrowdingBeforeBudget": 0,
+    "crowdingDrops": []
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0,
+     "below": 0.473663
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.3,
+    "marginAboveBound": 0.173663,
+    "nearestBoundaryDistance": 0.173663,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 6,
+    "maximumIndependentSet": 6,
+    "exhaustive": true,
+    "conflictEdges": 0,
+    "greedyIsMaximum": true,
+    "shortfall": 0
+   }
+  },
+  {
+   "layout": "LV03-equal-fit-ties",
+   "nonOverflowBodies": 12,
+   "drawnAtBound": 6,
+   "binding": "SPACING",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 6,
+    "crowdingDrops": [
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 8,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 5
+     },
+     {
+      "rank": 11,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 12,
+      "why": "CROWDING",
+      "blockedBy": 2
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.208587,
+     "below": 0.444382
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.091413,
+    "marginAboveBound": 0.144382,
+    "nearestBoundaryDistance": 0.091413,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 6,
+    "maximumIndependentSet": 6,
+    "exhaustive": true,
+    "conflictEdges": 10,
+    "greedyIsMaximum": true,
+    "shortfall": 0
+   }
+  },
+  {
+   "layout": "LV04-crowded-60",
+   "nonOverflowBodies": 31,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 16,
+    "crowdingDrops": [
+     {
+      "rank": 4,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 5,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 9,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 2
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.289578,
+     "below": 0.331249
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.010422,
+    "marginAboveBound": 0.031249,
+    "nearestBoundaryDistance": 0.010422,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 9,
+    "maximumIndependentSet": 9,
+    "exhaustive": true,
+    "conflictEdges": 75,
+    "greedyIsMaximum": true,
+    "shortfall": 0
+   }
+  },
+  {
+   "layout": "LV05-capacity-exceeded-overflow",
+   "nonOverflowBodies": 37,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 12,
+    "crowdingDrops": [
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 8,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 11,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 12,
+      "why": "CROWDING",
+      "blockedBy": 5
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.118165,
+     "below": 0.316553
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.181835,
+    "marginAboveBound": 0.016553,
+    "nearestBoundaryDistance": 0.016553,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 8,
+    "maximumIndependentSet": 11,
+    "exhaustive": true,
+    "conflictEdges": 109,
+    "greedyIsMaximum": false,
+    "shortfall": 3
+   }
+  },
+  {
+   "layout": "LV08-checked-fit-0-pressed-to-the-horizon",
+   "nonOverflowBodies": 70,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": false,
+    "bodiesDroppedByCrowdingBeforeBudget": 0,
+    "crowdingDrops": []
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0,
+     "below": 0.318909
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.3,
+    "marginAboveBound": 0.018909,
+    "nearestBoundaryDistance": 0.018909,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 15,
+    "maximumIndependentSet": 18,
+    "exhaustive": true,
+    "conflictEdges": 309,
+    "greedyIsMaximum": false,
+    "shortfall": 3
+   }
+  },
+  {
+   "layout": "LV09-shelf-fit-0-pressed-to-the-field-edge",
+   "nonOverflowBodies": 37,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": false,
+    "bodiesDroppedByCrowdingBeforeBudget": 0,
+    "crowdingDrops": []
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0,
+     "below": 0.356409
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.3,
+    "marginAboveBound": 0.056409,
+    "nearestBoundaryDistance": 0.056409,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 10,
+    "maximumIndependentSet": 12,
+    "exhaustive": true,
+    "conflictEdges": 72,
+    "greedyIsMaximum": false,
+    "shortfall": 2
+   }
+  },
+  {
+   "layout": "LV11-shelf-wide-bodies-cannot-leave-the-field",
+   "nonOverflowBodies": 22,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 10,
+    "crowdingDrops": [
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 8,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 9,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 11,
+      "why": "CROWDING",
+      "blockedBy": 3
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.271409,
+     "below": 0.318834
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.028591,
+    "marginAboveBound": 0.018834,
+    "nearestBoundaryDistance": 0.018834,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 8,
+    "maximumIndependentSet": 9,
+    "exhaustive": true,
+    "conflictEdges": 31,
+    "greedyIsMaximum": false,
+    "shortfall": 1
+   }
+  },
+  {
+   "layout": "LV12-shelf-medium-bodies-cannot-cross-the-field-edge",
+   "nonOverflowBodies": 24,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": false,
+    "bodiesDroppedByCrowdingBeforeBudget": 0,
+    "crowdingDrops": []
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0,
+     "below": 0.336103
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.3,
+    "marginAboveBound": 0.036103,
+    "nearestBoundaryDistance": 0.036103,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 9,
+    "maximumIndependentSet": 11,
+    "exhaustive": true,
+    "conflictEdges": 26,
+    "greedyIsMaximum": false,
+    "shortfall": 2
+   }
+  },
+  {
+   "layout": "LV10-checked-fit-1-pressed-from-the-inner-edge",
+   "nonOverflowBodies": 71,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 21,
+    "crowdingDrops": [
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 1
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 8,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 11,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 12,
+      "why": "CROWDING",
+      "blockedBy": 4
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.298531,
+     "below": 0.317636
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.001469,
+    "marginAboveBound": 0.017636,
+    "nearestBoundaryDistance": 0.001469,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 15,
+    "maximumIndependentSet": 18,
+    "exhaustive": true,
+    "conflictEdges": 309,
+    "greedyIsMaximum": false,
+    "shortfall": 3
+   }
+  },
+  {
+   "layout": "LV06-no-roles",
+   "nonOverflowBodies": 0,
+   "note": "no roles — PG-16 has no subject here"
+  },
+  {
+   "layout": "LV07-real-shape-73",
+   "nonOverflowBodies": 36,
+   "drawnAtBound": 7,
+   "binding": "BUDGET",
+   "limbB": {
+    "spacingActive": true,
+    "bodiesDroppedByCrowdingBeforeBudget": 11,
+    "crowdingDrops": [
+     {
+      "rank": 5,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 6,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 7,
+      "why": "CROWDING",
+      "blockedBy": 2
+     },
+     {
+      "rank": 8,
+      "why": "CROWDING",
+      "blockedBy": 3
+     },
+     {
+      "rank": 9,
+      "why": "CROWDING",
+      "blockedBy": 4
+     },
+     {
+      "rank": 10,
+      "why": "CROWDING",
+      "blockedBy": 2
+     }
+    ]
+   },
+   "limbC": {
+    "drawnSetUnchangedOnOpenInterval": {
+     "above": 0.233382,
+     "below": 0.444399
+    },
+    "boundIsInterior": true,
+    "marginBelowBound": 0.066618,
+    "marginAboveBound": 0.144399,
+    "nearestBoundaryDistance": 0.066618,
+    "distinguishes_0_3_from_0_5": true
+   },
+   "limbD": {
+    "greedyUncapped": 11,
+    "maximumIndependentSet": 14,
+    "exhaustive": true,
+    "conflictEdges": 75,
+    "greedyIsMaximum": false,
+    "shortfall": 3
+   }
+  }
+ ]
+}

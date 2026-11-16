@@ -1,0 +1,78 @@
+{
+ "SEALED": "A-G109 — PG-12's verdict-bearing quantity. Published to NOBODY, including GELB, until PINK's verdict on PG-12 is recorded. A-G117: the hue class's C* is sealed as well as the ratio, since the medium's C* is published and one division would recover this.",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "5c3ca5d97624da020da059a49d337fc9a5629ca3",
+  "headShort": "5c3ca5d9",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T19:02:05.800Z",
+  "instrumentCommit": "5c3ca5d9"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "level": "L0",
+ "motion": "resting (reducedMotion:reduce)",
+ "chromaDefinition": "CIELAB C* = hypot(a*, b*), D65, from linearised sRGB. C* is zero on any neutral grey, so the field's near-neutral ink and the one hue separate on it, where a hue ANGLE is undefined at zero chroma.",
+ "hueCarryingClassChroma": {
+  "n": 47071,
+  "p50": 6.4916,
+  "p90": 22.93,
+  "p99": 29.8311,
+  "max": 33.1052,
+  "mean": 9.5772
+ },
+ "plainGlowChroma": {
+  "n": 50094,
+  "p50": 7.3813,
+  "p90": 13.9047,
+  "p99": 16.7296,
+  "max": 18.9075,
+  "mean": 7.6581
+ },
+ "mediumChroma": {
+  "n": 427474,
+  "p50": 2.9116,
+  "p90": 5.1246,
+  "p99": 8.0262,
+  "max": 9.3358,
+  "mean": 2.8122
+ },
+ "mediumOverHue": 0.44852,
+ "boundForReference": "<= 0.02",
+ "hueClassIdentification": "glow pixels within haloFar of a body with data-required-gaps > 0 (G-4's one hue, the mf-halo-gap gradient). Plain-glow chroma is reported beside it as a control: the two glow fills differ only in hue, so a chroma channel that cannot separate them is not resolving hue at all."
+}

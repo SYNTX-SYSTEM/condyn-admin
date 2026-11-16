@@ -1,0 +1,67 @@
+{
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T16:51:04.452Z",
+  "instrumentCommit": "c84ab292"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "viewport": "1280x800",
+ "level": "L0",
+ "motion": "LIVE (travel drawn — A-G42's travel-drawn pass, its own frames)",
+ "frames": 528,
+ "spanS": 58,
+ "clipMatch": true,
+ "adequacyGuard": {
+  "cadenceMs": 110,
+  "nyquistHz": 4.546,
+  "maxFittedFreqHz": 0.35,
+  "limit": 4.092,
+  "adequate": true
+ },
+ "windowRule": {
+  "seconds": 58,
+  "requiredSeconds": 57,
+  "satisfied": true
+ },
+ "renderMode": "travel-drawn; may not reuse PF-8's travel-masked frames (A-G42 point 3)",
+ "reading": "GRÜN development reading · PG-11 MEASURABILITY — the medium's own coherent energy against A-G30's absolute guard",
+ "scope": "PUBLISHABLE per A-G111: a seal covers a pin's verdict-bearing quantity, not whether the pin can be measured at all. The relation limb and every ratio are in the SEALED companion file.",
+ "definitions": {
+  "comparator": "the medium's own layers: disc pixels that are NOT glow, NOT any sign, and NOT the relation carrier. Glows are excluded per A-G104 — A-G10 pin 7 makes them body light and A-G48 makes them breathe, so including them would compare relation motion against BODY motion.",
+  "energy": "coherent amplitude at the breath harmonics {0.1, 0.2, 0.3} from one joint LSQ, against a bracketed dof-matched null at {0.05, 0.15, 0.25, 0.35} (PINK's A-F17/A-F20 form)",
+  "guard": "A-G30: PG-11 returns INCONCLUSIVE unless the medium's coherent energy reaches 0.0002 in its own right — a ratio of two floor values is not a measurement",
+  "question": "A-G113: can the guarded quantity clear the guard on a PASSING build? If a correctly calm field necessarily puts it under, PG-11 can only return a number on a field that fails R17's calm."
+ },
+ "mediumCoherentEnergy": {
+  "pixels": 119077,
+  "pooledSignal": 0.00004534,
+  "pooledNull": 0.0000017677,
+  "pooledSignalOverNull": 25.65,
+  "perPixelP50": 0.000065517,
+  "perPixelP99": 0.00048889,
+  "perPixelNullP50": 0.0000038695
+ },
+ "guardThreshold": 0.0002,
+ "guardClears": false,
+ "marginFactor": 0.227,
+ "measurabilityReading": "the medium's coherent energy is BELOW A-G30's guard on this build, so PG-11 cannot return a verdict here. Whether that is a property of a CALM field or of this field is the architecture's call (A-G113 reserves it), and this lane does not decide it.",
+ "relationLimb": "SEALED — see the companion file. Publishing numerator and denominator would publish the ratio by arithmetic."
+}

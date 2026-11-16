@@ -1,0 +1,101 @@
+{
+ "reading": "GRÜN development reading · A-G86's discriminator under reducedMotion:reduce — the mode the inversion was observed in",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "642b0c26fea9ea8016e95a802c996501d515f239",
+  "headShort": "642b0c26",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:55:12.210Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "motion": "reduce (static field; in-disc swing measured 0.000000, so one frame per condition is exact)",
+ "discPixels": 545417,
+ "definitions": {
+  "PG1_standard": "(ΣL_full − ΣL_emittingSuppressed) / ΣL_full over disc pixels",
+  "PG1_occluderExcluded": "A-G86: (ΣL_occlSuppressed − ΣL_occlAndEmittingSuppressed) / ΣL_occlSuppressed",
+  "perturbation": "live style override of the shelf ring's stroke alpha, byte 5 (0.02) → byte 6 (0.022), on ONE build",
+  "expectedDirection": "NEGATIVE — rings are excluded from the numerator and included in the denominator, so adding ring light should lower the share",
+  "carrierSetCaveat": "the emitting set here INCLUDES .mf-travel and .mf-beam-glow (A-G61). The original 0.52215 → 0.54139 observation used the superseded set without them, which is why the absolute values here are higher. Re-running the original pair would require resurrecting a definition that omits a semantic channel."
+ },
+ "byShelfAlpha": {
+  "0.02": {
+   "renders": {
+    "requested": 0.02,
+    "byte": 5,
+    "effective": 0.0196078,
+    "quantum": 0.0039216
+   },
+   "PG1_standard": 0.64317,
+   "PG1_occluderExcluded": 0.72114,
+   "discSums": {
+    "full": 5648.4,
+    "emittingSuppressed": 2015.5,
+    "occludersSuppressed": 8453.6,
+    "bothSuppressed": 2357.4
+   },
+   "discMeanLuminance": 0.010356
+  },
+  "0.022": {
+   "renders": {
+    "requested": 0.022,
+    "byte": 6,
+    "effective": 0.0235294,
+    "quantum": 0.0039216
+   },
+   "PG1_standard": 0.63906,
+   "PG1_occluderExcluded": 0.71802,
+   "discSums": {
+    "full": 5693.3,
+    "emittingSuppressed": 2054.9,
+    "occludersSuppressed": 8510,
+    "bothSuppressed": 2399.6
+   },
+   "discMeanLuminance": 0.010438
+  }
+ },
+ "delta": {
+  "PG1_standard": -0.00411,
+  "PG1_occluderExcluded": -0.00312
+ },
+ "outcome": {
+  "inversionReproduced": false,
+  "occluderMediated": false,
+  "reading": "the inversion DOES NOT reproduce: both definitions move in the expected NEGATIVE direction, so the rise this lane reported is not attributable to the shelf alpha. A-G86's either/or is answered on its first limb — not occluder-mediated, and PG-1's definition does not need the joint-to-parts relationship stated on this evidence."
+ }
+}

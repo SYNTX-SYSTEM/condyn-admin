@@ -14,6 +14,19 @@ export const SPEC = JSON.parse(readFileSync(join(__dirname, "../../../docs/archi
   constellation: { nodeRadius: number; spacing: number; ringRadii: number[]; startDegrees: number };
 };
 
+/**
+ * MAPPING_LAYOUT_V1.1 (PERSON_X_JOB_MAPPING_PHASE_G.md §5/§7, A1): the same algorithm with two radii, each with one role — the mass
+ * radius keeps the band rule, the DRAWN radius takes the collision rule and the step. Read from its own spec; V1 stays phase B's record.
+ */
+export const SPEC_V11 = JSON.parse(readFileSync(join(__dirname, "../../../docs/architecture/decision-fields/mapping-spec/layout-spec-v1.1.json"), "utf8")) as typeof SPEC & {
+  body: typeof SPEC.body & { drawn: { min: number; max: number } };
+};
+/** V1.1: the drawn radius — the mass radius mapped linearly onto [drawn.min, drawn.max]. */
+export function drawnRadiusOf(weightSum: number): number {
+  const b = SPEC_V11.body, rho = bodyRadiusOf(weightSum);
+  return b.drawn.min + ((rho - b.min) / (b.max - b.min)) * (b.drawn.max - b.drawn.min);
+}
+
 export const r6 = (v: number): number => { const x = Math.round(v * 1e6) / 1e6; return x === 0 ? 0 : x; };
 const text = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 const rad = (deg: number) => (deg * Math.PI) / 180;
@@ -27,6 +40,8 @@ export interface Body {
   x: number; y: number; distance: number; angleDegrees: number; bodyRadius: number;
   /** [radial step, angular step] taken from the fit position; [0, 0] = placed exactly where its fit puts it. */
   displacement: [number, number]; overflow: boolean;
+  /** V1.1 only: the drawn radius (collision and size). */
+  drawnRadius?: number;
 }
 export interface LayoutOutput { specVersion: string; sectors: Sector[]; bodies: Body[]; overflowCount: number }
 
@@ -43,7 +58,11 @@ export function baseDistance(role: Pick<LayoutRole, "tier" | "fit">): number {
   return r.shelfNear + (r.shelfFar - r.shelfNear) * (1 - fit / 0.5);
 }
 
-export function referenceLayout(input: LayoutInput): LayoutOutput {
+export function referenceLayout(input: LayoutInput): LayoutOutput { return layoutWith(input, false); }
+/** MAPPING_LAYOUT_V1.1: identical to V1 except collision and step use the drawn radius; each body also states it. */
+export function referenceLayoutV11(input: LayoutInput): LayoutOutput { return layoutWith(input, true); }
+
+function layoutWith(input: LayoutInput, v11: boolean): LayoutOutput {
   const s = SPEC.sectors;
   const pools = [...input.pools].sort((a, b) => text(a.name, b.name) || text(a.id, b.id));
   const roles = [...input.roles].sort((a, b) => a.rank - b.rank);
@@ -64,11 +83,12 @@ export function referenceLayout(input: LayoutInput): LayoutOutput {
     if (!sector) throw new Error(`ERR_MAPPING_LAYOUT_UNKNOWN_POOL:${role.poolId}`);
     const i = indexInPool.get(role.poolId) ?? 0; indexInPool.set(role.poolId, i + 1);
     const rho = bodyRadiusOf(role.weightSum), shelf = role.tier !== "SEMANTIC";
+    const drawn = v11 ? drawnRadiusOf(role.weightSum) : rho;
     const u = frac((i + 1) * s.golden);
     const baseAngle = sector.startDegrees + sector.spanDegrees * (s.angleMargin + s.angleSpread * u);
     const base = baseDistance(role);
     const lo = shelf ? SPEC.rings.shelfNear : SPEC.rings.bestFit, hi = shelf ? SPEC.field.radius - rho : SPEC.rings.horizon - rho;
-    const step = 2 * rho + SPEC.body.gap;
+    const step = 2 * drawn + SPEC.body.gap;
     let found: { x: number; y: number; d: number; a: number; at: [number, number] } | null = null;
     outer:
     for (const dr of offsets(SPEC.search.radialSteps)) {
@@ -79,16 +99,17 @@ export function referenceLayout(input: LayoutInput): LayoutOutput {
         const a = baseAngle + da * angleStep;
         if (a < sector.startDegrees || a > sector.startDegrees + sector.spanDegrees) continue;
         const x = d * Math.cos(rad(a)), y = d * Math.sin(rad(a));
-        if (placed.every(o => o.overflow || Math.hypot(o.x - x, o.y - y) >= o.bodyRadius + rho + SPEC.body.gap)) { found = { x, y, d, a, at: [dr, da] }; break outer; }
+        if (placed.every(o => o.overflow || Math.hypot(o.x - x, o.y - y) >= (o.drawnRadius ?? o.bodyRadius) + drawn + SPEC.body.gap)) { found = { x, y, d, a, at: [dr, da] }; break outer; }
       }
     }
-    if (found) placed.push({ poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: r6(found.x), y: r6(found.y), distance: r6(found.d), angleDegrees: r6(found.a), bodyRadius: r6(rho), displacement: found.at, overflow: false });
+    const extra = v11 ? { drawnRadius: r6(drawn) } : {};
+    if (found) placed.push({ poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: r6(found.x), y: r6(found.y), distance: r6(found.d), angleDegrees: r6(found.a), bodyRadius: r6(rho), displacement: found.at, overflow: false, ...extra });
     else {
       overflowCount += 1; const d = SPEC.field.overflowRadius;
-      placed.push({ poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: r6(d * Math.cos(rad(baseAngle))), y: r6(d * Math.sin(rad(baseAngle))), distance: d, angleDegrees: r6(baseAngle), bodyRadius: r6(rho), displacement: [0, 0], overflow: true });
+      placed.push({ poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: r6(d * Math.cos(rad(baseAngle))), y: r6(d * Math.sin(rad(baseAngle))), distance: d, angleDegrees: r6(baseAngle), bodyRadius: r6(rho), displacement: [0, 0], overflow: true, ...extra });
     }
   }
-  return { specVersion: SPEC.specVersion, sectors: sectors.map(x => ({ ...x, startDegrees: r6(x.startDegrees), spanDegrees: r6(x.spanDegrees) })), bodies: placed, overflowCount };
+  return { specVersion: v11 ? SPEC_V11.specVersion : SPEC.specVersion, sectors: sectors.map(x => ({ ...x, startDegrees: r6(x.startDegrees), spanDegrees: r6(x.spanDegrees) })), bodies: placed, overflowCount };
 }
 
 export interface ArcRequirement { id: string; necessity: string; weight: number; value: number }

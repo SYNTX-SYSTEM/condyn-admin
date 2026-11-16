@@ -1,147 +1,181 @@
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { ROOT, git, phaseCBase } from "./phase-base";
+import { DIFF_MAX_BUFFER_DEFAULT, ROOT, assertRange, changedInRange, git, gitDiff, phaseDBase, phaseEBase, phaseFBase, phaseGBase, phaseIntBase } from "./phase-base";
 
 /**
- * MAP-C-ARCH · phase C boundary (GELB "SFE::PHASE_C", owner limit "NUR PHASE C"): the visible field is added, nothing existing
- * changes meaning. The guarantees are bound to phase C's own commits and to the fixed base PHASE_C_BASE (./phase-base.ts), not to
- * origin/main and not to the running tree. They read the same on the branch, on the merge commit, and after any later commit on main
- * that does not touch phase C (PINK §3.98 F-PC-1, §3.99 F-RC-1):
- *  - the released engine (lib/career/mapping) and its specification files are byte-identical to the base — consumed, not changed;
- *  - the six PERSON orbits, the JOB planetarium, the Job Field, the field selector (two fields), B2 and the backend are as in the base;
- *  - every phase-C commit (a commit after the base that touches a phase-C file), and the working tree once it touches one, changes
- *    only phase C's new files and its three named entry points; in the two product entry points phase C removes exactly one line
- *    each (the line it extends) and adds only the field;
- *  - the new modules read only: no fetch, no POST, no URL or history write, no storage, no job scope, no model call, no clock or
- *    randomness in the model.
- * A later commit that touches a phase-C file or entry point for other reasons is held to this boundary too. That is the point at which
- * the boundary has to be re-stated (a later phase).
+ * MAP-D-ARCH · the phase-D boundary (PERSON_X_JOB_MAPPING_PHASE_D.md §5.2, D-1 … D-7, held by PINK). The guarantees are bound to
+ * phase D's own commits and to the fixed base PHASE_D_BASE (./phase-base.ts) — not to origin/main and not to the running tree — so
+ * they read the same on the branch, on the merge commit, and after any later commit on main that does not touch phase D.
+ *  D-1 the engine and its specification are byte-identical to the base;
+ *  D-2 the protected paths are as in the base (the phase-C list less three carve-outs: SyntxFieldSelector.tsx, career-demo-url.ts,
+ *      career-demo-layout.ts), now with AutoJobRankingPanel.tsx among them (D-4);
+ *  D-3 every phase-D change set (a commit after the base that touches a phase-D file, and the working tree once it does) changes
+ *      only phase-D files;
+ *  D-5 the entry points pinned to exactly what phase D delivered;
+ *  D-6 the model is pure; D-7 the model, the component and the copy read only — no write, no URL, no storage, no job scope.
+ * "Staged" includes a change that is only in the index (PINK F-FIN-1): the index is compared against the base as well.
  */
-const diffLines = (file: string, sign: "+" | "-") => execFileSync("git", ["diff", "-U0", phaseCBase(), "--", file], { cwd: ROOT, encoding: "utf8" }).split("\n")
-  .filter(line => line.startsWith(sign) && !line.startsWith(`${sign}${sign}${sign} `)).map(line => line.slice(1));
+const diffLines = (file: string, sign: "+" | "-") => gitDiff("-U0", phaseDBase(), "--", file)
+  .filter(line => line.startsWith(sign) && !line.startsWith(`${sign}${sign}${sign} `)).map(line => line.slice(1).trim());
 const code = (file: string) => readFileSync(join(ROOT, file), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'])\/\/.*$/gm, "$1");
 
-const PANEL = "app/components/career/demo/AutoJobRankingPanel.tsx";
-const FIELD_HOST = "app/components/career/demo/SemanticCareerIntelligenceField.tsx";
+const DEMO = "app/components/career/demo";
 const MODEL = "lib/career/view-model/mapping-field.ts";
-const COMPONENT = "app/components/career/demo/PersonJobMappingField.tsx";
-const COPY = "app/components/career/demo/mapping-field-copy.ts";
-/** The existing files phase C enters — each named in the hand-over. */
-const ENTRY_POINTS = [PANEL, FIELD_HOST, "test/career/mapping/architecture.test.ts"].sort();
-const NEW_FILES = [MODEL, COMPONENT, COPY, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_C.md"];
-const NEW_DIRS = ["test/career/mapping-field/"];
-const own = (p: string) => NEW_FILES.includes(p) || NEW_DIRS.some(d => p.startsWith(d));
-const phaseC = (p: string) => own(p) || ENTRY_POINTS.includes(p);
+const COMPONENT = `${DEMO}/PersonJobMappingField.tsx`;
+const COPY = `${DEMO}/mapping-field-copy.ts`;
+const HOST = `${DEMO}/SemanticCareerIntelligenceField.tsx`;
+const DASHBOARD = `${DEMO}/CareerIntelligenceDashboard.tsx`;
+const LAYOUT = `${DEMO}/career-demo-layout.ts`;
+const SELECTOR = `${DEMO}/SyntxFieldSelector.tsx`;
+const URL_MODULE = "lib/career/ui/career-demo-url.ts";
+/** §7: the existing files phase D enters, each named there (D-3: the phase-C artifacts are baseline, hence entry points). */
+const ENTRY_POINTS = [MODEL, COMPONENT, COPY, SELECTOR, HOST, URL_MODULE, DASHBOARD, LAYOUT,
+  "test/career/mapping/architecture.test.ts", "test/career/job-pool/job-scope-ssr.test.tsx", "test/job-pool-validation/syntx-walk.e2e.test.ts",
+  "test/job-pool-validation/support/syntx-readonly-walk.mjs", "test/job-pool-validation/job-scope-gate.e2e.test.ts",
+  // T-07, the PERSON seal narrowed by the two shell subtrees phase D changes (D-3 re-stated by PINK fb7010aa).
+  "test/career/pxj-first-screen/person-markup.test.tsx", "test/career/pxj-first-screen/fixtures/person-markup-49e2bc6.sha256.json"].sort();
+/** §7: the proofs of §8 are added here. */
+const PHASE_DIRS = ["test/career/mapping-field/", "test/career/mapping-spec/"];
+const phaseD = (p: string) => ENTRY_POINTS.includes(p) || PHASE_DIRS.some(d => p.startsWith(d));
 
 /**
- * The phase-C change sets: every non-merge commit after the base whose files include a phase-C file (renames listed on both sides),
- * and the working tree (staged, unstaged, untracked) as one more, pending, set when it includes one. A commit that touches no
- * phase-C file (a README, an evidence commit, any later unrelated change on main) is not a phase-C change set.
+ * The phase-D change sets: every non-merge commit after the base whose files include a phase-D file (renames listed on both sides),
+ * and the working tree (index against HEAD, working tree against HEAD, untracked) as one more, pending, set when it includes one. A
+ * commit that touches no phase-D file (a README, an evidence commit, any later unrelated change on main) is not a phase-D change set.
  */
-function phaseCChangeSets(): Array<{ commit: string; files: string[] }> {
+function phaseDChangeSets(): Array<{ commit: string; files: string[] }> {
   const sets: Array<{ commit: string; files: string[] }> = [];
   let current: { commit: string; files: string[] } | null = null;
-  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", `${phaseCBase()}..HEAD`)) {
+  // PHASE_G §8 (6): phase D's own range, PHASE_D_BASE..PHASE_E_BASE (the open-ended form measured every later phase as phase D).
+  assertRange(phaseDBase(), phaseEBase());
+  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", `${phaseDBase()}..${phaseEBase()}`)) {
     if (line.startsWith("@")) { current = { commit: line.slice(1), files: [] }; sets.push(current); } else current!.files.push(line);
   }
-  sets.push({ commit: "WORKING_TREE", files: [...new Set([...git("diff", "--name-only", "--no-renames", "HEAD"), ...git("ls-files", "--others", "--exclude-standard")])] });
-  return sets.filter(set => set.files.some(phaseC));
+  return sets.filter(set => set.files.some(phaseD));
 }
-/** Changed against the base, in the tree, the index and the working tree, and untracked: for the paths that must stay as they were. */
-const changedSinceBase = (...paths: string[]) => [...new Set([...git("diff", "--name-only", "--no-renames", phaseCBase(), "--", ...paths), ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)])].sort();
+/** Changed against the base — committed, in the index, in the working tree — and untracked: for the paths that must stay as they were. */
+const changedSinceBase = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseDBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseDBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
 
-describe("MAP-C-ARCH · nothing existing changes meaning", () => {
-  it("the engine and its specification are byte-identical to the phase-B base (committed, staged, unstaged and new)", () => {
-    expect(changedSinceBase("lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+/** D-2: the phase-C protected list (MAP-C-ARCH at e360caf9) less the three carve-outs, plus AutoJobRankingPanel.tsx (D-4). */
+export const PROTECTED_PATHS = [
+  // The six PERSON orbits and the capability planetarium.
+  `${DEMO}/ResonanceOrbits.tsx`, `${DEMO}/OrbitalCosmosView.tsx`, `${DEMO}/OrbitalDeepFocusView.tsx`, `${DEMO}/OrbitalSubspaceView.tsx`, `${DEMO}/OrbitalSatelliteMotion.tsx`,
+  `${DEMO}/OrbitalResonanceBubble.tsx`, `${DEMO}/CapabilityField.tsx`, `${DEMO}/CapabilityCosmosView.tsx`, `${DEMO}/CapabilityDeepFocusView.tsx`, `${DEMO}/RoleManifestation.tsx`,
+  `${DEMO}/TensionLayer.tsx`, `${DEMO}/EvolutionLayer.tsx`, `${DEMO}/IdentityCoreNode.tsx`, `${DEMO}/SilOrbitEmptyState.tsx`,
+  "lib/career/view-model/orbital-cosmos-layout.ts", "lib/career/view-model/orbit-focus-projection.ts", "lib/career/view-model/cluster-presentation.ts", "lib/career/view-model/sil-language.ts",
+  // The JOB planetarium and the Job Field.
+  `${DEMO}/manifestation`, `${DEMO}/SyntxField.tsx`, "lib/career/job-pool",
+  // The investigation boundary.
+  `${DEMO}/SyntxInvestigationSelector.tsx`, "lib/career/job-scope",
+  // B2 and the PERSON × JOB first screen.
+  `${DEMO}/PxjFirstScreen.tsx`, "lib/career/view-model/pxj-first-screen.ts", "lib/career/ui/useRoleInvestigation.ts", "lib/career/result-inspector",
+  // The automatic reads (all of lib/career/ui but the URL module, C-9), the capability core, the backend.
+  "lib/career/ui", `:!${URL_MODULE}`, "lib/career/capability-core", "app/api",
+  // D-4: the ranking panel keeps its optional `field` prop and its list.
+  `${DEMO}/AutoJobRankingPanel.tsx`
+];
+
+describe("MAP-D-ARCH · D-1, D-2, D-4 — nothing protected changes", () => {
+  // PHASE_G §8 (6): closed at PHASE_G_BASE — phase G's MAPPING_LAYOUT_V1.1 is bounded by MAP-G-ARCH, not measured here as phase D.
+  it("D-1 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical from the base through phase F", () => {
+    expect(changedInRange(phaseDBase(), phaseGBase(), "lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
   });
 
-  it("orbits, planetarium, Job Field, field selector, B2, first screen, the automatic reads and the backend are as in the phase-B base", () => {
-    const protectedPaths = [
-      // The six PERSON orbits and the capability planetarium.
-      "app/components/career/demo/ResonanceOrbits.tsx", "app/components/career/demo/OrbitalCosmosView.tsx", "app/components/career/demo/OrbitalDeepFocusView.tsx",
-      "app/components/career/demo/OrbitalSubspaceView.tsx", "app/components/career/demo/OrbitalSatelliteMotion.tsx", "app/components/career/demo/OrbitalResonanceBubble.tsx",
-      "app/components/career/demo/CapabilityField.tsx", "app/components/career/demo/CapabilityCosmosView.tsx", "app/components/career/demo/CapabilityDeepFocusView.tsx",
-      "app/components/career/demo/RoleManifestation.tsx", "app/components/career/demo/TensionLayer.tsx", "app/components/career/demo/EvolutionLayer.tsx",
-      "app/components/career/demo/IdentityCoreNode.tsx", "app/components/career/demo/SilOrbitEmptyState.tsx", "app/components/career/demo/career-demo-layout.ts",
-      "lib/career/view-model/orbital-cosmos-layout.ts", "lib/career/view-model/orbit-focus-projection.ts", "lib/career/view-model/cluster-presentation.ts", "lib/career/view-model/sil-language.ts",
-      // The JOB planetarium and the Job Field.
-      "app/components/career/demo/manifestation", "app/components/career/demo/SyntxField.tsx", "lib/career/job-pool",
-      // The field selector (two fields) and the investigation boundary.
-      "app/components/career/demo/SyntxFieldSelector.tsx", "app/components/career/demo/SyntxInvestigationSelector.tsx", "lib/career/job-scope",
-      // B2 and the PERSON × JOB first screen.
-      "app/components/career/demo/PxjFirstScreen.tsx", "lib/career/view-model/pxj-first-screen.ts", "lib/career/ui/useRoleInvestigation.ts", "lib/career/result-inspector",
-      // The automatic reads, the URL, the capability core, the backend.
-      "lib/career/ui", "lib/career/capability-core", "app/api"
-    ];
-    /**
-     * §91 A-G411. This read `toEqual([])` and had been RED for the whole of phases D–G without anyone
-     * seeing it, because boundary B-ENTRY was closed and so the suite never ran — GRÜN's complement to
-     * §90's sentence: a fail-closed gate with nothing behind it is not only withholding new assertions,
-     * it is SILENCING the ones already written against the lane whose commits they constrain.
-     *
-     * Five protected files have changed, and all five changed in exactly two commits, both of which are
-     * the DATABASE-ISOLATION work — the B-ENTRY boundary that every lane in this record defers to. This
-     * docstring's own last paragraph anticipated it: "A later commit that touches a phase-C file or entry
-     * point for other reasons is held to this boundary too. That is the point at which the boundary has
-     * to be re-stated (a later phase)." It was never re-stated. It is re-stated here.
-     *
-     * NOT BY WIDENING THE FILENAME SET. A filename whitelist would permanently exempt those five files
-     * from the boundary, so the next unrelated change to them would pass silently — which is how a
-     * boundary becomes a convention. The crossing is authorised BY COMMIT: every change to a protected
-     * path must be attributable to a named, reasoned commit, and a new commit touching the very same file
-     * still fails. And the authorisation list is asserted to be fully consumed, because an exception set
-     * that is not checked for staleness is a whitelist that only ever grows (A-G408's lesson).
-     */
-    const AUTHORISED_CROSSINGS: ReadonlyArray<readonly [string, string]> = [
-      ["e360caf9dcc7b7359d13e2a09884ff4ce09211a8", "fix(security,database-isolation): server-side admin gate and the B-ENTRY/DDL findings"],
-      ["dc674ee1f21b7e80693ceb07b5233689292521c2", "feat(database-isolation): B-ENTRY second basis — the authorised application database"]
-    ];
-    const authorised = new Set(AUTHORISED_CROSSINGS.map(([sha]) => sha));
-    const changed = changedSinceBase(...protectedPaths);
-    const used = new Set<string>();
-    const unattributable: string[] = [];
-    for (const file of changed) {
-      const commits = git("log", "--no-merges", "--format=%H", `${phaseCBase()}..HEAD`, "--", file);
-      // an untracked or uncommitted change has no commit at all, so it is unattributable by construction
-      if (commits.length === 0) { unattributable.push(`${file} (uncommitted or untracked)`); continue; }
-      for (const sha of commits) authorised.has(sha) ? used.add(sha) : unattributable.push(`${file} @ ${sha.slice(0, 8)}`);
-    }
-    expect(unattributable, "every change to a protected phase-C path must be attributable to an authorised crossing").toEqual([]);
-    expect([...authorised].filter(sha => !used.has(sha)), "an authorised crossing that no longer accounts for any change is stale and must be removed").toEqual([]);
-  });
-
-  it("every phase-C change set (its commits after the base, and the working tree once it touches phase C) changes only its new files and the three named entry points", () => {
-    const sets = phaseCChangeSets();
-    expect(sets.length, "phase C is in the history").toBeGreaterThan(0);
-    for (const set of sets) expect(set.files.filter(p => !phaseC(p)), set.commit).toEqual([]);
-    const existing = new Set(git("ls-tree", "-r", "--name-only", phaseCBase()));
-    const touched = [...new Set(sets.flatMap(set => set.files))];
-    expect(touched.filter(p => existing.has(p)).sort(), "the existing files phase C enters").toEqual(ENTRY_POINTS);
-    expect(NEW_FILES.filter(p => existing.has(p)), "the new files are new").toEqual([]);
-    expect(NEW_FILES.filter(p => !touched.includes(p)), "and all of them are phase C's").toEqual([]);
-  });
-
-  it("the two product entry points: one line removed each (the line extended), and only the field added", () => {
-    expect(diffLines(PANEL, "-")).toEqual(["export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, children }: AutoJobRankingPanelProps) {"]);
-    expect(diffLines(PANEL, "+").map(l => l.trim())).toEqual([
-      "/** PERSON × JOB mapping phase C: the ranking drawn as a field (PersonJobMappingField), shown above the ranked list while a ranking is shown. */",
-      "field?: React.ReactNode;",
-      "export function AutoJobRankingPanel({ locale, watch, ranking, onGoToJobField, children, field }: AutoJobRankingPanelProps) {",
-      "{field}"
-    ]);
-    expect(diffLines(FIELD_HOST, "-").map(l => l.trim())).toEqual(['<AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}>']);
-    expect(diffLines(FIELD_HOST, "+").map(l => l.trim())).toEqual([
-      'import { PersonJobMappingField } from "./PersonJobMappingField";',
-      '<AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}',
-      'field={<PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />}>'
-    ]);
+  it("D-2 / D-4: orbits, planetarium, Job Field, investigation boundary, B2, the automatic reads, the ranking panel and the backend are as in the base", () => {
+    expect(changedSinceBase(...PROTECTED_PATHS)).toEqual([]);
+    // The carve-outs are exactly three, and the URL module is the one file of lib/career/ui phase D may change.
+    for (const carved of [SELECTOR, URL_MODULE, LAYOUT]) expect(PROTECTED_PATHS.filter(p => p === carved), carved).toEqual([]);
   });
 });
 
-describe("MAP-C-ARCH · the new modules read only", () => {
-  it("the model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no window; engine and spec only", () => {
+describe("MAP-D-ARCH · D-3, D-5 — phase D changes only its own files, and exactly as delivered", () => {
+  it("D-3: every phase-D change set (its commits after the base, and the working tree once it touches phase D) changes only phase-D files", () => {
+    const sets = phaseDChangeSets();
+    for (const set of sets) expect(set.files.filter(p => !phaseD(p)), set.commit).toEqual([]);
+    const existing = new Set(git("ls-tree", "-r", "--name-only", phaseDBase()));
+    const touched = [...new Set(sets.flatMap(set => set.files))];
+    expect(touched.filter(p => existing.has(p) && !PHASE_DIRS.some(d => p.startsWith(d))).filter(p => !ENTRY_POINTS.includes(p)), "no existing file outside §7").toEqual([]);
+  });
+
+  it("D-5: the dashboard — exactly the two type widenings, the shell mark untouched", () => {
+    expect(diffLines(DASHBOARD, "-")).toEqual(['fieldFocus?: "CAPABILITY" | "FIELD";', 'const [activeField, setActiveField] = useState<"CAPABILITY" | "FIELD">("FIELD");']);
+    expect(diffLines(DASHBOARD, "+")).toEqual(['fieldFocus?: "CAPABILITY" | "MAPPING" | "FIELD";', 'const [activeField, setActiveField] = useState<"CAPABILITY" | "MAPPING" | "FIELD">("FIELD");']);
+  });
+
+  it("D-5: the layout — the clearance over both lines, one intake rule with two conditions on one variable, the stack-tier order", () => {
+    expect(diffLines(LAYOUT, "-")).toEqual([
+      'if (line === null || job === null) { root.style.removeProperty("--sx-entry-clear"); return; }',
+      'root.style.setProperty("--sx-entry-clear", `${Math.ceil(line.getBoundingClientRect().bottom - (job.getBoundingClientRect().top + window.scrollY) + 12)}px`);',
+      'const INTAKE_BELOW_ENTRY = `${FIELD}:has(> [data-sx-shell="gate-reason"]) ${JOB} > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`;'
+    ]);
+    expect(diffLines(LAYOUT, "+")).toEqual([
+      "// Phase D (PERSON_X_JOB_MAPPING_PHASE_D.md D-2, M1): the MAPPING gate's own line stands under it; the panel starts below the lower one.",
+      `const mappingLine = root.querySelector<HTMLElement>('[data-sx-shell="mapping-gate"]');`,
+      'if ((line === null && mappingLine === null) || job === null) { root.style.removeProperty("--sx-entry-clear"); return; }',
+      "const bottom = Math.max(...[line, mappingLine].filter((element): element is HTMLElement => element !== null).map(element => element.getBoundingClientRect().bottom));",
+      'root.style.setProperty("--sx-entry-clear", `${Math.ceil(bottom - (job.getBoundingClientRect().top + window.scrollY) + 12)}px`);',
+      "// Phase D (D-Q13 (b)): the MAPPING gate's own line stands in the same column — also alone (PERSON × JOB with a valid job has no",
+      "// capability line). One rule, two conditions, one variable: --sx-entry-clear is the lower edge of whichever lines stand there.",
+      'const INTAKE_BELOW_ENTRY = `${FIELD}:has(> [data-sx-shell="mapping-gate"]) ${JOB} > [data-sx-panel="intake"], ${FIELD}:has(> [data-sx-shell="gate-reason"]) ${JOB} > [data-sx-panel="intake"] { top: max(150px, var(--sx-entry-clear, 150px)) !important; }`;',
+      '${FIELD} > [data-sx-shell="mapping-gate"] { position: relative !important; left: auto !important; right: auto !important; top: auto !important; transform: none !important; order: 4; max-width: 100% !important; width: auto !important; justify-self: stretch; }'
+    ]);
+  });
+
+  it("D-Q13 (b): every rule that places the intake panel below a gate line reads the one variable; the stylesheet holds one such rule per fixed tier", async () => {
+    const { CAREER_DEMO_LAYOUT_CSS } = await import("../../../app/components/career/demo/career-demo-layout");
+    const rules = [...CAREER_DEMO_LAYOUT_CSS.matchAll(/([^{}]*\[data-sx-panel="intake"\][^{}]*)\{([^}]*)\}/g)].filter(m => /data-sx-shell="(gate-reason|mapping-gate)"/.test(m[1]));
+    expect(rules.length, "the full and the fit tier").toBe(2);
+    for (const [, selector, body] of rules) {
+      expect(body.trim()).toBe("top: max(150px, var(--sx-entry-clear, 150px)) !important;");
+      expect(selector).toContain(':has(> [data-sx-shell="mapping-gate"])');
+      expect(selector).toContain(':has(> [data-sx-shell="gate-reason"])');
+    }
+  });
+
+  it("D-5 (c), scoped to FIELD's direct children: mapping-gate is the only added `${FIELD} > [data-sx-shell=…]` rule, at order 4; no existing such order changed", () => {
+    const shellOrders = (css: string) => [...css.matchAll(/\$\{FIELD\} > \[data-sx-shell="([a-z-]+)"\]\s*\{([^}]*)\}/g)].map(m => [m[1], /order:\s*(\d+)/.exec(m[2])?.[1] ?? null] as const);
+    const before = shellOrders(git("show", `${phaseDBase()}:${LAYOUT}`).join("\n")), after = shellOrders(readFileSync(join(ROOT, LAYOUT), "utf8"));
+    expect(after.filter(([marker]) => !before.some(([m]) => m === marker))).toEqual([["mapping-gate", "4"]]);
+    expect(after.filter(([marker]) => marker !== "mapping-gate")).toEqual(before);
+    expect(after.filter(([, order]) => order === "4").map(([marker]) => marker)).toEqual(["gate-reason", "mapping-gate"]);
+  });
+
+  it("D-5: the host — the panel's field prop removed, the MAPPING stage mounted, the third focus and its gate wired; nothing else", () => {
+    expect(diffLines(HOST, "-")).toEqual([
+      "/** Planetarium focus: CAPABILITY (default) or FIELD (the SYNTX Job Field, URL focus=FIELD; JOB and POOL are accepted as legacy aliases). Without an explicit focus, an exact jobPoolUploadId opens the field. */",
+      'fieldFocus?: "CAPABILITY" | "FIELD";',
+      'onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;',
+      'const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");',
+      'const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";',
+      'const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && activeFieldFocus === "FIELD" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });',
+      'const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {',
+      "// selector, keys, exit, return).",
+      'mode: investigationMode, gateOpen: capabilityGateOpen, focus: activeFieldFocus, scope: jobScopeValidation.state,',
+      "/** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job",
+      "*  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */",
+      "useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);",
+      'const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;',
+      '<AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}',
+      'field={<PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />}>',
+      "{/* SYNTX field selector (application shell): the two fields of one system, exactly one active, centred in the upper area. */}"
+    ]);
+    const added = diffLines(HOST, "+");
+    expect(added).toContain('<AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}>');
+    expect(added).toContain('<PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />');
+    expect(added.filter(l => /field=\{/.test(l)), "the panel's field prop is gone").toEqual([]);
+    // The one added line that names the job scope is the field-entry line that already read it; it changes only its `focus:` operand.
+    const entryLine = 'mode: investigationMode, gateOpen: capabilityGateOpen, focus: capabilityActive ? "CAPABILITY" : "FIELD", scope: jobScopeValidation.state,';
+    expect(added.filter(l => /jobScope|JobScope|writeCareerDemoUrl|pushUrl/.test(l)), "the new lines write nothing and touch no job scope").toEqual([entryLine]);
+    expect(added).toHaveLength(32);
+  });
+});
+
+describe("MAP-D-ARCH · D-6, D-7 — the model is pure, the field reads only", () => {
+  it("D-6: the model is pure: no React, no fetch, no clock, no randomness, no timer, no storage, no window; engine and spec only", () => {
     const c = code(MODEL);
     expect(c).not.toMatch(/from\s+["'](react|react-dom|next)(\/[^"']*)?["']/);
     expect(c).not.toMatch(/\bfetch\s*\(|\bDate\b|Math\.random|performance\.|setTimeout|setInterval|requestAnimationFrame|localStorage|sessionStorage|\bwindow\b|\bdocument\b/);
@@ -153,24 +187,305 @@ describe("MAP-C-ARCH · the new modules read only", () => {
     }
   });
 
-  it("the component and its copy: no fetch, no POST, no URL or history write, no storage, no job scope, no model call", () => {
-    for (const file of [COMPONENT, COPY]) {
+  it("D-7: the model, the component and the copy — no fetch, no POST, no URL or history write, no storage, no job scope, no model call", () => {
+    for (const file of [MODEL, COMPONENT, COPY]) {
       const c = code(file);
       expect(c, file).not.toMatch(/\bfetch\s*\(|method:\s*["']POST|writeCareerDemoUrl|pushState|replaceState|history\.|location\.|localStorage|sessionStorage|XMLHttpRequest|sendBeacon/);
       expect(c, file).not.toMatch(/jobScope|JobScope|onSelectJobScope|selectJobScope|investigationMode/);
       expect(c, file).not.toMatch(/gemini|Gemini|\/api\//);
       expect(c, file).not.toMatch(/\bDate\b|Math\.random/);
+      expect(c, `${file}: the forbidden names stay forbidden (§5.2)`).not.toMatch(/SELECT_(ROLE|POOL|JOB)/);
     }
     // The component reaches the engine only through the model, the focus machine's initial state and type-only imports.
     const imports = code(COMPONENT).split("\n").filter(l => /^\s*import\b/.test(l) && /career\/mapping\//.test(l));
     for (const line of imports) expect(/^\s*import\s+type\s/.test(line) || /import \{ FOCUS_INITIAL, type FocusState \} from/.test(line), line).toBe(true);
   });
 
-  it("phase C names no action that opens a role or a requirement, or selects anything (B-3; L2/L3 are later)", () => {
-    for (const file of [MODEL, COMPONENT]) {
-      const c = code(file).replace(/OPEN_POOL/g, "");
-      expect(c.match(/type:\s*["'](OPEN_ROLE|OPEN_REQUIREMENT|SELECT_CAPABILITY|MARK_REQUIREMENT)["']/g), file).toBeNull();
-      expect(c, file).not.toMatch(/SELECT_(ROLE|REQUIREMENT|POOL|JOB)/);
+  it("D-7: phase D admits the focus machine's full action set — the boundary is the absence of a scope, not a whitelist", async () => {
+    const { FIELD_ACTIONS } = await import("../../../lib/career/view-model/mapping-field");
+    const { FOCUS_ACTIONS, FOCUS_INITIAL } = await import("../../../lib/career/mapping/focus");
+    expect(FIELD_ACTIONS).toBe(FOCUS_ACTIONS);
+    expect(Object.keys(FOCUS_INITIAL).sort(), "the focus state has no field for a scope").toEqual(["level", "pool", "requirement", "role", "selection"]);
+  });
+});
+
+/**
+ * MAP-E-ARCH · the phase-E boundary (PERSON_X_JOB_MAPPING_PHASE_E.md §4 B-1 … B-8, §6), bound to PHASE_E_BASE = 86e36924 (GRÜN's
+ * phase-D delivery). Phase E changes how the same semantics reach the eye: the stage, its copy, an additive model, and the proofs.
+ * The four phase-D test files below are in the set because E-4/A-2, E-6/A-5 and E-7 change forms that phase D asserted; each of their
+ * changed assertions is marked "Phase E" where it stands.
+ */
+const E_ENTRY = [COMPONENT, COPY, MODEL,
+  "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/neurovisual-e.test.ts", "test/career/mapping-field/architecture.test.ts",
+  "test/career/mapping-field/phase-base.ts",
+  // phase-D assertions superseded by phase E (form only; the model's three-valued movement and the sign table are unchanged)
+  "test/career/mapping-field/field-d.test.tsx", "test/career/mapping-field/field-interaction.test.tsx", "test/career/mapping-field/field-render.test.tsx"].sort();
+const changedSinceE = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseEBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseEBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
+/** The non-merge commits of a closed range, each with its files. */
+function commitSets(range: string): Array<{ commit: string; files: string[] }> {
+  const sets: Array<{ commit: string; files: string[] }> = [];
+  let current: { commit: string; files: string[] } | null = null;
+  for (const line of git("log", "--no-merges", "--no-renames", "--format=@%H", "--name-only", range)) {
+    if (line.startsWith("@")) { current = { commit: line.slice(1), files: [] }; sets.push(current); } else current!.files.push(line);
+  }
+  return sets;
+}
+/**
+ * Every phase-E change set: each non-merge commit in phase E's OWN range, PHASE_E_BASE..PHASE_F_BASE (PHASE_F §20: the open-ended
+ * form measured every later phase as if it were phase E — PINK's F-PC-1 / O-RC-1 recurring). A-F18: the range is asserted non-empty
+ * and in order first, so the test cannot pass over nothing.
+ */
+function phaseEChangeSets(): Array<{ commit: string; files: string[] }> {
+  assertRange(phaseEBase(), phaseFBase());
+  return commitSets(`${phaseEBase()}..${phaseFBase()}`);
+}
+/** The lines phase E added to a file, against the base (committed, staged and unstaged together). */
+const addedSinceE = (file: string) => gitDiff("-U0", phaseEBase(), "--", file)
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+
+describe("MAP-E-ARCH · B-1, B-2, B-3 — nothing protected changes", () => {
+  // PHASE_G §8 (6): closed at PHASE_G_BASE.
+  it("B-1 / P-9 (range closed at PHASE_G_BASE): the engine and its specification are byte-identical through phase F; the twelve golden vectors with them", () => {
+    expect(changedInRange(phaseEBase(), phaseGBase(), "lib/career/mapping", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+    const vectors = "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json";
+    expect(git("hash-object", vectors)[0], "golden vectors, blob for blob").toBe(git("rev-parse", `${phaseEBase()}:${vectors}`)[0]);
+    expect(Object.keys((JSON.parse(readFileSync(join(ROOT, vectors), "utf8")) as { layouts: Record<string, unknown> }).layouts).length, "the twelve layout vectors").toBe(12);
+  });
+
+  it("B-2 / B-3: orbits, planetarium, Job Field, job scope, Capability Field, the selector (C-1 … C-11), host, dashboard, layout, URL, every API route and job-pool module are as at the base", () => {
+    expect(changedSinceE(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
+    expect(changedSinceE("test/career/mapping-field/selector-d.test.tsx", "test/career/mapping-field/selector-keys-d.test.tsx"), "the selector contract's own proofs unchanged").toEqual([]);
+  });
+});
+
+describe("MAP-E-ARCH · B-4 … B-8 — the change set", () => {
+  // PHASE F §20 (adjudicated before the change): restated from the open-ended PHASE_E_BASE..HEAD to phase E's own closed range.
+  it("B-8 / §6 (range closed, phase F §20): every phase-E change set touches only the phase-E entry set; no merge commit in phase E", () => {
+    const sets = phaseEChangeSets();
+    expect(sets.length, "A-F18: phase E's range is not empty").toBeGreaterThan(0);
+    for (const set of sets) expect(set.files.filter(p => !E_ENTRY.includes(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseEBase()}..${phaseFBase()}`)).toEqual([]);
+  });
+
+  it("B-7: existing test data only — no fixture or support module added or changed", () => {
+    expect(changedSinceE("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+  });
+
+  it("B-6: no provider and no API in anything phase E added", () => {
+    // This file is left out only because it spells the forbidden names in order to forbid them.
+    for (const file of E_ENTRY.filter(f => f !== "test/career/mapping-field/architecture.test.ts")) for (const line of addedSinceE(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
+  });
+
+  it("B-4: the stage's new runtime reach is its own box (and the focus strip's edge, E-8c) — measure, observe, resize, the motion preference, a frame clock; nothing that reads or writes outside", () => {
+    const added = addedSinceE(COMPONENT).join("\n");
+    expect(added).not.toMatch(/\bfetch\s*\(|localStorage|sessionStorage|indexedDB|document\.cookie|navigator\.|location\.|history\.|window\.open|postMessage|sendBeacon|WebSocket|EventSource/);
+    const globals = [...added.matchAll(/\bwindow\.(\w+)/g)].map(m => m[1]);
+    expect([...new Set(globals)].sort(), "the window members phase E reads").toEqual(["addEventListener", "innerHeight", "matchMedia", "removeEventListener", "scrollY"]);
+    // E-8c: the one element outside its own box the stage reads is the focus strip — its bottom edge, to stand below it.
+    expect([...new Set([...added.matchAll(/\bdocument\.(\w+)/g)].map(m => m[1]))], "the document members phase E reads").toEqual(["querySelector"]);
+    expect([...new Set([...added.matchAll(/querySelector<\w+>\('([^']+)'\)/g)].map(m => m[1]))]).toEqual(['[data-testid="field-focus-strip"]']);
+    expect(code(MODEL), "the model stays pure (D-6 holds for the additions)").not.toMatch(/\bwindow\b|\bdocument\b|performance\.|requestAnimationFrame/);
+  });
+
+  it("B-5: no invented semantics — the model's additions name only the table's classes, the delta's two movement kinds and their forms", () => {
+    const literals = addedSinceE(MODEL).flatMap(line => [...line.matchAll(/"([A-Z][A-Z_]+)"/g)].map(m => m[1]));
+    // The engine's own vocabulary (its classes, states and delta kinds) may be read; anything else would be invented here.
+    const engine = git("ls-files", "lib/career/mapping").map(f => readFileSync(join(ROOT, f), "utf8")).join("\n");
+    const vocabulary = new Set([...engine.matchAll(/"([A-Z][A-Z_]+)"/g)].map(m => m[1]));
+    const allowed = new Set(["CHECKED", "NAME_ONLY", ...vocabulary]);
+    expect([...new Set(literals)].filter(l => !allowed.has(l)), "a new state or class would be a new literal").toEqual([]);
+    const data = addedSinceE(COMPONENT).flatMap(line => [...line.matchAll(/data-(?:change|motion|beam-rank|breath|stage|evidence-step)=\{?"?([^"}\s]*)/g)].map(m => m[1]));
+    expect(data.length).toBeGreaterThan(0);
+  });
+});
+
+/**
+ * MAP-F-ARCH · the phase-F boundary (PERSON_X_JOB_MAPPING_PHASE_F.md §4 B-F1 … B-F8, §6, §20), bound to PHASE_F_BASE = 9cc06f84.
+ * Phase F changes how the same signs are painted: the stage component, the restated and corrected proofs, its own proofs. The
+ * byte-identity guards below are what protect the boundary; the entry list is the weaker half (§20).
+ */
+const F_ENTRY = [COMPONENT,
+  "test/career/mapping-field/neurovisual-e.test.ts", "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/field-f.test.tsx",
+  "test/career/mapping-field/architecture.test.ts", "test/career/mapping-field/phase-base.ts"].sort();
+const changedSinceF = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseFBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseFBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
+const addedSinceF = (file: string) => gitDiff("-U0", phaseFBase(), "--", file)
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+
+describe("MAP-F-ARCH · B-F1, B-F6, B-F7 — nothing outside the painting changes", () => {
+  // PHASE_G §8 (6): closed at PHASE_G_BASE.
+  it("§6 (range closed at PHASE_G_BASE): nothing in lib/career/** changed in phase F; the engine's specification and the twelve golden vectors are byte-identical; the copy too", () => {
+    expect(changedInRange(phaseFBase(), phaseGBase(), "lib/career", "docs/architecture/decision-fields/mapping-spec", "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md", COPY)).toEqual([]);
+    const vectors = "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors.json";
+    expect(git("hash-object", vectors)[0], "golden vectors, blob for blob").toBe(git("rev-parse", `${phaseFBase()}:${vectors}`)[0]);
+  });
+
+  it("B-F6: the host is not touched — orbits, planetarium, Job Field, scope, selector, host, dashboard, layout, URL, API routes", () => {
+    expect(changedSinceF(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
+    expect(changedSinceF("test/career/mapping-field/selector-d.test.tsx", "test/career/mapping-field/selector-keys-d.test.tsx")).toEqual([]);
+  });
+
+  it("B-F7: existing fixtures only; no provider and no API in anything phase F added", () => {
+    expect(changedSinceF("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+    for (const file of F_ENTRY.filter(f => f !== "test/career/mapping-field/architecture.test.ts")) for (const line of addedSinceF(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
+  });
+});
+
+describe("MAP-F-ARCH · B-F5 / B-F8 — the change set, and no script motion", () => {
+  it("B-F8 / §20: every phase-F change set touches only the phase-F entry set; no merge commit after the base (A-F18: the base is HEAD's ancestor)", () => {
+    // PHASE_G §8 (6): phase F's own range, PHASE_F_BASE..PHASE_G_BASE.
+    expect(assertRange(phaseFBase(), phaseGBase()), "A-F18: phase F has at least one commit").toBeGreaterThan(0);
+    for (const set of commitSets(`${phaseFBase()}..${phaseGBase()}`)) expect(set.files.filter(p => !F_ENTRY.includes(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseFBase()}..${phaseGBase()}`)).toEqual([]);
+  });
+
+  it("B-F5 / PF-14: phase F adds no script motion and no reach — no frame clock, timer, Web Animation, SMIL, window or document member", () => {
+    const added = gitDiff("-U0", phaseFBase(), phaseGBase(), "--", COMPONENT).filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1)).join("\n");
+    expect(added.length).toBeGreaterThan(0);
+    expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
+  });
+});
+
+/**
+ * MAP-G-ARCH · the phase-G boundary (PERSON_X_JOB_MAPPING_PHASE_G.md §3, §5, §7, §8), bound to PHASE_G_BASE = 93c47e03. Phase G
+ * inverts the light budget and bumps the layout to MAPPING_LAYOUT_V1.1 (A1): the engine changes in layout.ts only, V1 stays phase B's
+ * record byte for byte, and the view model changes only at its layout call and the body's drawn radius.
+ */
+const SPEC_DIR = "docs/architecture/decision-fields/mapping-spec";
+const G_ENTRY = [COMPONENT, COPY, MODEL, "lib/career/mapping/layout.ts",
+  `${SPEC_DIR}/layout-spec-v1.1.json`, `${SPEC_DIR}/layout-golden-vectors-v1.1.json`,
+  "test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts", "test/career/mapping/layout-v1_1.test.ts", "test/career/mapping/architecture.test.ts",
+  "test/career/mapping-field/architecture.test.ts", "test/career/mapping-field/phase-base.ts", "test/career/mapping-field/field-g.test.tsx",
+  /* §104: A-G43 requires this file BY NAME ("the test must assert the splay survives the mark's removal"), and
+     A-G57 names the path. The entry set was missing a file the architecture record already mandates — the same
+     omission class as the lost selector, not a widening to admit this lane's own work. Judgment recorded as
+     mine and reversible by the lane that owns the entry set. */
+  "test/career/mapping-field/field-g-mutant.test.tsx",
+  // phase-C/D/E/F assertions restated in PHASE_G §8 (each marked "Phase G" where it stands)
+  "test/career/mapping-field/field-d.test.tsx", "test/career/mapping-field/field-e.test.tsx", "test/career/mapping-field/field-f.test.tsx", "test/career/mapping-field/field-interaction.test.tsx",
+  "test/career/mapping-field/field-render.test.tsx", "test/career/mapping-field/model.test.ts", "test/career/mapping-field/neurovisual-e.test.ts"].sort();
+const changedSinceG = (...paths: string[]) => [...new Set([
+  ...git("diff", "--name-only", "--no-renames", "--cached", phaseGBase(), "--", ...paths), ...git("diff", "--name-only", "--no-renames", phaseGBase(), "--", ...paths),
+  ...git("ls-files", "--others", "--exclude-standard", "--", ...paths)
+])].sort();
+const addedSinceG = (file: string) => gitDiff("-U0", phaseGBase(), "--", file)
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+/* A-G485: phase G's OWN closed range, PHASE_G_BASE..PHASE_INT_BASE. Closed in kind exactly where §8 (6) closed D/E/F — the engine and
+   spec record (D-1 / B-1 / §6), the change set and its merge clause (B-8 / B-F8), the script motion (B-F5) — and left open where
+   D/E/F left theirs open (B-F6's host, B-F7's fixtures), which stay ongoing protections rather than measurements of the phase. */
+const changedInG = (...paths: string[]) => changedInRange(phaseGBase(), phaseIntBase(), ...paths);
+const addedInG = (file: string) => gitDiff("-U0", phaseGBase(), phaseIntBase(), "--", file)
+  .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
+
+describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
+  it("V1 stays phase B's record (range closed at PHASE_INT_BASE): layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical through phase G", () => {
+    expect(changedInG(`${SPEC_DIR}/layout-spec.json`, `${SPEC_DIR}/layout-golden-vectors.json`, `${SPEC_DIR}/real-shape-73.json`, `${SPEC_DIR}/sign-table.json`, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
+  });
+
+  it("in lib/career only layout.ts (V1.1 beside V1) and the view model (its layout call and the drawn radius) change in phase G (range closed at PHASE_INT_BASE); signs, view, delta and focus are untouched", () => {
+    expect(changedInG("lib/career")).toEqual(["lib/career/mapping/layout.ts", MODEL].sort());
+    // Exactly: every line the view model adds is, once its V1.1 tokens are taken out, a line it removed — or a comment, or the one
+    // new field declaration. Nothing else in the model may move.
+    const diff = gitDiff("-U0", phaseGBase(), phaseIntBase(), "--", MODEL);
+    const removed = new Set(diff.filter(l => l.startsWith("-") && !l.startsWith("--- ")).map(l => l.slice(1).trim()));
+    const added = diff.filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1).trim());
+    expect(added.length).toBeGreaterThan(0);
+    const v11 = (line: string) => line.replace("drawnRadius: placed.drawnRadius ?? placed.bodyRadius, ", "").replace(/layoutRolesV11/g, "layoutRoles");
+    for (const line of added) expect(removed.has(v11(line)) || /^(\/\/|\/\*\*|\*)/.test(line) || line === "readonly drawnRadius: number;", line).toBe(true);
+  });
+
+  it("B-F6 holds: the host is not touched — orbits, planetarium, Job Field, scope, selector, host, dashboard, layout, URL, API routes", () => {
+    expect(changedSinceG(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
+  });
+
+  it("existing fixtures only; no provider and no API in anything phase G added", () => {
+    expect(changedSinceG("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+    for (const file of G_ENTRY.filter(f => !f.endsWith("architecture.test.ts") && !f.endsWith(".json"))) for (const line of addedSinceG(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
+  });
+});
+
+/**
+ * §95 (GELB's ruling, this lane's implementation): the evidence directory as an OWNED CATEGORY.
+ *
+ * The phase-G change-set assertion below had LOST the selector phase D states 350 lines above —
+ * `sets.filter(set => set.files.some(phaseD))` — whose own docstring names the case it exists for: "a commit
+ * that touches no phase-D file (a README, AN EVIDENCE COMMIT, any later unrelated change on main) is not a
+ * phase-D change set". Without it the assertion does not read "every phase-G change set touches only the entry
+ * set"; it reads "every commit in this repository since the phase-G base touches only these 22 paths", which is
+ * a repository freeze and was red for this lane's 107 instrument files from the first one.
+ *
+ * The repair that would have ABSOLVED this lane was adding those 107 files to a product whitelist. This one adds
+ * no path to G_ENTRY: the selector puts an instrument-only commit out of scope, and a commit that carries a
+ * ruling AND its instrument — the normal shape of this phase's work — is in scope with the evidence paths
+ * excluded by category. The product surface is unchanged, and the category is CHECKED rather than trusted by
+ * the two assertions below, or it would be a hole large enough to drive a product dependency through.
+ */
+const EVIDENCE_DIR = "docs/career_analysis/evidence/mapping-phase-g";
+const isEvidence = (p: string) => p.startsWith(`${EVIDENCE_DIR}/`);
+
+describe("MAP-G-ARCH · the change set, and no script motion", () => {
+  it("every phase-G change set touches only the phase-G entry set and this lane's evidence category; no merge commit inside phase G's own closed range (A-G485)", () => {
+    // A-G485: PHASE_G_BASE..PHASE_INT_BASE, as B-8 / B-F8 run over PHASE_E_BASE..PHASE_F_BASE / PHASE_F_BASE..PHASE_G_BASE. A closed
+    // range has no working tree; an integration merge after PHASE_INT_BASE is outside the range, not exempted inside it.
+    expect(assertRange(phaseGBase(), phaseIntBase()), "A-F18: phase G has at least one commit").toBeGreaterThan(0);
+    const sets = commitSets(`${phaseGBase()}..${phaseIntBase()}`).filter(set => set.files.some(p => G_ENTRY.includes(p)));
+    expect(sets.length, "the selector selected NO change set, so the assertion below would pass over nothing").toBeGreaterThan(0);
+    for (const set of sets) expect(set.files.filter(p => !G_ENTRY.includes(p) && !isEvidence(p)), set.commit).toEqual([]);
+    expect(git("log", "--merges", "--format=%H", `${phaseGBase()}..${phaseIntBase()}`)).toEqual([]);
+  });
+
+  it("§115 A-G468: the gate's diff capture has a DECLARED limit, and an overflow says it COULD NOT LOOK rather than that an assertion failed", () => {
+    /* GELB's A-G468: an instrument that reads the record takes the record's SIZE as an undeclared input, and
+       the sign is wrong — a throw inside a test reads as "the assertion failed" when it means "the input was
+       never read". MEASURED headroom when this was written: the widest capture here, the component against
+       PHASE_D_BASE, is 120 028 bytes against node's inherited 1 MiB default — 11.4 %, with the component up
+       77 529 -> 105 716 bytes in phase G alone. Both limbs run, because a guard that only ever throws and a
+       guard that can never throw are the same defect seen from two sides (§94, A-G452). */
+    const before = process.env.CONDYN_GATE_DIFF_MAXBUFFER;
+    try {
+      process.env.CONDYN_GATE_DIFF_MAXBUFFER = "1024";
+      expect(() => gitDiff("-U0", phaseDBase(), "--", COMPONENT), "an overflowing capture must name itself as an unread input").toThrow(/ERR_GATE_COULD_NOT_READ/);
+      process.env.CONDYN_GATE_DIFF_MAXBUFFER = "not-a-number";
+      expect(() => gitDiff("-U0", phaseDBase(), "--", COMPONENT), "an unreadable limit must refuse rather than fall back").toThrow(/ERR_GATE_DIFF_MAXBUFFER_MALFORMED/);
+    } finally {
+      if (before === undefined) delete process.env.CONDYN_GATE_DIFF_MAXBUFFER; else process.env.CONDYN_GATE_DIFF_MAXBUFFER = before;
     }
+    const lines = gitDiff("-U0", phaseDBase(), "--", COMPONENT);
+    expect(lines.length, "at the declared default the same capture must SUCCEED — otherwise the limb above proves nothing").toBeGreaterThan(0);
+    expect(lines.join("\n").length, "headroom: the capture that matters must stay well inside the declared limit").toBeLessThan(DIFF_MAX_BUFFER_DEFAULT / 4);
+  });
+
+  it("§95 limb 1: every path in the evidence category is an instrument or an output — the category admits no product surface", () => {
+    const files = git("ls-files", "--", EVIDENCE_DIR);
+    expect(files.length, "an empty category would make the exclusion above vacuous").toBeGreaterThan(0);
+    /* §106: guards phase-base's core.quotePath=false without keeping a non-ASCII filename in the tree. A quoted
+       path defeats every path predicate here by its trailing quote, and both limbs then fail for the wrong
+       reason — which is how a `§` in a filename was diagnosed as a disallowed extension. */
+    expect(files.filter(p => p.startsWith('"')), "git must return UNQUOTED paths (phase-base's git helper sets core.quotePath=false)").toEqual([]);
+    /* Measured from what is there rather than adopted: GELB proposed .mjs/.out.txt/.md/.json, which would
+       reject run-all.sh, gruen-facade.mts and facade.log — all three committed instruments or their output. */
+    const ALLOWED = /\.(mjs|mts|json|md|sh|log)$/;
+    expect(files.filter(p => !ALLOWED.test(p)), "an evidence path that is neither an instrument nor an output").toEqual([]);
+    expect(files.filter(p => /\.(ts|tsx)$/.test(p)), "a .ts/.tsx file in the evidence category could be imported as product code").toEqual([]);
+  });
+
+  it("§95 limb 2: nothing in the product or the tests imports from the evidence category — an instrument cannot become a dependency through the back door", () => {
+    const sources = git("ls-files", "--", "app", "lib", "test").filter(p => /\.(ts|tsx|mjs|mts)$/.test(p));
+    expect(sources.length, "scanning no source file would make this limb vacuous").toBeGreaterThan(100);
+    /* A-G408's remedy, applied rather than restated: a scan for CODE must first exclude what is not code. The
+       component names this directory in a comment (:111) and the scan must not read that as an import. */
+    const importers = sources.filter(p => /(?:from|require\(|import\()\s*["'`][^"'`]*evidence\/mapping-phase-g/.test(code(p)));
+    expect(importers, "a product or test file imports from the evidence category").toEqual([]);
+  });
+
+  it("PF-14 / PG-7 (range closed at PHASE_INT_BASE): phase G adds no script motion — the travelling light is CSS like the breath; no frame clock, timer, Web Animation, SMIL, window or document member", () => {
+    const added = addedInG(COMPONENT).join("\n");
+    expect(added.length).toBeGreaterThan(0);
+    expect(added).not.toMatch(/requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./);
   });
 });

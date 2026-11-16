@@ -908,7 +908,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     expect(params(page).get("jobOrganizationId")).toBeNull();
     expect(await page.getByTestId("field-focus-capability-btn").getAttribute("data-field-focus-active")).toBe("true");
     expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("false");
-    expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2);
+    expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(3);
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await root.count()).toBe(0);
@@ -922,7 +922,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD â†
     expect(await root.getAttribute("data-observation-kind")).toBe("FIELD");
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-11.png") });
-    writeFileSync(resolve(EVIDENCE_DIR, "Q-11-ids.txt"), `retired selectors absent: ${RETIRED_SELECTORS.length}\nstrip buttons: field-focus-capability-btn, job-pool-panel-toggle\n`);
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-11-ids.txt"), `retired selectors absent: ${RETIRED_SELECTORS.length}\nstrip buttons: field-focus-capability-btn, field-focus-mapping-btn, job-pool-panel-toggle\n`);
     pass("Q-11");
     expect(pageErrors).toEqual([]);
     await page.close();

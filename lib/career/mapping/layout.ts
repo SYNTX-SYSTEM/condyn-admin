@@ -1,4 +1,5 @@
 import spec from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec.json";
+import specV11 from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec-v1.1.json";
 
 /**
  * PERSON × JOB mapping, phase B · the layout (MAPPING_LAYOUT_V1, docs/architecture/decision-fields/mapping-spec/layout-spec.json).
@@ -16,6 +17,8 @@ export interface LayoutBody {
   x: number; y: number; distance: number; angleDegrees: number; bodyRadius: number;
   /** [radial step, angular step] from the fit position; [0, 0] = exactly where the fit puts it. */
   displacement: [number, number]; overflow: boolean;
+  /** MAPPING_LAYOUT_V1.1 only: the drawn radius, which takes the collision rule and the step (phase G, A1). */
+  drawnRadius?: number;
 }
 export interface RoleLayout { specVersion: string; sectors: LayoutSector[]; bodies: LayoutBody[]; overflowCount: number }
 export interface ArcRequirement { id: string; necessity: string; weight: number; value: number }
@@ -63,8 +66,24 @@ function sectorsOf(pools: readonly LayoutPool[], roles: readonly LayoutRole[]): 
   });
 }
 
-/** The job bodies around the person: pools as sectors, roles by rank. */
-export function layoutRoles(pools: readonly LayoutPool[], roles: readonly LayoutRole[]): RoleLayout {
+/**
+ * MAPPING_LAYOUT_V1.1 (layout-spec-v1.1.json; PERSON_X_JOB_MAPPING_PHASE_G.md §5/§7, A1): the drawn radius — V1's mass radius
+ * mapped linearly onto [body.drawn.min, body.drawn.max]. Monotone in weightSum.
+ */
+export const drawnBodyRadius = (weightSum: number): number => {
+  const b = specV11.body, rho = bodyRadius(weightSum);
+  return b.drawn.min + ((rho - b.min) / (b.max - b.min)) * (b.drawn.max - b.drawn.min);
+};
+
+/** The job bodies around the person: pools as sectors, roles by rank (MAPPING_LAYOUT_V1, phase B). */
+export function layoutRoles(pools: readonly LayoutPool[], roles: readonly LayoutRole[]): RoleLayout { return layoutWith(pools, roles, false); }
+/**
+ * MAPPING_LAYOUT_V1.1: the same algorithm with two radii, each with one role — the mass radius keeps the band rule (fit), the drawn
+ * radius takes the collision rule and the step (bodies never touch as drawn). Every body states its drawnRadius.
+ */
+export function layoutRolesV11(pools: readonly LayoutPool[], roles: readonly LayoutRole[]): RoleLayout { return layoutWith(pools, roles, true); }
+
+function layoutWith(pools: readonly LayoutPool[], roles: readonly LayoutRole[], v11: boolean): RoleLayout {
   const sectors = sectorsOf(pools, roles);
   const sectorByPool = new Map(sectors.map(sector => [sector.poolId, sector] as const));
   const nextIndex = new Map<string, number>();
@@ -78,9 +97,11 @@ export function layoutRoles(pools: readonly LayoutPool[], roles: readonly Layout
     const golden = (index + 1) * sectorSpec.golden;
     const angle = sector.start + sector.span * (sectorSpec.angleMargin + sectorSpec.angleSpread * (golden - Math.floor(golden)));
     const rho = bodyRadius(role.weightSum), shelf = role.tier !== "SEMANTIC";
+    const drawn = v11 ? drawnBodyRadius(role.weightSum) : rho;
+    const extra = v11 ? { drawnRadius: round6(drawn) } : {};
     const inner = shelf ? rings.shelfNear : rings.bestFit, outer = (shelf ? field.radius : rings.horizon) - rho;
-    const fitAt = fitDistance(role.tier, role.fit), step = 2 * rho + body.gap;
-    const free = (x: number, y: number) => bodies.every(other => other.overflow || Math.hypot(other.x - x, other.y - y) >= other.bodyRadius + rho + body.gap);
+    const fitAt = fitDistance(role.tier, role.fit), step = 2 * drawn + body.gap;
+    const free = (x: number, y: number) => bodies.every(other => other.overflow || Math.hypot(other.x - x, other.y - y) >= (other.drawnRadius ?? other.bodyRadius) + drawn + body.gap);
     const place = (): LayoutBody | null => {
       for (const radial of RADIAL) {
         const distance = fitAt + radial * step;
@@ -91,7 +112,7 @@ export function layoutRoles(pools: readonly LayoutPool[], roles: readonly Layout
           if (at < sector.start || at > sector.start + sector.span) continue;
           const x = distance * Math.cos(toRadians(at)), y = distance * Math.sin(toRadians(at));
           if (free(x, y)) return { poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: round6(x), y: round6(y), distance: round6(distance),
-            angleDegrees: round6(at), bodyRadius: round6(rho), displacement: [radial, angular], overflow: false };
+            angleDegrees: round6(at), bodyRadius: round6(rho), displacement: [radial, angular], overflow: false, ...extra };
         }
       }
       return null;
@@ -100,9 +121,9 @@ export function layoutRoles(pools: readonly LayoutPool[], roles: readonly Layout
     if (placed !== null) { bodies.push(placed); continue; }
     overflowCount += 1;
     bodies.push({ poolId: role.poolId, roleId: role.roleId, rank: role.rank, tier: role.tier, shelf, x: round6(field.overflowRadius * Math.cos(toRadians(angle))),
-      y: round6(field.overflowRadius * Math.sin(toRadians(angle))), distance: field.overflowRadius, angleDegrees: round6(angle), bodyRadius: round6(rho), displacement: [0, 0], overflow: true });
+      y: round6(field.overflowRadius * Math.sin(toRadians(angle))), distance: field.overflowRadius, angleDegrees: round6(angle), bodyRadius: round6(rho), displacement: [0, 0], overflow: true, ...extra });
   }
-  return { specVersion: spec.specVersion, sectors: sectors.map(s => ({ poolId: s.poolId, startDegrees: round6(s.start), spanDegrees: round6(s.span), roles: s.roles })), bodies, overflowCount };
+  return { specVersion: v11 ? specV11.specVersion : spec.specVersion, sectors: sectors.map(s => ({ poolId: s.poolId, startDegrees: round6(s.start), spanDegrees: round6(s.span), roles: s.roles })), bodies, overflowCount };
 }
 
 /** The requirement ring of one job body: necessity order, then heavier first, then id; an arc's length is its weight, its fill its value. */

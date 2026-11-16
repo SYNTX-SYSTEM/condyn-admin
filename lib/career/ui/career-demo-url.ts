@@ -16,8 +16,9 @@ export interface CareerDemoUrlProps {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching. Never inferred, never a latest pool. */
   jobPoolUploadId?: string;
-  /** Planetarium focus: FIELD opens the SYNTX Job Field (JOB and POOL are accepted as legacy aliases); anything else is the capability field (an exact jobPoolUploadId without focus opens the field). */
-  fieldFocus?: "CAPABILITY" | "FIELD";
+  /** Planetarium focus: FIELD opens the SYNTX Job Field (JOB and POOL are accepted as legacy aliases); MAPPING opens the PERSON × JOB
+   *  mapping field (phase D, C-9); anything else is the capability field (an exact jobPoolUploadId without focus opens the field). */
+  fieldFocus?: "CAPABILITY" | "MAPPING" | "FIELD";
   /** Exact observation point of the field; never inferred. */
   jobOrganizationId?: string;
   jobRoleId?: string;
@@ -81,7 +82,7 @@ export function careerDemoPropsFromSearchParams(params: CareerDemoSearchParams):
     decisionContextRevisionId: single(params.decisionContextRevisionId),
     analysisId: single(params.analysisId),
     jobPoolUploadId: single(params.jobPoolUploadId),
-    fieldFocus: focus === "FIELD" || focus === "JOB" || focus === "POOL" ? "FIELD" : focus === "CAPABILITY" ? "CAPABILITY" : undefined,
+    fieldFocus: focus === "FIELD" || focus === "JOB" || focus === "POOL" ? "FIELD" : focus === "MAPPING" ? "MAPPING" : focus === "CAPABILITY" ? "CAPABILITY" : undefined,
     jobOrganizationId: single(params.jobOrganizationId),
     jobRoleId: single(params.jobRoleId),
     jobRequirementId: single(params.jobRequirementId),

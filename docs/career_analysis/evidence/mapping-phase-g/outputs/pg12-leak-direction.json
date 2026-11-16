@@ -1,0 +1,394 @@
+{
+ "reading": "GRÜN · PG-12 as re-formed — the leak's DIRECTION and the metric-robustness of the normalised difference",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "pure computation from a MEASURED medium triple and a SOURCE constant. No render, no sealed quantity, and about the pin's FORM, which A-G116 places outside the seal.",
+ "mediumTriple": [
+  6,
+  12,
+  17
+ ],
+ "gapHue": [
+  245,
+  166,
+  35
+ ],
+ "chromaQuantumAtMedium": 0.505,
+ "mediumBaseChroma": {
+  "CIELAB C*": 3.0531,
+  "HSV S x100": 64.7059,
+  "sRGB range": 11
+ },
+ "table": [
+  {
+   "alpha": 0,
+   "composite": "rgb(6, 12, 17)",
+   "CIELAB C*": {
+    "value": 3.0531,
+    "delta": 0,
+    "deltaOverQuantum": 0
+   },
+   "HSV S x100": {
+    "value": 64.7059,
+    "delta": 0,
+    "deltaOverQuantum": 0
+   },
+   "sRGB range": {
+    "value": 11,
+    "delta": 0,
+    "deltaOverQuantum": 0
+   }
+  },
+  {
+   "alpha": 0.005,
+   "composite": "rgb(7, 13, 17)",
+   "CIELAB C*": {
+    "value": 2.7063,
+    "delta": -0.3469,
+    "deltaOverQuantum": -0.687
+   },
+   "HSV S x100": {
+    "value": 58.8235,
+    "delta": -5.8824,
+    "deltaOverQuantum": -1
+   },
+   "sRGB range": {
+    "value": 10,
+    "delta": -1,
+    "deltaOverQuantum": -1
+   }
+  },
+  {
+   "alpha": 0.01,
+   "composite": "rgb(8, 14, 17)",
+   "CIELAB C*": {
+    "value": 2.3957,
+    "delta": -0.6575,
+    "deltaOverQuantum": -1.302
+   },
+   "HSV S x100": {
+    "value": 52.9412,
+    "delta": -11.7647,
+    "deltaOverQuantum": -2
+   },
+   "sRGB range": {
+    "value": 9,
+    "delta": -2,
+    "deltaOverQuantum": -2
+   }
+  },
+  {
+   "alpha": 0.02,
+   "composite": "rgb(11, 15, 17)",
+   "CIELAB C*": {
+    "value": 1.697,
+    "delta": -1.3561,
+    "deltaOverQuantum": -2.685
+   },
+   "HSV S x100": {
+    "value": 35.2941,
+    "delta": -29.4118,
+    "deltaOverQuantum": -5
+   },
+   "sRGB range": {
+    "value": 6,
+    "delta": -5,
+    "deltaOverQuantum": -5
+   }
+  },
+  {
+   "alpha": 0.03,
+   "composite": "rgb(13, 17, 18)",
+   "CIELAB C*": {
+    "value": 1.5521,
+    "delta": -1.501,
+    "deltaOverQuantum": -2.972
+   },
+   "HSV S x100": {
+    "value": 27.7778,
+    "delta": -36.9281,
+    "deltaOverQuantum": -6.278
+   },
+   "sRGB range": {
+    "value": 5,
+    "delta": -6,
+    "deltaOverQuantum": -6
+   }
+  },
+  {
+   "alpha": 0.04,
+   "composite": "rgb(16, 18, 18)",
+   "CIELAB C*": {
+    "value": 0.7923,
+    "delta": -2.2609,
+    "deltaOverQuantum": -4.477
+   },
+   "HSV S x100": {
+    "value": 11.1111,
+    "delta": -53.5948,
+    "deltaOverQuantum": -9.111
+   },
+   "sRGB range": {
+    "value": 2,
+    "delta": -9,
+    "deltaOverQuantum": -9
+   }
+  },
+  {
+   "alpha": 0.05,
+   "composite": "rgb(18, 20, 18)",
+   "CIELAB C*": {
+    "value": 1.5355,
+    "delta": -1.5176,
+    "deltaOverQuantum": -3.005
+   },
+   "HSV S x100": {
+    "value": 10,
+    "delta": -54.7059,
+    "deltaOverQuantum": -9.3
+   },
+   "sRGB range": {
+    "value": 2,
+    "delta": -9,
+    "deltaOverQuantum": -9
+   }
+  },
+  {
+   "alpha": 0.055,
+   "composite": "rgb(19, 20, 18)",
+   "CIELAB C*": {
+    "value": 1.3382,
+    "delta": -1.7149,
+    "deltaOverQuantum": -3.396
+   },
+   "HSV S x100": {
+    "value": 10,
+    "delta": -54.7059,
+    "deltaOverQuantum": -9.3
+   },
+   "sRGB range": {
+    "value": 2,
+    "delta": -9,
+    "deltaOverQuantum": -9
+   }
+  },
+  {
+   "alpha": 0.06,
+   "composite": "rgb(20, 21, 18)",
+   "CIELAB C*": {
+    "value": 1.9865,
+    "delta": -1.0666,
+    "deltaOverQuantum": -2.112
+   },
+   "HSV S x100": {
+    "value": 14.2857,
+    "delta": -50.4202,
+    "deltaOverQuantum": -8.571
+   },
+   "sRGB range": {
+    "value": 3,
+    "delta": -8,
+    "deltaOverQuantum": -8
+   }
+  },
+  {
+   "alpha": 0.08,
+   "composite": "rgb(25, 24, 18)",
+   "CIELAB C*": {
+    "value": 4.1233,
+    "delta": 1.0702,
+    "deltaOverQuantum": 2.119
+   },
+   "HSV S x100": {
+    "value": 28,
+    "delta": -36.7059,
+    "deltaOverQuantum": -6.24
+   },
+   "sRGB range": {
+    "value": 7,
+    "delta": -4,
+    "deltaOverQuantum": -4
+   }
+  },
+  {
+   "alpha": 0.15,
+   "composite": "rgb(42, 35, 20)",
+   "CIELAB C*": {
+    "value": 11.2905,
+    "delta": 8.2374,
+    "deltaOverQuantum": 16.311
+   },
+   "HSV S x100": {
+    "value": 52.381,
+    "delta": -12.3249,
+    "deltaOverQuantum": -2.095
+   },
+   "sRGB range": {
+    "value": 22,
+    "delta": 11,
+    "deltaOverQuantum": 11
+   }
+  },
+  {
+   "alpha": 0.3,
+   "composite": "rgb(78, 58, 22)",
+   "CIELAB C*": {
+    "value": 25.5546,
+    "delta": 22.5014,
+    "deltaOverQuantum": 44.554
+   },
+   "HSV S x100": {
+    "value": 71.7949,
+    "delta": 7.089,
+    "deltaOverQuantum": 1.205
+   },
+   "sRGB range": {
+    "value": 56,
+    "delta": 45,
+    "deltaOverQuantum": 45
+   }
+  },
+  {
+   "alpha": 0.6,
+   "composite": "rgb(149, 104, 28)",
+   "CIELAB C*": {
+    "value": 48.1664,
+    "delta": 45.1133,
+    "deltaOverQuantum": 89.327
+   },
+   "HSV S x100": {
+    "value": 81.2081,
+    "delta": 16.5022,
+    "deltaOverQuantum": 2.805
+   },
+   "sRGB range": {
+    "value": 121,
+    "delta": 110,
+    "deltaOverQuantum": 110
+   }
+  },
+  {
+   "alpha": 1,
+   "composite": "rgb(245, 166, 35)",
+   "CIELAB C*": {
+    "value": 74.4886,
+    "delta": 71.4355,
+    "deltaOverQuantum": 141.446
+   },
+   "HSV S x100": {
+    "value": 85.7143,
+    "delta": 21.0084,
+    "deltaOverQuantum": 3.571
+   },
+   "sRGB range": {
+    "value": 210,
+    "delta": 199,
+    "deltaOverQuantum": 199
+   }
+  }
+ ],
+ "finding1_leakDirection": {
+  "claim": "A-G123's form is ONE-SIDED: it fires only when the leak-side chroma EXCEEDS the no-hue side.",
+  "measured": "a small hue leak LOWERS the medium's chroma. GAP_HUE is warm (R-dominant) and the medium is cool (B > G > R), so compositing the hue at low alpha drives the triple TOWARD NEUTRAL before it ever becomes warm. CIELAB C* falls from 3.053 to a minimum -2.2609 (-4.48 quanta BELOW base) at alpha 0.04, and does not return to its starting value until alpha ~ 0.069.",
+  "consequence": "over the whole small-leak range — which is what 'never leaks to the ground' is about — the re-formed bound CANNOT FIRE. It passes trivially, and it passes MOST comfortably near the alpha where the leak is most detectable in magnitude. The test is anti-correlated with the defect it is meant to catch.",
+  "class": "a fourth A-G7 form defect, and a new kind: not 'cannot fail' (PG-13) nor 'cannot clear' (PG-11) nor 'cannot be met' (PG-12 as originally written), but FIRES IN THE WRONG DIRECTION — a build with a leak scores better than a build without one.",
+  "remedyShape": "NOT this lane's to choose. Two shapes exist: make the test two-sided on |difference|, which catches a magnitude change of either sign; or measure the SIGNED component along the hue's own chromatic direction (the projection of (a*, b*) onto GAP_HUE's hue angle), which is what 'the hue leaked' actually means and which rises monotonically with alpha from zero."
+ },
+ "verification_ofA_G126": {
+  "scope": "verification of figures GELB derived in §37 A-G126/A-G127. Those figures now sit inside a rule, and A-G106 requires a figure in a rule to meet the rule's evidentiary standard. This is arithmetic, which A-G128 makes mandatory before a pin is measured — not a measurement of the artifact.",
+  "hueDirectionUnitVector": {
+   "a": 0.26393,
+   "b": 0.96454
+  },
+  "singleCodeProjectionsAtMedium": {
+   "R +1": 0.1579,
+   "R -1": -0.1579,
+   "G +1": 0.1955,
+   "G -1": -0.1853,
+   "B +1": -0.4797,
+   "B -1": 0.4585
+  },
+  "q_proj": 0.4797,
+  "gelbStated": {
+   "R +/-": 0.1579,
+   "G +": 0.1955,
+   "G -": -0.1853,
+   "B -": -0.4797,
+   "B +": 0.4585,
+   "q_proj": 0.4797
+  },
+  "agreement": "EXACT to four decimals on all six steps and on q_proj, set by the BLUE channel as GELB said — which is where the cool medium's chroma lives (b* dominant at -2.9683).",
+  "alphaTable": [
+   {
+    "alpha": 0.002,
+    "composite": "rgb(6, 12, 17)",
+    "projection": 0,
+    "inQProj": 0,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.005,
+    "composite": "rgb(7, 13, 17)",
+    "projection": 0.3534,
+    "inQProj": 0.74,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.01,
+    "composite": "rgb(8, 14, 17)",
+    "projection": 0.7173,
+    "inQProj": 1.5,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.02,
+    "composite": "rgb(11, 15, 17)",
+    "projection": 1.4114,
+    "inQProj": 2.94,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.04,
+    "composite": "rgb(16, 18, 18)",
+    "projection": 2.6005,
+    "inQProj": 5.42,
+    "signedNonNegative": true
+   },
+   {
+    "alpha": 0.08,
+    "composite": "rgb(25, 24, 18)",
+    "projection": 6.6939,
+    "inQProj": 13.95,
+    "signedNonNegative": true
+   }
+  ],
+  "reportabilityClaimVerified": "GELB: a leak is reportable at alpha ~0.01 (1.50 q_proj) and under one quantum at 0.005. Measured: 1.50 and 0.74. Exact.",
+  "monotoneFromZero": true
+ },
+ "whyTheMagnitudeFormFailed": {
+  "mediumHueAngleDeg": -103.54,
+  "gapHueAngleDeg": 74.7,
+  "separationDeg": 178.24,
+  "mechanism": "the medium's chroma and GAP_HUE are 178.24 degrees apart in (a*, b*) — NEAR-ANTIPODAL. So the hue enters almost exactly opposite the medium's own chroma direction: it CANCELS the medium's chroma before it builds its own, which is why magnitude falls to a minimum and only then rises. The projection is immune because it is signed along the hue's direction, where cancellation of the medium reads as positive.",
+  "generalises": "this is a CONDITION, not an accident of two constants: a one-sided magnitude test fails for ANY hue whose chroma direction is near-antipodal to the medium it is leaking onto. A phase that chose a warm accent for a cool field chose the geometry that breaks the magnitude form.",
+  "exactCrossings": {
+   "firstVisibleInRaster": {
+    "alpha": 0.0021,
+    "triple": "rgb(7, 12, 17)",
+    "projection": 0.1579,
+    "inQProj": 0.329
+   },
+   "firstReportableAtOneQProj": {
+    "alpha": 0.00628,
+    "inQProj": 1.066
+   },
+   "note": "EXACT, replacing two approximations that both erred CONSERVATIVE-UPWARD on a lower bound: this lane said the raster floor was 'about alpha 0.003' where it is 0.00210 (GELB's correction, A-G131), and GELB's table puts reportability at '~0.008' where one q_proj is first reached at 0.00628. A-G106 applies to both — a figure inside a rule must meet the rule's standard, and a floor overstated upward licenses a factor that is too permissive."
+  },
+  "rasterDetectionFloor": "at alpha 0.002 the composite ROUNDS BACK to the medium exactly — rgb(6, 12, 17), projection 0.0000. Below about alpha 0.003 a leak is invisible to any metric because the triple does not change. That floor is the raster's, not the metric's, and it bounds what any chroma instrument can be asked for."
+ },
+ "finding2_metricRobustness": {
+  "claim": "A-G123 reason 1: 'the sign of a paired difference and its size against that metric's own quantum do not depend on the metric's absolute scale'.",
+  "signHalf": "HOLDS. All three monotone measures agree on the sign at every alpha — a real leak is a real leak.",
+  "magnitudeHalf": "DOES NOT HOLD. At alpha 0.01 the normalised difference is -1.302 in CIELAB C*, -2 in HSV S and -2 in sRGB range — a factor of about 1.5 between them, and 3.6 for a single +1R step. Normalising by the metric's own quantum does NOT cancel the metric's local anisotropy: the quantum is taken along the metric's most sensitive channel direction while the leak runs along a different one, so the two do not scale together.",
+  "consequence": "a one-quantum threshold is metric-dependent even in differential form. The sign-robustness that reason 1 gets right is enough to make the FORM sound; it is not enough to make the THRESHOLD portable, so the chosen metric still has to be stated with the threshold — which is A-G122's point surviving its own remedy."
+ }
+}

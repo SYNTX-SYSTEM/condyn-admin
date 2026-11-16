@@ -1,0 +1,438 @@
+{
+ "reading": "GRÜN · §62 — PG-12's alpha floor recomputed at the only alphas A-G81 permits, and the answer to 'which backdrop'",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "pure arithmetic over the committed modal medium rgb(6,12,17) and the source constant GAP_HUE rgb(245,166,35). No render, no raster, no server, no browser, no credential.",
+ "answerToGELB_whichBackdrop": {
+  "shortAnswer": "None — no raster measured it. The 0.329 figure is this lane's and it is a COMPUTATION, not a reading.",
+  "where": "outputs/pg12-leak-direction.json → whyTheMagnitudeFormFailed.exactCrossings.firstVisibleInRaster",
+  "backdropUsed": "rgb(6, 12, 17)",
+  "backdropProvenance": "the modal medium triple, declared at gruen-pg12-direction.mjs:19 as MEASURED at both sizes; the composite is Math.round over it",
+  "whatTheSealedRasterActuallyContains": "SEALED-pg12-ratio-{1920x1080,1280x800}.json hold C* DISTRIBUTIONS — hueCarryingClassChroma, plainGlowChroma, mediumChroma and mediumOverHue. No alpha, no composite triple, no backdrop. The rescue hypothesis has nothing to attach to.",
+  "soTheRecordIsRightAndIAmWrong": "A-G131's withdrawal is correct and A-G209 does not land on GELB here. The defect is this lane's: a continuous-alpha sweep reported under a field called `firstVisibleInRaster`."
+ },
+ "continuumFigureAsCommitted": {
+  "alpha": 0.0021,
+  "triple": "rgb(7, 12, 17)",
+  "inQProj": 0.329
+ },
+ "quantisedUnderA_G81": {
+  "round": {
+   "firstVisibleState": {
+    "k": 1,
+    "alpha": 0.0039216,
+    "triple": "rgb(7, 13, 17)",
+    "projection": 0.3534,
+    "inQProj": 0.737
+   },
+   "firstReportableAtOneQProj": {
+    "k": 2,
+    "alpha": 0.0078431,
+    "triple": "rgb(8, 13, 17)",
+    "inQProj": 1.066
+   }
+  },
+  "truncate": {
+   "firstVisibleState": {
+    "k": 2,
+    "alpha": 0.0078431,
+    "triple": "rgb(7, 13, 17)",
+    "projection": 0.3534,
+    "inQProj": 0.737
+   },
+   "firstReportableAtOneQProj": {
+    "k": 3,
+    "alpha": 0.0117647,
+    "triple": "rgb(8, 13, 17)",
+    "inQProj": 1.066
+   }
+  }
+ },
+ "whyGCannotStayAt12": {
+  "atFirstAchievableAlpha": "k = 1, α = 1/255 = 0.0039216",
+  "channels": [
+   {
+    "channel": "R",
+    "from": 6,
+    "exact": 6.9373,
+    "rounds": 7,
+    "fractionalPart": 0.9373
+   },
+   {
+    "channel": "G",
+    "from": 12,
+    "exact": 12.6039,
+    "rounds": 13,
+    "fractionalPart": 0.6039
+   },
+   {
+    "channel": "B",
+    "from": 17,
+    "exact": 17.0706,
+    "rounds": 17,
+    "fractionalPart": 0.0706
+   }
+  ],
+  "mechanism": "G's exact value is 12.6039, fractional part 0.60, so G rounds to 13 at the same alpha code where R first rounds to 7. A pure-R step is unreachable: the two channels cross their rounding boundaries at different alphas and there is no alpha code between them."
+ },
+ "diagnosisOfTheFloor": {
+  "claim": "A-G131's 0.329 floor is A-G126's single-code R step divided by q_proj — the smallest step the METRIC can resolve, taken for the smallest step the RASTER can carry.",
+  "singleCodeRStep": 0.1579,
+  "q_proj": 0.4797,
+  "ratio": 0.3291,
+  "matchesTheRecordedFloor": true,
+  "whyItIsWrong": "compositing a triple over a triple moves EVERY channel at once, so the achievable step is the vector step and never the smallest component step. An rgb(7,12,17) is a pure-R step; no alpha produces one here."
+ },
+ "backdropSweep": {
+  "target": "rgb(7, 12, 17)",
+  "backdropsTested": 27,
+  "backdropsReachingTarget": [
+   {
+    "backdrop": "rgb(5, 11, 17)",
+    "atCode": 2
+   },
+   {
+    "backdrop": "rgb(6, 11, 17)",
+    "atCode": 1
+   }
+  ],
+  "excludedAsDegenerate": "rgb(7, 12, 17) itself: a backdrop equal to the target is not a backdrop that reaches it, so the sweep starts at k = 1. The first version of this sweep started at k = 0 and listed the target among the reaching backdrops.",
+  "backdropsWithFirstStepNear0_329_ownFrame": [],
+  "backdropsWithFirstStepNear0_329_modalFrame": [
+   {
+    "backdrop": "rgb(6, 11, 17)",
+    "firstStep": 0.329
+   }
+  ],
+  "perBackdrop": [
+   {
+    "backdrop": "rgb(5, 11, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 12, 16)",
+    "firstVisibleStepInOwnQProj": 0.748,
+    "firstVisibleStepInModalQProj": 0.956
+   },
+   {
+    "backdrop": "rgb(5, 11, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": true,
+    "atCode": 2,
+    "firstVisibleTriple": "rgb(6, 12, 17)",
+    "firstVisibleStepInOwnQProj": 0.715,
+    "firstVisibleStepInModalQProj": 0
+   },
+   {
+    "backdrop": "rgb(5, 11, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 12, 18)",
+    "firstVisibleStepInOwnQProj": 0.685,
+    "firstVisibleStepInModalQProj": -1
+   },
+   {
+    "backdrop": "rgb(5, 12, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 13, 16)",
+    "firstVisibleStepInOwnQProj": 0.771,
+    "firstVisibleStepInModalQProj": 1.363
+   },
+   {
+    "backdrop": "rgb(5, 12, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 13, 17)",
+    "firstVisibleStepInOwnQProj": 0.737,
+    "firstVisibleStepInModalQProj": 0.408
+   },
+   {
+    "backdrop": "rgb(5, 12, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 13, 18)",
+    "firstVisibleStepInOwnQProj": 0.705,
+    "firstVisibleStepInModalQProj": -0.592
+   },
+   {
+    "backdrop": "rgb(5, 13, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 14, 16)",
+    "firstVisibleStepInOwnQProj": 0.794,
+    "firstVisibleStepInModalQProj": 1.793
+   },
+   {
+    "backdrop": "rgb(5, 13, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 14, 17)",
+    "firstVisibleStepInOwnQProj": 0.758,
+    "firstVisibleStepInModalQProj": 0.837
+   },
+   {
+    "backdrop": "rgb(5, 13, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(6, 14, 18)",
+    "firstVisibleStepInOwnQProj": 0.726,
+    "firstVisibleStepInModalQProj": -0.163
+   },
+   {
+    "backdrop": "rgb(6, 11, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 12, 16)",
+    "firstVisibleStepInOwnQProj": 0.748,
+    "firstVisibleStepInModalQProj": 1.285
+   },
+   {
+    "backdrop": "rgb(6, 11, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": true,
+    "atCode": 1,
+    "firstVisibleTriple": "rgb(7, 12, 17)",
+    "firstVisibleStepInOwnQProj": 0.715,
+    "firstVisibleStepInModalQProj": 0.329
+   },
+   {
+    "backdrop": "rgb(6, 11, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 12, 18)",
+    "firstVisibleStepInOwnQProj": 0.685,
+    "firstVisibleStepInModalQProj": -0.671
+   },
+   {
+    "backdrop": "rgb(6, 12, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 13, 16)",
+    "firstVisibleStepInOwnQProj": 0.771,
+    "firstVisibleStepInModalQProj": 1.693
+   },
+   {
+    "backdrop": "rgb(6, 12, 17)",
+    "isModal": true,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 13, 17)",
+    "firstVisibleStepInOwnQProj": 0.737,
+    "firstVisibleStepInModalQProj": 0.737
+   },
+   {
+    "backdrop": "rgb(6, 12, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 13, 18)",
+    "firstVisibleStepInOwnQProj": 0.705,
+    "firstVisibleStepInModalQProj": -0.263
+   },
+   {
+    "backdrop": "rgb(6, 13, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 14, 16)",
+    "firstVisibleStepInOwnQProj": 0.794,
+    "firstVisibleStepInModalQProj": 2.122
+   },
+   {
+    "backdrop": "rgb(6, 13, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 14, 17)",
+    "firstVisibleStepInOwnQProj": 0.758,
+    "firstVisibleStepInModalQProj": 1.166
+   },
+   {
+    "backdrop": "rgb(6, 13, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(7, 14, 18)",
+    "firstVisibleStepInOwnQProj": 0.726,
+    "firstVisibleStepInModalQProj": 0.166
+   },
+   {
+    "backdrop": "rgb(7, 11, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 12, 16)",
+    "firstVisibleStepInOwnQProj": 0.748,
+    "firstVisibleStepInModalQProj": 1.614
+   },
+   {
+    "backdrop": "rgb(7, 11, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 12, 17)",
+    "firstVisibleStepInOwnQProj": 0.715,
+    "firstVisibleStepInModalQProj": 0.658
+   },
+   {
+    "backdrop": "rgb(7, 11, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 12, 18)",
+    "firstVisibleStepInOwnQProj": 0.685,
+    "firstVisibleStepInModalQProj": -0.342
+   },
+   {
+    "backdrop": "rgb(7, 12, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 13, 16)",
+    "firstVisibleStepInOwnQProj": 0.771,
+    "firstVisibleStepInModalQProj": 2.022
+   },
+   {
+    "backdrop": "rgb(7, 12, 17)",
+    "isModal": false,
+    "isTarget": true,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 13, 17)",
+    "firstVisibleStepInOwnQProj": 0.737,
+    "firstVisibleStepInModalQProj": 1.066
+   },
+   {
+    "backdrop": "rgb(7, 12, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 13, 18)",
+    "firstVisibleStepInOwnQProj": 0.705,
+    "firstVisibleStepInModalQProj": 0.066
+   },
+   {
+    "backdrop": "rgb(7, 13, 16)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4585,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 14, 16)",
+    "firstVisibleStepInOwnQProj": 0.794,
+    "firstVisibleStepInModalQProj": 2.451
+   },
+   {
+    "backdrop": "rgb(7, 13, 17)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.4797,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 14, 17)",
+    "firstVisibleStepInOwnQProj": 0.758,
+    "firstVisibleStepInModalQProj": 1.495
+   },
+   {
+    "backdrop": "rgb(7, 13, 18)",
+    "isModal": false,
+    "isTarget": false,
+    "q_projAtThisBackdrop": 0.5011,
+    "reachesRgb7_12_17": false,
+    "atCode": null,
+    "firstVisibleTriple": "rgb(8, 14, 18)",
+    "firstVisibleStepInOwnQProj": 0.726,
+    "firstVisibleStepInModalQProj": 0.495
+   }
+  ]
+ },
+ "compositingDepth": {
+  "branchA": {
+   "model": "effective alpha re-quantised to 8 bits at the group join",
+   "achievableSetChanges": false,
+   "reachesRgb7_12_17": false,
+   "why": "round(k1*k2/255)/255 is itself of the form k/255, so no effective alpha below 1/255 exists and the single-stage result stands unchanged"
+  },
+  "branchB": {
+   "model": "exact product of the two 8-bit alphas kept in higher precision",
+   "achievableSetChanges": true,
+   "lowestVisibleEffectiveAlpha": {
+    "k1": 137,
+    "k2": 1,
+    "effectiveAlpha": 0.0021069,
+    "triple": "rgb(7, 12, 17)",
+    "inQProj": 0.329
+   },
+   "reachesRgb7_12_17": {
+    "k1": 1,
+    "k2": 137,
+    "effectiveAlpha": 0.0021069,
+    "inQProj": 0.329
+   },
+   "why": "k1*k2/255^2 densely fills (0, 1/255), so states unreachable with one alpha become reachable with two"
+  }
+ },
+ "withdrawals": [
+  "WITHDRAWN: `firstVisibleInRaster` α 0.00210 → rgb(7,12,17) at 0.329 q_proj, in outputs/pg12-leak-direction.json. It is a continuum figure at an alpha the renderer cannot apply, and its field name asserted a raster observation that never happened.",
+  "WITHDRAWN: the same file's `rasterDetectionFloor` sentence, 'below about alpha 0.003 a leak is invisible to any metric because the triple does not change'. The true statement under A-G81 is that no alpha below 1/255 exists at all, so the floor is not 'about 0.003' and is not a property of the raster's colour resolution; it is the alpha ladder.",
+  "CONFIRMED AS A CLASS, not a one-off: this is the same defect as the selectedGain erratum already declared this phase — a figure exact in the continuum and void at the quantised levels where it would be measured. Every alpha-swept figure in this lane is suspect until checked against the k/255 ladder, which is why gruen-colour.mjs now exports `achievableAlphas` and `compositeAtCode`: a derivation should not be able to sweep past the ladder by accident."
+ ],
+ "openMeasurable": "Whether the gap glow's two alphas (gradient stop × group opacity) yield effective alphas below 1/255 is a property of the compositor, not of this arithmetic. Branch A leaves every figure above unchanged; branch B restores sub-quantum states and would make rgb(7,12,17) reachable after all. Settling it needs one rendered probe of a known two-alpha stack, which is blocked with the rest of the raster work. It is recorded as measurable, not resolved."
+}

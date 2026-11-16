@@ -1,0 +1,329 @@
+{
+ "SEALED": "§33 A-G109 — published to NOBODY, including GELB, until PINK's verdict on PG-17 is recorded. Committed so it cannot be revised after seeing PINK's.",
+ "reading": "GRÜN development reading · PG-17, the glare ramp, per A-G105's four fields",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "8d62028c0cfcb2616c2db178330ccc975789e2ba",
+  "headShort": "8d62028c",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/facade.log"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T18:44:13.704Z",
+  "instrumentCommit": "8d62028c"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "zeroByConstructionChannel": {
+  "name": "repeat-capture difference over DISC pixels on a static field (reducedMotion:reduce)",
+  "domain": "disc only — the host animates outside it, so a whole-region form is not zero and would false-alarm",
+  "pixels": 812049,
+  "mustBe": 0,
+  "measured": 0,
+  "valid": true
+ },
+ "viewport": "1920x1080",
+ "level": "L2",
+ "carries": false,
+ "carriesNote": "A-G105: L0 at 1920 carries. 1280 and L2 are reported and do NOT carry — L2 is the ramp's best case and must not be where a verdict is taken.",
+ "motion": "resting (reducedMotion:reduce) — PG-10 owns the modulation, PG-17 owns the shape",
+ "definitions": {
+  "carrier": "the union of the glow and the medium beneath it (A-G31). glowsAll is the SUBJECT and is never an occluder — treating it as one was §31's self-occlusion error.",
+  "occluders": "signs, their seats, and EVERY ring seat (A-G97's 'any crossing ring seat'), plus the body's own name and measure excluded per A-G20. Ring seats carry no hook (A-G49) and are tagged by geometry.",
+  "boundMonotone": "a monotone falloff over >= 1.5 x the body radius",
+  "boundCore": "the core at >= 1.45 x the local ground",
+  "notABlur": "'a soft blur that is not a ramp does not satisfy it' — rampDynamicRange is reported so a flat blur cannot pass as a ramp on monotonicity alone",
+  "monoEpsilon": "near black the sRGB quantum dominates, so a strictly non-increasing test fails on one-code jitter. Both a STRICT extent and an eps-tolerant extent are reported, eps = 0.000022 (~ one 8-bit code step at these levels). Neither is presented as the figure; the pair is.",
+  "localGround": "median of uncovered carrier pixels in 3.2 ... 4.0 r, beyond the glow's own haloFar of 3.0 r",
+  "profileStep": "0.05 r bands from the rim (1.0 r) to 3.0 r"
+ },
+ "perBody": [
+  {
+   "rank": 2,
+   "shelf": false,
+   "drawnRadiusPx": 79.58,
+   "requiredGaps": 5,
+   "coreMedian": null,
+   "corePixels": 0,
+   "localGroundMedian": 0.0043087,
+   "localGroundPixels": 72455,
+   "coreOverLocalGround": null,
+   "monotoneExtentInR_strict": 1.8,
+   "monotoneExtentInR_epsTolerant": 1.8,
+   "rampDynamicRange": 16.763,
+   "profile": [
+    {
+     "uFrom": 1,
+     "uTo": 1.05,
+     "n": 772,
+     "median": 0.067019
+    },
+    {
+     "uFrom": 1.05,
+     "uTo": 1.1,
+     "n": 1350,
+     "median": 0.063698
+    },
+    {
+     "uFrom": 1.1,
+     "uTo": 1.15,
+     "n": 2107,
+     "median": 0.061151
+    },
+    {
+     "uFrom": 1.15,
+     "uTo": 1.2,
+     "n": 2219,
+     "median": 0.055482
+    },
+    {
+     "uFrom": 1.2,
+     "uTo": 1.25,
+     "n": 2342,
+     "median": 0.050699
+    },
+    {
+     "uFrom": 1.25,
+     "uTo": 1.3,
+     "n": 2473,
+     "median": 0.046205
+    },
+    {
+     "uFrom": 1.3,
+     "uTo": 1.35,
+     "n": 2574,
+     "median": 0.042381
+    },
+    {
+     "uFrom": 1.35,
+     "uTo": 1.4,
+     "n": 2674,
+     "median": 0.038619
+    },
+    {
+     "uFrom": 1.4,
+     "uTo": 1.45,
+     "n": 2792,
+     "median": 0.034946
+    },
+    {
+     "uFrom": 1.45,
+     "uTo": 1.5,
+     "n": 2843,
+     "median": 0.031885
+    },
+    {
+     "uFrom": 1.5,
+     "uTo": 1.55,
+     "n": 2763,
+     "median": 0.029308
+    },
+    {
+     "uFrom": 1.55,
+     "uTo": 1.6,
+     "n": 2854,
+     "median": 0.026361
+    },
+    {
+     "uFrom": 1.6,
+     "uTo": 1.65,
+     "n": 3019,
+     "median": 0.024263
+    },
+    {
+     "uFrom": 1.65,
+     "uTo": 1.7,
+     "n": 3175,
+     "median": 0.021644
+    },
+    {
+     "uFrom": 1.7,
+     "uTo": 1.75,
+     "n": 3255,
+     "median": 0.020135
+    },
+    {
+     "uFrom": 1.75,
+     "uTo": 1.8,
+     "n": 3394,
+     "median": 0.01819
+    },
+    {
+     "uFrom": 1.8,
+     "uTo": 1.85,
+     "n": 3448,
+     "median": 0.016033
+    },
+    {
+     "uFrom": 1.85,
+     "uTo": 1.9,
+     "n": 3101,
+     "median": 0.01477
+    },
+    {
+     "uFrom": 1.9,
+     "uTo": 1.95,
+     "n": 3262,
+     "median": 0.012778
+    },
+    {
+     "uFrom": 1.95,
+     "uTo": 2,
+     "n": 3492,
+     "median": 0.011835
+    },
+    {
+     "uFrom": 2,
+     "uTo": 2.05,
+     "n": 3657,
+     "median": 0.010887
+    },
+    {
+     "uFrom": 2.05,
+     "uTo": 2.1,
+     "n": 3787,
+     "median": 0.0097887
+    },
+    {
+     "uFrom": 2.1,
+     "uTo": 2.15,
+     "n": 3901,
+     "median": 0.0090041
+    },
+    {
+     "uFrom": 2.15,
+     "uTo": 2.2,
+     "n": 4033,
+     "median": 0.0079965
+    },
+    {
+     "uFrom": 2.2,
+     "uTo": 2.25,
+     "n": 4134,
+     "median": 0.007333
+    },
+    {
+     "uFrom": 2.25,
+     "uTo": 2.3,
+     "n": 4258,
+     "median": 0.006598
+    },
+    {
+     "uFrom": 2.3,
+     "uTo": 2.35,
+     "n": 4358,
+     "median": 0.0061432
+    },
+    {
+     "uFrom": 2.35,
+     "uTo": 2.4,
+     "n": 4461,
+     "median": 0.0056185
+    },
+    {
+     "uFrom": 2.4,
+     "uTo": 2.45,
+     "n": 4529,
+     "median": 0.0052693
+    },
+    {
+     "uFrom": 2.45,
+     "uTo": 2.5,
+     "n": 4368,
+     "median": 0.0050948
+    },
+    {
+     "uFrom": 2.5,
+     "uTo": 2.55,
+     "n": 4287,
+     "median": 0.0047878
+    },
+    {
+     "uFrom": 2.55,
+     "uTo": 2.6,
+     "n": 4260,
+     "median": 0.0044985
+    },
+    {
+     "uFrom": 2.6,
+     "uTo": 2.65,
+     "n": 4237,
+     "median": 0.0044029
+    },
+    {
+     "uFrom": 2.65,
+     "uTo": 2.7,
+     "n": 4052,
+     "median": 0.0041262
+    },
+    {
+     "uFrom": 2.7,
+     "uTo": 2.75,
+     "n": 3748,
+     "median": 0.0040292
+    },
+    {
+     "uFrom": 2.75,
+     "uTo": 2.8,
+     "n": 3801,
+     "median": 0.0040292
+    },
+    {
+     "uFrom": 2.8,
+     "uTo": 2.85,
+     "n": 3947,
+     "median": 0.0040626
+    },
+    {
+     "uFrom": 2.85,
+     "uTo": 2.9,
+     "n": 3708,
+     "median": 0.0040292
+    },
+    {
+     "uFrom": 2.9,
+     "uTo": 2.95,
+     "n": 2542,
+     "median": 0.004033
+    },
+    {
+     "uFrom": 2.95,
+     "uTo": 3,
+     "n": 2960,
+     "median": 0.0039981
+    }
+   ]
+  }
+ ]
+}

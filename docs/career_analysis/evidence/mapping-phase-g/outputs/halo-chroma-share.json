@@ -1,0 +1,122 @@
+{
+ "reading": "GRÜN · §102 — the halo's chroma share, and §94's requirement corrected from a lower bound to a figure",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "c84ab292ed885f1e66b2c3d263310a4496d04a2c",
+  "headShort": "c84ab292",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "utpaUMQpafZVzAeyYImhv",
+  "measuredAt": "2026-11-11T22:40:19.850Z",
+  "measuredBuildCommit": "c84ab292",
+  "measuredWorktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3230",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "level": "L0",
+ "motion": "resting (reducedMotion:reduce)",
+ "repeats": 3,
+ "whatWasOwed": "§94 used each pixel's TOTAL chroma as the c in c >= 2q/(p*relSwing). The breath modulates only the HALO's contribution, so the requirement is larger by 1/share and §94's 75.1 / 214.6 were a LOWER BOUND.",
+ "whyTakeItAnyway": "GELB ruled it can only move the unselected limb toward decided, never away. A figure that can only help the conclusion is exactly the figure A-G140 forbids leaving unmeasured.",
+ "shareIsADifferential": "C* is not additive over layers, so (C_all - C_without)/C_all is NOT an algebraic share. It is the chroma the halo CONTRIBUTES at that pixel, measured as A-F19 requires — an excess against a render without it, never a raw window. A ratio of two measured quantities invites being read as a partition; this one is not one.",
+ "spreadDomain": {
+  "everySpreadHere": "WITHIN ONE RUN — repeat-to-repeat across suppression cycles in a single browser launch, after a discarded warm-up.",
+  "excluded": "browser launch and page load. §99 measured those two domains differing by roughly a factor of two on a comparable quantity.",
+  "perCycleMedianShare_overALLHueGlowPixels": [
+   0.47533,
+   0.47533,
+   0.47533
+  ],
+  "twoMediansAndWhyTheyDiffer": "the per-cycle median above is taken over ALL hue-glow pixels INCLUDING those whose differential contribution is <= 0; the haloChromaShare block below is over the EVALUATED (positive-contribution) subset only. Both are medians of a 'share' and they are 0.475 and 0.728 respectively. Named because two differently-filtered medians under one word is the A-G417 shape — a property of a sub-population read as a property of the whole — and a reader comparing them would conclude the instrument was inconsistent."
+ },
+ "constantsRead": {
+  "haloDepth": 0.235,
+  "selectedGain": 0.35,
+  "haloMean": 0.8825,
+  "relSwingUnselected": 0.266289,
+  "relSwingSelected": 0.093201
+ },
+ "population": {
+  "hueCarryingGlowPixels": 47073,
+  "evaluated": 30130,
+  "haloElementsMatched": 5,
+  "droppedFromTheShareFigure": 16943,
+  "droppedPct": 35.99,
+  "whyTheyWereDropped": "at these pixels the halo's DIFFERENTIAL chroma contribution is <= 0 — hiding the halo did not reduce C*, and at some pixels it raised it. That is not an error: compositing is not additive, and a cyan layer at low alpha over a dark near-neutral ground can leave the ground's own chroma MORE dominant when removed, which is §79's finding reaching a share figure. A share is undefined where the contribution is not positive, so those pixels carry no corrected requirement.",
+  "andTheyTravelWithEveryFigureBelow": "GELB §91: a share without its denominator cannot be audited. Every figure in this reading is over the EVALUATED population and says so."
+ },
+ "haloChromaShare": {
+  "n": 30130,
+  "min": 0,
+  "p10": 0.27841,
+  "p50": 0.72802,
+  "p90": 0.8715,
+  "max": 1,
+  "mean": 0.64687
+ },
+ "cOverQ": {
+  "n": 30130,
+  "min": 1.36238,
+  "p10": 6.48288,
+  "p50": 19.40992,
+  "p90": 49.45634,
+  "max": 73.20357,
+  "mean": 23.65371
+ },
+ "requiredCOverQ_at10pct": {
+  "unselected": {
+   "n": 30130,
+   "min": 75.10638,
+   "p10": 86.18031,
+   "p50": 103.16552,
+   "p90": 269.77267,
+   "max": 408487419.07801,
+   "mean": 17351.79552
+  },
+  "selectedMedian": 294.8
+ },
+ "pixelsMeetingTheCorrectedRequirement": {
+  "unselected": 0,
+  "selected": 0,
+  "ofEvaluated": 30130
+ },
+ "theCeilingAfterCorrection": {
+  "bestPixel_cOverQ": 73.2036,
+  "itsHaloShare": 0.8992,
+  "itsCorrectedRequirement_unselected": 83.5,
+  "shortfallFactor": 1.14,
+  "note": "§94's uncorrected figures were 75.1 unselected and 214.6 selected against a best pixel of 73.20."
+ },
+ "finding": "THE HALO'S CHROMA SHARE, over the EVALUATED population of 30130 of 47073 hue-glow pixels (36.0 % DROPPED, because hiding the halo there did not reduce C* — compositing is not additive and removing a cyan layer over a dark ground can leave the ground's chroma more dominant, which is §79 reaching a share figure): median 0.72802, p10 0.27841, p90 0.8715, max 1. So at the median pixel the halo contributes 72.8 % of the chroma, and the breath can only modulate THAT part.\n§94's REQUIREMENT WAS A LOWER BOUND AND IS NOW A FIGURE: corrected for share, 10 % precision on the UNSELECTED amplitude needs c/q >= 103.16552 at the median pixel (§94 said 75.1 for every pixel), and 0 of 30130 pixels meet it. Selected needs 294.75862 at the median and 0 meet it.\nTHE CEILING MOVED THE WAY GELB SAID IT COULD ONLY MOVE: the brightest pixel reaches c/q 73.20 with a halo share of 0.8992, so its corrected requirement is 83.5 — a shortfall of 1.14x where the uncorrected comparison was 75.1 against 73.20, a shortfall of 1.03x. The 2.5 % that GELB ruled INCONCLUSIVE is not 2.5 % once the share is carried.\nNO VERDICT (A-G36 point 2): this is a resolution and a population. PG-12 IS ESTABLISHED UNSATISFIABLE BY ANY BUILD (§36 — THIS LANE'S OWN finding, already recorded in gruen-pg12-chroma.mjs: the hue's own chroma is half the bound), so there is NO verdict to refer. These are measurability readings about a CHANNEL, not evidence toward an open pin. The earlier form of this sentence said {{WAS: whether PG-12 is satisfied is PINK's}} — referring a settled negative to another lane, which is the exact waste A-G111 exists to prevent, and the settlement was in my own record when I wrote it."
+}

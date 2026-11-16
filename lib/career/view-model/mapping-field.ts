@@ -1,26 +1,54 @@
 import spec from "../../../docs/architecture/decision-fields/mapping-spec/layout-spec.json";
+import signTable from "../../../docs/architecture/decision-fields/mapping-spec/sign-table.json";
 import type { CapabilityProposalProjection } from "../capability-core/projection";
 import type { AutoMatchRunState, AutoMatchWatch, EvidenceClass, JobRankingState, RoleRanking } from "../ui/auto-match";
-import { buildMappingView, capabilitiesOfProjection, type MappingRoleId, type MappingView } from "../mapping/view";
-import { layoutConstellation, layoutRoles } from "../mapping/layout";
-import { couplingSign, runSign, type CouplingClass, type RunSign } from "../mapping/signs";
+import { buildMappingView, capabilitiesOfProjection, type MappingCoupling, type MappingRequirement, type MappingRoleId, type MappingView } from "../mapping/view";
+import { layoutConstellation, layoutRequirementArcs, layoutRolesV11 } from "../mapping/layout";
+import { COUPLING_STATES, couplingSign, runSign, type CouplingClass, type CouplingSign, type RunSign } from "../mapping/signs";
 import { diffRankings } from "../mapping/delta";
-import { focusReduce, type FocusAction, type FocusState } from "../mapping/focus";
+import { FOCUS_ACTIONS, focusReduce, reverseView, type FocusAction, type FocusLevel, type FocusState, type ReverseView } from "../mapping/focus";
 
 /**
- * PERSON × JOB mapping, phase C · the visible field on L0 (the whole field) and L1 (one pool). This module only composes the
- * released phase-B engine (lib/career/mapping: view, layout, signs, delta, focus) — it changes none of it and adds no rule of its own
- * to the layout or the signs: positions are the layout's, line kinds the sign table's, the levels the focus machine's.
+ * PERSON × JOB mapping, phase D (docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_D.md) · the MAPPING field on its own
+ * stage, L0 to L3. This module only composes the released phase-B engine (lib/career/mapping: view, layout, signs, delta, focus). It
+ * changes none of it and adds no rule of its own to the layout or the signs. Positions come from the layout, every line, fill, beam
+ * and mark from the sign table, and the levels from the focus machine.
  *
- * It reads only (B-7): the PERSON projection (capabilities) and the ranking that the automatic path has already read (GET). It owns no
- * entity (B-5), claims no decision (B-6) and never writes the job scope (B-3): no action of this field selects anything. L2 and L3
- * (a role opened, a requirement opened) are not part of phase C: their actions are refused here, whatever the engine would allow.
- * Pure and deterministic: no clock, no randomness, nothing written.
+ * One structural unit at four magnifications (§1.2): sector (pool) ⊃ body (role) ⊃ collar/ring (requirements) ⊃ arc (one
+ * requirement's coupling). The collar at L0/L1 and the ring at L2 are ONE output, layoutRequirementArcs called once per role, with
+ * one couplingSign per requirement (D-Q3). Nothing is aggregated, summarised or averaged.
+ *
+ * It reads only (B-7): the PERSON projection and the ranking the automatic path has already read (GET). It owns no entity (B-5),
+ * claims no decision (B-6), and has no job scope anywhere. The focus machine has no field for one, so no action of it can write one
+ * (B-3, D-7). It admits the machine's full action set. Pure and deterministic: no clock, no randomness, nothing written.
  */
-export type FieldLevel = "L0" | "L1";
-/** The focus actions phase C admits: open a pool, go up, reset, mark a role (a highlight only) and clear the mark. */
-export const FIELD_ACTIONS = ["OPEN_POOL", "UP", "RESET", "MARK_ROLE", "CLEAR_SELECTION"] as const;
-export type FieldAction = Extract<FocusAction, { type: typeof FIELD_ACTIONS[number] }>;
+export type FieldLevel = FocusLevel;
+/** Phase D admits the focus machine's full action set (§5.2). The boundary is the read-only envelope (D-7), not a whitelist. */
+export const FIELD_ACTIONS = FOCUS_ACTIONS;
+export type FieldAction = FocusAction;
+
+/** One requirement of a role, placed on its ring: the layout's arc and the sign table's sign for its coupling state. */
+export interface FieldArc {
+  readonly poolRequirementId: string;
+  readonly requirementText: string;
+  readonly necessity: MappingRequirement["necessity"];
+  readonly weight: number;
+  readonly source: MappingRequirement["source"];
+  readonly state: MappingRequirement["state"];
+  readonly value: number;
+  /** The coupling class of the requirement's source (SEMANTIC checked, LEXICAL a name relation, NONE no relation). */
+  readonly class: CouplingClass;
+  /** couplingSign(class, state): arcLine, arcFill, luminance, beam, phaseLocked, mark — the table's object itself. */
+  readonly sign: CouplingSign;
+  readonly startDegrees: number;
+  readonly endDegrees: number;
+  readonly spanDegrees: number;
+  readonly midDegrees: number;
+  /** The requirement's coupling to a capability (its key, key status, explanation, evidence), or null when it names none. */
+  readonly coupling: MappingCoupling | null;
+}
+/** The requirement ring of one role, in ring order (layout-spec arcs.necessityOrder, then heavier first, then id). */
+export interface FieldRing { readonly key: string; readonly id: MappingRoleId; readonly arcs: readonly FieldArc[] }
 
 export interface FieldBody {
   /** `${jobPoolUploadId}\u0000${poolRoleId}` — the stable identity the delta uses. */
@@ -31,16 +59,19 @@ export interface FieldBody {
   readonly organizationName: string;
   readonly poolName: string;
   readonly tier: "SEMANTIC" | "LEXICAL_ONLY";
-  /** What L0 shows of a role (sign table, channel "class"): checked by the model, a name relation only, or no relation. */
+  /** The role's class line (sign table, channel "class"): checked by the model, a name relation only, or no relation. */
   readonly class: CouplingClass;
-  /** The line of that class, read from the sign table through the engine. */
   readonly line: string;
   readonly x: number;
   readonly y: number;
   readonly radius: number;
+  /** MAPPING_LAYOUT_V1.1: the drawn radius (requirement mass mapped onto the presence range; the collision radius). */
+  readonly drawnRadius: number;
   readonly shelf: boolean;
   /** Moved off its fit position to find room: its distance is then approximate (quantities come from the data). */
   readonly displaced: boolean;
+  /** The role's ring — the very array of its FieldRing (one output, D-Q3). */
+  readonly arcs: readonly FieldArc[];
 }
 export interface FieldSector {
   readonly poolId: string;
@@ -71,8 +102,12 @@ export interface MappingFieldModel {
   readonly sectors: readonly FieldSector[];
   /** The drawn bodies, by rank. */
   readonly bodies: readonly FieldBody[];
+  /** Every role's ring, drawn or not, by rank. */
+  readonly rings: readonly FieldRing[];
   readonly overflowCount: number;
   readonly constellation: { readonly nodes: readonly FieldNode[]; readonly overflowCount: number };
+  /** D-Q1: the reading holds at least one requirement and none of them was checked by the model (source SEMANTIC). */
+  readonly namesOnly: boolean;
   readonly geometry: typeof GEOMETRY;
 }
 export interface MappingFieldInput {
@@ -87,76 +122,203 @@ const GEOMETRY = Object.freeze({
   bestFit: spec.rings.bestFit, horizon: spec.rings.horizon, shelfNear: spec.rings.shelfNear, shelfFar: spec.rings.shelfFar,
   nodeRadius: spec.constellation.nodeRadius
 });
-/** The line of each class at L0: the sign of the class's full-strength state, read from the table (never a second table here). */
+/** The line of each class: the sign of the class's full-strength state, read from the table (never a second table here). */
 export const CLASS_LINE: Readonly<Record<CouplingClass, string>> = Object.freeze({
   SEMANTIC: couplingSign("SEMANTIC", "EQUIVALENT").arcLine,
   LEXICAL: couplingSign("LEXICAL", "NAME_EXACT").arcLine,
   NONE: couplingSign("NONE", "NONE").arcLine
 });
+/** A requirement's source is its coupling class (the ranking's source values are the table's classes). */
+const CLASS_OF_SOURCE: Readonly<Record<MappingRequirement["source"], CouplingClass>> = Object.freeze({ SEMANTIC: "SEMANTIC", LEXICAL: "LEXICAL", NONE: "NONE" });
 
 export const roleKey = (id: MappingRoleId) => `${id.jobPoolUploadId}\u0000${id.poolRoleId}`;
+const sameRole = (a: MappingRoleId, b: MappingRoleId) => a.jobPoolUploadId === b.jobPoolUploadId && a.poolRoleId === b.poolRoleId;
+
+/** The ring of one role: layoutRequirementArcs once, one couplingSign per requirement. */
+function ringOf(role: MappingView["roles"][number], couplings: ReadonlyMap<string, MappingCoupling>): FieldArc[] {
+  const byId = new Map(role.requirements.map(q => [q.poolRequirementId, q] as const));
+  return layoutRequirementArcs(role.requirements.map(q => ({ id: q.poolRequirementId, necessity: q.necessity, weight: q.weight, value: q.value }))).map(arc => {
+    const q = byId.get(arc.id)!;
+    const cls = CLASS_OF_SOURCE[q.source];
+    return Object.freeze({
+      poolRequirementId: q.poolRequirementId, requirementText: q.requirementText, necessity: q.necessity, weight: q.weight, source: q.source, state: q.state, value: q.value,
+      class: cls, sign: couplingSign(cls, q.state), startDegrees: arc.startDegrees, endDegrees: arc.endDegrees, spanDegrees: arc.spanDegrees,
+      midDegrees: Math.round(((arc.startDegrees + arc.endDegrees) / 2) * 1e6) / 1e6, coupling: couplings.get(`${roleKey(role.id)}\u0000${q.poolRequirementId}`) ?? null
+    });
+  });
+}
 
 /**
- * The field for the ranking on view, or null when there is none to draw: no ranking read (the panel says why), no run read, or a
- * ranking of another analysis. An empty ranking gives a model with no bodies (view.empty says why).
+ * The field for the ranking on view, or null when there is none to draw (no ranking read, no run read). An empty ranking gives a
+ * model with no bodies (view.empty says why).
  */
 export function mappingFieldModel(input: MappingFieldInput): MappingFieldModel | null {
   if (input.ranking.state !== "AVAILABLE" || input.watch.read.state !== "AVAILABLE") return null;
   const ranking = input.ranking.ranking, run = input.watch.read.autoMatch;
   const view = buildMappingView({ capabilities: capabilitiesOfProjection(input.projection), ranking, run: { state: run.state, resumePending: run.resumePending }, evidenceClass: ranking.evidenceClass });
-  const layout = layoutRoles(view.pools.map(p => ({ id: p.id, name: p.name })),
+  // MAPPING_LAYOUT_V1.1 (PHASE_G §5/§7, A1): V1's algorithm, the drawn radius taking collision and step — bodies never touch as drawn.
+  const layout = layoutRolesV11(view.pools.map(p => ({ id: p.id, name: p.name })),
     view.roles.map(r => ({ poolId: r.id.jobPoolUploadId, roleId: r.id.poolRoleId, rank: r.rank, tier: r.tier, fit: r.fit, weightSum: r.weightSum })));
+  const couplings = new Map(view.couplings.map(c => [`${roleKey(c.role)}\u0000${c.poolRequirementId}`, c] as const));
+  const rings: FieldRing[] = view.roles.map(r => Object.freeze({ key: roleKey(r.id), id: r.id, arcs: Object.freeze(ringOf(r, couplings)) }));
+  const ringByKey = new Map(rings.map(r => [r.key, r] as const));
   const roleOf = new Map(view.roles.map(r => [roleKey(r.id), r] as const));
   const poolName = new Map(view.pools.map(p => [p.id, p.name] as const));
   const bodies: FieldBody[] = [];
   const overflowByPool = new Map<string, number>();
   for (const placed of layout.bodies) {
     if (placed.overflow) { overflowByPool.set(placed.poolId, (overflowByPool.get(placed.poolId) ?? 0) + 1); continue; }
-    const role = roleOf.get(roleKey({ jobPoolUploadId: placed.poolId, poolRoleId: placed.roleId }))!;
+    const key = roleKey({ jobPoolUploadId: placed.poolId, poolRoleId: placed.roleId });
+    const role = roleOf.get(key)!;
     const cls: CouplingClass = role.tier === "SEMANTIC" ? "SEMANTIC" : role.requirements.some(q => q.source === "LEXICAL") ? "LEXICAL" : "NONE";
-    bodies.push({ key: roleKey(role.id), id: role.id, rank: role.rank, title: role.title, organizationName: role.organizationName, poolName: poolName.get(placed.poolId) ?? placed.poolId,
-      tier: role.tier, class: cls, line: CLASS_LINE[cls], x: placed.x, y: placed.y, radius: placed.bodyRadius, shelf: placed.shelf,
-      displaced: placed.displacement[0] !== 0 || placed.displacement[1] !== 0 });
+    bodies.push(Object.freeze({ key, id: role.id, rank: role.rank, title: role.title, organizationName: role.organizationName, poolName: poolName.get(placed.poolId) ?? placed.poolId,
+      tier: role.tier, class: cls, line: CLASS_LINE[cls], x: placed.x, y: placed.y, radius: placed.bodyRadius, drawnRadius: placed.drawnRadius ?? placed.bodyRadius, shelf: placed.shelf,
+      displaced: placed.displacement[0] !== 0 || placed.displacement[1] !== 0, arcs: ringByKey.get(key)!.arcs }));
   }
-  const sectors = layout.sectors.map(s => ({ poolId: s.poolId, poolName: poolName.get(s.poolId) ?? s.poolId, startDegrees: s.startDegrees, spanDegrees: s.spanDegrees, roles: s.roles,
+  const sectors = layout.sectors.map(s => Object.freeze({ poolId: s.poolId, poolName: poolName.get(s.poolId) ?? s.poolId, startDegrees: s.startDegrees, spanDegrees: s.spanDegrees, roles: s.roles,
     drawn: s.roles - (overflowByPool.get(s.poolId) ?? 0), overflow: overflowByPool.get(s.poolId) ?? 0 }));
   const placedNodes = layoutConstellation(view.constellation.map(c => ({ key: c.key, name: c.name })));
   const names = new Map(view.constellation.map(c => [c.key, c.name] as const));
   const sign = runSign(run.state, run.resumePending);
   const budget = run.budget;
   const pendingBreath = sign.pendingBreath && (budget === null || budget.rolesEvaluated < budget.rolesPlanned);
+  const requirements = view.roles.flatMap(r => r.requirements);
   return Object.freeze({
     analysisId: ranking.analysisId, ranking, view, evidenceClass: view.evidenceClass, authority: view.authority,
     run: Object.freeze({ state: run.state, resumePending: run.resumePending, sign, pendingBreath }),
-    sectors: Object.freeze(sectors.map(s => Object.freeze(s))), bodies: Object.freeze(bodies.map(b => Object.freeze(b))), overflowCount: layout.overflowCount,
+    sectors: Object.freeze(sectors), bodies: Object.freeze(bodies), rings: Object.freeze(rings), overflowCount: layout.overflowCount,
     constellation: Object.freeze({ nodes: Object.freeze(placedNodes.nodes.map(n => Object.freeze({ key: n.key, name: names.get(n.key) ?? n.key, x: n.x, y: n.y }))), overflowCount: placedNodes.overflowCount }),
+    namesOnly: requirements.length > 0 && !requirements.some(q => q.source === "SEMANTIC"),
     geometry: GEOMETRY
   });
 }
 
-/** The focus machine, held to phase C: only the admitted actions reach the engine; any other returns the very same state. */
-export function fieldFocusReduce(state: FocusState, action: FieldAction | FocusAction): FocusState {
-  if (!action || typeof action !== "object" || !(FIELD_ACTIONS as readonly string[]).includes(action.type)) return state;
+/** The focus machine itself: phase D admits its full action set (§5.2); an inadmissible action returns the very same state. */
+export function fieldFocusReduce(state: FocusState, action: FieldAction): FocusState {
   return focusReduce(state, action);
 }
 
-/** The level on view: L1 only while its pool is in the field; anything deeper is not phase C and reads as L0. */
-export function fieldLevel(state: FocusState, model: MappingFieldModel | null): { level: FieldLevel; pool: string | null } {
-  if (model !== null && state.level === "L1" && state.pool !== null && model.sectors.some(s => s.poolId === state.pool)) return { level: "L1", pool: state.pool };
-  return { level: "L0", pool: null };
+export interface FieldFocusView {
+  readonly level: FieldLevel;
+  /** The open pool (L1 and deeper). */
+  readonly pool: string | null;
+  /** The open role (L2, L3): a drawn body of the field. */
+  readonly body: FieldBody | null;
+  /** The open arc (L3). */
+  readonly arc: FieldArc | null;
+}
+/**
+ * The level on view, held to what the field draws: L3 while its arc is on the open role's ring, L2 while the open role is a drawn
+ * body, L1 while its pool is in the field. Whatever is no longer there reads one level up. The focus state itself is never rewritten.
+ */
+export function fieldLevel(state: FocusState, model: MappingFieldModel | null): FieldFocusView {
+  const none: FieldFocusView = { level: "L0", pool: null, body: null, arc: null };
+  if (model === null || state.level === "L0") return none;
+  const body = state.role === null ? null : model.bodies.find(b => sameRole(b.id, state.role!)) ?? null;
+  if ((state.level === "L2" || state.level === "L3") && body !== null) {
+    const arc = state.level === "L3" && state.requirement !== null ? body.arcs.find(a => a.poolRequirementId === state.requirement) ?? null : null;
+    return { level: arc === null ? "L2" : "L3", pool: body.id.jobPoolUploadId, body, arc };
+  }
+  return state.pool !== null && model.sectors.some(s => s.poolId === state.pool) ? { level: "L1", pool: state.pool, body: null, arc: null } : none;
 }
 
-/** The marked role, while it is a drawn body of the field on view (and, on L1, of the open pool). */
+/** The marked role on L0/L1, while it is a drawn body (and, on L1, of the open pool). */
 export function markedBody(state: FocusState, model: MappingFieldModel | null): FieldBody | null {
   if (model === null || state.selection === null || state.selection.kind !== "ROLE") return null;
-  const key = roleKey(state.selection.role);
   const { level, pool } = fieldLevel(state, model);
+  if (level !== "L0" && level !== "L1") return null;
+  const key = roleKey(state.selection.role);
   const body = model.bodies.find(b => b.key === key) ?? null;
   return body === null || (level === "L1" && body.id.jobPoolUploadId !== pool) ? null : body;
 }
 
+/** The marked arc on L2/L3: a requirement of the open role. */
+export function markedArc(state: FocusState, model: MappingFieldModel | null): FieldArc | null {
+  if (model === null || state.selection === null || state.selection.kind !== "REQUIREMENT") return null;
+  const { body } = fieldLevel(state, model);
+  if (body === null || !sameRole(body.id, state.selection.role)) return null;
+  const id = state.selection.poolRequirementId;
+  return body.arcs.find(a => a.poolRequirementId === id) ?? null;
+}
+
+/** The selected capability and its reverse view (§2.2): the couplings that carry exactly its key, over capabilityKey only. */
+export interface FieldReverse { readonly key: string; readonly name: string; readonly node: FieldNode | null; readonly reverse: ReverseView; readonly roles: ReadonlySet<string> }
+export function selectedCapability(state: FocusState, model: MappingFieldModel | null): FieldReverse | null {
+  if (model === null || state.selection === null || state.selection.kind !== "CAPABILITY") return null;
+  const key = state.selection.capabilityKey;
+  const reverse = reverseView(model.view, key);
+  const name = model.view.constellation.find(c => c.key === key)?.name ?? key;
+  return { key, name, node: model.constellation.nodes.find(n => n.key === key) ?? null, reverse, roles: new Set(reverse.roles.map(roleKey)) };
+}
+
+/**
+ * A beam (§2.1): from the constellation node whose key a requirement couples, to that requirement's arc, in the form of the coupling
+ * state's `beam`. Only couplings whose sign has a beam are beams at all (DIFFERENT, WEAK_TOKEN_CONTAINMENT and NONE never draw one).
+ * Without a drawn start point (D-Q2) `from` is null and `missing` says why. The arc's own sign is never weakened for it.
+ */
+export type BeamMissing = "CONSTELLATION_OVERFLOW" | "NOT_IN_PERSON" | "KEY_ABSENT";
+export interface FieldBeam {
+  readonly id: string;
+  readonly roleKey: string;
+  readonly body: FieldBody;
+  readonly arc: FieldArc;
+  readonly beam: string;
+  readonly phaseLocked: boolean;
+  readonly from: { readonly x: number; readonly y: number } | null;
+  readonly missing: BeamMissing | null;
+}
+function beamOf(model: MappingFieldModel, body: FieldBody, arc: FieldArc): FieldBeam | null {
+  if (arc.coupling === null || arc.sign.beam === "none") return null;
+  const c = arc.coupling;
+  const node = c.keyStatus === "KNOWN" && c.capabilityKey !== null ? model.constellation.nodes.find(n => n.key === c.capabilityKey) ?? null : null;
+  const missing: BeamMissing | null = c.keyStatus === "ABSENT" ? "KEY_ABSENT" : c.keyStatus === "NOT_IN_PERSON" ? "NOT_IN_PERSON" : node === null ? "CONSTELLATION_OVERFLOW" : null;
+  return Object.freeze({ id: `${body.key}\u0000${arc.poolRequirementId}`, roleKey: body.key, body, arc, beam: arc.sign.beam, phaseLocked: arc.sign.phaseLocked,
+    from: node === null ? null : Object.freeze({ x: node.x, y: node.y }), missing });
+}
+/**
+ * The beams the level shows: L1 the marked role's, L2 all of the open role's, L3 the open arc's — and on every level the selected
+ * capability's, over all drawn roles of all pools (the reverse view). Each beam once.
+ */
+export function levelBeams(state: FocusState, model: MappingFieldModel | null): readonly FieldBeam[] {
+  if (model === null) return [];
+  const view = fieldLevel(state, model);
+  const out = new Map<string, FieldBeam>();
+  const add = (body: FieldBody, arc: FieldArc) => { const beam = beamOf(model, body, arc); if (beam !== null && !out.has(beam.id)) out.set(beam.id, beam); };
+  if (view.level === "L3" && view.body !== null && view.arc !== null) add(view.body, view.arc);
+  else if (view.level === "L2" && view.body !== null) for (const arc of view.body.arcs) add(view.body, arc);
+  else if (view.level === "L1") { const marked = markedBody(state, model); if (marked !== null) for (const arc of marked.arcs) add(marked, arc); }
+  const selected = selectedCapability(state, model);
+  if (selected !== null) {
+    const bodies = new Map(model.bodies.map(b => [b.key, b] as const));
+    for (const c of selected.reverse.couplings) {
+      const body = bodies.get(roleKey(c.role));
+      if (body === undefined || (view.body !== null && body.key !== view.body.key)) continue;
+      const arc = body.arcs.find(a => a.poolRequirementId === c.poolRequirementId);
+      if (arc !== undefined) add(body, arc);
+    }
+  }
+  return [...out.values()];
+}
+
+/**
+ * D-Q3 · the collar of a small body: it draws the arcs it can carry at the legible minimum IN RING ORDER and counts the rest. Ring
+ * order begins at REQUIRED and descends by weight, so what is counted away is always the lightest and least necessary — never an
+ * arbitrary pick, never a merge, never an average. `radiusPx` is the collar's radius on screen.
+ */
+export const COLLAR_MIN_ARC_PX = 4;
+export function collarSplit(arcs: readonly FieldArc[], radiusPx: number): { readonly drawn: readonly FieldArc[]; readonly hidden: number } {
+  const gapPx = (2 * Math.PI * radiusPx * spec.arcs.gapDegrees) / 360;
+  const capacity = Math.max(0, Math.floor((2 * Math.PI * radiusPx) / (COLLAR_MIN_ARC_PX + gapPx)));
+  if (arcs.length <= capacity) return { drawn: arcs, hidden: 0 };
+  return { drawn: arcs.slice(0, capacity), hidden: arcs.length - capacity };
+}
+
 export interface ViewBox { readonly x: number; readonly y: number; readonly width: number; readonly height: number }
 const round3 = (v: number) => Math.round(v * 1000) / 1000;
+const square = (minX: number, maxX: number, minY: number, maxY: number): ViewBox => {
+  const side = Math.max(maxX - minX, maxY - minY), cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  return { x: round3(cx - side / 2), y: round3(cy - side / 2), width: round3(side), height: round3(side) };
+};
 /** L0: the whole field with a margin. */
 export function fieldViewBox(margin = 24): ViewBox {
   const r = GEOMETRY.fieldRadius + margin;
@@ -170,29 +332,140 @@ export function sectorViewBox(sector: Pick<FieldSector, "startDegrees" | "spanDe
   const points: Array<[number, number]> = [];
   for (const a of angles) for (const r of [GEOMETRY.personRadius, GEOMETRY.fieldRadius]) points.push([r * Math.cos((a * Math.PI) / 180), r * Math.sin((a * Math.PI) / 180)]);
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
-  const minX = Math.min(...xs) - margin, maxX = Math.max(...xs) + margin, minY = Math.min(...ys) - margin, maxY = Math.max(...ys) + margin;
-  const side = Math.max(maxX - minX, maxY - minY), cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-  return { x: round3(cx - side / 2), y: round3(cy - side / 2), width: round3(side), height: round3(side) };
+  return square(Math.min(...xs) - margin, Math.max(...xs) + margin, Math.min(...ys) - margin, Math.max(...ys) + margin);
+}
+/**
+ * L2/L3 · the magnification of one body: its ring drawn at the ring radius around the body's own place, and the person (its
+ * constellation) in the same frame, so every beam runs between two drawn points. The ring radius is a drawing magnification, never a
+ * quantity: at least three body radii, else three tenths of the way from the person's edge to the body.
+ */
+export function ringRadius(body: Pick<FieldBody, "x" | "y" | "radius">): number {
+  const distance = Math.hypot(body.x, body.y);
+  return round3(Math.max(3 * body.radius, 0.3 * (distance - GEOMETRY.personRadius)));
+}
+export function roleViewBox(body: Pick<FieldBody, "x" | "y" | "radius">, margin = 36): ViewBox {
+  const r = ringRadius(body), p = GEOMETRY.personRadius;
+  return square(Math.min(-p, body.x - r) - margin, Math.max(p, body.x + r) + margin, Math.min(-p, body.y - r) - margin, Math.max(p, body.y + r) + margin);
 }
 
 /**
- * The time sign (sign-table timeMovement): between two readings of one analysis, a body moves only when its own tier or fit changed
- * (delta ROLE_TIER_CHANGED / ROLE_FIT_CHANGED) — then with a trail from its previous drawn position; several changes of one read are
- * one movement. A new body appears without a trail; a re-read that changed nothing moves nothing.
+ * The time sign, three-valued (§4.2 A3, D-Q5). Movement means evidence, always and only:
+ *  - EVIDENCE — the delta names the body's own ROLE_TIER_CHANGED or ROLE_FIT_CHANGED: it moves, with a trail from its previous place;
+ *    several changes of one reading are one movement;
+ *  - LAYOUT — drawn in both readings, its place differs, and the delta names no tier or fit change of its own (a neighbour moved, a
+ *    role was added, the collision search displaced it): it takes its new place with no transition and no trail, and is stated;
+ *  - NONE — no entry: the same place, a body that appears or comes out of overflow, or one that goes into overflow (an absence, told
+ *    by the overflow count). Across analyses, and without a previous reading, everything is NONE.
  */
-export interface BodyMovement { readonly moved: boolean; readonly from: { readonly x: number; readonly y: number } | null }
+export type MovementKind = "EVIDENCE" | "LAYOUT";
+export interface BodyMovement { readonly kind: MovementKind; readonly moved: boolean; readonly from: { readonly x: number; readonly y: number } }
 export interface FieldSnapshot { readonly analysisId: string; readonly ranking: RoleRanking; readonly bodies: readonly FieldBody[] }
 export function bodyMovements(previous: FieldSnapshot | null, next: FieldSnapshot): ReadonlyMap<string, BodyMovement> {
   const out = new Map<string, BodyMovement>();
   if (previous === null || previous.analysisId !== next.analysisId) return out;
   const before = new Map(previous.bodies.map(b => [b.key, b] as const));
-  const drawn = new Set(next.bodies.map(b => b.key));
+  const evidence = new Set<string>();
   for (const change of diffRankings(previous.ranking, next.ranking)) {
-    if (change.kind !== "ROLE_TIER_CHANGED" && change.kind !== "ROLE_FIT_CHANGED") continue;
-    const key = roleKey(change.role);
-    if (!drawn.has(key) || out.has(key)) continue;
-    const was = before.get(key);
-    out.set(key, Object.freeze({ moved: true, from: was === undefined ? null : Object.freeze({ x: was.x, y: was.y }) }));
+    if (change.kind === "ROLE_TIER_CHANGED" || change.kind === "ROLE_FIT_CHANGED") evidence.add(roleKey(change.role));
+  }
+  for (const body of next.bodies) {
+    const was = before.get(body.key);
+    if (was === undefined) continue;
+    const from = Object.freeze({ x: was.x, y: was.y });
+    if (evidence.has(body.key)) out.set(body.key, Object.freeze({ kind: "EVIDENCE" as const, moved: true, from }));
+    else if (was.x !== body.x || was.y !== body.y) out.set(body.key, Object.freeze({ kind: "LAYOUT" as const, moved: false, from }));
+  }
+  return out;
+}
+
+/*
+ * ── Phase E (docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_PHASE_E.md, GRÜN) · additive only ──────────────────────────
+ * How the same semantics reach the eye. Nothing above changes meaning; nothing here adds a coupling, a state or an evidence class
+ * (B-5). Every value below is derived from what the sign table, the layout and the delta already carry.
+ */
+
+/**
+ * E-1 / A-3 · the evidence bands: the one channel that answers "is it evidenced?". Each coupling class owns a disjoint luminance
+ * band; the sign table's own per-state luminance is mapped monotonically INSIDE its class's band, so the class is recoverable from
+ * luminance alone and the state gradation survives. The table is read, never rewritten: data-luminance keeps the table's value.
+ */
+export type EvidenceStep = "CHECKED" | "NAME_ONLY" | "NONE";
+export const EVIDENCE_STEP: Readonly<Record<CouplingClass, EvidenceStep>> = Object.freeze({ SEMANTIC: "CHECKED", LEXICAL: "NAME_ONLY", NONE: "NONE" });
+export const EVIDENCE_BAND: Readonly<Record<EvidenceStep, readonly [number, number]>> = Object.freeze({
+  CHECKED: Object.freeze([0.93, 1.0] as const), NAME_ONLY: Object.freeze([0.45, 0.58] as const), NONE: Object.freeze([0.22, 0.28] as const)
+});
+/** Adjacent bands at their closest points are at least this far apart. */
+export const LUMINANCE_STEP_MIN = 1.6;
+/** The table's own luminance domain (its faintest and brightest state), read from the table — the source of the monotone map. */
+const TABLE_LUMINANCE = (() => {
+  const values = COUPLING_STATES.map(state => (signTable.couplingStates as Record<string, { luminance: number }>)[state].luminance);
+  return Object.freeze({ min: Math.min(...values), max: Math.max(...values) });
+})();
+/** E-1: an arc's drawn luminance — its class picks the band, the table's per-state luminance its place inside the band. */
+export function luminanceOf(sign: Pick<CouplingSign, "class" | "luminance">): number {
+  const step = EVIDENCE_STEP[sign.class];
+  if (step === undefined) throw new Error(`ERR_MAPPING_FIELD_UNKNOWN_CLASS:${String(sign.class)}`);
+  const [lo, hi] = EVIDENCE_BAND[step];
+  const t = (sign.luminance - TABLE_LUMINANCE.min) / (TABLE_LUMINANCE.max - TABLE_LUMINANCE.min);
+  return round3(lo + Math.min(1, Math.max(0, t)) * (hi - lo));
+}
+
+/**
+ * E-2 / A-8 · the relation ink at L0: each drawn body's own strongest coupling — among its couplings whose sign has a beam, the
+ * highest requirement value, then ring order (the ring begins at REQUIRED and the heavier), then poolRequirementId: a total order.
+ * The beam is returned with its start point or with the reason it has none (D-Q2): a body whose strongest coupling starts nowhere
+ * in the person draws no beam, and the undrawn counter counts it.
+ */
+export const PRIMARY_BEAM_LUMINANCE = 0.22;
+export function primaryBeamOf(model: MappingFieldModel, body: FieldBody): FieldBeam | null {
+  let best: { beam: FieldBeam; index: number } | null = null;
+  body.arcs.forEach((arc, index) => {
+    const beam = beamOf(model, body, arc);
+    if (beam === null) return;
+    const better = best === null || arc.value > best.beam.arc.value
+      || (arc.value === best.beam.arc.value && (index < best.index || (index === best.index && arc.poolRequirementId < best.beam.arc.poolRequirementId)));
+    if (better) best = { beam, index };
+  });
+  return best === null ? null : (best as { beam: FieldBeam }).beam;
+}
+/** One per drawn body that has a beam-bearing coupling, by rank. */
+export function primaryBeams(model: MappingFieldModel | null): readonly FieldBeam[] {
+  if (model === null) return [];
+  return model.bodies.map(b => primaryBeamOf(model, b)).filter((b): b is FieldBeam => b !== null);
+}
+
+/**
+ * E-7 · the size floor. A body is drawn at least SIZE_FLOOR_PX across on screen; where the floor takes over, the size channel has
+ * stopped being proportional and the body says so (data-size-floor). `k` is the user units per screen pixel of the drawing.
+ */
+export const SIZE_FLOOR_PX = 12;
+export function sizeFloor(radius: number, k: number): { readonly radius: number; readonly floor: boolean } {
+  const floorRadius = (SIZE_FLOOR_PX / 2) * k;
+  return radius < floorRadius ? { radius: Math.ceil(floorRadius * 1000) / 1000, floor: true } : { radius, floor: false };
+}
+
+/**
+ * E-3 / E-4 · the three motion kinds, on opposite sides of the capture boundary. A body's change is the delta's (bodyMovements):
+ * EVIDENCE arrives as a luminance transient (its place is cut, never travelled), LAYOUT as a position gradient (no luminance change);
+ * QUERY is the user's own selection, a shared-phase oscillation of the selected capability's coupled bodies.
+ */
+export type ChangeKind = MovementKind;
+export interface BodyMotion { readonly change: ChangeKind | null; readonly query: boolean }
+export function motionKind(movement: BodyMovement | undefined, queried: boolean): BodyMotion {
+  return { change: movement?.kind ?? null, query: queried };
+}
+
+/**
+ * E-4b · evidence that changed without anything moving. The delta already names it at the requirement — REQUIREMENT_STATE_CHANGED
+ * (its source or its state) and REQUIREMENT_KEY_CHANGED (the capability it couples) — and bodyMovements, reading only the role
+ * kinds, let it pass in silence. Here it is kept: the set of `${roleKey}\u0000${poolRequirementId}` whose own evidence changed
+ * since the previous reading of the same analysis. No new delta kind, no new rule: the engine's own diff, read once more.
+ */
+export function arcChanges(previous: FieldSnapshot | null, next: FieldSnapshot): ReadonlySet<string> {
+  const out = new Set<string>();
+  if (previous === null || previous.analysisId !== next.analysisId) return out;
+  for (const change of diffRankings(previous.ranking, next.ranking)) {
+    if ((change.kind === "REQUIREMENT_STATE_CHANGED" || change.kind === "REQUIREMENT_KEY_CHANGED") && change.poolRequirementId !== null) out.add(`${roleKey(change.role)}\u0000${change.poolRequirementId}`);
   }
   return out;
 }

@@ -1,0 +1,153 @@
+{
+ "reading": "GRÜN development reading · PG-3 rendered drawn-body diameter",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "priorBaseline": "NONE — A-G41 voided §12's 54 px. PG-3 stays OPEN per A-G24. FIRST MEASUREMENT.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:31:55.075Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1920x1080",
+ "region": "924x924",
+ "svgCssWidthPx": 924,
+ "viewBoxUnits": {
+  "x": -554.41,
+  "y": -554.41,
+  "w": 1108.82,
+  "h": 1108.82
+ },
+ "unitsToPx": 0.83332,
+ "level": "L0",
+ "breath": "LIVE",
+ "definitions": {
+  "fromModel": "2 × data-drawn-radius (field units) × (svg CSS width ÷ viewBox width)",
+  "fromRenderedShape": "the [data-mapping-body-shape] element's own client rectangle width",
+  "specRange": "layout-spec-v1.1.json body.drawn 34.2 … 54.6 units, annotated '≥ 56 … ≤ 92 px diameter at L0, 1920×1080, with the frame widened to hold every drawn body whole (PG-14)'",
+  "whyTwoWays": "the frame widening (frameWithBodies, PG-14 as restated by A-G38(c)) changes k, so the spec's px annotation and the rendered px can diverge — A-G19's '~4 % shrink' prediction is about exactly this",
+  "drawnSet": "bodies with data-in-pool=true — the set the level actually draws (PG-5 budget ∩ PG-16 crowding)"
+ },
+ "PG3_boundForReference": ">= 56 px diameter at 1920x1080 (<= 92 px)",
+ "drawnBodyCount": 5,
+ "totalBodyCount": 5,
+ "diameterPx_fromModel": {
+  "n": 5,
+  "mean": 69.098,
+  "p50": 67.96,
+  "p90": 69.24,
+  "p99": 69.24,
+  "p999": 69.24,
+  "p9999": 69.24,
+  "max": 87.77,
+  "min": 57
+ },
+ "diameterPx_fromRenderedShape": {
+  "n": 5,
+  "mean": 69.098,
+  "p50": 67.96,
+  "p90": 69.24,
+  "p99": 69.24,
+  "p999": 69.24,
+  "p9999": 69.24,
+  "max": 87.77,
+  "min": 57
+ },
+ "bodies": [
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "rank": 1,
+   "tier": "SEMANTIC",
+   "shelf": false,
+   "inPool": true,
+   "sizeFloorApplied": false,
+   "requiredGaps": 1,
+   "drawnRadiusUnits": 41.544,
+   "diameterPx_fromModel": 69.24,
+   "diameterPx_fromRenderedShape": 69.24
+  },
+  {
+   "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+   "rank": 2,
+   "tier": "SEMANTIC",
+   "shelf": false,
+   "inPool": true,
+   "sizeFloorApplied": false,
+   "requiredGaps": 5,
+   "drawnRadiusUnits": 52.662,
+   "diameterPx_fromModel": 87.77,
+   "diameterPx_fromRenderedShape": 87.77
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+   "rank": 3,
+   "tier": "LEXICAL_ONLY",
+   "shelf": true,
+   "inPool": true,
+   "sizeFloorApplied": false,
+   "requiredGaps": 0,
+   "drawnRadiusUnits": 40.774,
+   "diameterPx_fromModel": 67.96,
+   "diameterPx_fromRenderedShape": 67.96
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+   "rank": 4,
+   "tier": "LEXICAL_ONLY",
+   "shelf": true,
+   "inPool": true,
+   "sizeFloorApplied": false,
+   "requiredGaps": 0,
+   "drawnRadiusUnits": 38.115,
+   "diameterPx_fromModel": 63.52,
+   "diameterPx_fromRenderedShape": 63.52
+  },
+  {
+   "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+   "rank": 5,
+   "tier": "LEXICAL_ONLY",
+   "shelf": true,
+   "inPool": true,
+   "sizeFloorApplied": false,
+   "requiredGaps": 0,
+   "drawnRadiusUnits": 34.2,
+   "diameterPx_fromModel": 57,
+   "diameterPx_fromRenderedShape": 57
+  }
+ ]
+}

@@ -1,0 +1,136 @@
+{
+ "reading": "GRÜN · §108 — PF-13 evaluated over its own population, verdict from the JSON reporter",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "commit": "980c77bf",
+ "pin": {
+  "statement": "PF-13: every phase-D and phase-E test passes, except the three restated in writing.",
+  "firstStatement": "an earlier statement of the same pin reads 'every phase-D and phase-E test passes UNCHANGED'",
+  "aG426": "the exception is to UNCHANGED, not to PASSES — the three were rewritten for phase F and must still pass. This evaluator implements that stricter reading and reports the contradiction with GELB §116's wording rather than choosing quietly."
+ },
+ "population": {
+  "derivedFrom": "test/career/mapping-field/architecture.test.ts -> PHASE_DIRS",
+  "phaseDirs": [
+   "test/career/mapping-field/",
+   "test/career/mapping-spec/"
+  ],
+  "testFiles": [
+   "test/career/mapping-field/architecture.test.ts",
+   "test/career/mapping-field/field-d.test.tsx",
+   "test/career/mapping-field/field-e.test.tsx",
+   "test/career/mapping-field/field-f.test.tsx",
+   "test/career/mapping-field/field-g-mutant.test.tsx",
+   "test/career/mapping-field/field-g.test.tsx",
+   "test/career/mapping-field/field-interaction.test.tsx",
+   "test/career/mapping-field/field-render.test.tsx",
+   "test/career/mapping-field/field-wiring.test.tsx",
+   "test/career/mapping-field/model.test.ts",
+   "test/career/mapping-field/neurovisual-e.test.ts",
+   "test/career/mapping-field/selector-d.test.tsx",
+   "test/career/mapping-field/selector-keys-d.test.tsx",
+   "test/career/mapping-field/signs-d.test.ts",
+   "test/career/mapping-spec/layout.test.ts",
+   "test/career/mapping-spec/sign-table.test.ts"
+  ],
+  "testFileCount": 16
+ },
+ "reporter": {
+  "totalTests": 198,
+  "passed": 198,
+  "failed": 0,
+  "filesCovered": 16,
+  "coverageMatchesPopulation": true,
+  "missing": [],
+  "extra": []
+ },
+ "restatedSetDerivedFromTitles": {
+  "allInPopulation": [
+   {
+    "file": "test/career/mapping-field/field-e.test.tsx",
+    "itLine": 355,
+    "title": "REPRODUCE (restated, phase G): every drawn body ≥ max(12 px floor, its V1.1 drawn radius); size monotone in mass; the floor binds, and says so, on a narrow stage",
+    "namesPhaseF": false,
+    "namesPhaseG": true
+   },
+   {
+    "file": "test/career/mapping-field/field-f.test.tsx",
+    "itLine": 195,
+    "title": "REPRODUCE (restated, phase G): the pool wash lifts the ground by 1 … 3 sRGB codes in every channel over the whole ground — and never darkens it",
+    "namesPhaseF": false,
+    "namesPhaseG": true
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 136,
+    "title": "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign",
+    "namesPhaseF": true,
+    "namesPhaseG": false
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 173,
+    "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
+    "namesPhaseF": true,
+    "namesPhaseG": true
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 205,
+    "title": "no other ambient motion (restated, phase F §12): nothing animates infinitely but rules keyed on LIVE and the user's own query",
+    "namesPhaseF": true,
+    "namesPhaseG": false
+   }
+  ],
+  "forPF13_phaseF_inTheCitedFile": [
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 136,
+    "title": "inverse (position half restated, phase F §12/A-F15): no other rule gives a transient to anything but EVIDENCE, and no rule gives a position transition to EVIDENCE or to a sign",
+    "namesPhaseF": true,
+    "namesPhaseG": false
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 173,
+    "title": "REPRODUCE (restated, phase F §12 and phase G §8): every breath rule is keyed on LIVE and selects inside the field; 0.1 Hz exactly; 4 s rise : 6 s fall; ≥ 30× under 3 Hz; the travel's period divides the breath's",
+    "namesPhaseF": true,
+    "namesPhaseG": true
+   },
+   {
+    "file": "test/career/mapping-field/neurovisual-e.test.ts",
+    "itLine": 205,
+    "title": "no other ambient motion (restated, phase F §12): nothing animates infinitely but rules keyed on LIVE and the user's own query",
+    "namesPhaseF": true,
+    "namesPhaseG": false
+   }
+  ],
+  "outsidePF13_phaseG": [
+   {
+    "file": "test/career/mapping-field/field-e.test.tsx",
+    "itLine": 355,
+    "title": "REPRODUCE (restated, phase G): every drawn body ≥ max(12 px floor, its V1.1 drawn radius); size monotone in mass; the floor binds, and says so, on a narrow stage",
+    "namesPhaseF": false,
+    "namesPhaseG": true
+   },
+   {
+    "file": "test/career/mapping-field/field-f.test.tsx",
+    "itLine": 195,
+    "title": "REPRODUCE (restated, phase G): the pool wash lifts the ground by 1 … 3 sRGB codes in every channel over the whole ground — and never darkens it",
+    "namesPhaseF": false,
+    "namesPhaseG": true
+   }
+  ],
+  "whyTheFilterIsPhaseAware": "PF-13 is a PHASE-F pin and says 'the three restated in writing' in neurovisual-e. Two further tests in the population say 'restated, phase G' (field-e.test.tsx and field-f.test.tsx) — restated for a LATER phase, so outside a phase-F pin's exception list by design rather than by omission. 'Restated' in a title does not by itself mean 'exempted by PF-13'; the phase it names decides."
+ },
+ "failuresNamed": [],
+ "venue": {
+  "note": "global-setup.ts runs UNCONDITIONALLY, so the population's static files — which open no database — cannot be evaluated without a provisioned disposable one. That is a property of the stand, not of the pin, and it is why this half runs in the lane holding the credential."
+ },
+ "finding": "PF-13 EVALUATED over 16 test files from PHASE_DIRS, verdict read from the JSON reporter rather than an exit code: 198 tests, 198 passed, 0 failed.\nCOVERAGE GUARD: the reporter's file set EQUALS the enumerated population (missing 0, out-of-population 0). A zero denominator or a partial filter reads as a clean pass and is refused here instead.\nTHE RESTATED SET FOR PF-13, derived from titles and scoped to the pin's own phase and file: [136,173,205] in test/career/mapping-field/neurovisual-e.test.ts. 2 further tests in the population say \"restated, phase G\" (field-e.test.tsx:355, field-f.test.tsx:195) — restated for a LATER phase, outside a phase-F pin by design. PF-13's own citations resolve to a DIFFERENT set — §98 reports that mismatch and now fails on it.\nNO VERDICT on the pin (A-G36 point 2): this says the population passes. Whether PF-13 is satisfied is PINK's."
+}

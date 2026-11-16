@@ -1,0 +1,208 @@
+{
+ "reading": "GRÜN · §82 — A-G49's hooks checked by SET EQUALITY against the two routes that predate them",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "scope": "rendered-page DOM and computed style on a loopback build. No raster, no luminance, no sealed datum touched.",
+ "standard": "PINK's, adopted by GELB for the whole hook set: set equality against class membership and animationName, on the rendered page. This probe never asks whether an attribute exists; it asks whether the partition it induces is the same SET as two older independent routes induce.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d-hooks",
+  "head": "fb4632dac30bd21d6c5b3262e4efa2bd3553a777",
+  "headShort": "fb4632da",
+  "branch": "HEAD",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "TKZRoMo0_1Ro-svJrokkW",
+  "measuredAt": "2026-11-11T16:15:36.790Z"
+ },
+ "viewport": "1920x1080",
+ "motion": "LIVE — route 3 needs the animation running to be a route",
+ "buildCarriesTheHooks": true,
+ "counts": {
+  "hooked": 5,
+  "byClassShelf": 3,
+  "byClassField": 2
+ },
+ "routes": {
+  "route1_hook": {
+   "shelf": [
+    232,
+    234,
+    236
+   ],
+   "field": [
+    262,
+    264
+   ]
+  },
+  "route2_classMembership": {
+   "shelf": [
+    232,
+    234,
+    236
+   ],
+   "field": [
+    262,
+    264
+   ],
+   "selector": ".mf-halo > circle:not(.mf-wave-halo) | .mf-wave-halo — PINK's §15 selector, predating the hook"
+  },
+  "route3_animationName": {
+   "none": [
+    232,
+    234,
+    236
+   ],
+   "some": [
+    262,
+    264
+   ],
+   "names": [
+    "mappingFieldWave"
+   ]
+  }
+ },
+ "agreement": {
+  "hookShelf_vs_classShelf": true,
+  "hookField_vs_classField": true,
+  "hookShelf_vs_animNone": true,
+  "hookField_vs_animSome": true,
+  "haloSigs_vs_bodySigs": true,
+  "gapAttr_vs_gapFill": true,
+  "haloRadiusAttrMatchesRenderedR": true
+ },
+ "crossChecks": {
+  "haloIdentityMultisetEqualsBodyIdentityMultiset": true,
+  "haloSigs": [
+   "1|false|1",
+   "2|false|5",
+   "3|true|0",
+   "4|true|0",
+   "5|true|0"
+  ],
+  "bodySigs": [
+   "1|false|1",
+   "2|false|5",
+   "3|true|0",
+   "4|true|0",
+   "5|true|0"
+  ],
+  "note": "rank|shelf|required-gaps as a MULTISET, so halo and body are matched by identity rather than by concentricity under 2 px — which is the inference the hook exists to replace",
+  "oneHueCarrier": {
+   "byAttribute": [
+    262,
+    264
+   ],
+   "byFill": [
+    262,
+    264
+   ],
+   "agree": true,
+   "note": "the halos with data-required-gaps > 0 must be exactly the halos filled url(#mf-halo-gap). PG-12's carrier previously had to infer this from proximity."
+  }
+ },
+ "seats": {
+  "expectedSeven": [
+   "shelf-band",
+   "ring-best-fit",
+   "ring-horizon",
+   "ring-field",
+   "ring-person",
+   "node",
+   "open-body-ring"
+  ],
+  "present": [
+   "shelf-band",
+   "ring-best-fit",
+   "ring-horizon",
+   "ring-field",
+   "ring-person",
+   "node"
+  ],
+  "missing": [
+   "open-body-ring"
+  ],
+  "detail": {
+   "shelf-band": {
+    "count": 1,
+    "tags": [
+     "circle"
+    ]
+   },
+   "ring-best-fit": {
+    "count": 1,
+    "tags": [
+     "circle"
+    ]
+   },
+   "ring-horizon": {
+    "count": 1,
+    "tags": [
+     "circle"
+    ]
+   },
+   "ring-field": {
+    "count": 1,
+    "tags": [
+     "circle"
+    ]
+   },
+   "ring-person": {
+    "count": 1,
+    "tags": [
+     "circle"
+    ]
+   },
+   "node": {
+    "count": 3,
+    "tags": [
+     "circle"
+    ]
+   },
+   "body-disc": {
+    "count": 5,
+    "tags": [
+     "circle"
+    ]
+   },
+   "body-ring": {
+    "count": 5,
+    "tags": [
+     "circle"
+    ]
+   },
+   "arc-marks": {
+    "count": 19,
+    "tags": [
+     "g"
+    ]
+   }
+  },
+  "groupFlagged": [
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks",
+   "arc-marks"
+  ],
+  "groupFlagNote": "arc-marks carries data-seat-is-group because selecting it does not select a painted mark — the A-G31 shape stated where it still applies"
+ },
+ "finding": "ALL 7 CHECKS AGREE. The hook's shelf/field partition is set-identical to PINK's class-membership partition AND to the browser's own animationName partition (3 shelf, 2 field); the halo identity multiset equals the body identity multiset, so halo-to-body matching no longer needs geometric inference; the one hue's carrier read from the attribute equals the carrier read from the fill; and data-halo-radius equals the rendered r. Seats MISSING at this level: open-body-ring — expected where a level does not draw them, and listed rather than passed over."
+}

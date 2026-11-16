@@ -1,0 +1,285 @@
+{
+ "reading": "GRÜN development reading · PF-15 inverted, limbs (a) budget and (b) ladder, measured jointly",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "priorBaseline": "NONE for limb (a) — A-G41 voided §12's 0.23. Limb (b) has PINK's phase-F readings on a different ground and a different statistic.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:33:52.760Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "region": "520x520",
+ "discPixels": 154765,
+ "unitsToPx": 0.44398,
+ "definitions": {
+  "statistic": "A-G65: per-angle MEDIAN over band pixels no SIGN and no SEAT covers, signs kept drawn; the ring's figure is the pooled median and the distribution is always published. min() and max() are BOTH superseded: max() caught a crossing body (PINK's 0.58), min() caught a crossing opaque seat (pure rgb(0,0,0) over ~1% of angles). The engraved minimum is retained in `supersededExtrema` for comparison only.",
+  "signsDrawn": "defect nineteen's remedy: suppression does not isolate the medium, so every sign stays drawn and is excluded by mask instead.",
+  "limbA": "(ΣL_full − ΣL_ringsSuppressed) / (ΣL_full − ΣL_semanticsSuppressed) — the rings' light as a share of the semantic light (A-G5 limb a, bound ≤ 0.08)",
+  "limbB": "ring-to-ring ratio on the engraved minimum, ladder shelf → best → field → horizon (A-G5 limb b, bound ≥ 1.6 per step)",
+  "bodiesDrawn": "the bodies are DRAWN, not suppressed: the engraved minimum is what makes that safe, and suppressing them would change the ground the rings sit on",
+  "jointness": "A-G34 — both limbs from ONE run, so a declaration of mutual unsatisfiability would rest on one state of the field"
+ },
+ "limbA_ringsShareOfSemanticLight": 0.11678,
+ "limbA_boundForReference": "<= 0.08",
+ "limbA_sums": {
+  "full": 2341.2,
+  "semanticLight": 1441.5,
+  "ringsLight": 168.34
+ },
+ "limbB_ladder": [
+  {
+   "step": "shelf → best",
+   "ratioOnMaskedMedian": 2.222,
+   "ratioOnEngravedMin_SUPERSEDED": 2.022
+  },
+  {
+   "step": "best → field",
+   "ratioOnMaskedMedian": 0.572,
+   "ratioOnEngravedMin_SUPERSEDED": 2.092
+  },
+  {
+   "step": "field → horizon",
+   "ratioOnMaskedMedian": 0.77,
+   "ratioOnEngravedMin_SUPERSEDED": 2.341
+  }
+ ],
+ "limbB_boundForReference": ">= 1.6 per step",
+ "perRing": {
+  "shelf": {
+   "bandPx": [
+    190.9,
+    222
+   ],
+   "bandIsStrokeExtent": true,
+   "fromRenderer": {
+    "r": 465,
+    "strokeWidthUnits": 70,
+    "strokeWidthPx": 31.08,
+    "alpha": 0.022,
+    "stroke": "rgba(205, 240, 255, 0.022)"
+   },
+   "masked": {
+    "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
+    "anglesMeasured": 446,
+    "anglesFullyCovered": 274,
+    "bandPixels": 90000,
+    "coveredPixels": 87947,
+    "coveredFraction": 0.9772,
+    "pooledMedian": 0.0022854,
+    "perAngleMedian": {
+     "min": 0.00030353,
+     "p05": 0.0011496,
+     "p25": 0.0020602,
+     "p50": 0.0027195,
+     "p75": 0.0035653,
+     "p95": 0.0063542,
+     "max": 0.010048
+    },
+    "perAngleSpread": 1.914
+   },
+   "supersededExtrema": {
+    "angles": 720,
+    "statistic": "min over angles of the per-angle radial peak (engraved minimum, A-G45)",
+    "engravedMin": 0.0019323,
+    "p05": 0.0062641,
+    "p25": 0.016117,
+    "p50": 0.01693,
+    "p95": 0.49303,
+    "max": 0.61674
+   }
+  },
+  "best": {
+   "bandPx": [
+    69.8,
+    72.2
+   ],
+   "bandIsStrokeExtent": true,
+   "fromRenderer": {
+    "r": 160,
+    "strokeWidthUnits": 5.406,
+    "strokeWidthPx": 2.4,
+    "alpha": 0.085,
+    "stroke": "rgba(205, 240, 255, 0.085)"
+   },
+   "masked": {
+    "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
+    "anglesMeasured": 8,
+    "anglesFullyCovered": 712,
+    "bandPixels": 7200,
+    "coveredPixels": 7192,
+    "coveredFraction": 0.9989,
+    "pooledMedian": 0.0050793,
+    "perAngleMedian": {
+     "min": 0.004699,
+     "p05": 0.004699,
+     "p25": 0.0047368,
+     "p50": 0.0050793,
+     "p75": 0.0051847,
+     "p95": 0.0055018,
+     "max": 0.0055664
+    },
+    "perAngleSpread": 0.158
+   },
+   "supersededExtrema": {
+    "angles": 720,
+    "statistic": "min over angles of the per-angle radial peak (engraved minimum, A-G45)",
+    "engravedMin": 0.003907,
+    "p05": 0.0072286,
+    "p25": 0.0072286,
+    "p50": 0.0072286,
+    "p95": 0.17057,
+    "max": 0.57194
+   }
+  },
+  "field": {
+   "bandPx": [
+    221,
+    223
+   ],
+   "bandIsStrokeExtent": true,
+   "fromRenderer": {
+    "r": 500,
+    "strokeWidthUnits": 4.505,
+    "strokeWidthPx": 2,
+    "alpha": 0.15,
+    "stroke": "rgba(205, 240, 255, 0.15)"
+   },
+   "masked": {
+    "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
+    "anglesMeasured": 389,
+    "anglesFullyCovered": 331,
+    "bandPixels": 6480,
+    "coveredPixels": 5297,
+    "coveredFraction": 0.8174,
+    "pooledMedian": 0.0029062,
+    "perAngleMedian": {
+     "min": 0,
+     "p05": 0.000239,
+     "p25": 0.0011496,
+     "p50": 0.0026027,
+     "p75": 0.004543,
+     "p95": 0.0067363,
+     "max": 0.0092927
+    },
+    "perAngleSpread": 2.496
+   },
+   "supersededExtrema": {
+    "angles": 720,
+    "statistic": "min over angles of the per-angle radial peak (engraved minimum, A-G45)",
+    "engravedMin": 0.0081719,
+    "p05": 0.016117,
+    "p25": 0.01693,
+    "p50": 0.01693,
+    "p95": 0.01693,
+    "max": 0.61674
+   }
+  },
+  "horizon": {
+   "bandPx": [
+    176.6,
+    178.6
+   ],
+   "bandIsStrokeExtent": true,
+   "fromRenderer": {
+    "r": 400,
+    "strokeWidthUnits": 4.505,
+    "strokeWidthPx": 2,
+    "alpha": 0.25,
+    "stroke": "rgba(205, 240, 255, 0.25)"
+   },
+   "masked": {
+    "statistic": "A-G65: per-angle MEDIAN over band pixels no sign or seat covers; the ring's figure is the pooled median. Distribution published, never an extremum alone.",
+    "anglesMeasured": 37,
+    "anglesFullyCovered": 683,
+    "bandPixels": 6480,
+    "coveredPixels": 6436,
+    "coveredFraction": 0.9932,
+    "pooledMedian": 0.0022364,
+    "perAngleMedian": {
+     "min": 0.0018459,
+     "p05": 0.0018459,
+     "p25": 0.0019323,
+     "p50": 0.0022364,
+     "p75": 0.0024773,
+     "p95": 0.0029965,
+     "max": 0.0033907
+    },
+    "perAngleSpread": 0.514
+   },
+   "supersededExtrema": {
+    "angles": 720,
+    "statistic": "min over angles of the per-angle radial peak (engraved minimum, A-G45)",
+    "engravedMin": 0.019131,
+    "p05": 0.033896,
+    "p25": 0.043057,
+    "p50": 0.043057,
+    "p95": 0.099649,
+    "max": 0.57786
+   }
+  }
+ },
+ "signAndSeatMaskPixels": {
+  "glowsAll": 24967,
+  "bodyCore": 5266,
+  "bodyOutlines": 7002,
+  "bodyNames": 6712,
+  "arcs": 3191,
+  "beams": 1473,
+  "nodes": 3431,
+  "sectorText": 4407,
+  "bodySeat": 64707
+ },
+ "shelfCompositedOverItsOwnBlackSeat": {
+  "note": "The shelf ring is NOT composited over the stage plate. A black seat circle of the SAME geometry (:882) is painted immediately before it, so the band is pure black beneath the ring and rgba(INK, alpha) composites over rgb(0,0,0), not over rgb(3,5,8). Measured radial profile at 1920: the band reads 1.45e-3 with the ring and ~0 without it (+1.5e-3 contribution at every sampled radius 435…495), and the ring contributes light at 718 of 720 angles. At alpha 0.02 that lands on 0.0014531 against the plate's 0.00145432 — luminance-identical to within 1.2e-6 BY COINCIDENCE, not because the ring is missing.",
+  "consequence": "the shelf band renders at the stage ground's luminance at EVERY angle, which is systematic rather than the single dark angle this lane first reported"
+ },
+ "shelfRenderedLuminance_forTheStaleComment": {
+  "note": "A-G39(a): PersonJobMappingField.tsx:96–100 still records the pre-inversion ladder at shelf alpha 0.05. GELB's instruction is to correct that comment with the shelf's REAL rendered luminance when a measurement produces it, never with an invented number. This is that measurement — development grade, so the comment should cite it as GRÜN's development reading, not as a verdict."
+ },
+ "pinkComparison": {
+  "source": "PINK phase-F rings (all-angles / ink-only closest-point)",
+  "pink_ratios": [
+   1.636,
+   0.63,
+   0.861
+  ],
+  "note": "different ground, different statistic (closest-point, not engraved minimum); divergence is a finding (A-G36 point 4)"
+ }
+}

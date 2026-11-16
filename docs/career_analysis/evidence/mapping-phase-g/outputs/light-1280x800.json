@@ -1,0 +1,210 @@
+{
+ "reading": "GRÜN development reading · PG-1 semantic share and PG-6 relation share, by suppression",
+ "verdict": "NONE — development reading only (A-G36 point 2)",
+ "priorBaseline": "NONE — A-G41 voided §12's 0.42 / 0.025 (measured on a vanished working tree). FIRST MEASUREMENT.",
+ "provenance": {
+  "worktree": "/home/codi/Entwicklung/condyn-admin-mapping-d",
+  "head": "185427d51714d3850511768b27757db6bbbfda88",
+  "headShort": "185427d5",
+  "branch": "frontend/mapping-phase-g",
+  "treeClean": false,
+  "productTreeClean": true,
+  "dirtyOutsideProduct": [
+   "ocs/career_analysis/evidence/mapping-phase-g/outputs/bodies-1280x800.json"
+  ],
+  "productDeltaFrom3ec8457d": [
+   "app/components/career/demo/PersonJobMappingField.tsx"
+  ],
+  "untrackedProductFiles": [],
+  "buildId": "HRYkeEpbpndI3UEE7ceeC",
+  "measuredAt": "2026-11-10T17:33:36.656Z"
+ },
+ "instrument": {
+  "playwrightModule": "/home/codi/Entwicklung/nquiry/node_modules/playwright/index.mjs",
+  "sharpModule": "/home/codi/Entwicklung/condyn-admin-mapping-d/node_modules/sharp/lib/index.js",
+  "base": "http://127.0.0.1:3220",
+  "instrument": "GRÜN phase-G development instrument",
+  "verdict": "NONE — development reading only (A-G36 point 2)"
+ },
+ "guard": {
+  "overlayInitial": 1,
+  "overlayFinal": 0,
+  "dismissAttempts": 1,
+  "centre": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  },
+  "pageErrors": [],
+  "api": [
+   "200 /api/career/analyses/CAN_…/investigation",
+   "200 /api/career/job-pools",
+   "200 /api/career/analyses/CAN_…",
+   "200 /api/career/analyses/CAN_…/auto-match",
+   "200 /api/career/analyses/CAN_…/job-ranking"
+  ]
+ },
+ "viewport": "1280x800",
+ "region": "520x520",
+ "discPixels": 154765,
+ "definitions": {
+  "domain": "the field disc (inside mapping-ring-field), the medium's own boundary",
+  "emittingClasses": [
+   "glowsAll",
+   "bodyCore",
+   "bodyOutlines",
+   "bodyNames",
+   "arcs",
+   "beams",
+   "nodes",
+   "sectorText"
+  ],
+  "occludingClasses": [
+   "bodySeat"
+  ],
+  "relationClasses": [
+   "beams"
+  ],
+  "ringClasses": [
+   "ringShelf",
+   "ringBest",
+   "ringField",
+   "ringHorizon"
+  ],
+  "A_G55": "PG-1 is defined over the field's EMITTING classes. The occluders (bodySeat, bodyCore) are excluded from numerator and denominator and the exclusion is recorded here. `[data-mapping-body-content]` is no longer used as a class: it is a MIXED group whose share read -0.084 at 1920 and +0.119 at 1280 because it wraps occluders and emitters together. Decomposed into bodyOutlines + bodyNames + arcs (emitting) and bodySeat + bodyCore (occluding).",
+  "beamSelectorCorrection": "RELATION_CLASSES uses [data-testid^=\"mapping-beam-\"]. The earlier reading used [data-beam], which ALSO matches every arc (arcSign emits data-beam={s.beam}), so PG-6 was overstated by the arcs' light. Measured live: L0 22 [data-beam] of which 3 are drawn beams; L1 19 of which 0 are.",
+  "selectors": {
+   "glowsAll": ".mf-halo",
+   "glowsField": "[data-testid=\"mapping-glows\"] .mf-halo",
+   "glowsBreathing": ".mf-wave-halo",
+   "bodyOutlines": "[data-mapping-body-shape]",
+   "bodyNames": "[data-testid^=\"mapping-name-\"],[data-testid^=\"mapping-measure-\"]",
+   "arcs": "[data-mapping-arc]",
+   "beams": "[data-testid^=\"mapping-beam-\"]",
+   "nodes": "[data-mapping-node]",
+   "sectorText": "[data-mapping-sector]",
+   "bodySeat": ".mf-seat,[stroke=\"rgba(0, 0, 0, 1)\"],[fill=\"rgba(0, 0, 0, 1)\"]",
+   "bodyCore": ".mf-core",
+   "ringBest": "[data-testid=\"mapping-ring-best\"]",
+   "ringField": "[data-testid=\"mapping-ring-field\"]",
+   "ringHorizon": "[data-testid=\"mapping-ring-horizon\"]",
+   "ringShelf": "[data-testid=\"mapping-ring-shelf\"]"
+  },
+  "PG1": "(ΣL_full − ΣL_semanticsSuppressed) / ΣL_full over disc pixels; the excl-rings form is PG-1's subject (rings are scaffold, PINK's finding)",
+  "PG6": "(ΣL_full − ΣL_beamsSuppressed) / (ΣL_full − ΣL_semanticsSuppressed) — relations' share OF THE SEMANTIC LIGHT, not of the field's",
+  "glowsIncluded": "glows are semantic here: A-G10 pin 7 moved them out of the medium into mapping-glows (A-G36 point 3)",
+  "perClassCaveat": "classes are suppressed one at a time; shares do not sum to the joint removal where classes overlap"
+ },
+ "discMeanLuminance": {
+  "full": 0.015127,
+  "groundOnly_semAndRingsSuppressed": 0.0047488
+ },
+ "stageGroundConstant": {
+  "rgb": "rgb(3, 5, 8)",
+  "wcagRelativeLuminance": 0.0014543,
+  "note": "A-G27's recomputation — the occluding plate's own light, which is why PG-2 was restated"
+ },
+ "PG1_semanticShare_exclRings": 0.61571,
+ "PG1_share_inclRings": 0.68607,
+ "PG1_boundForReference": ">= 0.55",
+ "ringsShareOfField": 0.0719,
+ "PG6_relationShareOfSemanticLight": 0.02181,
+ "PG6_boundForReference": ">= 0.15",
+ "perClassShareOfField": {
+  "glowsAll": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.11824,
+   "removedSum": 276.82
+  },
+  "bodyCore": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.02788,
+   "removedSum": 65.277
+  },
+  "bodyOutlines": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.08779,
+   "removedSum": 205.52
+  },
+  "bodyNames": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.1897,
+   "removedSum": 444.13
+  },
+  "arcs": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.09929,
+   "removedSum": 232.46
+  },
+  "beams": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.01343,
+   "removedSum": 31.438
+  },
+  "nodes": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.07051,
+   "removedSum": 165.07
+  },
+  "sectorText": {
+   "declared": "EMITTING",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.00362,
+   "removedSum": 8.472
+  },
+  "bodySeat": {
+   "declared": "OCCLUDING",
+   "measured": "OCCLUDING",
+   "removedShareOfField": -0.24414,
+   "removedSum": -571.58
+  },
+  "ringShelf": {
+   "declared": "SCAFFOLD",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.02882,
+   "removedSum": 67.479
+  },
+  "ringBest": {
+   "declared": "SCAFFOLD",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.00306,
+   "removedSum": 7.1676
+  },
+  "ringField": {
+   "declared": "SCAFFOLD",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.00858,
+   "removedSum": 20.086
+  },
+  "ringHorizon": {
+   "declared": "SCAFFOLD",
+   "measured": "EMITTING",
+   "removedShareOfField": 0.03144,
+   "removedSum": 73.611
+  }
+ },
+ "occluderSignCheck": {
+  "mismatches": [],
+  "note": "empty = every class behaved as declared (A-G55)"
+ },
+ "sums": {
+  "full": 2341.2,
+  "semanticsSuppressed": 899.69,
+  "semanticsAndRingsSuppressed": 734.95,
+  "ringsSuppressed": 2172.8,
+  "beamsSuppressed": 2309.7
+ },
+ "pinkComparison": {
+  "source": "pink-pg1.mjs at 93c47e03",
+  "pink_semanticFraction_exclRings": 0.0282,
+  "pink_inclRings": 0.0809,
+  "note": "a different commit AND a different taxonomy (no glows class); divergence is a finding, not to be reconciled (A-G36 point 4)"
+ }
+}

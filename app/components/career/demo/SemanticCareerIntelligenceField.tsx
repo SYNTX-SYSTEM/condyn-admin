@@ -37,6 +37,7 @@ import { AnalysisPicker } from "./AnalysisPicker";
 import { RoleDiscoveryEntry, RoleDiscoveryPanel } from "./RoleDiscoveryPanel";
 import { AutoJobRankingPanel } from "./AutoJobRankingPanel";
 import { PersonJobMappingField } from "./PersonJobMappingField";
+import { MAPPING_FIELD_COPY, type MappingGateReason } from "./mapping-field-copy";
 import { rankingKey, useAutoMatch, useJobRanking } from "../../../../lib/career/ui/auto-match";
 import { useRoleDiscovery } from "../../../../lib/career/ui/role-discovery";
 import { useSemanticInvestigation, type InvestigationRoleKey } from "../../../../lib/career/ui/semantic-investigation";
@@ -75,8 +76,8 @@ export interface SemanticCareerIntelligenceFieldProps {
   analysisId?: string;
   /** Exact Job Pool upload selected for matching (URL). */
   jobPoolUploadId?: string;
-  /** Planetarium focus: CAPABILITY (default) or FIELD (the SYNTX Job Field, URL focus=FIELD; JOB and POOL are accepted as legacy aliases). Without an explicit focus, an exact jobPoolUploadId opens the field. */
-  fieldFocus?: "CAPABILITY" | "FIELD";
+  /** Planetarium focus: CAPABILITY (default), MAPPING (the PERSON × JOB mapping field, URL focus=MAPPING, phase D) or FIELD (the SYNTX Job Field, URL focus=FIELD; JOB and POOL are accepted as legacy aliases). Without an explicit focus, an exact jobPoolUploadId opens the field. */
+  fieldFocus?: "CAPABILITY" | "MAPPING" | "FIELD";
   /** Exact observation point of the field (URL jobOrganizationId / jobRoleId / jobRequirementId); never inferred. */
   jobOrganizationId?: string;
   jobRoleId?: string;
@@ -94,7 +95,7 @@ export interface SemanticCareerIntelligenceFieldProps {
   /** RI-URL: the semantic investigation of the released pools, read again by its own id only (URL roleInvestigationId). */
   roleInvestigationId?: string;
   /** The application shell's brand surface follows the active field (Decision Loop Labs in the Job Field context). */
-  onFieldFocusChange?: (focus: "CAPABILITY" | "FIELD") => void;
+  onFieldFocusChange?: (focus: "CAPABILITY" | "MAPPING" | "FIELD") => void;
   initialAnalysisState?: {
     isAnalyzing?: boolean;
     analysisStep?: string | null;
@@ -397,12 +398,12 @@ export function SemanticCareerIntelligenceField({
   const analysisPool: string | null = analysisBoundary.state === "RESOLVED" && analysisBoundary.value.mode === "PERSON_X_JOB" ? analysisBoundary.value.jobScopeSelection?.jobPoolUploadId ?? null : null;
   /** The requested field. Job Pool first (owner "JOB POOL FIRST / CAPABILITY GATE"): the Job Field is the ground state; CAPABILITY is
    *  only requested here — it becomes the active field only while the job scope is VALID (`activeFieldFocus`, below). */
-  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "FIELD">(initialFieldFocus ?? "FIELD");
+  const [fieldFocus, setFieldFocus] = useState<"CAPABILITY" | "MAPPING" | "FIELD">(initialFieldFocus ?? "FIELD");
   /** Capability gate: PERSON always open (the person needs no job); PERSON × JOB open only for a VALID job scope (a loaded, ACTIVE,
    *  mapped pool and one of its roles); JOB closed (no person). Closed, the Job Field is the active field whatever was requested;
    *  the request is kept, so the field returns to Capability as soon as the gate opens again. */
   const capabilityGateOpen = investigationMode === "PERSON" || (investigationMode === "PERSON_X_JOB" && jobScopeValidation.state === "VALID");
-  const activeFieldFocus: "CAPABILITY" | "FIELD" = fieldFocus === "CAPABILITY" && capabilityGateOpen ? "CAPABILITY" : "FIELD";
+  const capabilityActive = fieldFocus === "CAPABILITY" && capabilityGateOpen;
   /** The Job Field compares an analysis with a pool only in PERSON × JOB, only for an analysis whose persisted boundary is
    *  PERSON_X_JOB, and only with the very pool it was investigated in (GELB legacyJobComparisonPermitted: no comparison across job
    *  scopes, also not with another version of the pool). The role is not a condition (the legacy comparison is pool-wide; the
@@ -410,7 +411,7 @@ export function SemanticCareerIntelligenceField({
    *  nothing (no misleading matching); the pool is never switched silently. JOB reads no analysis. */
   const comparisonCandidate = investigationMode === "PERSON_X_JOB" && analysisPool !== null;
   // The legacy pool comparison (/matches) is the Job Field's: read only while the Job Field is the active field (owner G1, A-02).
-  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && activeFieldFocus === "FIELD" && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
+  const jobPoolWorkflow = useJobPoolWorkflow({ analysisId: comparisonCandidate && !capabilityActive && viewedAnalysisSource.kind !== "NONE" ? viewedAnalysisSource.analysisId : null, analysisJobPoolUploadId: analysisPool, initialJobPoolUploadId: jobPoolUploadId ?? null });
   const jobComparisonAllowed = investigationMode === "PERSON_X_JOB" && viewedAnalysisSource.kind !== "NONE" && jobPoolWorkflow.selectedJobPoolUploadId !== null
     && legacyJobComparisonPermitted(analysisBoundary.state === "RESOLVED" ? analysisBoundary : null, { analysisId: viewedAnalysisSource.analysisId, jobPoolUploadId: jobPoolWorkflow.selectedJobPoolUploadId });
   const comparisonWithheld: "RESOLVING" | "PERSON" | "UNRESOLVED" | "OTHER_POOL" | null = investigationMode !== "PERSON_X_JOB" || viewedAnalysisSource.kind === "NONE" || jobComparisonAllowed ? null : analysisBoundary.state === "RESOLVING" || analysisBoundary.state === "IDLE" ? "RESOLVING" : viewedAnalysisMode === "PERSON" ? "PERSON" : analysisPool !== null ? (jobPoolWorkflow.selectedJobPoolUploadId === null ? null : "OTHER_POOL") : "UNRESOLVED";
@@ -428,10 +429,11 @@ export function SemanticCareerIntelligenceField({
   });
   /** Field changes since mount: each one is crossed by one calm veil (the shell's transition; none on the first paint). */
   const [fieldSwitches, setFieldSwitches] = useState(0);
-  const switchFieldFocus = (next: "CAPABILITY" | "FIELD") => {
+  const switchFieldFocus = (next: "CAPABILITY" | "MAPPING" | "FIELD") => {
     // Capability gate: closed — no VALID job in PERSON × JOB, or the mode JOB — the Capability Field cannot be entered (every path:
-    // selector, keys, exit, return).
+    // selector, keys, exit, return). The MAPPING gate likewise (phase D, C-10).
     if (next === "CAPABILITY" && !capabilityGateOpen) return;
+    if (next === "MAPPING" && mappingGate !== null) return;
     if (next !== activeFieldFocus) setFieldSwitches(count => count + 1);
     setFieldFocus(next);
     onFieldFocusChange?.(next);
@@ -484,7 +486,7 @@ export function SemanticCareerIntelligenceField({
    *  mode logic are unchanged: this only names where the field stands. PERSON inside the Capability Field says nothing (T-07). */
   const observedRoleId = observation.kind === "ROLE" || observation.kind === "REQUIREMENT" ? observation.roleId : null;
   const fieldEntry = fieldEntryState({
-    mode: investigationMode, gateOpen: capabilityGateOpen, focus: activeFieldFocus, scope: jobScopeValidation.state,
+    mode: investigationMode, gateOpen: capabilityGateOpen, focus: capabilityActive ? "CAPABILITY" : "FIELD", scope: jobScopeValidation.state,
     pools: jobPoolWorkflow.pools.state, poolOpen: jobPoolWorkflow.selectedJobPoolUploadId !== null, roleOpen: observedRoleId !== null
   });
   const entryCopy = t.syntx.entry;
@@ -502,9 +504,6 @@ export function SemanticCareerIntelligenceField({
   };
   /** The closed controls' tooltip says exactly what the line says (R-05, consistent with the visible state). */
   const capabilityGateTitle = capabilityGate === null || capabilityGate.state === null ? undefined : `${capabilityGate.reason} ${capabilityGate.way}`;
-  /** The shell's brand follows the active field: directly on a switch (above), and here when the gate itself moves the field (a job
-   *  becoming VALID after a reload with focus=CAPABILITY, or the selected job turning invalid). */
-  useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
 
   /* PERSON × JOB · the first screen (owner G1, 2026-10-22): analysisId → persisted result → boundary → B2 → one closed state. */
   /** Once an analysis SUCCEEDED its id is written to the URL with the interface's mode (§03.1). The interface's mode, not the one the
@@ -533,7 +532,7 @@ export function SemanticCareerIntelligenceField({
     pendingSelection: jobScopeValidation.state === "CHECKING" ? { state: "CHECKING" as const, scope: jobScopeValidation.scope } : jobScopeValidation.state === "INVALID" ? { state: "INVALID" as const, scope: jobScopeValidation.scope, reason: jobScopeValidation.reason } : null
   };
   /** B2 is read only on the Capability Field, in PERSON × JOB, for the analysis's own selected job (P-01); with the existing hook. */
-  const coverageRequest = activeFieldFocus === "CAPABILITY" ? firstScreenCoverageRequest(firstScreenInput) : null;
+  const coverageRequest = capabilityActive ? firstScreenCoverageRequest(firstScreenInput) : null;
   const firstScreenCoverage = useSelectedRoleCoverage(coverageRequest?.analysisId ?? null, coverageRequest?.scope ?? null);
   const firstScreen = projectPxjFirstScreen({ ...firstScreenInput, coverage: firstScreenCoverage });
   /** RD-PANEL: role discovery belongs to the PERSON result on view (its boundary resolved PERSON, its result read) — while that
@@ -550,6 +549,17 @@ export function SemanticCareerIntelligenceField({
    *  bounded wait while it has not settled), then the ranking of that run (GET, once it has settled). Nothing is chosen or started here. */
   const autoMatch = useAutoMatch(discoveryAnalysisId);
   const jobRanking = useJobRanking(discoveryAnalysisId, rankingKey(autoMatch));
+  /** Phase D (C-10): the MAPPING field is the PERSON investigation seen against all pools, so it opens only with a PERSON ranking.
+   *  Closed, it names why — first match wins: the boundary before the absence, the absence before the detail. A ranking without
+   *  roles opens it (the field says so itself). Closed, the Job Field is the active field whatever was requested; the request is
+   *  kept, so the field returns to MAPPING as soon as the gate opens (the Capability gate's pattern). */
+  const mappingGate: MappingGateReason | null = investigationMode !== "PERSON" || jobRanking.state === "NOT_PERSON" ? "NOT_PERSON"
+    : discoveryAnalysisId === null ? "NO_ANALYSIS" : jobRanking.state !== "AVAILABLE" ? "NO_RANKING" : jobRanking.ranking.pools.length === 0 ? "NO_POOL" : null;
+  const mappingCopy = MAPPING_FIELD_COPY[locale];
+  const activeFieldFocus: "CAPABILITY" | "MAPPING" | "FIELD" = capabilityActive ? "CAPABILITY" : fieldFocus === "MAPPING" && mappingGate === null ? "MAPPING" : "FIELD";
+  /** The shell's brand follows the active field: directly on a switch (above), and here when a gate itself moves the field (a job
+   *  becoming VALID after a reload with focus=CAPABILITY, the selected job turning invalid, the ranking arriving for focus=MAPPING). */
+  useEffect(() => { onFieldFocusChange?.(activeFieldFocus); }, [activeFieldFocus]);
   const startSemanticInvestigation = (roles: InvestigationRoleKey[], confirmedCalls: number) => {
     void semanticInvestigation.start(roles, confirmedCalls).then(result => {
       if (result?.state === "STORED") { setRoleInvestigationId(result.investigation.investigationId); writeCareerDemoUrl({ [ROLE_INVESTIGATION_URL_PARAM]: result.investigation.investigationId }, "replace"); }
@@ -1766,8 +1776,7 @@ export function SemanticCareerIntelligenceField({
           the ranked jobs with their reasons; the manual discovery's entry is its last row, unchanged (hidden during an orbit focus, as before). */}
       {activeFieldFocus === "CAPABILITY" && discoveryAnalysisId !== null && !discoveryOpen && discoveryPools === null && (
         <div style={{ opacity: isOrbitStageFocus ? 0.12 : 1, filter: isOrbitStageFocus ? "blur(3px)" : undefined, pointerEvents: isOrbitStageFocus ? "none" : "auto", transition: "opacity 0.56s ease, filter 0.56s ease" }}>
-          <AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}
-            field={<PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />}>
+          <AutoJobRankingPanel locale={locale} watch={autoMatch} ranking={jobRanking} onGoToJobField={() => switchFieldFocus("FIELD")}>
             {!isOrbitStageFocus && <RoleDiscoveryEntry locale={locale} inline onOpen={() => setDiscoveryOpen(true)} />}
           </AutoJobRankingPanel>
         </div>
@@ -1859,7 +1868,12 @@ export function SemanticCareerIntelligenceField({
         />
       )}
 
-      {/* SYNTX field selector (application shell): the two fields of one system, exactly one active, centred in the upper area. */}
+      {/* MAPPING focus (phase D): the PERSON × JOB mapping field on its own stage, L0 to L3, over the receding planetarium. */}
+      {activeFieldFocus === "MAPPING" && (
+        <PersonJobMappingField locale={locale} projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null} ranking={jobRanking} watch={autoMatch} />
+      )}
+
+      {/* SYNTX field selector (application shell): the three fields of one system, exactly one active, centred in the upper area. */}
       <SyntxFieldSelector
         focus={activeFieldFocus}
         capabilityGated={!capabilityGateOpen}
@@ -1867,6 +1881,8 @@ export function SemanticCareerIntelligenceField({
         capabilityGate={capabilityGate}
         groupLabel={t.syntx.selector.group}
         capabilityLabel={t.syntx.selector.capability}
+        mappingLabel={mappingCopy.selector}
+        mappingGate={mappingGate === null ? null : { state: mappingGate, label: `${investigationCopy.modes[investigationMode]} ⟶ ${mappingCopy.selector}`, reason: mappingCopy.gate[mappingGate].reason, way: mappingCopy.gate[mappingGate].way }}
         jobLabel={t.syntx.toggle}
         onSelect={switchFieldFocus}
         jobScope={jobScopePresentation}
