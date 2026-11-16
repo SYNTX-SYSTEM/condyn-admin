@@ -12,7 +12,15 @@ and the file did not say so. That version is still readable at that commit.
 
 ## The three items of 2026-11-11, and where each stands
 
-### 1 · `CROWDING` 0.3 or 0.5: moved to GELB for adjudication
+### 1 · `CROWDING` 0.3 or 0.5: RULED by GELB on 2026-11-16, stays 0.3
+
+GELB's grounds:
+- **The defect was a frame error.** PG-5's budget verdicts were derived at 0.5 while the build runs 0.3.
+  The constant itself was never shown to be wrong.
+- **At 0.3 the L0 budget is live**, not inert: it binds on 8 of 10 layouts.
+- **Moving to 0.5 would be a visible product change nobody ordered.**
+
+The figures below remain as the sensitivity analysis.
 
 GELB offered on 2026-11-16 to adjudicate this rather than route it to the owner. The build is
 `export const CROWDING = 0.3`. The record bounds PG-16 at 0.5 (A-G156), and GELB's §4 records that PG-5's
@@ -84,10 +92,10 @@ Nothing remains to decide here.
 
 | item | with | state |
 |---|---|---|
-| `CROWDING` 0.3 / 0.5 | **GELB** (offered adjudication) | figures current, above |
-| A-G48 / A-G51 / A-G206 fixtures | **GELB**, then owner | blocked by B-7 + A-G487, not by a credential |
+| `CROWDING` 0.3 / 0.5 | GELB | **RULED 2026-11-16: stays 0.3.** The 0.5 column remains a recorded sensitivity analysis, never again the basis of a verdict. One limb stays open: rendered px rim gaps, which belong to the pixel trace |
+| A-G48 / A-G51 / A-G206 fixtures | GELB | **RULED 2026-11-16: DEFERRED until PINK's verdict is in**, so the shared ground truth does not move during an in-flight validation. If still wanted afterwards, they go under MAP-INT-ARCH, plus an `AUTHORISED_CROSSINGS` entry for any that touches product code |
 | A-G487 · MAP-INT-ARCH or not | **owner** | scope decision: needed only if work continues on the integration tip |
 | PF-13 closure | **owner** (ruled measure-only 2026-11-16) | measured at `980c77bf`: 16 files, 198/198, coverage matches both ways; verdict field NONE |
 | PG-14 | **PINK**, or the owner | RESTATED/UNVERIFIED; not this lane's |
-| the 8 seals' build referent | **this lane** | see README §96c |
-| PG-11's relation limb | **GELB's sentence**, this lane's readings | see README §96c, PG-11 paragraph |
+| the 8 seals' build referent | this lane | **delivered and accepted by GELB (A-G489)**, see README §96c; the seals stay stale against HEAD |
+| PG-11's relation limb | GELB's sentence, this lane's readings | **dated** (README §96c); GELB re-dated §89 on 2026-11-16 |
