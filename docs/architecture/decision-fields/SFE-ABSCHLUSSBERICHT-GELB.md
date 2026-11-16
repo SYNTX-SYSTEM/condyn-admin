@@ -44,7 +44,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 
 | Prüfebene | Stand | Herkunft |
 |---|---|---|
-| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen** (24 übersprungen, 3570) — *** AUF DIESEM STAND, DER DAS MAPPING DER PHASEN D–G NICHT ENTHÄLT (§11.10) *** | 2026-11-16 in dieser Lane selbst gefahren, auf eigener Wegwerf-DB (§11.9). **Keine Bestätigung von GRÜNs gleichlautender Zahl — die Populationen unterscheiden sich um 9 Dateien und ~95 Fälle.** Eine rote Testdatei, Ursache mein eigener verwaister Dev-Server; einzeln 4/4 grün. |
+| **Gesamtsuite** | *** 3688 bestanden / 0 fehlgeschlagen / 20 übersprungen (3708), 521 Dateien, exit 0 *** — am Integrationsstand `7ffaeb40`, **ruhige Maschine**, Wegwerf-DB, B-ENTRY unumgangen | §12.12. **Und diesmal REPRODUZIERBAR:** die vorige 0 war von einer Laufreihenfolge abhängig (F-A1) und ist behoben. Mein früheres „3546/0“ beschrieb einen Stand **ohne das Mapping**; „3681/0“ war ein **Zufall**. |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
 | **GELB-Instrumente** | *** 26 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). **UND DIE FORM DANACH LAS „25 Instrumente, 22 Exit 0“, OHNE DIE DREI ZU BENENNEN — zwei von ihnen waren seit §125 an `ENOBUFS` TOT und konnten überhaupt nicht hinsehen (§128, A-G468, Defekte 402/403).** **Heute: 28** (neu `gelb-read.mjs`, `gelb-paths.mjs`, `gelb-currency-lapse.mjs`), **26 Exit 0, 2 verweigern
 bauartbedingt** — das Subject-Gate dauerhaft, und `gelb-currency-lapse` solange **≥ 1 Währungsaussage
@@ -243,7 +243,7 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 
 | Bedingung des Mandats | Stand |
 |---|---|
-| **1. Das MAPPING funktioniert durchgängig** | *** AUF DEM INTEGRIERTEN STAND ERFÜLLT UND GEMESSEN (§11.18): 3681 bestanden / 0 fehlgeschlagen / 20 übersprungen (3701), 520 Dateien, exit 0, Wegwerf-DB, B-ENTRY unumgangen. *** Erstmals auf einem Stand gemessen, **der das Mapping enthält** — integriert plus A-G485. **Einschränkung, die dazugehört: dieser Stand existiert nur lokal (`de065a24`), ist nicht gepusht und von PINK nicht gesehen.** Auf den Einzel-Lanes gilt es nicht: GRÜN allein 27 rot, GELB allein ohne das Mapping. |
+| **1. Das MAPPING funktioniert durchgängig** | *** ERFÜLLT UND REPRODUZIERBAR GEMESSEN (§12.12): 3688 / 0 / 20 übersprungen (3708), 521 Dateien, exit 0, am integrierten Stand `7ffaeb40` auf ruhiger Maschine. *** Erstmals auf einem Stand, **der das Mapping enthält**, und erstmals ohne Reihenfolgenabhängigkeit. **Einschränkung, die dazugehört:** der Stand ist auf `origin` veröffentlicht, aber **nicht in `main`**, und die Suite ist nicht die ganze Prüfebene — Pixel siehe §12.8, PG-20 offen. |
 | **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. **PF-13 ist gedeckt; sein Urteil steht PINK zu.** |
 | **3. Alle Prüfungen abgeschlossen** | **ERFÜLLT** für jede Prüfung, die auf einem lesbaren Stand ausführbar ist. **Nicht ausführbar:** die iptables-Frage (sudo) und die Ausmaß-Charakterisierung der Naht (Instrumentengrenze). |
 | **4. PINK hat den tatsächlichen Gesamtsystemstand unabhängig validiert** | *** NICHT NACHVOLLZIEHBAR, UND ICH WEISE ES NICHT ALS ERFÜLLT AUS. *** |
@@ -1426,3 +1426,46 @@ Phasen unentdeckt blieb: *** DIESE LANES HABEN IMMER ALLEIN GEMESSEN. ***
 
 **Disposition: der Eigentümerpunkt bleibt, mit geschärften Kosten.** Nicht repariert, nicht freigestellt,
 nicht als geschlossen ausgewiesen.
+### §12.12 ***DER INTEGRIERTE STAND IST GRÜN UND DIESMAL REPRODUZIERBAR — 3688 / 0***
+
+Integrationsstand `7ffaeb40` (= `4f4534c5` + GRÜNs F-C4 + MAP-INT-ARCH v2 + der F-A1-Fix), **ruhige
+Maschine**, Wegwerf-DB, B-ENTRY unverändert und unumgangen, Exit-Code ohne Pipe:
+
+```
+Test Files  521 passed | 11 skipped (532)        0 fehlgeschlagen
+     Tests  3688 passed | 20 skipped (3708)      0 fehlgeschlagen
+exit 0 · 559.38 s
+```
+
+**Arithmetische Kohärenz geprüft, nicht unterstellt** — weil eine Gesamtzahl, die man nicht aufgehen lässt,
+genau der Defekt dieser Phase war: voriger sauberer Lauf **3705** mit MAP-INT-ARCHs 4 Tests → v2 hat **7**,
+also **+3 → 3708** ✓; bestanden **3683 + 2** (F-A1 behoben) **+ 3** (neue Glieder) **= 3688** ✓; Dateien
+**532 → 532** ✓.
+
+#### F-A1 geschlossen — und es ist die Zahl, die ich dreimal falsch gemeldet habe
+
+| Lauf | Ergebnis |
+|---|---|
+| meine drei Vollläufe | worker-config **grün** (5,6–11,5 s) |
+| PINK-STRUCT, sauber | **2 rot** |
+| mein sauberer Lauf | **2 rot** in 27 ms |
+| allein, auf `e360caf9` / `eb75fd02` / `a0475f13` / `4f4534c5` | **rot, exit 1, `42P01`** |
+
+Die Datei hatte **keinen eigenen Bootstrap** und bestand nur, wenn eine früher laufende Datei das Schema auf
+die geteilte Lauf-Datenbank angewandt hatte. *** ALSO WAR DIE NULL ECHT UND ZUFÄLLIG ZUGLEICH. ***
+**Behoben, indem die Abhängigkeit entfernt wurde** — `initDbSchema()` im eigenen `beforeAll`, idempotent —
+**nicht, indem ich gesucht habe, welche Datei die Tabelle lieferte.** Rot-zuerst: allein vorher exit 1,
+allein nachher 2/2.
+
+> **A-G493:** *** EIN GRÜN, DAS VON DER LAUFREIHENFOLGE ABHÄNGT, IST KEIN GRÜN, SONDERN EIN GRÜN MIT EINEM
+> UNGENANNTEN RAHMEN — UND DER RAHMEN HEISST *WELCHE DATEIEN VORHER LIEFEN*. *** Er gehört neben Build,
+> Domäne, Population, Quantor, Phase und Bedingung (A-G491). **Und er erklärt, warum keine Lane ihn fand:
+> eine Einzeldatei-Nachprüfung fragt „läuft dieser Test?“, und dieser Test läuft nur, wenn man ihn NICHT
+> einzeln prüft** — die Nachprüfung, die wir alle als Kontrolle benutzen, ist hier die einzige Form, die
+> den Defekt **erzeugt** statt ihn zu verbergen.
+
+#### Was damit steht und was nicht
+
+**Bedingung 1 ist erfüllt und reproduzierbar gemessen**, auf einem Stand, der das Mapping trägt. **Nicht
+erfüllt:** Bedingung 4 — die Pixelschicht ist von einer von MIR beauftragten Spur gemessen (§12.8), und
+**PG-20 ist noch offen** und läuft gerade. **Und der Stand ist auf `origin`, nicht in `main`.**
