@@ -6,6 +6,7 @@ import {
   DISPOSABLE_TEST_DATABASE_PATTERN,
   disposableTestDatabaseMarker,
   isProtectedDatabaseName,
+  isSuiteOwnedDatabase,
   maintenanceUrlFor,
   MAINTENANCE_DATABASE_NAMES,
   SHARED_PROTECTED_DATABASE_NAMES
@@ -175,7 +176,10 @@ export async function assertDisposableServer(
   if (witnesses.length > 0) {
     fail("ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER", `this server holds the protected database ${witnesses.join(", ")}, so it is the shared server and never a provisioning basis — the host and port guards cannot tell it from a disposable server, which is why the server itself is identified`);
   }
-  const foreign = names.filter(name => !(MAINTENANCE_DATABASE_NAMES as readonly string[]).includes(name) && !DISPOSABLE_TEST_DATABASE_PATTERN.test(name));
+  // F-A2: "holds nothing else" means nothing a STRANGER put there. This suite's own payload — the r5 database
+  // a concurrent run provisions included — is not a stranger's. isSuiteOwnedDatabase is deliberately NOT the
+  // basis pattern: widening that would let a run be pointed at an r5 database, which is the actual bypass.
+  const foreign = names.filter(name => !(MAINTENANCE_DATABASE_NAMES as readonly string[]).includes(name) && !isSuiteOwnedDatabase(name));
   if (foreign.length > 0) {
     fail("ERR_TEST_DATABASE_ISOLATION_FOREIGN_PAYLOAD", `this server holds ${foreign.length} database(s) that are neither maintenance nor disposable test databases (${foreign.slice(0, 5).join(", ")}${foreign.length > 5 ? ", …" : ""}); a server provisioned for this suite holds nothing else, so this is not a provisioning basis`);
   }

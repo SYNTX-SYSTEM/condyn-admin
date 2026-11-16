@@ -58,6 +58,58 @@ describe("B-ENTRY server limb · the URL policy cannot tell two servers on one h
     await expect(assertDisposableServer(onDisposable, otherApps)).rejects.toThrow(/billing/);
   });
 
+  /**
+   * ── F-A2, PINK-STRUCT's finding, REPAIRED HERE (GELB, 2026-11-16) ──────────────────────────────
+   *
+   * THE DEFECT, and its measured cost rather than its hypothetical one. `test/decision-runtime/e2e/
+   * local-decision-context-http.e2e.test.ts:21` provisions `condyn_r5_<20 hex>` on the same disposable
+   * server. That name matched no pattern the foreign-payload limb knew, so ANOTHER RUN'S B-ENTRY
+   * verification classified it as a production payload and refused. *** TWO CONCURRENT RUNS THEREFORE
+   * DESTROYED EACH OTHER, AND FOUR TESTS BECAME "SKIPPED" SILENTLY. A SOLO RUN CANNOT FIND THIS — which
+   * is why it survived four phases: these lanes had always measured alone. ***
+   *
+   * WHY THE TWO REPAIRS ON RECORD WERE BOTH REFUSED, and why this third one is neither of them. The
+   * record named only (1) route the r5 database through the sanctioned create/drop — which edits a file
+   * under `test/decision-runtime`, tripping P8's frozen set — and (2) exempt `condyn_r5_` inside the
+   * foreign-payload limb, which is a gate bypass. Both breach a boundary, so it was booked as an owner
+   * decision.
+   *
+   * *** THE THIRD READING IS THAT THE POLICY'S ENUMERATION WAS SIMPLY INCOMPLETE. *** The limb asks
+   * whether the server "holds nothing else". A `condyn_r5_` database is not something ELSE: this
+   * repository's own suite created it, randomly named, and drops it. The limb was not too weak — it was
+   * mis-classifying this suite's own payload as a stranger's.
+   *
+   * SO THE FIX IS A SEPARATE, NARROWER CONCEPT, AND THE SEPARATION IS THE WHOLE POINT.
+   * `DISPOSABLE_TEST_DATABASE_PATTERN` also decides which URL may be ACCEPTED AS A BASIS for a run.
+   * Widening THAT would let someone point the suite at an r5 database — a real bypass. So
+   * `isSuiteOwnedDatabase` is used by the foreign-payload limb ONLY, and the test below pins that the
+   * basis check is unchanged. A classification repair that also widened the basis would be the bypass
+   * wearing the repair's clothes.
+   */
+  it("F-A2: a concurrent run's condyn_r5_ database is NOT foreign payload — this suite created it", async () => {
+    const withR5 = async () => ["postgres", "template0", "template1", "condyn_test_0123456789abcdef", "condyn_r5_0123456789abcdef0123"];
+    await expect(assertDisposableServer(onDisposable, withR5)).resolves.toMatchObject({ databaseCount: 5 });
+  });
+
+  it("F-A2: and the GATE IS NOT BYPASSED — an r5 database is still refused as a BASIS for a run", () => {
+    const verdict = classifyTestDatabaseUrl("postgresql://runner:pw@127.0.0.1:5433/condyn_r5_0123456789abcdef0123");
+    expect(verdict.ok, "an r5 database must never be an acceptable basis — that would be the bypass").toBe(false);
+    expect(verdict.ok === false && verdict.code).toBe("NOT_DISPOSABLE");
+  });
+
+  it("F-A2: a genuine foreign payload still refuses, and is still named, even beside an r5 database", async () => {
+    const r5AndStranger = async () => ["postgres", "template0", "template1", "condyn_r5_0123456789abcdef0123", "billing"];
+    await expect(assertDisposableServer(onDisposable, r5AndStranger)).rejects.toThrow(/ERR_TEST_DATABASE_ISOLATION_FOREIGN_PAYLOAD/);
+    await expect(assertDisposableServer(onDisposable, r5AndStranger)).rejects.toThrow(/billing/);
+  });
+
+  it("F-A2: the r5 pattern is EXACT — a near miss is still a stranger", async () => {
+    for (const near of ["condyn_r5_", "condyn_r5_0123456789abcdef012", "condyn_r5_0123456789abcdef01234", "condyn_r5_zzzzzzzzzzzzzzzzzzzz", "condyn_r5x0123456789abcdef0123"]) {
+      const names = async () => ["postgres", "template0", "template1", near];
+      await expect(assertDisposableServer(onDisposable, names), near).rejects.toThrow(/FOREIGN_PAYLOAD/);
+    }
+  });
+
   it("the WITNESS limb fires before the foreign-payload limb, so the sharper reason is the one reported", async () => {
     const sharedWithApps = async () => ["postgres", ...SHARED_SERVER_WITNESS_NAMES, "billing"];
     await expect(assertDisposableServer(onShared, sharedWithApps)).rejects.toThrow(/SHARED_SERVER/);

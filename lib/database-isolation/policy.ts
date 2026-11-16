@@ -11,6 +11,33 @@
 export const SHARED_PROTECTED_DATABASE_NAMES = Object.freeze(["condyn", "postgres", "template0", "template1"] as const);
 export const DISPOSABLE_TEST_DATABASE_PATTERN = /^condyn_test_[0-9a-f]{16}$/;
 export const DISPOSABLE_TEST_DATABASE_MARKER_PREFIX = "CONDYN_DISPOSABLE_TEST_DATABASE ";
+
+/**
+ * F-A2 (2026-11-16) — DATABASES THIS REPOSITORY'S OWN SUITE PROVISIONS.
+ *
+ * Distinct from DISPOSABLE_TEST_DATABASE_PATTERN **on purpose**, and the distinction is the whole repair.
+ * That pattern decides which URL may be ACCEPTED AS A BASIS for a run; widening it would let a run be
+ * pointed at an r5 database, which is a real bypass. This set answers a different question — "is this
+ * database a STRANGER'S?" — and is consumed by the foreign-payload limb ONLY.
+ *
+ * `test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts:21` provisions `condyn_r5_<20 hex>`
+ * on the same disposable server. It matched nothing here, so a CONCURRENT run's B-ENTRY verification
+ * classified this suite's own payload as a production payload and refused: *** TWO PARALLEL RUNS DESTROYED
+ * EACH OTHER AND FOUR TESTS BECAME "SKIPPED" SILENTLY. A SOLO RUN CANNOT FIND IT. *** The limb was never
+ * too weak; its enumeration was incomplete.
+ *
+ * Every entry is EXACT-ANCHORED and names the file that creates it, so a near miss stays a stranger and a
+ * dead entry is findable. Adding one is a deliberate statement that this repository creates that database.
+ */
+export const SUITE_OWNED_DATABASE_PATTERNS = Object.freeze([
+  { pattern: DISPOSABLE_TEST_DATABASE_PATTERN, createdBy: "lib/database-isolation/verification.ts · createDisposableTestDatabaseNamed" },
+  { pattern: /^condyn_r5_[0-9a-f]{20}$/, createdBy: "test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts:21" },
+] as const);
+
+/** True when the name belongs to a database THIS repository's suite creates — not a stranger's payload. */
+export function isSuiteOwnedDatabase(databaseName: string): boolean {
+  return SUITE_OWNED_DATABASE_PATTERNS.some(entry => entry.pattern.test(databaseName));
+}
 /** Unroutable by definition (RFC 2606 `.invalid`): a missing DATABASE_URL can never reach a real server. */
 export const UNCONFIGURED_DATABASE_URL = "postgresql://database-url-not-configured.invalid:5432/database_url_not_configured";
 
