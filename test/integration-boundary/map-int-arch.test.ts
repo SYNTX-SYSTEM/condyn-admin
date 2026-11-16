@@ -53,6 +53,11 @@ const resolve = (rev: string) => {
 const blob = (rev: string, path: string) => {
   try { return git("rev-parse", `${rev}:${path}`)[0]; } catch { return undefined; }
 };
+/** Added lines (no context) for a range, or for the working tree when `range` is undefined. */
+const gitAdded = (range: string | undefined, path: string) =>
+  git("diff", "-U0", ...(range ? [range] : ["HEAD"]), "--", path)
+    .filter(l => l.startsWith("+") && !l.startsWith("+++ ")).map(l => l.slice(1));
+
 const productPathsDifferingBetweenParents = () =>
   git("diff", "--name-only", "--no-renames", PARENT_GELB, PARENT_GRUEN, "--", ...PRODUCT).sort();
 
@@ -106,5 +111,74 @@ describe("MAP-INT-ARCH · the integration merge is a union and invents nothing",
     expect(unauthorised, "product changes after the integration merge with no named authority").toEqual([]);
     // The list is consumed in full: a stale entry is a failure, not a standing exemption.
     expect([...authorised.keys()].filter(k => !used.has(k)), "AUTHORISED_CROSSINGS entries that matched no commit").toEqual([]);
+  });
+});
+
+/**
+ * ── THE HANDED-OVER INVARIANTS (A-G492 · PINK-STRUCT's F-C1 / F-C2 / F-C3) ─────────────────────
+ *
+ * A-G485 closed phase G's range, and PINK-STRUCT measured what that cost: three limbs stopped guarding.
+ *   F-C1  the working-tree change set was no longer checked against the entry set;
+ *   F-C2  PF-14/PG-7's no-script-motion limb went blind past the base, the working tree included;
+ *   F-C3  the `lib/career` engine-scope limb went blind — *** AND THAT IS WHAT LET GELB'S OWN
+ *         lib/career/db/client.ts REPAIR PASS MAP-G-ARCH UNEXAMINED. *** Verified with git: over the
+ *         open-ended range `lib/career` yields [db/client.ts, mapping/layout.ts, view-model/mapping-field.ts]
+ *         while the closed form asserts exactly [layout.ts, MODEL] — so the open form FAILS.
+ *
+ * PINK-STRUCT's structural judgement, accepted in full: for D/E/F the closure point was the NEXT PHASE'S
+ * BASE, and the next phase's gate assumed the open-ended duty. PHASE_INT_BASE is not a phase and has no
+ * architecture test, so for G the duty was *** ENDED, NOT HANDED OVER *** — the symmetry with D/E/F was
+ * formal, not functional. These three limbs make it functional.
+ *
+ * THE DIVISION IS DELIBERATE, and it is the invariant/measurement line this record keeps relearning:
+ *   · a phase MEASUREMENT ("in lib/career only layout.ts and the model changed IN PHASE G") stays CLOSED in
+ *     GRÜN's range — it states a finished interval, and reopening it would measure later phases too;
+ *   · its INVARIANT SHADOW ("nothing else in lib/ moves without a named authority") continues here.
+ * Phase ranges cover the past; this file covers the merge and everything after it. No duty is asserted twice.
+ */
+
+/** Every `lib/` path differing from the merge base, with the authority that owns it. Consumed in full. */
+const DECLARED_LIB_CHANGES: Record<string, string> = {
+  "lib/career/db/client.ts":
+    "GELB · the bootstrap-to-ORM schema-drift repair over 9 tables (the 42703 on career_policy_versions.version). " +
+    "DECLARED HERE BECAUSE IT WAS NEVER EXAMINED — F-C3: A-G485's closure is what let it past MAP-G-ARCH's lib/career limb.",
+  "lib/career/mapping/layout.ts": "GRÜN · phase G, MAPPING_LAYOUT_V1.1 beside V1",
+  "lib/career/view-model/mapping-field.ts": "GRÜN · phase G, the layout call and the drawn radius",
+  "lib/career/ui/career-demo-url.ts": "GRÜN · phase D's declared URL_MODULE carve-out",
+  "lib/database-isolation/policy.ts": "GELB · B-ENTRY, the disposable-database policy",
+  "lib/database-isolation/verification.ts": "GELB · B-ENTRY, assertDisposableServer at the single creation choke point",
+};
+
+const COMPONENT = "app/components/career/demo/PersonJobMappingField.tsx";
+/** PF-14/PG-7's own token list, carried verbatim so the two cannot drift apart. */
+const SCRIPT_MOTION = /requestAnimationFrame|setInterval|setTimeout|\.animate\(|<animate|<set\b|performance\.now|\bwindow\.|\bdocument\./;
+
+describe("MAP-INT-ARCH · the invariants A-G485 ended rather than handed over", () => {
+  it("F-C3: every lib/ path differing from the merge base is DECLARED with its authority, and the list is consumed in full", () => {
+    const mergeBase = git("merge-base", resolve(PARENT_GELB), resolve(PARENT_GRUEN))[0];
+    const changed = git("diff", "--name-only", "--no-renames", mergeBase, resolve(INTEGRATION_MERGE), "--", "lib").sort();
+    expect(changed.length, "no lib/ path differs from the merge base, so this assertion would pass over nothing").toBeGreaterThan(0);
+    expect(changed.filter(p => DECLARED_LIB_CHANGES[p] === undefined), "lib/ changes with no declared authority").toEqual([]);
+    expect(Object.keys(DECLARED_LIB_CHANGES).filter(p => !changed.includes(p)).sort(),
+      "DECLARED_LIB_CHANGES entries matching no actual change (a stale declaration is a failure, not an exemption)").toEqual([]);
+  });
+
+  it("F-C2: no commit after the integration merge and no working-tree edit adds script motion to the component", () => {
+    const head = git("rev-parse", "HEAD")[0];
+    const committed = gitAdded(`${resolve(INTEGRATION_MERGE)}..${head}`, COMPONENT);
+    const pending = gitAdded(undefined, COMPONENT);
+    expect([...committed, ...pending].filter(l => SCRIPT_MOTION.test(l)),
+      `script motion added to ${COMPONENT} after the integration merge`).toEqual([]);
+  });
+
+  it("F-C1: the working tree holds no product change, unless a WORKING_TREE authority is declared and consumed", () => {
+    const pending = [...new Set([
+      ...git("diff", "--name-only", "--no-renames", "--cached", "HEAD", "--", ...PRODUCT),
+      ...git("diff", "--name-only", "--no-renames", "HEAD", "--", ...PRODUCT),
+      ...git("ls-files", "--others", "--exclude-standard", "--", ...PRODUCT),
+    ])].sort();
+    const declared = AUTHORISED_CROSSINGS.some(c => c.commit === "WORKING_TREE");
+    if (!declared) expect(pending, "uncommitted product changes; declare {commit:'WORKING_TREE', reason} to stage work deliberately").toEqual([]);
+    else expect(pending.length, "a WORKING_TREE authority is declared but the tree is clean — a stale declaration is a failure").toBeGreaterThan(0);
   });
 });
