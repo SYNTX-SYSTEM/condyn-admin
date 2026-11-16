@@ -21,6 +21,81 @@
 >
 > *A-G465 is this lane's rule and it was aimed here second, after its author aimed it at themselves first.*
 >
+> *** §131 · THE THREE AMENDMENTS CLOSED BY READING WHAT THEY SAY, AND PG-14's PIN GETS THE LIMB IT HAS
+> BEEN MISSING SINCE A-G271. FOUR DEFECTS IN THIS LANE'S OWN PROOFS, ONE AGAINST GELB, ONE AGAINST THE
+> RECORD. ***
+>
+> **A-G48 / A-G51 / A-G206 — verdicts, with the evidence, in `outputs/OWNER-DECISIONS-OPEN.md` §131.**
+> Two of the three were never fixtures: A-G373 established that L1, L2 and a marked body are STATES of the
+> already-served fixture, and `fixture-states-{1920x1080,1280x800}.json` records both as `reached: true`.
+> A-G51's *ruling* was withdrawn by GELB at A-G90 and **was still being carried as open twenty sections
+> later**. A-G206 was discharged the moment its negative half was tried (A-G380). **So the three-limb
+> collision §130 measured was never a blocker on these items** — it was a blocker on a fixture none of them
+> needs. What is still owed is not a fixture but **two pixel readings** in states that already exist, and
+> that is in the table with its boundary: there is no `glow-*` reading at L2 and no `pg11-guard-L1-*` at
+> all, and `gruen-pg11.mjs`'s header still names a precondition that has been satisfied since §84.
+>
+> **F-G5 closed, and F-G9 found by asking what the limb MISSES rather than what it catches.** The three
+> fixtures limbs guard three literal paths and their sentences name a category, so the honest placement of a
+> fixture failed and the evasive one passed 32/32 — reproduced at `7ad75af8` before the repair.
+> **F-G9 is the same hole with a COMMITTED instance:** `test/support/mapping/vectors.ts` and
+> `layout-reference.ts` are support modules, both changed since all three bases, named by no limb's path
+> list. Phase G's limb now guards the category — with the category itself checked three ways, because a
+> widening that cannot be falsified is the same defect in a larger font. E's and F's are NOT widened, and
+> the reason is a measurement: widening them reddens on a change phase G's entry set authorises.
+>
+> **PG-14 was RESTATED/UNVERIFIED because its falsifiable content needs a render and nothing rendered
+> asserted it.** `gruen-pg14-frame-fixed.mjs` says so in its own words — *"this derivation renders nothing
+> and cannot establish it."* Now asserted in three states from the product's unconditional disclosure, and
+> **the third state is the one that matters**: at L2 `framed` is empty, so §87's `"n/a"` is asserted and the
+> vacuous `true` cannot return unnoticed. **Measured and worth more than the limb itself:** with
+> `FRAME_PASS_CAP` mutated to 1 — §64's defect, re-created — the CONTAINMENT limb stays green and only the
+> convergence limb fails. On the populations a render can reach, the disclosure is the carrier of PG-14's
+> content and the containment is not. The browser route agrees from the other side without being asked:
+> `fixture-states-1920x1080.json` records `framePasses "0"` / `frameConverged "n/a"` at that same L2.
+>
+> **Four in this lane's own proofs.** (1) the L1 half of the containment limb **discarded its own return**
+> and was one population away from passing over nothing. (2) it retyped the frame's em as a bare `0.62` —
+> the same bare literal §86 named as a defect in the product — and the repair comes with the limb's real
+> reach stated rather than improved: it is **tautological in the em** and falsifies only the solve
+> disagreeing with its own extent model. (3) `pg14-frame-fixed.json`, the figure PG-14's closure rests on,
+> **carried no build at all**; 13 of the 70 files in `outputs/` do not. (4) `finalHalf` was written as
+> `c.finalHalf` where `check()` returns `half`, so a field this instrument NAMES was `undefined` in all 440
+> rows and `JSON.stringify` dropped it silently through every re-run since §86.
+>
+> **F-G10, against the record and against this lane's own instrument.** A-G373 gives the collar-more emit
+> condition as *"`:784` emits the span only when `floored > 0`"* and `gruen-pg14-frame-fixed.mjs` repeats the
+> citation. The condition is `level === "L1" && collar !== null && collar.hidden > 0 && inPoolNow` (`:884`).
+> `floored` counts bodies pushed to the 12 px SIZE FLOOR; `collar.hidden` counts requirement arcs that do not
+> fit on the collar. **The conclusion both lanes drew was right and the quantity was not**, and the new limb
+> reads `data-collar-hidden`, which is what the condition tests. *Caught while drafting an assertion that was
+> about to repeat it.*
+>
+> **F-G11, against GELB, on the repair it handed me.** Its F-R13 is real and reproduced here. Its stated
+> PROOF is not: *"in a clone `--single-branch --branch main` the commit is ABSENT, so the guard refuses a
+> genuine checkout"* — measured, **neither `gelb-paths.mjs` nor `gruen-paths.mjs` exists on `main`**, so in
+> that clone the instrument is absent and the guard never runs. And the case that IS reachable — a shallow
+> clone — **lacks the root commit GELB moved to as well**, so the anchor change alone would have replaced one
+> false "wrong repository" with another. Shallowness is now detected first and named as *cannot establish*,
+> with `git fetch --unshallow` as the remedy.
+>
+> **F-G12, against GELB, on the hand-over it declared.** Of the three instruments declared as still naming a
+> machine-local path, **two name none at my tip** (`gruen-pg16-crowding-L1.mjs` 0 hits,
+> `gruen-rank5-check.mjs` 0 hits) and the third's single hit is **inside a docstring** describing the
+> historical risk. They have 2 / 1 / 2 hits **on the integration tip**, which is GELB's own item 2 — the
+> integration carries 51 instruments to this branch's 52 and is missing `gruen-paths.mjs`. **The declaration
+> is measuring the integrated state and attributing it to this lane.** It should be removed, not kept; the
+> one live machine-local path left here is `gruen-paths.mjs`'s documented Playwright fallback, which every
+> reading discloses as `provenance.playwright.resolvedBy: "DOCUMENTED_FALLBACK"` and which exists only
+> because `playwright` is UNDECLARED in this branch's `package.json`.
+>
+> *** §131b · THE VACUITY CLASS SWEPT RATHER THAN PATCHED WHERE IT WAS FOUND. *** Six limbs across three
+> files walked a population something else derives. The figure that makes it worth having done: with both of
+> `sign-table.json`'s records emptied, `sign-table.test.ts` detected the mutant in **4 of 9** limbs before
+> and **9 of 9** after. One of my own guards was a **FALSE RED** and was caught by running it rather than by
+> reading it — `role_empty` is a deliberate fixture with no requirements, so a per-BODY floor on arcs
+> contradicts the fixture; the floor is the aggregate.
+>
 > ### §111 · `{{WAS: … }}` marks a SUPERSEDED quote — strip it before scanning this record
 >
 > **A correction that quotes what it corrects is indistinguishable, to grep, from the thing it corrects.**
@@ -721,6 +796,17 @@
 > exclusion is caught by the exclusion. The claim is therefore withdrawn as a claim, in place; the
 > detector's count is a FLOOR in one direction and carries at least this one false positive in the
 > other, which its own `detectorLimit` does not yet say. **NO VERDICT** (A-G36 point 2).
+>
+> **§131e · IT SAYS SO NOW, AND THE COUNT HAS BECOME TWO OF THE SAME PAIR.** `detectorLimit` carried only
+> the floor direction; the over-count direction is now stated by the instrument itself
+> (`detectorLimitTheOtherDirection`), which is what §130 above asked for. And a second limit was measured
+> while writing §131: **this line's own status flipped from CURRENT to LAPSED on `e39455a1`, a commit that
+> added a section elsewhere in this file and changed nothing about the sentence.** That is §119's class
+> turned on the detector — `CURRENT` here means *written at or after the referent*, which for a
+> methodological sentence rather than a figure carries no information at all. Recorded as
+> `detectorLimitTheReferentItself`. **So `LAPSED 2` is this one pair, both marked in place, and the
+> instrument stays fail-closed rather than being relaxed to make its own count look better.**
+>
 > **The criterion does not absolve them; it locates them.**
 >
 > *** §123 · THE BACKTICK DEFECT CHECKED HERE, AND THE CONVERGENCE TEST APPLIED TO THE AUDITS THEMSELVES.

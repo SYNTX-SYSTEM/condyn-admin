@@ -3,7 +3,7 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "b5be9e05",
+ "head": "e39455a1",
  "referents": {
   "product-pixels": {
    "sha": "fd45f45f",
@@ -16,9 +16,9 @@
    "subject": "feat(career): mapping phase G · PG-12's chroma channel — the channel resolves, and the BOUND cannot be met by any build"
   },
   "readings-corpus": {
-   "sha": "b5be9e05",
-   "when": "2026-11-16T07:46:04+01:00",
-   "subject": "fix(career): mapping phase G · §130 — die vier nicht rekonstruierbaren Instrumente, repariert und belegt; drei neue Befunde gegen diese Spur"
+   "sha": "e39455a1",
+   "when": "2026-11-16T13:39:22+01:00",
+   "subject": "fix(career,evidence): mapping phase G · §131c/d — F-R13 repaired on a measurement that contradicts the remedy I was handed, and PG-14's live figure finally carries its build"
   },
   "product-source": {
    "sha": "fd45f45f",
@@ -55,8 +55,8 @@
   "claims": 17,
   "phrases": 24,
   "matched": 17,
-  "LAPSED": 1,
-  "CURRENT": 4,
+  "LAPSED": 2,
+  "CURRENT": 3,
   "SCOPED": 7,
   "SCOPED-UNRESOLVABLE": 3,
   "UNCOMMITTED": 0,
@@ -65,7 +65,7 @@
  },
  "rows": [
   {
-   "line": 132,
+   "line": 207,
    "kind": "test-population",
    "phrases": 1,
    "text": "> §112's verdict was then read from the JSON directly: **16 files, 197 tests, 197 passed, 0 failed** at",
@@ -85,7 +85,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 150,
+   "line": 225,
    "kind": "product-pixels",
    "phrases": 1,
    "text": "> | `7b8fc7f5` | §93 | `MOTION.breath` **deleted** (dead — 0 of 47 073 pixels swung in either state) | a constants-reader finds the key **missing** |",
@@ -105,7 +105,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 204,
+   "line": 279,
    "kind": "test-population",
    "phrases": 1,
    "text": "> ~~**16 files, 198 tests, 0 failed** at this section; `architecture.test.ts` **32/32**.~~",
@@ -125,7 +125,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 257,
+   "line": 332,
    "kind": "product-pixels",
    "phrases": 2,
    "text": "> | §64's envelope, L=16 at 420 px | worst **0.1068 px** — was **1.59 px** |",
@@ -147,7 +147,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 294,
+   "line": 369,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> *** 38 STALE UNSEALED READINGS · 8 STALE SEALS · AND `valid` IS NOW 0, WAS 1 AT §87 — MEASURED AT",
@@ -165,7 +165,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 393,
+   "line": 468,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> CLAIM LINES. *** One, `:276`, was genuinely LAPSED: §116c's *38 stale unsealed readings · 8 stale seals ·",
@@ -183,7 +183,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 394,
+   "line": 469,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> `valid` is now 0*, **measured at `f80425ed`**, carried no build where it was written. *(§119: the build is",
@@ -201,7 +201,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 528,
+   "line": 603,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> | *“the seals remain exactly **reproducible** against `HRYkeEpbpndI3UEE7ceeC`”* | asserts a corpus is currently reproducible | **yes**, and it is th",
@@ -217,7 +217,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 550,
+   "line": 625,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> bucket STILL read 0, because the claim spans a wrap: *“The seals remain”* ends one line, *“exactly",
@@ -239,7 +239,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 562,
+   "line": 637,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> `:801` — *the seals remain exactly reproducible against `HRYkeEpbpndI3UEE7ceeC`* — **is scoped to a build",
@@ -255,7 +255,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 614,
+   "line": 689,
    "kind": "readings-corpus",
    "phrases": 3,
    "text": "> set phrases — *38 STALE UNSEALED READINGS*, *8 STALE SEALS*, *`valid` IS NOW 0*, all three measured at",
@@ -273,7 +273,7 @@
    "why": "the paragraph names a build that RESOLVES, so this is a dated measurement (A-G54) and cannot lapse"
   },
   {
-   "line": 708,
+   "line": 783,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> writing its own file, and *“+20 stale”* about a peer's citations is not a claim about this lane's",
@@ -288,14 +288,14 @@
     "subject": "fix(career): mapping phase G · §122 — A-G480 over eleven derivations: 0 bare zeros of 91, and my first probe said 2 where the correct unit says 10"
    },
    "referent": {
-    "sha": "b5be9e05",
-    "when": "2026-11-16T07:46:04+01:00",
-    "subject": "fix(career): mapping phase G · §130 — die vier nicht rekonstruierbaren Instrumente, repariert und belegt; drei neue Befunde gegen diese Spur"
+    "sha": "e39455a1",
+    "when": "2026-11-16T13:39:22+01:00",
+    "subject": "fix(career,evidence): mapping phase G · §131c/d — F-R13 repaired on a measurement that contradicts the remedy I was handed, and PG-14's live figure finally carries its build"
    },
    "status": "LAPSED"
   },
   {
-   "line": 719,
+   "line": 794,
    "kind": "readings-corpus",
    "phrases": 1,
    "text": "> is evaluated over `windowAt(i)`, not over one line, so **“stale” on this line and “readings” on the",
@@ -310,14 +310,14 @@
     "subject": "fix(career): mapping phase G · §130 — die vier nicht rekonstruierbaren Instrumente, repariert und belegt; drei neue Befunde gegen diese Spur"
    },
    "referent": {
-    "sha": "b5be9e05",
-    "when": "2026-11-16T07:46:04+01:00",
-    "subject": "fix(career): mapping phase G · §130 — die vier nicht rekonstruierbaren Instrumente, repariert und belegt; drei neue Befunde gegen diese Spur"
+    "sha": "e39455a1",
+    "when": "2026-11-16T13:39:22+01:00",
+    "subject": "fix(career,evidence): mapping phase G · §131c/d — F-R13 repaired on a measurement that contradicts the remedy I was handed, and PG-14's live figure finally carries its build"
    },
-   "status": "CURRENT"
+   "status": "LAPSED"
   },
   {
-   "line": 960,
+   "line": 1046,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "Ports are GRÜN's alone: **façade 3220 → prod 3221**. GELB's `:3020` and PINK's `:3120/:3121` are untouched, and",
@@ -325,7 +325,7 @@
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   },
   {
-   "line": 1021,
+   "line": 1107,
    "kind": "product-source",
    "phrases": 1,
    "text": "| **A-G43's splay re-keying** | **APPLIED AND PROVEN (§104).** The splay now reads `arc.state === \"DIFFERENT\"`. It was held out of the tree for the wh",
@@ -347,7 +347,7 @@
    "status": "CURRENT"
   },
   {
-   "line": 1078,
+   "line": 1164,
    "kind": "seal-corpus",
    "phrases": 1,
    "text": "> emitted `viewBox`, so it changes `k`, so it changes every rendered size on the page. The seals remain",
@@ -363,7 +363,7 @@
    "why": "the paragraph names a build that resolves to NOTHING here, so the dating is NOMINAL — not re-checkable by anyone, by any means (A-G469 one layer out)"
   },
   {
-   "line": 1194,
+   "line": 1280,
    "kind": "stand-liveness",
    "phrases": 1,
    "text": "PINK's `:3120`/`:3121`/`:3123` and the DLL demo's `:3017` are untouched.",
@@ -371,5 +371,7 @@
    "why": "a liveness claim about a running process decays in wall-clock time, not in commits"
   }
  ],
- "detectorLimit": "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29."
+ "detectorLimit": "Claims are found by PATTERN, so a currency claim phrased outside these six forms is invisible to this scan and the counts are a FLOOR, not a census. LAPSED means the claim no longer carries its own WARRANT — not that it is false: a reading can survive a change that does not touch its quantity, which GELB measured as 5 of 9 findings stable across +166/-29.",
+ "detectorLimitTheOtherDirection": "THE COUNT IS ALSO AN OVER-COUNT, and both known false positives are F-G6's: `readings-corpus`'s form /\\bstale\\b[^.\\n]*\\breadings\\b/i is evaluated over windowAt(i) rather than over one line, so \"stale\" on one line and \"readings\" on the next satisfy the corpus-noun requirement ACROSS A LINE BREAK — which catches the two sentences that EXPLAIN the exclusion (A-G460: this scan cannot tell a claim from a sentence about a claim). Both are marked in place in the record.",
+ "detectorLimitTheReferentItself": "AND A CLASSIFICATION HERE CAN FLIP ON A COMMIT THAT DID NOT TOUCH THE CLAIM, which is §119's own class turned on this instrument. MEASURED at §131: README :794 read CURRENT at b5be9e05 because it happened to be written at the then-newest readings commit, and read LAPSED at e39455a1 — a commit that added a section elsewhere in the same file and changed nothing about that sentence. So CURRENT here means `written at or after the referent`, which for a methodological sentence rather than a figure carries no information at all. Read the matched line before acting on its status (A-G450)."
 }
