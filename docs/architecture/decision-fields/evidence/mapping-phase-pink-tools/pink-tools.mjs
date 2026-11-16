@@ -91,18 +91,35 @@ if (!existsSync(resolve(REPO_ROOT, ".git")))
  * says so, rather than being refused or silently accepted.
  */
 export const REPO_ROOT_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4";
+
+/**
+ * *** AND THE FIRST VERSION OF THIS CHECK HAD F-R13 ITSELF, caught by testing it in a git-less PATH. ***
+ * It conflated "git answered NO" with "git could not be asked": with no `git` binary the ancestry probe
+ * threw, the code read that as a failed ancestry test, and the module refused a GENUINE checkout while
+ * asserting it was "a checkout of SOMETHING ELSE". That is worse than the defect it replaced, because it
+ * misattributes with confidence. A refusal must distinguish a negative answer from no answer.
+ *
+ * So the probe is three-valued: VERIFIED (git answered yes), REFUSED (git answered no), or UNVERIFIABLE
+ * (git absent, or a shallow clone without the root commit) — and only a NEGATIVE ANSWER refuses.
+ */
 export const repoIdentity = (() => {
-  let shallow = false;
-  try { shallow = execFileSync_("git", ["-C", REPO_ROOT, "rev-parse", "--is-shallow-repository"], { encoding: "utf8" }).trim() === "true"; } catch { /* no git */ }
+  const git = a => execFileSync_("git", ["-C", REPO_ROOT, ...a], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  let gitUsable = false, shallow = false;
+  try { git(["rev-parse", "--git-dir"]); gitUsable = true; } catch { /* no git binary, or not a repo */ }
+  if (!gitUsable)
+    return { verified: false, unverifiable: true, by: "git could not be asked (no usable `git` here) — downgraded to the path test", shallow: false, gitUsable };
+  try { shallow = git(["rev-parse", "--is-shallow-repository"]) === "true"; } catch { /* older git */ }
   try {
     execFileSync_("git", ["-C", REPO_ROOT, "merge-base", "--is-ancestor", REPO_ROOT_COMMIT, "HEAD"], { stdio: "ignore" });
-    return { verified: true, by: `root commit ${REPO_ROOT_COMMIT.slice(0, 8)} is an ancestor of HEAD`, shallow };
+    return { verified: true, unverifiable: false, by: `root commit ${REPO_ROOT_COMMIT.slice(0, 8)} is an ancestor of HEAD`, shallow, gitUsable };
   } catch {
-    if (shallow) return { verified: false, by: "shallow clone — root commit absent; downgraded to the path test", shallow };
-    return { verified: false, by: "root commit is NOT an ancestor of HEAD", shallow };
+    if (shallow)
+      return { verified: false, unverifiable: true, by: "shallow clone — root commit absent, so the question cannot be answered; downgraded to the path test", shallow, gitUsable };
+    return { verified: false, unverifiable: false, by: `root commit ${REPO_ROOT_COMMIT.slice(0, 8)} is NOT an ancestor of HEAD`, shallow, gitUsable };
   }
 })();
-if (!repoIdentity.verified && !repoIdentity.shallow)
+/** ONLY a negative answer refuses. An unanswerable question downgrades and says so. */
+if (!repoIdentity.verified && !repoIdentity.unverifiable)
   throw new Error(`REFUSE pink-tools: derived REPO_ROOT ${REPO_ROOT} is a git checkout, but the root commit ` +
     `${REPO_ROOT_COMMIT.slice(0, 8)} of this repository is not an ancestor of its HEAD — so it is a checkout of ` +
     `SOMETHING ELSE. Refusing rather than reporting a measurement taken from a tree that is not this repository.`);

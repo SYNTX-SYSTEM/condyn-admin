@@ -948,9 +948,34 @@ coverage and forgeability, and the correct outcome is to say so rather than defe
 
 **Shallow clones do not hold the root commit**, so a hard refusal there would re-create F-R13's false
 refusal one layer out. A repository that cannot answer the ancestry question is **downgraded to the path
-test and says so** (`repoIdentity.shallow`), rather than refused or silently accepted. All four cases
-measured: this worktree accepts; the forgery refuses; a `--depth 1` clone of `main` loads with
-`verified:false, shallow:true`; a copy at layer depth still refuses for want of `.git`.
+test and says so**, rather than refused or silently accepted.
+
+### 11.1 *** AND MY FIRST VERSION OF THE FIX HAD F-R13 ITSELF ***
+
+Caught by testing the new check in a **git-less `PATH`** rather than only in the cases it was written for.
+The first version **conflated "git answered NO" with "git could not be asked"**: with no `git` binary the
+ancestry probe threw, the code read that as a failed ancestry test, and the module **refused a genuine
+checkout while asserting it was "a checkout of SOMETHING ELSE"**.
+
+*** THAT IS WORSE THAN THE DEFECT IT REPLACED, because it misattributes with confidence. *** A path test
+that wrongly accepts is a false negative; a refusal that names the tree as foreign when it never asked is
+a false positive **carrying a diagnosis**. I wrote it one section after criticising exactly this shape in
+GELB's lane, and the only reason it did not ship is that I tested the environment I had not designed for.
+
+The probe is now **three-valued** — VERIFIED (git answered yes), REFUSED (git answered no), UNVERIFIABLE
+(git absent, or shallow without the root commit) — and **only a negative answer refuses.** Five cases
+measured:
+
+| case | expected | measured |
+|---|---|---|
+| genuine worktree | accept, verified | `verified:true` |
+| `git init` + the path (the forgery my old anchor accepted) | **REFUSE** | exit 1 |
+| `clone --depth 1 --branch main` | accept, unverifiable | `verified:false, unverifiable:true` |
+| git-less `PATH` | accept, unverifiable | exit 0, `gitUsable:false` |
+| copy at layer depth | **REFUSE** (no `.git`) | exit 1 |
+
+**The rule this leaves:** a guard may refuse on a negative answer and must never refuse on a missing one.
+*An unanswerable question is not a failed test.*
 
 ---
 

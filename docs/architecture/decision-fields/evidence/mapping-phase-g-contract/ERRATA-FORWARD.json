@@ -2,7 +2,7 @@
   "schema": "pink.errata-forward/1",
   "what": "Forward pointers from withdrawn or superseded claims standing in a SEALED register to the errata that withdraws them. The sealed register is not modified; this file sits beside it and is not listed in its manifest.",
   "ownerDecision": "Connect PINK's three withdrawals by traceable forward pointers to their valid errata. Do not rewrite historical evidence.",
-  "generatedAtUTC": "2026-11-16T12:41:43.844Z",
+  "generatedAtUTC": "2026-11-16T12:45:31.879Z",
   "generator": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-errata-forward.mjs",
   "howQuotesWereObtained": "READ from the sealed file at the cited line and recorded verbatim. The generator is given only an id, a line number and a short expected substring, and REFUSES (exit 4) if the substring is not at that line. Quotes are never typed into this file by hand — that is the W-3 failure mode.",
   "sealedRegister": {

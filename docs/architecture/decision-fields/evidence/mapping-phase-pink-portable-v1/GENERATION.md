@@ -1,6 +1,6 @@
 # PINK — PORTABLE EVIDENCE LAYER V1 · GENERATION RECORD
 
-Generated `2026-11-16T12:37:38.543Z` from `validation/hr-decision-loop-pink` @ `d85df734`.
+Generated `2026-11-16T12:45:31.695Z` from `validation/hr-decision-loop-pink` @ `787d3fe9`.
 
 ## What this layer is, and what it is not
 
@@ -27,7 +27,7 @@ historical manifest line**, the digest **recomputed from disk**, and the **outpu
 > pink-tools.mjs derives REPO_ROOT five levels up from its own directory. A copy at <layer>/mapping-phase-pink-tools/ is one level too deep, derives REPO_ROOT=<repo>/docs, finds no .git and THROWS AT IMPORT by its own guard. Measured, not reasoned. One canonical copy also cannot drift.
 
 Imported as `../../../mapping-phase-pink-tools/pink-tools.mjs` (3 levels up), digest
-`65b1dcd39f7f854f…`. **Cost:** the layer is valid only at the depth it was
+`f77e28930ae527bd…`. **Cost:** the layer is valid only at the depth it was
 generated for; `--verify` re-derives that depth rather than trusting it.
 
 ## Census
