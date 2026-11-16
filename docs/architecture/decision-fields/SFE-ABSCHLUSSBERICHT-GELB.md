@@ -1401,3 +1401,28 @@ Es berichtet beides ungefragt: der **erste Volllauf lief parallel zu meinem** un
 > **PINK-STRUCT hat seinen Falschlauf an der DAUER erkannt**, was der schärfere Detektor ist als meine
 > Einzeldatei-Nachläufe: *** EIN SUITE-LAUF, DER DOPPELT SO LANGE BRAUCHT, IST VERDÄCHTIG, BEVOR MAN SEINE
 > ROTEN ANSIEHT. ***
+### §12.11 F-A2 — ***NICHT VON MIR ZU SCHLIESSEN, UND DER GRUND STEHT SEIT WOCHEN IM CODE***
+
+PINK-STRUCTs F-A2: `assertDisposableServer`s FOREIGN_PAYLOAD-Glied verlangt, dass der Wegwerf-Server nichts
+Fremdes hält; `local-decision-context-http.e2e.test.ts:21` erzeugt `condyn_r5_<20 hex>`. **Ich wollte es
+reparieren und habe zuerst gelesen, warum es so ist** — `lib/decision-runtime/local/decision-context-api.ts`
+sagt es selbst:
+
+> *„Making it use the sanctioned disposable create/drop fixes it, but `test/decision-runtime` is sealed
+> against commit 435a112 by … (P8), and that seal was intact. The isolation mandate of 2026-10-10 and that
+> older seal therefore **contradict each other on this one path**; resolving it means re-pinning P8 or
+> exempting that one file, **which is OTTAVIO's call.**“*
+
+**Also beides verboten:** der saubere Weg (die r5-Datenbank dem Wegwerf-Muster unterwerfen) **bricht ein
+intaktes Siegel**, und der bequeme Weg (`condyn_r5_` im FOREIGN_PAYLOAD-Glied freistellen) ist genau die
+**Gate-Umgehung**, die das Mandat ausschließt. *** EIN DEFEKT, DESSEN BEIDE REPARATUREN EINE GRENZE
+VERLETZEN, IST KEINE AUFGABE, SONDERN EINE EIGENTÜMERENTSCHEIDUNG — UND SIE WAR BEREITS EINE. ***
+
+**Was PINK-STRUCT hinzugefügt hat, und es ist der Wert des Befundes:** der Widerspruch war als *„dieser Test
+antwortet mit dem Gate 503“* verbucht — ein Kostenpunkt **innerhalb eines Laufs**. Gemessen ist jetzt ein
+zweiter: *** ZWEI GLEICHZEITIGE LÄUFE AUF DEM EINEN WEGWERF-SERVER ZERSTÖREN SICH GEGENSEITIG, UND VIER TESTS
+WURDEN DABEI STILL ZU „SKIPPED“. *** **Und ein Sololauf kann das nicht finden** — was erklärt, warum es vier
+Phasen unentdeckt blieb: *** DIESE LANES HABEN IMMER ALLEIN GEMESSEN. ***
+
+**Disposition: der Eigentümerpunkt bleibt, mit geschärften Kosten.** Nicht repariert, nicht freigestellt,
+nicht als geschlossen ausgewiesen.
