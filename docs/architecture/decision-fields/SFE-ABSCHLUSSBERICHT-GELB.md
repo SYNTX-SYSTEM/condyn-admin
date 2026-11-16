@@ -44,7 +44,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 
 | Prüfebene | Stand | Herkunft |
 |---|---|---|
-| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen**, mit Abgleich | Lauf dieser Session, auf bereitgestellter Wegwerf-DB. *** Figur aus GRÜNs Lane, deren 69 Ausgaben AUSNAHMSLOS `verdict: NONE` erklären (A-G458). *** |
+| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen** (24 übersprungen, 3570) | *** 2026-11-16 IN DIESER LANE SELBST GEFAHREN, auf Wegwerf-DB, und auf den Test genau mit GRÜNs Zahl übereinstimmend — §11.9. NICHT MEHR „auf Bericht hin“. *** Eine rote Testdatei, Ursache war mein eigener verwaister Dev-Server; einzeln 4/4 grün. |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
 | **GELB-Instrumente** | *** 26 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). **UND DIE FORM DANACH LAS „25 Instrumente, 22 Exit 0“, OHNE DIE DREI ZU BENENNEN — zwei von ihnen waren seit §125 an `ENOBUFS` TOT und konnten überhaupt nicht hinsehen (§128, A-G468, Defekte 402/403).** **Heute: 28** (neu `gelb-read.mjs`, `gelb-paths.mjs`, `gelb-currency-lapse.mjs`), **26 Exit 0, 2 verweigern
 bauartbedingt** — das Subject-Gate dauerhaft, und `gelb-currency-lapse` solange **≥ 1 Währungsaussage
@@ -368,8 +368,8 @@ war. *** **Eine Zählung lässt sich durch Fleiß aufblähen, eine Latenz nicht.
 Vorwärtszeiger · Amendments bis **A-G457** · Branch `architecture/mapping-phase-f` @ `14ae2170`, nichts
 ungepusht, Arbeitsbaum sauber.
 
-**Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). **Zahlen aus GRÜNs Lane** (Suite, PF-13,
-`tsc`) **und PINKs Lane** (Pixel, sRGB, PF-5/PF-7-Mutanten) **sind AUF BERICHT HIN übernommen** und hier als
+**Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). **Zahlen aus GRÜNs Lane** (~~Suite~~, PF-13,
+`tsc`) **und PINKs Lane** (Pixel, sRGB, PF-5/PF-7-Mutanten) **sind AUF BERICHT HIN übernommen** — *** AUSSER DER GESAMTSUITE, die §11.9 in dieser Lane auf eigener Wegwerf-DB nachgefahren hat (3546/0, identisch). PF-13 UND `tsc` BLEIBEN AUF BERICHT HIN. *** und hier als
 solche gekennzeichnet — **keine davon konnte ich auf einem von mir lesbaren Stand nachvollziehen** (§0) — **und wo ein Instrument ein
 eigenes Verdict-Feld führt, steht es hier wörtlich statt zusammengefasst (A-G458).**
 
@@ -531,19 +531,35 @@ die eine Zeile in `.env.local` ist. *** DIE ANWEISUNG WAR BEI NIEDERSCHRIFT RICH
 WEGGEZOGEN, UND DER ALTE NAME ANTWORTETE WEITER AUF SEINEM PORT. *** **A-G471s dritte Richtung in der
 Infrastrukturschicht: der Name auflöste, also schlug nichts laut fehl.**
 
-**Zwei Dinge, die hier zusammengehören.** Erstens: **die Grenze hat es gefangen, nicht die Dokumentation** —
-B-ENTRY verweigerte korrekt und unumgangen. Zweitens, und unangenehmer: *** DER RUNNER BEENDETE SICH MIT
-EXIT 0, OBWOHL KEIN EINZIGER TEST GELAUFEN WAR. *** Eine Verweigerung, die als Erfolg zurückkehrt, ist genau die
-Form, gegen die dieses Register seit §107 argumentiert. **§4 Punkt 2 und §5 sind korrigiert** (2026-11-16, mit
-Provenienz und ohne den alten Wortlaut zu tilgen); **der Exit-Code ist als Befund offen und gehört in die
-Runner-Schicht, nicht in die Dokumentation.**
+**Die Grenze hat es gefangen, nicht die Dokumentation** — B-ENTRY verweigerte korrekt und unumgangen. **§4 Punkt 2
+und §5 sind korrigiert** (2026-11-16, mit Provenienz und ohne den alten Wortlaut zu tilgen).
+
+> ⚠ ***WIDERRUF IN DERSELBEN SITZUNG, UND ER TRIFFT MICH.*** Die erste Form dieses Abschnitts trug als zweiten
+> Befund: *„DER RUNNER BEENDETE SICH MIT EXIT 0, OBWOHL KEIN EINZIGER TEST GELAUFEN WAR“*, und nannte das die Form,
+> gegen die dieses Register seit §107 argumentiert. **Das ist falsch, und zwar nachgemessen:** derselbe Lauf ohne
+> Pipe und ohne `nohup` gibt *** TRUE EXIT CODE = 1 ***. `scripts/test-db/run.ts` sagt im Kommentar *„The exit code
+> is vitest's“* und tut genau das (`process.exit(exitCode)`). **Die 0, die ich gesehen habe, war meine eigene
+> Shell:** ein `nohup … &` meldet den Exit des Hintergrund-Starters, und der spätere Volllauf lief durch
+> `| tail -60`, dessen Exit die Pipeline bestimmt. *** ICH HABE DEN DEFEKT MEINES MESSAUFBAUS DEM GEPRÜFTEN SYSTEM
+> ZUGESCHRIEBEN — UND ZWAR IN DER EINEN DEFEKTKLASSE, DIE DIESES REGISTER AM LÄNGSTEN VERFOLGT, WAS DIE
+> ZUSCHREIBUNG PLAUSIBEL UND DESHALB GEFÄHRLICH MACHTE. *** **A-G483: wer einen Exit-Code als Befund führt, muss
+> ihn ohne Pipe, ohne `&` und ohne Wrapper genommen haben — sonst misst er seine eigene Shell.** Der
+> Runbook-Befund oben bleibt unverändert: er ist unabhängig reproduziert.
 
 ### §11.6 Verwaiste Wegwerf-Datenbanken
 
-**18 auf dem geteilten Server `:5432`, zusammen 285 MB**, aus der Zeit, als dieser Server noch Basis war — plus
-**6 auf dem Container**, zwei davon aus **meinen eigenen** abgebrochenen Läufen heute. **Nicht gelöscht:**
-Datenbanken auf dem geteilten Server zu verwerfen ist destruktiv und die Fremden sind nicht meine. **Meine
-eigenen räume ich auf; die 18 sind eine Eigentümerentscheidung.**
+**18 auf dem geteilten Server `:5432`, zusammen 285 MB**, aus der Zeit, als dieser Server noch Basis war, und
+**1 auf dem Container** (`condyn_test_a623d5d0040e8c57`, bestand schon vor dieser Sitzung).
+
+> **Korrektur der ersten Form dieser Zeile:** sie las „6 auf dem Container, zwei davon aus meinen eigenen
+> abgebrochenen Läufen“. **Die 6 war während laufender Läufe gezählt und hat deren lebende Datenbanken
+> mitgezählt** — eine Momentaufnahme als Bestand ausgegeben. *** UND MEINE EIGENEN LÄUFE HABEN NICHTS GELECKT: ***
+> `run.ts` verwirft im `finally`, und das Nachsehen nach der Datenbank meines abgebrochenen Laufs ergab
+> `does not exist, skipping`. **Dieser Worktree hält jetzt keinen Node-Prozess und keinen lauschenden Socket** —
+> geprüft über `cwd` und `ss -ltnp`, nicht über ein Muster, das meine eigene Kommandozeile trifft.
+
+**Nicht gelöscht:** Datenbanken auf dem geteilten Server zu verwerfen ist destruktiv und die Fremden sind nicht
+meine. **Die 18 sind eine Eigentümerentscheidung.**
 ### §11.7 ***DIE GEGENSEITIGE UNLESBARKEIT WAR NIE GEGENSEITIG***
 
 §0 dieses Berichts trägt als zweitwichtigste Schranke: *„PINK kann GELBs Pflichtenregister nicht lesen —
@@ -596,3 +612,33 @@ sind acht.**
 
 > **Und der Mechanismus ist derselbe wie bei §11.7:** gefunden hat es **der Abgleich mit der anderen Lane**,
 > nicht eine Regel dieser Lane — **genau das Methodenergebnis aus §10, an diesem Bericht selbst bestätigt.**
+### §11.9 DIE SUITE, ERSTMALS VON DIESER LANE SELBST GEFAHREN
+
+§9 führte die Suitezahl als **„auf Bericht hin“ aus GRüNs Lane** — *„keine davon konnte ich auf einem von mir
+lesbaren Stand nachvollziehen“*. **Das gilt nicht mehr.** Gefahren in **diesem** Worktree, auf einer
+**Wegwerf-Datenbank** über `test:isolated`, Basis der Container auf `127.0.0.1:5433`:
+
+| | |
+|---|---|
+| **Tests** | *** 3546 bestanden · 0 fehlgeschlagen · 24 übersprungen (3570) *** |
+| Testdateien | **509 bestanden · 1 fehlgeschlagen · 11 übersprungen (521)** |
+| Dauer | 754.36 s |
+| B-ENTRY | `verifyDisposableTestDatabase` lief **unverändert und unumgangen**, Datenbank erzeugt, verifiziert, verworfen |
+
+> *** DIE 3546 STIMMT AUF DEN TEST GENAU MIT GRÜNS ZAHL ÜBEREIN, IN EINEM ZWEITEN WORKTREE UND AUF EINER ANDEREN
+> DATENBANK GEMESSEN. *** Damit fällt die §9-Kennzeichnung für **diese** Figur — und nur für sie. Die
+> Pixelzahlen und PF-13 bleiben, was sie waren.
+
+**Die eine rote Datei, mit ihrer Ursache statt mit einer Ausrede:**
+`test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts` scheiterte in `waitForReadiness` an
+*„Another next dev server is already running“* (PID 3107520, **in diesem Worktree**). Das war **mein eigener
+verwaister Lauf** — der abgebrochene zweite Start hatte einen Next-Dev-Server hinterlassen, der das Lock hielt.
+**Einzeln nachgefahren, unmittelbar danach: `Test Files 1 passed`, `Tests 4 passed | 3 skipped`, exit 0, 27.41 s.**
+
+> **Also: kein Produktdefekt, und ich schreibe es als meinen eigenen Messfehler auf, nicht als Flake.** Der
+> Unterschied ist nicht Kosmetik — *„flaky e2e“* ist eine Erklärung, die nichts verlangt, und *„mein
+> abgebrochener Lauf hielt das Lock“* ist eine, die eine Aufräumregel verlangt. **Zusammen mit A-G483 aus
+> §11.5 sind das zwei Befunde dieser Sitzung, die beide MEIN MESSAUFBAU waren und beide zuerst wie
+> Systemdefekte aussahen.**
+
+**Bedingung 1 ist damit in zwei Lanes unabhängig gemessen statt in einer gemessen und in der anderen zitiert.**
