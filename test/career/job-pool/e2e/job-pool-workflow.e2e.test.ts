@@ -4,9 +4,17 @@
  * is resolvable) a real Chromium session driving the SYNTX field: upload → explicit selection →
  * FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN.
  *
- * Playwright is not a dependency of this repository. Point CONDYN_PLAYWRIGHT_MODULE at a
- * `playwright` package directory to run the browser section; otherwise it is reported as
+ * `playwright` is a declared devDependency of this repository (1.63.0), so the browser section runs with
+ * no environment variable at all. CONDYN_PLAYWRIGHT_MODULE stays an OVERRIDE, honoured before package
+ * resolution, for pointing at a different install; when neither resolves the section is reported as
  * skipped, never as passed.
+ *
+ * CORRECTION 2026-11-16 · F-R11. This docstring said, and the sentence is kept rather than deleted:
+ *   [WITHDRAWN F-R11 2026-11-16] "Playwright is not a dependency of this repository."
+ * *** IT WAS TRUE WHEN WRITTEN AND MY OWN F-R8 REPAIR FALSIFIED IT: DECLARING THE DEPENDENCY IS WHAT MADE
+ * THE VARIABLE OPTIONAL. *** The claim now stands in its positive direction so that
+ * test/integration-boundary/dependency-claim-currency.test.ts keeps checking it against package.json in
+ * both directions — removing the dependency turns this docstring red instead of leaving it quietly wrong.
  */
 import { createRequire } from "node:module";
 import { once } from "node:events";

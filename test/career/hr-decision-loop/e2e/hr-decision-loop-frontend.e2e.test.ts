@@ -3,10 +3,18 @@
  * world, real HTTP, server-rendered SIL page and (when Playwright is
  * resolvable) a real Chromium session driving the dock.
  *
- * Playwright is not a dependency of this repository. Point
- * CONDYN_PLAYWRIGHT_MODULE at a `playwright` package directory (any project
- * with a matching browser install) to run the browser section; otherwise it
- * is reported as skipped, never as passed.
+ * `playwright` is a declared devDependency of this repository (1.63.0), so the
+ * browser section runs with no environment variable at all.
+ * CONDYN_PLAYWRIGHT_MODULE stays an OVERRIDE, honoured before package
+ * resolution, for pointing at another install; when neither resolves the
+ * section is reported as skipped, never as passed.
+ *
+ * CORRECTION 2026-11-16 · F-R11. This docstring said, kept rather than deleted:
+ *   [WITHDRAWN F-R11 2026-11-16] "Playwright is not a dependency of this repository."
+ * It was true when written and the F-R8 repair falsified it. The claim now
+ * stands in its positive direction, checked by
+ * test/integration-boundary/dependency-claim-currency.test.ts in both
+ * directions.
  */
 import { createRequire } from "node:module";
 import { once } from "node:events";
