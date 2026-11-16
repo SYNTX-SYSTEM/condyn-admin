@@ -1,0 +1,424 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_975f6f2ec0370ca9
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-hr-integration
+
+[database-isolation] verified disposable test database condyn_test_975f6f2ec0370ca9
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'00000'[39m,
+  message: [32m'constraint "career_capability_proposal_projection_references_analysis_id_fk" of relation "career_capability_proposal_projection_references" does not exist, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'12670'[39m,
+  routine: [32m'ATExecDropConstraint'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-policy-activation-atomicity.test.ts (10 tests) 670ms
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-recovery.test.ts (6 tests) 431ms
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-concurrency-idempotency.test.ts (6 tests) 291ms
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-postgres-persistence.test.ts (14 tests) 204ms
+
+ Test Files  4 passed (4)
+      Tests  36 passed (36)
+   Start at  03:24:37
+   Duration  3.42s (transform 312ms, setup 58ms, collect 802ms, tests 1.60s, environment 1ms, prepare 274ms)
+
+[test-db] dropped condyn_test_975f6f2ec0370ca9

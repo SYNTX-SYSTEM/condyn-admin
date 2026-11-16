@@ -812,3 +812,56 @@ geschrieben, und das Schreiben machte 120. Danach kamen 8 weitere → 128.
 > limitation of the deliverable“*. Er ist seit heute falsch, **und nur PINK darf ihn berichtigen.** *** ALSO
 > WIRD BEDINGUNG 4 NICHT AUF DIE STÄRKE DES PUSHES HIN ALS ERFÜLLT AUSGEWIESEN: LESBARKEIT WAR NOTWENDIG UND
 > IST NICHT HINREICHEND, UND DIE LANE, DIE DAS GESAGT HAT, IST IMMER NOCH NICHT OFFEN. ***
+### §11.14 DIE VERÖFFENTLICHUNGSGRENZE IST GESCHLOSSEN — 10 → 26, GEMESSEN
+
+GRÜN hat gepusht (`3ec8457d..7b4d5852`, 100 Commits, Fast-Forward; vom Eigentümer **direkt in GRÜNs Session**
+autorisiert, nicht auf meine Freigabe hin). **`4b83414e` liegt jetzt auf einem `origin`-Ref.** Derselbe
+Instrumentenlauf, derselbe reine `origin`-Clone, nur ein `git fetch` später:
+
+| | vorher (§11.3) | nachher |
+|---|---|---|
+| OK | 10 | *** 26 *** |
+| PIN-UNRESOLVABLE | 16 | *** 0 *** |
+| REFUSE-BY-DESIGN | 2 | 2 |
+
+> *** §4 PUNKT 8s VORHERSAGE — „mit GRÜNs und PINKs Commits veröffentlicht laufen 26 von 27, 0 unerreichbar“ —
+> IST AUF DIE ZAHL EINGETROFFEN. *** Sie war damals über einen **Dateipfad** in den Prüf-Clone gemessen, also
+> eine Simulation der Veröffentlichung; jetzt ist sie über `origin` gemessen, also die Sache selbst. **Die
+> lane-übergreifende Nachrechnung reist.** §10 Punkt 1 und Punkt 2 sind damit **erledigt**, und zwar durch
+> Veröffentlichung, nicht durch ein Instrument — genau wie dort vorhergesagt.
+
+### §11.15 ***DIE 27 ROTEN SIND MAINS, UND DIESE LANE HÄLT IHRE REPARATUR — DIE INTEGRATION MACHT SIE GRÜN***
+
+GRÜNs Volllauf auf seinem Branch: **27 fehlgeschlagen / 3642 bestanden / 20 übersprungen (3689)**, vier
+G1-Lifecycle-Suiten, Runner-Exit 1. GRÜN schrieb die 27 der *„recorded base redness“* (PINK §3.78) zu **und
+sagte ausdrücklich, main heute nicht nachgemessen zu haben.** *** DIE ZUSCHREIBUNG WAR OFFEN, ALSO HABE ICH
+SIE GEMESSEN STATT SIE ZU ÜBERNEHMEN. *** Dieselben vier Suiten, dieselbe Wegwerf-DB, echte Exit-Codes:
+
+| Stand | G1-Lifecycle-Suiten |
+|---|---|
+| `origin/main` `e360caf9` | *** 27 fehlgeschlagen / 9 bestanden (36) *** |
+| `frontend/mapping-phase-g` (GRÜN) | **27 fehlgeschlagen** (GRÜNs Messung) |
+| `architecture/mapping-phase-f` (GELB) | *** 36 BESTANDEN / 0 *** |
+| **Integrationsversuch (GELB + GRÜN)** | *** 36 BESTANDEN / 0 *** |
+
+**Die Ursache, aus der Fehlermeldung gelesen statt vermutet:** PostgreSQL **`42703` — undefined column** auf
+`insert into "career_policy_versions" (… "payload_hash", "payload")`. **Das ist die Bootstrap-↔-ORM-Drift, die
+diese Lane bereits behoben hat** (§2 DELTA: 9 Tabellen korrigiert, Drift = 0, Test gesetzt).
+
+> *** GRÜNS ZUSCHREIBUNG IST RICHTIG — DIE 27 SIND VON `main` GEERBT UND NICHT VON GRÜNS ARBEIT ERZEUGT. ***
+> **Und die Reparatur liegt in dieser Lane, in drei Dateien, die GRÜNs Branch nicht hat.** Beide Lanes sind
+> von `e360caf9` abgezweigt; GRÜN nahm das Mapping mit, GELB die Schema-Reparatur, **und keiner von beiden
+> hat beides.**
+>
+> *** DAHER IST DIE INTEGRATION KEIN AUFRAUMSCHRITT, SONDERN DER SCHRITT, DER DIE SUITE GRÜN MACHT. *** Die
+> §11.11-Messung stellt das auf den Kopf, was ein Integrationsrisiko zu sein schien: der Merge bringt
+> **27 rote Tests nach grün** und lässt **zwei** rote zurück, beide MAP-G-ARCH, beide mit einer Ursache und
+> einer Adjudikation (A-G485).
+>
+> **Was ich daraus über meine eigene §1-Zeile lerne:** sie führte „3546 / 0 fehlgeschlagen“ als Zustand des
+> **Systems**. Auf dem Stand, der das Mapping trägt, war die Suite **nie** 0 — sie war 27 rot, und das stand in
+> PINKs §3.78 seit Wochen. **Meine Zahl war nicht falsch gemessen, sondern falsch adressiert:** sie beschrieb
+> einen Stand, auf dem das Feature fehlt, und wurde als Aussage über das Feature gelesen — von mir zuerst.
+
+**Evidenz:** `evidence/integration-trial-20261116/` — `g1-gelb.out.txt`, `g1-origin-main.out.txt`,
+`g1-integration.out.txt`, `instruments-after-push.out.txt`.

@@ -1,0 +1,1129 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_cb94c62ce3713be3
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-g1probe
+
+[database-isolation] verified disposable test database condyn_test_cb94c62ce3713be3
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'00000'[39m,
+  message: [32m'constraint "career_capability_proposal_projection_references_analysis_id_fk" of relation "career_capability_proposal_projection_references" does not exist, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'12670'[39m,
+  routine: [32m'ATExecDropConstraint'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ❯ test/career-policy-activation-atomicity.test.ts (10 tests | 10 failed) 488ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists 212ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.304Z,actor1,299f2abe4026ec7e03e1875f6e67d274818e5cb2251d072b4deeaa63c5e77a08,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.304Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged 35ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.349Z,actor1,57193024ab4ffcb61292d06aabd7be1ba35636a860b035ebe5aa962dab6364bf,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.349Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL 33ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.383Z,actor1,6d045acad01596055be08fb218ee8ab555ffdbf0da1141e36fb20e2400000bf2,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.383Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL 40ms
+     → expected [Function] to throw error including 'ERR_POLICY_NOT_FOUND' but got 'Failed query: select "id", "policy_fa…'
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL 31ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.455Z,actor1,680f612d384e2713c814bb2511cbf6cef734bfec3117ee976c59d73ee8bcb25c,{"policyId":"P1","policyFamilyId":"FAM2","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.455Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT 28ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.483Z,actor1,504f3d23b3c51f374443e2a5bb7e60993a29c32a1eb47e4d53d0bf59224ab9fb,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.483Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds 28ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.509Z,actor1,59c8631ebef8929b15e098768ee6eecd9b75921d0536d7fe8bc86aa5a3988a83,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.509Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent 26ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.537Z,actor1,8b1e3dcb5133cf7bf1ac96a30b959a4036e3bdb949381cda936823b4df8c0cf1,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.537Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL 26ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.562Z,actor1,c805fe056d1de7b6168958629656eb6d64d491820ad5a990b0b3fdcaa6c97307,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.562Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged 28ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P_A,1,,2026-11-16T02:24:56.590Z,actor1,1e8a0b1360ed5fcf74da8c0c50b8a6abfcaec6ce61b5dc4d31fe2f359aeaff30,{"policyId":"P_A","policyFamilyId":"FAM_A","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.590Z","createdBy":"actor1"}
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ❯ test/career-lifecycle-recovery.test.ts (6 tests | 5 failed) 314ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved 95ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.007Z,actor1,1cc12a70d9fd9324c27ca11c5644c1e9b4ed6abf5848ed27a72ca0241089adc0,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.007Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved 42ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.063Z,actor1,30ecb017987fefde637f64a5c45b9c5d9a87ecf8f4a2d5f275533dc09641cb9a,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.063Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved 49ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.113Z,actor1,a5ef4c37a60fcb73e8c1fe76bcf2283588a313222335f98e403d2e3246b6e516,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.113Z","createdBy":"actor1"}
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE 41ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY 44ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.196Z,actor1,12f1461f87f30733fcff455cfa752ca5dd1fc6a140d6970696673c3a32a109b1,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.196Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches 42ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.239Z,actor1,87710b61a0e3096db9e13c86900e2bc45189c1d27bea3d133972fc76d40a8e81,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.239Z","createdBy":"actor1"}
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts (6 tests | 6 failed) 126ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > A/B/C/D. concurrent insertions -> idempotent success or strict ERR_IMMUTABLE_RECORD_CONFLICT 23ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.670Z,actor1,cdf16fa5c17cce22769ca2434d5ce48287099207ee9bf2423ed6035dfda38f27,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.670Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > E. same external Outcome event delivered twice concurrently -> one Outcome 9ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.690Z,actor1,42c6d687b28c3e004e1f40d6173a04937d3338e5aaac65c79196e7dc6ed4ca60,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.690Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > F. same Outcome + two different legitimate observers -> two FeedbackRecords 7ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.698Z,actor1,aad7f1b96560e95aa88e46a5f65203d742ee7c4408ff5aea4b2f857b5cba42c4,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.698Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > G/H. child races before parent commit -> no dangling lineage / retry succeeds 7ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.705Z,actor1,65fcb90ad9d9971ed984367fd1cfdc63796fb51599b4643209ae34e99fece78c,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.705Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > I. three concurrent identical retries -> still one artifact 6ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.711Z,actor1,67d9e9452b35159ba1725469eb96fa1a38b1d5b9e336754b5aed2c1b11ebd45a,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.711Z","createdBy":"actor1"}
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > J/K/L. process restart after race -> exact lifecycle recovery (no JS lock needed) 7ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.718Z,actor1,60546464917fe81a5ac87246cccb22c850f50cc41a769f3f1324725d2c9fd367,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.718Z","createdBy":"actor1"}
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts (14 tests | 6 failed) 202ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > A. Recommendation save/load -> deepEqual 16ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > B. Decision save/load -> recommendation reference preserved 13ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > C. Decision with unknown Recommendation -> FAIL 6ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > D. Commitment with unknown Decision -> FAIL 19ms
+     → expected [Function] to throw error including 'ERR_UNKNOWN_DECISION' but got 'Failed query: insert into "career_com…'
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > E. Action with unknown Commitment -> FAIL 9ms
+     → expected [Function] to throw error including 'ERR_UNKNOWN_COMMITMENT' but got 'Failed query: insert into "career_act…'
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > F. Outcome with unknown Action -> FAIL 7ms
+     → expected [Function] to throw error including 'ERR_UNKNOWN_ACTION' but got 'Failed query: insert into "career_out…'
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > G. Feedback with unknown Outcome -> FAIL 6ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > H. Attribution with unknown Feedback -> FAIL 8ms
+     → expected [Function] to throw error including 'ERR_UNKNOWN_FEEDBACK' but got 'Failed query: insert into "career_att…'
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > I. same ID + identical payload -> IDEMPOTENT 17ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > J. same ID + reordered object keys -> IDEMPOTENT 7ms
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > K. same ID + modified semantic payload -> ERR_IMMUTABLE_RECORD_CONFLICT 6ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > L. save V1 Policy -> save V2 Policy -> V1 unchanged 8ms
+     → Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_1,1,,2026-11-16T02:24:58.204Z,actor1,3a74cf5c5ce6babba1879157494e277c6bb69eb7c982c31ffa7c2ee64fca2c52,{"policyId":"POL_1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumExplainability":0.2,"minimumFit":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:58.204Z","createdBy":"actor1"}
+   ✓ CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > M. Decision recommendationSnapshot differs from referenced Recommendation -> FAIL 8ms
+   × CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > N. save complete lifecycle -> reload each artifact -> exact lineage reconstructable 13ms
+     → Failed query: insert into "career_commitments" ("id", "decision_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)
+params: COM_1794795898227_903,DEC_1794795898223_316,2026-11-16T02:24:58.227Z,037e881f1b48ca43d724822a4e48011cf453b778aeb3a790332d86e59d8e3a57,{"commitmentId":"COM_1794795898227_903","decisionId":"DEC_1794795898223_316","actor":"actor1","actionType":"COMMITTED","createdAt":"2026-11-16T02:24:58.227Z"}
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 27 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > A/B/C/D. concurrent insertions -> idempotent success or strict ERR_IMMUTABLE_RECORD_CONFLICT
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.670Z,actor1,cdf16fa5c17cce22769ca2434d5ce48287099207ee9bf2423ed6035dfda38f27,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.670Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:60:21
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.670Z', 'actor1', 'cdf16fa5c17cce22769ca2434d5ce48287099207ee9bf2423ed6035dfda38f27', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.670Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.670Z', 'actor1', 'cdf16fa5c17cce22769ca2434d5ce48287099207ee9bf2423ed6035dfda38f27', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.670Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/27]⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > E. same external Outcome event delivered twice concurrently -> one Outcome
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.690Z,actor1,42c6d687b28c3e004e1f40d6173a04937d3338e5aaac65c79196e7dc6ed4ca60,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.690Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:107:21
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.690Z', 'actor1', '42c6d687b28c3e004e1f40d6173a04937d3338e5aaac65c79196e7dc6ed4ca60', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.690Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.690Z', 'actor1', '42c6d687b28c3e004e1f40d6173a04937d3338e5aaac65c79196e7dc6ed4ca60', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.690Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/27]⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > F. same Outcome + two different legitimate observers -> two FeedbackRecords
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.698Z,actor1,aad7f1b96560e95aa88e46a5f65203d742ee7c4408ff5aea4b2f857b5cba42c4,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.698Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:135:21
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.698Z', 'actor1', 'aad7f1b96560e95aa88e46a5f65203d742ee7c4408ff5aea4b2f857b5cba42c4', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.698Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.698Z', 'actor1', 'aad7f1b96560e95aa88e46a5f65203d742ee7c4408ff5aea4b2f857b5cba42c4', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.698Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/27]⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > G/H. child races before parent commit -> no dangling lineage / retry succeeds
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.705Z,actor1,65fcb90ad9d9971ed984367fd1cfdc63796fb51599b4643209ae34e99fece78c,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.705Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:159:21
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.705Z', 'actor1', '65fcb90ad9d9971ed984367fd1cfdc63796fb51599b4643209ae34e99fece78c', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.705Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.705Z', 'actor1', '65fcb90ad9d9971ed984367fd1cfdc63796fb51599b4643209ae34e99fece78c', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.705Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/27]⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > I. three concurrent identical retries -> still one artifact
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.711Z,actor1,67d9e9452b35159ba1725469eb96fa1a38b1d5b9e336754b5aed2c1b11ebd45a,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.711Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:174:21
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.711Z', 'actor1', '67d9e9452b35159ba1725469eb96fa1a38b1d5b9e336754b5aed2c1b11ebd45a', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.711Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.711Z', 'actor1', '67d9e9452b35159ba1725469eb96fa1a38b1d5b9e336754b5aed2c1b11ebd45a', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.711Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/27]⎯
+
+ FAIL  test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E) > J/K/L. process restart after race -> exact lifecycle recovery (no JS lock needed)
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_CONCURRENCY,1,,2026-11-16T02:24:57.718Z,actor1,60546464917fe81a5ac87246cccb22c850f50cc41a769f3f1324725d2c9fd367,{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.718Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ setupBase test/career-lifecycle-concurrency-idempotency.test.ts:42:5
+ ❯ test/career-lifecycle-concurrency-idempotency.test.ts:189:29
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.718Z', 'actor1', '60546464917fe81a5ac87246cccb22c850f50cc41a769f3f1324725d2c9fd367', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.718Z","createdBy":"actor1"}' ], args: [ 'POL_CONCURRENCY', 1, null, '2026-11-16T02:24:57.718Z', 'actor1', '60546464917fe81a5ac87246cccb22c850f50cc41a769f3f1324725d2c9fd367', '{"policyId":"POL_CONCURRENCY","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.718Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > D. Commitment with unknown Decision -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_DECISION' but got 'Failed query: insert into "career_com…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- ERR_UNKNOWN_DECISION[39m
+[31m+ Failed query: insert into "career_commitments" ("id", "decision_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)[39m
+[31m+ params: COM_1794795898124_534,DEC_1794795898124_140,2026-11-16T02:24:58.124Z,920866401e8f6a88f8af1714ca760c7f54c52c40d19d90371c99f9dd08dd64d2,{"commitmentId":"COM_1794795898124_534","decisionId":"DEC_1794795898124_140","actor":"actor1","actionType":"COMMITTED","createdAt":"2026-11-16T02:24:58.124Z"}[39m
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:74:5
+     72|     const commitment = createCommitment(decision, "actor1", "COMMITTED…
+     73|     
+     74|     await expect(repo.saveCommitment(commitment)).rejects.toThrow("ERR…
+       |     ^
+     75|   });
+     76| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > E. Action with unknown Commitment -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_COMMITMENT' but got 'Failed query: insert into "career_act…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- ERR_UNKNOWN_COMMITMENT[39m
+[31m+ Failed query: insert into "career_actions" ("id", "commitment_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)[39m
+[31m+ params: ACT_1794795898143_486,COM_1794795898143_699,2026-11-16T02:24:58.143Z,ecaa886fa33df98a42ff6f01f069b61b158b18702c9528a041bcca68fd6f82e0,{"actionId":"ACT_1794795898143_486","commitmentId":"COM_1794795898143_699","actor":"actor1","actionType":"SEND_EMAIL","occurredAt":"2026-11-16T02:24:58.143Z"}[39m
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:83:5
+     81|     const action = createActionEvent("", commitment, "actor1", "SEND_E…
+     82|     
+     83|     await expect(repo.saveAction(action)).rejects.toThrow("ERR_UNKNOWN…
+       |     ^
+     84|   });
+     85| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > F. Outcome with unknown Action -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_ACTION' but got 'Failed query: insert into "career_out…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- ERR_UNKNOWN_ACTION[39m
+[31m+ Failed query: insert into "career_outcomes" ("id", "action_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)[39m
+[31m+ params: OUT_1794795898152_858,ACT_1794795898152_705,2026-11-16T02:24:58.152Z,21b33a438d18cd34ba067f6d55108af79944012d17cde273b10e5a997246ba25,{"outcomeId":"OUT_1794795898152_858","actionId":"ACT_1794795898152_705","actor":"actor1","outcomeState":"REPLIED","occurredAt":"2026-11-16T02:24:58.152Z"}[39m
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:93:5
+     91|     const outcome = createOutcome(action, "actor1", "REPLIED");
+     92|     
+     93|     await expect(repo.saveOutcome(outcome)).rejects.toThrow("ERR_UNKNO…
+       |     ^
+     94|   });
+     95| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > H. Attribution with unknown Feedback -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_UNKNOWN_FEEDBACK' but got 'Failed query: insert into "career_att…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- ERR_UNKNOWN_FEEDBACK[39m
+[31m+ Failed query: insert into "career_attributions" ("id", "feedback_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)[39m
+[31m+ params: ATTR_1794795898166_598,FDB_1794795898166_007,2026-11-16T02:24:58.166Z,110cd08d99735775c99d1de482bb736db22d44f7f061b71dbbbde6eada671b0e,{"attributionId":"ATTR_1794795898166_598","feedbackId":"FDB_1794795898166_007","targetType":"RECOMMENDATION","targetId":"REC_1794795898166_007","attributionType":"ASSOCIATED_WITH","actor":"actor2"}[39m
+
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:116:5
+    114|     const attribution = createAttribution("", feedback, "RECOMMENDATIO…
+    115|     
+    116|     await expect(repo.saveAttribution(attribution)).rejects.toThrow("E…
+       |     ^
+    117|   });
+    118| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > L. save V1 Policy -> save V2 Policy -> V1 unchanged
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_1,1,,2026-11-16T02:24:58.204Z,actor1,3a74cf5c5ce6babba1879157494e277c6bb69eb7c982c31ffa7c2ee64fca2c52,{"policyId":"POL_1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumExplainability":0.2,"minimumFit":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:58.204Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:153:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_1', 1, null, '2026-11-16T02:24:58.204Z', 'actor1', '3a74cf5c5ce6babba1879157494e277c6bb69eb7c982c31ffa7c2ee64fca2c52', '{"policyId":"POL_1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumExplainability":0.2,"minimumFit":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:58.204Z","createdBy":"actor1"}' ], args: [ 'POL_1', 1, null, '2026-11-16T02:24:58.204Z', 'actor1', '3a74cf5c5ce6babba1879157494e277c6bb69eb7c982c31ffa7c2ee64fca2c52', '{"policyId":"POL_1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumExplainability":0.2,"minimumFit":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:58.204Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/27]⎯
+
+ FAIL  test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B) > N. save complete lifecycle -> reload each artifact -> exact lineage reconstructable
+Error: Failed query: insert into "career_commitments" ("id", "decision_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)
+params: COM_1794795898227_903,DEC_1794795898223_316,2026-11-16T02:24:58.227Z,037e881f1b48ca43d724822a4e48011cf453b778aeb3a790332d86e59d8e3a57,{"commitmentId":"COM_1794795898227_903","decisionId":"DEC_1794795898223_316","actor":"actor1","actionType":"COMMITTED","createdAt":"2026-11-16T02:24:58.227Z"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.saveCommitment lib/career/repositories/lifecycle.ts:106:5
+ ❯ test/career-lifecycle-postgres-persistence.test.ts:180:5
+
+Caused by: PostgresError: null value in column "actor" of relation "career_commitments" violates not-null constraint
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '23502', detail: 'Failing row contains (COM_1794795898227_903, DEC_1794795898223_316, 2026-11-16T02:24:58.227Z, null, 037e881f1b48ca43d724822a4e48011cf453b778aeb3a790332d86e59d8e3a57, {"actor": "actor1", "createdAt": "2026-11-16T02:24:58.227Z", "ac...).', schema_name: 'public', table_name: 'career_commitments', column_name: 'actor', file: 'execMain.c', routine: 'ExecConstraints', query: 'insert into "career_commitments" ("id", "decision_id", "timestamp", "payload_hash", "payload") values ($1, $2, $3, $4, $5)', parameters: [ 'COM_1794795898227_903', 'DEC_1794795898223_316', '2026-11-16T02:24:58.227Z', '037e881f1b48ca43d724822a4e48011cf453b778aeb3a790332d86e59d8e3a57', '{"commitmentId":"COM_1794795898227_903","decisionId":"DEC_1794795898223_316","actor":"actor1","actionType":"COMMITTED","createdAt":"2026-11-16T02:24:58.227Z"}' ], args: [ 'COM_1794795898227_903', 'DEC_1794795898223_316', '2026-11-16T02:24:58.227Z', '037e881f1b48ca43d724822a4e48011cf453b778aeb3a790332d86e59d8e3a57', '{"commitmentId":"COM_1794795898227_903","decisionId":"DEC_1794795898223_316","actor":"actor1","actionType":"COMMITTED","createdAt":"2026-11-16T02:24:58.227Z"}' ], types: [ 25, 25, 25, 25, 3802 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/27]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.007Z,actor1,1cc12a70d9fd9324c27ca11c5644c1e9b4ed6abf5848ed27a72ca0241089adc0,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.007Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:73:5
+ ❯ test/career-lifecycle-recovery.test.ts:104:101
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.007Z', 'actor1', '1cc12a70d9fd9324c27ca11c5644c1e9b4ed6abf5848ed27a72ca0241089adc0', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.007Z","createdBy":"actor1"}' ], args: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.007Z', 'actor1', '1cc12a70d9fd9324c27ca11c5644c1e9b4ed6abf5848ed27a72ca0241089adc0', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.007Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/27]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.063Z,actor1,30ecb017987fefde637f64a5c45b9c5d9a87ecf8f4a2d5f275533dc09641cb9a,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.063Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:73:5
+ ❯ test/career-lifecycle-recovery.test.ts:130:42
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.063Z', 'actor1', '30ecb017987fefde637f64a5c45b9c5d9a87ecf8f4a2d5f275533dc09641cb9a', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.063Z","createdBy":"actor1"}' ], args: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.063Z', 'actor1', '30ecb017987fefde637f64a5c45b9c5d9a87ecf8f4a2d5f275533dc09641cb9a', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.063Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/27]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.113Z,actor1,a5ef4c37a60fcb73e8c1fe76bcf2283588a313222335f98e403d2e3246b6e516,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.113Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:73:5
+ ❯ test/career-lifecycle-recovery.test.ts:137:29
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.113Z', 'actor1', 'a5ef4c37a60fcb73e8c1fe76bcf2283588a313222335f98e403d2e3246b6e516', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.113Z","createdBy":"actor1"}' ], args: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.113Z', 'actor1', 'a5ef4c37a60fcb73e8c1fe76bcf2283588a313222335f98e403d2e3246b6e516', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.113Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/27]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.196Z,actor1,12f1461f87f30733fcff455cfa752ca5dd1fc6a140d6970696673c3a32a109b1,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.196Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:73:5
+ ❯ test/career-lifecycle-recovery.test.ts:153:24
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.196Z', 'actor1', '12f1461f87f30733fcff455cfa752ca5dd1fc6a140d6970696673c3a32a109b1', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.196Z","createdBy":"actor1"}' ], args: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.196Z', 'actor1', '12f1461f87f30733fcff455cfa752ca5dd1fc6a140d6970696673c3a32a109b1', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.196Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/27]⎯
+
+ FAIL  test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: POL_V1,1,,2026-11-16T02:24:57.239Z,actor1,87710b61a0e3096db9e13c86900e2bc45189c1d27bea3d133972fc76d40a8e81,{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.239Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ populateCompleteLifecycle test/career-lifecycle-recovery.test.ts:73:5
+ ❯ test/career-lifecycle-recovery.test.ts:163:26
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.239Z', 'actor1', '87710b61a0e3096db9e13c86900e2bc45189c1d27bea3d133972fc76d40a8e81', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.239Z","createdBy":"actor1"}' ], args: [ 'POL_V1', 1, null, '2026-11-16T02:24:57.239Z', 'actor1', '87710b61a0e3096db9e13c86900e2bc45189c1d27bea3d133972fc76d40a8e81', '{"policyId":"POL_V1","policyFamilyId":"FAM_1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:57.239Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.304Z,actor1,299f2abe4026ec7e03e1875f6e67d274818e5cb2251d072b4deeaa63c5e77a08,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.304Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:33:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.304Z', 'actor1', '299f2abe4026ec7e03e1875f6e67d274818e5cb2251d072b4deeaa63c5e77a08', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.304Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.304Z', 'actor1', '299f2abe4026ec7e03e1875f6e67d274818e5cb2251d072b4deeaa63c5e77a08', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.304Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.349Z,actor1,57193024ab4ffcb61292d06aabd7be1ba35636a860b035ebe5aa962dab6364bf,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.349Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:51:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.349Z', 'actor1', '57193024ab4ffcb61292d06aabd7be1ba35636a860b035ebe5aa962dab6364bf', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.349Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.349Z', 'actor1', '57193024ab4ffcb61292d06aabd7be1ba35636a860b035ebe5aa962dab6364bf', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.349Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.383Z,actor1,6d045acad01596055be08fb218ee8ab555ffdbf0da1141e36fb20e2400000bf2,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.383Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:65:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.383Z', 'actor1', '6d045acad01596055be08fb218ee8ab555ffdbf0da1141e36fb20e2400000bf2', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.383Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.383Z', 'actor1', '6d045acad01596055be08fb218ee8ab555ffdbf0da1141e36fb20e2400000bf2', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.383Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+AssertionError: expected [Function] to throw error including 'ERR_POLICY_NOT_FOUND' but got 'Failed query: select "id", "policy_fa…'
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- ERR_POLICY_NOT_FOUND[39m
+[31m+ Failed query: select "id", "policy_family_id", "from_policy_version_id", "to_policy_version_id", "actor", "promoted_at", "payload_hash", "payload" from "career_policy_promotions" where "career_policy_promotions"."id" = $1[39m
+[31m+ params: PROM1[39m
+
+ ❯ test/career-policy-activation-atomicity.test.ts:70:5
+     68| 
+     69|   it("F. unknown candidate policy -> FAIL", async () => {
+     70|     await expect(repo.promotePolicy("PROM1", "FAM1", "NONEXISTENT", 0,…
+       |     ^
+     71|   });
+     72| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.455Z,actor1,680f612d384e2713c814bb2511cbf6cef734bfec3117ee976c59d73ee8bcb25c,{"policyId":"P1","policyFamilyId":"FAM2","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.455Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:75:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.455Z', 'actor1', '680f612d384e2713c814bb2511cbf6cef734bfec3117ee976c59d73ee8bcb25c', '{"policyId":"P1","policyFamilyId":"FAM2","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.455Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.455Z', 'actor1', '680f612d384e2713c814bb2511cbf6cef734bfec3117ee976c59d73ee8bcb25c', '{"policyId":"P1","policyFamilyId":"FAM2","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.455Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.483Z,actor1,504f3d23b3c51f374443e2a5bb7e60993a29c32a1eb47e4d53d0bf59224ab9fb,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.483Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:81:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.483Z', 'actor1', '504f3d23b3c51f374443e2a5bb7e60993a29c32a1eb47e4d53d0bf59224ab9fb', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.483Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.483Z', 'actor1', '504f3d23b3c51f374443e2a5bb7e60993a29c32a1eb47e4d53d0bf59224ab9fb', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.483Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.509Z,actor1,59c8631ebef8929b15e098768ee6eecd9b75921d0536d7fe8bc86aa5a3988a83,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.509Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:97:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.509Z', 'actor1', '59c8631ebef8929b15e098768ee6eecd9b75921d0536d7fe8bc86aa5a3988a83', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.509Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.509Z', 'actor1', '59c8631ebef8929b15e098768ee6eecd9b75921d0536d7fe8bc86aa5a3988a83', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.509Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.537Z,actor1,8b1e3dcb5133cf7bf1ac96a30b959a4036e3bdb949381cda936823b4df8c0cf1,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.537Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:123:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.537Z', 'actor1', '8b1e3dcb5133cf7bf1ac96a30b959a4036e3bdb949381cda936823b4df8c0cf1', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.537Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.537Z', 'actor1', '8b1e3dcb5133cf7bf1ac96a30b959a4036e3bdb949381cda936823b4df8c0cf1', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.537Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P1,1,,2026-11-16T02:24:56.562Z,actor1,c805fe056d1de7b6168958629656eb6d64d491820ad5a990b0b3fdcaa6c97307,{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.562Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:133:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P1', 1, null, '2026-11-16T02:24:56.562Z', 'actor1', 'c805fe056d1de7b6168958629656eb6d64d491820ad5a990b0b3fdcaa6c97307', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.562Z","createdBy":"actor1"}' ], args: [ 'P1', 1, null, '2026-11-16T02:24:56.562Z', 'actor1', 'c805fe056d1de7b6168958629656eb6d64d491820ad5a990b0b3fdcaa6c97307', '{"policyId":"P1","policyFamilyId":"FAM1","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.562Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/27]⎯
+
+ FAIL  test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+Error: Failed query: insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)
+params: P_A,1,,2026-11-16T02:24:56.590Z,actor1,1e8a0b1360ed5fcf74da8c0c50b8a6abfcaec6ce61b5dc4d31fe2f359aeaff30,{"policyId":"P_A","policyFamilyId":"FAM_A","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.590Z","createdBy":"actor1"}
+ ❯ PostgresJsPreparedQuery.queryWithCache ../condyn-admin-hr-integration/node_modules/src/pg-core/session.ts:73:11
+ ❯ LifecycleRepository.idempotentSave lib/career/repositories/lifecycle.ts:28:7
+     26|     
+     27|     try {
+     28|       await this.db.insert(table).values({
+       |       ^
+     29|         id,
+     30|         payloadHash,
+ ❯ LifecycleRepository.savePolicyVersion lib/career/repositories/lifecycle.ts:162:5
+ ❯ test/career-policy-activation-atomicity.test.ts:144:5
+
+Caused by: PostgresError: column "version" of relation "career_policy_versions" does not exist
+ ❯ ErrorResponse ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:815:30
+ ❯ handle ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:489:6
+ ❯ Socket.data ../condyn-admin-hr-integration/node_modules/postgres/src/connection.js:324:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { severity_local: 'ERROR', severity: 'ERROR', code: '42703', position: '45', file: 'parse_target.c', routine: 'checkInsertTargets', query: 'insert into "career_policy_versions" ("id", "version", "parent_version", "created_at", "created_by", "payload_hash", "payload") values ($1, $2, $3, $4, $5, $6, $7)', parameters: [ 'P_A', 1, null, '2026-11-16T02:24:56.590Z', 'actor1', '1e8a0b1360ed5fcf74da8c0c50b8a6abfcaec6ce61b5dc4d31fe2f359aeaff30', '{"policyId":"P_A","policyFamilyId":"FAM_A","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.590Z","createdBy":"actor1"}' ], args: [ 'P_A', 1, null, '2026-11-16T02:24:56.590Z', 'actor1', '1e8a0b1360ed5fcf74da8c0c50b8a6abfcaec6ce61b5dc4d31fe2f359aeaff30', '{"policyId":"P_A","policyFamilyId":"FAM_A","version":1,"configuration":{"minimumFit":0.5,"minimumExplainability":0.5,"partialSupportContribution":0.5},"createdAt":"2026-11-16T02:24:56.590Z","createdBy":"actor1"}' ], types: [ +0, +0, +0, +0, +0, +0, +0 ] }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/27]⎯
+
+
+ Test Files  4 failed (4)
+      Tests  27 failed | 9 passed (36)
+   Start at  03:24:55
+   Duration  2.80s (transform 259ms, setup 51ms, collect 738ms, tests 1.13s, environment 2ms, prepare 260ms)
+
+[test-db] dropped condyn_test_cb94c62ce3713be3
