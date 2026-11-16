@@ -1175,6 +1175,24 @@ constant two lines above now reads `shelf: 0.02`. Verified. This is the file's o
 the pre-inversion numbers as current. GRÜN to correct the comment with the shelf's new rendered luminance when
 the measurement produces it, not before: an invented number would be worse than a stale one.
 
+> ### ✅ DISCHARGED — AND THIS ITEM WAS CONTRADICTED BY THIS VERY REGISTER, 677 LINES LATER (2026-11-16, F-R6)
+>
+> **GRÜN found it, GELB verified it in the component.** `A-G39(a)` was carried out long ago: the component at
+> `9b57319d` reads `export const RING_LUMINANCE = Object.freeze({ shelf: 0.022, … })` and the comment beneath
+> it states *"the pre-inversion ladder this comment used to quote (0.0036 · 0.0069 · 0.0169 · 0.0431 …) **was
+> stale** from the moment the shelf moved, and **is replaced by MEASURED values** rather than by arithmetic"* —
+> followed by the four measured luminances against the stage plate, each labelled a DEVELOPMENT reading under
+> A-G36 point 2. **The instruction above was followed exactly as written, including its refusal to invent.**
+>
+> *** AND THE STALE PART WAS NEVER THE CODE — IT WAS THIS ITEM. *** It still says the constant "now reads
+> `shelf: 0.02`", while **this same register records `RING_LUMINANCE.shelf = 0.022` at lines 1848 and 1955.**
+> So the open item and its own resolution sat 677 lines apart in one document, and the item was the one that
+> had lapsed. **A register long enough to contradict itself needs its currency measured, not its length
+> admired** — which is precisely what A-G473/A-G476 built the lapse detector for, and the detector does not
+> read prose obligations like this one. **That gap is the finding, not the ladder.**
+>
+> The sentence above is kept rather than deleted: an instruction that was carried out is evidence that it was.
+
 **(b) The specification authority is single-homed on this branch.** GRÜN's §0: `PHASE_{D,E,F,G}.md` exist **only**
 in `condyn-admin-hr-integration`; GRÜN's tree carries `PHASE_C` and the `SPEC` only, and no `A-G*` identifier
 appears anywhere in it. GRÜN builds against four documents it does not hold, on a branch 60 ahead of
