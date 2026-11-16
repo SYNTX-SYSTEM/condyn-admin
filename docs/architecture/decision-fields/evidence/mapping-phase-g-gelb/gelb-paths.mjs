@@ -74,18 +74,88 @@ const IDENTITY_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4"; // this repo
 if (!existsSync(resolve(REPO_ROOT, ".git")))
   throw new Error(`REFUSE gelb-paths: derived REPO_ROOT ${REPO_ROOT} holds no .git — refusing to read a tree ` +
     `that is not a checkout of this repository rather than reporting a measurement taken from one.`);
-try {
-  execFileSync("git", ["-C", REPO_ROOT, "cat-file", "-e", `${IDENTITY_COMMIT}^{commit}`], { stdio: "ignore" });
-} catch {
+
+/**
+ * F-G11 (GRUEN, 2026-11-16) — AGAINST F-R13, WHICH WAS MY CORRECTION OF F-R9. VERIFIED BY ME.
+ *
+ * TWO SEPARATE FAULTS, AND THE FIRST IS IN MY REASONING RATHER THAN IN THE CODE.
+ *
+ * 1. *** THE SCENARIO F-R13 NAMED CANNOT EXHIBIT THE DEFECT. *** I wrote that a `clone --single-branch
+ *    --branch main` refuses a genuine checkout. Measured: `main` carries ZERO paths under
+ *    `evidence/mapping-phase-g-gelb`, so THIS MODULE IS NOT IN THAT CLONE AT ALL and the guard never runs.
+ *    The conclusion was right and the reason was unreachable — the same shape as the four relayed figures
+ *    PINK caught in this record, arrived at while correcting one of them.
+ *
+ * 2. *** AND THE CASE THAT IS REACHABLE DEFEATS THE ANCHOR I MOVED TO. *** In a SHALLOW clone of a branch
+ *    that DOES carry this module, both the phase-G base AND the root commit are absent (measured:
+ *    `--depth 1 --single-branch` of this branch, `rev-list --count HEAD` = 1, both objects ABSENT). So
+ *    re-anchoring alone replaced one false *"this is not this repository"* with another carrying a
+ *    different sha. The root commit is still the better anchor — it is reachable from `main`, which the
+ *    phase-G base is not — but it is not the repair.
+ *
+ * THE REPAIR IS A SIGN, NOT AN ANCHOR (A-G468). A shallow clone cannot ANSWER the identity question; it is
+ * not a wrong answer. `cannot establish` and `is wrong` are different verdicts and only one of them is true
+ * here, so shallowness is detected FIRST and named separately, with the remedy this repository already
+ * uses for exactly this case (`ERR_PHASE_C_BASE_MISSING` in test/career/mapping-field/phase-base.ts).
+ * GRUEN reached the same construction independently in `gruen-paths.mjs` and proved it end to end.
+ */
+/**
+ * AND A THIRD FAULT, PINK'S, FOUND IN PINK'S OWN F-R13 FIX AND TRUE OF MINE AS WRITTEN.
+ *
+ * *** EVERY `try { git … } catch { refuse }` IN THIS FILE CONFLATED "GIT ANSWERED NO" WITH "GIT COULD NOT BE
+ * ASKED". *** With no `git` on `PATH`, `execFileSync` throws `ENOENT` and the catch declared a genuine
+ * checkout to be "a checkout of SOMETHING ELSE" — a false verdict carrying a confident diagnosis, which is
+ * more harmful than a missed one. PINK hit exactly this in its own repair, one section after criticising the
+ * shape in my lane, and stated the rule:
+ *
+ *   *** A GUARD MAY REFUSE ON A NEGATIVE ANSWER AND MUST NEVER REFUSE ON A MISSING ONE.
+ *       AN UNANSWERABLE QUESTION IS NOT A FAILED TEST. ***
+ *
+ * So the probe is three-valued. `VERIFIED` / `REFUSED` / `UNVERIFIABLE`, distinguished by WHY git failed:
+ * a non-zero exit is an answer, a spawn failure is not.
+ *
+ * WHERE I DIVERGE FROM PINK, WITH THE GROUND, SINCE PINK HOLDS VALIDATION AUTHORITY AND MAY OVERRULE THIS:
+ * PINK's form lets `UNVERIFIABLE` continue. This module still REFUSES on it — because its entire purpose is
+ * to stop a reading being taken from a tree that is not this repository (A-G494), and continuing with the
+ * identity unestablished reinstates precisely that defect. What PINK is right about is the VERDICT, not the
+ * refusal: the message must say "cannot establish" and name the remedy, never "wrong repository". Three
+ * refusals, three distinct causes, no two wearing each other's words.
+ */
+function probeGit(args) {
+  try { execFileSync("git", args, { stdio: ["ignore", "pipe", "ignore"] }); return "VERIFIED"; }
+  catch (error) {
+    if (error.code === "ENOENT" || error.code === "EACCES" || error.status === undefined) return "UNVERIFIABLE";
+    return "REFUSED";
+  }
+}
+
+const shallowProbe = (() => {
+  try { return { state: "VERIFIED", shallow: execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "--is-shallow-repository"], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() === "true" }; }
+  catch (error) {
+    if (error.code === "ENOENT" || error.code === "EACCES" || error.status === undefined) return { state: "UNVERIFIABLE", shallow: false };
+    return { state: "VERIFIED", shallow: false };
+  }
+})();
+if (shallowProbe.state === "UNVERIFIABLE")
+  throw new Error(`REFUSE gelb-paths: CANNOT ESTABLISH whether ${REPO_ROOT} is a checkout of this repository — ` +
+    `\`git\` could not be run at all (no git on PATH, or not executable). *** THIS IS NOT A VERDICT THAT THE ` +
+    `TREE IS WRONG: THE QUESTION WAS UNANSWERABLE, NOT ANSWERED NO (PINK's rule, errata §11.1). *** Install ` +
+    `git, or run this instrument where git is available.`);
+if (shallowProbe.shallow)
+  throw new Error(`REFUSE gelb-paths: CANNOT ESTABLISH whether ${REPO_ROOT} is a checkout of this repository — ` +
+    `it is a SHALLOW clone, so the identity commit ${IDENTITY_COMMIT.slice(0, 8)} is absent whether or not this ` +
+    `is the right repository. This is "cannot establish", NOT "wrong repository" (A-G468, F-G11). Fetch the ` +
+    `history (\`git fetch --unshallow\`) and run again — the same remedy as ERR_PHASE_C_BASE_MISSING.`);
+if (probeGit(["-C", REPO_ROOT, "cat-file", "-e", `${IDENTITY_COMMIT}^{commit}`]) === "REFUSED") {
   throw new Error(`REFUSE gelb-paths: ${REPO_ROOT} is a git checkout but NOT of this repository — it does not hold ` +
     `the root commit ${IDENTITY_COMMIT.slice(0, 8)}. A .git alone proves only that something is version-controlled ` +
-    `(F-R9). A SHALLOW CLONE lacks the root commit too: fetch the history (\`git fetch --unshallow\`) and run again — ` +
-    `the same refusal and the same remedy as ERR_PHASE_C_BASE_MISSING in test/career/mapping-field/phase-base.ts.`);
+    `(F-R9). Shallowness is ruled out above and reported separately, so this verdict really is "wrong ` +
+    `repository" and not "cannot establish" (F-G11).`);
 }
 for (const [n, p] of [["PHASE_G", PHASE_G], ["PHASE_F", PHASE_F]]) {
   if (!existsSync(p)) throw new Error(`REFUSE gelb-paths: ${n} not at the derived ${p}`);
-  try { execFileSync("git", ["-C", REPO_ROOT, "ls-files", "--error-unmatch", p], { stdio: "ignore" }); }
-  catch { throw new Error(`REFUSE gelb-paths: ${n} exists at ${p} but is NOT git-tracked here — existsSync is satisfied by touch (F-R9).`); }
+  if (probeGit(["-C", REPO_ROOT, "ls-files", "--error-unmatch", p]) === "REFUSED")
+    throw new Error(`REFUSE gelb-paths: ${n} exists at ${p} but is NOT git-tracked here — existsSync is satisfied by touch (F-R9).`);
 }
 
 /**
