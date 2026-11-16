@@ -46,9 +46,35 @@ const archSrc = readFileSync(join(ROOT, ARCH), "utf8");
 const dirsDecl = /const PHASE_DIRS = \[([^\]]+)\]/.exec(archSrc);
 if (dirsDecl === null) throw new Error("ERR_GRUEN_PF13_NO_PHASE_DIRS: PF-13's population cannot be read and must not be assumed.");
 const PHASE_DIRS = dirsDecl[1].split(",").map(s => s.trim().replace(/^"|"$/g, "")).filter(Boolean);
-const walk = d => existsSync(join(ROOT, d))
-  ? readdirSync(join(ROOT, d), { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(`${d}${e.name}/`) : [`${d}${e.name}`])
-  : [];
+/**
+ * §130 / F-G1 — A DECLARED VENUE THAT DOES NOT RESOLVE MUST SAY SO, AND THE DECLARATION MUST BE CONSUMED.
+ *
+ * The form this replaces read `existsSync(dir) ? readdirSync(dir) : []`. PHASE_DIRS is READ from phase D's
+ * own predicate rather than restated — which is right — but the READING was never checked against the
+ * filesystem: a declared directory that had been renamed or moved contributed ZERO FILES, SILENTLY, and
+ * every guard below it then agreed with itself. `population` would shrink, vitest would be handed the same
+ * shrunken list, `covered` would equal `population`, `coverageMatchesPopulation` would read TRUE, and the
+ * instrument would report *"PF-13 EVALUATED over N test files"* as a clean pass over a population it never
+ * had. The two existing guards cannot see it: ERR_GRUEN_PF13_EMPTY_POPULATION catches only a TOTAL loss, and
+ * ERR_GRUEN_PF13_ZERO_DENOMINATOR only a zero test count.
+ *
+ * *** THIS IS THE SAME SHAPE AS gelb-pin-assertion-scan's TWO VENUES WITH `catch { continue }` ON A MISSING
+ * ONE — a venue that shrinks silently — and it sits under PF-13's DENOMINATOR, which is the figure the record
+ * quotes. *** MEASURED at 9b57319d: both declared venues resolve (mapping-field 14 test files, mapping-spec
+ * 2), so no figure reported to date is wrong because of this. The defect is that nothing would have said so.
+ *
+ * Resolution is now declared per venue and the declaration is consumed in full: an unresolved venue throws.
+ */
+const VENUES = PHASE_DIRS.map(d => ({ dir: d, resolved: existsSync(join(ROOT, d)) }));
+const unresolvedVenues = VENUES.filter(v => !v.resolved);
+if (unresolvedVenues.length > 0)
+  throw new Error(`ERR_GRUEN_PF13_VENUE_UNRESOLVED: PHASE_DIRS declares ${JSON.stringify(unresolvedVenues.map(v => v.dir))}, ` +
+    `which ${unresolvedVenues.length === 1 ? "does" : "do"} not resolve under ${ROOT}. A declared venue that contributes ` +
+    `nothing silently shrinks PF-13's population while every coverage guard below still agrees with itself — the ` +
+    `reading would be a clean pass over a population it never had. Declare the venue's absence in ` +
+    `architecture.test.ts's PHASE_DIRS, or restore the directory. Refusing rather than measuring (F-G1).`);
+const walk = d => readdirSync(join(ROOT, d), { withFileTypes: true })
+  .flatMap(e => e.isDirectory() ? walk(`${d}${e.name}/`) : [`${d}${e.name}`]);
 const population = PHASE_DIRS.flatMap(walk).filter(p => /\.(test|spec)\.(ts|tsx)$/.test(p)).sort();
 if (population.length === 0) throw new Error("ERR_GRUEN_PF13_EMPTY_POPULATION: an empty population would make PF-13 vacuously true.");
 
@@ -100,7 +126,10 @@ const out = {
   pin: { statement: "PF-13: every phase-D and phase-E test passes, except the three restated in writing.",
     firstStatement: "an earlier statement of the same pin reads 'every phase-D and phase-E test passes UNCHANGED'",
     aG426: "the exception is to UNCHANGED, not to PASSES — the three were rewritten for phase F and must still pass. This evaluator implements that stricter reading and reports the contradiction with GELB §116's wording rather than choosing quietly." },
-  population: { derivedFrom: `${ARCH} -> PHASE_DIRS`, phaseDirs: PHASE_DIRS, testFiles: population, testFileCount: population.length },
+  population: { derivedFrom: `${ARCH} -> PHASE_DIRS`, phaseDirs: PHASE_DIRS, testFiles: population, testFileCount: population.length,
+    /* F-G1: the declaration is CONSUMED, not merely made — every declared venue is named with whether it
+       resolved, so a shrunken population is visible in the reading instead of being invisible in it. */
+    venuesDeclared: VENUES, venuesUnresolved: unresolvedVenues.map(v => v.dir) },
   reporter: { totalTests: total, passed, failed, filesCovered: covered.length,
     coverageMatchesPopulation: missing.length === 0 && extra.length === 0, missing, extra },
   restatedSetDerivedFromTitles: {

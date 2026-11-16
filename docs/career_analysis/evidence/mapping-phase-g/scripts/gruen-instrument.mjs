@@ -27,7 +27,10 @@ import { pathToFileURL } from "node:url";
  * derivation that renders nothing no longer has to load Playwright to learn its own verdict string. They are
  * re-exported here unchanged, so every probe that imports them from this module keeps working untouched.
  */
-import { PW_MODULE, SHARP_MODULE, BASE, ANALYSIS, FIELD_URL, PROVENANCE } from "./gruen-provenance.mjs";
+import { playwrightModuleOrThrow, sharpModuleOrThrow, BASE, ANALYSIS, FIELD_URL, PROVENANCE } from "./gruen-provenance.mjs";
+/* §130: resolution refuses with the FULL candidate list instead of naming one unversioned path in an
+   unrelated repository. The ERR_INSTRUMENT_NO_PLAYWRIGHT code below is kept so nothing downstream changes. */
+const PW_MODULE = playwrightModuleOrThrow(), SHARP_MODULE = sharpModuleOrThrow();
 export { BASE, ANALYSIS, FIELD_URL, PROVENANCE };
 
 const pwNamespace = await import(pathToFileURL(PW_MODULE).href);

@@ -31,6 +31,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PROVENANCE } from "./gruen-provenance.mjs";
+import { inputFrame } from "./gruen-paths.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(here, "../../../../..");
@@ -141,7 +142,7 @@ for (const [name, v] of Object.entries(vectors.layouts)) {
         measure: measureFor(b.rank, b.tier === "SEMANTIC"), collarMore: null }));
       const c = check(base, bodies, drawnPx);
       rows.push({ layout: name, drawnPx, titleLength: L, bodies: bodies.length, measureChars: bodies[0].measure.length,
-        passes: c.passes, converged: c.converged, hitCap: !c.converged, finalHalf: c.finalHalf,
+        passes: c.passes, converged: c.converged, hitCap: !c.converged, finalHalf: c.half,
         contains: c.contains, worstOverflowPx: c.worstOverflowPx, observable: c.observable, where: c.where });
     }
   }
@@ -172,6 +173,16 @@ const passHist = rows.reduce((m, r) => { m[r.passes] = (m[r.passes] ?? 0) + 1; r
 const out = {
   reading: "GRÜN · §86 — the replaced PG-14 solve: convergence to a half-device-pixel tolerance, and containment of all three labels",
   verdict: PROVENANCE.verdict,
+  /* §131c: THIS FIGURE CARRIED NO BUILD AT ALL until now, and it is the figure PG-14's closure rests on. The
+     frame is the identity of what the derivation read, which is the complete and exact build of a pure
+     function over committed files. Every other frame field this figure needs is already below it:
+     `scope` (domain), `sweep` (population and quantifier), `subject` (condition), `phase` in the frame. */
+  frame: inputFrame(fileURLToPath(import.meta.url), [
+    resolve(ROOT, "app/components/career/demo/PersonJobMappingField.tsx"),
+    resolve(ROOT, "lib/career/view-model/mapping-field.ts"),
+    resolve(ROOT, "docs/architecture/decision-fields/mapping-spec/layout-golden-vectors-v1.1.json"),
+    resolve(ROOT, "docs/architecture/decision-fields/mapping-spec/layout-spec-v1.1.json")
+  ], { runOrder: "standalone; order-independent — reads files and writes one output, with no shared state" }),
   scope: "arithmetic on committed constants, the committed layout spec and layout-golden-vectors-v1.1.json. No render, no server, no build, no browser.",
   subject: { fn: "frameWithBodies", tolerance: "half grows by < 0.5·k, k taken at the NEW half", passCap: PASS_CAP, emPerChar: { sans: EM_SANS, mono: EM_MONO } },
   whatThisRouteCannotSee: "glyph advance is modelled as chars × em, so this route is BLIND to real glyph metrics by construction — which is why PINK's browser route found the second defect and this one could not. What it sees instead is the whole envelope: every layout, every width, every name length, including lengths no fixture contains.",
@@ -186,7 +197,13 @@ const out = {
     exactResidualNote: "a non-zero residual is expected: the solve stops inside half a device pixel, so 'not contained exactly' counts the tolerance rather than a defect.",
     worstOverflowPx: rows.reduce((m, r) => Math.max(m, r.worstOverflowPx), 0),
     worstOverflowPxWithinRealisticNames: rows.filter(r => r.titleLength <= 32).reduce((m, r) => Math.max(m, r.worstOverflowPx), 0),
-    maxPassesUsed: Math.max(...rows.map(r => r.passes))
+    maxPassesUsed: Math.max(...rows.map(r => r.passes)),
+    /* §131c: `finalHalf` was written as `c.finalHalf` while `check()` returns `half`, so the field was
+       `undefined` in all 440 rows and JSON.stringify dropped it silently — a figure this file NAMES and
+       never reported, through every re-run since §86. Named here as a count so an absent field cannot hide
+       again: a reporter that reports nothing is indistinguishable from a reporter that was removed (§67). */
+    rowsCarryingFinalHalf: rows.filter(r => typeof r.finalHalf === "number").length,
+    finalHalfUnit: "field units, the solved half-width of the emitted viewBox (ceil to 1e-3, as the product emits it)"
   },
   theHole: holeCases.slice(0, 10),
   notContainedCases: notContained.slice(0, 10),

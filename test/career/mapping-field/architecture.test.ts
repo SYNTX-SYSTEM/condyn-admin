@@ -382,6 +382,47 @@ const changedInG = (...paths: string[]) => changedInRange(phaseGBase(), phaseInt
 const addedInG = (file: string) => gitDiff("-U0", phaseGBase(), phaseIntBase(), "--", file)
   .filter(line => line.startsWith("+") && !line.startsWith("+++ ")).map(line => line.slice(1));
 
+/**
+ * §131 · F-G5 and F-G9 · THE FIXTURES LIMB GUARDED A PATH LIST AND ITS SENTENCE NAMES A CATEGORY.
+ *
+ * F-G5, measured at `9b57319d` and reproduced at `7ad75af8`: a fixture appended to `support.ts` tripped the
+ * limb, and the SAME fixture placed in a new file beside it — `support-g.ts`, or any name outside the three
+ * literals — passed **32/32**, committed or not. So the limb blocked the honest placement and not the evasive
+ * one, which is the worse way round.
+ *
+ * F-G9 is the same hole with a committed instance rather than a probe, and it was found by asking what the
+ * literals MISS instead of what they catch: `test/support/mapping/vectors.ts` and
+ * `test/support/mapping/layout-reference.ts` are support modules, both CHANGED since all three bases, and
+ * named by no limb's path list. Phase G's own `G_ENTRY` authorises them; the limb never saw them.
+ *
+ * SO THE CATEGORY IS NAMED, THE EXEMPTION IS NAMED, AND BOTH ARE CHECKED:
+ *   · the category must COVER the three literals the old limb named, or the widening is not a superset;
+ *   · the category must RESOLVE to tracked files, or a mistyped glob makes the limb vacuous — which is the
+ *     failure mode F-G5 itself was (a limb that passes because it is looking somewhere else);
+ *   · every exempt path must be in `G_ENTRY`, or the exemption is a hole rather than a disclosure.
+ *
+ * WHAT IT DELIBERATELY DOES **NOT** COVER, and the reason is §95's: `test/support/database-isolation`,
+ * `test/support/job-scope` and `test/support/provider-calls` are support modules no mapping phase touches.
+ * Including them would make this limb red for another lane's work — a repository freeze wearing a boundary's
+ * name, which is exactly the defect §95 removed from the change-set assertion 50 lines below.
+ *
+ * AND E's AND F's LIMBS ARE NOT WIDENED HERE, FOR A MEASURED REASON RATHER THAN A JURISDICTIONAL ONE.
+ * `B-7` ("no fixture or support module added or changed") and `B-F7` ("existing fixtures only") carry the same
+ * three literals and the same hole. Widening them to this category makes them **RED on
+ * `test/support/mapping/vectors.ts`** — a change phase G's entry set authorises and phase E and phase F never
+ * ruled on. That red is true against their letter and an artefact of the open-ended form PHASE_F §20 already
+ * diagnosed, so the repair there is to close their fixtures limb to their own range or to state the exemption
+ * in their boundary. Both are amendments to another phase's boundary document. Reported, not taken.
+ */
+const G_FIXTURE_CATEGORY = [
+  ":(glob)test/career/mapping*/support*.ts", ":(glob)test/career/mapping*/fixtures*.ts",
+  ":(glob)test/**/fixtures/**", ":(glob)test/support/mapping/**"
+];
+/** The three literals the limb named before §131. The category must be a superset of them or it is a narrowing. */
+const G_FIXTURE_LITERALS = ["test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts"];
+/** F-G9: support modules phase G's entry set authorises. Exempt BECAUSE they are in G_ENTRY, and that is asserted. */
+const G_FIXTURE_EXEMPT = ["test/support/mapping/layout-reference.ts", "test/support/mapping/vectors.ts"];
+
 describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves", () => {
   it("V1 stays phase B's record (range closed at PHASE_INT_BASE): layout-spec.json, the twelve V1 golden vectors and the real shape are byte-identical through phase G", () => {
     expect(changedInG(`${SPEC_DIR}/layout-spec.json`, `${SPEC_DIR}/layout-golden-vectors.json`, `${SPEC_DIR}/real-shape-73.json`, `${SPEC_DIR}/sign-table.json`, "docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md")).toEqual([]);
@@ -403,8 +444,13 @@ describe("MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves
     expect(changedSinceG(...PROTECTED_PATHS.filter(p => !p.startsWith(":!")), SELECTOR, HOST, DASHBOARD, LAYOUT, URL_MODULE, "app/api", "lib/career/job-pool", "lib/career/job-scope")).toEqual([]);
   });
 
-  it("existing fixtures only; no provider and no API in anything phase G added", () => {
-    expect(changedSinceG("test/career/mapping/fixtures.ts", "test/career/mapping-field/support.ts", "test/career/mapping-field/support-d.ts", ":(glob)test/**/fixtures/**")).toEqual([]);
+  it("§131 (F-G5 / F-G9): existing fixtures only — the CATEGORY, not three literals; no provider and no API in anything phase G added", () => {
+    // The category is checked before it is trusted, or this limb could pass by looking in the wrong place.
+    const covered = git("ls-files", "--", ...G_FIXTURE_CATEGORY);
+    expect(covered.length, "the fixture category resolves to no tracked file, so the limb below would pass over nothing").toBeGreaterThan(0);
+    expect(G_FIXTURE_LITERALS.filter(p => !covered.includes(p)), "the category must COVER the literals the limb named before §131, or it is a narrowing dressed as a widening").toEqual([]);
+    expect(G_FIXTURE_EXEMPT.filter(p => !G_ENTRY.includes(p)), "an exemption the phase-G entry set does not authorise would be a hole, not a disclosure").toEqual([]);
+    expect(changedSinceG(...G_FIXTURE_CATEGORY).filter(p => !G_FIXTURE_EXEMPT.includes(p))).toEqual([]);
     for (const file of G_ENTRY.filter(f => !f.endsWith("architecture.test.ts") && !f.endsWith(".json"))) for (const line of addedSinceG(file)) expect(line, file).not.toMatch(/gemini|generativelanguage|openai|anthropic\.com|\/api\/|GEMINI_JOB_CALL_LIMIT\s*=\s*[1-9]/i);
   });
 });

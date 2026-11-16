@@ -21,6 +21,11 @@ describe("SIGNS · the table covers exactly the states of the system", () => {
   });
 
   it("the ten signs differ pairwise in arcLine + arcFill + beam + mark (never in luminance or colour alone)", () => {
+    /* §131: every limb in this file walks a population READ OUT OF A JSON FILE. A renamed key empties the
+       record and each walk then asserts a property of nothing. The first limb above pins the key set, but a
+       guard in a SIBLING it-block does not protect this one — vitest runs it regardless of that one's
+       verdict — so each walk states its own floor. */
+    expect(Object.keys(table.couplingStates).length, "§131: an empty coupling-state record would make the walk below vacuous").toBe(10);
     const seen = new Map<string, string>();
     for (const [state, sign] of Object.entries(table.couplingStates)) {
       const key = signature(sign);
@@ -30,11 +35,13 @@ describe("SIGNS · the table covers exactly the states of the system", () => {
   });
 
   it("the arc fill is the value of the published ranking formula", () => {
+    expect(Object.keys(table.couplingStates).length, "§131: an empty coupling-state record would make the walk below vacuous").toBeGreaterThan(0);
     const value: Record<string, number> = { ...ROLE_RANKING_FORMULA.semanticValue, ...ROLE_RANKING_FORMULA.lexicalValue, NONE: 0 };
     for (const [state, sign] of Object.entries(table.couplingStates)) expect([state, sign.arcFill]).toEqual([state, value[state]]);
   });
 
   it("class is right; only a semantic state that carries value is phase locked; a lexical relation never is", () => {
+    expect(Object.keys(table.couplingStates).length, "§131: an empty coupling-state record would make the walk below vacuous").toBeGreaterThan(0);
     for (const [state, sign] of Object.entries(table.couplingStates)) {
       expect(sign.class, state).toBe(SEMANTIC.includes(state) ? "SEMANTIC" : LEXICAL.includes(state) ? "LEXICAL" : "NONE");
       expect(sign.phaseLocked, state).toBe(SEMANTIC.includes(state) && sign.arcFill > 0);
@@ -62,6 +69,7 @@ describe("SIGNS · the run states", () => {
   });
 
   it("only a RUNNING run breathes; only a STALLED run is frozen; the two never coincide; an end state moves nothing", () => {
+    expect(Object.keys(table.runStates).length, "§131: an empty run-state record would make the walk below vacuous").toBeGreaterThan(0);
     for (const [state, sign] of Object.entries(table.runStates)) {
       expect(sign.pendingBreath, state).toBe(state === "RUNNING");
       expect(sign.frozen, state).toBe(state === "STALLED");
@@ -71,6 +79,7 @@ describe("SIGNS · the run states", () => {
   });
 
   it("a resume pulse exists only where a run can be taken up again (PARTIAL, FAILED)", () => {
+    expect(Object.keys(table.runStates).length, "§131: an empty run-state record would make the walk below vacuous").toBeGreaterThan(0);
     for (const [state, sign] of Object.entries(table.runStates)) expect(sign.resumePulse !== false, state).toBe(state === "PARTIAL" || state === "FAILED");
   });
 });

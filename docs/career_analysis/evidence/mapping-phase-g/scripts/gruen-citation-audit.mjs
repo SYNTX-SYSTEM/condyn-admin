@@ -47,11 +47,25 @@ const SUBJECT = /["'`][^"'`]{8,}["'`]|\bA-[GF]\d+\b|\bP[GF]-\d+\b|\bB-[FG]?\d+\b
 const TARGET_FILE = /\b([A-Za-z0-9_./-]+\.(?:tsx?|mjs|mts|json))\b/;
 const PHASE_DOC = /PHASE_[A-G]\b|PERSON_X_JOB_MAPPING_PHASE_[A-G]/;
 
+/**
+ * §130 / F-G2 — THE DENOMINATOR THIS AUDIT PRINTS WAS THE DECLARED COUNT, NOT THE SCANNED ONE.
+ *
+ * `continue` on a missing source skipped it silently while the finding below went on to say
+ * "across ${sources.length} scanned files" — `sources.length` is the DECLARED list. The .mjs entries come
+ * from readdirSync so they always exist, but "README.md" is a literal: renamed or moved, the audit would have
+ * scanned one fewer file and still reported the larger number. Same class as the hardcoded path and harder to
+ * see, because the figure stays plausible. Resolution is now recorded per source and the printed denominator
+ * is the RESOLVED count, with any unresolved source NAMED rather than dropped.
+ *
+ * Also removed: a dead `const p` computed one line above `path` and never read.
+ */
 const rows = [];
+const sourceResolution = [];
 for (const rel of sources) {
-  const p = join(here, "..", rel.startsWith("scripts/") ? rel.slice(8) : rel);
   const path = rel.startsWith("scripts/") ? join(here, rel.slice(8)) : join(here, "..", rel);
-  if (!existsSync(path)) continue;
+  const resolved = existsSync(path);
+  sourceResolution.push({ source: rel, resolved });
+  if (!resolved) continue;
   const lines = readFileSync(path, "utf8").split("\n");
   lines.forEach((line, i) => {
     for (const m of line.matchAll(CITE)) {
@@ -66,6 +80,8 @@ for (const rel of sources) {
   });
 }
 
+const scannedSources = sourceResolution.filter(x => x.resolved).map(x => x.source);
+const unresolvedSources = sourceResolution.filter(x => !x.resolved).map(x => x.source);
 const byClass = rows.reduce((a, r) => { a[r.classification] = (a[r.classification] ?? 0) + 1; return a; }, {});
 const citations = rows.filter(r => r.classification !== "PORT_OR_ADDRESS");
 const withSubject = citations.filter(r => r.carriesSubject);
@@ -122,11 +138,13 @@ const out = {
       whyThisLaneLooksTheWayItDoes: "every INSTRUMENT here pins its build in code — servedProvenance() and PROVENANCE record the served BUILD_ID and the worktree SHA on every reading, and a probe that failed to would not run. The PROSE has no such forcing function. GELB's sentence, and it is exactly right: an instrument cannot cite sloppily and still run; a paragraph can. So the unpinned citations are all in the prose, in both lanes, and that is a property of where enforcement reaches rather than of anyone's care."
     }
   },
+  /* F-G2: declared vs scanned, so the denominator below is the one actually read */
+  sources: { declared: sources.length, scanned: scannedSources.length, unresolvedAndSkipped: unresolvedSources },
   bareOffsets: bare.map(r => ({ source: r.source, sourceLine: r.sourceLine, citedLine: r.citedLine, context: r.context })),
   finding: null
 };
 out.finding =
-`A-G427 ON MY OWN RECORD: ${citations.length} line-number citations across ${sources.length} scanned files (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying ${byClass.PORT_OR_ADDRESS ?? 0} port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.
+`A-G427 ON MY OWN RECORD: ${citations.length} line-number citations across ${scannedSources.length} scanned files (${sources.length} declared, ${unresolvedSources.length} unresolved and NAMED rather than dropped — F-G2) (this audit's own source EXCLUDED — its first form counted its own header's examples, A-G408), after classifying ${byClass.PORT_OR_ADDRESS ?? 0} port/address numbers OUT — a bare grep counted those as citations and would have inflated my denominator in the direction that makes my record look worse, which is the same error GELB's first verifier made in the same direction.
 ${withSubject.length} of ${citations.length} (${(100 * withSubject.length / Math.max(1, citations.length)).toFixed(1)} %) carry a SUBJECT on the same line — a quoted sentence, a pin id, a section or a filename — so they survive A-G427 with the number as an accompaniment rather than as the citation. ${bare.length} carry an offset and nothing else, and those are unverifiable permanently, not weakly: the record does not say what they were meant to name.
 INTO THE PRODUCT COMPONENT, the one cited target this lane EDITS: ${componentChecked.length} citations, of which ${componentChecked.filter(r => r.landsOnTrivialLine).length} now land on a blank or brace-only line. §93 shifted that file by +7 and I reported GELB's stale citations in the same phase.
 A-G427 EXTENDED, ON MY OWN COMPONENT CITATIONS: ${namingABuild} of ${buildChecked.length} name a build within two lines. The drawing surface changed repeatedly across the builds this record quotes, so a bare line number into it is not a weak citation — it is a citation to nothing in particular. Every INSTRUMENT here pins its build in code because a probe that did not would not run; the prose has no such forcing function, which is where both lanes' unpinned citations live.

@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactElement } from "react";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { browser, instance } from "../pxj-first-screen/harness";
 import { CAPS, POOL_A, available, crowdedRoles, projectionOf, rankingOf, standardRoles, watchOf } from "./support";
 import { allStates, keyCases } from "./support-d";
@@ -170,6 +172,35 @@ describe("MAP-G-FIELD · G-3 / PG-7 — relations carry their own light", () => 
   });
 });
 
+/**
+ * §131 · THE EM THE FRAME ACTUALLY USES, READ FROM THE PRODUCT RATHER THAN RETYPED.
+ *
+ * `FRAME_EM_PER_CHAR` is module-private, so the label check below used to carry a BARE `0.62` — the same bare
+ * literal §86 found in `frameWithBodies` itself and named as a defect ("`CHAR_EM` NEVER GOVERNED THIS
+ * FUNCTION"). A test that retypes the constant it is checking against cannot fail when that constant moves:
+ * it would keep measuring the old frame and keep passing. So it is read, and the read FAILS LOUD.
+ *
+ * §116's lesson is honoured in the shape rather than the strictness: the needle pins the PROPERTY (the two
+ * faces' ems, under any spacing) and a miss throws a named error instead of silently falling back.
+ *
+ * *** AND WHAT THIS LIMB CAN AND CANNOT FALSIFY, BECAUSE THE BARE LITERAL MADE IT LOOK INDEPENDENT AND IT IS
+ * NOT. *** The product sizes the frame from this same em, so the containment check below is TAUTOLOGICAL IN
+ * THE EM: no value of it can make the limb fail. What the limb can falsify is the solve DISAGREEING WITH ITS
+ * OWN EXTENT MODEL — which is exactly §64's defect, where the frame was emitted at the previous iterate's `k`
+ * and clipped by 1.59 px. Reading the constant does not buy independence; it buys that the limb stops
+ * measuring a DIFFERENT frame from the product's the moment the product's model is corrected upward, which a
+ * retyped 0.62 would have done silently while still passing. Real glyph advance is PINK's browser route.
+ */
+const FRAME_SRC = readFileSync(join(__dirname, "../../../app/components/career/demo/PersonJobMappingField.tsx"), "utf8");
+function fromComponent(re: RegExp, what: string): number {
+  const m = re.exec(FRAME_SRC);
+  if (m === null) throw new Error(`ERR_FRAME_CONSTANT_UNREADABLE: ${what} is not where this proof reads it — the frame's own constant moved and the check below would have gone on using the retyped value.`);
+  return Number(m[1]);
+}
+const FRAME_EM_SANS = fromComponent(/FRAME_EM_PER_CHAR\s*=\s*Object\.freeze\(\{\s*sans:\s*([\d.]+)/, "FRAME_EM_PER_CHAR.sans");
+const FRAME_EM_MONO = fromComponent(/FRAME_EM_PER_CHAR\s*=\s*Object\.freeze\(\{\s*sans:\s*[\d.]+,\s*mono:\s*([\d.]+)/, "FRAME_EM_PER_CHAR.mono");
+const FRAME_PASS_CAP = fromComponent(/FRAME_PASS_CAP\s*=\s*(\d+)/, "FRAME_PASS_CAP");
+
 describe("MAP-G-FIELD · PG-14 / PG-15 — framed whole, rings behind", () => {
   // PG-14: the widening exists for what a drawn body carries beyond its rim — the name above and the measure below (the rims of the
   // existing inputs never leave the base frame: a body on the shelf sits off the frame's axes). Read from the rendered text elements.
@@ -184,9 +215,10 @@ describe("MAP-G-FIELD · PG-14 / PG-15 — framed whole, rings behind", () => {
         const [bx, by] = /translate\(([-\d.]+)px, ([-\d.]+)px\)/.exec(String((b.props.style as Record<string, string>).transform))!.slice(1).map(Number);
         const r = Number(b.props["data-drawn-radius"]), id = String(b.props["data-testid"]).replace("mapping-body-", "");
         expect(bx - r >= x && bx + r <= x + w && by - r >= y && by + r <= y + h, `${level} ${id} rim`).toBe(true);
-        for (const tid of [`mapping-name-${id}`, `mapping-measure-${id}`]) {
+        // the name is SANS and the measure MONO — §86's second correction; each is bought in its own face's em
+        for (const [tid, em] of [[`mapping-name-${id}`, FRAME_EM_SANS], [`mapping-measure-${id}`, FRAME_EM_MONO]] as const) {
           const text = byTestId(b, tid); if (text === null) continue;
-          const font = Number(text.props.fontSize), ty = by + Number(text.props.y), half = (textOf(text).length * 0.62 * font) / 2;
+          const font = Number(text.props.fontSize), ty = by + Number(text.props.y), half = (textOf(text).length * em * font) / 2;
           expect(ty - font >= y && ty + 0.3 * font <= y + h && bx - half >= x && bx + half <= x + w, `${level} ${tid}`).toBe(true);
           checked += 1;
         }
@@ -195,13 +227,107 @@ describe("MAP-G-FIELD · PG-14 / PG-15 — framed whole, rings behind", () => {
     };
     const base = fieldViewBox(l0Margin(960, 500));
     expect(Number(String(byTestId(tree, "mapping-field-svg")!.props.viewBox).split(" ")[2]), "precondition: the L0 frame was widened beyond its base to hold them").toBeGreaterThan(base.width);
-    expect(inside(tree, "L0")).toBeGreaterThan(0);
+    expect(inside(tree, "L0"), "L0: labels were checked, not skipped").toBeGreaterThan(0);
     fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
-    inside(tree, "L1");
+    /* §131: the L1 call's RETURN WAS DISCARDED, so the whole L1 half of this proof passed over nothing the
+       moment L1 stopped carrying an in-pool body with a label. Measured here: 2 bodies x 2 labels = 4. */
+    expect(inside(tree, "L1"), "L1: labels were checked, not skipped — the discarded return made this limb silently vacuous").toBeGreaterThan(0);
     const open = bodies(tree).find(b => b.props["data-in-pool"] === "true")!;
     fire(open, "onClick"); tree = view.settle(p);
     const ring = byTestId(tree, "mapping-ring")!;
     expect(Number(ring.props["data-radius"]), "the ring outside the drawn disc").toBeGreaterThan(Number(bodies(tree)[0].props["data-drawn-radius"]));
+    view.unmount();
+  });
+
+  /**
+   * §131 · PG-14's RESTATED CONTENT, WHICH NOTHING HERE ASSERTED: A-G271 established that PG-14's falsifiable
+   * content is **the convergence of the two-pass fixed point, not the containment**, and §66 replaced the
+   * fixed two passes with an iteration to half a device pixel under a cap. The pin has stood
+   * RESTATED/UNVERIFIED ever since — `gruen-pg14-frame-fixed.mjs` sweeps 440 cases of the ARITHMETIC and says
+   * so itself: *"this derivation renders nothing and cannot establish"* that the disclosure is unconditional.
+   * This is the half that needs a render, and it is the cheap half.
+   *
+   * AND IT IS THE ONLY LIMB IN THIS PROOF THAT CAN SEE §64's DEFECT CLASS, WHICH WAS MEASURED RATHER THAN
+   * ASSUMED. With `FRAME_PASS_CAP` mutated to 1 — the single-pass version of the very defect §66 replaced —
+   * the containment limb above STAYS GREEN and only this one fails. That is not a fault in the limb above:
+   * §64's shortfall was 1.59 px at a 16-character name at 420 px, and this proof's population carries short
+   * titles at 960 px, where the residual is 0.1008 px. So on the populations a render can reach, the
+   * convergence DISCLOSURE is the carrier of PG-14's falsifiable content and the containment is not.
+   *
+   * THREE STATES, AND THE THIRD IS THE ONE THAT MATTERS. At L2 `framed` is empty, so the solve never runs:
+   * §87 changed `converged` from a VACUOUS `true` to `null`/"n/a" for exactly that reason. Asserting "n/a"
+   * here is what stops the vacuous true returning unnoticed — a true at L2 would read as a healthy solve
+   * where none executed.
+   */
+  it("§131: PG-14's solve DISCLOSES its own convergence in every state — true inside the cap at L0 and L1, \"n/a\" at L2 where it never runs (§87's vacuous true cannot return)", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const p = props();
+    let tree = view.settle(p);
+    const disclosure = (level: string) => {
+      const field = byTestId(tree, "mapping-field")!;
+      const converged = field.props["data-frame-converged"], passes = field.props["data-frame-passes"];
+      // UNCONDITIONAL is the claim §86 makes and only a render can check: present in every state, not only when something went wrong.
+      expect(converged, `${level}: data-frame-converged is absent — the disclosure is conditional, which cannot be told from a removed one`).not.toBeUndefined();
+      expect(passes, `${level}: data-frame-passes is absent`).not.toBeUndefined();
+      return { converged: String(converged), passes: Number(passes) };
+    };
+    const l0 = disclosure("L0");
+    expect(l0.converged, "L0: the solve reached its fixed point").toBe("true");
+    expect(Number.isInteger(l0.passes) && l0.passes >= 1 && l0.passes < FRAME_PASS_CAP, `L0: passes ${l0.passes} is a real iterate count inside the cap of ${FRAME_PASS_CAP}`).toBe(true);
+    fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
+    const l1 = disclosure("L1");
+    expect(l1.converged, "L1: the solve reached its fixed point").toBe("true");
+    expect(Number.isInteger(l1.passes) && l1.passes >= 1 && l1.passes < FRAME_PASS_CAP, `L1: passes ${l1.passes} inside the cap`).toBe(true);
+    const open = bodies(tree).find(b => b.props["data-in-pool"] === "true")!;
+    fire(open, "onClick"); tree = view.settle(p);
+    const l2 = disclosure("L2");
+    expect([l2.converged, l2.passes], "L2: the solve has nothing to frame, so it reports NOT APPLICABLE and zero passes — never a convergence it did not perform").toEqual(["n/a", 0]);
+    view.unmount();
+  });
+
+  /**
+   * §131 · THE ONE EXTENT OF THE THREE THAT HAS NO CARRIER ANYWHERE, STATED AS A MEASUREMENT RATHER THAN
+   * LEFT AS SILENCE. §86's second correction was the ASYMMETRIC reservation for `mapping-collar-more-*`: a
+   * LEFT-ANCHORED label needs its full width past its own anchor, not half a width about a centre. §84 found
+   * it renders ZERO times on the served population, the golden vectors are L0 populations so the sweep's
+   * `collarMore` is null throughout, and this proof's own populations render it zero times at L0, L1 and L2.
+   *
+   * *** AND THE MECHANISM THE RECORD GIVES FOR THAT ZERO IS THE WRONG QUANTITY (F-G10). *** A-G373 wrote
+   * *"`:784` emits the span only when `floored > 0`"*, and `gruen-pg14-frame-fixed.mjs` carries the same
+   * citation. The emit condition is `level === "L1" && collar !== null && collar.hidden > 0 && inPoolNow`
+   * (`:884`). `floored` is the count of bodies pushed up to the 12 px SIZE FLOOR (`:783`, disclosed as
+   * `data-size-floors`); `collar.hidden` is the count of requirement arcs that do not FIT ON THE COLLAR
+   * (`collarSplit`, disclosed per body as `data-collar-hidden` and in the meta as `mapping-collar-hidden`).
+   * The two are unrelated and neither implies the other. The CONCLUSION both lanes drew — "no body hides a
+   * collar requirement" — is right and is about `collar.hidden`; the cited line and constant are not. So this
+   * limb reads the quantity the condition actually tests, which is the only way its zero means anything.
+   *
+   * §67's case, exactly: a disclosure conditional on being non-zero cannot be told from a removed one. So the
+   * absence is ASSERTED rather than assumed — if a population ever does render one, this limb fails and says
+   * the asymmetric budget now has a carrier and must be measured, which is the opposite of a stale pass.
+   */
+  it("§131: PG-14's third extent — the left-anchored \"n more\" label — has NO carrier at L0, L1 or L2 on these populations, so its asymmetric budget is reserved-but-unexercised and says so", () => {
+    const view = instance<PersonJobMappingFieldProps>(PersonJobMappingField);
+    const p = props();
+    let tree = view.settle(p);
+    const more = (level: string) => {
+      const found = all(tree, e => /mapping-collar-more/.test(String(e.props?.["data-testid"] ?? "")) || /\bmapping-collar-more\b/.test(cls(e)));
+      expect(bodies(tree).length, `${level}: bodies are drawn, so the scan below is not looking at an empty field`).toBeGreaterThan(0);
+      return found.length;
+    };
+    const counts = [more("L0")];
+    fire(byTestId(tree, `mapping-pool-${POOL_A}`), "onClick"); tree = view.settle(p);
+    counts.push(more("L1"));
+    /* THE REASON, in the quantity the emit condition actually tests (F-G10). L1 is the only level where the
+       span can render at all, so this is where the zero has to be explained — and `data-collar-hidden` is
+       the product's own disclosure of `collar.hidden`, not `data-size-floors`. */
+    const hidden = bodies(tree).filter(b => b.props["data-in-pool"] === "true").map(b => Number(b.props["data-collar-hidden"]));
+    expect(hidden.length, "L1 draws in-pool bodies, so the reason below is read off something").toBeGreaterThan(0);
+    expect(hidden.filter(n => n > 0), "no in-pool body at L1 hides a collar requirement — `collar.hidden` is 0 throughout, which is why `:884` emits no span").toEqual([]);
+    const open = bodies(tree).find(b => b.props["data-in-pool"] === "true")!;
+    fire(open, "onClick"); tree = view.settle(p);
+    counts.push(more("L2"));
+    expect(counts, "zero at every level: the measured boundary on PG-14's third extent. A non-zero here is not a failure of the product — it means the carrier exists at last and the asymmetric reservation must be measured on it").toEqual([0, 0, 0]);
     view.unmount();
   });
 });
