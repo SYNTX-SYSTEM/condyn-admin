@@ -27,13 +27,37 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "../../../..");
 const git = (...a) => execFileSync("git", ["-C", REPO_ROOT, ...a], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).split("\n").filter(Boolean);
 
-/** Every sealed entry across every tracked manifest, repo-relative. */
+/**
+ * Every sealed entry across every tracked manifest, repo-relative.
+ *
+ * *** F-R15: THIS CENSUS WAS BLIND TO 62% OF EVERY SEAL IN THE REPOSITORY. *** It required the `./` prefix
+ * that `sha256sum -c` writes when invoked on `.`, and **1082 of 1747 entries, in 63 of 101 manifests, are
+ * written WITHOUT it**. So `sealed` held 665 and the "REFUSED sealed file" mechanism could not fire for the
+ * rest — including two instruments inside this script's own population (`lens-proof.mjs`,
+ * `probe-reach.py`). The `--apply` run did not touch a sealed file, but only because neither of those two
+ * carries a machine-local path in a shape this rewriter matches. **That is luck, not a guard.**
+ *
+ * It is GRUEN's F-G5 one more time, in my own code: the mechanism guarded a FORM where its sentence named a
+ * CATEGORY. Both forms are now accepted, and a manifest that holds digest lines yet parses to NOTHING is a
+ * REFUSAL rather than an empty set — because an unparsed seal is exactly what this defect looked like from
+ * the inside: silence that reads as "nothing sealed here".
+ */
+const SEAL_ENTRY = /^([0-9a-f]{64})\s+\*?(?:\.\/)?(.+)$/;
 const sealed = new Set();
 for (const m of git("ls-files", "--", "*manifest.sha256")) {
   const dir = dirname(m);
-  for (const line of readFileSync(join(REPO_ROOT, m), "utf8").split("\n")) {
-    const hit = line.match(/^[0-9a-f]{64}\s+\*?\.\/(.+)$/);
-    if (hit) sealed.add(`${dir}/${hit[1]}`);
+  const lines = readFileSync(join(REPO_ROOT, m), "utf8").split("\n");
+  const digestLines = lines.filter(l => /^[0-9a-f]{64}\s/.test(l)).length;
+  let parsed = 0;
+  for (const line of lines) {
+    const hit = line.match(SEAL_ENTRY);
+    if (hit) { sealed.add(`${dir}/${hit[2]}`); parsed++; }
+  }
+  if (digestLines > 0 && parsed !== digestLines) {
+    console.error(`REFUSE: ${m} holds ${digestLines} digest line(s) but only ${parsed} parsed. An unparsed ` +
+      `seal is indistinguishable from an absent one, and this script refuses to decide what is sealed from ` +
+      `a partial reading (F-R15).`);
+    process.exit(2);
   }
 }
 
