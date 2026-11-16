@@ -1469,3 +1469,69 @@ allein nachher 2/2.
 **Bedingung 1 ist erfüllt und reproduzierbar gemessen**, auf einem Stand, der das Mapping trägt. **Nicht
 erfüllt:** Bedingung 4 — die Pixelschicht ist von einer von MIR beauftragten Spur gemessen (§12.8), und
 **PG-20 ist noch offen** und läuft gerade. **Und der Stand ist auf `origin`, nicht in `main`.**
+### §12.13 PG-20 GEMESSEN — ***MEINE HYPOTHESE IST WIDERLEGT, UND DER PIN HAT KEINE SCHRANKE***
+
+PINK-PIXEL hat GRÜNs Instrument **ohne eine Zeile Quellanpassung** gefahren (alle fünf Skripte am
+Integrationsstand **byteidentisch** zu `origin/frontend/mapping-phase-g`, nur Env gesetzt; der
+`GRUEN_EVIDENCE_ROOT`-Override ist im Instrument als **vorgesehener** Zweitspeicher dokumentiert).
+Eigener Build **`d66mAV-ZQ1OcInLuwst57`**, eigener Stand, beide Viewports, Raster deklariert. **Und
+GRÜNs Worktree danach nachweislich unberührt** — HEAD `9b57319d`, BUILD_ID `HRYkeEp`, die beiden
+`pg20-splay-*.json` noch mit mtime 2026-11-10T19:09.
+
+| Zelle | gemessen | A-G94 aufgezeichnet | Δ |
+|---|---|---|---|
+| **1920 L0 collar** *(urteilstragend)* | **5.4605 px** | 5.461 | **−0.009 %** |
+| 1920 L1 / L2 | 6.3500 / 28.0500 | 6.350 / 28.050 | ***bitidentisch*** |
+| **1280 L0 collar** *(urteilstragend)* | **3.0500 px** | 3.053 | **−0.082 %** |
+| 1280 L1 / L2 | 3.7065 / 15.7860 | 3.707 / 15.786 | ***bitidentisch*** |
+
+Nullkanal `NONE/none/open`: **max 0.002 px** (1920) und **0.001 px** (1280) — er liest Null. Trennung in der
+schlechtesten Zelle: **3.050 px gegen 0.000 px.** Kreisfits: 4 Punkte, Residual-RMS 0.0000–0.0003 px.
+
+> *** MEINE HYPOTHESE IST WIDERLEGT, UND ZWAR GEMESSEN. *** Ich hatte geschrieben, §86s Frame-Solve habe die
+> gerenderte Splay-Größe bewegt und sie sei am Integrationsstand ungemessen. **Vier von sechs Zellen sind
+> bitidentisch, die zwei bewegten um 0.0005 px und 0.0025 px.** `k` hat sich bewegt (−0.018 % / −0.088 %) und
+> die Splay folgte **eins zu eins** — **weil sie nicht anders kann:** beide Äste von `tick = max(2.4k, 0.18r)`
+> rendern in Device-px, ebenso die 1.300 px Strichbreite. **Die Größe ist bauartbedingt k-invariant bis auf
+> die Eigenbewegung des Frames.** Meine Prämisse war plausibel und die Boden-Argumentation formal richtig —
+> *** SIE ERREICHT BEI DIESEM k-DELTA NUR KEINEN MESSBAREN EFFEKT. *** PG-20s Magnitude am integrierten Stand
+> **ist A-G94s Figur, unverändert.**
+
+#### Das Urteil, und die Verweigerung ist die richtige
+
+**PG-20s Magnitudenglied: GEMESSEN — UND NICHT ALS PASS-ODER-FAIL ENTSCHEIDBAR, WEIL DER PIN KEINE
+NUMERISCHE SCHRANKE NENNT.** A-G94 setzt Methode und Venue und **lehnt die Schwelle ausdrücklich ab**:
+*„Whether 3.05 px is perceivable is PINK's threshold to set, from its own instrument, and not mine.“*
+**PINK hat sie nie gesetzt** — in 43 veröffentlichten Skripten existiert keine PG-20-Probe, und PG-20 steht
+in PINKs §3 unter keinem bewachten Pin.
+
+> *** PINK-PIXEL HAT SICH GEWEIGERT, EINE SCHRANKE ZU ERFINDEN, UND DAS IST DIE EINZIG RICHTIGE ANTWORT: EINE
+> SCHWELLE ZU SETZEN IST EIN URTEIL, KEINE MESSUNG, UND EINE VON DER PRÜFENDEN LANE AUTORISIERTE SCHRANKE,
+> DIE SIE DANN BESTEHT, IST GENAU DIE SELBSTZERTIFIZIERUNG, DIE A-G36 VERBIETET. *** Als **ungemessen**
+> berichtet, nie als bestanden.
+
+**Was falsifizierbar ist und hält:** PG-20s **qualitative** Forderung — nur DIFFERENTs offene Enden spreizen,
+nichts sonst — ist auf jedem Level und in beiden Viewports erfüllt, Nullkanal auf Null. **Und ohne Schwelle
+kaufbar:** in der schlechtesten Zelle ist das offene Ende um **2.35 × seine eigene Strichbreite** verschoben,
+also durch eine klare Rasterlücke getrennt statt verschmolzen — **eine untere Grenze der Auflösbarkeit, die
+die perzeptuelle Frage genau dort lässt, wo A-G94 sie gelassen hat: offen, und PINKs.**
+
+#### Drei Korrekturen an mir — zwei davon habe ich selbst nachgeprüft
+
+| | |
+|---|---|
+| **Population** | Ich relayte *„6 DIFFERENT/counterTick gegen 6 NONE/none pro Level“*. **Geprüft im Artefakt: 1 DIFFERENT- und 1 NONE-Arc mit je 2 Enden im gemessenen Collar**, und dokumentweit **2 von 19 Arcs**. *** MEINE ZAHL TRIFFT KEINEN DER BEIDEN MASSSTÄBE. *** |
+| **Quell-Commit** | Ich relayte `185427d5`. **Geprüft: `provenance.head = 02a1b585`.** |
+| **L2-Identität** | vakuos (0 = 0 = 0) und darf nicht zitiert werden |
+
+> *** DRITTES MAL HEUTE, DASS EINE VON MIR WEITERGEGEBENE FIGUR FALSCH WAR, UND ALLE DREI MALE AUS DEMSELBEN
+> GRUND: ICH HABE SIE WEITERGEGEBEN, OHNE SIE IM ARTEFAKT NACHZUSEHEN. *** PG-1 (D-PP-2), die 42703-Spalte
+> (F-B1), und jetzt Population und Commit. **A-G458 verlangte, das Verdict-Feld wörtlich mitzunehmen; A-G491
+> die Bedingung. Der gemeinsame Kern ist einfacher und härter: *** WER EINE ZAHL WEITERGIBT, HAT SIE IM
+> ARTEFAKT GELESEN, ODER ER GIBT EIN GERÜCHT WEITER. *** Und ich habe diesmal auch PINK-PIXELs Korrekturen
+> nachgeprüft statt sie zu übernehmen — beide bestätigt.
+
+**Und ein Befund zu GRÜNs Gunsten:** D-PP-3 **wiederholt sich hier nicht.** GRÜNs Instrument liest Build und
+Head **aus dem bedienten Worktree** (`servedProvenance`) statt sie zu hartkodieren, also labeln die Re-Run-
+Ausgaben sich korrekt als `7ffaeb40` / `d66mAV-ZQ1OcInLuwst57`. *** AUF DIESER ACHSE IST GRÜNS INSTRUMENT
+BESSER GEBAUT ALS PINKS — UND DAS IST DIE LANE, DEREN REGEL ES IST. ***
