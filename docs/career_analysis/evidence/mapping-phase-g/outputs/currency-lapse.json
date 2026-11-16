@@ -3,12 +3,12 @@
  "verdict": "NONE — development reading only (A-G36 point 2)",
  "rule": "A-G473 (GELB's): a currency claim is itself DATED; the repair of a staleness defect is a DATED closure.",
  "record": "docs/career_analysis/evidence/mapping-phase-g/README.md",
- "head": "95aab3e2",
+ "head": "980c77bf",
  "referents": {
   "test-population": {
-   "sha": "3231f52c",
-   "when": "2026-11-12T23:12:38+01:00",
-   "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+   "sha": "980c77bf",
+   "when": "2026-11-16T03:27:42+01:00",
+   "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
   },
   "product-pixels": {
    "sha": "fd45f45f",
@@ -60,8 +60,8 @@
   "claims": 16,
   "phrases": 23,
   "matched": 16,
-  "LAPSED": 0,
-  "CURRENT": 5,
+  "LAPSED": 1,
+  "CURRENT": 4,
   "SCOPED": 6,
   "SCOPED-UNRESOLVABLE": 3,
   "UNCOMMITTED": 0,
@@ -125,11 +125,11 @@
     "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
    },
    "referent": {
-    "sha": "3231f52c",
-    "when": "2026-11-12T23:12:38+01:00",
-    "subject": "feat(career): mapping phase G · §115 — GELB's product stand is a docs commit; 24 of 30 pinned commits are local-only, the seals among them"
+    "sha": "980c77bf",
+    "when": "2026-11-16T03:27:42+01:00",
+    "subject": "fix(career): mapping phase G · A-G485 — phase G's range closed at PHASE_INT_BASE 7b4d5852"
    },
-   "status": "CURRENT"
+   "status": "LAPSED"
   },
   {
    "line": 239,
