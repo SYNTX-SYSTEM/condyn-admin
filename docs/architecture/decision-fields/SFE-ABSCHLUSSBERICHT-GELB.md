@@ -1746,3 +1746,268 @@ ist das Ergebnis, nicht die Lücke)* · **PF-13s Closure** · **PG-14** · **PF-
 **A-G48/A-G51/A-G206** *(aufgeschoben)* · **die Naht** · **`sudo iptables -S DOCKER | grep 5432`** · **der
 Merge nach `main`** · **die Instrumenten-Provenienz aus §13.6, die jetzt eine benannte Größe hat statt einer
 Vermutung.**
+
+---
+
+## §14 MANDAT „FULL SYSTEM REPAIR & CLEANUP" — WAS TATSÄCHLICH REPARIERT IST
+
+**Rahmen:** Reparatur statt Dokumentation, keine Features, kein Produktumfang. Eingehalten: **kein Merge nach
+`main`** (`e360caf9` unverändert), **kein Deployment**, **Gemini aus**, **kein Siegel verändert**, kein
+Prüfstand neu gebaut. Produktberührung: **zwei Dateien**, `lib/database-isolation/{policy,verification}.ts`,
+unter einer **deklarierten und verbrauchten** `AUTHORISED_CROSSINGS`-Querung.
+
+### §14.1 DIE WURZEL DER INSTRUMENTEN-PROVENIENZ — BESEITIGT, UND DIE ZAHL DAVOR WAR NICHT VERGLEICHBAR
+
+***Das Repository deklarierte `playwright` nie, an keinem Ref.*** Die gesamte visuelle Prüfapparatur beider
+Fremdspuren importierte es per absolutem Pfad aus `/home/codi/Entwicklung/nquiry` — einem **anderen
+Repository** (`SYNTX-SYSTEM/NQUIRY.git`), das `origin` nicht enthält. Jetzt **exakt gepinnt**, `1.63.0` und
+`0.34.5`, keine Caret-Range: *eine Range nennt keinen Build.* **Nachgewiesen statt behauptet:** echter
+Chromium-Start mit SwiftShader und eine `sharp`-Lesung des Screenshots, beide über blanke Imports aus dem
+`node_modules` des Repositorys.
+
+> ⚠ **PINKS KORREKTUR, NACHGEMESSEN UND ANGENOMMEN:** `sharp@0.34.5` war **schon vorher blank auflösbar** —
+> transitiv unter `next@16.2.4`, von npm nach oben gehoben (`npm ls` zeigt beides). **Für `sharp` ist meine
+> Deklaration eine Versionsfixierung, keine Auflösungsreparatur.** Nur für `playwright` ist sie beides.
+
+**Und die Zahlen, die drei Spuren getrennt gemessen haben, sind nicht vergleichbar — das ist der Befund, nicht
+die Zahl:**
+
+| Spur | Kriterium | Population | Zahl |
+|---|---|---|---|
+| GELB | *Modul per absolutem Pfad aufgelöst* | 28 GELB-Instrumente | **0 von 28** — PINK bestätigt **28/28 rekonstruierbar**, selbst gemessen |
+| GRÜN | *absoluter Pfad in AUFLÖSUNGSPOSITION* | 54 Dateien, Mapping-Ära | **4 → 0** |
+| PINK | *Modul per absolutem Pfad aufgelöst* | 115 Dateien, **ganze** `career_analysis`-Wurzel | **12** — *keine davon in der Mapping-Ära* |
+| GELB, Gegenprobe | *irgendeine Nennung, Kommentare eingeschlossen* | dieselben zwei Wurzeln | **3** bzw. **19** |
+
+> *** ALLE VIER SIND UNTER IHREM EIGENEN KRITERIUM RICHTIG UND KEINE IST MIT EINER ANDEREN VERGLEICHBAR. ***
+> Ich habe GRÜNs „4 von 53 → 0 von 54" weitergegeben, als sei es eine Aussage über GRÜNs Prüfwerkzeug
+> überhaupt. **PINK hat nachgemessen: alle zwölf ihrer Treffer liegen in älteren `job-pool`-Ären, keiner unter
+> `mapping-phase-g`.** Also beantwortet eine 54-Datei-Population eine andere Frage als die 115-Datei-Wurzel.
+> ***Das ist genau die Falle „ältere Ären in der zweiten Evidenzwurzel", vor der dieser Bericht in §13.3 F-R5
+> selbst gewarnt hat — gestellt von der Lane, die die Warnung geschrieben hat, drei Abschnitte später.***
+> **Vierter weitergegebener Zahlenfehler dieses Vorhabens, und wieder dieselbe Ursache: die Population nicht
+> mitgelesen.**
+
+### §14.2 F-R1 ANGEWENDET — UND DER AUFSCHUBGRUND IST ENTFALLEN, NICHT ÜBERGANGEN
+
+§13.8 hatte die Reparatur *benannt und zurückgehalten*, weil jeder weitere Commit den Tip verschiebt und
+§12.12s Suitezahl dann einen Vorfahren beschreibt. **Das Reparaturmandat autorisiert Test-, Build- und
+Integrationsarbeit ausdrücklich — also zieht derselbe Lauf, der den Tip verschiebt, die Suite neu ab, und der
+Grund entfällt, statt übergangen zu werden.**
+
+Repariert mit `--diff-merges=first-parent`, und das neue Glied pinnt **Gits Verhalten in beide Richtungen**
+(die blanke Form MUSS leer sein, die reparierte MUSS etwas zeigen) plus die **Vollständigkeit** der
+Pro-Commit-Begehung gegen den Zweipunkt-Diff — die Prüfung, die F-R1 am Tag seiner Entstehung gefunden hätte.
+**Mutant getötet, und er nennt `6bdf2628`.** Die Vollständigkeitsprüfung ist heute leer von Entwurf; das steht
+im Docstring statt versteckt.
+
+### §14.3 F-A2 GESCHLOSSEN — ***UND ES WAR KEINE EIGENTÜMERENTSCHEIDUNG***
+
+Der Befund war seit Wochen als Eigentümerpunkt verbucht, weil beide bekannten Reparaturen eine Grenze
+verletzen. ***Ich habe die Prämisse geprüft statt sie zu erben, und sie hielt nicht:***
+
+> **Das „intakte Siegel" ist kein Manifest-Siegel.** Keines der 69 `manifest.sha256` nennt einen Pfad unter
+> `test/decision-runtime`. **P8 ist eine lebende Regressions-Assertion** — `git diff --quiet 435a112 -- …` in
+> `test/decision-integration/g2-g3-vertical-proof.test.ts`. Das Mandat friert **Siegel und historische
+> Prüfartefakte** ein; ein Test ist keins von beiden.
+
+Damit wurde eine **dritte Lesung** sichtbar: das Glied fragt, ob der Server *„nichts anderes"* hält. Eine
+`condyn_r5_`-Datenbank ist **nichts anderes** — die Suite dieses Repositorys erzeugt sie, zufällig benannt, und
+löscht sie. ***Das Glied war nie zu schwach; es hat den eigenen Payload als den eines Fremden klassifiziert.***
+
+**Die Trennung ist die Reparatur.** `isSuiteOwnedDatabase` wird **ausschließlich** vom `FOREIGN_PAYLOAD`-Glied
+gelesen; `DISPOSABLE_TEST_DATABASE_PATTERN` entscheidet weiter allein, welche URL als **Basis** zugelassen
+wird. **Rot zuerst** (genau `ERR_TEST_DATABASE_ISOLATION_FOREIGN_PAYLOAD`), dann **91/91**, `tsc` 0, **P8 63/63
+und seine gefrorene Menge unberührt**. Zwei Mutanten getötet — und der zweite ist der wichtige: ***wer den
+Begriff in die Basis-Prüfung einbaut, bringt einen Test zum Fallen.*** Damit ist die Umgehung nicht nur
+vermieden, sondern **bewacht**.
+
+**Offen und benannt:** der r5-Pfad geht weiter nicht durch den sanktionierten create/drop-Engpass und kann bei
+einem Abbruch lecken. **Die gemessenen Kosten sind beseitigt** — zwei parallele Läufe zerstörten sich, vier
+Tests wurden still „skipped", und *ein Sololauf konnte das nie finden, weil diese Lanes immer allein gemessen
+haben.*
+
+### §14.4 F-R8 — ***ZWÖLF VON ZWANZIG ÜBERSPRUNGENEN WAREN EINE NIE DEKLARIERTE ABHÄNGIGKEIT***
+
+Fünf Browser-Suiten sperren sich mit `describe.skipIf(playwrightModule === null)`. Die 20 Übersprungenen des
+zertifizierten `3688/0`-Laufs, **aus dem Logbuch ausgezählt und arithmetisch aufgegangen:**
+
+| | |
+|---|---|
+| **8** | Gemini, per Mandat deaktiviert — korrekt |
+| **5** | ganze Dateien, weil `playwright` nicht auflöste |
+| ***7*** | ***innerhalb zweier Dateien, die die Summenzeile `✓ passed` nennt*** |
+| **= 20** | 8 + 5 + 7 ✓ |
+
+***Wer übersprungene DATEIEN zählte, fand 11 und erfuhr nie von zwei halb übersprungenen Bestandenen.***
+
+> ⚠ **PINKS VERFEINERUNG, DIE MEINE AUSSAGE ZURECHTRÜCKT:** das Tor honoriert `CONDYN_PLAYWRIGHT_MODULE`
+> **vor** der Paketauflösung. Diese Suiten **liefen** für einen Operator, der die Variable exportierte — so hat
+> §3.43 `syntx-walk` zweimal mit 3/3 verbucht. ***Der Defekt ist also BEDINGT: ausgeführt, wenn exportiert;
+> still übersprungen, wenn nicht.*** Mein Batch ist der zweite Fall. **Q-12 ist „gemessen, dann gealtert",
+> nicht „ungemessen"** — und das ist die präzisere und unbequemere Aussage, weil eine Zahl, die einmal stimmte,
+> schwerer zu misstrauen ist als eine, die es nie gab. **Dieselbe Annahme sitzt an 12 Stellen in 6 Dateien;
+> zwei waren PINKs und sind repariert, zehn sind meine zu triagieren.**
+
+**Ausgeführt, ruhige Maschine, Exit ohne Pipe: `2 fehlgeschlagen / 19 bestanden / 1 übersprungen (22)`,
+RUNNER_EXIT=1, 8m23s.** Beide Fehlschläge sind **echte Assertions, keine Timeouts** — geprüft, weil sechs
+meiner eigenen Befunde dieser Arbeit mein Messaufbau waren.
+
+### §14.5 DIE ZWEI VERALTETEN ASSERTIONS — UND MEINE ERSTE URSACHENZUSCHREIBUNG WAR FALSCH
+
+**(a) Die Copy.** `"UPLOADED != SELECTED"` gegen das Produkt-`"UPLOADED ≠ OPENED · open it in the list
+below"`, bewusst geändert in `44f9eede` *(„one word, one meaning", UX-07)* am **2026-10-23 — 23 Tage**. Jetzt
+gegen `SIL_COPY.en.jobPool.uploadNotSelected` geprüft statt gegen ein Literal.
+
+**(b) Die sechs festen Stufenschalen.** Gemessen statt vermutet:
+`[shell-01, shell-02, shell-syntx-org_nordlicht, shell-syntx-org_rheinwerk, shell-syntx-org_alpendata]`.
+
+> *** PINKS VERDIKT, NACHGEPRÜFT UND ANGENOMMEN: MEINE ZUSCHREIBUNG AN `ca117947` WAR FALSCH. *** Die Ursache
+> ist `legacyHidden = investigationMode === "PERSON_X_JOB"` (`:612`) mit `legacyStage` (`:613`), das genau
+> `["03","04","05","06"]` herausfiltert — Regel angekommen mit **`afcf89f6`**, 2026-10-22. **Und das
+> Gegenbeweis-Stück ist meine eigene Datei:** sie nennt **keinen** Investigation-Mode und hat 03–06 doch als
+> null gemessen — weil `DEFAULT_INVESTIGATION_MODE = "PERSON_X_JOB"` (`investigation-mode.ts:17`). **Eine
+> Ursache über beide Suiten, und ich hatte zwei verschiedene vermutet.** `ca117947` erklärt die *Ersetzung*,
+> nicht die *Ausblendung*. **Für PINKs Lauf ist die Assertion sieben Tage veraltet, nicht 23.**
+
+Repariert, aus der Fixture **abgeleitet** statt hartkodiert, und 03–06 ausdrücklich als **abwesend** geprüft,
+damit eine stille Rückkehr zum alten Modell auch fällt: **10/10**, `tsc` 0. PINK hat ihre Hälfte selbst
+repariert — und **meine Vorlage verbessert**, indem sie die zwei Mechanismen *getrennt* prüft statt in einer
+Summe, die bei beiden Ausfällen fällt, ohne zu sagen welcher.
+
+### §14.6 DIE KLASSE GEWÄCHTERT, NICHT DIE ZEILE — UND WARUM DER VERGLEICH EXAKT SEIN MUSS
+
+Neu, **ohne Browser**, `test/integration-boundary/ui-copy-currency.test.ts`: jedes copy-förmige Literal der
+Browser-Suiten muss noch in `SIL_COPY` existieren, Fragmentliste deklariert und **vollständig verbraucht**.
+4/4; der Mutant mit dem alten Literal wird in **9 ms** rot.
+
+> *** UND DER ENTWURFSPUNKT IST DER BEFUND: `"UPLOADED != SELECTED"` EXISTIERT HEUTE NOCH IN `SIL_COPY` *** —
+> als Fragment von `en.jobPool.nonClaims` und `en.syntx.nonClaims`, zwei Sätzen ohne jeden Bezug zur
+> Upload-Statuszeile. **Eine Teilstring-Regel hätte die Veraltung durchgelassen.**
+>
+> **A-G495:** ***EIN STRING, DER IRGENDWO NOCH EXISTIERT, IST KEIN BELEG DAFÜR, DASS ER DORT NOCH EXISTIERT,
+> WO ER BEHAUPTET WIRD.*** Dieselbe Verwechslung von Art und Identität wie A-G494s `.git`-Prüfung — und der
+> Grund, warum dieses Glied eine Deklaration ausgibt statt seinen Vergleich zu lockern.
+
+### §14.7 ZWEI BEFUNDE GEGEN MICH VON GRÜN — BEIDE NACHGEPRÜFT, BEIDE ANGENOMMEN
+
+**F-R9.** `gelb-paths.mjs` prüfte `.git` plus zwei Dateien auf der Platte. ***Das besteht in einem völlig
+fremden Repository.*** Reproduziert: ein `git init` mit zwei `touch`-Dateien genügte, damit mein Modul seine
+Wurzeln ausgab und *„all three verified present"* schrieb — es refusierte erst in `peerRef()`, und nur weil
+dort kein Branch des Peer-Namens lag. **Jedes Instrument, das `REPO_ROOT` oder `PHASE_G` ohne `peerRef`
+importiert, hätte eine Messung aus einem fremden Baum berichtet.** Identität ist jetzt **drei Bedingungen**:
+`.git`, ein **Identitäts-Commit**, und die Records **git-verfolgt** statt bloß vorhanden.
+
+> **A-G494:** ***EIN WÄCHTER, DER FRAGT „IST DAS EIN REPOSITORY?" STATT „IST DAS *DAS* REPOSITORY?", HAT
+> DENSELBEN DEFEKT WIE EINE ZAHL OHNE IHREN BUILD.*** Beide nennen eine **Art**, wo der Record eine
+> **Identität** brauchte.
+
+**Und der Edit, den ich vorgeschlagen habe, war selbst falsch.** Ich hieß GRÜN einen Kommentar „korrigieren",
+der sagt, die Leiter sei *„stale from the moment the shelf moved to 0.02"*. **GRÜN hat es verweigert und
+begründet:** die zitierte Leiter galt für Alpha **0.05**, also datiert der Satz den *Beginn* der Veraltung
+korrekt; auf `0.022` geändert wäre er **falsch** geworden. ***Eine Lane, die eine Anweisung ihrer
+Koordinationslane ausführt, hätte hier einen Fehler eingebaut, den die Koordinationslane als Korrektur
+ausgegeben hat.***
+
+### §14.8 ***DER SCHÄRFSTE BEFUND DES MANDATS, UND ER IST PINKS BEFUND ÜBER MICH***
+
+PINK sollte 123 hartkodierte Importe umschreiben. PINK hat gemessen, was das kostet, und **verweigert**:
+
+| Manifest | Einträge | davon `scripts/` |
+|---|---|---|
+| `mapping-phase-e-contract` | 33 | 15 |
+| `mapping-phase-f-contract` | 43 | 25 |
+| `mapping-phase-g-contract` | 91 | 43 |
+| **Summe** | **167** | ***83 — jedes einzelne Instrument*** |
+
+**Von mir an PINKs eigenem Ref nachgezählt: exakt 167 und 83.** Die Umschreibung bricht **80 von 167**
+Einträgen — von PINK in einem Wegwerf-Clone **demonstriert, nicht argumentiert**. Dazu sind
+`PINK-SYSTEM-VALIDATION.md` und `prep.txt` selbst Siegeleinträge: **das Register, das ich „an Ort und Stelle
+korrigieren" ließ, ist mitversiegelt.**
+
+> *** UND PINKS SATZ DAZU IST DER BEFUND: „Du hast das nicht gesehen, weil `mapping-phase-g-gelb/` kein
+> Manifest hat — deine Instrumente sind unversiegelte Flachdateien, deine eigene Reparatur hat dich also
+> nichts gekostet." *** Nachgeprüft: **an `4f551f89` existiert dort kein Manifest.** Also habe ich einer
+> versiegelten Spur eine Reparatur verordnet, **deren Preis ich nie bezahlt habe, weil meine Lane nicht
+> versiegelt ist** — und zwei Anweisungen desselben Mandats („stelle Rekonstruierbarkeit her" und „Siegel
+> bleiben unverändert") kollidieren genau dort und nur dort.
+>
+> **A-G496:** ***EINE LANE, DIE EINER ANDEREN EINE REPARATUR VERORDNET, MUSS ZUERST PRÜFEN, WAS DIESE
+> REPARATUR DORT KOSTET — DIE EIGENEN KOSTEN SIND KEIN MASS, WENN DIE EIGENE LANE DIE GRENZE NICHT HAT.***
+
+**PINKs Ausgang ist der richtige:** die Reparatur ist gebaut und bewiesen (`3/83 → 83/83`, 137 Stellen → 0,
+vier Auflösungswege mit echter Ausgabe durchgespielt, plus der Wurzel-Refusal), aber `--in-place` **verweigert
+jede versiegelte Datei namentlich und beendet mit 3**; ein Override-Schalter hebt es. ***Das Anwenden ist eine
+Eigentümerentscheidung, weil sie ein gefrorenes Siegel gegen Rekonstruierbarkeit tauscht und beide über dieser
+Lane gesetzt wurden.***
+
+### §14.9 WAS DIE FREMDSPUREN SONST AN SICH SELBST GEFUNDEN HABEN
+
+**GRÜN:** **F-G1** — PF-13s Prüforte waren `existsSync(dir) ? readdir : []`; ein umbenannter `PHASE_DIR` hätte
+**null Dateien still beigetragen**, und jeder Wächter darunter hätte sich selbst bestätigt:
+`coverageMatchesPopulation` liest TRUE über eine Population, die es nie hatte — **unter dem Nenner, den dieses
+Register zitiert.** Repariert. **F-G3** — `run-all.sh`s Kopf behauptet, jeder Fehlschlag werde benannt; *es
+galt für 11 von ~41 Aufrufstellen*, Rasterprobe und Kompositionsproben druckten eine `!!`-Zeile und ließen
+`FAILED` leer, sodass der Durchlauf weiter *„ALL DERIVATIONS AND PROBES RETURNED 0"* schloss. Aufrufstellen
+2 → 12. **F-G6** — die Wrap-Gefahr des eigenen Detektors wurde **nur in der untercountenden Richtung
+auditiert** und nie in der überzählenden. **F-G5** — siehe unten.
+
+**PINK:** drei Widerrufe, jeder gegen die eigene Spur. **W-1** „119 commits, UNPUSHED" — falsch, aus `origin`
+geklont. **W-2** `PHASE_G*.md` unlesbar — eigener Worktree-gegen-Ref-Fehler. **W-3** „197/197" — ***das
+Artefakt sagt 198, und es ist der schlimmste der drei, weil GRÜNs Detektor die Veraltung längst markiert
+hatte.*** Dazu **neu**: vier Stilllegungen von *auf Bericht* auf *am Ref verifiziert* gehoben — **und dabei
+der Fund, dass PF-5 und PF-7 stillgelegt wurden, WÄHREND SIE ROT WAREN.** PG-19s Beerdigungen **bleiben auf
+Bericht**: kein Grep-Treffer, und *das Fehlen eines Treffers ist nicht das Fehlen einer Entscheidung.* **Und
+meine Zeigerangaben `:725`/`:998` für A-G20 sind beide falsch — A-G20 steht bei `:773`. Der Anspruch hielt,
+der Zeiger versagte.**
+
+**F-G5, GRÜNs Befund, hier gepinnt.** Die Fixture-Glieder von MAP-E/F/G-ARCH wächtern eine **Pfadliste**, nicht
+die Kategorie *„eine Fixture"*. GRÜN hat es **experimentell** gemessen: eine Fixture in `support.ts` reißt
+**drei** Glieder ohne jeden Commit — ***dieselbe Fixture in einer neuen Datei daneben besteht 32/32.*** **Die
+Grenze blockiert die ehrliche Platzierung und lässt die ausweichende durch.** Als Invariantenschatten in
+MAP-INT-ARCH gepinnt (A-G492s Teilung), Arbeitsbaum eingeschlossen, denn die Umgehung brauchte keinen Commit.
+
+### §14.10 EIN HARNESS-FEHLER DIESER RUNDE, UND ER IST DER SIEBTE
+
+Unescapte Backticks in einem **nicht gequoteten Heredoc** haben `git init` **gegen den echten Worktree**
+ausgeführt und die Ausgabe in einen Docstring injiziert. **Integrität geprüft, nicht gehofft:** `fsck` exit 0,
+HEAD korrekt, 63 lokale und 61 Remote-Refs, Config vollständig, `origin/main` unverändert — und `git init` ist
+auf einem bestehenden Repository idempotent. **Kein Schaden.** Der Kommentar wurde anschließend ohne Shell
+geschrieben.
+
+> **A-G497:** ***EIN NICHT GEQUOTETES HEREDOC IST EINE SHELL, UND PROSA MIT BACKTICKS IST DARIN CODE.*** Die
+> sechs Harness-Fehler davor betrafen Messung; dieser betraf **Ausführung** — und er landete im selben
+> Dokument, das die Regel gegen sie sammelt.
+
+### §14.11 BEREINIGT, MIT NACHGEWIESENEN KOSTEN
+
+Der lokale `main`-Ref lag **8 Commits zurück** und hat GRÜN heute eine falsche Zahl geliefert: `main..lane`
+gab **123**, `origin/main..lane` gibt **115**. Nachgezogen; `origin/main` selbst unverändert bei `e360caf9`.
+**Nicht gelöscht:** `integration/mapping-trial-20261116` — sein Produktdelta gegen den kanonischen Stand ist
+**0 Dateien**, es trägt also nichts, was verloren gehen könnte, und eine unumkehrbare Löschung eines
+Engineering-Artefakts ist unter einem Mandat, das historische Prüfartefakte einfriert, der falsche Tausch.
+
+### §14.12 OFFEN — JEDES MIT SEINER TATSÄCHLICHEN GRENZE
+
+**Eigentümerentscheidungen, beide neu geschärft:**
+1. ***PINKs Portabilitätsreparatur gegen 167 Siegeleinträge.*** Gebaut, bewiesen, hinter einem Schalter. Der
+   Tausch ist Rekonstruierbarkeit gegen ein gefrorenes Siegel.
+2. ***Der Vorwärtszeiger auf PINKs Errata.*** Das versiegelte Register trägt **keinen** Hinweis darauf, dass
+   drei seiner Sätze widerrufen sind — ein Leser trifft sie unverändert an. **Eine Zeile behebt es und bricht
+   dasselbe Siegel.**
+
+**Bei PINK, mit Grenze statt Vermutung:** **PG-20** offen, **einmal begründet verweigert** — *nichts in dieser
+Schranke misst Wahrnehmung*, und eine Zahl zu setzen würde PF-5s Nennerfehler wiederholen; Magnitude
+verifiziert (**3.053 px**, Verhältnis 0.5604). **PF-2** offen, Grenze schärfer als §23: **0 von 19** Gruppen
+selbstmessbar, und *die eine Rote dreht an dem Schritt, dessen Träger sich nicht identifizieren lässt* —
+braucht einen Produkt-Hook. **PF-11** klärt **0 von 8** Sprossen; *eine Sprosse, die nichts gemessen hat, ist
+kein Pass.* **PF-6** Zeile 1 rot bestätigt (**0.5074 gegen ≤0.03, 16.9×**), **1280×800 weiter ungemessen**.
+**PF-13** alle drei Gründe halten, nur die Zahl bewegte sich auf **198/198**. **D-PP-3** Pfadhälfte repariert
+und unangewendet, **Provenienzhälfte offen und nicht derselbe Fix: 60 von 80 Instrumenten hartkodieren ein
+Commit-Literal**, eines berichtete `"commit": "9cc06f84"`, während es `3ec8457d` maß.
+
+**Bei mir, benannt:** die **10 verbleibenden** `CONDYN_PLAYWRIGHT_MODULE`-Annahmestellen aus PINKs Zensus.
+**PG-14**, **A-G48/A-G51/A-G206** (GRÜN hat gemessen, dass sie **drei** Glieder reißen, nicht eines, und dass
+E's und F's Glieder *nicht Phase Gs zu ändern* sind). **Die Naht** — eine Abwägung zwischen einer sichtbaren
+Kante und einer Leitersprosse, **keine technische Frage**. **`sudo iptables -S DOCKER | grep 5432`.** **Der
+Merge nach `main`.**
