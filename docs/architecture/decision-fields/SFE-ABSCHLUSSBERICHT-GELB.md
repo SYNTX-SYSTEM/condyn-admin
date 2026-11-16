@@ -237,7 +237,7 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 
 | Bedingung des Mandats | Stand |
 |---|---|
-| **1. Das MAPPING funktioniert durchgängig** | *** NICHT MEHR ALS ERFÜLLT AUSGEWIESEN (§11.10, 2026-11-16). *** Die Zahlen stehen: 3546/0 und `tsc` sauber **auf diesem Stand** (selbst gefahren), 197/197 auf der Regressionspopulation **aus GRÜNs Lane**, Drift 0. **Aber das Mapping der Phasen D–G liegt auf keinem Stand, den diese Lane oder `origin` hält** — das Feld ist hier 244 Zeilen und bei GRÜN 1243. **Die Kette ist auf GRÜNs Branch durchgängig und nur dort; das ist eine Aussage über einen unveröffentlichten Stand.** |
+| **1. Das MAPPING funktioniert durchgängig** | *** AUF DEM INTEGRIERTEN STAND ERFÜLLT UND GEMESSEN (§11.18): 3681 bestanden / 0 fehlgeschlagen / 20 übersprungen (3701), 520 Dateien, exit 0, Wegwerf-DB, B-ENTRY unumgangen. *** Erstmals auf einem Stand gemessen, **der das Mapping enthält** — integriert plus A-G485. **Einschränkung, die dazugehört: dieser Stand existiert nur lokal (`de065a24`), ist nicht gepusht und von PINK nicht gesehen.** Auf den Einzel-Lanes gilt es nicht: GRÜN allein 27 rot, GELB allein ohne das Mapping. |
 | **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. **PF-13 ist gedeckt; sein Urteil steht PINK zu.** |
 | **3. Alle Prüfungen abgeschlossen** | **ERFÜLLT** für jede Prüfung, die auf einem lesbaren Stand ausführbar ist. **Nicht ausführbar:** die iptables-Frage (sudo) und die Ausmaß-Charakterisierung der Naht (Instrumentengrenze). |
 | **4. PINK hat den tatsächlichen Gesamtsystemstand unabhängig validiert** | *** NICHT NACHVOLLZIEHBAR, UND ICH WEISE ES NICHT ALS ERFÜLLT AUS. *** |
@@ -964,3 +964,50 @@ Next-Server, also erreicht keine dieser Suiten ihren Endpunkt.** Ersetzt durch e
 
 **Der definitive Volllauf** — integriert, **mit** A-G485 und echtem `node_modules` — läuft; seine Zahl ist
 die erste, die Bedingung 1 über das Mapping überhaupt aussagen kann.
+### §11.18 ***DER INTEGRIERTE BAUM IST GRÜN — 3681 / 0, UND ES IST DIE ERSTE ZAHL, DIE ÜBER DAS MAPPING ETWAS SAGT***
+
+Integrationsversuch **plus** A-G485, echtes `node_modules`, Wegwerf-DB, B-ENTRY unverändert und unumgangen,
+echter Exit-Code **ohne** Pipe:
+
+```
+Test Files  520 passed | 11 skipped (531)        0 fehlgeschlagen
+     Tests  3681 passed | 20 skipped (3701)      0 fehlgeschlagen
+  exit 0 · 573.85 s
+[test-db] created condyn_test_14fe551bdc59a65f
+[database-isolation] verified disposable test database condyn_test_14fe551bdc59a65f
+[test-db] dropped condyn_test_14fe551bdc59a65f
+```
+
+**Die vier Stände nebeneinander, alle von dieser Lane gemessen, alle auf Wegwerf-DB:**
+
+| Stand | enthält das Mapping? | Suite |
+|---|---|---|
+| `origin/main` `e360caf9` | nein | **27 rot** (G1-Schema-Drift) |
+| `frontend/mapping-phase-g` (GRÜN allein) | **ja** | **27 rot** / 3642 (3689) |
+| `architecture/mapping-phase-f` (GELB allein) | **nein** | 0 rot / 3546 (3570) |
+| **Integration + A-G485** | **ja** | *** 0 ROT / 3681 (3701) *** |
+
+> *** JEDE EINZELNE LANE IST ROT ODER UNVOLLSTÄNDIG. ERST ZUSAMMEN SIND SIE GRÜN, UND ZWAR VOLLSTÄNDIG. ***
+> GRÜN allein trägt das Mapping und erbt mains Schema-Drift. GELB allein trägt die Drift-Reparatur und hat
+> das Mapping nicht. **Der Merge löst beide Hälften auf einmal:** 27 rot → grün durch GELBs Reparatur, 2 rot
+> → grün durch A-G485, **und nichts bleibt zurück.**
+
+**Was das für Bedingung 1 heißt, genau und nicht mehr:** *** DIE KETTE IST ERSTMALS AUF EINEM STAND GEMESSEN,
+DER DAS MAPPING ENTHÄLT, UND SIE IST GRÜN. *** §11.9s Lauf konnte das nicht sagen (244-Zeilen-Feld),
+§11.10 benannte warum, §11.11 bezahlte es, und dies ist die Zahl.
+
+**Und was es NICHT heißt, dreifach:**
+1. **Der Stand existiert nur lokal.** `de065a24` auf `integration/mapping-trial-20261116`, ein Probe-Worktree,
+   **nichts gepusht, kein `main`.** Ein echter Integrationsbranch braucht das Wort des Eigentümers.
+2. **PINK hat diesen Baum nicht gesehen.** Bedingung 4 ist unberührt — PINKs Validierung gilt `3ec8457d`, und
+   **PINK hat keine Session.** *** EINE GRÜNE SUITE IST KEINE UNABHÄNGIGE VALIDIERUNG, UND ICH WEISE SIE NICHT
+   ALS EINE AUS. ***
+3. **Die Suite ist nicht die ganze Prüfebene.** Die Pixelbefunde, PF-13s Urteil, PG-14, die Naht und
+   `sudo iptables` sind davon unberechnet.
+
+> **A-G488, und es ist das Ergebnis dieses Mandats, nicht eine Pointe:** *** VIER PHASEN LANG HAT JEDE LANE
+> IHRE EIGENE SUITE GRÜN GEMELDET ODER IHRE ROTEN ALS GEERBT ERKLÄRT, UND KEINE HAT DEN STAND GEMESSEN, DEN
+> DER EIGENTÜMER BESTELLT HAT — DEN ZUSAMMENGEFÜHRTEN. *** Der Zustand „integriert“ war in keiner Lane ein
+> Messobjekt, **weil keine Lane ihn besitzt.** §4 Punkt 8s 16 unerreichbare Instrumente, §0s
+> „Unlesbarkeit“, GRÜNs geerbte 27 und mein 3546/0 sind **vier Gesichter derselben Sache**: jede Lane hat
+> das gemessen, was sie halten konnte, und die Vereinigung hat niemand gehalten.

@@ -1,0 +1,2520 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_14fe551bdc59a65f
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-int3
+
+[database-isolation] verified disposable test database condyn_test_14fe551bdc59a65f
+ ✓ test/career/mapping-field/architecture.test.ts (32 tests) 1271ms
+ ✓ test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts (10 tests | 4 skipped) 20911ms
+   ✓ Job Pool workflow over HTTP against the production routes > lists no upload on a fresh verified database, persists the sample pool once, and reports an identical re-upload as existing  3063ms
+   ✓ Job Pool workflow over HTTP against the production routes > reads the presentation matching for the exact analysis and the exact upload, ranked as delivered, with evidence quotes and the canonical NOT_EVALUATED state  1632ms
+   ✓ Job Pool workflow over HTTP against the production routes > serves the analysis sources the SYNTX aperture may join: the seeded document title, the capability evidence location, no projection  1370ms
+   ✓ Job Pool workflow over HTTP against the production routes > persists a DRAFT copy of the pool and refuses matching for it with 409, so an inactive pool is visible as inactive  902ms
+   ✓ Job Pool workflow over HTTP against the production routes > server-renders the field-state strip and opens on the SYNTX field (Job Pool first, Capability gated without a job), also for an exact upload, never a dock without an exact DCTXREV  4484ms
+ ✓ test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts (7 tests | 3 skipped) 24998ms
+   ✓ HR Decision Loop over HTTP against the production composition roots > answers the exact-id read with the documented envelope and all fifteen families (fourteen G3 families plus the DCDRB binding) persisted for context A  2447ms
+   ✓ HR Decision Loop over HTTP against the production composition roots > admits one human decision for context B through the sealed gate, rereads it exactly, and refuses what the gate refuses  3888ms
+   ✓ HR Decision Loop over HTTP against the production composition roots > reads the reconstructed next Decision Context through the frozen G2 API and walks its lineage to the root by exact ids  2129ms
+   ✓ HR Decision Loop over HTTP against the production composition roots > server-renders the dock only for an explicit DCTXREV and keeps the SIL field otherwise untouched  5846ms
+ ✓ test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts (8 tests) 17574ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > constructs sealed first, subsequent, branch, audit, and UNRESOLVED-capable history plus the existing abstract replay reader shape  2277ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > freezes exact row/payload coherence, detached exact-ID reads, absence, and first-parent T13H composition before a physical write  2938ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > freezes subsequent-parent physical composition and exact T13H reread  2960ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > freezes idempotency, immutable conflict, and original preservation  2616ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > freezes lawful physical branch freedom without a single successor  2387ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen PostgreSQL persistence adapter contract > freezes T13I concrete-reader compatibility without physical-byte authority  4385ms
+stdout | test/career/job-pool/three-point.postgres.test.ts > the three points together (PostgreSQL, scripted SDK)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/three-point.postgres.test.ts > the three points together (PostgreSQL, scripted SDK)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/three-point.postgres.test.ts > the three points together (PostgreSQL, scripted SDK)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'00000'[39m,
+  message: [32m'constraint "career_capability_proposal_projection_references_analysis_id_fk" of relation "career_capability_proposal_projection_references" does not exist, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'12670'[39m,
+  routine: [32m'ATExecDropConstraint'[39m
+}
+
+ ✓ test/career/job-pool/three-point.postgres.test.ts (6 tests) 17208ms
+   ✓ the three points together (PostgreSQL, scripted SDK) > POINT 1+2: a role that fails TRANSIENTLY twice is FAILED with its class; every request is in the register (failed ones too); then a successor run asks ONLY that role again  2450ms
+   ✓ the three points together (PostgreSQL, scripted SDK) > POINT 1: a continuation asks ONLY what a second request can change — never a refused output, a permanent failure or the refused pairs of a partly admitted role  2213ms
+   ✓ the three points together (PostgreSQL, scripted SDK) > POINT 3: one sweep starts at most three continuations; the rest follow with the next sweep  8702ms
+   ✓ the three points together (PostgreSQL, scripted SDK) > runs from before this existed (not marked resumable) are never touched by the sweep; a run at the last revision is not continued  2051ms
+ ✓ test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts (5 tests) 12068ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen replay contract > builds sealed first, subsequent, and branch COVFCR history with observable read-only doubles  2169ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen replay contract > exposes exactly byte, semantic, and derivation replay, with byte replay retaining requested-child absence  2088ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen replay contract > classifies malformed or wrong requested stored children as replay mismatch without physical-byte, receipt, or writer semantics  2055ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen replay contract > semantically replays exactly one first or subsequent persisted parent with the sealed audit-time equality laws  3031ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen replay contract > preserves semantic replay mismatch for invalid immediate parents while derivation remains parent-reader-free and timestamp-exact  2723ms
+ ✓ test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts (6 tests) 12712ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain contract > constructs sealed COVFCR histories and observable test-only heterogeneous repository doubles without persistence  1745ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain contract > returns only a validated reread COVFCR and introduces neither a persistence state field nor a lineage receipt  1809ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain contract > persists a first revision only after complete DCTXREV parent resolution, including its audit-time historical witness  2307ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain contract > resolves a subsequent named COVFCR parent, preserves branch freedom, and keeps semantic COVFCC comparison audit-time-insensitive  4335ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision persistence frozen Domain contract > enforces immutable write and exact reread semantics without a receipt, replay, PostgreSQL, or ancestor traversal  2509ms
+ ✓ test/career/relation/outcome-valence-feedback-context-revision/career-outcome-valence-feedback-context-revision.test.ts (6 tests) 9027ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > constructs sealed first and subsequent transition history independently  1295ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > requires explicit revision construction with the exact public API and five-field first envelope  1217ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > binds a subsequent typed parent content witness without recursively embedding a parent revision  1417ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > preserves standalone-invalid precedence and locally classifies reachable parent compatibility failures  1657ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > makes typed lineage and complete transition semantics identity-bearing while excluding audit-only time  2068ms
+   ✓ CareerOutcomeValenceFeedbackContextRevision frozen Domain contract > detaches and locally asserts revisions without repository, persistence, replay, validation, eligibility, or authority leakage  1371ms
+stdout | test/decision-integration/hr-decision-loop-p7.test.ts > P7 inverse: fresh process walks child DREV to root by exact ids only > reaches COVD, CORD, ASCAD, SCD, AOC, ECTXREV, EAGR, HCOM, DAINT, DCR, DCTXREV, the binding, the RCP and the DAR without any search
+[P7 INVERSE] GREEN pid=3198735 child=DREV_36E75FFA9CD8EFDE4269A080 root=DREV_69B0F5F6C7D9DB45FDC3CA18 steps=16
+
+stdout | test/decision-integration/hr-decision-loop-p7.test.ts
+[P7 CLEANUP] dropped=condyn_test_c848dbf4f7996c46 before=condyn_test_14fe551bdc59a65f,condyn_test_c848dbf4f7996c46 after=condyn_test_14fe551bdc59a65f basisPreserved=true
+
+ ✓ test/decision-integration/hr-decision-loop-p7.test.ts (7 tests) 8396ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > creates the root DREV over the real local HTTP path from persisted G3 state (R1, R2, R3)  520ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > runs the HR decision path over PostgreSQL: DCR per admissible class, DAINT, HCOM, EAGR, ECTXREV, AOC, SCD, ASCAD, CORD, COVD for all four valences (P6)  1500ms
+   ✓ P7 forward: root DREV to child DREV through the G3 chain > resolves AOC, SCD, ASCAD, CORD and COVD through the bound resolvers against the live repositories (R1 reachability, R5)  430ms
+   ✓ P7 inverse: fresh process walks child DREV to root by exact ids only > reaches COVD, CORD, ASCAD, SCD, AOC, ECTXREV, EAGR, HCOM, DAINT, DCR, DCTXREV, the binding, the RCP and the DAR without any search  2101ms
+ ✓ test/database-isolation/fail-closed.e2e.test.ts (13 tests) 7160ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses unset  536ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses empty  526ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses whitespace  550ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses malformed  536ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses no database path (maintenance fallback)  553ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses query redirect  553ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses shared condyn  530ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses shared condyn via alias host on a closed port (no connection attempted)  492ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses maintenance database  535ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses non-disposable name  512ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses non-local host  516ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > refuses pattern-valid but absent database  545ms
+   ✓ fail-closed vitest runs (child process through the real configuration) > runs the canary against the verified disposable database  771ms
+ ✓ test/career-worker-config-validation.test.ts (2 tests) 5631ms
+   ✓ Worker Configuration Validation > fails fast on missing provider configuration without claiming a job  2392ms
+   ✓ Worker Configuration Validation > exits non-zero for missing prompt encryption before claiming a job  3237ms
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stderr | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P1 resolver local proof per G3 family > CRREL has no resolver because its identity excludes the evaluation
+Promise returned by `expect(actual).rejects.toThrow(expected)` was not awaited. Vitest currently auto-awaits hanging assertions at the end of the test, but this will cause the test to fail in Vitest 3. Please remember to await the assertion.
+    at /home/codi/Entwicklung/condyn-admin-int3/test/decision-integration/g2-g3-vertical-proof.test.ts:210:56
+
+stdout | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > mutating the persisted RCP row makes the same POST fail; deleting the RCP turns it into 422; malformed JSON is 400
+[P3 E2E] GREEN database=condyn_test_fd3cd3383cb69238 port=33235 readiness=404 post=201 tampered=500 restored=201 absent=422 malformed=400
+
+stdout | test/decision-integration/g2-g3-vertical-proof.test.ts > G2/G3 vertical integration proof > P3 root context from G3 state over HTTP
+[P3 CLEANUP] dropped=condyn_test_fd3cd3383cb69238 before=condyn_test_14fe551bdc59a65f,condyn_test_fd3cd3383cb69238 after=condyn_test_14fe551bdc59a65f basisPreserved=true
+
+ ✓ test/decision-integration/g2-g3-vertical-proof.test.ts (63 tests) 6734ms
+   ✓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > POST 201 == stored payload == GET; RCP payload sentinel absent from the DREV  451ms
+   ✓ G2/G3 vertical integration proof > P3 root context from G3 state over HTTP > mutating the persisted RCP row makes the same POST fail; deleting the RCP turns it into 422; malformed JSON is 400  382ms
+ ✓ test/career/job-pool/syntx-role-orbit.test.ts (11 tests) 5118ms
+   ✓ role orbit refinement (organization cosmos) > is the smallest orbit that holds: one step closer on either axis breaks the air or stands the orbit upright  980ms
+   ✓ role orbit refinement (organization cosmos) > keeps its air in every phase: to the centre body, between neighbours on an orbit; across orbits never closer than the packing at rest  1016ms
+   ✓ role orbit refinement (organization cosmos) > keeps the air across orbits in every phase pair, never closer than the packing in motion (tall level boxes, PINK D-RO-2)  1240ms
+   ✓ role orbit refinement (organization cosmos) > keeps its air for variable titles (seeded random title sets of 4 to 80 characters, GELB / PINK §3.45 D-RO-1)  1267ms
+ ✓ test/career/relation/outcome-valence-feedback-admission-declaration/persistence-postgres.test.ts (8 tests) 6136ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > persists exact root/payload/children/COVD history, performs detached reread, and preserves genuine absence  1535ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > is idempotent only for exact complete durable state including audit time, admission state, copied witnesses, and children  1385ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > fails closed for physical/payload/child/identity/COVD corruption without translating found roots to absence  621ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > requires exact COVD copied witnesses and admission chronology but never re-evaluates EAGR or DAR after AOC time  980ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > atomically rolls back deterministic root, subject, and evidence write failures before exact retry  1051ms
+   ✓ T12J PostgreSQL immutable CareerOutcomeValenceFeedbackAdmissionDeclaration RED contract > requires mandatory post-commit exact reread and exposes no mutable, current, target, delivery, evaluation, learning, or causal surface  489ms
+ ✓ test/career/outcome-valence-feedback-context-revision-admission/application.test.ts (4 tests) 6253ms
+   ✓ T48 deterministic feedback context revision boundary > constructs an exact first revision envelope from an exact first transition  1604ms
+   ✓ T48 deterministic feedback context revision boundary > preserves exact subsequent lineage and rejects mismatched parent content  1769ms
+   ✓ T48 deterministic feedback context revision boundary > retains transition identity and feedback valence while leaving audit time out of revision identity  1535ms
+   ✓ T48 deterministic feedback context revision boundary > preserves every individual historical valence without aggregation or revision authority  1343ms
+ ✓ test/career/relation/outcome-valence-declaration/persistence-postgres.test.ts (8 tests) 5966ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > persists exact root/payload/children/CORD history, performs detached reread, and preserves genuine absence  1407ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > is idempotent only for exact complete durable state including audit time, valence, copied witnesses, and children  1239ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > fails closed for physical/payload/child/identity/CORD corruption without translating found roots to absence  524ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > requires exact CORD copied witnesses and COVD chronology but never re-evaluates EAGR or DAR after AOC time  1103ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > atomically rolls back deterministic root, subject, and evidence write failures before exact retry  984ms
+   ✓ T12I PostgreSQL immutable CareerOutcomeValenceDeclaration RED contract > requires mandatory post-commit exact reread and exposes no mutable, current, verification, evaluation, or causal surface  645ms
+ ✓ test/career/outcome-valence-feedback-context-revision-lifecycle/field-integration.test.ts (2 tests) 5983ms
+   ✓ T49 COVFCR deterministic lifecycle integration > preserves first and subsequent typed lineage through immutable persistence, exact reread, and all sealed replay modes  3819ms
+   ✓ T49 COVFCR deterministic lifecycle integration > preserves every valence through first-revision persistence and derivation replay without creating a current or authority claim  2163ms
+ ✓ test/career/relation/outcome-valence-feedback-target-declaration/persistence-postgres.test.ts (8 tests) 6277ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > persists exact root/payload/subjects/target-selection evidence, returns detached rereads, and preserves genuine absence  1716ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > is idempotent only for exact complete durable state including audit time, opaque target reference, witnesses, and child rows  1392ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > fails closed for root, payload, child, identity, and COVFAD-relation corruption without converting found roots to absence  676ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > retains opaque target declaration chronology and historical expiry without target lookup or EAGR/DAR reevaluation  748ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > atomically rolls back root, subject, and evidence write failures before exact retry while leaving COVFAD untouched  1144ms
+   ✓ T13A PostgreSQL immutable CareerOutcomeValenceFeedbackTargetDeclaration RED contract > requires postcommit exact reread and exposes no mutable, target-binding, current, delivery, learning, evaluation, or causal repository surface  533ms
+ ✓ test/career/mapping-spec/layout.test.ts (15 tests) 5725ms
+   ✓ LAYOUT · golden vectors > the committed vectors are exactly what the reference produces now (no drift between spec, oracle and file)  453ms
+   ✓ LAYOUT · golden vectors > DETERMINISM: the same input gives the same output, byte for byte, in any call order and with shuffled input lists  1099ms
+   ✓ LAYOUT · promises on every vector > NO OVERLAP: placed bodies keep their gap; bodies beyond capacity are counted, never drawn over others  2249ms
+   ✓ LAYOUT · promises on every vector > HORIZON: a checked role lies inside the horizon, a name-only role beyond it, none outside the field  395ms
+   ✓ LAYOUT · promises on every vector > SECTORS: each pool keeps to its own sector; sectors are ordered by pool name and never overlap; a pool without roles still has its sector  397ms
+   ✓ LAYOUT · promises on every vector > FIT IS DISTANCE: an undisplaced body sits exactly where its fit puts it; a better fit is never farther out in its tier  367ms
+   ✓ LAYOUT · promises on every vector > BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactly (horizon - rho, field - rho) and never cross them or the inner edge  356ms
+   ✓ LAYOUT · promises on every vector > CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit completely; only the stress vector overflows  353ms
+ ✓ test/career/relation/outcome-role-declaration/persistence-postgres.test.ts (8 tests) 5095ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > persists exact root/payload/children/ASCAD history, performs detached reread, and preserves genuine absence  1245ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > is idempotent only for exact complete durable state including audit time, declaration input, copied witnesses, and children  1113ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > fails closed for physical/payload/child/identity/ASCAD corruption without translating found roots to absence  478ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > requires exact ASCAD copied witnesses and CORD chronology but never re-evaluates EAGR or DAR after AOC time  956ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > atomically rolls back deterministic root, subject, and evidence write failures before exact retry  870ms
+   ✓ T12H PostgreSQL immutable CareerOutcomeRoleDeclaration RED contract > requires mandatory post-commit exact reread and exposes no mutable, current, verification, outcome, or causal surface  354ms
+ ✓ test/career/hr-decision-loop/local-composition.postgres.test.ts (2 tests) 5197ms
+   ✓ HR Decision Loop local composition root > registers the unified persistence order on construction and reads an absent context as NOT_FOUND, with every family provisioned  373ms
+   ✓ HR Decision Loop local composition root > serves the seeded world through the production composition with every family persisted, not merely provisioned  4091ms
+ ✓ test/career/relation/outcome-valence-feedback-context-transition/career-outcome-valence-feedback-context-transition.test.ts (6 tests) 4027ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > constructs sealed bases, items, and feedback content states independently  519ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > requires explicit transition construction and preserves null only as the first-transition discriminator  469ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > constructs exact seven-field first and subsequent append-one witnesses without transition, revision, readiness, or acceptance leakage  725ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > classifies standalone-invalid operands before valid relational failures and proves strict append-one preservation  691ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > makes complete semantic witnesses identity-bearing while excluding audit-only times and nested artifact-own IDs  1026ms
+   ✓ CareerOutcomeValenceFeedbackContextTransition frozen Domain contract > detaches and locally asserts transitions without external, authority, validation, revision, persistence, replay, or legacy behavior  595ms
+ ✓ test/career/hr-decision-loop/read-service.postgres.test.ts (4 tests) 4522ms
+   ✓ HR Decision Loop read service over an isolated PostgreSQL world > reconstructs context A with every family AVAILABLE and bound to the exact seeded ids  807ms
+   ✓ HR Decision Loop read service over an isolated PostgreSQL world > represents context B as EMPTY in every family and persists a human decision for it through the sealed DCR gate  389ms
+ ✓ test/career/mapping/layout-vectors.test.ts (9 tests) 3769ms
+   ✓ MAP-LAYOUT · golden vectors > all twelve layouts match (band edges LV08–LV12 and the real 73-role shape included)  336ms
+   ✓ MAP-LAYOUT · the phase A promises on the product module > DETERMINISM and READ-ONLY: frozen input, same output byte for byte, also with shuffled pools and roles  940ms
+   ✓ MAP-LAYOUT · the phase A promises on the product module > NO OVERLAP, HORIZON, SECTORS: bodies keep their gap and band, each pool keeps to its sector, sectors close the circle  2075ms
+   ✓ MAP-LAYOUT · the phase A promises on the product module > CAPACITY and SIZE: the realistic shapes fit completely, only the stress vector overflows; body radius stays in 6…16  412ms
+ ✓ test/career/relation/state-change-declaration/persistence-postgres.test.ts (8 tests) 4432ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > persists exact root, subjects, evidence, nullable and non-null external state references, detached rereads, restart history, and genuine absence  1230ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > is idempotent only for exact immutable durable state including audit time, child inventories, observations, and external state reference  846ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > fails closed for physical root/payload state, state subject/dimension, observation, temporal, and external-reference corruption  368ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > requires the exact AOC witnesses and observation ordering, but never treats EAGR expiry at observedAt as an authorization failure  576ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > atomically rolls back root, subject, and evidence failures before exact retry  753ms
+   ✓ T12F PostgreSQL immutable CareerStateChangeDeclaration RED contract > requires mandatory post-commit reread and exposes no mutable, current, verification, result, outcome, or causal surface  308ms
+ ✓ test/career/relation/action-state-change-association-declaration/persistence-postgres.test.ts (8 tests) 4383ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > persists exact root, complete subjects/evidence, detached rereads, restart history, and genuine absence  1137ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > is idempotent only for exact complete durable state including audit time, copied witnesses, children, declarant, and declaration time  940ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > fails closed for physical/payload corruption and missing, extra, duplicate, or changed normalized child rows  417ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > requires exact SCD copied witnesses and declaredAt ordering, but never re-evaluates EAGR or DAR after AOC time  690ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > atomically rolls back deterministic root, subject, and evidence write failures before exact retry  816ms
+   ✓ T12G PostgreSQL immutable CareerActionStateChangeAssociationDeclaration RED contract > requires mandatory post-commit exact reread and exposes no mutable, current, verification, outcome, or causal surface  318ms
+ ✓ test/decision-integration/g2-g3-cross-relation.test.ts (3 tests) 3650ms
+   ✓ G2/G3 cross-relation integration (one D3 vocabulary, R2 to R4, R5 to R1) > every G3 R5 reference resolves through the bound G2 R1 resolver list  1928ms
+   ✓ G2/G3 cross-relation integration (one D3 vocabulary, R2 to R4, R5 to R1) > a root DREV built by the G2 HR layer (R2) is bindable to a DCTXREV over the same RCP (R4)  1717ms
+ ✓ test/decision-integration/g3-decision-context-binding-vertical.test.ts (10 tests) 3435ms
+   ✓ P0 unified startup registration order (R7) > provisions both fields in one order in a fresh database, idempotently, with no cross-field foreign key  901ms
+   ✓ P0 unified startup registration order (R7) > detects a cross-field foreign key as a structural law violation (falsifier)  669ms
+   ✓ P4 DCTXREV to DREV binding over real PostgreSQL (R4, D4) > refuses a DREV that does not witness the DCTXREV proposal and a reader that selects (falsifiers)  532ms
+ ✓ test/decision-core/context/contract.test.ts (26 tests) 2341ms
+   ✓ Decision Context Draft structural contract > resolves direct, type-only, wildcard, and namespace exports through the public context barrel  2315ms
+ ✓ test/decision-core/structural-consequences/reconstruct.test.ts (8 tests) 2900ms
+   ✓ Structural consequence propagation > propagates sealed source-gap errors and exposes only the adjacent generic consequence surface  2781ms
+ ✓ test/career/relation/action-occurrence/persistence-postgres.test.ts (8 tests) 3735ms
+   ✓ T12E PostgreSQL immutable CareerActionOccurrence RED contract > persists exact root, subjects, evidence, and external ref; returns detached rereads; survives restart; and distinguishes NOT_FOUND  964ms
+   ✓ T12E PostgreSQL immutable CareerActionOccurrence RED contract > is idempotent only for exact immutable state, including createdAt and complete durable children  650ms
+   ✓ T12E PostgreSQL immutable CareerActionOccurrence RED contract > fails closed for every physical root witness and payload corruption  301ms
+   ✓ T12E PostgreSQL immutable CareerActionOccurrence RED contract > requires exact ECTXREV/EAGR authority relations, target/channel permission, and the historical half-open interval  484ms
+   ✓ T12E PostgreSQL immutable CareerActionOccurrence RED contract > atomically rolls back root, subject, and evidence failures before exact retry  751ms
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > serves list, read and presentation matches; the match evidence is verbatim analysis evidence (JP-H, JP-I)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > serves list, read and presentation matches; the match evidence is verbatim analysis evidence (JP-H, JP-I)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-pool.postgres.test.ts > JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > refuses a stored PERSON analysis and an unresolvable boundary; PERSON_X_JOB stays pool-wide and role-unbound (owner GO 2026-10-15)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/job-pool.postgres.test.ts (8 tests) 2010ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > registers its tables through the gate and maps the sample pool onto canonical target revisions (201)  655ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > is idempotent: an equivalent re-upload answers 200 with the same id and adds no row, and a re-run of the mapping is byte-identical  393ms
+   ✓ JSON Job Pool on PostgreSQL (JP-C, JP-I, JP-H) > answers the documented error statuses  419ms
+ ✓ test/career/outcome-valence-feedback-context-transition-admission/application.test.ts (4 tests) 3298ms
+   ✓ T47 deterministic feedback context transition boundary > constructs only an exact first append-one transition witness  693ms
+   ✓ T47 deterministic feedback context transition boundary > preserves exact source/result inventory and rejects corrupt or non-append-one operands  830ms
+   ✓ T47 deterministic feedback context transition boundary > is detached and preserves all historical valences without revision construction  1011ms
+   ✓ T47 deterministic feedback context transition boundary > treats createdAt as validated audit metadata, not transition chronology or authority  761ms
+stdout | test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbatim and persists nothing
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/job-pool-validation/http-canonical-inverse.postgres.test.ts > Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H + JP-I: presentation matching follows CP-I1..I4 and Step 23, states its basis, quotes the analysis evidence verbatim and persists nothing
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED: neither basis of boundary B-ENTRY holds. disposable: ERR_TEST_DATABASE_ISOLATION_NOT_MARKED: database condyn_test_ebeda82d782cf195 carries no disposable marker. application: ERR_APPLICATION_DATABASE_UNDER_TEST_RUNNER: an application database is never provisioned from a test runner
+ ✓ test/job-pool-validation/http-canonical-inverse.postgres.test.ts (13 tests) 2068ms
+   ✓ Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: POST creates the upload once (201) and reports an identical upload as 200 with the same id, also for reordered keys  328ms
+   ✓ Job Pool connection: HTTP contract, canonical mapping and inverse walk (JP-H / JP-C / JP-I) > JP-H: an unmarked database in the disposable name pattern receives no DDL and the upload answers 503  1342ms
+ ✓ test/career/relation/execution-context-revision/persistence-postgres.test.ts (9 tests) 2677ms
+   ✓ T12D PostgreSQL immutable CareerExecutionContextRevision RED contract > persists exact ECTXREV, returns detached rereads, survives restart, and distinguishes NOT_FOUND  746ms
+   ✓ T12D PostgreSQL immutable CareerExecutionContextRevision RED contract > is idempotent only for exact immutable state including createdAt  350ms
+   ✓ T12D PostgreSQL immutable CareerExecutionContextRevision RED contract > atomically rolls back root, subject, and evidence failures before exact retry  427ms
+stdout | test/career/job-pool/job-structure.postgres.test.ts > JOB ONLY job structure route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-structure.postgres.test.ts > JOB ONLY job structure route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/job-structure.postgres.test.ts (3 tests) 2390ms
+ ✓ test/career/relation/action-intent/persistence-postgres.test.ts (9 tests) 2481ms
+   ✓ T12A PostgreSQL immutable CareerDecisionActionIntent RED contract > persists exact multi-subject DAINT, mandatory-rereads detached state, restarts, and reports NOT_FOUND  540ms
+   ✓ T12A PostgreSQL immutable CareerDecisionActionIntent RED contract > fails closed for every root and payload witness corruption  427ms
+   ✓ T12A PostgreSQL immutable CareerDecisionActionIntent RED contract > atomically rolls back root, subject, and evidence insertion failures to zero durable rows before clean retry  398ms
+ ✓ test/decision-integration/resolver-list-composition.test.ts (3 tests) 2166ms
+ ✓ test/career/relation/execution-authority-grant/persistence-postgres.test.ts (8 tests) 2953ms
+   ✓ T12C PostgreSQL immutable CareerExecutionAuthorityGrantRevision RED contract > persists exact EAGR, detached rereads, restart rereads, and NOT_FOUND  736ms
+   ✓ T12C PostgreSQL immutable CareerExecutionAuthorityGrantRevision RED contract > is idempotent only for exact state and preserves createdAt as immutable durable history  362ms
+   ✓ T12C PostgreSQL immutable CareerExecutionAuthorityGrantRevision RED contract > fails closed for root, payload, and every normalized inventory corruption  302ms
+   ✓ T12C PostgreSQL immutable CareerExecutionAuthorityGrantRevision RED contract > atomically rolls back root, subject, target, channel, and evidence failures before clean retry  602ms
+ ✓ test/decision-integration/hr-decision-loop-postgres.test.ts (6 tests) 3285ms
+   ✓ P0 integrated registration including the post-decision chain (R7) > registers T11, the post-decision chain DAINT..COVFCR, DREV and DCDRB in FK order without a cross-field FK  778ms
+   ✓ P6 HR decision boundary on PostgreSQL across both fields (D1, D4) > creates the root DREV through the composed G2 application with every reference resolved by R1 on PostgreSQL  382ms
+   ✓ P6 HR decision boundary on PostgreSQL across both fields (D1, D4) > walks the inverse path DCR to DCTXREV to DCDRB to DREV to resolved upstream state in a fresh client by exact ids only  364ms
+ ✓ test/decision-integration/hr-decision-context.test.ts (4 tests) 2000ms
+ ✓ test/career/hr-decision-loop/read-service.test.ts (4 tests) 2289ms
+   ✓ HR Decision Loop read service > walks COVFCR lineage by exact parent ids only and orders artifacts by id, never by time  2251ms
+ ✓ test/decision-core/validation/authority.test.ts (16 tests) 2426ms
+   ✓ Decision Context authority gate > resolves forbidden direct, type-only, aliased, wildcard, and namespace exports through the validation barrel  2398ms
+ ✓ test/career/relation/human-commitment/persistence-postgres.test.ts (9 tests) 2346ms
+   ✓ T12B PostgreSQL immutable CareerHumanCommitment RED contract > persists exact HCOM, detached rereads, restarts, and reports NOT_FOUND  557ms
+   ✓ T12B PostgreSQL immutable CareerHumanCommitment RED contract > atomically rolls back root, subject, and evidence failures to zero durable state before clean retry  339ms
+stdout | test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts > R5 Local HTTP -> Authority -> Decision Core -> PostgreSQL -> HTTP > proves the real local vertical path, authority rejection, malformed JSON handling, exact persistence equality, and no legacy lifecycle provisioning
+[R5 E2E] FINAL HARDENED R5 RUN: GREEN database=condyn_r5_3539dc2e9bcbc3cd6c8b port=40777 readiness=404 markerSeeded=PASS markerAbsentPost=PASS stored=exact markerAbsentGet=PASS GET=200 authority=422 malformed=400 legacyLifecycleTables=absent
+
+ ✓ test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts (1 test) 2941ms
+stdout | test/career/job-pool/auto-match.postgres.test.ts > automatic match (PostgreSQL, stand-in)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/auto-match.postgres.test.ts > automatic match (PostgreSQL, stand-in)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/auto-match.postgres.test.ts (14 tests) 1796ms
+   ✓ automatic match (PostgreSQL, stand-in) > the run: one investigation within the budget, STAND_IN, COMPLETED; a repeat runs nothing; the ranking now carries semantic roles first  773ms
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job without selection (bypassing the route) fails terminally and never reaches the processor
+[Worker job-pool-first-worker] CLAIMED JOB_1794797151975_157 lease=1
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job without selection (bypassing the route) fails terminally and never reaches the processor
+[Worker job-pool-first-worker] FAILED JOB_1794797151975_157 lease=1 terminal=true ERR_JOB_SCOPE_REQUIRED: Bitte wähle einen Job aus einem Pool aus.
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job with an inactive pool or a foreign role fails terminally and never reaches the processor
+[Worker job-pool-first-worker] CLAIMED JOB_1794797151984_820 lease=1
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job with an inactive pool or a foreign role fails terminally and never reaches the processor
+[Worker job-pool-first-worker] FAILED JOB_1794797151984_820 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job with an inactive pool or a foreign role fails terminally and never reaches the processor
+[Worker job-pool-first-worker] CLAIMED JOB_1794797151993_951 lease=1
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: an enqueued job with an inactive pool or a foreign role fails terminally and never reaches the processor
+[Worker job-pool-first-worker] FAILED JOB_1794797151993_951 lease=1 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: a job with a valid pool + selected job reaches the processor
+[Worker job-pool-first-worker] CLAIMED JOB_1794797152003_898 lease=1
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker: a job with a valid pool + selected job reaches the processor
+[Worker job-pool-first-worker] FAILED JOB_1794797152003_898 lease=1 terminal=true PROCESSOR_REACHED: PROCESSOR_REACHED
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker retry: every attempt is validated again against the pool as stored then; a retry never inherits the earlier validation
+[Worker job-pool-first-retry] CLAIMED JOB_1794797152016_324 lease=1
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker retry: every attempt is validated again against the pool as stored then; a retry never inherits the earlier validation
+[Worker job-pool-first-retry] FAILED JOB_1794797152016_324 lease=1 terminal=false TRANSIENT: transient
+
+stdout | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker retry: every attempt is validated again against the pool as stored then; a retry never inherits the earlier validation
+[Worker job-pool-first-retry] CLAIMED JOB_1794797152016_324 lease=2
+
+stderr | test/career/job-scope/job-scope.postgres.test.ts > JOB POOL FIRST — analyze route and Career worker (PostgreSQL, no Gemini) > worker retry: every attempt is validated again against the pool as stored then; a retry never inherits the earlier validation
+[Worker job-pool-first-retry] FAILED JOB_1794797152016_324 lease=2 terminal=true ERR_JOB_SCOPE_INVALID: Bitte wähle einen Job aus einem Pool aus.
+
+ ✓ test/career/job-scope/job-scope.postgres.test.ts (10 tests) 1790ms
+ ✓ test/career/result-inspector/exchange-failures.test.ts (10 tests) 2056ms
+   ✓ Gemini exchange archive — failed responses > waits at most EXCHANGE_ARCHIVE_WAIT_MS for a slow archive; the analysis result is unchanged (PINK O-ARCHIVE-AWAIT)  2010ms
+ ✓ test/career/mapping/layout-v1_1.test.ts (7 tests) 2016ms
+   ✓ LAYOUT V1.1 · golden vectors > the product module (layoutRolesV11) matches every V1.1 vector within 1e-6, and V1 (layoutRoles) still matches the reference V1  1223ms
+   ✓ LAYOUT V1.1 · golden vectors > DETERMINISM: the same input gives the same output, byte for byte, with shuffled input lists  437ms
+ ✓ test/career/mapping-field/field-e.test.tsx (22 tests) 1512ms
+ ✓ test/career/relation/decision-record/persistence-postgres.test.ts (8 tests) 1678ms
+   ✓ T11C PostgreSQL immutable HumanDecisionRecord > persists exact historical lineage idempotently and survives a fresh client/repository restart  363ms
+   ✓ T11C PostgreSQL immutable HumanDecisionRecord > atomically rolls back every root-plus-inventory write failure and allows clean retry  406ms
+ ✓ test/career/mapping-field/field-interaction.test.tsx (11 tests) 1326ms
+   ✓ MAP-C-FOCUS-UI · L0 ⇄ L1 > REPRODUCE: pool button → L1 (its view box, its title, an up button); up → L0; Escape → L0; nothing read, written or navigated  328ms
+ ✓ test/decision-core/decision-loop-occurrence-return-binding/contract.test.ts (8 tests) 1617ms
+   ✓ Decision Loop Occurrence Return Binding > accepts independently constructed complete-equal claims but rejects valid claim differences with exact mismatch  379ms
+   ✓ Decision Loop Occurrence Return Binding > retains complete predecessors, commits complete state deterministically, and returns detached data  388ms
+ ✓ test/decision-core/structural-gaps/reconstruct.test.ts (15 tests) 1631ms
+   ✓ Structural Gap reconstruction > keeps structural gaps generic and excludes later decision concepts from its public surface  1585ms
+ ✓ test/decision-core/structural-findings/relation.test.ts (12 tests) 1369ms
+   ✓ Explicit Structural Relation Proposal > has no detector/evaluator coupling or public finding and decision concepts  1341ms
+ ✓ test/decision-core/structural-findings/expectation.test.ts (15 tests) 1382ms
+   ✓ Explicit Structural Expectation > exposes no finding or decision concepts and keeps structural-findings production generic  1346ms
+ ✓ test/decision-core/evidence-binding/contract.test.ts (24 tests) 1579ms
+   ✓ Semantic Evidence Binding > exports no score/confidence or Phase-5C3+ concepts  1516ms
+ ✓ test/decision-core/assessment-request/contract.test.ts (13 tests) 1457ms
+   ✓ Decision Assessment Request > exports the exact 6A runtime module surface and no later-phase public symbols  1439ms
+stdout | test/career-async-api-orchestration.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-async-api-orchestration.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-async-api-orchestration.test.ts (12 tests) 1229ms
+   ✓ CONDYN Career Analysis Protocol v5.0 - PHASE 5: ASYNC API ORCHESTRATION (TEST005C) > M. REAL END-TO-END API PROOF (Test 13)  939ms
+ ✓ test/career/mapping-field/field-d.test.tsx (13 tests) 1177ms
+   ✓ MAP-D-FIELD · L0 → L3 by the field's own controls > REPRODUCE: pool → role (its full ring, the open role at the centre) → arc (its evidence, verbatim); ↑ and Escape go back level by level  351ms
+ ✓ test/career-pdf-payload-contract.test.ts (1 test) 800ms
+   ✓ BUG 007: PDF Payload Contract Mismatch > RED: should normalize UI PDF content into the batch loader PDF payload and reach inference (CATEGORY A)  799ms
+ ✓ test/career-analyze-flow.test.ts (3 tests) 1193ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - Step 7.2: Server Boundary API Route > should execute pipeline via MockInferenceProvider, verify schema, save to demo persistence, and return pre-computed reactFlowGraph  1154ms
+ ✓ test/career-analyze-multisource.test.ts (7 tests) 942ms
+   ✓ CONDYN Career Analysis Protocol v1.0 — Step 19d: Multi-Source API Route (`test/career-analyze-multisource.test.ts`) > should accept website source item and invoke loadWebsiteDocument server-side (CATEGORY A)  855ms
+ ✓ test/career-provider-switch.test.ts (5 tests) 885ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - Step 9.4: Server-Side Provider Switch > should return structured error response with ERR_PROVIDER_FAILURE when GEMINI_API_KEY is missing during live provider execution  879ms
+ ✓ test/career/relation/outcome-valence-feedback-context-content/career-outcome-valence-feedback-context-content.test.ts (6 tests) 984ms
+   ✓ CareerOutcomeValenceFeedbackContextContent frozen Domain contract > enforces exact base provenance, unique canonical item inventory, and semantic identity independent of caller ordering or audit-only times  379ms
+ ✓ test/decision-core/context-observation-revision-persistence/contract.test.ts (9 tests) 878ms
+ ✓ test/career/auto-capability/auto-match-wiring.test.tsx (11 tests) 778ms
+   ✓ AC-FLOW · the PERSON result goes on by itself > REPRODUCE: NOT_STARTED → RUNNING → RUNNING (unmoved) → COMPLETED — 2 s, falling back while unmoved; the ranking at each move, then quiet  308ms
+stdout | test/career/job-pool/role-investigation.postgres.test.ts > explicit semantic investigation route (PostgreSQL, stand-in)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/role-investigation.postgres.test.ts > explicit semantic investigation route (PostgreSQL, stand-in)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/role-investigation.postgres.test.ts (6 tests) 732ms
+ ✓ test/career/pxj-first-screen/analysis-picker.test.tsx (5 tests) 824ms
+   ✓ D-PICK · where it is not > inverse: PERSON and JOB offer no picker and read no analysis list; without a valid job none either  306ms
+ ✓ test/career-pdf-runtime-resolution.test.ts (1 test) 795ms
+   ✓ CONDYN Career Analysis Protocol v1.0 - BUG 009: Next.js Runtime PDF Worker Resolution (CATEGORY A) > should successfully parse PDF in Node.js runtime without pdf.worker.mjs resolution errors  794ms
+stdout | test/career/job-pool/auto-match-gemini.postgres.test.ts > automatic match with the Gemini provider (mocked SDK, PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/auto-match-gemini.postgres.test.ts > automatic match with the Gemini provider (mocked SDK, PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/auto-match-gemini.postgres.test.ts (3 tests) 627ms
+   ✓ automatic match with the Gemini provider (mocked SDK, PostgreSQL) > the shared start uses the configured provider: Gemini calls, one per role, labelled REAL_GEMINI; the key stays out of every stored row  326ms
+ ✓ test/career/three-modes/three-modes-ssr.test.tsx (31 tests) 494ms
+ ✓ test/career/pxj-first-screen/discovery-ri-url.test.tsx (7 tests) 564ms
+ ✓ test/career/mapping-field/field-render.test.tsx (10 tests) 679ms
+stdout | test/job-pool-validation/pdf-path.postgres.test.ts > JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/job-pool-validation/pdf-path.postgres.test.ts > JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/job-pool-validation/pdf-path.postgres.test.ts (2 tests) 661ms
+   ✓ JP-PDF: PDF → capability sweep (stub) → JSON Job Pool → matching, on PostgreSQL without Gemini > drives GELB's synthetic two-page CV PDF the same way and matches the resulting analysis against PINK's pool  392ms
+ ✓ test/career/pxj-first-screen/first-screen-ssr.test.tsx (37 tests) 663ms
+ ✓ test/career/mapping-field/field-f.test.tsx (9 tests) 487ms
+ ✓ test/career/pxj-first-screen/field-entry-state.test.tsx (19 tests) 803ms
+ ✓ test/decision-core/authority/contract.test.ts (33 tests) 564ms
+   ✓ Decision Core authoritative state reader contract > keeps the generic kernel free of Career, Capability, matching, and recommendation imports  362ms
+ ✓ test/career/relation/requirement-inventory/concrete-composition-postgres.test.ts (1 test) 495ms
+   ✓ T7A concrete PostgreSQL process-restart composition seal > persists canonical concrete composition and replays it after a fresh repository restart without providers  418ms
+ ✓ test/career/outcome-valence-feedback-return-item-admission/application.test.ts (3 tests) 477ms
+ ✓ test/career/relation/outcome-valence-feedback-return-item/career-outcome-valence-feedback-return-item.test.ts (6 tests) 466ms
+ ✓ test/career/mapping-field/field-g.test.tsx (10 tests) 663ms
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > A/B/C/K. complete persisted lifecycle -> exact reconstruction with all IDs/timestamps preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > D. Recommendation policy binding preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > E. Evidence -> Document -> Source provenance preserved
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > F. missing parent artifact -> ERR_LIFECYCLE_RECOVERY_BROKEN_LINEAGE
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > G. tampered JSONB -> ERR_PERSISTED_ARTIFACT_INTEGRITY
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-recovery.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: RESTART & LINEAGE RECONSTRUCTION (TEST004C) > H/J. zero LLM calls during recovery + empty caches
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-recovery.test.ts (6 tests) 371ms
+ ✓ test/career/pxj-first-screen/role-field-closure.test.tsx (10 tests) 625ms
+ ✓ test/career/hr-decision-loop/local-composition-gate.test.ts (2 tests) 592ms
+   ✓ HR Decision Loop persistence registration gate > runs the unified registration only after a positive disposable identity, once per process, on a dedicated silenced client  411ms
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > A. V1 active -> promote V2 -> head = V2 -> promotion record exists
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > B. V1 historical PolicyVersion unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > E. promotion without actor -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > F. unknown candidate policy -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > G. policy from wrong family -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > H. expected active = V1 but head already = V2 -> ERR_POLICY_ACTIVATION_CONFLICT
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > I. two concurrent promotions from same revision -> exactly one succeeds
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > M. same promotion request retry -> idempotent
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > N. same promotion ID conflicting payload -> FAIL
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-policy-activation-atomicity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: ATOMIC POLICY ACTIVATION (TEST004D) > O. promotion in family A -> family B unchanged
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-policy-activation-atomicity.test.ts (10 tests) 538ms
+ ✓ test/database-isolation/access-paths.test.ts (5 tests) 286ms
+ ✓ test/career/mapping-field/field-wiring.test.tsx (4 tests) 463ms
+ ✓ test/career/job-pool/job-scope-ssr.test.tsx (12 tests) 501ms
+ ✓ test/career/job-pool/syntx-field-ssr.test.tsx (11 tests) 563ms
+ ✓ test/decision-adapters/revision-persistence/postgres.test.ts (10 tests) 474ms
+ ✓ test/career/relation/decision-authority/persistence-postgres.test.ts (3 tests) 288ms
+ ✓ test/decision-core/human-commitment-action-occurrence-association/contract.test.ts (7 tests) 504ms
+ ✓ test/decision-core/context-observation-revision-creation/contract.test.ts (6 tests) 434ms
+ ✓ test/career/pxj-first-screen/discovery-start-flow.test.tsx (4 tests) 437ms
+ ✓ test/career/relation/decision-context/persistence-postgres.test.ts (3 tests) 454ms
+stdout | test/career/job-pool/role-discovery.postgres.test.ts > role discovery route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/role-discovery.postgres.test.ts > role discovery route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/role-discovery.postgres.test.ts (4 tests) 389ms
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-concurrency-idempotency.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: GLOBAL IDEMPOTENCY & CONCURRENCY (TEST004E)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-concurrency-idempotency.test.ts (6 tests) 282ms
+ ✓ test/career/job-pool/local-composition-gate.test.ts (2 tests) 473ms
+   ✓ Job Pool persistence registration gate > registers unified and job pool schemas once, on the verified URL's dedicated client, and ends it  360ms
+ ✓ test/decision-core/action-intent/contract.test.ts (9 tests) 298ms
+ ✓ test/decision-core/context-observation-context-validation-assembly/contract.test.ts (6 tests) 326ms
+ ✓ test/career/pxj-first-screen/navigation.test.tsx (13 tests) 292ms
+ ✓ test/career/pxj-first-screen/run-recovery.test.tsx (11 tests) 316ms
+ ✓ test/career/outcome-valence-feedback-context-content-admission/application.test.ts (2 tests) 320ms
+stdout | test/career-worker-lease-retry.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: WORKER CLAIM / LEASE / RETRY BOUNDARY (TEST005B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-worker-lease-retry.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: WORKER CLAIM / LEASE / RETRY BOUNDARY (TEST005B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-worker-lease-retry.test.ts (12 tests) 282ms
+stdout | test/career/result-inspector/exchange-archive.postgres.test.ts > Gemini exchange archive (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/result-inspector/exchange-archive.postgres.test.ts > Gemini exchange archive (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stderr | test/career/result-inspector/exchange-archive.postgres.test.ts > Gemini exchange archive (PostgreSQL, no Gemini) > creates no table outside a verified disposable database and stays off without the flag
+ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED: neither basis of boundary B-ENTRY holds. disposable: ERR_TEST_DATABASE_ISOLATION_PROTECTED: database condyn is protected and never a test target. application: ERR_APPLICATION_DATABASE_UNDER_TEST_RUNNER: an application database is never provisioned from a test runner
+
+ ✓ test/career/result-inspector/exchange-archive.postgres.test.ts (5 tests) 309ms
+ ✓ test/career/pxj-first-screen/discovery-panel.test.tsx (7 tests) 213ms
+ ✓ test/decision-core/proposal-coherence/contract.test.ts (6 tests) 226ms
+ ✓ test/career/outcome-valence-feedback-return-representation-admission/application.test.ts (5 tests) 355ms
+stdout | test/career/investigation/analysis-investigation.postgres.test.ts > analysis investigation route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/investigation/analysis-investigation.postgres.test.ts > analysis investigation route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/investigation/analysis-investigation.postgres.test.ts (4 tests) 277ms
+ ✓ test/career/pxj-first-screen/submit-handoff.test.tsx (5 tests) 268ms
+ ✓ test/career/pxj-first-screen/discovery-panel-flow.test.tsx (5 tests) 232ms
+ ✓ test/career/job-pool/semantic-investigation-store.postgres.test.ts (10 tests) 244ms
+stdout | test/career/provider-calls/register.postgres.test.ts > call register (PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/provider-calls/register.postgres.test.ts > call register (PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/provider-calls/register.postgres.test.ts (9 tests) 271ms
+ ✓ test/database-isolation/disposable-database.test.ts (4 tests) 296ms
+stdout | test/career/job-pool/job-comparison.postgres.test.ts > B2 job comparison route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/job-comparison.postgres.test.ts > B2 job comparison route (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/job-comparison.postgres.test.ts (2 tests) 280ms
+ ✓ test/career/pxj-first-screen/discovery-handover.test.tsx (4 tests) 249ms
+ ✓ test/decision-core/assessment-basis/contract.test.ts (16 tests) 222ms
+ ✓ test/decision-core/assessment-proposal/contract.test.ts (13 tests) 222ms
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: PERSON reaches the processor with an issued person investigation; PERSON_X_JOB with its scope
+[Worker investigation-worker] CLAIMED JOB_1794797241920_939 lease=1
+
+stderr | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: PERSON reaches the processor with an issued person investigation; PERSON_X_JOB with its scope
+[Worker investigation-worker] FAILED JOB_1794797241920_939 lease=1 terminal=true PROCESSOR_REACHED: PROCESSOR_REACHED
+
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: PERSON reaches the processor with an issued person investigation; PERSON_X_JOB with its scope
+[Worker investigation-worker] CLAIMED JOB_1794797241931_411 lease=1
+
+stderr | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: PERSON reaches the processor with an issued person investigation; PERSON_X_JOB with its scope
+[Worker investigation-worker] FAILED JOB_1794797241931_411 lease=1 terminal=true PROCESSOR_REACHED: PROCESSOR_REACHED
+
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: a contradictory or JOB declaration that bypassed the route fails terminally before the processor
+[Worker investigation-worker] CLAIMED JOB_1794797241945_411 lease=1
+
+stderr | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: a contradictory or JOB declaration that bypassed the route fails terminally before the processor
+[Worker investigation-worker] FAILED JOB_1794797241945_411 lease=1 terminal=true ERR_INVESTIGATION_INVALID: Bitte wähle eine eindeutige Untersuchungsgrenze.
+
+stdout | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: a contradictory or JOB declaration that bypassed the route fails terminally before the processor
+[Worker investigation-worker] CLAIMED JOB_1794797241953_337 lease=1
+
+stderr | test/career/investigation/investigation.postgres.test.ts > three investigation modes — analyze route and worker (PostgreSQL, no Gemini) > worker: a contradictory or JOB declaration that bypassed the route fails terminally before the processor
+[Worker investigation-worker] FAILED JOB_1794797241953_337 lease=1 terminal=true ERR_INVESTIGATION_MODE_NOT_ANALYZABLE: Bitte wähle eine eindeutige Untersuchungsgrenze.
+
+ ✓ test/career/investigation/investigation.postgres.test.ts (5 tests) 232ms
+ ✓ test/career/runtime/organization-relation-evolution-coordinator/organization-relation-evolution-coordinator.test.ts (5 tests) 175ms
+ ✓ test/decision-core/revisions/contract.test.ts (7 tests) 301ms
+ ✓ test/career/relation/state-change-declaration/replay.test.ts (8 tests) 204ms
+ ✓ test/career/relation/action-state-change-association-declaration/replay.test.ts (7 tests) 183ms
+ ✓ test/decision-core/human-decision/contract.test.ts (8 tests) 248ms
+ ✓ test/career/relation/requirement-inventory/postgres.test.ts (1 test) 231ms
+ ✓ test/career/relation/outcome-valence-feedback-return-representation/career-outcome-valence-feedback-return-representation.test.ts (6 tests) 227ms
+ ✓ test/career-f12-pulse-alignment.test.tsx (14 tests) 259ms
+stdout | test/career-async-job-contract.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: DURABLE ASYNC JOB CONTRACT (TEST005A)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-async-job-contract.test.ts > CONDYN Career Analysis Protocol v5.0 - PHASE 5: DURABLE ASYNC JOB CONTRACT (TEST005A)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-async-job-contract.test.ts (19 tests) 231ms
+ ✓ test/career/relation/capability-requirement/relation-postgres.test.ts (1 test) 198ms
+ ✓ test/decision-core/human-commitment/contract.test.ts (7 tests) 215ms
+stdout | test/career/job-pool/relation-cache.postgres.test.ts > relation cache repository (PostgreSQL) > O-RC-3/O-RC-6: an earlier table gets every guarantee; a violating row fails the registration atomically, the repair path works
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'00000'[39m,
+  message: [32m'drop cascades to 10 other objects'[39m,
+  detail: [32m'drop cascades to table orc3_clean_1794797249979.career_proposal_requirement_relations\n'[39m +
+    [32m'drop cascades to function orc3_clean_1794797249979.career_proposal_requirement_relations_immutable()\n'[39m +
+    [32m'drop cascades to table orc3_clean_1794797249979.career_relation_investigations\n'[39m +
+    [32m'drop cascades to table orc3_clean_1794797249979.career_relation_role_tasks\n'[39m +
+    [32m'drop cascades to table orc3_clean_1794797249979.career_relation_call_ledger\n'[39m +
+    [32m'drop cascades to table orc3_clean_1794797249979.career_provider_calls\n'[39m +
+    [32m'drop cascades to function orc3_clean_1794797249979.rel_inv_guard()\n'[39m +
+    [32m'drop cascades to function orc3_clean_1794797249979.rel_task_guard()\n'[39m +
+    [32m'drop cascades to function orc3_clean_1794797249979.rel_ledger_guard()\n'[39m +
+    [32m'drop cascades to function orc3_clean_1794797249979.rel_call_guard()'[39m,
+  file: [32m'dependency.c'[39m,
+  line: [32m'1165'[39m,
+  routine: [32m'reportDependentObjects'[39m
+}
+
+stdout | test/career/job-pool/relation-cache.postgres.test.ts > relation cache repository (PostgreSQL) > O-RC-3/O-RC-6: an earlier table gets every guarantee; a violating row fails the registration atomically, the repair path works
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'00000'[39m,
+  message: [32m'drop cascades to 10 other objects'[39m,
+  detail: [32m'drop cascades to table orc3_dirty_1794797249979.career_proposal_requirement_relations\n'[39m +
+    [32m'drop cascades to function orc3_dirty_1794797249979.career_proposal_requirement_relations_immutable()\n'[39m +
+    [32m'drop cascades to table orc3_dirty_1794797249979.career_relation_investigations\n'[39m +
+    [32m'drop cascades to table orc3_dirty_1794797249979.career_relation_role_tasks\n'[39m +
+    [32m'drop cascades to table orc3_dirty_1794797249979.career_relation_call_ledger\n'[39m +
+    [32m'drop cascades to table orc3_dirty_1794797249979.career_provider_calls\n'[39m +
+    [32m'drop cascades to function orc3_dirty_1794797249979.rel_inv_guard()\n'[39m +
+    [32m'drop cascades to function orc3_dirty_1794797249979.rel_task_guard()\n'[39m +
+    [32m'drop cascades to function orc3_dirty_1794797249979.rel_ledger_guard()\n'[39m +
+    [32m'drop cascades to function orc3_dirty_1794797249979.rel_call_guard()'[39m,
+  file: [32m'dependency.c'[39m,
+  line: [32m'1165'[39m,
+  routine: [32m'reportDependentObjects'[39m
+}
+
+stdout | test/career/job-pool/relation-cache.postgres.test.ts > relation cache repository (PostgreSQL) > registration enables a DISABLED guard trigger again and the guard works afterwards (PINK O-LED-4)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "lease_owner" of relation "career_relation_investigations" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/relation-cache.postgres.test.ts > relation cache repository (PostgreSQL) > registration enables a DISABLED guard trigger again and the guard works afterwards (PINK O-LED-4)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "lease_expires_at" of relation "career_relation_investigations" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/relation-cache.postgres.test.ts > relation cache repository (PostgreSQL) > registration enables a DISABLED guard trigger again and the guard works afterwards (PINK O-LED-4)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "heartbeat_at" of relation "career_relation_investigations" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-pool/relation-cache.postgres.test.ts (9 tests) 232ms
+ ✓ test/career/pxj-first-screen/readability.test.tsx (8 tests) 211ms
+ ✓ test/career/target-adapters/role-requirement-revision-persistence/postgres.test.ts (5 tests) 248ms
+ ✓ test/career/mapping-field/model.test.ts (22 tests) 214ms
+stderr | test/career/provider-calls/register-everywhere.postgres.test.ts > the call register on a database that never had it > a register that cannot be provisioned refuses every call (nothing is sent)
+ERR_JOB_POOL_PERSISTENCE_NOT_PROVISIONED: neither basis of boundary B-ENTRY holds. disposable: ERR_TEST_DATABASE_ISOLATION_NOT_DISPOSABLE: database none does not match condyn_test_<16 hex>. application: ERR_APPLICATION_DATABASE_UNDER_TEST_RUNNER: an application database is never provisioned from a test runner
+
+ ✓ test/career/provider-calls/register-everywhere.postgres.test.ts (5 tests) 170ms
+ ✓ test/career/outcome-valence-feedback-admission/application.test.ts (7 tests) 177ms
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-lifecycle-postgres-persistence.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: IMMUTABLE LIFECYCLE PERSISTENCE (TEST004B)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-lifecycle-postgres-persistence.test.ts (14 tests) 186ms
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > A. overall_confidence exists -> exact value persists and reloads
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > B. overall_confidence absent -> remains absent/null
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > C. overall_cohesion_score exists but overall_confidence absent -> MUST NOT become overallConfidence
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > D. missing metric -> MUST NOT become 0
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-persistence-semantic-integrity.test.ts > CONDYN Career Analysis Protocol v4.0 - PHASE 4: PERSISTENCE SEMANTIC INTEGRITY (TEST004A) > E. save -> load -> canonical payload deep-equal
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-persistence-semantic-integrity.test.ts (5 tests) 188ms
+ ✓ test/career/pxj-first-screen/mode-normalization.test.tsx (8 tests) 212ms
+ ✓ test/career/job-pool/syntx-field-governance.test.ts (10 tests) 218ms
+ ✓ test/decision-core/validation-assembly/assembly.test.ts (14 tests) 170ms
+ ✓ test/career/outcome-valence-feedback-target-revision-binding-admission/application.test.ts (6 tests) 186ms
+ ✓ test/career/pxj-first-screen/terms.test.tsx (4 tests) 212ms
+ ✓ test/decision-core/recommendation-proposal/contract.test.ts (11 tests) 237ms
+ ✓ test/career/relation/recommendation-proposal/atomic-persistence-postgres.test.ts (2 tests) 160ms
+ ✓ test/career/target-adapters/organization-revision-persistence/postgres.test.ts (7 tests) 193ms
+ ✓ test/career/outcome-valence-feedback-target-admission/application.test.ts (6 tests) 208ms
+ ✓ test/career/auto-capability/auto-ranking-panel.test.tsx (15 tests) 212ms
+ ✓ test/career/pxj-first-screen/job-levels.test.tsx (4 tests) 178ms
+ ✓ test/career/pxj-first-screen/discovery-start.test.tsx (6 tests) 189ms
+ ✓ test/decision-core/revision-persistence/persister.test.ts (10 tests) 205ms
+ ✓ test/career/pxj-first-screen/full-names.test.tsx (2 tests) 134ms
+ ✓ test/career/relation/organization-relation/organization-relation.test.ts (5 tests) 199ms
+ ✓ test/career/target-adapters/source-revision-persistence/postgres.test.ts (7 tests) 230ms
+ ✓ test/career/auto-capability/backend-contract.test.ts (5 tests) 173ms
+ ✓ test/career/pxj-first-screen/gate-reason.test.tsx (4 tests) 206ms
+ ✓ test/career/relation/action-occurrence/replay.test.ts (8 tests) 150ms
+ ✓ test/decision-runtime/composition/postgres-capability-core.test.ts (4 tests) 171ms
+ ✓ test/career/outcome-valence-admission/application.test.ts (7 tests) 183ms
+ ✓ test/career/target-adapters/role-source-binding-revision-persistence/postgres.test.ts (4 tests) 197ms
+ ✓ test/career/mapping/architecture.test.ts (7 tests) 174ms
+ ✓ test/career/target/role/requirement-durable-producer-postgres.test.ts (1 test) 176ms
+ ✓ test/career/pxj-first-screen/mode-keyboard.test.tsx (3 tests) 169ms
+ ✓ test/decision-core/context-observation-target-revision-binding/contract.test.ts (9 tests) 118ms
+ ✓ test/career/pxj-first-screen/discovery-start-refresh.test.tsx (3 tests) 145ms
+ ✓ test/career/auto-capability/client-bundle.test.ts (3 tests) 135ms
+ ✓ test/career/relation/execution-context-revision/replay.test.ts (9 tests) 139ms
+ ✓ test/career/pxj-first-screen/person-markup.test.tsx (2 tests) 167ms
+ ✓ test/career/pxj-first-screen/recovery-ways.test.tsx (7 tests) 141ms
+ ✓ test/career/pxj-first-screen/shell-role-identity.test.tsx (2 tests) 141ms
+ ✓ test/career/target-adapters/role-profile-revision-persistence/postgres.test.ts (3 tests) 129ms
+ ✓ test/decision-core/context-observation-item-materialization/contract.test.ts (7 tests) 171ms
+ ✓ test/decision-core/context-observation-materialization-readiness/contract.test.ts (9 tests) 140ms
+ ✓ test/career-demo-e2e.test.tsx (7 tests) 141ms
+ ✓ test/decision-core/context-observation-context-transition/contract.test.ts (5 tests) 151ms
+ ✓ test/career/pxj-first-screen/pdf-parse-token.test.tsx (3 tests) 143ms
+ ✓ test/career/hr-decision-loop/dock-ssr.test.tsx (4 tests) 117ms
+stdout | test/career/capability-core/projection/postgres-reference-composition.test.ts > F11 PostgreSQL immutable proposal projection reference composition > is physically provisioned with immutable idempotency and referenced-row constraints
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/capability-core/projection/postgres-reference-composition.test.ts > F11 PostgreSQL immutable proposal projection reference composition > is physically provisioned with immutable idempotency and referenced-row constraints
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/capability-core/projection/postgres-reference-composition.test.ts (1 test) 100ms
+ ✓ test/career/target-adapters/role-organization-binding-revision-persistence/postgres.test.ts (3 tests) 129ms
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > runs once after SUCCEEDED, with the result analysis id, and sees the job already SUCCEEDED
+[Worker after-success-worker] CLAIMED JOB_1794797277639_615 lease=1
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > a hook that never ends does not hold the loop: the iteration returns with the job SUCCEEDED
+[Worker after-success-worker] CLAIMED JOB_1794797277675_745 lease=1
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > a failing hook leaves the job SUCCEEDED and the loop alive
+[Worker after-success-worker] CLAIMED JOB_1794797277685_156 lease=1
+
+stderr | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > a failing hook leaves the job SUCCEEDED and the loop alive
+[Worker after-success-worker] AFTER_SUCCESS failed for JOB_1794797277685_156: ERR_AUTO_MATCH_BOOM
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > is not called when the analysis failed, and absent hook changes nothing
+[Worker after-success-worker] CLAIMED JOB_1794797277695_659 lease=1
+
+stderr | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > is not called when the analysis failed, and absent hook changes nothing
+[Worker after-success-worker] FAILED JOB_1794797277695_659 lease=1 terminal=true X: boom
+
+stdout | test/career/job-pool/worker-after-success.postgres.test.ts > worker afterSuccess hook > is not called when the analysis failed, and absent hook changes nothing
+[Worker after-success-worker] CLAIMED JOB_1794797277702_233 lease=1
+
+ ✓ test/career/job-pool/worker-after-success.postgres.test.ts (4 tests) 132ms
+ ✓ test/career/relation/outcome-valence-feedback-target-declaration/replay.test.ts (5 tests) 124ms
+ ✓ test/career/pxj-first-screen/job-level-label.test.tsx (1 test) 150ms
+ ✓ test/career/outcome-role-admission/application.test.ts (7 tests) 148ms
+stdout | test/career/job-scope/snapshot-scope.postgres.test.ts > scope identity in the confirmed capability state (PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/job-scope/snapshot-scope.postgres.test.ts > scope identity in the confirmed capability state (PostgreSQL)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/job-scope/snapshot-scope.postgres.test.ts (1 test) 112ms
+ ✓ test/career/capability-core/verification/integrity-contract.test.ts (105 tests) 121ms
+ ✓ test/career/relation/decision-context-decision-revision-binding/binding.test.ts (6 tests) 105ms
+ ✓ test/career/relation/human-commitment/replay.test.ts (10 tests) 118ms
+ ✓ test/career/relation/action-intent/replay.test.ts (18 tests) 111ms
+ ✓ test/career/relation/execution-authority-grant/replay.test.ts (9 tests) 118ms
+ ✓ test/career/relation/outcome-valence-feedback-target-revision-binding/career-outcome-valence-feedback-target-revision-binding.test.ts (6 tests) 156ms
+ ✓ test/career/state-change-admission/application.test.ts (7 tests) 123ms
+stdout | test/career/result-inspector/result-inspector.postgres.test.ts > Gemini Result Inspector (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/result-inspector/result-inspector.postgres.test.ts > Gemini Result Inspector (PostgreSQL, no Gemini)
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/result-inspector/result-inspector.postgres.test.ts (2 tests) 129ms
+ ✓ test/career/action-state-change-association-admission/application.test.ts (7 tests) 104ms
+ ✓ test/career/pxj-first-screen/field-entry-actions.test.tsx (4 tests) 106ms
+ ✓ test/career/pxj-first-screen/gate-dual-way.test.tsx (2 tests) 110ms
+ ✓ test/career/relation/outcome-valence-feedback-admission-declaration/career-outcome-valence-feedback-admission-declaration.test.ts (6 tests) 99ms
+ ✓ test/career/relation/capability-requirement/relation.test.ts (10 tests) 112ms
+ ✓ test/career/relation/outcome-valence-feedback-admission-declaration/replay.test.ts (5 tests) 98ms
+stdout | test/career-github-account-intake.test.ts > GitHub account input reaches the extraction > the analyze route accepts an account on github.com and on www.github.com, and still refuses other hosts
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-github-account-intake.test.ts > GitHub account input reaches the extraction > the analyze route accepts an account on github.com and on www.github.com, and still refuses other hosts
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-github-account-intake.test.ts (2 tests) 87ms
+ ✓ test/career/relation/outcome-valence-declaration/career-outcome-valence-declaration.test.ts (6 tests) 93ms
+ ✓ test/career/mapping-field/field-g-mutant.test.tsx (2 tests) 101ms
+ ✓ test/career/pxj-first-screen/next-step.test.tsx (3 tests) 73ms
+ ✓ test/career/relation/state-change-declaration/career-state-change-declaration.test.ts (7 tests) 88ms
+ ✓ test/career/action-occurrence-admission/application.test.ts (7 tests) 98ms
+ ✓ test/career/pxj-first-screen/job-field-size.test.tsx (3 tests) 85ms
+ ✓ test/career/db/bootstrap-drift.test.ts (2 tests) 88ms
+ ✓ test/career/pxj-first-screen/tab-path.test.tsx (2 tests) 107ms
+ ✓ test/decision-core/context-observation-target-declaration/contract.test.ts (7 tests) 94ms
+ ✓ test/decision-runtime/use-cases/root-decision-context.test.ts (5 tests) 88ms
+ ✓ test/career/relation/outcome-role-declaration/replay.test.ts (5 tests) 75ms
+ ✓ test/decision-core/revision-lineage/reconstruct.test.ts (10 tests) 98ms
+ ✓ test/career/capability-core/relation-operand/operand-postgres.test.ts (1 test) 101ms
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career-postgres-repository.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 10: PostgreSQL & Drizzle Persistence Layer
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career-postgres-repository.test.ts (5 tests) 96ms
+ ✓ test/career/relation/outcome-valence-feedback-target-declaration/career-outcome-valence-feedback-target-declaration.test.ts (6 tests) 104ms
+ ✓ test/career/relation/outcome-valence-feedback-target-revision-binding/replay.test.ts (5 tests) 91ms
+ ✓ test/career/execution-authority-admission/application.test.ts (7 tests) 73ms
+ ✓ test/career/pxj-first-screen/discovery-pools-empty-handover.test.tsx (3 tests) 99ms
+stdout | test/database-isolation/least-privilege-role.test.ts > least-privilege test role (maintenance catalog only, never the shared database) > reports the admin role identity; a superuser is UNVERIFIED for this proof
+[least-privilege] role=condyn_test_runner superuser=false
+
+ ✓ test/database-isolation/least-privilege-role.test.ts (3 tests) 76ms
+stdout | test/career/capability-core/source-bundle-postgres.test.ts > CandidateSourceBundle PostgreSQL exact-ID persistence > survives exact-ID reread and rejects immutable mutation without hash-based replacement
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/capability-core/source-bundle-postgres.test.ts > CandidateSourceBundle PostgreSQL exact-ID persistence > survives exact-ID reread and rejects immutable mutation without hash-based replacement
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/capability-core/source-bundle-postgres.test.ts (1 test) 81ms
+ ✓ test/career/relation/role-relation/role-relation.test.ts (3 tests) 70ms
+ ✓ test/career/job-pool/syntx-field-view-model.test.ts (15 tests) 84ms
+ ✓ test/career/relation/outcome-role-declaration/career-outcome-role-declaration.test.ts (6 tests) 75ms
+ ✓ test/career-sil-empty-orbit-visual-attention.test.tsx (7 tests) 94ms
+ ✓ test/career/relation/action-intent/career-decision-action-intent.test.ts (15 tests) 63ms
+ ✓ test/career-sil-global-language-wiring.test.tsx (9 tests) 102ms
+ ✓ test/career/pxj-first-screen/telemetry-clearance.test.tsx (3 tests) 84ms
+stdout | test/career/runtime/canonical-sil-execution/association-postgres.test.ts > Canonical SIL runtime association PostgreSQL persistence > durably exact-rereads immutable six-ID technical provenance after repository reconstruction
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/career/runtime/canonical-sil-execution/association-postgres.test.ts > Canonical SIL runtime association PostgreSQL persistence > durably exact-rereads immutable six-ID technical provenance after repository reconstruction
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/career/runtime/canonical-sil-execution/association-postgres.test.ts (1 test) 87ms
+ ✓ test/career/human-commitment-admission/application.test.ts (8 tests) 93ms
+ ✓ test/career/relation/outcome-valence-declaration/replay.test.ts (5 tests) 87ms
+ ✓ test/career/pxj-first-screen/gate-title.test.tsx (3 tests) 76ms
+stdout | test/job-pool-validation/legacy-matchers-identity-name.test.ts > D-JP-1: the live analyses route serves demo matching for a canonical analysis
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "current_operation" of relation "career_analysis_jobs" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+stdout | test/job-pool-validation/legacy-matchers-identity-name.test.ts > D-JP-1: the live analyses route serves demo matching for a canonical analysis
+{
+  severity_local: [32m'NOTICE'[39m,
+  severity: [32m'NOTICE'[39m,
+  code: [32m'42701'[39m,
+  message: [32m'column "candidate_source_bundle_id" of relation "career_capability_proposal_projection_references" already exists, skipping'[39m,
+  file: [32m'tablecmds.c'[39m,
+  line: [32m'7480'[39m,
+  routine: [32m'check_for_column_name_collision'[39m
+}
+
+ ✓ test/job-pool-validation/legacy-matchers-identity-name.test.ts (4 tests) 86ms
+ ✓ test/career-demo-ui.test.tsx (5 tests) 70ms
+ ✓ test/career/relation/execution-context-revision/career-execution-context-revision.test.ts (9 tests) 97ms
+ ✓ test/career/execution-context-admission/application.test.ts (7 tests) 92ms
+ ✓ test/career/pxj-first-screen/discovery-url.test.tsx (5 tests) 88ms
+ ✓ test/career/relation/outcome-valence-feedback-target-revision-binding/persistence-postgres.test.ts (8 tests) 87ms
+ ✓ test/career/relation/action-occurrence/career-action-occurrence.test.ts (8 tests) 69ms
+ ✓ test/career/provider-calls/everywhere.test.ts (5 tests) 87ms
+ ✓ test/career/relation/human-commitment/career-human-commitment.test.ts (11 tests) 63ms
+ ✓ test/career/relation/execution-authority-grant/career-execution-authority-grant-revision.test.ts (10 tests) 84ms
+ ✓ test/career/job-pool/semantic-relation-engine.test.ts (93 tests) 59ms
+ ✓ test/career/result-inspector/result-inspector.test.ts (10 tests) 69ms
+ ✓ test/career/relation/action-state-change-association-declaration/career-action-state-change-association-declaration.test.ts (6 tests) 73ms
+ ✓ test/career/action-intent-admission/application.test.ts (7 tests) 69ms
+ ✓ test/career/relation/tension-state/tension-state.test.ts (4 tests) 56ms
+ ✓ test/career-analyze-recommendations.test.ts (4 tests) 63ms
+ ✓ test/decision-core/context-observation-item-projection/contract.test.ts (7 tests) 58ms
+ ✓ test/career/target-adapters/role-requirement-artifact-persistence/postgres.test.ts (2 tests) 62ms
+ ✓ test/career/hr-decision-loop/declaration-application.test.ts (5 tests) 86ms
+ ✓ test/career-worker-recovery-pipeline.test.ts (1 test) 55ms
+ ✓ test/career/job-pool/presentation-matching.test.ts (11 tests) 48ms
+ ✓ test/career/pxj-first-screen/discovery-control.test.tsx (3 tests) 58ms
+ ✓ test/career/auto-capability/manual-start-gemini.test.tsx (6 tests) 44ms
+ ✓ test/decision-core/context-observation-admission/contract.test.ts (7 tests) 65ms
+ ✓ test/career/capability-core/verification/phase4-contract.test.ts (14 tests) 64ms
+ ✓ test/career-final-orbit-hardening.test.tsx (4 tests) 68ms
+ ✓ test/career/capability-core/relation-operand/operand.test.ts (12 tests) 61ms
+ ✓ test/career/pxj-first-screen/discovery-trace.test.tsx (5 tests) 58ms
+ ✓ test/decision-core/context-observation-proposal/contract.test.ts (7 tests) 68ms
+ ✓ test/career/hr-decision-loop/decision-revision-binding-region.test.ts (3 tests) 51ms
+ ✓ test/career/mapping-field/signs-d.test.ts (15 tests) 37ms
+ ✓ test/career/job-pool/provider.test.ts (5 tests) 41ms
+ ✓ test/career/job-scope/job-scope.test.ts (14 tests) 46ms
+ ✓ test/career/investigation/persisted-investigation.test.ts (9 tests) 52ms
+ ✓ test/career-pdf-loader.test.ts (5 tests) 36ms
+ ✓ test/career/mapping-field/selector-d.test.tsx (7 tests) 59ms
+ ✓ test/decision-integration/import-boundary.test.ts (5 tests) 44ms
+ ✓ test/decision-core/outcome-attribution-proposal/contract.test.ts (7 tests) 42ms
+ ✓ test/career-multi-model-failover.test.tsx (4 tests) 47ms
+ ✓ test/career/pxj-first-screen/discovery-layout.test.tsx (4 tests) 31ms
+ ✓ test/career/target/organization/revision-contract.test.ts (10 tests) 44ms
+ ✓ test/career/investigation/investigation-boundary.test.ts (9 tests) 33ms
+ ✓ test/career-capability-cosmos-layout.test.ts (8 tests) 47ms
+ ✓ test/career/target/role/requirement-continuity.test.ts (16 tests) 47ms
+ ✓ test/career/target/source/revision-contract.test.ts (8 tests) 49ms
+ ✓ test/database-isolation/admin-privilege.test.ts (1 test) 39ms
+ ✓ test/career-job-lifecycle-timestamp.test.ts (1 test) 43ms
+ ✓ test/decision-runtime/http/decision-contexts.test.ts (6 tests) 41ms
+ ✓ test/career-real-routes.test.ts (5 tests) 43ms
+ ✓ test/career/mapping-field/selector-keys-d.test.tsx (2 tests) 53ms
+ ✓ test/career-immutable-analysis-persistence.test.ts (1 test) 37ms
+ ✓ test/career/pxj-first-screen/source-files.test.tsx (6 tests) 45ms
+ ✓ test/career/hr-decision-loop/client-reads.test.ts (4 tests) 49ms
+ ✓ test/career/target/role/requirement-revision.test.ts (6 tests) 47ms
+ ✓ test/career/job-pool/client-reads.test.ts (4 tests) 51ms
+ ✓ test/career/job-pool/semantic-run-retry.test.ts (8 tests) 41ms
+ ✓ test/career/human-decision-admission/transport-identity.test.ts (6 tests) 45ms
+ ✓ test/career/target/role/reconstruction.test.ts (9 tests) 54ms
+ ✓ test/career/relation/evolution-input/evolution-input.test.ts (5 tests) 55ms
+ ✓ test/career-generalized-orbit-focus.test.tsx (4 tests) 33ms
+ ✓ test/career/pxj-first-screen/pools-first.test.tsx (3 tests) 41ms
+ ✓ test/career-frontend-job-lifecycle.test.tsx (34 tests) 28ms
+ ✓ test/career/canonical-authority/references.test.ts (4 tests) 36ms
+ ✓ test/career/hr-decision-loop/http.test.ts (3 tests) 47ms
+ ✓ test/career/relation/requirement-inventory/replay.test.ts (2 tests) 40ms
+ ✓ test/career/job-pool/selected-role-coverage.test.ts (6 tests) 51ms
+ ✓ test/career-components.test.tsx (5 tests) 33ms
+ ✓ test/decision-core/action-state-change-association/contract.test.ts (7 tests) 32ms
+ ✓ test/career-worker-capability-proposal-wiring.test.ts (13 tests) 27ms
+ ✓ test/career/pxj-first-screen/discovery-start-reset-unit.test.tsx (2 tests) 31ms
+ ✓ test/career/job-scope/snapshot-scope.test.ts (5 tests) 33ms
+ ✓ test/career-capability-cosmos-view.test.tsx (3 tests) 32ms
+ ✓ test/career/capability-core/discovery/phase2-matrix.test.ts (40 tests) 41ms
+ ✓ test/career-orbital-motion-runtime.test.tsx (7 tests) 31ms
+ ✓ test/decision-runtime/api/decision-context-routes.test.ts (3 tests) 30ms
+ ✓ test/career-pipeline.test.ts (8 tests) 35ms
+ ✓ test/career/relation/recommendation-proposal/recommendation-proposal.test.ts (2 tests) 28ms
+ ✓ test/career/hr-decision-loop/routes.test.ts (4 tests) 31ms
+ ✓ test/career/relation/requirement-inventory/inventory.test.ts (3 tests) 24ms
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-2.0-flash
+ATTEMPT: 1/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-2.5-flash
+ATTEMPT: 2/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-1.5-pro
+ATTEMPT: 3/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > should cleanly encapsulate SDK and API errors into ERR_PROVIDER_FAILURE across cascade
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-1.5-flash
+ATTEMPT: 4/4
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: HTTP 429 Too Many Requests - Quota exceeded
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+stderr | test/career-gemini-provider.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 9: Gemini Inference Provider TDD > clamps maxOutputTokens to 65536 and diagnostic correctly reports it (BUG010E)
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-3.5-flash
+ATTEMPT: 1/5
+STEP: 0
+HTTP: 400
+CODE: INVALID_ARGUMENT
+STATUS: 400
+MESSAGE: Simulated rejection.
+DETAILS: NONE
+
+EXACT INPUT TOKENS: 12345
+MODEL INPUT TOKEN LIMIT: 2000000
+MODEL OUTPUT TOKEN LIMIT: 8192
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: 77881
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 31
+userPromptChars: 53
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-provider.test.ts (8 tests) 41ms
+ ✓ test/career/result-inspector/client.test.ts (4 tests) 33ms
+ ✓ test/career/pxj-first-screen/nav-reads.test.tsx (1 test) 35ms
+ ✓ test/career/capability-core/verification/repository-contract.test.ts (19 tests) 35ms
+ ✓ test/career/job-scope/discovery-scope.test.ts (7 tests) 22ms
+ ✓ test/career/hr-decision-loop/frontend-presentation.test.ts (7 tests) 30ms
+ ✓ test/career/job-pool/semantic-governance.test.ts (4 tests) 32ms
+ ✓ test/career/job-pool/semantic-provider.test.ts (10 tests) 28ms
+stderr | test/career/provider-calls/extraction-sites.test.ts > the legacy analysis with its regenerations and model cascade > a failing model moves the cascade on — and every model tried is a counted call
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: m1
+ATTEMPT: 1/2
+STEP: 0
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: Empty or non-string response generated by Gemini API.
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5657
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 1
+userPromptChars: 1
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career/provider-calls/extraction-sites.test.ts (6 tests) 23ms
+ ✓ test/career/auto-capability/auto-match-contract.test.ts (19 tests) 35ms
+ ✓ test/career-graph-diff.test.ts (9 tests) 48ms
+ ✓ test/career-system-codex-modal.test.tsx (4 tests) 26ms
+ ✓ test/career/mapping/delta.test.ts (10 tests) 26ms
+ ✓ test/career/relation/decision-record/human-decision-record.test.ts (4 tests) 28ms
+ ✓ test/career/mapping/view.test.ts (13 tests) 25ms
+stderr | test/career-gemini-continuation.test.ts > BUG010M: Atomic Structured Retry Contract > TEST C — repeated structured truncation
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-3.5-flash
+ATTEMPT: 1/5
+STEP: 2
+HTTP: UNKNOWN
+CODE: UNKNOWN
+STATUS: UNKNOWN
+MESSAGE: ERR_PROVIDER_STRUCTURED_OUTPUT_TRUNCATED
+DETAILS: NONE
+
+EXACT INPUT TOKENS: UNKNOWN
+MODEL INPUT TOKEN LIMIT: UNKNOWN
+MODEL OUTPUT TOKEN LIMIT: UNKNOWN
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: UNKNOWN
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 3
+userPromptChars: 3
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-continuation.test.ts (6 tests) 20ms
+ ✓ test/career/pxj-first-screen/projection.test.ts (35 tests) 24ms
+ ✓ test/career/pxj-first-screen/discovery-plan.test.ts (3 tests) 26ms
+ ✓ test/career-gui-interaction-audit.test.tsx (4 tests) 21ms
+ ✓ test/career/pxj-first-screen/analysis-picker-read.test.ts (7 tests) 24ms
+ ✓ test/career/mapping/focus.test.ts (10 tests) 16ms
+ ✓ test/career-batch-ingestion.test.ts (7 tests) 18ms
+ ✓ test/career/target/role/requirement-producer.test.ts (5 tests) 23ms
+ ✓ test/career-analysis.test.ts (12 tests) 21ms
+ ✓ test/career-d3-force.test.ts (6 tests) 20ms
+ ✓ test/career/relation/decision-context/decision-context.test.ts (6 tests) 23ms
+ ✓ test/career/job-pool/upload.test.ts (5 tests) 21ms
+ ✓ test/career/target/role/organization-binding-revision-persistence.test.ts (4 tests) 15ms
+ ✓ test/career-deep-sweep-prompt.test.ts (5 tests) 16ms
+ ✓ test/career/mapping-field/neurovisual-e.test.ts (15 tests) 23ms
+ ✓ test/career-pipeline-prompt-resolver.test.ts (3 tests) 24ms
+ ✓ test/career-release-ui-hardening.test.tsx (4 tests) 16ms
+ ✓ test/career-adapter.test.ts (11 tests) 22ms
+ ✓ test/career-runtime-progress-hud.test.tsx (7 tests) 18ms
+ ✓ test/career-prompt-system.test.ts (5 tests) 20ms
+ ✓ test/career/auto-capability/source-github-account.test.tsx (5 tests) 20ms
+ ✓ test/career-sil-orbit-empty-state.test.tsx (8 tests) 20ms
+ ✓ test/decision-core/state-change-claim/contract.test.ts (7 tests) 23ms
+ ✓ test/decision-core/action-occurrence-claim/contract.test.ts (7 tests) 22ms
+ ✓ test/career-github-account-loader.test.ts (8 tests) 19ms
+ ✓ test/career-react-flow.test.ts (5 tests) 24ms
+ ✓ test/career-canonical-assembly.test.ts (6 tests) 20ms
+stdout | test/career-perception.test.ts > CONDYN Career Analysis Protocol v1.0 - Step 5.1: Topology Projection Mapper (`projectTopology`) > should project canonical model into TopologyProjection without mutating domain scores or labels
+PRESENTATION: {
+  "semantic_graph": {
+    "nodes": [
+      {
+        "node_id": "CAP_001",
+        "entity_type": "CAPABILITY",
+        "weight": 0.95
+      },
+      {
+        "node_id": "ORG_001",
+        "entity_type": "CONCRETE_ORGANIZATION",
+        "weight": 0.94
+      },
+      {
+        "node_id": "ROL_001",
+        "entity_type": "ROLE",
+        "weight": 0.92
+      }
+    ],
+    "edges": [
+      {
+        "source_id": "ORG_001",
+        "target_id": "CAP_001",
+        "interaction_force": 0.89
+      },
+      {
+        "source_id": "ROL_001",
+        "target_id": "ORG_001",
+        "interaction_force": 0.95
+      }
+    ]
+  },
+  "ui_layout": {
+    "center_node_id": "CAP_001",
+    "concentric_rings": [
+      {
+        "ring_index": 0,
+        "name": "Core Capabilities",
+        "node_ids": [
+          "CAP_001"
+        ]
+      },
+      {
+        "ring_index": 1,
+        "name": "Target Organizations",
+        "node_ids": [
+          "ORG_001"
+        ]
+      },
+      {
+        "ring_index": 2,
+        "name": "Target Roles",
+        "node_ids": [
+          "ROL_001"
+        ]
+      }
+    ],
+    "color_tokens": {
+      "CAPABILITY": "#1565C0",
+      "CONCRETE_ORGANIZATION": "#4CAF50"
+    },
+    "priority_groups": [
+      {
+        "group_id": "GRP_TOP_RESONANCE",
+        "label": "Immediate Market Match",
+        "node_ids": [
+          "ORG_001"
+        ]
+      }
+    ]
+  }
+}
+
+ ✓ test/career-perception.test.ts (4 tests) 21ms
+ ✓ test/decision-runtime/api/local-api-contract-freeze.test.ts (4 tests) 13ms
+ ✓ test/career-hover-hud-compositing.test.tsx (1 test) 18ms
+ ✓ test/career-gemini-schema-projector.test.ts (7 tests) 18ms
+ ✓ test/career-decision-graph-inspector.test.tsx (4 tests) 21ms
+ ✓ test/career/identity-core-dropzone-intake.test.tsx (4 tests) 16ms
+ ✓ test/job-pool-validation/job-field-static.test.ts (5 tests) 18ms
+ ✓ test/career-analyze-page.test.tsx (5 tests) 19ms
+ ✓ test/career-proposal-sil-projection.test.ts (4 tests) 18ms
+ ✓ test/career-layout.test.ts (4 tests) 22ms
+ ✓ test/career-sil-focused-manifestation-bounding.test.tsx (4 tests) 18ms
+ ✓ test/career-evidence-graph.test.ts (6 tests) 14ms
+ ✓ test/career/target/role/requirement-state-matrix.test.ts (6 tests) 18ms
+ ✓ test/career/target/role/requirement-durable-producer.test.ts (1 test) 21ms
+ ✓ test/career/relation/decision-authority/decision-authority.test.ts (5 tests) 19ms
+ ✓ test/career/capability-core/runtime/kernel-bootstrap.test.ts (3 tests) 18ms
+ ✓ test/career/pxj-first-screen/staged-sources-hint.test.tsx (3 tests) 18ms
+ ✓ test/career-pipeline-full-multisource.test.ts (1 test) 15ms
+ ✓ test/career-ux-friction-audit.test.tsx (3 tests) 19ms
+ ✓ test/career-repository.test.ts (4 tests) 16ms
+ ✓ test/career-prompt-registry.test.ts (9 tests) 15ms
+ ✓ test/career/target/source/revision-persistence.test.ts (6 tests) 17ms
+ ✓ test/career/capability-core/convergence/hardening.test.ts (13 tests) 15ms
+ ✓ test/career/capability-core/discovery/gemini-provider.test.ts (4 tests) 21ms
+ ✓ test/career-reactflow-component.test.tsx (4 tests) 18ms
+ ✓ test/career/target/role/requirement-replay.test.ts (3 tests) 18ms
+ ✓ test/career-ui-metrics-wiring.test.tsx (2 tests) 18ms
+ ✓ test/career/target/organization/revision-persistence.test.ts (8 tests) 16ms
+ ✓ test/career/target/role/profile-revision.test.ts (3 tests) 18ms
+ ✓ test/career-ui-source-presentation-wiring.test.tsx (1 test) 15ms
+ ✓ test/career-sil-orbit-contract.test.tsx (7 tests) 17ms
+ ✓ test/career/pxj-first-screen/discovery-read.test.ts (4 tests) 16ms
+ ✓ test/career/capability-core/convergence/runtime.test.ts (10 tests) 14ms
+ ✓ test/career/job-pool/capability-key.test.ts (18 tests) 16ms
+ ✓ test/career/provider-calls/guard.test.ts (10 tests) 14ms
+ ✓ test/career-sil-ghost-manifestation.test.tsx (7 tests) 19ms
+ ✓ test/career/target/role/requirement-admission.test.ts (4 tests) 15ms
+ ✓ test/career/job-pool/frontend-presentation.test.ts (9 tests) 13ms
+ ✓ test/career-role-extraction.test.ts (4 tests) 15ms
+ ✓ test/career-guided-onboarding.test.tsx (3 tests) 16ms
+ ✓ test/career/capability-core/convergence/gemini-provider.test.ts (7 tests) 15ms
+ ✓ test/career/capability-core/convergence/phase3-matrix.test.ts (13 tests) 14ms
+ ✓ test/career/job-pool/pool-role-discovery.test.ts (9 tests) 18ms
+ ✓ test/career/three-modes/role-investigation.test.ts (37 tests) 14ms
+ ✓ test/career/target/role/revision-persistence.test.ts (5 tests) 22ms
+ ✓ test/career-pipeline-website.test.ts (1 test) 17ms
+ ✓ test/career/hr-decision-loop/registration-client.test.ts (1 test) 9ms
+ ✓ test/career/sil-projection/server-read-service.test.ts (4 tests) 20ms
+ ✓ test/career/job-pool/relation-cache.test.ts (18 tests) 19ms
+ ✓ test/decision-core/authority/capability-core-adapter.test.ts (8 tests) 15ms
+ ✓ test/career/pxj-first-screen/job-release.test.tsx (3 tests) 12ms
+ ✓ test/career-semantic-search.test.ts (8 tests) 13ms
+ ✓ test/career/relation-adapters/recommendation-proposal-persistence/implementation-registry.test.ts (4 tests) 16ms
+ ✓ test/career/job-pool/three-point-view.test.ts (13 tests) 14ms
+ ✓ test/job-pool-validation/layer-separation.test.ts (4 tests) 12ms
+ ✓ test/career/capability-core/snapshot.test.ts (7 tests) 12ms
+ ✓ test/career/job-pool/role-ranking.test.ts (11 tests) 11ms
+ ✓ test/database-isolation/shared-server.test.ts (10 tests) 13ms
+ ✓ test/career-pipeline-github.test.ts (1 test) 13ms
+ ✓ test/career-company-pool.test.ts (7 tests) 14ms
+ ✓ test/career/mapping/signs.test.ts (8 tests) 11ms
+ ✓ test/career/job-pool/relation-cache-registration-gate.test.ts (2 tests) 12ms
+ ✓ test/career-github-loader.test.ts (7 tests) 11ms
+ ✓ test/career-pipeline-multi-source.test.ts (1 test) 13ms
+ ✓ test/career-assembly.test.ts (8 tests) 10ms
+stderr | test/career-gemini-provider-error.test.ts > GeminiProvider Error Diagnostic Boundary > formats detailed bounded error diagnostics without leaking secrets (RED/GREEN)
+==================================================
+GEMINI REQUEST FAILURE
+MODEL: gemini-test-model
+ATTEMPT: 1/5
+STEP: 0
+HTTP: 400
+CODE: INVALID_ARGUMENT
+STATUS: 400
+MESSAGE: Request contains an invalid argument.
+DETAILS: [{"type":"type.googleapis.com/google.rpc.BadRequest"}]
+
+EXACT INPUT TOKENS: 12345
+MODEL INPUT TOKEN LIMIT: 2000000
+MODEL OUTPUT TOKEN LIMIT: 8192
+REQUESTED OUTPUT TOKENS: 65536
+INPUT + REQUESTED OUTPUT: 77881
+
+REQUEST:
+responseMimeType: application/json
+responseJsonSchema: YES
+schemaBytes: 5619
+schemaDepth: 12
+schemaProperties: 80
+schemaRefs: 8
+schemaDefs: 1
+schemaRootKeys: 5
+systemPromptChars: 22
+userPromptChars: 28
+maxOutputTokens: 65536
+temperature: 0.1
+==================================================
+
+ ✓ test/career-gemini-provider-error.test.ts (1 test) 11ms
+ ✓ test/career/capability-core/projection/projection-contract.test.ts (6 tests) 13ms
+ ✓ test/career/pxj-first-screen/result-hook.test.ts (2 tests) 9ms
+ ✓ test/career-gemini-structured-output.test.ts (1 test) 10ms
+ ✓ test/career-release-benchmark.test.ts (3 tests) 11ms
+ ✓ test/career/capability-core/runtime/proposal-runtime.test.ts (4 tests) 12ms
+ ✓ test/career-source-metadata.test.ts (6 tests) 11ms
+ ✓ test/career/mapping-spec/sign-table.test.ts (9 tests) 11ms
+ ✓ test/career-website-loader.test.ts (6 tests) 14ms
+ ✓ test/database-isolation/application-database-connection.test.ts (7 tests) 15ms
+ ✓ test/decision-runtime/runtime.test.ts (6 tests) 13ms
+ ✓ test/career-job-mapping-engine.test.ts (6 tests) 12ms
+ ✓ test/career/target/role/revision-contract.test.ts (5 tests) 10ms
+ ✓ test/career/job-pool/auto-match-unit.test.ts (4 tests) 9ms
+ ✓ test/career/capability-core/source-bundle.test.ts (4 tests) 11ms
+ ✓ test/career/target/role/organization-binding-revision-contract.test.ts (4 tests) 13ms
+ ✓ test/career/capability-core/schema.test.ts (3 tests) 9ms
+ ✓ test/career-gemini-embedding-provider.test.ts (7 tests) 9ms
+ ✓ test/career/capability-core/discovery/runtime.test.ts (3 tests) 10ms
+ ✓ test/career-gemini-inference-scope.test.ts (1 test) 10ms
+ ✓ test/career/capability-core/convergence/run.test.ts (2 tests) 10ms
+ ✓ test/career-feedback-attribution-boundary.test.ts (13 tests) 9ms
+ ✓ test/career/pxj-first-screen/entry-clearance-wiring.test.tsx (4 tests) 9ms
+ ✓ test/career/job-pool/job-scope.test.ts (12 tests) 8ms
+ ✓ test/database-isolation/authorized-application-database.test.ts (12 tests) 10ms
+ ✓ test/career/runtime/canonical-sil-execution/association.test.ts (2 tests) 8ms
+ ✓ test/career/matching-identity-name.test.ts (2 tests) 8ms
+ ✓ test/career-pgvector-store.test.ts (5 tests) 9ms
+ ✓ test/database-isolation/policy.test.ts (29 tests) 9ms
+ ✓ test/career-worker-retry-source-bundle.test.ts (2 tests) 10ms
+ ✓ test/career/canonical-sil-api-contract.test.ts (1 test) 9ms
+ ✓ test/career-learning-policy-boundary.test.ts (9 tests) 8ms
+ ✓ test/career/three-modes/investigation-mode.test.ts (17 tests) 9ms
+ ✓ test/career-view-model.test.ts (4 tests) 7ms
+ ✓ test/database-isolation/incident-db1-recovery-candidate.test.ts (2 tests) 7ms
+ ✓ test/career/sil-projection/canonical-read-model.test.ts (4 tests) 9ms
+ ✓ test/admin-auth/session.test.ts (9 tests) 8ms
+ ✓ test/career-commitment-action-boundary.test.ts (12 tests) 8ms
+ ✓ test/career/capability-core/convergence/repository.test.ts (4 tests) 8ms
+ ✓ test/career/relation-adapters/decision-context-decision-revision-binding-persistence/schema-freeze.test.ts (3 tests) 6ms
+ ✓ test/career-release-edge-cases.test.ts (4 tests) 8ms
+ ✓ test/career-sil-language-contract.test.ts (12 tests) 8ms
+ ✓ test/career/db/t11-persistence-schema.test.ts (1 test) 7ms
+ ✓ test/career-confidence-propagation.test.ts (6 tests) 7ms
+ ✓ test/career-recommendation-engine.test.ts (6 tests) 8ms
+ ✓ test/career-decision-integrity.test.ts (5 tests) 8ms
+ ✓ test/career-ui-adapter.test.ts (2 tests) 8ms
+ ✓ test/career/capability-core/convergence/canonicalizer.test.ts (1 test) 6ms
+ ✓ test/career/job-pool/job-field-presentation.test.ts (4 tests) 7ms
+ ✓ test/career/runtime/canonical-sil-execution/stage-a-source-identity.test.ts (1 test) 8ms
+ ✓ test/career/planetarium-role-alignment.test.ts (3 tests) 7ms
+stdout | test/career-worker-runtime-operation-contract.test.ts > Career worker runtime-operation boundary contract > publishes recovery, source preparation, and persistence in executable collaborator order
+[Worker worker-runtime-operation-contract] CLAIMED JOB_RUNTIME_OPERATION_CONTRACT lease=1
+
+ ✓ test/career-worker-runtime-operation-contract.test.ts (1 test) 7ms
+ ✓ test/career-release-e2e.test.ts (3 tests) 6ms
+ ✓ test/career-evidence-highlight.test.ts (3 tests) 5ms
+ ✓ test/job-pool-validation/sweep-coverage.test.ts (3 tests) 7ms
+ ✓ test/career-capability-proof-chain.test.ts (6 tests) 7ms
+ ✓ test/career-capability-convergence.test.ts (5 tests) 7ms
+ ✓ test/career/job-pool/auto-match-hook.test.ts (3 tests) 6ms
+ ✓ test/career-recommendation-proof-chain.test.ts (7 tests) 7ms
+ ✓ test/career/target/role/requirement-artifact.test.ts (1 test) 7ms
+ ✓ test/career/capability-core/verification/repository.test.ts (4 tests) 11ms
+ ✓ test/career-api-integration.test.ts (2 tests) 8ms
+ ✓ test/career/capability-proposal-projection/shared-evidence.test.ts (3 tests) 8ms
+ ✓ test/career/capability-core/convergence/validator.test.ts (2 tests) 7ms
+ ✓ test/career-decision-boundary.test.ts (8 tests) 7ms
+ ✓ test/build/route-exports.test.ts (3 tests) 7ms
+ ✓ test/career/capability-core/discovery/repository.test.ts (4 tests) 7ms
+ ✓ test/career-gemini-adapter.test.ts (4 tests) 6ms
+ ✓ test/career-source-satellite-presentation.test.ts (6 tests) 6ms
+ ✓ test/career/capability-core/discovery/prompt-builder.test.ts (3 tests) 6ms
+ ✓ test/career/pxj-first-screen/viewport-layout.test.tsx (7 tests) 7ms
+ ✓ test/career/capability-core/runtime/source-bridge.test.ts (2 tests) 6ms
+ ✓ test/career-action-outcome-boundary.test.ts (5 tests) 7ms
+ ✓ test/career/capability-core/hashing.test.ts (1 test) 4ms
+ ✓ test/career/capability-core/convergence/prompt-builder.test.ts (3 tests) 6ms
+ ✓ test/career-section-workflow.test.ts (2 tests) 5ms
+ ✓ test/career/db/notice-filter.test.ts (2 tests) 5ms
+ ✓ test/career-sil-empty-orbit-attention.test.ts (7 tests) 6ms
+ ✓ test/career-sil-hud-cluster-resolution.test.ts (7 tests) 5ms
+ ✓ test/career/pxj-first-screen/viewport-fit.test.ts (8 tests) 5ms
+ ✓ test/career-score-provenance.test.ts (5 tests) 5ms
+ ✓ test/career/auto-capability/auto-ranking-stack.test.ts (2 tests) 4ms
+ ✓ test/career/runtime/canonical-sil-execution/input.test.ts (2 tests) 5ms
+ ✓ test/career-iso-country-code.test.ts (6 tests) 5ms
+ ✓ test/career/pxj-first-screen/analysis-id-comment.test.ts (2 tests) 5ms
+ ✓ test/career-capability-requirement-alignment.test.ts (4 tests) 5ms
+ ✓ test/career/sil-projection/exact-id-read-lineage-contract.test.ts (3 tests) 4ms
+ ✓ test/career/capability-core/discovery/run.test.ts (2 tests) 6ms
+ ✓ test/career-sil-focused-empty-orbit.test.ts (7 tests) 5ms
+ ✓ test/career-ui-source-presentation.test.ts (1 test) 4ms
+ ✓ test/career/capability-core/convergence/prompt-resolver.test.ts (1 test) 6ms
+ ✓ test/career/sil-projection/frontend-presentation.test.ts (2 tests) 5ms
+ ✓ test/career/capability-core/discovery/coverage-validator.test.ts (2 tests) 5ms
+ ✓ test/career/capability-core/evidence-validator.test.ts (3 tests) 5ms
+ ✓ test/career/capability-core/identity.test.ts (2 tests) 5ms
+ ✓ test/career-prompt-contract.test.ts (3 tests) 5ms
+ ✓ test/career/capability-core/source.test.ts (2 tests) 4ms
+ ✓ test/career/human-decision-admission/application.test.ts (1 test) 4ms
+stdout | test/career-gemini-live-probe.test.ts > BUG 010: Gemini Schema Acceptance (LIVE PROBE) > should successfully generate content using the projected Gemini schema
+Skipping live probe (RUN_GEMINI_LIVE_PROBE not set)
+
+ ✓ test/career-gemini-live-probe.test.ts (1 test) 3ms
+ ✓ test/career/capability-core/discovery/prompt-resolver.test.ts (1 test) 3ms
+ ✓ test/career-ui-cluster-metrics-wiring.test.ts (1 test) 3ms
+ ✓ test/database-isolation/canary.test.ts (1 test) 2ms
+ ↓ test/career-forensic-pdf.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-embedding-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-live.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-probe.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-request-boundary.test.ts (1 test | 1 skipped)
+ ↓ test/career-gemini-schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/gemini-token-limit-matrix.test.ts (1 test | 1 skipped)
+ ↓ test/schema-bisection.test.ts (1 test | 1 skipped)
+ ↓ test/job-pool-validation/job-scope-gate.e2e.test.ts (1 test | 1 skipped)
+ ↓ test/job-pool-validation/live-browser-workflow.e2e.test.ts (1 test | 1 skipped)
+ ↓ test/job-pool-validation/syntx-walk.e2e.test.ts (3 tests | 3 skipped)
+
+ Test Files  520 passed | 11 skipped (531)
+      Tests  3681 passed | 20 skipped (3701)
+   Start at  03:40:49
+   Duration  573.85s (transform 9.29s, setup 5.00s, collect 125.55s, tests 344.43s, environment 113ms, prepare 36.70s)
+
+[test-db] dropped condyn_test_14fe551bdc59a65f
