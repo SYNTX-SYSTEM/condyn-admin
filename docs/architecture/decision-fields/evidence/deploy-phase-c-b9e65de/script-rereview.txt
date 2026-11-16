@@ -1,0 +1,52 @@
+PINK §3.101 addendum 2 — re-review of GELB's fixed DLL ops scripts (2026-11-04). Read locally from GELB's refreshed evidence copy; md5 equal
+to GELB's server values: dll-3017.sh 9bc17d56…, dll-launch.sh cb9962d4…, dll-revert.sh 6f88b188…, dll-rollback.sh b79e9d2c…,
+provision-dll-runtime.ts 16a7bdd3… (unchanged), DEPLOYMENT.md e20c076e…. Not run; dll.env not seen. GELB's confirmations taken as stated:
+(a) exactly one condyn_test_* database (condyn_test_8138803cb03b0edc, owner condyn_dll_runner, marker), (b) no mount under /opt/condyn-dll.
+
+Status of the six findings
+R-1 FIXED. Runtime (dll-launch.sh:43) and removal (dll-rollback.sh:46-63) pin condyn_test_8138803cb03b0edc; shape is checked before
+    identity, so `condyn` is refused even with an edited pin. Owner/marker checks fail open on a psql error (`|| true`, `[ -n "$owner" ]`),
+    which is harmless because the name is pinned.
+R-2 FIXED. set -e; a failed or refused stop aborts before anything is dropped; DROP failures abort with dll.env and $ROOT intact.
+    Repeatability walked through: fail at DROP DATABASE → retry identical; fail at DROP ROLE → retry finds no database (owner empty,
+    DROP IF EXISTS no-op) and drops the role; fail inside rm -rf → retry finds no dll.env, skips the database, drops the role IF EXISTS,
+    removes the rest. Holds. See N-4 and N-5.
+R-3 FIXED (--one-file-system).
+R-4 PARTLY. Inheritance is gone (env -i, 12 variables as GELB measured). New regression N-1.
+R-5 PARTLY. The restore swap is staged correctly. The forward save is not (N-3), and the checkout order adds N-2.
+R-6 FIXED.
+Ancestry FIXED, with limits N-6.
+
+New findings (report only, not corrected)
+N-1 (regression of the Gemini tripwire). dll-launch.sh checks the provider names (lines 18-25) BEFORE it sources dll.env (line 38), and
+    dll-3017.sh checks only the caller's environment. The old dll-3017.sh sourced dll.env first and then refused. So a GEMINI_API_KEY or a
+    GOOGLE_* name written into dll.env is no longer refused at all. dll.env can also set NODE_OPTIONS (e.g. --require or --env-file),
+    which bypasses both the env -i construction and the .env* check. Today dll.env holds only the six benign names GELB listed.
+    Fix: repeat the tripwire after sourcing, or allow exactly the expected names from dll.env and refuse everything else.
+N-2 (new failure mode, dll-revert.sh). The checkout (line 61) happens BEFORE the build is staged. If the copy fails (line 68) or the
+    rebuild fails (line 83, set -e), the script aborts with HEAD already at PREV while .next is still CURRENT's build (or a broken build),
+    and PREVIOUS_COMMIT unchanged. A retry then reads CURRENT = PREV and, if rollback/next-<PREV8> is absent, saves the build that is in
+    .next under PREV's name: a mislabelled saved build that a later revert would serve as PREV.
+    Fix: stage the build before the checkout, or check CURRENT back out on every abort; tie a saved build to its commit by a stamp inside it.
+N-3 (R-5 incomplete). The forward save `cp -a "$APP/.next" "$FORWARD" && echo …` (line 58) is not staged. A failing cp inside an && list
+    does not trigger set -e, so the script goes on; a partial $FORWARD stays, and `[ ! -d "$FORWARD" ]` trusts it from then on as a
+    complete build. Fix: copy to a temporary name and rename on success.
+N-4 (dll-rollback.sh). DROP DATABASE … WITH (FORCE) needs PostgreSQL ≥ 13. On an older server the statement is a syntax error and every
+    apply aborts (safe, but the removal can never complete). GELB to confirm the server's version.
+N-5 (dll-rollback.sh). The kept copy /root/backups/dll-phasec-20261104/dll.env.removed is never read by the script (a repeat reads
+    $ROOT/ops/dll.env). It is a manual safety net, and after a complete removal it remains as a file holding the password of a dropped
+    role. List it with what remains (as Node 20.20.2 is listed), or remove it after a successful run.
+N-6 (ancestry, as GELB asked). Correct when origin/main moves ahead: an ancestor stays an ancestor, the operator precedence of
+    `! A && [ B ]` is right, and the equality test is redundant but harmless. Limits: it checks the checkout's LOCAL origin/main, which
+    moves only on a fetch. A roll-forward to a commit newer than that ref is refused until a fetch; a force-push that rewrites main makes
+    an old PREV refused (fail-safe); the check trusts whatever origin/main was last fetched.
+N-7 (env -i for next start). No new failure mode found: NODE_ENV comes from dll.env, --hostname and --port are explicit, TMPDIR defaults
+    to /tmp, HOME is set, and no npm_* variables are needed (next is started directly). TZ is unset, so the clock renders in UTC; whether
+    the old start inherited a TZ is not visible to PINK. Minor: a launcher refusal surfaces only after the 180 s readiness timeout of
+    dll-3017.sh start, with the reason only in the log.
+N-8 (rebuild path of dll-revert.sh, line 83). Not run through env -i and not covered by the .env* check: `next build` loads .env* from
+    $APP and inlines NEXT_PUBLIC_* from the operator's shell into the client bundle (the app reads NEXT_PUBLIC_ADMIN_USERNAME and
+    NEXT_PUBLIC_ADMIN_PASSWORD). next.config.ts maps no env. Fix: run the rebuild through the same env -i and .env* check.
+
+provision-dll-runtime.ts (R-1 left open by GELB): PINK agrees to leave it as an owner decision. With exactly one marked disposable
+    database on the server, a rerun can only reuse the DLL's own database or create a new one. It must be pinned before any rerun.

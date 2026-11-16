@@ -1,0 +1,14 @@
+PINK §3.101 addendum 9 — optional confirmation pass on V-1..V-3 and the success-path WAS_SERVING change (2026-11-04). Read locally;
+md5 dll-revert.sh f2dc4d55…, dll-3017.sh c728fb03…, DEPLOYMENT.md bc038684…, equal to GELB's values. Nothing executed.
+
+Verdict: V-1, V-2, V-3 FIXED; the success path now honours WAS_SERVING too. No functional defect in the defined flows. The new kill path
+cannot reach anything pre-existing: it matches only processes whose exe is the DLL's private node under $NODE_BIN (v20.20.2) AND whose
+cwd is $APP. It excludes $$/$BASHPID/$PPID, re-lists by the same criteria before SIGKILL (so no stale pid list) and signals single pids,
+never groups. This rests on GELB's statement that every other application pins v24.11.1. A remaining process makes stop return
+non-zero, and the revert then aborts with "nothing changed" (consistent).
+
+X-1 (note, concurrent manual operations only). The matcher cannot tell a runtime from a BUILD. A `dll-build.sh` that is running (next build
+    under the same node, cwd $APP) is an "unbound runtime": `dll-3017.sh stop`, and cmd_start's 180 s cleanup, would SIGTERM/SIGKILL it,
+    leaving a partial, unstamped .next. dll-3017.sh start does not check the stamp, so a later manual start would serve that partial
+    build. dll-revert.sh would refuse it, correctly. DLL-only. Fix, if wanted: exclude a cmdline containing "next build" (or let
+    dll-build.sh take the apply lock), and let dll-3017.sh start refuse or warn when .next/COMMIT != HEAD.

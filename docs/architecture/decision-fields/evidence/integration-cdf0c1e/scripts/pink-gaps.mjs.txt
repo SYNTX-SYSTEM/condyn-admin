@@ -1,0 +1,65 @@
+// PINK dll-entry-gaps probe (cdf0c1e) — STAND-IN lab only, NO job pool uploaded (the EMPTY case). argv: <state.json> <repo> <out dir> <label>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+const page = await ctx.newPage(); const errors = []; page.on("pageerror", e => errors.push(String(e).slice(0, 140)));
+const reqs = []; ctx.on("request", r => { const u = new URL(r.url()); if (u.pathname.startsWith("/api/")) reqs.push({ m: r.method(), p: u.pathname.replace(/ANL_\d+_\d+/g, "ANL") }); });
+const mark = () => reqs.length; const posts = n => reqs.slice(n).filter(r => r.m === "POST").map(r => r.p);
+const t = id => page.getByTestId(id); const out = { label: LABEL, evidenceClass: "STAND_IN", gate: {}, empty: {}, drop: {} };
+const ids = async () => ((await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []).map(a => a.analysisId);
+// 1 gate texts
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB`, { waitUntil: "domcontentloaded" }); await sleep(6000);
+const gate = async () => page.evaluate(() => ({ title: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("title") ?? null, way: document.querySelector('[data-testid="capability-gate-way"]')?.textContent?.trim() ?? null, gate: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("data-field-gate") ?? null }));
+const g1 = await gate(); out.gate.pxjNoJobEN = { ...g1, bothWays: [g1.title, g1.way].map(x => !!x && /PERSON/.test(x) && /no job/.test(x) && /PERSON × JOB/.test(x)) };
+// locale: the codex toggle (best effort)
+await page.getByText(/SYSTEM CODEX/i).first().click().catch(() => {}); await sleep(800);
+const buttons = await page.evaluate(() => [...document.querySelectorAll("button")].map(x => (x.textContent ?? "").trim().replace(/\s+/g, " ").slice(0, 24)).filter(Boolean)); out.gate.codexButtons = buttons.slice(0, 40);
+const toggled = await page.evaluate(() => { const bs = [...document.querySelectorAll("button")].filter(x => /DEUTSCH/.test(x.textContent ?? "")); if (bs[0]) { bs[0].click(); return (bs[0].textContent ?? "").trim(); } return false; }); await sleep(800);
+await page.keyboard.press("Escape").catch(() => {}); await sleep(600);
+const g2 = await gate(); out.gate.pxjNoJobDE = { localeToggled: toggled, ...g2, bothWays: [g2.title, g2.way].map(x => !!x && /PERSON/.test(x) && /keinen Job/.test(x) && /PERSON × JOB/.test(x)) };
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(6000); out.gate.personOpen = await gate();
+// 2 drop: file reaches the real intake
+const cv = readFileSync(`${ROOT}/docs/examples/cv.synthetic.pdf`); const cvB64 = cv.toString("base64");
+const dropOn = async (name, type, b64, { over = false } = {}) => page.evaluate(async ([name, type, b64, over]) => { const el = document.querySelector('[data-testid="identity-core-dropzone"]'); if (!el) return { found: false }; const dt = new DataTransfer(); if (b64 !== null) dt.items.add(new File([Uint8Array.from(atob(b64), c => c.charCodeAt(0))], name, { type })); const lab = () => document.querySelector('[data-testid="identity-core-dropzone"]')?.innerText ?? ""; if (over) { el.dispatchEvent(new DragEvent("dragover", { dataTransfer: dt, bubbles: true, cancelable: true })); await new Promise(r => setTimeout(r, 400)); const label = lab(); el.dispatchEvent(new DragEvent("dragleave", { bubbles: true })); return { found: true, label }; } el.dispatchEvent(new DragEvent("drop", { dataTransfer: dt, bubbles: true, cancelable: true })); return { found: true }; }, [name, type, b64, over]);
+const dock = () => page.evaluate(() => ({ text: document.querySelector('[data-testid="source-dock"]')?.innerText ?? "", refused: document.querySelector('[data-testid="source-dock-file-refused"]')?.dataset.reason ?? null, analyzeDisabled: document.querySelector('[data-testid="start-intake-analysis-btn"]')?.disabled ?? null }));
+const staged = d => (d.text.match(/STAGED SOURCES \((\d+)\)/)?.[1] ?? null);
+let n = mark(); out.drop.dragOverLabel = (await dropOn("x.pdf", "application/pdf", cvB64, { over: true })).label?.replace(/\s+/g, " ").trim();
+const d0 = await dock(); out.drop.before = staged(d0);
+await dropOn("cv.synthetic.pdf", "application/pdf", cvB64); await sleep(1200); let d = await dock(); out.drop.pdf = { staged: staged(d), showsName: /cv\.synthetic\.pdf/.test(d.text), refused: d.refused, posts: posts(n) };
+await dropOn("notes.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", Buffer.from("x").toString("base64")); await sleep(800); d = await dock(); out.drop.docx = { staged: staged(d), refused: d.refused, refusedNamesFile: /notes\.docx/.test(d.text) };
+await dropOn("empty.txt", "text/plain", ""); await sleep(800); d = await dock(); out.drop.emptyTxt = { staged: staged(d), refused: d.refused };
+await dropOn("note.txt", "text/plain", Buffer.from("Built a payments platform.").toString("base64")); await sleep(800); d = await dock(); out.drop.txt = { staged: staged(d), refused: d.refused, showsName: /note\.txt/.test(d.text) };
+await dropOn("none", "", null); await sleep(500); d = await dock(); out.drop.dropWithoutFile = { staged: staged(d) };
+await dropOn("a.pdf", "application/pdf", cvB64); await dropOn("b.pdf", "application/pdf", cvB64); await sleep(1500); d = await dock(); out.drop.twoQuickDrops = { staged: staged(d), expected: Number(staged(await { text: "" , ...{} }) ?? 0) };
+out.drop.twoQuickDrops.stagedAfter = staged(d);
+// compare with the file button: same file, fresh page
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(5000);
+await t("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`); await sleep(1200); const btn = await dock();
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(5000);
+await dropOn("cv.synthetic.pdf", "application/pdf", cvB64); await sleep(1200); const drp = await dock();
+const norm = x => x.text.replace(/doc_[a-z]+_\d+/g, "").replace(/\s+/g, " ").trim();
+out.drop.sameAsButton = { buttonStaged: staged(btn), dropStaged: staged(drp), sameDockText: norm(btn) === norm(drp), buttonAnalyzeDisabled: btn.analyzeDisabled, dropAnalyzeDisabled: drp.analyzeDisabled };
+// analyse after a single drop: exactly one POST, one job, one analysis
+const before = new Set(await ids()); n = mark(); await t("start-intake-analysis-btn").click(); await sleep(3000);
+let A = null; for (let i = 0; i < 240 && !A; i += 1) { await sleep(1000); A = (await ids()).find(x => !before.has(x)) ?? null; }
+out.drop.analyze = { posts: posts(n), newAnalyses: (await ids()).filter(x => !before.has(x)).length, analysisReady: !!A };
+// PxJ without a job: the Capability Field is closed, so there is no drop target and no dock
+await page.goto(`${BASE}/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(6000);
+out.drop.pxjNoJob = await page.evaluate(() => ({ dropTarget: !!document.querySelector('[data-testid="identity-core-dropzone"]') && getComputedStyle(document.querySelector('[data-testid="identity-core-dropzone"]')).visibility !== "hidden", dockVisible: !!document.querySelector('[data-testid="source-dock"]') && getComputedStyle(document.querySelector('[data-testid="source-dock"]')).visibility !== "hidden", gate: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("data-field-gate") ?? null }));
+// 3 empty pools: GO TO JOB FIELD (the lab has no pool uploaded; a PERSON analysis exists from the drop above)
+if (A) {
+  await page.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${A}`, { waitUntil: "domcontentloaded" }); await sleep(7000);
+  await t("rd-open").click(); await sleep(2500); const url0 = page.url(); const h0 = await page.evaluate(() => history.length); n = mark();
+  const before = await page.evaluate(() => ({ empty: document.querySelector('[data-testid="role-discovery-panel"]')?.innerText ?? "", btn: document.querySelector('[data-testid="rd-pools-go-to-job-field"]')?.innerText ?? null, discoverDisabled: document.querySelector('[data-testid="rd-discover"]')?.disabled ?? null }));
+  out.empty = { poolsEmptyText: /No job pool|no pool|keinen? Pool|uploaded/i.test(before.empty) || before.empty.slice(0, 400).replace(/\s+/g, " "), button: before.btn, discoverDisabled: before.discoverDisabled };
+  await t("rd-pools-go-to-job-field").click(); await sleep(2500);
+  const after = await page.evaluate(() => ({ capBtn: document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("aria-pressed") ?? document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("data-active"), jobBtn: document.querySelector('[data-testid="field-focus-job-btn"]')?.getAttribute("aria-pressed") ?? document.querySelector('[data-testid="field-focus-job-btn"]')?.getAttribute("data-active"), panel: !!document.querySelector('[data-testid="role-discovery-panel"]'), jobField: !!document.querySelector('[data-testid="syntx-field"]') }));
+  const u1 = new URL(page.url()); out.empty.after = { ...after, urlChangedParams: [...new Set([...new URL(url0).searchParams.keys(), ...u1.searchParams.keys()])].filter(k => new URL(url0).searchParams.get(k) !== u1.searchParams.get(k)), historyDelta: (await page.evaluate(() => history.length)) - h0, posts: posts(n), analysisKept: u1.searchParams.get("analysisId") === A };
+  await t("field-focus-capability-btn").click().catch(() => {}); await sleep(3000); out.empty.backToCapability = await page.evaluate(() => ({ panelOpen: !!document.querySelector('[data-testid="role-discovery-panel"]'), entry: !!document.querySelector('[data-testid="rd-entry"]') }));
+}
+out.pageErrors = errors; out.apiPOSTs = reqs.filter(r => r.m === "POST").length; await b.close(); writeFileSync(`${OUT}/gaps-${LABEL}.json`, JSON.stringify(out, null, 1)); console.log("GAPS", JSON.stringify(out).slice(0, 1800));

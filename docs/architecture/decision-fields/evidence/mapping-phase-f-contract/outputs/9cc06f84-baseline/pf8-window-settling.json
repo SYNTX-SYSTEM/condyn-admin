@@ -1,0 +1,11 @@
+{
+ "note":"A-F21 floor-settling test. Tier-A floor (pooled-mean fit, decoys 0.15/0.25/0.35) vs window length, one 62s capture, offline nested-window fits. df=0.05Hz -> A-F21 minimum 2/df=40s = 2 resolution cells.",
+ "floorVsWindow":[
+  {"T":20,"cells":1.00,"floor":3.28e-5},{"T":26,"cells":1.30,"floor":3.12e-5},{"T":33,"cells":1.65,"floor":3.03e-5},
+  {"T":40,"cells":2.00,"floor":2.64e-5},{"T":47,"cells":2.35,"floor":2.76e-5},{"T":54,"cells":2.70,"floor":2.53e-5},
+  {"T":62.3,"cells":3.11,"floor":2.65e-5}],
+ "reading_floor":"Floor falls 3.28e-5 (1 cell) -> 2.64e-5 (2 cells/40s) then FLATTENS (2.5-2.8e-5). Settles at exactly 2/df=40s, confirming A-F21's resolution explanation (below 2 cells, signal leaks into the null and biases the floor high).",
+ "selfCheck70pct":{"fullWindowS":62.3,"subWindowS":43.6,"subCells":2.18,"subFloor":2.48e-5,"fullFloor":2.65e-5,"ratio":0.94},
+ "reading_selfcheck":"With a 62s full window the 70% sub-window (43.6s) clears 2 cells, so the self-check ratio is 0.94 (clean ~1.0). At GELB's 49.5s full window the 70% sub-window is 34.6s=1.73 cells (<2), so its floor is inflated by its OWN resolution, giving ratio 1.47 — not a falling floor. REFINEMENT: full window must be >= 2/(0.7*df) ~= 57s so the self-check's sub-window itself clears 2 cells.",
+ "note_absolute_floor":"PINK's plateau floor ~2.6e-5 vs GELB's converged 1e-5 — same order, both far under the 0.0005 bound (19-50x); the ~2.6x gap is plausibly PINK's more-inclusive stage-minus-svg mask (200k vs 178k px); per-element sign-hide on the tip should tighten it. The reproducible result is the SHAPE (settles at 2 cells), not the absolute."
+}

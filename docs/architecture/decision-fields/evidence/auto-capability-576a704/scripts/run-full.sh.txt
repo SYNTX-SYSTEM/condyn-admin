@@ -1,0 +1,23 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/tacp && npx tsc --noEmit -p . > $O/full-tsc.log 2>&1; echo "cand tsc errors $(grep -c 'error TS' $O/full-tsc.log) (pink files: $(grep -c 'test/pink' $O/full-tsc.log))"
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts"
+for n in tacp tacpbase; do cd $S/int/$n; npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg-$n.log 2>&1; echo "$n regression exit $? $(grep -E '^\s*(Test Files|Tests) ' $O/reg-$n.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg-$n.log > $O/reg-fails-$n.txt; done
+echo "fails only on candidate:"; comm -23 $O/reg-fails-tacp.txt $O/reg-fails-tacpbase.txt; echo "fails only on base:"; comm -13 $O/reg-fails-tacp.txt $O/reg-fails-tacpbase.txt | head -20
+cd $S/int/tacp
+TA="test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-github-loader.test.ts test/career-analyze-multisource.test.ts test/career-source-metadata.test.ts test/career-analyze-flow.test.ts"
+npm run -s test:isolated -- $TA > $O/pristine-A.log 2>&1; fails $O/pristine-A.log > $O/pristine-A-fails.txt; echo "pristine A fails $(wc -l < $O/pristine-A-fails.txt)"
+TBE=$(python3 -c "exec(open('$S/acp/mutate-acp.py').read().split('T, M = BLOCKS[BLOCK]')[0].split('I = sys.argv[1]')[0]); print()" 2>/dev/null)
+npm run -s test:isolated -- test/career/job-pool/pool-role-discovery.test.ts test/career/job-pool/role-discovery.postgres.test.ts test/career/job-pool/relation-cache.test.ts test/career/job-pool/relation-cache.postgres.test.ts test/career/job-pool/role-investigation.postgres.test.ts test/career/job-pool/semantic-relation-engine.test.ts test/career/job-pool/semantic-provider.test.ts test/career/job-pool/semantic-governance.test.ts test/career/job-pool/auto-match.postgres.test.ts test/career/job-pool/relation-cache-registration-gate.test.ts test/career/job-pool/semantic-investigation-store.postgres.test.ts test/career/job-pool/selected-role-coverage.test.ts test/career/job-pool/worker-after-success.postgres.test.ts test/career/job-pool/role-ranking.test.ts > $O/pristine-BE.log 2>&1; fails $O/pristine-BE.log > $O/pristine-BE-fails.txt; echo "pristine BE exit $? fails $(wc -l < $O/pristine-BE-fails.txt) $(grep -E '^\s*(Tests|Duration) ' $O/pristine-BE.log | tr -s ' ' | tr '\n' ' ')"
+BASE_FAILS=$O/pristine-A-fails.txt PRISTINE_NAME=tacp MUT_TAG=-r2 python3 $S/acp/mutate-acp.py $S/int A > $O/mut-A-r2.log 2>&1; echo "A r2: $(grep -c ' RED ' $O/mut-A-r2.log) red; alive: $(grep 'GREEN' $O/mut-A-r2.log | cut -c1-40 | tr '\n' ';')"
+python3 - "$S" <<'PY'
+import sys, re; s=open(sys.argv[1]+"/acp/mutate-acp.py").read(); ids=re.findall(r'\("([BCDE]-M\d+) ', s); open(sys.argv[1]+"/acp/out/be-ids.txt","w").write(" ".join(ids))
+PY
+IDS=($(cat $O/be-ids.txt)); H=$(( ${#IDS[@]} / 2 ))
+BASE_FAILS=$O/pristine-BE-fails.txt PRISTINE_NAME=tacp WORK_TAG=1 python3 $S/acp/mutate-acp.py $S/int BE ${IDS[@]:0:$H} > $O/mut-BE-1.log 2>&1 &
+BASE_FAILS=$O/pristine-BE-fails.txt PRISTINE_NAME=tacp WORK_TAG=2 python3 $S/acp/mutate-acp.py $S/int BE ${IDS[@]:$H} > $O/mut-BE-2.log 2>&1 &
+wait
+echo "BE: $(cat $O/mut-BE-1.log $O/mut-BE-2.log | grep -c ' RED ') red of ${#IDS[@]}; alive:"; cat $O/mut-BE-1.log $O/mut-BE-2.log | grep -E 'GREEN|PATTERN|TIMEOUT'
+echo FULL-END

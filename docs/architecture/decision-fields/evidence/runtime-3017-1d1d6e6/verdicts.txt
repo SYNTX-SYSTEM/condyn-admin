@@ -1,0 +1,29 @@
+PINK §3.81 · :3017 after the cutover (dev server, worktree condyn-admin-dll-runtime, main 1d1d6e6 = 489b167 code + switch script + docs).
+STAND_IN only; no Gemini; :3017 GET only (every non-GET aborted in the browser: 0 occurred). The product path ran in PINK's own production lab of 1d1d6e6 on a
+restored copy of the real :41862 world (GELB's mirror :41895 was not needed).
+
+VERDICT                PASS — :3017 runs the integrated state as validated; GO of §3.80 confirmed in operation. No finding for GELB or GRÜN that blocks.
+
+1 Product path         PASS   real world, production build: start 1 POST (confirmedCalls = shown 2), "Relation cache: 190 of 790 pairs · stand-in check: completed"
+  (own prod lab)              = 190 relations in the DB, engine label "Stand-in, no model"; reload / Back / Forward / URL contract 0 POST; six viewports
+                              complete (width = viewport, six shells); six-orbit scenes identical to §3.80; panel walk, orbits with the panel (VIEW MATCHES on
+                              03, 04 opens its cosmos), handover 0 non-GET; three modes from every view: PERSON / PERSON × JOB / JOB, Back ×3 and Forward ×3
+                              retrace the modes exactly, reload keeps the mode; DE / EN switch works; the GET sweep wrote nothing (rows, tuples), 0 outbound
+2 Live :3017 (GET)     PASS   default (PxJ, gate AWAITING_JOB), PERSON (gate OPEN, six shells), PxJ without job: 200, no page error, 0 non-GET; mode switching
+                              and Back / Forward / reload as in the lab; each shell on a fresh page: 01, 03, 04, 05, 06 open their cosmos, 02 focuses the
+                              Capability Field (pulse, no cosmos view) — the same in the production lab; DE / EN switch; HR context A (full chain, bound
+                              revision) and B render with 200
+Dev vs production      PASS   on the same data shape (the runner's seeded world in PINK's prod lab vs live :3017): identical text (hash), identical testid set
+                              (hash), same counts, same modes, orbits, language and HR results; only +6 elements on the dev server (Next dev overlay)
+Config on :3017        PASS   :3017 holds no analysis and no pool (GET /api/career/analyses 0, /job-pools 0): the discovery entry is absent and nothing can be
+                              started — correct for an empty world. The stand-in label itself shows only with data: verified in the lab with the same
+                              environment ("Stand-in, no model"); the switch script sets stand-in and day limit 1000 by default (code inspection)
+No writes on :3017     PASS*  from PINK's side only GET requests reached :3017 (0 aborted, i.e. none attempted). Server-side writes cannot be measured without its
+                              database (not touched); the same production code on the real world wrote nothing on any GET (rows and tuple statistics unchanged)
+Observations (GRÜN)    OBS    O-RT-1 Escape closes neither the planetarium focus / cosmos nor the System Codex modal (only ✕ CLOSE / clicks do); same on dev and
+                              prod; keyboard accessibility, not a regression
+                       OBS    O-RT-2 on the dev server the chain of HR context A appeared after more than 9 s at 1920 (on-demand compile), at 1280 within 9 s;
+                              the production build always within 9 s — a dev-server latency, not a defect
+Observation (owner)    OBS    O-RT-3 :3017 is a dev server and, per the switch script's default, starts the career worker; if a Gemini key is in its
+                              environment (as before the cutover), an analysis submitted through the UI calls Gemini. Unchanged by the cutover; PINK sent no
+                              POST. A production build and --no-worker would be the stricter runtime

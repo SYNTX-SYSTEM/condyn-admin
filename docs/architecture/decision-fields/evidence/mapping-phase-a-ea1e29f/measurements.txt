@@ -1,0 +1,110 @@
+PINK §3.92 measurements — ea1e29f (base main 26c59f7), 2026-10-31. Record counts and ids only.
+
+== PINK probe pink-pa.test.ts on ea1e29f: 6/6 ==
+p1: {"status": 200, "ranks": 9, "tiers": {"SEMANTIC": 5, "LEXICAL_ONLY": 4}, "proposals": 6, "shown": 6, "checks": {"semantic": 43, "semanticKeyIsJudgedBest": 43, "semanticKeyShown": 43, "semanticKeyNamesCapability": 43, "lexical": 0, "lexicalKeyIsProposalId": 0, "lexicalKeyInProjection": 0, "none": 36, "noneKeyNull": 36, "keyEqualsName": 0, "ambiguousBest": 0, "bestMismatch": [], "twinKey": [], "keysPerName": {"Python": ["PCAP_025308E990A808F14E50681F"], "Event-driven migration": ["PCAP_CA0C0579DA7499805D6DCF79"], "Kubernetes": ["PCAP_AD61B44B8C10B067DBED9F63"], "PostgreSQL": ["PCAP_6B66C4A822CBE888BF11452D"], "Python Teaching": ["PCAP_DCE762AF76E7DD87634B2DA6"], "TypeScript": ["PCAP_AAFB8C7F8820052B592BDE11"]}}, "sameNumbers": true, "oldHasKey": false, "readsChanged": [], "fetch": 0}
+p1lexical: {"lexical": 6, "keyIsLexicalProposalId": 6, "keyNamesCapability": 6, "none": 73, "noneNull": 73, "semantic": 0, "bases": {"NAME_EXACT": 6}, "sameNumbers": true, "readsChanged": [], "calls": 0, "evidenceClass": null}
+p1cache: {"requestsBefore": 5, "requestsAfter": 5, "semanticA": 43, "semanticC": 43, "sameNamesAndStates": true, "keysDiffer": 0, "cKeysShownToProvider": 43, "readsChanged": []}
+p2real: {"newDecodes": true, "newSameObject": true, "oldDecodes": true, "oldSameObject": true, "oldKeysRead": [null], "oldKeyFieldAbsent": true, "baseDecoderOnNew": "REFUSED", "baseDecoderOnOld": "ACCEPTED"}
+
+== recomputation vs 20 vectors ==
+layout LV01-single-role: MATCH
+layout LV02-three-pools-mixed-tiers: MATCH
+layout LV03-equal-fit-ties: MATCH
+layout LV04-crowded-60: MATCH
+layout LV05-capacity-exceeded-overflow: MATCH
+layout LV08-checked-fit-0-pressed-to-the-horizon: MATCH
+layout LV09-shelf-fit-0-pressed-to-the-field-edge: MATCH
+layout LV11-shelf-wide-bodies-cannot-leave-the-field: MATCH
+layout LV10-checked-fit-1-pressed-from-the-inner-edge: MATCH
+layout LV06-no-roles: MATCH
+layout LV07-real-shape-73: MATCH
+arcs AV01-seven-requirements: MATCH
+arcs AV02-single: MATCH
+arcs AV03-empty: MATCH
+arcs AV04-ties-by-id: MATCH
+constellation CV00-0-capabilities: MATCH
+constellation CV01-1-capabilities: MATCH
+constellation CV05-5-capabilities: MATCH
+constellation CV40-40-capabilities: MATCH
+constellation CV80-80-capabilities: MATCH
+
+== invariants on the vectors ==
+LV01-single-role: bodies 1 drawn 1 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 1) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV02-three-pools-mixed-tiers: bodies 6 drawn 6 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 6) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV03-equal-fit-ties: bodies 12 drawn 12 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 12) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV04-crowded-60: bodies 60 drawn 60 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 60) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV05-capacity-exceeded-overflow: bodies 320 drawn 289 overflow 31/31 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 9 xy 0 fit=dist(undisplaced 34) 0 fitOrderInverted 0 displaced 255 (radial 251, shelf 0) share360 ok size 0
+LV08-checked-fit-0-pressed-to-the-horizon: bodies 200 drawn 200 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisplaced 89) 0 fitOrderInverted 0 displaced 111 (radial 98, shelf 0) share360 ok size 0
+LV09-shelf-fit-0-pressed-to-the-field-edge: bodies 260 drawn 260 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 1 xy 0 fit=dist(undisplaced 89) 0 fitOrderInverted 0 displaced 171 (radial 102, shelf 171) share360 ok size 0
+LV11-shelf-wide-bodies-cannot-leave-the-field: bodies 120 drawn 119 overflow 1/1 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisplaced 55) 0 fitOrderInverted 0 displaced 64 (radial 57, shelf 64) share360 ok size 0
+LV10-checked-fit-1-pressed-from-the-inner-edge: bodies 160 drawn 160 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 2 xy 0 fit=dist(undisplaced 34) 0 fitOrderInverted 0 displaced 126 (radial 100, shelf 0) share360 ok size 0
+LV06-no-roles: bodies 0 drawn 0 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 0) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV07-real-shape-73: bodies 73 drawn 73 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 1 xy 0 fit=dist(undisplaced 67) 0 fitOrderInverted 0 displaced 6 (radial 0, shelf 6) share360 ok size 0
+AV01-seven-requirements: arcs 7 total 360.0 contiguous True fill=value True
+AV02-single: arcs 1 total 360 contiguous True fill=value True
+AV03-empty: arcs 0 total 0 contiguous True fill=value True
+AV04-ties-by-id: arcs 3 total 360 contiguous True fill=value True
+CV00-0-capabilities: nodes 0 overflow 0 outerEdge 5 (< person 90) nodeOverlap 0 sum 0 = input 0
+CV01-1-capabilities: nodes 1 overflow 0 outerEdge 5.0 (< person 90) nodeOverlap 0 sum 1 = input 1
+CV05-5-capabilities: nodes 5 overflow 0 outerEdge 35.0 (< person 90) nodeOverlap 0 sum 5 = input 5
+CV40-40-capabilities: nodes 40 overflow 0 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 40 = input 40
+CV80-80-capabilities: nodes 69 overflow 11 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 80 = input 80
+
+== which rule variants the vectors notice ==
+checked upper edge = zeroFit (380) instead of horizon - rho: noticed by layout LV08-checked-fit-0-pressed-to-the-horizon
+checked upper edge = horizon (400) without - rho: noticed by layout LV05-capacity-exceeded-overflow
+checked upper edge exclusive: noticed by layout LV08-checked-fit-0-pressed-to-the-horizon, layout LV09-shelf-fit-0-pressed-to-the-field-edge
+checked/shelf lower edge exclusive: noticed by layout LV01-single-role, layout LV10-checked-fit-1-pressed-from-the-inner-edge
+checked lower edge = person + rho instead of bestFit: noticed by layout LV05-capacity-exceeded-overflow, layout LV10-checked-fit-1-pressed-from-the-inner-edge
+checked lower edge = bestFit - 30: noticed by layout LV05-capacity-exceeded-overflow, layout LV10-checked-fit-1-pressed-from-the-inner-edge
+shelf upper edge = shelfFar (480): noticed by layout LV09-shelf-fit-0-pressed-to-the-field-edge
+shelf upper edge = radius (500) without - rho: NOT noticed (all vectors still match)
+shelf unbounded outward: noticed by layout LV11-shelf-wide-bodies-cannot-leave-the-field
+shelf lower edge = horizon (400): noticed by layout LV11-shelf-wide-bodies-cannot-leave-the-field
+radial order -k before +k: noticed by layout LV05-capacity-exceeded-overflow, layout LV08-checked-fit-0-pressed-to-the-horizon, layout LV09-shelf-fit-0-pressed-to-the-field-edge
+angular loop outer, radial inner: noticed by layout LV05-capacity-exceeded-overflow, layout LV08-checked-fit-0-pressed-to-the-horizon, layout LV09-shelf-fit-0-pressed-to-the-field-edge, layout LV11-shelf-wide-bodies-cannot-leave-the-field, layout LV10-checked-fit-1-pressed-from-the-inner-edge, layout LV07-real-shape-73
+collision without gap: noticed by layout LV05-capacity-exceeded-overflow, layout LV08-checked-fit-0-pressed-to-the-horizon, layout LV09-shelf-fit-0-pressed-to-the-field-edge, layout LV11-shelf-wide-bodies-cannot-leave-the-field, layout LV10-checked-fit-1-pressed-from-the-inner-edge, layout LV07-real-shape-73
+ring capacity ceil: noticed by constellation CV40-40-capabilities, constellation CV80-80-capabilities
+no radial band at all: noticed by layout LV05-capacity-exceeded-overflow, layout LV11-shelf-wide-bodies-cannot-leave-the-field, layout LV10-checked-fit-1-pressed-from-the-inner-edge
+
+== M16 counterexample ==
+120 shelf roles fit 0 weightSum 3 (rho 6.810512) rule [430, 500-rho]: drawn 120 overflow 0 outermost disc edge 486.811 crossing 500: 0
+120 shelf roles fit 0 weightSum 3 (rho 6.810512) M16 [430, 500]: drawn 120 overflow 0 outermost disc edge 486.811 crossing 500: 0
+200 shelf roles fit 0 weightSum 3 (rho 6.810512) rule [430, 500-rho]: drawn 200 overflow 0 outermost disc edge 486.811 crossing 500: 0
+200 shelf roles fit 0 weightSum 3 (rho 6.810512) M16 [430, 500]: drawn 200 overflow 0 outermost disc edge 502.432 crossing 500: 43
+200 shelf roles fit 0 weightSum 6 (rho 8.388877) rule [430, 500-rho]: drawn 200 overflow 0 outermost disc edge 488.389 crossing 500: 0
+200 shelf roles fit 0 weightSum 6 (rho 8.388877) M16 [430, 500]: drawn 200 overflow 0 outermost disc edge 507.167 crossing 500: 90
+
+== mutants vs GELB's tests (60 s timeout), batch 1 ==
+M01 RED semantic key = capability name | Tests  3 failed | 55 passed (58) | ['the key is the id of the BEST proposal — not the first, not the last; ', 'the shared start uses the configured provider: Gemini calls, one per r']
+M02 RED semantic key = first proposal of the projection | Tests  41 passed (41) | ['FAIL  test/career/job-pool/capability-key.test.ts [ test/career/job-po']
+M02L RED semantic key = last proposal | Tests  41 passed (41) | ['FAIL  test/career/job-pool/capability-key.test.ts [ test/career/job-po']
+M09 GREEN decoder: one extra field of any name tolerated | Tests  58 passed (58) | []
+M11 RED ranking: key changes a number (PARTIAL counted as 1 when keyed) | Tests  1 failed | 57 passed (58) | ['through the ranking the keys and the numbers stay what the formula say']
+M05 RED keyOf lets an empty key through | Tests  1 failed | 57 passed (58) | ['an older finding without a key (or an empty one) is a null key — never']
+M08 RED decoder: old shape (no key) refused | Tests  1 failed | 57 passed (58) | ['an older payload without the field (the persisted shape) still decodes']
+
+== batch 2 ==
+M12 RED oracle: checked band ends at zeroFit, not horizon - rho | Tests  2 failed | 56 passed (58) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'the committed vectors are exactly what the reference produces now (no ']
+M13 RED oracle: shelf band unbounded outward (bodies may leave the field) | Tests  3 failed | 55 passed (58) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a checked role lies inside the horizon, a name-only role beyo']
+M14 RED oracle: collision gap ignored | Tests  3 failed | 55 passed (58) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'NO OVERLAP: placed bodies keep their gap; bodies beyond capacity are c']
+M15 RED oracle: angular step halved | Tests  2 failed | 56 passed (58) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'the committed vectors are exactly what the reference produces now (no ']
+M16 GREEN oracle: shelf band upper edge = field radius (disc may cross the field edge) | Tests  58 passed (58) | []
+M17 RED oracle: checked band upper edge = horizon (disc may cross the horizon) | Tests  3 failed | 55 passed (58) | ['CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit ', 'HORIZON: a checked role lies inside the horizon, a name-only role beyo']
+M18 RED oracle: shelf lower edge = horizon | Tests  3 failed | 55 passed (58) | ['BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactl', 'HORIZON: a checked role lies inside the horizon, a name-only role beyo']
+
+== M02R vs GELB's tests ==
+M02R RED semantic key = the NEXT proposal's id (ids rotated consistently) | Tests  1 failed | 57 passed (58) | ['one cache key per requirement and proposal, each remembering ITS propo']
+
+== mutants vs PINK's probe ==
+M02R RED semantic key = the NEXT proposal's id (ids rotated consistently) | Tests  2 failed | 4 passed (6) | ['P1/P4: rows written by the BASE code; base and candidate read them; nu', 'P2: decoder inverse cases on a real body (one mutation at a time)']
+M02 RED semantic key = first proposal of the projection | Tests  2 failed | 4 passed (6) | ['P1/P4: rows written by the BASE code; base and candidate read them; nu', 'P2: decoder inverse cases on a real body (one mutation at a time)']
+M09 RED decoder: one extra field of any name tolerated | Tests  1 failed | 5 passed (6) | ['P2: decoder inverse cases on a real body (one mutation at a time)']
+M16 GREEN oracle: shelf band upper edge = field radius (disc may cross the field edge) | Tests  6 passed (6) | []
+
+== GELB's five phase-A files on ea1e29f ==
+gelb-pristine.log: → Test timed out in 5000ms. · Error: Test timed out in 5000ms. · Test Files  1 failed | 4 passed (5) · Tests  1 failed | 57 passed (58)
+gelb-pristine-60s.log: Test Files  5 passed (5) · Tests  58 passed (58)
+layout.test.ts alone, run 1:  beyond capacity are counted, never drawn over others 4540ms · Tests  15 passed (15)
+layout.test.ts alone, run 2:  beyond capacity are counted, never drawn over others 3502ms · Tests  15 passed (15)
+tsc --noEmit on ea1e29f: 0 errors.

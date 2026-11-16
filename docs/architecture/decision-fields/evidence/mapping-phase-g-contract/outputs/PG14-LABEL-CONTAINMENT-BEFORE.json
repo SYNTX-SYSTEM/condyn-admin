@@ -1,0 +1,1080 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "reading": "PINK — PG-14 label containment against the emitted viewBox, the BEFORE reading (GELB §66)",
+  "verdict": "see standVerdict per run — conditioned on the fixture's title lengths, §63",
+  "scope": "one fixture, one analysisId, five bodies (2 field / 3 shelf), L0",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "level": "L0",
+      "k": 0.833318,
+      "viewBox": [
+        -554.41,
+        -554.41,
+        1108.82,
+        1108.82
+      ],
+      "titles": [
+        "Platform Engineer",
+        "All States",
+        "Key Cases",
+        "Platform Engineer",
+        "Unspecified Role"
+      ],
+      "titleLengths": [
+        17,
+        10,
+        9,
+        17,
+        16
+      ],
+      "longestTitle": 17,
+      "canThisStandSeeTheDefect": true,
+      "standVerdict": "fixture carries a >=16-char title — the length-driven defect is in range",
+      "labelsMeasured": 10,
+      "labelsOutsideViewBox": 0,
+      "perBodyAllowance": [
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#1 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 69.704,
+          "widestLabelHalf": 59.694,
+          "widestIsTheMeasure": false,
+          "needOverAllowance": 0.8564,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "titleText": "All States",
+          "titleChars": 10,
+          "measureText": "#2 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 41.002,
+          "widestLabelHalf": 47.598,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.1609,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "titleText": "Key Cases",
+          "titleChars": 9,
+          "measureText": "#3 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 36.902,
+          "widestLabelHalf": 59.72,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.6183,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#4 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 69.704,
+          "widestLabelHalf": 59.72,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.8568,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "titleText": "Unspecified Role",
+          "titleChars": 16,
+          "measureText": "#5 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 65.604,
+          "widestLabelHalf": 59.72,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.9103,
+          "exceedsAllowance": false
+        }
+      ],
+      "bodiesWhereMeasureIsLongerThanTitle": 2,
+      "bodiesExceedingTheirTitleDerivedAllowance": 2,
+      "worstNeedOverAllowance": 1.6183,
+      "worstOverflowUserUnits": -20.003,
+      "worstOverflowDevicePx": -16.669,
+      "allLabelsInside": true,
+      "widenEstimate": {
+        "constant": 0.62,
+        "ratioMin": 0.7656,
+        "ratioMax": 0.971,
+        "ratioMean": 0.9084,
+        "anyLabelWiderThanEstimated": false,
+        "measuredEmPerCharMean": 0.5632,
+        "measuredEmPerCharWorst": 0.602,
+        "headroomOnTheConstantAtWorstLabel": "2.9 %",
+        "note": "measured / (chars * 0.62 * fontSizeUserUnits). > 1 means the frame is widened by LESS than the label actually needs, independently of whether the two-pass solve converges. Must be k-INDEPENDENT: both terms scale as 1/k, so a ratio that moves with the viewport is an instrument defect, not a finding.",
+        "kIndependent": true
+      },
+      "labels": [
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": -297.292,
+            "x1": -177.904,
+            "y0": -213.34,
+            "y1": -197.74
+          },
+          "overflowUserUnits": {
+            "left": -257.118,
+            "right": -732.314,
+            "top": -341.07,
+            "bottom": -752.15
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 59.694,
+          "estimatedHalfWidthUserUnits": 69.704,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "All States",
+          "chars": 10,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 26.158,
+          "boxUser": {
+            "x0": -322.725,
+            "x1": -259.944,
+            "y0": 10.15,
+            "y1": 25.75
+          },
+          "overflowUserUnits": {
+            "left": -231.685,
+            "right": -814.354,
+            "top": -564.56,
+            "bottom": -528.66
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 31.39,
+          "estimatedHalfWidthUserUnits": 41.002,
+          "estimateRatio_measuredOverEstimated": 0.7656
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "Key Cases",
+          "chars": 9,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 28.215,
+          "boxUser": {
+            "x0": 295.522,
+            "x1": 363.24,
+            "y0": 215.911,
+            "y1": 231.511
+          },
+          "overflowUserUnits": {
+            "left": -849.932,
+            "right": -191.17,
+            "top": -770.321,
+            "bottom": -322.899
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 33.859,
+          "estimatedHalfWidthUserUnits": 36.902,
+          "estimateRatio_measuredOverEstimated": 0.9175
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": 302.963,
+            "x1": 422.351,
+            "y0": -289.506,
+            "y1": -273.906
+          },
+          "overflowUserUnits": {
+            "left": -857.373,
+            "right": -132.059,
+            "top": -264.904,
+            "bottom": -828.316
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 59.694,
+          "estimatedHalfWidthUserUnits": 69.704,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "Unspecified Role",
+          "chars": 16,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 45.919,
+          "boxUser": {
+            "x0": -12.371,
+            "x1": 97.837,
+            "y0": 423.985,
+            "y1": 439.585
+          },
+          "overflowUserUnits": {
+            "left": -542.039,
+            "right": -456.573,
+            "top": -978.395,
+            "bottom": -114.825
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 55.104,
+          "estimatedHalfWidthUserUnits": 65.604,
+          "estimateRatio_measuredOverEstimated": 0.84
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "#1 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -285.47,
+            "x1": -190.274,
+            "y0": -105.03,
+            "y1": -88.23
+          },
+          "overflowUserUnits": {
+            "left": -268.94,
+            "right": -744.684,
+            "top": -449.38,
+            "bottom": -642.64
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 47.598,
+          "estimatedHalfWidthUserUnits": 49.203,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "#2 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -339.084,
+            "x1": -243.889,
+            "y0": 140.695,
+            "y1": 157.496
+          },
+          "overflowUserUnits": {
+            "left": -215.326,
+            "right": -798.299,
+            "top": -695.105,
+            "bottom": -396.914
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 47.598,
+          "estimatedHalfWidthUserUnits": 49.203,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "#3 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 269.731,
+            "x1": 389.171,
+            "y0": 322.68,
+            "y1": 339.481
+          },
+          "overflowUserUnits": {
+            "left": -824.141,
+            "right": -165.239,
+            "top": -877.09,
+            "bottom": -214.929
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 59.72,
+          "estimatedHalfWidthUserUnits": 61.504,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "#4 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 302.888,
+            "x1": 422.328,
+            "y0": -188.054,
+            "y1": -171.253
+          },
+          "overflowUserUnits": {
+            "left": -857.298,
+            "right": -132.082,
+            "top": -366.356,
+            "bottom": -725.663
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 59.72,
+          "estimatedHalfWidthUserUnits": 61.504,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "#5 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 13.2266,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": -16.89,
+            "x1": 102.55,
+            "y0": 517.607,
+            "y1": 534.407
+          },
+          "overflowUserUnits": {
+            "left": -537.52,
+            "right": -451.86,
+            "top": -1072.017,
+            "bottom": -20.003
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 59.72,
+          "estimatedHalfWidthUserUnits": 61.504,
+          "estimateRatio_measuredOverEstimated": 0.971
+        }
+      ]
+    },
+    {
+      "viewport": "1280x800",
+      "level": "L0",
+      "k": 0.443977,
+      "viewBox": [
+        -585.616,
+        -585.616,
+        1171.232,
+        1171.232
+      ],
+      "titles": [
+        "Platform Engineer",
+        "All States",
+        "Key Cases",
+        "Platform Engineer",
+        "Unspecified Role"
+      ],
+      "titleLengths": [
+        17,
+        10,
+        9,
+        17,
+        16
+      ],
+      "longestTitle": 17,
+      "canThisStandSeeTheDefect": true,
+      "standVerdict": "fixture carries a >=16-char title — the length-driven defect is in range",
+      "labelsMeasured": 10,
+      "labelsOutsideViewBox": 0,
+      "perBodyAllowance": [
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#1 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 130.831,
+          "widestLabelHalf": 112.042,
+          "widestIsTheMeasure": false,
+          "needOverAllowance": 0.8564,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "titleText": "All States",
+          "titleChars": 10,
+          "measureText": "#2 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 76.959,
+          "widestLabelHalf": 89.338,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.1608,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "titleText": "Key Cases",
+          "titleChars": 9,
+          "measureText": "#3 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 69.263,
+          "widestLabelHalf": 112.091,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.6183,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#4 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 130.831,
+          "widestLabelHalf": 112.091,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.8568,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "titleText": "Unspecified Role",
+          "titleChars": 16,
+          "measureText": "#5 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 123.135,
+          "widestLabelHalf": 112.091,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.9103,
+          "exceedsAllowance": false
+        }
+      ],
+      "bodiesWhereMeasureIsLongerThanTitle": 2,
+      "bodiesExceedingTheirTitleDerivedAllowance": 2,
+      "worstNeedOverAllowance": 1.6183,
+      "worstOverflowUserUnits": -31.827,
+      "worstOverflowDevicePx": -14.13,
+      "allLabelsInside": true,
+      "widenEstimate": {
+        "constant": 0.62,
+        "ratioMin": 0.7656,
+        "ratioMax": 0.971,
+        "ratioMean": 0.9084,
+        "anyLabelWiderThanEstimated": false,
+        "measuredEmPerCharMean": 0.5632,
+        "measuredEmPerCharWorst": 0.602,
+        "headroomOnTheConstantAtWorstLabel": "2.9 %",
+        "note": "measured / (chars * 0.62 * fontSizeUserUnits). > 1 means the frame is widened by LESS than the label actually needs, independently of whether the two-pass solve converges. Must be k-INDEPENDENT: both terms scale as 1/k, so a ratio that moves with the viewport is an instrument defect, not a finding.",
+        "kIndependent": true
+      },
+      "labels": [
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": -349.4,
+            "x1": -125.316,
+            "y0": -230.809,
+            "y1": -201.528
+          },
+          "overflowUserUnits": {
+            "left": -236.216,
+            "right": -710.932,
+            "top": -354.807,
+            "bottom": -787.144
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 112.042,
+          "estimatedHalfWidthUserUnits": 130.831,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "All States",
+          "chars": 10,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 26.158,
+          "boxUser": {
+            "x0": -350.118,
+            "x1": -232.283,
+            "y0": -7.319,
+            "y1": 21.962
+          },
+          "overflowUserUnits": {
+            "left": -235.498,
+            "right": -817.899,
+            "top": -578.297,
+            "bottom": -563.654
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 58.918,
+          "estimatedHalfWidthUserUnits": 76.959,
+          "estimateRatio_measuredOverEstimated": 0.7656
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "Key Cases",
+          "chars": 9,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 28.215,
+          "boxUser": {
+            "x0": 265.966,
+            "x1": 393.069,
+            "y0": 198.442,
+            "y1": 227.723
+          },
+          "overflowUserUnits": {
+            "left": -851.582,
+            "right": -192.547,
+            "top": -784.058,
+            "bottom": -357.893
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 63.551,
+          "estimatedHalfWidthUserUnits": 69.263,
+          "estimateRatio_measuredOverEstimated": 0.9175
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": 250.856,
+            "x1": 474.939,
+            "y0": -306.975,
+            "y1": -277.694
+          },
+          "overflowUserUnits": {
+            "left": -836.472,
+            "right": -110.677,
+            "top": -278.641,
+            "bottom": -863.31
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 112.042,
+          "estimatedHalfWidthUserUnits": 130.831,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "Unspecified Role",
+          "chars": 16,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 45.919,
+          "boxUser": {
+            "x0": -60.582,
+            "x1": 146.272,
+            "y0": 406.516,
+            "y1": 435.797
+          },
+          "overflowUserUnits": {
+            "left": -525.034,
+            "right": -439.344,
+            "top": -992.132,
+            "bottom": -149.819
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 103.427,
+          "estimatedHalfWidthUserUnits": 123.135,
+          "estimateRatio_measuredOverEstimated": 0.8399
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "#1 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -327.21,
+            "x1": -148.534,
+            "y0": -100.382,
+            "y1": -68.848
+          },
+          "overflowUserUnits": {
+            "left": -258.406,
+            "right": -734.15,
+            "top": -485.234,
+            "bottom": -654.464
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 89.338,
+          "estimatedHalfWidthUserUnits": 92.351,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "#2 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -380.825,
+            "x1": -202.148,
+            "y0": 145.344,
+            "y1": 176.877
+          },
+          "overflowUserUnits": {
+            "left": -204.791,
+            "right": -787.764,
+            "top": -730.96,
+            "bottom": -408.739
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 89.338,
+          "estimatedHalfWidthUserUnits": 92.351,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "#3 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 217.558,
+            "x1": 441.739,
+            "y0": 327.329,
+            "y1": 358.862
+          },
+          "overflowUserUnits": {
+            "left": -803.174,
+            "right": -143.877,
+            "top": -912.945,
+            "bottom": -226.754
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 112.091,
+          "estimatedHalfWidthUserUnits": 115.439,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "#4 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 250.715,
+            "x1": 474.896,
+            "y0": -183.405,
+            "y1": -151.872
+          },
+          "overflowUserUnits": {
+            "left": -836.331,
+            "right": -110.72,
+            "top": -402.211,
+            "bottom": -737.488
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 112.091,
+          "estimatedHalfWidthUserUnits": 115.439,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "#5 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 24.8256,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": -69.063,
+            "x1": 155.118,
+            "y0": 522.255,
+            "y1": 553.789
+          },
+          "overflowUserUnits": {
+            "left": -516.553,
+            "right": -430.498,
+            "top": -1107.871,
+            "bottom": -31.827
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 112.091,
+          "estimatedHalfWidthUserUnits": 115.439,
+          "estimateRatio_measuredOverEstimated": 0.971
+        }
+      ]
+    },
+    {
+      "viewport": "1024x768",
+      "level": "L0",
+      "k": 0.347337,
+      "viewBox": [
+        -604.601,
+        -604.601,
+        1209.202,
+        1209.202
+      ],
+      "titles": [
+        "Platform Engineer",
+        "All States",
+        "Key Cases",
+        "Platform Engineer",
+        "Unspecified Role"
+      ],
+      "titleLengths": [
+        17,
+        10,
+        9,
+        17,
+        16
+      ],
+      "longestTitle": 17,
+      "canThisStandSeeTheDefect": true,
+      "standVerdict": "fixture carries a >=16-char title — the length-driven defect is in range",
+      "labelsMeasured": 10,
+      "labelsOutsideViewBox": 0,
+      "perBodyAllowance": [
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#1 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 167.232,
+          "widestLabelHalf": 143.216,
+          "widestIsTheMeasure": false,
+          "needOverAllowance": 0.8564,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "titleText": "All States",
+          "titleChars": 10,
+          "measureText": "#2 · checked",
+          "measureChars": 12,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 98.372,
+          "widestLabelHalf": 114.195,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.1608,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "titleText": "Key Cases",
+          "titleChars": 9,
+          "measureText": "#3 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": true,
+          "allowanceHalfFromTitle": 88.535,
+          "widestLabelHalf": 143.278,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 1.6183,
+          "exceedsAllowance": true
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "titleText": "Platform Engineer",
+          "titleChars": 17,
+          "measureText": "#4 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 167.232,
+          "widestLabelHalf": 143.278,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.8568,
+          "exceedsAllowance": false
+        },
+        {
+          "key": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "titleText": "Unspecified Role",
+          "titleChars": 16,
+          "measureText": "#5 · names only",
+          "measureChars": 15,
+          "measureLongerThanTitle": false,
+          "allowanceHalfFromTitle": 157.395,
+          "widestLabelHalf": 143.278,
+          "widestIsTheMeasure": true,
+          "needOverAllowance": 0.9103,
+          "exceedsAllowance": false
+        }
+      ],
+      "bodiesWhereMeasureIsLongerThanTitle": 2,
+      "bodiesExceedingTheirTitleDerivedAllowance": 2,
+      "worstNeedOverAllowance": 1.6183,
+      "worstOverflowUserUnits": -39.27,
+      "worstOverflowDevicePx": -13.64,
+      "allLabelsInside": true,
+      "widenEstimate": {
+        "constant": 0.62,
+        "ratioMin": 0.7656,
+        "ratioMax": 0.971,
+        "ratioMean": 0.9084,
+        "anyLabelWiderThanEstimated": false,
+        "measuredEmPerCharMean": 0.5632,
+        "measuredEmPerCharWorst": 0.602,
+        "headroomOnTheConstantAtWorstLabel": "2.9 %",
+        "note": "measured / (chars * 0.62 * fontSizeUserUnits). > 1 means the frame is widened by LESS than the label actually needs, independently of whether the two-pass solve converges. Must be k-INDEPENDENT: both terms scale as 1/k, so a ratio that moves with the viewport is an instrument defect, not a finding.",
+        "kIndependent": true
+      },
+      "labels": [
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": -380.43,
+            "x1": -93.999,
+            "y0": -241.212,
+            "y1": -203.784
+          },
+          "overflowUserUnits": {
+            "left": -224.171,
+            "right": -698.6,
+            "top": -363.389,
+            "bottom": -808.385
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 143.216,
+          "estimatedHalfWidthUserUnits": 167.232,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "All States",
+          "chars": 10,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 26.158,
+          "boxUser": {
+            "x0": -366.432,
+            "x1": -215.811,
+            "y0": -17.722,
+            "y1": 19.706
+          },
+          "overflowUserUnits": {
+            "left": -238.169,
+            "right": -820.412,
+            "top": -586.879,
+            "bottom": -584.895
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 75.311,
+          "estimatedHalfWidthUserUnits": 98.372,
+          "estimateRatio_measuredOverEstimated": 0.7656
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "Key Cases",
+          "chars": 9,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 28.215,
+          "boxUser": {
+            "x0": 248.365,
+            "x1": 410.832,
+            "y0": 188.039,
+            "y1": 225.466
+          },
+          "overflowUserUnits": {
+            "left": -852.966,
+            "right": -193.769,
+            "top": -792.64,
+            "bottom": -379.135
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 81.233,
+          "estimatedHalfWidthUserUnits": 88.535,
+          "estimateRatio_measuredOverEstimated": 0.9175
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "Platform Engineer",
+          "chars": 17,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 49.744,
+          "boxUser": {
+            "x0": 219.825,
+            "x1": 506.256,
+            "y0": -317.378,
+            "y1": -279.95
+          },
+          "overflowUserUnits": {
+            "left": -824.426,
+            "right": -98.345,
+            "top": -287.223,
+            "bottom": -884.551
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 143.216,
+          "estimatedHalfWidthUserUnits": 167.232,
+          "estimateRatio_measuredOverEstimated": 0.8564
+        },
+        {
+          "kind": "name",
+          "testid": "mapping-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "Unspecified Role",
+          "chars": 16,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 45.919,
+          "boxUser": {
+            "x0": -89.292,
+            "x1": 175.116,
+            "y0": 396.113,
+            "y1": 433.541
+          },
+          "overflowUserUnits": {
+            "left": -515.309,
+            "right": -429.485,
+            "top": -1000.714,
+            "bottom": -171.06
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 132.204,
+          "estimatedHalfWidthUserUnits": 157.395,
+          "estimateRatio_measuredOverEstimated": 0.8399
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+          "text": "#1 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -352.067,
+            "x1": -123.677,
+            "y0": -97.613,
+            "y1": -57.306
+          },
+          "overflowUserUnits": {
+            "left": -252.534,
+            "right": -728.278,
+            "top": -506.988,
+            "bottom": -661.907
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 114.195,
+          "estimatedHalfWidthUserUnits": 118.046,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+          "text": "#2 · checked",
+          "chars": 12,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 39.664,
+          "boxUser": {
+            "x0": -405.681,
+            "x1": -177.292,
+            "y0": 148.113,
+            "y1": 188.419
+          },
+          "overflowUserUnits": {
+            "left": -198.92,
+            "right": -781.893,
+            "top": -752.714,
+            "bottom": -416.182
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 114.195,
+          "estimatedHalfWidthUserUnits": 118.046,
+          "estimateRatio_measuredOverEstimated": 0.9674
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+          "text": "#3 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 186.488,
+            "x1": 473.044,
+            "y0": 330.097,
+            "y1": 370.404
+          },
+          "overflowUserUnits": {
+            "left": -791.089,
+            "right": -131.557,
+            "top": -934.698,
+            "bottom": -234.197
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 143.278,
+          "estimatedHalfWidthUserUnits": 147.558,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+          "text": "#4 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": 219.645,
+            "x1": 506.201,
+            "y0": -180.636,
+            "y1": -140.33
+          },
+          "overflowUserUnits": {
+            "left": -824.246,
+            "right": -98.4,
+            "top": -423.965,
+            "bottom": -744.931
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 143.278,
+          "estimatedHalfWidthUserUnits": 147.558,
+          "estimateRatio_measuredOverEstimated": 0.971
+        },
+        {
+          "kind": "measure",
+          "testid": "mapping-measure-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+          "text": "#5 · names only",
+          "chars": 15,
+          "fontSizeUserUnits": 31.7329,
+          "renderedHalfWidthCssPx": 49.766,
+          "boxUser": {
+            "x0": -100.133,
+            "x1": 186.423,
+            "y0": 525.024,
+            "y1": 565.331
+          },
+          "overflowUserUnits": {
+            "left": -504.468,
+            "right": -418.178,
+            "top": -1129.625,
+            "bottom": -39.27
+          },
+          "inside": true,
+          "measuredHalfWidthUserUnits": 143.278,
+          "estimatedHalfWidthUserUnits": 147.558,
+          "estimateRatio_measuredOverEstimated": 0.971
+        }
+      ]
+    }
+  ]
+}

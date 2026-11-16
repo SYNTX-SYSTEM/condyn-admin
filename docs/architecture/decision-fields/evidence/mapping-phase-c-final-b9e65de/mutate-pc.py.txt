@@ -1,0 +1,89 @@
+# PINK phase C mutants (own set, §3.98) against GRÜN's phase-C suite. argv: <pristine tree> <work root> [--dry] <ids...>
+# One copy per mutant under <work root>; the pristine tree is never edited; no copy is removed by this script (scratch only).
+# architecture.test.ts files read git and are excluded (each mutant is an unstaged change there by construction).
+import os, shutil, subprocess, sys
+SRC, ROOT = sys.argv[1], sys.argv[2]
+DRY = "--dry" in sys.argv
+IDS = [a for a in sys.argv[3:] if a != "--dry"]
+SUITE = ["test/career/mapping-field/model.test.ts", "test/career/mapping-field/field-render.test.tsx", "test/career/mapping-field/field-interaction.test.tsx",
+         "test/career/mapping-field/field-wiring.test.tsx", "test/career/auto-capability"]
+if os.environ.get("SUITE") == "pink": SUITE = ["test/pink/pink-pc.test.ts", "test/pink/pink-pc-render.test.tsx"]
+MF, C, P, H = "lib/career/view-model/mapping-field.ts", "app/components/career/demo/PersonJobMappingField.tsx", "app/components/career/demo/AutoJobRankingPanel.tsx", "app/components/career/demo/SemanticCareerIntelligenceField.tsx"
+M = {
+ # --- model: class, line, bodies, sectors, run
+ "M1": ("class: any requirement of a LEXICAL_ONLY role makes it LEXICAL", MF, 'role.requirements.some(q => q.source === "LEXICAL")', 'role.requirements.some(q => q.source !== "SEMANTIC")'),
+ "M2": ("class from fit instead of tier", MF, 'const cls: CouplingClass = role.tier === "SEMANTIC" ?', 'const cls: CouplingClass = (role.fit ?? 0) > 0 ?'),
+ "M3": ("SEMANTIC line from UNCLEAR (broken)", MF, 'SEMANTIC: couplingSign("SEMANTIC", "EQUIVALENT").arcLine', 'SEMANTIC: couplingSign("SEMANTIC", "UNCLEAR").arcLine'),
+ "M4": ("overflow bodies drawn", MF, "if (placed.overflow) { overflowByPool.set(placed.poolId, (overflowByPool.get(placed.poolId) ?? 0) + 1); continue; }", "if (placed.overflow) { overflowByPool.set(placed.poolId, (overflowByPool.get(placed.poolId) ?? 0) + 1); }"),
+ "M5": ("sector drawn ignores overflow", MF, "drawn: s.roles - (overflowByPool.get(s.poolId) ?? 0)", "drawn: s.roles"),
+ "M6": ("breath ignores the budget", MF, "sign.pendingBreath && (budget === null || budget.rolesEvaluated < budget.rolesPlanned)", "sign.pendingBreath"),
+ "M7": ("breath only with a budget", MF, "(budget === null || budget.rolesEvaluated < budget.rolesPlanned)", "(budget !== null && budget.rolesEvaluated < budget.rolesPlanned)"),
+ "M8": ("displaced only by x", MF, "placed.displacement[0] !== 0 || placed.displacement[1] !== 0", "placed.displacement[0] !== 0"),
+ "M9": ("constellation name = key", MF, "name: names.get(n.key) ?? n.key", "name: n.key"),
+ "M10": ("evidence class dropped", MF, "evidenceClass: view.evidenceClass, authority", "evidenceClass: null, authority"),
+ "M11": ("field without an available run", MF, 'if (input.ranking.state !== "AVAILABLE" || input.watch.read.state !== "AVAILABLE") return null;', 'if (input.ranking.state !== "AVAILABLE") return null; if (input.watch.read.state !== "AVAILABLE") return null as never;'),
+ "M12": ("sector pool name = id", MF, "poolName: poolName.get(s.poolId) ?? s.poolId, startDegrees", "poolName: s.poolId, startDegrees"),
+ # --- model: focus held to L0/L1
+ "F1": ("all engine actions admitted", MF, "if (!action || typeof action !== \"object\" || !(FIELD_ACTIONS as readonly string[]).includes(action.type)) return state;", "if (!action || typeof action !== \"object\") return state;"),
+ "F2": ("OPEN_ROLE admitted", MF, 'export const FIELD_ACTIONS = ["OPEN_POOL", "UP", "RESET", "MARK_ROLE", "CLEAR_SELECTION"] as const;', 'export const FIELD_ACTIONS = ["OPEN_POOL", "UP", "RESET", "MARK_ROLE", "CLEAR_SELECTION", "OPEN_ROLE"] as const;'),
+ "F3": ("refused action returns a new equal object", MF, "includes(action.type)) return state;", "includes(action.type)) return { ...state };"),
+ "F4": ("L1 kept for a pool no longer in the field", MF, 'state.level === "L1" && state.pool !== null && model.sectors.some(s => s.poolId === state.pool)', 'state.level === "L1" && state.pool !== null'),
+ "F5": ("marked body shown outside the open pool", MF, '(level === "L1" && body.id.jobPoolUploadId !== pool)', "false"),
+ "F6": ("UP not admitted", MF, '["OPEN_POOL", "UP", "RESET", "MARK_ROLE", "CLEAR_SELECTION"]', '["OPEN_POOL", "RESET", "MARK_ROLE", "CLEAR_SELECTION"]'),
+ # --- model: time
+ "T1": ("a rank change moves a body", MF, 'if (change.kind !== "ROLE_TIER_CHANGED" && change.kind !== "ROLE_FIT_CHANGED") continue;', 'if (change.kind !== "ROLE_TIER_CHANGED" && change.kind !== "ROLE_FIT_CHANGED" && change.kind !== "ROLE_RANK_CHANGED") continue;'),
+ "T2": ("movement across analyses", MF, "if (previous === null || previous.analysisId !== next.analysisId) return out;", "if (previous === null) return out;"),
+ "T3": ("tier change does not move", MF, 'if (change.kind !== "ROLE_TIER_CHANGED" && change.kind !== "ROLE_FIT_CHANGED") continue;', 'if (change.kind !== "ROLE_FIT_CHANGED") continue;'),
+ "T4": ("trail lost", MF, "from: was === undefined ? null : Object.freeze({ x: was.x, y: was.y })", "from: null"),
+ "T5": ("undrawn body moves", MF, "if (!drawn.has(key) || out.has(key)) continue;", "if (out.has(key)) continue;"),
+ # --- view box
+ "B1": ("L1 view box misses the quarter points", MF, "quarter <= to; quarter += 90) angles.push(quarter);", "quarter < from; quarter += 90) angles.push(quarter);"),
+ "B2": ("L1 view box from the horizon, not the field edge", MF, "for (const r of [GEOMETRY.personRadius, GEOMETRY.fieldRadius])", "for (const r of [GEOMETRY.personRadius, GEOMETRY.horizon])"),
+ # --- component
+ "C1": ("click on L1 opens a pool too", C, 'onClick={() => { if (level === "L0") act({ type: "OPEN_POOL", jobPoolUploadId: b.id.jobPoolUploadId }); }}', 'onClick={() => { act({ type: "OPEN_POOL", jobPoolUploadId: b.id.jobPoolUploadId }); }}'),
+ "C2": ("hover opens the pool instead of marking", C, 'onMouseEnter={() => act({ type: "MARK_ROLE", role: b.id })}', 'onMouseEnter={() => act({ type: "OPEN_POOL", jobPoolUploadId: b.id.jobPoolUploadId })}'),
+ "C3": ("leave does not clear the mark", C, 'onMouseLeave={() => act({ type: "CLEAR_SELECTION" })}', "onMouseLeave={() => undefined}"),
+ "C4": ("Escape does nothing", C, 'if (event.key === "Escape" && level !== "L0") { event.stopPropagation(); act({ type: "UP" }); }', 'if (event.key === "Escape" && level !== "L0") { event.stopPropagation(); }'),
+ "C5": ("no still sentence for STALLED", C, '{run.sign.frozen && <span data-testid="mapping-still"', '{false && <span data-testid="mapping-still"'),
+ "C6": ("still sentence ignores resumePending", C, "{run.resumePending ? c.stillResume : c.still}", "{c.still}"),
+ "C7": ("SEMANTIC bodies breathe too", C, 'const breath = run.pendingBreath && b.class !== "SEMANTIC";', "const breath = run.pendingBreath;"),
+ "C8": ("line dash dropped (class by nothing)", C, "strokeDasharray={dashOf(b.line, k, circumference)}", "strokeDasharray={undefined}"),
+ "C9": ("L1 shows the whole field's overflow", C, "const overflowShown = openSector === null ? model.overflowCount : openSector.overflow;", "const overflowShown = model.overflowCount;"),
+ "C10": ("empty view draws a field", C, "if (model === null || model.view.empty !== null) return null;", "if (model === null) return null;"),
+ "C11": ("DE shows EN copy", C, "const c = MAPPING_FIELD_COPY[locale];", "const c = MAPPING_FIELD_COPY.en;"),
+ "C12": ("bodies outside the open pool focusable", C, "tabIndex={inPool(b.id.jobPoolUploadId) ? 0 : -1}", "tabIndex={0}"),
+ "C13": ("decorative transition on every body", C, 'transition: move?.moved ? "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)" : "none"', 'transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)"'),
+ "C14": ("readings never advance (no movement after the first)", C, "if ((model?.ranking ?? null) !== (pair.now?.ranking ?? null)) {", "if (pair.now === null && model !== null) {"),
+ "C15": ("pulse while frozen with resumePending", C, "{run.sign.resumePulse && <circle", "{(run.sign.resumePulse || run.resumePending) && <circle"),
+ "C16": ("legend lines all solid", C, 'strokeDasharray={dashOf(line, 1, 2 * Math.PI * 5)}', 'strokeDasharray={dashOf("solid", 1, 2 * Math.PI * 5)}'),
+ "C17": ("authority sentence emptied", C, 'data-decision={String(model.authority.decision)} style={meta}>{c.authority}</span>', 'data-decision={String(model.authority.decision)} style={meta}>{""}</span>'),
+ "C18": ("evidence badge always NONE", C, 'const evidence = model.evidenceClass ?? "NONE";', 'const evidence = "NONE" as const;'),
+ "C19": ("trail without a movement", C, "{move?.moved && move.from !== null && (", "{move !== undefined && move.from !== null && move.from.x !== b.x + 1e9 && ("),
+ "C20": ("pool buttons on L1 too", C, "{openSector === null && (\n        <nav", "{true && (\n        <nav"),
+ # --- panel and wiring
+ "P1": ("panel: field below the list", P, "                {field}\n", ""),
+ "P2": ("panel: field dropped", P, "{field}", "{null}"),
+ "W1": ("wiring: projection never passed", H, 'projection={firstScreen.state === "PERSON_RESULT" ? firstScreen.result.projection : null}', "projection={null}"),
+ "W2": ("wiring: field without the run", H, "ranking={jobRanking} watch={autoMatch} />}>", "ranking={jobRanking} watch={{ read: { state: \"LOADING\" }, waitedOut: false }} />}>"),
+}
+if not IDS: IDS = list(M)
+for mid in IDS:
+    label, f, old, new = M[mid]
+    src = open(f"{SRC}/{f}").read(); n = src.count(old)
+    if DRY: print(f"{mid} pattern={n} {label}", flush=True); continue
+    if n != 1: print(f"{mid} PATTERN {n} {label}", flush=True); continue
+    W = f"{ROOT}/m-{mid}"
+    if os.path.exists(W): print(f"{mid} EXISTS {W} (not reused)", flush=True); continue
+    # Hard-linked copy of SRC (a dedicated real copy, never the product tree): no extra space. The mutated file gets a NEW inode
+    # through os.replace, so SRC's file is untouched; SRC is checked with git status after the run.
+    subprocess.run(["cp", "-al", SRC, W], check=True)
+    tmp = f"{W}/{f}.pink-mutant"
+    with open(tmp, "w") as out_file: out_file.write(src.replace(old, new))
+    os.replace(tmp, f"{W}/{f}")
+    assert open(f"{SRC}/{f}").read() == src, "pristine source changed"
+    try:
+        r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *SUITE], cwd=W, capture_output=True, text=True, timeout=900)
+        out = r.stdout + r.stderr; tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+        fails = sorted({l.split(">")[-1].strip()[:70] for l in out.splitlines() if l.strip().startswith("FAIL ")})
+        print(f"{mid} {'RED' if r.returncode != 0 else 'GREEN'} {label} | {tests[-1] if tests else 'no summary'} | {fails[:2]}", flush=True)
+    except subprocess.TimeoutExpired: print(f"{mid} TIMEOUT {label}", flush=True)

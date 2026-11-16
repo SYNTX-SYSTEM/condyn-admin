@@ -1,0 +1,93 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "reading": "PINK — PG-3's lower limb and the size-floor disclosure, on the rendered page",
+  "verdict": "PG-3's lower limb WITHIN bound at its stated condition; the disclosure does NOT measure it",
+  "scope": "one fixture, one analysisId, five bodies (2 field / 3 shelf), L0 — §63's condition applies",
+  "constants": {
+    "SIZE_FLOOR_PX": 12,
+    "PG3_LO": 56,
+    "PG3_HI": 92
+  },
+  "finding": "sizeFloor enforces 12 px of diameter, not PG-3's 56. The disclosure counts interventions of a floor ~4.7x lower than the bound, so data-count = 0 is consistent with every body being far under 56 px — as the 1280 and 1024 rows show. Use data-size-floors (unconditional, :736) over the span (:784, conditional on floored > 0).",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "k": 0.833318,
+      "level": "L0",
+      "unconditionalHook_dataSizeFloors": "0",
+      "conditionalSpanPresent": false,
+      "conditionalSpanCount": null,
+      "hooksAgree": true,
+      "bodyDiametersDevicePx": [
+        87.77,
+        69.24,
+        67.96,
+        63.52,
+        57
+      ],
+      "smallest": 57,
+      "largest": 87.77,
+      "productFloorDevicePx": 12,
+      "anyBodyBelowProductFloor": false,
+      "PG3_inStatedCondition": true,
+      "PG3_bound": "56..92 px diameter at L0 1920x1080",
+      "PG3_allWithinBound": true,
+      "PG3_marginAtSmallest_px": 1,
+      "PG3_verdict": "WITHIN",
+      "bodiesBelowPG3Low": 0
+    },
+    {
+      "viewport": "1280x800",
+      "k": 0.443977,
+      "level": "L0",
+      "unconditionalHook_dataSizeFloors": "0",
+      "conditionalSpanPresent": false,
+      "conditionalSpanCount": null,
+      "hooksAgree": true,
+      "bodyDiametersDevicePx": [
+        46.76,
+        36.89,
+        36.21,
+        33.84,
+        30.37
+      ],
+      "smallest": 30.37,
+      "largest": 46.76,
+      "productFloorDevicePx": 12,
+      "anyBodyBelowProductFloor": false,
+      "PG3_inStatedCondition": false,
+      "PG3_bound": "56..92 px diameter at L0 1920x1080",
+      "PG3_allWithinBound": false,
+      "PG3_marginAtSmallest_px": -25.63,
+      "PG3_verdict": "OUT OF CONDITION — reported as context, not as a verdict (A-G162)",
+      "bodiesBelowPG3Low": 5
+    },
+    {
+      "viewport": "1024x768",
+      "k": 0.347337,
+      "level": "L0",
+      "unconditionalHook_dataSizeFloors": "0",
+      "conditionalSpanPresent": false,
+      "conditionalSpanCount": null,
+      "hooksAgree": true,
+      "bodyDiametersDevicePx": [
+        36.58,
+        28.86,
+        28.32,
+        26.48,
+        23.76
+      ],
+      "smallest": 23.76,
+      "largest": 36.58,
+      "productFloorDevicePx": 12,
+      "anyBodyBelowProductFloor": false,
+      "PG3_inStatedCondition": false,
+      "PG3_bound": "56..92 px diameter at L0 1920x1080",
+      "PG3_allWithinBound": false,
+      "PG3_marginAtSmallest_px": -32.24,
+      "PG3_verdict": "OUT OF CONDITION — reported as context, not as a verdict (A-G162)",
+      "bodiesBelowPG3Low": 5
+    }
+  ]
+}

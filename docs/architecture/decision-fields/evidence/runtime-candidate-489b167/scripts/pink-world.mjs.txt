@@ -1,0 +1,45 @@
+// PINK runtime-candidate probe on the restored world (STAND-IN, no worker, no key). argv: <state.json> <repo> <out dir> <label> <phase: get|post|old>
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL, PHASE] = process.argv.slice(2); mkdirSync(OUT, { recursive: true });
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; if (!/^condyn_test_[0-9a-f]+$/.test(st.database)) throw new Error("not disposable");
+const postgres = (await import(pathToFileURL(`${ROOT}/node_modules/postgres/src/index.js`).href)).default;
+const au = new URL(process.env.TEST_DATABASE_ADMIN_URL); au.pathname = `/${st.database}`; const sql = postgres(au.toString(), { max: 1, onnotice: () => {} });
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const NETLOG = STATE.replace(/state\.json$/, "net.log"); const net = () => { try { return readFileSync(NETLOG, "utf8").split("\n").filter(Boolean).length; } catch { return 0; } };
+const counts = async () => { const tables = (await sql`SELECT tablename FROM pg_tables WHERE schemaname = 'public' ORDER BY 1`).map(r => r.tablename); const c = {}; for (const t of tables) c[t] = (await sql.unsafe(`SELECT count(*)::int AS n FROM "${t}"`))[0].n; return c; };
+const stats = async () => { await sql`SELECT pg_stat_clear_snapshot()`; const [r] = await sql`SELECT coalesce(sum(n_tup_ins),0)::bigint AS i, coalesce(sum(n_tup_upd),0)::bigint AS u, coalesce(sum(n_tup_del),0)::bigint AS d FROM pg_stat_user_tables`; return { ins: Number(r.i), upd: Number(r.u), del: Number(r.d) }; };
+const diff = (a, b) => Object.fromEntries([...new Set([...Object.keys(a), ...Object.keys(b)])].filter(k => a[k] !== b[k]).map(k => [k, [a[k] ?? "absent", b[k] ?? "absent"]]));
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5"; const out = { label: LABEL, phase: PHASE, evidenceClass: "STAND_IN (restored world, no worker, no key)" };
+const analyses = (await (await fetch(`${BASE}/api/career/analyses`)).json()).analyses ?? []; out.analyses = analyses.length;
+const PA = analyses.find(a => a.analysisId === "ANL_1792628831636_456")?.analysisId ?? null; out.personAnalysisPresent = !!PA;
+const rev = (await sql`SELECT career_decision_context_revision_id AS id FROM career_decision_context_revisions ORDER BY 1 LIMIT 2`.catch(() => [])).map(r => r.id); out.decisionContextRevisions = rev.length; writeFileSync(`${OUT}/rev-ids-${LABEL}.txt`, rev.join(" "));
+const relTables = async () => (await sql`SELECT tablename FROM pg_tables WHERE tablename IN ('career_proposal_requirement_relations','career_relation_investigations','career_relation_role_tasks','career_relation_call_ledger') ORDER BY 1`).map(r => r.tablename);
+if (PHASE === "get" || PHASE === "old") {
+  out.relationTablesBefore = await relTables(); const c0 = await counts(); const s0 = await stats(); const n0 = net();
+  const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  let blocked = 0; const api = []; await ctx.route("**/*", r => { const m = r.request().method(), u = new URL(r.request().url()); if (u.pathname.startsWith("/api/")) api.push(`${m} ${u.pathname.replace(/ANL_\d+_\d+/g, "ANL").replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL")}`); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+  const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(String(e).slice(0, 140)));
+  const pages = [`/career/demo`, `/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PA}`, `/career/demo?investigationMode=PERSON&focus=CAPABILITY&analysisId=${PA}&discoveryPoolUploadId=${DLL}`,
+    `/career/demo?investigationMode=PERSON_X_JOB&focus=CAPABILITY&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_kestrel_fullstack`, `/career/demo?investigationMode=JOB&focus=FIELD&jobPoolUploadId=${DLL}`,
+    ...rev.map(r => `/career/demo?careerDecisionContextRevisionId=${r}`)];
+  const pageRes = {};
+  for (const path of pages) { const r = await p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }).catch(e => null); await sleep(7000); pageRes[path.replace(/ANL_\d+_\d+/g, "ANL").replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL").replace(/DCTXREV_[0-9A-F]+/g, "DCTXREV").slice(0, 120)] = { status: r?.status() ?? "ERR", shells: await p.evaluate(() => document.querySelectorAll('[data-testid^="focus-transition-stage-shell-"]').length).catch(() => null), rdState: await p.evaluate(() => document.querySelector('[data-testid="rd-state"]')?.dataset.state ?? null).catch(() => null), hrContext: await p.evaluate(() => !!document.querySelector('[data-testid="hr-decision-loop-context"]')).catch(() => null) }; }
+  const apiPaths = [`/api/career/analyses`, `/api/career/analyses/${PA}`, `/api/career/analyses/${PA}/investigation`, `/api/career/analyses/${PA}/gemini-result`, `/api/career/job-pools`, `/api/career/job-pools/${DLL}`, `/api/career/job-pools/${DLL}/matches?analysisId=${PA}`, `/api/career/job-pools/${DLL}/roles/role_kestrel_fullstack/structure`, `/api/career/analyses/${PA}/role-discovery?jobPoolUploadId=${DLL}`];
+  const apiRes = {}; for (const path of apiPaths) { const r = await fetch(`${BASE}${path}`); const j = await r.json().catch(() => ({})); apiRes[path.replace(/ANL_\d+_\d+/g, "ANL").replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL")] = `${r.status} ${j.issues?.[0]?.code ?? j.error?.code ?? (j.discovery ? `plan ${j.discovery.semanticPlan?.state} control ${j.discovery.startControl?.engineState ?? "-"}` : "")}`; }
+  await b.close(); await sleep(2500);
+  const c1 = await counts(); const s1 = await stats();
+  out.get = { pages: pageRes, api: apiRes, browserApiCalls: [...new Set(api)].sort(), blockedNonGet: blocked, pageErrors: errors, rowChanges: diff(c0, c1), tupleStats: { before: s0, after: s1 }, outboundAttempts: net() - n0 };
+  out.relationTablesAfter = await relTables();
+  if (out.relationTablesAfter.length) { out.relationRows = Object.fromEntries(await Promise.all(out.relationTablesAfter.map(async t => [t, (await sql.unsafe(`SELECT count(*)::int AS n FROM ${t}`))[0].n]))); out.guardTriggers = (await sql`SELECT tgname, tgenabled FROM pg_trigger WHERE tgname LIKE 'rel_%guard' OR tgname LIKE 'career_proposal_requirement_relations%' ORDER BY 1`).map(r => `${r.tgname}:${r.tgenabled}`); }
+}
+if (PHASE === "post") {
+  // nothing Gemini-related starts without worker / key: one analyze POST (PERSON, a text document) → the job waits
+  const n0 = net(); const r = await fetch(`${BASE}/api/career/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ investigation: { mode: "PERSON" }, documents: [{ type: "text", content: "Led a migration to event-driven services with TypeScript.", title: "t", docId: "d1" }] }) });
+  const j = await r.json(); await sleep(15000); const job = j.jobId ? await (await fetch(`${BASE}/api/career/jobs/${j.jobId}`)).json() : null;
+  out.post = { analyzeStatus: r.status, jobStatusAfter15s: job?.status ?? null, exchanges: j.jobId ? (await (await fetch(`${BASE}/api/career/jobs/${j.jobId}/gemini-exchanges`)).json().catch(() => ({})))?.exchanges?.length ?? "n/a" : null, outboundAttempts: net() - n0, geminiExchangeRows: (await sql`SELECT count(*)::int AS n FROM career_gemini_provider_exchanges`.catch(() => [{ n: "n/a" }]))[0].n };
+  // semantic start without provider configuration is refused (the lab runs with stand-in; this checks the exact config once more via the GET control)
+  const d = await (await fetch(`${BASE}/api/career/analyses/${PA}/role-discovery?jobPoolUploadId=${DLL}`)).json(); out.post.startControl = d.discovery?.startControl ?? null;
+}
+await sql.end(); writeFileSync(`${OUT}/world-${LABEL}-${PHASE}.json`, JSON.stringify(out, null, 1)); console.log("WORLD", LABEL, PHASE, JSON.stringify(out).slice(0, 1600));

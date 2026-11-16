@@ -1,0 +1,84 @@
+// PINK semiotic entry probe v2 (§3.82): every entry state, gate attributes, keyboard, entry action, overlap. The browser sends GET only.
+// argv: <state.json> <repo> <out json> <label> [W H] ; env PINK_SHOTS=<dir> (clipped top-band shots, no CV content in these states)
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT, LABEL, Wd = "1920", Ht = "1080"] = process.argv.slice(2);
+const st = JSON.parse(readFileSync(STATE, "utf8")); if (st.gemini !== "STANDIN") throw new Error("not a stand-in lab"); const BASE = st.base;
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const SHOTS = process.env.PINK_SHOTS; if (SHOTS) mkdirSync(SHOTS, { recursive: true });
+const DLL = "JPOOL_B94850C439974E27496FE3B1A9A076B5", ORG = "org_kestrel", ROLE = "role_kestrel_fullstack";
+const FORBID = /\b(closed|gated|blocked|block|locked|first|error|must|denied|forbidden|not allowed|required|geschlossen|gesperrt|blockiert|zuerst|fehler|muss|müssen|verboten|nicht erlaubt|erforderlich|pflicht|cannot|can't|kann nicht|nicht möglich|unavailable|nicht verfügbar)\b/gi;
+const capture = async (p) => p.evaluate((src) => {
+  const re = new RegExp(src, "gi"); const btn = document.querySelector('[data-testid="field-focus-capability-btn"]');
+  const line = document.querySelector('[data-sx-shell="gate-reason"]');
+  const rgb = c => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return null; const [r, g, b, a = 1] = m[1].split(",").map(Number); return { r, g, b, a }; };
+  const warm = c => { const x = rgb(c); if (!x || x.a < 0.3) return false; const mx = Math.max(x.r, x.g, x.b), mn = Math.min(x.r, x.g, x.b); if (mx - mn < 40) return false; let h; if (mx === x.r) h = (60 * ((x.g - x.b) / (mx - mn)) + 360) % 360; else if (mx === x.g) h = 60 * ((x.b - x.r) / (mx - mn)) + 120; else h = 60 * ((x.r - x.g) / (mx - mn)) + 240; return h < 70 || h > 330; };
+  const vis = e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== "hidden" && cs.display !== "none"; };
+  const top = [...document.querySelectorAll("body *")].filter(e => { const r = e.getBoundingClientRect(); return r.top < 300 && r.bottom > 0 && vis(e) && [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()); });
+  const topText = top.map(e => [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent.trim()).join(" ")).filter(Boolean);
+  const els = line ? [line, ...line.querySelectorAll("*")] : [];
+  let overlap = null;
+  if (line && vis(line)) { const L = line.getBoundingClientRect(); const inter = (a) => Math.max(0, Math.min(a.right, L.right) - Math.max(a.left, L.left)) * Math.max(0, Math.min(a.bottom, L.bottom) - Math.max(a.top, L.top));
+    const cands = [...document.querySelectorAll('button, a[href], [role="button"], [tabindex="0"], [data-testid^="cosmos-"], [data-testid*="node"], [data-testid="job-pool-list"]')].filter(e => !line.contains(e) && vis(e));
+    overlap = cands.map(e => ({ id: e.dataset.testid ?? e.tagName, px: Math.round(inter(e.getBoundingClientRect())) })).filter(x => x.px > 0).sort((a, b) => b.px - a.px).slice(0, 8); }
+  const act = line?.querySelector('[data-testid="field-entry-action"]');
+  return {
+    button: btn ? { gate: btn.getAttribute("data-field-gate"), disabled: btn.disabled, ariaDisabled: btn.getAttribute("aria-disabled"), describedBy: btn.getAttribute("aria-describedby"), describedResolves: !!(btn.getAttribute("aria-describedby") && document.getElementById(btn.getAttribute("aria-describedby"))), title: btn.getAttribute("title"), active: btn.getAttribute("data-field-focus-active"), tabIndex: btn.tabIndex } : null,
+    field: (() => { const f = document.querySelector('[data-testid="semantic-career-intelligence-field"]'); return f ? { gate: f.dataset.capabilityGate ?? null, focus: f.dataset.fieldFocus ?? null, mode: f.dataset.investigationMode ?? null } : null; })(),
+    line: line ? { testid: line.dataset.testid ?? null, id: line.id || null, role: line.getAttribute("role"), ariaLive: line.getAttribute("aria-live"), dataGate: line.dataset.gate ?? null, entryState: line.dataset.entryState ?? null, visible: vis(line), text: line.innerText.replace(/\s+/g, " ").trim(), rect: (() => { const r = line.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height)]; })(), colors: [...new Set(els.map(e => getComputedStyle(e).color))], warmColors: [...new Set(els.map(e => getComputedStyle(e).color).filter(warm))], warmBorders: [...new Set(els.map(e => getComputedStyle(e).borderColor).filter(warm))], warmBg: [...new Set(els.map(e => getComputedStyle(e).backgroundColor).filter(warm))], icons: els.filter(e => e.tagName === "svg").length, action: act ? { id: act.dataset.action, text: act.textContent.trim() } : null, overflowX: line.scrollWidth > line.clientWidth + 1 } : null,
+    overlap, alerts: [...document.querySelectorAll('[role="alert"]')].map(e => e.dataset.testid ?? e.tagName), assertive: document.querySelectorAll('[aria-live="assertive"]').length, statuses: [...document.querySelectorAll('[role="status"]')].map(e => (e.dataset.testid ?? e.tagName)).slice(0, 10),
+    forbiddenInTop: [...new Set((topText.join(" | ").match(re) ?? []).map(s => s.toLowerCase()))], topText: topText.slice(0, 40),
+    pageScroll: document.documentElement.scrollWidth > innerWidth + 1 ? "X" : "", pageScrollY: document.documentElement.scrollHeight > innerHeight + 1
+  };
+}, FORBID.source);
+const b = await chromium.launch(); const out = { label: LABEL, viewport: `${Wd}x${Ht}`, states: {} };
+async function fresh(locale, routeMode) {
+  const ctx = await b.newContext({ viewport: { width: +Wd, height: +Ht } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const rec = { blocked: 0, errors: [] };
+  await ctx.route("**/*", async r => { const req = r.request(); if (!["GET", "HEAD"].includes(req.method())) { rec.blocked += 1; return r.abort(); } const u = new URL(req.url());
+    if (routeMode === "unread" && u.pathname === "/api/career/job-pools") return r.abort();
+    if (routeMode === "checking" && /^\/api\/career\/job-pools\/JPOOL_/.test(u.pathname)) { await sleep(25000); return r.continue().catch(() => {}); }
+    return r.continue(); });
+  const p = await ctx.newPage(); p.on("pageerror", e => rec.errors.push(String(e).slice(0, 120)));
+  return { ctx, p, rec };
+}
+async function setLocale(p, locale) { if (locale !== "de") return; await p.getByText(/SYSTEM CODEX/i).first().click().catch(() => {}); await sleep(700); await p.evaluate(() => [...document.querySelectorAll("button")].find(b => /DEUTSCH/.test(b.textContent ?? ""))?.click()); await sleep(700); await p.getByText(/CLOSE|SCHLIESSEN/).first().click().catch(() => {}); await sleep(1200); }
+const urlOf = p => new URL(p.url()).search.replace(/JPOOL_[0-9A-F]{32}/g, "JPOOL");
+async function run(name, path, locale, routeMode) {
+  const { ctx, p, rec } = await fresh(locale, routeMode);
+  await p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }); await sleep(routeMode === "checking" ? 4000 : 6500);
+  await setLocale(p, locale);
+  const c = await capture(p);
+  if (SHOTS && +Wd === 1920 && c.line?.visible) { const [x, y, w, h] = c.line.rect; await p.screenshot({ path: `${SHOTS}/${LABEL}-${name.replace(/[:+]/g, "_")}-${locale}.png`, clip: { x: Math.max(0, x - 40), y: Math.max(0, y - 30), width: Math.min(+Wd, w + 80), height: h + 60 } }).catch(() => {}); }
+  // keyboard: Tab through the page; does the capability button / the entry action receive focus? Enter on the capability button.
+  await p.locator("body").click({ position: { x: 2, y: 2 } }).catch(() => {});
+  let tabCap = false, tabAction = false; for (let i = 0; i < 60; i += 1) { await p.keyboard.press("Tab"); const id = await p.evaluate(() => document.activeElement?.dataset?.testid ?? null); if (id === "field-focus-capability-btn") tabCap = true; if (id === "field-entry-action") tabAction = true; if (tabCap && (tabAction || !c.line?.action)) break; }
+  let enterResult = null; if (tabCap) { await p.locator('[data-testid="field-focus-capability-btn"]').focus().catch(() => {}); await p.keyboard.press("Enter"); await sleep(1200); enterResult = { active: await p.evaluate(() => document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("data-field-focus-active") ?? null), url: urlOf(p) }; }
+  // pointer: click the capability button (fresh page so focus changes do not carry)
+  await ctx.close();
+  const f2 = await fresh(locale, routeMode); await f2.p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }); await sleep(routeMode === "checking" ? 4000 : 6500); await setLocale(f2.p, locale);
+  await f2.p.locator('[data-testid="field-focus-capability-btn"]').click({ force: true, timeout: 3000 }).catch(() => {}); await sleep(1500);
+  const click = { active: await f2.p.evaluate(() => document.querySelector('[data-testid="field-focus-capability-btn"]')?.getAttribute("data-field-focus-active") ?? null), url: urlOf(f2.p), field: await f2.p.evaluate(() => { const f = document.querySelector('[data-testid="semantic-career-intelligence-field"]'); return f ? [f.dataset.capabilityGate ?? null, f.dataset.fieldFocus ?? null, f.dataset.investigationMode ?? null] : null; }) };
+  await f2.ctx.close();
+  // entry action: activate it once on a fresh page and record where the field goes
+  let action = null;
+  if (c.line?.action) { const f3 = await fresh(locale, routeMode); await f3.p.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" }); await sleep(6500); await setLocale(f3.p, locale);
+    await f3.p.locator('[data-testid="field-entry-action"]').click({ timeout: 3000 }).catch(e => { action = { error: String(e).slice(0, 80) }; }); await sleep(4000);
+    const after = await capture(f3.p); action = action ?? { id: c.line.action.id, url: urlOf(f3.p), field: after.field, button: after.button?.gate, line: after.line?.entryState ?? null, blocked: f3.rec.blocked, errors: f3.rec.errors }; await f3.ctx.close(); }
+  out.states[`${name}·${locale}`] = { ...c, keyboard: { tabReachesCapability: tabCap, tabReachesAction: tabAction, enter: enterResult }, click, action, url: urlOf(p), blocked: rec.blocked + f2.rec.blocked, errors: [...rec.errors, ...f2.rec.errors] };
+}
+const Q = "/career/demo?investigationMode=";
+const STATES = [["person", `${Q}PERSON`], ["pxj", `${Q}PERSON_X_JOB`], ["job", `${Q}JOB`],
+  ["pxj+poolOpen", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}`], ["pxj+roleOpen", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}`],
+  ["pxj+jobSelected", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}`], ["person+poolOpen", `${Q}PERSON&jobPoolUploadId=${DLL}`],
+  ["person+focusField", `${Q}PERSON&focus=FIELD`], ["person+focusCap", `${Q}PERSON&focus=CAPABILITY`], ["pxj+jobSelected+focusCap", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=${ROLE}&focus=CAPABILITY`],
+  ["pxj+invalidJob", `${Q}PERSON_X_JOB&jobPoolUploadId=${DLL}&jobScopePoolUploadId=${DLL}&jobScopeRoleId=role_pink_absent`], ["pxj+focusCap", `${Q}PERSON_X_JOB&focus=CAPABILITY`], ["job+roleOpen", `${Q}JOB&jobPoolUploadId=${DLL}&jobOrganizationId=${ORG}&jobRoleId=${ROLE}`]];
+const pools = async () => ((await (await fetch(`${BASE}/api/career/job-pools`)).json()).jobPools ?? []).length;
+out.poolsBefore = await pools();
+for (const [n, p] of [...STATES.slice(0, 3), STATES[7], STATES[11]]) for (const l of ["en", "de"]) await run(`nopool:${n}`, p, l);
+await fetch(`${BASE}/api/career/job-pools`, { method: "POST", headers: { "content-type": "application/json", "x-condyn-principal-actor-id": "JOB_POOL_UPLOADER:PINK_SEM" }, body: readFileSync(`${ROOT}/docs/examples/job-pool-tests/DLL_JOBPOOL_ENGINEERING.json`, "utf8") });
+out.poolsAfter = await pools();
+for (const [n, p] of STATES) for (const l of ["en", "de"]) await run(`pool:${n}`, p, l);
+for (const l of ["en", "de"]) { await run("pool:pxj+unread", `${Q}PERSON_X_JOB`, l, "unread"); await run("pool:pxj+checking", STATES[5][1], l, "checking"); }
+await b.close(); writeFileSync(OUT, JSON.stringify(out, null, 1)); console.log("GATE2", LABEL, Object.keys(out.states).length, "states");

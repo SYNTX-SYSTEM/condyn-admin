@@ -1,0 +1,336 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "pin": "PF-3 halo limb — halo peak <= 0.25 x core peak, in A-F19's DIFFERENTIAL form",
+  "whyRemeasured": "A-G54 / rule 1 — A-F19's 0.039-0.083 is a phase-F figure; phase G's VOLUME.haloAlpha is 0.5 and A-G17 changed the medium beneath",
+  "constants": {
+    "haloAlpha": 0.5,
+    "coreAlpha": 0.16,
+    "ceiling": 0.25
+  },
+  "scope": "one fixture, one analysisId, five bodies (2 field / 3 shelf), L0, reduce — §63",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "motion": "reduce",
+      "measuredRepeatFloor": 0.0031951,
+      "maskEpsilon": 0.0063902,
+      "nCores": 5,
+      "nHalos": 5,
+      "bodiesMeasured": 5,
+      "worstRatio_onPeaks": 5.1971,
+      "ratioRange_onPeaks": [
+        2.5576,
+        5.1971
+      ],
+      "haloExcessRange_max": [
+        0.05422516,
+        0.1091617
+      ],
+      "allClear_onPeaks": false,
+      "bodies": [
+        {
+          "haloIndex": 0,
+          "coreIndex": 2,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.830455,
+          "haloGroupOpacity": 0.83,
+          "coreRadiusPx": 33.98,
+          "haloRadiusPx": 95.14,
+          "haloPixels": 9873,
+          "corePixels": 3272,
+          "haloExcess": {
+            "max": 0.06254896,
+            "p999_9": 0.06243319,
+            "p99_9": 0.06094466,
+            "p50": 0.01758441
+          },
+          "coreExcess": {
+            "max": 0.0244565,
+            "p999_9": 0.02441892,
+            "p99_9": 0.02408676,
+            "p50": 0.0123457
+          },
+          "ratio_onPeaks": 2.5576,
+          "ratio_onP999_9": 2.5568,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 1,
+          "coreIndex": 3,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.756788,
+          "haloGroupOpacity": 0.757,
+          "coreRadiusPx": 31.76,
+          "haloRadiusPx": 92.11,
+          "haloPixels": 8427,
+          "corePixels": 2826,
+          "haloExcess": {
+            "max": 0.1091617,
+            "p999_9": 0.106798,
+            "p99_9": 0.09774409,
+            "p50": 0.01657575
+          },
+          "coreExcess": {
+            "max": 0.02100417,
+            "p999_9": 0.02097343,
+            "p99_9": 0.02075721,
+            "p50": 0.01129995
+          },
+          "ratio_onPeaks": 5.1971,
+          "ratio_onP999_9": 5.0921,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 2,
+          "coreIndex": 4,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.689655,
+          "haloGroupOpacity": 0.69,
+          "coreRadiusPx": 28.5,
+          "haloRadiusPx": 85.5,
+          "haloPixels": 7414,
+          "corePixels": 2262,
+          "haloExcess": {
+            "max": 0.05422516,
+            "p999_9": 0.05422516,
+            "p99_9": 0.05296357,
+            "p50": 0.01637932
+          },
+          "coreExcess": {
+            "max": 0.01871077,
+            "p999_9": 0.01871077,
+            "p99_9": 0.01855307,
+            "p50": 0.009793905
+          },
+          "ratio_onPeaks": 2.8981,
+          "ratio_onP999_9": 2.8981,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 3,
+          "coreIndex": 0,
+          "isField": true,
+          "restsUnderReduce": true,
+          "coreGain": 1,
+          "haloGroupOpacity": 1,
+          "coreRadiusPx": 34.62,
+          "haloRadiusPx": 90.01,
+          "haloPixels": 9830,
+          "corePixels": 3388,
+          "haloExcess": {
+            "max": 0.101977,
+            "p999_9": 0.1001033,
+            "p99_9": 0.0750309,
+            "p50": 0.01856483
+          },
+          "coreExcess": {
+            "max": 0.03220388,
+            "p999_9": 0.03173374,
+            "p99_9": 0.03081582,
+            "p50": 0.01551125
+          },
+          "ratio_onPeaks": 3.1666,
+          "ratio_onP999_9": 3.1545,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 4,
+          "coreIndex": 1,
+          "isField": true,
+          "restsUnderReduce": true,
+          "coreGain": 0.911293,
+          "haloGroupOpacity": 0.911,
+          "coreRadiusPx": 43.88,
+          "haloRadiusPx": 118.49,
+          "haloPixels": 17514,
+          "corePixels": 5542,
+          "haloExcess": {
+            "max": 0.1091516,
+            "p999_9": 0.1025391,
+            "p99_9": 0.08961242,
+            "p50": 0.01787361
+          },
+          "coreExcess": {
+            "max": 0.02799981,
+            "p999_9": 0.02799981,
+            "p99_9": 0.0273035,
+            "p50": 0.0142376
+          },
+          "ratio_onPeaks": 3.8983,
+          "ratio_onP999_9": 3.6621,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        }
+      ]
+    },
+    {
+      "viewport": "1280x800",
+      "motion": "reduce",
+      "measuredRepeatFloor": 0.00305937,
+      "maskEpsilon": 0.00611874,
+      "nCores": 5,
+      "nHalos": 5,
+      "bodiesMeasured": 5,
+      "worstRatio_onPeaks": 4.493,
+      "ratioRange_onPeaks": [
+        2.1003,
+        4.493
+      ],
+      "haloExcessRange_max": [
+        0.05112368,
+        0.09388329
+      ],
+      "allClear_onPeaks": false,
+      "bodies": [
+        {
+          "haloIndex": 0,
+          "coreIndex": 2,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.830455,
+          "haloGroupOpacity": 0.83,
+          "coreRadiusPx": 18.1,
+          "haloRadiusPx": 50.69,
+          "haloPixels": 2212,
+          "corePixels": 855,
+          "haloExcess": {
+            "max": 0.05112368,
+            "p999_9": 0.05073955,
+            "p99_9": 0.04923064,
+            "p50": 0.01620531
+          },
+          "coreExcess": {
+            "max": 0.02434162,
+            "p999_9": 0.02426131,
+            "p99_9": 0.02353849,
+            "p50": 0.01332677
+          },
+          "ratio_onPeaks": 2.1003,
+          "ratio_onP999_9": 2.0914,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 1,
+          "coreIndex": 3,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.756788,
+          "haloGroupOpacity": 0.757,
+          "coreRadiusPx": 16.92,
+          "haloRadiusPx": 49.08,
+          "haloPixels": 1882,
+          "corePixels": 727,
+          "haloExcess": {
+            "max": 0.09388329,
+            "p999_9": 0.09348886,
+            "p99_9": 0.09040175,
+            "p50": 0.01588254
+          },
+          "coreExcess": {
+            "max": 0.02089538,
+            "p999_9": 0.02088322,
+            "p99_9": 0.02077379,
+            "p50": 0.01138912
+          },
+          "ratio_onPeaks": 4.493,
+          "ratio_onP999_9": 4.4767,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 2,
+          "coreIndex": 4,
+          "isField": false,
+          "restsUnderReduce": true,
+          "coreGain": 0.689655,
+          "haloGroupOpacity": 0.69,
+          "coreRadiusPx": 15.18,
+          "haloRadiusPx": 45.55,
+          "haloPixels": 1844,
+          "corePixels": 596,
+          "haloExcess": {
+            "max": 0.05279669,
+            "p999_9": 0.05253716,
+            "p99_9": 0.05124971,
+            "p50": 0.01907274
+          },
+          "coreExcess": {
+            "max": 0.01855307,
+            "p999_9": 0.01854683,
+            "p99_9": 0.01849073,
+            "p50": 0.00983754
+          },
+          "ratio_onPeaks": 2.8457,
+          "ratio_onP999_9": 2.8327,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 3,
+          "coreIndex": 0,
+          "isField": true,
+          "restsUnderReduce": true,
+          "coreGain": 1,
+          "haloGroupOpacity": 1,
+          "coreRadiusPx": 18.44,
+          "haloRadiusPx": 47.96,
+          "haloPixels": 2370,
+          "corePixels": 881,
+          "haloExcess": {
+            "max": 0.07426888,
+            "p999_9": 0.0740223,
+            "p99_9": 0.06711149,
+            "p50": 0.01794244
+          },
+          "coreExcess": {
+            "max": 0.03114618,
+            "p999_9": 0.03102578,
+            "p99_9": 0.02994213,
+            "p50": 0.01641884
+          },
+          "ratio_onPeaks": 2.3845,
+          "ratio_onP999_9": 2.3858,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        },
+        {
+          "haloIndex": 4,
+          "coreIndex": 1,
+          "isField": true,
+          "restsUnderReduce": true,
+          "coreGain": 0.911293,
+          "haloGroupOpacity": 0.911,
+          "coreRadiusPx": 23.38,
+          "haloRadiusPx": 63.13,
+          "haloPixels": 4267,
+          "corePixels": 1466,
+          "haloExcess": {
+            "max": 0.09210453,
+            "p999_9": 0.09179783,
+            "p99_9": 0.0871374,
+            "p50": 0.01634143
+          },
+          "coreExcess": {
+            "max": 0.02799981,
+            "p999_9": 0.02780861,
+            "p99_9": 0.02669469,
+            "p50": 0.01433254
+          },
+          "ratio_onPeaks": 3.2895,
+          "ratio_onP999_9": 3.3011,
+          "bound": "<= 0.25",
+          "clears_onPeaks": false
+        }
+      ]
+    }
+  ]
+}

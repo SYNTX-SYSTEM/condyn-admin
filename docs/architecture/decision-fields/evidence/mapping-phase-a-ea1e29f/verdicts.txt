@@ -1,0 +1,37 @@
+PINK §3.92 — re-check of the §3.91 conditions on GELB backend/mapping-phase-a ea1e29f (only F-PA-1, F-PA-2, F-PA-T1, F-PA-T2; owner hardlock "NUR PHASE A. MEHR NICHT.") — 2026-10-31
+Method: PINK's own layout recomputation (unchanged since §3.91) against all 20 vectors, plus 15 variants of the search rules; the 15 mutants of §3.91 plus M02L, M02R, M16, M17 and M18 against GELB's phase-A tests (with --testTimeout=60000, see F-PA-3) and against PINK's probe; PINK's probe pink-pa.test.ts on ea1e29f. DETERMINISTIC_FIXTURE, no model, no network. main and :3017 untouched.
+
+VERDICT: NO-GO on the conditions as a whole. F-PA-1 and F-PA-T1 are closed. Two small remainders: F-PA-2 (one band edge not pinned) and F-PA-T2 (M09 still survives). New: F-PA-3, a test near its timeout.
+
+F-PA-1 CLOSED  spec §2 now says id = hash(normalised name, scope); same name, same scope = one proposal (refused upstream); different scope = two keys. Test title adjusted.
+F-PA-T1 CLOSED
+  * The read path is now relationKeysOf + findingsOf, and the behaviour is unchanged: PINK's probe is 6/6 on ea1e29f. It shows the same 43/43 judged-best keys, 6/6 lexical keys, byte-identical numbers against base 26c59f7, and that no read writes anything.
+  * These mutants are red on GELB's tests: M02 (first proposal) and M02L (last proposal) — the CK fixture fails as a whole, which still counts as a kill; M02R (ids rotated consistently) — killed by "one cache key per requirement and proposal, each remembering ITS proposal id"; M11 (PARTIAL number). M01, M05 and M08 are still red.
+F-PA-2 PARTLY CLOSED
+  * The rules are now in layout-spec.json search.rules and in §4.
+  * PINK's recomputation matches 20/20 vectors; the old 16 are unchanged in content.
+  * The invariants hold on LV08–LV11: overlap 0, horizon 0, field 0, sector angle 0, fit = distance 0, fit order never inverted.
+  * Variants of the recomputation that LV08–LV11 now notice:
+    - checked upper edge at zeroFit, or inclusive vs exclusive;
+    - lower edge at person + rho, or at bestFit − 30, or exclusive;
+    - shelf upper edge at shelfFar, or unbounded;
+    - shelf lower edge at the horizon;
+    - radial order −k before +k, or angular as the outer loop;
+    - collision without the gap;
+    - ring capacity rounded up.
+  * GELB's tests kill the oracle mutants M12, M13, M14, M15, M17 and M18.
+  REMAINDER: the shelf upper edge field.radius − rho is not pinned. A product that uses [430, 500] instead of [430, 500 − rho] still
+    matches all 20 vectors (PINK's variant), and GELB's tests stay green (mutant M16).
+    Counterexample: 200 shelf roles, fit 0, weightSum 6 (rho 8.39). The rule gives an outermost disc edge of 488.4; M16 gives 507.2,
+    with 90 bodies crossing the field edge. With weightSum 3: 502.4 and 43 bodies.
+    Why the vectors miss it: they use rho 6 or 16, where both variants skip the same candidates.
+    Fix: one more vector that presses shelf bodies with 6 < rho ≤ 9 outward, for example the counterexample.
+F-PA-T2 NOT CLOSED
+  * GELB's new cases replace a known field with an unknown one, at the old and at the new field count.
+  * Mutant M09 tolerates one extra field on an OLD-shape body (12 old fields + 1 unknown, no capabilityKey). It is still green on GELB's tests; PINK's probe P2 kills it.
+  * Fix: one more case, the old shape plus one unknown field.
+F-PA-3 NEW (test reliability): "NO OVERLAP" in test/career/mapping-spec/layout.test.ts takes 3.5–4.5 s alone (the vitest default limit is 5 s). In PINK's run of GELB's five files it timed out (1 failed | 57 passed). With --testTimeout=60000 the run is 58/58. Fix: an explicit timeout for that test, or a cheaper pair check (for example a grid).
+Notes:
+  * tsc 0.
+  * The doc comment "GET: the explainable ranking …" now sits above relationKeysOf instead of buildAnalysisRanking (auto-match.ts:272).
+  * The STALLED + resumePending note and the instruction to compare x/y directly are in the spec, as stated.

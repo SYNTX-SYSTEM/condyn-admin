@@ -1,0 +1,135 @@
+PINK §3.88 measurements — owner mandate SFE::THREE-POINT IMPLEMENTATION GO. Backend a1687aa → 133ff76 → 88bdc05, frontend 832d185 (on main 5521ae7); the pair = 88bdc05 + the frontend diff 5521ae7..832d185 applied in a scratch tree (no overlapping file). DETERMINISTIC: vitest, own condyn_test_* database per run, scripted mocked @google/genai (no SDK, no network, no key of the owner). No model call, nothing on main or :3017.
+
+== Point 1 — error classes (one role per run, scripted SDK; sdk calls · task · register rows state/class/http/attempt · job ledger)
+  400            calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_FAILED'] · ['FAILED_AFTER_SEND/PERMANENT/400/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  401            calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_FAILED'] · ['FAILED_AFTER_SEND/PERMANENT/401/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  403            calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_FAILED'] · ['FAILED_AFTER_SEND/PERMANENT/403/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  404            calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_FAILED'] · ['FAILED_AFTER_SEND/PERMANENT/404/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  408            calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/408/a1', 'FAILED_AFTER_SEND/TRANSIENT/408/a2'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  429            calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/429/a1', 'FAILED_AFTER_SEND/TRANSIENT/429/a2'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  500            calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/500/a2', 'FAILED_AFTER_SEND/TRANSIENT/500/a1'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  503            calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/503/a2', 'FAILED_AFTER_SEND/TRANSIENT/503/a1'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  504            calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/504/a2', 'FAILED_AFTER_SEND/TRANSIENT/504/a1'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  fetch failed   calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/null/a1', 'FAILED_AFTER_SEND/TRANSIENT/null/a2'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  ECONNRESET     calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/null/a1', 'FAILED_AFTER_SEND/TRANSIENT/null/a2'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  timeout abort  calls 2 · ['FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT'] · ['FAILED_AFTER_SEND/TRANSIENT/null/a2', 'FAILED_AFTER_SEND/TRANSIENT/null/a1'] · {'reserved': 2, 'consumed': 2, 'released': 0}
+  unclassified   calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_FAILED'] · ['FAILED_AFTER_SEND/UNKNOWN/null/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  MAX_TOKENS     calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_INCOMPLETE'] · ['COMPLETED/null/null/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  SAFETY         calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_INCOMPLETE'] · ['COMPLETED/null/null/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  empty          calls 1 · ['FAILED:ERR_SEMANTIC_PROVIDER_EMPTY'] · ['COMPLETED/null/null/a1'] · {'reserved': 1, 'consumed': 1, 'released': 0}
+  explicit path with 503: {"needed": 1, "kind": "CREATED", "sdkCalls": 1, "register": ["FAILED_AFTER_SEND/TRANSIENT/a1"]}
+
+== Point 1 — partial admission and continuation (4 roles: TRANSIENT×2 / PERMANENT 400 / all pairs refused / first requirement's pairs refused)
+  first run tasks: {"role_aurelion_backend_interop": "FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT:9/0", "role_aurelion_principal_architect": "FAILED:ERR_SEMANTIC_PROVIDER_FAILED:10/0", "role_aurelion_security_engineer": "FAILED:ERR_SEMANTIC_OUTPUT_REFUSED:8/0", "role_brightwater_backend_ledger": "SUCCEEDED:ERR_SEMANTIC_OUTPUT_PARTIAL:8/7"}
+  claim text stored in the relation cache: 0
+  a1687aa (before F-TP-1): the successor made 1 call each for the TRANSIENT role, the PERMANENT role, the all-refused role and the refused pair of the partly admitted role (4 calls, 1 allowed)
+  88bdc05: successor {"revision": 1, "tasks": ["role_aurelion_backend_interop:SUCCEEDED:9/9"]} · calls ["role_aurelion_backend_interop (first run FAILED:ERR_SEMANTIC_PROVIDER_TRANSIENT:9/0): 1 call(s)"]
+  view after the continuation: {"state": "PARTIAL", "reason": "ROLE_FAILURES", "revision": 1, "budget": {"rolesPlanned": 4, "rolesEvaluated": 2, "callsLimit": 1, "callsUsed": 6, "callsJobLimit": 12}, "resumePending": false}
+
+== Point 2 — register
+  call1: "SENT"
+  call2: "SENT"
+  call3: "SENT"
+  call4: "ERR_PROVIDER_CALL_BUDGET_EXHAUSTED"
+  sentWhileLimit3: 3
+  retryAttempt: "ERR_PROVIDER_CALL_BUDGET_EXHAUSTED"
+  failAfterSend: "original error"
+  failLedger: {"reserved": 1, "consumed": 1, "released": 0}
+  trigger: {"delete": "ERR_PROVIDER_CALL_IMMUTABLE", "backToSent": "ERR_PROVIDER_CALL_STATUS_BACKWARD", "toReleased": "ERR_PROVIDER_CALL_STATUS_BACKWARD", "stage": "ERR_PROVIDER_CALL_STATUS_BACKWARD", "job": "ERR_PROVIDER_CALL_IMMUTABLE", "ledgerDown": "ERR_LEDGER_IMMUTABLE"}
+  settle: {"unknown": 1, "released": 1}
+  staleRows: [{"state": "UNKNOWN", "error_code": "NO_END_RECORDED"}, {"state": "FAILED_BEFORE_SEND", "error_code": "NEVER_SENT"}]
+  staleLedger: {"reserved": 2, "consumed": 1, "released": 1}
+  noContext: {"sent": 1, "newRows": 0}
+  jobLimit: {"\"2\"": 2, "\"0\"": 0, "\"abc\"": 0, "\"\"": 0, "\"1e2\"": 0, "\" 3 \"": 3, "unset": 12}
+  job budget 4 over run + continuation: {"sentFirstRun": 4, "sweep": {"settled": 0, "interrupted": 0, "continued": 3}, "investigations": ["FAILED"], "registerTotal": 4} · view budget {"rolesPlanned": 3, "rolesEvaluated": 0, "callsLimit": 3, "callsUsed": 4, "callsJobLimit": 4}
+
+== Point 3 — lease, take-over, zombie
+  read of a run whose worker is lost: {"state": "STALLED", "reason": "WORKER_LOST", "leaseExpiresAt": "2026-10-30T23:50:26.715Z", "readsChanged": [], "ranking": true}
+  two parallel sweeps: [{"settled": 0, "interrupted": 1, "continued": 2}, {"settled": 0, "interrupted": 0, "continued": 3}] · this analysis after the sweeps: ["INTERRUPTED", "COMPLETED"] · after the zombie woke up: ["INTERRUPTED", "COMPLETED"] · unchanged True · first run tasks [{"pool_role_id": "role_aurelion_backend_interop", "status": "INTERRUPTED", "error_code": "ERR_WORKER_LOST", "pairs": 9, "stored": 0}, {"pool_role_id": "role_aurelion_principal_architect", "status": "CANCELLED", "error_code": null, "pairs": 10, "stored": 0}]
+  key of the test in any row of the four tables: False · SDK httpOptions seen: ['{"timeout":120000}']
+
+== Pair contract (backend answers → client decoder)
+  answers observed in the probe: {"autoAnswers": 6, "states": {"PARTIAL\u00b7ROLE_FAILURES": 2, "FAILED\u00b7ERR_SEMANTIC_PROVIDER_TRANSIENT": 2, "STALLED\u00b7WORKER_LOST": 1, "PARTIAL\u00b7ROLES_BEYOND_BUDGET": 1}, "refusedByClient": [], "rankingAnswers": 4, "rankingRefusedByClient": 0}
+  generated backend views (status × lease × resumable × revision × task mix × carried × age × usage): 10368, refused by the client 0, changed by decoding 0
+    RUNNING·null: 1728
+    STALLED·WORKER_LOST: 1944
+    PARTIAL·ROLES_BEYOND_BUDGET: 768
+    PARTIAL·ROLE_FAILURES: 1968
+    COMPLETED·null: 288
+    PARTIAL·PAIRS_REFUSED: 216
+    PARTIAL·ROLE_FAILURES·resumePending: 48
+    PARTIAL·DAY_BUDGET_EXHAUSTED: 144
+    PARTIAL·ROLES_BEYOND_BUDGET·resumePending: 24
+    FAILED·ERR_AUTO_MATCH_FAILED: 432
+    FAILED·ERR_SEMANTIC_PROVIDER_TRANSIENT·resumePending: 36
+    FAILED·ERR_SEMANTIC_PROVIDER_TRANSIENT: 180
+    FAILED·ERR_SEMANTIC_OUTPUT_REFUSED: 216
+    FAILED·ERR_SEMANTIC_OUTPUT_PARTIAL: 216
+    FAILED·ERR_BUDGET_EXHAUSTED: 216
+    FAILED·ERR_WORKER_LOST·resumePending: 36
+    FAILED·ERR_WORKER_LOST: 180
+    FAILED·ERR_SEMANTIC_PROVIDER_FAILED: 216
+    FAILED·ERR_INVESTIGATION_INTERRUPTED: 1440
+    STALLED·WORKER_LOST·resumePending: 72
+  backend 133ff76 alone against main's client: test/career/auto-capability/backend-contract.test.ts red (STALLED refused) — the backend must not ship without the frontend
+
+== Mutants (red = a failure outside the pristine run; pristine runs green)
+  -- backend 133ff76, GELB's suites (test/career/job-pool, test/career/provider-calls): 21 red of 29
+     RED   T-M01 429 permanent
+     RED   T-M02 broken connection not transient
+     RED   T-M03 every failure retried
+     ALIVE T-M04 explicit path retries too
+     RED   T-M05 three attempts
+     RED   T-M06 partial admission off (all-or-nothing)
+     RED   T-M07 all refused reads SUCCEEDED
+     RED   T-M08 failed request released
+     ALIVE T-M09 resumable marker ignored
+     ALIVE T-M10 five revisions
+     RED   T-M11 spent budget continued
+     RED   T-M12 refusal continued
+     RED   T-M25 continuation takes every role
+     RED   T-M26 carried roles not shown
+     RED   T-M27 malformed job limit opens the default
+     RED   T-M28 sweep unbounded
+     RED   T-M29 carried failure forgotten when the successor completes
+     ALIVE T-M13 sent before the row
+     RED   T-M14 failure after send released
+     RED   T-M15 stale SENT released
+     RED   T-M16 trigger allows delete
+     RED   T-M17 cascade continues after a blocked call
+     RED   T-M18 job limit not enforced
+     ALIVE T-M19 no register for the job
+     ALIVE T-M20 take-over without lease check
+     ALIVE T-M21 lease taken from a live holder
+     RED   T-M22 STALLED never derived
+     RED   T-M23 not-sent failure consumed
+     ALIVE T-M24 sweeper not started
+  -- T-M13 corrected (the first cut sent nothing), GELB's suites: 1 red of 1
+     RED   T-M13 sent before the row
+  -- survivors against PINK's probe pink-tp: 2 red of 6
+     RED   T-M04 explicit path retries too
+     ALIVE T-M09 resumable marker ignored
+     ALIVE T-M10 five revisions
+     RED   T-M13 sent before the row
+     ALIVE T-M20 take-over without lease check
+     ALIVE T-M21 lease taken from a live holder
+  -- frontend point 3 on the pair (test/career/auto-capability, pxj-first-screen, three-point-view): 12 red of 12
+     RED   FT-M01 running run gets the 3-min cap again
+     RED   FT-M02 STALLED not read again
+     RED   FT-M03 resumePending not read again
+     RED   FT-M04 ranking not re-read while the run moves
+     RED   FT-M05 previous analysis's ranking shown
+     RED   FT-M06 ranking blanks while it is read again
+     RED   FT-M07 decoder refuses STALLED
+     RED   FT-M08 decoder accepts a finished STALLED
+     RED   FT-M09 resumePending dropped by the decoder
+     RED   FT-M10 backoff never comes back
+     RED   FT-M11 decoder refuses PAIRS_REFUSED
+     RED   FT-M12 backend: STALLED carries a finish time
+
+== Suites
+  tsc 0 on a1687aa, 133ff76 and the pair.
+  133ff76 (backend only): Test Files  9 failed | 411 passed | 6 skipped (426) · Tests  33 failed | 2671 passed | 13 skipped (2717)
+  base 5521ae7: Test Files  5 failed | 409 passed | 6 skipped (420) · Tests  29 failed | 2620 passed | 13 skipped (2662)
+  pair 88bdc05 + 832d185: Test Files  8 failed | 412 passed | 6 skipped (426) · Tests  35 failed | 2680 passed | 13 skipped (2728)
+  failing only on the pair: ["test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts", "test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts", "test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts"]

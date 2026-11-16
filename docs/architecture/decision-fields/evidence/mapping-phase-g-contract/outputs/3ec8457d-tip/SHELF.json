@@ -1,0 +1,92 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "pin": "PF-15 shelf limb (A-G56/A-G62)",
+ "sourceNote": "PersonJobMappingField.tsx:882 draws SEAT=rgba(0,0,0,1) across the FULL band width before :883 strokes rgba(205,240,255,0.02). The band composites over BLACK, not over the plate.",
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "rUser": 465,
+   "swUser": 70,
+   "scale": 0.83332,
+   "bandPx": {
+    "rPx": 387.49,
+    "widthPx": 58.33,
+    "sampledSteps": 55
+   },
+   "declaredAlpha": "0.02",
+   "stroke": "rgba(205, 240, 255, 0.02)",
+   "angles": 720,
+   "engravedMin_darkestAngle": 0,
+   "engravedMin_rgb_atDarkest": [
+    0,
+    0,
+    0
+   ],
+   "engravedMin_p01": 0,
+   "engravedMin_p50": 0.0008460511,
+   "engravedMin_p99": 0.005897695,
+   "engravedMin_max": 0.01589661,
+   "plate_justInside": {
+    "min": 0.001106963,
+    "p50": 0.002746006,
+    "rgb": [
+     4,
+     10,
+     15
+    ]
+   },
+   "plate_justOutside": {
+    "min": 0.0005425241,
+    "p50": 0.001432405,
+    "rgb": [
+     3,
+     5,
+     7
+    ]
+   }
+  },
+  {
+   "viewport": "1280x800",
+   "rUser": 465,
+   "swUser": 70,
+   "scale": 0.44398,
+   "bandPx": {
+    "rPx": 206.45,
+    "widthPx": 31.08,
+    "sampledSteps": 28
+   },
+   "declaredAlpha": "0.02",
+   "stroke": "rgba(205, 240, 255, 0.02)",
+   "angles": 720,
+   "engravedMin_darkestAngle": 0,
+   "engravedMin_rgb_atDarkest": [
+    0,
+    0,
+    0
+   ],
+   "engravedMin_p01": 0,
+   "engravedMin_p50": 0.000910581,
+   "engravedMin_p99": 0.01366979,
+   "engravedMin_max": 0.01762036,
+   "plate_justInside": {
+    "min": 0,
+    "p50": 0.002746006,
+    "rgb": [
+     5,
+     11,
+     15
+    ]
+   },
+   "plate_justOutside": {
+    "min": 0.00002191465,
+    "p50": 0.001432405,
+    "rgb": [
+     3,
+     5,
+     7
+    ]
+   }
+  }
+ ]
+}

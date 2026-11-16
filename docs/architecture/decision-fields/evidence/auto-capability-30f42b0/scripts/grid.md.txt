@@ -1,0 +1,71 @@
+# PINK grid — AUTOMATED_CAPABILITY_TO_JOB (spec b3ebb6d, base main 9fa2cdc)
+Scope: only this path. No model calls (stand-in + loopback Gemini fake only), disposable condyn_test_* DBs, :3017 GET only.
+Evidence classes: DETERMINISTIC (unit/fake), STAND_IN (lab), CODE_INSPECTION, MEASUREMENT.
+
+## A GitHub account selection (3.1)
+A1 accepted: https://github.com/<user>, trailing slash, www.github.com; repo URL still -> single repo (no regression)
+A2 refused: other hosts (gist., api., githubusercontent, github.com.evil, userinfo@, port), http:, orgs/<x>, reserved paths (settings, features, …), 3+ segments ambiguity (tree/main stays repo), encoded segments (%2e%2e, %2F), user regex [A-Za-z0-9-]{1,39}
+A3 request set: only api.github.com, only GET /users/<user>/repos?type=owner (+ existing per-repo loader endpoints); recorded fetch log, no other host incl. redirects
+A4 selection: forks excluded, archived excluded, (disabled/private/empty?) ; order pushed_at desc then name (ties, null pushed_at); stable across permutations of the API response
+A5 bound: GITHUB_ACCOUNT_MAX_REPOS default 5, hard cap 10, malformed/0/negative/"5abc" -> ? (expect fail-closed or default, must be specified); pagination: never more than one page / cap respected
+A6 failure: 0 eligible repos, 404 user, 403 rate limit, 1 repo loader failing -> defined outcome, no partial silent success
+A7 determinism: same account response -> same source set & order -> same intake input hash
+
+## B Gate provider/budget (3.2) — fail closed
+B1 NOT_CONFIGURED: no provider -> auto-match DISABLED, 0 calls, analysis SUCCEEDED
+B2 gemini without GEMINI_API_KEY -> not READY; with key but DAY_LIMIT missing/empty/" "/"0"/"-1"/"1e3"/"0x10"/"١"(non-ASCII digit)/"1.0" -> not READY
+B3 unknown provider string (Gemini, gemini␠, openai) -> PROVIDER_NOT_AUTHORIZED
+B4 stand-in with DAY_LIMIT 0: what state? (today READY with dayLimit 0) -> must be DISABLED/SKIPPED with reason, 0 calls
+B5 one factory: route + runner pick the same provider for the same env (no second switch)
+B6 evidenceClass REAL_GEMINI only for gemini, stand-in stays labelled STAND_IN in run, ranking and UI
+B7 key never in logs/responses/run rows (grep outputs of fake runs)
+
+## C Auto-match run (3.3)
+C1 hook only after SUCCEEDED PERSON analysis; not after FAILED/CANCELLED, not for PxJ/JOB analyses (?)
+C2 operand snapshot: ACTIVE pools only (not ARCHIVED/REJECTED/pending), ≤10, deterministic order, recorded in run; pool added after start not in snapshot
+C3 budget: rolesPlanned = min(maxRoles, 25, remaining day limit); remaining shared with manual investigations via ledger; ledger count == calls made (fake counts)
+C4 idempotence: worker retry / hook twice / concurrent double -> one investigation (clientRequestId auto:<id>), 0 extra calls, one run row
+C5 cached pairs cost 0: second analysis with identical proposals -> CACHED, calls 0
+C6 roles beyond budget marked LEXICAL_ONLY; BUDGET_EXHAUSTED mid-run -> PARTIAL, rest CANCELLED
+C7 hook failures (store throw, provider throw, cache throw, DB missing table, timeout) -> analysis job stays SUCCEEDED, run FAILED/INTERRUPTED with reason, worker continues next job
+C8 persistence: career_auto_match_runs registered only on verified disposable DB; on non-disposable DB -> no DDL, defined state (DISABLED?) — check :3017 consequence
+C9 no call outside an explicitly started analysis job (no call at boot, on pool upload, on GET, on reload)
+
+## D Ranking ROLE_RANKING_V1 (3.4) — pure function
+D1 values: EQUIVALENT/COVERS 1, PARTIAL 0.5, DIFFERENT/UNCLEAR 0; lexical NAME_EXACT/NAME_ALIAS 0.5 marked LEXICAL, others 0
+D2 weights REQUIRED 3, PREFERRED 2, OPTIONAL 1, UNKNOWN 1; fit = Σw·v/Σw (hand-computed oracle tables)
+D3 edge: role with 0 requirements (Σw=0) -> no NaN/Infinity; mixed role (some reqs semantic, some not) -> which tier/source per req
+D4 tiers: SEMANTIC before LEXICAL_ONLY even if lexical fit higher
+D5 order in tier: fit desc, required gaps asc, title, role id; ties constructed per key; locale-independent title compare
+D6 permutation invariance: shuffled discovery/relations -> identical ranking (byte)
+D7 per-rank inputs complete: state, source, weight, contribution per requirement; contributions sum to fit; explanation, evidence limitation, quotes passed through (no rewrite)
+D8 authority: ranking true, decision false, authorityState NONE on every rank; no "hire/reject/decision" wording
+D9 claim guard untouched: admitProviderOutput + semantic-relation-engine diff vs 9fa2cdc = 0; refused outputs never enter ranking
+
+## E Read APIs (3.5)
+E1 GET auto-match / job-ranking: no-store, 0 DB writes (row counts + DDL log before/after), 0 provider/ledger calls
+E2 no lazy DDL on GET (no CREATE TABLE triggered by a read)
+E3 unknown/malformed analysisId -> 404/400, no stack; non-PERSON analysis -> defined
+E4 states NOT_STARTED/DISABLED/RUNNING/COMPLETED/PARTIAL/FAILED/SKIPPED each reachable and shaped as spec
+E5 job-ranking without run -> all ACTIVE pools, lexical only; with run -> run snapshot (pool archived later still ranked from snapshot?)
+E6 other methods (POST/PUT/DELETE) -> 405
+
+## F Frontend (3.6, GRÜN)
+F1 after ANALYZE no pool picker / role picker / confirmation on this path; walk to ranking without input (STAND_IN lab)
+F2 state line in existing entry language EN/DE, no lock words, no warm tone, status/polite
+F3 ranking shows tier, fit, explanation, limitation, "no decision" marking
+F4 GitHub account URL accepted in input; invalid -> existing error language
+F5 non-regression: orbits, modes, drop zone, role discovery panel, manual start, gate 40 states identical (S7), S8 baseline, 0 covered elements (§3.83 geometry)
+
+## G Non-regression / inverse
+G1 tsc 0, test/career only base-red files (compare to 9fa2cdc)
+G2 mutants: fork filter off, archive filter off, cap off, host check off, order flip, day-limit regex loosened, factory bypass, hook rethrow, clientRequestId random, weight swap, tier swap, tie-break drop, GET writes, decision:true -> each must be red
+G3 diff scope: only files of this path (no side work)
+
+## GELB decisions (2026-10-30, binding oracle)
+Q1 DAY_LIMIT=0 (stand-in or gemini): readSemanticConfig unchanged (READY, dayLimit 0, manual route as before); auto-match DISABLED reason DAY_LIMIT_ZERO, 0 calls, no investigation. -> B4, C3
+Q2 career_auto_match_runs registered only in worker hook + start path (relation-cache gate: verified disposable DB, CREATE TABLE IF NOT EXISTS). Unverified DB: no DDL, DISABLED reason NOT_PROVISIONED. GET: to_regclass check, missing table -> NOT_STARTED, no write. -> C8, E1, E2. Claim ":3017 DB is a verified disposable DB" -> verify read-only (code inspection of the gate + GET only), never write.
+Q3 per requirement best semantic relation over all proposals (1 / 0.5 / 0); missing -> lexical NAME_EXACT/NAME_ALIAS 0.5 else 0, source LEXICAL. Tier SEMANTIC iff ≥1 requirement has a semantic relation; role carries semanticCoverage x of y. Σw=0: fit null, LEXICAL_ONLY, tier end, then title / role id. -> D1, D3, D4, D5
+Q4 GITHUB_ACCOUNT_MAX_REPOS invalid ("abc","0","-1","") -> default 5, hard 10, one API page per_page=100. www.github.com/<user> = account. ≥2 segments stay repo (unchanged). -> A1, A5
+Q5 job-ranking with run: snapshot pool no longer ACTIVE -> removed, reported in ranking.poolsDropped (upload id), rest ranked. -> E5
+Base red: test/career-analyze-multisource CATEGORY C red on cd1e4de/9fa2cdc (missing career_capability_proposal_projection_references, F-JP-5) -> re-verify on base myself.

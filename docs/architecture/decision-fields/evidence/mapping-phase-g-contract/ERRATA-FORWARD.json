@@ -1,0 +1,172 @@
+{
+  "schema": "pink.errata-forward/1",
+  "what": "Forward pointers from withdrawn or superseded claims standing in a SEALED register to the errata that withdraws them. The sealed register is not modified; this file sits beside it and is not listed in its manifest.",
+  "ownerDecision": "Connect PINK's three withdrawals by traceable forward pointers to their valid errata. Do not rewrite historical evidence.",
+  "generatedAtUTC": "2026-11-16T12:45:31.879Z",
+  "generator": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-errata-forward.mjs",
+  "howQuotesWereObtained": "READ from the sealed file at the cited line and recorded verbatim. The generator is given only an id, a line number and a short expected substring, and REFUSES (exit 4) if the substring is not at that line. Quotes are never typed into this file by hand — that is the W-3 failure mode.",
+  "sealedRegister": {
+    "path": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md",
+    "digest": "30e4b24dcf946b0835474d346ac693fa0aa25537c2f1351abe34bdf3bff1576c",
+    "lines": 376,
+    "manifest": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/manifest.sha256",
+    "manifestEntries": 91,
+    "manifestEntryForRegister": 47,
+    "mustNotChange": true
+  },
+  "thisFile": {
+    "path": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/ERRATA-FORWARD.json",
+    "listedInSealedManifest": false,
+    "whyUnlisted": "Adding an unlisted file to a sealed directory does not break the seal: `sha256sum -c` verifies the lines it lists and is silent about anything else present. Measured both ways — adding three unlisted files (one nested) left 33 OK / exit 0 on a throwaway copy of mapping-phase-e-contract, while appending one byte to a LISTED file gave 1 FAILED / exit 1."
+  },
+  "errata": {
+    "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/PINK-ERRATA-AND-PORTABILITY-REPAIR.md",
+    "declaredWithdrawals": [
+      {
+        "id": "W-1",
+        "line": 37
+      },
+      {
+        "id": "W-2",
+        "line": 65
+      },
+      {
+        "id": "W-3",
+        "line": 81
+      }
+    ]
+  },
+  "markConvention": {
+    "rule": "A-G500 (GELB). Every quotation of a withdrawn claim carries `[WITHDRAWN <id> <YYYY-MM-DD>]` on its own line; a bare `[WITHDRAWN]` silences nothing and the line falls back to being a live claim.",
+    "form": "[WITHDRAWN <id> <YYYY-MM-DD>]",
+    "appliedIn": [
+      "ERRATA-FORWARD.md"
+    ],
+    "notAppliedIn": [
+      "the sealed register"
+    ],
+    "whyNotInTheSealedRegister": "A-G500 writes on the claim's own line. That line is inside a frozen seal (entry 47 of 91) and the owner's decision is 'do not rewrite historical evidence'. This is the one case the mark cannot reach, which is why a forward pointer beside the file is needed at all.",
+    "marks": {
+      "W-1": "[WITHDRAWN W-1 2026-11-16]",
+      "W-2": "[WITHDRAWN W-2 2026-11-16]",
+      "W-3": "[WITHDRAWN W-3 2026-11-16]"
+    }
+  },
+  "guardContract": {
+    "forWhom": "a browser-free guard consuming this file; GELB owns it in test/integration-boundary/",
+    "mustGoRedIf": [
+      "the 167 historical seal entries stop verifying (33 + 43 + 91, `sha256sum -c` in each contract dir)",
+      "pointers[].occurrences[].quote is no longer present at pointers[].occurrences[].line of sealedRegister.path",
+      "pointers[].dependentPassages[].quote is no longer present at its .line",
+      "errata.path is missing, or pointers[].errataAnchor is not found as a line prefix in it",
+      "errata.declaredWithdrawals contains an id with no entry in pointers[]",
+      "sealedRegister.digest no longer matches the file (history rewritten)"
+    ],
+    "lineNumbersAre": "1-based",
+    "quoteComparison": "exact substring of the whole line; the quote IS the whole line as it stood at generation"
+  },
+  "pointers": [
+    {
+      "id": "W-1",
+      "verdict": "WITHDRAWN",
+      "date": "2026-11-16",
+      "claim": "the branch is unpushed and the validation is unreadable where it matters",
+      "sealedFile": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md",
+      "errataFile": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/PINK-ERRATA-AND-PORTABILITY-REPAIR.md",
+      "errataAnchor": "### W-1 ·",
+      "errataAnchorLine": 37,
+      "supersededBy": "the push itself, not by any change in content",
+      "occurrences": [
+        {
+          "line": 4,
+          "quote": "**Branch:** `validation/hr-decision-loop-pink` — **119 commits, UNPUSHED**"
+        }
+      ],
+      "dependentPassages": [
+        {
+          "section": "§0",
+          "what": "fourth clause — 'IT IS NOT READABLE WHERE IT MATTERS'",
+          "line": 27,
+          "quote": "**AND IT IS NOT READABLE WHERE IT MATTERS.** This branch is unpushed. A validation that"
+        },
+        {
+          "section": "§5",
+          "what": "symmetry clause — what is readable in which direction",
+          "line": 165,
+          "quote": "  `PHASE_F*.md`) **in one direction, and this unpushed statement in the other.** So pin"
+        },
+        {
+          "section": "§5",
+          "what": "strongest-reason clause",
+          "line": 167,
+          "quote": "  and were checked. **Still the strongest reason the unpushed branch is a defect in the work"
+        },
+        {
+          "section": "§11",
+          "what": "cost paragraph",
+          "line": 363,
+          "quote": "**That is the concrete cost of the unpushed branch, and it is stated by the lane writing the"
+        }
+      ],
+      "dependentPassagesNote": "The errata names these as '§0's fourth clause, §5, §8's asymmetry argument, §11's cost paragraph'. MEASURED: §8 (lines 214-318, 'PIN COVERAGE — stated as TWO bounds') carries no asymmetry argument and no dependency on the unpushed condition. The asymmetry/symmetry argument is at 161-169, in §5. Four dependent passages across THREE sections, not four."
+    },
+    {
+      "id": "W-2",
+      "verdict": "WITHDRAWN",
+      "date": "2026-11-16",
+      "claim": "`PHASE_G*.md` exists in none of the four worktrees this lane can read",
+      "sealedFile": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md",
+      "errataFile": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/PINK-ERRATA-AND-PORTABILITY-REPAIR.md",
+      "errataAnchor": "### W-2 ·",
+      "errataAnchorLine": 65,
+      "supersededBy": "a worktree-versus-ref error of this lane's own: `git show <ref>:<path>` answers in every clone holding the object",
+      "occurrences": [
+        {
+          "line": 96,
+          "quote": "`PHASE_G*.md` exists in none of the four worktrees this lane can read.**"
+        },
+        {
+          "line": 158,
+          "quote": "  retired unmeasured. *** GELB cites `PHASE_G:725` and `:998`. **`PHASE_G*.md` and"
+        },
+        {
+          "line": 159,
+          "quote": "  `PHASE_F*.md` exist in NONE of the four worktrees this lane can read**, so this is"
+        },
+        {
+          "line": 273,
+          "quote": "`PHASE_G*.md`, which this lane cannot read. That is not the same"
+        },
+        {
+          "line": 358,
+          "quote": "verify its contents — `PHASE_G*.md` remains unreadable here."
+        }
+      ],
+      "dependentPassages": [],
+      "dependentPassagesNote": "§5's A-G20 retirements sat on 'TAKEN ON REPORT' purely because of this error; the errata's §2 re-tiers them."
+    },
+    {
+      "id": "W-3",
+      "verdict": "SUPERSEDED",
+      "date": "2026-11-16",
+      "claim": "16 files, 197 tests, 197 passed for PF-13",
+      "sealedFile": "docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md",
+      "errataFile": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/PINK-ERRATA-AND-PORTABILITY-REPAIR.md",
+      "errataAnchor": "### W-3 ·",
+      "errataAnchorLine": 81,
+      "supersededBy": "the artefact reads 198: one test was added (§115 A-G468, `3231f52c`). 197 was correct at `bce62ea1`.",
+      "occurrences": [
+        {
+          "line": 233,
+          "quote": "figure is present and correct in GRÜN's `pf13-evaluated.json` — **16 files, 197 tests, 197"
+        },
+        {
+          "line": 267,
+          "quote": "**197/197** with coverage matched both ways and zero missing or extra; **no verdict by its"
+        }
+      ],
+      "dependentPassages": [],
+      "dependentPassagesNote": "The errata cites this as `PINK-SYSTEM-VALIDATION.md:8`. LINE 8 IS EMPTY — '8' is §8, which begins at line 214. The wording is at 233 and restated at 267. Corrected here and in the errata prose."
+    }
+  ]
+}

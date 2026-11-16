@@ -1,0 +1,15 @@
+PINK §3.90 — re-check of §3.89 on GELB backend/call-register-everywhere fcf1084 (only F-BB-1, F-BB-2 and the question "does a Gemini request leave without a register row?") — 2026-10-31
+Method: the five scripts run as real processes (tsx) in a scratch copy without any .env file, dummy GEMINI_API_KEY, a preloaded fetch stub that logs and answers every Google API request locally (no network); afterwards the requests are compared with the register rows of the script's job (SCRIPT:<name>). The in-process probe of §3.89 (no recorder, database without the disposable marker, unprovisionable register) re-run on fcf1084: 4/4 green. CODE_INSPECTION of every tracked SDK call site and of the architecture test.
+
+VERDICT: GO — no Gemini request without a register row was found.
+
+  test-schema.ts             requests  2 · register rows counted 2 · requests without a row 0
+  bisection.ts               requests  1 · register rows counted 1 · requests without a row 0
+  schema-bisection.ts        requests 11 · register rows counted 11 · requests without a row 0
+  schema-bisection-mjs.ts    requests 11 · register rows counted 11 · requests without a row 0
+  scripts/list-models.ts     requests  3 · register rows counted 3 · requests without a row 0
+  (exit 143: the harness stopped each process after 120 s — the scripts keep their database pool open after their work; every request had been made by then)
+F-BB-1 CLOSED  the four root scripts call through guardedGenerateContent inside withJobCallRegister (bisection 1, test-schema 2, schema-bisection 11, schema-bisection-mjs 11 requests = rows)
+F-BB-2 CLOSED  list-models: 3 pager pages = 3 register rows (page + every nextPage is its own registered call)
+Architecture test: now scans the repository root too and any receiver of .models.<method>( and .nextPage(.
+OBSERVATION (not a finding): the scan does not see an async iteration over a pager (for await … of pager), which fetches further pages by itself, nor SDK services other than models (chats, caches, files, live, batches); no tracked file uses either today (CODE_INSPECTION).

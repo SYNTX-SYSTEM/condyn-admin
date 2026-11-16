@@ -1,0 +1,353 @@
+{
+ "commit": "3ec8457d",
+ "stand": "http://127.0.0.1:3122",
+ "pin": "A-G412 limb 3 (PINK §33)",
+ "claimUnderTest": "unselected swing / selected swing = 1/selectedGain = 2.857142857",
+ "spaceNote": "exact in ENCODED sRGB; the luminance ratio carries a convexity factor above 1",
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "discPixels": 545417,
+   "isolation": "all field animations paused; only circle.mf-wave.mf-wave-halo running — asserted via animationPlayState",
+   "playState_unsel": {
+    "halo": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "ground": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "playState_sel": {
+    "halo": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "ground": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "kept": 24580,
+   "droppedForBackdropDrift": 6535,
+   "maxDriftCodes": 1,
+   "framesPerState": 41,
+   "stepMs": 250,
+   "samplingMissBound_frac": 0.004815,
+   "centre": 2.857143,
+   "ladder": [
+    {
+     "rung": 3,
+     "pixels": 24580,
+     "medianSwing_unsel": 6,
+     "medianSwing_sel": 2,
+     "pooled_ratio_E_green": 2.81118,
+     "dev_pct": -1.60872,
+     "pooled_boot95": [
+      2.80369,
+      2.81866
+     ],
+     "pooled_ratio_E_sumRGB": 2.74167,
+     "pooled_ratio_L": 2.80325,
+     "ratio_L_dev_pct": -1.88608,
+     "LATTICE_median_of_ratios": 3,
+     "pointPrediction_measuredOverPredicted": 1.01984,
+     "median_selSwing_quanta": 4.91061,
+     "perPixel_quantResolution_median": 0.5,
+     "median_drift_codes": 1
+    },
+    {
+     "rung": 4,
+     "pixels": 19839,
+     "medianSwing_unsel": 7,
+     "medianSwing_sel": 3,
+     "pooled_ratio_E_green": 2.80982,
+     "dev_pct": -1.65628,
+     "pooled_boot95": [
+      2.80168,
+      2.81803
+     ],
+     "pooled_ratio_E_sumRGB": 2.73602,
+     "pooled_ratio_L": 2.80619,
+     "ratio_L_dev_pct": -1.78327,
+     "LATTICE_median_of_ratios": 2.75,
+     "pointPrediction_measuredOverPredicted": 1.01879,
+     "median_selSwing_quanta": 6.23785,
+     "perPixel_quantResolution_median": 0.33333,
+     "median_drift_codes": 1
+    },
+    {
+     "rung": 6,
+     "pixels": 14647,
+     "medianSwing_unsel": 9,
+     "medianSwing_sel": 3,
+     "pooled_ratio_E_green": 2.8107,
+     "dev_pct": -1.62553,
+     "pooled_boot95": [
+      2.80177,
+      2.81945
+     ],
+     "pooled_ratio_E_sumRGB": 2.73898,
+     "pooled_ratio_L": 2.80774,
+     "ratio_L_dev_pct": -1.72899,
+     "LATTICE_median_of_ratios": 2.8,
+     "pointPrediction_measuredOverPredicted": 1.01825,
+     "median_selSwing_quanta": 6.91144,
+     "perPixel_quantResolution_median": 0.33333,
+     "median_drift_codes": 1
+    },
+    {
+     "rung": 8,
+     "pixels": 9807,
+     "medianSwing_unsel": 11,
+     "medianSwing_sel": 4,
+     "pooled_ratio_E_green": 2.85032,
+     "dev_pct": -0.23865,
+     "pooled_boot95": [
+      2.84078,
+      2.85907
+     ],
+     "pooled_ratio_E_sumRGB": 2.75596,
+     "pooled_ratio_L": 2.82949,
+     "ratio_L_dev_pct": -0.968,
+     "LATTICE_median_of_ratios": 2.8,
+     "pointPrediction_measuredOverPredicted": 1.01047,
+     "median_selSwing_quanta": 8.33723,
+     "perPixel_quantResolution_median": 0.25,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 12,
+     "pixels": 3291,
+     "medianSwing_unsel": 13,
+     "medianSwing_sel": 5,
+     "pooled_ratio_E_green": 2.8414,
+     "dev_pct": -0.55099,
+     "pooled_boot95": [
+      2.82819,
+      2.85538
+     ],
+     "pooled_ratio_E_sumRGB": 2.75803,
+     "pooled_ratio_L": 2.82974,
+     "ratio_L_dev_pct": -0.95909,
+     "LATTICE_median_of_ratios": 2.8,
+     "pointPrediction_measuredOverPredicted": 1.01045,
+     "median_selSwing_quanta": 10.77036,
+     "perPixel_quantResolution_median": 0.2,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 16,
+     "pixels": 66,
+     "medianSwing_unsel": 16,
+     "medianSwing_sel": 5,
+     "pooled_ratio_E_green": 3.15224,
+     "dev_pct": 10.32836,
+     "pooled_boot95": [
+      3.05202,
+      3.25926
+     ],
+     "pooled_ratio_E_sumRGB": 2.8929,
+     "pooled_ratio_L": 3.00971,
+     "ratio_L_dev_pct": 5.33982,
+     "LATTICE_median_of_ratios": 3.2,
+     "pointPrediction_measuredOverPredicted": 0.95013,
+     "median_selSwing_quanta": 11.75446,
+     "perPixel_quantResolution_median": 0.2,
+     "median_drift_codes": 1
+    },
+    {
+     "rung": 24,
+     "pixels": 0
+    }
+   ],
+   "ladderMonotonicity": "NOT monotone"
+  },
+  {
+   "viewport": "1280x800",
+   "discPixels": 154765,
+   "isolation": "all field animations paused; only circle.mf-wave.mf-wave-halo running — asserted via animationPlayState",
+   "playState_unsel": {
+    "halo": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "ground": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "playState_sel": {
+    "halo": [
+     "mappingFieldWave:running",
+     "mappingFieldWave:running"
+    ],
+    "ground": [
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused",
+     "mappingFieldWave:paused"
+    ],
+    "travel": [
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused",
+     "mappingFieldTravel:paused"
+    ]
+   },
+   "kept": 6642,
+   "droppedForBackdropDrift": 938,
+   "maxDriftCodes": 1,
+   "framesPerState": 41,
+   "stepMs": 250,
+   "samplingMissBound_frac": 0.004815,
+   "centre": 2.857143,
+   "ladder": [
+    {
+     "rung": 3,
+     "pixels": 6642,
+     "medianSwing_unsel": 6,
+     "medianSwing_sel": 2,
+     "pooled_ratio_E_green": 2.8093,
+     "dev_pct": -1.67436,
+     "pooled_boot95": [
+      2.79393,
+      2.82491
+     ],
+     "pooled_ratio_E_sumRGB": 2.74089,
+     "pooled_ratio_L": 2.80277,
+     "ratio_L_dev_pct": -1.90296,
+     "LATTICE_median_of_ratios": 3,
+     "pointPrediction_measuredOverPredicted": 1.01998,
+     "median_selSwing_quanta": 4.38882,
+     "perPixel_quantResolution_median": 0.5,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 4,
+     "pixels": 5267,
+     "medianSwing_unsel": 7,
+     "medianSwing_sel": 3,
+     "pooled_ratio_E_green": 2.80467,
+     "dev_pct": -1.83638,
+     "pooled_boot95": [
+      2.78842,
+      2.82189
+     ],
+     "pooled_ratio_E_sumRGB": 2.73401,
+     "pooled_ratio_L": 2.80496,
+     "ratio_L_dev_pct": -1.82657,
+     "LATTICE_median_of_ratios": 2.75,
+     "pointPrediction_measuredOverPredicted": 1.0192,
+     "median_selSwing_quanta": 5.68897,
+     "perPixel_quantResolution_median": 0.33333,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 6,
+     "pixels": 3539,
+     "medianSwing_unsel": 9,
+     "medianSwing_sel": 3,
+     "pooled_ratio_E_green": 2.80325,
+     "dev_pct": -1.88635,
+     "pooled_boot95": [
+      2.78517,
+      2.81987
+     ],
+     "pooled_ratio_E_sumRGB": 2.72895,
+     "pooled_ratio_L": 2.80655,
+     "ratio_L_dev_pct": -1.77089,
+     "LATTICE_median_of_ratios": 2.75,
+     "pointPrediction_measuredOverPredicted": 1.01867,
+     "median_selSwing_quanta": 6.86893,
+     "perPixel_quantResolution_median": 0.33333,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 8,
+     "pixels": 2332,
+     "medianSwing_unsel": 10,
+     "medianSwing_sel": 4,
+     "pooled_ratio_E_green": 2.83492,
+     "dev_pct": -0.77766,
+     "pooled_boot95": [
+      2.81424,
+      2.85321
+     ],
+     "pooled_ratio_E_sumRGB": 2.74089,
+     "pooled_ratio_L": 2.82448,
+     "ratio_L_dev_pct": -1.14308,
+     "LATTICE_median_of_ratios": 2.75,
+     "pointPrediction_measuredOverPredicted": 1.01224,
+     "median_selSwing_quanta": 8.19433,
+     "perPixel_quantResolution_median": 0.25,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 12,
+     "pixels": 616,
+     "medianSwing_unsel": 13,
+     "medianSwing_sel": 5,
+     "pooled_ratio_E_green": 2.83459,
+     "dev_pct": -0.78919,
+     "pooled_boot95": [
+      2.80136,
+      2.87123
+     ],
+     "pooled_ratio_E_sumRGB": 2.75861,
+     "pooled_ratio_L": 2.83621,
+     "ratio_L_dev_pct": -0.73265,
+     "LATTICE_median_of_ratios": 2.8,
+     "pointPrediction_measuredOverPredicted": 1.00815,
+     "median_selSwing_quanta": 10.30798,
+     "perPixel_quantResolution_median": 0.2,
+     "median_drift_codes": 0.5
+    },
+    {
+     "rung": 16,
+     "pixels": 0
+    },
+    {
+     "rung": 24,
+     "pixels": 0
+    }
+   ],
+   "ladderMonotonicity": "NOT monotone"
+  }
+ ]
+}

@@ -1,0 +1,45 @@
+// PINK dig: why the PDF walk ranks 0 semantic roles while the run says "10 of 10 roles checked"; and the stack-tier column order. STAND-IN lab only.
+import { readFileSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [STATE, ROOT, OUT] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const st = JSON.parse(readFileSync(STATE, "utf8")); const BASE = st.base; const sleep = ms => new Promise(r => setTimeout(r, ms));
+const J = async p => (await fetch(`${BASE}${p}`)).json();
+const browser = await chromium.launch(); const rec = { runs: [] };
+const TEXT = "Built event-driven TypeScript services on PostgreSQL and Kubernetes; designed GraphQL APIs and React front ends; led the migration of a dispatch platform to event sourcing.";
+for (const kind of ["pdf", "text"]) {
+  const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+  const page = await ctx.newPage(); const t = id => page.getByTestId(id);
+  const before = new Set(((await J("/api/career/analyses")).analyses ?? []).map(a => a.analysisId));
+  await page.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON`, { waitUntil: "networkidle" });
+  if (kind === "pdf") await t("source-dock-file-input").setInputFiles(`${ROOT}/docs/examples/cv.synthetic.pdf`);
+  else { await t("add-text-source-btn").click(); await t("source-text-input").fill(TEXT); await t("submit-source-btn").click(); }
+  await page.locator('[data-testid="start-intake-analysis-btn"]:not([disabled])').waitFor({ timeout: 30000 }); await t("start-intake-analysis-btn").click();
+  let id = null; for (let i = 0; i < 120 && !id; i += 1) { await sleep(1000); id = ((await J("/api/career/analyses")).analyses ?? []).map(a => a.analysisId).find(x => !before.has(x)) ?? null; }
+  let auto = null; for (let i = 0; i < 60; i += 1) { await sleep(1500); auto = (await J(`/api/career/analyses/${id}/auto-match`)).autoMatch; if (auto && !["NOT_STARTED", "RUNNING"].includes(auto.state)) break; }
+  const pools = Object.values(st.uploads ?? {}).filter(Boolean);
+  const rd = await (await fetch(`${BASE}/api/career/analyses/${id}/role-discovery?${pools.map(p => `jobPoolUploadId=${p}`).join("&")}`)).json();
+  const disc = rd.discovery ?? rd.roleDiscovery ?? rd;
+  const inv = auto?.investigationId ? await J(`/api/career/analyses/${id}/role-discovery/investigations/${auto.investigationId}`) : null;
+  const rk = (await J(`/api/career/analyses/${id}/job-ranking`)).ranking;
+  rec.runs.push({ kind, auto: auto && { state: auto.state, reason: auto.reason, evidenceClass: auto.evidenceClass, budget: auto.budget },
+    discovery: { keys: Object.keys(disc ?? {}).slice(0, 12), proposals: Array.isArray(disc?.proposals) ? disc.proposals.length : null, roles: Array.isArray(disc?.roles) ? disc.roles.length : null, nameRelated: Array.isArray(disc?.roles) ? disc.roles.reduce((n, r) => n + (r.counts?.nameRelated ?? 0), 0) : null, status: rd.success ?? null, code: rd.issues?.[0]?.code ?? null },
+    investigation: inv && { status: inv.investigation?.status, provider: inv.investigation?.provider, tasks: (inv.tasks ?? []).map(x => `${x.status}:${x.pairs}/${x.stored}`) },
+    ranking: rk && { ranks: rk.ranks.length, semantic: rk.ranks.filter(r => r.tier === "SEMANTIC").length, maxFit: Math.max(...rk.ranks.map(r => r.fit ?? 0)), evidenceClass: rk.evidenceClass } });
+  console.log(kind, JSON.stringify(rec.runs.at(-1)).slice(0, 900));
+  // stack tier: column order and the orbit shells' document positions at 640x360@2 and 960x540@2
+  for (const [w, h] of [[960, 540], [640, 360]]) {
+    const c2 = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 }); await c2.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+    const p2 = await c2.newPage(); await p2.goto(`${BASE}/career/demo?focus=CAPABILITY&investigationMode=PERSON&analysisId=${id}`, { waitUntil: "networkidle" }); await sleep(7000);
+    const m = await p2.evaluate(() => { const y = e => e ? Math.round(e.getBoundingClientRect().top + scrollY) : null; const q = s => document.querySelector(s);
+      return { docHeight: document.documentElement.scrollHeight, panelTop: y(q('[data-testid="auto-ranking-panel"]')), panelHeight: Math.round(q('[data-testid="auto-ranking-panel"]')?.getBoundingClientRect().height ?? 0), shell01Top: y(q('[data-testid="focus-transition-stage-shell-01"]')), shell06Top: y(q('[data-testid="focus-transition-stage-shell-06"]')), dockTop: y(q('[data-testid="source-dock-file-input"]')?.closest("[data-sx-shell]") ?? q('[data-testid="start-intake-analysis-btn"]')) }; });
+    // the probe of §3.81 S8: click shell 01 at its centre after scrolling it into view
+    const shell = p2.locator('[data-testid="focus-transition-stage-shell-01"]').first(); await shell.scrollIntoViewIfNeeded().catch(() => {}); await sleep(800); const bx = await shell.boundingBox();
+    if (bx) { await p2.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await sleep(2500); }
+    m.shell01OpensAfterScroll = await p2.evaluate(() => document.querySelectorAll('[data-testid^="orbital-cosmos-view-"], [data-testid^="orbital-empty-projection"]').length);
+    await p2.screenshot({ path: `${OUT}/stack-${kind}-${w}x${h}.png` });
+    rec.runs.at(-1)[`stack${w}`] = m; console.log(kind, w, JSON.stringify(m)); await c2.close();
+  }
+  await ctx.close();
+}
+writeFileSync(`${OUT}/dig.json`, JSON.stringify(rec, null, 1)); await browser.close();

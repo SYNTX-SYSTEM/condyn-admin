@@ -1,0 +1,190 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "pins": {
+    "PF-11": "live form at :862/:907, NOT :329 — four thresholds separate, computed-style clause own verdict",
+    "PF-6": "live form at :715 — on 2 px-BLURRED frames; §21 measured unblurred and is corrected here"
+  },
+  "scope": "one fixture, one analysisId, L0 — §63",
+  "pf11": [
+    {
+      "viewport": "1920x1080",
+      "motion": "reduce",
+      "blur": "sharp.blur(2)",
+      "outermostRing": "field",
+      "discPixels": 548001,
+      "limb_thresholds_REPORTED_SEPARATELY": [
+        {
+          "threshold": 0.001,
+          "backToBackCount": 0,
+          "apartCount": 10,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "UNBOUNDED — back-to-back count is zero and the 2 s count is not; ratio infinite",
+          "clears": false
+        },
+        {
+          "threshold": 0.002,
+          "backToBackCount": 0,
+          "apartCount": 2,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "UNBOUNDED — back-to-back count is zero and the 2 s count is not; ratio infinite",
+          "clears": false
+        },
+        {
+          "threshold": 0.004,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        },
+        {
+          "threshold": 0.008,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        }
+      ],
+      "rungsClearing": 0,
+      "rungsFailing": 2,
+      "rungsNotEvaluable": 2,
+      "limb_computedStyle_OWN_VERDICT": {
+        "offenders": 0,
+        "clears": true,
+        "sample": []
+      },
+      "conjunctionVerdict_forContrastOnly": false
+    },
+    {
+      "viewport": "1280x800",
+      "motion": "reduce",
+      "blur": "sharp.blur(2)",
+      "outermostRing": "field",
+      "discPixels": 156157,
+      "limb_thresholds_REPORTED_SEPARATELY": [
+        {
+          "threshold": 0.001,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        },
+        {
+          "threshold": 0.002,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        },
+        {
+          "threshold": 0.004,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        },
+        {
+          "threshold": 0.008,
+          "backToBackCount": 0,
+          "apartCount": 0,
+          "ratio": null,
+          "bound": "<= 1.5",
+          "state": "NO SIGNAL — both counts zero, ratio 0/0, rung measured nothing",
+          "clears": null
+        }
+      ],
+      "rungsClearing": 0,
+      "rungsFailing": 0,
+      "rungsNotEvaluable": 4,
+      "limb_computedStyle_OWN_VERDICT": {
+        "offenders": 0,
+        "clears": true,
+        "sample": []
+      },
+      "conjunctionVerdict_forContrastOnly": false
+    }
+  ],
+  "pf6": [
+    {
+      "viewport": "1920x1080",
+      "motion": "reduce",
+      "foreignSuppressed": false,
+      "blur": "sharp.blur(2)",
+      "discPixels": 548001,
+      "row1_blurred": {
+        "bound": "<= 0.03",
+        "max": 0.003891808,
+        "p999_9": 0.0007986297,
+        "p99_9": 0,
+        "p99": 0,
+        "p50": 0,
+        "pixelsAbove": 0,
+        "clears": true
+      },
+      "row2_blurred": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 2.567947e-8,
+        "maxPairMean": 5.560293e-8,
+        "clears": true
+      }
+    },
+    {
+      "viewport": "1920x1080",
+      "motion": "no-preference",
+      "foreignSuppressed": true,
+      "blur": "sharp.blur(2)",
+      "discPixels": 548001,
+      "row1_blurred": {
+        "bound": "<= 0.03",
+        "max": 0.02825015,
+        "p999_9": 0.02649586,
+        "p99_9": 0.02321658,
+        "p99": 0.01496688,
+        "p50": 0.0003005255,
+        "pixelsAbove": 0,
+        "clears": true
+      },
+      "row2_blurred": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 0.0001002759,
+        "maxPairMean": 0.0002666641,
+        "clears": true
+      }
+    },
+    {
+      "viewport": "1920x1080",
+      "motion": "no-preference",
+      "foreignSuppressed": false,
+      "blur": "sharp.blur(2)",
+      "discPixels": 548001,
+      "row1_blurred": {
+        "bound": "<= 0.03",
+        "max": 0.5074394,
+        "p999_9": 0.3336438,
+        "p99_9": 0.2499961,
+        "p99": 0.02039345,
+        "p50": 0.0003005255,
+        "pixelsAbove": 3427,
+        "clears": false
+      },
+      "row2_blurred": {
+        "bound": "<= 0.0025",
+        "meanOfPairMeans": 0.0002066225,
+        "maxPairMean": 0.0005437473,
+        "clears": true
+      }
+    }
+  ]
+}

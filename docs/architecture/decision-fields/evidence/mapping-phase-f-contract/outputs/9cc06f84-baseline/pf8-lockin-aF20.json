@@ -1,0 +1,11 @@
+{
+ "note": "PINK PF-8 lock-in re-run under A-F20 (decoys 0.15/0.25/0.35Hz between the harmonics; joint 13-param LSQ). Independent check of GELB §21 convergence at base 9cc06f84.",
+ "aF20_decoys_26s_window_2p6_periods": { "tierA":{"sigAmp":0.000102,"floor":0.00003631,"verdict":"GREEN"},
+   "tierB":{"p99sig":0.005362,"p99null":0.002335,"ratio":2.3,"verdict":"RED"},
+   "tierC":{"signal":[34689,26031,5441,24],"null":[16497,3847,102,1],"ratios":[2.1,6.77,53.34,24],"verdict":"RED"} },
+ "aF20_decoys_47s_window_4p7_periods_ALIGNED": { "tierA":{"sigAmp":0.0001417,"floor":0.00001801,"verdict":"GREEN"},
+   "tierB":{"p99sig":0.005084,"p99null":0.002079,"ratio":2.45,"verdict":"RED"},
+   "tierC":{"signal":[30286,20332,4325,18],"null":[16398,2435,37,0],"ratios":[1.85,8.35,116.89,"inf"],"verdict":"RED"} },
+ "GELB_sec21_after": { "tierAfloor":0.00001, "tierB":"3.45x", "tierC":"2.27/21.11/236.45/inf" },
+ "convergence":"PINK tier A floor 1.8e-5 (47s) lands on GELB's converged 1e-5 — two instruments corrected from different starting errors (PINK: uniform-DFT aliasing; GELB: per-frequency fit + a 0.59Hz decoy above its own Nyquist) meet at the same floor. Window-length dependence found: 26s->47s dropped PINK's floor 3.6e-5->1.8e-5 and sharpened tier C 53x->117x at 0.004; the window must be >=~4.7 periods for the floor to settle (GELB's choice)."
+}

@@ -1,0 +1,19 @@
+// PINK HR-decision-loop page check, GET only (every non-GET aborted and counted). argv: <base> <out json> <label> <revisionId...>
+import { writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+const [BASE, OUT, LABEL, ...IDS] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+let blocked = 0; const reqs = []; await ctx.route("**/*", r => { const m = r.request().method(), u = new URL(r.request().url()); if (u.pathname.startsWith("/api/")) reqs.push(`${m} ${u.pathname.replace(/[A-Z]+_[0-9A-F_]{8,}/g, "ID")}`); if (m !== "GET" && m !== "HEAD") { blocked += 1; return r.abort(); } return r.continue(); });
+const out = { label: LABEL, base: BASE.replace(/:\d+$/, ":PORT"), pages: {} };
+for (const id of IDS) {
+  const p = await ctx.newPage(); const errors = []; p.on("pageerror", e => errors.push(String(e).slice(0, 140))); const cons = []; p.on("console", m => { if (m.type() === "error") cons.push(m.text().slice(0, 140)); });
+  const n = reqs.length; const resp = await p.goto(`${BASE}/career/demo?careerDecisionContextRevisionId=${id}`, { waitUntil: "domcontentloaded" }); await sleep(9000);
+  const html = await resp.text().catch(() => ""); 
+  const v = await p.evaluate(() => { const q = s => document.querySelector(s); const ids = [...new Set([...document.querySelectorAll('[data-testid^="hr-"]')].map(e => e.dataset.testid))].sort(); return { ids, loading: !!q('[data-testid="hr-decision-loop-loading"]'), notFound: !!q('[data-testid="hr-decision-loop-not-found"]'), failed: !!q('[data-testid="hr-decision-loop-failed"]'), context: !!q('[data-testid="hr-decision-loop-context"]'), chain: !!q('[data-testid="hr-decision-loop-chain"]'), nonClaims: (q('[data-testid="hr-decision-loop-non-claims"]')?.innerText ?? "").slice(0, 200), bound: [...document.querySelectorAll('[data-testid^="hr-decision-loop-bound-revisions"]')].map(e => e.dataset.testid), shells: document.querySelectorAll('[data-testid^="focus-transition-stage-shell-"]').length }; });
+  const r2 = await p.reload({ waitUntil: "domcontentloaded" }); await sleep(8000); const v2 = await p.evaluate(() => [...new Set([...document.querySelectorAll('[data-testid^="hr-"]')].map(e => e.dataset.testid))].sort());
+  out.pages[id.slice(0, 12) + "…"] = { status: resp.status(), ssrBytes: html.length, ...v, reloadStatus: r2.status(), reloadSameIds: JSON.stringify(v2) === JSON.stringify(v.ids), apiCalls: reqs.slice(n), pageErrors: errors, consoleErrors: cons.slice(0, 5) };
+  await p.close();
+}
+out.blockedNonGet = blocked; await b.close(); writeFileSync(OUT, JSON.stringify(out, null, 1)); console.log("HR", LABEL, JSON.stringify(Object.fromEntries(Object.entries(out.pages).map(([k, v]) => [k, [v.status, v.context, v.chain, v.notFound, v.failed, v.pageErrors.length, v.reloadSameIds]]))), "blocked", blocked);

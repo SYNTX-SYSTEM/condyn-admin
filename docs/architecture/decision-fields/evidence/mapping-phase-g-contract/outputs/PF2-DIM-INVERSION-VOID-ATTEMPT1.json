@@ -1,0 +1,1684 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "motion": "reduce",
+  "viewport": "1920x1080",
+  "pin": "PF-2 — adjacent evidence bands >= 1.6 at their closest points, on rendered pixels",
+  "inheritedScope": "between classes, WITHIN ONE FOCUSED GROUP (PHASE_E §12, recorded at mapping-phase-e-contract/prep.txt:267, citing A-6) — i.e. across bodies that SHARE a focus state, so a common group opacity cancels in the ratio",
+  "scope": "one fixture, one analysisId, L0 — §63",
+  "snapshots": [
+    {
+      "label": "resting (no selection)",
+      "selection": "",
+      "markCount": 19,
+      "twoRouteAgreement": {
+        "min": 0.1002,
+        "max": 6.9476
+      },
+      "inScope_withinOneFocusState": [
+        {
+          "focusState": "lit=true,inPool=true,op=1",
+          "marks": 19,
+          "bandsPresent": [
+            {
+              "step": "CHECKED",
+              "floor": 0.06792792,
+              "ceil": 0.4685185,
+              "n": 8
+            },
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.01095574,
+              "ceil": 0.03220728,
+              "n": 9
+            },
+            {
+              "step": "NONE",
+              "floor": 0.01004788,
+              "ceil": 0.02714436,
+              "n": 2
+            }
+          ],
+          "adjacentPairs": [
+            {
+              "upper": "CHECKED",
+              "lower": "NAME_ONLY",
+              "upperFloor": 0.06792792,
+              "lowerCeil": 0.03220728,
+              "ratio": 2.1091,
+              "bound": ">= 1.6",
+              "clears": true
+            },
+            {
+              "upper": "NAME_ONLY",
+              "lower": "NONE",
+              "upperFloor": 0.01095574,
+              "lowerCeil": 0.02714436,
+              "ratio": 0.4036,
+              "bound": ">= 1.6",
+              "clears": false
+            }
+          ],
+          "allClear": false
+        }
+      ],
+      "outOfScope_crossFocusState": null,
+      "marks": [
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.2565924,
+          "predictedFromDeclared": 0.7275838,
+          "twoRouteRatio": 0.3527
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.2625341,
+          "predictedFromDeclared": 0.8251931,
+          "twoRouteRatio": 0.3181
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.184471,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.239
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.02714436,
+          "predictedFromDeclared": 0.003907013,
+          "twoRouteRatio": 6.9476
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.4685185,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.6069
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.2410383,
+          "predictedFromDeclared": 0.7275838,
+          "twoRouteRatio": 0.3313
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1818767,
+          "predictedFromDeclared": 0.8251931,
+          "twoRouteRatio": 0.2204
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01197271,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.2242
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.476,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.476,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01855711,
+          "predictedFromDeclared": 0.03642203,
+          "twoRouteRatio": 0.5095
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.03163209,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.5925
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.01004788,
+          "predictedFromDeclared": 0.003907013,
+          "twoRouteRatio": 2.5718
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.148159,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.1919
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.958,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.958,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.06792792,
+          "predictedFromDeclared": 0.6781828,
+          "twoRouteRatio": 0.1002
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.45,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.45,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01095574,
+          "predictedFromDeclared": 0.02936799,
+          "twoRouteRatio": 0.3731
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.02418669,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.453
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.03220728,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.6032
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.0130748,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.2449
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.02563223,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.4801
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01687682,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.3161
+        }
+      ]
+    },
+    {
+      "label": "selected mapping-capability-PCAP_K8",
+      "selection": "CAPABILITY",
+      "markCount": 19,
+      "twoRouteAgreement": {
+        "min": 0.2449,
+        "max": 45.6046
+      },
+      "inScope_withinOneFocusState": [
+        {
+          "focusState": "lit=false,inPool=true,op=0.32",
+          "marks": 14,
+          "bandsPresent": [
+            {
+              "step": "CHECKED",
+              "floor": 0.06875076,
+              "ceil": 0.1714866,
+              "n": 8
+            },
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.04228321,
+              "ceil": 0.05185277,
+              "n": 4
+            },
+            {
+              "step": "NONE",
+              "floor": 0.03845337,
+              "ceil": 0.052426,
+              "n": 2
+            }
+          ],
+          "adjacentPairs": [
+            {
+              "upper": "CHECKED",
+              "lower": "NAME_ONLY",
+              "upperFloor": 0.06875076,
+              "lowerCeil": 0.05185277,
+              "ratio": 1.3259,
+              "bound": ">= 1.6",
+              "clears": false
+            },
+            {
+              "upper": "NAME_ONLY",
+              "lower": "NONE",
+              "upperFloor": 0.04228321,
+              "lowerCeil": 0.052426,
+              "ratio": 0.8065,
+              "bound": ">= 1.6",
+              "clears": false
+            }
+          ],
+          "allClear": false
+        },
+        {
+          "focusState": "lit=true,inPool=true,op=1",
+          "marks": 5,
+          "bandsPresent": [
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.0130748,
+              "ceil": 0.03220728,
+              "n": 5
+            }
+          ],
+          "adjacentPairs": [],
+          "allClear": true
+        }
+      ],
+      "outOfScope_crossFocusState": {
+        "litGroupOpacity": 1,
+        "dimmedGroupOpacity": 0.32,
+        "dimFactor": 3.125,
+        "comparablePairs": 40,
+        "invertedPairs": 0,
+        "anyInversion": false,
+        "examples": [
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1174618,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.02418669,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 4.8565,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1174618,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.03220728,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 3.6471,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1174618,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.0130748,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 8.9838,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1174618,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.02563223,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 4.5826,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1174618,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.01687682,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 6.9599,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 1,
+              "rendered": 0.1340988,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.02418669,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 5.5443,
+            "inverted": false
+          }
+        ]
+      },
+      "marks": [
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 1,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.1174618,
+          "predictedFromDeclared": 0.06194685,
+          "twoRouteRatio": 1.8962
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 1,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1340988,
+          "predictedFromDeclared": 0.07075201,
+          "twoRouteRatio": 1.8953
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 1,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1011074,
+          "predictedFromDeclared": 0.06552061,
+          "twoRouteRatio": 1.5431
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 1,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.052426,
+          "predictedFromDeclared": 0.001149578,
+          "twoRouteRatio": 45.6046
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1714866,
+          "predictedFromDeclared": 0.06552061,
+          "twoRouteRatio": 2.6173
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.1108243,
+          "predictedFromDeclared": 0.06194685,
+          "twoRouteRatio": 1.789
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.09568873,
+          "predictedFromDeclared": 0.07075201,
+          "twoRouteRatio": 1.3525
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04228321,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.5324
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.476,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.476,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04596247,
+          "predictedFromDeclared": 0.005379322,
+          "twoRouteRatio": 8.5443
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.05185277,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.7845
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.03845337,
+          "predictedFromDeclared": 0.001149578,
+          "twoRouteRatio": 33.45
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.08733825,
+          "predictedFromDeclared": 0.06552061,
+          "twoRouteRatio": 1.333
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.958,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.958,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.06875076,
+          "predictedFromDeclared": 0.05975135,
+          "twoRouteRatio": 1.1506
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.45,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.45,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04377644,
+          "predictedFromDeclared": 0.005044151,
+          "twoRouteRatio": 8.6787
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.02418669,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.453
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.03220728,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.6032
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.0130748,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.2449
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.02563223,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.4801
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01687682,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.3161
+        }
+      ]
+    },
+    {
+      "label": "selected mapping-capability-PCAP_PG",
+      "selection": "CAPABILITY",
+      "markCount": 19,
+      "twoRouteAgreement": {
+        "min": 0.239,
+        "max": 33.45
+      },
+      "inScope_withinOneFocusState": [
+        {
+          "focusState": "lit=true,inPool=true,op=1",
+          "marks": 4,
+          "bandsPresent": [
+            {
+              "step": "CHECKED",
+              "floor": 0.184471,
+              "ceil": 0.2625341,
+              "n": 3
+            },
+            {
+              "step": "NONE",
+              "floor": 0.02714436,
+              "ceil": 0.02714436,
+              "n": 1
+            }
+          ],
+          "adjacentPairs": [
+            {
+              "upper": "CHECKED",
+              "lower": "NONE",
+              "upperFloor": 0.184471,
+              "lowerCeil": 0.02714436,
+              "ratio": 6.7959,
+              "bound": ">= 1.6",
+              "clears": true
+            }
+          ],
+          "allClear": true
+        },
+        {
+          "focusState": "lit=false,inPool=true,op=0.32",
+          "marks": 15,
+          "bandsPresent": [
+            {
+              "step": "CHECKED",
+              "floor": 0.06875076,
+              "ceil": 0.1714866,
+              "n": 5
+            },
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.04180629,
+              "ceil": 0.05185277,
+              "n": 9
+            },
+            {
+              "step": "NONE",
+              "floor": 0.03845337,
+              "ceil": 0.03845337,
+              "n": 1
+            }
+          ],
+          "adjacentPairs": [
+            {
+              "upper": "CHECKED",
+              "lower": "NAME_ONLY",
+              "upperFloor": 0.06875076,
+              "lowerCeil": 0.05185277,
+              "ratio": 1.3259,
+              "bound": ">= 1.6",
+              "clears": false
+            },
+            {
+              "upper": "NAME_ONLY",
+              "lower": "NONE",
+              "upperFloor": 0.04180629,
+              "lowerCeil": 0.03845337,
+              "ratio": 1.0872,
+              "bound": ">= 1.6",
+              "clears": false
+            }
+          ],
+          "allClear": false
+        }
+      ],
+      "outOfScope_crossFocusState": {
+        "litGroupOpacity": 1,
+        "dimmedGroupOpacity": 0.32,
+        "dimFactor": 3.125,
+        "comparablePairs": 18,
+        "invertedPairs": 4,
+        "anyInversion": true,
+        "examples": [
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.986,
+              "rendered": 0.1714866,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.2565924,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 0.6683,
+            "inverted": true
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.986,
+              "rendered": 0.1714866,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.02714436,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 6.3176,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.1108243,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.02714436,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 4.0828,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 1,
+              "rendered": 0.09568873,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "CHECKED",
+              "declared": 0.972,
+              "rendered": 0.2565924,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 0.3729,
+            "inverted": true
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 1,
+              "rendered": 0.09568873,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "CHECKED",
+              "declared": 0.986,
+              "rendered": 0.184471,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 0.5187,
+            "inverted": true
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "CHECKED",
+              "declared": 1,
+              "rendered": 0.09568873,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.02714436,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 3.5252,
+            "inverted": false
+          }
+        ]
+      },
+      "marks": [
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.2565924,
+          "predictedFromDeclared": 0.7275838,
+          "twoRouteRatio": 0.3527
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.2625341,
+          "predictedFromDeclared": 0.8251931,
+          "twoRouteRatio": 0.3181
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.184471,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.239
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.02714436,
+          "predictedFromDeclared": 0.003907013,
+          "twoRouteRatio": 6.9476
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1714866,
+          "predictedFromDeclared": 0.06552061,
+          "twoRouteRatio": 2.6173
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.1108243,
+          "predictedFromDeclared": 0.06194685,
+          "twoRouteRatio": 1.789
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.09568873,
+          "predictedFromDeclared": 0.07075201,
+          "twoRouteRatio": 1.3525
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04228321,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.5324
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.476,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.476,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04596247,
+          "predictedFromDeclared": 0.005379322,
+          "twoRouteRatio": 8.5443
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.05185277,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.7845
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.03845337,
+          "predictedFromDeclared": 0.001149578,
+          "twoRouteRatio": 33.45
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.08733825,
+          "predictedFromDeclared": 0.06552061,
+          "twoRouteRatio": 1.333
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.958,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.958,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.06875076,
+          "predictedFromDeclared": 0.05975135,
+          "twoRouteRatio": 1.1506
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.45,
+          "bodyRank": 2,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.45,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04377644,
+          "predictedFromDeclared": 0.005044151,
+          "twoRouteRatio": 8.6787
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04660564,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.098
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.050293,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.5805
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04465908,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.8433
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04308853,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.6378
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04180629,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.47
+        }
+      ]
+    },
+    {
+      "label": "selected mapping-capability-PCAP_TS",
+      "selection": "CAPABILITY",
+      "markCount": 19,
+      "twoRouteAgreement": {
+        "min": 0.1567,
+        "max": 6.9476
+      },
+      "inScope_withinOneFocusState": [
+        {
+          "focusState": "lit=true,inPool=true,op=1",
+          "marks": 14,
+          "bandsPresent": [
+            {
+              "step": "CHECKED",
+              "floor": 0.1062925,
+              "ceil": 0.4685185,
+              "n": 8
+            },
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.01095574,
+              "ceil": 0.03232533,
+              "n": 4
+            },
+            {
+              "step": "NONE",
+              "floor": 0.01004788,
+              "ceil": 0.02714436,
+              "n": 2
+            }
+          ],
+          "adjacentPairs": [
+            {
+              "upper": "CHECKED",
+              "lower": "NAME_ONLY",
+              "upperFloor": 0.1062925,
+              "lowerCeil": 0.03232533,
+              "ratio": 3.2882,
+              "bound": ">= 1.6",
+              "clears": true
+            },
+            {
+              "upper": "NAME_ONLY",
+              "lower": "NONE",
+              "upperFloor": 0.01095574,
+              "lowerCeil": 0.02714436,
+              "ratio": 0.4036,
+              "bound": ">= 1.6",
+              "clears": false
+            }
+          ],
+          "allClear": false
+        },
+        {
+          "focusState": "lit=false,inPool=true,op=0.32",
+          "marks": 5,
+          "bandsPresent": [
+            {
+              "step": "NAME_ONLY",
+              "floor": 0.04180629,
+              "ceil": 0.050293,
+              "n": 5
+            }
+          ],
+          "adjacentPairs": [],
+          "allClear": true
+        }
+      ],
+      "outOfScope_crossFocusState": {
+        "litGroupOpacity": 1,
+        "dimmedGroupOpacity": 0.32,
+        "dimFactor": 3.125,
+        "comparablePairs": 20,
+        "invertedPairs": 0,
+        "anyInversion": false,
+        "examples": [
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.04660564,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.02714436,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 1.717,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.04660564,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.476,
+              "rendered": 0.02771195,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 1.6818,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.04660564,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.01004788,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 4.6384,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.04660564,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.45,
+              "rendered": 0.01095574,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 4.254,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.050293,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NONE",
+              "declared": 0.232,
+              "rendered": 0.02714436,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 1.8528,
+            "inverted": false
+          },
+          {
+            "higherBandOnDimmedBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.528,
+              "rendered": 0.050293,
+              "groupOpacity": 0.32
+            },
+            "lowerBandOnLitBody": {
+              "step": "NAME_ONLY",
+              "declared": 0.476,
+              "rendered": 0.02771195,
+              "groupOpacity": 1
+            },
+            "renderedRatio_higherOverLower": 1.8148,
+            "inverted": false
+          }
+        ]
+      },
+      "marks": [
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.2565924,
+          "predictedFromDeclared": 0.7275838,
+          "twoRouteRatio": 0.3527
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.2625341,
+          "predictedFromDeclared": 0.8251931,
+          "twoRouteRatio": 0.3181
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.184471,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.239
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 1,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.02714436,
+          "predictedFromDeclared": 0.003907013,
+          "twoRouteRatio": 6.9476
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.4685185,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.6069
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.972,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.972,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.2410383,
+          "predictedFromDeclared": 0.7275838,
+          "twoRouteRatio": 0.3313
+        },
+        {
+          "step": "CHECKED",
+          "declared": 1,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 1,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1818767,
+          "predictedFromDeclared": 0.8251931,
+          "twoRouteRatio": 0.2204
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01401249,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.2625
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.476,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.476,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.02771195,
+          "predictedFromDeclared": 0.03642203,
+          "twoRouteRatio": 0.7609
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.03232533,
+          "predictedFromDeclared": 0.05339099,
+          "twoRouteRatio": 0.6054
+        },
+        {
+          "step": "NONE",
+          "declared": 0.232,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.232,
+          "samples": 40,
+          "geometryTag": "line",
+          "renderedMedian": 0.01004788,
+          "predictedFromDeclared": 0.003907013,
+          "twoRouteRatio": 2.5718
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.986,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.986,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.148159,
+          "predictedFromDeclared": 0.7719725,
+          "twoRouteRatio": 0.1919
+        },
+        {
+          "step": "CHECKED",
+          "declared": 0.958,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.958,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.1062925,
+          "predictedFromDeclared": 0.6781828,
+          "twoRouteRatio": 0.1567
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.45,
+          "bodyRank": 2,
+          "bodyLit": "true",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 1,
+          "arcOwnOpacity": 0.45,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.01095574,
+          "predictedFromDeclared": 0.02936799,
+          "twoRouteRatio": 0.3731
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04660564,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.098
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.050293,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 6.5805
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 3,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04465908,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.8433
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04308853,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.6378
+        },
+        {
+          "step": "NAME_ONLY",
+          "declared": 0.528,
+          "bodyRank": 4,
+          "bodyLit": "false",
+          "bodyInPool": "true",
+          "bodyGroupOpacity": 0.32,
+          "arcOwnOpacity": 0.528,
+          "samples": 40,
+          "geometryTag": "path",
+          "renderedMedian": 0.04180629,
+          "predictedFromDeclared": 0.007642788,
+          "twoRouteRatio": 5.47
+        }
+      ]
+    }
+  ]
+}

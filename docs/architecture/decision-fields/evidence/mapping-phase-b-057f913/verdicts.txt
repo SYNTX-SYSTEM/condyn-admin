@@ -1,0 +1,65 @@
+PINK §3.95 — PERSON × JOB phase B on GRÜN frontend/mapping-phase-b 057f913 (base main 85274dc, not merged), GELB request; owner hardlock
+"… NUR PHASE B. MEHR NICHT." — only the phase-B modules lib/career/mapping/{view,layout,signs,delta,focus}.ts and their tests — 2026-11-01
+Method:
+  * Code read of the five modules.
+  * GRÜN's tests in an isolated local clone; tsc.
+  * PINK's own probe: seeded generators of decoder-valid ROLE_RANKING_V1 bodies, own re-derivations, the Phase-A oracle and vectors.
+  * PINK's Python recomputation from the spec text on 200 random and pressure layouts.
+  * PINK's own 43 mutants against GRÜN's suite; the survivors against PINK's probe.
+Evidence class: DETERMINISTIC_FIXTURE. No model, no network, no database row of condyn. main and :3017 untouched; no GRÜN contact.
+
+VERDICT: GO for the phase-B product code 057f913 — no product finding. Condition (test only, before any merge): F-PB-T1…T3.
+
+Determinism, golden vectors  PASS
+  * All 12 layouts, 4 rings and 5 constellations: 11 753 numbers, all exact (max deviation 0).
+  * 200 random and pressure layouts (17 394 bodies, 113 overflow, 7 354 displaced): product byte-identical to the Phase-A oracle and to
+    itself under 400 permuted inputs; PINK's Python from the spec text matches 200/200. Rings and constellations (200 cases each) the same.
+  * Inputs are never written; frozen input is accepted.
+Sign semantics  PASS
+  * couplingSign equals sign-table.json for the 10 (class, state) pairs and refuses 92 other pairs (prototype names included).
+  * COUPLING_STATES = SEMANTIC_RELATION_STATES + the 4 lexical bases + NONE.
+  * 10 distinct signatures; DIFFERENT, UNCLEAR and NONE are three signs; every name relation is dotted, never phase locked, at most half
+    filled.
+  * runSign: all 8 AUTO_MATCH_STATES × resumePending equal the table. STALLED+pending is frozen without a pulse; a pulse only for
+    PARTIAL/FAILED while pending; only RUNNING breathes; bad input refused.
+Data identity  PASS
+  * 400 decoder-valid rankings, 5 318 couplings, equal to PINK's own derivation: KNOWN 1 632, NOT_IN_PERSON 893, ABSENT 2 793.
+  * capabilityKey 1:1. A key-less old body stays ABSENT, also in 1 850 couplings that carry exactly a PERSON capability's name; no
+    coupling by name.
+  * reverseView: by key only (4 375 checks, names as keys give nothing).
+  * The view is order-free over capabilities, pools, ranks and requirements; deeply frozen; inputs unchanged and not frozen.
+  * The view's ring order equals the layout's ring order.
+delta  PASS
+  * 500 random pairs equal to PINK's own diff, all 9 change kinds.
+  * Empty on equality, also shuffled and with an absent key read as null.
+  * Exact mirror; order-free; a fit change of 0.001 is reported (467 checks); null → ranking = ROLE_ADDED only.
+focus  PASS
+  * All 72 reachable states (L0 6, L1 12, L2 18, L3 36) and 1 080 transitions: the level invariants hold, the state has exactly
+    level/pool/role/requirement/selection (no scope field).
+  * Every no-op and all 1 728 inadmissible actions return the very same object (SELECT_ROLE, SELECT_JOB, SET_JOB_SCOPE included).
+  * Opening keeps the selection, marking keeps the level; FOCUS_ACTIONS has MARK_ROLE / MARK_REQUIREMENT / SELECT_CAPABILITY and no B2
+    action.
+Boundaries  PASS
+  * The diff against main is only the 12 files under lib/career/mapping and test/career/mapping, and nothing outside them imports the
+    modules.
+  * Imports: type-only plus the two spec JSON files. No React, time, randomness, network or storage.
+  * GRÜN's tests: 76/76 (8 files); tsc 0.
+
+Findings (test only; the product passes PINK's checks):
+F-PB-T1 delta: GRÜN's suite does not notice two regressions PINK's probe kills —
+  * D2: the change list sorted without the requirement id, so the order depends on the input order (owner focus "order independence");
+  * D4: fit changes below 0.01 ignored (fit steps of 1/(2·Σweight) are smaller than that with Σweight > 50).
+F-PB-T2 view: GRÜN's suite does not notice
+  * V5: the constellation ordered by key, not name then key;
+  * V12: the quotes handed through, so the view freezes the caller's ranking.
+F-PB-T3 focus: GRÜN's suite does not notice F4, opening a pool clearing the selection (the selection is its own axis).
+Equivalent mutants:
+  * V4: the ring's weight tie-break; the decoder binds the weight to the necessity.
+  * L5: overflow bodies on ring 520 cannot reach a disc inside 500 − rho.
+  * L10: unrounded output, within the 1e-6 contract.
+  * L4: exclusive sector end; only exact float equality separates it, with no difference in 200 cases.
+Observations (shapes the backend never emits; no finding inside phase B):
+O-PB-1 Two requirements with one poolRequirementId in one role pass the strict decoder. The view then depends on their order, while delta
+  refuses them. The upload refuses duplicate requirement ids (upload.ts assertJobPoolReferences).
+O-PB-2 Source LEXICAL with basis NONE passes the strict decoder, and couplingSign refuses it (SOURCE_MISMATCH) instead of painting it.
+  role-ranking.ts emits NONE/NONE only.

@@ -1,0 +1,49 @@
+PINK §3.101 addendum 5 — fifth re-review of GELB's DLL ops scripts (2026-11-04). Read locally from GELB's refreshed evidence copy; md5 equal to
+GELB's values: dll-build.sh f8671343…, dll-revert.sh a5f7b790…; unchanged dll-env-guard.sh dd1d09a5…, dll-launch.sh 0a0b382c…, dll-3017.sh
+72dfd8ee…, dll-rollback.sh 300df5d5…, provision-dll-runtime.ts 16a7bdd3…; DEPLOYMENT.md 39d96b9b…; test scripts measure-q1.sh 0c37e7c4…,
+test-q.sh c3b2bc09…, test-p1-cases.sh dfc02dbe…. Nothing of GELB's was executed. dll.env not seen.
+
+Verdict: Q-1..Q-5 FIXED. No path found that damages anything pre-existing, loses the only copy of a build, or fails silently. One latent
+availability defect remains (S-1): a refusal that stops a serving runtime and leaves it down. Plus two message-level points (S-2, S-3)
+and one recorded limit (S-4). Not fully clean because of S-1.
+
+Fixed
+Q-1 recover() moves a present .next to .staging-discard, then puts STAGE_OUT back, and never deletes STAGE_OUT (it is not in the cleanup
+    at line 132). The case where BOTH .next and DISCARD exist (GELB's question): rm -rf DISCARD runs first. If that fails, `mv .next
+    DISCARD` moves .next INTO the leftover DISCARD; .next is then absent and the restore still happens. Correct.
+    If `mv STAGE_OUT .next` fails, the warning names the path and STAGE_OUT survives the handler. See S-2.
+Q-2 PREV == HEAD is refused; the journal is written before anything moves, removed on COMMITTED and on a successful restart, and a leftover
+    journal refuses every run (plan included) with its contents printed. A run killed after COMMITTED: once the journal is removed, the
+    next apply is refused by PREV == HEAD. No self-revert any more. See S-3.
+Q-3 `set +e` is the first statement of recover(); the git calls in it are guarded; a stopped runtime is named explicitly in every branch.
+Q-4 accepted as framed.
+Q-5 dll-build.sh refuses a dirty tree, compares HEAD and porcelain before and after, and fails if the stamp is not written or does not read
+    back. GELB's question, whether this blocks the recovery the trap prescribes: measured, no. PINK's failed-build scratch clone (addendum 4)
+    shows `git status --porcelain` with ONLY the planted file after `next build` failed. next build rewrote no tracked file (tsconfig.json
+    already carries .next/types and the plugin), and *.tsbuildinfo and next-env.d.ts are gitignored. After recover() restores HEAD, the
+    tree is clean and the prescribed rebuild runs. Only a failed HEAD restore (local modifications) leaves it dirty, and then dll-build.sh
+    names the files.
+Value class: PINK agrees with GELB not to pin NODE_ENV / NEXT_TELEMETRY_DISABLED. The allowlist and the B-ENTRY pin already bound them,
+    and `next start` serves the production build regardless of a non-standard NODE_ENV.
+
+Findings (report only, not corrected)
+S-1 (latent, availability). The forward-save stamp refusal (lines 169-172) comes AFTER the stop (line 159) with the trap armed. recover()
+    restores nothing (nothing moved), finds .next's stamp != HEAD, which is the reason for the refusal, and therefore declines to restart.
+    A deployment that was SERVING, with an unstamped or mismatched .next, is left DOWN by a refused revert. That contradicts GELB's own rule
+    from round 2: a refused revert leaves the deployment as found. The message is explicit, so it is not silent. It does not fire today
+    (the current .next carries a build-time stamp).
+    Fix: run the stamp checks (forward: .next/COMMIT == HEAD when FORWARD is absent; incoming: BUILD/COMMIT == PREV) in the plan phase,
+    before the stop, so that a refusal changes nothing.
+S-2 (message). When the restore fails, the warning says the saved build at .staging-outgoing must NOT be deleted. But the next apply,
+    after the operator removes the journal, deletes .staging-outgoing at line 163. No data is lost, because rollback/next-<CURRENT8>
+    always exists before .staging-outgoing is created (lines 167-177). The message should name that canonical copy instead. Also, a
+    PRE-EXISTING forward build is not stamp-checked at save time (line 167 checks only when it is absent); it is checked later, when used
+    as BUILD (lines 191-192), which is fail-safe.
+S-3 (message). The journal refusal tells the operator to check and remove the journal. It does not say how to tell whether the revert had
+    committed (HEAD == "to" and .next stamped "to"), nor that in that case PREVIOUS_COMMIT must be set to the journal's "from" by hand.
+    Without that edit, the next apply is refused by PREV == HEAD and the way back is not named.
+S-4 (recorded limit). The stamp binds the TRACKED source at HEAD. Ignored build inputs are not part of it: node_modules, and .next/cache,
+    which next build keeps across builds. .env* is refused separately. Both commits share package-lock.json, so this is not live today.
+
+Unchanged and still holding: dll-rollback.sh (addendum 2), dll-env-guard.sh / dll-launch.sh / dll-3017.sh (addendum 4),
+provision-dll-runtime.ts (owner decision; pin before any rerun).

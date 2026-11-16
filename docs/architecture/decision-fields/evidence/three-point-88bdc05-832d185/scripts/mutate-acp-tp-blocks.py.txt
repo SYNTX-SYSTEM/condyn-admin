@@ -1,0 +1,54 @@
+GUARD = "lib/career/provider-calls/guard.ts"; REG = "lib/career/provider-calls/register.ts"; JCTX = "lib/career/provider-calls/job-context.ts"; ENG = "lib/career/job-pool/semantic-relation-engine.ts"; RUN = "lib/career/job-pool/semantic-investigation-run.ts"; ISTORE = "lib/career/job-pool/semantic-investigation-store.ts"; LEG = "lib/career/providers/gemini.ts"
+T_TP = ["test/career/job-pool", "test/career/provider-calls"]
+BLOCKS["TP"] = (T_TP, [
+ ("T-M01 429 permanent", GUARD, "if ([408, 429, 500, 502, 503, 504].includes(httpStatus))", "if ([408, 500, 502, 503, 504].includes(httpStatus))"),
+ ("T-M02 broken connection not transient", GUARD, 'if (NETWORK.test(message)) return { errorClass: "TRANSIENT", errorCode: "NETWORK", httpStatus };', ""),
+ ("T-M03 every failure retried", RUN, 'if (outcome.status === "FAILED" && outcome.errorClass === "TRANSIENT" && attempt < maxAttempts)', 'if (outcome.status === "FAILED" && attempt < maxAttempts)'),
+ ("T-M04 explicit path retries too", "lib/career/job-pool/semantic-investigation-start.ts", 'const maxAttempts = input.confirmedCalls === "AS_PLANNED" ? ROLE_MAX_ATTEMPTS : 1;', "const maxAttempts = ROLE_MAX_ATTEMPTS;"),
+ ("T-M05 three attempts", RUN, "export const ROLE_MAX_ATTEMPTS = 2;", "export const ROLE_MAX_ATTEMPTS = 3;"),
+ ("T-M06 partial admission off (all-or-nothing)", ENG, "if (refusals.length > 0 && records.length === 0) return", "if (refusals.length > 0) return"),
+ ("T-M07 all refused reads SUCCEEDED", ENG, "if (refusals.length > 0 && records.length === 0) return", "if (false) return"),
+ ("T-M08 failed request released", ENG, "try { await input.ledger.consume({ requestBytes: Buffer.byteLength(JSON.stringify(request)), responseBytes: 0 }); } catch { /* the failure below is the outcome */ }", "try { await input.ledger.release(); } catch { /* the failure below is the outcome */ }"),
+ ("T-M09 resumable marker ignored", ISTORE, "request_json::jsonb @> '{\"auto\": true, \"resumable\": true}'::jsonb", "request_json::jsonb @> '{\"auto\": true}'::jsonb"),
+ ("T-M10 five revisions", AM, "export const AUTO_MATCH_MAX_REVISIONS = 2;", "export const AUTO_MATCH_MAX_REVISIONS = 5;"),
+ ("T-M11 spent budget continued", AM, '  if (tasks.some(t => t.status === "BUDGET_EXHAUSTED")) return false;\n', ""),
+ ("T-M12 refusal continued", AM, 'export const isRetryableTask = (t: { status: TaskStatus; errorCode: string | null }): boolean => (t.status === "FAILED" && t.errorCode === TRANSIENT_PROVIDER_CODE)', 'export const isRetryableTask = (t: { status: TaskStatus; errorCode: string | null }): boolean => (t.status === "FAILED")'),
+ ("T-M25 continuation takes every role", AM, "const roles = tasks.filter(isRetryableTask).map(", "const roles = tasks.map("),
+ ("T-M26 carried roles not shown", AM, ".length + carried.evaluated;", ".length;"),
+ ("T-M27 malformed job limit opens the default", REG, "return /^[0-9]{1,6}$/.test(text) && Number(text) >= 1 ? Number(text) : 0;", "return /^[0-9]{1,6}$/.test(text) && Number(text) >= 1 ? Number(text) : PROVIDER_CALL_DEFAULT_JOB_LIMIT;"),
+ ("T-M28 sweep unbounded", AM, "    if (result.continued >= AUTO_MATCH_SWEEP_MAX_CONTINUATIONS) break;\n", ""),
+ ("T-M29 carried failure forgotten when the successor completes", AM, 'state = beyond || failures || refused ? "PARTIAL" : "COMPLETED";', 'state = beyond || refused ? "PARTIAL" : "COMPLETED";'),
+ ("T-M13 sent before the row", GUARD, "  try { callId = await recorder.begin({ stage, ...ctx.meta }); } catch (error) { throw error instanceof ProviderCallBlocked ? error : new ProviderCallBlocked(\"ERR_PROVIDER_CALL_REGISTER_FAILED\"); }", "  try { callId = await recorder.begin({ stage, ...ctx.meta }); } catch (error) { await send().catch(() => undefined); throw error instanceof ProviderCallBlocked ? error : new ProviderCallBlocked(\"ERR_PROVIDER_CALL_REGISTER_FAILED\"); }"),
+ ("T-M14 failure after send released", REG, "UPDATE career_provider_calls SET state = 'FAILED_AFTER_SEND', error_class = ${info.errorClass}", "UPDATE career_provider_calls SET state = 'FAILED_BEFORE_SEND', error_class = ${info.errorClass}"),
+ ("T-M15 stale SENT released", REG, "UPDATE career_provider_calls SET state = 'UNKNOWN', error_class = 'UNKNOWN', error_code = 'NO_END_RECORDED', ended_at = ${now} WHERE state = 'SENT' AND sent_at < ${before} RETURNING job_id`;\n    for (const r of unknown) await tx`UPDATE career_relation_call_ledger SET consumed = consumed + 1", "UPDATE career_provider_calls SET state = 'UNKNOWN', error_class = 'UNKNOWN', error_code = 'NO_END_RECORDED', ended_at = ${now} WHERE state = 'SENT' AND sent_at < ${before} RETURNING job_id`;\n    for (const r of unknown) await tx`UPDATE career_relation_call_ledger SET consumed = consumed + 0"),
+ ("T-M16 trigger allows delete", REG, "IF TG_OP = 'DELETE' THEN RAISE EXCEPTION 'ERR_PROVIDER_CALL_IMMUTABLE: delete refused'; END IF;", "IF TG_OP = 'DELETE' THEN RETURN OLD; END IF;"),
+ ("T-M17 cascade continues after a blocked call", LEG, "        if (err instanceof ProviderCallBlocked) throw err;\n", ""),
+ ("T-M18 job limit not enforced", REG, "WHERE scope_key = ${this.key} AND reserved - released < limit_units RETURNING scope_key", "WHERE scope_key = ${this.key} RETURNING scope_key"),
+ ("T-M19 no register for the job", "scripts/run-career-worker.ts", "const processAttempt: typeof processJob = (job, reportOperation) => withJobCallRegister(job.jobId, () => archivedAttempt(job, reportOperation));", "const processAttempt: typeof processJob = archivedAttempt; void withJobCallRegister;"),
+ ("T-M20 take-over without lease check", ISTORE, "AND (CASE WHEN lease_expires_at IS NOT NULL THEN lease_expires_at < ${now} ELSE updated_at < ${legacyBefore} END) RETURNING investigation_id`;\n      if (rows.length !== 1) return false;", "RETURNING investigation_id`;\n      if (rows.length !== 1) return false;"),
+ ("T-M21 lease taken from a live holder", ISTORE, "AND (lease_owner IS NULL OR lease_owner = ${owner} OR lease_expires_at < ${now})", ""),
+ ("T-M22 STALLED never derived", AM, "if (open) { state = lost ? \"STALLED\" : \"RUNNING\"; reason = lost ? \"WORKER_LOST\" : null; }", "if (open) { state = \"RUNNING\"; reason = null; }"),
+ ("T-M23 not-sent failure consumed", ENG, "    if (NOT_SENT.has(code)) {", "    if (false) {"),
+ ("T-M24 sweeper not started", "scripts/run-career-worker.ts", "  startAutoMatchSweeper(workerId);\n", "  void startAutoMatchSweeper;\n"),
+])
+
+T_F3 = ["test/career/auto-capability", "test/career/pxj-first-screen", "test/career/job-pool/three-point-view.test.ts"]
+BLOCKS["F3"] = (T_F3, [
+ ("FT-M01 running run gets the 3-min cap again", UAM, 'const waitedOut = run?.state === "NOT_STARTED" && Date.now() - started + poll.intervalMs > poll.maxMs;', 'const waitedOut = (run?.state === "NOT_STARTED" || run?.state === "RUNNING") && Date.now() - started + poll.intervalMs > poll.maxMs;'),
+ ("FT-M02 STALLED not read again", UAM, 'else if (run.state === "STALLED" || ((run.state === "PARTIAL" || run.state === "FAILED") && run.resumePending)) next = poll.stalledMs;', 'else if (false) next = poll.stalledMs;'),
+ ("FT-M03 resumePending not read again", UAM, 'else if (run.state === "STALLED" || ((run.state === "PARTIAL" || run.state === "FAILED") && run.resumePending)) next = poll.stalledMs;', 'else if (run.state === "STALLED") next = poll.stalledMs;'),
+ ("FT-M04 ranking not re-read while the run moves", UAM, 'return `${run.state}:${run.revision}:${run.budget?.rolesEvaluated ?? "-"}:${run.finishedAt ?? ""}`;', 'return `${run.state}:${run.finishedAt ?? ""}`;'),
+ ("FT-M05 previous analysis's ranking shown", UAM, 'if (key !== null && entry.analysisId === analysisId && entry.value.state === "AVAILABLE") return entry.value;', 'if (key !== null && entry.value.state === "AVAILABLE") return entry.value;'),
+ ("FT-M06 ranking blanks while it is read again", UAM, 'setEntry(previous => previous.analysisId === analysisId && previous.value.state === "AVAILABLE" ? { ...previous, key } : { key, analysisId, value: { state: "LOADING" } });', 'setEntry({ key, analysisId, value: { state: "LOADING" } });'),
+ ("FT-M07 decoder refuses STALLED", UAM, 'export const AUTO_MATCH_STATES = ["NOT_STARTED", "DISABLED", "RUNNING", "STALLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"] as const;', 'export const AUTO_MATCH_STATES = ["NOT_STARTED", "DISABLED", "RUNNING", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"] as const;'),
+ ("FT-M08 decoder accepts a finished STALLED", UAM, "if (open && (value.startedAt === null || value.finishedAt !== null)) return null;", 'if (state === "RUNNING" && (value.startedAt === null || value.finishedAt !== null)) return null;'),
+ ("FT-M09 resumePending dropped by the decoder", UAM, "...(synced ? {} : { revision: 0, lastProgressAt: null, leaseExpiresAt: null, resumePending: false })", "...(synced ? {} : { revision: 0, lastProgressAt: null, leaseExpiresAt: null }), resumePending: false"),
+ ("FT-M10 backoff never comes back", UAM, "interval = now === progress ? Math.min(interval * 2, poll.maxIntervalMs) : poll.intervalMs;", "interval = Math.min(interval * 2, poll.maxIntervalMs);"),
+ ("FT-M11 decoder refuses PAIRS_REFUSED", UAM, '"DAY_BUDGET_EXHAUSTED", "PAIRS_REFUSED"],', '"DAY_BUDGET_EXHAUSTED"],'),
+ ("FT-M12 backend: STALLED carries a finish time", AM, 'finishedAt: open || state === "STALLED" ? null : investigation.updatedAt,', "finishedAt: open ? null : investigation.updatedAt,"),
+])
+
+BLOCKS["TPX"] = (["test/pink/pink-tp.test.ts"], [m for m in BLOCKS["TP"][1] if m[0].split()[0] in ("T-M04", "T-M09", "T-M10", "T-M13", "T-M20", "T-M21")])
+BLOCKS["TP13"] = (T_TP, [m for m in BLOCKS["TP"][1] if m[0].split()[0] == "T-M13"])
+
+

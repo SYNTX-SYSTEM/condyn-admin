@@ -1,0 +1,20 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out
+until ! pgrep -f run-iso.sh >/dev/null; do sleep 20; done
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/t576 && npx tsc --noEmit -p . > $O/t576-tsc.log 2>&1; echo "t576 tsc errors $(grep -c 'error TS' $O/t576-tsc.log)"
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts"
+npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg-t576.log 2>&1; echo "t576 regression exit $? $(grep -E '^\s*(Test Files|Tests) ' $O/reg-t576.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg-t576.log > $O/reg-fails-t576.txt
+echo "fails only on 576a704 (vs base 9fa2cdc):"; comm -23 $O/reg-fails-t576.txt $O/reg-fails-tacpbase.txt | cut -c1-200
+PINK_OUT=$O/db576.json npm run -s test:isolated -- test/pink/pink-acp-db.test.ts > $O/db576.log 2>&1; echo "pink db probe on 576 $(grep -E '^\s*Tests ' $O/db576.log | tr -s ' ')"
+PINK_OUT=$O/pure576.json npm run -s test:isolated -- test/pink/pink-acp-pure.test.ts > $O/pure576.log 2>&1; echo "pink pure probe on 576 $(grep -E '^\s*Tests ' $O/pure576.log | tr -s ' ')"
+TF="test/career/auto-capability test/career/pxj-first-screen test/career-demo-ui.test.tsx test/career-sil-language-contract.test.ts test/career-sil-global-language-wiring.test.tsx test/career/identity-core-dropzone-intake.test.tsx"
+npm run -s test:isolated -- $TF > $O/pristine-F.log 2>&1; fails $O/pristine-F.log > $O/pristine-F-fails.txt; echo "pristine F $(grep -E '^\s*Tests ' $O/pristine-F.log | tr -s ' ') fails $(wc -l < $O/pristine-F-fails.txt)"
+npm run -s test:isolated -- test/career/job-pool/pool-role-discovery.test.ts test/career/job-pool/role-discovery.postgres.test.ts test/career/job-pool/relation-cache.test.ts test/career/job-pool/relation-cache.postgres.test.ts test/career/job-pool/role-investigation.postgres.test.ts test/career/job-pool/semantic-relation-engine.test.ts test/career/job-pool/semantic-provider.test.ts test/career/job-pool/semantic-governance.test.ts test/career/job-pool/auto-match.postgres.test.ts test/career/job-pool/relation-cache-registration-gate.test.ts test/career/job-pool/semantic-investigation-store.postgres.test.ts test/career/job-pool/selected-role-coverage.test.ts test/career/job-pool/worker-after-success.postgres.test.ts test/career/job-pool/role-ranking.test.ts test/career/auto-capability > $O/pristine-BEF.log 2>&1; fails $O/pristine-BEF.log > $O/pristine-BEF-fails.txt; echo "pristine BEF $(grep -E '^\s*Tests ' $O/pristine-BEF.log | tr -s ' ') fails $(wc -l < $O/pristine-BEF-fails.txt)"
+BASE_FAILS=$O/pristine-F-fails.txt PRISTINE_NAME=t576 WORK_TAG=f python3 $S/acp/mutate-acp.py $S/int F > $O/mut-F.log 2>&1 &
+BASE_FAILS=$O/pristine-BEF-fails.txt PRISTINE_NAME=t576 WORK_TAG=b python3 $S/acp/mutate-acp.py $S/int BEF B-M10 C-M03 C-M05 C-M06 C-M14 D-M05 D-M06 E-M08 > $O/mut-BEF.log 2>&1 &
+wait
+echo "F: $(grep -c ' RED ' $O/mut-F.log) red; alive:"; grep -E 'GREEN|PATTERN' $O/mut-F.log | cut -c1-80
+echo "BE alive rechecked with the frontend suites: $(grep -c ' RED ' $O/mut-BEF.log) red; alive:"; grep -E 'GREEN|PATTERN' $O/mut-BEF.log | cut -c1-80
+echo T576-END

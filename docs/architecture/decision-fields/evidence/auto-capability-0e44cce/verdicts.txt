@@ -1,0 +1,16 @@
+PINK §3.86 — re-check of §3.85 on frontend 0e44cce (frontend/auto-capability-path-r2, on backend b972905) — 2026-10-30
+Scope: only the conditions PINK named in §3.85 (mandate "NUR DAS. MEHR NICHT."). DETERMINISTIC + STAND_IN; no model call, no network (sentinel log never created), nothing on main or :3017.
+
+VERDICT: GO for merge and :3017 (the stand-in stays the provider there until the owner releases a budget).
+
+F-AC-1  CLOSED with one accepted deviation (D-AC-1)
+        Stack tier: the automatic ranking keeps at most half the viewport and scrolls in itself — panel 270 px (960×540@2) / 180 px (640×360@2), was 8758 / 10827 px; document 1509 / 1241 px tall, was 9997 / 11888.
+        Orbit 01 at document y 475 / 388 (before the path ~193 / 196 per GRÜN); after scrolling it opens (cosmos 1) in both tiers.
+        S8: 960×540 orbit 01 reached again without scrolling (cosmos 1 as on the baseline); 640×360 orbit 01 starts 28 px below the first viewport, so the S8 click without scrolling misses it (cosmos 1 → 0) — D-AC-1: one short scroll, the orbits follow right below the panel; in the stack tier orbits 02–06 already needed scrolling on the baseline. Accepted by PINK as "orbit access stays"; owner-visible.
+F-AC-2  CLOSED  PARTIAL · DAY_BUDGET_EXHAUSTED from the backend's own view decodes and renders its own line (EN "Today's call budget ran out…", DE "Das heutige Aufrufbudget war … aufgebraucht…"), never READ_FAILED; mutant R-F01 (decoder without it) red.
+F-AM-6  CLOSED  backend: an analysis without proposals → SKIPPED · NO_PROPOSALS, no run, no investigation (both lab analyses: 0 proposals, investigation none); browser: PDF flow line SKIPPED with its own sentence, no "roles checked" claim, ranking 73 lexical; decoder/panel EN/DE; mutants R-M01, R-M02, R-F02 red.
+F-AM-7  CLOSED  E-M01, N-M04, N-M05 red in GELB's suites (auto-match-unit); F-M17 red in GRÜN's; R-F03 (stack cap removed) red.
+Path unchanged otherwise: text flow 0 inputs after ANALYZE, 22 SEMANTIC of 73 (STAND-IN), UI = API, 0 writes (also on reload), EN/DE; 6 viewports 0 covered, no horizontal scroll; PINK's backend probes (db-r2, worker-r2, notprov-r2) green on b972905.
+Suites: tsc 0; test/career + root career suites: one file differs from base 9fa2cdc (outcome-valence lifecycle, base-red DDL-drift domain, fluctuating set).
+
+Owner notes carried over from §3.85 (not conditions): O-AC-2 3-minute wait vs real Gemini latency, O-AC-3 fit shown as a percentage, O-AM-4 worker stop mid-run leaves RUNNING, O-A-2/3 account input budget and GitHub rate limit, D-AC-1 above.

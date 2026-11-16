@@ -1,0 +1,31 @@
+PINK §3.94 — integrated Phase A on origin/main 85274dc (fast-forward from 26c59f7), GELB request; owner hardlock "Kein Rollout auf :3017.
+Keine Gemini-Aufrufe. Keine Datenbankänderungen. Keine UI-Änderungen. Keine Delegation an GRÜN. Keine Phase B. NUR PHASE-A-INTEGRATION.
+MEHR NICHT." — 2026-11-01
+Method:
+  * git metadata of origin/main; a git-archive extract of origin/main, byte-compared with PINK's §3.93 extract of 85274dc.
+  * On that extract, through npm run test:isolated (disposable condyn_test_* databases): tsc, GELB's targeted files, PINK's probe
+    pink-pa.test.ts (unchanged since §3.91, base tree 26c59f7), PINK's recomputation (pink_layout_final.py --bounds, as committed in
+    evidence/mapping-phase-a-ea1e29f/pink_layout.py.txt), the invariants and the 20 mutants of mutate-pa3.py (all unchanged).
+  * :3017: listener metadata, the git state of its worktree and four GETs. Process environments were not read.
+Evidence class: DETERMINISTIC_FIXTURE (the probe's provider is a mocked @google/genai). No model call, no network, no write to condyn.
+
+VERDICT: GO — no integration fault inside Phase A.
+
+1 PASS  origin/main = 85274dc = origin/backend/mapping-phase-a. Its tree 8447827e is the tree PINK released in §3.93, and the extract is
+  byte-identical to PINK's §3.93 extract. Linear chain 85274dc → ea1e29f → 3b632da → 26c59f7 → 32c63c2: no merge commit, nothing else
+  came along. 26c59f7 and 32c63c2 are ancestors under their own ids, so they are unchanged. 26c59f7..main touches only the 16 Phase-A
+  files (5 spec/vector docs, 3 lib files, 8 test/support files).
+2 PASS  Phase-A contracts on main:
+  * capabilityKey: semantic keys equal the proposal the provider was shown and judged best (43/43); lexical keys equal
+    lexical.proposalId (6/6); NONE keys are null; numbers are equal to the base on the same rows; reads write nothing; a cache read keeps
+    the keys and sends no request.
+  * Strict decoder: 14 cases refused and 8 accepted as the same object; the base decoder refuses the new payload (rollout coupling
+    unchanged).
+  * Spec and golden vectors: PINK's recomputation matches 21/21, identical to the §3.93 output; the invariants hold
+    (overlap 0, horizon 0, field 0).
+  * Inverse: 19 of 20 mutants are red on GELB's tests; M10 is the known equivalent mutant.
+  * GELB's targeted files: 20 files, 167/167 green; tsc 0. Same numbers as GELB's.
+3 PASS  :3017 is next-server in worktree condyn-admin-dll-runtime, branch runtime/dll-main, HEAD 32c63c2, clean, started on
+  2026-10-31 at 03:56 (before the merge). Its code has no capabilityKey. GET / /career/demo /api/career/analyses /api/career/job-pools
+  each returned 200. PINK did nothing else to it.
+Boundaries: main and :3017 unchanged by PINK; scratch trees under PINK's scratchpad; no GRÜN contact; no Phase B.

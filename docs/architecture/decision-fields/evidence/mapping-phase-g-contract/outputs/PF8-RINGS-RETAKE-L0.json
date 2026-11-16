@@ -1,0 +1,204 @@
+{
+ "commit": "3ec8457d",
+ "shelfAlpha": 0.02,
+ "shelfAlphaByte": 5,
+ "instrument": "pink-pf8-rings-retake-g.mjs (phase-F pf8-tip, 3 changes)",
+ "level": "L0",
+ "levelInfo": {
+  "level": "L0",
+  "breath": "LIVE",
+  "arcs": 19
+ },
+ "waveAnims": 18,
+ "clipMatch": true,
+ "frames": 287,
+ "spanS": 95.1,
+ "medCadenceMs": 321,
+ "nyquistHz": 1.558,
+ "maxFreqHz": 0.35,
+ "samplingAdequate": true,
+ "perClass": {
+  "shelfBand": {
+   "els": 1,
+   "px": 127337,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 4.03e-7,
+    "floor": 4.87e-8,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0,
+    "nullFloor": 0,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:inf",
+     "0.002:inf",
+     "0.004:inf",
+     "0.008:inf"
+    ],
+    "red": true
+   }
+  },
+  "ringStrokes": {
+   "els": 3,
+   "px": 15062,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.000104,
+    "floor": 0.00000295,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.00262,
+    "nullFloor": 0.0000638,
+    "resolved": true,
+    "red": true,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:14.73",
+     "0.002:14.47",
+     "0.004:2.82",
+     "0.008:6.25"
+    ],
+    "red": true
+   }
+  },
+  "arcs": {
+   "els": 19,
+   "px": 3500,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.000592,
+    "floor": 0.00000427,
+    "red": true
+   },
+   "tierB": {
+    "p99": 0.00837,
+    "nullFloor": 0.000289,
+    "resolved": true,
+    "red": true,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:46.38",
+     "0.002:35.33",
+     "0.004:33",
+     "0.008:39"
+    ],
+    "red": true
+   }
+  },
+  "beams": {
+   "els": 22,
+   "px": 5255,
+   "ppFloor": 0.00000262,
+   "tierA": {
+    "sig": 0.00898,
+    "floor": 0.0000751,
+    "red": true
+   },
+   "tierB": {
+    "p99": 0.224,
+    "nullFloor": 0.0184,
+    "resolved": false,
+    "red": false,
+    "incon": true
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:1.23",
+     "0.002:1.19",
+     "0.004:1.33",
+     "0.008:2.2"
+    ],
+    "red": true
+   }
+  },
+  "nodes": {
+   "els": 3,
+   "px": 1205,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.00274,
+    "floor": 0.0000719,
+    "red": true
+   },
+   "tierB": {
+    "p99": 0.107,
+    "nullFloor": 0.00569,
+    "resolved": false,
+    "red": false,
+    "incon": true
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:1.52",
+     "0.002:2.19",
+     "0.004:3.1",
+     "0.008:29"
+    ],
+    "red": true
+   }
+  },
+  "text": {
+   "els": 2,
+   "px": 2771,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.00000785,
+    "floor": 0.00000863,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.000275,
+    "nullFloor": 0.0003,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:1",
+     "0.002:1",
+     "0.004:1",
+     "0.008:1"
+    ],
+    "red": false
+   }
+  },
+  "outlines": {
+   "els": 5,
+   "px": 19780,
+   "ppFloor": 0,
+   "tierA": {
+    "sig": 0.0000138,
+    "floor": 0.0000012,
+    "red": false
+   },
+   "tierB": {
+    "p99": 0.000315,
+    "nullFloor": 0.0000694,
+    "resolved": true,
+    "red": false,
+    "incon": false
+   },
+   "tierC": {
+    "rungs": [
+     "0.001:inf",
+     "0.002:inf",
+     "0.004:inf",
+     "0.008:inf"
+    ],
+    "red": true
+   }
+  }
+ }
+}

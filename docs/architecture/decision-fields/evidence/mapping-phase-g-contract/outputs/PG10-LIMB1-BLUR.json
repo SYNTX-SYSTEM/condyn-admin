@@ -1,0 +1,209 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "pin": "PG-10 limb 1 (PHASE_G:757) — on the visible glow, >= 25 % of pixels swing >= 0.004",
+  "frames": "blurred and unblurred decoded from the SAME captures — a paired comparison, not two runs",
+  "scope": "one fixture, one analysisId, L0, field halos only (A-G48/A-G31) — §63",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "selection": "",
+      "selectedCapability": null,
+      "maskEpsilon": 0.00700567,
+      "measuredRepeatFloor": 0.00350283,
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "maskPixels": 16813,
+        "shareUnblurred": 0.7488,
+        "shareBlurred": 0.7588,
+        "bound": ">= 0.25",
+        "clearsUnblurred": true,
+        "clearsBlurred": true,
+        "blurDelta": 0.0099,
+        "blurDirection": "RAISED by blur"
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "maskPixels": 9376,
+          "shareUnblurred": 0.7015,
+          "shareBlurred": 0.7173,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0158,
+          "blurDirection": "RAISED by blur"
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "maskPixels": 16813,
+          "shareUnblurred": 0.7488,
+          "shareBlurred": 0.7588,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0099,
+          "blurDirection": "RAISED by blur"
+        }
+      ],
+      "allClearBlurred": true,
+      "allClearUnblurred": true
+    },
+    {
+      "viewport": "1920x1080",
+      "selection": "CAPABILITY",
+      "selectedCapability": "PCAP_PG",
+      "maskEpsilon": 0.00685001,
+      "measuredRepeatFloor": 0.00342501,
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "maskPixels": 24885,
+        "shareUnblurred": 0.2309,
+        "shareBlurred": 0.2394,
+        "bound": ">= 0.25",
+        "clearsUnblurred": false,
+        "clearsBlurred": false,
+        "blurDelta": 0.0086,
+        "blurDirection": "RAISED by blur"
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "maskPixels": 9452,
+          "shareUnblurred": 0.4075,
+          "shareBlurred": 0.4357,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0281,
+          "blurDirection": "RAISED by blur"
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "maskPixels": 24885,
+          "shareUnblurred": 0.2309,
+          "shareBlurred": 0.2394,
+          "bound": ">= 0.25",
+          "clearsUnblurred": false,
+          "clearsBlurred": false,
+          "blurDelta": 0.0086,
+          "blurDirection": "RAISED by blur"
+        }
+      ],
+      "allClearBlurred": false,
+      "allClearUnblurred": false
+    },
+    {
+      "viewport": "1280x800",
+      "selection": "",
+      "selectedCapability": null,
+      "maskEpsilon": 0.006325,
+      "measuredRepeatFloor": 0.0031625,
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "maskPixels": 4222,
+        "shareUnblurred": 0.6923,
+        "shareBlurred": 0.7108,
+        "bound": ">= 0.25",
+        "clearsUnblurred": true,
+        "clearsBlurred": true,
+        "blurDelta": 0.0185,
+        "blurDirection": "RAISED by blur"
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "maskPixels": 2332,
+          "shareUnblurred": 0.6647,
+          "shareBlurred": 0.6762,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0116,
+          "blurDirection": "RAISED by blur"
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "maskPixels": 4222,
+          "shareUnblurred": 0.6923,
+          "shareBlurred": 0.7108,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0185,
+          "blurDirection": "RAISED by blur"
+        }
+      ],
+      "allClearBlurred": true,
+      "allClearUnblurred": true
+    },
+    {
+      "viewport": "1280x800",
+      "selection": "CAPABILITY",
+      "selectedCapability": "PCAP_PG",
+      "maskEpsilon": 0.00701704,
+      "measuredRepeatFloor": 0.00350852,
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "maskPixels": 6964,
+        "shareUnblurred": 0.1864,
+        "shareBlurred": 0.1956,
+        "bound": ">= 0.25",
+        "clearsUnblurred": false,
+        "clearsBlurred": false,
+        "blurDelta": 0.0092,
+        "blurDirection": "RAISED by blur"
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "maskPixels": 2184,
+          "shareUnblurred": 0.478,
+          "shareBlurred": 0.5325,
+          "bound": ">= 0.25",
+          "clearsUnblurred": true,
+          "clearsBlurred": true,
+          "blurDelta": 0.0545,
+          "blurDirection": "RAISED by blur"
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "maskPixels": 6964,
+          "shareUnblurred": 0.1864,
+          "shareBlurred": 0.1956,
+          "bound": ">= 0.25",
+          "clearsUnblurred": false,
+          "clearsBlurred": false,
+          "blurDelta": 0.0092,
+          "blurDirection": "RAISED by blur"
+        }
+      ],
+      "allClearBlurred": false,
+      "allClearUnblurred": false
+    }
+  ]
+}

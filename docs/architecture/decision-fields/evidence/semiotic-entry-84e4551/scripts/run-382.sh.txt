@@ -1,0 +1,31 @@
+#!/bin/bash
+# PINK §3.82 S8 regression: per commit (1) the restored real world (pink-world-lab, --dump, --build): hit test, modes 6 viewports, RI, orbits, rd-ui;
+# (2) an empty stand-in video-lab: drop zone / entry gaps. argv: <commit> <label>
+[ "$2" = base ] && { echo "SKIPPED base: cd1e4de app/lib/scripts identical to 1d1d6e6, baseline = §3.81 outputs on the same world"; exit 0; }
+S=$SCRATCH; W=$S/rt; G=$S/sem; P=$REPO; DUMP=$SCRATCH_OTHER
+C=$1; L=$2
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT PINK_SENTINEL=$S/scope-paths/pink-net-sentinel.cjs ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3
+OUT=$G/s8-$L; mkdir -p $OUT; cd $P
+start() { LD=$1; shift; rm -rf "${LD:?}"; if ss -ltn | grep -q ":41873 "; then echo "PORT BUSY"; return 1; fi; npx tsx $W/pink-world-lab.ts $LD 41873 "$@" > $LD.log 2>&1 & for k in $(seq 1 400); do grep -qE "PINK LAB READY|Error|error" $LD.log && break; sleep 3; done; grep -E "build|READY|rror" $LD.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -4; grep -q "PINK LAB READY" $LD.log; }
+stop() { LD=$1; PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 20); do grep -qE "kept|dropped" $LD.log && break; sleep 1; done; grep -E "kept|dropped" $LD.log; sleep 2; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"; }
+base() { python3 -c "import json;print(json.load(open('$1/state.json'))['base'])"; }
+git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD) ($L)"
+LW=$G/lab-w-$L
+if start $LW --dump $DUMP --build; then B=$(base $LW); PA=ANL_1792628831636_456; DLL=JPOOL_B94850C439974E27496FE3B1A9A076B5; XA=$(curl -s $B/api/career/analyses | python3 -c "import json,sys; a=[x['analysisId'] for x in json.load(sys.stdin).get('analyses',[]) if x['analysisId']!='ANL_1792628831636_456']; print(a[0] if a else 'ANL_0_0')")
+  timeout 1500 node $G/pink-hit.mjs $B $OUT/hit.json $L > $OUT/hit.log 2>&1; tail -1 $OUT/hit.log
+  for VP in "1920 1080 1" "1280 720 1" "1440 900 1" "1600 900 1" "960 540 2" "640 360 2"; do set -- $VP; timeout 1500 node $W/pink-modes.mjs $B $OUT/modes-$1x$2@$3.json $L $1 $2 $3 $PA $DLL role_kestrel_fullstack 2>&1 | tail -1 | cut -c1-200; done
+  ri() { LB_=$1; MD=$2; shift 2; timeout 1500 node $S/rd11/pink-ri.mjs $LW/state.json $P $OUT $PA $XA $LB_ $MD "$@" 2>&1 | tail -1 | cut -c1-200; }
+  ri $L-1920 main 1920 1080 1
+  ri $L-1280x720 vp 1280 720 1
+  timeout 900 node $S/rec/pink-orbits.mjs $B $OUT $L $PA $XA 1920 1080 > $OUT/orbits-1920.log 2>&1; echo "orbits exit $?"
+  timeout 900 node $S/rd6/pink-rd-ui.mjs $B $OUT $L $PA $XA 1920 1080 > $OUT/rd-ui.log 2>&1; echo "rd-ui exit $?"
+  cp $LW/net.jsonl $OUT/net-w.jsonl 2>/dev/null
+fi; stop $LW
+export VIDEO_LAB_PROD=1; LAB=$G/lab-gaps-$L; rm -rf "${LAB:?}"; mkdir -p $LAB
+VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+if grep -qE "VIDEO LAB READY" $LAB/lab.log; then timeout 1500 node $S/int/pink-gaps.mjs $LAB/state.json $P $OUT $L > $OUT/gaps.log 2>&1; tail -2 $OUT/gaps.log | cut -c1-300; else echo "gaps lab failed"; fi
+bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+git status --short | head -3; git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo "S8-END $L"

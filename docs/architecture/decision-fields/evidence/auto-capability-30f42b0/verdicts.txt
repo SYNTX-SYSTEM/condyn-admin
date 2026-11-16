@@ -1,0 +1,31 @@
+PINK §3.84 — AUTOMATED_CAPABILITY_TO_JOB, block A (GitHub account input), GELB 30f42b0 on base main 9fa2cdc — 2026-10-30
+Evidence classes: DETERMINISTIC (fake fetcher, no network), CODE_INSPECTION. No model call, no GitHub request, nothing on :3017 or main.
+
+A1 account/repo recognition           PASS  37/37 URLs as specified (incl. www, trailing slash, query/fragment, 39/40 chars, -- / leading/trailing hyphen, _, non-ASCII, %2e%2e, %2F, foreign hosts, ftp:, javascript:)
+A2 refusal before any request          PASS  invalid owner -> ERR_INVALID_GITHUB_URL with 0 requests
+A3 request set                         PASS  exactly one listing call users/<u>/repos?type=owner&sort=pushed&per_page=100, host api.github.com only, only the selected repositories touched
+A4 selection                           PASS  forks/archived/private/disabled/malformed out; pushed_at desc, code-unit name tie-break; null or invalid pushed_at last; 1 order over 200 permutations
+A5 bounds (GELB Q4)                    PASS  15/15: default 5, "", "0", "-1", "abc", "1.5" -> 5; 11 / 999999 -> 10; option 50 -> 10, 0 -> 1
+A6 failures                            PASS  10/10: 403/500/bad JSON -> FETCH_FAILURE, 404 -> ACCOUNT_NOT_FOUND, 403 on a later repo is not hidden, nothing usable -> EMPTY_ACCOUNT_CONTENT
+A7 determinism                         PASS  same listing in another order -> byte-identical documents and ids
+Repo path non-regression               PASS with O-A-1  5/9 repo URLs identical to base through prepareDocuments; 4 tightened (see O-A-1)
+tsc                                    PASS  0 errors
+Suites                                 PASS  same 4 failing tests on base and candidate (3 × career-analyze-flow, 1 × career-analyze-multisource CATEGORY C) — base red, not caused by 30f42b0
+Mutants (inverse)                      14/20 red
+
+Findings
+F-ACC-1  www.github.com/<user> is an account in the loader (Q4) but the analyze route still refuses every host other than github.com (app/api/career/analyze/route.ts:49, CODE_INSPECTION) -> HTTP 400 end to end. Q4 does not hold end to end. Same pre-existing behaviour for www repo URLs. Decide: route accepts www.github.com, or Q4 is narrowed to github.com.
+F-ACC-2  test gap, 6 mutants alive in GELB's suites:
+         A-M07 hard cap 10 removed · A-M08 default 5 -> 100 · A-M09 env "0" taken as 1 · A-M10 env GITHUB_ACCOUNT_MAX_REPOS ignored
+         A-M14 every repository failure swallowed (a 403 on a later repo becomes a silent partial success)
+         A-M17 worker entry (document-loader) back to the repository loader: account URLs fail in the worker, no test notices — the product path entry is not covered
+         PINK's probe pink-acp-a covers M07–M10 and M14 (bounds, secondRepo403); M17 needs a prepareDocuments test with an account URL.
+
+Observations
+O-A-1  The repository path is stricter now: owner names outside GitHub's rule (a_b, a--b, -x) and non-http(s) protocols are refused before any request, where base tried the API. Fail closed; on github.com only managed (EMU, "_suffix") accounts have such names, and they have no public repositories.
+O-A-2  Input size: an account brings up to 10 repositories × 10 files = 100 documents into the one existing extraction call, bounded by count, not bytes — up to 10× the input of one repository per ANALYZE. Owner budget note.
+O-A-3  Unauthenticated GitHub API: 60 requests per hour; one account run with 5 repositories needs at least 16 requests. Without GITHUB_TOKEN about 3 account analyses per hour, then 403 -> job FAILED (correctly not hidden). PINK did not read any environment.
+O-A-4  fork/archived/private/disabled are filtered on `=== true`; a non-boolean value passes. The API returns booleans; no defect.
+O-A-5  Redirects are followed by the runtime fetch (pre-existing, unchanged).
+
+Verdict block A: PASS with F-ACC-1 and F-ACC-2 open. Not blocking for the next blocks; both should be closed before integration.

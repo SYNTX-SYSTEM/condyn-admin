@@ -1,0 +1,46 @@
+// PINK §3.98 panel probe: AutoJobRankingPanel rendered for a matrix of run × ranking × locale WITHOUT a field; the markup is dumped
+// and compared byte for byte between the base 5ca0f3f and GRÜN fa895193 (outside vitest). On fa895193 also WITH a field: the field's
+// markup removed must give back the field-less markup. Pure render, no fetch.
+import React from "react";
+import { describe, expect, it } from "vitest";
+import { writeFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import { renderToStaticMarkup } from "react-dom/server";
+import { AutoJobRankingPanel } from "../../app/components/career/demo/AutoJobRankingPanel";
+import { AUTO_MATCH_STATES, decodeAutoMatch, type AutoMatchWatch, type JobRankingState } from "../../lib/career/ui/auto-match";
+import { autoMatch } from "../career/auto-capability/fixtures";
+import { rankingOf, standardRanking, standardRoles } from "../career/mapping/fixtures";
+
+const OUT = process.env.PINK_OUT ?? "/dev/null";
+const FIELD_PATH = ["..", "..", "app/components/career/demo/PersonJobMappingField"].join("/");
+const watchOf = (state: (typeof AUTO_MATCH_STATES)[number], patch: Record<string, unknown> = {}): AutoMatchWatch => ({ read: { state: "AVAILABLE", autoMatch: decodeAutoMatch(autoMatch(state, patch))! }, waitedOut: false });
+const WATCHES: Array<[string, AutoMatchWatch]> = [
+  ["IDLE", { read: { state: "IDLE" }, waitedOut: false }], ["LOADING", { read: { state: "LOADING" }, waitedOut: false }], ["WAITED_OUT", { read: { state: "LOADING" }, waitedOut: true }],
+  ["NOT_FOUND", { read: { state: "ANALYSIS_NOT_FOUND" }, waitedOut: false }], ["READ_FAILED", { read: { state: "FAILED", code: "ERR_X" }, waitedOut: false }],
+  ...AUTO_MATCH_STATES.map(s => [s, watchOf(s)] as [string, AutoMatchWatch]), ["STALLED_RESUME", watchOf("STALLED", { resumePending: true })], ["PARTIAL_RESUME", watchOf("PARTIAL", { resumePending: true })]
+];
+const dropped = rankingOf(standardRoles(), { poolsDropped: ["JPOOL_DROPPED"] } as never);
+const RANKINGS: Array<[string, JobRankingState]> = [
+  ["IDLE", { state: "IDLE" }], ["LOADING", { state: "LOADING" }], ["AVAILABLE", { state: "AVAILABLE", ranking: standardRanking() }], ["EMPTY", { state: "AVAILABLE", ranking: rankingOf([]) }],
+  ["DROPPED", { state: "AVAILABLE", ranking: dropped }], ["ANALYSIS_NOT_FOUND", { state: "ANALYSIS_NOT_FOUND" }], ["NOT_PERSON", { state: "NOT_PERSON" }], ["PROJECTION_ABSENT", { state: "PROJECTION_ABSENT" }],
+  ["BOUNDARY", { state: "BOUNDARY_UNRESOLVED", reason: "BOUNDARY_X" }], ["NOT_PROVISIONED", { state: "NOT_PROVISIONED" }], ["FAILED", { state: "FAILED", code: "ERR_Y" }], ["FAILED_NULL", { state: "FAILED", code: null }]
+];
+const child = <i data-pink-child="1">child</i>;
+
+describe("PINK C · panel", () => {
+  it("renders the matrix without a field (dumped for the cross-tree comparison); on fa895193 also with a field", async () => {
+    const plain: Record<string, string> = {}; const withField: Record<string, string> = {};
+    const hasField = existsSync(join(__dirname, "../../app/components/career/demo/PersonJobMappingField.tsx"));
+    const Field = hasField ? (await import(/* @vite-ignore */ FIELD_PATH)).PersonJobMappingField : null;
+    for (const locale of ["en", "de"] as const) for (const [wn, w] of WATCHES) for (const [rn, rk] of RANKINGS) {
+      const k = `${locale}/${wn}/${rn}`;
+      plain[k] = renderToStaticMarkup(<AutoJobRankingPanel locale={locale} watch={w} ranking={rk} onGoToJobField={() => undefined}>{child}</AutoJobRankingPanel>);
+      if (Field) {
+        const props = { locale, watch: w, ranking: rk, onGoToJobField: () => undefined, field: <Field locale={locale} projection={null} ranking={rk} watch={w} /> } as never;
+        withField[k] = renderToStaticMarkup(React.createElement(AutoJobRankingPanel, props, child));
+      }
+    }
+    writeFileSync(OUT, JSON.stringify({ hasField, plain, withField }));
+    expect(Object.keys(plain).length).toBe(2 * WATCHES.length * RANKINGS.length);
+  });
+});

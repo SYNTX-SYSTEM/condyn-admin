@@ -1,0 +1,11 @@
+#!/bin/bash
+I=$SCRATCH/int; P=$REPO
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER
+SIX="test/career-lifecycle-recovery.test.ts test/career-lifecycle-postgres-persistence.test.ts test/career-lifecycle-concurrency-idempotency.test.ts test/career-policy-activation-atomicity.test.ts test/decision-integration/g2-g3-vertical-proof.test.ts test/decision-integration/hr-decision-loop-p7.test.ts"
+for T in t29 tmain t27 tedae; do
+  cd $I/$T && npm run -s test:isolated -- $SIX > $I/six-$T.log 2>&1; echo "six $T exit $?"
+done
+# e2e files need a real node_modules (Turbopack): run in the real worktree, detached
+cd $P
+for p in 29ae2d7:t29 b712152:tmain 27f3253:t27; do c=${p%%:*}; T=${p##*:}; git checkout -q --detach $c && npm run -s test:isolated -- test/decision-runtime/e2e/local-decision-context-http.e2e.test.ts test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts > $I/e2e-$T.log 2>&1; echo "e2e $T exit $?"; done
+git checkout -q validation/hr-decision-loop-pink; echo "INT8-END"

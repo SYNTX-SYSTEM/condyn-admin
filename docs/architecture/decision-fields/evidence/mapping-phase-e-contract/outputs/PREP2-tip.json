@@ -1,0 +1,319 @@
+{
+ "base": "http://127.0.0.1:3120",
+ "commit": "86e36924",
+ "P6_reducedMotion": {
+  "reducedMotion": true,
+  "durations": {
+   "scanned": 164,
+   "offenders": [],
+   "offenderCount": 0
+  },
+  "movedCount": 0,
+  "moved": [],
+  "pass": true
+ },
+ "P6_control_motionOn": {
+  "durationsOffenderCount": 12,
+  "animNames": [
+   "none",
+   "mappingFieldRingBreath",
+   "mappingFieldEvidence",
+   "mappingFieldQuery"
+  ],
+  "movedCount": 28,
+  "movedSample": [
+   {
+    "key": "mapping-ring-field#4",
+    "from": "398.57|146.57|802.86|802.86|1.000|matrix(1.01498, 0, 0, 1.01498, 0, 0)|visible||||500|",
+    "to": "403.45|151.45|793.1|793.1|0.967|matrix(1.00264, 0, 0, 1.00264, 0, 0)|visible||||500|"
+   },
+   {
+    "key": "mapping-body-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys#98",
+    "from": "1032.34|742.9|56.43|33.79|1.000|matrix(1, 0, 0, 1, 329.226, 276.605)|visible|||||1",
+    "to": "1033.68|742.9|56.43|33.79|1.000|matrix(1, 0, 0, 1, 329.226, 276.605)|visible|||||1"
+   },
+   {
+    "key": "g100#100",
+    "from": "1032.34|742.9|56.43|33.79|1.000|matrix(1, 0, 0, 1, 0, 0)|visible|||||",
+    "to": "1033.68|742.9|56.43|33.79|1.000|matrix(1, 0, 0, 1, 1.69615, 0)|visible|||||"
+   },
+   {
+    "key": "circle101#101",
+    "from": "1053.13|759.5|14.59|14.59|1.000|none|visible||||9.22254|",
+    "to": "1054.47|759.5|14.59|14.59|1.000|none|visible||||9.22254|"
+   },
+   {
+    "key": "mapping-collar-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys#102",
+    "from": "1049.16|755.78|21.16|20.91|1.000|none|visible|||||",
+    "to": "1050.5|755.78|21.16|20.91|1.000|none|visible|||||"
+   },
+   {
+    "key": "mapping-tick-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys:q_foreign#103",
+    "from": "1060.83|756.92|9.49|16.41|0.528|none|visible|||||0.528",
+    "to": "1062.17|756.92|9.49|16.41|0.528|none|visible|||||0.528"
+   },
+   {
+    "key": "path104#104",
+    "from": "1060.94|756.92|9.38|16.41|1.000|none|visible|||||",
+    "to": "1062.28|756.92|9.38|16.41|1.000|none|visible|||||"
+   },
+   {
+    "key": "path105#105",
+    "from": "1060.83|759.11|6.69|4.69|1.000|none|visible|||||",
+    "to": "1062.17|759.11|6.69|4.69|1.000|none|visible|||||"
+   }
+  ],
+  "samplerDetectsMotion": true
+ },
+ "P7": [
+  {
+   "size": {
+    "w": 1280,
+    "h": 800
+   },
+   "p7pass": true,
+   "innerW": 1280,
+   "innerH": 800,
+   "stage": {
+    "top": 128,
+    "bottom": 648,
+    "left": 380,
+    "right": 900
+   },
+   "section": {
+    "id": "mapping-field",
+    "top": 61,
+    "bottom": 1021,
+    "left": 0,
+    "right": 1280
+   },
+   "outermostBottom": {
+    "id": "mapping-ring-field",
+    "top": 145.2,
+    "bottom": 630.8,
+    "left": 397.2,
+    "right": 882.8
+   },
+   "outermostTop": {
+    "id": "mapping-ring-field",
+    "top": 145.2,
+    "bottom": 630.8,
+    "left": 397.2,
+    "right": 882.8
+   },
+   "outermostLeft": {
+    "id": "mapping-sector-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "top": 281.7,
+    "bottom": 343.4,
+    "left": 388.4,
+    "right": 419.9
+   },
+   "outermostRight": {
+    "id": "mapping-sector-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    "top": 430.5,
+    "bottom": 496.7,
+    "left": 859.7,
+    "right": 892.6
+   },
+   "outermostBottomInsideStage": true,
+   "outermostTopInsideStage": true,
+   "outermostLeftInsideStage": true,
+   "outermostRightInsideStage": true,
+   "stageInsideSection": true,
+   "dashScrollH": 1021,
+   "pageScrolls": true,
+   "dashboardH": 1021,
+   "hostH": 960
+  },
+  {
+   "size": {
+    "w": 1600,
+    "h": 1000
+   },
+   "p7pass": true,
+   "innerW": 1600,
+   "innerH": 1000,
+   "stage": {
+    "top": 128,
+    "bottom": 968,
+    "left": 380,
+    "right": 1220
+   },
+   "section": {
+    "id": "mapping-field",
+    "top": 61,
+    "bottom": 1061,
+    "left": 0,
+    "right": 1600
+   },
+   "outermostBottom": {
+    "id": "mapping-ring-field",
+    "top": 146.7,
+    "bottom": 949.3,
+    "left": 398.7,
+    "right": 1201.3
+   },
+   "outermostTop": {
+    "id": "mapping-ring-field",
+    "top": 146.7,
+    "bottom": 949.3,
+    "left": 398.7,
+    "right": 1201.3
+   },
+   "outermostLeft": {
+    "id": "mapping-sector-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "top": 393.5,
+    "bottom": 455,
+    "left": 395.3,
+    "right": 426.8
+   },
+   "outermostRight": {
+    "id": "mapping-sector-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    "top": 638.6,
+    "bottom": 705.3,
+    "left": 1172.8,
+    "right": 1205.9
+   },
+   "outermostBottomInsideStage": true,
+   "outermostTopInsideStage": true,
+   "outermostLeftInsideStage": true,
+   "outermostRightInsideStage": true,
+   "stageInsideSection": true,
+   "dashScrollH": 1061,
+   "pageScrolls": true,
+   "dashboardH": 1061,
+   "hostH": 1000
+  },
+  {
+   "size": {
+    "w": 1829,
+    "h": 912
+   },
+   "p7pass": true,
+   "innerW": 1829,
+   "innerH": 912,
+   "stage": {
+    "top": 128,
+    "bottom": 884,
+    "left": 536.5,
+    "right": 1292.5
+   },
+   "section": {
+    "id": "mapping-field",
+    "top": 61,
+    "bottom": 1021,
+    "left": 0,
+    "right": 1829
+   },
+   "outermostBottom": {
+    "id": "mapping-ring-field",
+    "top": 146.6,
+    "bottom": 865.4,
+    "left": 555.1,
+    "right": 1273.9
+   },
+   "outermostTop": {
+    "id": "mapping-ring-field",
+    "top": 146.6,
+    "bottom": 865.4,
+    "left": 555.1,
+    "right": 1273.9
+   },
+   "outermostLeft": {
+    "id": "mapping-sector-name-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "top": 364.1,
+    "bottom": 425.7,
+    "left": 549.9,
+    "right": 581.4
+   },
+   "outermostRight": {
+    "id": "mapping-sector-name-JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    "top": 584,
+    "bottom": 650.5,
+    "left": 1247.1,
+    "right": 1280.2
+   },
+   "outermostBottomInsideStage": true,
+   "outermostTopInsideStage": true,
+   "outermostLeftInsideStage": true,
+   "outermostRightInsideStage": true,
+   "stageInsideSection": true,
+   "dashScrollH": 1021,
+   "pageScrolls": true,
+   "dashboardH": 1021,
+   "hostH": 960
+  },
+  {
+   "size": {
+    "w": 2560,
+    "h": 1300
+   },
+   "p7pass": true,
+   "innerW": 2560,
+   "innerH": 1300,
+   "stage": {
+    "top": 128,
+    "bottom": 1228,
+    "left": 730,
+    "right": 1830
+   },
+   "section": {
+    "id": "mapping-field",
+    "top": 61,
+    "bottom": 1361,
+    "left": 0,
+    "right": 2560
+   },
+   "outermostBottom": {
+    "id": "mapping-ring-field",
+    "top": 147.8,
+    "bottom": 1208.2,
+    "left": 749.8,
+    "right": 1810.2
+   },
+   "outermostTop": {
+    "id": "mapping-ring-field",
+    "top": 147.8,
+    "bottom": 1208.2,
+    "left": 749.8,
+    "right": 1810.2
+   },
+   "outermostLeft": {
+    "id": "mapping-ring-field",
+    "top": 147.8,
+    "bottom": 1208.2,
+    "left": 749.8,
+    "right": 1810.2
+   },
+   "outermostRight": {
+    "id": "mapping-ring-field",
+    "top": 147.8,
+    "bottom": 1208.2,
+    "left": 749.8,
+    "right": 1810.2
+   },
+   "outermostBottomInsideStage": true,
+   "outermostTopInsideStage": true,
+   "outermostLeftInsideStage": true,
+   "outermostRightInsideStage": true,
+   "stageInsideSection": true,
+   "dashScrollH": 1361,
+   "pageScrolls": true,
+   "dashboardH": 1361,
+   "hostH": 1300
+  }
+ ],
+ "P8_1280x800": {
+  "minStroke": 2.513,
+  "minStrokeEl": {
+   "id": "mapping-ring-best",
+   "strokeWidth": 2.513,
+   "hasStroke": true
+  },
+  "strokeCount": 63,
+  "minTextPx": 23.03,
+  "textCount": 5,
+  "beamCount": 3,
+  "minBeam": 3.291
+ }
+}

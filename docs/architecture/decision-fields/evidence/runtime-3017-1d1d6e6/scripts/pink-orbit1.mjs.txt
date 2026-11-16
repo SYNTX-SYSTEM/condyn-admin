@@ -1,0 +1,15 @@
+// GET-only: each shell clicked on a FRESH page (no carry-over), and what Escape does after a click. argv: <base>
+import { pathToFileURL } from "node:url";
+const [BASE] = process.argv.slice(2);
+const pw = await import(pathToFileURL(process.env.CONDYN_PLAYWRIGHT_MODULE).href); const { chromium } = pw.chromium ? pw : pw.default;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1920, height: 1080 } }); await ctx.addInitScript(() => { try { localStorage.setItem("condyn_onboarding_seen", "true"); } catch {} });
+let blocked = 0; await ctx.route("**/*", r => { if (!["GET", "HEAD"].includes(r.request().method())) { blocked += 1; return r.abort(); } return r.continue(); });
+const p = await ctx.newPage(); const out = {};
+const focus = () => p.evaluate(() => ({ cosmos: [...document.querySelectorAll('[data-testid^="orbital-cosmos-view-"]')].map(e => e.dataset.testid.slice(-2)), empty: document.querySelectorAll('[data-testid^="orbital-empty-projection"]').length, focusIds: [...new Set([...document.querySelectorAll('[data-testid*="focus"]')].map(e => e.dataset.testid))].filter(x => !x.startsWith("focus-transition-stage-shell")).slice(0, 8) }));
+for (const k of ["01", "02", "03", "04", "05", "06"]) {
+  await p.goto(`${BASE}/career/demo?investigationMode=PERSON&focus=CAPABILITY`, { waitUntil: "domcontentloaded" }); await sleep(6000);
+  const bx = await p.locator(`[data-testid="focus-transition-stage-shell-${k}"]`).first().boundingBox(); await p.mouse.click(bx.x + bx.width / 2, bx.y + bx.height / 2); await sleep(2500);
+  const after = await focus(); await p.keyboard.press("Escape"); await sleep(1500); const esc = await focus(); out[k] = { afterClick: after, afterEscape: esc };
+}
+console.log(JSON.stringify({ blocked, out }, null, 0)); await b.close();

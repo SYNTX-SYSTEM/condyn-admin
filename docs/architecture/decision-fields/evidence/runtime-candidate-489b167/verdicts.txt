@@ -1,0 +1,41 @@
+PINK §3.80 · main 489b167 as the runtime candidate replacing :3017 (old code 175c481). STAND_IN only; no Gemini; nothing on :3017; :41890 (GELB) GET only.
+Classes: STAND_IN (PINK production labs on :41873 with PINK's net sentinel, no worker, no key) on a restored copy of the real :41862 world · CODE_INSPECTION ·
+DETERMINISTIC (mutations).
+
+VERDICT                GO, with three cutover conditions (C1–C3). No production finding blocks the cutover.
+
+1 Setup                PASS   GELB's dump of :41862 restored into a fresh marked disposable DB (source sha256 unchanged, restore without error); production build
+                              of 489b167 without a flag; ANL_1792628831636_456 (PERSON) and the DLL pool present; ROLE_DISCOVERY_* set explicitly (stand-in,
+                              day limit 1000, max 3)
+2 Product path         PASS   real world: 10 proposals × 79 requirements = 790 pairs; load / open / release 0 POST; pick capped at 3; one START = 1 POST with
+                              confirmedCalls = the shown 2; "Relation cache: 190 of 790 pairs · stand-in check: completed" = 190 relations in the DB; reload /
+                              Back / Forward 0 POST, the plan re-read once per id; URL contract 0 POST; foreign / broken answers FAILED; D-RD-4 groups unchanged;
+                              six viewports complete, width = viewport; six-orbit scenes at 1920 and 1280; panel walk, trace = API, handover 0 non-GET
+2a HR decision loop    PASS (code) / OPEN (data)
+                              The code: the runner's own seeded HR world renders context A (full chain, bound revision) and B (no binding) with 200, no page
+                              error, equal after reload — identically on 489b167 and on the old 175c481. The seeded ids are the same deterministic ids
+                              GELB named (DCTXREV_25E6…, DCTXREV_5EFC…).
+                              GELB's :41890 (489b167 on a copy of the :3017 database): both pages 200 but the context API answers 404
+                              ERR_HR_DECISION_LOOP_API_NOT_FOUND — the copy does not hold these contexts. Not a code fault (proven above); whether the live
+                              :3017 database holds them was not checked (nothing on :3017) → C1
+2b GET without writes  PASS   five page states, the HR page and nine API GETs on the restored world: exact row counts of every table unchanged, insert / update
+                              / delete statistics unchanged, 0 outbound connections, 0 non-GET from the browser
+2c Lazy registration   PASS   the restored world has none of the four relation / investigation tables; the first discovery GET creates them (0 rows) with every
+                              guard trigger enabled (O); nothing else changes
+2d No Gemini           PASS   no worker, no key: an analyze POST is accepted (202) and the job stays PENDING, 0 outbound attempts, no new exchange row; the
+                              semantic start is the stand-in only (startControl READY via configuration); no GET reaches a model
+3 Inverse              PASS*  25 seam mutations: 23 caught (F-INT-2 now caught, ddf356f); M17 equivalent; M22 (F-INT-4, the Field forwarding one drop twice)
+                              still not caught by a unit test — the browser probe shows one staged source per drop; test gap only
+3 Rollback             PASS   the old code 175c481 starts on the very database the candidate used (relation / investigation tables present, 190 relations,
+                              9 investigations, guard triggers on): every page 200, six shells, the same API answers (its own role-discovery plan), 0 row change,
+                              0 outbound; then 489b167 again on the same database: unchanged. (A first rollback attempt was invalid — PINK's own stop signal did
+                              not reach the launcher; detected, repeated cleanly; see measurements)
+Conditions for the cutover
+  C1                          before switching, GET /api/career/hr-decision-loop/contexts/DCTXREV_25E6B6DA8048EDCA22B1C4 (and …5EFC…) on the NEW server against
+                              the real :3017 database: 200 → go on; 404 → the database does not hold the demo contexts (the same answer as the old code would
+                              give; not a regression, but the HR demo needs a re-seed by the owner's decision)
+  C2                          rollback = stop the new server by its own PID, keep the database, start the old 175c481 build; tested here, forward and back
+  C3                          environment: ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in and an explicit ROLE_DISCOVERY_DAY_LIMIT (it falls closed to 0 otherwise);
+                              no Gemini key / worker change without the owner's separate GO
+Not blocking, open      —     F-INT-4 (test gap); O-INT-1 SSRF and the app-wide Origin check (local, unauthenticated use only); 27 base-red lifecycle tests (F-JP-5);
+                              the world's PERSON analysis has no stored Gemini result (gemini-result 404 on both versions)

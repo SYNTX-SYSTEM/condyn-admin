@@ -1,0 +1,24 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out
+until grep -q T576-END $O/run-576.out 2>/dev/null; do sleep 20; done
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/tbe2 && npx tsc --noEmit -p . > $O/be2-tsc.log 2>&1; echo "be2 tsc errors $(grep -c 'error TS' $O/be2-tsc.log)"
+for f in pure db-r2 worker-r2 notprov-r2; do PINK_OUT=$O/be2-$f.json npm run -s test:isolated -- test/pink/pink-acp-$f.test.ts > $O/be2-$f.log 2>&1; echo "probe $f exit $? $(grep -E '^\s*Tests ' $O/be2-$f.log | tr -s ' ')"; grep -E '^ FAIL ' $O/be2-$f.log | cut -c1-160; done
+T=$(python3 -c "
+import re,sys; s=open('$S/acp/mutate-acp.py').read(); m=re.search(r'T_BE = \[f\"test/career/job-pool/\{x\}\" for x in \"([^\"]+)\"', s); print(' '.join('test/career/job-pool/'+x for x in m.group(1).split()) + ' test/career/job-pool/auto-match-gemini.postgres.test.ts test/career/job-pool/auto-match-hook.test.ts')")
+npm run -s test:isolated -- $T > $O/pristine-BE2.log 2>&1; fails $O/pristine-BE2.log > $O/pristine-BE2-fails.txt; echo "pristine BE2 $(grep -E '^\s*Tests ' $O/pristine-BE2.log | tr -s ' ') fails $(wc -l < $O/pristine-BE2-fails.txt)"
+python3 - "$S" <<'PY'
+import sys,re; s=open(sys.argv[1]+"/acp/mutate-acp.py").read(); blk=s.split('BLOCKS["BE2"]')[1]
+ids=[m for m in re.findall(r'\("([BCDEN]-M\d+b?) ', s.split('BLOCKS["BE"] = ')[1].split('BLOCKS["F"]')[0]) if m not in ("C-M02","C-M03")] + re.findall(r'\("([CN]-M\d+b?) ', blk)
+open(sys.argv[1]+"/acp/out/be2-ids.txt","w").write(" ".join(ids))
+PY
+IDS=($(cat $O/be2-ids.txt)); H=$(( ${#IDS[@]} / 2 )); echo "BE2 mutants: ${#IDS[@]}"
+BASE_FAILS=$O/pristine-BE2-fails.txt PRISTINE_NAME=tbe2 WORK_TAG=1 python3 $S/acp/mutate-acp.py $S/int BE2 ${IDS[@]:0:$H} > $O/mut-BE2-1.log 2>&1 &
+BASE_FAILS=$O/pristine-BE2-fails.txt PRISTINE_NAME=tbe2 WORK_TAG=2 python3 $S/acp/mutate-acp.py $S/int BE2 ${IDS[@]:$H} > $O/mut-BE2-2.log 2>&1 &
+wait
+echo "BE2: $(cat $O/mut-BE2-1.log $O/mut-BE2-2.log | grep -c ' RED ') red of ${#IDS[@]}; alive:"; cat $O/mut-BE2-1.log $O/mut-BE2-2.log | grep -E 'GREEN|PATTERN|TIMEOUT' | cut -c1-90
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts"
+npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg-tbe2.log 2>&1; echo "be2 regression exit $? $(grep -E '^\s*(Test Files|Tests) ' $O/reg-tbe2.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg-tbe2.log > $O/reg-fails-tbe2.txt
+echo "fails only on 571c201 (vs base):"; comm -23 $O/reg-fails-tbe2.txt $O/reg-fails-tacpbase.txt | cut -c1-200
+echo BE2-END

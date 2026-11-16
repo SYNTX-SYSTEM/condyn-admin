@@ -1,0 +1,351 @@
+PINK — inverse validation of admin.condyn.eu access control (2026-11-05)
+========================================================================
+
+Scope: two GELB mandates, validated together because the admin gate spans both.
+  §3.104  SFE::ADMIN ACCESS CONTROL — HTTP Basic Auth on /etc/nginx/sites-enabled/admin.condyn.eu
+          (server config; quoted by GELB, measured by GELB; I check the LOGIC, not the server).
+  §3.105  SFE::FINAL INTEGRATION — commit e360caf9 (parent dc674ee1, signature G Ottavio Braun,
+          16 files, +585/-75). Read from the local object store, diffed against the previously
+          validated production state dc674ee1. Nothing executed against any server or database.
+
+Headline: the code-side fixes (1a, 1b, 1c, D-2, the server-side gate) are sound and I confirm them.
+TWO GO-blocking items are NOT logic and NOT in the repo — they are server measurements GELB has not
+yet supplied, and both decide whether the whole auth is real:
+  (A) are :3003 (app) and :8002 (backend) reachable from OUTSIDE the host? If yes, Basic Auth is bypassed.
+  (B) the already-leaked old BACKEND_TOKEN cannot be revoked and stays valid ~18 months (owner decision).
+Everything else is GO with recorded dissents.
+
+
+========================================================================
+§3.104  BASIC AUTH — six points
+========================================================================
+
+POINT 1 — a URI / method / protocol / processing path outside the 8 (now 9) blocks, or answered
+          before the access phase?
+  CLEAN AT THE NGINX LAYER. I could not construct one.
+   - location / is the catch-all; auth_basic runs in the ACCESS phase, which executes for proxied
+     and for static (alias) content alike — static files are served in the content phase, AFTER access.
+   - nginx normalises the URI (%xx decode, /../ collapse) BEFORE location selection, so encoding
+     tricks (/%2e%2e/, /./) cannot dodge a block; GELB measured 400/401 for these.
+   - = / ^~ / regex precedence: every terminal selection lands in a block that carries auth. The
+     exact block (= /api/pdf) and the regex block (~* \.pdf$) are both auth'd; a miss on the exact
+     block falls to /api/ or / which are auth'd.
+   - HTTP/3 (QUIC) is NOT configured (listen 443 ssl only), so there is no unauthenticated h3 endpoint.
+     HTTP/2 measured 401.
+   - Next.js internal paths — /_next/static, /_next/image?url=, /_next/data, Server Actions (POST /),
+     websocket upgrade — all route through location / (block 8/9) under auth. (Note: /_next/image?url=
+     is an SSRF/open-proxy surface AFTER auth; not an auth bypass, flagged for later.)
+   - No error_page redirect, X-Accel-Redirect/internal location, named location (@x), or try_files is
+     configured, so none of the classic pre-access content paths exists.
+
+  THE REAL BYPASS IS BELOW NGINX, and it is a MEASUREMENT, not logic:
+     Basic Auth exists only on the reverse proxy (:80/:443). The app (:3003) and backend (:8002)
+     listen on their own ports. GELB's checks "App direkt :3003 200, Backend direkt :8002 /health 200"
+     were run ON the server (localhost); they prove the listeners exist, not that they are unreachable
+     from the internet. If either binds a public interface AND the host/Hetzner-cloud firewall permits
+     inbound, then
+         http://<ip>:3003/...     and     http://<ip>:8002/...
+     reach the app and backend with NO Basic Auth — a complete bypass of all 9 blocks. This is also
+     where the §3.103 proxy-token exposure is or is not closed: /api/admin/proxy is only auth'd at
+     :443; a direct hit on :3003/api/admin/proxy/<x> still wields BACKEND_TOKEN.
+     REQUESTS THAT DEMONSTRATE IT, run from OFF the server:
+         curl -ksS https://<ip>:3003/api/admin/proxy/health
+         curl  -sS http://<ip>:8002/health
+     If either returns content, the gate is void for that path.
+     MEASUREMENTS REQUESTED FROM GELB:
+         ss -ltnp | grep -E ':3003|:8002'      (bind address: 127.0.0.1 vs 0.0.0.0)
+         host firewall / cloud firewall inbound rules for 3003 and 8002
+     VERDICT point 1: CONDITIONAL GO — clean at nginx; GO iff :3003 and :8002 are not externally
+     reachable.
+
+POINT 2 — per-location auth vs server-wide auth + explicit ACME exception: improvement or gap?
+  GO on correctness, WITH DISSENT.
+   - Renewal concern VALIDATED (see point 3): certbot 2.9.0 inserts `location = /.well-known/
+     acme-challenge/<token>` (exact match, highest precedence). Server-wide auth_basic is inherited
+     into every location INCLUDING a certbot-inserted one, so it would have 401'd the challenge.
+     Per-location auth is not inherited, so the inserted exact-match block stays open. GELB's mechanism
+     is correct.
+   - DISSENT: per-location auth is FAIL-OPEN — any future location added without auth_basic (by a
+     later edit, an include, a new app route needing its own block) is unprotected by default. A
+     security gate should fail CLOSED. The alternative that achieves BOTH fail-closed AND renewal
+     safety is: server-wide auth_basic + a PERMANENT `location ^~ /.well-known/acme-challenge/
+     { auth_basic off; root <webroot>; }` using the --webroot authenticator (which writes a file into
+     a static location and never live-inserts a location, so GELB's duplicate-location worry does not
+     arise — that worry is specific to the nginx authenticator).
+   - Net: GELB's choice is defensible given the proven renewal and the dev.syntx-system.com history,
+     but it is a trade (renewal-robustness over fail-closed default), not a pure win. OTTAVIO should
+     know that.
+
+POINT 3 — does certificate renewal still work?
+  CONFIRMED, now empirically (was: open). `certbot renew --dry-run` exit 0, "all simulated renewals
+  succeeded", mechanism visible in the log (exact-match acme location inserted, ACME fetch over
+  http://.../acme-challenge/<token>), vhost md5 unchanged after the run, cert valid to 2027-01-26.
+  My earlier logical concern (the committed :443 config has no ACME exception, so renewal depends on
+  certbot's transient live-insert) is answered: certbot performs exactly that insert and it succeeds.
+  OPERATIONAL CAVEAT (GELB raised it): certbot.service is already `failed` because of
+  dev.syntx-system.com's standalone authenticator (F-DEP-2). Ensure the admin cert's scheduled renewal
+  is not collateral-blocked by that failing unit (a successful --dry-run for one cert does not prove
+  the timer runs all certs).
+
+POINT 4 — does `proxy_set_header Authorization ""` break anything unseen?
+  CONFIRMED correct and necessary.
+   - Without it nginx forwards the inbound `Authorization: Basic base64(condyn-admin:pw)` to the
+     foreign :8002 app on every /api/ request routed there, landing the (trivially reversible base64)
+     Basic credential in the foreign app's logs — a direct violation of Auflage 4. Stripping it is right.
+   - What it breaks: only a client that relied on passing a Bearer token THROUGH nginx /api/ to :8002.
+     GELB's "no such client in the logs" rests on access logs that record PATHS, not headers (a Bearer
+     is a header), so that evidence is weak. The STRONG argument, which holds: the admin app never
+     routes a client Authorization through that path — it reaches :8002 via CONDYN_API_URL=
+     localhost:8002 directly (bypassing nginx), and /api/admin/proxy injects its OWN Bearer ${BACKEND_
+     TOKEN} server-side (confirmed route.ts:40), independent of the client header. No internal consumer
+     breaks.
+   - Minor: "" sends an EMPTY header, not an absent one; equivalent for virtually all upstreams, only
+     matters if :8002 distinguishes empty from missing. Negligible.
+
+POINT 5 — can the change affect a foreign vhost? (admin is the :443 default_server)
+  GO, with one check for GELB.
+   - If admin.condyn.eu was ALREADY the :443 default_server, then IP / no-Host / unknown-Host requests
+     hitting this block and now returning 401 is an IMPROVEMENT (unknown traffic is challenged, not
+     served). It does NOT reach other vhosts: each foreign vhost matches its own server_name and is
+     served by its own server block; auth_basic is confined to THIS block's locations. GELB's
+     measurements corroborate (foreign hosts 200; shared /etc/nginx/.htpasswd untouched by md5+mtime).
+   - CHECK: confirm `default_server` was PRE-EXISTING on this block's listen line and not newly
+     introduced, and that no other :443 block claims default_server (nginx errors on a duplicate). The
+     whole-file md5 changed (auth added), so the listen line cannot be diffed from the hashes given.
+
+POINT 6 — what is still unprotected that should be protected? Is "bundle now behind auth" real?
+  REAL improvement at the EDGE, but it is EDGE auth, not APPLICATION auth.
+   - Real: the client bundle (its NEXT_PUBLIC_* literals) and the token-wielding /api/admin/proxy are
+     no longer anonymously reachable through nginx; an unauthenticated internet client gets 401 first.
+     That closes the anonymous-internet exposure of §3.103 point 6 — PROVIDED point 1 (direct ports)
+     is clean. Not self-deception.
+   - GAP (a): the new server-side gate /api/admin/session is consumed ONLY by ConDynPanel's UI-reveal
+     GET (confirmed: the sole consumer of adminSessionIsOpen is the session route's GET). NO privileged
+     route consumes the session — /api/admin/proxy/[...path] is unchanged and still injects BACKEND_
+     TOKEN for anyone who reaches it. So at the APPLICATION layer the token-wielding proxy is
+     authorised by nothing; the sole gate on it is nginx Basic Auth: one shared credential, no
+     per-user accountability. Do NOT tell OTTAVIO the privileged API is behind the app login; it is
+     behind Basic Auth only.
+   - GELB's self-report (Basic-Auth user "condyn-admin" is a prefix of client user
+     "condyn-admin-b28544"): for the Basic credential this is BELANGLOS — I agree (usernames are not
+     secret; 24-char random password under bcrypt). But the printed fragment is a reminder that the
+     OLD client-side admin credential shipped in a bundle historically; treat it as retired/compromised
+     and ensure it is reused nowhere (it must not equal the Basic Auth password or any backend cred;
+     GELB's Basic password is independently generated, so that is fine — just confirm the retired one
+     is dead).
+
+
+========================================================================
+§3.105  FINAL INTEGRATION e360caf9 — PINK findings, as implemented
+========================================================================
+
+1a (sticky refusal) — CONFIRMED FIXED. The four composition gates (hr-decision-loop, job-pool,
+   relation-cache, result-inspector) now memoise ONLY success; a refusal throws
+   DatabaseNotProvisionedError (own module not-provisioned.ts, correctly separate so the gate tests'
+   mock of verification.ts cannot make the class undefined), the inner .catch clears the memo and
+   rethrows, the outer .catch translates it back to the gate's refusal value. verifyProvisionableDatabase
+   still RETURNS null (no throw) and now logs the reason once per distinct reason naming both bases.
+   CROSS-CHECK 3 (does 1a change the exception-vs-value contract seen by a caller anywhere?): NO.
+   Verified in all four gates: refusal -> refusal value (as before), real DDL/connection error -> throw
+   (as before), success -> "REGISTERED" (as before). The ONLY behavioural change is memo lifetime
+   (refusals re-verify instead of sticking) — the intended fix. D-2 keeps its own memo reset
+   (registration.catch(() => registrations.delete(url))), so the budget path is NOT a 1a regression.
+   Minor note: on a refusal that reaches the application basis probe, verifyAuthorizedApplicationDatabase
+   opens a read-only connection with connect_timeout 10s; in production the realistic refusals are
+   pre-connection (classify refuses bad/unauthorised/misnamed URLs before connecting), and success is
+   memoised, so the per-request connection cost does not accumulate. Acceptable.
+
+1b (basis 2 is a denylist) — CONFIRMED FIXED for the PROVISIONING gates; NOT changed for the plain
+   application client. CROSS-CHECK 1 (is `database=<name>` robust — any value authorising what it
+   should not?): I found NONE.
+     readSharedDatabaseAuthorization fails closed on: undefined/""/whitespace-wrapped value (value !=
+     value.trim() catches "1 ", " 1", trailing "\n"); anything not starting with "database=";
+     a pinned name whose lowercase is a maintenance name (postgres/template0/template1 — so "Postgres"
+     etc. are refused); a pinned name matching the disposable pattern; a pinned name that is not a
+     simple identifier /^[A-Za-z_][A-Za-z0-9_$]{0,62}$/ (JS $ without /m does not match before a
+     trailing newline, so "condyn\n" is refused — and the whole-value trim check already caught it).
+     "1" keeps its exact old meaning (authorised, no pin). The pinned name is compared, never
+     interpolated into SQL, so no injection. In classifyAuthorizedApplicationDatabaseUrl the actual
+     databaseName is independently refused if maintenance/disposable BEFORE the pin check, and then
+     NAME_NOT_AUTHORIZED if it is not the pinned name — double-guarded. The 1c test proves
+     database=condyn + probe"condyn" resolves and "1" + probe"neighbour" is an identity mismatch.
+   ASYMMETRY TO RECORD: the pin constrains the DDL/provisioning gates (so the §3.103 "wrong DATABASE_URL
+   lays 114 tables into a neighbour" catastrophe is prevented — provisioning now requires name==condyn
+   in production). It does NOT constrain resolveApplicationDatabaseUrl for a NON-protected name:
+   policy.ts:92 returns raw for any name not in {condyn,postgres,template0,template1} without consulting
+   the pin. So the APPLICATION CLIENT (reads/writes) can still be pointed at a non-protected neighbour
+   DB by a misconfigured DATABASE_URL. Because all DDL is now gated, no tables would be created there,
+   so the app would fail on missing tables rather than silently populate a neighbour — tolerable, but
+   the pin is narrower than "the app only ever touches condyn". If the stricter guarantee is wanted,
+   resolveApplicationDatabaseUrl must apply the pin to protected AND non-protected names alike.
+
+1c (no test exercises the connection path) — CONFIRMED FIXED. CurrentDatabaseProbe is a parameter;
+   production uses probeCurrentDatabase (real read-only connection). New test
+   application-database-connection.test.ts injects a fake probe and exercises: exact-name accept,
+   reaches a DIFFERENT database than named (the case that matters -> IDENTITY_MISMATCH), reports
+   nothing -> mismatch, connection error propagated (not swallowed as an assumption), no connection
+   when policy already refuses, plus the disposable marker both ways. Good.
+
+D-2 (ensureProviderCallRegister on the raw URL) — CONFIRMED FIXED. It now calls
+   verifyProvisionableDatabase(url) first; null -> throws ERR_PROVIDER_CALL_REGISTER_NOT_PROVISIONED ->
+   no registration -> no model call, so the budget boundary holds in both directions. The false
+   comment head "on ANY database" is corrected. Memo reset on failure is present (retries next use).
+
+D-1 (per-request DDL on the application client) — TWO THIRDS, and I accept GELB's handling of the third.
+   Fixed: the DDL (ensureDecisionRuntimePostgresSchema — one table, decision_context_revisions, its
+   byte hash sealed by root-decision-context.test.ts:232 and confirmed restored to 75eeaa3c…) now runs
+   on a short-lived registration client, once per process, never on the application client and never
+   per request.
+   NOT fixed: the B-ENTRY gate is absent. GELB's reason is sound as a PROCESS matter: the e2e test
+   local-decision-context-http.e2e.test.ts provisions condyn_r5_<20hex> (non-disposable, unmarked),
+   which satisfies neither basis, so a gate would 503 it; but test/decision-runtime is sealed against
+   435a112 by P8 (g2-g3-vertical-proof.test.ts:577) and that seal was intact. GELB did NOT break the
+   seal, documented the live exception truthfully in registration-client.ts (removing a false
+   invariant), and escalated to OTTAVIO. That is the correct call for a peer who cannot resolve two
+   conflicting owner mandates. I CONFIRM the handling.
+   RESIDUAL RISK, stated precisely: ensureDecisionRuntimeRegistration uses the RAW process.env.DATABASE_
+   URL, not the resolved/gated URL. So a misconfigured DATABASE_URL naming a PROTECTED name != condyn
+   (e.g. ".../postgres") would have the application client refuse (resolveApplicationDatabaseUrl ->
+   UNCONFIGURED) while this path still creates decision_context_revisions in that maintenance DB —
+   one table, once per process, now behind Basic Auth, but exactly the "DDL into the wrong database"
+   class B-ENTRY exists to prevent. This makes OTTAVIO's P8 decision load-bearing, not cosmetic.
+   NON-SEAL-BREAKING HARDENING (recommended, not blocking): have ensureDecisionRuntimeRegistration
+   resolve through resolveApplicationDatabaseUrl instead of the raw URL. The e2e's condyn_r5_… is
+   non-protected -> returned as-is -> the test still passes and the seal is untouched; a protected
+   misconfig (postgres/template*) -> UNCONFIGURED -> the DDL fails fast against .invalid instead of
+   writing into a maintenance DB. Strictly closes the worst case without touching test/decision-runtime.
+
+Server-side admin gate (mandate point 2) — well-built, scope correctly understood.
+   session.ts: opaque 256-bit token via randomBytes(32).base64url (CSPRNG — not forgeable; this is the
+   point where process-local beats a signed cookie, see CC2); timing-safe compare with length masked;
+   fail-closed when ADMIN_USERNAME/ADMIN_PASSWORD absent (503, reason logged not served); cookie
+   HttpOnly + SameSite=Strict + Secure + Max-Age; no credential in the component (ConDynPanel now POSTs
+   to /api/admin/session and reads only {authenticated}). GELB measured the bundle clean of every
+   secret. Confirmed the client gate is REPLACED, not merely "wirkungslos wie zuvor".
+   CROSS-CHECK 2 (process-local sessions acceptable, or does a signed cookie prevent an attack?):
+   PROCESS-LOCAL IS ACCEPTABLE AND HERE PREFERABLE. An opaque server-side token is not forgeable and
+   has no secret to leak; a signed stateless cookie would only buy survival across restart (an
+   availability, not a security, property) and would ADD a signing secret to protect. I see no attack
+   a signed cookie prevents that the opaque store does not. The real constraints are operational:
+   (i) single process only — under pm2 cluster / multiple workers sessions would not be shared and
+   logins would flap; GELB states a single process, so note it as a standing assumption; (ii) the
+   Map is swept on access and bounded by the 12h TTL, and growth needs a valid login, so no
+   unauthenticated memory DoS. The $scheme question is answered below.
+   SCOPE LIMIT (also §3.104 point 6a): this gate protects the UI reveal only; it does not authorise
+   any API route. The privileged proxy is still edge-auth-only.
+
+$scheme explanation GELB asked for: on a `listen 443 ssl` block, $scheme IS "https", so the VALUE was
+   not wrong. The likely cause is that nginx proxy_set_header does NOT merge across levels — a location
+   that defines ANY proxy_set_header loses ALL inherited ones. If the handling block (the ^~ /api/admin/
+   session block, or block 5's rewrite path) set its own headers, it did not inherit a server/http-level
+   `X-Forwarded-Proto $scheme`, so the app saw the header absent and secure() fell to false. Hardcoding
+   the literal "https" in that block is correct and robust, because the block exists only inside the TLS
+   server. (If you prefer one source of truth, set X-Forwarded-Proto $scheme once and repeat the full
+   proxy_set_header set in every proxying location, since they do not inherit.)
+
+Point 3 (Canonical-SIL policy versions) — NOT DELIVERED, correctly. No value exists in the code
+   (product-service.ts:115/117 builds the registry self-referentially); inventing one would be a NEW
+   value that enters the record ID hash. OTTAVIO's call. /api/career/canonical-sil/* stays 500 — the
+   UI hides this until such data exists (§3.103 point 5 still stands).
+
+BACKEND_TOKEN rotation — handled correctly; one LIVE exposure to escalate. The old token was shipped in
+   a client bundle historically (NEXT_PUBLIC_BACKEND_TOKEN at 91d06c3c, §3.102). The JWT is stateless
+   with no blacklist/revoke and expires 2027-05-03, so anyone who scraped the old bundle holds a VALID
+   backend token against :8002 for ~18 months, and nginx Basic Auth does NOT mitigate it (the holder
+   calls :8002 directly or by any route). Rotating BACKEND_TOKEN protects FUTURE proxy use only. Real
+   revocation needs JWT_SECRET_KEY rotation, which logs out all 6 foreign users — OTTAVIO's decision, as
+   GELB flagged. This is item (B) of the headline.
+
+Testsuite: GELB reports 28 red / 3558, all pre-existing, re-measured against dc674ee1 in a separate
+   worktree (27 in the four career-lifecycle-* files + MAP-C-ARCH). No regression claimed. I did not
+   execute the suite (no product-code or DB execution); I validated the diff logic. The five hash-pinned
+   files are not in the diff (GELB restored postgres-capability-core.ts to its sealed hash after a
+   self-caught second seal break).
+
+
+========================================================================
+VERDICT
+========================================================================
+§3.105 FINAL INTEGRATION e360caf9: GO on the code. 1a/1b/1c/D-2 confirmed fixed; the three cross-checks
+   come back clean (CC1 no bad value; CC2 process-local acceptable/preferable; CC3 no contract break).
+   D-1 is two-thirds by an owner-level seal conflict that GELB escalated correctly; its residual
+   (one table on the raw URL, ungated) is real and I recommend the resolveApplicationDatabaseUrl
+   hardening. Point 3 correctly deferred to OTTAVIO.
+
+§3.104 BASIC AUTH: GO at the nginx layer — I found no path between or before the 9 blocks. The GO is
+   CONDITIONAL on one server measurement: :3003 and :8002 must not be reachable from outside the host
+   (item A). Point 2 is a recorded dissent (fail-open default), point 3 confirmed empirically, point 4
+   confirmed, point 5 one check, point 6 real-at-the-edge with the application-authz gap (6a) and the
+   un-revocable old token (item B) escalated to OTTAVIO.
+
+TWO ITEMS FOR OTTAVIO (owner decisions, not GELB's to make):
+   A. external reachability of :3003 / :8002 — if open, Basic Auth is moot for those ports.
+   B. the leaked old BACKEND_TOKEN valid until 2027-05-03, un-revocable without JWT_SECRET_KEY rotation.
+   (plus the D-1 / P8-seal conflict, already in GELB's hands.)
+
+Read-only throughout: nothing executed against any server or database; no product code or existing
+database changed; evidence is local and signed, not pushed.
+
+
+========================================================================
+ADDENDUM (2026-11-05) — point 1 resolved: the bypass was live, :3003 is now closed
+========================================================================
+GELB supplied the measurements item A required. They confirm the finding and then close it for :3003.
+
+BINDING (server): 127.0.0.1:3017 (DLL, loopback — tight); 0.0.0.0:8002 (uvicorn, FOREIGN app);
+   *:3003 (condyn-admin — ALL interfaces, v4+v6). No host firewall at all: ufw inactive, iptables
+   INPUT policy ACCEPT with no rule for 3003/8002, nftables only Docker NAT/forward. Also public:
+   3000/3001/3002/8000/8001/8040/8090 (all foreign apps). 5432 and 3017 are loopback.
+
+EXPLOIT CONFIRMED FROM OFF-HOST (GELB, against 49.13.3.21, no auth — which also rules out an
+   invisible cloud firewall):
+     http://49.13.3.21:3003/api/admin/proxy/health   -> 200 {"status":"healthy",...}
+     http://49.13.3.21:3003/api/admin/proxy/prompts   -> 200 JSON (form+count only, no content read)
+     same proxy path via the vhost                    -> 401
+   So §3.104 point 1's last paragraph was exact: over the port, ANYONE who knew IP+port wielded
+   BACKEND_TOKEN with full authority, because route.ts injects it server-side; Basic Auth was
+   wirkungslos for them. This was a LIVE exposure, not a hypothesis.
+
+CLOSED FOR :3003: pm2 ran `bash -c 'node_modules/.bin/next start --port 3003'` (not npm start, so a
+   package.json change would have done nothing); HOSTNAME=127.0.0.1 did not bind on this Next version;
+   effective fix was `--hostname 127.0.0.1` via pm2 delete+start (same name) + pm2 save, with a backup
+   (pm2.before-bind.json, dump.pm2.before-bind) and an automatic fallback (not needed). AFTER, off-host:
+   :3003 TCP closed on all four paths; vhost unchanged (no-auth 401, auth 200 incl. /api/admin/proxy/
+   prompts); foreign hosts 200/302; data unchanged 6/8/0, 128 tables; worker polling; binding now
+   127.0.0.1:3003 persisted.
+
+CORRECTIONS GELB volunteered, accepted:
+   - default_server: NOT an explicit directive on admin's listen line. The 401-by-IP is because nginx
+     picks the FIRST server block for the address on an absent/unknown Host, and admin.condyn.eu loads
+     first alphabetically from sites-enabled. Pre-existing, unchanged by the edit. Point 5's conclusion
+     is unchanged (no foreign vhost affected); only the mechanism is corrected.
+   - $scheme: my non-merging mechanism does not explain GELB's case, because the X-Forwarded-Proto line
+     was present in the SAME block in both tests (only the value differed). I withdraw it for this
+     specific case. GELB's stale-worker-after-reload hypothesis is plausible (a reload keeps old
+     workers serving drained keepalive connections). The literal "https" is correct regardless in a
+     TLS-only block. Unresolved, not load-bearing.
+
+POINT 1 VERDICT, now decidable: GO for the admin access-control mandate. :3003 is loopback and
+   measured closed from outside, so the admin app and its token-injecting proxy are reachable ONLY
+   through Basic Auth. The bypass is closed.
+
+   BUT closing :3003 does NOT close item B, and this is the answer to GELB's direct question ("is
+   closing :3003 alone enough while :8002 is open?"):
+     - For gating the ADMIN APP: yes. Clean GO.
+     - For CONTAINING the token: no. :8002 is bound 0.0.0.0 with no firewall; its protected endpoints
+       accept a bearer token (403 without one). The OLD backend token was public in the client bundle
+       for ~10h, is a stateless JWT valid until 2027-05-03, and cannot be revoked. So anyone who
+       scraped it in that window can call :8002 PROTECTED endpoints directly from the internet
+       (`curl http://49.13.3.21:8002/prompts -H 'Authorization: Bearer <old>'`), bypassing nginx,
+       Basic Auth and the :3003 closure entirely, for ~18 months. Rotating BACKEND_TOKEN and closing
+       :3003 protect FUTURE proxy use; neither touches the already-leaked token against a directly
+       reachable :8002.
+   This is NOT a defect in GELB's admin-app work and NOT GELB's to fix: :8002 is /opt/condyn-analyzer,
+   a foreign app under OTTAVIO's hardlock; GELB correctly did not touch it and laid it before OTTAVIO.
+   The real remedies are cross-application owner decisions: rotate JWT_SECRET_KEY on :8002 (invalidates
+   the old token, logs out all 6 foreign users) and/or restrict :8002's network exposure (which may
+   break the foreign app's own direct-login clients — multi_user:true, 6 users). OTTAVIO's call.
+
+SO: §3.104 is GO (admin access control met). Item B stays open and is now LIVE, not latent, because
+   :8002 is public. The six other public foreign ports are outside this mandate and outside my scope.
+   Still read-only; all measurements are GELB's; nothing executed by PINK.

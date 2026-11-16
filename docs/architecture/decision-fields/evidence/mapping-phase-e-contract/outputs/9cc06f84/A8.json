@@ -1,0 +1,52 @@
+{
+ "commit": "9cc06f84",
+ "deterministic": true,
+ "loads": [
+  {
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all": "q_covers",
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform": "q_ts",
+   "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform": "q_k8"
+  },
+  {
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all": "q_covers",
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform": "q_ts",
+   "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform": "q_k8"
+  },
+  {
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all": "q_covers",
+   "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform": "q_ts",
+   "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform": "q_k8"
+  }
+ ],
+ "ruleAllOk": true,
+ "ruleRows": [
+  {
+   "body": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+   "beamReq": "q_covers",
+   "beamState": "COVERS",
+   "expectedByRule": "q_covers",
+   "ok": true,
+   "bearingCount": 7,
+   "maxV": 1
+  },
+  {
+   "body": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+   "beamReq": "q_ts",
+   "beamState": "EQUIVALENT",
+   "expectedByRule": "q_ts",
+   "ok": true,
+   "bearingCount": 2,
+   "maxV": 1
+  },
+  {
+   "body": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+   "beamReq": "q_k8",
+   "beamState": "NAME_EXACT",
+   "expectedByRule": "q_k8",
+   "ok": true,
+   "bearingCount": 2,
+   "maxV": 0.5
+  }
+ ]
+}
+

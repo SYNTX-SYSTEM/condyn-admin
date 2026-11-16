@@ -1,0 +1,96 @@
+PINK §3.98 — PERSON × JOB phase C, GRÜN frontend/mapping-phase-c fa895193 (base origin/main 5ca0f3f; local only, not pushed),
+GELB request SFE::PHASE_C VALIDATION, authorized by OTTAVIO; hardlock "nichts pushen, nichts mergen, keine Produktänderung, keine Delegation,
+keine Gemini-Aufrufe, kein :3017, keine Phase D, keine L2/L3. NUR PHASE-C-VALIDIERUNG. MEHR NICHT." — 2026-11-04
+Method:
+  * git metadata and tree identities of fa895193 against 5ca0f3f; own engine-importer grep; 8 positive controls on GRÜN's architecture tests.
+  * Scratch clones with a REAL (hard-linked) node_modules, npm run test:isolated (disposable condyn_test_* DB, least-privilege role):
+    PINK's own probes pink-pc (model vs the Phase-A reference layout, the sign-table JSON read directly, PINK's A4 reading, own focus walk,
+    own movement rule), pink-pc-render (field markup over runs × rankings × EN/DE), pink-pc-panel (panel markup on 5ca0f3f and fa895193);
+    the Phase-B probe pink-pb; 49 own mutants (mutate-pc.py) vs GRÜN's suite, the survivors vs PINK's probes; tsc; eslint; GRÜN's suites;
+    full suite alternating 5ca0f3f / fa895193, two runs each.
+Evidence class: DETERMINISTIC_FIXTURE. No model call, no network, no condyn row; product code, main and :3017 untouched; nothing pushed.
+
+VERDICT: GO for the product code of fa895193 — with one merge condition (F-PC-1) and test conditions (F-PC-T1, F-PC-T2).
+The field is correct in every contract PINK can derive; one of GRÜN's tests breaks at integration, so a merge as-is would turn main from
+27 to 29 failures.
+
+(1) INTEGRITY      1 commit on 5ca0f3f, 0 merges, on no remote branch; diff = exactly the 13 listed files (+1412/−7), 0 outside. The engine,
+                   mapping-spec, PERSON_X_JOB_MAPPING_SPEC.md, the orbits (ResonanceOrbits, OrbitalCosmosView, CapabilityField), manifestation/
+                   (planetarium), SyntxField, SyntxFieldSelector (two buttons), PxjFirstScreen, pxj-first-screen.ts, lib/career/ui (incl.
+                   useRoleInvestigation), job-pool, job-scope, capability-core, app/api and db all have tree ids identical to 5ca0f3f.
+                   Engine importers outside lib/career/mapping: only mapping-field.ts, PersonJobMappingField.tsx, mapping-field-copy.ts (+ tests).
+                   Positive controls: an engine change, an orbit change and a change to an unlisted file each turn GRÜN's tests red, also after
+                   a merge (K2–K6).
+(2) CONTRACT       pink-pc 6/6.
+                   * Bodies = Phase-A reference layout on 400 random rankings (10 359 bodies).
+                   * Class = A4 and line = sign table on every body; the 3 lines solid/dotted/open differ pairwise.
+                   * Sectors: drawn + overflow = roles.
+                   * Constellation = exactly the projection's ids.
+                   * Nothing depends on capabilityKey or capabilityName (1 600 variants ABSENT/null/foreign/name trap, byte-identical), so
+                     ABSENT is never coupled by a name.
+                   * Order-free on 400 permutations; read-only (frozen input).
+                   * Honesty sentence "nearer = higher in the ranking": 0 inversions in 478 161 pairs.
+                   * Run sign for every decoder-valid state × resumePending × budget = sign table (breath only RUNNING with
+                     evaluated < planned; STALLED frozen with no pulse; pulse only PARTIAL/FAILED while pending).
+                   * Focus BFS (20 states / 560 transitions): only L0/L1, role and requirement always null, no scope field. All 340
+                     non-admitted actions (OPEN_ROLE, OPEN_REQUIREMENT, SELECT_CAPABILITY, MARK_REQUIREMENT, SELECT_ROLE, malformed)
+                     return the same object, and a mark never changes level or pool, so the field marks and never selects.
+                   * Movement on 300 pairs = PINK's own rule: tier/fit only, trail from the previous place, nothing on an equal re-read
+                     or across analyses.
+                   * Phase-B probe 7/7 (engine byte-identical).
+(3) RENDERING      * Panel without field: 360/360 cases byte-identical between 5ca0f3f and fa895193.
+                   * With field, the field section removed: 360/360 equal to the field-less panel. The field is drawn in 40 cases, always
+                     after the authority line (and pools-dropped) and before the list.
+                   * Field (216 renders): empty, LOADING and FAILED draw nothing (72); STALLED shows the still sentence (resume variant
+                     when pending); the pending breath only on non-SEMANTIC bodies.
+                   * No L2/L3 element, link, form or input; no percent, fit, score or claim word; DE carries no EN sentence; copy keys EN = DE.
+                   * Static scan: no fetch/XHR/WebSocket/API path/Gemini/dynamic import/effect/storage/router/jobScope in the 3 new files.
+                   * tsc 0, eslint 0; GRÜN's suites 21 files 187/187; architecture 7 + 7.
+(4) MUTANTS        38/49 red vs GRÜN's suite.
+                   * Equivalent or invalid (PINK's construction): M7 (RUNNING without budget is refused by the decoder), M11 and C19
+                     (identical behaviour by construction), T5 (an extra entry for an undrawn body is never rendered).
+                   * Real gaps, killed by PINK's probe: T1 (a rank change moves a body), T2 (movement across analyses), T3 (a tier-only
+                     change does not move), M8 (angular displacement not flagged; data attribute only).
+                   * Real gaps, killed by nobody: C1 (on L1 a click on a faded body of another pool switches the pool), C9 (L1 shows the
+                     whole field's overflow count), C16 (legend lines all solid — the legend could lie).
+(5) REGRESSION     * 5ca0f3f: 3432 passed / 27 failed / 20 skipped (3479).
+                   * fa895193: 3472 / 27 / 20 (3519).
+                   * FAIL lists identical in every pair: the same 4 files 6/6/5/10, causes counted per run (21× 42703, 1× 23502, 5 follow-ups
+                     = F-JP-5).
+                   * +5 files / +40 tests, all green. The HTTP files and hr-decision-loop-postgres are green in every run: no flake, no new
+                     failure.
+
+FINDINGS
+F-PC-1  (merge condition) test/career/mapping-field/architecture.test.ts is branch-relative. After a merge (origin/main = fa895193, tree
+        unchanged) two tests fail: "against main, the branch changes only its new files and the three named entry points" (it expects the
+        three entry points in the diff) and "the two product entry points: one line removed each …" (it expects the exact diff lines). Main
+        would go from 27 to 29 red. The engine/protected checks keep their teeth after the merge (K5/K6).
+F-PC-T1 (test condition) timeMovement has no test for: a rank change without a tier/fit change moves nothing (T1); a tier-only change moves
+        (T3); different analyses move nothing with an actual change between them (T2 — GRÜN's inverse test is vacuous). The product is
+        correct (PINK's probe).
+F-PC-T2 (test condition, minor) no test for the L1 click on a body of another pool (C1), the L1 overflow count (C9) or the legend's line per
+        class (C16); M8 is not flagged (angular displacement).
+O-PC-1  The Phase-B importer test's grep "(career/|\.\./)mapping/…" misses "./mapping/view" from lib/career/* (K1). Only the phase-C scope
+        test catches such a file — and after a merge that test is the one F-PC-1 breaks.
+O-PC-2  mappingFieldModel's comment says "or a ranking of another analysis" gives null; the model does not check it. The wiring guarantees it
+        (projection and discoveryAnalysisId from the same PERSON_RESULT; both hooks keyed by analysisId), so the comment over-claims for
+        other callers.
+
+ASSUMPTIONS (assessed as risk, not changed; decision OTTAVIO/GELB)
+A1 placement in the automatic ranking's panel: technical risk LOW (wiring proven, panel byte-identical, selector untouched). Product risk:
+   the field lives only in PERSON mode / CAPABILITY focus and fades with the orbit focus like the panel — a navigation question, not a defect.
+A2 width min(400px, 29vw): risk MEDIUM, pending visual acceptance. At 360 px the L0 view box (1048 units) scales by 0.344, so bodies are
+   2.1–5.5 px in radius; a dotted line on a 2 px body has about 3 dots. Class by line at L0 is at the edge of legibility.
+   TECHNICAL PASS ≠ HUMAN VISUAL ACCEPTANCE.
+A3 time rule: risk HIGH, spec conflict. 63.4 % of bodies without own new evidence (2 870 of 4 528 over 300 random pairs) change position
+   between readings, because the angle inside a sector follows the in-pool rank index, and jump without trail. The letter of
+   timeMovement.rule ("a body moves only when new evidence changes its tier or fit") is not met by the released layout, so this needs a
+   decision: accept the jump, or animate/stabilise in a later phase. Not a defect of fa895193 (the layout is the released engine).
+A4 L0 class: risk LOW, consistent with the sign table's class channel. Observations: 13 % of SEMANTIC bodies (990/7 421) have only value-0
+   findings and are still solid ("checked by the model" is true; it is not "positive"); LEXICAL includes value-0 bases (427/1 099); NONE
+   includes roles without requirements (1 446), where "no relation found" means "nothing to relate". The LEXICAL/NONE shape (O-PB-2,
+   upstream-unreachable) would be classed LEXICAL.
+A5 omissions (L2/L3, beams, coupling marks, capability selection/reverse view, pending per role, degenerate PxJ field with the B2 portal):
+   risk LOW. The absence of L2/L3 is proven (focus BFS, markup); pending per role is missing by spec line 78; under NOT_PERSON there is no
+   ranking and so no field.
+Boundaries: no product change, no push, no merge, no delegation, no Gemini, no :3017, no Phase D, no L2/L3. Scratch clones only; nothing deleted.

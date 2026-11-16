@@ -1,0 +1,158 @@
+PINK §3.103 — inverse validation of GELB's production upgrade of admin.condyn.eu to dc674ee1 (2026-11-05).
+Deployed commit dc674ee1f21b7e80693ceb07b5233689292521c2 (parent b9e65de1, tree 908e89d2…, signature G, Ottavio Braun).
+Scope: the code of dc674ee1, plus one local probe in a PINK scratch clone of dc674ee1. The probe recorded the registration DDL
+against a stub client, with no database contact and DATABASE_URL and the opt-in unset. No SSH, no server contact, no database
+contact. Server numbers are GELB's.
+Probe: $SCRATCH/probes/ddl/count.ts, output $SCRATCH/probes/ddl/stmts.json (179 statements). Import reachability:
+$SCRATCH/probes/ddl/reach.py.
+
+SUMMARY. The schema change is additive (confirmed), and the 128 tables are reproduced exactly. GELB's explanation of the 128
+is wrong, though. Two claims are presented more favourably than the code supports: the second basis is not unreachable for
+agent operations (point 1), and the remaining risk is understated (point 6). There are more DDL paths than gates (point 2).
+There is a list of required variables (point 5); two of them are missing on the server going by GELB's list of names.
+
+POINT 1 — second basis (classifyAuthorizedApplicationDatabaseUrl / verifyProvisionableDatabase): PARTLY REFUTED
+  CONFIRMED (error handling unchanged): all 5 sites used to swallow the rejection themselves (`.then(r => r, () => null)`).
+    verifyProvisionableDatabase swallows the same rejections internally (verification.ts:71-78) and returns null. Every
+    caller treats null as a refusal: hr-loop local-composition.ts:31-32, job-pool local-composition.ts:34-35,
+    relation-cache-registration.ts:24-25, postgres-exchange-store.ts:57-58. auto-match.ts:209
+    `.then(basis => basis !== null, () => false)` is equivalent. An attacker gains nothing from null instead of a throw.
+  CONFIRMED: P-1 is closed (policy.ts: an empty name is refused in every process). The classifier refuses query, fragment,
+    multi-host, percent-encoding, maintenance and disposable names before it connects. The identity check then requires
+    current_database() == the declared name.
+  REFUTED — "a test run or an agent operation can never reach this verdict" (policy.ts:109-110;
+    job-pool/local-composition.ts:21-22):
+    - underTestRunner is only VITEST / VITEST_WORKER_ID (client.ts:26, verification.ts:44). node:test, jest, playwright, a tsx
+      script, `next dev` and a REPL all count as a "real server".
+    - The opt-in is an ordinary variable. Any process can set it (`CONDYN_ALLOW_SHARED_DATABASE=1 npx tsx …`, or
+      process.env). test/database-isolation/access-paths.test.ts:63 only scans committed files for the literal string.
+    - On the production host, .env.local now holds BOTH DATABASE_URL=…/condyn and the opt-in. `next dev`, `next build` and
+      `next start` load it automatically, and so does `npm run worker:career` (`tsx --env-file=.env.local`). Any agent command
+      in /opt/condyn-admin-v2.5.2 of that kind holds the authorised basis with full DDL and write authority.
+    - script-scope.ts stays on the disposable path (correct, as GELB says). scripts/write-live-lifecycle.ts has NO gate:
+      initDbSchema (DDL plus a CREATE DATABASE fallback) and fixed lifecycle records (POL_LIVE_1 …). Started with
+      --env-file=.env.local, it writes into condyn.
+    Honest wording: "the second basis is unreachable for any process that does not carry the opt-in". The code cannot tell
+    a server from an agent; only the environment does.
+  NEW 1a (availability, fail-safe): each gate memoises its verdict per process (`registration ??=`, reset only when it
+    THROWS). A refusal is not a throw. If the first request arrives while postgres is briefly unreachable (restart,
+    connection limit), the verdict sticks as NOT_PROVISIONED / NO_DDL until the process restarts. Job pool then answers 503
+    and the HR loop NOT_PROVISIONED, and no log line gives a reason (verifyProvisionableDatabase drops it). Before the upgrade
+    this only affected disposable databases. It now affects production.
+  NEW 1b (design): basis 2 is a DENYLIST (maintenance + disposable pattern), not an allowlist. With the opt-in, ANY other
+    database name on ANY host is accepted, for example a neighbouring application's database (GELB counts 7 databases on the
+    server). A wrong DATABASE_URL would put 114 tables there. Pinning the expected name explicitly would close this.
+  NEW 1c (test gap): the 9 new cases test only the pure classifier. All four gate tests mock verifyProvisionableDatabase
+    entirely. NO test executes verifyAuthorizedApplicationDatabase (the read-only connection and the identity check) or the
+    composition order in verifyProvisionableDatabase. GELB's server message "AUTHORIZED_APPLICATION_DATABASE on condyn" is
+    the only evidence for that path.
+
+POINT 2 — a seventh gate? The gate count is CONFIRMED; the DDL paths are MORE than the gates
+  The six sites that use the symbol are right (5 switched + script-scope.ts). DDL WITHOUT any verify symbol:
+  D-1 app/api/decision-contexts/route.ts and [revisionId]/route.ts -> lib/decision-runtime/local/decision-context-api.ts:19
+      ensureDecisionRuntimePostgresSchema(db) on the APPLICATION client. It runs on EVERY request (not memoised) and with no
+      gate. It was the same at b9e65de1, but harmless there (the client pointed at .invalid). It is now live on condyn, and
+      publicly reachable through the new nginx location. In effect it is idempotent (CREATE TABLE IF NOT EXISTS, 1 table,
+      which already exists). Still, it is DDL during request handling. It contradicts unified-schema-registration.ts:14
+      ("Request handling never calls it") and the sentence GELB itself edited in registration-client.ts:8 ("the application
+      client is never used for DDL").
+  D-2 lib/career/provider-calls/register-schema.ts:30-36 ensureProviderCallRegister provisions on the RAW
+      process.env.DATABASE_URL, with no verify and no opt-in check (my P-2 from §3.102). This is now LIVE: the production
+      worker runs it on condyn for the first claimed job (job-context.ts:18). Additive, but outside "the ONE place".
+  D-3 scripts/write-live-lifecycle.ts: initDbSchema with no gate (see point 1).
+  Not reachable: lib/career/search/pgvector-store.ts (CREATE EXTENSION vector) is only re-exported and no route constructs
+  it (reach.py: 0 entries).
+
+POINT 3 — additive? CONFIRMED. GELB's explanation of the count is REFUTED
+  Probe: the full registration path (applyCareerDbSchema incl. T11 and SIL, initPostDecisionChainSchema,
+  ensureDecisionRuntimePostgresSchema, the DCDRB binding, registerJobPoolPersistenceSchema, registerRelationCacheSchema,
+  registerProviderCallRegisterSchema) issues 179 statements and 128 DISTINCT TABLES = 14 old + 114 new. That is exactly GELB's
+  server count. Every CREATE TABLE carries IF NOT EXISTS. There is no DROP TABLE/COLUMN/INDEX/TRIGGER/FUNCTION, no TRUNCATE,
+  no DELETE, and no UPDATE of data. Exactly ONE statement touches one of the 14 old tables:
+  `ALTER TABLE career_analysis_jobs ADD COLUMN IF NOT EXISTS current_operation TEXT` (client.ts:183). No trigger, index or
+  rule is placed on an old table. The only new foreign keys onto old tables come from
+  career_capability_proposal_projection_references (ON DELETE CASCADE, client.ts:187-188/201/203). Deleting an analysis
+  therefore also removes its reference row, and nothing else changes.
+  The other statements of this kind are on NEW tables: DROP/ADD CONSTRAINT on the projection references (client.ts:200-203)
+  and on career_provider_calls_stage_check (register.ts:39-40), plus ENABLE TRIGGER.
+  Operational note: client.ts:200-203 runs DROP and ADD of the two FKs on EVERY registration, i.e. at every process start.
+  ADD FOREIGN KEY takes SHARE ROW EXCLUSIVE locks on career_analyses and career_analysis_jobs and validates. That is
+  negligible at 6/8 rows, but it is not a no-op.
+  Where the 114 come from (GELB's explanation was "ensureDecisionRuntimePostgresSchema pulls in the whole decision-runtime
+  schema"): WRONG. ensureDecisionRuntimePostgresSchema creates exactly ONE table, decision_context_revisions
+  (postgres-capability-core.ts:47-57). The breakdown is:
+    applyCareerDbSchema 76 = 14 old + 4 literal new + 4 SIL lineage + 54 T11, generated from drizzle tables via getTableConfig
+      (t11-persistence-schema.ts:147/165)
+    initPostDecisionChainSchema 37 (generated, post-decision-chain-schema.ts:29)
+    job pool 8 · relation cache 5 · decision runtime 1 · DCDRB 1
+  A text grep for CREATE TABLE misses the generated 91. That is why GELB's count failed, not because of the decision
+  runtime. Not included: career_gemini_provider_exchanges (only with CONDYN_GEMINI_EXCHANGE_ARCHIVE=1) and career_embeddings
+  (unreachable).
+
+POINT 4 — nginx order. Not refutable from the repository; two concrete gaps to measure
+  - No path the frontend used before (91d06c3c) begins with /api/admin/proxy or /api/decision-contexts. From the repository
+    side, no old 8002 path is cut.
+  - `^~ /api/decision-contexts` has no trailing slash, so it also captures /api/decision-contexts* (…-x, ….json, …foo).
+    Whether the backend has such paths can only be seen in its route list (a read-only GET of /openapi.json on :8002, if it
+    is FastAPI).
+  - ^~ is its own location block and also turns off regex matching. Whatever was attached to `location /api/` or to regex
+    locations (auth_basic, allow/deny, limit_req, client_max_body_size, timeouts, security deny rules) does NOT apply to the
+    new paths. DECISIVE: if `location /api/` protects the backend by IP or auth, /api/admin/proxy/ now bypasses that
+    protection, with the bearer token added by the server (point 6).
+
+POINT 5 — variables whose absence breaks a start or a route (code at dc674ee1; grep of process.env.X / env.X / env[CONST])
+  HARD (start or route fails):
+    DATABASE_URL + CONDYN_ALLOW_SHARED_DATABASE=1      every DB route 500; gates NOT_PROVISIONED (client.ts:24-28, verification.ts:44-45)
+    PROMPT_ENCRYPTION_KEY (base64, exactly 32 bytes)   worker start: ERR_MISSING/ERR_INVALID_ENCRYPTION_KEY (crypto.ts:9-23 via
+                                                       run-career-worker.ts:64-67). In 23 route entries only through the import
+                                                       graph; I traced no taken path.
+    CONDYN_API_URL + BACKEND_TOKEN                     proxy 500 -> AnalyzePanel and PromptsPanel dead (proxy route.ts:10-16)
+    CAREER_TENSION_CLASSIFICATION_POLICY_VERSION +     GET and POST /api/career/canonical-sil/* 500
+    CAREER_EVOLUTION_INPUT_DERIVATION_POLICY_VERSION   (route.ts:4-11). NOT among GELB's .env.local names, so these routes
+                                                       are broken on production now. The UI swallows it
+                                                       (SemanticCareerIntelligenceField.tsx:655-663); it stays latent until an
+                                                       association id exists.
+    GEMINI_API_KEY                                     the worker starts without it (gemini.ts:145 does not check) and every
+                                                       job FAILs at call time.
+  SILENT, with a dangerous default:
+    NEXT_PUBLIC_ADMIN_USERNAME / NEXT_PUBLIC_ADMIN_PASSWORD   read at BUILD time. Missing at build -> login condyn/condyn
+                                                       (ConDynPanel.tsx:7-8).
+    NODE_ENV=test or CAREER_REPOSITORY=inmemory        switches silently to the in-memory repository: the 6 analyses
+                                                       "disappear" and nothing is persisted (repositories/index.ts:22-28).
+    GEMINI_JOB_CALL_LIMIT                              unset -> 12 per job (register.ts:13). A malformed value -> 0, which
+                                                       blocks every call (:93-97).
+    DEBUG_GEMINI_REQUEST                               if set, logs requests (personal data) (gemini.ts:227).
+  OPTIONAL (off or defaulted when missing): GEMINI_MODEL, GEMINI_EMBEDDING_MODEL, GEMINI_MAX_CONTINUATIONS,
+    GEMINI_MAX_OUTPUT_TOKENS, ROLE_DISCOVERY_SEMANTIC_PROVIDER/_DAY_LIMIT/_GEMINI_MODEL/_MAX_ROLES, GITHUB_TOKEN,
+    GITHUB_ACCOUNT_MAX_REPOS, CAREER_WORKER_ID, CONDYN_GEMINI_EXCHANGE_ARCHIVE (+_RETENTION_DAYS), the result-inspector flag
+    and token (lib/career/result-inspector/access.ts:21-22), NEXT_PUBLIC_CONDYN_RESULT_INSPECTOR_UI,
+    NEXT_PUBLIC_SYNTX_RESONANCE_BREATH, OPENAI_/ANTHROPIC_/USE_*_PROVIDER (not used by the worker), TEST_DATABASE_ALLOWED_HOSTS,
+    RUN_PGVECTOR_TESTS.
+  Limit of this list: only names that appear as literals or constants. Variables read inside node_modules (e.g. PG*,
+  NEXT_*) are not included. postgres-js reads PGHOST/PGPORT/PGUSER/PGPASSWORD/PG<option> as fallbacks
+  (node_modules/postgres/cjs/src/index.js:438-480).
+
+POINT 6 — is the account to OTTAVIO honest? NO, the remaining risk is understated
+  - No route under app/api checks any credential (grep: the only mention of authorization is the proxy STRIPPING the client
+    header). The login in ConDynPanel.tsx:25 is a string comparison in the browser against values inlined into the JS at
+    build time. Rotating them only helps against people who do not open the bundle.
+    (GELB's earlier statement "no literal in .next/static" was about the OLD build. For the NEW build, count the literal
+    without printing it; Next inlines NEXT_PUBLIC_* values.)
+  - "Backend token removed from the client" is literally true but does not reduce exposure. The proxy (route.ts:9-85,
+    GET/POST/PUT/DELETE, no check) gives every anonymous internet client the token's authority for EVERY backend path.
+    GELB's own measurement shows it: a public /api/admin/proxy/health returns 200. Before, anyone with the bundle had the
+    token; now anyone without the bundle can use it.
+  - Publicly reachable without authentication (pre-existing = also before the upgrade):
+    read all 6 analyses incl. personal career data (/api/career/analyses + detail: GELB measured 200, pre-existing);
+    enqueue analyses (POST /api/career/analyze with investigation {mode:"PERSON"}, pre-existing). NEW: a RUNNING worker
+    processes them with real Gemini (GEMINI_API_KEY and USE_GEMINI_PROVIDER are among GELB's names), up to 12 calls per job.
+    I found no cap on that path that is global or per day. NEW: writes into condyn through job pools, the HR decision loop
+    and decision contexts. NEW: all backend endpoints through the proxy, including changing and deleting prompts.
+  - Honest wording: "admin.condyn.eu has no access control. The login is cosmetic. Anyone on the internet can read the
+    analyses, write into the production database, use the backend with full authority, and — since the worker runs — cause
+    Gemini costs." The remedy (server-side authentication, e.g. auth_basic on the vhost, and/or stopping the worker until
+    then) is OTTAVIO's decision.
+
+OPEN MEASUREMENTS (GELB, read-only): directives inside `location /api/` (auth/allow/limit) and any regex locations; the
+backend route list for the two prefixes; whether a career worker ran BEFORE the upgrade; a count of the admin password
+literal in the new .next/static; whether a rate limit exists for admin.condyn.eu.

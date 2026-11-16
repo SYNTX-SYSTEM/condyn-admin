@@ -1,0 +1,237 @@
+{
+ "commit": "9cc06f84",
+ "variant": "default",
+ "viewport": "1280x800",
+ "deviceScaleFactor": 1,
+ "url": "http://127.0.0.1:3120/career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=CAN_00000000000000000000000000000002",
+ "overlay": {
+  "initial": 1,
+  "finalAfterDismiss": 0,
+  "dismissAttempts": 1,
+  "centreOwner": {
+   "topTag": "circle",
+   "insideSvg": true,
+   "overlayAbove": null
+  }
+ },
+ "apiResponses": [],
+ "region": {
+  "svgSquarePx": "520x520",
+  "fieldCentre": {
+   "x": 260,
+   "y": 260
+  },
+  "ringRadiusPx": 241.9,
+  "discPixels": 183785
+ },
+ "Q-F1_stageSquare": {
+  "n": 270400,
+  "mean": 0.0045078,
+  "p50": 0.0014543,
+  "p90": 0.0052957,
+  "p99": 0.040134,
+  "p999": 0.40544,
+  "max": 0.62347,
+  "fracAbove": {
+   "0.005": 0.10832,
+   "0.02": 0.01661,
+   "0.05": 0.00781
+  }
+ },
+ "Q-F4_discInterior": {
+  "n": 183785,
+  "mean": 0.0053032,
+  "p50": 0.0014543,
+  "p90": 0.0053697,
+  "p99": 0.047416,
+  "p999": 0.43715,
+  "max": 0.62347,
+  "fracAbove": {
+   "0.005": 0.14247,
+   "0.02": 0.02203,
+   "0.05": 0.00947
+  }
+ },
+ "Q-F5_nodesVsSurround": {
+  "bodies": [
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_platform",
+    "box": "18x21",
+    "peak": 0.62347,
+    "surroundMedian": 0.0014324,
+    "diff": 0.62204,
+    "weberRatio": 435.261,
+    "weberContrast": 434.261
+   },
+   {
+    "id": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all",
+    "box": "23x23",
+    "peak": 0.57661,
+    "surroundMedian": 0.0014324,
+    "diff": 0.57518,
+    "weberRatio": 402.549,
+    "weberContrast": 401.549
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_keys",
+    "box": "19x19",
+    "peak": 0.62227,
+    "surroundMedian": 0.0056492,
+    "diff": 0.61662,
+    "weberRatio": 110.151,
+    "weberContrast": 109.151
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_platform",
+    "box": "22x17",
+    "peak": 0.41414,
+    "surroundMedian": 0.0049576,
+    "diff": 0.40919,
+    "weberRatio": 83.537,
+    "weberContrast": 82.537
+   },
+   {
+    "id": "JPOOL_BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB:role_empty",
+    "box": "12x12",
+    "peak": 0.55338,
+    "surroundMedian": 0.0053697,
+    "diff": 0.54801,
+    "weberRatio": 103.055,
+    "weberContrast": 102.055
+   }
+  ],
+  "caps": [
+   {
+    "id": "mapping-capability-PCAP_K8",
+    "box": "63x19",
+    "peak": 0.53466,
+    "surroundMedian": 0.0033907,
+    "diff": 0.53127,
+    "weberRatio": 157.685,
+    "weberContrast": 156.685
+   },
+   {
+    "id": "mapping-capability-PCAP_PG",
+    "box": "72x18",
+    "peak": 0.57776,
+    "surroundMedian": 0.0014324,
+    "diff": 0.57633,
+    "weberRatio": 403.348,
+    "weberContrast": 402.348
+   },
+   {
+    "id": "mapping-capability-PCAP_TS",
+    "box": "67x18",
+    "peak": 0.62227,
+    "surroundMedian": 0.0022785,
+    "diff": 0.61999,
+    "weberRatio": 273.108,
+    "weberContrast": 272.108
+   }
+  ]
+ },
+ "Q-F2_breathTemporal": {
+  "nFrames": 46,
+  "spanMs": 10875,
+  "cadenceMs": 242,
+  "swing_p999": 0.024802,
+  "swing_max": 0.052532,
+  "fracSwingGt002": 0.079,
+  "swingPixCount": 21362,
+  "radial": [
+   {
+    "rOverR": 0.05,
+    "swingPix": 3,
+    "ofTotal": 0.0014,
+    "meanSwing": 0.00004607
+   },
+   {
+    "rOverR": 0.16,
+    "swingPix": 42,
+    "ofTotal": 0.0064,
+    "meanSwing": 0.00005608
+   },
+   {
+    "rOverR": 0.27,
+    "swingPix": 470,
+    "ofTotal": 0.0429,
+    "meanSwing": 0.0002177
+   },
+   {
+    "rOverR": 0.38,
+    "swingPix": 168,
+    "ofTotal": 0.011,
+    "meanSwing": 0.0001149
+   },
+   {
+    "rOverR": 0.49,
+    "swingPix": 428,
+    "ofTotal": 0.0218,
+    "meanSwing": 0.0001574
+   },
+   {
+    "rOverR": 0.6,
+    "swingPix": 165,
+    "ofTotal": 0.0068,
+    "meanSwing": 0.00007706
+   },
+   {
+    "rOverR": 0.71,
+    "swingPix": 512,
+    "ofTotal": 0.018,
+    "meanSwing": 0.0001289
+   },
+   {
+    "rOverR": 0.82,
+    "swingPix": 1499,
+    "ofTotal": 0.0457,
+    "meanSwing": 0.0002867
+   },
+   {
+    "rOverR": 0.93,
+    "swingPix": 5761,
+    "ofTotal": 0.155,
+    "meanSwing": 0.00177
+   },
+   {
+    "rOverR": 1.04,
+    "swingPix": 10058,
+    "ofTotal": 0.2474,
+    "meanSwing": 0.003376
+   },
+   {
+    "rOverR": 1.15,
+    "swingPix": 2256,
+    "ofTotal": 0.0429,
+    "meanSwing": 0.000243
+   }
+  ]
+ },
+ "Q-F3_motionAtRest": {
+  "meanAbsStep": 0.000071598,
+  "pixPerStepGt002_mean": 2606.4,
+  "pixPerStepGt002_max": 5079,
+  "steps": 45
+ },
+ "Q-F6_groundPurity": {
+  "disc": {
+   "n": 183785,
+   "mean": 0.0015721,
+   "p50": 0.0014324,
+   "p90": 0.0016933,
+   "p99": 0.0036058,
+   "p999": 0.0074073,
+   "max": 0.0089183,
+   "fracAbove": {
+    "0.005": 0.00585,
+    "0.02": 0,
+    "0.05": 0
+   }
+  },
+  "brightGt02": {
+   "count": 0,
+   "fracOfDisc": 0,
+   "bboxLocal": null
+  }
+ }
+}

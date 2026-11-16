@@ -1,0 +1,15 @@
+{
+ "note": "PINK's independent three-tier PF-8 firewall lock-in at base 9cc06f84, checking GELB §19.",
+ "v1_DFT_undersampled_WRONG": { "method":"simple DFT projection, 14 frames, 849ms cadence (uniform assumption)",
+   "signMaskPixels":200208, "tierA":{"sigAmp":0.0001174,"floor":0.00009983,"verdict":"GREEN"},
+   "tierB":{"p99sig":0.005332,"p99null":0.005121,"ratio":1.04,"verdict":"green/incon (FALSE)"},
+   "tierC":{"signal":[37168,28372,10890,147],"null":[34287,24961,7861,50],"ratios":[1.08,1.14,1.39,2.94],"verdict":"barely RED (FALSE-WEAK)"},
+   "why_wrong":"~600-820ms/screenshot (SwiftShader, A-F2) under-samples the 0.43/0.59Hz decoys; they alias and inflate the null until floor~signal. The A-F11 trap, reproduced in PINK's own hands." },
+ "v2_LSQ_correct": { "method":"least-squares 13-param multi-sinusoid fit (DC + 6 freqs), 63 frames over 26.2s, 423ms mean JITTERED cadence; uneven sampling + LSQ estimates all six freqs without the uniform-Nyquist assumption",
+   "signMaskPixels":200689, "frames":63, "spanS":26.2,
+   "tierA":{"sigAmp":0.0001552,"bound":0.0005,"floor":0.00001591,"verdict":"GREEN (correct — ring moves not brightens, conserves pooled light)"},
+   "tierB":{"p99sig":0.005137,"p99null":0.001841,"ratioToFloor":2.79,"verdict":"RED"},
+   "tierC":{"thresholds":[0.001,0.002,0.004,0.008],"signal":[35895,22326,3814,30],"null":[11763,1444,139,6],"ratios":[3.05,15.46,27.44,5],"verdict":"RED"} },
+ "GELB_sec19_for_comparison": { "tierA":"0.00014 (floor 0.00007) GREEN", "tierB":"p99 0.00629 / floor 0.00287 = 2.2x RED", "tierC":"signal 24210/18218/10584/163 null 22586/8703/323/4 ratios 1.07/2.09/32.77/inf RED" },
+ "conclusion":"CONFIRMED. All three tiers match GELB's verdicts; Tier C is the sharpest limb (PINK 27x at 0.004 vs Tier B 2.79x). Tier A green is correct (a geometric ring move conserves pooled light)."
+}

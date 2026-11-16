@@ -1,0 +1,250 @@
+{
+ "scope": "defects 23..46, i.e. every defect added since A-G16 \u2014 the window the claim is now tested on",
+ "n": 24,
+ "owner_whose_artifact_was_defective": {
+  "gelb": 16,
+  "gruen": 7,
+  "pink": 1
+ },
+ "finder_which_lane_surfaced_it": {
+  "pink": 16,
+  "gelb": 6,
+  "gruen": 2
+ },
+ "self_caught_owner_equals_finder": 5,
+ "cross_caught_found_by_another_lane": 19,
+ "cross_caught_fraction": 0.792,
+ "already_carried_something_when_found": {
+  "total": 5,
+  "by_kind": {
+   "none": 19,
+   "verdict": 3,
+   "status": 2
+  }
+ },
+ "verdict_neutral_A_G16_criterion": 7,
+ "verdict_neutral_fraction": 0.292,
+ "A_G16_reference_point": {
+  "count": 22,
+  "neutral": 9,
+  "neutral_fraction": 0.409
+ },
+ "rows": [
+  {
+   "id": 23,
+   "adj": "A-G26 PG-10 max-swing limb below the instrument floor",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 24,
+   "adj": "A-G27 PG-2 satisfied by the stage ground colour alone",
+   "owner": "gelb",
+   "finder": "gelb",
+   "status": "none",
+   "neutral": true,
+   "note": ""
+  },
+  {
+   "id": 25,
+   "adj": "A-G28 PG-21 satisfied by its own remedy",
+   "owner": "gelb",
+   "finder": "gelb",
+   "status": "none",
+   "neutral": true,
+   "note": ""
+  },
+  {
+   "id": 26,
+   "adj": "A-G29 PG-13 already passed 12-50x on the rejected stage",
+   "owner": "gelb",
+   "finder": "gelb",
+   "status": "none",
+   "neutral": true,
+   "note": "on PINK's Q-F5 data"
+  },
+  {
+   "id": 27,
+   "adj": "A-G30 PG-11 a ratio of two floor values; guard dropped",
+   "owner": "gelb",
+   "finder": "gelb",
+   "status": "none",
+   "neutral": false,
+   "note": "PINK's PF-10 guard, dropped by GELB"
+  },
+  {
+   "id": 28,
+   "adj": "A-G41 the four \u00a712 reds are void as measurements",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "verdict",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 29,
+   "adj": "A-G42 PF-8 / PG-11 frequency collision",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 30,
+   "adj": "A-G43 PG-20's splay keys on the mark, not the state",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 31,
+   "adj": "A-G44 A-G23's scaling inherits a fixture",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 32,
+   "adj": "A-G49 a semantic carrier lives only in className",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": "PINK F-G1"
+  },
+  {
+   "id": 33,
+   "adj": "A-G50 A-G4's justification falsified \u2014 L1 not densest",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": true,
+   "note": "justification, not bound"
+  },
+  {
+   "id": 34,
+   "adj": "A-G51 PG-18 has no satisfier at L1",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": "PINK F-G3"
+  },
+  {
+   "id": 35,
+   "adj": "A-G54 a floor inherits the ground it was measured on",
+   "owner": "pink",
+   "finder": "gelb",
+   "status": "verdict",
+   "neutral": false,
+   "note": "went against PINK"
+  },
+  {
+   "id": 36,
+   "adj": "A-G55 PG-1 cannot score an occluding semantic",
+   "owner": "gelb",
+   "finder": "gruen",
+   "status": "none",
+   "neutral": false,
+   "note": "PINK reproduced independently"
+  },
+  {
+   "id": 37,
+   "adj": "A-G56 the shelf ring is absent at its darkest angle",
+   "owner": "gelb",
+   "finder": "gruen",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 38,
+   "adj": "A-G62 the shelf floor limb fails on arithmetic",
+   "owner": "gelb",
+   "finder": "gelb",
+   "status": "none",
+   "neutral": false,
+   "note": "on GRUEN's number"
+  },
+  {
+   "id": 39,
+   "adj": "A-G64 GELB credited PINK with a reading PINK had not taken",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "status",
+   "neutral": false,
+   "note": "a decision rested on it"
+  },
+  {
+   "id": 40,
+   "adj": "A-G65 min() is contaminated exactly as max() was",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "verdict",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 41,
+   "adj": "A-G66 PF-15's local-ground limb ill-posed for the shelf",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": ""
+  },
+  {
+   "id": 42,
+   "adj": "A-G71(a) G_ENTRY is in its own whitelist, doc never enumerates",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "none",
+   "neutral": true,
+   "note": "boundary, not obligation"
+  },
+  {
+   "id": 43,
+   "adj": "A-G71(b) the provider/API scan exempts phase G's own JSON",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": true,
+   "note": ""
+  },
+  {
+   "id": 44,
+   "adj": "A-G71(c) deleting field-g.test.tsx satisfies MAP-G-ARCH",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": false,
+   "note": "no mechanism for the SFE no-delete rule"
+  },
+  {
+   "id": 45,
+   "adj": "A-G72 A-G14 is VOID \u2014 it accepted a tree that did not exist",
+   "owner": "gelb",
+   "finder": "pink",
+   "status": "status",
+   "neutral": false,
+   "note": "range falsified 120/120 in LV11"
+  },
+  {
+   "id": 46,
+   "adj": "A-G73 the vectors cannot witness their own no-touch bound",
+   "owner": "gruen",
+   "finder": "pink",
+   "status": "none",
+   "neutral": true,
+   "note": "record precision < margin"
+  }
+ ]
+}

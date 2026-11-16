@@ -1,0 +1,29 @@
+# PINK: layout promises checked directly on the published golden vectors (own code). argv: <spec.json> <vectors.json>
+import json, math, sys, itertools
+S = json.load(open(sys.argv[1])); V = json.load(open(sys.argv[2])); R = S["rings"]; G = S["body"]["gap"]
+for name, v in V["layouts"].items():
+    e = v["expected"]; B = e["bodies"]; drawn = [b for b in B if not b["overflow"]]; fit = {r["roleId"]: r for r in v["input"]["roles"]}
+    sec = {s["poolId"]: s for s in e["sectors"]}
+    overlap = sum(1 for a, b in itertools.combinations(drawn, 2) if math.hypot(a["x"] - b["x"], a["y"] - b["y"]) < a["bodyRadius"] + b["bodyRadius"] + G - 1e-6)
+    horizon = sum(1 for b in drawn if (not b["shelf"] and b["distance"] + b["bodyRadius"] > R["horizon"] + 1e-6) or (b["shelf"] and b["distance"] - b["bodyRadius"] < R["horizon"] - 1e-6))
+    field = sum(1 for b in drawn if b["distance"] + b["bodyRadius"] > S["field"]["radius"] + 1e-6 or b["distance"] - b["bodyRadius"] < S["field"]["personRadius"] - 1e-6)
+    inside = sum(1 for b in drawn if not (sec[b["poolId"]]["startDegrees"] - 1e-6 <= b["angleDegrees"] <= sec[b["poolId"]]["startDegrees"] + sec[b["poolId"]]["spanDegrees"] + 1e-6))
+    disc_cross = sum(1 for b in drawn if math.degrees(math.asin(min(1, b["bodyRadius"] / b["distance"]))) > min(b["angleDegrees"] - sec[b["poolId"]]["startDegrees"], sec[b["poolId"]]["startDegrees"] + sec[b["poolId"]]["spanDegrees"] - b["angleDegrees"]) + 1e-6)
+    xy = sum(1 for b in B if abs(b["x"] - b["distance"] * math.cos(math.radians(b["angleDegrees"]))) > 5e-6 or abs(b["y"] - b["distance"] * math.sin(math.radians(b["angleDegrees"]))) > 5e-6)
+    def base(r):
+        if r["tier"] == "SEMANTIC": return R["bestFit"] + (1 - r["fit"]) * (R["zeroFit"] - R["bestFit"])
+        return R["shelfFar"] if r["fit"] is None else R["shelfNear"] + (R["shelfFar"] - R["shelfNear"]) * (1 - min(r["fit"], .5) / .5)
+    exact = [b for b in drawn if b["displacement"] == [0, 0]]
+    fitdist = sum(1 for b in exact if abs(b["distance"] - base(fit[b["roleId"]])) > 1e-6)
+    disp = [b for b in drawn if b["displacement"] != [0, 0]]; shelf_disp = sum(1 for b in disp if b["shelf"]); rad_disp = sum(1 for b in disp if b["displacement"][0] != 0)
+    mono = sum(1 for a, b in itertools.combinations([x for x in exact if not x["shelf"]], 2) if (fit[a["roleId"]]["fit"] - fit[b["roleId"]]["fit"]) * (a["distance"] - b["distance"]) > 1e-9)
+    share = abs(sum(s["spanDegrees"] for s in e["sectors"]) + S["sectors"]["gapDegrees"] * len(e["sectors"]) - 360) > 1e-5 if e["sectors"] else False
+    size = sum(1 for b in B if not (S["body"]["min"] <= b["bodyRadius"] <= S["body"]["max"]))
+    print(f"{name}: bodies {len(B)} drawn {len(drawn)} overflow {e['overflowCount']}/{len(B)-len(drawn)} | overlap {overlap} horizon {horizon} field {field} sectorAngle {inside} discCrossesSectorEdge {disc_cross} xy {xy} fit=dist(undisplaced {len(exact)}) {fitdist} fitOrderInverted {mono} displaced {len(disp)} (radial {rad_disp}, shelf {shelf_disp}) share360 {'BAD' if share else 'ok'} size {size}")
+for name, v in V["arcs"].items():
+    a = v["expected"]; n = len(a); tot = sum(x["spanDegrees"] for x in a) + (6 * n if n > 1 else 0)
+    print(f"{name}: arcs {n} total {round(tot, 6) if n else 0} contiguous {all(abs(a[i+1]['startDegrees'] - a[i]['endDegrees'] - 6) < 1e-6 for i in range(n - 1))} fill=value {all(x['fill'] == next(i['value'] for i in v['input'] if i['id'] == x['id']) for x in a)}")
+for name, v in V["constellations"].items():
+    e = v["expected"]; mx = max([math.hypot(n["x"], n["y"]) for n in e["nodes"]] or [0]) + S["constellation"]["nodeRadius"]
+    ov = sum(1 for a, b in itertools.combinations(e["nodes"], 2) if math.hypot(a["x"] - b["x"], a["y"] - b["y"]) < 2 * S["constellation"]["nodeRadius"])
+    print(f"{name}: nodes {len(e['nodes'])} overflow {e['overflowCount']} outerEdge {round(mx, 3)} (< person {S['field']['personRadius']}) nodeOverlap {ov} sum {len(e['nodes']) + e['overflowCount']} = input {len(v['input'])}")

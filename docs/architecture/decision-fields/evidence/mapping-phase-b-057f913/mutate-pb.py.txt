@@ -1,0 +1,68 @@
+# PINK phase B mutants (own set) against GRÜN's mapping tests or PINK's probe. argv: <scratch int dir> <ids...>; env SUITE=grun|pink.
+# One copy per mutant; the pristine tree is never edited. architecture.test.ts reads git and runs in the clone separately.
+import os, shutil, subprocess, sys
+INT = sys.argv[1]; SRC = f"{INT}/tpb"
+SUITES = {"grun": ["test/career/mapping/view.test.ts", "test/career/mapping/layout-vectors.test.ts", "test/career/mapping/signs.test.ts", "test/career/mapping/delta.test.ts", "test/career/mapping/focus.test.ts", "test/career/mapping-spec"],
+          "pink": ["test/pink/pink-pb.test.ts"]}
+V, L, SG, D, F = "lib/career/mapping/view.ts", "lib/career/mapping/layout.ts", "lib/career/mapping/signs.ts", "lib/career/mapping/delta.ts", "lib/career/mapping/focus.ts"
+M = {
+ "S1": ("sign: class check dropped", SG, "  if (sign.class !== source) throw new Error(`ERR_MAPPING_SIGN_SOURCE_MISMATCH:${source}/${state}`);\n", ""),
+ "S2": ("sign: STALLED pulses while resumePending", SG, "else if (typeof sign.resumePulse === \"boolean\") resumePulse = sign.resumePulse;", "else if (typeof sign.resumePulse === \"boolean\") resumePulse = sign.resumePulse || (resumePending && sign.frozen);"),
+ "S3": ("sign: resumePending type check dropped", SG, "  if (typeof resumePending !== \"boolean\") throw new Error(\"ERR_MAPPING_SIGN_RESUME_PENDING\");\n", ""),
+ "S4": ("sign: name relation phase locked", SG, "  return sign;\n}", "  return sign.class === \"LEXICAL\" ? Object.freeze({ ...sign, phaseLocked: true }) : sign;\n}"),
+ "S5": ("sign: UNCLEAR painted as DIFFERENT", SG, ": signs.get(state);", ": signs.get(state === \"UNCLEAR\" ? \"DIFFERENT\" : state);"),
+ "S6": ("sign: NONE painted as UNCLEAR", SG, ": signs.get(state);", ": signs.get(state === \"NONE\" ? \"UNCLEAR\" : state);"),
+ "V1": ("view: absent key filled from the PERSON name", V, "const key = q.capabilityKey ?? null;", "const key = q.capabilityKey ?? constellation.find(c => c.name === q.capabilityName)?.key ?? null;"),
+ "V2": ("view: foreign key reported KNOWN", V, "personKeys.has(key) ? \"KNOWN\" : \"NOT_IN_PERSON\"", "\"KNOWN\""),
+ "V3": ("view: foreign-key coupling dropped", V, "const key = q.capabilityKey ?? null;", "const key = q.capabilityKey ?? null; if (key !== null && !personKeys.has(key)) continue;"),
+ "V4": ("view: ring lighter first", V, "|| b.weight - a.weight ||", "|| a.weight - b.weight ||"),
+ "V5": ("view: constellation by key only", V, "byText(a.name, b.name) || byText(a.key, b.key)", "byText(a.key, b.key)"),
+ "V6": ("view: ranks in input order", V, "[...input.ranking.ranks].sort((a, b) => a.rank - b.rank)", "[...input.ranking.ranks]"),
+ "V7": ("view: requirement key falls back to the name", V, "capabilityKey: q.capabilityKey ?? null }))", "capabilityKey: q.capabilityKey ?? q.capabilityName }))"),
+ "V8": ("view: shallow freeze", V, "for (const item of Object.values(value)) deepFreeze(item); Object.freeze(value);", "Object.freeze(value);"),
+ "V9": ("view: weightSum of coupled requirements only", V, "ranked.requirements.reduce((sum, q) => sum + q.weight, 0)", "ranked.requirements.filter(q => q.capabilityName !== null).reduce((sum, q) => sum + q.weight, 0)"),
+ "V10": ("view: pools by id", V, "byText(a.poolName, b.poolName) || byText(a.jobPoolUploadId, b.jobPoolUploadId)", "byText(a.jobPoolUploadId, b.jobPoolUploadId)"),
+ "V11": ("view: NO_ROLES not told", V, "empty: roles.length === 0 ? \"NO_ROLES\" as const : null", "empty: null"),
+ "V12": ("view: quotes shared with the input", V, "quotes: q.quotes.map(x => ({ sourceDocumentId: x.sourceDocumentId, exactQuote: x.exactQuote })) });", "quotes: q.quotes });"),
+ "L1": ("layout: roles in input order", L, "[...roles].sort((a, b) => a.rank - b.rank)", "[...roles]"),
+ "L2": ("layout: sectors by pool id", L, "byText(a.name, b.name) || byText(a.id, b.id)", "byText(a.id, b.id)"),
+ "L3": ("layout: band upper edge exclusive", L, "distance > outer", "distance >= outer"),
+ "L4": ("layout: sector end exclusive", L, "at > sector.start + sector.span", "at >= sector.start + sector.span"),
+ "L5": ("layout: overflow bodies collide", L, "other.overflow || ", "false || "),
+ "L6": ("layout: shelf fit cap 0.6", L, "const SHELF_FIT_CAP = 0.5;", "const SHELF_FIT_CAP = 0.6;"),
+ "L7": ("layout: a single arc gets a gap", L, "ordered.length > 1 ? arcSpec.gapDegrees : 0", "arcSpec.gapDegrees"),
+ "L8": ("layout: a single capability not centred", L, "if (ordered.length === 1) return", "if (false) return"),
+ "L9": ("layout: arc tie by id descending", L, "b.weight - a.weight || byText(a.id, b.id)", "b.weight - a.weight || byText(b.id, a.id)"),
+ "L10": ("layout: collision on unrounded coordinates of placed bodies", L, "x: round6(x), y: round6(y), distance: round6(distance),", "x: x, y: y, distance: round6(distance),"),
+ "D1": ("delta: absent key differs from null", D, "const keyOf = (q: RankedRequirement) => q.capabilityKey ?? null;", "const keyOf = (q: RankedRequirement) => q.capabilityKey as string | null;"),
+ "D2": ("delta: requirement id not in the sort", D, "    || byText(p.poolRequirementId ?? \"\", q.poolRequirementId ?? \"\") || KIND_ORDER[p.kind] - KIND_ORDER[q.kind]);", "    || KIND_ORDER[p.kind] - KIND_ORDER[q.kind]);"),
+ "D3": ("delta: source change ignored", D, "x.source !== y.source || x.state !== y.state", "x.state !== y.state"),
+ "D4": ("delta: small fit change ignored", D, "if (a.role.fit !== b.role.fit)", "if (Math.abs((a.role.fit ?? -1) - (b.role.fit ?? -1)) > 0.01)"),
+ "D5": ("delta: removed requirement loses its key", D, "from: requirementSummary(x), to: null", "from: { ...requirementSummary(x), capabilityKey: null }, to: null"),
+ "D6": ("delta: duplicate requirement not refused", D, "if (requirements.has(q.poolRequirementId)) throw", "if (false) throw"),
+ "D7": ("delta: tier change ignored", D, "    if (a.role.tier !== b.role.tier) changes.push", "    if (false) changes.push"),
+ "F1": ("focus: no-op returns a new equal object", F, "sameSelection(selection, state.selection)) return state;", "sameSelection(selection, state.selection)) return { ...state };"),
+ "F2": ("focus: requirement opens without a role", F, "return state.role !== null && isText(action.poolRequirementId)", "return isText(action.poolRequirementId)"),
+ "F3": ("focus: UP from L3 jumps to L1", F, "if (state.level === \"L3\") return settle(state, { level: \"L2\", pool: state.pool, role: state.role, requirement: null });", "if (state.level === \"L3\") return settle(state, { level: \"L1\", pool: state.pool, role: null, requirement: null });"),
+ "F4": ("focus: opening a pool clears the selection", F, "settle(state, { level: \"L1\", pool: action.jobPoolUploadId, role: null, requirement: null })", "settle(state, { level: \"L1\", pool: action.jobPoolUploadId, role: null, requirement: null, selection: null })"),
+ "F5": ("focus: B-3 broken, the state carries a job scope", F, "return Object.freeze({ level: next.level, pool: next.pool, role: next.role, requirement: next.requirement, selection });", "return Object.freeze({ level: next.level, pool: next.pool, role: next.role, requirement: next.requirement, selection, jobScope: next.role });"),
+ "F6": ("focus: marking a role opens it", F, "return isRoleId(action.role) ? settle(state, { ...state, selection: Object.freeze({ kind: \"ROLE\", role: roleOf(action.role) }) }) : state;", "return isRoleId(action.role) ? settle(state, { level: \"L2\", pool: action.role.jobPoolUploadId, role: roleOf(action.role), requirement: null, selection: Object.freeze({ kind: \"ROLE\", role: roleOf(action.role) }) }) : state;"),
+ "F7": ("focus: reverse view couples key-less couplings by PERSON name", F, "view.couplings.filter(c => c.capabilityKey !== null && c.capabilityKey === capabilityKey)", "view.couplings.filter(c => (c.capabilityKey !== null && c.capabilityKey === capabilityKey) || (c.capabilityKey === null && view.constellation.some(p => p.key === capabilityKey && p.name === c.capabilityName)))"),
+ "F8": ("focus: opening a role keeps the old pool", F, "pool: action.role.jobPoolUploadId, role: sameRole", "pool: state.pool ?? action.role.jobPoolUploadId, role: sameRole"),
+}
+T = SUITES[os.environ.get("SUITE", "grun")]
+for mid in sys.argv[2:]:
+    label, f, old, new = M[mid]; W = f"{SRC}-{mid}"
+    if os.path.exists(W): shutil.rmtree(W)
+    shutil.copytree(SRC, W, symlinks=True, ignore=shutil.ignore_patterns("node_modules", ".next"))
+    os.symlink(os.path.realpath(f"{SRC}/node_modules"), f"{W}/node_modules")
+    p = f"{W}/{f}"; s = open(p).read()
+    if s.count(old) != 1: print(f"{mid} PATTERN {s.count(old)} {label}", flush=True); shutil.rmtree(W); continue
+    open(p, "w").write(s.replace(old, new))
+    try:
+        r = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *T], cwd=W, capture_output=True, text=True, timeout=900, env={**os.environ, "PINK_OUT": f"{W}/pink-out.json"})
+        out = r.stdout + r.stderr; tests = [l.strip() for l in out.splitlines() if l.strip().startswith("Tests ")]
+        fails = sorted({l.split(">")[-1].strip()[:70] for l in out.splitlines() if l.strip().startswith("FAIL ")})
+        print(f"{mid} {'RED' if r.returncode != 0 else 'GREEN'} {label} | {tests[-1] if tests else 'no summary'} | {fails[:2]}", flush=True)
+    except subprocess.TimeoutExpired: print(f"{mid} TIMEOUT {label}", flush=True)
+    shutil.rmtree(W)

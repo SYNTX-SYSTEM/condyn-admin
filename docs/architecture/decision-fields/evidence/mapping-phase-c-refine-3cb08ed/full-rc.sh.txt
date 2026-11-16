@@ -1,0 +1,9 @@
+#!/bin/bash
+# PINK §3.99 full suite, alternating 5ca0f3f (tpb) / 3cb08edf (trc), then 3cb08edf with a simulated merge (trm: origin/main = 3cb08edf).
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+I=/tmp/claude-1000/-home-codi-Entwicklung/a060e5e1-d3f6-49b1-ab41-8710c6e835d7/scratchpad/int397
+for run in base1 rc1 base2 rc2 rcm; do
+  case $run in base*) d=$I/tpb;; rcm) d=$I/trm;; *) d=$I/trc;; esac
+  cd $d; echo "$run $(git rev-parse HEAD) origin/main=$(git rev-parse origin/main) real-node_modules start $(date -Is)" > $I/fullr-$run.txt
+  timeout 3000 npm run -s test:isolated >> $I/fullr-$run.txt 2>&1; echo "exit $? end $(date -Is)" >> $I/fullr-$run.txt
+done

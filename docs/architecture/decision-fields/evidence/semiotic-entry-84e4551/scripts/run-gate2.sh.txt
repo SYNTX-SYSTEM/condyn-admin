@@ -1,0 +1,16 @@
+#!/bin/bash
+# PINK semiotic entry: fresh STAND-IN production lab (no pool at start) on <commit>; pink-gate at 1920 and 1280. argv: <commit> <label>
+S=$SCRATCH; G=$SCRATCH/sem; P=$REPO; C=$1; L=$2
+cd $P && git checkout -q --detach $C && echo "HEAD $(git rev-parse --short HEAD)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT VIDEO_LAB_PROD=1 ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000
+OUT=$G/out2-$L; export PINK_SHOTS=$OUT/shots; mkdir -p $OUT
+for VP in "1920 1080" "1280 720"; do set -- $VP
+  LAB=$G/lab-$L-$1; rm -rf "${LAB:?}"; mkdir -p $LAB
+  VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+  for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+  if grep -q "VIDEO LAB READY" $LAB/lab.log; then timeout 3600 node $G/pink-gate2.mjs $LAB/state.json $P $OUT/gate-$1.json $L $1 $2 2>&1 | tail -1; else echo "lab failed"; fi
+  bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+done
+git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo "GATE-END $L"

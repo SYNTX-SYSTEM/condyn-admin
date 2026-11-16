@@ -1,0 +1,11 @@
+BLOCKS["R3"] = (BLOCKS["BE2"][0] + ["test/career/job-pool/auto-match-unit.test.ts"], [m for m in BLOCKS["BE2"][1] if m[0].split()[0] in ("E-M01", "N-M04", "N-M05")] + [
+ ("R-M01 NO_PROPOSALS run check removed", AM, '  if (!hasCapabilityProposals(operand.projection)) return { outcome: "SKIPPED", reason: "NO_PROPOSALS" };\n', ""),
+ ("R-M02 NO_PROPOSALS read check removed", AM, '  if (!hasCapabilityProposals(base.projection)) return { ok: true, value: { state: "SKIPPED", reason: "NO_PROPOSALS", ...EMPTY } };\n', ""),
+])
+BLOCKS["R3F"] = (T_F, [m for m in BLOCKS["F"][1] if m[0].split()[0] == "F-M17"] + [
+ ("R-F01 client refuses DAY_BUDGET_EXHAUSTED", UAM, 'PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES", "DAY_BUDGET_EXHAUSTED"]', 'PARTIAL: ["ROLES_BEYOND_BUDGET", "ROLE_FAILURES"]'),
+ ("R-F02 client refuses NO_PROPOSALS", UAM, 'SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS", "NO_PROPOSALS"]', 'SKIPPED: ["NOT_PERSON", "NO_ACTIVE_POOLS"]'),
+ ("R-F03 stack-tier height cap removed", "app/components/career/demo/career-demo-layout.ts", '${FIELD} [data-testid="auto-ranking-panel"] { max-height: 50vh !important; overflow-y: auto !important; overscroll-behavior: contain; }', ''),
+])
+
+

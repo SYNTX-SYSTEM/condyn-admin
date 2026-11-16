@@ -1,0 +1,25 @@
+PINK §3.79 · measurements (main 9fb785a = integration/dll-full; STAND_IN; no Gemini).
+
+== delta cdf0c1e..9fb785a (git diff --stat): 5 files, 97+ / 6-; files outside test/ and docs/: none
+   docs/…/CONDYN_DLL_SYSTEM_RECOVERY_2026-10-28.md 13; test/career/identity-core-dropzone-intake.test.tsx 15; test/career/job-pool/role-investigation.postgres.test.ts 11;
+   test/career/pxj-first-screen/discovery-ri-url.test.tsx 7; test/career/pxj-first-screen/discovery-start-reset-unit.test.tsx 57 (new)
+   fast-forward: b712152 and cdf0c1e are ancestors of 9fb785a
+
+== mutants re-applied on 9fb785a (same harness and patterns as §3.78)
+   M05 config: day limit fails open: RED Test Files 1 failed | 26 passed (27) · Tests 2 failed | 286 passed | 4 skipped (292) · explicit semantic investigation route (PostgreSQL, stand-in) > a start is a same-site JSON call; a missing or 
+   M10 URL: lowercase id accepted: GREEN (not caught) Test Files 50 passed (50) · Tests 286 passed (286) 
+   M14 panel: picks not cleared after a stored run: RED Test Files 1 failed | 49 passed (50) · Tests 1 failed | 285 passed (286) · F-INT-3 · O-RI-4 unit — picked resets and START goes inert the moment a run is stored > REPRODUCE: a picked ro
+   M22 field: drop forwarded twice (double intake): GREEN (not caught) Test Files 52 passed (52) · Tests 301 passed (301) 
+
+== the four changed test files, unmutated: Test Files 4 passed (4) · Tests 19 passed (19); tsc errors 0
+== next build (production, no flag) on 9fb785a: exit 0, 0m40,800s
+== product path smoke (rec-setup PDF → PERSON, then pink-ri main) on a stand-in production lab of 9fb785a:
+   load: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 0, "entry": 1}
+   openRelease: {"POST": 0, "postsToInvestigations": 0, "getInv": 0, "getDiscovery": 1, "startOffered": true, "startControlPlan": "PLANNED", "semantic": "Semantic check: not executed · 0 of 948 pairs in the relation cache · would need 9 calls · no investigation named in this view", "picked": "0", "calls": "0", "runDisabled": true, "nothingPreselected": true, "pickable": 5, "groups": {"ALL_REQUIREMENTS_NAME_RELATED": 0, "PARTIAL_NAME_RELATED": 5, "WEAK_LEXICAL_ONLY": 0, "NO_LEXICAL_RELATION": 4, "NO_REQUIREMENTS": 0}, "startControlApi": {"engineState": "READY", "maxRoles": 3}, "planCallsApi": 9}
+   pick: {"maxRoles": 3, "requested": 5, "picked": "3", "calls": "3", "selection": "Picked: 3 of at most 3 roles · would need 3 calls for 288 open pairs", "runConfirmed": "3", "displayedNumbers": ["3", "3", "3", "288"], "disabledAfterCap": 6, "checked": 3}
+   start: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "postBody": {"confirmedCalls": 2, "roles": 2, "uploads": 1, "keys": ["clientRequestId", "confirmedCalls", "jobPoolUploadIds", "roles"]}, "displayedCalls": "2", "riValid": true, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "notStartedShown": false, "db": {"before": {"geminiStandIn": 6, "relation_investigations": 0, "relation_call_ledger": 0, "proposal_requirement_relations": 0}, "after": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relatio
+   startSettled: {"POST": 1, "postsToInvestigations": 1, "getInv": 0, "getDiscovery": 1, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "runDisabled": true, "pickedChecked": 0, "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   reload: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "equal": true, "replayed": false, "invState": "STORED"}
+   reloadSettled: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "semantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "picked": "0", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "proposal_requirement_relations": 192}}
+   backForward: {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2, "historyLen": 3, "back": {"panel": false, "inv": null, "url": {"ri": [], "riCount": 0, "pools": 0, "analysis": true, "mode": "PERSON"}}, "forward": {"equal": true, "invState": "STORED", "url": {"ri": ["RINV_…"], "riCount": 1, "pools": 1, "analysis": true, "mode": "PERSON"}}, "settled": {"POST": 0, "postsToInvestigations": 0, "getInv": 1, "getDiscovery": 2}, "forwardSemantic": "Relation cache: 192 of 948 pairs · stand-in check: completed", "db": {"geminiStandIn": 6, "relation_investigations": 1, "relation_call_ledger": 2, "
+   equal to the cdf0c1e run in every recorded value; six-orbit scene probe at 1920 identical to c670b74

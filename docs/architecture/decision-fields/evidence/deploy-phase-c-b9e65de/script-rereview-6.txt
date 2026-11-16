@@ -1,0 +1,43 @@
+PINK §3.101 addendum 6 — sixth re-review, dll-revert.sh only (2026-11-04). Read locally from GELB's evidence copy; md5 dll-revert.sh 4f2a5251…
+and DEPLOYMENT.md 1cf12772…, equal to GELB's values; the other scripts are unchanged (md5 as in addendum 5). Nothing executed.
+
+Verdict: S-1..S-4 FIXED. GELB's narrow question is answered clean: no false "down" between `cp -a "$BUILD" "$STAGE_IN"` and the checkout.
+But the mirror image exists from another angle (T-1), and the apply phase re-asserts only one of the two stamps (T-2). Not fully clean.
+
+GELB's question
+* A failure of `cp -a "$BUILD" "$STAGE_IN"` (line 243) exits with INTACT=1, because INTACT=0 is set only after it (line 244). recover()
+  removes STAGE_IN, finds HEAD unchanged, takes the INTACT path and restarts. Correct: no unnecessary "down".
+* Setting INTACT=0 BEFORE the checkout is right, because a checkout can modify the tree even when it fails.
+* The plan-time stamp checks run before the stop, and the S-1 refusal path is now inert (verified in the code: the plan exits at
+  lines 100-122 before line 212).
+
+Findings (report only, not corrected)
+T-1 (mirror image of S-1: a false "serving"). The INTACT path (line 189) restarts UNCONDITIONALLY, on the premise that the HEAD/.next pair
+    "is exactly what was being served a moment earlier". That premise is assumed, not checked. dll-3017.sh stop returns 0 when :3017 is
+    already free, so a revert applied while the runtime was DOWN (stopped by an operator, or crashed because of a bad build) that fails
+    after the stop, e.g. at the apply assertion on line 223, STARTS a runtime that was not running. With an unstamped .next, that is
+    exactly the unidentified build S-1 was about. The stamp branch (line 196) and the final start (line 269) are intended on success,
+    but on a FAILED revert the rule "leave it as found" applies.
+    Fix: record WAS_SERVING (listening) before the stop, and restart in recover() only if it was serving.
+T-2 (the plan/apply gap; GELB's first question). GELB's message says the apply phase keeps both checks as assertions. Only the forward
+    check is repeated (line 222). The incoming stamp (BUILD/COMMIT == PREV) is checked only at plan time (lines 110-122). Between plan and
+    copy lie the stop (up to 30 s), the forward save and the journal, and STAGE_IN is never checked after `cp -a`. There is also no lock:
+    two concurrent applies both pass the journal check, because the journal is written only after the forward save.
+    Fix: after line 243, assert `stamp_of "$STAGE_IN" == PREV` (which also verifies the copy itself), and take a lock (flock) for the
+    whole apply.
+T-3 (residual false "down", narrow). When FORWARD already exists, the plan does not look at the CURRENT .next stamp at all (line 100 only
+    checks when FORWARD is absent). If .next is then unstamped or mismatched and a failure happens at the checkout (line 245) or at
+    `mv .next → STAGE_OUT` (line 247), recover() finds INTACT=0, HEAD back at CURRENT, .next the same untouched directory, but a
+    stamp != CURRENT. It takes the third branch: not restarted, although the served pair is in fact intact. The rebuild branch has the
+    same effect after STAGE_OUT is moved back. It does not fire today (.next carries a build-time stamp).
+    Fix: decide "intact" by state, not by a flag: HEAD == CURRENT and .next is the same directory as at the start (inode recorded before
+    the stop), subject to WAS_SERVING (T-1).
+T-4 (minor). recover() restores HEAD only if HEAD differs (line 178). A checkout that fails midway can leave a partly updated working tree
+    with HEAD unchanged. The served build is unaffected, but the "0 dirty" invariant is broken and nothing reports it.
+    Fix: check `git status --porcelain` in recover() and name a dirty tree.
+T-5 (minor). The S-2 message calls rollback/next-<CURRENT8> "the canonical stamped copy". A PRE-EXISTING forward build is never
+    stamp-verified in this run (line 100 / 220 check only when it is absent). Either verify it in the plan, or word the message as
+    "the saved copy; check its COMMIT first".
+
+Holding: S-1 refusal before the stop, S-2 restore command, S-3 decision table, S-4 recorded, the journal and PREV == HEAD refusals,
+set +e in recover(). Unchanged files as in addendum 5.

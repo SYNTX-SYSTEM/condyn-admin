@@ -1,0 +1,197 @@
+{
+ "criterion": "A-G16: 'could not change their verdict in either direction'",
+ "readings": {
+  "a_retrospective": "the verdict actually returned was unaffected",
+  "b_structural": "the defect is incapable of affecting any verdict the pin could return"
+ },
+ "n": 24,
+ "neutral_under_a_retrospective": {
+  "count": 18,
+  "fraction": 0.75
+ },
+ "neutral_under_b_structural": {
+  "count": 2,
+  "fraction": 0.083
+ },
+ "PINK_original_mixed_count": {
+  "count": 7,
+  "fraction": 0.292,
+  "defect": "PINK applied (b) to some rows and (a) to others without declaring which; the 29.2% is an undeclared mixture, not a measurement"
+ },
+ "A_G16_reference": {
+  "count": 9,
+  "of": 22,
+  "fraction": 0.409
+ },
+ "conclusion": "The sub-count swings from 75.0% to 8.3% on an unstated reading of A-G16's own words. A quantity whose value moves by a factor of 9.0 depending on which of two readings is taken, neither of which A-G16 declares, is not a measurement. So the neutral sub-count cannot carry PINK's charge (3), and PINK withdraws charge (3) as stated.",
+ "rows": [
+  {
+   "id": 23,
+   "adj": "A-G26 max-swing limb below the instrument floor",
+   "retro": true,
+   "struct": false,
+   "why": "limb withdrawn before any verdict; but a ceiling under its own floor cannot ever discriminate"
+  },
+  {
+   "id": 24,
+   "adj": "A-G27 PG-2 satisfied by the stage ground constant",
+   "retro": true,
+   "struct": false,
+   "why": "no PG-2 verdict returned; structurally it would PASS a bright medium"
+  },
+  {
+   "id": 25,
+   "adj": "A-G28 PG-21 satisfied by its own remedy",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; structurally it passes without witnessing the ghost"
+  },
+  {
+   "id": 26,
+   "adj": "A-G29 PG-13 passed 12-50x on the rejected stage",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; a bound of 8 against 97-400 can never fail"
+  },
+  {
+   "id": 27,
+   "adj": "A-G30 PG-11 a ratio of two floor values",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; a ratio of noise can report any value"
+  },
+  {
+   "id": 28,
+   "adj": "A-G41 the four \u00a712 reds are void",
+   "retro": false,
+   "struct": false,
+   "why": "four REDs were returned and are void"
+  },
+  {
+   "id": 29,
+   "adj": "A-G42 PF-8 / PG-11 frequency collision",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; it would misattribute energy when one is"
+  },
+  {
+   "id": 30,
+   "adj": "A-G43 splay keys on the mark, not the state",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; a counterTick mutant would pass PG-20"
+  },
+  {
+   "id": 31,
+   "adj": "A-G44 A-G23's scaling inherits a fixture",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; the bound moves with the fixture"
+  },
+  {
+   "id": 32,
+   "adj": "A-G49 a semantic carrier lives only in className",
+   "retro": false,
+   "struct": false,
+   "why": "PINK's own PG-1 instrument would have under-counted the largest term"
+  },
+  {
+   "id": 33,
+   "adj": "A-G50 A-G4's justification falsified",
+   "retro": true,
+   "struct": true,
+   "why": "falsifies a justification; PG-5's bound is untouched either way"
+  },
+  {
+   "id": 34,
+   "adj": "A-G51 PG-18 has no satisfier at L1",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; PG-18 would be unsatisfiable at L1"
+  },
+  {
+   "id": 35,
+   "adj": "A-G54 a floor inherits its ground",
+   "retro": false,
+   "struct": false,
+   "why": "PINK's charge against PG-10 rested on it and was withdrawn"
+  },
+  {
+   "id": 36,
+   "adj": "A-G55 PG-1 cannot score an occluding semantic",
+   "retro": true,
+   "struct": false,
+   "why": "PG-1 PASSED and correction only raises it -> (a) neutral; but the measure sign-flips between sizes, so a near-0.55 build's verdict turns on the convention"
+  },
+  {
+   "id": 37,
+   "adj": "A-G56 the shelf ring absent at its darkest angle",
+   "retro": true,
+   "struct": false,
+   "why": "no PF-15 verdict returned; the rung it ladders is invisible"
+  },
+  {
+   "id": 38,
+   "adj": "A-G62 the shelf floor limb fails on arithmetic",
+   "retro": true,
+   "struct": true,
+   "why": "the limb was never measurable, so no verdict could rest on it"
+  },
+  {
+   "id": 39,
+   "adj": "A-G64 a reading credited to a lane that never took it",
+   "retro": false,
+   "struct": false,
+   "why": "a DECISION (A-G62) rested on it"
+  },
+  {
+   "id": 40,
+   "adj": "A-G65 min() contaminated exactly as max() was",
+   "retro": false,
+   "struct": false,
+   "why": "GR\u00dcN's ladder figures and A-G56's 'vindicated' rested on it"
+  },
+  {
+   "id": 41,
+   "adj": "A-G66 PF-15's local-ground limb ill-posed",
+   "retro": true,
+   "struct": false,
+   "why": "no verdict returned; which side is chosen decides it"
+  },
+  {
+   "id": 42,
+   "adj": "A-G71(a) G_ENTRY is in its own whitelist",
+   "retro": true,
+   "struct": false,
+   "why": "MAP-G-ARCH HELD and the set was tight; structurally it permits an undocumented widening"
+  },
+  {
+   "id": 43,
+   "adj": "A-G71(b) the scan exempts phase G's own JSON",
+   "retro": true,
+   "struct": false,
+   "why": "MAP-G-ARCH HELD; structurally a provider string in the spec JSON would pass"
+  },
+  {
+   "id": 44,
+   "adj": "A-G71(c) deleting field-g.test.tsx satisfies it",
+   "retro": true,
+   "struct": false,
+   "why": "MAP-G-ARCH HELD; structurally the proofs can be removed and the boundary still pass"
+  },
+  {
+   "id": 45,
+   "adj": "A-G72 A-G14 is VOID",
+   "retro": false,
+   "struct": false,
+   "why": "an ACCEPTANCE was conferred"
+  },
+  {
+   "id": 46,
+   "adj": "A-G73 the vectors cannot witness no-touch",
+   "retro": true,
+   "struct": false,
+   "why": "A-G14 HELD on the evidence; structurally a real violation at <1.4e-6 is invisible to the record"
+  }
+ ]
+}

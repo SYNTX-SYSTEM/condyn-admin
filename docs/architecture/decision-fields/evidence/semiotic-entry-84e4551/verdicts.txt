@@ -1,0 +1,45 @@
+PINK §3.82 · SEMIOTIC_ENTRY_FIX · GRÜN frontend/semiotic-entry 84e4551 (feature) + 20bf662 (evidence), base main cd1e4de (ancestor checked), not merged.
+STAND_IN only; no Gemini; own production labs (port 41873, disposable DBs, own PIDs); :3017 not touched; main unchanged.
+
+VERDICT                NO-GO for the rollout on :3017 — one new finding (F-SEM-1) against GELB's criterion "the line covers nothing new".
+                       Everything else passes; the fix is local (position / action of the PERSON_OPEN line when the Job Field shows an opened pool).
+                       Re-check after the fix: pink-gate2 (1920/1280), pink-hit, pink-steal, the three alive mutants — about 40 minutes.
+
+S1 Distinct states     PASS   9 entry states EN and 9 DE, all texts pairwise distinct (baseline: one identical text for no pool / pool / pool open /
+                              role open / unread); data-entry-state names each state; the 2a/2b split (POOL_NOT_OPENED / ROLE_NOT_OPENED) and state 4
+                              (ROLE_NOT_CHOSEN, action SELECT AS JOB) appear exactly at the URLs GELB named. OBS O-SEM-1: 1 / 2a / 2b / unread differ only
+                              by text (same channel, same action "→ PERSON") — by design of the calm line, no non-text marker
+S2 No lock language    PASS   0 forbidden words (closed, gated, blocked, locked, first, error, must, required, cannot, unavailable … and the DE set) in the
+                              top band in 40 states × 2 viewports × EN/DE; baseline: "closed" in every closed state
+S3 Cool tone           PASS   0 warm colours, borders or backgrounds in the line (hue < 70° or > 330°); baseline: amber label and border in every closed state
+S4 Status channel      PASS   role="status" aria-live="polite" in every state with a line; 0 role=alert, 0 aria-live=assertive; aria-describedby of the closed
+                              capability button resolves to the line in every closed state
+S5 Language            PASS   EN and DE natural and parallel. OBS O-SEM-2 (wording, owner/GRÜN): DE "Der gewählte Job trägt hier nicht" / "sobald er trägt"
+                       (OBS)  and EN "does not hold here" / "once it holds" are figurative and read unclear; DE "die Person bleibt außen" is unidiomatic
+                              ("bleibt außen vor" / "bleibt draußen"); INVALID still shows the raw code (e.g. ROLE_NOT_IN_POOL), as GRÜN states
+S6 Inverse             PASS*  28 one-line mutants against GRÜN's suites: 25 red. Alive (test gaps only, no production finding):
+                              F-SEM-2 E11 an opened REQUIREMENT no longer counts as an opened role (state 4 → 2b) — not caught
+                              F-SEM-3 E19 amber path label (rgba(255,206,128)) — not caught despite the token check
+                              F-SEM-4 E20 the line loses its id, aria-describedby of the closed button points to nothing — not caught
+S7 Gate unchanged      PASS   40 states × 1920/1280 against cd1e4de with the same probe and lab recipe: data-field-gate, disabled, aria-disabled,
+                              aria-describedby, active, tabIndex, field gate/focus/mode, pointer click result + URL, Tab reachability, Enter result + URL,
+                              data-gate → 0 differences. Only the tooltip text differs (intended). Gate OPEN with a valid job: no line (as specified)
+S8 Regression          PASS   restored real world, production build: six viewports (modes, orbits, languages, Back/Forward, reload) identical to §3.81 except
+                              the three scenes carrying the line (+ action button, new text); orbits, role discovery (main 1920 with 3 POST, viewport 1280),
+                              rd-ui: 0 differences; drop zone / empty-pool handover identical; tsc 0; full suite: same base-red domains on candidate and
+                              base, no failure in the touched suites (82 files, 675 passed pristine)
+Overlaps               PASS*  PxJ / JOB states: job-pool-list overlap at 1280 removed (FIT rule), KESTREL overlap reduced (1920 6980 → 4081 px²,
+                              1280 9246 → 6626 px²) — confirms GRÜN. Pre-existing, reduced, not new (GRÜN's "open" item)
+F-SEM-1                FAIL   NEW: PERSON with an opened pool in the Job Field (…?investigationMode=PERSON&jobPoolUploadId=…) now shows the PERSON_OPEN line
+                              over the KESTREL organization node — on the baseline PERSON had no line here. The line covers 13 % (1920) / 27 % (1280–1600)
+                              of the node box including the organization name, and the action "◈ CAPABILITY FIELD" (pointer-events auto) sits on the node's
+                              top: a click there enters the Capability Field (focus=CAPABILITY) instead of opening the organization; a click at the node
+                              centre still opens it (jobOrganizationId set). Reproduced at 1920, 1600, 1440 and 1280 (pink-steal); in PxJ the action
+                              "→ PERSON" sits beside the node and takes no point. GRÜN's walk had no PERSON + opened pool state.
+                              Shot: f-sem-1-cand-1280-person-pool-open.png
+Observations           OBS    O-SEM-3 PxJ with focus=CAPABILITY in the URL (gate falls back to the Job Field): the "→ PERSON" action keeps focus=CAPABILITY
+                              and lands directly in the Capability Field — consistent with the existing mode handler, mentioned for completeness
+                       OBS    O-SEM-4 the entry-gaps needles of §3.78 ("needs no job" / "SELECT AS JOB") are obsolete with the new wording; both ways are
+                              still named (+ INTAKE / → PERSON)
+
+Evidence classes       MEASUREMENT (browser probes in STAND_IN labs), CODE_INSPECTION (diff cd1e4de..84e4551), DETERMINISTIC (mutants, suites)

@@ -1,0 +1,85 @@
+# PINK independent recomputation of MAPPING_LAYOUT_V1 from the spec TEXT (PERSON_X_JOB_MAPPING_SPEC.md §4 + layout-spec.json) only.
+# Written without reading test/support/mapping/layout-reference.ts. argv: <spec.json> <vectors.json>
+import json, math, sys
+S = json.load(open(sys.argv[1])); V = json.load(open(sys.argv[2]))
+def r6(v):
+    x = math.floor(v * 1e6 + 0.5) / 1e6  # Math.round semantics (half up)
+    return 0 if x == 0 else x
+def frac(x): return x - math.floor(x)
+def body_r(ws):
+    b = S["body"]; return min(max(b["base"] + b["perSqrtWeight"] * math.sqrt(ws), b["min"]), b["max"])
+def fit_dist(role):
+    R = S["rings"]; f = role["fit"]
+    if role["tier"] == "SEMANTIC": return R["bestFit"] + (1 - f) * (R["zeroFit"] - R["bestFit"])
+    if f is None: return R["shelfFar"]
+    return R["shelfNear"] + (R["shelfFar"] - R["shelfNear"]) * (1 - min(f, 0.5) / 0.5)
+def layout(inp, variant):
+    sec = S["sectors"]; pools = sorted(inp["pools"], key=lambda p: (p["name"], p["id"]))
+    roles = sorted(inp["roles"], key=lambda r: r["rank"]); n = len(roles)
+    cnt = {p["id"]: sum(1 for r in roles if r["poolId"] == p["id"]) for p in pools}
+    share = {p["id"]: max(cnt[p["id"]], math.ceil(sec["minShare"] * n), 1) for p in pools}
+    tot = sum(share.values()); free = 360 - sec["gapDegrees"] * len(pools)
+    sectors = []; a = sec["startDegrees"] + sec["gapDegrees"] / 2
+    for p in pools:
+        span = free * share[p["id"]] / tot; sectors.append({"poolId": p["id"], "startDegrees": a, "spanDegrees": span, "roles": cnt[p["id"]]}); a += span + sec["gapDegrees"]
+    sp = {s["poolId"]: s for s in sectors}; idx = {}; placed = []; bodies = []; over = 0
+    for r in roles:
+        s = sp[r["poolId"]]; i = idx.get(r["poolId"], 0); idx[r["poolId"]] = i + 1
+        ang = s["startDegrees"] + s["spanDegrees"] * (sec["angleMargin"] + sec["angleSpread"] * frac((i + 1) * sec["golden"]))
+        d0 = fit_dist(r); rho = body_r(r["weightSum"]); step = 2 * rho + S["body"]["gap"]; shelf = r["tier"] != "SEMANTIC"
+        found = None
+        def offs(k): return [0] + [x for j in range(1, k + 1) for x in (j, -j)]
+        for dr in offs(S["search"]["radialSteps"]):
+            d = d0 + dr * step
+            lo, hi = (S["rings"]["shelfNear"], S["field"]["radius"] - rho) if shelf else (S["rings"]["bestFit"], S["rings"]["horizon"] - rho)
+            if variant.get("bounds") and not (lo <= d <= hi): continue
+            for da in offs(S["search"]["angularSteps"]):
+                aa = ang + da * math.degrees(step / d)
+                if not (s["startDegrees"] <= aa <= s["startDegrees"] + s["spanDegrees"]): continue
+                x, y = d * math.cos(math.radians(aa)), d * math.sin(math.radians(aa))
+                if all(math.hypot(x - px, y - py) >= rho + pr + S["body"]["gap"] for px, py, pr in placed):
+                    found = (d, aa, x, y, [dr, da]); break
+            if found: break
+        if found:
+            d, aa, x, y, disp = found; placed.append((x, y, rho)); ov = False
+        else:
+            d, aa = S["field"]["overflowRadius"], ang; x, y = d * math.cos(math.radians(aa)), d * math.sin(math.radians(aa)); disp = [0, 0]; ov = True; over += 1
+        bodies.append({"poolId": r["poolId"], "roleId": r["roleId"], "rank": r["rank"], "tier": r["tier"], "shelf": shelf, "x": r6(x), "y": r6(y), "distance": r6(d), "angleDegrees": r6(aa), "bodyRadius": r6(rho), "displacement": disp, "overflow": ov})
+    return {"specVersion": S["specVersion"], "sectors": [{k: (r6(v) if isinstance(v, float) else v) for k, v in s.items()} for s in sectors], "bodies": bodies, "overflowCount": over}
+NO = {"REQUIRED": 0, "PREFERRED": 1, "OPTIONAL": 2, "UNKNOWN": 3}
+def arcs(inp):
+    A = S["arcs"]; q = sorted(inp, key=lambda r: (NO[r["necessity"]], -r["weight"], r["id"]))
+    if not q: return []
+    gap = A["gapDegrees"] if len(q) > 1 else 0; W = sum(r["weight"] for r in q); free = 360 - gap * len(q); a = A["startDegrees"] + gap / 2; out = []
+    for r in q:
+        span = free * r["weight"] / W; out.append({"id": r["id"], "startDegrees": r6(a), "endDegrees": r6(a + span), "spanDegrees": r6(span), "fill": r["value"]}); a += span + gap
+    return out
+def constellation(inp):
+    C = S["constellation"]; c = sorted(inp, key=lambda x: (x["name"], x["key"]))
+    if len(c) == 1: return {"nodes": [{"key": c[0]["key"], "x": 0, "y": 0, "ring": 0, "overflow": False}], "overflowCount": 0}
+    nodes = []; rest = c
+    for ri, R in enumerate(C["ringRadii"]):
+        cap = math.floor(2 * math.pi * R / C["spacing"]); take = rest[:cap]; rest = rest[cap:]
+        for j, x in enumerate(take):
+            a = math.radians(C["startDegrees"] + 360 * j / len(take)); nodes.append({"key": x["key"], "x": r6(R * math.cos(a)), "y": r6(R * math.sin(a)), "ring": ri, "overflow": False})
+    return {"nodes": nodes, "overflowCount": len(rest)}
+def cmp(a, b, path=""):
+    if isinstance(a, dict) and isinstance(b, dict):
+        out = [f"{path}: keys {sorted(set(a) ^ set(b))}"] if set(a) != set(b) else []
+        for k in set(a) & set(b): out += cmp(a[k], b[k], f"{path}.{k}")
+        return out
+    if isinstance(a, list) and isinstance(b, list):
+        if len(a) != len(b): return [f"{path}: len {len(a)} vs {len(b)}"]
+        out = []
+        for i, (x, y) in enumerate(zip(a, b)): out += cmp(x, y, f"{path}[{i}]")
+        return out
+    if isinstance(a, (int, float)) and isinstance(b, (int, float)) and not isinstance(a, bool) and not isinstance(b, bool):
+        return [] if abs(a - b) <= 1e-6 else [f"{path}: {a} vs {b}"]
+    return [] if a == b else [f"{path}: {a!r} vs {b!r}"]
+variant = {"bounds": "--bounds" in sys.argv}
+for name, v in V["layouts"].items():
+    d = cmp(layout(v["input"], variant), v["expected"]); print(f"layout {name}: {'MATCH' if not d else 'DIFF ' + str(len(d))}"); [print("   ", x) for x in d[:4]]
+for name, v in V["arcs"].items():
+    d = cmp(arcs(v["input"]), v["expected"]); print(f"arcs {name}: {'MATCH' if not d else 'DIFF ' + str(len(d))}"); [print("   ", x) for x in d[:4]]
+for name, v in V["constellations"].items():
+    d = cmp(constellation(v["input"]), v["expected"]); print(f"constellation {name}: {'MATCH' if not d else 'DIFF ' + str(len(d))}"); [print("   ", x) for x in d[:4]]

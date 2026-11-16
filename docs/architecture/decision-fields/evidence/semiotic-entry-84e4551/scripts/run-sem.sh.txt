@@ -1,0 +1,7 @@
+#!/bin/bash
+I=$SCRATCH/int
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES
+for t in tsem tsbase; do cd $I/$t
+  npx tsc --noEmit -p . > $I/$t-tsc.log 2>&1; echo "$t tsc exit $? errors $(grep -c 'error TS' $I/$t-tsc.log)"
+  npm run -s test:isolated > $I/$t-suite.log 2>&1; echo "$t suite exit $? $(grep -E '^\s*(Test Files|Tests) ' $I/$t-suite.log | tr -s ' ' | tr '\n' ' ')"
+done; echo SEM-END

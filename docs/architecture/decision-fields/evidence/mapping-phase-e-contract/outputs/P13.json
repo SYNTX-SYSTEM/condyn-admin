@@ -1,0 +1,62 @@
+{
+ "commit": "716a1941",
+ "flippedOk": true,
+ "verdict": {
+  "P13_MAIN_red": true,
+  "P13_INVERSE_marksNothing": true,
+  "inverseChangeArrived": false
+ },
+ "main": {
+  "to": "B",
+  "target": {
+   "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "roleId": "role_all",
+   "reqId": "q_covers"
+  },
+  "baseState": "COVERS",
+  "sawStates": [
+   "COVERS",
+   "EQUIVALENT"
+  ],
+  "changeArrived": true,
+  "firstChangeAt": 1189,
+  "peakEvidence": 0,
+  "peakLayout": 0,
+  "peakDeltaEvidence": 0,
+  "peakTrail": 0,
+  "transientSeen": false,
+  "bodiesMovedCount": 0,
+  "bodiesMoved": [],
+  "carrierIds": [
+   "mapping-beam-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all:q_covers",
+   "mapping-arc-q_covers"
+  ],
+  "rankingReads": 0
+ },
+ "inverse": {
+  "to": "A2",
+  "target": {
+   "pool": "JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "roleId": "role_all",
+   "reqId": "q_covers"
+  },
+  "baseState": "COVERS",
+  "sawStates": [
+   "COVERS"
+  ],
+  "changeArrived": false,
+  "firstChangeAt": null,
+  "peakEvidence": 0,
+  "peakLayout": 0,
+  "peakDeltaEvidence": 0,
+  "peakTrail": 0,
+  "transientSeen": false,
+  "bodiesMovedCount": 0,
+  "bodiesMoved": [],
+  "carrierIds": [
+   "mapping-beam-JPOOL_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:role_all:q_covers",
+   "mapping-arc-q_covers"
+  ],
+  "rankingReads": 0
+ }
+}

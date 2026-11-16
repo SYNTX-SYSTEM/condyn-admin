@@ -1,0 +1,8 @@
+{
+ "commit": "9cc06f84", "probe": "under-reduce swing bucketed by source (field frozen; isolates what an opaque ground will NOT fix)",
+ "frames": 5, "region": "924x924",
+ "mark_AAedge":           { "n": 10072,  "max": 0.02751,  "fracGt002": 0.077,   "fracGt006": 0.0227,     "gt030": 0, "fracGt030": 0 },
+ "quietMidDisc_hostBleed":{ "n": 160203, "max": 0.005917, "fracGt002": 0.00342, "fracGt006": 0,          "gt030": 0, "fracGt030": 0 },
+ "outsideDisc_host":      { "n": 255095, "max": 0.009368, "fracGt002": 0.000815,"fracGt006": 0.00000392, "gt030": 0, "fracGt030": 0 },
+ "reading": "mark bucket = antialiasing/raster jitter on the marks' own edges (NOT removed by DISC_GROUND_OPAQUE); quietMidDisc = host-through-ground that the opaque ground removes (low amplitude, max 0.0059); outsideDisc = host, scoped out by A-F4. The whole-square floor max 0.032 is the RING stroke edge (r/R~1.0, not in these buckets)."
+}

@@ -1,0 +1,103 @@
+PINK §3.91 measurements — PERSON × JOB phase A, GELB backend/mapping-phase-a 3b632da (base main 26c59f7), 2026-10-31
+Evidence class: DETERMINISTIC_FIXTURE (own six-capability analysis, mocked @google/genai with a fixed per-pair verdict hash, disposable condyn_test_* database, fetch stubbed to refuse). No model, no network. Record counts and ids only; no requirement text, no quotes.
+
+== 1. probe pink-pa.test.ts (6/6 green) ==
+baseRun: {"outcome": "STARTED", "reason": null, "investigationId": "RINV_547833933A040D3BC9C08DD07FB18AD2"}
+requests: 5
+judged: 258
+projection: [{"id": "PCAP_025308E990A808F14E50681F", "name": "Python", "quotes": 1}, {"id": "PCAP_CA0C0579DA7499805D6DCF79", "name": "Event-driven migration", "quotes": 1}, {"id": "PCAP_6B66C4A822CBE888BF11452D", "name": "PostgreSQL", "quotes": 1}, {"id": "PCAP_AAFB8C7F8820052B592BDE11", "name": "TypeScript", "quotes": 1}, {"id": "PCAP_DCE762AF76E7DD87634B2DA6", "name": "Python Teaching", "quotes": 1}, {"id": "PCAP_AD61B44B8C10B067DBED9F63", "name": "Kubernetes", "quotes": 1}]
+p1: {"status": 200, "ranks": 9, "tiers": {"SEMANTIC": 5, "LEXICAL_ONLY": 4}, "proposals": 6, "shown": 6, "checks": {"semantic": 43, "semanticKeyIsJudgedBest": 43, "semanticKeyShown": 43, "semanticKeyNamesCapability": 43, "lexical": 0, "lexicalKeyIsProposalId": 0, "lexicalKeyInProjection": 0, "none": 36, "noneKeyNull": 36, "keyEqualsName": 0, "ambiguousBest": 0, "bestMismatch": [], "twinKey": [], "keysPerName": {"Python": ["PCAP_025308E990A808F14E50681F"], "Event-driven migration": ["PCAP_CA0C0579DA7499805D6DCF79"], "Kubernetes": ["PCAP_AD61B44B8C10B067DBED9F63"], "PostgreSQL": ["PCAP_6B66C4A822CBE888BF11452D"], "Python Teaching": ["PCAP_DCE762AF76E7DD87634B2DA6"], "TypeScript": ["PCAP_AAFB8C7F8820052B592BDE11"]}}, "sameNumbers": true, "oldHasKey": false, "readsChanged": [], "fetch": 0}
+p1lexical: {"lexical": 6, "keyIsLexicalProposalId": 6, "keyNamesCapability": 6, "none": 73, "noneNull": 73, "semantic": 0, "bases": {"NAME_EXACT": 6}, "sameNumbers": true, "readsChanged": [], "calls": 0, "evidenceClass": null}
+p1cache: {"requestsBefore": 5, "requestsAfter": 5, "semanticA": 43, "semanticC": 43, "sameNamesAndStates": true, "keysDiffer": 0, "cKeysShownToProvider": 43, "readsChanged": []}
+p1idOrigin: {"samePythonAtomic": true, "caseAndSpace": true, "otherScope": false, "otherName": false}
+p2real: {"newDecodes": true, "newSameObject": true, "oldDecodes": true, "oldSameObject": true, "oldKeysRead": [null], "oldKeyFieldAbsent": true, "baseDecoderOnNew": "REFUSED", "baseDecoderOnOld": "ACCEPTED"}
+p2: {"cases": {"unchanged": "ACCEPTED_SAME_OBJECT", "key null on SEMANTIC": "ACCEPTED_SAME_OBJECT", "key absent on SEMANTIC": "ACCEPTED_SAME_OBJECT", "key null on LEXICAL": "ACCEPTED_SAME_OBJECT", "key whitespace": "ACCEPTED_SAME_OBJECT", "key other text": "ACCEPTED_SAME_OBJECT", "key empty": "REFUSED", "key number": "REFUSED", "key true": "REFUSED", "key object": "REFUSED", "key array": "REFUSED", "key on NONE": "REFUSED", "key text, name null (SEMANTIC)": "REFUSED", "key null, name null (SEMANTIC)": "REFUSED", "extra field": "REFUSED", "case variant instead of key": "REFUSED", "key replaces explanation (same count)": "REFUSED", "no key, explanation dropped": "REFUSED", "key + extra, old count": "REFUSED", "unchanged LEXICAL": "ACCEPTED_SAME_OBJECT", "key absent on LEXICAL": "ACCEPTED_SAME_OBJECT", "key on LEXICAL with name null": "REFUSED"}, "states": {"EQUIVALENT": "seen in real body: true", "COVERS": "seen in real body: true", "PARTIAL": "seen in real body: true", "DIFFERENT": "seen in real body: false", "UNCLEAR": "seen in real body: false", "NAME_EXACT": "seen in real body: false", "NAME_ALIAS": "seen in real body: false", "NAME_COMPOSITE_CONSTITUENT": "seen in real body: false", "WEAK_TOKEN_CONTAINMENT": "seen in real body: false", "NONE": "seen in real body: true", "BOGUS": "seen in real body: false"}}
+p3runStates: {"combos": {"INTERRUPTED+CANCELLED": "STALLED·WORKER_LOST resumePending=true decodes=true", "INTERRUPTED+FAILED transient": "STALLED·WORKER_LOST resumePending=true decodes=true", "PARTIAL+CANCELLED": "PARTIAL·ROLES_BEYOND_BUDGET resumePending=true decodes=true", "FAILED+CANCELLED": "FAILED·ERR_AUTO_MATCH_FAILED resumePending=true decodes=true"}, "autoMatchStates": ["NOT_STARTED", "DISABLED", "RUNNING", "STALLED", "COMPLETED", "PARTIAL", "FAILED", "SKIPPED"]}
+
+== 2a. mutants vs GELB's phase-A tests (batch 1) ==
+M01 RED semantic key = capability name | Tests  1 failed | 50 passed (51) | ['the shared start uses the configured provider: Gemini calls, one per r']
+M02 GREEN semantic key = first proposal of the projection | Tests  51 passed (51) | []
+M03 RED lexical key = proposal name | Tests  2 failed | 49 passed (51) | ['a semantic relation carries the proposal id of its finding, a name rel', 'decodes the new shape and keeps the key']
+M04 RED lexical key dropped (null) | Tests  2 failed | 49 passed (51) | ['a semantic relation carries the proposal id of its finding, a name rel', 'decodes the new shape and keeps the key']
+M05 RED keyOf lets an empty key through | Tests  1 failed | 50 passed (51) | ['an older finding without a key (or an empty one) is a null key — never']
+M06 RED decoder: key allowed without a named capability | Tests  1 failed | 50 passed (51) | ['INVERSE: a key on a requirement with no capability is refused']
+M07 RED decoder: key of any type | Tests  2 failed | 49 passed (51) | ['INVERSE: a non-text key is refused', 'INVERSE: an empty key is refused']
+M08 RED decoder: old shape (no key) refused | Tests  1 failed | 50 passed (51) | ['an older payload without the field (the persisted shape) still decodes']
+
+== 2b. mutants vs GELB's phase-A tests (batch 2) ==
+M09 GREEN decoder: one extra field of any name tolerated | Tests  51 passed (51) | []
+M10 GREEN decoder: hands back a copy | Tests  51 passed (51) | []
+M11 GREEN ranking: key changes a number (PARTIAL counted as 1 when keyed) | Tests  51 passed (51) | []
+M12 GREEN oracle: checked band ends at zeroFit, not horizon - rho | Tests  51 passed (51) | []
+M13 GREEN oracle: shelf band unbounded outward (bodies may leave the field) | Tests  51 passed (51) | []
+M14 RED oracle: collision gap ignored | Tests  2 failed | 49 passed (51) | ['NO OVERLAP: placed bodies keep their gap; bodies beyond capacity are c', 'the committed vectors are exactly what the reference produces now (no ']
+M15 RED oracle: angular step halved | Tests  1 failed | 50 passed (51) | ['the committed vectors are exactly what the reference produces now (no ']
+
+== 2c. the same mutants vs PINK's probe ==
+M02 RED semantic key = first proposal of the projection | Tests  2 failed | 4 passed (6) | ['P1/P4: rows written by the BASE code; base and candidate read them; nu', 'P2: decoder inverse cases on a real body (one mutation at a time)']
+M09 RED decoder: one extra field of any name tolerated | Tests  1 failed | 5 passed (6) | ['P2: decoder inverse cases on a real body (one mutation at a time)']
+M11 RED ranking: key changes a number (PARTIAL counted as 1 when keyed) | Tests  2 failed | 4 passed (6) | ['P1/P4: rows written by the BASE code; base and candidate read them; nu', 'P2: decoder inverse cases on a real body (one mutation at a time)']
+M01 RED semantic key = capability name | Tests  2 failed | 4 passed (6) | ['P1/P4: rows written by the BASE code; base and candidate read them; nu', 'P2: decoder inverse cases on a real body (one mutation at a time)']
+M03 RED lexical key = proposal name | Tests  1 failed | 5 passed (6) | ['P1/P4: name relations only (no engine configured, no run for this anal']
+M06 RED decoder: key allowed without a named capability | Tests  1 failed | 5 passed (6) | ['P2: decoder inverse cases on a real body (one mutation at a time)']
+
+== 3a. PINK's own recomputation (Python, from the spec text + inferred search rules) vs the 16 golden vectors ==
+layout LV01-single-role: MATCH
+layout LV02-three-pools-mixed-tiers: MATCH
+layout LV03-equal-fit-ties: MATCH
+layout LV04-crowded-60: MATCH
+layout LV05-capacity-exceeded-overflow: MATCH
+layout LV06-no-roles: MATCH
+layout LV07-real-shape-73: MATCH
+arcs AV01-seven-requirements: MATCH
+arcs AV02-single: MATCH
+arcs AV03-empty: MATCH
+arcs AV04-ties-by-id: MATCH
+constellation CV00-0-capabilities: MATCH
+constellation CV01-1-capabilities: MATCH
+constellation CV05-5-capabilities: MATCH
+constellation CV40-40-capabilities: MATCH
+constellation CV80-80-capabilities: MATCH
+
+== 3b. do the vectors pin the search band? (variants of the recomputation) ==
+checked band upper edge = zeroFit (380) instead of horizon - rho: NO vector notices (all 16 still match)
+shelf band upper edge = shelfFar (480) instead of radius - rho: NO vector notices (all 16 still match)
+shelf band unbounded outward: NO vector notices (all 16 still match)
+checked band lower edge = person + rho instead of bestFit: vectors that notice: layout LV05-capacity-exceeded-overflow
+no radial band at all: vectors that notice: layout LV05-capacity-exceeded-overflow
+
+== 3c. layout promises checked on the published vectors (own code) ==
+LV01-single-role: bodies 1 drawn 1 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 1) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV02-three-pools-mixed-tiers: bodies 6 drawn 6 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 6) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV03-equal-fit-ties: bodies 12 drawn 12 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 12) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV04-crowded-60: bodies 60 drawn 60 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 60) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV05-capacity-exceeded-overflow: bodies 320 drawn 289 overflow 31/31 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 9 xy 0 fit=dist(undisplaced 34) 0 fitOrderInverted 0 displaced 255 (radial 251, shelf 0) share360 ok size 0
+LV06-no-roles: bodies 0 drawn 0 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 0 xy 0 fit=dist(undisplaced 0) 0 fitOrderInverted 0 displaced 0 (radial 0, shelf 0) share360 ok size 0
+LV07-real-shape-73: bodies 73 drawn 73 overflow 0/0 | overlap 0 horizon 0 field 0 sectorAngle 0 discCrossesSectorEdge 1 xy 0 fit=dist(undisplaced 67) 0 fitOrderInverted 0 displaced 6 (radial 0, shelf 6) share360 ok size 0
+AV01-seven-requirements: arcs 7 total 360.0 contiguous True fill=value True
+AV02-single: arcs 1 total 360 contiguous True fill=value True
+AV03-empty: arcs 0 total 0 contiguous True fill=value True
+AV04-ties-by-id: arcs 3 total 360 contiguous True fill=value True
+CV00-0-capabilities: nodes 0 overflow 0 outerEdge 5 (< person 90) nodeOverlap 0 sum 0 = input 0
+CV01-1-capabilities: nodes 1 overflow 0 outerEdge 5.0 (< person 90) nodeOverlap 0 sum 1 = input 1
+CV05-5-capabilities: nodes 5 overflow 0 outerEdge 35.0 (< person 90) nodeOverlap 0 sum 5 = input 5
+CV40-40-capabilities: nodes 40 overflow 0 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 40 = input 40
+CV80-80-capabilities: nodes 69 overflow 11 outerEdge 79.0 (< person 90) nodeOverlap 0 sum 80 = input 80
+
+== 3d. sign table vs the source lists (own parse) ==
+coupling states in table: 10 | system (relation-cache SEMANTIC_RELATION_STATES + LexicalBasis type incl. NONE): 10 | equal sets: True
+run states equal AUTO_MATCH_STATES: True 8
+signatures unique (arcLine+arcFill+beam+mark): True
+arcFill = client decoder value for every state: True
+lexical: dotted, never phase locked, fill <= 0.5: True
+DIFFERENT / UNCLEAR / NONE distinct: True
+class matches source: True
+pendingBreath only RUNNING, frozen only STALLED: ['RUNNING'] ['STALLED']
+resumePulse defined for: ['PARTIAL', 'FAILED']
+
+== 4. boundaries ==
+changed files 26c59f7..3b632da: lib/career/job-pool/auto-match.ts (buildAnalysisRanking, read path only), lib/career/job-pool/role-ranking.ts, lib/career/ui/auto-match.ts (decoder); docs/architecture/decision-fields/PERSON_X_JOB_MAPPING_SPEC.md + mapping-spec/*.json; tests and test/support/mapping/*. No file under app/, no route, no component, no job-scope / B2 file.
+regression 3b632da (test/career/job-pool, test/career/mapping-spec, auto-capability + pxj-first-screen consumers of the ranking): Test Files  47 passed (47) · Tests  463 passed | 4 skipped (467)
+regression 26c59f7 (test/career/job-pool, test/career/mapping-spec, auto-capability + pxj-first-screen consumers of the ranking): Test Files  44 passed (44) · Tests  429 passed | 4 skipped (433)
+failing only on 3b632da: none · failing only on base: none
+tsc --noEmit on 3b632da: 0 errors. GELB's named phase-A tests on 3b632da: 5 files, 51/51 green.

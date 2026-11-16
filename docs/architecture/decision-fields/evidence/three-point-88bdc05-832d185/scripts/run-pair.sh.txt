@@ -1,0 +1,14 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out/tp
+until grep -q TP-END $S/../tasks/b6k6lhzfk.output 2>/dev/null; do sleep 30; done
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES ROLE_DISCOVERY_GEMINI_MODEL GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS GEMINI_JOB_CALL_LIMIT
+fails() { grep -E '^ FAIL ' "$1" | sed 's/ [0-9]*ms$//' | sort -u; }
+cd $S/int/tpair && npx tsc --noEmit -p . > $O/pair-tsc.log 2>&1; echo "pair tsc errors $(grep -c 'error TS' $O/pair-tsc.log)"
+npm run -s test:isolated -- test/career/auto-capability test/career/pxj-first-screen test/career/job-pool/three-point-view.test.ts > $O/pristine-F3.log 2>&1; fails $O/pristine-F3.log > $O/pristine-F3-fails.txt; echo "pristine F3 $(grep -E '^\s*Tests ' $O/pristine-F3.log | tr -s ' ') fails $(wc -l < $O/pristine-F3-fails.txt)"
+BASE_FAILS=$O/pristine-F3-fails.txt PRISTINE_NAME=tpair WORK_TAG=f3 python3 $S/acp/mutate-acp.py $S/int F3 > $O/mut-F3.log 2>&1
+echo "F3 mutants: $(grep -c ' RED ' $O/mut-F3.log) red of $(grep -c 'M[0-9]' $O/mut-F3.log); alive:"; grep -E 'GREEN|PATTERN|TIMEOUT' $O/mut-F3.log | cut -c1-90
+REG="test/career test/career-github-loader.test.ts test/career-github-account-loader.test.ts test/career-github-account-intake.test.ts test/career-analyze-flow.test.ts test/career-analyze-multisource.test.ts test/career-analyze-recommendations.test.ts test/career-source-metadata.test.ts test/career-async-api-orchestration.test.ts test/career-worker-recovery-pipeline.test.ts test/career-worker-runtime-operation-contract.test.ts test/career-worker-retry-source-bundle.test.ts test/career-worker-capability-proposal-wiring.test.ts test/career-worker-config-validation.test.ts"
+npm run -s test:isolated -- $REG --exclude 'test/pink/**' > $O/reg-tpair.log 2>&1; echo "pair regression $(grep -E '^\s*(Test Files|Tests) ' $O/reg-tpair.log | tr -s ' ' | tr '\n' ' ')"; fails $O/reg-tpair.log > $O/reg-fails-tpair.txt
+echo "failing only on the pair (vs base 5521ae7):"; comm -23 $O/reg-fails-tpair.txt $O/reg-fails-t552.txt | sed 's/ > .*//' | sort | uniq -c
+echo "failing only on base:"; comm -13 $O/reg-fails-tpair.txt $O/reg-fails-t552.txt | sed 's/ > .*//' | sort | uniq -c
+echo PAIR-END

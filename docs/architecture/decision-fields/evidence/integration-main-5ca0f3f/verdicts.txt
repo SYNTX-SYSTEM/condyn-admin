@@ -1,0 +1,38 @@
+PINK §3.97 — integrated Phase B on origin/main 5ca0f3f (fast-forward from 85274dc), GELB request (SFE::PHASE_B_INTEGRATION_VALIDATION,
+authorized by OTTAVIO); owner hardlock "Keine Codeänderungen am Produkt, keine Delegation, keine Gemini-Aufrufe, kein Merge, kein Rollout
+auf :3017, keine Phase C. NUR INTEGRATIONSVALIDIERUNG. MEHR NICHT." — 2026-11-04
+Method:
+  * git metadata of origin/main after git fetch (re-fetched at the end); tree and diff against the §3.96 release 5ca0f3f and base 85274dc.
+  * Two local clones in PINK's scratchpad (origin/main 5ca0f3f, base 85274dc), through npm run test:isolated (disposable condyn_test_*
+    databases, least-privilege role): tsc, GRÜN's mapping suite, PINK's probes pink-pb.test.ts / pink-pb-edges.test.ts, PINK's Python
+    recomputation pink_layout.py --bounds and the 43 mutants of mutate-pb.py (all unchanged from the committed §3.95 / ea1e29f copies).
+  * Full suite: main and base alternating, 3 runs each (2 with a symlinked node_modules, 1 with a hard-linked real copy).
+Evidence class: DETERMINISTIC_FIXTURE. No model call, no network, no condyn row; main, :3017 and the product code untouched; no merge.
+
+VERDICT: GO — no integration fault in Phase B on main.
+(1) INTEGRITY        origin/main = 5ca0f3f5dd4f = the commit released in §3.96 (same SHA, so same tree a471f22b); linear 85274dc → 9532e67 →
+                     057f913 → 5ca0f3f, 0 merges; diff 12 files A, +1218, 0 outside lib/career/mapping + test/career/mapping; lib/
+                     byte-identical to 057f913, docs/ (spec, vectors, sign table) identical to 85274dc; 0 importers outside.
+(2) CONTRACTS        probe 7/7 with every count IDENTICAL to §3.95: vectors 11 753/11 753 exact, 200 random/pressure layouts = oracle under
+                     permutation, signs 10/10 distinct (92 refused), view 400 views / 1 850 name traps / ABSENT never coupled by name,
+                     delta 500 pairs, focus 72 states / 1 080 transitions; runSigns identical; edge shapes O-PB-1/O-PB-2 unchanged.
+                     Python 200/200 random and 21/21 golden MATCH. Mutants 39/43 red vs GRÜN's suite; the 4 green are the §3.95
+                     equivalents V4, L4, L5, L10; PINK's probe kills L10. D2, D4, V5, V12, F4 (F-PB-T1..T3) stay red on main.
+(3) TARGETED         tsc 0; GRÜN's suite 81/81 (8 files, architecture included) on the clean tree; positive control: PINK's untracked
+                     probe files turn both MAP-ARCH "nothing existing is touched" tests red.
+(4) REGRESSION       main 3432 passed / 27 failed / 20 skipped (3479) = GELB's numbers; base 3375 / 27 / 20 (3422). FAIL lists of main and
+                     base identical in every pair (4 files: lifecycle-concurrency-idempotency 6, lifecycle-postgres-persistence 6,
+                     lifecycle-recovery 5, policy-activation-atomicity 10). Causes identical: 21x 42703 career_policy_versions.version,
+                     1x 23502 career_commitments.actor, 5 follow-ups = legacy DDL drift F-JP-5, untouched by Phase B. main − base = +6
+                     files / +57 tests, all green = the Phase-B test files. No new failure.
+     FLAKY           hr-decision-loop-postgres: green in 6/6 full runs and 2 reruns, main and base. It builds its own disposable DB
+                     through dynamic imports of the schema, and nothing outside lib/career/mapping imports the mapping modules, so
+                     Phase B cannot reach it. GELB's single collect error is classified as environmental/timing, not Phase B.
+Observations (not blocking):
+  O-PB-3  MAP-ARCH "against main, only the two dirs" diffs HEAD against merge-base(HEAD, origin/main). Now that main = HEAD it is
+          vacuous (empty diff); scope was proven directly against 85274dc in (1). It keeps its teeth on future branches.
+  O-PB-4  PINK environment only: with node_modules as a symlink, Turbopack refuses to start Next ("points out of the filesystem root"),
+          so g2-g3-vertical-proof, hr-decision-loop-p7 and local-decision-context-http fail on main AND base (12 skipped). With a real
+          node_modules all three pass (77/77 with hr-decision-loop-postgres). Not a product finding.
+  O-PB-1/O-PB-2 (upstream-unreachable shapes) unchanged and open as in §3.95.
+Boundaries: no product change, no delegation, no Gemini, no merge, no :3017, no Phase C; scratch clones only under PINK's scratchpad.

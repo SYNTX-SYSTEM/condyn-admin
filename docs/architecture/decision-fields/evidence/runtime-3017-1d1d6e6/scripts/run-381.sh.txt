@@ -1,0 +1,24 @@
+#!/bin/bash
+# PINK §3.81: own production labs on main 1d1d6e6 (code = 489b167): S = the runner's seeded world (≈ the :3017 data), W = restored :41862 world.
+S=$SCRATCH; W=$SCRATCH/rt; P=$REPO; DUMP=$GELB_SCRATCH/preserved/condyn_test_f96356700c836e92.dump
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT_HOME/node_modules/playwright/index.mjs PINK_SENTINEL=$S/scope-paths/pink-net-sentinel.cjs ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3
+OUT=$W/out381; mkdir -p $OUT; cd $P
+start() { LD=$1; shift; rm -rf "${LD:?}"; if ss -ltn | grep -q ":41873 "; then echo "PORT BUSY"; return 1; fi; npx tsx $W/pink-world-lab.ts $LD 41873 "$@" > $LD.log 2>&1 & for k in $(seq 1 400); do grep -qE "PINK LAB READY|Error|error" $LD.log && break; sleep 3; done; grep -E "created|seeded|restore|build|READY|rror" $LD.log | sed -E 's/(postgres[a-z]*:\/\/)[^ ]*/\1***/g' | head -5; grep -q "PINK LAB READY" $LD.log; }
+stop() { LD=$1; PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 20); do grep -qE "kept|dropped" $LD.log && break; sleep 1; done; grep -E "kept|dropped" $LD.log; sleep 2; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"; }
+base() { python3 -c "import json;print(json.load(open('$1/state.json'))['base'])"; }
+git checkout -q --detach 1d1d6e6 && echo "HEAD $(git rev-parse --short HEAD)"
+# S: seeded world (no analysis, no pool; HR contexts A/B) — the data shape of :3017
+if start $W/lab-s --seed-hr --build; then B=$(base $W/lab-s); IDS=$(cat $W/lab-s/hr-ids.txt); for VP in "1920 1080 1" "1280 720 1"; do set -- $VP; node $W/pink-modes.mjs $B $OUT/modes-s-$1.json seeded $1 $2 $3 - - - $IDS 2>&1 | tail -1; done; fi; stop $W/lab-s
+# W: restored real world with the full product path
+if start $W/lab-w --dump $DUMP; then B=$(base $W/lab-w); PA=ANL_1792628831636_456; DLL=JPOOL_B94850C439974E27496FE3B1A9A076B5; XA=$(curl -s $B/api/career/analyses | python3 -c "import json,sys; a=[x['analysisId'] for x in json.load(sys.stdin).get('analyses',[]) if x['analysisId']!='ANL_1792628831636_456']; print(a[0] if a else 'ANL_0_0')")
+  node $W/pink-world.mjs $W/lab-w/state.json $P $OUT w get 2>&1 | tail -1 | cut -c1-200
+  for VP in "1920 1080 1" "1280 720 1" "1440 900 1" "1600 900 1" "960 540 2" "640 360 2"; do set -- $VP; node $W/pink-modes.mjs $B $OUT/modes-w-$1x$2@$3.json world $1 $2 $3 $PA $DLL role_kestrel_fullstack 2>&1 | tail -1; done
+  ri() { LB_=$1; MD=$2; shift 2; timeout 1500 node $S/rd11/pink-ri.mjs $W/lab-w/state.json $P $OUT $PA $XA $LB_ $MD "$@" 2>&1 | tail -1 | cut -c1-200; }
+  ri w-1920 main 1920 1080 1
+  for VP in "1280 720 1 1280x720" "1440 900 1 1440x900" "1600 900 1 1600x900" "1920 1080 1 1920x1080" "960 540 2 zoom200-1920x1080" "640 360 2 zoom200-1280x720"; do set -- $VP; ri w-$4 vp $1 $2 $3; done
+  for VP in 1920x1080 1280x720; do timeout 900 node $S/rec/pink-orbits.mjs $B $OUT w381 $PA $XA ${VP%x*} ${VP#*x} > $OUT/orbits-$VP.log 2>&1; echo "orbits $VP exit $?"; done
+  timeout 900 node $S/rd6/pink-rd-ui.mjs $B $OUT w381 $PA $XA 1920 1080 > $OUT/rd-ui.log 2>&1; echo "rd-ui exit $?"
+fi; stop $W/lab-w
+git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo "381-END"

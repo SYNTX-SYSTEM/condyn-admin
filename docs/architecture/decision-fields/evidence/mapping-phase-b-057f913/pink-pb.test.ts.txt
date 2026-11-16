@@ -1,0 +1,438 @@
+// PINK PERSON × JOB phase B (GRÜN 057f913), independent and inverse checks of lib/career/mapping/{layout,signs,view,delta,focus}.
+// Own seeded generators (no product code used to build expectations), decoder-valid ranking bodies, own re-derivations, the Phase-A
+// oracle and golden vectors. Pure: no database row, no network, no model. Record counts only (no CV text exists here: placeholders).
+import { describe, expect, it } from "vitest";
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { layoutConstellation, layoutRequirementArcs, layoutRoles, type LayoutRole } from "../../lib/career/mapping/layout";
+import { COUPLING_STATES, couplingSign, runSign } from "../../lib/career/mapping/signs";
+import { buildMappingView, capabilitiesOfProjection, type MappingView } from "../../lib/career/mapping/view";
+import { diffRankings } from "../../lib/career/mapping/delta";
+import { FOCUS_ACTIONS, FOCUS_INITIAL, focusReduce, reverseView, type FocusState } from "../../lib/career/mapping/focus";
+import { referenceArcs, referenceConstellation, referenceLayout } from "../support/mapping/layout-reference";
+import { AUTO_MATCH_STATES, RANKING_SEMANTIC_STATES, decodeRoleRanking, type RankedRequirement, type RankedRole, type RoleRanking } from "../../lib/career/ui/auto-match";
+import { SEMANTIC_RELATION_STATES } from "../../lib/career/job-pool/relation-cache";
+import { ROLE_RANKING_FORMULA } from "../../lib/career/job-pool/role-ranking";
+import { formula } from "../career/auto-capability/fixtures";
+
+const ROOT = join(__dirname, "../..");
+const SPECDIR = join(ROOT, "docs/architecture/decision-fields/mapping-spec");
+const TABLE = JSON.parse(readFileSync(join(SPECDIR, "sign-table.json"), "utf8"));
+const LSPEC = JSON.parse(readFileSync(join(SPECDIR, "layout-spec.json"), "utf8"));
+const VECTORS = JSON.parse(readFileSync(join(SPECDIR, "layout-golden-vectors.json"), "utf8"));
+const rec: Record<string, unknown> = {};
+const OUT = process.env.PINK_OUT ?? "/dev/null";
+const dump = () => writeFileSync(OUT, JSON.stringify(rec, null, 1));
+
+// ---------- seeded randomness (test side only) ----------
+function rngOf(seed: number) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+type R = () => number;
+const int = (r: R, lo: number, hi: number) => lo + Math.floor(r() * (hi - lo + 1));
+const pick = <T,>(r: R, xs: readonly T[]): T => xs[Math.floor(r() * xs.length)];
+const shuffle = <T,>(r: R, xs: readonly T[]): T[] => { const a = [...xs]; for (let i = a.length - 1; i > 0; i -= 1) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v));
+const text = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+function freezeDeep<T>(v: T): T { if (v && typeof v === "object") { for (const x of Object.values(v)) freezeDeep(x); Object.freeze(v); } return v; }
+function anyFrozen(v: unknown): boolean { return !!v && typeof v === "object" && (Object.isFrozen(v) || Object.values(v).some(anyFrozen)); }
+function deepFrozen(v: unknown): boolean { return !v || typeof v !== "object" || (Object.isFrozen(v) && Object.values(v).every(deepFrozen)); }
+
+// ---------- decoder-valid ROLE_RANKING_V1 bodies ----------
+const ANALYSIS = "CAN_PINK0000000000000000000000000PB";
+const W = { REQUIRED: 3, PREFERRED: 2, OPTIONAL: 1, UNKNOWN: 1 } as const;
+const SV = { EQUIVALENT: 1, COVERS: 1, PARTIAL: 0.5, DIFFERENT: 0, UNCLEAR: 0 } as const;
+const LV = { NAME_EXACT: 0.5, NAME_ALIAS: 0.5, NAME_COMPOSITE_CONSTITUENT: 0, WEAK_TOKEN_CONTAINMENT: 0 } as const;
+const NECESSITIES = ["REQUIRED", "PREFERRED", "OPTIONAL", "UNKNOWN"] as const;
+const CAP_NAMES = ["TypeScript", "PostgreSQL", "Kubernetes", "Python", "Go", "Rust"];
+type Person = Array<{ key: string; name: string }>;
+function personOf(r: R): Person {
+  const n = int(r, 0, 6); const out: Person = [];
+  for (let i = 0; i < n; i += 1) out.push({ key: `PCAP_P${i}_${int(r, 0, 999)}`, name: r() < 0.25 && out.length ? out[0].name : pick(r, CAP_NAMES) });
+  return out;
+}
+type KeyMode = "KNOWN" | "FOREIGN" | "NULL" | "ABSENT";
+function requirementOf(r: R, id: string, person: Person, stats: Record<string, number>): RankedRequirement {
+  const necessity = pick(r, NECESSITIES), weight = W[necessity];
+  const roll = r();
+  const source = roll < 0.5 ? "SEMANTIC" : roll < 0.8 ? "LEXICAL" : "NONE";
+  const quote = [{ sourceDocumentId: "DOC_PINK", exactQuote: `placeholder ${id}` }];
+  if (source === "NONE") {
+    const q: Record<string, unknown> = { poolRequirementId: id, requirementText: `Req ${id}`, necessity, weight, source, state: "NONE", value: 0, contribution: 0, capabilityName: null, explanation: null, evidenceLimitation: null, quotes: [] };
+    if (r() < 0.5) q.capabilityKey = null;
+    return q as unknown as RankedRequirement;
+  }
+  const mode: KeyMode = pick(r, ["KNOWN", "KNOWN", "FOREIGN", "NULL", "ABSENT", "ABSENT"] as const);
+  const cap = person.length ? pick(r, person) : null;
+  // The name trap: a key-less coupling often carries exactly a PERSON capability's name.
+  const name = mode === "KNOWN" && cap ? (r() < 0.8 ? cap.name : "Label differs from PERSON name") : cap && r() < 0.7 ? cap.name : pick(r, CAP_NAMES);
+  const key = mode === "KNOWN" && cap ? cap.key : mode === "FOREIGN" ? `PCAP_FOREIGN_${int(r, 0, 3)}` : mode === "NULL" ? null : mode === "KNOWN" ? null : undefined;
+  stats[`key_${mode === "KNOWN" && !cap ? "NULL" : mode}`] = (stats[`key_${mode === "KNOWN" && !cap ? "NULL" : mode}`] ?? 0) + 1;
+  let q: Record<string, unknown>;
+  if (source === "SEMANTIC") {
+    const state = pick(r, Object.keys(SV) as Array<keyof typeof SV>), value = SV[state];
+    q = { poolRequirementId: id, requirementText: `Req ${id}`, necessity, weight, source, state, value, contribution: weight * value, capabilityName: name,
+      explanation: `Statement ${id}`, evidenceLimitation: `Limit ${id}`, quotes: state === "DIFFERENT" || state === "UNCLEAR" ? (r() < 0.5 ? [] : quote) : quote };
+  } else {
+    const state = pick(r, Object.keys(LV) as Array<keyof typeof LV>), value = LV[state];
+    q = { poolRequirementId: id, requirementText: `Req ${id}`, necessity, weight, source, state, value, contribution: weight * value, capabilityName: name, explanation: null, evidenceLimitation: null, quotes: r() < 0.5 ? quote : [] };
+  }
+  if (key !== undefined) q.capabilityKey = key;
+  return q as unknown as RankedRequirement;
+}
+function rankingOf(r: R, person: Person, stats: Record<string, number>, maxRoles = 14): RoleRanking {
+  const poolCount = int(r, 1, 4);
+  const pools = Array.from({ length: poolCount }, (_, i) => ({ jobPoolUploadId: `JPOOL_PINK_${i}_${int(r, 0, 99)}`, poolName: pick(r, ["Alpha", "Beta", "Gamma", "Alpha"]) }));
+  const used = new Set<string>(); const built: Array<Omit<RankedRole, "rank">> = [];
+  for (let i = 0, n = int(r, 0, maxRoles); i < n; i += 1) {
+    const pool = pick(r, pools), poolRoleId = `role_${int(r, 0, 9)}`;
+    if (used.has(`${pool.jobPoolUploadId}/${poolRoleId}`)) continue; used.add(`${pool.jobPoolUploadId}/${poolRoleId}`);
+    const requirements = Array.from({ length: int(r, 0, 6) }, (_, k) => requirementOf(r, `q_${k}_${int(r, 0, 9)}`, person, stats)).filter((q, k, all) => all.findIndex(x => x.poolRequirementId === q.poolRequirementId) === k);
+    const weights = requirements.reduce((s, q) => s + q.weight, 0);
+    const evaluated = requirements.filter(q => q.source === "SEMANTIC").length;
+    built.push({ tier: evaluated ? "SEMANTIC" : "LEXICAL_ONLY", fit: requirements.length ? requirements.reduce((s, q) => s + q.contribution, 0) / weights : null,
+      requiredGaps: requirements.filter(q => q.necessity === "REQUIRED" && q.value === 0).length, semanticCoverage: { evaluated, total: requirements.length },
+      role: { jobPoolUploadId: pool.jobPoolUploadId, poolRoleId, title: pick(r, ["Engineer", "Lead", "Analyst"]), organizationName: "Org", poolName: pool.poolName }, requirements });
+  }
+  built.sort((a, b) => (a.tier === b.tier ? 0 : a.tier === "SEMANTIC" ? -1 : 1) || (a.fit === null ? 1 : 0) - (b.fit === null ? 1 : 0) || (b.fit ?? 0) - (a.fit ?? 0) || a.requiredGaps - b.requiredGaps
+    || text(a.role.title, b.role.title) || text(a.role.jobPoolUploadId, b.role.jobPoolUploadId) || text(a.role.poolRoleId, b.role.poolRoleId));
+  const ranks = built.map((x, at) => ({ rank: at + 1, ...x }));
+  const body = { rankingVersion: "ROLE_RANKING_V1", authority: { ranking: true, decision: false, authorityState: "NONE" }, analysisId: ANALYSIS,
+    evidenceClass: ranks.some(x => x.tier === "SEMANTIC") ? "STAND_IN" : null, pools, poolsDropped: [], formula: formula(), counts: { pools: pools.length, roles: ranks.length, ranked: ranks.length }, ranks };
+  const decoded = decodeRoleRanking(clone(body), ANALYSIS);
+  if (decoded === null) throw new Error("PINK generator produced a body the strict decoder refuses");
+  return decoded;
+}
+
+// ---------- 1. LAYOUT ----------
+describe("PINK B · layout", () => {
+  it("golden vectors: every number of all 12 layouts, 4 rings and 5 constellations; max deviation recorded", () => {
+    let max = 0, numbers = 0, exact = 0;
+    const walk = (a: unknown, e: unknown, path: string): void => {
+      if (typeof e === "number") { expect(typeof a, path).toBe("number"); const d = Math.abs((a as number) - e); numbers += 1; if (d === 0) exact += 1; max = Math.max(max, d); return; }
+      if (Array.isArray(e)) { expect(Array.isArray(a) && a.length === e.length, path).toBe(true); e.forEach((x, i) => walk((a as unknown[])[i], x, `${path}[${i}]`)); return; }
+      if (e && typeof e === "object") { expect(Object.keys(a as object).sort(), path).toEqual(Object.keys(e).sort()); for (const k of Object.keys(e)) walk((a as Record<string, unknown>)[k], (e as Record<string, unknown>)[k], `${path}.${k}`); return; }
+      expect(a, path).toBe(e);
+    };
+    for (const [n, v] of Object.entries<any>(VECTORS.layouts)) walk(layoutRoles(v.input.pools, v.input.roles), v.expected, n);
+    for (const [n, v] of Object.entries<any>(VECTORS.arcs)) walk(layoutRequirementArcs(v.input), v.expected, n);
+    for (const [n, v] of Object.entries<any>(VECTORS.constellations)) walk(layoutConstellation(v.input), v.expected, n);
+    rec.vectors = { layouts: Object.keys(VECTORS.layouts).length, arcs: Object.keys(VECTORS.arcs).length, constellations: Object.keys(VECTORS.constellations).length, numbers, exact, maxDeviation: max };
+    expect(max).toBeLessThanOrEqual(1e-6);
+    dump();
+  }, 300_000);
+
+  it("random and edge inputs: product === Phase-A oracle byte for byte, any input order; inputs untouched; inputs dumped for PINK's Python", () => {
+    const r = rngOf(0x5eb1);
+    const cases: Array<{ pools: Array<{ id: string; name: string }>; roles: LayoutRole[] }> = [];
+    for (let c = 0; c < 160; c += 1) {
+      const pools = Array.from({ length: int(r, 1, 6) }, (_, i) => ({ id: `P${i}${pick(r, ["a", "Z", "_", "ä"])}`, name: pick(r, ["alpha", "Alpha", "beta", "beta", "Ω", ""]) }));
+      const n = c < 150 ? int(r, 0, 70) : int(r, 150, 260);
+      const roles: LayoutRole[] = shuffle(r, Array.from({ length: n }, (_, i) => i + 1)).map(rank => {
+        const tier = r() < 0.6 ? "SEMANTIC" as const : "LEXICAL_ONLY" as const;
+        const w = int(r, 0, 3) === 0 ? 0 : int(r, 1, 40);
+        const fit = tier === "LEXICAL_ONLY" && (w === 0 || r() < 0.15) ? null : pick(r, [0, 1, 0.5, 0.25, r(), r(), r() * 0.5]);
+        return { poolId: pick(r, pools).id, roleId: `r${int(r, 0, 9999)}`, rank, tier, fit: tier === "SEMANTIC" && fit === null ? 0.3 : fit, weightSum: w };
+      });
+      cases.push({ pools, roles });
+    }
+    // pressure: crowded sectors, equal fits at the band edges, heavy bodies — overflow and edge searches must happen
+    for (let c = 0; c < 40; c += 1) {
+      const pools = Array.from({ length: int(r, 1, 8) }, (_, i) => ({ id: `Q${i}`, name: pick(r, ["a", "b", "c"]) }));
+      const hot = pick(r, pools).id, n = int(r, 120, 360), fit = pick(r, [0, 1, 0.5, 0.25]);
+      const roles: LayoutRole[] = shuffle(r, Array.from({ length: n }, (_, i) => i + 1)).map(rank => {
+        const tier = r() < 0.5 ? "SEMANTIC" as const : "LEXICAL_ONLY" as const;
+        return { poolId: r() < 0.85 ? hot : pick(r, pools).id, roleId: `p${rank}`, rank, tier, fit: tier === "LEXICAL_ONLY" && r() < 0.2 ? null : fit, weightSum: pick(r, [0, 3, 6, 12, 30, 60]) };
+      });
+      cases.push({ pools, roles });
+    }
+    let bodies = 0, overflow = 0, permuted = 0;
+    const outputs: unknown[] = [];
+    for (const k of cases) {
+      const before = JSON.stringify(k);
+      const out = layoutRoles(freezeDeep(clone(k.pools)), freezeDeep(clone(k.roles)));
+      expect(JSON.stringify(out)).toBe(JSON.stringify(referenceLayout(clone(k))));
+      for (let p = 0; p < 2; p += 1) { expect(JSON.stringify(layoutRoles(shuffle(r, k.pools), shuffle(r, k.roles)))).toBe(JSON.stringify(out)); permuted += 1; }
+      expect(JSON.stringify(k)).toBe(before);
+      bodies += out.bodies.length; overflow += out.overflowCount; outputs.push(out);
+    }
+    writeFileSync(`${OUT}.layout-cases.json`, JSON.stringify({ cases, outputs }));
+    // rings and constellations: random sizes, duplicate names, any order
+    let arcs = 0, nodes = 0;
+    for (let c = 0; c < 200; c += 1) {
+      const reqs = Array.from({ length: int(r, 0, 12) }, (_, i) => { const n = pick(r, NECESSITIES); return { id: `q${int(r, 0, 99)}_${i}`, necessity: n, weight: r() < 0.2 ? int(r, 1, 3) : W[n], value: pick(r, [0, 0.5, 1]) }; });
+      const a = layoutRequirementArcs(freezeDeep(clone(reqs)));
+      expect(JSON.stringify(a)).toBe(JSON.stringify(referenceArcs(clone(reqs))));
+      expect(JSON.stringify(layoutRequirementArcs(shuffle(r, reqs)))).toBe(JSON.stringify(a));
+      if (a.length) expect(a.reduce((s, x) => s + x.spanDegrees, 0) + (a.length > 1 ? LSPEC.arcs.gapDegrees * a.length : 0)).toBeCloseTo(360, 4);
+      arcs += a.length;
+      const caps = Array.from({ length: int(r, 0, 95) }, (_, i) => ({ key: `K${int(r, 0, 9999)}_${i}`, name: pick(r, CAP_NAMES) }));
+      const cn = layoutConstellation(freezeDeep(clone(caps)));
+      expect(JSON.stringify(cn)).toBe(JSON.stringify(referenceConstellation(clone(caps))));
+      expect(JSON.stringify(layoutConstellation(shuffle(r, caps)))).toBe(JSON.stringify(cn));
+      expect(cn.nodes.length + cn.overflowCount).toBe(caps.length);
+      nodes += cn.nodes.length;
+    }
+    const displaced = outputs.reduce((n: number, o: any) => n + o.bodies.filter((b: any) => !b.overflow && (b.displacement[0] || b.displacement[1])).length, 0);
+    const radial = outputs.reduce((n: number, o: any) => n + o.bodies.filter((b: any) => !b.overflow && b.displacement[0]).length, 0);
+    rec.layoutRandom = { cases: cases.length, bodies, overflow, displaced, radialDisplaced: radial, permutedRuns: permuted, ringCases: 200, arcs, constellationNodes: nodes };
+    dump();
+  }, 600_000);
+});
+
+// ---------- 2. SIGNS ----------
+describe("PINK B · signs", () => {
+  it("couplingSign = the table for every (source, state); every other pair refused; real state lists; honesty", () => {
+    const lexical = Object.keys(ROLE_RANKING_FORMULA.lexicalValue).filter(k => k !== "NONE");
+    const real = [...SEMANTIC_RELATION_STATES, ...lexical, "NONE"].sort();
+    expect([...COUPLING_STATES].sort()).toEqual(real);
+    expect([...RANKING_SEMANTIC_STATES].sort()).toEqual([...SEMANTIC_RELATION_STATES].sort());
+    let accepted = 0, refused = 0;
+    for (const state of [...COUPLING_STATES, "__proto__", "constructor", "toString", "hasOwnProperty", "", "equivalent", "STALLED"])
+      for (const source of ["SEMANTIC", "LEXICAL", "NONE", "semantic", "", "__proto__"] as const) {
+        const row = Object.hasOwn(TABLE.couplingStates, state) ? TABLE.couplingStates[state] : undefined;
+        if (row && row.class === source) { const s = couplingSign(source as never, state); expect({ ...s }).toEqual(row); expect(Object.isFrozen(s)).toBe(true); accepted += 1; }
+        else { expect(() => couplingSign(source as never, state)).toThrow(/ERR_MAPPING_SIGN/); refused += 1; }
+      }
+    // The pairs the backend can emit (role-ranking.ts): SEMANTIC×5, LEXICAL×4, NONE/NONE — all signed.
+    for (const s of SEMANTIC_RELATION_STATES) expect(couplingSign("SEMANTIC", s).class).toBe("SEMANTIC");
+    for (const s of lexical) { const g = couplingSign("LEXICAL", s); expect(g.phaseLocked).toBe(false); expect(g.arcLine).toBe("dotted"); expect(g.arcFill).toBeLessThanOrEqual(0.5); }
+    // A frozen sign: writing to it changes neither it nor the next answer.
+    const g = couplingSign("SEMANTIC", "EQUIVALENT"); try { (g as any).arcFill = 0; } catch { /* strict mode */ }
+    expect(couplingSign("SEMANTIC", "EQUIVALENT").arcFill).toBe(1);
+    const sig = (s: string) => { const x = TABLE.couplingStates[s]; return `${x.arcLine}|${x.arcFill}|${x.beam}|${x.mark}`; };
+    const sigs = COUPLING_STATES.map(s => { const c = couplingSign(TABLE.couplingStates[s].class, s); return `${c.arcLine}|${c.arcFill}|${c.beam}|${c.mark}`; });
+    expect(new Set(sigs).size).toBe(10);
+    expect(new Set([sig("DIFFERENT"), sig("UNCLEAR"), sig("NONE")]).size).toBe(3);
+    rec.signs = { couplingStates: COUPLING_STATES.length, accepted, refused, distinctSignatures: new Set(sigs).size };
+    dump();
+  });
+
+  it("runSign: 8 states × resumePending; STALLED frozen without pulse; pulse only PARTIAL/FAILED while pending; refusals", () => {
+    expect(Object.keys(TABLE.runStates).sort()).toEqual([...AUTO_MATCH_STATES].sort());
+    const rows: string[] = [];
+    for (const s of AUTO_MATCH_STATES) for (const p of [false, true]) {
+      const g = runSign(s, p), t = TABLE.runStates[s];
+      expect(g.resumePulse).toBe(t.resumePulse === "when resumePending" ? p : t.resumePulse);
+      expect([g.fieldMotion, g.pendingBreath, g.frozen]).toEqual([t.fieldMotion, t.pendingBreath, t.frozen]);
+      expect(Object.isFrozen(g)).toBe(true);
+      rows.push(`${s}/${p}:${g.fieldMotion},${g.pendingBreath},${g.frozen},${g.resumePulse}`);
+    }
+    expect(runSign("STALLED", true)).toEqual({ fieldMotion: "none", pendingBreath: false, frozen: true, resumePulse: false });
+    expect(AUTO_MATCH_STATES.filter(s => runSign(s, true).resumePulse).sort()).toEqual(["FAILED", "PARTIAL"]);
+    expect(AUTO_MATCH_STATES.filter(s => runSign(s, false).pendingBreath)).toEqual(["RUNNING"]);
+    for (const bad of ["IDLE", "__proto__", "constructor", "", "running"]) expect(() => runSign(bad as never, false)).toThrow(/ERR_MAPPING_SIGN/);
+    for (const bad of [undefined, null, 1, "true"]) expect(() => runSign("PARTIAL", bad as never)).toThrow(/ERR_MAPPING_SIGN_RESUME_PENDING/);
+    rec.runSigns = rows;
+    dump();
+  });
+});
+
+// ---------- 3. VIEW (data identity) ----------
+function expectedView(person: Person, ranking: RoleRanking) {
+  const keys = new Set(person.map(p => p.key));
+  const order = (q: RankedRequirement) => NECESSITIES.indexOf(q.necessity as never);
+  const roles = [...ranking.ranks].sort((a, b) => a.rank - b.rank);
+  const couplings: unknown[] = [];
+  const outRoles = roles.map(x => {
+    const reqs = [...x.requirements].sort((a, b) => order(a) - order(b) || b.weight - a.weight || text(a.poolRequirementId, b.poolRequirementId));
+    for (const q of reqs) if (q.capabilityName !== null) {
+      const key = Object.hasOwn(q, "capabilityKey") ? q.capabilityKey! : null;
+      couplings.push({ role: { jobPoolUploadId: x.role.jobPoolUploadId, poolRoleId: x.role.poolRoleId }, poolRequirementId: q.poolRequirementId, source: q.source, state: q.state,
+        capabilityKey: key, capabilityName: q.capabilityName, keyStatus: key === null ? "ABSENT" : keys.has(key) ? "KNOWN" : "NOT_IN_PERSON", explanation: q.explanation, evidenceLimitation: q.evidenceLimitation, quotes: q.quotes });
+    }
+    return { id: { jobPoolUploadId: x.role.jobPoolUploadId, poolRoleId: x.role.poolRoleId }, title: x.role.title, organizationName: x.role.organizationName, rank: x.rank, tier: x.tier, fit: x.fit,
+      weightSum: x.requirements.reduce((s, q) => s + q.weight, 0),
+      requirements: reqs.map(q => ({ poolRequirementId: q.poolRequirementId, requirementText: q.requirementText, necessity: q.necessity, weight: q.weight, source: q.source, state: q.state, value: q.value, capabilityKey: Object.hasOwn(q, "capabilityKey") ? q.capabilityKey : null })) };
+  });
+  const pools = [...ranking.pools].sort((a, b) => text(a.poolName, b.poolName) || text(a.jobPoolUploadId, b.jobPoolUploadId))
+    .map(p => ({ id: p.jobPoolUploadId, name: p.poolName, roles: roles.filter(x => x.role.jobPoolUploadId === p.jobPoolUploadId).length }));
+  return { roles: outRoles, couplings, pools, constellation: [...person].sort((a, b) => text(a.name, b.name) || text(a.key, b.key)) };
+}
+
+describe("PINK B · view and reverse view", () => {
+  it("random decoder-valid rankings: key 1:1, ABSENT never coupled by name, NOT_IN_PERSON kept, reverse view by key only, order-free, read-only, frozen", () => {
+    const r = rngOf(0xb1e3); const stats: Record<string, number> = {};
+    let views = 0, couplings = 0, trap = 0, reverse = 0, permuted = 0;
+    const status: Record<string, number> = {};
+    for (let c = 0; c < 400; c += 1) {
+      const person = personOf(r);
+      if (new Set(person.map(p => p.key)).size !== person.length) continue;
+      const ranking = rankingOf(r, person, stats);
+      const run = { state: pick(r, AUTO_MATCH_STATES), resumePending: r() < 0.5 };
+      const before = JSON.stringify(ranking), personBefore = JSON.stringify(person);
+      const view = buildMappingView({ capabilities: person, ranking, run, evidenceClass: ranking.evidenceClass });
+      views += 1;
+      expect(JSON.stringify(ranking)).toBe(before); expect(JSON.stringify(person)).toBe(personBefore);
+      expect(anyFrozen(ranking) || anyFrozen(person), "the caller's input was frozen by the view").toBe(false);
+      expect(deepFrozen(view)).toBe(true);
+      expect(view.authority).toEqual({ ranking: true, decision: false, authorityState: "NONE" });
+      expect(view.run).toEqual(run); expect(view.evidenceClass).toBe(ranking.evidenceClass);
+      expect(view.empty).toBe(ranking.ranks.length === 0 ? "NO_ROLES" : null);
+      const e = expectedView(person, ranking);
+      expect(clone(view.roles)).toEqual(e.roles); expect(clone(view.couplings)).toEqual(clone(e.couplings)); expect(clone(view.pools)).toEqual(e.pools); expect(clone(view.constellation)).toEqual(e.constellation);
+      // the view's ring order is the layout's ring order
+      for (const role of view.roles) expect(layoutRequirementArcs(role.requirements.map(q => ({ id: q.poolRequirementId, necessity: q.necessity, weight: q.weight, value: q.value }))).map(a => a.id)).toEqual(role.requirements.map(q => q.poolRequirementId));
+      for (const k of view.couplings) { status[k.keyStatus] = (status[k.keyStatus] ?? 0) + 1; couplings += 1; couplingSign(k.source, k.state); }
+      // name trap: a key-less coupling carrying a PERSON name never appears under that PERSON key
+      for (const k of view.couplings.filter(x => x.capabilityKey === null && person.some(p => p.name === x.capabilityName))) {
+        trap += 1;
+        for (const p of person.filter(p => p.name === k.capabilityName)) expect(reverseView(view, p.key).couplings.some(x => x.poolRequirementId === k.poolRequirementId && x.role.poolRoleId === k.role.poolRoleId && x.role.jobPoolUploadId === k.role.jobPoolUploadId && x.capabilityKey === null)).toBe(false);
+      }
+      for (const key of [...person.map(p => p.key), "PCAP_FOREIGN_0", "PCAP_FOREIGN_1", ...CAP_NAMES]) {
+        const rv = reverseView(view, key); reverse += 1;
+        expect(clone(rv.couplings)).toEqual(clone(view.couplings.filter(x => x.capabilityKey === key)));
+        const ids = view.roles.filter(x => rv.couplings.some(k => k.role.jobPoolUploadId === x.id.jobPoolUploadId && k.role.poolRoleId === x.id.poolRoleId)).map(x => x.id);
+        expect(clone(rv.roles)).toEqual(clone(ids));
+        expect(rv.known).toBe(person.some(p => p.key === key));
+        expect(deepFrozen(rv)).toBe(true);
+      }
+      // any order of the inputs → the same view
+      const shuffled = { ...clone(ranking), pools: shuffle(r, ranking.pools), ranks: shuffle(r, ranking.ranks).map(x => ({ ...x, requirements: shuffle(r, x.requirements) })) };
+      expect(JSON.stringify(buildMappingView({ capabilities: shuffle(r, person), ranking: shuffled as RoleRanking, run, evidenceClass: ranking.evidenceClass }))).toBe(JSON.stringify(view)); permuted += 1;
+      // deep-frozen input works
+      expect(JSON.stringify(buildMappingView({ capabilities: freezeDeep(clone(person)), ranking: freezeDeep(clone(ranking)), run, evidenceClass: ranking.evidenceClass }))).toBe(JSON.stringify(view));
+    }
+    // empty and refusals
+    expect(buildMappingView({ capabilities: [], ranking: null, run: { state: "NOT_STARTED", resumePending: false }, evidenceClass: null }).empty).toBe("NO_RANKING");
+    expect(() => buildMappingView({ capabilities: [{ key: "K", name: "a" }, { key: "K", name: "b" }], ranking: null, run: { state: "NOT_STARTED", resumePending: false }, evidenceClass: null })).toThrow(/DUPLICATE_CAPABILITY/);
+    expect(capabilitiesOfProjection(null)).toEqual([]);
+    expect(capabilitiesOfProjection({ capabilities: [{ id: "PCAP_X", name: "X", extra: 1 }] } as never)).toEqual([{ key: "PCAP_X", name: "X" }]);
+    rec.view = { views, couplings, keyStatus: status, generatedKeys: stats, nameTrapCouplings: trap, reverseViews: reverse, permutedRuns: permuted };
+    expect(trap).toBeGreaterThan(50); expect(status.NOT_IN_PERSON ?? 0).toBeGreaterThan(50); expect(status.ABSENT ?? 0).toBeGreaterThan(50);
+    dump();
+  }, 300_000);
+});
+
+// ---------- 4. DELTA ----------
+type Change = ReturnType<typeof diffRankings>[number];
+function pinkDiff(a: RoleRanking | null, b: RoleRanking | null): unknown[] {
+  const id = (x: RankedRole) => `${x.role.jobPoolUploadId}\u0000${x.role.poolRoleId}`;
+  const A = new Map((a?.ranks ?? []).map(x => [id(x), x])), B = new Map((b?.ranks ?? []).map(x => [id(x), x]));
+  const k = (q: RankedRequirement) => (Object.hasOwn(q, "capabilityKey") && q.capabilityKey !== undefined ? q.capabilityKey : null);
+  const out: Array<{ s: string; c: unknown }> = [];
+  const order = ["ROLE_ADDED", "ROLE_REMOVED", "ROLE_RANK_CHANGED", "ROLE_TIER_CHANGED", "ROLE_FIT_CHANGED", "REQUIREMENT_ADDED", "REQUIREMENT_REMOVED", "REQUIREMENT_STATE_CHANGED", "REQUIREMENT_KEY_CHANGED"];
+  const push = (role: RankedRole, q: string | null, kind: string, from: unknown, to: unknown) => out.push({ s: `${role.role.jobPoolUploadId}\u0001${role.role.poolRoleId}\u0001${q ?? ""}\u0001${String(Math.min(order.indexOf(kind), kind.endsWith("REMOVED") ? order.indexOf(kind) - 1 : 99)).padStart(2, "0")}`,
+    c: { kind, role: { jobPoolUploadId: role.role.jobPoolUploadId, poolRoleId: role.role.poolRoleId }, poolRequirementId: q, from, to } });
+  for (const key of [...new Set([...A.keys(), ...B.keys()])].sort()) {
+    const x = A.get(key), y = B.get(key);
+    if (!x) { push(y!, null, "ROLE_ADDED", null, { rank: y!.rank, tier: y!.tier, fit: y!.fit }); continue; }
+    if (!y) { push(x, null, "ROLE_REMOVED", { rank: x.rank, tier: x.tier, fit: x.fit }, null); continue; }
+    if (x.rank !== y.rank) push(x, null, "ROLE_RANK_CHANGED", x.rank, y.rank);
+    if (x.tier !== y.tier) push(x, null, "ROLE_TIER_CHANGED", x.tier, y.tier);
+    if (x.fit !== y.fit) push(x, null, "ROLE_FIT_CHANGED", x.fit, y.fit);
+    const QA = new Map(x.requirements.map(q => [q.poolRequirementId, q])), QB = new Map(y.requirements.map(q => [q.poolRequirementId, q]));
+    for (const qid of new Set([...QA.keys(), ...QB.keys()])) {
+      const p = QA.get(qid), q = QB.get(qid);
+      if (!p) { push(x, qid, "REQUIREMENT_ADDED", null, { source: q!.source, state: q!.state, capabilityKey: k(q!) }); continue; }
+      if (!q) { push(x, qid, "REQUIREMENT_REMOVED", { source: p.source, state: p.state, capabilityKey: k(p) }, null); continue; }
+      if (p.source !== q.source || p.state !== q.state) push(x, qid, "REQUIREMENT_STATE_CHANGED", { source: p.source, state: p.state }, { source: q.source, state: q.state });
+      if (k(p) !== k(q)) push(x, qid, "REQUIREMENT_KEY_CHANGED", k(p), k(q));
+    }
+  }
+  return out.sort((m, n) => text(m.s, n.s)).map(x => x.c);
+}
+const mirror = (c: Change): unknown => ({ ...c, kind: c.kind === "ROLE_ADDED" ? "ROLE_REMOVED" : c.kind === "ROLE_REMOVED" ? "ROLE_ADDED" : c.kind === "REQUIREMENT_ADDED" ? "REQUIREMENT_REMOVED" : c.kind === "REQUIREMENT_REMOVED" ? "REQUIREMENT_ADDED" : c.kind, from: c.to, to: c.from });
+function mutateRanking(r: R, a: RoleRanking, person: Person, stats: Record<string, number>): RoleRanking {
+  const b = clone(a) as RoleRanking; const ops: string[] = [];
+  for (let n = int(r, 0, 4); n > 0; n -= 1) {
+    const op = pick(r, ["state", "source", "key", "keyAbsentNull", "reqAdd", "reqDel", "roleAdd", "roleDel", "rankSwap", "fit", "tier", "text"]);
+    const role = b.ranks.length ? pick(r, b.ranks) : null; const q = role?.requirements.length ? pick(r, role.requirements) : null;
+    ops.push(op);
+    if (op === "state" && q) q.state = (q.source === "SEMANTIC" ? pick(r, Object.keys(SV)) : q.source === "LEXICAL" ? pick(r, Object.keys(LV)) : "NONE") as never;
+    if (op === "source" && q) { q.source = pick(r, ["SEMANTIC", "LEXICAL", "NONE"]); q.state = q.source === "NONE" ? "NONE" : q.source === "SEMANTIC" ? "UNCLEAR" : "NAME_EXACT"; }
+    if (op === "key" && q) { const m = pick(r, [0, 1, 2]); if (m === 0) q.capabilityKey = `PCAP_NEW_${int(r, 0, 2)}`; else if (m === 1) q.capabilityKey = null; else delete q.capabilityKey; }
+    if (op === "keyAbsentNull" && q) { if (q.capabilityKey === null) delete q.capabilityKey; else if (!Object.hasOwn(q, "capabilityKey")) q.capabilityKey = null; }
+    if (op === "reqAdd" && role) role.requirements.push(requirementOf(r, `q_new_${int(r, 0, 99)}`, person, stats));
+    if (op === "reqDel" && role && role.requirements.length) role.requirements.splice(int(r, 0, role.requirements.length - 1), 1);
+    if (op === "roleAdd") { const extra = rankingOf(r, person, stats, 3).ranks[0]; if (extra && !b.ranks.some(x => x.role.jobPoolUploadId === extra.role.jobPoolUploadId && x.role.poolRoleId === extra.role.poolRoleId)) b.ranks.push({ ...extra, rank: b.ranks.length + 1 }); }
+    if (op === "roleDel" && b.ranks.length) b.ranks.splice(int(r, 0, b.ranks.length - 1), 1);
+    if (op === "rankSwap" && b.ranks.length > 1) { const i = int(r, 0, b.ranks.length - 1), j = int(r, 0, b.ranks.length - 1); [b.ranks[i].rank, b.ranks[j].rank] = [b.ranks[j].rank, b.ranks[i].rank]; }
+    if (op === "fit" && role) role.fit = pick(r, [null, 0, 1, Math.round(r() * 1000) / 1000]);
+    if (op === "tier" && role) role.tier = role.tier === "SEMANTIC" ? "LEXICAL_ONLY" : "SEMANTIC";
+    if (op === "text" && role) { role.role.title = "Renamed"; if (q) { q.requirementText = "changed text"; q.quotes = []; } }
+  }
+  for (const o of ops) stats[`op_${o}`] = (stats[`op_${o}`] ?? 0) + 1;
+  return b;
+}
+
+describe("PINK B · delta", () => {
+  it("random pairs: product = PINK's own diff; empty on equality (also shuffled, also key absent vs null); mirror; order-free; inputs untouched", () => {
+    const r = rngOf(0xde17); const stats: Record<string, number> = {}; const kinds: Record<string, number> = {};
+    let pairs = 0, emptyChecks = 0, smallFit = 0;
+    for (let c = 0; c < 500; c += 1) {
+      const person = personOf(r); const a = rankingOf(r, person, stats); const b = mutateRanking(r, a, person, stats);
+      const sa = JSON.stringify(a), sb = JSON.stringify(b);
+      const d = diffRankings(a, b); pairs += 1;
+      expect(JSON.parse(JSON.stringify(d))).toEqual(pinkDiff(a, b));
+      expect(JSON.stringify(a)).toBe(sa); expect(JSON.stringify(b)).toBe(sb);
+      expect(JSON.parse(JSON.stringify(diffRankings(b, a)))).toEqual(JSON.parse(JSON.stringify(d.map(mirror))));
+      const sh = (x: RoleRanking) => ({ ...clone(x), ranks: shuffle(r, x.ranks).map(y => ({ ...y, requirements: shuffle(r, y.requirements) })) }) as RoleRanking;
+      expect(JSON.stringify(diffRankings(sh(a), sh(b)))).toBe(JSON.stringify(d));
+      expect(diffRankings(a, sh(a))).toEqual([]); expect(diffRankings(a, clone(a))).toEqual([]);
+      const flipped = clone(a); for (const x of flipped.ranks) for (const q of x.requirements) { if (q.capabilityKey === null) delete q.capabilityKey; else if (!Object.hasOwn(q, "capabilityKey")) q.capabilityKey = null; }
+      expect(diffRankings(a, flipped)).toEqual([]); emptyChecks += 3;
+      if (a.ranks.length) { const f = clone(a); f.ranks[0].fit = (f.ranks[0].fit ?? 0) + 0.001; expect(diffRankings(a, f).map(x => x.kind)).toEqual(["ROLE_FIT_CHANGED"]); smallFit += 1; }
+      for (const x of d) kinds[x.kind] = (kinds[x.kind] ?? 0) + 1;
+      expect(diffRankings(null, a).every(x => x.kind === "ROLE_ADDED")).toBe(true);
+      expect(diffRankings(null, a)).toHaveLength(a.ranks.length);
+    }
+    expect(diffRankings(null, null)).toEqual([]);
+    rec.delta = { pairs, emptyChecks, smallFitChanges: smallFit, kinds, ops: Object.fromEntries(Object.entries(stats).filter(([k]) => k.startsWith("op_"))) };
+    expect(Object.keys(kinds).sort()).toEqual(["REQUIREMENT_ADDED", "REQUIREMENT_KEY_CHANGED", "REQUIREMENT_REMOVED", "REQUIREMENT_STATE_CHANGED", "ROLE_ADDED", "ROLE_FIT_CHANGED", "ROLE_RANK_CHANGED", "ROLE_REMOVED", "ROLE_TIER_CHANGED"]);
+    dump();
+  }, 300_000);
+});
+
+// ---------- 5. FOCUS ----------
+describe("PINK B · focus", () => {
+  it("reachable state space: level invariants, no scope field, inadmissible = same object, frozen, B-3 action set", () => {
+    expect([...FOCUS_ACTIONS]).toEqual(["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "SELECT_CAPABILITY", "MARK_ROLE", "MARK_REQUIREMENT", "CLEAR_SELECTION", "UP", "RESET"]);
+    const roleA = { jobPoolUploadId: "JP_A", poolRoleId: "r1" }, roleB = { jobPoolUploadId: "JP_B", poolRoleId: "r1" }, roleC = { jobPoolUploadId: "JP_A", poolRoleId: "r2" };
+    const valid: any[] = [
+      { type: "OPEN_POOL", jobPoolUploadId: "JP_A" }, { type: "OPEN_POOL", jobPoolUploadId: "JP_B" },
+      { type: "OPEN_ROLE", role: roleA }, { type: "OPEN_ROLE", role: { ...roleB } }, { type: "OPEN_ROLE", role: roleC },
+      { type: "OPEN_REQUIREMENT", poolRequirementId: "q1" }, { type: "OPEN_REQUIREMENT", poolRequirementId: "q2" },
+      { type: "SELECT_CAPABILITY", capabilityKey: "PCAP_1" }, { type: "SELECT_CAPABILITY", capabilityKey: "PCAP_2" },
+      { type: "MARK_ROLE", role: roleA }, { type: "MARK_ROLE", role: roleB }, { type: "MARK_REQUIREMENT", role: roleA, poolRequirementId: "q1" },
+      { type: "CLEAR_SELECTION" }, { type: "UP" }, { type: "RESET" }];
+    const invalid: any[] = [null, undefined, 1, "UP", {}, { type: "SELECT_ROLE", role: roleA }, { type: "SELECT_JOB", jobPoolUploadId: "JP_A" }, { type: "SET_JOB_SCOPE", jobPoolUploadId: "JP_A", poolRoleId: "r1" },
+      { type: "constructor" }, { type: "__proto__" }, { type: "OPEN_POOL" }, { type: "OPEN_POOL", jobPoolUploadId: "" }, { type: "OPEN_POOL", jobPoolUploadId: 7 },
+      { type: "OPEN_ROLE" }, { type: "OPEN_ROLE", role: null }, { type: "OPEN_ROLE", role: { jobPoolUploadId: "JP_A" } }, { type: "OPEN_ROLE", role: { jobPoolUploadId: "", poolRoleId: "r" } },
+      { type: "OPEN_REQUIREMENT", poolRequirementId: "" }, { type: "OPEN_REQUIREMENT" }, { type: "SELECT_CAPABILITY", capabilityKey: "" }, { type: "SELECT_CAPABILITY", capabilityKey: null },
+      { type: "MARK_ROLE", role: "r1" }, { type: "MARK_REQUIREMENT", role: roleA }, { type: "MARK_REQUIREMENT", role: roleA, poolRequirementId: "" }];
+    const seen = new Map<string, FocusState>([[JSON.stringify(FOCUS_INITIAL), FOCUS_INITIAL]]); const queue: FocusState[] = [FOCUS_INITIAL];
+    let transitions = 0, sameObject = 0, invalidSame = 0;
+    const levels: Record<string, number> = {};
+    const check = (s: FocusState) => {
+      expect(Object.keys(s).sort()).toEqual(["level", "pool", "requirement", "role", "selection"]);
+      expect(Object.isFrozen(s)).toBe(true); if (s.role) expect(Object.isFrozen(s.role)).toBe(true); if (s.selection) expect(deepFrozen(s.selection)).toBe(true);
+      if (s.level === "L0") expect([s.pool, s.role, s.requirement]).toEqual([null, null, null]);
+      if (s.level === "L1") { expect(typeof s.pool).toBe("string"); expect([s.role, s.requirement]).toEqual([null, null]); }
+      if (s.level === "L2") { expect(s.role).not.toBeNull(); expect(s.pool).toBe(s.role!.jobPoolUploadId); expect(s.requirement).toBeNull(); }
+      if (s.level === "L3") { expect(s.role).not.toBeNull(); expect(s.pool).toBe(s.role!.jobPoolUploadId); expect(typeof s.requirement).toBe("string"); }
+      if (s.level === "L0" && s.selection === null) expect(s).toBe(FOCUS_INITIAL);
+      levels[s.level] = (levels[s.level] ?? 0) + 1;
+    };
+    while (queue.length) {
+      const s = queue.shift()!; check(s);
+      for (const a of invalid) { expect(focusReduce(s, a)).toBe(s); invalidSame += 1; }
+      for (const a of valid) {
+        const snapshot = JSON.stringify(a);
+        const n = focusReduce(s, a); transitions += 1;
+        expect(JSON.stringify(a)).toBe(snapshot);
+        if (JSON.stringify(n) === JSON.stringify(s)) { expect(n).toBe(s); sameObject += 1; }
+        // specific transitions
+        if (a.type === "UP") expect(n.level).toBe(({ L0: "L0", L1: "L0", L2: "L1", L3: "L2" } as const)[s.level]);
+        if (a.type === "RESET") expect(n).toBe(FOCUS_INITIAL);
+        if (a.type === "OPEN_REQUIREMENT" && s.role === null) expect(n).toBe(s);
+        if (a.type === "OPEN_REQUIREMENT" && s.role !== null) { expect(n.level).toBe("L3"); expect(n.role).toEqual(s.role); }
+        if (["SELECT_CAPABILITY", "MARK_ROLE", "MARK_REQUIREMENT", "CLEAR_SELECTION"].includes(a.type)) expect([n.level, n.pool, n.role, n.requirement]).toEqual([s.level, s.pool, s.role, s.requirement]);
+        if (["OPEN_POOL", "OPEN_ROLE", "OPEN_REQUIREMENT", "UP"].includes(a.type)) expect(n.selection).toEqual(s.selection);
+        if (a.type === "OPEN_ROLE") { expect(n.level).toBe("L2"); expect(n.role).toEqual(a.role); expect(n.role).not.toBe(a.role); }
+        const k = JSON.stringify(n); if (!seen.has(k)) { seen.set(k, n); queue.push(n); }
+      }
+    }
+    rec.focus = { reachableStates: seen.size, transitions, sameObject, invalidSame, levels };
+    expect(seen.size).toBe(72); // levels × 6 selections: 6 + 2·6 + 3·6 + 3·2·6
+    dump();
+  }, 300_000);
+});

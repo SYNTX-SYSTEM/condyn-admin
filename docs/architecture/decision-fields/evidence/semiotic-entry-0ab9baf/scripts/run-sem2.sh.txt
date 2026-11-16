@@ -1,0 +1,9 @@
+#!/bin/bash
+I=$SCRATCH/int
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES
+cd $I/tsem2
+npx tsc --noEmit -p . > $I/tsem2-tsc.log 2>&1; echo "tsem2 tsc exit $? errors $(grep -c 'error TS' $I/tsem2-tsc.log)"
+npm run -s test:isolated -- test/career > $I/tsem2-career.log 2>&1; echo "tsem2 test/career exit $? $(grep -E '^\s*(Test Files|Tests) ' $I/tsem2-career.log | tr -s ' ' | tr '\n' ' ')"
+grep -E "^ FAIL " $I/tsem2-career.log | sed 's/ > .*//' | sort | uniq -c
+PRISTINE_NAME=tsem2 MUT_TAG=-r2 python3 $I/mutate-sem.py $I > $I/mutate-sem2.log 2>&1; grep -c RED $I/mutate-sem2.log; grep -v RED $I/mutate-sem2.log
+echo SEM2-END

@@ -1,0 +1,150 @@
+import subprocess, shutil, os, sys, json, re
+# PINK inverse check: each mutant applied to a copy of the pristine tree; red = the suites catch it. argv: <int dir> <block> [ids...]
+I = sys.argv[1]; BLOCK = sys.argv[2]; PRISTINE = f"{I}/" + os.environ["PRISTINE_NAME"]; WORK = PRISTINE + "-mut" + os.environ.get("WORK_TAG", "")
+GH = "lib/career/loaders/github.ts"; DL = "lib/career/orchestration/document-loader.ts"
+BLOCKS = {
+ "A": (["test/career-github-account-loader.test.ts", "test/career-github-account-intake.test.ts", "test/career-github-loader.test.ts", "test/career-analyze-multisource.test.ts", "test/career-source-metadata.test.ts", "test/career-analyze-flow.test.ts"], [
+  ("A-M01 fork filter off", GH, '(r as any).fork !== true && ', ''),
+  ("A-M02 archived filter off", GH, '(r as any).archived !== true && ', ''),
+  ("A-M03 disabled filter off", GH, '(r as any).disabled !== true && ', ''),
+  ("A-M04 private filter off", GH, ' && (r as any).private !== true);', ');'),
+  ("A-M05 oldest push first", GH, 'time(b) - time(a) ||', 'time(a) - time(b) ||'),
+  ("A-M06 name tie-break reversed", GH, '(a.name < b.name ? -1 : a.name > b.name ? 1 : 0)', '(a.name < b.name ? 1 : a.name > b.name ? -1 : 0)'),
+  ("A-M07 hard cap gone", GH, 'Math.min(Math.floor(value), GITHUB_ACCOUNT_MAX_REPOS_HARD_CAP)', 'Math.floor(value)'),
+  ("A-M08 default 5 -> 100", GH, 'export const GITHUB_ACCOUNT_MAX_REPOS_DEFAULT = 5;', 'export const GITHUB_ACCOUNT_MAX_REPOS_DEFAULT = 100;'),
+  ("A-M09 env 0 taken as 1 (not default)", GH, 'Number.isInteger(fromEnv) && fromEnv >= 1', 'Number.isInteger(fromEnv) && fromEnv >= 0'),
+  ("A-M10 env ignored", GH, 'const value = requested ?? (Number.isInteger(fromEnv) && fromEnv >= 1 ? fromEnv : GITHUB_ACCOUNT_MAX_REPOS_DEFAULT);', 'const value = requested ?? GITHUB_ACCOUNT_MAX_REPOS_DEFAULT;'),
+  ("A-M11 owner name not checked", GH, 'if (parts.length === 0 || !GITHUB_ACCOUNT_NAME.test(parts[0]))', 'if (parts.length === 0)'),
+  ("A-M12 host suffix accepted", GH, 'if (url.hostname !== "github.com" && url.hostname !== "www.github.com") throw new Error(`ERR_INVALID_GITHUB_URL: URL "${sourceUrl}" must point to github.com.`);', 'if (!url.hostname.endsWith("github.com")) throw new Error(`ERR_INVALID_GITHUB_URL: URL "${sourceUrl}" must point to github.com.`);'),
+  ("A-M13 listing includes member repos", GH, '/repos?type=owner&sort=pushed&per_page=100', '/repos?type=all&sort=pushed&per_page=100'),
+  ("A-M14 every repo failure swallowed", GH, 'if (!String(error?.message ?? "").startsWith("ERR_GITHUB_EMPTY_REPOSITORY_CONTENT")) throw error;', 'void error;'),
+  ("A-M15 unknown account reads as empty", GH, 'if (listing === null) throw new Error(`ERR_GITHUB_ACCOUNT_NOT_FOUND: GitHub account "${parsed.owner}" was not found.`);', ''),
+  ("A-M16 two segments read as account", GH, 'if (parts.length === 1) return { kind: "account", owner: parts[0] };', 'if (parts.length <= 2) return { kind: "account", owner: parts[0] };'),
+  ("A-M17 worker entry back to repo-only", DL, 'const docs = await loadGitHubSourceDocuments(item.url);', 'const docs = await (await import("../loaders/github")).loadGitHubRepositoryDocuments(item.url);'),
+  ("A-M18 repo index dropped from doc ids", GH, 'docIdPrefix: `${options?.docIdPrefix || "DOC_GH_"}R${index + 1}_`', 'docIdPrefix: `${options?.docIdPrefix || "DOC_GH_"}R_`'),
+  ("A-M19 selection unbounded", GH, '.slice(0, Math.floor(max));', ';'),
+  ("A-M20 empty account succeeds", GH, 'if (documents.length === 0) throw new Error(`ERR_GITHUB_EMPTY_ACCOUNT_CONTENT: GitHub account "${parsed.owner}" has no repository with usable documentation files.`);', ''),
+ ]),
+}
+
+CFG = "lib/career/job-pool/semantic-config.ts"; GSP = "lib/career/job-pool/gemini-semantic-provider.ts"; START = "lib/career/job-pool/semantic-investigation-start.ts"; AM = "lib/career/job-pool/auto-match.ts"; RR = "lib/career/job-pool/role-ranking.ts"; STORE = "lib/career/job-pool/semantic-investigation-store.ts"
+WK = "lib/career/orchestration/worker.ts"; SCR = "scripts/run-career-worker.ts"; RAM = "app/api/career/analyses/[analysisId]/auto-match/route.ts"; RRK = "app/api/career/analyses/[analysisId]/job-ranking/route.ts"
+T_BE = [f"test/career/job-pool/{x}" for x in "pool-role-discovery.test.ts role-discovery.postgres.test.ts relation-cache.test.ts relation-cache.postgres.test.ts role-investigation.postgres.test.ts semantic-relation-engine.test.ts semantic-provider.test.ts semantic-governance.test.ts auto-match.postgres.test.ts relation-cache-registration-gate.test.ts semantic-investigation-store.postgres.test.ts selected-role-coverage.test.ts worker-after-success.postgres.test.ts role-ranking.test.ts".split()]
+BLOCKS["BE"] = (T_BE, [
+ ("B-M01 gemini READY without key", CFG, 'if (!env.GEMINI_API_KEY?.trim() || budget < 1) return', 'if (budget < 1) return'),
+ ("B-M02 gemini READY without budget", CFG, 'if (!env.GEMINI_API_KEY?.trim() || budget < 1) return', 'if (!env.GEMINI_API_KEY?.trim()) return'),
+ ("B-M03 day limit parse loosened", CFG, '/^[0-9]{1,6}$/.test(value.trim())', 'Number.isFinite(Number(value.trim()))'),
+ ("B-M04 gemini labelled STAND_IN", CFG, 'provider === "gemini" ? "REAL_GEMINI"', 'provider === "gemini" ? "STAND_IN"'),
+ ("B-M05 prompt not in engine identity", CFG, 'promptChecksum: createHash("sha256").update(GEMINI_SEMANTIC_PROMPT, "utf8").digest("hex")', 'promptChecksum: "GEMINI_V1"'),
+ ("B-M06 factory: gemini answered by stand-in", GSP, 'if (engine.provider === "gemini") {', 'if (engine.provider === "gemini") return new StandInSemanticProvider();\n  if (false) {'),
+ ("B-M07 factory: unknown provider runs stand-in", GSP, 'throw new Error("ERR_SEMANTIC_PROVIDER_NOT_AUTHORIZED");', 'return new StandInSemanticProvider();'),
+ ("B-M08 SDK message (with key) leaks", GSP, '} catch {\n      throw new Error("ERR_SEMANTIC_PROVIDER_FAILED");', '} catch (e) {\n      throw new Error(`ERR_SEMANTIC_PROVIDER_FAILED: ${String(e)}`);'),
+ ("B-M09 finishReason ignored", GSP, 'if (finishReason !== undefined && finishReason !== "STOP")', 'if (false)'),
+ ("B-M10 shared start always stand-in", START, 'provider: createSemanticProvider(config.engine)', 'provider: createSemanticProvider({ ...config.engine, provider: "stand-in" })'),
+ ("C-M01 hook never called", WK, 'if (this.afterSuccess) {', 'if (false && this.afterSuccess) {'),
+ ("C-M02 hook failure rethrown", WK, 'await this.afterSuccess(job, resultAnalysisId).catch(error => {', 'await this.afterSuccess(job, resultAnalysisId).catch(error => { throw error;'),
+ ("C-M03 worker script not wired", SCR, 'const outcome = await runAutoMatch(resultAnalysisId);', 'const outcome = { outcome: "DISABLED", reason: null as string | null }; void runAutoMatch;'),
+ ("C-M04 clientRequestId not idempotent", AM, 'clientRequestId: `${AUTO_MATCH_REQUEST_PREFIX}${analysisId}`', 'clientRequestId: `${AUTO_MATCH_REQUEST_PREFIX}${analysisId}:${Date.now()}:${Math.random()}`'),
+ ("C-M05 snapshot takes every pool status", AM, 'summaries.filter(p => p.poolStatus === "ACTIVE").sort(', 'summaries.filter(() => true).sort('),
+ ("C-M06 snapshot unbounded", AM, '.slice(0, POOL_ROLE_DISCOVERY_MAX_POOLS)', ''),
+ ("C-M07 role budget uncapped", AM, 'selectAutomaticRoles(operand.discovery, Math.min(config.maxRoles, SEMANTIC_ROLES_HARD_CAP))', 'selectAutomaticRoles(operand.discovery, 1000)'),
+ ("C-M08 DAY_LIMIT_ZERO not disabling", AM, 'return config.dayLimit < 1 ? "DAY_LIMIT_ZERO" : null;', 'return null;'),
+ ("C-M09 lexical role order ignored", AM, 'order(a.role.status) - order(b.role.status) || a.index - b.index', 'a.index - b.index'),
+ ("C-M10 roles without requirements planned", AM, '.filter(({ role }) => role.counts.requirements > 0)\n', '\n'),
+ ("C-M11 automatic marker lost", AM, 'requestExtra: { auto: true,', 'requestExtra: { auto: false,'),
+ ("C-M12 PxJ analysis fails instead of skip", AM, '? { outcome: "SKIPPED", reason: "NOT_PERSON" } : { outcome: "FAILED"', '? { outcome: "FAILED", reason: "NOT_PERSON" } : { outcome: "FAILED"'),
+ ("C-M13 beyond-budget reads COMPLETED", AM, 'state = rolesTotal > planned ? "PARTIAL" : "COMPLETED";', 'state = "COMPLETED";'),
+ ("C-M14 running reads terminal", AM, 'const terminal = !(investigation.status === "PLANNED" || investigation.status === "RUNNING");', 'const terminal = true;'),
+ ("C-M15 explicit route confirmation bypassed", START, 'if (input.confirmedCalls !== "AS_PLANNED" && input.confirmedCalls !== plan.callsNeeded)', 'if (false)'),
+ ("C-M16 idempotency check removed", START, 'if (existing) return { kind: "EXISTING"', 'if (false && existing) return { kind: "EXISTING"'),
+ ("D-M01 weights REQUIRED/PREFERRED swapped", RR, 'REQUIRED: 3, PREFERRED: 2', 'REQUIRED: 2, PREFERRED: 3'),
+ ("D-M02 PARTIAL counts 1", RR, 'PARTIAL: 0.5, DIFFERENT: 0', 'PARTIAL: 1, DIFFERENT: 0'),
+ ("D-M03 lexical exact counts 1", RR, 'NAME_EXACT: 0.5', 'NAME_EXACT: 1'),
+ ("D-M04 tier ignored", RR, 'unranked.sort((a, b) => tierOrder[a.tier] - tierOrder[b.tier]', 'unranked.sort((a, b) => 0'),
+ ("D-M05 required-gaps tie-break dropped", RR, ' || a.requiredGaps - b.requiredGaps', ''),
+ ("D-M06 title tie-break reversed", RR, '|| text(a.role.title, b.role.title)', '|| text(b.role.title, a.role.title)'),
+ ("D-M07 null fit first", RR, '(a.fit === null ? 1 : 0) - (b.fit === null ? 1 : 0)', '(b.fit === null ? 1 : 0) - (a.fit === null ? 1 : 0)'),
+ ("D-M08 decision true", RR, 'authority: { ranking: true, decision: false, authorityState: "NONE" },', 'authority: { ranking: true, decision: true as never, authorityState: "NONE" },'),
+ ("D-M09 lexical overrides semantic", RR, '  if (finding) {', '  if (finding && requirement.lexical.basis === "NONE") {'),
+ ("D-M10 every role tier SEMANTIC", RR, 'tier: evaluated > 0 ?', 'tier: evaluated >= 0 ?'),
+ ("D-M11 best finding = worst", RR, 'SEMANTIC_VALUE[b.state] - SEMANTIC_VALUE[a.state]', 'SEMANTIC_VALUE[a.state] - SEMANTIC_VALUE[b.state]'),
+ ("D-M12 source quotes dropped", RR, 'quotes: finding.quotes.map(q => ({ ...q }))', 'quotes: []'),
+ ("E-M01 auto-match GET registers the tables", AM, 'export async function readAutoMatch(analysisId: string): Promise<Outcome<AutoMatchView>> {\n', 'export async function readAutoMatch(analysisId: string): Promise<Outcome<AutoMatchView>> {\n  await (await import("./relation-cache-registration")).ensureRelationCacheRegistration();\n'),
+ ("E-M02 ranking ignores the run snapshot", AM, 'if (run && Array.isArray(run.request.uploads)) snapshot =', 'if (false && run && Array.isArray(run.request.uploads)) snapshot ='),
+ ("E-M03 dropped pools kept", AM, 'const keep = snapshot.filter(id => active.has(id));', 'const keep = snapshot;'),
+ ("E-M04 auto-match GET cacheable", RAM, 'return NextResponse.json({ success: true, autoMatch: result.value }, { headers: NO_STORE });', 'return NextResponse.json({ success: true, autoMatch: result.value });'),
+ ("E-M05 job-ranking GET cacheable", RRK, 'return NextResponse.json({ success: true, ranking: result.value }, { headers: NO_STORE });', 'return NextResponse.json({ success: true, ranking: result.value });'),
+ ("E-M06 auto-match GET starts the run", RAM, 'const result = await readAutoMatch(analysisId);', 'await (await import("../../../../../../lib/career/job-pool/auto-match")).runAutoMatch(analysisId).catch(() => null);\n    const result = await readAutoMatch(analysisId);'),
+ ("E-M07 unknown analysis not 404", AM, '  if (!base.ok && base.issue.status === 404) return base;\n', ''),
+ ("E-M08 latest automatic ignores the marker", STORE, " AND request_json::jsonb @> '{\"auto\": true}'::jsonb", ''),
+])
+
+UAM = "lib/career/ui/auto-match.ts"; PAN = "app/components/career/demo/AutoJobRankingPanel.tsx"; FLD = "app/components/career/demo/SemanticCareerIntelligenceField.tsx"; SINV = "lib/career/ui/semantic-investigation.ts"; RDC = "app/components/career/demo/role-discovery-copy.ts"; AMC = "app/components/career/demo/auto-match-copy.ts"; SD = "app/components/career/demo/SourceDock.tsx"
+T_F = ["test/career/auto-capability", "test/career/pxj-first-screen", "test/career-demo-ui.test.tsx", "test/career-sil-language-contract.test.ts", "test/career-sil-global-language-wiring.test.tsx", "test/career/identity-core-dropzone-intake.test.tsx"]
+BLOCKS["F"] = (T_F, [
+ ("F-M01 wait never ends", UAM, "const waitedOut = open && Date.now() - started + poll.intervalMs > poll.maxMs;", "const waitedOut = false;"),
+ ("F-M02 no second read while open", UAM, "if (open && !waitedOut) timer = setTimeout(once, poll.intervalMs);", "if (false) timer = setTimeout(once, poll.intervalMs);"),
+ ("F-M03 ranking read while the run is open", UAM, "return watch.waitedOut ? `WAITED_OUT:${read.autoMatch.state}` : null;", "return `OPEN:${read.autoMatch.state}`;"),
+ ("F-M04 decoder accepts decision true", UAM, "authority.ranking !== true || authority.decision !== false ||", "authority.ranking !== true ||"),
+ ("F-M05 decoder accepts any evidence class", UAM, 'const isEvidenceClass = (value: unknown): value is EvidenceClass => value === "STAND_IN" || value === "REAL_GEMINI";', 'const isEvidenceClass = (value: unknown): value is EvidenceClass => typeof value === "string";'),
+ ("F-M06 tier order not checked", UAM, 'if (previous.tier === "LEXICAL_ONLY" && current.tier === "SEMANTIC") return null;', ''),
+ ("F-M07 fit not recomputed", UAM, "!near(rank.fit, requirements.reduce((sum, r) => sum + r.contribution, 0) / weights)", "false"),
+ ("F-M08 ranking of another analysis accepted", UAM, 'value.rankingVersion !== "ROLE_RANKING_V1" || value.analysisId !== analysisId)', 'value.rankingVersion !== "ROLE_RANKING_V1")'),
+ ("F-M09 reads become POST", UAM, 'fetcher(url, { method: "GET", cache: "no-store", signal })', 'fetcher(url, { method: "POST", cache: "no-store", signal })'),
+ ("F-M10 field never reads the run", FLD, "const autoMatch = useAutoMatch(discoveryAnalysisId);", "const autoMatch = useAutoMatch(null);"),
+ ("F-M11 manual discovery entry dropped", FLD, "{!isOrbitStageFocus && <RoleDiscoveryEntry locale={locale} inline onOpen={() => setDiscoveryOpen(true)} />}", "{null}"),
+ ("F-M12 evidence badge dropped", PAN, '{shown && <span data-testid="auto-evidence"', '{false && shown && <span data-testid="auto-evidence"'),
+ ("F-M13 authority line dropped", PAN, '<span data-testid="auto-authority"', '<span data-testid="auto-authority-x"'),
+ ("F-M14 dropped pools hidden", PAN, "{shown.poolsDropped.length > 0 && <span", "{false && <span"),
+ ("F-M15 gemini investigation read as stand-in", SINV, 'export const INVESTIGATION_PROVIDERS = { [STAND_IN_PROVIDER]: "STAND_IN", gemini: "REAL_GEMINI" } as const;', 'export const INVESTIGATION_PROVIDERS = { [STAND_IN_PROVIDER]: "STAND_IN", gemini: "STAND_IN" } as const;'),
+ ("F-M16 manual stand-in engine text changed", RDC, 'engine: { STAND_IN: "Stand-in, no model",', 'engine: { STAND_IN: "Stand-in",'),
+ ("F-M17 DE beyond-budget line in EN", AMC, 'ROLES_BEYOND_BUDGET: { cause: "Der Abgleich hat die Rollen geprüft, die sein Budget zulässt; die übrigen sind nach Namensrelation gereiht.",', 'ROLES_BEYOND_BUDGET: { cause: "The matching checked the roles its budget allows; the others are ranked by name relation.",'),
+ ("F-M18 account URL not recognised", SD, '&& url.pathname.split("/").filter(Boolean).length === 1;', '&& url.pathname.split("/").filter(Boolean).length === 2;'),
+ ("F-M20 GO TO JOB FIELD on every skip", "app/components/career/demo/AutoJobRankingPanel.tsx", 'action: run.reason === "NO_ACTIVE_POOLS" ? "GO_TO_JOB_FIELD" : null', 'action: "GO_TO_JOB_FIELD"'),
+])
+BLOCKS["BEF"] = (BLOCKS["BE"][0] + ["test/career/auto-capability"], BLOCKS["BE"][1])
+
+HOOK = "lib/career/job-pool/auto-match-hook.ts"; INV = "app/api/career/analyses/[analysisId]/role-discovery/investigations/route.ts"
+_be2 = [m for m in BLOCKS["BE"][1] if not m[0].startswith(("C-M02", "C-M03"))]
+BLOCKS["BE2"] = (BLOCKS["BE"][0] + ["test/career/job-pool/auto-match-gemini.postgres.test.ts", "test/career/job-pool/auto-match-hook.test.ts"], _be2 + [
+ ("C-M02 hook awaited again (holds the loop)", WK, "void Promise.resolve().then(() => this.afterSuccess!(job, resultAnalysisId)).catch(error => {", "await Promise.resolve().then(() => this.afterSuccess!(job, resultAnalysisId)).catch(error => {"),
+ ("C-M02b hook failure rethrown", WK, "void Promise.resolve().then(() => this.afterSuccess!(job, resultAnalysisId)).catch(error => {", "await Promise.resolve().then(() => this.afterSuccess!(job, resultAnalysisId)).catch(error => { throw error;"),
+ ("C-M03 worker script not wired", SCR, "createAutoMatchHook(workerId)", "async () => undefined"),
+ ("C-M03b hook never runs the match", HOOK, "const outcome = await run(resultAnalysisId);", 'const outcome = { outcome: "DISABLED", reason: null } as AutoMatchOutcome; void run;'),
+ ("N-M01 provider timeout removed", GSP, "httpOptions: { timeout: GEMINI_SEMANTIC_TIMEOUT_MS }", "httpOptions: {}"),
+ ("N-M02 ranking uses the configured engine", AM, 'runEngine ?? (config.state === "READY" ? config.engine : null)', '(config.state === "READY" ? config.engine : null)'),
+ ("N-M03 run engine not stored", AM, "requestExtra: { auto: true, engine: config.engine,", "requestExtra: { auto: true,"),
+ ("N-M04 NOT_PROVISIONED run reads FAILED", AM, 'return { outcome: "DISABLED", reason: "NOT_PROVISIONED" };', "return { outcome: \"FAILED\", reason: started.code };"),
+ ("N-M05 GET NOT_PROVISIONED dropped", AM, '  if (!(await tableExists("career_relation_investigations")) && (await verifyDisposableTestDatabase(process.env.DATABASE_URL).then(() => true, () => false)) === false) return { ok: true, value: { state: "DISABLED", reason: "NOT_PROVISIONED", ...EMPTY } };\n', ""),
+ ("N-M06 day budget reason dropped", AM, 'tasks.some(t => t.status === "BUDGET_EXHAUSTED") ? "DAY_BUDGET_EXHAUSTED" : ', ""),
+ ("N-M07 route accepts auto: ids", INV, '    if (isRecord(body) && typeof body.clientRequestId === "string" && body.clientRequestId.startsWith("auto:")) return issue("ERR_INVESTIGATION_BODY_INVALID", 400); // the identity of the automatic run is reserved\n', ""),
+])
+
+T, M = BLOCKS[BLOCK]
+if sys.argv[3:4] == ["check"]:
+    for name, f, old, new in M: print(open(f"{PRISTINE}/{f}").read().count(old), name)
+    sys.exit()
+if os.path.exists(WORK): shutil.rmtree(WORK)
+shutil.copytree(PRISTINE, WORK, symlinks=True)
+for p in ["test/pink"]:
+    if os.path.exists(f"{WORK}/{p}"): shutil.rmtree(f"{WORK}/{p}")
+BASE = set(l.split(" > ",1)[-1].strip()[:110] for l in open(os.environ["BASE_FAILS"]) if l.strip()) if os.environ.get("BASE_FAILS") else set()
+results = []; sel = sys.argv[3:]
+for name, f, old, new in M:
+    if sel and name.split()[0] not in sel: continue
+    src = open(f"{PRISTINE}/{f}").read(); n = src.count(old)
+    if n != 1: results.append({"mutation": name, "error": f"pattern count {n}"}); print(name, "PATTERN", n, flush=True); continue
+    open(f"{WORK}/{f}", "w").write(src.replace(old, new))
+    try:
+        p = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *T], cwd=WORK, capture_output=True, text=True, timeout=1500); out = p.stdout + p.stderr; code = p.returncode
+    except subprocess.TimeoutExpired as e:
+        out = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or ""); code = "TIMEOUT"
+    finally:
+        shutil.copyfile(f"{PRISTINE}/{f}", f"{WORK}/{f}")
+    tot = " · ".join(re.sub(r"\s+", " ", m).strip() for m in re.findall(r"(?m)^\s*(?:Test Files|Tests)\s.*$", out))
+    failed = sorted({re.sub(r"\s+\d+ms$", "", l.split(" > ", 1)[-1].strip())[:110] for l in out.splitlines() if l.startswith(" FAIL ")})
+    new = [t for t in failed if t not in BASE]; red = code == "TIMEOUT" or bool(new) or (code != 0 and not failed)
+    results.append({"mutation": name, "file": f, "exit": code, "red": red, "totals": tot, "newFailures": new[:6]})
+    print(name, "RED" if red else "GREEN (not caught)", tot, flush=True)
+json.dump(results, open(f"{I}/../acp/out/mut-{BLOCK}{os.environ.get('MUT_TAG', '')}{os.environ.get('WORK_TAG', '')}.json", "w"), indent=1, ensure_ascii=False)
+print("MUT-END")

@@ -1,0 +1,529 @@
+PINK · SFE PHASE F · PERSON × JOB MAPPING — INDEPENDENT PIXEL-LEVEL EVIDENCE
+============================================================================
+Role: PINK is the independent inverse validator. OTTAVIO rejected phase E on VISUAL grounds (too dark, too
+static, too little alive; breath imperceptible; bodies/couplings develop no spatial effect). The phase-E GO on
+9cc06f84 stands as an ENGINEERING fact (DOM/geometry proofs P-1..P-13) and is NOT withdrawn; it was never a
+design acceptance. GELB's lesson, which PINK shares: every phase-E proof read the DOM — attributes, computed
+styles, geometry. NOT ONE read a pixel. The defect OTTAVIO saw lives entirely in the rasterised image, and the
+whole phase-E proof surface was blind to it by construction. Phase F's proof surface must read pixels.
+
+PHASE_F_BASE = 9cc06f84 (phase-E delivery tip). This file §1 is PINK's OWN red-first pixel baseline on 9cc06f84,
+built on PINK's OWN instrument and OWN render — a SECOND measurement, deliberately not a re-run of GELB's harness
+and NOT read against GELB's §0 readings until PINK's own were committed (independence condition, GELB's own ask).
+
+
+§1  RED-FIRST PIXEL BASELINE ON 9cc06f84  (own render, own code; committed before reading GELB §0)
+-----------------------------------------------------------------------------------------------------
+RENDER (PINK's own, isolated, read-only; no provider reachable):
+  - Worktree /home/codi/Entwicklung/condyn-admin-pink-visual-e at 9cc06f84 (clean). PRODUCTION build
+    (next build, dummy DATABASE_URL) served by `next start -p 3121`; fixture façade on 3120 proxies non-/api to
+    3121 and serves the 6 fixture routes from test/career/** (shared ground truth, B-7). NOT GELB's :3020 façade.
+  - PROVENANCE confirmed from façade log: each page load drives exactly 5 server-side FIXTURE GETs (investigation,
+    job-pools, analyses, auto-match, job-ranking), 0 UNSCRIPTED, 0 REFUSED. The render's data is entirely PINK's
+    fixtures. (Client-side /api XHR count is 0 because the data is fetched SSR; the 5 server GETs are the path.)
+  - Variant default; URL /career/demo?focus=MAPPING&investigationMode=PERSON&analysisId=CAN_…0002.
+  - Measured at 1920×1080 (the size OTTAVIO judged), deviceScaleFactor 1 so 1 screenshot px == 1 CSS px; 1280×800
+    as a cross-check second size.
+
+INSTRUMENT (scripts/pink-pixels.mjs): Playwright screenshot of the REGION the field's svg occupies (NOT sampled
+points) → sharp raw RGBA → WCAG relative luminance per pixel (sRGB linearised: c'≤0.03928 ? c'/12.92 :
+((c'+0.055)/1.055)^2.4 ; L = 0.2126R'+0.7152G'+0.0722B'). Disc mask = pixels within the ring circle (centre and
+radius taken from [data-testid=mapping-ring-field] getBoundingClientRect). Region 924×924 @1920 (disc 616,149 px);
+520×520 @1280 (disc 183,785 px).
+
+GELB's two self-found phase-F defects, both AVOIDED here and asserted, not assumed:
+  (1) ONBOARDING OVERLAY: present on a fresh profile (overlay count = 1 at first paint — reproduced). The harness
+      DISMISSES it and ASSERTS absence before any measurement: overlay count must be 0 AND the element under the
+      field centre must belong to the svg (elementFromPoint walks to a <svg> ancestor, no overlay/scrim/backdrop
+      above it). A non-zero/scrim state ABORTS the run (exit 2). Every reading below was taken with overlay = 0.
+  (2) SAMPLE-NOT-REGION: Q-F1/F4/F6 iterate EVERY pixel of the square / disc; Q-F5 scans each node's full box and a
+      surrounding band. No hand-chosen sample points.
+
+THE SIX READINGS  (primary 1920×1080; raw per-pixel WCAG luminance unless noted)
+
+Q-F1  STAGE SQUARE (924×924, whole svg):
+      mean 3.25e-3 · p50 1.45e-3 · p90 4.96e-3 · p99 1.39e-2 · p999 2.57e-1 · max 6.35e-1
+      fraction above 0.005 = 6.03% · above 0.02 = 0.78% · above 0.05 = 0.31%
+Q-F4  DISC INTERIOR (616,149 px, every pixel inside the ring):
+      mean 3.78e-3 · p50 1.67e-3 · p90 4.99e-3 · p99 2.03e-2 · p999 2.80e-1 · max 6.35e-1
+      above 0.005 = 7.94% · above 0.02 = 1.01% · above 0.05 = 0.37%
+      READ: the field is BLACK. The median disc pixel is 1.7e-3; 90% of the disc is below 5e-3; only ~1% exceeds
+      0.02. The field is near-black everywhere except the ~6-8% of pixels that are the marks. This is OTTAVIO's
+      "too dark" quantified, and the red-first floor for PF-1 (ground luminance) / the plan to raise ground ~10×.
+      (1280×800 agrees, slightly higher mark density on the smaller square: mean 4.5e-3/5.3e-3, above-0.02
+       1.66%/2.20%, p50 identical 1.45e-3 — the same near-black ground value at both sizes.)
+
+Q-F5  EACH BODY & CAPABILITY NODE vs ITS LOCAL SURROUND (peak inside box vs median of a 10px band; Weber):
+      bodies (5): peak 0.48–0.63, surround median 1.5e-3–5.0e-3, Weber ratio 97–398 (contrast 96–397).
+      capability nodes (3): peak 0.53–0.63, surround median ~3.4e-3, Weber ratio 158–185.
+      READ: marks are bright points sitting on a near-black ground with essentially ZERO falloff — the surround
+      is black right up to the mark edge. No halo, no gradient, no depth. This is OTTAVIO's "bodies and couplings
+      develop no spatial effect" quantified, and the red-first floor for PF-3/PF-4 (depth on core+halo).
+
+Q-F2  BREATH, TEMPORAL (14 frames over 11.24s ≥ one 10s period; per-pixel temporal max−min):
+      RAW: swing p999 1.95e-2 · swing max 3.39e-2 · pixels swing>0.002 = 74,015 (8.67%).
+      WHERE (radius r/R from field centre): swinging pixels concentrate in the RIM annulus r/R 0.9–1.04
+      (18,713 + 25,290 = 44,003 of 74,015) and a small central cluster r/R 0.05–0.16 (1,313 + 5,727). The mid
+      disc (r/R 0.3–0.7) barely moves. The breath at 9cc06f84 is a thin RING modulation — consistent with the
+      phase-E DOM finding "idle = only the ring moves", now confirmed at the pixel. Red-first floor for PF-5/F-6.
+
+Q-F3  MOTION AT REST (mean |frame−prev| over the stage; pixels changing >0.002 per step):
+      RAW: mean |Δframe| 1.52e-4 · pixels/step >0.002 mean 12,894, max 16,308 (over 865ms steps).
+      This includes the breath (intended slow motion). See the instrument caveat below for signal vs noise.
+
+Q-F6  GROUND PURITY (field drawing SUPPRESSED via svg visibility:hidden; re-measure the disc):
+      disc with field suppressed: mean 1.67e-3 · p90 1.93e-3 · p99 4.71e-3 · max 8.92e-3 · above 0.02 = 0% ·
+      bright (>0.02) pixels inside disc = 0, no bbox.
+      READ: there is NO host bleed in the disc — the only light inside the disc is the field's own. (This directly
+      refutes the phase-E sampling defect that claimed/denied panels inside the field: measuring the REGION, there
+      are zero ground pixels above 0.02.) The ground under the field is near-black (max 8.9e-3), so Q-F1/Q-F4
+      darkness is genuine field darkness, not a measurement through a scrim or a bright backdrop. Red-first floor
+      for PF-6 (ground purity) — phase F raises the ground deliberately; this is what it starts from.
+
+INSTRUMENT SELF-AUDIT — the decisive caveat (scripts/pink-pixels-floor.mjs, pink-breath-vs-floor.mjs):
+  Under reducedMotion:reduce at 9cc06f84 NOTHING animates (phase-E P-6 is green: 0 durations, 0 moved), yet the
+  IMAGE is NOT pixel-identical frame to frame. A sub-pixel antialiasing shift on a bright-mark edge flips one
+  pixel from ~0.6 to ~0.001 — a huge SINGLE-PIXEL delta. Measured static noise floor: swing_max 0.0319, 11,302
+  pixels swing>0.002, mean|Δ| 3.6e-5. CONSEQUENCES, stated plainly because phase F depends on them:
+    - Q-F2 raw swing_max (0.0339) is NOT distinguishable from the static floor's max (0.0319). The per-pixel MAX
+      and any raw single-pixel threshold are NOISE-DOMINATED. The robust signal is the COUNT of swinging pixels
+      and mean|Δ|: signal 74k vs floor 13k pixels>0.002; signal 1.5e-4 vs floor 3.6e-5 mean — the breath is ~5×
+      above the floor on both, so it IS real, but small.
+    - A 2px blur separates them cleanly: >0.002 count signal 74,259→52,292 (survives) vs floor 13,456→2,225
+      (collapses); signal:floor ratio 5.5:1 raw → 23:1 blurred. Blurred breath mean|Δ| ~6e-5, swing_max ~0.011.
+    - FOR PHASE F: PF-8's "every mark pixel swing ≤ 0.002" and F-6's ceiling "no pixel over 0.030" CANNOT be
+      tested at raw single-pixel strictness — the antialiasing floor alone reaches 0.030–0.032 and 11k pixels
+      >0.002 with NOTHING moving. These obligations need an AA-tolerant instrument (area/blur luminance, or a
+      per-pixel epsilon / neighbourhood-persistence). A naive raw test false-fails on every build, phase E or F.
+      PF-11 ("every pixel identical across ≥2s") has the same problem: it is already false at 9cc06f84 under
+      reduce by 11k pixels, none of them moving. This is PINK's first concrete feedback on the §7/§8 corridors.
+
+OUTPUTS: outputs/9cc06f84-baseline/{QF-1920x1080.json, QF-1280x800.json, noise-floor.json, breath-vs-floor.json}.
+SHOTS:   shots/{stage,ground}-{1920x1080,1280x800}.png (stage = as rendered; ground = field drawing suppressed).
+SCRIPTS: scripts/{pink-pixels.mjs (the instrument), pink-pixels-floor.mjs, pink-breath-vs-floor.mjs,
+         pink-probe-dom.mjs, pink-facade.mts}.
+
+STATUS: baseline delivered to GELB as PINK's independent six readings. §0 (GELB's readings) and §7/§8 (the 14
+phase-F obligations on tip f31605cf) to be taken up next — a fresh render worktree at f31605cf, each obligation
+red-first with a recorded mutant, with the AA-tolerant instrument correction above carried in from the start.
+
+
+§2  §0 CROSS-CHECK + TESTABILITY FINDING FOR PF-6 / PF-8 / PF-11  (read §0 only AFTER §1 was committed)
+-------------------------------------------------------------------------------------------------------
+PINK's six independent readings (§1, committed at 5a3a7847 BEFORE §0 was read) vs GELB's §0 (M-F1..M-F6):
+
+  M-F1 ≡ Q-F1  stage square: mean 0.00325, p50 0.00145, p90 0.00496, max 0.635, above-0.05 0.31%  — IDENTICAL.
+  M-F2 ≡ Q-F4/Q-F6  disc p50 0.00167, suppressed-ground p50 0.00145  — IDENTICAL.
+  M-F3 ≡ Q-F6  suppressed-disc max 0.0089, 0 above the threshold  — IDENTICAL (no host STATIC bleed).
+  M-F6 ≡ Q-F3  motion at rest 0.00016 vs 0.000152  — IDENTICAL.
+  M-F4 vs Q-F5  body peaks: GELB 0.307–0.547, PINK 0.48–0.635 — DEFINITIONAL only: GELB uses p98-inside, PINK
+                uses max. Same conclusion (binary image, bright points on black, no mid-tone). Not a fault.
+  M-F5 vs Q-F2  breath: GELB peak 0.0427/p999 0.0205/rim-concentrated; PINK 0.0339/0.0195/rim-concentrated. The
+                p999 and rim concentration agree; the per-pixel MAX differs because it is NOISE-DOMINATED (below).
+Two independent instruments, same render, agree on every robust statistic. Both are sound on static luminance.
+
+THE ONE THING §0 DOES NOT CARRY — a raster/antialiasing jitter floor, and what it means for §7/§8/§11:
+Under reducedMotion:reduce at 9cc06f84 the FIELD has 0 animations (phase-E P-6 green) yet the IMAGE is not
+frame-identical. Whole-square swing floor: max 0.032, 11,302 px >0.002, mean|Δ| 3.6e-5. Bucketed by source
+(scripts/pink-floor-regions.mjs, outputs/9cc06f84-baseline/floor-regions.json):
+  - MARK edges (bodies/arcs/nodes boxes +2px): max 0.0275; 7.7% of mark px swing >0.002; 2.27% >0.006.
+  - QUIET mid-disc r/R 0.30–0.60 (host-through-translucent-ground): max 0.0059; 0.34% >0.002; 0% >0.006.
+  - OUTSIDE disc (host): max 0.0094; 0.08% >0.002.
+  - the whole-square max 0.032 is the RING stroke edge at r/R~1.0 (a bright 1.2px stroke, not in the buckets).
+INTERPRETATION, reconciled with §11:
+  1. The BROAD low-amplitude disc change under reduce is host motion through the 8% STAGE_GROUND_ALPHA — this
+     INDEPENDENTLY CORROBORATES A-F4 (GRÜN's 101,868 changing disc px, max Δ 0.032) with a second instrument, and
+     my quiet-mid-disc max 0.0059 confirms it is low-amplitude and will be removed by DISC_GROUND_OPAQUE. Good.
+  2. The HIGH single-pixel maxima (0.027 marks / 0.032 ring) are raster/antialiasing jitter on the field's OWN
+     bright thin edges. An opaque ground does NOT remove these — they are present on any build, phase E or F.
+CONSEQUENCE for the obligations (semantics right, MEASUREMENT must change — this is PINK's main feedback):
+  - PF-8 (A-F5: p99 of mark px ≤ 0.002 AND max ≤ 0.006): BOTH limbs are already RED from AA alone at this
+    geometry (mark px: 7.7% >0.002 ⇒ p99 ≫ 0.002; max 0.0275 ≫ 0.006), with the firewall working and nothing
+    breathing. A-F5 foresaw the STATIC fringe; the TEMPORAL jitter of that fringe across screenshots is the part
+    that bites. PF-8 must be measured AA/raster-tolerant: co-registered frames, an area/blur luminance, or
+    amplitude-at-the-breath-frequency — not raw per-pixel max-min.
+  - PF-11 ("every pixel identical across ≥2s", even scoped to the disc per A-F4): unachievable at pixel-exact
+    strictness — the field's own ring/mark edges jitter ~0.027–0.032 under reduce. Needs a per-pixel epsilon
+    (≈0.01) or an area/blur basis. A-F4 removed the host CAUSE; the field's own AA remains.
+  - PF-6 ceiling ("no pixel swings > 0.030"): BORDERLINE — ring-edge raster jitter reached 0.032 under reduce.
+    Safer as a high percentile (p999.9) or on co-registered/blurred frames.
+  - PF-6 floor / PF-5 (area, low-frequency) are UNAFFECTED: a 2px blur keeps the breath (>0.002 count
+    52,292) while collapsing the floor (2,225) — 23:1. Area metrics are robust; per-pixel extremes are not.
+These are build-independent instrument findings (SwiftShader software raster, dsf=1). They do not change any
+F-rule; they change how PF-6/PF-8/PF-11 must be instrumented so a CORRECT phase-F build does not read red. PINK
+will carry the AA/raster-tolerant instrument into the PF-1..PF-15 red/green pass when GRÜN commits a phase-F
+IMPLEMENTATION (the architecture tip f31605cf/fdf54b39 is the contract; there is no phase-F build to measure yet).
+
+
+§3  ATTACK ON A-F6 — E-7's FOUR RINGS ON RENDERED PIXELS (GELB asked PINK to BREAK this, not confirm it)
+-------------------------------------------------------------------------------------------------------
+GELB's A-F6 claim: E-7's "four rings told apart by luminance alone, each step >=1.6x" does NOT hold on pixels and
+never did — rendered luminance is dominated by stroke WIDTH and DASH, not ink alpha. Edge ratios (GELB) 1.316 /
+0.895 / 0.573; best-fit (ink 0.085) renders dimmer than shelf (ink 0.05). PINK tried to falsify it, with a
+deliberately DIFFERENT method (scripts/pink-rings-pixels.mjs): geometry via getScreenCTM (circles have NO cx/cy
+attrs — default 0, positioned by transform; parseFloat(null) bug caught and fixed, else all-zero), 720 angles,
+per-angle STROKE PEAK across the stroke width, and TWO readings — all-angles (incl. dash gaps, like GELB) AND
+ink-only (lit angles, peak>0.004) to test whether separation exists in the ink and GELB's method merely includes
+gaps. The four rings at base (9cc06f84, 1920x1080):
+  horizon  ink0.25 sw1.2  solid       allP10 0.0229 p50 0.0367 p90 0.0473  litFrac 1
+  field    ink0.15 sw1.2  solid       allP10 0.0078 p50 0.0098 p90 0.0130  litFrac 1
+  shelf    ink0.05 sw61   solid band  allP10 0.0082 p50 0.0119 p90 0.0140  litFrac 1   (max 0.58 = contamination)
+  best     ink0.086 sw1.2 dash 2.3/4.6 allP10 0.0017 p50 0.0030 p90 0.0091 litFrac 0.41 litP50 0.0071
+RESULT — A-F6 CONFIRMED, independently and doubly:
+  - horizon and best-fit match GELB to ~5% on independent geometry + sampling (horizon p50 0.0367 vs 0.0364,
+    p90 0.0473 vs 0.0474; best p10/p50/p90 0.0017/0.0030/0.0091 vs 0.0017/0.0025/0.0087).
+  - closest-point ratios all-angles 1.636 / 0.630 / 0.861; INK-ONLY 1.636 / 0.630 / 0.796. BOTH fail >=1.6 at the
+    lower two steps DECISIVELY (<1.0). So it is NOT merely the dash: even restricting to lit ink, best-fit (0.086)
+    renders at field's level and the shelf band sits below field. The alpha order 0.25>0.15>0.086>0.05 does NOT
+    map to rendered-luminance order. best-fit's dash puts 59% of its circumference in ground (litFrac 0.41),
+    dragging its percentiles to the ground; the shelf's width makes it a wide faint band.
+  - ONE honest method divergence, which REINFORCES the verdict: PINK's "max across the 61px shelf band" is
+    contaminated by bodies/arcs/beams crossing that wide annulus (shelf max 0.58 = a body), so PINK's shelf p50
+    0.0119 is inflated and reorders the marginal middle (PINK horizon>shelf>field; GELB horizon>field>shelf). The
+    shelf's OWN band value is ~0.005-0.008, consistent with GELB's flat 0.00496 — once de-contaminated the shelf
+    sits BELOW field, exactly as GELB has it. For a wide band, max-across-width is the wrong statistic; GELB's
+    representative-within-stroke is correct. The verdict is unchanged either way: the rings do not separate >=1.6x.
+  - The TOP step (horizon/field) is marginal and instrument-sensitive (PINK 1.75 if de-contaminated, GELB 1.316);
+    the LOWER steps fail in both measurements regardless of method. So the claim is robust at the steps that matter.
+CONCLUSION: PF-15 surfaces an OLD defect (E-7 never held on pixels — it was specified/verified in ink alphas),
+not a new burden. GRÜN re-deriving four ring constants against the phase-F ground is justified and necessary.
+
+ACCESSOR CHECK (GELB: field-e.test.tsx:260 read r.poolRoleId — nonexistent; r.role.poolRoleId exists — so the
+in-repo P-13 precondition compared [undefined,rank,tier,fit] and left role order/identity unchecked):
+PINK's P-13 instrument used the CORRECT accessor rank.role.poolRoleId (pink-facade-p13.mts:53), and PINK's P-13
+conclusion rests on a RENDER measurement (exactly one data-change=EVIDENCE arc = mapping-arc-q_covers, never more;
+0 bodies moved by COMPUTED transform; mappingFieldTransient; provenance mapping-delta-requirements=1), not on the
+in-repo precondition. So P-13 STANDS on PINK's measurement; only the in-repo test was weak and should be fixed.
+PHASE_E §19 need not be amended on the strength of PINK's evidence.
+
+A-F11 adopted for the PF-1..PF-15 pass: every temporal obligation on 2px-blurred frames, each run measures its own
+back-to-back jitter floor in the same pass, bound admissible only at >=5x floor else INCONCLUSIVE. PF-8 as the
+coherent amplitude at 0.1 Hz (least-squares over one period) on sign/structure pixels; PF-11 broadband at 2x floor.
+PINK's baseline blur already showed 23:1 (clears 5x). Note: PINK will sample finer than the baseline's 865ms
+cadence for a clean single-frequency fit. §14/§15 noted: halo LAYOUT lives in classList (mf-layout), not data-* —
+PINK will admit mf-layout in mark-count instruments and honor the category check (no sign/structure element carries
+a transform transition). A-F13 agreed: PF-8 bounds a sign's OWN luminance, not its contrast against the breathing
+medium — consistent with A-F5's absolute backing, so PF-2/PF-15 band/ring separation stays phase-independent.
+
+
+§4  A-F11 SUPERSEDED BY §16 (GELB, commit 18562b0c) — the version recorded in §3 is WRONG; this binds instead
+-------------------------------------------------------------------------------------------------------------
+GELB implemented A-F11-as-first-written, ran it at base, and it FAILED THE OTHER WAY: PF-11 GREEN (max delta
+0.00842 vs limit 0.00852 — passed by 1%) and PF-8 GREEN (coherent p99 0.00161 ≤ 0.002) on a build where the ring
+demonstrably breathes and the host moves under the field. Two greens-by-construction — the exact defect class.
+Two causes, both in the RULE, not in PINK's jitter finding:
+  1. The 2px BLUR destroys what PF-8 exists to catch: blur suppresses the amplitude of a thin structure moving
+     GEOMETRICALLY (= what a breath leak onto a mark looks like). PINK's 23:1 was an AREA result on the broad
+     ground (correct THERE); it must NOT be applied to a per-pixel EDGE statistic. PF-8 is measured UNBLURRED;
+     the coherent fit alone does the rejection.
+  2. MAX-against-MAX has no statistical content when floor ~ signal. Compare DISTRIBUTIONS, not maxima.
+A-F11 AS CORRECTED (binds the PF-1..PF-15 pass; replaces the §3 note):
+  - Every temporal obligation measures its OWN floor in the same run: back-to-back frames for BROADBAND bounds;
+    a fit at a DECOY frequency incommensurate with the breath for COHERENT ones.
+  - Compare DISTRIBUTIONS, not maxima. Blur for AREA statistics ONLY, never for a moving-edge statistic.
+  - Admissibility is ASYMMETRIC: a GREEN needs the floor well under the bound (a high floor hides a leak); a RED
+    needs the signal clearly above the floor (a fluctuating floor invents one).
+  PF-11 (restated): at thresholds 0.001/0.002/0.004/0.008 on BLURRED frames (it is a COUNT of changing disc
+    pixels — area-like, so blur is right here), the count between two samples >=2s apart must be <= 1.5x the
+    back-to-back count AT EVERY THRESHOLD. Base reads 6.43/4.48/13.7/inf — decisively RED (max form passed by 1%).
+  PF-8 (restated, TWO TIERS — one statistic cannot do both jobs):
+    Tier A (systematic): coherent amplitude at 0.1Hz of the MEAN over all ~178k sign pixels, <= 0.0005 absolute.
+      Pooling puts the floor ~0.00001 (50x under bound) — the sensitive limb a GREEN rests on. Reads GREEN at
+      base CORRECTLY: the phase-E ring MOVES not brightens, geometric movement ~conserves total light, so the
+      pooled mean is blind to it.
+    Tier B (localised): per-pixel p99 of the coherent amplitude, UNBLURRED, <= 2x the run's own decoy-frequency
+      floor (stated against own floor because 26 frames cannot resolve 0.002 — floor sits ~0.0023). Catches the
+      geometric move Tier A misses: base p99 0.00484 vs floor 0.00231 = RED.
+    Neither tier alone is the firewall. A leak class escaping BOTH is "the finding of the phase."
+
+PINK's leak-class hypotheses to hunt on GRÜN's tip (candidates, to TEST not assert):
+  (a) LOW-PIXEL-COUNT coherent leak: a halo/gradient edge grazing < 1% of sign pixels, coherent at 0.1Hz, with
+      near-zero pooled mean — escapes Tier B (p99 blind to <1%) AND Tier A (pooled mean clean). Counter to build:
+      a COHERENT-amplitude pixel COUNT above the decoy floor (the PF-11 ladder logic applied to the coherent fit),
+      or p99.9, not p99.
+  (b) HARMONIC leak from the 4:6 (NON-sinusoidal) breath (A-F1): the breath has energy at 0.1Hz AND its harmonics
+      (0.2Hz+). Both tiers fit the FUNDAMENTAL (0.1Hz) only, so a leak whose dominant component is the 2nd
+      harmonic under-reads in both. Counter: fit the firewall over the breath's measured spectrum (fundamental +
+      harmonics), not the fundamental alone.
+These supersede §3's "A-F11 adopted exactly". PINK will build the CORRECTED instrument when the implementation tip
+lands, and will run (a)/(b) as explicit leak-mutants.
+
+
+§5  PF-8 THREE-TIER FIREWALL LOCK-IN — independent build, run at base 9cc06f84 (confirms GELB §19 + an A-F11 trap)
+----------------------------------------------------------------------------------------------------------------
+Built PINK's own three-tier PF-8 (§17 Tier A/B + §19 Tier C), signal RSS over {T,T/2,T/3}=0.1/0.2/0.3Hz, null RSS
+over decoys {T/2.7,T/4.3,T/5.9}=0.270/0.233/0.169Hz, UNBLURRED. Sign mask = stage minus svg-hidden >0.001 (at base
+no lit ground, so = marks+arcs+ticks+beams+nodes+text+4 rings; the 61px shelf band dominates the count). 200,689
+sign px (GELB ~178k — same order; PINK's whole-svg-hide>0.001 is slightly more inclusive).
+RESULT (v2, LSQ) CONFIRMS GELB §19:
+  Tier A pooled  0.000155 vs bound 0.0005 (floor 1.6e-5)                 GREEN  (GELB 0.00014/7e-5 GREEN)
+  Tier B p99     0.00514 vs floor 0.00184 = 2.79x                        RED    (GELB 0.00629/0.00287=2.2x RED)
+  Tier C ladder  signal 35895/22326/3814/30 null 11763/1444/139/6
+                 ratios 3.05/15.46/27.44/5.0                             RED    (GELB 1.07/2.09/32.77/inf RED)
+All three tiers match GELB's verdicts; Tier C is the sharpest limb (PINK 27x at 0.004 vs Tier B 2.79x) — GELB's
+"Tier C is the strongest" confirmed. Tier A green is CORRECT: the phase-E ring moves (geometric), conserving
+pooled light, so the pooled-mean fit is blind to it; B and C catch it.
+
+THE A-F11 TRAP, REPRODUCED IN PINK'S OWN HANDS (and the operational fix for the real pass):
+PINK's FIRST build (v1) used a simple DFT projection (uniform-sampling assumption) over 14 frames at 849ms cadence
+and FALSELY read Tier B 1.04x and Tier C mid-rung 1.39x — a sampling-induced near-green-by-construction. Cause:
+this machine renders ~600-820ms/screenshot (SwiftShader software raster of the host's 17 backdrop-filters + 800px
+core = GELB's A-F2 cost), so a uniform DFT at that spacing under-samples the 0.43/0.59Hz decoys; they ALIAS and
+inflate the null until floor~signal and the separation collapses. Tell-tale: the Tier A FLOOR dropped 10x between
+methods (v1 0.0001 -> v2 1.6e-5) once the estimator was correct. FIX, binding for the PF-8 pass on GRÜN's tip
+(same machine): the lock-in MUST use a least-squares multi-sinusoid fit over a LONG, naturally-JITTERED window
+(~26s, 63 frames here), never a short uniform DFT; jittered sampling + LSQ estimates all six frequencies without
+the uniform-Nyquist bound. This is A-F11's "a bound the instrument cannot reach is not a bound" applied to the
+FREQUENCY axis — each PF-8 run must confirm its decoy floor actually resolved (the 10x floor drop is the check).
+Scripts: scripts/pink-pf8-lockin.mjs (v1, kept as the demonstrated trap), pink-pf8-lockin2.mjs (v2, correct),
+pink-shot-timing.mjs (the ~608-822ms/screenshot profile). Output: outputs/9cc06f84-baseline/pf8-lockin.json.
+
+
+§6  A-F20 ADOPTED — decoys relocated to 0.15/0.25/0.35Hz; floors CONVERGE independently (GELB §21/059e1dcf)
+---------------------------------------------------------------------------------------------------------
+GELB's harness, corrected for the same aliasing class (it fitted each frequency separately AND placed a decoy at
+0.59Hz above its own ~1s-cadence Nyquist), now reports tier A floor 0.00001, tier B 3.45x, tier C 2.27/21.11/
+236.45/inf. A-F20 (binding both lanes): the lock-in is ONE simultaneous LSQ of DC + every frequency, over a long
+naturally-jittered window; decoys 0.15/0.25/0.35Hz placed BETWEEN the harmonics and below cadence Nyquist; every
+run reports its own window and decoy floor; an unresolved floor INVALIDATES the run (no verdict).
+PINK adopted A-F20 (scripts/pink-pf8-lockin3.mjs decoys; pink-pf8-lockin3b.mjs = +47s window) and re-ran at base:
+  26s window (2.6 periods):  tier A floor 3.6e-5  · tier B 2.30x · tier C 2.10/6.77/53.34/24      all verdicts = GELB
+  47s window (4.7 periods):  tier A floor 1.8e-5  · tier B 2.45x · tier C 1.85/8.35/116.89/inf     all verdicts = GELB
+CONVERGENCE: PINK's tier A floor at the aligned 47s window (1.8e-5) lands on GELB's converged 1e-5 — two
+instruments corrected from DIFFERENT starting errors meet at the same floor (worth more than either number alone).
+PINK's ADDITIVE refinement to A-F20: the floor is WINDOW-LENGTH dependent and keeps dropping until ~4.7 periods —
+PINK measured floor 3.6e-5 at 26s falling to 1.8e-5 at 47s, and tier C at 0.004 sharpening 53x->117x over the same
+change. So A-F20's "long jittered window" has a FLOOR: >= ~4.7 periods (47s), below which the decoy floor has not
+settled and (by A-F20's own rule) the run should be inconclusive. Confirmed GELB's 47s/4.7-period choice is not
+arbitrary — it is where the floor stabilises. PINK's instrument is now aligned (3b) for the PF-1..PF-15 pass.
+GRÜN PF-3 note (halo/core must be measured DIFFERENTIALLY, with-halo minus without-halo, because rank-4's halo
+window at r=430 reads the lit ground inside the shelf and false-reads 0.31 vs 0.25) — accepted as sound (same
+class as M-F4: a window reporting what is in it, not what put it there) and TO BE VERIFIED by PINK on GRÜN's tip
+(no halo exists at base). Per-element sign-hide (not stage-minus-svg) confirmed in the doc for the lit-ground tip.
+
+
+§7  A-F21 CONFIRMED + REFINED — the floor settles at 2/df; the 70% self-check needs its OWN sub-window resolved
+---------------------------------------------------------------------------------------------------------------
+GELB's A-F21 (74b62cdb/§23): window >= 2/df (df = smallest signal-to-decoy spacing = 0.05Hz -> 40s), plus a
+self-check that re-fits the first 70% and reports INCONCLUSIVE if the floor is still falling. GELB's reframing of
+PINK's window finding as FREQUENCY RESOLUTION (not period count) is correct and better. PINK tested it directly
+(scripts/pink-pf8-window.mjs: one 62s pooled-mean capture, offline nested-window LSQ fits):
+  Tier-A floor vs window:  20s/1.0cell 3.28e-5 · 26s/1.3 3.12e-5 · 33s/1.65 3.03e-5 · 40s/2.0 2.64e-5 ·
+                           47s/2.35 2.76e-5 · 54s/2.7 2.53e-5 · 62s/3.1 2.65e-5.
+  => the floor falls until ~2 cells (40s) then FLATTENS. A-F21's 2/df minimum is confirmed by the measured curve:
+     below 2 cells signal leaks into the null and biases the floor high; at 2 cells it stops.
+PINK'S REFINEMENT (measured, additive to A-F21): the 70% self-check is itself confounded by the SUB-window's
+resolution. With a 62s full window the 70% sub-window is 43.6s = 2.18 cells (>=2) and the self-check ratio is 0.94
+(clean ~1.0). At GELB's 49.5s full window the 70% sub-window is 34.6s = 1.73 cells (<2), so its floor is inflated
+by its OWN under-resolution (PINK's curve: floor at 33s is 3.03e-5 vs plateau 2.6e-5 ~= 1.16x from resolution
+alone) -> GELB's observed 1.47 ratio is substantially sub-window resolution, NOT a falling true floor. So the
+self-check is only clean when the sub-window also clears 2/df: FULL WINDOW >= 2/(0.7*df) ~= 57s for the current
+frequencies. PINK will run the PF-8 pass at >=57s so both the window and its 70% self-check are resolution-valid.
+(Absolute floor: PINK plateau ~2.6e-5 vs GELB converged 1e-5 — same order, both 19-50x under the 0.0005 bound; the
+gap is plausibly PINK's more-inclusive stage-minus-svg mask, which per-element sign-hide on the tip will tighten.
+The reproducible, build-independent result is the SHAPE: settles at 2 cells.)
+ALSO ADOPTED from §23: PF-9 reports NOT RUN on the default variant (data-breath=LIVE, no STILL state) — needs the
+`running` variant; PF-10 reports INCONCLUSIVE unless the UNSELECTED breath amplitude is >= 0.0002 in its own right
+(a ratio of two floor values is not a measurement — at base both amps ~1-2e-5 are pure noise). Both carried in.
+
+
+§8  PF-8 PER-CLASS (§24/§25) + §26 MULTI-LEVEL — per-class instrument built; mostly matches GELB; two findings
+---------------------------------------------------------------------------------------------------------------
+GRÜN's arc-seat-removed mutant SURVIVED pooled tiers A/B because pooling 173k unequal pixels hides an ~807-px
+class under a p99 (the 1730th value) — PINK's §19(a) low-count class, worst form. Fix (§25): tiers A/B/C PER
+CLASS, each own null; masks built under reduced-motion (GELB's 11th defect — a live mask sweeps the breath in).
+PINK built the per-class instrument (scripts/pink-pf8-perclass.mjs; masks under reduce via per-selector hide; live
+58s capture; joint LSQ; decoys 0.15/0.25/0.35) and ran at base L0. Classes: rings [data-testid^=mapping-ring],
+arcs [data-mapping-arc], beams [data-beam], nodes [data-mapping-node], text <text>, outlines [data-mapping-body-
+shape]. Result (fringe mask diff>0.001; Tier C ratios at 0.001/0.002/0.004/0.008; output PF8-PERCLASS.json):
+  rings    166510px  A green  B 3.18x RED  C 2.18/34.74/361.73/inf RED   (GELB rings 236x) — ring is the breather;
+                     Tier A green is CORRECT (geometric move conserves pooled light), B/C catch it.
+  outlines  17335px  A green  B 1.49     C 1.04/2.52/3.08/1 (3.08x)      (GELB outlines 3.43x) — MATCH.
+  arcs       9462px  A green  B 1.11     C 0.74/1.41/1.56/1              (GELB arcs clean) — ~clean, MATCH.
+  beams     15718px  A green  B 1.23     C 0.93/1.79/2.11/1              (GELB beams 1.54x) — mild, ~consistent.
+  nodes     16750px  A green  B 1.43     C 1.04/2.40/2.00/1              (GELB nodes CLEAN) — DIVERGENCE (mild red).
+  text      17804px  A green  B 1.47     C 1.03/2.52/2.19/1             (GELB text CLEAN) — DIVERGENCE (mild red).
+MATCHES: rings (massive), outlines (~3x), arcs (clean) all agree with GELB. DIVERGENCE: nodes/text show mild Tier
+C red (~2-2.5x) where GELB is clean, and beams a touch high. Two findings from chasing it, NOT papered over:
+ (1) EROSION DOES NOT FIX IT, and reveals a Tier-C constraint. Interior masks (1px erosion) left thin classes too
+     sparse for a stable null (arcs interior 1143px, nodes 1789px -> null counts ~0 -> ratios blow to 4.5/10/inf),
+     so Tier C needs a MINIMUM class POPULATION; and thin marks are nearly ALL fringe (GRÜN's coverage point),
+     so they cannot be measured on an eroded interior at all. The firewall mask must be the full seat footprint.
+ (2) THE NULL IS ASYMMETRIC and can bias quiet classes toward FALSE-RED. Decoys {0.15,0.25,0.35} each sit +0.05
+     ABOVE a harmonic {0.1,0.2,0.3}; the null therefore samples a systematically higher part of the spectrum than
+     the signal. Under ANY non-flat temporal-noise spectrum (e.g. low-frequency-weighted raster/compositor noise)
+     the signal band then carries more noise power than the null -> signal/null > 1 with no real leak. This is a
+     candidate cause of PINK's mild quiet-class red (and PINK's broader masks, ~3x GELB's px, include more breath-
+     adjacent fringe, compounding it). It is a "can this measurement FALSE-RED" risk in the GELB-checklist family,
+     and it would affect BOTH instruments. PROPOSED: a spectrally SYMMETRIC/bracketing null (decoys both below and
+     above each harmonic), and matching GELB's tighter element-coverage mask. PINK will resolve both before/at the
+     tip (where the element taxonomy is final) rather than assert a cause now.
+§26 ADOPTED: PF-8 has only ever been measured at L0; the interactive/emphasisable L2 ring arcs (PersonJobMapping
+Field.tsx:669, drawn 1.3*k over a larger ground) were never in any sign mask. PINK's full pass runs the per-class
+firewall at L0 AND L2 (open a pool, then a role), per level. GELB's checklist second limb adopted: "can this
+measurement fail" now also asks "is the thing it must fail on even in the frame" (coverage/view, not just stat).
+
+
+§9  BRACKETED dof-MATCHED NULL (§27/89af05f2) — PINK's false-red finding confirmed as a SHARED flaw, now fixed
+---------------------------------------------------------------------------------------------------------------
+GELB confirmed PINK's §8 finding: GELB's harness did NOT bracket; the asymmetric null (decoys all +0.05 above the
+harmonics) was a systematic false-red designed into BOTH instruments, and GELB looked clean only because its
+tighter element-coverage mask excluded the fringe carrying it. FIX (matched by PINK): raw null freqs
+{0.05,0.15,0.25,0.35}; for each harmonic f_k the null component = RMS of its two brackets f_k±0.05 -> THREE
+dof-matched components (not a flat 4-RSS), so the null is spectrally CENTRED on the signal and A-F17 variance
+matching survives. Guards also adopted: Tier C not evaluated below 1000 px/class; no rung below 2x the per-pixel
+null floor (A-F11 applied to the ladder — the 0.001/0.002 rungs otherwise float inside per-pixel noise).
+PINK re-ran at base L0 with the bracketed null (scripts/pink-pf8-perclass2.mjs; 112 frames / 58.5s; output
+PF8-PERCLASS2.json):
+  rings    167958px  tierA 0.000195 / floor 1.96e-5   B 4.01x  C 5.67/37.75/74.91/inf   RED  (correct; breathes)
+  arcs      12164px  B 0.95  C all <1                                                     GREEN
+  beams     17356px  B 0.98  C all <1                                                     GREEN
+  nodes     16214px  B 0.99  C 0.39/0.64/0.79                                             GREEN
+  text      17301px  B 1.16  C 0.52/1.38/1.24                                             GREEN
+  outlines  20561px  B 1.12  C 0.48/1.27/0.69                                             GREEN
+DIVERGENCE RESOLVED: nodes/text/arcs/beams/outlines all GREEN, rings RED — matches GELB's §27 post-fix base result
+exactly. PINK tierA rings 0.000195/1.96e-5 converges on GELB's 0.00020/1e-5. The mild quiet-class red of §8 was the
+asymmetric null, confirmed on PINK's instrument independently; the centred null removes it on both. This is the
+phase's second false-red direction (a measurement failing when nothing is wrong), now closed on both lanes.
+BOTH INSTRUMENTS NOW ALIGNED on: joint LSQ; bracketed dof-matched null (0.05/0.15/0.25/0.35, RMS-of-two per
+harmonic); window >=57s with resolution-valid self-check (A-F21 + PINK's sub-window refinement); per-class masks
+built under reduced-motion; per-level L0+L2; min class population 1000px; live-rung guard; differential PF-3;
+PF-9 NOT-RUN on LIVE-only default; PF-10 >=0.0002 amplitude guard; GELB-checklist two limbs (statistic can fail
+AND the thing it must fail on is in the frame). L2 navigation (click a body twice, rebuild masks under reduce at
+L2) is in GELB's harness and confirmed; PINK will validate its own L2 navigation against GRÜN's tip content.
+
+
+§10  TIP ef466ca8 — PF-8 FIREWALL Tier B/C, L0 AND L2 (the limbs GRÜN cannot measure; §26 never-run config)
+----------------------------------------------------------------------------------------------------------
+Render rebuilt at tip ef466ca8 (3 commits off base: field-e:260 fix, phase F, SEAT_PAD_PX 1.6). Own prod 3121 +
+façade 3120, variant default, 1920x1080. Tip: breath LIVE, 15 mappingFieldWave animations, lit opaque ground;
+L2 reached by clicking a body twice (L0->L1->L2), 4 ring arcs at L2. Per-class masks built UNDER reduced-motion
+(ground breathes now, so whole-svg-hide invalid). Bracketed dof-matched null. GUARDS added & FIRED: dead-field
+(abort unless breath=LIVE + wave anims) and SAMPLING-ADEQUACY (A-F20 on the frequency axis: maxFreq 0.35 < 0.9*Nyquist).
+INSTRUMENT FINDING (critical): the tip's lit animated ground costs ~1.25s/screenshot at L0 and ~1.4s at L2
+(SwiftShader). My first L0 run decoded inline -> 1.45s cadence -> 0.35Hz ABOVE Nyquist (0.345) -> aliased -> false
+RED everywhere (arcs tierA 0.000307, 3.5x GRUN). The adequacy guard flagged it. FIX: defer decode (loop = screenshot
+only) -> 1.23s/Nyquist 0.406 (L0, adequate); add CDP optimizeForSpeed:true PNG -> 0.91s/Nyquist 0.551 (L2, adequate).
+L2 without optimizeForSpeed was 1.40s/Nyquist 0.358 = INCONCLUSIVE (guard caught it). A-F20 carried to the freq axis.
+BOUND adopted (GELB §29/c719a98d): Tier B is ABSOLUTE p99<=0.002 (floor<=0.0004 to resolve), NOT 2x-own-floor
+(floor-relative was 4x too strict once the instrument improved). Tier C: the 0.001/0.002 rungs sit INSIDE the
+physical AA fringe (~0.002, A-F5), so only 0.004/0.008 are meaningful (GELB: "discrimination lives at 0.004+").
+FINAL per-class (absolute Tier B; Tier C meaningful rungs; floor 2.7e-4 = GELB 0.00027, aligned):
+  L0  rings    A 2.2e-6 green  B 1.6e-5 pass   C pass      | arcs    A 2.9e-4 green  B 3.0e-3 FAIL  C 0.004:inf FAIL
+      beams    A 1.2e-4 green  B 2.2e-3 FAIL   C 0.004:inf | nodes   pass(<1000px C n/e) | text pass | outlines B 1.2e-3 pass
+  L2  rings/arcs/beams/nodes/outlines ALL PASS  (arcs B 9.7e-4, beams 1.7e-3, all <0.002; C 0.004/0.008 ratio 1)
+VERDICT: the firewall LEAKS at L0 on the thinnest collar TICKS (arcs class, 1.3px) — p99 ~0.0030, CONFIRMS GRÜN's
+prediction (p99~0.002) and GELB (0.0033) INDEPENDENTLY. The under-mark test (scripts/pink-pf8-under.mjs: ground
+breath at the mark footprint with signs hidden) shows the ground DOES breathe under the thin arc (under-p99 1.6e-3)
+-> real seat-coverage leak at 1.6px pad on the thinnest ticks, NOT a mask artifact. At L2 the interactive/
+emphasisable ring arcs (§26's never-measured config) are CLEAN (p99 0.00097) — larger arcs, proportionally less
+fringe. DIVERGENCE: my beams FAIL (0.0022) vs GELB pass (0.00072) — 3x gap = my per-element-hide diff>0.001 mask is
+broader than GELB's element-coverage mask (more fringe). Arcs fail on BOTH masks (decisive); beams is mask-sensitive
+at the margin. RESOLUTION: match GELB's element-coverage mask for beams on the re-delivery.
+ADOPTED from §27/§29: absolute Tier B; PF-3 footprint by SUPPRESSION (lit ground makes a threshold-denominator
+collapse to ~1); PF-7 bands restricted to the WAVE region (person disc + shelf carry no wave -> phase noise ->
+false non-monotone); PF-15 rings are ENGRAVED MINIMA (use min() in the ring band, not max() which reads the ground
+beside). PF-16 (wedge step in luminance <=0.004, ratio[0.92,1.09], not sRGB alpha) and PF-17 (ground continuity:
+no sub-0.6x-median run <12px along circles, >=8 radii) adopted for the re-delivery.
+PINK's SPATIAL-DUAL proposal (answering GELB's "a second spatial property with no obligation"): PF-17 scans along
+CIRCLES (angular) and so catches RADIAL gashes; its DUAL — continuity along RADII (spokes) — is untested and would
+catch ANNULAR/tangential holes. The ground is seven STACKED concentric layers (A-F1); a compositing gap between two
+layers is ring-shaped, runs ALONG a circle-scan (invisible) and ACROSS a radial-scan (caught). PF-17 should scan
+both directions (or add PF-18 radial continuity).
+
+
+§11  PF-17/PF-18 CONTINUITY (re-delivery 93c47e03) + STAGE REJECTED → PHASE F ARCHITECTURE PIVOT
+------------------------------------------------------------------------------------------------
+PF-17/PF-18 built MASK-BASED (GELB defect #19: a sign's seat IS medium, so never suppress signs — exclude sign
+pixels by mask, keep signs drawn). RED-FIRST on old tip ef466ca8 (gashes present): PF-17 angular dark holes at
+radii 0.4-0.9 (7/4/8/5...), PF-18 radial 32 across 12 spokes. On re-delivery 93c47e03 (sector-edge seats changed
+from flat black SEAT to the resting-medium gradient url(#mf-rest); WEDGE_SHADE 0.148->0.022): PF-17 angular near
+zero -> RADIAL GASHES FIXED (confirms GELB; cuts 0.0033->0.038 light lines). PF-18 radial still ~33 holes, but
+classification vs ring radii {0.316,0.789,0.917,1.0} shows 38 AT-RING vs only 3 OFF-RING (all at 0.86R): the holes
+are the INTENDED ENGRAVED RINGS (A-F12: rings are dark grooves below 0.6x median), which a radial scan crosses.
+INSTRUMENT LESSON (carries forward): PF-18 must EXCLUDE intended engraved structure (ring radii); otherwise it
+false-fails on the design's own rings. GELB confirms PF-18 proven red-first by GRÜN's mutant (3px ring gap at
+r=300 -> PF-18 red 15/16 spokes, PF-17 blind) — the angular/radial dual is necessary by experiment as well as
+construction.
+STAGE REJECTED BY OTTAVIO (visual architecture, not execution): "wie eine große blaue Zielscheibe" — the ground's
+concentric-circle coordinate system became the subject; the relations (bodies, couplings) lost presence. "Keine
+kosmetische Reparatur dieser Kreise. Rekonstruiere die visuelle Architektur grundlegend aus den tatsächlichen
+Relationen." Phase F inherited phase D's geometry (radius=rank, angle=pool, concentric rings) = a coordinate
+system for a derived scalar, not a structure from relations. GELB halted the 93c47e03 pass (its numbers are correct
+but measure a design that is going away) and is reconstructing a RELATIONAL (bipartite) layout. INSTRUMENT LESSONS
+ALL SURVIVE (bracketed null, joint LSQ, window/adequacy rule, per-class masks, two-limb checklist, PF-17+PF-18) —
+they govern how light and time behave, not where things sit. PINK's design-input (thinking, not measuring) sent to
+GELB: see §12 for the overlap/occlusion risk to the firewall+bands, the solved-position determinism risk, and a
+proposed presence/salience obligation.
+
+
+§12  PINK DESIGN-INPUT FOR THE RELATIONAL LAYOUT (thinking, not measuring; GELB's two questions)
+------------------------------------------------------------------------------------------------
+Q1 — what makes the firewall (PF-8) and the evidence bands (PF-2/A-3) meaningless under a relational layout:
+  Both rest on ONE premise — every mark's seat is the STATIC resting MEDIUM at its location, so the mark's
+  luminance is absolute and ground-independent. The relational layout's new power (bodies anywhere, overlap,
+  occlude) is exactly what voids that premise:
+  - OVERLAP/OCCLUSION is the killer. A mark drawn over a breathing body core/halo (F-3 depth breathes) or over
+    another mark has a backdrop that is neither static nor medium. Then PF-8 goes red for a correct build (the
+    mark breathes because its backdrop does) and PF-2/A-3 stop being absolute (rendered luminance depends on what
+    is behind). Both silently become unmeasurable wherever marks can overlap breathing elements.
+  - The per-class MASK technique (hide-a-class, diff under reduced-motion) silently fails under overlap: hiding a
+    sign then reveals ANOTHER sign, not medium, so neither the mask nor "what's behind" is well defined.
+  - PF-15 dies with the rings (it IS the polar coordinate system). PF-7 ("phase monotone in RADIUS") and PF-3/PF-4
+    ("depth = rank on radius") lose their spatial anchor. PF-5/PF-6/PF-17/PF-18 need "disc/medium" redefined
+    wherever the medium now lives (the concepts survive; the polar domain does not).
+  FIX OPTIONS: (a) a LAYOUT CONSTRAINT — sign-bearing marks never overlap a breathing element (protects the
+  firewall and the bands by construction); or (b) redefine the firewall DIFFERENTIALLY — a mark vs its OWN static
+  backdrop, computed per-mark from whatever is actually behind it, with z-order-aware isolation instead of
+  hide-and-diff. (a) is cleaner and testable; (b) is more general but needs the backdrop made static per mark.
+Q2 — solved (not closed-form) position: determinism stops being BY CONSTRUCTION and must be MEASURED.
+  Every obligation we own assumes same input -> same picture. A solver breaks that in named ways:
+   1 seed/init dependence; 2 iteration-order + float non-associativity (platform/run variance); 3 convergence-
+   tolerance drift (stops at "good enough", lands at different near-optima); 4 SENSITIVITY / non-Lipschitz — a one-
+   datum change moves the WHOLE layout, which kills every delta proof (P-13, previous->next, "a mutant moves
+   exactly one thing"); 5 non-unique optima / symmetry needing a deterministic tie-break; 6 data-dependent OVERLAP
+   (ties back to Q1 — the solver can produce the very occlusion that voids the firewall).
+  For determinism to be PROVABLE not asserted, phase G needs, BEFORE any pixel obligation:
+   - GEOMETRY-DETERMINISM: positions byte-identical across N runs, a SHUFFLED input order, and platforms; red-first
+     by reseeding / loosening tolerance. (A-8's total order extended from beam-pick to POSITION — every tie broken
+     by a documented total order on stable ids.)
+   - GEOMETRY-STABILITY: a bounded single-datum perturbation yields a bounded and LOCAL displacement (a Lipschitz
+     bound, and only the affected region moves); red-first by a global/ill-conditioned solve. Without it no delta
+     proof is interpretable.
+  Meta: today's proof surface is deterministic-by-construction; a solved layout makes it deterministic-that-must-be-
+  measured. Those two obligations are the new foundation; every light/time obligation sits on top of them.
+Q3 (unasked, but it is the rejection): there is no obligation for how much PRESENCE the relations are entitled to.
+  Propose a SALIENCE/PRESENCE BUDGET: the relations (bodies + couplings) must carry at least the scaffold/medium's
+  share of the field's contrast-energy (or above-threshold luminance-variance / a salience measure). A field where
+  the medium carries most of the energy is a "target"; this is the measurable whose absence let 93c47e03 pass.
+
+
+§13  PHASE G · PG-1 CONFIRMED (semantic light fraction) + META-AUDIT "which obligation is about the instrument"
+---------------------------------------------------------------------------------------------------------------
+Phase G (72fa5459): layout STAYS radial (OTTAVIO's own pointer — the capability field he praised is itself radial
+— so radiality was never the defect; PINK's Q1/Q2 on a solved layout are moot, but asking them made GELB check).
+The founding defect = PINK's Q3 presence idea, now PG-1: semantic elements must contribute >=55% of the field's
+light, measured by SUPPRESSION. GELB measured 4.78%. PINK CONFIRMS (scripts/pink-pg1.mjs, 93c47e03):
+  1920x1080: semantic fraction 2.82% (excl scaffold rings) / 8.09% (incl rings); disc mean lum 0.0240, ground-only
+             0.0221.  1280x800: 6.72% / 12.88%.  GELB's 4.78% sits inside PINK's bracket.
+  PER-GROUP (1920, fraction of disc light each removes): bodies 1.38% · arcs 0.87% · beams 1.26% · nodes 0.81% ·
+  text 0.23% (semantic sum ~4.55%, jointly 2.82%) · RINGS 5.25%.
+  SHARPENING: the coordinate RINGS alone (5.25%) out-light ALL the relations combined (4.55%). The scaffold is
+  literally brighter than the subject — the quantified "blaue Zielscheibe". PG-1 must EXCLUDE the rings from
+  "semantic" (they are the rejected coordinate target, not content); the true semantic presence is 2.82%, failing
+  the >=55% bound by ~20x. PG-1 is the right founding obligation and the current stage fails it 7-20x by size.
+META-AUDIT (GELB's 2nd ask — which other obligation measures the INSTRUMENT/scaffold, not the field's meaning):
+  - SHARPEST SINGLE: PF-15. It devotes a whole obligation to making the four coordinate rings mutually LEGIBLE —
+    i.e. to making the scaffold (the rejected target) a well-formed distinct structure. PG-1 shows the rings
+    out-light the relations; PF-15 actively certifies that over-presence. An obligation that ensures the
+    coordinate frame is legible optimises the thing that should RECEDE. Phase G should RETIRE or INVERT PF-15
+    (rings subordinate, not merely distinct).
+  - THE CLASS: the proof surface bounds the MEDIUM on both sides — PF-1 (light), PF-5/6 (motion), PF-16 (wedge),
+    PF-17/18 (continuity) — and had NO presence bound on the SEMANTICS until PG-1. Every medium channel phase G
+    re-lights needs a "relations get >= their share" counterpart: PG-1 (light) now; a MOTION-presence bound (the
+    paths' travelling light must out-salience the breath, else the medium is again the only ALIVE thing — the
+    exact phase-F failure, reborn in motion); a HUE-containment bound (hue lives on semantics, never leaked to the
+    ground). Without these, phase G recreates the defect in the new channels.
+  - CAUTION ON PG-1 ITSELF: presence is multi-channel (light, size, motion, hue, local contrast). PG-1 is the
+    LIGHT limb only; a body could hold 55% of the light and still lack presence (a dim large blob). Name the other
+    limbs so PG-1 does not become a single-channel bound something slips past — the exact class we keep finding.

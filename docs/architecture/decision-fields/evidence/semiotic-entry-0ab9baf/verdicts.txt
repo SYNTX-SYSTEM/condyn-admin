@@ -1,0 +1,34 @@
+PINK §3.83 · SEMIOTIC_ENTRY_FIX round 2 · GRÜN frontend/semiotic-entry 0ab9baf on 20bf662 (base main cd1e4de, ancestor checked), not merged.
+STAND_IN only; no Gemini; own production labs (port 41873, disposable DBs, own PIDs); :3017 not touched; main unchanged.
+
+VERDICT                GO for the rollout on :3017 — F-SEM-1 is closed, F-SEM-2…4 are closed, no new finding that blocks.
+                       Rollout and merge remain GELB's / the owner's step; O-RT-3 of §3.81 (:3017 as dev server with worker) is unchanged.
+
+F-SEM-1 (closed)       PASS   the line now stands in the Job Field's right column (right 28 px, top 128 px, width clamp(220px, 50vw − 460px, 316px)).
+                              Generic scan of every visible element with a testid, text or interactivity under the line: 0 covered elements in
+                              88 visits × 4 captures (EN, EN + intake open, DE, DE + intake open), 8 viewports from 1920x1080 to 640x360@2, all
+                              line states incl. PERSON with an opened pool. KESTREL rim click: 2 rim points × 3 pool-open states × 6 full/fit
+                              viewports → every click opens the organization (focus stays FIELD, jobOrganizationId set), never the Capability Field.
+                              Hit test on the restored real world: 0 cosmos nodes under the line (round 1: KESTREL in 3 states per viewport)
+Right column           PASS   intake panel opens 12 px below the line in every full/fit visit (EN and DE, all line heights 84–146 px), never
+                              overlapping; mode selector, job-scope card, pool list and cosmos: not covered. Stack tier: line in the page column
+                              (relative), 0 covered. Below 1248 px (1200, 1152) the 220 px minimum reaches 24 / 48 px into the pool box's empty
+                              corner, 0 elements covered — GRÜN's stated limit confirmed
+S7 Gate unchanged      PASS   40 states × 1920/1280 against cd1e4de: 0 differences (attributes, focus, click + URL, Tab, Enter + URL, data-gate);
+                              entry states and actions identical to round 1
+S1–S4                  PASS   9 distinct states per language, 0 lock words, 0 warm tones, role=status / polite only, aria-describedby resolves
+S5 Wording (O-SEM-2)   PASS   "is not readable in this field" / "ist in diesem Feld nicht lesbar", "once it is read" / "sobald er gelesen ist",
+                              "bleibt außen vor" — clear and idiomatic; exactly the seven changed lines, nothing else changed
+S6 Inverse             PASS*  32 mutants (E28 obsolete with the removed FIT rule; E29–E33 new for the right column): 30 of 31 applicable red,
+                              incl. E11 / E19 / E20 (F-SEM-2…4 closed) and E29 / E30 / E31 / E33 (clearance rule, centre position, unbounded
+                              width, stack-tier right). Alive: F-SEM-5 E32 — the dashboard never writes --sx-entry-clear (the intake would fall
+                              back to top 150 px, under the line) — not caught by the suites; the browser measures the 12 px, so test gap only
+S8 Regression          PASS   real world, production build, vs §3.81: modes in six viewports differ only in the three scenes carrying the line;
+                              orbits 0, role discovery 1920 (3 POST) and 1280 0, rd-ui 0 differences; drop zone / empty-pool handover identical to
+                              round 1; tsc 0; test/career: only the known base-red domains, all touched suites green
+Observations           OBS    O-SEM-1 (1 / 2a / 2b / unread differ by text only, by design) stays; O-SEM-3 (→ PERSON keeps focus=CAPABILITY from
+                              the URL) goes to the owner as GRÜN says; INVALID still shows the raw validation code (owner item)
+                       OBS    stack tier: the KESTREL node lies below the first screen, so the rim click proof does not reach it there (probe
+                              limit, not a finding)
+
+Evidence classes       MEASUREMENT (browser probes in STAND_IN labs), CODE_INSPECTION (diff 20bf662..0ab9baf), DETERMINISTIC (mutants, suites)

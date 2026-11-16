@@ -1,0 +1,38 @@
+PINK §3.101 addendum — adversarial review of GELB's DLL ops scripts (2026-11-04). Read locally from GELB's evidence copy; md5 equal to
+GELB's server values: dll-3017.sh 083be638…, dll-revert.sh 308182e1…, dll-rollback.sh 022286c6…, provision-dll-runtime.ts 16a7bdd3….
+Not run. ops/dll.env not seen (GELB withheld it: it holds the database password). DEPLOYMENT.md changed while it was read (74 → 114 lines,
+GELB's corrections); its md5 is not part of GELB's set.
+
+Question: can either rollback path damage anything pre-existing?
+Answer: no such path found, under two conditions GELB should confirm: (a) no other condyn_test_<16 hex> database exists on the server,
+(b) nothing is mounted under /opt/condyn-dll. Hardening points R-1..R-3 below; none was triggered by the executed round trip.
+
+GELB's claims
+* dll-rollback.sh refuses any name that is not ^condyn_test_[0-9a-f]{16}$ and derives it only from dll.env: HOLDS. A DATABASE_URL with a
+  query suffix or quotes makes sed return the whole line, which is refused (fail-safe). Without dll.env or DATABASE_URL the guard is
+  skipped, no database is dropped, and the role drop and rm -rf still run (DLL objects only).
+* dll-3017.sh refuses to SIGTERM a pid whose cwd is not under /opt/condyn-dll/: HOLDS. The pattern needs the slash, so /opt/condyn-dll-x and
+  /opt/condyn-dll itself are refused; only the single listener pid of :3017 is ever signalled; :3003 is never named.
+* dll-revert.sh refuses a PREVIOUS_COMMIT that is not 40-hex and touches no database: HOLDS for 40-hex and for the database (no psql in
+  the script). "Present in the checkout's history" is weaker in fact: rev-parse --verify $PREV^{commit} only proves the object exists in
+  the object store, not that it is an ancestor of anything (merge-base --is-ancestor would).
+
+Findings (report only, not corrected)
+R-1 (dll-rollback.sh; also provision-dll-runtime.ts). The database guard checks the SHAPE, not the IDENTITY. Any condyn_test_<16 hex>
+    name in dll.env passes and would be dropped with DROP DATABASE as postgres. The same holds for PROVISION_DATABASE_NAME, which would
+    reuse any marked disposable database and register schemas into it. Pin the exact name condyn_test_8138803cb03b0edc (or also require
+    owner = condyn_dll_runner and the marker comment) before DROP.
+R-2 (dll-rollback.sh). No set -e and no exit on failed steps. The result of `dll-3017.sh stop` (line 50) is ignored: on a refused or
+    timed-out stop the script goes on to DROP DATABASE (which then fails on open connections, no FORCE) and `rm -rf /opt/condyn-dll`
+    while the runtime may still run from it. A failed DROP DATABASE makes DROP ROLE fail too (owner dependency), and rm -rf still removes
+    dll.env, leaving an orphaned database whose name and credentials are gone, and a later rollback no longer has its input.
+    Not damage to anything pre-existing; damage to the rollback's own integrity. Stop on a failed stop or drop before rm -rf.
+R-3 (dll-rollback.sh line 57). rm -rf without --one-file-system: a bind mount under /opt/condyn-dll would be descended into. Theoretical;
+    GELB to confirm (b).
+R-4 (dll-3017.sh, wording and Gemini margin). "Reads its environment from dll.env and from nothing else" is not exact: the subshell
+    inherits the caller's environment; only six provider variables are refused and CONDYN_ALLOW_SHARED_DATABASE is unset. Not refused:
+    GOOGLE_API_KEY / GOOGLE_GENAI_USE_VERTEXAI / GOOGLE_CLOUD_PROJECT (names present in @google/genai dist/node/index.cjs, read by the SDK itself), and an .env* file
+    appearing in $APP (G-1 holds today by absence, not by construction). The env gate in semantic-config.ts still needs GEMINI_API_KEY.
+R-5 (dll-revert.sh). After `rm -rf .next && cp -a`, a failing copy does not stop the script: PREVIOUS_COMMIT is rewritten and start is
+    attempted on a partial build. DLL only.
+R-6 (cosmetic). dll-rollback.sh line 32 prints `${_:-}` (the previous command's last argument) before the listener pid.

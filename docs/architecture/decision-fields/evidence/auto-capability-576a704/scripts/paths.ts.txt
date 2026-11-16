@@ -1,0 +1,7 @@
+import { ROLE_DISCOVERY_COPY as OLD } from "./old/c";
+import { ROLE_DISCOVERY_COPY as NEW } from "./new/c";
+const flat = (x: any, p = "", out: Record<string, string> = {}) => { if (typeof x === "function") out[p] = `fn/${x.length}:${String(x(...Array.from({ length: x.length }, (_, i) => `A${i}`)))}`; else if (x && typeof x === "object") for (const [k, v] of Object.entries(x)) flat(v, p ? `${p}.${k}` : k, out); else out[p] = String(x); return out; };
+const a = flat(OLD), b = flat(NEW);
+const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort();
+const d = keys.filter(k => a[k] !== b[k]);
+console.log(`paths old ${Object.keys(a).length} new ${Object.keys(b).length}; differing ${d.length}`); for (const k of d) console.log(`  ${k}: ${JSON.stringify(a[k] ?? null)} -> ${JSON.stringify(b[k] ?? null)}`);

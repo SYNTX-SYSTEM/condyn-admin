@@ -1,0 +1,13 @@
+#!/bin/bash
+S=$SCRATCH; O=$S/acp/out; P=$REPO
+cd $P && git checkout -q --detach 576a704 && echo "HEAD $(git rev-parse --short HEAD)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES GITHUB_TOKEN
+export CONDYN_PLAYWRIGHT_MODULE=$NQUIRY/node_modules/playwright/index.mjs
+LD=$S/acp/lab-dig; rm -rf "${LD:?}"; mkdir -p $LD $O/dig
+ss -ltn | grep -q ":41873 " && { echo "PORT BUSY"; exit 1; }
+LAB_PORT=41873 LAB_DIR=$LD LAB_STATE_FILE=$LD/state.json npx tsx docs/career_analysis/evidence/auto-capability-path/scripts/lab.ts > $LD/lab.log 2>&1 &
+for k in $(seq 1 200); do grep -qE "LAB READY|Error|rror:" $LD/lab.log && break; sleep 3; done; grep -c "LAB READY" $LD/lab.log
+grep -q "LAB READY" $LD/lab.log && timeout 1200 node $S/acp/web/pink-acp-dig.mjs $LD/state.json $P $O/dig > $O/dig.log 2>&1; echo "dig exit $?"
+PID=$(python3 -c "import json;print(json.load(open('$LD/state.json'))['pid'])" 2>/dev/null); [ -n "$PID" ] && kill -TERM $PID; for k in $(seq 1 30); do ss -ltn | grep -q ":41873 " || break; sleep 1; done; ss -ltn | grep -q ":41873 " && echo "PORT STILL BUSY" || echo "port free"
+cd $P && git checkout -q validation/hr-decision-loop-pink && echo "back on $(git branch --show-current)"; echo DIG-END

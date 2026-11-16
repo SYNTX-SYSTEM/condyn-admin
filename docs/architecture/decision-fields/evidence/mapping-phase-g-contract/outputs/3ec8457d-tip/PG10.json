@@ -1,0 +1,896 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "pin": "PG-10 (A-G22 restated, A-G48 carrier, A-G26 max limb restored, A-G97 seat occluder)",
+ "limbs": {
+  "limb1": ">= 25 % of visible-glow pixels swing >= 0.004",
+  "limb2": "median Weber in [10 %, 35 %]",
+  "limb3": "max swing <= 0.030",
+  "negative": "shelf glows rest within the run's static floor"
+ },
+ "provenance": {
+  "0.004": "UNDERIVED",
+  "0.25": "UNDERIVED",
+  "[10%,35%]": "CITED-WITHOUT-A-NUMBER (R17, no figure in record)",
+  "note": "a clear is NOT reported as 'PG-10 met' (A-G143)"
+ },
+ "weberReadingUndeclared": [
+  "W_mod=(max-min)/mean",
+  "W_min=(max-min)/min",
+  "W_grd=(max-min)/localGround",
+  "W_sta=(mean-localGround)/localGround"
+ ],
+ "method": {
+  "carrier": "MEASURED mask: pixels where hiding .mf-wave-halo changes the static render, minus foreign-mask pixels",
+  "foreign": ".mf-travel, .mf-beam-glow, [data-beam], text, [data-mapping-arc], [data-mapping-node], [data-mapping-trail], [data-testid^=\"mapping-measure-\"]",
+  "maskEps": 0.0001,
+  "windowMs": 13000,
+  "periodMs": 10000,
+  "note": "masks derived in a separate static pass; every element stays drawn in the measured frames"
+ },
+ "waveModel": {
+  "periodMs": 10000,
+  "haloMean": 0.8825,
+  "haloDepth": 0.1175,
+  "pkpk_unselected": 0.235,
+  "selectedGain": 0.35,
+  "pkpk_selected": 0.08225
+ },
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "states": [
+    {
+     "label": "(a) unselected LIVE",
+     "selection": "",
+     "waveGain": "(unset => 1)",
+     "waveMean": "0.8825000000000001",
+     "waveDepth": "0.1175",
+     "frames": 59,
+     "elapsedMs": 13067,
+     "periodsCovered": 1.31,
+     "periodCoverageAdequate": true,
+     "verdictAdmissible": true,
+     "maskCounts": {
+      "carrierPx": 54374,
+      "foreignPx": 18464,
+      "overlapPx": 3105
+     },
+     "region": "924x924",
+     "perCarrier": [
+      {
+       "isField": false,
+       "rank": 3,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 33.376,
+       "seatEdgeR": 34.778,
+       "haloR": 95.137,
+       "centreDelta": 0,
+       "localGround": 0.0015112,
+       "carrierMaskPx": 8,
+       "visiblePx": 3,
+       "visibleShare": 0.375,
+       "carrierMask": {
+        "n": 8,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.001036,
+        "medianSwing": 0.000499,
+        "W_mod": 0.13305,
+        "W_min": 0.1428,
+        "W_grd": 0.33022,
+        "W_sta": 0.55601
+       },
+       "visibleGlow": {
+        "n": 3,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.001036,
+        "medianSwing": 0.000897,
+        "W_mod": 0.10796,
+        "W_min": 0.11111,
+        "W_grd": 0.59336,
+        "W_sta": 5.34964
+       }
+      },
+      {
+       "isField": false,
+       "rank": 4,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 31.161,
+       "seatEdgeR": 32.562,
+       "haloR": 92.111,
+       "centreDelta": 0,
+       "localGround": 0.0014531,
+       "carrierMaskPx": 0,
+       "visiblePx": 0,
+       "visibleShare": null,
+       "carrierMask": {
+        "n": 0
+       },
+       "visibleGlow": {
+        "n": 0
+       }
+      },
+      {
+       "isField": false,
+       "rank": 5,
+       "cls": "NONE",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 27.898,
+       "seatEdgeR": 29.299,
+       "haloR": 85.498,
+       "centreDelta": 0,
+       "localGround": 0.0014531,
+       "carrierMaskPx": 11,
+       "visiblePx": 9,
+       "visibleShare": 0.81818,
+       "carrierMask": {
+        "n": 11,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.002239,
+        "medianSwing": 0.000877,
+        "W_mod": 0.03889,
+        "W_min": 0.03922,
+        "W_grd": 0.6035,
+        "W_sta": 12.82208
+       },
+       "visibleGlow": {
+        "n": 9,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.002239,
+        "medianSwing": 0.001374,
+        "W_mod": 0.03889,
+        "W_min": 0.03922,
+        "W_grd": 0.94548,
+        "W_sta": 15.24904
+       }
+      },
+      {
+       "isField": true,
+       "rank": 1,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 34.018,
+       "seatEdgeR": 35.419,
+       "haloR": 90.01,
+       "centreDelta": 0,
+       "localGround": 0.0033359,
+       "carrierMaskPx": 18659,
+       "visiblePx": 11554,
+       "visibleShare": 0.61922,
+       "carrierMask": {
+        "n": 18659,
+        "fracSwingGe004": 0.33732,
+        "maxSwing": 0.032038,
+        "medianSwing": 0.001686,
+        "W_mod": 0.19554,
+        "W_min": 0.21775,
+        "W_grd": 0.50554,
+        "W_sta": 1.77975
+       },
+       "visibleGlow": {
+        "n": 11554,
+        "fracSwingGe004": 0.54475,
+        "maxSwing": 0.032038,
+        "medianSwing": 0.004779,
+        "W_mod": 0.2855,
+        "W_min": 0.33009,
+        "W_grd": 1.43264,
+        "W_sta": 4.02633
+       }
+      },
+      {
+       "isField": true,
+       "rank": 2,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 43.283,
+       "seatEdgeR": 44.684,
+       "haloR": 118.487,
+       "centreDelta": 0,
+       "localGround": 0.0030073,
+       "carrierMaskPx": 32801,
+       "visiblePx": 22204,
+       "visibleShare": 0.67693,
+       "carrierMask": {
+        "n": 32801,
+        "fracSwingGe004": 0.37231,
+        "maxSwing": 0.032688,
+        "medianSwing": 0.002093,
+        "W_mod": 0.23584,
+        "W_min": 0.26538,
+        "W_grd": 0.69601,
+        "W_sta": 2.18551
+       },
+       "visibleGlow": {
+        "n": 22204,
+        "fracSwingGe004": 0.54999,
+        "maxSwing": 0.032688,
+        "medianSwing": 0.004788,
+        "W_mod": 0.3062,
+        "W_min": 0.35236,
+        "W_grd": 1.59202,
+        "W_sta": 4.33979
+       }
+      }
+     ],
+     "limb1_fracPerFieldCarrier": [
+      0.54475,
+      0.54999
+     ],
+     "limb1_pass": true,
+     "limb2_W_mod_perFieldCarrier": [
+      0.2855,
+      0.3062
+     ],
+     "limb2_W_grd_perFieldCarrier": [
+      1.43264,
+      1.59202
+     ],
+     "limb3_maxSwing": 0.032688,
+     "limb3_pass": false,
+     "negativeLimb_shelfMaxSwing": 0.002239,
+     "negativeLimb_perShelfCarrier": [
+      {
+       "rank": 3,
+       "animationName": "none",
+       "maxSwing": 0.001036
+      },
+      {
+       "rank": 4,
+       "animationName": "none"
+      },
+      {
+       "rank": 5,
+       "animationName": "none",
+       "maxSwing": 0.002239
+      }
+     ]
+    },
+    {
+     "label": "(b) capability selected, gain 0.35",
+     "selection": "CAPABILITY",
+     "waveGain": "0.35",
+     "waveMean": "0.8825000000000001",
+     "waveDepth": "0.1175",
+     "frames": 60,
+     "elapsedMs": 13092,
+     "periodsCovered": 1.31,
+     "periodCoverageAdequate": true,
+     "verdictAdmissible": true,
+     "maskCounts": {
+      "carrierPx": 66807,
+      "foreignPx": 21691,
+      "overlapPx": 6345
+     },
+     "region": "924x924",
+     "perCarrier": [
+      {
+       "isField": false,
+       "rank": 3,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 33.377,
+       "seatEdgeR": 34.778,
+       "haloR": 95.137,
+       "centreDelta": 0.222,
+       "localGround": 0.0014531,
+       "carrierMaskPx": 21,
+       "visiblePx": 8,
+       "visibleShare": 0.38095,
+       "carrierMask": {
+        "n": 21,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.000762,
+        "medianSwing": 0.000032,
+        "W_mod": 0.01147,
+        "W_min": 0.01147,
+        "W_grd": 0.02203,
+        "W_sta": 0.33032
+       },
+       "visibleGlow": {
+        "n": 8,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.000527,
+        "medianSwing": 0.000148,
+        "W_mod": 0.0315,
+        "W_min": 0.03155,
+        "W_grd": 0.1018,
+        "W_sta": 1.36163
+       }
+      },
+      {
+       "isField": false,
+       "rank": 4,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 31.161,
+       "seatEdgeR": 32.562,
+       "haloR": 92.111,
+       "centreDelta": 0.222,
+       "localGround": 0.0014531,
+       "carrierMaskPx": 7,
+       "visiblePx": 7,
+       "visibleShare": 1,
+       "carrierMask": {
+        "n": 7,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.000041,
+        "medianSwing": 0,
+        "W_mod": 0,
+        "W_min": 0,
+        "W_grd": 0,
+        "W_sta": 1.75143
+       },
+       "visibleGlow": {
+        "n": 7,
+        "fracSwingGe004": 0,
+        "maxSwing": 0.000041,
+        "medianSwing": 0,
+        "W_mod": 0,
+        "W_min": 0,
+        "W_grd": 0,
+        "W_sta": 1.75143
+       }
+      },
+      {
+       "isField": false,
+       "rank": 5,
+       "cls": "NONE",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 27.898,
+       "seatEdgeR": 29.299,
+       "haloR": 85.498,
+       "centreDelta": 0,
+       "localGround": 0.0014531,
+       "carrierMaskPx": 17,
+       "visiblePx": 17,
+       "visibleShare": 1,
+       "carrierMask": {
+        "n": 17,
+        "fracSwingGe004": 0.11765,
+        "maxSwing": 0.005112,
+        "medianSwing": 0.001,
+        "W_mod": 0.06148,
+        "W_min": 0.06285,
+        "W_grd": 0.68835,
+        "W_sta": 11.68803
+       },
+       "visibleGlow": {
+        "n": 17,
+        "fracSwingGe004": 0.11765,
+        "maxSwing": 0.005112,
+        "medianSwing": 0.001,
+        "W_mod": 0.06148,
+        "W_min": 0.06285,
+        "W_grd": 0.68835,
+        "W_sta": 11.68803
+       }
+      },
+      {
+       "isField": true,
+       "rank": 1,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 34.018,
+       "seatEdgeR": 35.419,
+       "haloR": 90.01,
+       "centreDelta": 0,
+       "localGround": 0.0032543,
+       "carrierMaskPx": 18709,
+       "visiblePx": 11720,
+       "visibleShare": 0.62644,
+       "carrierMask": {
+        "n": 18709,
+        "fracSwingGe004": 0.17959,
+        "maxSwing": 0.013517,
+        "medianSwing": 0.001096,
+        "W_mod": 0.13171,
+        "W_min": 0.14069,
+        "W_grd": 0.33671,
+        "W_sta": 1.80554
+       },
+       "visibleGlow": {
+        "n": 11720,
+        "fracSwingGe004": 0.28669,
+        "maxSwing": 0.013517,
+        "medianSwing": 0.002232,
+        "W_mod": 0.14325,
+        "W_min": 0.15382,
+        "W_grd": 0.68597,
+        "W_sta": 4.07056
+       }
+      },
+      {
+       "isField": true,
+       "rank": 2,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 43.283,
+       "seatEdgeR": 44.684,
+       "haloR": 118.487,
+       "centreDelta": 0,
+       "localGround": 0.0029143,
+       "carrierMaskPx": 32884,
+       "visiblePx": 22440,
+       "visibleShare": 0.6824,
+       "carrierMask": {
+        "n": 32884,
+        "fracSwingGe004": 0.16613,
+        "maxSwing": 0.012758,
+        "medianSwing": 0.001101,
+        "W_mod": 0.1338,
+        "W_min": 0.1428,
+        "W_grd": 0.37768,
+        "W_sta": 2.24371
+       },
+       "visibleGlow": {
+        "n": 22440,
+        "fracSwingGe004": 0.24345,
+        "maxSwing": 0.012758,
+        "medianSwing": 0.002008,
+        "W_mod": 0.13574,
+        "W_min": 0.14506,
+        "W_grd": 0.68913,
+        "W_sta": 4.45949
+       }
+      }
+     ],
+     "limb1_fracPerFieldCarrier": [
+      0.28669,
+      0.24345
+     ],
+     "limb1_pass": false,
+     "limb2_W_mod_perFieldCarrier": [
+      0.14325,
+      0.13574
+     ],
+     "limb2_W_grd_perFieldCarrier": [
+      0.68597,
+      0.68913
+     ],
+     "limb3_maxSwing": 0.013517,
+     "limb3_pass": true,
+     "negativeLimb_shelfMaxSwing": 0.005112,
+     "negativeLimb_perShelfCarrier": [
+      {
+       "rank": 3,
+       "animationName": "none",
+       "maxSwing": 0.000762
+      },
+      {
+       "rank": 4,
+       "animationName": "none",
+       "maxSwing": 0.000041
+      },
+      {
+       "rank": 5,
+       "animationName": "none",
+       "maxSwing": 0.005112
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "viewport": "1280x800",
+   "states": [
+    {
+     "label": "(a) unselected LIVE",
+     "selection": "",
+     "waveGain": "(unset => 1)",
+     "waveMean": "0.8825000000000001",
+     "waveDepth": "0.1175",
+     "frames": 117,
+     "elapsedMs": 13038,
+     "periodsCovered": 1.3,
+     "periodCoverageAdequate": true,
+     "verdictAdmissible": true,
+     "maskCounts": {
+      "carrierPx": 20753,
+      "foreignPx": 23112,
+      "overlapPx": 7628
+     },
+     "region": "520x520",
+     "perCarrier": [
+      {
+       "isField": false,
+       "rank": 3,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 17.501,
+       "seatEdgeR": 18.903,
+       "haloR": 50.688,
+       "centreDelta": 0,
+       "localGround": 0.0025148,
+       "carrierMaskPx": 37,
+       "visiblePx": 19,
+       "visibleShare": 0.51351,
+       "carrierMask": {
+        "n": 37,
+        "fracSwingGe004": 0.16216,
+        "maxSwing": 0.004667,
+        "medianSwing": 0.001707,
+        "W_mod": 0.3558,
+        "W_min": 0.39438,
+        "W_grd": 0.67873,
+        "W_sta": 1.25981
+       },
+       "visibleGlow": {
+        "n": 19,
+        "fracSwingGe004": 0.31579,
+        "maxSwing": 0.004667,
+        "medianSwing": 0.002183,
+        "W_mod": 0.3558,
+        "W_min": 0.36882,
+        "W_grd": 0.86816,
+        "W_sta": 1.84956
+       }
+      },
+      {
+       "isField": false,
+       "rank": 4,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 16.321,
+       "seatEdgeR": 17.722,
+       "haloR": 49.075,
+       "centreDelta": 0,
+       "localGround": 0.0014543,
+       "carrierMaskPx": 0,
+       "visiblePx": 0,
+       "visibleShare": null,
+       "carrierMask": {
+        "n": 0
+       },
+       "visibleGlow": {
+        "n": 0
+       }
+      },
+      {
+       "isField": false,
+       "rank": 5,
+       "cls": "NONE",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 14.583,
+       "seatEdgeR": 15.984,
+       "haloR": 45.552,
+       "centreDelta": 0,
+       "localGround": 0.0017089,
+       "carrierMaskPx": 0,
+       "visiblePx": 0,
+       "visibleShare": null,
+       "carrierMask": {
+        "n": 0
+       },
+       "visibleGlow": {
+        "n": 0
+       }
+      },
+      {
+       "isField": true,
+       "rank": 1,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 17.843,
+       "seatEdgeR": 19.245,
+       "haloR": 47.956,
+       "centreDelta": 0,
+       "localGround": 0.003357,
+       "carrierMaskPx": 4351,
+       "visiblePx": 2673,
+       "visibleShare": 0.61434,
+       "carrierMask": {
+        "n": 4351,
+        "fracSwingGe004": 0.339,
+        "maxSwing": 0.028247,
+        "medianSwing": 0.001649,
+        "W_mod": 0.1917,
+        "W_min": 0.21257,
+        "W_grd": 0.49114,
+        "W_sta": 1.69021
+       },
+       "visibleGlow": {
+        "n": 2673,
+        "fracSwingGe004": 0.55181,
+        "maxSwing": 0.028247,
+        "medianSwing": 0.004797,
+        "W_mod": 0.2877,
+        "W_min": 0.33251,
+        "W_grd": 1.42891,
+        "W_sta": 4.0784
+       }
+      },
+      {
+       "isField": true,
+       "rank": 2,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 22.779,
+       "seatEdgeR": 24.181,
+       "haloR": 63.128,
+       "centreDelta": 0,
+       "localGround": 0.0030109,
+       "carrierMaskPx": 8180,
+       "visiblePx": 5296,
+       "visibleShare": 0.64743,
+       "carrierMask": {
+        "n": 8180,
+        "fracSwingGe004": 0.32763,
+        "maxSwing": 0.027908,
+        "medianSwing": 0.001731,
+        "W_mod": 0.21788,
+        "W_min": 0.24307,
+        "W_grd": 0.57474,
+        "W_sta": 1.89052
+       },
+       "visibleGlow": {
+        "n": 5296,
+        "fracSwingGe004": 0.50604,
+        "maxSwing": 0.027908,
+        "medianSwing": 0.004051,
+        "W_mod": 0.29085,
+        "W_min": 0.33355,
+        "W_grd": 1.34532,
+        "W_sta": 3.91166
+       }
+      }
+     ],
+     "limb1_fracPerFieldCarrier": [
+      0.55181,
+      0.50604
+     ],
+     "limb1_pass": true,
+     "limb2_W_mod_perFieldCarrier": [
+      0.2877,
+      0.29085
+     ],
+     "limb2_W_grd_perFieldCarrier": [
+      1.42891,
+      1.34532
+     ],
+     "limb3_maxSwing": 0.028247,
+     "limb3_pass": true,
+     "negativeLimb_shelfMaxSwing": 0.004667,
+     "negativeLimb_perShelfCarrier": [
+      {
+       "rank": 3,
+       "animationName": "none",
+       "maxSwing": 0.004667
+      },
+      {
+       "rank": 4,
+       "animationName": "none"
+      },
+      {
+       "rank": 5,
+       "animationName": "none"
+      }
+     ]
+    },
+    {
+     "label": "(b) capability selected, gain 0.35",
+     "selection": "CAPABILITY",
+     "waveGain": "0.35",
+     "waveMean": "0.8825000000000001",
+     "waveDepth": "0.1175",
+     "frames": 124,
+     "elapsedMs": 13089,
+     "periodsCovered": 1.31,
+     "periodCoverageAdequate": true,
+     "verdictAdmissible": true,
+     "maskCounts": {
+      "carrierPx": 26977,
+      "foreignPx": 26025,
+      "overlapPx": 11178
+     },
+     "region": "520x520",
+     "perCarrier": [
+      {
+       "isField": false,
+       "rank": 3,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 17.502,
+       "seatEdgeR": 18.903,
+       "haloR": 50.688,
+       "centreDelta": 0.75,
+       "localGround": 0.0024439,
+       "carrierMaskPx": 43,
+       "visiblePx": 23,
+       "visibleShare": 0.53488,
+       "carrierMask": {
+        "n": 43,
+        "fracSwingGe004": 0.11628,
+        "maxSwing": 0.119633,
+        "medianSwing": 0.001381,
+        "W_mod": 0.29173,
+        "W_min": 0.31274,
+        "W_grd": 0.56503,
+        "W_sta": 1.30765
+       },
+       "visibleGlow": {
+        "n": 23,
+        "fracSwingGe004": 0.21739,
+        "maxSwing": 0.119633,
+        "medianSwing": 0.001827,
+        "W_mod": 0.24507,
+        "W_min": 0.25257,
+        "W_grd": 0.74755,
+        "W_sta": 2.61818
+       }
+      },
+      {
+       "isField": false,
+       "rank": 4,
+       "cls": "LEXICAL",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 16.321,
+       "seatEdgeR": 17.722,
+       "haloR": 49.075,
+       "centreDelta": 0.75,
+       "localGround": 0.0014543,
+       "carrierMaskPx": 0,
+       "visiblePx": 0,
+       "visibleShare": null,
+       "carrierMask": {
+        "n": 0
+       },
+       "visibleGlow": {
+        "n": 0
+       }
+      },
+      {
+       "isField": false,
+       "rank": 5,
+       "cls": "NONE",
+       "animationName": "none",
+       "animationDuration": "0s",
+       "rBody": 14.583,
+       "seatEdgeR": 15.984,
+       "haloR": 45.552,
+       "centreDelta": 0,
+       "localGround": 0.0017094,
+       "carrierMaskPx": 1,
+       "visiblePx": 0,
+       "visibleShare": 0,
+       "carrierMask": {
+        "n": 1,
+        "fracSwingGe004": 0,
+        "maxSwing": 0,
+        "medianSwing": 0,
+        "W_mod": 0,
+        "W_min": 0,
+        "W_grd": 0,
+        "W_sta": 0.75294
+       },
+       "visibleGlow": {
+        "n": 0
+       }
+      },
+      {
+       "isField": true,
+       "rank": 1,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 17.843,
+       "seatEdgeR": 19.245,
+       "haloR": 47.956,
+       "centreDelta": 0,
+       "localGround": 0.0032639,
+       "carrierMaskPx": 4386,
+       "visiblePx": 2751,
+       "visibleShare": 0.62722,
+       "carrierMask": {
+        "n": 4386,
+        "fracSwingGe004": 0.18012,
+        "maxSwing": 0.011843,
+        "medianSwing": 0.001084,
+        "W_mod": 0.12831,
+        "W_min": 0.13746,
+        "W_grd": 0.33209,
+        "W_sta": 1.76909
+       },
+       "visibleGlow": {
+        "n": 2751,
+        "fracSwingGe004": 0.28717,
+        "maxSwing": 0.011843,
+        "medianSwing": 0.002251,
+        "W_mod": 0.1398,
+        "W_min": 0.14921,
+        "W_grd": 0.68962,
+        "W_sta": 4.14016
+       }
+      },
+      {
+       "isField": true,
+       "rank": 2,
+       "cls": "SEMANTIC",
+       "animationName": "mappingFieldWave",
+       "animationDuration": "10s",
+       "rBody": 22.779,
+       "seatEdgeR": 24.181,
+       "haloR": 63.128,
+       "centreDelta": 0,
+       "localGround": 0.0029092,
+       "carrierMaskPx": 8225,
+       "visiblePx": 5387,
+       "visibleShare": 0.65495,
+       "carrierMask": {
+        "n": 8225,
+        "fracSwingGe004": 0.14614,
+        "maxSwing": 0.013318,
+        "medianSwing": 0.000987,
+        "W_mod": 0.1312,
+        "W_min": 0.14022,
+        "W_grd": 0.33939,
+        "W_sta": 1.97211
+       },
+       "visibleGlow": {
+        "n": 5387,
+        "fracSwingGe004": 0.22313,
+        "maxSwing": 0.013318,
+        "medianSwing": 0.001748,
+        "W_mod": 0.13347,
+        "W_min": 0.14272,
+        "W_grd": 0.60078,
+        "W_sta": 4.06114
+       }
+      }
+     ],
+     "limb1_fracPerFieldCarrier": [
+      0.28717,
+      0.22313
+     ],
+     "limb1_pass": false,
+     "limb2_W_mod_perFieldCarrier": [
+      0.1398,
+      0.13347
+     ],
+     "limb2_W_grd_perFieldCarrier": [
+      0.68962,
+      0.60078
+     ],
+     "limb3_maxSwing": 0.013318,
+     "limb3_pass": true,
+     "negativeLimb_shelfMaxSwing": 0.119633,
+     "negativeLimb_perShelfCarrier": [
+      {
+       "rank": 3,
+       "animationName": "none",
+       "maxSwing": 0.119633
+      },
+      {
+       "rank": 4,
+       "animationName": "none"
+      },
+      {
+       "rank": 5,
+       "animationName": "none",
+       "maxSwing": 0
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

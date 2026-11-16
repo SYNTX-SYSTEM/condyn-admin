@@ -1,0 +1,54 @@
+import subprocess, shutil, os, sys, json, re
+I = sys.argv[1]; PRISTINE = f"{I}/" + os.environ.get("PRISTINE_NAME", "t29"); WORK = f"{I}/tm"
+if os.path.exists(WORK): shutil.rmtree(WORK)
+shutil.copytree(PRISTINE, WORK, symlinks=True)
+API = "app/api/career/analyses/[analysisId]/role-discovery"
+UI = "test/career/pxj-first-screen"; DZ = ["test/career/pxj-first-screen", "test/career/identity-core-dropzone-intake.test.tsx", "test/career/job-pool/syntx-field-ssr.test.tsx"]; JP = ["test/career/job-pool"]
+M = [
+ ("M01 start route: idempotency not first", f"{API}/investigations/route.ts", "const existing = await store.investigation(identity.investigationId);", "const existing = null as any;", JP),
+ ("M02 start route: confirmedCalls not checked", f"{API}/investigations/route.ts", "if (body.confirmedCalls !== plan.callsNeeded) return", "if (false) return", JP),
+ ("M03 start route: cross-site accepted", f"{API}/investigations/route.ts", 'if ((request.headers.get("sec-fetch-site") ?? "").trim().toLowerCase() === "cross-site")', "if (false)", JP),
+ ("M04 start route: content type unchecked", f"{API}/investigations/route.ts", 'if ((request.headers.get("content-type") ?? "").split(";")[0].trim().toLowerCase() !== "application/json")', "if (false)", JP),
+ ("M05 config: day limit fails open", "lib/career/job-pool/semantic-config.ts", ": 0);", ": 1000);", JP),
+ ("M06 GET route: startControl missing", f"{API}/route.ts", ", startControl: { engineState: config.state, maxRoles: config.state === \"READY\" ? config.maxRoles : null }", "", JP + [UI]),
+ ("M07 UI client: confirmedCalls + 1", "lib/career/ui/semantic-investigation.ts", "confirmedCalls: request.confirmedCalls };", "confirmedCalls: request.confirmedCalls + 1 };", [UI]),
+ ("M08 hook: no open-guard (double POST)", "lib/career/ui/semantic-investigation.ts", "if (key === null || open.current || roles.length === 0) return null;", "if (key === null || roles.length === 0) return null;", [UI]),
+ ("M09 panel: confirmedCalls = picked roles", "app/components/career/demo/RoleDiscoveryPanel.tsx", "pickedRoles.map(key => ({ jobPoolUploadId: key.jobPoolUploadId, poolRoleId: key.poolRoleId })), calls); }", "pickedRoles.map(key => ({ jobPoolUploadId: key.jobPoolUploadId, poolRoleId: key.poolRoleId })), pickedRoles.length); }", [UI]),
+ ("M10 URL: lowercase id accepted", "lib/career/ui/career-demo-url.ts", "const INVESTIGATION_ID = /^RINV_[0-9A-F]{32}$/;", "const INVESTIGATION_ID = /^RINV_[0-9A-Fa-f]{32}$/;", [UI]),
+ ("M11 Dashboard: id not handed on (50dac39)", "app/components/career/demo/CareerIntelligenceDashboard.tsx", "        roleInvestigationId={roleInvestigationId}\n", "", [UI]),
+ ("M12 field: release keeps the id in the URL", "app/components/career/demo/SemanticCareerIntelligenceField.tsx", "pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null, [ROLE_INVESTIGATION_URL_PARAM]: null });", "pushUrl({ [DISCOVERY_POOLS_URL_PARAM]: next ?? null });", [UI]),
+ ("M13 field: no plan re-read after a stored id", "app/components/career/demo/SemanticCareerIntelligenceField.tsx", "if (storedSemanticInvestigationId !== null) setDiscoveryRevision(previous => previous + 1);", "", [UI]),
+ ("M14 panel: picks not cleared after a stored run", "app/components/career/demo/RoleDiscoveryPanel.tsx", "useEffect(() => { if (storedInvestigationId !== null) setPicked([]); }, [storedInvestigationId]);", "", [UI]),
+ ("M15 decoder: foreign provider accepted", "lib/career/ui/semantic-investigation.ts", "|| investigation.provider !== STAND_IN_PROVIDER ||", "||", [UI]),
+ ("M16 decoder: start control not checked", "lib/career/ui/role-discovery.ts", "if (!isStartControl(value.startControl, value.semanticPlan as SemanticInvestigationPlan)) return null;", "", [UI]),
+ ("M17 panel: start offered although unavailable", "app/components/career/demo/RoleDiscoveryPanel.tsx", "const startable = unavailable === null && plan.state", "const startable = plan.state", [UI]),
+ ("M18 field: start by pick (auto POST on tick)", "app/components/career/demo/RoleDiscoveryPanel.tsx", "onChange={() => onPick?.(roleKey)}", "onChange={() => { onPick?.(roleKey); onStart?.([{ jobPoolUploadId: roleKey.split(':')[0], poolRoleId: roleKey.split(':').slice(1).join(':') }], 0); }}", [UI]),
+ ("M19 dropzone: dropped file ignored", "app/components/career/demo/IdentityCoreDropZone.tsx", "if (file && onDropFile) onDropFile(file);", "if (file) { /* ignored */ }", DZ),
+ ("M20 dropzone: invents a file (the old no-op)", "app/components/career/demo/IdentityCoreDropZone.tsx", "if (file && onDropFile) onDropFile(file);", "if (file && onDropFile) onDropFile(new File([\"x\"], \"dropped-source.pdf\"));", DZ),
+ ("M21 intake: refused type no longer refused", "app/components/career/demo/SourceDock.tsx", "    if (kind === null) return;\n", "", DZ),
+ ("M22 field: drop forwarded twice (double intake)", "app/components/career/demo/SemanticCareerIntelligenceField.tsx", "onDropFile={file => sourceDockRef.current?.stageFile(file)}", "onDropFile={file => { sourceDockRef.current?.stageFile(file); sourceDockRef.current?.stageFile(file); }}", DZ),
+ ("M23 panel: GO TO JOB FIELD goes to the Capability Field", "app/components/career/demo/SemanticCareerIntelligenceField.tsx", "onGoToJobField={() => switchFieldFocus(\"FIELD\")}", "onGoToJobField={() => switchFieldFocus(\"CAPABILITY\")}", DZ),
+ ("M24 gate text EN: one way only again", "lib/career/view-model/sil-language.ts", "PERSON needs no job: choose it above. PERSON × JOB needs a valid", "Select a job first. PERSON × JOB needs a valid", DZ),
+ ("M25 gate text DE: one way only again", "lib/career/view-model/sil-language.ts", "PERSON braucht keinen Job: wähle ihn oben. PERSON × JOB braucht", "Zuerst einen Job wählen. PERSON × JOB braucht", DZ),
+]
+env = {**os.environ}; results = []
+sel = sys.argv[2:] 
+for name, f, old, new, tests in M:
+    if sel and name.split()[0] not in sel: continue
+    if os.environ.get("WIDE"): tests = ["test/career"]
+    src = open(f"{PRISTINE}/{f}").read(); n = src.count(old)
+    if n != 1: results.append({"mutation": name, "error": f"pattern count {n}"}); print(name, "PATTERN", n, flush=True); continue
+    open(f"{WORK}/{f}", "w").write(src.replace(old, new))
+    try:
+        p = subprocess.run(["npm", "run", "-s", "test:isolated", "--", *tests], cwd=WORK, env=env, capture_output=True, text=True, timeout=1500)
+        out = p.stdout + p.stderr; code = p.returncode
+    except subprocess.TimeoutExpired as e:
+        out = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or ""); code = "TIMEOUT"
+    finally:
+        shutil.copyfile(f"{PRISTINE}/{f}", f"{WORK}/{f}")
+    tot = " · ".join(re.sub(r"\s+", " ", m).strip() for m in re.findall(r"(?m)^\s*(?:Test Files|Tests)\s.*$", out))
+    failed = sorted({re.sub(r"\s+\d+ms$", "", l.split(" > ", 1)[-1].strip())[:110] for l in out.splitlines() if l.startswith(" FAIL ")})
+    results.append({"mutation": name, "file": f, "exit": code, "red": code != 0, "totals": tot, "failedTests": failed[:6], "failedCount": len(failed)})
+    print(name, "RED" if code != 0 else "GREEN (not caught)", tot, flush=True)
+json.dump(results, open(f"{I}/mut/results{os.environ.get('MUT_TAG', '')}{'-' + '-'.join(sel) if sel else ''}.json", "w"), indent=1, ensure_ascii=False)
+print("MUT-END")

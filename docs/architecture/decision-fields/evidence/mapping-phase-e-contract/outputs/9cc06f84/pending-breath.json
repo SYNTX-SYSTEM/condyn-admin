@@ -1,0 +1,14 @@
+=== pending-breath (RUNNING, phase A) ===
+{
+ "commit": "9cc06f84",
+ "runState": "RUNNING",
+ "pendingBreath": "true",
+ "fieldBreath": "STILL",
+ "ringBreath": "STILL",
+ "ringAnim": "none",
+ "ringDur": "0s",
+ "movedWhilePending": [],
+ "movedCount": 0,
+ "pass": true
+}
+

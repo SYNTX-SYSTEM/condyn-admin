@@ -3630,6 +3630,740 @@ No Gemini call.
 
 **Run record.** `evidence/role-investigation-ui-9bb6bed/`.
 
+### 3.78 Integrated state `integration/dll-full` `cdf0c1e` (2026-10-29)
+
+**Request.** GELB, after the owner GO "DLL FULL INTEGRATION", asked for an independent, inverse validation of the integrated state: `29ae2d7` first, then `cdf0c1e` (plus `frontend/dll-entry-gaps`). Stand-in only; `main` stays at `b712152`. Five points, plus whether GELB's red files are base redness.
+
+**Method.**
+- Full suite, tsc and production build in a detached worktree with a real `node_modules`, on a disposable database.
+- Scratch trees for the same files on `27f3253`, `edae658` and `29ae2d7`.
+- Stand-in production labs without a flag: product path, sources, the dll-entry-gaps probe and the integrity probes of earlier rounds.
+- 25 one-line mutations, one per seam, against the relevant tests.
+
+**Verdicts (`evidence/integration-cdf0c1e/verdicts.txt`).**
+- **1 Suite: PASS.**
+  - tsc 0, build exit 0.
+  - 473 files with 458 green, 3113 tests green, 27 red.
+  - The red ones are only the four lifecycle files. The decision-integration and e2e files are green with a real `node_modules`; they fail only in scratch trees with a symlinked one (Turbopack panic).
+- **Base redness: confirmed.**
+  - The same 27 tests in the same four files are red on `27f3253`, `edae658`, `29ae2d7` and `cdf0c1e`.
+  - `main` `b712152` has no tests at all; they arrived with `1c64dc1` on 2026-08-17.
+  - The cause is `lib/career/db/client.ts` creating `career_policy_versions` with `timestamp` where the Drizzle schema and repositories use `version`, `parent_version`, `created_at` and `created_by` (F-JP-5, §3.5). The integration did not cause it.
+- **2 Product path: PASS.** Upload, PERSON, release, lexical discovery, explicit stand-in start, cache reuse, reload, Back and Forward all behave as in §3.77, with the displayed numbers equal to the database. The website source works end to end. The GitHub success path is INCONCLUSIVE in the network-less lab. No source is shown in the discovery panel, and there is no LinkedIn input.
+- **3 Integrity: PASS.** Six orbits are identical to `c670b74`, and the integrity probes match earlier rounds (nav 88/90 and s10 17/20 with S6, both as before).
+- **4 Inverse: 20 of 25 mutations caught.**
+  - **F-INT-1:** the day-limit fails-closed test is vacuous (it reads `run.calls`, which does not exist), so a fail-open limit survives.
+  - **F-INT-2:** a lowercase `roleInvestigationId` accepted by the parser survives.
+  - **F-INT-3:** picks not cleared after a stored run survive.
+  - **F-INT-4:** a drop forwarded twice survives.
+  - One further survivor is an equivalent mutant.
+  - The browser probes pin the behaviour behind F-INT-3 and F-INT-4.
+- **5 Viewports: PASS.** Six viewports in the production build without a flag.
+- **dll-entry-gaps: PASS.** The gate text names both ways in EN and DE, GO TO JOB FIELD works, and a drop reaches the real intake with the same validation as the file button, once per drop.
+- **Observations.**
+  - **O-INT-1 (security):** the analyze route and the website loader fetch loopback and link-local addresses (SSRF). That is acceptable only while the app stays local and unauthenticated.
+  - **O-INT-2:** an unknown document type is accepted.
+  - **O-INT-3:** one database-isolation test is flaky under load.
+
+**Run record.** `evidence/integration-cdf0c1e/`.
+
+### 3.79 Closing check of `main` `9fb785a` (2026-10-29)
+
+**Request.** GELB fast-forwarded `main` to `9fb785a` (= `integration/dll-full`: `cdf0c1e`, GRÜN's test-gap fixes `804834c`, GELB's F-INT-1 `ec06d8a` and docs §11) under the owner mandate. GELB asked for a final check: the delta, the four surviving mutants of §3.78, and a smoke on `main`. Stand-in only.
+
+**Verdicts (`evidence/main-9fb785a/verdicts.txt`).**
+- **1 Delta: PASS.** Only `test/` (4 files) and `docs/` (1 file) changed, and the fast-forward is confirmed.
+- **2 Mutants: partly fixed.**
+  - F-INT-1 and F-INT-3 are now caught.
+  - **F-INT-2 is still open.** The new case lower-cases the whole id including the `RINV_` prefix, so it cannot tell a widened hex class apart. A value of `RINV_` plus lower-case hex would.
+  - **F-INT-4 is still open.** The new tests pin the drop zone and SourceDock, but not the Field wiring between them. A Field-level test is missing.
+  - Both are test gaps only; the behaviour on `main` is correct (§3.78 browser probes).
+- **3 Smoke: PASS.** tsc 0, the changed tests green, the production build succeeds, and the product path is identical to `cdf0c1e` with the numbers equal to the database. Six orbits are unchanged.
+- **Result.** No production finding on `main` and nothing to revert. The open items are F-INT-2 and F-INT-4 (tests) and the owner items of §3.78.
+
+**Run record.** `evidence/main-9fb785a/`.
+
+### 3.80 Runtime candidate `main` `489b167` for :3017 (2026-10-29) — GO with conditions
+
+**Request.** Under the owner mandate SFE FULL_RUNTIME_INTEGRATION, GELB asked for an independent, inverse validation of `main` `489b167` as the replacement of :3017, which runs the old code `175c481`. Stand-in only, no Gemini, nothing on :3017; GELB's :41890 was used read-only. Points:
+- the product path on the real world;
+- HR decision-loop pages, GET without writes, lazy relation-cache registration, no Gemini without a worker;
+- one mutation per seam, and a rollback test.
+
+**Method.**
+- GELB's dump of :41862 restored into a fresh marked disposable database; the source dump was unchanged.
+- Production builds without a flag, `next start` with PINK's net sentinel, no worker, no key.
+- The runner's own seeded HR world as a positive control on both versions.
+- Exact row counts and tuple statistics around every GET sweep.
+- The 25 seam mutations of §3.78.
+
+**Verdict: GO, with three conditions.** Details in `evidence/runtime-candidate-489b167/verdicts.txt`.
+- **Product path: PASS on the real world.** 790 pairs. The displayed "190 of 790" equals the 190 relations in the database. One POST per start, none on reload, Back or Forward. Six viewports, six orbits.
+- **HR pages: PASS (code).** The seeded contexts A and B render identically on `489b167` and `175c481`.
+  - On GELB's :41890 copy the context API answers 404 NOT_FOUND for the same ids. The copy lacks those contexts; this is not a code fault.
+- **GET without writes: PASS.** No row or tuple change and no outbound connection.
+- **Lazy registration: PASS.** The four tables are created on the first discovery GET with 0 rows and the guards enabled.
+- **No Gemini: PASS.** An analyze job stays PENDING with no outbound attempt.
+- **Inverse: 23 of 25 mutations caught.** F-INT-2 is now caught. F-INT-4 remains a test gap, and M17 is an equivalent mutant.
+- **Rollback: PASS.** `175c481` runs on the database the candidate used, and the candidate runs again afterwards.
+- **Conditions.**
+  - **C1:** smoke the HR context API on the new server against the real database before switching.
+  - **C2:** the rollback procedure as tested.
+  - **C3:** set the stand-in and an explicit day limit; no Gemini change without a separate GO.
+
+**Run record.** `evidence/runtime-candidate-489b167/`.
+
+**Addendum (C1 corrected).** GELB's first context ids were truncated to 30 characters; that caused the 404 in 2a, not missing data. With the full ids (`DCTXREV_25E6B6DA8048EDCA22B1C41380A1B71C`, `DCTXREV_5EFC324ADF56B112661878848951FDD2`), :41890 renders both contexts with their chains and no page error, and the context API answers 200. GELB reports 200 on :3017 itself with the old code. 2a is PASS for code and data, and C1 is met. C2 and C3 stand, and GO is unchanged (`evidence/runtime-candidate-489b167/addendum-c1.txt`).
+
+### 3.81 :3017 after the cutover to `main` `1d1d6e6` (2026-10-30) — PASS
+
+**Request.** After the cutover, GELB asked for an independent, inverse check of the live :3017, which runs a dev server on `main` `1d1d6e6`: the `489b167` code plus the switch script and docs. Two parts:
+- the full product path, six orbits with their interactions, the three modes, Reload/Back/Forward, both languages and six viewports;
+- live :3017 with GET only, including the HR contexts, a dev-versus-production comparison, the configuration, and no writes.
+
+**Method.**
+- PINK's own production labs of `1d1d6e6`: the runner's seeded world (the data shape of :3017) and the restored real :41862 world, both with the stand-in and day limit 1000, without key or worker.
+- On :3017, a browser that aborts every non-GET request; none occurred.
+
+**Verdict: PASS** (`evidence/runtime-3017-1d1d6e6/verdicts.txt`). The GO of §3.80 is confirmed in operation.
+- **Product path on the real world.** One POST per start; "190 of 790" equals the database; "Stand-in, no model". Reload, Back and Forward send 0 POST. Six viewports.
+- **Modes.** Three modes from every view, retraced exactly by Back ×3 and Forward ×3; the DE/EN switch works.
+- **Orbits.** 01 and 03–06 open their cosmos, 02 focuses the Capability Field.
+- **GET without writes.** The GET sweep wrote nothing.
+- **Live :3017 equals the production build.** On the same data shape, text and testid sets are identical by hash; only the dev overlay adds six elements. HR contexts A and B render.
+- **Empty world on :3017.** :3017 holds no analysis and no pool, so no start is offered, which is correct. The stand-in label was verified in the lab.
+- **Observations.**
+  - **O-RT-1:** Escape closes neither the orbit focus nor the codex modal.
+  - **O-RT-2:** dev-server compile latency on the HR chain.
+  - **O-RT-3:** :3017 runs as a dev server with the worker; an analysis submitted through the UI would call Gemini if a key is set. This is unchanged by the cutover and an owner item.
+
+**Run record.** `evidence/runtime-3017-1d1d6e6/`.
+
+### 3.82 Semiotic entry line, GRÜN `84e4551` (2026-10-30) — NO-GO for :3017 (one new finding)
+
+**Request.** SEMIOTIC_ENTRY_FIX: GRÜN replaced the closed-gate note at the Capability Field entry ("CAPABILITY FIELD CLOSED … Way: …", amber, `role="note"`) with a calm field-state line in cool tokens (`role="status"`, `aria-live="polite"`), derived by `field-entry-state.ts`. The gate and the mode logic stay unchanged. GELB asked for GO/NO-GO for the rollout on :3017 and named the checks: S7 gate identity against `cd1e4de`, no regression, and that the line covers nothing new.
+
+**Method.**
+- **Gate probe v2.** Own empty stand-in production lab, run on the candidate and on `cd1e4de` with the same recipe: 40 states × EN/DE × 1920/1280. It covers no pool, pool, pool open, role open, job selected, invalid job, pools unread, job being checked, PERSON (both focuses) and JOB, and records attributes, click, Tab/Enter, entry action, colours, words and overlaps.
+- **Hit test and click proof.** A hit test on the restored real world and a click proof in the stand-in lab.
+- **Mutants.** 28 one-line mutants against GRÜN's suites.
+- **Suites.** tsc and the full isolated suite on both trees.
+- **Regression.** On the restored real world in a production build: modes in 6 viewports, orbits, role discovery, rd-ui and the drop zone, compared with §3.81 (`cd1e4de` has the same app code as `1d1d6e6`).
+
+**Verdict: NO-GO** (`evidence/semiotic-entry-84e4551/verdicts.txt`).
+- **Passing.**
+  - **S1.** 9 distinct states in each language.
+  - **S2.** 0 lock words.
+  - **S3.** 0 warm tones.
+  - **S4.** status/polite only.
+  - **S5.** Natural EN/DE, with wording observations.
+  - **S7.** 0 gate differences in 40 states at both viewports.
+  - **S8.** Identical except the new line itself.
+  - **Overlaps.** PxJ/JOB overlaps are reduced or removed, which confirms GRÜN.
+- **F-SEM-1 (new, blocking).** PERSON with an opened pool in the Job Field now shows the PERSON_OPEN line over the KESTREL organization node, including its name. Its action "◈ CAPABILITY FIELD" takes clicks on the node's top edge, so a click there enters the Capability Field instead of opening the organization. Reproduced at 1920/1600/1440/1280; the baseline had no line in this state.
+- **Test gaps, no production finding.** F-SEM-2 (requirement as opened role), F-SEM-3 (amber path label) and F-SEM-4 (dangling aria-describedby).
+- **Observations.**
+  - **O-SEM-1.** States 1/2a/2b/unread differ by text only.
+  - **O-SEM-2.** The "trägt / holds" and "bleibt außen" wordings.
+  - **O-SEM-3.** The PERSON action keeps focus=CAPABILITY from the URL.
+  - **O-SEM-4.** The §3.78 gaps needles are obsolete.
+- **Re-check after the fix.** About 40 minutes: gate probe, hit test, click proof and the alive mutants.
+
+**Run record.** `evidence/semiotic-entry-84e4551/` (verdicts, measurements, scripts, line shots of the empty lab and the F-SEM-1 shot).
+
+### 3.83 Semiotic entry line, round 2, GRÜN `0ab9baf` (2026-10-30) — GO for :3017
+
+**Request.** GRÜN fixed the §3.82 findings:
+- F-SEM-1: the line now sits in the Job Field's right column, under the mode selector, and the intake panel opens 12 px below it.
+- F-SEM-2…4: test gaps closed.
+- O-SEM-2: wording changed.
+
+GELB asked for the gate probe again, a hit test and click proof in all states and both languages, the three mutants, S8, and a new check that the right column covers nothing new. It asked for GO/NO-GO.
+
+**Method.**
+- **Gate probe v2.** Same probe as §3.82 against `cd1e4de`.
+- **New geometry probe.** A generic scan of every visible element with a testid, text or interactivity under the line. It runs in 8 viewports, EN and DE, with and without the intake panel open, and includes the KESTREL rim click proof.
+- **Hit test.** On the restored real world.
+- **Mutants.** 32 mutants: E29–E33 are new for the right column, and E28 is obsolete.
+- **Tests and regression.** tsc and test/career, then the S8 regression against §3.81.
+
+**Verdict: GO** (`evidence/semiotic-entry-0ab9baf/verdicts.txt`).
+- **F-SEM-1 closed.** The line covers 0 elements in 88 visits × 4 captures. The intake panel always sits 12 px below the line. Every KESTREL rim click opens the organization, and the real-world hit test finds 0 nodes under the line.
+- **Other checks.** S7 shows 0 gate differences in 40 states at 1920/1280. S1–S5 pass, including the new wording. S8 is identical to §3.81 except for the line itself.
+- **Mutants.** 30 of 31 applicable mutants are red, so F-SEM-2…4 are closed.
+- **Remaining test gap (F-SEM-5, E32).** If the dashboard stopped writing the entry clearance, the suites would not notice. The browser measures the 12 px, so the shipped code is correct.
+- **Owner items, unchanged.** O-SEM-3, the INVALID code, and O-RT-3 (:3017 runs as a dev server with the worker).
+
+**Run record.** `evidence/semiotic-entry-0ab9baf/`.
+
+### 3.84 Automated capability-to-job path, block A: GitHub account input, GELB `30f42b0` (2026-10-30) — PASS with two open findings
+
+**Request.** Owner mandate SFE::AUTOMATED_CAPABILITY_TO_JOB_EXECUTE ("NUR DAS. MEHR NICHT."), spec `b3ebb6d`. GELB delivers the backend block by block; block A is the GitHub account input: `github.com/<user>` selects the account's own public, active repositories automatically (newest push first, default 5, hard cap 10) and loads them with the existing repository loader. GELB's decisions Q1–Q5 on the spec are the oracle (`evidence/auto-capability-30f42b0/scripts/grid.md.txt`).
+
+**Method.** Deterministic only: a fake fetcher, no network, no model, a disposable `condyn_test_*` database per run.
+- **Probe `pink-acp-a`.** URL matrix (37 URLs), request set, selection with 200 seeded permutations, bounds (15 cases), failure cases (10), determinism.
+- **Repo-path non-regression.** Nine repository URLs through `prepareDocuments` (the worker entry) on base `9fa2cdc` and on the candidate.
+- **Suites and tsc.** GELB's suites on both trees.
+- **Mutants.** 20 mutants of the new rules, judged against the base-red set.
+
+**Verdict: PASS with F-ACC-1 and F-ACC-2 open** (`evidence/auto-capability-30f42b0/verdicts.txt`).
+- **A1–A7 pass.** Only `api.github.com`, one listing call, forks, archived, private and disabled repositories excluded, the order is stable, the bounds follow Q4, and failures are not hidden.
+- **Repo path.** 5 of 9 URLs identical to base. Four are refused earlier now (O-A-1, fail closed).
+- **tsc and suites.** tsc 0. The same 4 tests fail on base and candidate (3 in career-analyze-flow, CATEGORY C in career-analyze-multisource).
+- **F-ACC-1.** The analyze route still accepts only `github.com`, so `www.github.com/<user>` (an account per Q4) gets HTTP 400 end to end.
+- **F-ACC-2.** 6 of 20 mutants stay green in GELB's suites: hard cap, default, env handling (3), swallowed repository failures, and the worker entry `document-loader`. The account path's entry into the worker is not covered by any test.
+- **Observations.** O-A-2: up to 100 documents per ANALYZE in the one extraction call, bounded by count, not bytes. O-A-3: without `GITHUB_TOKEN`, the GitHub rate limit allows about 3 account analyses per hour.
+
+**Run record.** `evidence/auto-capability-30f42b0/`.
+
+### 3.85 Automated capability-to-job path, whole path: backend `af24134` → `571c201`, frontend `576a704` (2026-10-30) — NO-GO on the current pair
+
+**Request.** GELB asked for the independent and inverse validation of the whole path (blocks B–G) and a GO/NO-GO for merge and :3017. The path covers the gate and provider, the automatic run after a PERSON analysis, `ROLE_RANKING_V1`, the two read APIs, the worker hook, and GRÜN's frontend: the GitHub account input, the automatic ranking panel, and O-AC-1. The mandate is unchanged ("NUR DAS. MEHR NICHT."). GELB fixed PINK's interim findings during the check in `ab47d51`/`571c201`, and PINK re-checked those fixes.
+
+**Method.**
+- **Evidence classes.** DETERMINISTIC vitest probes on their own `condyn_test_*` databases, with the stand-in or a mocked `@google/genai` and the network refused; STAND_IN browser walks in GRÜN's lab (production build, real worker, loopback Gemini fake, network sentinel); CODE_INSPECTION.
+- **Probes.** Gate matrix, provider seam, whole-database fingerprint around the reads, concurrency, snapshot and poolsDropped, budget, Gemini path, worker hook, NOT_PROVISIONED, and an independent ranking oracle.
+- **Browser.** S7 gate in 40 states, the §3.83 geometry, and S8 on the restored real world. Walks: PDF and text, EN/DE, semantic on and off, in 6 viewports.
+- **Mutants and suites.** 46 + 55 backend mutants and 19 frontend mutants. tsc and the test/career regression against base `9fa2cdc`.
+
+**Verdict: NO-GO on the current pair** (`evidence/auto-capability-576a704/verdicts.txt`). Backend blocks B–E pass after GELB's fixes. Two blocking findings remain:
+- **F-AC-1.** In the stack tier (960×540@2, 640×360@2) the ranking is an uncollapsed 73-rank list of 8.8–10.8k px above the six orbits. S8 no longer reaches orbit 01 at 640×360.
+- **F-AC-2.** Backend `571c201` reports `PARTIAL · DAY_BUDGET_EXHAUSTED`, but the frontend `576a704` decoder refuses that reason, so such a run reads as READ_FAILED.
+
+Open but not blocking:
+- **F-AM-6.** An analysis without capability proposals still reads "10 of 10 roles checked semantically" (CACHED tasks with 0 pairs).
+- **F-AM-7.** Test gaps: E-M01, N-M04 and N-M05 in the backend, F-M17 in the frontend.
+
+**What passes.**
+- **Product path.** After ANALYZE the path runs through with 0 inputs, 0 writes, and no picker or confirmation. With text input the UI shows 22 SEMANTIC ranks out of 73, labelled STAND-IN, and they equal the API ranking.
+- **Reads and ranking.** The reads write nothing and register nothing. The ranking equals PINK's oracle. The claim guard is unchanged.
+- **Fixes.** F-RK-1 and F-AM-1…5 are closed. On block A, F-ACC-1/2 are closed (§3.84; 20/20 mutants red).
+- **O-AC-1.** The stand-in texts are byte-identical.
+- **Owner notes.** O-AC-2 (the 3-minute wait against real Gemini latency), O-AC-3 (fit shown as a percentage), O-AM-4 (shutdown during a run), and the budget and operations notes O-A-2/3.
+
+**Run record.** `evidence/auto-capability-576a704/`.
+
+### 3.86 Automated capability-to-job path, re-check of §3.85 on frontend `0e44cce` (backend `b972905`, 2026-10-30) — GO
+
+**Request.** GELB asked PINK to re-check only the conditions named in §3.85 (mandate "NUR DAS. MEHR NICHT.") on the integrated pair: frontend `frontend/auto-capability-path-r2` `0e44cce` on backend `b972905`, and to give GO/NO-GO.
+
+**Method.**
+- **Browser.** A stack-tier walk and a stack dig in GRÜN's stand-in lab, and S8 on the restored real world (including 960×540@2 and 640×360@2).
+- **Decoder.** The backend's own view objects for `PARTIAL · DAY_BUDGET_EXHAUSTED` and `SKIPPED · NO_PROPOSALS`, run through the client decoder and the server-rendered panel in EN and DE.
+- **Inverse.** 9 targeted mutants, plus PINK's backend probes, tsc and the test/career regression against base `9fa2cdc`.
+
+**Verdict: GO for merge and :3017** (`evidence/auto-capability-0e44cce/verdicts.txt`). On :3017 the stand-in stays the provider until the owner releases a budget.
+- **F-AC-1 closed.** In the stack tier the ranking panel now keeps at most half the viewport (270 / 180 px, was 8758 / 10827 px). Orbit 01 sits at document y 475 / 388 and opens.
+  - At 960×540, S8 reaches orbit 01 without scrolling, as on the baseline.
+  - **D-AC-1 (accepted deviation).** At 640×360 orbit 01 starts 28 px below the first viewport, so it needs one short scroll. On the baseline, orbits 02–06 already needed scrolling there.
+- **F-AC-2 closed.** `DAY_BUDGET_EXHAUSTED` decodes and has its own line in EN and DE.
+- **F-AM-6 closed.** An analysis without capability proposals reads as `SKIPPED · NO_PROPOSALS`: no run, no claim that roles were checked.
+- **F-AM-7 closed.** All 9 mutants are red.
+- **Rest of the path.** Unchanged: 0 inputs and 0 writes after ANALYZE, 22 SEMANTIC ranks out of 73, UI = API, EN/DE.
+- **tsc and regression.** tsc 0. The regression differs from base only in the base-red outcome-valence domain.
+
+**Owner notes** carried over from §3.85: O-AC-2, O-AC-3, O-AM-4, O-A-2/3, and D-AC-1 above.
+
+**Run record.** `evidence/auto-capability-0e44cce/`.
+
+### 3.87 Real end-to-end run on :3017, analysis `ANL_1793382839627_744` (2026-10-30) — result consistent; call count not provable read-only
+
+**Request.** Owner mandate SFE::REAL END-TO-END EXECUTION ("Ein Durchlauf, maximal 10 echte Gemini-Aufrufe … NUR DIESEN DURCHLAUF. MEHR NICHT."). GELB ran the one real run. PINK's only task was to check it inversely, GET and read only, with no ANALYZE and no Gemini call. The four points to check:
+1. UI ranking = API ranking.
+2. Every cited quote stands verbatim in the PDF, with no claim beyond the authority.
+3. The failed roles are not counted as evaluated.
+4. The number of calls (≤ 10 including extraction) is plausibly shown.
+
+**Verdict** (`evidence/real-e2e-ANL_1793382839627_744/verdicts.txt`, counts only, no model text or CV quote per E-6):
+- **Point 1, PASS.** 73 UI ranks equal the 73 API ranks in order, tier and fit. The page visit made no request other than GET.
+- **Point 2, PASS.** Quotes: semantic 29 of 29 and lexical 40 of 40 occurrences stand verbatim in the PDF. The explanations contain 0 score or hiring words, and the authority is ranking only with no decision.
+- **Point 3, PASS.** The run counts 4 of 7 roles as evaluated.
+  - The two provider failures are LEXICAL_ONLY.
+  - The role whose output was refused carries one relation from the identical requirement content of a succeeded role (cache by content). That is not its own evaluation.
+- **Point 4, open.** The semantic part made up to 7 requests. Extraction makes at least 3 calls (legacy pipeline ≥ 1, discovery 1, convergence 1).
+  - If the two failed requests went out (8-minute run, consistent with 120 s timeouts), the lower bound is exactly 10 calls, with no margin.
+  - The read APIs do not show the extraction call count. GELB's exchange archive or worker log must name it.
+
+### 3.88 Three-point hardening, pair backend `88bdc05` + frontend `832d185` (2026-10-31) — GO on all three points
+
+**Request.** Owner mandate SFE::THREE-POINT IMPLEMENTATION GO ("NUR DIESE DREI PUNKTE. MEHR NICHT."). GELB asked for an independent and inverse check with GO/NO-GO per point.
+- **Point 1, semantic coverage.** Error classes with one TRANSIENT retry, partial admission, and a continuation that asks only for what is missing.
+- **Point 2, write-ahead call register.** A job budget over extraction and matching.
+- **Point 3, synchronisation.** Lease, heartbeat, take-over and STALLED in the backend; the interface reads without a fixed 3-minute cap.
+
+**Method.**
+- **Probes and evidence.** DETERMINISTIC probes with a scripted mocked SDK on PostgreSQL (no network, no key of the owner): 16 error classes, the explicit path, a 4-role continuation case, the register, its trigger and stale settling, the job budget, a lost worker with a zombie and racing sweeps, and the GET fingerprint.
+- **Pair contract.** 10 368 generated backend views run through the client decoder.
+- **Inverse.** 29 + 1 backend mutants and 12 frontend mutants, plus tsc and regression against base `5521ae7`.
+
+**Verdict: GO for points 1, 2 and 3** (`evidence/three-point-88bdc05-832d185/verdicts.txt`).
+- **F-TP-1 closed.** On `a1687aa` the continuation also asked roles that must never be asked again: the permanent failure, the all-refused role and the refused pair. Since `133ff76` it asks only the TRANSIENT role.
+- **F-TP-2 closed.** A malformed or 0 job limit now means 0 calls.
+- **F-TP-3, open, not blocking.** Test gaps in GELB's suites: the explicit retry, the resumable marker, the revision limit, the worker binding of the register and of the sweeper, and the two lease conditions.
+- **D-TP-1.** Backend and frontend must ship together, because the backend alone breaks main's client contract.
+- **Owner note.** The default job limit is 12 calls.
+
+### 3.89 Budget boundary hardlock, GELB `67abdfe` (2026-10-31) — NO-GO: two paths send without a register row
+
+**Request.** Owner mandate SFE::BUDGET BOUNDARY HARDLOCK ("Ohne persistente Aufrufregistrierung darf kein Gemini-Aufruf stattfinden. Unabhängig von der verwendeten Datenbank."). The only question: can any Gemini API request leave without a persistent register row, on any database?
+
+**Method.**
+- **Code inspection.** Every tracked file that imports the SDK or names its host.
+- **Deterministic probe.** The real `@google/genai` SDK with global fetch replaced by a recorder that counts the register rows at the moment of each request. The probe ran on a database whose disposable marker was removed.
+
+**Verdict: NO-GO** (`evidence/budget-boundary-67abdfe/verdicts.txt`).
+- **What holds.**
+  - Without a recorder no production provider sends anything.
+  - On the unmarked database the register is provisioned, and every request had its row first.
+  - Existing rows survive, and the stage list is widened in place.
+  - When the register cannot be provisioned, nothing is sent.
+- **F-BB-1.** Four tracked scripts at the repository root (`bisection.ts`, `schema-bisection.ts`, `schema-bisection-mjs.ts`, `test-schema.ts`) call `ai.models.generateContent` directly, outside the seam. The architecture test scans only `lib/`, `scripts/` and `app/`.
+- **F-BB-2.** In `scripts/list-models.ts` the pager sends its further pages without rows: 3 requests, 1 row.
+
+### 3.90 Budget boundary, re-check of §3.89 on GELB `fcf1084` (2026-10-31) — GO
+
+**Request.** Re-check only F-BB-1, F-BB-2 and the question whether a Gemini request leaves without a register row.
+
+**Method.**
+- **The five scripts.** They ran as real processes in a scratch copy without any env file, with a dummy key and a preloaded fetch stub that answers locally. Afterwards the logged requests were compared with the register rows of each script's job.
+- **§3.89 probe.** Re-run on `fcf1084`.
+
+**Verdict: GO** (`evidence/budget-boundary-fcf1084/verdicts.txt`).
+- **Requests equal rows** for every script, with 0 requests without a row:
+  - `test-schema.ts`: 2.
+  - `bisection.ts`: 1.
+  - `schema-bisection.ts` and `schema-bisection-mjs.ts`: 11 each.
+  - `scripts/list-models.ts`: 3 pager pages.
+- **§3.89 probe.** 4 of 4 green.
+- **Observation.** The architecture test does not see an async iteration over a pager or SDK services other than `models`. No tracked file uses either today.
+
+### 3.91 PERSON × JOB phase A, GELB `3b632da` on `26c59f7` (2026-10-31) — GO on points 1, 2 and 4; point 3 GO with condition F-PA-2
+
+**Request.** Independent and inverse check of phase A only (owner hardlock "NUR PHASE A. MEHR NICHT."), points 1–4:
+1. `capabilityKey`.
+2. The strict decoder.
+3. Sign and layout specification.
+4. Boundaries.
+
+**Method.**
+- **Probe.** An own analysis with six capabilities. Its relations were written by the *base* code through a mocked SDK whose verdict for each pair is a fixed hash. Base and candidate then read the same disposable database.
+- **Mutants.** 15 targeted mutants run against GELB's tests; the survivors then run against PINK's probe.
+- **Layout.** An own Python recomputation of the layout from the spec text, plus an own check of the invariants on the vectors.
+
+**Verdict** (`evidence/mapping-phase-a-3b632da/verdicts.txt`):
+- **1 — GO.**
+  - Every semantic key is the proposal id the provider was shown and judged best (43/43). Every lexical key is `lexical.proposalId` (6/6). NONE always has a null key.
+  - With the key removed, the body is byte-identical to the base over the same rows.
+  - Reads write nothing (whole-database fingerprints equal).
+  - F-PA-1 (spec precision): the proposal id is itself `PCAP_hash(normalizedName|scope)`. "Two proposals of the same name keep two keys" therefore holds only across scopes, and the CK test uses a state a real analysis cannot reach.
+  - F-PA-T1 (test gap): the mutants M02 (key = first proposal) and M11 (a key changes a PARTIAL number) survive GELB's tests. PINK's probe kills both.
+- **2 — GO.**
+  - The old body (real, from the base code) and the new body decode as the same object.
+  - All 14 refusal cases are refused (8 cases accepted as the same object).
+  - The base decoder refuses the new body, so the two ship together as the spec says.
+  - F-PA-T2 (test gap): M09 (one extra field at the old key count) survives GELB's tests. PINK's P2 kills it.
+- **3 — GO with condition F-PA-2.**
+  - The sign table equals the system lists (10 coupling states, 8 run states), and every signature is unique.
+  - All layout promises hold on all vectors.
+  - The own recomputation matches 16/16 vectors, but only after inferring the search rules (band, angular step, order, collision distance, ring capacity).
+  - The vectors do not pin the upper band edges: M12 and M13 leave all 16 vectors unchanged, so a product module could let shelf bodies leave the field and still match.
+- **4 — GO.**
+  - Product code changed only the read path, `role-ranking.ts` and the decoder. Nothing under `app/` changed, and no route, orbit, planetarium or B2 file.
+  - Regression 463/463 against base 429/429, with 0 failures. tsc 0. No network.
+
+### 3.92 PERSON × JOB phase A, re-check of the §3.91 conditions on GELB `ea1e29f` (2026-10-31) — NO-GO, two small remainders
+
+**Request.** Re-check only F-PA-1, F-PA-2, F-PA-T1 and F-PA-T2 (owner hardlock "NUR PHASE A. MEHR NICHT.").
+
+**Method.**
+- **Recomputation.** PINK's own layout recomputation against all 20 vectors, plus 15 variants of the search rules.
+- **Mutants.** 20 mutants, run against GELB's tests (with a 60 s timeout) and against PINK's probe.
+- **Probe.** PINK's probe on `ea1e29f`.
+
+**Verdict: NO-GO on the conditions as a whole** (`evidence/mapping-phase-a-ea1e29f/verdicts.txt`).
+- **F-PA-1: closed.** Spec §2 now says the id is a hash of name and scope.
+- **F-PA-T1: closed.**
+  - The refactored read path behaves the same: the probe is 6/6, with 43/43 judged-best keys and numbers byte-identical to the base.
+  - M02, M02L, M02R and M11 are red on GELB's tests.
+- **F-PA-2: partly closed.**
+  - The rules are in `layout-spec.json` and §4.
+  - The recomputation matches 20/20 vectors, and LV08–LV11 pin every band edge except one.
+  - Remainder: the shelf upper edge `500 − ρ` is not pinned. With `[430, 500]` (mutant M16) all vectors still match and GELB's tests stay green.
+  - Counterexample: 200 shelf roles at fit 0 with weight 6 (ρ 8.39). 90 bodies cross the field edge, up to 507.2.
+  - Fix: one vector with shelf bodies of 6 < ρ ≤ 9 pressed outward.
+- **F-PA-T2: not closed.**
+  - M09 (an old-shape body plus one unknown field) is still green on GELB's tests.
+  - Fix: add that one case.
+- **F-PA-3: new.**
+  - "NO OVERLAP" takes 3.5–4.5 s against vitest's 5 s limit, and it timed out once in PINK's run.
+  - Fix: an explicit timeout or a cheaper pair check.
+
+### 3.93 PERSON × JOB phase A, re-check of the §3.92 remainders on GELB `85274dc` (2026-10-31) — GO
+
+**Request.** Re-check only the F-PA-2 rest, F-PA-T2 and F-PA-3 (owner hardlock "NUR PHASE A. MEHR NICHT.").
+
+**Verdict: GO.** Every condition of §3.91 is closed (`evidence/mapping-phase-a-85274dc/verdicts.txt`).
+- **F-PA-2: closed.**
+  - LV12 is PINK's counterexample (200 shelf roles, fit 0, weight 6).
+  - PINK's recomputation matches 21/21 vectors, and the other 20 are unchanged.
+  - The variant "shelf edge 500 instead of 500 − ρ" is now noticed, and M16 is red on GELB's tests.
+- **F-PA-T2: closed.** M09 is red.
+- **F-PA-3: closed.**
+  - The slow layout tests have a 60 s timeout.
+  - Two unmutated runs under load were each 59/59 green. "NO OVERLAP" took 5.9 s, which would have failed with the old 5 s default.
+- **Product code.** Since `ea1e29f` it changed only a doc comment. tsc 0.
+
+### 3.94 PERSON × JOB phase A, integrated on `main` `85274dc` (2026-11-01) — GO
+
+**Request.** GELB asked PINK to confirm the integrated Phase-A state on origin/main, a fast-forward from `26c59f7`, under the owner hardlock "NUR PHASE-A-INTEGRATION. MEHR NICHT." (no rollout to :3017, no Gemini, no database or UI change, no GRÜN, no phase B). Three points to check.
+
+**Verdict: GO.** There is no integration fault inside Phase A (`evidence/integration-main-85274dc/verdicts.txt`).
+- **1. main: PASS.**
+  - origin/main is `85274dc`, with exactly the tree PINK released in §3.93. A fresh extract is byte-identical to PINK's §3.93 extract.
+  - The chain is linear with no merge commit. `26c59f7` and `32c63c2` are ancestors under their own ids.
+  - Only the 16 Phase-A files changed.
+- **2. Contracts: PASS.**
+  - capabilityKey: semantic keys are 43/43 and lexical keys 6/6. NONE keys are null. Numbers equal the base and reads write nothing.
+  - Decoder: 14 cases refused, 8 accepted as the same object.
+  - Recomputation: 21/21 vectors, and the invariants hold.
+  - Mutants: 19 of 20 are red, and M10 is the known equivalent mutant.
+  - GELB's targeted files: 20 files, 167/167 green, tsc 0.
+- **3. :3017: PASS.** It is unchanged on `32c63c2`: a clean worktree, started before the merge, with no capabilityKey in its code. Four GETs each returned 200, and PINK did nothing else to it.
+
+### 3.95 PERSON × JOB phase B, GRÜN `057f913` (2026-11-01) — GO, with test conditions F-PB-T1…T3
+
+**Request.** GELB asked for an independent, inverse check of only the phase-B modules `lib/career/mapping/{view,layout,signs,delta,focus}.ts` on `frontend/mapping-phase-b` (base `main` `85274dc`, not merged). The owner hardlock "NUR PHASE B. MEHR NICHT." applies. The owner's focus points: determinism, sign semantics, data identity, boundaries and agreement with the golden vectors.
+
+**Verdict: GO for the product code.** There is no product finding. Before any merge, the test gaps F-PB-T1…T3 must be closed in the tests only (`evidence/mapping-phase-b-057f913/verdicts.txt`).
+- **Golden vectors and determinism: PASS.**
+  - All 11 753 numbers of the 12 layouts, 4 rings and 5 constellations are exact.
+  - In 200 random and pressure layouts (17 394 bodies, 113 overflow), the product is byte-identical to the Phase-A oracle, also under permuted input. PINK's Python recomputation matches 200/200.
+- **Signs: PASS.**
+  - couplingSign equals the table and refuses 92 other pairs. The state lists equal the system's lists, and there are 10 distinct signatures.
+  - A name relation is never phase locked.
+  - runSign holds for 8 states × resumePending, and STALLED is frozen without a pulse.
+- **Data identity: PASS.**
+  - capabilityKey is taken 1:1 over 5 318 couplings.
+  - A key-less old body stays ABSENT, also with a PERSON capability's name (1 850 cases). NOT_IN_PERSON is kept.
+  - The reverse view works by key only. The view is order-free, deeply frozen and read-only.
+- **delta: PASS.** It equals PINK's own diff over 500 pairs. It is empty on equality, an exact mirror and order-free.
+- **focus: PASS.**
+  - All 72 reachable states keep the level invariants and carry no scope field.
+  - Every no-op and inadmissible action returns the same object.
+  - There is no B2 action.
+- **Boundaries: PASS.**
+  - Only the 12 files under the two mapping directories changed, and nothing imports the modules.
+  - There is no React, time, randomness, network or storage dependency.
+  - GRÜN's tests are 76/76, tsc 0.
+- **Test gaps.** Of PINK's 43 mutants, 9 survive GRÜN's suite. PINK's probe kills 5 of them; the other 4 are equivalent.
+  - **F-PB-T1 delta:** D2 (order without the requirement id) and D4 (fit changes below 0.01 ignored).
+  - **F-PB-T2 view:** V5 (constellation by key) and V12 (freezes the caller's ranking).
+  - **F-PB-T3 focus:** F4 (opening a pool clears the selection).
+- **Observations.** Both are shapes the backend never emits.
+  - **O-PB-1:** a duplicate requirement id passes the decoder, and then the view is order-dependent while delta refuses it.
+  - **O-PB-2:** LEXICAL/NONE passes the decoder, and couplingSign refuses it.
+
+### 3.96 PERSON × JOB phase B, re-check of the §3.95 conditions on GRÜN `5ca0f3f` (2026-11-01) — GO
+
+**Request.** Re-check only F-PB-T1…T3 (owner hardlock "NUR PHASE B. MEHR NICHT."). Since `057f913` only the three test files changed.
+
+**Verdict: GO.** All three conditions are closed (`evidence/mapping-phase-b-5ca0f3f/verdicts.txt`).
+- **F-PB-T1, F-PB-T2, F-PB-T3: closed.** The mutants D2, D4, V5, V12 and F4 are now red, each through the new test written for it.
+- **Equivalent mutants.** V4, L4, L5 and L10 stay green. The product code is byte-identical to `057f913`, so the §3.95 assessment holds.
+- **Checks.** tsc 0; GRÜN's suite 81/81.
+
+### 3.97 PERSON × JOB phase B, integrated on `main` `5ca0f3f` (2026-11-04) — GO
+
+**Request.** GELB asked for an inverse integration check of origin/main against §3.96 (SFE::PHASE_B_INTEGRATION_VALIDATION, authorized by OTTAVIO). Owner hardlock: "NUR INTEGRATIONSVALIDIERUNG. MEHR NICHT." There was no product change, no merge, no :3017 and no Phase C.
+
+**Verdict: GO.** There is no integration fault (`evidence/integration-main-5ca0f3f/verdicts.txt`).
+
+**(1) Integrity**
+- origin/main is `5ca0f3f`, the very commit released in §3.96, with tree `a471f22b`.
+- The history is a linear fast-forward from `85274dc` with 0 merges.
+- The diff adds 12 files (+1218), all inside `lib/career/mapping` and `test/career/mapping`.
+- `lib/` is byte-identical to `057f913`, and `docs/` is identical to `85274dc`.
+- Nothing outside the two directories imports the mapping modules.
+
+**(2) Contracts**
+- PINK's probe passes 7/7, and every count is identical to §3.95.
+- PINK's Python matches the oracle: 200/200 random layouts and 21/21 golden vectors.
+- 39 of 43 mutants are red. The 4 green ones are the known equivalents V4, L4, L5 and L10, and the probe kills L10.
+
+**(3) Targeted checks**
+- tsc 0.
+- GRÜN's suite 81/81.
+- Positive control: PINK's untracked probe files turn both MAP-ARCH "nothing existing is touched" tests red, so those tests catch what they should.
+
+**(4) Regression**
+- main: 3432 passed, 27 failed, 20 skipped. These are GELB's numbers.
+- base `85274dc`: 3375 passed, 27 failed, 20 skipped.
+- The FAIL lists of main and base are identical in all three run pairs.
+- The cause is the same on both: legacy DDL drift F-JP-5 (21× 42703 `career_policy_versions.version`, 1× 23502 `career_commitments.actor`, plus 5 follow-on failures).
+- main minus base is +57 tests, all green: the six Phase-B test files.
+- The flaky `hr-decision-loop-postgres` is green in 6/6 full runs and is unreachable from Phase B.
+
+**Observations (not blocking)**
+- **O-PB-3.** On main, MAP-ARCH "only the two dirs" is vacuous because HEAD and origin/main are the same commit; (1) proves the scope directly.
+- **O-PB-4.** PINK environment only: with a symlinked node_modules, Turbopack refuses to start Next, and 3 HTTP files fail on main and base alike. With a real copy they pass 77/77.
+
+### 3.98 PERSON × JOB phase C, GRÜN `fa89519` (2026-11-04) — GO for the product code, merge condition F-PC-1
+
+**Request.** GELB asked for an inverse check of GRÜN's visible L0/L1 field (SFE::PHASE_C, authorized by OTTAVIO). The commit exists only locally. Hardlock: nothing pushed, no merge, no product change, no L2/L3, no Gemini, no :3017 (`evidence/mapping-phase-c-fa89519/`).
+
+**Verdict: GO for the product code.** The field is correct in every contract PINK can derive. One of GRÜN's tests breaks at integration.
+
+**(1) Integrity**
+- 1 commit on `5ca0f3f`; the diff is exactly the 13 listed files.
+- Engine, spec, orbits, planetarium, field selector, B2, `lib/career/ui`, job-pool, job-scope, capability-core, `app/api` and `db` are tree-identical to `5ca0f3f`.
+- Only the three Phase C files import the engine.
+- Positive controls: engine, orbit and unlisted changes turn GRÜN's tests red, also after a merge.
+
+**(2) Contract (PINK's probe, 6/6)**
+- Bodies equal the Phase A reference layout (10 359 bodies).
+- Class equals the A4 reading and the line equals the sign table on every body.
+- Nothing depends on capabilityKey or name (1 600 variants), so ABSENT is never coupled by a name.
+- Order-free and read-only.
+- "Nearer = higher in the ranking": 0 inversions in 478 161 pairs.
+- The run sign equals the sign table for every decoder-valid state.
+- Focus: only L0/L1; every non-admitted action returns the same object; a mark never changes level or pool.
+- Movement equals PINK's own rule.
+
+**(3) Rendering**
+- Panel without field: byte-identical to `5ca0f3f` in 360/360 cases.
+- With the field section removed, the panel equals that markup again in 360/360 cases, and the field always stands between the authority line and the list.
+- Empty, STALLED and PENDING behave as the sign table says.
+- No L2/L3, no figure, no claim word; EN/DE are clean; no network path.
+- tsc 0, eslint 0; GRÜN's suites 187/187.
+
+**(4) Mutants**
+- 38/49 are red against GRÜN's suite.
+- Four survivors are equivalent or invalid by PINK's construction: M7, M11, C19 and T5.
+- PINK's probe kills T1, T2, T3 and M8.
+- Nobody kills C1, C9 and C16.
+
+**(5) Regression**
+- `fa89519`: 3472 passed, 27 failed, 20 skipped. Base: 3432 / 27 / 20.
+- The FAIL lists are identical in every pair (F-JP-5).
+- +40 tests, all green; no flake.
+
+**Findings**
+- **F-PC-1 (merge condition).** `test/career/mapping-field/architecture.test.ts` is branch-relative. After a merge, on an unchanged tree, 2 of its tests fail ("changes only its new files and the three entry points" and "one line removed each"). Main would go from 27 to 29 red.
+- **F-PC-T1.** timeMovement lacks tests for "a rank change moves nothing" (T1), "a tier-only change moves" (T3) and "across analyses with a real change" (T2 — the existing inverse test is vacuous).
+- **F-PC-T2 (minor).** No tests for the L1 click on another pool (C1), the L1 overflow count (C9) or the legend line (C16).
+- **O-PC-1.** The Phase B importer grep misses `./mapping/view`.
+- **O-PC-2.** The model's comment over-claims an analysis check that only the wiring guarantees.
+
+**Assumptions (risk only; the decision is OTTAVIO's/GELB's)**
+- **A1:** low technical risk.
+- **A2:** medium risk. At 360 px bodies are 2.1–5.5 px, so the line class is at the edge of legibility; visual acceptance is open.
+- **A3:** high risk. 63.4 % of bodies without new evidence of their own change position between readings and jump without a trail. The released layout does not meet the letter of timeMovement.rule, so this is a spec decision.
+- **A4:** low risk (13 % of SEMANTIC bodies are solid with only value-0 findings).
+- **A5:** low risk (the absence of L2/L3 is proven).
+
+### 3.99 PERSON × JOB phase C refinement, GRÜN `3cb08ed` (2026-11-04) — GO, merge condition F-RC-1
+
+**Request.** GELB asked for an inverse re-check of GRÜN's test-only refinement to §3.98 (SFE::PHASE_C RE-VALIDATION, authorized by OTTAVIO). The commit sits on `fa89519`, is local only and was not amended. Hardlock: nothing pushed, no merge, no product change, no Gemini, no :3017, no Phase D, real `node_modules`. A2 and A3 are not part of this check (`evidence/mapping-phase-c-refine-3cb08ed/`).
+
+**Verdict: GO for `3cb08ed`.** Every claim of GRÜN reproduces, the product is unchanged and nothing regresses. F-PC-T1, F-PC-T2 and O-PC-1 are closed. F-PC-1 is closed for the merge itself but moves to main's next commit (F-RC-1).
+
+**(1) Integrity**
+- 5 files (+243/−10): 4 tests and the phase C document.
+- `lib/` and `app/` are tree-identical to `fa89519`.
+- Engine, spec, orbits, planetarium, selector, B2, `lib/career/ui`, job-pool, job-scope, capability-core and `app/api` are tree-identical to `5ca0f3f`.
+
+**(2) F-PC-1 and controls** (quiet runs)
+- After a simulated merge, both architecture files are green (14/14), and the full suite shows 27 red, not 29.
+- `fa89519`'s old test in the same state gives exactly the 2 F-PC-1 reds.
+- Engine, orbit, unlisted-file, importer (`./mapping/view`) and GRÜN's selector/panel probe are red before and after the merge.
+- Main moving on after the merge:
+  - An unrelated committed change turns "only these files" red.
+  - A committed engine change is caught only by the fixed-base tests; the phase-B merge-base test stays green.
+
+**(3) Mutants**
+- 44/49 are red against GRÜN's suite.
+- GRÜN's counts hold: T1 2, T2 1, T3 2, M8 2, C1 1, C9 2, C16 1. The old T2 test is green under the mutant (17/17), so it was vacuous.
+- Not red:
+  - M7, M11, C19 and T5 are equivalent by construction.
+  - C13 is a real survivor (F-RC-T1).
+- A position-only shift turns the same single pre-existing test red on `fa89519` and `3cb08ed`, so the refinement asserts no drawn position (A3 untouched).
+
+**(4) Regression**
+- `3cb08ed`: 3482 passed, 27 failed, 20 skipped, unmerged and merged. Base: 3432 / 27 / 20.
+- +10 tests over `fa89519`, all green.
+- The 27 test-level failures are identical to §3.98 in all 7 runs.
+- The only extras are on both sides: load timeouts while overlapping the first mutant run, and the O-ENV-DROP teardown error.
+- The 3 files GRÜN skipped are green here.
+- tsc 0, eslint 0; GRÜN's suites 197/197.
+
+**Findings**
+- **F-RC-1 (merge condition).** The fixed base `5ca0f3f` makes "phase C changes only its new files and the three entry points" compare main's whole tree.
+  - It holds on the merge commit.
+  - The first later commit on main that touches a file outside phase C's list turns it red (27 → 28). PINK's evidence commits count too, as do later legitimate changes to an entry point or a protected path.
+  - GRÜN's §7 names the mechanism but places the trigger "at the next phase boundary". It is the next commit on main.
+  - OTTAVIO/GELB must decide before the merge who re-bases or retires the check, and when.
+- **F-RC-T1 (minor, and an erratum to §3.98).** Mutant C13 gives every drawn body the movement transition, not only bodies marked moved, and no test turns red. §3.98 counted C13 as red because of a non-zero exit with 99/99 passed. The true §3.98 count is 37/49.
+- **O-RC-1.** O-PB-3 is confirmed and bounded. The phase-B merge-base test is vacuous on main only for committed engine changes; today the fixed-base phase C test covers that case.
+- **O-RC-2.** §7 matches PINK's measurements row for row. Inaccuracies:
+  - the timing of the open point (F-RC-1);
+  - "A2/A3 stay with GELB", whereas they are with OTTAVIO;
+  - "PINK §3.95" for `5ca0f3f`, which should be §3.97.
+- **O-RC-3.** `PHASE_C_BASE` must be present as an object: in a shallow clone the whole file is red. Derived from the code, not run.
+- **O-RC-4.** O-ENV-DROP leaves disposable databases behind: 17 `condyn_test_*` (14 marked), 0 connections. Not dropped (no database change allowed).
+
+### 3.100 PERSON × JOB phase C finalization, GRÜN `b9e65de` (2026-11-04) — GO
+
+**Request.** GELB asked for the merge-gate re-check of GRÜN's test-and-doc commit on `3cb08ed` (SFE::PHASE_C FINALIZATION RE-VALIDATION, authorized by OTTAVIO). The commit is local and not amended. Scratch clones with real `node_modules`, `update-ref` only there; nothing pushed, no merge, no product change, no Gemini, no server access. A2 and A3 are not part of this check (`evidence/mapping-phase-c-final-b9e65de/`).
+
+**Verdict: GO for `b9e65de`.** F-RC-1, F-RC-T1, O-RC-1 and O-RC-3 are closed. The product is unchanged and nothing regresses. The change-set mechanism has wording and reach limits (F-FIN-1 to F-FIN-3); `b9e65de` itself is not affected by any of them.
+
+**(1) Integrity**
+- 5 files (+137/−39): two architecture tests, `phase-base.ts`, `field-interaction.test.tsx` and the phase C document.
+- `lib/` and `app/` are tree-identical to `3cb08ed`; protected paths, scripts and package files are identical to `5ca0f3f`.
+- Cumulative against `5ca0f3f`: 14 files. The only existing files modified are the three entry points.
+
+**(2) F-RC-1 reproduced and attacked**
+- GRÜN's (a)–(d) reproduce exactly:
+  - green 14/14 on the branch, after a `--no-ff` merge with a parallel README, after a fast-forward, and with later README and evidence commits;
+  - all eleven red cases give GRÜN's counts (2/1/1/1/1/1/1/1/1/2/3).
+- Caught: an evil merge on a protected file, renames of a phase-C file and of a protected file, a squash carrying an unlisted change, and a gitignored file in the engine directory. A clean squash is green.
+- Not caught: see F-FIN-1 to F-FIN-3 and O-FIN-1.
+
+**(3) O-RC-1 and O-RC-3**
+- A committed engine change after the merge is red in both the phase-C test and the phase-B test.
+- Shallow clone, depth 1: 5 red with `ERR_PHASE_C_BASE_MISSING` and the fetch hint, 9 green, 0 skipped.
+- Depth 4, where the base is the shallow boundary: 14/14 green.
+
+**(4) Mutants**
+- 45/49 are red. GRÜN's counts hold: T1 3, T2 1, T3 2, M8 2, C1 1, C9 2, C13 1, C16 1.
+- C13 is now killed. M7, M11, T5 and C19 remain equivalent; there is no new survivor.
+- No added test line asserts a drawn position (A3 untouched).
+
+**(5) Regression** (4 runs alternating `5ca0f3f` / `b9e65de`)
+- Start load was below 3 each time. The median load during the runs was 3.3–4.5.
+- The 27 legacy failures are identical in all 4 runs.
+- Every other failure is a timeout, in the same files on both sides: base 12 and 3, `b9e65de` 9 and 7. GRÜN's 11 timeouts therefore do not vanish, but they are not caused by `b9e65de`.
+- Totals: 3530 tests, which is `3cb08ed` + 1 (C13).
+- tsc 0, eslint 0; GRÜN's suites 198/198.
+- Not run, stopped on GELB's "SFE::EXECUTION STATUS": a third pair of runs and the A3p extra.
+
+**Findings**
+- **F-FIN-1 (minor, wording).** §8 and two test titles claim the protected paths and the engine are compared even when only staged. They are not:
+  - An index-only change is green.
+  - A staged change committed while the working tree keeps the old content is green too.
+  - A committed and checked-out change is caught.
+  - Fix: drop "staged", or add `git diff --cached` / a HEAD tree comparison.
+- **F-FIN-2 (limit of reach).** These stay green:
+  - on the branch, a commit that touches no phase-C file but changes an unlisted file or adds a new lib file;
+  - an unlisted file changed inside a merge commit;
+  - product code in `test/career/mapping-field/` imported by the component (fetch POST), because the read-only scan covers only the model, component and copy.
+
+  `b9e65de` has none of these. The protected paths stay covered in every case.
+- **F-FIN-3 (minor, false positive).** A phase-C commit carrying an unlisted file stays red for good even after a revert.
+- **O-FIN-1.** A gitignored new file in a protected directory is green. It is local only: it cannot be committed without `git add -f`, and once committed it is caught.
+- **O-FIN-2.** The machine was not below load 3 throughout the runs (see (5)).
+- **O-FIN-3.** O-RC-4 not re-checked. No superuser teardown error occurred in the 4 runs.
+
+**Task (2), server deployment: not done.** PINK's user has not confirmed SSH access, so no connection was made.
+
+### 3.101 Deployed phase C artifact on dev.syntx-system.com, main `b9e65de` (2026-11-04) — GO
+
+**Request.** GELB merged on PINK's GO (fast-forward, main = `b9e65de`), deployed to `/opt/condyn-dll` (127.0.0.1:3017) and asked for an inverse check of the deployment. PINK's user authorized only read-only HTTP GET through GELB's tunnel `127.0.0.1:3018` plus the TLS check: no SSH of PINK, no POST, no write, no Gemini. Local `:3017` is a different runtime and is kept apart in every measurement (`evidence/deploy-phase-c-b9e65de/`).
+
+**Verdict: GO.** The served build carries phase C. It is not reachable from outside, condyn-admin is serving its own build untouched, and no GET path reaches a provider. Server internals stay GELB's measurement because they cannot be observed this way: tree hash, process lines, pm2/systemd/nginx, databases, script contents.
+
+**(1) Identity**
+- Locally, `b9e65de`'s tree is `abf2cb8e…`, GELB's server value.
+- origin/main = `b9e65de`, a linear fast-forward with 3 signed commits and 0 merges.
+- The tunnel is verified: `ssh -L 3018:127.0.0.1:3017 root@dev.syntx-system.com`.
+- The served client chunk contains all 28 phase C copy strings; "Open pool" does not exist in `5ca0f3f`. The build shares 0 chunks with local `:3017`.
+- Over HTTP, `b9e65de` cannot be told from `fa89519`/`3cb08ed`, since the product code is identical.
+
+**(2) Isolation**
+- Port 3017 is refused from outside, by name and by IP.
+- The dev host serves only a docs site (`/career/demo` and `/api` 404). No other vhost carries the career API or phase C.
+- The default HTTPS server is condyn-admin (certificate `admin.condyn.eu`), a different build without phase C. Its 5 chunks shared with `:3018` are byte-identical common chunks, not a route to the DLL.
+
+**(3) Gemini off**
+- In the code:
+  - all 8 `@google/genai` call sites go through `guardedGenerateContent`;
+  - OpenAI and Anthropic have no importer;
+  - the outbound website/GitHub loaders and the auto-match sweeper live only in the worker.
+- On the server: 0 analyses and 0 job pools, and every provider-capable route needs an analysis.
+
+**(4) Phase C surface: a boundary consequence, not a defect**
+- The panel mounts only after a discovery analysis, in client state.
+- The field returns `null` for an empty view, so on the server it does not exist at all, rather than standing in an empty state.
+- Its absence from the SSR HTML follows from that client-state mount. The only SSR match is a pre-existing CSS selector.
+
+**(5) Rollback.** Not verifiable by PINK, because the scripts exist only on the server. The forward state is served now.
+
+**F-DEP-1 and F-DEP-2**
+- **F-DEP-1:** `next start --port 3003` is confirmed in `package.json`. On the server it is confirmed indirectly: condyn-admin keeps its port with its own build.
+- **F-DEP-2:** confirmed and independent of the deployment. The certificate's notAfter is 2026-05-20 16:14:26 GMT, 168 days before the deploy. The handshake completes and verification fails (code 10).
+
+**Findings**
+- **G-1 (evidence gap).** `next start` also loads `.env`, `.env.production` and `.env.local` from the app directory. The process environment does not show them. GELB should list `/opt/condyn-dll/app/.env*` for the provider variable names (names only).
+- **G-2 (correction).** The explicit POST `…/role-discovery/investigations` runs the investigation in the web process, so "no worker" is no barrier there. The barriers are:
+  - the fail-closed env gate (provider `gemini`, key and day limit ≥ 1);
+  - the register's job budget;
+  - today, the absence of any analysis.
+- **G-3.** `dll-revert.sh` and `dll-rollback.sh` belong in the evidence, so that their harmlessness can be checked independently.
+- **O-1.** The exact commit is bound by GELB's tree hash only.
+
+### 3.102 Production compatibility of admin.condyn.eu (:3003), `91d06c3` -> `b9e65de` (2026-11-05) — GELB's finding CONFIRMED, no path inside the boundaries
+
+**Request.** OTTAVIO, via GELB: check inversely whether the newest DLL state can run on the existing port 3003 with the existing data and functions, without a new port, a new database or new configuration. Repository only. Server figures are GELB's measurement (`evidence/production-compat-91d06c3c/review.txt`).
+
+**Verdict.** GELB's conclusion (incompatible) is confirmed and understated. B1: production has no `DATABASE_URL`, so the decisive line is `policy.ts:81`, not `:89`, and the opt-in alone changes nothing. B2: `condyn` carries the 14-table schema of `91d06c3`, which lacks `current_operation` and the projection-reference table, so three of the four existing career routes return 500 even with the opt-in. B3: job pool, phase C and the HR loop are gated on a verified disposable database (B-ENTRY) by design. B4, independent of the database: from `8677ffa` (commit 1 of 831), AnalyzePanel and PromptsPanel call `/api/admin/proxy`, which the current nginx sends to :8002. A staged integration buys nothing, because B4 arrives with the first commit. Policy defects reported: P-1, an empty database name outside a test runner bypasses the protection; P-2, the call-register DDL runs on the raw `DATABASE_URL`.
+
+### 3.103 Production upgrade of admin.condyn.eu to `dc674ee` (2026-11-05) — additivity CONFIRMED, two claims too favourable
+
+**Request.** GELB executed the upgrade on OTTAVIO's GO, covering B1–B4 plus the second B-ENTRY basis, and asked for an inverse validation. PINK covered the code of `dc674ee` and a stub-client DDL probe (no database contact). Server figures are GELB's (`evidence/production-upgrade-dc674ee1/review.txt`).
+
+**Verdict.**
+- **Confirmed: the schema change is additive.** 128 tables (14 old + 114 new) are reproduced exactly. Exactly one statement touches an old table: the nullable `ADD COLUMN`.
+- **GELB's explanation of the 114 is wrong.** The decision runtime creates one table. The bulk is 54 generated T11 tables plus 37 post-decision tables.
+- **Error handling at the five gates is unchanged.**
+- **Refuted: "a test run or an agent operation can never reach the second basis".** Only `VITEST` is detected. On the server, `.env.local` carries the opt-in, which Next and the worker load automatically. `scripts/write-live-lifecycle.ts` has no gate.
+- **More DDL paths than gates.** There is per-request DDL on the application client via `/api/decision-contexts`, now public. The call register is provisioned on the raw URL and is now live in the worker.
+- **Two required variables are missing on the server**, going by GELB's list of names: the canonical-SIL policy versions.
+- **The remaining risk is understated.** No API route authenticates. The proxy hands the backend token's authority to anonymous clients. The running worker turns anonymous `analyze` requests into Gemini calls.
+
+### 3.104 Basic Auth on admin.condyn.eu (2026-11-05) — GO after :3003 was closed; the bypass was live below nginx
+
+**Request.** OTTAVIO, via GELB: HTTP Basic Auth for the whole admin app including all API routes, no public bypass, internals intact, credentials server-side only, nothing in Git/logs/bundle. nginx config and all figures are GELB's measurement (`evidence/admin-access-control-e360caf9/review.txt`). I check the logic.
+
+**Verdict.** Clean at the nginx layer: with auth in all 9 location blocks and `/` as catch-all, I found no URI between the blocks and none answered before the access phase (static alias is content-phase, URI is normalised before matching, no HTTP/3 listener, no error_page/X-Accel/named-location/try_files, Next internals route through `/` under auth). **The bypass was LIVE, not hypothetical: GELB measured `http://49.13.3.21:3003/api/admin/proxy/prompts` returning backend JSON from the internet with no auth, because `:3003` bound `*:3003` and there was no host firewall.** GELB rebound it to `127.0.0.1` (`--hostname 127.0.0.1` via pm2) and confirmed `:3003` closed from off-host; the admin app and its token-injecting proxy are now reachable only through Basic Auth, so point 1 is GO for the admin access-control mandate. The residual (item B) is that `:8002` (foreign app, under OTTAVIO's hardlock) stays bound `0.0.0.0` with no firewall, so the un-revocable old `BACKEND_TOKEN` is directly usable against its protected endpoints from the internet until 2027-05-03 — not GELB's to fix, laid before OTTAVIO. Point 2: per-location auth works and keeps renewal alive, but it is fail-open; server-wide auth + a permanent webroot ACME exception would be fail-closed and equally renewal-safe (dissent, not a blocker). Point 3: renewal CONFIRMED empirically (`--dry-run` exit 0; certbot inserts an exact-match acme location that inherits nothing). Point 4: `Authorization ""` is correct and necessary (Auflage 4); nothing internal breaks (the app uses `localhost:8002` and `/api/admin/proxy` injects its own Bearer). Point 5: default_server already this block means unknown-Host now 401s (improvement), foreign vhosts unaffected; confirm `default_server` was pre-existing. Point 6: bundle-behind-auth is a real EDGE improvement, but it is not application auth — see §3.105 6a.
+
+### 3.105 Final integration `e360caf9` (2026-11-05) — GO on the code; two items for OTTAVIO
+
+**Request.** GELB implemented PINK's §3.103 findings and the server-side admin gate on OTTAVIO's GO, and asked for an inverse GO/NO-GO with three cross-checks. PINK read `e360caf9` (parent `dc674ee`) against `dc674ee`. Nothing executed. Server figures are GELB's (`evidence/admin-access-control-e360caf9/review.txt`).
+
+**Verdict.**
+- **1a CONFIRMED FIXED.** The four gates memoise only success; a refusal throws `DatabaseNotProvisionedError` (own module, so the gate tests' mock cannot make it `undefined`) and is translated back to the refusal value. **CC3: no caller's exception-vs-value contract changes** — only the memo lifetime (refusals re-verify). D-2 keeps its memo reset, so it is not a 1a regression.
+- **1b CONFIRMED FIXED for the provisioning gates.** **CC1: `database=<name>` is robust** — I found no value authorising a forbidden name (whitespace, maintenance case-fold, disposable pattern, non-identifier all fail closed; the name is compared, never interpolated). Asymmetry recorded: `resolveApplicationDatabaseUrl` still returns any non-protected name unchanged, so the pin bounds provisioning (the 114-table catastrophe is prevented) but not the application client pointed at a non-protected neighbour.
+- **1c CONFIRMED FIXED.** The probe is a parameter; a new test drives the connection path, including "reaches a different database than named".
+- **D-2 CONFIRMED FIXED.** `ensureProviderCallRegister` now passes B-ENTRY before the registration client; no basis, no registration, no model call.
+- **D-1 two-thirds.** DDL moved to a once-per-process registration client (one table, sealed hash), but ungated: the e2e `condyn_r5_…` satisfies no basis and `test/decision-runtime` is sealed by P8, so GELB did not break the seal, documented the exception truthfully, and escalated to OTTAVIO — correct. Residual: it uses the RAW `DATABASE_URL`, so a protected misconfig (`…/postgres`) writes the table into a maintenance DB that the app client itself refuses. Non-seal-breaking fix recommended: resolve through `resolveApplicationDatabaseUrl`.
+- **Admin gate well-built.** Opaque CSPRNG token, timing-safe compare, fail-closed, correct cookie flags, no credential in the bundle; the client gate is replaced, not merely hidden. **CC2: process-local sessions are acceptable and here preferable** (nothing to forge or leak; a signed cookie only buys restart-survival); standing assumption: a single serving process. **Scope limit (= §3.104 6a):** the only consumer of the session is ConDynPanel's UI-reveal GET; no privileged route checks it, so `/api/admin/proxy` is still authorised by nothing but nginx Basic Auth.
+- **Canonical-SIL versions correctly deferred** to OTTAVIO (no value exists in code; it enters the record ID hash).
+
+**Two items for OTTAVIO (owner decisions):** A — external reachability of `:3003`/`:8002`; B — the old `BACKEND_TOKEN`, shipped in a client bundle at `91d06c3`, is a stateless JWT valid until 2027-05-03 and un-revocable without rotating `JWT_SECRET_KEY` (which logs out all 6 foreign users); rotation protects only future use. (Plus the D-1 / P8-seal conflict, already with GELB.)
+
+### 3.106 PERSON × JOB mapping phase D — contract and base acceptance (2026-11-05) — HELD after two corrections
+
+**Request.** GELB gates GRÜN's build on PINK's acceptance of two things only: the re-stated field-selector contract (§5.1, C-1…C-11) and the phase base (§5.2) of `docs/.../PERSON_X_JOB_MAPPING_PHASE_D.md` (commits `bc339aae` + `f0ef15a7`, document-only). The §8 proofs are a later, post-build validation. Verified against the actual contract-bearing files at the base `e360caf9` (`evidence/mapping-phase-d-contract/review.txt`).
+
+**Verdict.** Design of both is sound; two wordings are refuted.
+- **§5.1 contract: design accepted, "exactly one assertion changes" REFUTED.** Three button-count assertions hardcode the two-button strip, all in files GELB lists as reached: `job-scope-ssr.test.tsx:60` (the one named), `syntx-walk.e2e.test.ts:911`, `syntx-readonly-walk.mjs:193`; plus two stale artifacts (`syntx-walk.e2e.test.ts:925` id string, the `job-scope-ssr.test.tsx:51` title). No hidden order or keyboard assertion breaks (mode-keyboard tests the investigation-mode selector, not the strip). Correct C-3 to enumerate all three sites and I hold C-1…C-11.
+- **§5.2 base: value `e360caf9` CONFIRMED, "logic carried over unchanged" REFUSED.** The base value is right (main, PINK-validated §3.105; MAP-C-ARCH is red because the authorized FINAL INTEGRATION touched phase-C protected paths `app/api`, `lib/career/job-pool`, `lib/career/result-inspector` against `5ca0f3f5`). But the guard `architecture.test.ts` must be re-stated (MAP-D-ARCH), not just re-based: (a) `protectedPaths` freezes `SyntxFieldSelector.tsx` and `lib/career/ui` byte-identical, yet §7/C-4/C-9 change them; (b) the phase-C artifacts (`mapping-field.ts`, `PersonJobMappingField.tsx`, `mapping-field-copy.ts`) are now baseline, so NEW_FILES/ENTRY_POINTS rebuild and the contract-test files must be admitted; (c) the exact-diff entry-point pin changes (GELB's D-Q4 concedes the host file; `AutoJobRankingPanel` now equals base and should move to protected); (d) the "model names no OPEN_ROLE/OPEN_REQUIREMENT/SELECT_CAPABILITY" assertion inverts, since §7/§2.2 require exactly those (while scope/URL/fetch writes stay forbidden). The algorithm carries; the sets and content assertions do not.
+- **§5 weak point CONFIRMED by the data.** `EvidenceClass` lives once per reading (`RoleRanking.evidenceClass`), never per role; a per-body evidence class would be invented. Field-level class + per-requirement collar honestly meet the owner's L0 sentence; anything per-role needs a backend field and a new mandate.
+
+On the two corrections (C-3 → three sites; MAP-D-ARCH re-stated) PINK holds C-1…C-11 and the base `e360caf9`. Read-only; nothing executed.
+
+**Hold given (`bfa10b92`).** Both corrections verified against the files at `e360caf9`: C-3 now names all three sites + the two artifacts in a recorded correction block; §5.2 is re-stated as MAP-D-ARCH D-1…D-7 exactly per (a)–(d) (D-2 carve-outs, D-3 artifacts→entry-points, D-4 PANEL into protection/pin removed, D-5 host pin deferred to delivery, D-1/D-6/D-7 verbatim). GELB's one extension — admitting the full `FOCUS_ACTIONS` set incl. `MARK_REQUIREMENT` — is CLEARED: `focus.ts` is a pure reducer whose `MARK_REQUIREMENT` case only sets `selection` and writes no scope/URL/history/storage, so the boundary rests on D-7 + the structural absence of a scope, not the whitelist. **PINK holds C-1…C-11 and D-1…D-7.** Two items carried to the post-build §8 pass (neither blocks GRÜN): D-5's exact host-file pin lands at delivery for PINK to hold then; §8.8/§8.11 must exercise the newly admitted mark/select actions.
+
 ## 4. Boundaries and findings for coordination
 
 - F-JP-1 (closed in `b782793`): `JOB_POOL_CONNECTION.md` §4 followed the per-role `JOB_POOL_JSON_ROLE` design;

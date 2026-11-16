@@ -1,0 +1,19 @@
+// PINK O-AC-1 check: the manual START's stand-in texts before (42380bf) and after (576a704), rendered with the same arguments.
+import { ROLE_DISCOVERY_COPY as OLD } from "./old/c";
+import { ROLE_DISCOVERY_COPY as NEW } from "./new/c";
+const out: string[] = []; let diff = 0;
+for (const loc of Object.keys(OLD) as Array<keyof typeof OLD>) {
+  const o = OLD[loc] as any, n = NEW[loc] as any;
+  const pairs: Array<[string, string, string]> = [
+    ["semantic.stored", o.semantic.stored("3", "9", "completed"), n.semantic.stored("3", "9", "completed", n.semantic.check.STAND_IN)],
+    ["semantic.storedUnknownCache", o.semantic.storedUnknownCache("completed"), n.semantic.storedUnknownCache("completed", n.semantic.check.STAND_IN)],
+    ["run.standIn / run.engine.STAND_IN", o.run.standIn, n.run.engine.STAND_IN],
+    ["run.roleTask", o.run.roleTask("succeeded"), n.run.roleTask("succeeded", n.run.roleTaskEngine.STAND_IN)]
+  ];
+  for (const [k, a, b] of pairs) { const same = a === b; if (!same) diff += 1; out.push(`${same ? "SAME" : "DIFF"} ${loc} ${k}: ${JSON.stringify(a)}${same ? "" : ` -> ${JSON.stringify(b)}`}`); }
+  out.push(`     ${loc} gemini: ${JSON.stringify(n.semantic.stored("3", "9", "completed", n.semantic.check.REAL_GEMINI))} | ${JSON.stringify(n.run.engine.REAL_GEMINI)} | ${JSON.stringify(n.run.roleTask("succeeded", n.run.roleTaskEngine.REAL_GEMINI))}`);
+  const strip = (x: any): any => typeof x === "function" ? "fn" : x && typeof x === "object" ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, strip(v)])) : x;
+  const keysOld = JSON.stringify(strip(o)), keysNew = JSON.stringify(strip({ ...n, semantic: { ...n.semantic, check: undefined }, run: { ...n.run, engine: undefined, roleTaskEngine: undefined, standIn: o.run.standIn } }));
+  out.push(`     ${loc} all other copy entries identical: ${keysOld === keysNew}`);
+}
+console.log(out.join("\n")); console.log(`stand-in differences: ${diff}`);

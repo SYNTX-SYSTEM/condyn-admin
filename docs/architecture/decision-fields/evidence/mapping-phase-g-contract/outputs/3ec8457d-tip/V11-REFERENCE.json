@@ -1,0 +1,817 @@
+{
+ "instrument": "PINK independent re-derivation from spec text (python)",
+ "specVersion": "MAPPING_LAYOUT_V1.1",
+ "specRange": [
+  34.2,
+  54.6
+ ],
+ "A_G14_claimedRange": [
+  32.2,
+  52.6
+ ],
+ "tolerance": 1e-06,
+ "layouts": {
+  "LV01-single-role": {
+   "bodies": 1,
+   "overflowCount": 0,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": null
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV02-three-pools-mixed-tiers": {
+   "bodies": 6,
+   "overflowCount": 0,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-000",
+      "b": "role-003",
+      "dist": 321.098618,
+      "need": 100.217566,
+      "slack": 220.881052
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 3,
+     "shelfDrawn": 3,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV03-equal-fit-ties": {
+   "bodies": 12,
+   "overflowCount": 0,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-007",
+      "b": "role-008",
+      "dist": 96.461913,
+      "need": 96.241942,
+      "slack": 0.219971
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV04-crowded-60": {
+   "bodies": 60,
+   "overflowCount": 29,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-022",
+      "b": "role-033",
+      "dist": 90.393061,
+      "need": 89.888602,
+      "slack": 0.504459
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV05-capacity-exceeded-overflow": {
+   "bodies": 320,
+   "overflowCount": 283,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-003",
+      "b": "role-017",
+      "dist": 104.836501,
+      "need": 104.800664,
+      "slack": 0.035837
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV06-no-roles": {
+   "bodies": 0,
+   "overflowCount": 0,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": null
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV07-real-shape-73": {
+   "bodies": 73,
+   "overflowCount": 37,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-014",
+      "b": "role-022",
+      "dist": 95.985718,
+      "need": 92.334507,
+      "slack": 3.651211
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 59,
+     "shelfDrawn": 22,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV08-checked-fit-0-pressed-to-the-horizon": {
+   "bodies": 200,
+   "overflowCount": 130,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-039",
+      "b": "role-081",
+      "dist": 70.404773,
+      "need": 70.4,
+      "slack": 0.004773
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV09-shelf-fit-0-pressed-to-the-field-edge": {
+   "bodies": 260,
+   "overflowCount": 223,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-019",
+      "b": "role-023",
+      "dist": 70.433018,
+      "need": 70.4,
+      "slack": 0.033018
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 260,
+     "shelfDrawn": 37,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV10-checked-fit-1-pressed-from-the-inner-edge": {
+   "bodies": 160,
+   "overflowCount": 89,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-008",
+      "b": "role-022",
+      "dist": 70.4,
+      "need": 70.4,
+      "slack": -0.0
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 0,
+     "shelfDrawn": 0,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV11-shelf-wide-bodies-cannot-leave-the-field": {
+   "bodies": 120,
+   "overflowCount": 98,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": false,
+     "outside": [
+      "role-000",
+      "role-001",
+      "role-002",
+      "role-003",
+      "role-004",
+      "role-005",
+      "role-006",
+      "role-007",
+      "role-008",
+      "role-009",
+      "role-010",
+      "role-011",
+      "role-012",
+      "role-013",
+      "role-014",
+      "role-015",
+      "role-016",
+      "role-017",
+      "role-018",
+      "role-019",
+      "role-020",
+      "role-021",
+      "role-022",
+      "role-023",
+      "role-024",
+      "role-025",
+      "role-026",
+      "role-027",
+      "role-028",
+      "role-029",
+      "role-030",
+      "role-031",
+      "role-032",
+      "role-033",
+      "role-034",
+      "role-035",
+      "role-036",
+      "role-037",
+      "role-038",
+      "role-039",
+      "role-040",
+      "role-041",
+      "role-042",
+      "role-043",
+      "role-044",
+      "role-045",
+      "role-046",
+      "role-047",
+      "role-048",
+      "role-049",
+      "role-050",
+      "role-051",
+      "role-052",
+      "role-053",
+      "role-054",
+      "role-055",
+      "role-056",
+      "role-057",
+      "role-058",
+      "role-059",
+      "role-060",
+      "role-061",
+      "role-062",
+      "role-063",
+      "role-064",
+      "role-065",
+      "role-066",
+      "role-067",
+      "role-068",
+      "role-069",
+      "role-070",
+      "role-071",
+      "role-072",
+      "role-073",
+      "role-074",
+      "role-075",
+      "role-076",
+      "role-077",
+      "role-078",
+      "role-079",
+      "role-080",
+      "role-081",
+      "role-082",
+      "role-083",
+      "role-084",
+      "role-085",
+      "role-086",
+      "role-087",
+      "role-088",
+      "role-089",
+      "role-090",
+      "role-091",
+      "role-092",
+      "role-093",
+      "role-094",
+      "role-095",
+      "role-096",
+      "role-097",
+      "role-098",
+      "role-099",
+      "role-100",
+      "role-101",
+      "role-102",
+      "role-103",
+      "role-104",
+      "role-105",
+      "role-106",
+      "role-107",
+      "role-108",
+      "role-109",
+      "role-110",
+      "role-111",
+      "role-112",
+      "role-113",
+      "role-114",
+      "role-115",
+      "role-116",
+      "role-117",
+      "role-118",
+      "role-119"
+     ]
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-001",
+      "b": "role-019",
+      "dist": 111.825645,
+      "need": 111.2,
+      "slack": 0.625645
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 120,
+     "shelfDrawn": 22,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  },
+  "LV12-shelf-medium-bodies-cannot-cross-the-field-edge": {
+   "bodies": 200,
+   "overflowCount": 176,
+   "checks": {
+    "massRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_rederived": {
+     "pass": true,
+     "mismatches": []
+    },
+    "drawnRadius_in_SPEC_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawnRadius_in_A_G14_claimed_range": {
+     "pass": true,
+     "outside": []
+    },
+    "drawn_monotone_in_mass": {
+     "pass": true
+    },
+    "no_two_drawn_bodies_touch": {
+     "pass": true,
+     "violations": [],
+     "tightestPair": {
+      "a": "role-021",
+      "b": "role-024",
+      "dist": 89.135037,
+      "need": 80.14662,
+      "slack": 8.988417
+     }
+    },
+    "band_by_MASS_radius": {
+     "pass": true,
+     "violations": []
+    },
+    "undisplaced_at_its_fit": {
+     "pass": true,
+     "violations": []
+    },
+    "shelf_survives": {
+     "shelfBodies": 200,
+     "shelfDrawn": 24,
+     "pass": true
+    },
+    "angle_inside_its_sector": {
+     "pass": true,
+     "violations": []
+    },
+    "rounded_to_6dp": {
+     "pass": true,
+     "fields": []
+    }
+   }
+  }
+ },
+ "totals": {
+  "bodies": 1412,
+  "massOk": 1412,
+  "drawnOk": 1412
+ },
+ "failures": [
+  "LV11-shelf-wide-bodies-cannot-leave-the-field:drawnRadius_in_A_G14_claimed_range"
+ ],
+ "verdict": "FAILURES PRESENT"
+}

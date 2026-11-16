@@ -1,0 +1,12 @@
+#!/bin/bash
+I=$SCRATCH/int; P=$REPO; L=cdf
+cd $P && git checkout -q --detach cdf0c1e && echo "HEAD $(git rev-parse --short HEAD)"
+set -a; . ~/.config/condyn/test-db-role.env; set +a
+unset DATABASE_URL CONDYN_ALLOW_SHARED_DATABASE GEMINI_API_KEY GEMINI_MODEL GOOGLE_GEMINI_BASE_URL VIDEO_LAB_GEMINI VIDEO_LAB_LIVE_GEMINI_GO VIDEO_LAB_GEMINI_ENV
+export CONDYN_PLAYWRIGHT_MODULE=$PLAYWRIGHT_HOME/node_modules/playwright/index.mjs VIDEO_LAB_PROD=1 ROLE_DISCOVERY_SEMANTIC_PROVIDER=stand-in ROLE_DISCOVERY_DAY_LIMIT=1000 ROLE_DISCOVERY_MAX_ROLES=3
+LAB=$I/lab-gaps; rm -rf "${LAB:?}"; mkdir -p $LAB; OUT=$I/out-gaps; mkdir -p $OUT
+VIDEO_LAB_PORT=41873 VIDEO_LAB_DIR=$LAB npx tsx docs/career_analysis/evidence/video-readiness/scripts/video-lab.ts > $LAB/lab.log 2>&1 &
+for k in $(seq 1 900); do grep -qE "VIDEO LAB READY|Error|failed" $LAB/lab.log && break; sleep 3; done
+if grep -qE "VIDEO LAB READY" $LAB/lab.log; then timeout 1500 node $I/pink-gaps.mjs $LAB/state.json $P $OUT $L 2>&1 > $OUT/gaps.log 2>&1; tail -5 $OUT/gaps.log | cut -c1-600; else echo "lab failed"; fi
+bash docs/career_analysis/evidence/video-readiness/scripts/stop-lab.sh $LAB; sleep 3
+git checkout -q validation/hr-decision-loop-pink; echo "GAPS-END"

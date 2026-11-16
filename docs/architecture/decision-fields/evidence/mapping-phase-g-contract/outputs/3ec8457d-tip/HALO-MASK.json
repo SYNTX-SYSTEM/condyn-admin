@@ -1,0 +1,37 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "L0": {
+  "level": "L0",
+  "bodies": 5,
+  "shelfBodies": 3,
+  "fieldBodies": 2,
+  "glowsGroupHalos": 2,
+  "allHalos": 5,
+  "waveHalos": 2,
+  "gapHalos": 2,
+  "plainHalos": 3
+ },
+ "L1": {
+  "level": "L1",
+  "bodies": 5,
+  "shelfBodies": 3,
+  "fieldBodies": 2,
+  "glowsGroupHalos": 2,
+  "allHalos": 5,
+  "waveHalos": 2,
+  "gapHalos": 2,
+  "plainHalos": 3
+ },
+ "L2": {
+  "level": "L2",
+  "bodies": 1,
+  "shelfBodies": 1,
+  "fieldBodies": 0,
+  "glowsGroupHalos": 0,
+  "allHalos": 1,
+  "waveHalos": 0,
+  "gapHalos": 0,
+  "plainHalos": 1
+ }
+}

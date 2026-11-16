@@ -1,0 +1,186 @@
+PINK §3.83 measurements · SEMIOTIC_ENTRY_FIX round 2 · frontend/semiotic-entry 0ab9baf (e32764f F-SEM-1, b29d307 tests, 4c969af wording, 0ab9baf evidence) on 20bf662 / main cd1e4de
+Own production labs (port 41873, disposable DBs, own PIDs), STAND_IN, no Gemini key; paths written as $SCRATCH / $REPO.
+
+== A. Gate probe v2 (same probe and lab recipe as §3.82), 0ab9baf vs baseline cd1e4de ==
+1920: S7 gate differences vs cd1e4de 0/40 · entry state or action differing from round 1 0/40 · forbidden words 0 · warm 0 · role=alert 0 · line roles ['status'] · describedby resolves ['True'] · interactive overlaps 0 · page errors 0 · non-GET 0
+   text changed (O-SEM-2 wording): nopool:job·de: JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen vor. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+   text changed (O-SEM-2 wording): pool:job·de: JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen vor. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+   text changed (O-SEM-2 wording): pool:pxj+invalidJob·en: PERSON × JOB ⟶ ◈ CAPABILITY FIELD The chosen job is not readable in this field · ROLE_NOT_IN_POOL. → open another role in the Job Field · SELECT AS JOB
+   text changed (O-SEM-2 wording): pool:pxj+invalidJob·de: PERSON × JOB ⟶ ◈ CAPABILITY-FELD Der gewählte Job ist in diesem Feld nicht lesbar · ROLE_NOT_IN_POOL. → im Job-Feld eine andere Rolle öffnen · ALS JOB WÄHLEN
+   text changed (O-SEM-2 wording): pool:job+roleOpen·de: JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen vor. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+   text changed (O-SEM-2 wording): pool:pxj+checking·en: PERSON × JOB ⟶ ◈ CAPABILITY FIELD The chosen job is being read. → the Capability Field follows once it is read
+   text changed (O-SEM-2 wording): pool:pxj+checking·de: PERSON × JOB ⟶ ◈ CAPABILITY-FELD Der gewählte Job wird gelesen. → das Capability-Feld folgt, sobald er gelesen ist
+1280: S7 gate differences vs cd1e4de 0/40 · entry state or action differing from round 1 0/40 · forbidden words 0 · warm 0 · role=alert 0 · line roles ['status'] · describedby resolves ['True'] · interactive overlaps 0 · page errors 0 · non-GET 0
+
+== B. Geometry probe (pink-geo): generic scan of every visible element with a testid, text or interactivity that intersects the line (stage containers > 40 % of the viewport excluded); EN, EN + intake open, DE, DE + intake open ==
+vp · state · line rect EN [x,y,w,h] · covered elements (EN/EN+I/DE/DE+I) · intake gap below the line px · air line→pool box px · KESTREL rim click result
+1920x1080@1  nopool:pxj           [1576, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1920x1080@1  nopool:job           [1576, 128, 316, 101] covered 0 · intake gap [12] · air None · -
+1920x1080@1  nopool:person        [1576, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1600x900@1   nopool:pxj           [1256, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1600x900@1   nopool:job           [1256, 128, 316, 101] covered 0 · intake gap [12] · air None · -
+1600x900@1   nopool:person        [1256, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1440x900@1   nopool:pxj           [1152, 128, 260, 113] covered 0 · intake gap [12] · air None · -
+1440x900@1   nopool:job           [1152, 128, 260, 117] covered 0 · intake gap [12] · air None · -
+1440x900@1   nopool:person        [1152, 128, 260, 101] covered 0 · intake gap [12] · air None · -
+1280x720@1   nopool:pxj           [1032, 128, 220, 113] covered 0 · intake gap [12] · air None · -
+1280x720@1   nopool:job           [1032, 128, 220, 117] covered 0 · intake gap [12] · air None · -
+1280x720@1   nopool:person        [1032, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1200x800@1   nopool:pxj           [952, 128, 220, 113] covered 0 · intake gap [12] · air None · -
+1200x800@1   nopool:job           [952, 128, 220, 117] covered 0 · intake gap [12] · air None · -
+1200x800@1   nopool:person        [952, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1152x864@1   nopool:pxj           [904, 128, 220, 113] covered 0 · intake gap [12] · air None · -
+1152x864@1   nopool:job           [904, 128, 220, 117] covered 0 · intake gap [12] · air None · -
+1152x864@1   nopool:person        [904, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+960x540@2    nopool:pxj           [16, 195, 928, 47] covered 0 · intake gap [324] · air None · -
+960x540@2    nopool:job           [16, 195, 928, 47] covered 0 · intake gap [324] · air None · -
+960x540@2    nopool:person        [16, 195, 928, 47] covered 0 · intake gap [324] · air None · -
+640x360@2    nopool:pxj           [16, 195, 608, 47] covered 0 · intake gap [324] · air None · -
+640x360@2    nopool:job           [16, 195, 608, 66] covered 0 · intake gap [324] · air None · -
+640x360@2    nopool:person        [16, 195, 608, 66] covered 0 · intake gap [324] · air None · -
+1920x1080@1  pool:pxj             [1576, 128, 316, 100] covered 0 · intake gap [12] · air None · -
+1920x1080@1  pool:pxj+poolOpen    [1576, 128, 316, 84] covered 0 · intake gap [12] · air 200 · node→FIELD+org node→FIELD+org
+1920x1080@1  pool:pxj+roleOpen    [1576, 128, 316, 100] covered 0 · intake gap [12] · air 200 · -
+1920x1080@1  pool:person          [1576, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1920x1080@1  pool:person+poolOpen [1576, 128, 316, 84] covered 0 · intake gap [12] · air 200 · node→FIELD+org node→FIELD+org
+1920x1080@1  pool:person+roleOpen [1576, 128, 316, 84] covered 0 · intake gap [12] · air 200 · -
+1920x1080@1  pool:job+poolOpen    [1576, 128, 316, 101] covered 0 · intake gap [12] · air 200 · node→FIELD+org node→FIELD+org
+1920x1080@1  pool:pxj+invalidJob  [1576, 128, 316, 97] covered 0 · intake gap [12] · air 200 · -
+1600x900@1   pool:pxj             [1256, 128, 316, 100] covered 0 · intake gap [12] · air None · -
+1600x900@1   pool:pxj+poolOpen    [1256, 128, 316, 84] covered 0 · intake gap [12] · air 80 · node→FIELD+org node→FIELD+org
+1600x900@1   pool:pxj+roleOpen    [1256, 128, 316, 100] covered 0 · intake gap [12] · air 80 · -
+1600x900@1   pool:person          [1256, 128, 316, 84] covered 0 · intake gap [12] · air None · -
+1600x900@1   pool:person+poolOpen [1256, 128, 316, 84] covered 0 · intake gap [12] · air 80 · node→FIELD+org node→FIELD+org
+1600x900@1   pool:person+roleOpen [1256, 128, 316, 84] covered 0 · intake gap [12] · air 80 · -
+1600x900@1   pool:job+poolOpen    [1256, 128, 316, 101] covered 0 · intake gap [12] · air 80 · node→FIELD+org node→FIELD+org
+1600x900@1   pool:pxj+invalidJob  [1256, 128, 316, 97] covered 0 · intake gap [12] · air 80 · -
+1440x900@1   pool:pxj             [1152, 128, 260, 130] covered 0 · intake gap [12] · air None · -
+1440x900@1   pool:pxj+poolOpen    [1152, 128, 260, 130] covered 0 · intake gap [12] · air 56 · node→FIELD+org node→FIELD+org
+1440x900@1   pool:pxj+roleOpen    [1152, 128, 260, 113] covered 0 · intake gap [12] · air 56 · -
+1440x900@1   pool:person          [1152, 128, 260, 101] covered 0 · intake gap [12] · air None · -
+1440x900@1   pool:person+poolOpen [1152, 128, 260, 101] covered 0 · intake gap [12] · air 56 · node→FIELD+org node→FIELD+org
+1440x900@1   pool:person+roleOpen [1152, 128, 260, 101] covered 0 · intake gap [12] · air 56 · -
+1440x900@1   pool:job+poolOpen    [1152, 128, 260, 117] covered 0 · intake gap [12] · air 56 · node→FIELD+org node→FIELD+org
+1440x900@1   pool:pxj+invalidJob  [1152, 128, 260, 110] covered 0 · intake gap [12] · air 56 · -
+1280x720@1   pool:pxj             [1032, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1280x720@1   pool:pxj+poolOpen    [1032, 128, 220, 130] covered 0 · intake gap [12] · air 16 · node→FIELD+org node→FIELD+org
+1280x720@1   pool:pxj+roleOpen    [1032, 128, 220, 130] covered 0 · intake gap [12] · air 16 · -
+1280x720@1   pool:person          [1032, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1280x720@1   pool:person+poolOpen [1032, 128, 220, 130] covered 0 · intake gap [12] · air 16 · node→FIELD+org node→FIELD+org
+1280x720@1   pool:person+roleOpen [1032, 128, 220, 130] covered 0 · intake gap [12] · air 16 · -
+1280x720@1   pool:job+poolOpen    [1032, 128, 220, 117] covered 0 · intake gap [12] · air 16 · node→FIELD+org node→FIELD+org
+1280x720@1   pool:pxj+invalidJob  [1032, 128, 220, 127] covered 0 · intake gap [12] · air 16 · -
+1200x800@1   pool:pxj             [952, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1200x800@1   pool:pxj+poolOpen    [952, 128, 220, 130] covered 0 · intake gap [12] · air -24 · node→FIELD+org node→FIELD+org
+1200x800@1   pool:pxj+roleOpen    [952, 128, 220, 130] covered 0 · intake gap [12] · air -24 · -
+1200x800@1   pool:person          [952, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1200x800@1   pool:person+poolOpen [952, 128, 220, 130] covered 0 · intake gap [12] · air -24 · node→FIELD+org node→FIELD+org
+1200x800@1   pool:person+roleOpen [952, 128, 220, 130] covered 0 · intake gap [12] · air -24 · -
+1200x800@1   pool:job+poolOpen    [952, 128, 220, 117] covered 0 · intake gap [12] · air -24 · node→FIELD+org node→FIELD+org
+1200x800@1   pool:pxj+invalidJob  [952, 128, 220, 127] covered 0 · intake gap [12] · air -24 · -
+1152x864@1   pool:pxj             [904, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1152x864@1   pool:pxj+poolOpen    [904, 128, 220, 130] covered 0 · intake gap [12] · air -48 · node→FIELD+org node→FIELD+org
+1152x864@1   pool:pxj+roleOpen    [904, 128, 220, 130] covered 0 · intake gap [12] · air -48 · -
+1152x864@1   pool:person          [904, 128, 220, 130] covered 0 · intake gap [12] · air None · -
+1152x864@1   pool:person+poolOpen [904, 128, 220, 130] covered 0 · intake gap [12] · air -48 · node→FIELD+org node→FIELD+org
+1152x864@1   pool:person+roleOpen [904, 128, 220, 130] covered 0 · intake gap [12] · air -48 · -
+1152x864@1   pool:job+poolOpen    [904, 128, 220, 117] covered 0 · intake gap [12] · air -48 · node→FIELD+org node→FIELD+org
+1152x864@1   pool:pxj+invalidJob  [904, 128, 220, 127] covered 0 · intake gap [12] · air -48 · -
+960x540@2    pool:pxj             [16, 195, 928, 47] covered 0 · intake gap [332] · air None · -
+960x540@2    pool:pxj+poolOpen    [16, 195, 928, 47] covered 0 · intake gap [290] · air -840 · other→FIELD other→FIELD
+960x540@2    pool:pxj+roleOpen    [16, 195, 928, 47] covered 0 · intake gap [443] · air -840 · -
+960x540@2    pool:person          [16, 195, 928, 47] covered 0 · intake gap [332] · air None · -
+960x540@2    pool:person+poolOpen [16, 195, 928, 47] covered 0 · intake gap [248] · air -840 · other→FIELD other→FIELD
+960x540@2    pool:person+roleOpen [16, 195, 928, 47] covered 0 · intake gap [288] · air -840 · -
+960x540@2    pool:job+poolOpen    [16, 195, 928, 47] covered 0 · intake gap [248] · air -840 · other→FIELD other→FIELD
+960x540@2    pool:pxj+invalidJob  [16, 195, 928, 46] covered 0 · intake gap [290] · air -840 · -
+640x360@2    pool:pxj             [16, 195, 608, 66] covered 0 · intake gap [332] · air None · -
+640x360@2    pool:pxj+poolOpen    [16, 195, 608, 66] covered 0 · intake gap [290, 308] · air -581 · other→FIELD other→FIELD
+640x360@2    pool:pxj+roleOpen    [16, 195, 608, 66] covered 0 · intake gap [480, 498] · air -581 · -
+640x360@2    pool:person          [16, 195, 608, 66] covered 0 · intake gap [332] · air None · -
+640x360@2    pool:person+poolOpen [16, 195, 608, 66] covered 0 · intake gap [248] · air -581 · other→FIELD other→FIELD
+640x360@2    pool:person+roleOpen [16, 195, 608, 66] covered 0 · intake gap [310] · air -581 · -
+640x360@2    pool:job+poolOpen    [16, 195, 608, 66] covered 0 · intake gap [248] · air -581 · other→FIELD other→FIELD
+640x360@2    pool:pxj+invalidJob  [16, 195, 608, 64] covered 0 · intake gap [290, 308] · air -581 · -
+Stack tier (960x540@2, 640x360@2): the line is in the page column (position relative); the KESTREL node lies below the first screen (y 581–752 > viewport height), so the rim points are outside the viewport ('other', no click target) — a probe limit, not a finding; the line covers 0 elements there too.
+1200x800 / 1152x864: the 220 px minimum reaches 24 / 48 px into the pool box (negative air) but covers 0 elements (GRÜN's stated limit below 1248 px).
+
+== C. Hit test on the restored real world (pink-hit), 0ab9baf: cosmos nodes intersecting the line ==
+20 visits (4 viewports × 5 states): nodes under the line 0 · non-GET 0 · page errors 0 (round 1: KESTREL under the line in 3 states per viewport)
+
+== D. S6 inverse, round 2: 32 one-line mutants against GRÜN's suites (pristine 82 files / 682 passed) ==
+RED   E01 derive: no pool reads as pools not opened              Test Files 1 failed | 81 passed (82) · Tests 3 failed | 679 passed | 4 skipped (686)
+RED   E02 derive: opened pool ignored                            Test Files 2 failed | 80 passed (82) · Tests 8 failed | 674 passed | 4 skipped (686)
+RED   E03 derive: opened role ignored                            Test Files 2 failed | 80 passed (82) · Tests 5 failed | 677 passed | 4 skipped (686)
+RED   E04 derive: unread pools read as no pool                   Test Files 6 failed | 76 passed (82) · Tests 6 failed | 676 passed | 4 skipped (686)
+RED   E05 derive: PERSON line inside the Capability Field (T-07) Test Files 3 failed | 79 passed (82) · Tests 4 failed | 678 passed | 4 skipped (686)
+RED   E06 derive: line although the gate is open                 Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E07 derive: CHECKING reads as INVALID                      Test Files 4 failed | 78 passed (82) · Tests 5 failed | 677 passed | 4 skipped (686)
+RED   E08 gate cause: role-not-chosen loses data-gate NONE       Test Files 1 failed | 81 passed (82) · Tests 4 failed | 678 passed | 4 skipped (686)
+RED   E09 field: pool-open source constant                       Test Files 1 failed | 81 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E10 field: role-open source constant false                 Test Files 2 failed | 80 passed (82) · Tests 4 failed | 678 passed | 4 skipped (686)
+RED   E11 field: requirement observation not a role              Test Files 2 failed | 80 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E12 field: choose-role switches the mode instead           Test Files 1 failed | 81 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E13 field: person action selects JOB                       Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E14 field: capability action goes to the Job Field         Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E15 field: tooltip out of sync with the line               Test Files 5 failed | 77 passed (82) · Tests 7 failed | 675 passed | 4 skipped (686)
+RED   E16 field: gate opens for JOB (mode logic)                 Test Files 4 failed | 78 passed (82) · Tests 7 failed | 675 passed | 4 skipped (686)
+RED   E17 selector: role alert                                   Test Files 1 failed | 81 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E18 selector: aria-live removed                            Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E19 selector: amber path label                             Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E20 selector: describedby target id dropped                Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E21 selector: data-gate carries the entry state            Test Files 2 failed | 80 passed (82) · Tests 4 failed | 678 passed | 4 skipped (686)
+RED   E22 selector: action not rendered                          Test Files 1 failed | 81 passed (82) · Tests 3 failed | 679 passed | 4 skipped (686)
+RED   E23 copy EN: lock language back                            Test Files 1 failed | 81 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E24 copy DE: lock language back                            Test Files 1 failed | 81 passed (82) · Tests 2 failed | 680 passed | 4 skipped (686)
+RED   E25 copy EN: 2a and 2b same sentence                       Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E26 copy DE: state 4 untranslated                          Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E27 copy EN: state 4 = state 2b                            Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+n/a   E28 layout: FIT room rule removed                          pattern count 0
+RED   E29 layout: intake clearance rule never matches            Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E30 selector: line back to the top centre                  Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+RED   E31 selector: line width unbounded (over the cosmos)       Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+ALIVE E32 dashboard: entry clearance never written               Test Files 82 passed (82) · Tests 682 passed | 4 skipped (686)
+RED   E33 layout: stack tier keeps right: 28px                   Test Files 1 failed | 81 passed (82) · Tests 1 failed | 681 passed | 4 skipped (686)
+
+== E. tsc and test/career (isolated DB) on 0ab9baf ==
+tsem2 tsc exit 0 errors 0
+tsem2 test/career exit 1  Test Files 8 failed | 388 passed | 6 skipped (402)  Tests 36 failed | 2495 passed | 13 skipped (2544) 
+      6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+      6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+      5  FAIL  test/career-lifecycle-recovery.test.ts
+     10  FAIL  test/career-policy-activation-atomicity.test.ts
+      4  FAIL  test/career/relation-adapters/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-postgres.test.ts
+      1  FAIL  test/career/relation/outcome-valence-feedback-context-revision-persistence/career-outcome-valence-feedback-context-revision-persistence.test.ts
+      3  FAIL  test/career/relation/outcome-valence-feedback-context-revision-replay/career-outcome-valence-feedback-context-revision-replay.test.ts
+      1  FAIL  test/career-worker-config-validation.test.ts
+All failing files are the known base-red domains (career lifecycle / policy activation / outcome-valence revision / worker config); none in pxj-first-screen, job-pool, three-modes, career-demo, syntx, orbit or SIL.
+
+== F. S8 regression on the restored real world (production build) vs §3.81 (main 1d1d6e6 = cd1e4de app code) ==
+HEAD 0ab9baf (cand2)
+[pink-lab] next build exit 0
+PINK LAB READY http://127.0.0.1:41873 database=condyn_test_d08695ae88ab09c1 server=2023749 up=true
+HIT-END cand2
+MODES cand2 1920x1080@1 blocked 0 errors 0
+MODES cand2 1280x720@1 blocked 0 errors 0
+MODES cand2 1440x900@1 blocked 0 errors 0
+MODES cand2 1600x900@1 blocked 0 errors 0
+MODES cand2 960x540@2 blocked 0 errors 0
+MODES cand2 640x360@2 blocked 0 errors 0
+RI main cand2-1920 done {"POST":3,"nonGetOther":0} errors 0
+RI vp cand2-1280x720 done {"POST":1,"nonGetOther":0} errors 0
+orbits exit 0
+rd-ui exit 0
+[pink-lab] dropped condyn_test_d08695ae88ab09c1
+port free
+modes 1920x1080@1: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+modes 1280x720@1: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+modes 1440x900@1: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+modes 1600x900@1: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+modes 960x540@2: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+modes 640x360@2: scenes differing ['default', 'job', 'pxj-noscope'] (the scenes that carry the line), all other keys identical
+orbits-cand2-1920.json: 155 keys, 0 differences
+rd-ui-cand2-1920.json: 97 keys, 0 differences
+ri-cand2-1920-main.json: 419 keys, 0 differences
+ri-cand2-1280x720-vp.json: 37 keys, 0 differences
+drop zone / empty-pool handover (empty lab): 0 differences vs round 1 (which equalled cdf0c1e apart from the wording)

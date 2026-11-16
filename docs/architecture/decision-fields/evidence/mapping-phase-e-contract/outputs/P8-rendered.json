@@ -1,0 +1,6 @@
+{ "commit": "716a1941", "window": "1280x800", "viewBoxW": 1086.694, "svgClientW": 520, "scale": 0.4785,
+  "renderedPx": { "minStroke": 1.202, "minStrokeEl": "arc-line", "minBeam": 1.575, "beamCount": 3,
+    "minText": 11.022, "textCount": 5, "minBody": 12, "bodyCount": 5, "bodiesAtFloor": 4,
+    "bodyDiaPx": [12, 12, 12, 12, 14.403] },
+  "floors": { "stroke": 1.2, "beam": 1.0, "body": 12, "text": 11 },
+  "pass": { "stroke": true, "beam": true, "text": true, "body": true } }

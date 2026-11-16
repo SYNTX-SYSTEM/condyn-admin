@@ -1,0 +1,24 @@
+PINK §3.89 — owner mandate SFE::BUDGET BOUNDARY HARDLOCK ("Ohne persistente Aufrufregistrierung darf kein Gemini-Aufruf stattfinden. Unabhängig von der verwendeten Datenbank."), GELB backend/call-register-everywhere 67abdfe on main fe859b3 — 2026-10-31
+Question checked (only this): can any Gemini API request leave without a persistent register row, on any database?
+Method: CODE_INSPECTION of every tracked file that imports the Gemini SDK or names its host; DETERMINISTIC probe with the REAL @google/genai SDK and global fetch replaced by a recorder that answers like Gemini and counts the register rows at the moment of each request; the disposable marker of the probe database removed for the run (restored before the drop). Dummy key, no network, no model, nothing on main or :3017.
+
+VERDICT: NO-GO — two paths send Gemini API requests without a register row.
+
+PASS
+  no recorder bound: discovery, convergence, legacy (cascade), embedding, semantic and a raw SDK call inside the seam -> ERR_PROVIDER_CALL_REGISTER_FAILED, 0 requests
+  database WITHOUT the disposable marker: the register is provisioned there; 4 requests (discovery, convergence, legacy, embedding), each one with its row already SENT (rows at request time [2, 3, 4, 5] incl. one older row); rows ['EXTRACTION_DISCOVERY:COMPLETED', 'EXTRACTION_CONVERGENCE:COMPLETED', 'EXTRACTION_LEGACY:COMPLETED', 'EMBEDDING:COMPLETED']
+  existing data: an old-format register with a row and the old 4-stage CHECK -> row kept, stage list widened in place (EMBEDDING present: True), both guard triggers enabled ([{'tgname': 'rel_ledger_guard', 'tgenabled': 'O'}, {'tgname': 'rel_call_guard', 'tgenabled': 'O'}])
+  register cannot be provisioned (ledger name taken by a view): ERR_PROVIDER_CALL_REGISTER_FAILED, 0 requests
+  the SDK retries only with httpOptions.retryOptions; no tracked file sets it (CODE_INSPECTION) — one guarded call is one request
+
+FINDINGS (blocking)
+F-BB-1  tracked scripts at the repository root call the SDK directly, outside the seam and without any register:
+        bisection.ts:36, schema-bisection.ts:122, schema-bisection-mjs.ts:122, test-schema.ts:22 and :38 — ai.models.generateContent(...) with GEMINI_API_KEY,
+        gated only by the job-scope check (resolveScriptJobScope). `npx tsx test-schema.ts` with a key and a scope sends without a row, on any database.
+        GELB's architecture test (test/career/provider-calls/everywhere.test.ts) scans only lib/, scripts/ and app/ and only the receiver names ai|client|this.client.
+F-BB-2  scripts/list-models.ts: models.list() registers one row for the first page; iterating the pager sends every further page request without a row.
+        Measured with the real SDK: 3 requests, 1 register row, 2 requests without a row (GELB named this limit).
+
+OBSERVATIONS (not findings)
+O-BB-1  docs/career_analysis/evidence/video-readiness/scripts/video-gemini-relay.ts forwards to Gemini only for the lab worker's placeholder key; every relayed request has its origin row in the worker (guarded). scripts/proofs/job-scope-all-paths.ts makes a deliberate positive-control request with a dummy key under the network sentinel.
+O-BB-2  the provisioning memo is per process and URL: when the register tables are dropped while a process runs, its calls are refused (fail closed) until restart.

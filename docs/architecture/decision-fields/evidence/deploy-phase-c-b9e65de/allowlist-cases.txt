@@ -1,0 +1,14 @@
+NODE_ENV=production; LD_PRELOAD=/tmp/evil.so
+NODE_ENV=production BASH_ENV=/tmp/x
+export NODE_ENV=production PATH=/tmp/evil:/usr/bin
+: ; NODE_PATH=/tmp/evil
+. /tmp/other.env
+$(touch /tmp/pink-would-run)
+`touch /tmp/pink-would-run`
+DATABASE_URL="postgresql://u:p@127.0.0.1:5432/condyn_test_8138803cb03b0edc$(touch /tmp/x)"
+NODE_ENV=production && HOSTNAME=evil
+declare -x LD_PRELOAD=/tmp/evil.so
+source /tmp/other.env
+NODE_ENV=prod\
+uction
+{ LD_PRELOAD=/x; }

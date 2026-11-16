@@ -1,0 +1,30 @@
+// PINK three-point pair contract: every view the backend's pure viewOfAutoInvestigation can produce (status × lease × resumable × revision ×
+// task mixes × carried × age) must decode in the client, and a decoded view must keep state, reason, resumePending and finishedAt. DETERMINISTIC.
+import { describe, expect, it, afterAll } from "vitest";
+import { writeFileSync } from "node:fs";
+import { viewOfAutoInvestigation } from "../../lib/career/job-pool/auto-match";
+import { decodeAutoMatch, rankingKey } from "../../lib/career/ui/auto-match";
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+describe("PINK pair contract", () => {
+  it("backend views × client decoder", () => {
+    const NOW = "2026-10-31T12:00:00.000Z"; const t = (ms: number) => new Date(Date.parse(NOW) + ms).toISOString();
+    const T = (status: string, errorCode: string | null = null) => ({ status, errorCode }) as never;
+    const mixes: Record<string, unknown[]> = { ok: [T("SUCCEEDED"), T("CACHED")], transient: [T("SUCCEEDED"), T("FAILED", "ERR_SEMANTIC_PROVIDER_TRANSIENT")], refused: [T("SUCCEEDED"), T("FAILED", "ERR_SEMANTIC_OUTPUT_REFUSED")], partialPairs: [T("SUCCEEDED", "ERR_SEMANTIC_OUTPUT_PARTIAL"), T("CACHED")],
+      budget: [T("SUCCEEDED"), T("BUDGET_EXHAUSTED", "ERR_BUDGET_EXHAUSTED"), T("CANCELLED")], lost: [T("SUCCEEDED"), T("INTERRUPTED", "ERR_WORKER_LOST"), T("CANCELLED")], open: [T("SUCCEEDED"), T("RUNNING"), T("PENDING")], allFailed: [T("FAILED", "ERR_SEMANTIC_PROVIDER_FAILED")] };
+    const counts: Record<string, number> = {}; const refused: unknown[] = []; const changed: unknown[] = []; let n = 0;
+    for (const status of ["PLANNED", "RUNNING", "COMPLETED", "PARTIAL", "FAILED", "INTERRUPTED"]) for (const lease of [null, t(60_000), t(-60_000)]) for (const resumable of [true, false]) for (const revision of [0, 1, 2])
+      for (const [mix, tasks] of Object.entries(mixes)) for (const carried of [undefined, { planned: 2, evaluated: 1, failed: 1, pairsRefused: true }, { planned: 1, evaluated: 1, failed: 0, pairsRefused: false }]) for (const age of [-30_000, -900_000]) for (const usage of [null, { used: 3, limit: 12 }]) {
+        const request: Record<string, unknown> = { auto: true, resumable, revision, uploads: ["JPOOL_A"], roles: [{}, {}], callsNeeded: 2, rolesTotal: 3, ...(carried ? { carried } : {}) };
+        const v = viewOfAutoInvestigation({ investigation: { investigationId: "RINV_0123456789ABCDEF0123456789ABCDEF", provider: "gemini", status: status as never, createdAt: t(-1_000_000), updatedAt: t(age), request, leaseExpiresAt: lease }, tasks: tasks as never, poolNames: new Map([["JPOOL_A", "Pool A"]]), now: NOW, lastProgressAt: t(age), usage });
+        n += 1; const k = `${v.state}·${v.reason}${v.resumePending ? "·resumePending" : ""}`; counts[k] = (counts[k] ?? 0) + 1;
+        const d = decodeAutoMatch(JSON.parse(JSON.stringify(v)));
+        if (d === null) { if (refused.length < 8) refused.push({ status, lease, resumable, revision, mix, carried: !!carried, age, view: v }); continue; }
+        if (d.state !== v.state || d.reason !== v.reason || d.resumePending !== v.resumePending || d.finishedAt !== v.finishedAt || d.budget?.rolesEvaluated !== v.budget?.rolesEvaluated) changed.push(k);
+        const key = rankingKey({ read: { state: "AVAILABLE", autoMatch: d }, waitedOut: false });
+        if (key === null && v.state !== "NOT_STARTED") changed.push(`no ranking key for ${k}`);
+      }
+    rec.contract = { views: n, distinct: counts, refusedByClient: refused, changedByDecode: changed.slice(0, 10) };
+    expect(refused).toEqual([]); expect(changed).toEqual([]);
+  });
+});

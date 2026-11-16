@@ -1,0 +1,143 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "viewport": "1920x1080",
+ "frames": 10,
+ "levels": [
+  {
+   "level": "L0",
+   "clip": {
+    "x": 498,
+    "y": 128,
+    "width": 924,
+    "height": 924
+   },
+   "shotOnly": {
+    "p50": 474,
+    "min": 448,
+    "max": 590
+   },
+   "shotFast": {
+    "p50": 347,
+    "min": 213,
+    "max": 371
+   },
+   "shotFastPlusInlineDecode": {
+    "p50": 228,
+    "min": 200,
+    "max": 361
+   },
+   "adequacy_deferredDecode_fast": {
+    "cadenceMs": 347,
+    "nyquistHz": 1.4409,
+    "maxFreqHz": 0.35,
+    "limitHz": 1.2968,
+    "adequate": true
+   },
+   "adequacy_inlineDecode_fast": {
+    "cadenceMs": 228,
+    "nyquistHz": 2.193,
+    "maxFreqHz": 0.35,
+    "limitHz": 1.9737,
+    "adequate": true
+   },
+   "adequacy_deferredDecode_slow": {
+    "cadenceMs": 474,
+    "nyquistHz": 1.0549,
+    "maxFreqHz": 0.35,
+    "limitHz": 0.9494,
+    "adequate": true
+   }
+  },
+  {
+   "level": "L1",
+   "clip": {
+    "x": 498,
+    "y": 128,
+    "width": 924,
+    "height": 924
+   },
+   "shotOnly": {
+    "p50": 281,
+    "min": 256,
+    "max": 384
+   },
+   "shotFast": {
+    "p50": 184,
+    "min": 160,
+    "max": 275
+   },
+   "shotFastPlusInlineDecode": {
+    "p50": 185,
+    "min": 121,
+    "max": 233
+   },
+   "adequacy_deferredDecode_fast": {
+    "cadenceMs": 184,
+    "nyquistHz": 2.7174,
+    "maxFreqHz": 0.35,
+    "limitHz": 2.4457,
+    "adequate": true
+   },
+   "adequacy_inlineDecode_fast": {
+    "cadenceMs": 185,
+    "nyquistHz": 2.7027,
+    "maxFreqHz": 0.35,
+    "limitHz": 2.4324,
+    "adequate": true
+   },
+   "adequacy_deferredDecode_slow": {
+    "cadenceMs": 281,
+    "nyquistHz": 1.7794,
+    "maxFreqHz": 0.35,
+    "limitHz": 1.6014,
+    "adequate": true
+   }
+  },
+  {
+   "level": "L2",
+   "clip": {
+    "x": 498,
+    "y": 128,
+    "width": 924,
+    "height": 924
+   },
+   "shotOnly": {
+    "p50": 338,
+    "min": 317,
+    "max": 496
+   },
+   "shotFast": {
+    "p50": 283,
+    "min": 185,
+    "max": 374
+   },
+   "shotFastPlusInlineDecode": {
+    "p50": 210,
+    "min": 178,
+    "max": 343
+   },
+   "adequacy_deferredDecode_fast": {
+    "cadenceMs": 283,
+    "nyquistHz": 1.7668,
+    "maxFreqHz": 0.35,
+    "limitHz": 1.5901,
+    "adequate": true
+   },
+   "adequacy_inlineDecode_fast": {
+    "cadenceMs": 210,
+    "nyquistHz": 2.381,
+    "maxFreqHz": 0.35,
+    "limitHz": 2.1429,
+    "adequate": true
+   },
+   "adequacy_deferredDecode_slow": {
+    "cadenceMs": 338,
+    "nyquistHz": 1.4793,
+    "maxFreqHz": 0.35,
+    "limitHz": 1.3314,
+    "adequate": true
+   }
+  }
+ ]
+}

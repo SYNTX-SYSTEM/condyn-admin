@@ -1,0 +1,577 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "reading": "PINK — PF-4 limb 3 across focus states; the 0.32 path MEASURED, the 0.18 path out of reach at L0",
+  "pin": "PF-4 limb 3: same-class marks on different bodies differ <= 2 %",
+  "reachable": "the 0.32 path (capability selected, body in pool but unlit) needs only L0 — driven here",
+  "notReachable": "the 0.18 path (body outside the focused pool) needs L1 and >1 pool — A-G51's fixture, so GELB's 455.6 % stays a DERIVATION",
+  "scope": "one fixture, one analysisId, five bodies (2 field / 3 shelf), L0 — §63",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "motion": "reduce",
+      "level": "L0",
+      "restingState": {
+        "selectionAttr": "",
+        "rows": [
+          {
+            "cls": "SEMANTIC",
+            "n": 2,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          },
+          {
+            "cls": "LEXICAL",
+            "n": 2,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          },
+          {
+            "cls": "NONE",
+            "n": 1,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          }
+        ],
+        "worstSpreadPct": 0,
+        "worstClass": "SEMANTIC",
+        "clears": true,
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.911293
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.830455
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.756788
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.689655
+          }
+        ]
+      },
+      "capabilitiesTried": 3,
+      "selectionsThatTook": 3,
+      "the0_32PathObserved": true,
+      "observedDimmedGroupOpacities": [
+        0.32
+      ],
+      "worstSpreadAcrossAllSelections_pct": 212.5,
+      "worstSpreadClass": "SEMANTIC",
+      "worstSpreadUnderWhichCapability": "mapping-capability-PCAP_PG",
+      "bound": "<= 2 %",
+      "limb3_clearsAtRest": true,
+      "limb3_clearsUnderEverySelection": false,
+      "perSelection": [
+        {
+          "i": 0,
+          "capability": "mapping-capability-PCAP_K8",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "true"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 0,
+          "worstClass": "SEMANTIC",
+          "clears": true
+        },
+        {
+          "i": 1,
+          "capability": "mapping-capability-PCAP_PG",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 1,
+              "spreadPct": 212.5,
+              "strokesIdentical": true,
+              "litStates": [
+                "true",
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 212.5,
+          "worstClass": "SEMANTIC",
+          "clears": false
+        },
+        {
+          "i": 2,
+          "capability": "mapping-capability-PCAP_TS",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "true"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 0.32,
+              "maxGroupOpacity": 0.32,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 0,
+          "worstClass": "SEMANTIC",
+          "clears": true
+        }
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "motion": "no-preference",
+      "level": "L0",
+      "restingState": {
+        "selectionAttr": "",
+        "rows": [
+          {
+            "cls": "SEMANTIC",
+            "n": 2,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          },
+          {
+            "cls": "LEXICAL",
+            "n": 2,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          },
+          {
+            "cls": "NONE",
+            "n": 1,
+            "minGroupOpacity": 1,
+            "maxGroupOpacity": 1,
+            "spreadPct": 0,
+            "strokesIdentical": true,
+            "litStates": [
+              "true"
+            ],
+            "inPoolStates": [
+              "true"
+            ]
+          }
+        ],
+        "worstSpreadPct": 0,
+        "worstClass": "SEMANTIC",
+        "clears": true,
+        "bodies": [
+          {
+            "rank": 1,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 1
+          },
+          {
+            "rank": 2,
+            "cls": "SEMANTIC",
+            "shelf": "false",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.911293
+          },
+          {
+            "rank": 3,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.830455
+          },
+          {
+            "rank": 4,
+            "cls": "LEXICAL",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.756788
+          },
+          {
+            "rank": 5,
+            "cls": "NONE",
+            "shelf": "true",
+            "lit": "true",
+            "inPool": "true",
+            "marked": "false",
+            "groupOpacity": 1,
+            "shapeStroke": "rgba(205, 240, 255, 0.82)",
+            "coreOpacity": 0.689655
+          }
+        ]
+      },
+      "capabilitiesTried": 3,
+      "selectionsThatTook": 3,
+      "the0_32PathObserved": true,
+      "observedDimmedGroupOpacities": [
+        1
+      ],
+      "worstSpreadAcrossAllSelections_pct": 0,
+      "worstSpreadClass": "SEMANTIC",
+      "worstSpreadUnderWhichCapability": "mapping-capability-PCAP_K8",
+      "bound": "<= 2 %",
+      "limb3_clearsAtRest": true,
+      "limb3_clearsUnderEverySelection": true,
+      "perSelection": [
+        {
+          "i": 0,
+          "capability": "mapping-capability-PCAP_K8",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "true"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 0,
+          "worstClass": "SEMANTIC",
+          "clears": true
+        },
+        {
+          "i": 1,
+          "capability": "mapping-capability-PCAP_PG",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "true",
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 0,
+          "worstClass": "SEMANTIC",
+          "clears": true
+        },
+        {
+          "i": 2,
+          "capability": "mapping-capability-PCAP_TS",
+          "selectionAttr": "CAPABILITY",
+          "rows": [
+            {
+              "cls": "SEMANTIC",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "true"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "LEXICAL",
+              "n": 2,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            },
+            {
+              "cls": "NONE",
+              "n": 1,
+              "minGroupOpacity": 1,
+              "maxGroupOpacity": 1,
+              "spreadPct": 0,
+              "strokesIdentical": true,
+              "litStates": [
+                "false"
+              ],
+              "inPoolStates": [
+                "true"
+              ]
+            }
+          ],
+          "worstSpreadPct": 0,
+          "worstClass": "SEMANTIC",
+          "clears": true
+        }
+      ]
+    }
+  ]
+}

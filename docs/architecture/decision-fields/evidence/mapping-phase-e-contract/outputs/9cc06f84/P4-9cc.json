@@ -1,0 +1,42 @@
+{
+ "commit": "9cc06f84",
+ "rising": {
+  "changesSeen": [],
+  "distinctPositions": 0,
+  "peakBrightness": 1,
+  "transientAnimSeen": [],
+  "everHadTransformTransition": false,
+  "firstEvidenceAt": null
+ },
+ "steady": {
+  "changesSeen": [],
+  "distinctPositions": 0,
+  "peakBrightness": 1,
+  "filterNoneEveryFrame": true,
+  "everHadTransformTransition": false,
+  "firstLayoutAt": null
+ },
+ "rafFrames": {
+  "rising": {
+   "peakBright": 1.75111,
+   "distinctTr": 1,
+   "changes": [
+    "EVIDENCE"
+   ],
+   "frames": 15
+  },
+  "steady": {
+   "peakBright": 1,
+   "distinctTr": 10,
+   "changes": [
+    "LAYOUT"
+   ],
+   "frames": 15
+  }
+ },
+ "verdict": {
+  "EVIDENCE_cut": false,
+  "LAYOUT_ease": false,
+  "directions_disjoint": true
+ }
+}

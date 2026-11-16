@@ -1,0 +1,101 @@
+{
+ "commit": "3ec8457d",
+ "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+ "pin": "PG-10 limb 3 (max swing <= 0.030), restored 'as written' at the A-G26 suspension lift",
+ "against": "A-G195 (§50 @ e6078e0b): 'not runnable' on (i) floor 0.031872 and (ii) no co-registration",
+ "statisticNote": "A-G26's p999.9 read as the 99.99th percentile; reported beside p99.9, p99 and the max",
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "region": "924x924",
+   "carrierMaskPx": 51289,
+   "seatExcludedPx": 43,
+   "carrierRadialExtent_rOverR": {
+    "min": 0.3309,
+    "max": 1.0746
+   },
+   "animatedCarriersUnderReduce": 0,
+   "animatedCarriersLive": 2,
+   "staticFloorOnCarrierMask": {
+    "frames": 24,
+    "elapsedMs": 3234,
+    "n": 51289,
+    "median": 0,
+    "p99": 0,
+    "p999": 0.0002958,
+    "p9999": 0.0023684,
+    "max": 0.0041447,
+    "fracOverCeiling": 0
+   },
+   "liveSwingOnCarrierMask": {
+    "frames": 60,
+    "elapsedMs": 13189,
+    "periodsCovered": 1.32,
+    "n": 51289,
+    "median": 0.0019368,
+    "p99": 0.0264989,
+    "p999": 0.0308056,
+    "p9999": 0.0319155,
+    "max": 0.0326883,
+    "fracOverCeiling": 0.0020472
+   },
+   "limb3": {
+    "ceiling": 0.03,
+    "floorP9999": 0.0023684,
+    "floorMax": 0.0041447,
+    "liveP9999": 0.0319155,
+    "liveMax": 0.0326883,
+    "ceilingOverFloorMax": 7.2,
+    "admissibleByAsymmetry": true,
+    "verdict_p9999_vs_ceiling": "EXCEEDS",
+    "verdict_max_vs_ceiling": "EXCEEDS"
+   }
+  },
+  {
+   "viewport": "1280x800",
+   "region": "520x520",
+   "carrierMaskPx": 13574,
+   "seatExcludedPx": 22,
+   "carrierRadialExtent_rOverR": {
+    "min": 0.3311,
+    "max": 1.6468
+   },
+   "animatedCarriersUnderReduce": 0,
+   "animatedCarriersLive": 2,
+   "staticFloorOnCarrierMask": {
+    "frames": 24,
+    "elapsedMs": 1641,
+    "n": 13574,
+    "median": 0,
+    "p99": 0.0007872,
+    "p999": 0.0026648,
+    "p9999": 0.0030408,
+    "max": 0.0032079,
+    "fracOverCeiling": 0
+   },
+   "liveSwingOnCarrierMask": {
+    "frames": 118,
+    "elapsedMs": 13052,
+    "periodsCovered": 1.31,
+    "n": 13574,
+    "median": 0.0015619,
+    "p99": 0.022425,
+    "p999": 0.0269044,
+    "p9999": 0.0279076,
+    "max": 0.0282471,
+    "fracOverCeiling": 0
+   },
+   "limb3": {
+    "ceiling": 0.03,
+    "floorP9999": 0.0030408,
+    "floorMax": 0.0032079,
+    "liveP9999": 0.0279076,
+    "liveMax": 0.0282471,
+    "ceilingOverFloorMax": 9.4,
+    "admissibleByAsymmetry": true,
+    "verdict_p9999_vs_ceiling": "CLEARS",
+    "verdict_max_vs_ceiling": "CLEARS"
+   }
+  }
+ ]
+}

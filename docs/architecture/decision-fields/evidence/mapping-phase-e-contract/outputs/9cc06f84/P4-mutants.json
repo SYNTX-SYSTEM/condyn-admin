@@ -1,0 +1,27 @@
+{
+ "commit": "9cc06f84",
+ "mutant": "MUT-LAYOUT-TRANSIENT",
+ "watch": "STEADY(role_y)",
+ "peakBright": 1.7734,
+ "distinctTr": 12,
+ "changes": [
+  "LAYOUT"
+ ],
+ "frames": 18,
+ "P4_turnedRed": true
+}
+---EVIDENCE---
+{
+ "commit": "9cc06f84",
+ "mutant": "MUT-EVIDENCE-EASES",
+ "watch": "RISING(role_x)",
+ "peakBright": 1.72888,
+ "distinctTr": 1,
+ "changes": [
+  "EVIDENCE"
+ ],
+ "frames": 19,
+ "survived_stillCut": true
+}
+
+[exited with code 0]

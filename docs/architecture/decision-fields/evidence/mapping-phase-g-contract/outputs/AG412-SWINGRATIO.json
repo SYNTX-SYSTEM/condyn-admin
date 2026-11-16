@@ -1,0 +1,430 @@
+{
+ "commit": "3ec8457d",
+ "stand": "http://127.0.0.1:3122",
+ "pin": "A-G412 probe (PINK §33)",
+ "claimUnderTest": "unselected swing / selected swing = 1/selectedGain = 2.857142857",
+ "spaceNote": "exact in ENCODED sRGB (compositing affine there); luminance ratio carries a convexity factor > 1",
+ "sourceFacts": {
+  "WAVE.haloDepth@:122": 0.235,
+  "WAVE.selectedGain@:122": 0.35,
+  "mf-wave-halo mean@:274": 0.8825,
+  "mf-wave-halo depth@:274": 0.1175,
+  "selected gain@:275": 0.35
+ },
+ "runs": [
+  {
+   "viewport": "1920x1080",
+   "discPixels": 545417,
+   "rowsAboveFloor": 27692,
+   "unselGeo": {
+    "selection": "",
+    "waveGain": "",
+    "animation": "mappingFieldWave",
+    "breath": "LIVE"
+   },
+   "selGeo": {
+    "selection": "CAPABILITY",
+    "waveGain": "0.35",
+    "animation": "mappingFieldWave",
+    "breath": "LIVE"
+   },
+   "sharedMask": true,
+   "maskDefinedIn": "unselected, live, disc-scoped, green swing >= 4 codes",
+   "framesPerState": 41,
+   "stepMs": 250,
+   "samplingMissBound_frac": 0.004815,
+   "centre": 2.857143,
+   "ladder": [
+    {
+     "rung_unselGreenSwing_codes": 4,
+     "pixels": 27692,
+     "medianGreenSwing_unsel": 7,
+     "medianGreenSwing_sel": 3,
+     "ratio_E_green_median": 2,
+     "ratio_E_green_p05": 0.88889,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2,
+      2
+     ],
+     "ratio_E_sumRGB_median": 2.25,
+     "ratio_L_median": 2.31593,
+     "pointPrediction_measuredOverPredicted_median": 1.22458,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 6.77,
+     "perPixelQuantResolution_median": 0.33333,
+     "devFromCentre_pct": -30
+    },
+    {
+     "rung_unselGreenSwing_codes": 6,
+     "pixels": 19388,
+     "medianGreenSwing_unsel": 9,
+     "medianGreenSwing_sel": 4,
+     "ratio_E_green_median": 2.25,
+     "ratio_E_green_p05": 0.78571,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2.25,
+      2.25
+     ],
+     "ratio_E_sumRGB_median": 2.33333,
+     "ratio_L_median": 2.37797,
+     "pointPrediction_measuredOverPredicted_median": 1.19098,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 8.112,
+     "perPixelQuantResolution_median": 0.25,
+     "devFromCentre_pct": -21.25
+    },
+    {
+     "rung_unselGreenSwing_codes": 8,
+     "pixels": 13350,
+     "medianGreenSwing_unsel": 11,
+     "medianGreenSwing_sel": 4,
+     "ratio_E_green_median": 2.25,
+     "ratio_E_green_p05": 0.66667,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2.25,
+      2.25
+     ],
+     "ratio_E_sumRGB_median": 2.35714,
+     "ratio_L_median": 2.44338,
+     "pointPrediction_measuredOverPredicted_median": 1.16221,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 9.022,
+     "perPixelQuantResolution_median": 0.2,
+     "devFromCentre_pct": -21.25
+    },
+    {
+     "rung_unselGreenSwing_codes": 12,
+     "pixels": 5231,
+     "medianGreenSwing_unsel": 14,
+     "medianGreenSwing_sel": 6,
+     "ratio_E_green_median": 2.33333,
+     "ratio_E_green_p05": 0.53846,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2.33333,
+      2.33333
+     ],
+     "ratio_E_sumRGB_median": 2.375,
+     "ratio_L_median": 2.45539,
+     "pointPrediction_measuredOverPredicted_median": 1.15346,
+     "medianMidpointDrift_codes": 1,
+     "median_selSwing_in_quanta": 11.704,
+     "perPixelQuantResolution_median": 0.16667,
+     "devFromCentre_pct": -18.333
+    },
+    {
+     "rung_unselGreenSwing_codes": 16,
+     "pixels": 1786,
+     "medianGreenSwing_unsel": 85,
+     "medianGreenSwing_sel": 68,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.53125,
+     "ratio_E_green_p95": 15,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.81198,
+     "medianMidpointDrift_codes": 3,
+     "median_selSwing_in_quanta": 130.052,
+     "perPixelQuantResolution_median": 0.01099,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 24,
+     "pixels": 1621,
+     "medianGreenSwing_unsel": 89,
+     "medianGreenSwing_sel": 75,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.63855,
+     "ratio_E_green_p95": 7.81818,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.82984,
+     "medianMidpointDrift_codes": 3,
+     "median_selSwing_in_quanta": 144.622,
+     "perPixelQuantResolution_median": 0.01053,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 32,
+     "pixels": 1521,
+     "medianGreenSwing_unsel": 91,
+     "medianGreenSwing_sel": 78,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.71681,
+     "ratio_E_green_p95": 7.64706,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.82984,
+     "medianMidpointDrift_codes": 2.5,
+     "median_selSwing_in_quanta": 152.227,
+     "perPixelQuantResolution_median": 0.01042,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 48,
+     "pixels": 1338,
+     "medianGreenSwing_unsel": 95.5,
+     "medianGreenSwing_sel": 83,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.83688,
+     "ratio_E_green_p95": 7.27778,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.8354,
+     "medianMidpointDrift_codes": 2.5,
+     "median_selSwing_in_quanta": 162.724,
+     "perPixelQuantResolution_median": 0.0101,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 64,
+     "pixels": 1191,
+     "medianGreenSwing_unsel": 99,
+     "medianGreenSwing_sel": 87,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.8875,
+     "ratio_E_green_p95": 5.89474,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.84348,
+     "medianMidpointDrift_codes": 2,
+     "median_selSwing_in_quanta": 168.649,
+     "perPixelQuantResolution_median": 0.0098,
+     "devFromCentre_pct": -65
+    }
+   ],
+   "ladderMonotonicity": "NOT monotone",
+   "centreCrossings": 0
+  },
+  {
+   "viewport": "1280x800",
+   "discPixels": 154765,
+   "rowsAboveFloor": 7780,
+   "unselGeo": {
+    "selection": "",
+    "waveGain": "",
+    "animation": "mappingFieldWave",
+    "breath": "LIVE"
+   },
+   "selGeo": {
+    "selection": "CAPABILITY",
+    "waveGain": "0.35",
+    "animation": "mappingFieldWave",
+    "breath": "LIVE"
+   },
+   "sharedMask": true,
+   "maskDefinedIn": "unselected, live, disc-scoped, green swing >= 4 codes",
+   "framesPerState": 41,
+   "stepMs": 250,
+   "samplingMissBound_frac": 0.004815,
+   "centre": 2.857143,
+   "ladder": [
+    {
+     "rung_unselGreenSwing_codes": 4,
+     "pixels": 7780,
+     "medianGreenSwing_unsel": 8,
+     "medianGreenSwing_sel": 4,
+     "ratio_E_green_median": 2,
+     "ratio_E_green_p05": 0.32,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2,
+      2
+     ],
+     "ratio_E_sumRGB_median": 2.16667,
+     "ratio_L_median": 2.22061,
+     "pointPrediction_measuredOverPredicted_median": 1.27211,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 7.061,
+     "perPixelQuantResolution_median": 0.25,
+     "devFromCentre_pct": -30
+    },
+    {
+     "rung_unselGreenSwing_codes": 6,
+     "pixels": 5512,
+     "medianGreenSwing_unsel": 10,
+     "medianGreenSwing_sel": 4,
+     "ratio_E_green_median": 2,
+     "ratio_E_green_p05": 0.36,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2,
+      2
+     ],
+     "ratio_E_sumRGB_median": 2.25,
+     "ratio_L_median": 2.28028,
+     "pointPrediction_measuredOverPredicted_median": 1.22298,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 8.312,
+     "perPixelQuantResolution_median": 0.25,
+     "devFromCentre_pct": -30
+    },
+    {
+     "rung_unselGreenSwing_codes": 8,
+     "pixels": 4053,
+     "medianGreenSwing_unsel": 11,
+     "medianGreenSwing_sel": 5,
+     "ratio_E_green_median": 2.2,
+     "ratio_E_green_p05": 0.39394,
+     "ratio_E_green_p95": 4,
+     "ratio_E_green_boot95": [
+      2,
+      2.2
+     ],
+     "ratio_E_sumRGB_median": 2.28571,
+     "ratio_L_median": 2.34801,
+     "pointPrediction_measuredOverPredicted_median": 1.19232,
+     "medianMidpointDrift_codes": 0.5,
+     "median_selSwing_in_quanta": 9.608,
+     "perPixelQuantResolution_median": 0.2,
+     "devFromCentre_pct": -23
+    },
+    {
+     "rung_unselGreenSwing_codes": 12,
+     "pixels": 1933,
+     "medianGreenSwing_unsel": 53,
+     "medianGreenSwing_sel": 25,
+     "ratio_E_green_median": 1.025,
+     "ratio_E_green_p05": 0.44643,
+     "ratio_E_green_p95": 11.83333,
+     "ratio_E_green_boot95": [
+      1.01136,
+      1.03704
+     ],
+     "ratio_E_sumRGB_median": 1.02623,
+     "ratio_L_median": 1.04317,
+     "pointPrediction_measuredOverPredicted_median": 2.43758,
+     "medianMidpointDrift_codes": 1,
+     "median_selSwing_in_quanta": 46.558,
+     "perPixelQuantResolution_median": 0.01724,
+     "devFromCentre_pct": -64.125
+    },
+    {
+     "rung_unselGreenSwing_codes": 16,
+     "pixels": 1342,
+     "medianGreenSwing_unsel": 84,
+     "medianGreenSwing_sel": 64.5,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.53521,
+     "ratio_E_green_p95": 19,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.84207,
+     "medianMidpointDrift_codes": 2.5,
+     "median_selSwing_in_quanta": 124.821,
+     "perPixelQuantResolution_median": 0.01124,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 24,
+     "pixels": 1243,
+     "medianGreenSwing_unsel": 87,
+     "medianGreenSwing_sel": 70,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.61905,
+     "ratio_E_green_p95": 17.5,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.84603,
+     "medianMidpointDrift_codes": 2,
+     "median_selSwing_in_quanta": 135.274,
+     "perPixelQuantResolution_median": 0.01099,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 32,
+     "pixels": 1153,
+     "medianGreenSwing_unsel": 90,
+     "medianGreenSwing_sel": 75,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.69355,
+     "ratio_E_green_p95": 14.125,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.84929,
+     "medianMidpointDrift_codes": 2,
+     "median_selSwing_in_quanta": 143.045,
+     "perPixelQuantResolution_median": 0.01075,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 48,
+     "pixels": 1015,
+     "medianGreenSwing_unsel": 94,
+     "medianGreenSwing_sel": 81,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.81319,
+     "ratio_E_green_p95": 10.75,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.85441,
+     "medianMidpointDrift_codes": 1.5,
+     "median_selSwing_in_quanta": 156.317,
+     "perPixelQuantResolution_median": 0.01042,
+     "devFromCentre_pct": -65
+    },
+    {
+     "rung_unselGreenSwing_codes": 64,
+     "pixels": 882,
+     "medianGreenSwing_unsel": 98,
+     "medianGreenSwing_sel": 85,
+     "ratio_E_green_median": 1,
+     "ratio_E_green_p05": 0.90244,
+     "ratio_E_green_p95": 9.2,
+     "ratio_E_green_boot95": [
+      1,
+      1
+     ],
+     "ratio_E_sumRGB_median": 1,
+     "ratio_L_median": 1,
+     "pointPrediction_measuredOverPredicted_median": 2.85878,
+     "medianMidpointDrift_codes": 1.5,
+     "median_selSwing_in_quanta": 166.091,
+     "perPixelQuantResolution_median": 0.01,
+     "devFromCentre_pct": -65
+    }
+   ],
+   "ladderMonotonicity": "NOT monotone",
+   "centreCrossings": 0
+  }
+ ]
+}

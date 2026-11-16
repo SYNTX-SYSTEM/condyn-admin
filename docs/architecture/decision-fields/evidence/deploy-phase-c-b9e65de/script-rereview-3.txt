@@ -1,0 +1,58 @@
+PINK §3.101 addendum 3 — third re-review of GELB's DLL ops scripts (2026-11-04). Read locally from GELB's refreshed evidence copy; md5 equal to
+GELB's values: dll-env-guard.sh 3e74a8df…, dll-launch.sh 432051d8…, dll-build.sh 491a47f0…, dll-3017.sh 8ce957f7…, dll-revert.sh 079aa568…,
+dll-rollback.sh 300df5d5…, provision-dll-runtime.ts 16a7bdd3… (unchanged), DEPLOYMENT.md f64daf52…. Nothing of GELB's was executed. The only
+thing run was GELB's allowlist grep/awk line, copied verbatim, against crafted one-line files in PINK's scratchpad. dll.env not seen.
+Taken as GELB measured: PostgreSQL 16.15 (N-4), system timezone Etc/UTC (N-7).
+
+Verdict: NOT clean. P-1, P-2 and P-3 are substantive; P-4 and P-5 are smaller.
+
+Confirmed fixed: N-3 (forward save staged as .partial and renamed), N-5 (the kept copy is shredded at the end; shredding it after a partly
+failed rm is harmless, because the database and the role are already gone by then), N-8 (dll-build.sh: env -i from dll-revert, NEXT_PUBLIC_*
+refused, .env* refused, DATABASE_URL not exported; a direct call is covered by its own checks), N-4 and N-7 answered, the immediate refusal
+report of dll-3017.sh start, and the ancestry check (is-ancestor alone, equality included).
+
+P-1 (allowlist bypass; GELB's main question). dll_check_env_file reads only the FIRST name at the start of each line; bash then executes the
+    whole file. 14 crafted lines, 9 pass the allowlist:
+      NODE_ENV=production; LD_PRELOAD=/tmp/evil.so            PASSES (second assignment after ;)
+      NODE_ENV=production BASH_ENV=/tmp/x                     PASSES (two assignments on one line)
+      export NODE_ENV=production PATH=/tmp/evil:/usr/bin      PASSES (export with several names)
+      NODE_ENV=production && HOSTNAME=evil                    PASSES
+      : ; NODE_PATH=/tmp/evil                                 PASSES (line starts with no name)
+      . /tmp/other.env                                        PASSES (sources another file)
+      { LD_PRELOAD=/x; }                                      PASSES
+      $(touch …) and `touch …`                                PASS  (command execution while sourcing)
+      DATABASE_URL="postgresql://…/condyn_test_8138803cb03b0edc$(touch /tmp/x)"   PASSES the allowlist AND the DATABASE_URL pin
+    Refused correctly: declare -x …, source …, a continuation whose next line starts with a name (fail-safe).
+    The forbidden-name check after sourcing still catches the 12 listed names however they were set. Nothing catches LD_PRELOAD, BASH_ENV,
+    NODE_PATH, PATH, HOSTNAME or code run during sourcing. Threat model: dll.env is root-owned, mode 600. This is not an attacker boundary,
+    but the claim "dll.env is held to exactly six names" is not true of what bash executes.
+    Fix: do not source dll.env. Parse each non-comment line against ^(the six names)=[a safe character class, no quote/$/`/;/space]*$,
+    refuse every other line, and export without evaluation.
+P-2 (rebuild abort leaves the runtime broken; the abort message is false). The rebuild branch checks out PREV (line 129) and runs
+    next build, which empties .next first. If the build fails, restore_head puts HEAD back, but .next is no longer CURRENT's build. The
+    message ".next still holds $CURRENT's build" (line 134) is false, abort's restart serves a partial build or fails, and the deployment
+    is not left as found. Recovery needs a manual copy of rollback/next-<CURRENT8>.
+    Fix: build into a separate distDir, or move .next aside before the build and restore it on failure.
+P-3 (set -e exits bypass abort). Only the six explicit abort calls restart (lines 98, 106, 108, 113, 123, 134; six, not five). Every other
+    failing command after the stop exits through set -e with no restore and no restart:
+      line 93/94 (stamp, rename of .partial): runtime stopped, .partial left behind;
+      line 116 git checkout PREV: runtime stopped, .next.incoming left behind;
+      line 119 mv .next → .next.outgoing: HEAD already at PREV with CURRENT's build in .next (exactly the N-2 pairing), runtime stopped;
+      line 125 rm -rf .next.outgoing: swap complete, PREVIOUS_COMMIT not flipped, runtime stopped;
+      line 129 checkout (rebuild branch) and line 140 PREV_FILE write: runtime stopped.
+    In abort 123, a failed restore_head only warns, and then the restart serves CURRENT's build with HEAD at PREV.
+    Fix: one EXIT/ERR trap, armed after the stop, that restores HEAD and .next, removes the staging directories and restarts.
+P-4 (stamp; GELB's question "wrong but matching"). Yes. A stamp certifies HEAD at save time, not the build. The forward save copies .next
+    and writes CURRENT into the copy (line 93), overwriting a stamp the copy may already carry without comparing it. Whenever HEAD and .next
+    disagree at save time (after P-2, after P-3 line 119, after a manual checkout), the wrong build is stamped with a matching name and later
+    restored as genuine. The two pre-existing builds were stamped by hand, so their identity rests on GELB's assignment alone.
+    Fix: stamp at build time (dll-build.sh writes HEAD into .next/COMMIT), and at the forward save REQUIRE .next/COMMIT == CURRENT instead of
+    writing it.
+P-5 (staging before the checkout; GELB's ordering question). For the saved-build branch the order is right. One side effect: .gitignore
+    ignores only /.next/, so .next.incoming/ and .next.outgoing/ (and a left .partial is outside $APP, fine) are UNTRACKED in the checkout.
+    git status is dirty during the window, and after any P-3 exit that leaves them behind; "0 dirty" checks then fail. Stage outside $APP
+    (e.g. $ROOT/rollback/.incoming on the same filesystem, so mv stays a rename).
+O-1 (minor). dll-3017.sh's early-exit detection (`kill -0 $launched`) relies on setsid not forking. That holds for a script without job
+    control: the background job is not a process-group leader, so setsid execs in place.
+
+provision-dll-runtime.ts unchanged; still an owner decision (pin before any rerun).

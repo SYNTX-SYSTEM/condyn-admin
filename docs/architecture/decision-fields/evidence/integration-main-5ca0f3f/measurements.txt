@@ -1,0 +1,136 @@
+PINK §3.97 measurements — Phase B integrated on origin/main 5ca0f3f (fast-forward from 85274dc), GELB request, 2026-11-04
+== 1. integrity ==
+git fetch origin: origin/main = 5ca0f3f5dd4f5e0323396c519eb31df89454449d (re-fetched after all runs: unchanged)
+origin/frontend/mapping-phase-b = 5ca0f3f5dd4f5e0323396c519eb31df89454449d = the commit released in §3.96
+tree origin/main = a471f22b459dd0890878311bdc470061066d6b6c; tree 5ca0f3f = a471f22b459dd0890878311bdc470061066d6b6c
+85274dc ancestor of origin/main: yes; merge commits in 85274dc..origin/main: 0
+  5ca0f3f5 parent=057f9131 test(career): mapping phase B — close PINK §3.95 test gaps F-PB-T1..T3 (tests only)
+  057f9131 parent=9532e671 refactor(career): mapping focus — a role or requirement is marked, not selected (GELB on
+  9532e671 parent=85274dc5 feat(career): PERSON x JOB mapping phase B — pure view, layout, sign, delta and focus mo
+diff 85274dc..origin/main:
+  A	lib/career/mapping/delta.ts
+  A	lib/career/mapping/focus.ts
+  A	lib/career/mapping/layout.ts
+  A	lib/career/mapping/signs.ts
+  A	lib/career/mapping/view.ts
+  A	test/career/mapping/architecture.test.ts
+  A	test/career/mapping/delta.test.ts
+  A	test/career/mapping/fixtures.ts
+  A	test/career/mapping/focus.test.ts
+  A	test/career/mapping/layout-vectors.test.ts
+  A	test/career/mapping/signs.test.ts
+  A	test/career/mapping/view.test.ts
+  12 files changed, 1218 insertions(+)
+files outside lib/career/mapping, test/career/mapping: 0
+lib/ identical to 057f913 (product code of §3.95): yes
+docs/ (spec, golden vectors, sign table) identical to 85274dc: yes
+importers of the mapping modules outside the two directories (git grep origin/main): 0
+blobs on origin/main:
+  11843c8d0e85b758b294cf5bbcd878346a4145b8 lib/career/mapping/delta.ts
+  66f864e2b2d20a1ea4bb8fa472891b0c758cb64f lib/career/mapping/focus.ts
+  adb414653a1be7566f644f81472e3505a9bf5e67 lib/career/mapping/layout.ts
+  93ad39648d08c66474ed5202d79f7c98d9196854 lib/career/mapping/signs.ts
+  99c3017cd840593b36a3ea7e33f45fd52a40b235 lib/career/mapping/view.ts
+  51b24a80b45a789b4b02355441e2cab9f3ea6fff test/career/mapping/architecture.test.ts
+  45c45bcab7bcbee5aac62e0c269164c6c0996e25 test/career/mapping/delta.test.ts
+  236869697ea419bd824a1bedad0f6353f2a8bbdf test/career/mapping/fixtures.ts
+  17ab48c9b1556f88cde3ef83d4791945b9adc12a test/career/mapping/focus.test.ts
+  a43eecb336d658f92e8f7e4425eb37c029065dc3 test/career/mapping/layout-vectors.test.ts
+  7527894a167f6a39716d16a181bd1543d6432ee2 test/career/mapping/signs.test.ts
+  55a2e0d7a48b53fb607046d967fed894fa59b721 test/career/mapping/view.test.ts
+== 2. mapping contracts (local clone of origin/main, PINK probes from evidence/mapping-phase-b-057f913, unchanged) ==
+pink-pb.test.ts: Tests 7 passed (7)
+  vectors: {"layouts": 12, "arcs": 4, "constellations": 5, "numbers": 11753, "exact": 11753, "maxDeviation": 0} | vs §3.95: IDENTICAL
+  layoutRandom: {"cases": 200, "bodies": 17394, "overflow": 113, "displaced": 7354, "radialDisplaced": 3708, "permutedRuns": 400, "ringCases": 200, "arcs": 1171, "constellationNodes": 8133} | vs §3.95: IDENTICAL
+  signs: {"couplingStates": 10, "accepted": 10, "refused": 92, "distinctSignatures": 10} | vs §3.95: IDENTICAL
+  view: {"views": 400, "couplings": 5318, "keyStatus": {"ABSENT": 2793, "NOT_IN_PERSON": 893, "KNOWN": 1632}, "generatedKeys": {"key_FOREIGN": 893, "key_ABSENT": 1749, "key_NULL": 1044, "key_KNOWN": 1632}, "nameTrapCouplings": 1850, "reverseViews": 4375, "permutedRuns": 400} | vs §3.95: IDENTICAL
+  delta: {"pairs": 500, "emptyChecks": 1500, "smallFitChanges": 467, "kinds": {"ROLE_TIER_CHANGED": 78, "REQUIREMENT_ADDED": 94, "REQUIREMENT_STATE_CHANGED": 95, "ROLE_REMOVED": 75, "REQUIREMENT_KEY_CHANGED": 33, "ROLE_ADDED": 56, "REQUIREMENT_REMOVED": 61, "ROLE_FIT_CHANGED": 59, "ROLE_RANK_CHANGED": 100}, "ops": {"op_tier": 91, "op_fit": 71, "op_text": 91, "op_roleDel": 80, "op_keyAbsentNull": 75, "op_reqAdd": 99, "op_source": 80, "op_roleAdd": 81, "op_key": 79, "op_state": 99, "op_reqDel": 84, "op_rankSwap": 88}} | vs §3.95: IDENTICAL
+  focus: {"reachableStates": 72, "transitions": 1080, "sameObject": 181, "invalidSame": 1728, "levels": {"L0": 6, "L1": 12, "L2": 18, "L3": 36}} | vs §3.95: IDENTICAL
+  runSigns: IDENTICAL to §3.95 (16 entries)
+pink-pb-edges.test.ts (upstream-unreachable shapes O-PB-1/O-PB-2): {"lexicalNoneDecoded": true, "lexicalNoneSign": "ERR_MAPPING_SIGN_SOURCE_MISMATCH:LEXICAL/NONE", "duplicateRequirementDecoded": true, "duplicateRequirementViewOrderFree": false, "singlePoolControlDecoded": true, "duplicatePoolDecoded": false}
+PINK Python (pink_layout.py --bounds from evidence/mapping-phase-a-ea1e29f) on the 200 random/pressure layouts dumped by the probe: 200/200 MATCH
+PINK Python on layout-golden-vectors.json (12 layouts, 4 arcs, 5 constellations): 21/21 MATCH
+mutants (mutate-pb.py unchanged) vs GRÜN's suite on origin/main (architecture.test.ts excluded), one copy each:
+  S1 RED sign: class check dropped | Tests  1 failed | 73 passed (74) | ['INVERSE: an unknown state and a state under the wrong source throw — n']
+  S2 RED sign: STALLED pulses while resumePending | Tests  1 failed | 73 passed (74) | ['a resume pulse exactly for PARTIAL and FAILED while resumePendi
+  S3 RED sign: resumePending type check dropped | Tests  1 failed | 73 passed (74) | ['INVERSE: an unknown run state throws; a pending flag that is not 
+  S4 RED sign: name relation phase locked | Tests  1 failed | 73 passed (74) | ['honesty: DIFFERENT, UNCLEAR and NONE are three signs; a name relation '
+  S5 RED sign: UNCLEAR painted as DIFFERENT | Tests  2 failed | 72 passed (74) | ['honesty: DIFFERENT, UNCLEAR and NONE are three signs; a name relation
+  S6 RED sign: NONE painted as UNCLEAR | Tests  3 failed | 71 passed (74) | ['every semantic state, every lexical basis and NONE has a sign of its o', '
+  V1 RED view: absent key filled from the PERSON name | Tests  4 failed | 70 passed (74) | ['DATA IDENTITY: the key is taken 1:1 from the requirement; t
+  V2 RED view: foreign key reported KNOWN | Tests  2 failed | 72 passed (74) | ['INVERSE: a key that is not among the PERSON capabilities is marked as '
+  V3 RED view: foreign-key coupling dropped | Tests  3 failed | 71 passed (74) | ['INVERSE: a key that is not among the PERSON capabilities is marked as
+  V4 GREEN view: ring lighter first | Tests  74 passed (74) | []
+  V5 RED view: constellation by key only | Tests  1 failed | 73 passed (74) | ['CONSTELLATION (PINK §3.95 F-PB-T2 V5): by name, then key — where name
+  V6 RED view: ranks in input order | Tests  1 failed | 73 passed (74) | ['DETERMINISM: shuffled ranks, requirements, pools and capabilities give']
+  V7 RED view: requirement key falls back to the name | Tests  2 failed | 72 passed (74) | ['DATA IDENTITY: the key is taken 1:1 from the requirement; t
+  V8 RED view: shallow freeze | Tests  2 failed | 72 passed (74) | ["CALLER'S DATA (PINK §3.95 F-PB-T2 V12): the view freezes its own copie", 'READ-ONL
+  V9 RED view: weightSum of coupled requirements only | Tests  1 failed | 73 passed (74) | ['REPRODUCE: pools by name, roles by rank with rank/tier/fit/
+  V10 RED view: pools by id | Tests  1 failed | 73 passed (74) | ['REPRODUCE: pools by name, roles by rank with rank/tier/fit/weightSum, ']
+  V11 RED view: NO_ROLES not told | Tests  1 failed | 73 passed (74) | ["no ranking: an empty, honest view with its reason; the person's conste"]
+  V12 RED view: quotes shared with the input | Tests  1 failed | 73 passed (74) | ["CALLER'S DATA (PINK §3.95 F-PB-T2 V12): the view freezes its own co
+  L1 RED layout: roles in input order | Tests  1 failed | 73 passed (74) | ['DETERMINISM and READ-ONLY: frozen input, same output byte for byte, al']
+  L2 RED layout: sectors by pool id | Tests  1 failed | 73 passed (74) | ['HAND-CHECKED: sectors follow the pool NAME, not the id; a small pool g']
+  L3 RED layout: band upper edge exclusive | Tests  1 failed | 73 passed (74) | ['all twelve layouts match (band edges LV08–LV12 and the real 73-role 
+  L4 GREEN layout: sector end exclusive | Tests  74 passed (74) | []
+  L5 GREEN layout: overflow bodies collide | Tests  74 passed (74) | []
+  L6 RED layout: shelf fit cap 0.6 | Tests  2 failed | 72 passed (74) | ['INVERSE: the comparison has teeth — one coordinate off by 2e-6 is a di', 'al
+  L7 RED layout: a single arc gets a gap | Tests  1 failed | 73 passed (74) | ['all four requirement rings and all five constellations match']
+  L8 RED layout: a single capability not centred | Tests  1 failed | 73 passed (74) | ['all four requirement rings and all five constellations match']
+  L9 RED layout: arc tie by id descending | Tests  1 failed | 73 passed (74) | ['all four requirement rings and all five constellations match']
+  L10 GREEN layout: collision on unrounded coordinates of placed bodies | Tests  74 passed (74) | []
+  D1 RED delta: absent key differs from null | Tests  1 failed | 73 passed (74) | ['a key change alone (same state) is a KEY change; absent and null are
+  D2 RED delta: requirement id not in the sort | Tests  1 failed | 73 passed (74) | ['ORDER (PINK §3.95 F-PB-T1 D2): two changes of one role and kind a
+  D3 RED delta: source change ignored | Tests  1 failed | 73 passed (74) | ['a change of the source alone is a state change (NONE/NONE → LEXICAL/NO']
+  D4 RED delta: small fit change ignored | Tests  1 failed | 73 passed (74) | ['FIT (PINK §3.95 F-PB-T1 D4): a fit change below 0.01 is a change — no
+  D5 RED delta: removed requirement loses its key | Tests  1 failed | 73 passed (74) | ['MIRROR: Delta(b, a) is Delta(a, b) with from/to swapped and add
+  D6 RED delta: duplicate requirement not refused | Tests  1 failed | 73 passed (74) | ['INVERSE: a ranking that names one role or one requirement twice
+  D7 RED delta: tier change ignored | Tests  1 failed | 73 passed (74) | ["a semantic finding arrives: the requirement's source/state change, the"]
+  F1 RED focus: no-op returns a new equal object | Tests  1 failed | 73 passed (74) | ['INVERSE: inadmissible transitions change nothing — the very sa
+  F2 RED focus: requirement opens without a role | Tests  1 failed | 73 passed (74) | ['INVERSE: inadmissible transitions change nothing — the very sa
+  F3 RED focus: UP from L3 jumps to L1 | Tests  1 failed | 73 passed (74) | ['L0 → L1 (pool) → L2 (role) → L3 (requirement), and UP walks back one
+  F4 RED focus: opening a pool clears the selection | Tests  1 failed | 73 passed (74) | ['OPENING (PINK §3.95 F-PB-T3 F4): no open action sets or drop
+  F5 RED focus: B-3 broken, the state carries a job scope | Tests  2 failed | 72 passed (74) | ['the module imports nothing of the job scope, the URL or
+  F6 RED focus: marking a role opens it | Tests  1 failed | 73 passed (74) | ['selection is its own axis: opening never selects, selecting never open']
+  F7 RED focus: reverse view couples key-less couplings by PERSON name | Tests  1 failed | 73 passed (74) | ['REVERSE VIEW: a chosen capability shows th
+  F8 RED focus: opening a role keeps the old pool | Tests  1 failed | 73 passed (74) | ['a role opens from any level and brings its own pool; another re
+  => 39 RED, 4 GREEN (V4, L4, L5, L10 = §3.95 equivalents)
+the 4 survivors vs PINK's probe:
+  V4 GREEN view: ring lighter first | Tests  7 passed (7) | []
+  L4 GREEN layout: sector end exclusive | Tests  7 passed (7) | []
+  L5 GREEN layout: overflow bodies collide | Tests  7 passed (7) | []
+  L10 RED layout: collision on unrounded coordinates of placed bodies | Tests  1 failed | 6 passed (7) | ['random and edge inputs: product === Phase-A o
+== 3. targeted tests ==
+tsc --noEmit on origin/main: tsc exit 0, 0 errors
+GRÜN's suite (test/career/mapping + test/career/mapping-spec), clean tree, test:isolated:
+  ✓ test/career/mapping/architecture.test.ts (7 tests)
+  ✓ test/career/mapping-spec/layout.test.ts (15 tests)
+  ✓ test/career/mapping/layout-vectors.test.ts (9 tests)
+  ✓ test/career/mapping/delta.test.ts (10 tests)
+  ✓ test/career/mapping/view.test.ts (13 tests)
+  ✓ test/career/mapping/focus.test.ts (10 tests)
+  ✓ test/career/mapping/signs.test.ts (8 tests)
+  ✓ test/career/mapping-spec/sign-table.test.ts (9 tests)
+  Test Files  8 passed (8)
+       Tests  81 passed (81)
+positive control: with PINK's untracked test/pink/* present, MAP-ARCH 'no importer' and 'only the two dirs' turn red naming exactly test/pink/pink-pb{,-edges}.test.ts (89 tests: 2 failed | 87 passed)
+== 4. regression guard (full test:isolated, least-privilege role condyn_test_runner, disposable DB per run) ==
+  main1 5ca0f3f5 [symlinked node_modules] ::  Test Files  7 failed | 493 passed | 11 skipped (511) :: Tests 27 failed | 3420 passed | 32 skipped (3479)
+  base1 85274dc5 [symlinked node_modules] ::  Test Files  7 failed | 487 passed | 11 skipped (505) :: Tests 27 failed | 3363 passed | 32 skipped (3422)
+  main2 5ca0f3f5 [symlinked node_modules] :: Test Files 7 failed | 493 passed | 11 skipped (511) :: Tests 27 failed | 3420 passed | 32 skipped (3479)
+  base2 85274dc5 [symlinked node_modules] :: Test Files 7 failed | 487 passed | 11 skipped (505) :: Tests 27 failed | 3363 passed | 32 skipped (3422)
+  main3 5ca0f3f5 [real node_modules] ::  Test Files  4 failed | 496 passed | 11 skipped (511) :: Tests 27 failed | 3432 passed | 20 skipped (3479)
+  base3 85274dc5 [real node_modules] ::  Test Files  4 failed | 490 passed | 11 skipped (505) :: Tests 27 failed | 3375 passed | 20 skipped (3422)
+failing files main3 = base3 (identical FAIL lists, also main1=base1=main2=base2 after removing the 3 env files):
+       6  FAIL  test/career-lifecycle-concurrency-idempotency.test.ts
+       6  FAIL  test/career-lifecycle-postgres-persistence.test.ts
+       5  FAIL  test/career-lifecycle-recovery.test.ts
+      10  FAIL  test/career-policy-activation-atomicity.test.ts
+causes (identical on main and base): 21x PostgresError 42703 column "version" of relation "career_policy_versions" does not exist;
+  1x 23502 null value in column "actor" of relation "career_commitments"; 5x follow-ups (expected ERR_POLICY_NOT_FOUND / ERR_UNKNOWN_ACTION /
+  ERR_UNKNOWN_COMMITMENT / ERR_UNKNOWN_DECISION / ERR_UNKNOWN_FEEDBACK, got 'Failed query'). = legacy DDL drift F-JP-5 (lib/career/db/client.ts vs schema.ts), not touched by Phase B.
+symlinked runs only: g2-g3-vertical-proof (beforeAll), hr-decision-loop-p7, local-decision-context-http fail on main AND base with
+  'TurbopackInternalError: Symlink [project]/node_modules is invalid, it points out of the filesystem root' (PINK scratch setup, 12 tests skipped)
+rerun of these 3 + hr-decision-loop-postgres with real node_modules: main Tests 77 passed (77) ; base Tests 77 passed (77)
+hr-decision-loop-postgres (GELB's flaky collect error): passed in all 6 full runs and both reruns, on main and base
+main3 - base3 = +6 test files, +57 tests, all passed = exactly the 6 Phase-B test files

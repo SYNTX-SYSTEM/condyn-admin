@@ -1,0 +1,171 @@
+PINK §3.82 measurements · SEMIOTIC_ENTRY_FIX · candidate frontend/semiotic-entry 84e4551 (+ evidence 20bf662) on main cd1e4de
+All labs: PINK's own production builds on port 41873, disposable condyn_test_* databases, STAND_IN, no Gemini key, no worker for the world lab.
+Paths are written as $SCRATCH / $REPO. Pool id JPOOL_B948… shown as JPOOL.
+
+== A. Entry-state matrix (pink-gate2, empty stand-in video-lab, DLL pool uploaded after the nopool phase), candidate 20bf662, 1920x1080 ==
+state · locale | button data-field-gate / disabled / aria-describedby | field gate / focus / mode | line: data-entry-state role aria-live data-gate | action | text
+nopool:person·en                   | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY FIELD PERSON reads capabilities without a role. → continue in the Capability Field ◈ CAPABILITY FIELD
+nopool:person·de                   | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY-FELD PERSON liest Fähigkeiten ohne Rolle. → im Capability-Feld weiter ◈ CAPABILITY-FELD
+nopool:pxj·en                      | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | NO_POOL status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD No job pool in the field yet. → add one with + INTAKE · PERSON needs no role → PERSON
+nopool:pxj·de                      | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | NO_POOL status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Im Feld liegt noch kein Job-Pool. → mit + INTAKE einen hinzufügen · PERSON braucht keine Rolle → PERSON
+nopool:job·en                      | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY FIELD JOB reads the job alone; the person stays outside. → PERSON or PERSON × JOB brings the person in → PERSON
+nopool:job·de                      | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+nopool:person+focusField·en        | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY FIELD PERSON reads capabilities without a role. → continue in the Capability Field ◈ CAPABILITY FIELD
+nopool:person+focusField·de        | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY-FELD PERSON liest Fähigkeiten ohne Rolle. → im Capability-Feld weiter ◈ CAPABILITY-FELD
+nopool:pxj+focusCap·en             | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | NO_POOL status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD No job pool in the field yet. → add one with + INTAKE · PERSON needs no role → PERSON
+nopool:pxj+focusCap·de             | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | NO_POOL status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Im Feld liegt noch kein Job-Pool. → mit + INTAKE einen hinzufügen · PERSON braucht keine Rolle → PERSON
+pool:person·en                     | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY FIELD PERSON reads capabilities without a role. → continue in the Capability Field ◈ CAPABILITY FIELD
+pool:person·de                     | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY-FELD PERSON liest Fähigkeiten ohne Rolle. → im Capability-Feld weiter ◈ CAPABILITY-FELD
+pool:pxj·en                        | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOL_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD Job pools are in the field; none is open. → open a pool, then a role · PERSON needs no role → PERSON
+pool:pxj·de                        | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOL_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Job-Pools liegen im Feld; keiner ist geöffnet. → einen Pool öffnen, dann eine Rolle · PERSON braucht keine Rolle → PERSON
+pool:job·en                        | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY FIELD JOB reads the job alone; the person stays outside. → PERSON or PERSON × JOB brings the person in → PERSON
+pool:job·de                        | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+pool:pxj+poolOpen·en               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | ROLE_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD The pool is open; no role is open in it yet. → open a role in the pool · PERSON needs no role → PERSON
+pool:pxj+poolOpen·de               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | ROLE_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Der Pool ist geöffnet; darin ist noch keine Rolle offen. → eine Rolle im Pool öffnen · PERSON braucht keine Rolle → PERSON
+pool:pxj+roleOpen·en               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | ROLE_NOT_CHOSEN status polite NONE | choose-role | PERSON × JOB ⟶ ◈ CAPABILITY FIELD A role is open; it is not the job yet. → select it as the job to read the person against it SELECT AS JOB
+pool:pxj+roleOpen·de               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | ROLE_NOT_CHOSEN status polite NONE | choose-role | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Eine Rolle ist geöffnet; sie ist noch nicht der Job. → als Job wählen, um die Person an ihr zu lesen ALS JOB WÄHLEN
+pool:pxj+jobSelected·en            | OPEN/False/None | OPEN/FIELD/PERSON_X_JOB | None None None None | None | None
+pool:pxj+jobSelected·de            | OPEN/False/None | OPEN/FIELD/PERSON_X_JOB | None None None None | None | None
+pool:person+poolOpen·en            | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY FIELD PERSON reads capabilities without a role. → continue in the Capability Field ◈ CAPABILITY FIELD
+pool:person+poolOpen·de            | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY-FELD PERSON liest Fähigkeiten ohne Rolle. → im Capability-Feld weiter ◈ CAPABILITY-FELD
+pool:person+focusField·en          | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY FIELD PERSON reads capabilities without a role. → continue in the Capability Field ◈ CAPABILITY FIELD
+pool:person+focusField·de          | OPEN/False/None | OPEN/FIELD/PERSON | PERSON_OPEN status polite None | capability | PERSON ⟶ ◈ CAPABILITY-FELD PERSON liest Fähigkeiten ohne Rolle. → im Capability-Feld weiter ◈ CAPABILITY-FELD
+pool:person+focusCap·en            | OPEN/False/None | OPEN/CAPABILITY/PERSON | None None None None | None | None
+pool:person+focusCap·de            | OPEN/False/None | OPEN/CAPABILITY/PERSON | None None None None | None | None
+pool:pxj+jobSelected+focusCap·en   | OPEN/False/None | OPEN/CAPABILITY/PERSON_X_JOB | None None None None | None | None
+pool:pxj+jobSelected+focusCap·de   | OPEN/False/None | OPEN/CAPABILITY/PERSON_X_JOB | None None None None | None | None
+pool:pxj+invalidJob·en             | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | INVALID status polite INVALID | None | PERSON × JOB ⟶ ◈ CAPABILITY FIELD The chosen job does not hold here · ROLE_NOT_IN_POOL. → open another role in the Job Field · SELECT AS JOB
+pool:pxj+invalidJob·de             | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | INVALID status polite INVALID | None | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Der gewählte Job trägt hier nicht · ROLE_NOT_IN_POOL. → im Job-Feld eine andere Rolle öffnen · ALS JOB WÄHLEN
+pool:pxj+focusCap·en               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOL_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD Job pools are in the field; none is open. → open a pool, then a role · PERSON needs no role → PERSON
+pool:pxj+focusCap·de               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOL_NOT_OPENED status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Job-Pools liegen im Feld; keiner ist geöffnet. → einen Pool öffnen, dann eine Rolle · PERSON braucht keine Rolle → PERSON
+pool:job+roleOpen·en               | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY FIELD JOB reads the job alone; the person stays outside. → PERSON or PERSON × JOB brings the person in → PERSON
+pool:job+roleOpen·de               | AWAITING_JOB/True/capability-gate-reason | JOB_MODE/FIELD/JOB | JOB status polite JOB | person | JOB · ◈ CAPABILITY-FELD JOB liest den Job allein; die Person bleibt außen. → PERSON oder PERSON × JOB holt die Person herein → PERSON
+pool:pxj+unread·en                 | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOLS_UNREAD status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY FIELD PERSON × JOB reads the person against one chosen role. → choose a role in the Job Field · PERSON needs no role → PERSON
+pool:pxj+checking·en               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | CHECKING status polite CHECKING | None | PERSON × JOB ⟶ ◈ CAPABILITY FIELD The chosen job is being read. → the Capability Field follows once it holds
+pool:pxj+unread·de                 | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | POOLS_UNREAD status polite NONE | person | PERSON × JOB ⟶ ◈ CAPABILITY-FELD PERSON × JOB liest die Person an einer gewählten Rolle. → im Job-Feld eine Rolle wählen · PERSON braucht keine Rolle → PERSON
+pool:pxj+checking·de               | AWAITING_JOB/True/capability-gate-reason | AWAITING_JOB/FIELD/PERSON_X_JOB | CHECKING status polite CHECKING | None | PERSON × JOB ⟶ ◈ CAPABILITY-FELD Der gewählte Job wird gelesen. → das Capability-Feld folgt, sobald er trägt
+
+-- 1280x720: every column above identical to 1920 except geometry (checked programmatically: 0 differences in button, field, entry state, text, click, action URL, Tab) --
+
+== B. S2–S4 aggregates (candidate, 40 states × 2 viewports) ==
+1920: forbidden words in top band 0 · warm colour/border/background in the line 0 · role=alert 0 · aria-live=assertive 0 · line roles ['status'] · page errors 0 · non-GET 0 · horizontal overflow in the line 0
+1920 baseline cd1e4de for contrast: forbidden words ['closed', 'geschlossen'] in 24 states · warm line 24 · role ['note']
+1280: forbidden words in top band 0 · warm colour/border/background in the line 0 · role=alert 0 · aria-live=assertive 0 · line roles ['status'] · page errors 0 · non-GET 0 · horizontal overflow in the line 0
+1280 baseline cd1e4de for contrast: forbidden words ['closed', 'geschlossen'] in 24 states · warm line 24 · role ['note']
+Pairwise text distinctness: EN 9 entry states, DE 9 entry states, 0 identical pairs (baseline: NONE text identical for no pool / pool / pool open / role open / unread).
+
+== C. S7 gate identity, candidate vs baseline cd1e4de (same probe, same lab recipe) ==
+1920: 40 states compared on data-field-gate, disabled, aria-disabled, aria-describedby (+ resolves), data-field-focus-active, tabIndex, field data-capability-gate / focus / mode, pointer click result + URL, Tab reachability, Enter result + URL, data-gate → 0 differences. Only the title text differs (intended).
+1280: 40 states compared on data-field-gate, disabled, aria-disabled, aria-describedby (+ resolves), data-field-focus-active, tabIndex, field data-capability-gate / focus / mode, pointer click result + URL, Tab reachability, Enter result + URL, data-gate → 0 differences. Only the title text differs (intended).
+
+== D. Overlap of the line with interactive elements (px², intersecting rect area) baseline → candidate ==
+1920 pool:pxj+poolOpen·en               {'syntx-organization-org_kestrel': 6980} → {'syntx-organization-org_kestrel': 4081}
+1920 pool:pxj+poolOpen·de               {'syntx-organization-org_kestrel': 6980} → {'syntx-organization-org_kestrel': 4081}
+1920 pool:person+poolOpen·en            {} → {'syntx-organization-org_kestrel': 4081}   NEW
+1920 pool:person+poolOpen·de            {} → {'syntx-organization-org_kestrel': 4081}   NEW
+1920 pool:pxj+invalidJob·en             {'syntx-organization-org_kestrel': 6980} → {'syntx-organization-org_kestrel': 3748}
+1920 pool:pxj+invalidJob·de             {'syntx-organization-org_kestrel': 6980} → {'syntx-organization-org_kestrel': 3748}
+1280 nopool:pxj·en                      {'job-pool-list': 19460} → {}
+1280 nopool:pxj·de                      {'job-pool-list': 24458} → {}
+1280 nopool:job·en                      {'job-pool-list': 13642} → {}
+1280 nopool:job·de                      {'job-pool-list': 13393} → {}
+1280 nopool:pxj+focusCap·en             {'job-pool-list': 19460} → {}
+1280 nopool:pxj+focusCap·de             {'job-pool-list': 24458} → {}
+1280 pool:pxj·en                        {'job-pool-list': 19460, 'job-pool-select-JPOOL': 269} → {}
+1280 pool:pxj·de                        {'job-pool-list': 24458, 'job-pool-select-JPOOL': 1680} → {}
+1280 pool:job·en                        {'job-pool-list': 13642} → {}
+1280 pool:job·de                        {'job-pool-list': 13393} → {}
+1280 pool:pxj+poolOpen·en               {'syntx-organization-org_kestrel': 9246} → {'syntx-organization-org_kestrel': 6626}
+1280 pool:pxj+poolOpen·de               {'syntx-organization-org_kestrel': 11899} → {'syntx-organization-org_kestrel': 6626}
+1280 pool:person+poolOpen·en            {} → {'syntx-organization-org_kestrel': 6626}   NEW
+1280 pool:person+poolOpen·de            {} → {'syntx-organization-org_kestrel': 6626}   NEW
+1280 pool:pxj+invalidJob·en             {'syntx-organization-org_kestrel': 9246} → {'syntx-organization-org_kestrel': 6325}
+1280 pool:pxj+invalidJob·de             {'syntx-organization-org_kestrel': 9246} → {'syntx-organization-org_kestrel': 6325}
+1280 pool:pxj+focusCap·en               {'job-pool-list': 19460, 'job-pool-select-JPOOL': 269} → {}
+1280 pool:pxj+focusCap·de               {'job-pool-list': 24458, 'job-pool-select-JPOOL': 1680} → {}
+1280 pool:pxj+unread·en                 {'job-pool-list': 19460} → {}
+1280 pool:pxj+unread·de                 {'job-pool-list': 24458} → {}
+
+== E. Hit test on the restored real world (pink-hit, GET only), candidate: sampled points of each cosmos node under the line taken by the entry action / the line ==
+1920x1080  person+poolOpen  PERSON_OPEN      syntx-organization-org_kestrel covered 13.4% of its box · action takes 0/77 · line takes 0
+1920x1080  pxj+poolOpen     ROLE_NOT_OPENED  syntx-organization-org_kestrel covered 13.4% of its box · action takes 0/77 · line takes 0
+1920x1080  job+poolOpen     JOB              syntx-organization-org_kestrel covered 13.4% of its box · action takes 0/77 · line takes 0
+1600x900   person+poolOpen  PERSON_OPEN      syntx-organization-org_kestrel covered 26.6% of its box · action takes 11/77 · line takes 0
+1600x900   pxj+poolOpen     ROLE_NOT_OPENED  syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+1600x900   job+poolOpen     JOB              syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+1440x900   person+poolOpen  PERSON_OPEN      syntx-organization-org_kestrel covered 26.6% of its box · action takes 11/77 · line takes 0
+1440x900   pxj+poolOpen     ROLE_NOT_OPENED  syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+1440x900   job+poolOpen     JOB              syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+1280x720   person+poolOpen  PERSON_OPEN      syntx-organization-org_kestrel covered 26.6% of its box · action takes 11/77 · line takes 0
+1280x720   pxj+poolOpen     ROLE_NOT_OPENED  syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+1280x720   job+poolOpen     JOB              syntx-organization-org_kestrel covered 26.6% of its box · action takes 0/77 · line takes 0
+(syntx-pool container and the 9 px engineering-lead dot are intercepted by other field elements in every state, line and action take 0 of their points: pre-existing structure, not the line.)
+
+== F. F-SEM-1 click proof (pink-steal, empty stand-in lab + DLL pool), candidate ==
+1920x1080  PERSON        node [873, 170, 175, 175] action [881, 169, 157, 18] · click on node point under the action → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&focus=CAPABILITY', 'focus': 'CAPABILITY'} · control click at node centre → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1920x1080  PERSON_X_JOB  node [873, 170, 175, 175] action [1065, 169, 82, 18] · click on node point under the action → None · control click at node centre → {'url': '?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1600x900   PERSON        node [721, 152, 158, 158] action [721, 169, 157, 18] · click on node point under the action → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&focus=CAPABILITY', 'focus': 'CAPABILITY'} · control click at node centre → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1600x900   PERSON_X_JOB  node [721, 152, 158, 158] action [905, 169, 82, 18] · click on node point under the action → None · control click at node centre → {'url': '?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1440x900   PERSON        node [641, 152, 158, 158] action [641, 169, 157, 18] · click on node point under the action → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&focus=CAPABILITY', 'focus': 'CAPABILITY'} · control click at node centre → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1440x900   PERSON_X_JOB  node [641, 152, 158, 158] action [825, 169, 82, 18] · click on node point under the action → None · control click at node centre → {'url': '?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1280x720   PERSON        node [561, 152, 158, 158] action [561, 169, 157, 18] · click on node point under the action → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&focus=CAPABILITY', 'focus': 'CAPABILITY'} · control click at node centre → {'url': '?investigationMode=PERSON&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+1280x720   PERSON_X_JOB  node [561, 152, 158, 158] action [745, 169, 82, 18] · click on node point under the action → None · control click at node centre → {'url': '?investigationMode=PERSON_X_JOB&jobPoolUploadId=JPOOL&jobOrganizationId=org_kestrel', 'focus': 'FIELD'}
+
+== G. S6 inverse: 28 one-line mutants against GRÜN's suites (pxj-first-screen, job-pool, three-modes); pristine 82 files / 675 passed ==
+RED   E01 derive: no pool reads as pools not opened              Test Files 1 failed | 81 passed (82) · Tests 3 failed | 672 passed | 4 skipped (679)
+RED   E02 derive: opened pool ignored                            Test Files 2 failed | 80 passed (82) · Tests 6 failed | 669 passed | 4 skipped (679)
+RED   E03 derive: opened role ignored                            Test Files 2 failed | 80 passed (82) · Tests 3 failed | 672 passed | 4 skipped (679)
+RED   E04 derive: unread pools read as no pool                   Test Files 6 failed | 76 passed (82) · Tests 6 failed | 669 passed | 4 skipped (679)
+RED   E05 derive: PERSON line inside the Capability Field (T-07) Test Files 3 failed | 79 passed (82) · Tests 4 failed | 671 passed | 4 skipped (679)
+RED   E06 derive: line although the gate is open                 Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E07 derive: CHECKING reads as INVALID                      Test Files 4 failed | 78 passed (82) · Tests 5 failed | 670 passed | 4 skipped (679)
+RED   E08 gate cause: role-not-chosen loses data-gate NONE       Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+RED   E09 field: pool-open source constant                       Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+RED   E10 field: role-open source constant false                 Test Files 2 failed | 80 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+ALIVE E11 field: requirement observation not a role              Test Files 82 passed (82) · Tests 675 passed | 4 skipped (679)
+RED   E12 field: choose-role switches the mode instead           Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E13 field: person action selects JOB                       Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E14 field: capability action goes to the Job Field         Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E15 field: tooltip out of sync with the line               Test Files 5 failed | 77 passed (82) · Tests 7 failed | 668 passed | 4 skipped (679)
+RED   E16 field: gate opens for JOB (mode logic)                 Test Files 4 failed | 78 passed (82) · Tests 5 failed | 670 passed | 4 skipped (679)
+RED   E17 selector: role alert                                   Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E18 selector: aria-live removed                            Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+ALIVE E19 selector: amber path label                             Test Files 82 passed (82) · Tests 675 passed | 4 skipped (679)
+ALIVE E20 selector: describedby target id dropped                Test Files 82 passed (82) · Tests 675 passed | 4 skipped (679)
+RED   E21 selector: data-gate carries the entry state            Test Files 2 failed | 80 passed (82) · Tests 4 failed | 671 passed | 4 skipped (679)
+RED   E22 selector: action not rendered                          Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+RED   E23 copy EN: lock language back                            Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+RED   E24 copy DE: lock language back                            Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+RED   E25 copy EN: 2a and 2b same sentence                       Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E26 copy DE: state 4 untranslated                          Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E27 copy EN: state 4 = state 2b                            Test Files 1 failed | 81 passed (82) · Tests 1 failed | 674 passed | 4 skipped (679)
+RED   E28 layout: FIT room rule removed                          Test Files 1 failed | 81 passed (82) · Tests 2 failed | 673 passed | 4 skipped (679)
+
+== H. Full isolated suite (vitest, disposable DB) ==
+tsem tsc exit 0 errors 0
+tsem suite exit 1  Test Files 16 failed | 449 passed | 11 skipped (476)  Tests 46 failed | 3101 passed | 32 skipped (3179) 
+tsbase tsc exit 0 errors 0
+tsbase suite exit 1  Test Files 14 failed | 449 passed | 11 skipped (474)  Tests 43 failed | 3088 passed | 32 skipped (3163) 
+SEM-END
+Differing failing tests between the runs (4 files: outcome-valence revision postgres / domain, worker-config-validation, decision-core context contract) re-run alone on both trees: 10 failed | 32 passed on BOTH — load flakiness in base-red domains. No failing test in pxj-first-screen, job-pool, three-modes, career-demo, syntx, orbit or SIL suites on the candidate.
+
+== I. S8 regression on the restored real world (pink-world-lab --dump --build, candidate) vs §3.81 outputs (main 1d1d6e6; cd1e4de has identical app/lib/scripts) ==
+HEAD 20bf662 (cand)
+[pink-lab] next build exit 0
+PINK LAB READY http://127.0.0.1:41873 database=condyn_test_df842a9fdf9bdb83 server=1838035 up=true
+HIT-END cand
+MODES cand 1920x1080@1 blocked 0 errors 0
+MODES cand 1280x720@1 blocked 0 errors 0
+MODES cand 1440x900@1 blocked 0 errors 0
+MODES cand 1600x900@1 blocked 0 errors 0
+MODES cand 960x540@2 blocked 0 errors 0
+MODES cand 640x360@2 blocked 0 errors 0
+RI main cand-1920 done {"POST":3,"nonGetOther":0} errors 0
+RI vp cand-1280x720 done {"POST":1,"nonGetOther":0} errors 0
+orbits exit 0
+rd-ui exit 0
+[pink-lab] dropped condyn_test_df842a9fdf9bdb83
+port free
+modes, 6 viewports: 174 keys each; differences only in the three scenes that carry the entry line (default = PxJ without job, pxj-noscope, job): +2 elements, +1 testid (field-entry-action), text hash/length. PERSON, PxJ with job, orbits, languages, Back/Forward, reload: identical.
+orbits 1920: 155 keys, 0 differences · rd-ui 1920: 97 keys, 0 differences · RI main 1920: 419 keys, 0 differences · RI 1280x720: 37 keys, 0 differences
+drop zone / entry gaps (empty lab) vs cdf0c1e run: only the gate title/way text differs (new wording); the old needles 'needs no job'/'SELECT AS JOB' no longer apply (bothWays false by needle, both ways are still named: '→ add one with + INTAKE · PERSON needs no role' + action '→ PERSON'); empty-pool handover, drop-to-intake and posts identical.

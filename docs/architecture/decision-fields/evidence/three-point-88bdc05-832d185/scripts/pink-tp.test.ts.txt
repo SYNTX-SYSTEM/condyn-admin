@@ -1,0 +1,186 @@
+// PINK THREE-POINT probe (owner mandate SFE::THREE-POINT IMPLEMENTATION GO): points 1–3 inversely on PostgreSQL with a scripted, mocked
+// @google/genai (no SDK, no network, no key of the owner). DETERMINISTIC. Runs alone in its own disposable condyn_test_* database.
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+const sdk = vi.hoisted(() => ({ calls: 0, log: [] as Array<{ i: number; reqTexts: string[]; behaviour: string }>, behave: (_i: number, _texts: string[]): unknown => "ok", release: [] as Array<() => void>, options: [] as unknown[] }));
+vi.mock("@google/genai", () => ({
+  GoogleGenAI: class {
+    constructor(o: unknown) { sdk.options.push(o); }
+    models = {
+      generateContent: async (request: { contents: string }) => {
+        const i = ++sdk.calls;
+        const after = request.contents.slice(request.contents.indexOf("\n\n") + 2);
+        const payload = JSON.parse(after.slice(after.indexOf("{"))) as { proposals: Array<{ id: string; evidence: Array<{ evidenceId: string }> }>; requirements: Array<{ requirementId: string; text: string }> };
+        const b = sdk.behave(i, payload.requirements.map(r => r.text)) as any;
+        sdk.log.push({ i, reqTexts: payload.requirements.map(r => r.text), behaviour: typeof b === "string" ? b : JSON.stringify(b) });
+        if (b === "hang") await new Promise<void>(r => sdk.release.push(r));
+        else if (b && typeof b === "object" && "throw" in b) throw b.throw;
+        else if (b && typeof b === "object" && "status" in b) throw Object.assign(new Error("upstream status"), b);
+        if (b && typeof b === "object" && "finish" in b) return { text: "{}", candidates: [{ finishReason: b.finish }] };
+        if (b === "empty") return { text: "  ", candidates: [{ finishReason: "STOP" }] };
+        const claimAll = b === "claimAll", claimFirst = b === "claimFirst";
+        const relations = payload.proposals.flatMap(p => payload.requirements.map((r, k) => ({ proposalId: p.id, requirementId: r.requirementId, state: "COVERS", citedEvidenceIds: p.evidence.slice(0, 1).map(e => e.evidenceId),
+          relationExplanation: claimAll || (claimFirst && k === 0) ? "The candidate is highly qualified and scores 95%." : "The quote names the same technology.", evidenceLimitation: "One sentence only." })));
+        return { text: JSON.stringify({ relations }), candidates: [{ finishReason: "STOP" }] };
+      }
+    };
+  }
+}));
+import { sql } from "drizzle-orm";
+import { db, initDbSchema } from "../../lib/career/db/client";
+import { careerAnalyses } from "../../lib/career/db/schema";
+import { PostgresCandidateSourceBundleRepository, PostgresCapabilityCoreRepository, PostgresCapabilityProposalProjectionReferenceRepository, createSourceDocument } from "../../lib/career/capability-core";
+import { JobRepository } from "../../lib/career/orchestration/job-repository";
+import { GET as GET_AUTO } from "../../app/api/career/analyses/[analysisId]/auto-match/route";
+import { GET as GET_RANK } from "../../app/api/career/analyses/[analysisId]/job-ranking/route";
+import { resumeAutoMatches, runAutoMatch, activePoolSnapshot } from "../../lib/career/job-pool/auto-match";
+import { startSemanticInvestigation } from "../../lib/career/job-pool/semantic-investigation-start";
+import { readSemanticConfig } from "../../lib/career/job-pool/semantic-config";
+import { loadRoleDiscoveryOperand } from "../../lib/career/job-pool/role-discovery-operand";
+import { selectAutomaticRoles } from "../../lib/career/job-pool/auto-match";
+import { createLocalJobPoolApplication } from "../../lib/career/job-pool/local-composition";
+import { ensureRelationCacheRegistration } from "../../lib/career/job-pool/relation-cache-registration";
+import { PostgresProviderCallRegister, settleStaleProviderCalls } from "../../lib/career/provider-calls/register";
+import { guardedGenerateContent, runWithProviderCallRecorder, ProviderCallBlocked } from "../../lib/career/provider-calls/guard";
+import { withJobCallRegister } from "../../lib/career/provider-calls/job-context";
+import { uploadEngineeringJobScope } from "../support/job-scope";
+import { SOURCE, fakeGeminiClient, geminiProvider, geminiText, produceAnalysis, type InspectorWorld } from "../career/result-inspector/fixture";
+
+const rec: Record<string, unknown> = {};
+afterAll(() => writeFileSync(process.env.PINK_OUT ?? "/dev/null", JSON.stringify(rec, null, 1)));
+const KEY = "AIza-PINK-three-point-7f3e9c";
+const T0 = Date.now() - 3_600_000; const at = (ms: number) => new Date(T0 + ms).toISOString();
+const setEnv = (o: Record<string, string | undefined>) => { for (const [k, v] of Object.entries(o)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } };
+const gemini = (roles = "3", extra: Record<string, string | undefined> = {}) => setEnv({ ROLE_DISCOVERY_SEMANTIC_PROVIDER: "gemini", ROLE_DISCOVERY_DAY_LIMIT: "100000", ROLE_DISCOVERY_MAX_ROLES: roles, ROLE_DISCOVERY_GEMINI_MODEL: "gemini-pink-mock", GEMINI_API_KEY: KEY, GEMINI_JOB_CALL_LIMIT: undefined, ...extra });
+const q = async <T>(s: string) => (await db.execute(sql.raw(s))) as unknown as T[];
+const jobOf = (a: string) => a.replace("ANL_", "JOB_");
+const rows = (a: string) => q<{ state: string; stage: string; attempt: number | null; error_class: string | null; error_code: string | null; http_status: number | null; investigation_id: string | null; pool_role_id: string | null }>(`SELECT state, stage, attempt, error_class, error_code, http_status, investigation_id, pool_role_id FROM career_provider_calls WHERE job_id = '${jobOf(a)}' ORDER BY created_at, call_id`);
+const invs = (a: string) => q<{ investigation_id: string; status: string; request_json: string }>(`SELECT investigation_id, status, request_json FROM career_relation_investigations WHERE analysis_id = '${a}' ORDER BY created_at, investigation_id`);
+const tasks = (i: string) => q<{ pool_role_id: string; status: string; error_code: string | null; pairs: number; stored: number }>(`SELECT pool_role_id, status, error_code, pairs, stored FROM career_relation_role_tasks WHERE investigation_id = '${i}' ORDER BY pool_role_id`);
+const params = (a: string) => ({ params: Promise.resolve({ analysisId: a }) });
+const auto = async (a: string) => (await (await GET_AUTO(new Request("http://local/x"), params(a))).json()).autoMatch;
+async function fingerprint() { const out: Record<string, string> = {}; for (const { t } of await q<{ t: string }>(`SELECT tablename AS t FROM pg_tables WHERE schemaname = current_schema() ORDER BY 1`)) { const h = (await q<{ h: string; n: number }>(`SELECT md5(coalesce(string_agg(x::text, '|' ORDER BY x::text), '')) AS h, count(*)::int AS n FROM "${t}" x`))[0]; out[t] = `${h.n}:${h.h}`; } return out; }
+const diff = (a: Record<string, string>, b: Record<string, string>) => Object.keys({ ...a, ...b }).filter(k => a[k] !== b[k]);
+
+describe("PINK three points", () => {
+  const jobs = new JobRepository(db);
+  const world: InspectorWorld = { capabilityRepository: new PostgresCapabilityCoreRepository(db), references: new PostgresCapabilityProposalProjectionReferenceRepository(db), sourceBundles: new PostgresCandidateSourceBundleRepository(db),
+    saveJob: async job => { await jobs.enqueueJob(job); }, saveAnalysis: async (analysisId, createdAt) => { await db.insert(careerAnalyses).values({ analysisId, createdAt, validationState: "VERIFIED", payload: { structured_data: {} } }); } };
+  let n = 0; const make = (group: string) => { n += 1; return produceAnalysis(world, geminiProvider(fakeGeminiClient([geminiText(`pk${n}`)])), null, `pk${n}`, createSourceDocument({ docId: "CV", title: "cv.synthetic.pdf", rawContent: `${SOURCE} (pk${n}-${Date.now()})` }), group); };
+  beforeAll(async () => { await initDbSchema(); await uploadEngineeringJobScope(); await ensureRelationCacheRegistration(); }, 120000);
+  const reset = (b: (i: number, t: string[]) => unknown) => { sdk.calls = 0; sdk.log.length = 0; sdk.behave = b; };
+
+  it("P1 error classes: only TRANSIENT is asked again, once, each attempt its own register row and reservation", async () => {
+    const cases: Array<[string, unknown]> = [["408", { status: 408 }], ["429", { status: 429 }], ["500", { status: 500 }], ["503", { status: 503 }], ["504", { status: 504 }], ["fetch failed", { throw: new TypeError("fetch failed") }], ["ECONNRESET", { throw: Object.assign(new Error("socket hang up"), { code: "ECONNRESET" }) }], ["timeout abort", { throw: new Error("The operation was aborted due to timeout") }],
+      ["400", { status: 400 }], ["401", { status: 401 }], ["403", { status: 403 }], ["404", { status: 404 }], ["unclassified", { throw: new Error("weird thing") }], ["MAX_TOKENS", { finish: "MAX_TOKENS" }], ["SAFETY", { finish: "SAFETY" }], ["empty", "empty"]];
+    const out: Record<string, unknown> = {};
+    gemini("1");
+    for (const [name, b] of cases) {
+      const A = await make(`Class ${name}`);
+      reset(() => b);
+      const r = await runAutoMatch(A.analysisId, () => at(0), "pink-a");
+      const [inv] = await invs(A.analysisId); const t = inv ? await tasks(inv.investigation_id) : [];
+      const rr = await rows(A.analysisId);
+      const led = (await q<{ reserved: number; consumed: number; released: number }>(`SELECT reserved, consumed, released FROM career_relation_call_ledger WHERE scope_key = 'JOB:${jobOf(A.analysisId)}'`))[0];
+      out[name] = { outcome: r.outcome, sdkCalls: sdk.calls, task: t.map(x => `${x.status}:${x.error_code}`), register: rr.map(x => `${x.state}/${x.error_class}/${x.http_status}/a${x.attempt}`), jobLedger: led };
+    }
+    rec.errorClasses = out;
+    const transient = ["408", "429", "500", "503", "504", "fetch failed", "ECONNRESET", "timeout abort"];
+    for (const [name] of cases) expect((out[name] as any).sdkCalls, name).toBe(transient.includes(name) ? 2 : 1);
+  }, 300000);
+
+  it("P1 explicit route path keeps one call per role even for TRANSIENT", async () => {
+    gemini("1"); const A = await make("Explicit transient");
+    const ids = activePoolSnapshot(await (await createLocalJobPoolApplication()).list()).map(p => p.jobPoolUploadId);
+    const op = await loadRoleDiscoveryOperand(A.analysisId, ids); const config = readSemanticConfig(); if (!op.ok || config.state !== "READY") throw new Error("fixture");
+    const roleKeys = selectAutomaticRoles(op.discovery, 1);
+    const probe = await startSemanticInvestigation({ analysisId: A.analysisId, config, jobPoolUploadIds: ids, roleKeys, clientRequestId: "pink-explicit", confirmedCalls: -1 });
+    const needed = (probe as any).extra?.callsNeeded;
+    reset(() => ({ status: 503 }));
+    const res = await startSemanticInvestigation({ analysisId: A.analysisId, config, jobPoolUploadIds: ids, roleKeys, clientRequestId: "pink-explicit", confirmedCalls: needed, now: () => at(0) });
+    rec.explicit = { needed, kind: res.kind, sdkCalls: sdk.calls, register: (await rows(A.analysisId)).map(x => `${x.state}/${x.error_class}/a${x.attempt}`) };
+    expect(sdk.calls).toBe(1);
+  }, 120000);
+
+  it("P1 partial admission and continuation: the successor asks only what a continuation can do something about", async () => {
+    gemini("4"); const A = await make("Continuation mix");
+    // first run, roles in order: role 1 two TRANSIENT failures; role 2 PERMANENT 400; role 3 every pair refused; role 4 the first requirement's pairs refused
+    reset(i => (i <= 2 ? { status: 503 } : i === 3 ? { status: 400 } : i === 4 ? "claimAll" : i === 5 ? "claimFirst" : "ok"));
+    await runAutoMatch(A.analysisId, () => at(0), "pink-a");
+    const [first] = await invs(A.analysisId); const t1 = await tasks(first.investigation_id);
+    const claimStored = (await q<{ n: number }>(`SELECT count(*)::int AS n FROM career_proposal_requirement_relations WHERE record_json LIKE '%scores 95%'`))[0]?.n ?? null;
+    reset(() => "ok");
+    const sweeps: unknown[] = []; let all = await invs(A.analysisId);
+    for (let k = 0; k < 8 && all.length < 2; k += 1) { sweeps.push(await resumeAutoMatches(() => at(61_000 + k * 1000), "pink-b")); all = await invs(A.analysisId); }
+    const sweep = { sweeps: sweeps.length, perSweep: sweeps }; const second = all.find(x => x.investigation_id !== first.investigation_id);
+    const succRows = second ? await q<{ pool_role_id: string; n: number }>(`SELECT pool_role_id, count(*)::int AS n FROM career_provider_calls WHERE investigation_id = '${second.investigation_id}' GROUP BY 1 ORDER BY 1`) : [];
+    const why = Object.fromEntries(t1.map(x => [x.pool_role_id, `${x.status}:${x.error_code}:${x.pairs}/${x.stored}`]));
+    rec.continuation = { firstTasks: why, claimTextStored: claimStored, sweepAllAnalyses: sweep,
+      successor: second ? { revision: JSON.parse(second.request_json).revision, tasks: (await tasks(second.investigation_id)).map(x => `${x.pool_role_id}:${x.status}:${x.pairs}/${x.stored}`) } : null,
+      successorCallsByRole: succRows.map(r => `${r.pool_role_id} (first run ${why[r.pool_role_id]}): ${r.n} call(s)`), viewAfter: await auto(A.analysisId).then(v => ({ state: v.state, reason: v.reason, revision: v.revision, budget: v.budget, resumePending: v.resumePending })) };
+    expect(second).toBeTruthy(); expect(succRows.length).toBeGreaterThan(0); expect(succRows.every(r => (why[r.pool_role_id] ?? "").includes("TRANSIENT"))).toBe(true);
+  }, 180000);
+
+  it("P2 register: write-ahead, trigger, stale settle, budget across job attempts, no row no call, key nowhere", async () => {
+    const out: Record<string, unknown> = {};
+    const reg = new PostgresProviderCallRegister(db.$client, { jobId: "JOB_PINK_REGISTER", limit: 3, now: () => at(0) });
+    let sent = 0; const send = async () => { sent += 1; return { text: "ok" }; };
+    for (let k = 0; k < 4; k += 1) out[`call${k + 1}`] = await runWithProviderCallRecorder(reg, () => guardedGenerateContent("SEMANTIC", send)).then(() => "SENT", e => (e instanceof ProviderCallBlocked ? e.code : String(e)));
+    out.sentWhileLimit3 = sent;
+    // a second "attempt" of the same job (worker retry) shares the budget
+    const reg2 = new PostgresProviderCallRegister(db.$client, { jobId: "JOB_PINK_REGISTER", limit: 3, now: () => at(0) });
+    out.retryAttempt = await runWithProviderCallRecorder(reg2, () => guardedGenerateContent("EXTRACTION_LEGACY", send)).then(() => "SENT", e => (e instanceof ProviderCallBlocked ? e.code : String(e)));
+    // failure after send stays counted; the original error propagates
+    const reg3 = new PostgresProviderCallRegister(db.$client, { jobId: "JOB_PINK_FAIL", limit: 5, now: () => at(0) });
+    out.failAfterSend = await runWithProviderCallRecorder(reg3, () => guardedGenerateContent("SEMANTIC", async () => { throw Object.assign(new Error(`boom ${KEY}`), { status: 503 }); })).then(() => "no error", e => String((e as Error).message).includes("boom") ? "original error" : String(e));
+    out.failLedger = (await q(`SELECT reserved, consumed, released FROM career_relation_call_ledger WHERE scope_key = 'JOB:JOB_PINK_FAIL'`))[0];
+    // trigger: no delete, no way back, identity fixed
+    const id = (await q<{ call_id: string }>(`SELECT call_id FROM career_provider_calls WHERE job_id = 'JOB_PINK_REGISTER' AND state = 'COMPLETED' LIMIT 1`))[0].call_id;
+    const tryQ = async (s: string) => { try { await q(s); return "ALLOWED"; } catch (e) { return String((e as Error).message).match(/ERR_[A-Z_]+/)?.[0] ?? String((e as any).cause?.message ?? e).match(/ERR_[A-Z_]+/)?.[0] ?? "refused"; } };
+    out.trigger = { delete: await tryQ(`DELETE FROM career_provider_calls WHERE call_id = '${id}'`), backToSent: await tryQ(`UPDATE career_provider_calls SET state = 'SENT' WHERE call_id = '${id}'`), toReleased: await tryQ(`UPDATE career_provider_calls SET state = 'FAILED_BEFORE_SEND' WHERE call_id = '${id}'`), stage: await tryQ(`UPDATE career_provider_calls SET stage = 'SEMANTIC' WHERE call_id = '${id}'`), job: await tryQ(`UPDATE career_provider_calls SET job_id = 'X' WHERE call_id = '${id}'`), ledgerDown: await tryQ(`UPDATE career_relation_call_ledger SET consumed = consumed - 1 WHERE scope_key = 'JOB:JOB_PINK_REGISTER'`) };
+    // stale: a SENT row without an end and a RESERVED row
+    await q(`INSERT INTO career_relation_call_ledger (scope_key, limit_units, reserved) VALUES ('JOB:JOB_PINK_STALE', 5, 2) ON CONFLICT DO NOTHING`);
+    await q(`INSERT INTO career_provider_calls (call_id, job_id, stage, state, created_at, sent_at) VALUES ('PCALL_${"A".repeat(32)}', 'JOB_PINK_STALE', 'SEMANTIC', 'SENT', '${at(-3_600_000)}', '${at(-3_600_000)}'), ('PCALL_${"B".repeat(32)}', 'JOB_PINK_STALE', 'SEMANTIC', 'RESERVED', '${at(-3_600_000)}', NULL)`);
+    out.settle = await settleStaleProviderCalls(db.$client, at(0));
+    out.staleRows = await q(`SELECT state, error_code FROM career_provider_calls WHERE job_id = 'JOB_PINK_STALE' ORDER BY call_id`);
+    out.staleLedger = (await q(`SELECT reserved, consumed, released FROM career_relation_call_ledger WHERE scope_key = 'JOB:JOB_PINK_STALE'`))[0];
+    // without a context: unchanged, no row
+    const before = (await q<{ n: number }>(`SELECT count(*)::int AS n FROM career_provider_calls`))[0].n; let plain = 0;
+    await guardedGenerateContent("SEMANTIC", async () => { plain += 1; return 1; });
+    out.noContext = { sent: plain, newRows: (await q<{ n: number }>(`SELECT count(*)::int AS n FROM career_provider_calls`))[0].n - before };
+    // withJobCallRegister on this verified disposable database: a context with GEMINI_JOB_CALL_LIMIT; malformed limits fall back to 12
+    out.jobLimit = {} as Record<string, unknown>;
+    for (const v of ["2", "0", "abc", "", "1e2", " 3 ", undefined] as Array<string | undefined>) { let s = 0; const r = await withJobCallRegister(`JOB_PINK_LIMIT_${v === undefined ? "UNSET" : (v.trim() || "EMPTY")}`, async () => { for (let k = 0; k < 14; k += 1) { try { await guardedGenerateContent("EXTRACTION_DISCOVERY", async () => { s += 1; return 1; }); } catch { break; } } return s; }, v === undefined ? {} : { GEMINI_JOB_CALL_LIMIT: v }); (out.jobLimit as any)[v === undefined ? "unset" : JSON.stringify(v)] = r; }
+    rec.register = out;
+    expect(out.sentWhileLimit3).toBe(3); expect(out.call4).toBe("ERR_PROVIDER_CALL_BUDGET_EXHAUSTED"); expect(out.retryAttempt).toBe("ERR_PROVIDER_CALL_BUDGET_EXHAUSTED");
+  }, 120000);
+
+  it("P2 job budget across the automatic run and its continuation (GEMINI_JOB_CALL_LIMIT=4)", async () => {
+    gemini("3", { GEMINI_JOB_CALL_LIMIT: "4" }); const A = await make("Job budget");
+    reset(() => ({ status: 503 }));
+    await runAutoMatch(A.analysisId, () => at(0), "pink-a");
+    const after1 = (await rows(A.analysisId)).length;
+    reset(() => "ok"); const sweep = await resumeAutoMatches(() => at(61_000), "pink-b");
+    const all = await invs(A.analysisId);
+    rec.jobBudget = { sentFirstRun: after1, sweep, investigations: all.map(x => x.status), registerTotal: (await rows(A.analysisId)).filter(x => x.state !== "FAILED_BEFORE_SEND").length, tasks: await tasks(all[0].investigation_id), view: await auto(A.analysisId) };
+    expect((await rows(A.analysisId)).filter(x => x.state !== "FAILED_BEFORE_SEND").length).toBeLessThanOrEqual(4);
+  }, 120000);
+
+  it("P3 a lost worker: GET derives STALLED and writes nothing; one take-over; the zombie changes nothing; key in no row", async () => {
+    gemini("2"); const A = await make("Zombie");
+    reset(i => (i === 1 ? "hang" : "ok"));
+    const zombie = runAutoMatch(A.analysisId, () => at(0), "pink-zombie");
+    for (let k = 0; k < 50 && sdk.calls < 1; k += 1) await new Promise(r => setTimeout(r, 100));
+    const f0 = await fingerprint(); const v = await auto(A.analysisId); const r1 = await (await GET_RANK(new Request("http://local/x"), params(A.analysisId))).json(); const f1 = await fingerprint();
+    rec.stalledRead = { state: v.state, reason: v.reason, leaseExpiresAt: v.leaseExpiresAt, readsChanged: diff(f0, f1), ranking: r1.success };
+    const [s1, s2] = await Promise.all([resumeAutoMatches(() => at(120_000), "pink-s1"), resumeAutoMatches(() => at(120_000), "pink-s2")]);
+    const mid = await invs(A.analysisId);
+    for (const f of sdk.release.splice(0)) f();
+    const zr = await zombie.catch(e => ({ outcome: "THREW", reason: String(e).slice(0, 80) }));
+    const end = await invs(A.analysisId);
+    const dump = (await q<{ d: string }>(`SELECT string_agg(t::text, '') AS d FROM (SELECT x::text AS t FROM career_provider_calls x UNION ALL SELECT x::text FROM career_relation_investigations x UNION ALL SELECT x::text FROM career_relation_role_tasks x UNION ALL SELECT x::text FROM career_relation_call_ledger x) s`))[0].d;
+    rec.zombie = { sweeps: [s1, s2], afterSweep: mid.map(x => x.status), zombieOutcome: zr, atEnd: end.map(x => x.status), unchangedAfterZombie: JSON.stringify(mid.map(x => x.status)) === JSON.stringify(end.map(x => x.status)), firstTasks: await tasks(end[0].investigation_id), keyInRows: dump.includes(KEY), sdkTimeoutOption: [...new Set(sdk.options.map(o => JSON.stringify((o as any)?.httpOptions ?? null)))] };
+    const mine = await invs(A.analysisId); expect(diff(f0, f1)).toEqual([]); expect(mid.filter(x => x.status === "INTERRUPTED").length).toBe(1); expect(mine.length).toBe(2); expect(dump.includes(KEY)).toBe(false);
+  }, 180000);
+});

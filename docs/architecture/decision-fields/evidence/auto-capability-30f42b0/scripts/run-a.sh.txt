@@ -1,0 +1,6 @@
+#!/bin/bash
+S=$SCRATCH
+set -a; . ~/.config/condyn/test-db-role.env; set +a; unset GEMINI_API_KEY GEMINI_MODEL DATABASE_URL GOOGLE_GEMINI_BASE_URL ROLE_DISCOVERY_SEMANTIC_PROVIDER ROLE_DISCOVERY_DAY_LIMIT ROLE_DISCOVERY_MAX_ROLES GITHUB_TOKEN GITHUB_ACCOUNT_MAX_REPOS
+cd $S/int/tacpA && PINK_OUT=$S/acp/out/a.json PINK_OUT_REPO=$S/acp/out/repo-cand.json npm run -s test:isolated -- test/pink/pink-acp-a.test.ts test/pink/pink-acp-a-repo.test.ts test/career-github-account-loader.test.ts > $S/acp/out/a.log 2>&1; echo "cand exit $?"
+cd $S/int/tacpbase && PINK_OUT_REPO=$S/acp/out/repo-base.json npm run -s test:isolated -- test/pink/pink-acp-a-repo.test.ts > $S/acp/out/a-base.log 2>&1; echo "base exit $?"
+echo A-END

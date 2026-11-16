@@ -1,0 +1,955 @@
+{
+  "commit": "3ec8457d",
+  "buildId": "xCD8LBxdjnP97-2Gjs5yr",
+  "stand": "PINK :3122 (own build) -- NOT GRUEN's hooked 839623e8/:3230",
+  "pin": "PG-10 limb 1 (PHASE_G:757) -- on the visible glow, >= 25 % of pixels swing >= 0.004",
+  "amendment": "A-G340 -- disc-scoped floor, mask inclusion threshold <= 0.004",
+  "control": "the wholeClipFloor_OLD_DEFECT rung must reproduce §27; if it does not, the delta is instrumental and nothing here may be cited",
+  "scope": "one fixture, one analysisId, L0, field halos only (A-G48/A-G31)",
+  "runs": [
+    {
+      "viewport": "1920x1080",
+      "selection": "",
+      "selectedCapability": null,
+      "outermostRingAsserted": {
+        "id": "mapping-ring-field",
+        "rpx": 416.659,
+        "cx": 960,
+        "cy": 590
+      },
+      "ringLadder": [
+        {
+          "id": "mapping-ring-field",
+          "rpx": 416.659,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-shelf",
+          "rpx": 387.493,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-horizon",
+          "rpx": 333.327,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-best",
+          "rpx": 133.331,
+          "cx": 960,
+          "cy": 590
+        }
+      ],
+      "discPixels": 545417,
+      "clipPixels": 853776,
+      "floors": {
+        "jitterWholeClip": 0.00386025,
+        "jitterDisc": 0,
+        "epsWholeClip_OLD": 0.0077205,
+        "epsDisc_NEW": 1e-9,
+        "discFloorBelowSwingThreshold": true,
+        "oldFloorBelowSwingThreshold": false,
+        "floorRegionShrankBy": 1
+      },
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "epsHalo": 1e-9,
+        "jitterHaloBbox": 0,
+        "haloBboxInsideDisc": true,
+        "trackedPixels": 36268,
+        "bound": ">= 0.25",
+        "atThreshold": {
+          "wholeClipFloor_OLD_DEFECT": {
+            "maskThreshold": 0.0077205,
+            "maskPixels": 15877,
+            "shareUnblurred": 0.7997,
+            "shareBlurred": 0.8096,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0099,
+            "note": "the threshold §10/§27 used -- control: must reproduce §27"
+          },
+          "discFloor_A-G340": {
+            "maskThreshold": 1e-9,
+            "maskPixels": 36268,
+            "shareUnblurred": 0.3582,
+            "shareBlurred": 0.3739,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0157,
+            "note": "floor measured over the disc only"
+          },
+          "swingThreshold_0.004": {
+            "maskThreshold": 0.004,
+            "maskPixels": 21417,
+            "shareUnblurred": 0.5988,
+            "shareBlurred": 0.6135,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0148,
+            "note": "mask threshold == the swing threshold it serves"
+          },
+          "tight_0.002": {
+            "maskThreshold": 0.002,
+            "maskPixels": 25192,
+            "shareUnblurred": 0.513,
+            "shareBlurred": 0.5312,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0182,
+            "note": "sensitivity rung"
+          },
+          "tight_0.001": {
+            "maskThreshold": 0.001,
+            "maskPixels": 30229,
+            "shareUnblurred": 0.4283,
+            "shareBlurred": 0.4455,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0172,
+            "note": "sensitivity rung"
+          }
+        }
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 20746,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.0077205,
+              "maskPixels": 8897,
+              "shareUnblurred": 0.7374,
+              "shareBlurred": 0.7527,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0153,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 20746,
+              "shareUnblurred": 0.3234,
+              "shareBlurred": 0.3493,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0258,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 11862,
+              "shareUnblurred": 0.5583,
+              "shareBlurred": 0.583,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0246,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 14639,
+              "shareUnblurred": 0.4556,
+              "shareBlurred": 0.4873,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0316,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 17302,
+              "shareUnblurred": 0.3864,
+              "shareBlurred": 0.4155,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0291,
+              "note": "sensitivity rung"
+            }
+          }
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 36268,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.0077205,
+              "maskPixels": 15877,
+              "shareUnblurred": 0.7997,
+              "shareBlurred": 0.8096,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0099,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 36268,
+              "shareUnblurred": 0.3582,
+              "shareBlurred": 0.3739,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0157,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 21417,
+              "shareUnblurred": 0.5988,
+              "shareBlurred": 0.6135,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0148,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 25192,
+              "shareUnblurred": 0.513,
+              "shareBlurred": 0.5312,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0182,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 30229,
+              "shareUnblurred": 0.4283,
+              "shareBlurred": 0.4455,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0172,
+              "note": "sensitivity rung"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "viewport": "1920x1080",
+      "selection": "CAPABILITY",
+      "selectedCapability": "PCAP_PG",
+      "outermostRingAsserted": {
+        "id": "mapping-ring-field",
+        "rpx": 416.659,
+        "cx": 960,
+        "cy": 590
+      },
+      "ringLadder": [
+        {
+          "id": "mapping-ring-field",
+          "rpx": 416.659,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-shelf",
+          "rpx": 387.493,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-horizon",
+          "rpx": 333.327,
+          "cx": 960,
+          "cy": 590
+        },
+        {
+          "id": "mapping-ring-best",
+          "rpx": 133.331,
+          "cx": 960,
+          "cy": 590
+        }
+      ],
+      "discPixels": 545417,
+      "clipPixels": 853776,
+      "floors": {
+        "jitterWholeClip": 0.00303558,
+        "jitterDisc": 0,
+        "epsWholeClip_OLD": 0.00607115,
+        "epsDisc_NEW": 1e-9,
+        "discFloorBelowSwingThreshold": true,
+        "oldFloorBelowSwingThreshold": false,
+        "floorRegionShrankBy": 1
+      },
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "epsHalo": 1e-9,
+        "jitterHaloBbox": 0,
+        "haloBboxInsideDisc": true,
+        "trackedPixels": 43753,
+        "bound": ">= 0.25",
+        "atThreshold": {
+          "wholeClipFloor_OLD_DEFECT": {
+            "maskThreshold": 0.00607115,
+            "maskPixels": 25819,
+            "shareUnblurred": 0.2244,
+            "shareBlurred": 0.2383,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0139,
+            "note": "the threshold §10/§27 used -- control: must reproduce §27"
+          },
+          "discFloor_A-G340": {
+            "maskThreshold": 1e-9,
+            "maskPixels": 43753,
+            "shareUnblurred": 0.1381,
+            "shareBlurred": 0.1478,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0097,
+            "note": "floor measured over the disc only"
+          },
+          "swingThreshold_0.004": {
+            "maskThreshold": 0.004,
+            "maskPixels": 29173,
+            "shareUnblurred": 0.2016,
+            "shareBlurred": 0.2139,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0122,
+            "note": "mask threshold == the swing threshold it serves"
+          },
+          "tight_0.002": {
+            "maskThreshold": 0.002,
+            "maskPixels": 32783,
+            "shareUnblurred": 0.182,
+            "shareBlurred": 0.1935,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0115,
+            "note": "sensitivity rung"
+          },
+          "tight_0.001": {
+            "maskThreshold": 0.001,
+            "maskPixels": 37782,
+            "shareUnblurred": 0.1584,
+            "shareBlurred": 0.1689,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0105,
+            "note": "sensitivity rung"
+          }
+        }
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 20598,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.00607115,
+              "maskPixels": 10025,
+              "shareUnblurred": 0.3906,
+              "shareBlurred": 0.4136,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0229,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 20598,
+              "shareUnblurred": 0.2209,
+              "shareBlurred": 0.2339,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.013,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 11812,
+              "shareUnblurred": 0.3462,
+              "shareBlurred": 0.3661,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0199,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 14576,
+              "shareUnblurred": 0.2995,
+              "shareBlurred": 0.3156,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0161,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 17226,
+              "shareUnblurred": 0.2592,
+              "shareBlurred": 0.2741,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0149,
+              "note": "sensitivity rung"
+            }
+          }
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 43753,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.00607115,
+              "maskPixels": 25819,
+              "shareUnblurred": 0.2244,
+              "shareBlurred": 0.2383,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0139,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 43753,
+              "shareUnblurred": 0.1381,
+              "shareBlurred": 0.1478,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0097,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 29173,
+              "shareUnblurred": 0.2016,
+              "shareBlurred": 0.2139,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0122,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 32783,
+              "shareUnblurred": 0.182,
+              "shareBlurred": 0.1935,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0115,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 37782,
+              "shareUnblurred": 0.1584,
+              "shareBlurred": 0.1689,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0105,
+              "note": "sensitivity rung"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "viewport": "1280x800",
+      "selection": "",
+      "selectedCapability": null,
+      "outermostRingAsserted": {
+        "id": "mapping-ring-field",
+        "rpx": 221.988,
+        "cx": 640,
+        "cy": 388
+      },
+      "ringLadder": [
+        {
+          "id": "mapping-ring-field",
+          "rpx": 221.988,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-shelf",
+          "rpx": 206.449,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-horizon",
+          "rpx": 177.591,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-best",
+          "rpx": 71.036,
+          "cx": 640,
+          "cy": 388
+        }
+      ],
+      "discPixels": 154765,
+      "clipPixels": 270400,
+      "floors": {
+        "jitterWholeClip": 0.00435993,
+        "jitterDisc": 0,
+        "epsWholeClip_OLD": 0.00871987,
+        "epsDisc_NEW": 1e-9,
+        "discFloorBelowSwingThreshold": true,
+        "oldFloorBelowSwingThreshold": false,
+        "floorRegionShrankBy": 1
+      },
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "epsHalo": 1e-9,
+        "jitterHaloBbox": 0,
+        "haloBboxInsideDisc": true,
+        "trackedPixels": 14903,
+        "bound": ">= 0.25",
+        "atThreshold": {
+          "wholeClipFloor_OLD_DEFECT": {
+            "maskThreshold": 0.00871987,
+            "maskPixels": 3437,
+            "shareUnblurred": 0.8452,
+            "shareBlurred": 0.8528,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0076,
+            "note": "the threshold §10/§27 used -- control: must reproduce §27"
+          },
+          "discFloor_A-G340": {
+            "maskThreshold": 1e-9,
+            "maskPixels": 14903,
+            "shareUnblurred": 0.2264,
+            "shareBlurred": 0.2251,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": -0.0013,
+            "note": "floor measured over the disc only"
+          },
+          "swingThreshold_0.004": {
+            "maskThreshold": 0.004,
+            "maskPixels": 5277,
+            "shareUnblurred": 0.5581,
+            "shareBlurred": 0.5852,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0271,
+            "note": "mask threshold == the swing threshold it serves"
+          },
+          "tight_0.002": {
+            "maskThreshold": 0.002,
+            "maskPixels": 6670,
+            "shareUnblurred": 0.4712,
+            "shareBlurred": 0.4847,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0135,
+            "note": "sensitivity rung"
+          },
+          "tight_0.001": {
+            "maskThreshold": 0.001,
+            "maskPixels": 9074,
+            "shareUnblurred": 0.3627,
+            "shareBlurred": 0.3638,
+            "clearsBlurred": true,
+            "clearsUnblurred": true,
+            "blurDelta": 0.0011,
+            "note": "sensitivity rung"
+          }
+        }
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 9095,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.00871987,
+              "maskPixels": 1923,
+              "shareUnblurred": 0.8019,
+              "shareBlurred": 0.8076,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0057,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 9095,
+              "shareUnblurred": 0.2148,
+              "shareBlurred": 0.1937,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.0211,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 2832,
+              "shareUnblurred": 0.5533,
+              "shareBlurred": 0.5749,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0215,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 3618,
+              "shareUnblurred": 0.4403,
+              "shareBlurred": 0.4679,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0276,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 4689,
+              "shareUnblurred": 0.3732,
+              "shareBlurred": 0.3677,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": -0.0055,
+              "note": "sensitivity rung"
+            }
+          }
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 14903,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.00871987,
+              "maskPixels": 3437,
+              "shareUnblurred": 0.8452,
+              "shareBlurred": 0.8528,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0076,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 14903,
+              "shareUnblurred": 0.2264,
+              "shareBlurred": 0.2251,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.0013,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 5277,
+              "shareUnblurred": 0.5581,
+              "shareBlurred": 0.5852,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0271,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 6670,
+              "shareUnblurred": 0.4712,
+              "shareBlurred": 0.4847,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0135,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 9074,
+              "shareUnblurred": 0.3627,
+              "shareBlurred": 0.3638,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0011,
+              "note": "sensitivity rung"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "viewport": "1280x800",
+      "selection": "CAPABILITY",
+      "selectedCapability": "PCAP_PG",
+      "outermostRingAsserted": {
+        "id": "mapping-ring-field",
+        "rpx": 221.988,
+        "cx": 640,
+        "cy": 388
+      },
+      "ringLadder": [
+        {
+          "id": "mapping-ring-field",
+          "rpx": 221.988,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-shelf",
+          "rpx": 206.449,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-horizon",
+          "rpx": 177.591,
+          "cx": 640,
+          "cy": 388
+        },
+        {
+          "id": "mapping-ring-best",
+          "rpx": 71.036,
+          "cx": 640,
+          "cy": 388
+        }
+      ],
+      "discPixels": 154765,
+      "clipPixels": 270400,
+      "floors": {
+        "jitterWholeClip": 0.00243285,
+        "jitterDisc": 0,
+        "epsWholeClip_OLD": 0.0048657,
+        "epsDisc_NEW": 1e-9,
+        "discFloorBelowSwingThreshold": true,
+        "oldFloorBelowSwingThreshold": false,
+        "floorRegionShrankBy": 1
+      },
+      "geometryAssertedEqual": true,
+      "fieldHalos": 2,
+      "framesCaptured": 27,
+      "deepestBreathingBody": {
+        "haloDomIndex": 4,
+        "groupOpacity": 0.911,
+        "epsHalo": 1e-9,
+        "jitterHaloBbox": 0,
+        "haloBboxInsideDisc": true,
+        "trackedPixels": 19369,
+        "bound": ">= 0.25",
+        "atThreshold": {
+          "wholeClipFloor_OLD_DEFECT": {
+            "maskThreshold": 0.0048657,
+            "maskPixels": 7688,
+            "shareUnblurred": 0.1695,
+            "shareBlurred": 0.1769,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.0074,
+            "note": "the threshold §10/§27 used -- control: must reproduce §27"
+          },
+          "discFloor_A-G340": {
+            "maskThreshold": 1e-9,
+            "maskPixels": 19369,
+            "shareUnblurred": 0.0859,
+            "shareBlurred": 0.0739,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": -0.012,
+            "note": "floor measured over the disc only"
+          },
+          "swingThreshold_0.004": {
+            "maskThreshold": 0.004,
+            "maskPixels": 8190,
+            "shareUnblurred": 0.1595,
+            "shareBlurred": 0.1664,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": 0.007,
+            "note": "mask threshold == the swing threshold it serves"
+          },
+          "tight_0.002": {
+            "maskThreshold": 0.002,
+            "maskPixels": 9329,
+            "shareUnblurred": 0.1496,
+            "shareBlurred": 0.1491,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": -0.0005,
+            "note": "sensitivity rung"
+          },
+          "tight_0.001": {
+            "maskThreshold": 0.001,
+            "maskPixels": 11586,
+            "shareUnblurred": 0.1334,
+            "shareBlurred": 0.1216,
+            "clearsBlurred": false,
+            "clearsUnblurred": false,
+            "blurDelta": -0.0117,
+            "note": "sensitivity rung"
+          }
+        }
+      },
+      "bodies": [
+        {
+          "haloDomIndex": 3,
+          "groupOpacity": 1,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 9740,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.0048657,
+              "maskPixels": 2612,
+              "shareUnblurred": 0.4188,
+              "shareBlurred": 0.456,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0371,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 9740,
+              "shareUnblurred": 0.1863,
+              "shareBlurred": 0.1717,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.0147,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 2808,
+              "shareUnblurred": 0.4031,
+              "shareBlurred": 0.4409,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0377,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 3582,
+              "shareUnblurred": 0.3568,
+              "shareBlurred": 0.3894,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0327,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 4552,
+              "shareUnblurred": 0.3236,
+              "shareBlurred": 0.3315,
+              "clearsBlurred": true,
+              "clearsUnblurred": true,
+              "blurDelta": 0.0079,
+              "note": "sensitivity rung"
+            }
+          }
+        },
+        {
+          "haloDomIndex": 4,
+          "groupOpacity": 0.911,
+          "epsHalo": 1e-9,
+          "jitterHaloBbox": 0,
+          "haloBboxInsideDisc": true,
+          "trackedPixels": 19369,
+          "bound": ">= 0.25",
+          "atThreshold": {
+            "wholeClipFloor_OLD_DEFECT": {
+              "maskThreshold": 0.0048657,
+              "maskPixels": 7688,
+              "shareUnblurred": 0.1695,
+              "shareBlurred": 0.1769,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.0074,
+              "note": "the threshold §10/§27 used -- control: must reproduce §27"
+            },
+            "discFloor_A-G340": {
+              "maskThreshold": 1e-9,
+              "maskPixels": 19369,
+              "shareUnblurred": 0.0859,
+              "shareBlurred": 0.0739,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.012,
+              "note": "floor measured over the disc only"
+            },
+            "swingThreshold_0.004": {
+              "maskThreshold": 0.004,
+              "maskPixels": 8190,
+              "shareUnblurred": 0.1595,
+              "shareBlurred": 0.1664,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": 0.007,
+              "note": "mask threshold == the swing threshold it serves"
+            },
+            "tight_0.002": {
+              "maskThreshold": 0.002,
+              "maskPixels": 9329,
+              "shareUnblurred": 0.1496,
+              "shareBlurred": 0.1491,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.0005,
+              "note": "sensitivity rung"
+            },
+            "tight_0.001": {
+              "maskThreshold": 0.001,
+              "maskPixels": 11586,
+              "shareUnblurred": 0.1334,
+              "shareBlurred": 0.1216,
+              "clearsBlurred": false,
+              "clearsUnblurred": false,
+              "blurDelta": -0.0117,
+              "note": "sensitivity rung"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

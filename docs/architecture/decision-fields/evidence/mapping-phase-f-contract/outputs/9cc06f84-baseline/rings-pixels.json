@@ -1,0 +1,100 @@
+{
+ "commit": "9cc06f84",
+ "method": "720 angles, per-angle stroke peak across width; getScreenCTM geometry",
+ "rings": {
+  "horizon": {
+   "r": 349,
+   "sw": 1.2,
+   "dash": "none",
+   "allP10": 0.0229,
+   "allP50": 0.03674,
+   "allP90": 0.04727,
+   "max": 0.08726,
+   "litFrac": 1,
+   "litP10": 0.0229,
+   "litP50": 0.03674,
+   "litP90": 0.04727
+  },
+  "field": {
+   "r": 442,
+   "sw": 1.2,
+   "dash": "none",
+   "allP10": 0.007815,
+   "allP50": 0.009762,
+   "allP90": 0.01302,
+   "max": 0.02169,
+   "litFrac": 1,
+   "litP10": 0.007815,
+   "litP50": 0.009762,
+   "litP90": 0.01302
+  },
+  "shelf": {
+   "r": 406,
+   "sw": 61.1,
+   "dash": "none",
+   "allP10": 0.008205,
+   "allP50": 0.01188,
+   "allP90": 0.014,
+   "max": 0.5842,
+   "litFrac": 1,
+   "litP10": 0.008205,
+   "litP50": 0.01188,
+   "litP90": 0.014
+  },
+  "best": {
+   "r": 140,
+   "sw": 1.2,
+   "dash": "2.29083px, 4.58166px",
+   "allP10": 0.001693,
+   "allP50": 0.002969,
+   "allP90": 0.009077,
+   "max": 0.05121,
+   "litFrac": 0.412,
+   "litP10": 0.004598,
+   "litP50": 0.007125,
+   "litP90": 0.009812
+  }
+ },
+ "orderByAllP50": [
+  "horizon",
+  "shelf",
+  "field",
+  "best"
+ ],
+ "closestPointRatios_allAngles": [
+  {
+   "pair": "horizon/shelf",
+   "ratio": 1.636
+  },
+  {
+   "pair": "shelf/field",
+   "ratio": 0.63
+  },
+  {
+   "pair": "field/best",
+   "ratio": 0.861
+  }
+ ],
+ "orderByLitP50": [
+  "horizon",
+  "shelf",
+  "field",
+  "best"
+ ],
+ "closestPointRatios_inkOnly": [
+  {
+   "pair": "horizon/shelf",
+   "ratio": 1.636
+  },
+  {
+   "pair": "shelf/field",
+   "ratio": 0.63
+  },
+  {
+   "pair": "field/best",
+   "ratio": 0.796
+  }
+ ],
+ "verdict_allAngles_hold_1p6": false,
+ "verdict_inkOnly_hold_1p6": false
+}
