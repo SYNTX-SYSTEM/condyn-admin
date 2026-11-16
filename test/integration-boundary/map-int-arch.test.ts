@@ -21,6 +21,10 @@ import { describe, expect, it } from "vitest";
  * which is exactly the coupling this record keeps finding. A boundary that corrupts another pin's denominator
  * to install itself is not worth having.
  *
+ * F-R1 (2026-11-16): the post-merge walk was blind to merge commits and this branch already contained one.
+ * Repaired with `--diff-merges=first-parent` plus a limb that pins git's behaviour in both directions and
+ * checks the per-commit walk for COMPLETENESS against the two-point diff. See that limb's own docstring.
+ *
  * THE VACUITY CLAUSE IS NOT OPTIONAL. If the two parents differed in no product file, the union assertion
  * would pass over nothing and read green. So the count of differing product paths is asserted positive first.
  */
@@ -102,7 +106,9 @@ describe("MAP-INT-ARCH · the integration merge is a union and invents nothing",
     const unauthorised: string[] = [];
     const used = new Set<string>();
     for (const commit of after) {
-      const touched = git("show", "--name-only", "--format=", "--no-renames", commit, "--", ...PRODUCT);
+      // F-R1: `--diff-merges=first-parent` is NOT optional. Without it `git show` prints NO diff for a merge
+      // commit, so the `length === 0` short-circuit below silently skips every merge, product paths included.
+      const touched = git("show", "--name-only", "--format=", "--no-renames", "--diff-merges=first-parent", commit, "--", ...PRODUCT);
       if (touched.length === 0) continue;
       const full = [...authorised.keys()].find(k => commit.startsWith(k) || k.startsWith(commit));
       if (full === undefined) unauthorised.push(`${commit.slice(0, 8)} -> ${touched.join(", ")}`);
@@ -111,6 +117,47 @@ describe("MAP-INT-ARCH · the integration merge is a union and invents nothing",
     expect(unauthorised, "product changes after the integration merge with no named authority").toEqual([]);
     // The list is consumed in full: a stale entry is a failure, not a standing exemption.
     expect([...authorised.keys()].filter(k => !used.has(k)), "AUTHORISED_CROSSINGS entries that matched no commit").toEqual([]);
+  });
+
+  /**
+   * F-R1 (2026-11-16) — THE LIMB ABOVE WAS BLIND TO MERGE COMMITS, AND THIS BRANCH ALREADY CONTAINS ONE.
+   *
+   * `git show --name-only <merge>` prints NOTHING by default. The walk above short-circuits on an empty
+   * result, so `6bdf2628` — the second merge on this branch — was SKIPPED WITHOUT BEING MEASURED. Its
+   * verdict stayed correct only because that merge happens to carry 0 product paths: *** CORRECT BY LUCK OF
+   * CONTENT, NOT BY THE CHECK. *** It is A-G492/F-C3's class again — a check that asks "what is listed?"
+   * instead of "what can this listing never reach?"
+   *
+   * This limb pins the mechanism in BOTH directions, so neither can rot unnoticed:
+   *   · the bare form MUST print nothing for a merge  — if git ever changes that default, we are told;
+   *   · the repaired form MUST print something        — if the flag ever stops working, we are told;
+   *   · and the per-commit union MUST cover the two-point diff — the completeness check that would have
+   *     caught F-R1 on the day it was written.
+   *
+   * The completeness assertion is EMPTY BY DESIGN today, because no post-merge commit touches the product
+   * surface. That is stated rather than hidden: its value is the moment a merge introduces one.
+   */
+  it("F-R1: the per-commit walk is not blind to merges, proven on the merge this branch actually contains", () => {
+    const head = git("rev-parse", "HEAD")[0];
+    const base = resolve(INTEGRATION_MERGE);
+    const merges = git("log", "--merges", "--format=%H", `${base}..${head}`);
+    expect(merges.length,
+      "no merge commit after the integration merge — F-R1's premise has changed; re-read this limb before trusting it").toBeGreaterThan(0);
+    for (const m of merges) {
+      const bare = git("show", "--name-only", "--format=", "--no-renames", m, "--");
+      const seeing = git("show", "--name-only", "--format=", "--no-renames", "--diff-merges=first-parent", m, "--");
+      expect(bare.length,
+        `git's bare form must print nothing for merge ${m.slice(0, 8)} — that is F-R1 and the whole reason the flag is required`).toBe(0);
+      expect(seeing.length,
+        `--diff-merges=first-parent must show what merge ${m.slice(0, 8)} changed against its first parent`).toBeGreaterThan(0);
+    }
+    const twoPoint = git("diff", "--name-only", "--no-renames", base, head, "--", ...PRODUCT).sort();
+    const perCommit = new Set<string>();
+    for (const c of git("log", "--format=%H", `${base}..${head}`))
+      for (const path of git("show", "--name-only", "--format=", "--no-renames", "--diff-merges=first-parent", c, "--", ...PRODUCT))
+        perCommit.add(path);
+    expect(twoPoint.filter(path => !perCommit.has(path)),
+      "product paths the two-point diff sees but the per-commit walk misses — the walk is incomplete").toEqual([]);
   });
 });
 
