@@ -1312,3 +1312,92 @@ dieselbe Zahl in einem Option-(3)-Kontext **richtig** ist und in einem As-built-
 > tritt **BEDINGUNG** — und eine Zahl, die aus einem Artefakt mit mehreren Bedingungen stammt, trägt den
 > Bedingungsnamen **im Satz**, nicht in der Quelldatei. **Mein eigener §0 zählt fünf Rahmen auf; es sind
 > sechs, und der sechste hat diesen Bericht an seiner sichtbarsten Zahl erwischt.**
+### §12.10 PINK-STRUCT ÜBER `4f4534c5` — ***DIE INTEGRATION IST SOLIDE, ZWEI MEINER BEHAUPTUNGEN SIND ES NICHT***
+
+Eigener Worktree (`cp -a`, Lockfile-md5 identisch), eigener Wegwerf-Clone für Mutanten, **jeder Exit-Code per
+Redirect und `echo $?`, ohne Pipe**. **Merge-Provenienz geprüft statt geglaubt:** zwei Eltern, Merge-Base
+`e360caf9`, und *** `comm -12` über die beiden Eltern-Diffs ist LEER — keine Datei weicht von beiden ab, also
+war der Merge inhaltlich trivial. *** Unabhängige Bestätigung meiner eigenen Unionsprüfung.
+
+#### Was bestätigt ist
+
+**Die vier G1-Zellen auf den Test genau** (`e360caf9` 27/9, GRÜN 27/9, GELB 36/36, Merge 36/36). **Und die
+Kausalität ist bewiesen, nicht nur konsistent:** auf dem Merge **allein** `lib/career/db/client.ts` auf GRÜNs
+Fassung zurückgesetzt (11/11 Zeilen, nichts sonst) → *** 27 rot, exit 1, 21× dasselbe 42703 — notwendig UND
+hinreichend. *** **B-ENTRY unverändert, unumgangen und gestärkt:** `test/support/database-isolation` und
+`scripts/test-db` byteidentisch zu `e360caf9`, das Gate lief in **allen 17** DB-Läufen mit passendem
+create/drop-Paar, und alle vier Verweigerungspfade eigenständig provoziert. **PF-13 bestätigt und auf den
+Merge ausgedehnt** (16 Dateien, 198/198, Deckung beidseitig, GRÜNs Evaluator am Merge nachgefahren).
+**MAP-INT-ARCHs Guard-Glieder feuern alle**, inklusive Vakuität.
+
+#### F-B1 und F-B2 — zwei Korrekturen an mir, beide übernommen
+
+> **F-B1:** das 42703 nennt `column "version" of relation "career_policy_versions"` — **nicht
+> `payload_hash`/`payload`.** *** MEIN EIGENES INSTRUMENT HATTE ES RICHTIG *** (`gelb-schema-drift.out.txt`:
+> `missing=[version parent_version created_at created_by]`); **mein Bericht und mein Briefing an die Agenten
+> haben die Spalte verschliffen.** Und die Drift umfasst **9 Tabellen**, nicht ein Insert.
+>
+> **F-B2, und die gebe ich ungern zu, weil sie die schönste Formulierung des Tages zerstört:** *„keine Lane
+> ist allein grün“* ist **falsch**. GELBs Lane ist auf **beiden** gemessenen Teilmengen allein grün — 36/36
+> auf den G1-Suiten und 13 Dateien / 132 Tests auf ihrer Mapping-Teilmenge. *** DIE HALTBARE FORM IST: KEINE
+> LANE IST ALLEIN GRÜN **UND VOLLSTÄNDIG**. *** GRÜNs Lane ist rot; meine ist grün, trägt aber die **kleinere
+> Population**, weil GRÜNs Phase-G-Testdateien dort nicht existieren. **Das Verdienst des Merges ist
+> Vollständigkeit, nicht Farbe** — und das ist eine schwächere, richtige Aussage an der Stelle einer
+> stärkeren, falschen.
+
+#### F-C1/F-C2/F-C3 — ***A-G485 HAT DREI SCHÜTZE BEENDET, UND EINER BEWACHTE MEINE EIGENE ÄNDERUNG***
+
+| Befund | Mutant | Ergebnis |
+|---|---|---|
+| **F-C1** Arbeitsbaum-Change-Set ungeprüft | Komponente editiert + Fremddokument | *** 262 Tests PASS, exit 0 *** |
+| **F-C2** PF-14/PG-7 Skriptbewegung blind | echtes `setTimeout(… requestAnimationFrame(…))` in der Komponente | *** 262 PASS, exit 0 *** |
+| **F-C3** `lib/career`-Engine-Scope blind | Kommentar an `lib/career/mapping/signs.ts` | *** 262 PASS, exit 0 *** |
+
+> **F-C3 habe ich selbst mit git nachgemessen, nicht übernommen:**
+> `git diff --name-only 93c47e03 <merge> -- lib/career` ergibt
+> **[`db/client.ts`, `mapping/layout.ts`, `view-model/mapping-field.ts`]**, während die geschlossene Form
+> **genau [`layout.ts`, MODEL]** zusichert. *** ALSO SCHEITERT DIE OFFENE FORM — UND DAS SCHLIESSEN DES
+> BEREICHS IST GENAU DAS, WAS GELBS EIGENE `lib/career/db/client.ts`-REPARATUR UNGEPRÜFT DURCH MAP-G-ARCH
+> GELASSEN HAT. ***
+>
+> **Meine Review in §11.16 hat geprüft, welche drei Glieder OFFEN blieben, und nicht, welche GESCHLOSSEN
+> wurden.** Ich habe GRÜN dafür gelobt, Invariante von Messung getrennt zu haben — **das Lob gilt für die
+> drei, die offen blieben, und verdeckte drei, die es nicht hätten sollen.** *** EINE PRÜFUNG, DIE FRAGT
+> „WAS IST ERHALTEN GEBLIEBEN?“ UND NICHT „WAS IST WEGGEFALLEN?“, BESTÄTIGT JEDE SCHLIESSUNG. ***
+>
+> **PINK-STRUCTs Strukturbefund, vollständig übernommen:** bei D/E/F war der Schlusspunkt die **Basis der
+> Folgephase**, und deren Gate übernahm die offene Pflicht. `PHASE_INT_BASE` **ist keine Phase und hat keinen
+> Architekturtest.** *** FÜR G WURDE DIE PFLICHT BEENDET, NICHT ÜBERGEBEN — DIE SYMMETRIE MIT D/E/F WAR
+> FORMAL, NICHT FUNKTIONAL. ***
+
+**A-G492, die Reparatur, und die Teilung ist bewusst:** die **Phasenmessung** bleibt geschlossen (GRÜN hatte
+recht), ihr **Invarianten-Schatten** wandert in MAP-INT-ARCH — drei neue Glieder: `lib/`-Scope **deklariert
+mit Autorität je Pfad und vollständig verbraucht** (`client.ts` damit **benannt statt ungeprüft**),
+Skriptbewegung **offen bis HEAD inklusive Arbeitsbaum**, und ein **Arbeitsbaum-Glied**. **Phasenbereiche
+deckten die Vergangenheit, dieses Glied deckt den Merge und alles danach — keine Pflicht zweimal.**
+
+**F-C4 an GRÜN:** `PHASE_INT_BASE` ist zwei Commits kürzer als nötig; beide liegen innerhalb des bereits
+Erlaubten (`980c77bf` nur G_ENTRY, `a0475f13` nur Evidenz), und PINK-STRUCTs Kontrolle bei `a0475f13` ist
+**32/32 grün**. **Strikt enger und trotzdem grün.**
+
+#### F-A2 — ein neuer Befund in MEINER eigenen Grenze
+
+`assertDisposableServer`s FOREIGN_PAYLOAD-Glied verlangt, dass der Server nichts anderes hält. **Das
+Repository selbst verletzt das per Konvention:** `local-decision-context-http.e2e.test.ts` erzeugt
+`condyn_r5_<20 hex>`, und `decision-context-api.ts:30` dokumentiert es als **absichtlich** außerhalb des
+Wegwerf-Musters. *** ALSO MACHT MEINE EIGENE NEUE REGEL ZWEI GLEICHZEITIGE LÄUFE AUF DEM EINEN WEGWERF-SERVER
+GEGENSEITIG ZERSTÖREND — UND EIN SOLOLAUF KANN DAS NICHT FINDEN. *** Das Glied ist in der Absicht richtig und
+feuert auf einem legitimen Zustand.
+
+#### Und PINK-STRUCT ist in dieselben zwei Fallen getreten wie ich
+
+Es berichtet beides ungefragt: der **erste Volllauf lief parallel zu meinem** und ergab **19 Timeout-Falschrote**
+(1225 s gegen 660 s) — an der **Dauer** erkannt, verworfen, solo neu gefahren. Und seine Warteschleife
+`until ! pgrep -f …` traf **die eigene Kommandozeile** und verklemmte den Lauf.
+
+> *** ZWEI UNABHÄNGIGE LANES, DIESELBEN ZWEI FALLEN, AM SELBEN TAG: NEBENLAST-TIMEOUTS UND PATTERN-SELBSTTREFFER.
+> *** Das hebt A-G490 und die Muster-Kill-Regel aus der Kategorie *Schlampigkeit* in die Kategorie
+> **Umgebungseigenschaft** — und eine Umgebungseigenschaft gehört in die Werkzeuge, nicht in die Disziplin.
+> **PINK-STRUCT hat seinen Falschlauf an der DAUER erkannt**, was der schärfere Detektor ist als meine
+> Einzeldatei-Nachläufe: *** EIN SUITE-LAUF, DER DOPPELT SO LANGE BRAUCHT, IST VERDÄCHTIG, BEVOR MAN SEINE
+> ROTEN ANSIEHT. ***
