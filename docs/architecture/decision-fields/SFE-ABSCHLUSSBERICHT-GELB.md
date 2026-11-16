@@ -1595,7 +1595,7 @@ einen Merge standardmäßig keinen Diff aus.*** Bewiesen: `6bdf2628` hat `phase-
 `git diff 1472ccf1 6bdf2628 --` nennt die Datei, `git show --name-only --format= 6bdf2628 --` gibt **leer**
 zurück. **Der Integrationsbranch enthält genau so einen Merge.** Das Urteil ist heute richtig, weil dieser
 Merge **0 Produktpfade** trägt — ***richtig durch Inhalt, nicht durch die Prüfung.*** Reparatur benannt und
-verifiziert: `--diff-merges=first-parent`. **NICHT ANGEWENDET**, Grund in §13.8. Dieselbe Klasse wie A-G492s
+verifiziert: `--diff-merges=first-parent`. ~~**NICHT ANGEWENDET**, Grund in §13.8.~~ ***ANGEWENDET AM 2026-11-16 UNTER DEM REPARATURMANDAT (§14.2): das Mandat autorisiert ausdrücklich Test- und Integrationsarbeit, und derselbe Lauf, der den Tip verschiebt, nimmt die Suite neu ab — womit §13.8s Aufschubgrund entfällt, statt übergangen zu werden.*** Dieselbe Klasse wie A-G492s
 F-C3: eine Prüfung, die fragt *„was ist aufgeführt?"* statt *„was kann diese Aufzählung nie erreichen?"*
 
 **F-R2 · `lens-owner-bfe0d27` ist kein gebrochenes Siegel, sondern ein falsches Basisverzeichnis.** Ich hatte
@@ -1675,10 +1675,10 @@ frischen `origin`-Clone gemessen:
 
 | Spur | rekonstruierbar |
 |---|---|
-| GELB | **26 / 28** |
+| GELB | ~~26 / 28~~ → ***28 / 28*** *(§14.1: zwei waren Fehlalarme des statischen Pfadtests — beide laufen mit exit 0 und lesen die Fremdspur an einem BENANNTEN Ref)* |
 | GRÜN | **49 / 53** |
-| ***PINK*** | ***2 / 83*** |
-| **gesamt** | ***77 / 164*** |
+| ***PINK*** | ***2 / 83*** → *siehe §14.1; die Wurzel ist beseitigt, die Neumessung ist PINKs* |
+| **gesamt** | ***77 / 164*** — ⚠ ***DIESE ZAHL IST SEIT 2026-11-16 ÜBERHOLT (§14.1): `playwright` und `sharp` sind jetzt deklariert, und GRÜN misst 4 von 53 → 0 von 53 absolute Pfade in Auflösungsposition*** |
 
 ***Der Grund, und ich habe ihn selbst nachgemessen: 75 der 83 PINK-Instrumente importieren Playwright aus
 `/home/codi/Entwicklung/nquiry/node_modules/` — und `nquiry` ist ein ANDERES REPOSITORY
@@ -1722,7 +1722,7 @@ Commit X kann nicht in Commit X liegen. **Die Konsistenz, die das Mandat verlang
 „alles in einen Commit", sondern „alle drei Aufzeichnungen von `origin` erreichbar" — und das ist gemessen
 wahr.** Deshalb: **kein Merge der Registerbranches in die Integration.**
 
-**2 · F-R1 wird BENANNT UND NICHT ANGEWENDET, und der Grund ist derselbe.** Jeder weitere Commit auf den
+**2 · F-R1 wird BENANNT UND NICHT ANGEWENDET, und der Grund ist derselbe.** ⚠ ***DIESE ADJUDIKATION IST AM 2026-11-16 VOM EIGENTÜMER ÜBERHOLT WORDEN (§14.2) — das Reparaturmandat verlangt die Ausführung und autorisiert den Volllauf, der den Rahmen mitzieht. Der Aufschubgrund war richtig und ist entfallen.*** Jeder weitere Commit auf den
 Integrationsbranch verschiebt den Tip — und **§12.12s 3688/0 beschriebe dann einen Vorfahren statt den Tip**,
 also genau die Rahmenlücke (A-G430), gegen die diese Phase ihre Methode gebaut hat. ***Die Reparatur ist
 richtig und gehört mit einem neuen Volllauf zusammen, nicht allein.*** Sie liegt fertig vor.
@@ -1739,7 +1739,7 @@ richtig und gehört mit einem neuen Volllauf zusammen, nicht allein.*** Sie lieg
 | Worktrees | **17**, 16 HEADs von `origin` erreichbar; der eine nicht: `condyn-admin` @ `59076c0d`, Vor-Mapping-Ära |
 | Prüfstände | **8 erhalten und bedienend**; fünf konservierte BUILD_IDs unverändert — `xCD8LBxdjnP97-2Gjs5yr` @ `3ec8457d` **bestätigt PINKs eigene Rahmenangabe** |
 | Auflösbarkeit | **alle 19 zitierten `gruen-*.mjs` und alle 9 gepinnten Commits liegen auf einem `origin`-Ref** |
-| ***Instrumenten-Rekonstruktion*** | ***77 / 164 über alle drei Spuren — PINK 2/83*** |
+| ***Instrumenten-Rekonstruktion*** | ~~77 / 164 über alle drei Spuren — PINK 2/83~~ → ***die Ursache ist beseitigt, §14.1*** |
 
 **Offen und keiner Lane zuzuordnen:** **F-A2** · **PG-20s Schranke** *(PINK hat sie erneut verweigert, und das
 ist das Ergebnis, nicht die Lücke)* · **PF-13s Closure** · **PG-14** · **PF-6 Zeile 1 / PF-11 / PF-2** ·
