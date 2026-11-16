@@ -453,7 +453,7 @@ HEAD bei Eingang `4f80421a`, Arbeitsbaum sauber, 0 vor / 0 zurück gegen LIVE `o
 | Prämisse | Befund |
 |---|---|
 | „Der Rechner wurde neu gestartet.“ | ***FALSCH.*** Boot `2026-11-07 14:55`, Uptime 1 Woche 1 Tag — **Tage vor** PINKs letztem Artefakt (11-11 23:25) und meinem (11-13 00:52). **Es ist nichts verloren gegangen.** Der Testdb-Container läuft seit 4 Tagen, die Rollen-Credentials sind intakt. |
-| „Alle drei SFE-Sessions sind wieder geöffnet.“ | ***FALSCH.*** Zwei Peers. **PINK existiert als Session nicht.** Die dritte, vom Eigentümer *pink gefärbte* Session sitzt in **MEINEM** Worktree auf **MEINEM** Branch und hat die PINK-Rolle korrekt verweigert. **Farbe ist nicht Lane.** |
+| „Alle drei SFE-Sessions sind wieder geöffnet.“ | ***FALSCH, UND SCHÄRFER ALS HIER ZUERST GESCHRIEBEN (§11.12).*** Drei Sessions laufen, **aber alle drei in MEINEM Worktree** — ein Index, ein HEAD. **PINK ist nicht offen.** Die *pink gefärbte* Session hat die Rolle korrekt verweigert. **Farbe ist nicht Lane, und cwd ist nicht Branch.** |
 | „`TEST_DATABASE_ADMIN_URL` war noch offen.“ | ***HISTORISCH, GESCHLOSSEN.*** Zugang verifiziert. |
 
 **Und GRÜNs „32 Commits“ sind 100.** Keine Basisdivergenz: `origin/main` (`e360caf9`) **ist** Vorfahre von
@@ -749,3 +749,66 @@ Dateinamen-Whitelist**, aus dem Grund, den A-G411 selbst nennt.
 **Die Umsetzung ist GRÜNs, in GRÜNs Datei.** Diese Lane adjudiziert den Pin und schreibt das Instrument der
 Peer-Lane nicht um — der MAP-C-ARCH-Präzedenzfall (§2 AUTHORITY, `AUTHORISED_CROSSINGS`). **Evidenz:**
 `evidence/integration-trial-20261116/`, 4 Dateien mit Manifest.
+### §11.12 ***DREI SESSIONS, EIN WORKTREE — UND ZWEI MEINER DREI MANDATE WAREN NICHT AUSFÜHRBAR***
+
+Vom Peer gemeldet, **von mir aus `/proc` unabhängig nachgemessen, nicht übernommen:**
+
+| | |
+|---|---|
+| Sockets in `/run/user/1000/cc-socks` | **drei**: `3087940` (ich), `3088335`, `3088790` |
+| `readlink /proc/<pid>/cwd` für alle drei | *** `/home/codi/Entwicklung/condyn-admin-hr-integration` — IDENTISCH *** |
+| Startzeiten | 02:26:02 / 02:26:59 / 02:28:03 |
+| Projektverzeichnis für `condyn-admin-mapping-d` | *** EXISTIERT NICHT UND HAT NIE EXISTIERT *** |
+
+> *** ALLE DREI LANES SITZEN IN MEINEM CHECKOUT: EIN INDEX, EIN HEAD, EIN ARBEITSBAUM. *** Nicht zwei
+> Sessions auf meinem Index, wie §11.1 schrieb — **drei.** Jeder Schreibvorgang einer Peer-Lane landet **in
+> meiner Lane auf meinem Branch**, und ich könnte ihn nicht von meinem eigenen unterscheiden.
+
+**Und das zerstört zwei meiner drei GRÜN-Mandate, die ich in GRÜNs Namen formuliert hatte, ohne zu prüfen, wo
+GRÜN steht:**
+
+| Mandat | ausführbar? |
+|---|---|
+| **1. Push der 100 Commits** | **JA.** `git push origin frontend/mapping-phase-g` schiebt den **Ref**, nicht den Checkout — das geht aus jedem Worktree des Repositorys. |
+| **2. PF-13 im Venue fahren** | *** NEIN. *** Die Population liegt auf `frontend/mapping-phase-g`; dieser Worktree hält **7 von 16** Dateien (§11.10). |
+| **3. A-G485 umsetzen** | *** NEIN. *** `architecture.test.ts` ist hier **meine** Fassung; eine Bearbeitung wäre ein Schreibvorgang in meine Lane auf meinen Branch. |
+
+**GRÜNs echter Worktree ist unversehrt und vollständig vorbereitet** — geprüft:
+`/home/codi/Entwicklung/condyn-admin-mapping-d`, `frontend/mapping-phase-g` @ `7b4d5852`, **sauber**,
+`node_modules` da, `.env.local` da, **Feld 1243 Zeilen, 16 Mapping-Testdateien, das PF-13-Instrument da.**
+*** ES FEHLT NICHTS AUSSER EINER SESSION, DIE DORT STEHT. ***
+
+> **A-G486: ein Mandat an eine Peer-Lane nennt den Worktree, in dem es ausgeführt werden soll, und der
+> Absender prüft vorher, dass die Lane dort steht.** Ich habe dreimal „in deinem Worktree“ geschrieben und
+> **nie geprüft, welcher das ist** — ich habe ihn aus `git worktree list` **erschlossen**, wo der Branch
+> ausgecheckt ist, und das ist eine Aussage über den Checkout, **nicht über den Aufenthaltsort der Lane.**
+> *** DERSELBE FEHLERTYP WIE §11.7: ICH HABE EINE EIGENSCHAFT DES DATEISYSTEMS FÜR EINE EIGENSCHAFT DER LANE
+> GENOMMEN. ZWEIMAL AM SELBEN TAG, IN BEIDE RICHTUNGEN. ***
+
+### §11.13 PINKs 119 — nicht falsch, sondern von ihrer eigenen Veröffentlichung veraltet
+
+PINKs Statement-Kopf liest **„119 commits, UNPUSHED“**; ich hatte **105** gemessen und als Abgleichsdefekt
+geführt. **Beide Zahlen sind richtig, und eine dritte auch** — sie nennen verschiedene Basen und verschiedene
+**Augenblicke**:
+
+| Zahl | Basis / Augenblick |
+|---|---|
+| **105** | gegen den **damaligen** `origin`-Tip `1f9117db` (heute 0, veröffentlicht) |
+| **128** | PINKs eigene Commits an ihrer Spitze `b6490e86`, ab Abzweigpunkt `a94593d8` |
+| **119** | *** PINKs eigene Commits ab `a94593d8` IM AUGENBLICK DES ZÄHLENS *** |
+
+**Nachgemessen am Commit, der die Zeile einführte** (`ebb6c8ac`, 2026-11-11 22:48): `a94593d8..ebb6c8ac`
+ergibt **120**. *** DIE ZEILE SAGT 119, UND IHR EIGENER COMMIT IST DER 120. *** PINK hat gezählt, 119
+geschrieben, und das Schreiben machte 120. Danach kamen 8 weitere → 128.
+
+> *** EINE FIGUR, DIE DURCH IHRE EIGENE VERÖFFENTLICHUNG UNGÜLTIG WURDE. *** Kein Rechenfehler, sondern genau
+> die Klasse, die diese Phase benannt hat — A-G473, eine Währungsaussage ist selbst datiert — **in ihrer
+> reinsten Form, weil der Akt des Aufschreibens der Akt des Veraltens war.** Mein eigener §7 hat daraus einen
+> **Abgleichsdefekt** gemacht („105 gegen 119, scheitert an der Abgleichklausel“); **das war zu hart: es ist
+> ein Rahmenfehler, kein Widerspruch.**
+>
+> **Die Änderung bleibt PINKs.** Ich stelle den Abgleich mit Provenienz fest und fasse PINKs Dokument nicht an.
+> **Und ein zweiter Satz in PINKs §0 ist durch meinen Push veraltet** — *„this branch is unpushed … a stated
+> limitation of the deliverable“*. Er ist seit heute falsch, **und nur PINK darf ihn berichtigen.** *** ALSO
+> WIRD BEDINGUNG 4 NICHT AUF DIE STÄRKE DES PUSHES HIN ALS ERFÜLLT AUSGEWIESEN: LESBARKEIT WAR NOTWENDIG UND
+> IST NICHT HINREICHEND, UND DIE LANE, DIE DAS GESAGT HAT, IST IMMER NOCH NICHT OFFEN. ***
