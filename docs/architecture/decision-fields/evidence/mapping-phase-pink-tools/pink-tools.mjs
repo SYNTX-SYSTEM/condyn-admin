@@ -46,6 +46,7 @@
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { existsSync } from "node:fs";
+import { execFileSync as execFileSync_ } from "node:child_process";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -64,9 +65,50 @@ export const EVIDENCE_DIR = resolve(HERE, "..");
 if (!existsSync(resolve(REPO_ROOT, ".git")))
   throw new Error(`REFUSE pink-tools: derived REPO_ROOT ${REPO_ROOT} holds no .git — refusing to read a tree ` +
     `that is not a checkout of this repository rather than reporting a measurement taken from one.`);
+
+/**
+ * *** REPOSITORY IDENTITY, RE-ANCHORED 2026-11-16 ON GELB'S F-R13 — AND MY ANCHOR WAS WORSE THAN THE ONE
+ * F-R13 FIXED, NOT BETTER. ***
+ *
+ * GELB asked which commit this module names, because `gelb-paths.mjs` had pinned identity on PHASE_G's base
+ * commit — present in 7 of 124 refs and NOT an ancestor of `main` — so it refused a genuine
+ * `clone --branch main`. I named NO commit at all: identity rested on the existence of the PATH
+ * `docs/architecture/decision-fields`. Measured, rather than argued:
+ *
+ *   - that path exists on only **53 of 61** origin refs, so a genuine checkout of 8 named branches
+ *     (architecture/target-revision-runtime, capability-mapping, feature/pdf-generator, feature/topology-view,
+ *     frontend/hr-decision-loop, frontend/sil-decision-integration, tooling/decision-core-phase-gate,
+ *     wip/field-01-overlay-2026-09-22) was FALSELY REFUSED. Same harm as F-R13, different cause.
+ *   - and a path test is FORGEABLE: `git init && mkdir -p docs/architecture/decision-fields` passes it.
+ *     A commit sha cannot be fabricated.
+ *
+ * So the root commit `29266f9c` is adopted here: measured as the root of `origin/main` and an ancestor of
+ * **61 of 61** origin refs. GELB's fix is strictly better than what I had on both coverage and forgeability,
+ * and saying so is the correct outcome.
+ *
+ * SHALLOW CLONES DO NOT HOLD THE ROOT COMMIT, so a hard refusal there would re-create F-R13's false refusal
+ * one layer out. A repository that cannot answer the ancestry question is DOWNGRADED to the old path test and
+ * says so, rather than being refused or silently accepted.
+ */
+export const REPO_ROOT_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4";
+export const repoIdentity = (() => {
+  let shallow = false;
+  try { shallow = execFileSync_("git", ["-C", REPO_ROOT, "rev-parse", "--is-shallow-repository"], { encoding: "utf8" }).trim() === "true"; } catch { /* no git */ }
+  try {
+    execFileSync_("git", ["-C", REPO_ROOT, "merge-base", "--is-ancestor", REPO_ROOT_COMMIT, "HEAD"], { stdio: "ignore" });
+    return { verified: true, by: `root commit ${REPO_ROOT_COMMIT.slice(0, 8)} is an ancestor of HEAD`, shallow };
+  } catch {
+    if (shallow) return { verified: false, by: "shallow clone — root commit absent; downgraded to the path test", shallow };
+    return { verified: false, by: "root commit is NOT an ancestor of HEAD", shallow };
+  }
+})();
+if (!repoIdentity.verified && !repoIdentity.shallow)
+  throw new Error(`REFUSE pink-tools: derived REPO_ROOT ${REPO_ROOT} is a git checkout, but the root commit ` +
+    `${REPO_ROOT_COMMIT.slice(0, 8)} of this repository is not an ancestor of its HEAD — so it is a checkout of ` +
+    `SOMETHING ELSE. Refusing rather than reporting a measurement taken from a tree that is not this repository.`);
 if (!existsSync(RECORD_DIR))
   throw new Error(`REFUSE pink-tools: derived RECORD_DIR ${RECORD_DIR} is absent — the derived root ${REPO_ROOT} ` +
-    `is a git checkout but not of this repository.`);
+    `is a git checkout but does not carry this lane's record directory.`);
 
 /** the phase contract directories, by name rather than by offset (A-G427) */
 export const PHASE_E_DIR = resolve(EVIDENCE_DIR, "mapping-phase-e-contract");
@@ -260,6 +302,16 @@ export async function provenance({ declaredCommit = null, declaredBuildId = null
     agrees: commitAgrees === true && (buildIdAgrees === true || buildIdAgrees === null),
     note: "declared = the label the sealed instrument was written with; observed = read at run time. " +
           "A figure taken on a run where agrees !== true belongs to the OBSERVED build, not the declared one.",
+    // *** THE LIMIT OF THIS BLOCK, STATED IN IT RATHER THAN DISCOVERED LATER. ***
+    // Found by running a repaired instrument against a stand this lane did not start: `observedCommit`
+    // is `git rev-parse HEAD` of the CHECKOUT the instrument ran from. For an instrument that measures a
+    // REMOTE STAND those two are independent, and the checkout's commit says nothing about the build the
+    // stand serves. So replacing a stale hardcoded label with the checkout's commit removes the silent
+    // fabrication but does NOT by itself establish the provenance of a stand measurement: for that, the
+    // only authority is `observedBuildId`, and when that is null the run has NO verified provenance at all.
+    observedCommitDescribes: "the checkout the instrument ran from — NOT the build a remote stand serves",
+    authoritativeForStandMeasurements: "observedBuildId",
+    standProvenanceVerified: ob.value != null,
   };
   const bad = commitAgrees === false || buildIdAgrees === false;
   const unk = commitAgrees === null || buildIdAgrees === null;

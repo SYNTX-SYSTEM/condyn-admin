@@ -39,6 +39,25 @@
  * Neither correction touches a sealed byte. Both are corrections to THIS round's errata prose, which is
  * unsealed and in this lane's authority.
  *
+ * ---------------------------------------------------------------------------------------------------
+ * *** A-G500 ADOPTED, AND IT CAUGHT A DEFECT IN THIS FILE'S OWN OUTPUT. ***
+ *
+ * GELB's A-G500: a guard that scans text is INSIDE ITS OWN POPULATION, so a quotation of a withdrawn claim
+ * is indistinguishable from the claim. The mark is `[WITHDRAWN <finding-id> <YYYY-MM-DD>]` on the claim's
+ * own line, and a bare `[WITHDRAWN]` silences nothing.
+ *
+ * It applies here, against me. Measured after the first version of this generator ran: a line scanner
+ * looking for `119 commits, UNPUSHED` finds it in FIVE files — the sealed register (the only LIVE claim),
+ * ERRATA-FORWARD.md, ERRATA-FORWARD.json, the errata, and this generator's own SPEC. The pointer file built
+ * to retract the claim had multiplied it. So every quotation this generator emits now carries the mark.
+ *
+ * *** AND THE MARK CANNOT REACH THE ONE LINE THAT MATTERS, WHICH IS EXACTLY WHY THIS FILE EXISTS. ***
+ * A-G500 works by writing on the claim's own line. `PINK-SYSTEM-VALIDATION.md:4` is inside a frozen seal
+ * (entry 47 of 91) and the owner's decision is "do not rewrite historical evidence". So the sealed claim is
+ * the one case A-G500's mechanism cannot address, and a forward pointer beside the file is the available
+ * substitute rather than a competing idea. GELB's rule is better than mine WHERE IT CAN BE APPLIED; it
+ * cannot be applied to a sealed line; both are needed and neither replaces the other.
+ *
  * Usage:
  *   node pink-errata-forward.mjs --out <dir>   write ERRATA-FORWARD.{json,md} (default: beside the register)
  *   node pink-errata-forward.mjs --check       verify an existing pointer file against both files
@@ -60,6 +79,8 @@ const i = args.indexOf("--out");
 const OUT = i >= 0 ? resolve(args[i + 1]) : SEALED_DIR;
 
 const sha = b => createHash("sha256").update(b).digest("hex");
+/** A-G500: the mark carries the finding id AND the date. A bare `[WITHDRAWN]` silences nothing. */
+const mark = p => `[WITHDRAWN ${p.id} ${p.date}]`;
 const rel = p => relative(REPO_ROOT, p);
 
 const sealedLines = readFileSync(SEALED, "utf8").split("\n");
@@ -205,6 +226,17 @@ const doc = {
       "while appending one byte to a LISTED file gave 1 FAILED / exit 1.",
   },
   errata: { path: rel(ERRATA), declaredWithdrawals: errataWithdrawals },
+  markConvention: {
+    rule: "A-G500 (GELB). Every quotation of a withdrawn claim carries `[WITHDRAWN <id> <YYYY-MM-DD>]` on its " +
+      "own line; a bare `[WITHDRAWN]` silences nothing and the line falls back to being a live claim.",
+    form: "[WITHDRAWN <id> <YYYY-MM-DD>]",
+    appliedIn: ["ERRATA-FORWARD.md"],
+    notAppliedIn: ["the sealed register"],
+    whyNotInTheSealedRegister: "A-G500 writes on the claim's own line. That line is inside a frozen seal " +
+      "(entry 47 of 91) and the owner's decision is 'do not rewrite historical evidence'. This is the one " +
+      "case the mark cannot reach, which is why a forward pointer beside the file is needed at all.",
+    marks: Object.fromEntries(SPEC.map(x => [x.id, `[WITHDRAWN ${x.id} ${x.date}]`])),
+  },
   guardContract: {
     forWhom: "a browser-free guard consuming this file; GELB owns it in test/integration-boundary/",
     mustGoRedIf: [
@@ -265,7 +297,7 @@ const md = [
     ``,
     `**Still standing at \`${rel(SEALED)}:${p.occurrences[0].line}\`:**`,
     ``,
-    ...p.occurrences.map(o => `> \`:${o.line}\` ${o.quote.trim()}`),
+    ...p.occurrences.map(o => `> \`:${o.line}\` ${o.quote.trim()}  ${mark(p)}`),
     ``,
     `**Superseded by:** ${p.supersededBy}`,
     ``,
@@ -273,7 +305,7 @@ const md = [
       `**Dependent passages that rest on the withdrawn premise** — a validator does not retract a premise and`,
       `leave its conclusions standing:`,
       ``,
-      ...p.dependentPassages.map(d => `- \`:${d.line}\` **${d.section}** ${d.what}  \n  > ${d.quote.trim()}`),
+      ...p.dependentPassages.map(d => `- \`:${d.line}\` **${d.section}** ${d.what}  \n  > ${d.quote.trim()}  ${mark(p)}`),
       ``,
     ] : []),
     ...(p.dependentPassagesNote ? [`*${p.dependentPassagesNote}*`, ``] : []),

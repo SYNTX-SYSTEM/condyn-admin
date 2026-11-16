@@ -2,7 +2,7 @@
   "schema": "pink.errata-forward/1",
   "what": "Forward pointers from withdrawn or superseded claims standing in a SEALED register to the errata that withdraws them. The sealed register is not modified; this file sits beside it and is not listed in its manifest.",
   "ownerDecision": "Connect PINK's three withdrawals by traceable forward pointers to their valid errata. Do not rewrite historical evidence.",
-  "generatedAtUTC": "2026-11-16T12:26:16.740Z",
+  "generatedAtUTC": "2026-11-16T12:41:43.844Z",
   "generator": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-errata-forward.mjs",
   "howQuotesWereObtained": "READ from the sealed file at the cited line and recorded verbatim. The generator is given only an id, a line number and a short expected substring, and REFUSES (exit 4) if the substring is not at that line. Quotes are never typed into this file by hand — that is the W-3 failure mode.",
   "sealedRegister": {
@@ -35,6 +35,22 @@
         "line": 81
       }
     ]
+  },
+  "markConvention": {
+    "rule": "A-G500 (GELB). Every quotation of a withdrawn claim carries `[WITHDRAWN <id> <YYYY-MM-DD>]` on its own line; a bare `[WITHDRAWN]` silences nothing and the line falls back to being a live claim.",
+    "form": "[WITHDRAWN <id> <YYYY-MM-DD>]",
+    "appliedIn": [
+      "ERRATA-FORWARD.md"
+    ],
+    "notAppliedIn": [
+      "the sealed register"
+    ],
+    "whyNotInTheSealedRegister": "A-G500 writes on the claim's own line. That line is inside a frozen seal (entry 47 of 91) and the owner's decision is 'do not rewrite historical evidence'. This is the one case the mark cannot reach, which is why a forward pointer beside the file is needed at all.",
+    "marks": {
+      "W-1": "[WITHDRAWN W-1 2026-11-16]",
+      "W-2": "[WITHDRAWN W-2 2026-11-16]",
+      "W-3": "[WITHDRAWN W-3 2026-11-16]"
+    }
   },
   "guardContract": {
     "forWhom": "a browser-free guard consuming this file; GELB owns it in test/integration-boundary/",

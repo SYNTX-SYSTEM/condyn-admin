@@ -19,7 +19,7 @@ Full grounds: `docs/architecture/decision-fields/evidence/mapping-phase-pink-too
 
 **Still standing at `docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md:4`:**
 
-> `:4` **Branch:** `validation/hr-decision-loop-pink` — **119 commits, UNPUSHED**
+> `:4` **Branch:** `validation/hr-decision-loop-pink` — **119 commits, UNPUSHED**  [WITHDRAWN W-1 2026-11-16]
 
 **Superseded by:** the push itself, not by any change in content
 
@@ -27,13 +27,13 @@ Full grounds: `docs/architecture/decision-fields/evidence/mapping-phase-pink-too
 leave its conclusions standing:
 
 - `:27` **§0** fourth clause — 'IT IS NOT READABLE WHERE IT MATTERS'  
-  > **AND IT IS NOT READABLE WHERE IT MATTERS.** This branch is unpushed. A validation that
+  > **AND IT IS NOT READABLE WHERE IT MATTERS.** This branch is unpushed. A validation that  [WITHDRAWN W-1 2026-11-16]
 - `:165` **§5** symmetry clause — what is readable in which direction  
-  > `PHASE_F*.md`) **in one direction, and this unpushed statement in the other.** So pin
+  > `PHASE_F*.md`) **in one direction, and this unpushed statement in the other.** So pin  [WITHDRAWN W-1 2026-11-16]
 - `:167` **§5** strongest-reason clause  
-  > and were checked. **Still the strongest reason the unpushed branch is a defect in the work
+  > and were checked. **Still the strongest reason the unpushed branch is a defect in the work  [WITHDRAWN W-1 2026-11-16]
 - `:363` **§11** cost paragraph  
-  > **That is the concrete cost of the unpushed branch, and it is stated by the lane writing the
+  > **That is the concrete cost of the unpushed branch, and it is stated by the lane writing the  [WITHDRAWN W-1 2026-11-16]
 
 *The errata names these as '§0's fourth clause, §5, §8's asymmetry argument, §11's cost paragraph'. MEASURED: §8 (lines 214-318, 'PIN COVERAGE — stated as TWO bounds') carries no asymmetry argument and no dependency on the unpushed condition. The asymmetry/symmetry argument is at 161-169, in §5. Four dependent passages across THREE sections, not four.*
 
@@ -41,11 +41,11 @@ leave its conclusions standing:
 
 **Still standing at `docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md:96`:**
 
-> `:96` `PHASE_G*.md` exists in none of the four worktrees this lane can read.**
-> `:158` retired unmeasured. *** GELB cites `PHASE_G:725` and `:998`. **`PHASE_G*.md` and
-> `:159` `PHASE_F*.md` exist in NONE of the four worktrees this lane can read**, so this is
-> `:273` `PHASE_G*.md`, which this lane cannot read. That is not the same
-> `:358` verify its contents — `PHASE_G*.md` remains unreadable here.
+> `:96` `PHASE_G*.md` exists in none of the four worktrees this lane can read.**  [WITHDRAWN W-2 2026-11-16]
+> `:158` retired unmeasured. *** GELB cites `PHASE_G:725` and `:998`. **`PHASE_G*.md` and  [WITHDRAWN W-2 2026-11-16]
+> `:159` `PHASE_F*.md` exist in NONE of the four worktrees this lane can read**, so this is  [WITHDRAWN W-2 2026-11-16]
+> `:273` `PHASE_G*.md`, which this lane cannot read. That is not the same  [WITHDRAWN W-2 2026-11-16]
+> `:358` verify its contents — `PHASE_G*.md` remains unreadable here.  [WITHDRAWN W-2 2026-11-16]
 
 **Superseded by:** a worktree-versus-ref error of this lane's own: `git show <ref>:<path>` answers in every clone holding the object
 
@@ -55,8 +55,8 @@ leave its conclusions standing:
 
 **Still standing at `docs/architecture/decision-fields/evidence/mapping-phase-g-contract/PINK-SYSTEM-VALIDATION.md:233`:**
 
-> `:233` figure is present and correct in GRÜN's `pf13-evaluated.json` — **16 files, 197 tests, 197
-> `:267` **197/197** with coverage matched both ways and zero missing or extra; **no verdict by its
+> `:233` figure is present and correct in GRÜN's `pf13-evaluated.json` — **16 files, 197 tests, 197  [WITHDRAWN W-3 2026-11-16]
+> `:267` **197/197** with coverage matched both ways and zero missing or extra; **no verdict by its  [WITHDRAWN W-3 2026-11-16]
 
 **Superseded by:** the artefact reads 198: one test was added (§115 A-G468, `3231f52c`). 197 was correct at `bce62ea1`.
 

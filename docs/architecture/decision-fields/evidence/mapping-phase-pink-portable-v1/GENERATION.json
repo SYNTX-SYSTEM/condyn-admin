@@ -3,21 +3,21 @@
   "layerVersion": "v1",
   "what": "A separately versioned, portable regeneration of the 83 PINK instruments sealed in mapping-phase-{e,f,g}-contract. The historical seal is unchanged; this layer is additive.",
   "ownerDecision": "Integrate PINK's portability repair over a new, separately versioned evidence layer. Keep all 167 historical seal entries unchanged.",
-  "generatedAtUTC": "2026-11-16T12:31:48.807Z",
+  "generatedAtUTC": "2026-11-16T12:37:38.543Z",
   "generator": {
     "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-layer-build.mjs",
     "digest": "c9e985772102164080d061f5e0c6f6c0bbad48658eb24f78ff7a67be065bffbe"
   },
   "resolver": {
     "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-tools.mjs",
-    "digest": "b52f9878290fdbea53d3cbd1aba5c15dec10b3fe743b5b83d3a6338dcb5bd6dc",
+    "digest": "65b1dcd39f7f854f860cd9211a7b5ab50aec7c13c735bdb5ffb7fdc50761665e",
     "copiedIntoLayer": false,
     "importedAs": "../../../mapping-phase-pink-tools/pink-tools.mjs",
     "depthFromLayerScripts": 3,
     "whyNotCopied": "pink-tools.mjs derives REPO_ROOT five levels up from its own directory. A copy at <layer>/mapping-phase-pink-tools/ is one level too deep, derives REPO_ROOT=<repo>/docs, finds no .git and THROWS AT IMPORT by its own guard. Measured, not reasoned. One canonical copy also cannot drift."
   },
   "sourceRef": {
-    "commit": "188d9cad6d8821d7968cb7dcfcba5b79e18c8c5e",
+    "commit": "d85df7342f5364a3237ba2050f9e656029ee4d81",
     "branch": "validation/hr-decision-loop-pink"
   },
   "historicalSeal": {
