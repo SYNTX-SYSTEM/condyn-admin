@@ -428,14 +428,24 @@ describe.skipIf(playwrightModule === null)("SYNTX field in a real browser: FIELD
     await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await page.getByTestId("job-pool-non-claims").textContent()).toContain("COVERED != SCORED");
     // Preservation: planetarium geometry rendered underneath; no dock without an exact DCTXREV.
-    // F-R8: this line asserted SIX fixed numeric stage shells, 01…06, and had been STALE since ca117947
-    // ("SYNTX semiotic transfer — the Job Field rendered from the Capability Field's own manifestation
-    // grammar", owner GO, variant A). It never went red because playwright was undeclared and this suite
-    // skipped itself. MEASURED, not assumed: the field renders shell-01, shell-02 and then ONE SHELL PER
-    // ORGANISATION, keyed `syntx-<org id>` — {"01":1,"02":1,"03":0,"04":0,"05":0,"06":0}, total 5, ids
-    // [01, 02, syntx-org_nordlicht, syntx-org_rheinwerk, syntx-org_alpendata]. A deliberate product change,
-    // so the TEST was the stale half. Derived from the fixture rather than hardcoded, and the two numeric
-    // stages that were REPLACED are asserted ABSENT, so a silent return to the old model also fails.
+    // F-R8: this line asserted SIX fixed numeric stage shells, 01…06. It never went red because playwright
+    // was undeclared and this suite skipped itself. MEASURED, not assumed: the field renders shell-01,
+    // shell-02 and then ONE SHELL PER ORGANISATION, keyed `syntx-<org id>` —
+    // {"01":1,"02":1,"03":0,"04":0,"05":0,"06":0}, total 5, ids
+    // [01, 02, syntx-org_nordlicht, syntx-org_rheinwerk, syntx-org_alpendata].
+    //
+    // *** THE CAUSE, AND MY FIRST ATTRIBUTION WAS WRONG — PINK CORRECTED IT AND IS RIGHT. *** I blamed
+    // ca117947 ("SYNTX semiotic transfer"), which explains the REPLACEMENT of the shells. The ABSENCE of
+    // 03…06 is a different rule: `legacyHidden = investigationMode === "PERSON_X_JOB"`
+    // (SemanticCareerIntelligenceField.tsx:612) with `legacyStage` (:613) filtering exactly
+    // ["03","04","05","06"], which arrived in afcf89f6 on 2026-10-22. *** AND THE COUNTER-EVIDENCE WAS THIS
+    // VERY FILE: it names no investigation mode at all, yet measured 03…06 as zero — because
+    // DEFAULT_INVESTIGATION_MODE = "PERSON_X_JOB" (lib/career/job-pool/investigation-mode.ts:17). *** One
+    // cause across both suites, where I had assumed two.
+    //
+    // A deliberate product change either way, so the TEST was the stale half. Derived from the fixture
+    // rather than hardcoded, and the four numeric stages that are HIDDEN are asserted ABSENT, so a silent
+    // return to the old model also fails.
     expect(world.samplePool.organizations.length, "no organisations in the fixture — this limb would pass over nothing").toBeGreaterThan(0);
     for (const stage of ["01", "02"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count(), `stage shell ${stage}`).toBe(1);
     for (const stage of ["03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count(), `stage shell ${stage} was replaced by an organisation-keyed shell in ca117947 and must not return silently`).toBe(0);

@@ -95,6 +95,61 @@ async function availablePort(): Promise<number> {
 interface SignRecord { testId: string | null; id: string; source: string; relation: string; state: string; manifestation: string; interaction: string; transition: string; proof: Record<string, string> }
 interface Report { tip: string; recordedAt: string; database: string; analysisId: string; jobPoolUploadId: string; scenarios: Record<string, { verdict: "PASS" | "BOUNDARY-MATCH" | "FAIL"; finding?: string; note?: string; counts?: Record<string, number> }> }
 
+/**
+ * Q1 — the owner's PERSON × JOB rule, asserted as its precondition plus both of its halves.
+ *
+ * *** THIS REPLACES AN ASSERTION THAT WAS STALE BY SEVEN DAYS AND COULD NOT GO RED. *** Both call sites
+ * previously read `for (const stage of ["01" … "06"]) expect(count).toBe(1)`. Under PERSON × JOB the product
+ * deliberately does NOT draw the legacy orbits — 03 resonance, 04 roles, 05 tension, 06 evolution — so that
+ * loop asserted the opposite of a documented product rule:
+ *
+ *   `legacyHidden = investigationMode === "PERSON_X_JOB"` and the stage list filtered by it
+ *   — app/components/career/demo/SemanticCareerIntelligenceField.tsx:612-613 and :864,
+ *   with `withoutLegacyOrbits` at lib/career/view-model/pxj-first-screen.ts:106.
+ *
+ * The rule arrived in `afcf89f6` (owner G1) on 2026-10-22; this walk was last rebound in `916e884e` on
+ * 2026-10-15. **It aged because it could not run: `playwright` was undeclared, so `describe.skipIf` skipped
+ * the file and a test that cannot run cannot go red.** The fixture declares PERSON_X_JOB at the seeded job,
+ * and this walk never checked that the product received it — so the MODE is asserted first, as the rule's
+ * precondition, and a product that silently dropped PERSON_X_JOB now fails here instead of passing quietly.
+ *
+ * All six stages are reported together. The previous `for` loop named only the earliest absent stage, which
+ * is why the original failure read `expected +0 to be 1` without saying which shell was missing.
+ *
+ * NOTE ON VENUE: this binds the rule, not a product generation, so it requires a checkout at or after
+ * `afcf89f6`. On an older surface (which draws all six) it fails by design — that is the assertion working.
+ */
+async function expectQ1LegacyOrbitsHidden(page: any, organizationIds: string[] | null): Promise<void> {
+  const fieldRoot = page.locator('[data-testid="semantic-career-intelligence-field"]');
+  expect(await fieldRoot.count()).toBe(1);
+  // The rule's PRECONDITION. This fixture declares PERSON_X_JOB, and DEFAULT_INVESTIGATION_MODE is
+  // PERSON_X_JOB too (lib/career/job-pool/investigation-mode.ts:17) — which is why the sibling suite
+  // test/career/job-pool/e2e/job-pool-workflow.e2e.test.ts reproduces this without naming a mode at all.
+  expect(await fieldRoot.getAttribute("data-investigation-mode")).toBe("PERSON_X_JOB");
+
+  // HALF ONE — the legacy orbits are filtered (afcf89f6). All six reported together.
+  const shells: Record<string, number> = {};
+  for (const stage of ["01", "02", "03", "04", "05", "06"]) shells[stage] = await page.getByTestId(`focus-transition-stage-shell-${stage}`).count();
+  expect(shells).toEqual({ "01": 1, "02": 1, "03": 0, "04": 0, "05": 0, "06": 0 });
+
+  // HALF TWO — one shell per organisation, keyed `syntx-<pool organization id>` (ca117947, the semiotic
+  // transfer, owner GO variant A). Asserted only where the SYNTX field is mounted; `null` at a call site
+  // where it is not, rather than guessing a count this lane has not observed in that state.
+  //
+  // *** THESE ARE TWO INDEPENDENT MECHANISMS IN TWO COMPONENTS, AND ARE ASSERTED SEPARATELY ON PURPOSE. ***
+  // Half one is the stage-list filter in SemanticCareerIntelligenceField (:613, :864); half two is
+  // SyntxField's own per-organisation shells (:824-826). Collapsing them into one total would break on
+  // either change without saying which.
+  if (organizationIds === null) return;
+  expect(organizationIds.length).toBeGreaterThan(0); // vacuity guard: an empty list would assert nothing
+  const perOrganization: Record<string, number> = {};
+  for (const id of organizationIds) perOrganization[id] = await page.getByTestId(`focus-transition-stage-shell-syntx-${id}`).count();
+  expect(perOrganization).toEqual(Object.fromEntries(organizationIds.map((id) => [id, 1])));
+  // and nothing else draws a shell: a silent return to the pre-transfer model fails here too.
+  expect(await page.locator('[data-testid^="focus-transition-stage-shell-"]').count()).toBe(2 + organizationIds.length);
+}
+
+
 describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD → ORGANIZATION → ROLE → REQUIREMENT → EVIDENCE → RETURN against PINK's fixtures", () => {
   let browser: any;
   const pageErrors: string[] = [];
@@ -437,7 +492,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     await page.keyboard.press("Escape");
     await page.getByTestId("job-pool-matches").waitFor({ state: "hidden", timeout: 10_000 });
     expect(await root.getAttribute("data-observation-kind")).toBe("FIELD");
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    await expectQ1LegacyOrbitsHidden(page, (view.canonicalMapping.organizations as any[]).map((organization: any) => organization.poolOrganizationId as string));
     expect(await page.locator('[data-testid^="hr-decision-loop"]').count()).toBe(0);
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-01.png") });
@@ -908,11 +963,13 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(params(page).get("jobOrganizationId")).toBeNull();
     expect(await page.getByTestId("field-focus-capability-btn").getAttribute("data-field-focus-active")).toBe("true");
     expect(await page.getByTestId("job-pool-panel-toggle").getAttribute("data-field-focus-active")).toBe("false");
-    expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(3);
+    expect(await page.locator('[data-testid="field-focus-strip"] button').count()).toBe(2);
     await page.reload({ waitUntil: "domcontentloaded" });
     await page.locator('[data-testid="semantic-career-intelligence-field"][data-field-focus="CAPABILITY"]').waitFor({ timeout: 60_000 });
     expect(await root.count()).toBe(0);
-    for (const stage of ["01", "02", "03", "04", "05", "06"]) expect(await page.getByTestId(`focus-transition-stage-shell-${stage}`).count()).toBe(1);
+    // The SYNTX field is exited here (`root.count() === 0`, focus CAPABILITY), so SyntxField is unmounted and
+    // its per-organisation shells are not asserted: this lane has not observed that state and will not guess it.
+    await expectQ1LegacyOrbitsHidden(page, null);
     // Re-entry after the reload: a click before hydration completes is lost in headless Chromium (not a field behaviour), so the click is repeated until the field answers.
     for (let attempt = 0; attempt < 12; attempt += 1) {
       await page.getByTestId("job-pool-panel-toggle").click();
@@ -922,7 +979,7 @@ describe.skipIf(playwrightModule === null)("PINK Q-12: SYNTX field walk FIELD �
     expect(await root.getAttribute("data-observation-kind")).toBe("FIELD");
     await settled(page);
     await page.screenshot({ path: resolve(EVIDENCE_DIR, "Q-11.png") });
-    writeFileSync(resolve(EVIDENCE_DIR, "Q-11-ids.txt"), `retired selectors absent: ${RETIRED_SELECTORS.length}\nstrip buttons: field-focus-capability-btn, field-focus-mapping-btn, job-pool-panel-toggle\n`);
+    writeFileSync(resolve(EVIDENCE_DIR, "Q-11-ids.txt"), `retired selectors absent: ${RETIRED_SELECTORS.length}\nstrip buttons: field-focus-capability-btn, job-pool-panel-toggle\n`);
     pass("Q-11");
     expect(pageErrors).toEqual([]);
     await page.close();

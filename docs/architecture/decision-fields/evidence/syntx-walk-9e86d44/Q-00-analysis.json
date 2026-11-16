@@ -174,7 +174,7 @@
   },
   "recommendations": {
     "analysisId": "ANL_PINK_SYNTX_WALK",
-    "generatedAt": "2026-11-16T06:48:53.309Z",
+    "generatedAt": "2026-10-12T17:57:53.572Z",
     "capabilityGaps": [
       {
         "capabilityName": "Real-Time Sensor Fusion",

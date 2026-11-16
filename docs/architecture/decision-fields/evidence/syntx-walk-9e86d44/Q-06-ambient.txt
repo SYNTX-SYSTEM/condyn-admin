@@ -1,2 +1,2 @@
-FIELD: {"switch":"on","names":["atmosphereGlow","coreBreathe","moonOrbit","orbitFloatPhase2","particleIn","plasmaFlarePulse","plasmaRotateCcw","plasmaRotateCw","rotateClockwise","waveExpand"],"outsideField":[]}
+FIELD: {"switch":"on","names":["sxBreathe","sxOrbit"],"outsideField":[]}
 expected switch: on
