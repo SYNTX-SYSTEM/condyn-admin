@@ -51,7 +51,7 @@ bauartbedingt** — das Subject-Gate dauerhaft, und `gelb-currency-lapse` solang
 abgelaufen ist** (derzeit 8 von 8, §131). **0 von 28 enthalten einen absoluten Maschinenpfad** (vorher 14). | diese Session, Mutanten heute gefahren |
 | **Schema-Drift Bootstrap ↔ ORM** | **9 Tabellen korrigiert, Drift = 0, Test gesetzt** | `CAREER-DB-DRIFT` |
 | **Typprüfung** | `tsc --noEmit` sauber | GRÜN |
-| **PG-1 (semantischer Lichtanteil)** | **0.6431 / 0.7397 gegen ≥ 0.55** | `3ec8457d` |
+| **PG-1 (semantischer Lichtanteil)** | *** KORRIGIERT 2026-11-16 (D-PP-2). WIE GEBAUT: 0.63906 / 0.73663 gegen ≥ 0.55 *** — und am Integrationsstand `4f4534c5` unabhängig nachgemessen: **0.62183 / 0.63471** (1920 reduce/live) und **0.71841 / 0.72938** (1280). | `A_asBuilt` aus `option3-*.json`, Provenienz-Head **`76ae9043`** — ***NICHT `3ec8457d`***. Die frühere Form dieser Zeile las **0.6431 / 0.7397**, und das ist `C_ringAndSeatHidden`: *„ring and its seat both gone“* — **ein Kontrafaktum, kein Messwert dieses Builds.** |
 
 **Die Grenzen sind erhalten:** `verifyDisposableTestDatabase` (B-ENTRY) **unumgangen in beiden Lanes**, kein
 Zugangsdatum geraten, **kein Merge nach `main`, kein Produktionsdeployment, Gemini deaktiviert.**
@@ -219,6 +219,12 @@ diesem Instrument NICHT CHARAKTERISIERBAR.**
 **Entfernbar über Option (3), und die Kosten sind bereits gemessen:** PF-15 Glied (a) 0.0556/0.0587 ≤ 0.08;
 PG-22 0.0811/0.1693 ≤ 0.20; PG-1 0.6431/0.7397 ≥ 0.55. **Preis: E-7s Leiter verliert eine Sprosse.**
 
+> ✓ **DIESE PG-1-ZAHL IST HIER RICHTIG UND DARF NICHT „korrigiert“ WERDEN.** `0.6431/0.7397` ist
+> `C_ringAndSeatHidden` — *„ring and its seat both gone“* — **und genau das IST Option (3).** In §1 stand
+> dieselbe Zahl als Zustand des Builds und war dort falsch (D-PP-2, korrigiert). *** EINE ZAHL KANN IN EINEM
+> ABSCHNITT KORREKT UND IM ANDEREN EIN FEHLER SEIN, WENN DER ABSCHNITT IHRE BEDINGUNG WECHSELT — UND DAS IST
+> DER GRUND, WARUM EINE BEDINGUNG ZUR ZAHL GEHÖRT WIE EIN BUILD. ***
+
 > **Zwei zulässige Ausgänge: die Kante annehmen, oder Option (3) nehmen.** Beide sind vertretbar; **die
 > Entscheidung ist nicht technisch, sondern eine Abwägung zwischen einer sichtbaren Kante und einer
 > Leitersprosse.**
@@ -368,7 +374,10 @@ war. *** **Eine Zählung lässt sich durch Fleiß aufblähen, eine Latenz nicht.
 Vorwärtszeiger · Amendments bis **A-G457** · Branch `architecture/mapping-phase-f` @ `14ae2170`, nichts
 ungepusht, Arbeitsbaum sauber.
 
-**Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). **Zahlen aus GRÜNs Lane** (~~Suite~~, PF-13,
+**Produktfiguren:** `4b83414e` (Quelle), `3ec8457d` (Pixel). ⚠ **PG-1 WAR HIER FALSCH ZUGESCHRIEBEN:** die
+Zahl stammt aus GRÜNs `option3-*.json` (Head `76ae9043`), **nicht aus PINKs Lane** — D-PP-2, von PINK-PIXEL
+gefunden. PINKs eigene As-built-PG-1 bei `3ec8457d` ist **0.62610/0.63857** und **0.72348/0.73335**.
+**Zahlen aus GRÜNs Lane** (~~Suite~~, PF-13,
 `tsc`) **und PINKs Lane** (Pixel, sRGB, PF-5/PF-7-Mutanten) **sind AUF BERICHT HIN übernommen** — *** AUSSER DER GESAMTSUITE, die §11.9 in dieser Lane auf eigener Wegwerf-DB nachgefahren hat (3546/0, identisch). PF-13 UND `tsc` BLEIBEN AUF BERICHT HIN. *** und hier als
 solche gekennzeichnet — **keine davon konnte ich auf einem von mir lesbaren Stand nachvollziehen** (§0) — **und wo ein Instrument ein
 eigenes Verdict-Feld führt, steht es hier wörtlich statt zusammengefasst (A-G458).**
@@ -1196,3 +1205,81 @@ unreferenziert und wurden **nie gepusht**.
 > LIEF DER FALLBACK NIE UND DIE VARIABLE WAR LEER. *** Dieselbe Mechanik wie A-G483, in derselben Sitzung, in
 > dem Kommando, mit dem ich die Regel durchsetzen wollte. **A-G483 ist damit keine Anekdote mehr, sondern
 > gemessen: sechs von sechs.**
+### §12.8 PINK-PIXEL ÜBER `4f4534c5` — DIE PIXELSCHICHT IST GEMESSEN, UND SIE HAT MEINEN BERICHT WIDERLEGT
+
+Eigener Worktree, eigener Production-Build (**BUILD_ID `ahSbSdZX60zaZGdwHvU0d`**, Exit 0, Dummy-DB auf Port 1,
+nie verbunden), eigener Stand 3460/3461, **PINKs committete Instrumente nachgefahren statt neu geschrieben**
+(3 Anpassungen, alle Port/Pfad, keine Logik), **SwiftShader-Software-Raster — derselbe Backend wie PINK**,
+1920×1080 **und** 1280×800, dSF 1, Onboarding-Overlay **vor jeder Messung auf 0 geprüft**. `package-lock`-md5
+**identisch mit PINKs**. Alle konservierten BUILD_IDs **nachher erneut verifiziert unverändert**.
+
+#### Die Byteidentität hält — und stärker als von mir behauptet
+
+`7b4d5852 → 4f4534c5` berührt *** KEINE EINZIGE RENDER-PFAD-DATEI *** — nur `lib/career/db/client.ts`, die
+zwei `database-isolation`-Dateien, vier Testdateien und Dokumente. **Kein CSS, kein View-Model, kein Layout.**
+Ich hatte eine Datei byteidentisch gemeldet; es ist die ganze Zeichenfläche. **Der schwere Befund, auf den
+der Auftrag vorbereitet war, existiert nicht.**
+
+#### Der Trägerdelta — *** NULL ÄNDERUNG IN ALLEN 18 MASKEN ***
+
+Alle 18 Maskenselektoren von PINKs §1 liefern **identische Zählungen bei L0, L1 und L2**; Halo-Aufschlüsselung
+identisch; `<g>`-Zählung 11→11; `data-testid`-Menge, `mf-*`-Klassenmenge, **jede `url(#…)`-Referenz mit
+identischer Multiplizität**, jede Mask-/ClipPath-/Gradient-`id` unverändert. *** KEINE VON PINK GEBAUTE MASKE
+IST GEBROCHEN, UND KEINE IHRER DECKUNGSLÜCKEN WURDE GRÖSSER. *** Und zwei davon sind **geschlossen**:
+`[data-mapping-seat]` erreicht 8 gezeichnete Sitze bei L0, die vorher **weder Klasse noch `data-*`** trugen,
+und `[data-mapping-halo]` erreicht **alle fünf** Glows, wo `mapping-glows` zwei erreicht — **PINKs F-G1 in
+beiden Kanälen.**
+
+#### Die Pins, mit Rahmen
+
+| Pin | Schranke | gemessen | Urteil |
+|---|---|---|---|
+| **PG-1** | ≥ 0.55 | **0.62183 / 0.63471** (1920 reduce/live) · **0.71841 / 0.72938** (1280) | *** PASS, alle vier Zellen *** |
+| **PF-2** | ≥ 1.6 | Zwei-Routen-Spreizung **433×**; `NAME_ONLY` **unter** `NONE` in einem Fokuszustand | *** NICHT MESSBAR — PINKs eigene Void-Bedingung unabhängig reproduziert *** |
+| **PF-6** Zeile 1 | kein Disc-Pixel > 0.030 | live mit gezeichneter Fremdbewegung **0.493676**, **3418** Pixel über der Schranke | *** ROT *** (PINK: 0.507439 / 3427 — **keine Regression**) |
+| **PF-11** Kontrastglied | apart ≤ 1.5× bb | 1920: zwei Sprossen **UNBOUNDED**, zwei **ohne Signal**; 1280: **alle vier ohne Signal** | *** KEINE EINZIGE SPROSSE KLART *** (Computed-Style-Glied: PASS) |
+| **PG-17** Extent | ≥ 1.5 r | **alle PASS**; schlechteste Zelle 1280 L0 rank 1 marked **1.50233 r = 0.0429 Device-px Luft** | PASS gemessen, **Pin WITHDRAWN** (A-G165, in der Quelle) |
+
+#### Was PINK-PIXEL an meinem Bericht zerstört hat — D-PP-2, und es ist der Befund des Mandats
+
+> *** MEIN §1 FÜHRTE PG-1 ALS „0.6431 / 0.7397“. DAS IST `C_ringAndSeatHidden` — *„ring and its seat both
+> gone“* — EIN KONTRAFAKTUM, IN DEM DER VERDECKENDE SITZ AUS DER ZEICHNUNG ENTFERNT IST. ***
+> **Selbst nachgeprüft, bevor ich es übernommen habe:** `A_asBuilt` = **0.63906 / 0.73663**,
+> `C_ringAndSeatHidden` = **0.64313 / 0.73971**, Provenienz-Head **`76ae9043`**. Also: **falsche Bedingung,
+> falscher Commit, und in §9 falscher Lane zugeschrieben** (die Zahl ist GRÜNs `option3`-Probe, nicht PINKs).
+> **Alle drei korrigiert.**
+>
+> **Eine Präzisierung zu PINK-PIXELs Formulierung:** es ist nicht die *günstigste* der drei Bedingungen —
+> `B_ringHidden` ist mit 0.66383 höher. Es ist **eine kontrafaktische**, und das ist der Defekt, nicht die
+> Optimierung.
+>
+> *** UND DER WICHTIGSTE TEIL: IN §5 IST DIESELBE ZAHL RICHTIG. *** §5 nennt die **Kosten von Option (3)**, und
+> Option (3) *ist* das Entfernen von Ring und Sitz. **Dieselbe Zahl, ein Abschnitt korrekt, ein Abschnitt
+> falsch** — §5 ist jetzt ausdrücklich gegen eine spätere „Korrektur“ geschützt. **Eine Bedingung gehört zur
+> Zahl wie ein Build**, und das wusste dieses Register — es hatte nur keinen Rahmenbegriff für *Bedingung*.
+
+#### D-PP-1 — ein Block gesiegelter Zahlen ist VOID, nach PINKs eigener Regel
+
+`RING_LUMINANCE.shelf` **0.02 → 0.022** (GRÜNs A-G62 — dieselbe Änderung, die A-G489 aufdeckte). Gemessen:
+α 0.020 → `rgb(4,5,5)`, L = 1.453105e-3; α 0.022 → `rgb(5,6,6)`, L = 1.756632e-3; **Verhältnis 1.20888 —
+PINKs Figur auf fünf Dezimalen reproduziert.** *** DIE ÄNDERUNG ÜBERSCHREITET EINE QUANTISIERUNGSSTUFE, IST
+ALSO KEIN NO-OP IM PLATEAU. *** **VOID bei `4f4534c5`:** die Modalreferenz der nackten Bande (§35/§42/§43), die
+`rgb(4,5,5)`-Bestätigung meines Sitzkanten-Mechanismus (§40), und die Naht-Zellen, die gegen dieses Niveau
+formuliert sind. **Die Naht selbst — Existenz und Mechanismus — ist unberührt; ihre Zahlen sind nicht die
+dieses Builds.** E-7s Leiter klart auf gerenderter Luminanz (4.1150 / 2.3421 / 2.5432, alle ≥ 1.6).
+
+#### Meine Urteile zu den übrigen Befunden
+
+| | |
+|---|---|
+| **D-PP-7, PG-17** | *** WITHDRAWN entschieden. *** A-G165 hat den Pin zurückgezogen, und die Quelle sagt es. **Der gemessene PASS weist keine lebende Obligation nach.** PINKs §3 führt ihn weiter unter seinen vier bewachten Pins — **das ist veraltet und nur PINK darf es ändern.** Die 0.0429 Device-px bleiben als *Befund* im Register: **wer PG-17 je reaktiviert, reaktiviert einen Pin, der bei 1280 vier Hundertstel Pixel von Rot steht.** |
+| **D-PP-4, PF-6 Zeile 1** | **ROT, keine Regression, vom Merge übernommen.** Steht als offener Pin, nicht als Integrationsdefekt. **1280×800 ist für PF-6 UNGEMESSEN** — PINKs Instrument fährt nur 1920. |
+| **D-PP-5, PF-11** | **Kein grüner Wert zu übertragen.** Die Konjunktion ist falsch, wie PINK schon festhielt. |
+| **D-PP-6, PF-2** | *** DIE REPARATUR LIEGT IM TRÄGER UND IST UNGENUTZT: *** `[data-mapping-seat="arc-marks"][data-seat-is-group]` macht die leuchtende Marke als Nicht-Sitz-Geschwister wählbar, und der Quellkommentar nennt PF-2 als Grund. **PINKs Instrument ist älter und steigt nicht ab.** Schließbar. |
+| **D-PP-3** | PINKs Instrumente **schreiben ihre Provenienz als Literal** und stempeln jeden Re-Run auf `3ec8457d`/`xCD8LBxdjnP97-2Gjs5yr`. *** FÜR EINE LANE, DEREN REGEL IST, DASS KEINE ZAHL OHNE IHREN BUILD REIST, MACHEN DIE INSTRUMENTE DIE FALSCHMARKIERUNG AUTOMATISCH UND LAUTLOS — GENAU IM RE-VALIDIERUNGSFALL, FÜR DEN SIE DA SIND. *** Schließbar. |
+| **D-PP-8** | PG-14s Konvergenz-Offenlegung ist bei L2 leer (`passes="0"`, `converged="n/a"`). Benannt. |
+
+> **Und die Grenze dieses Berichts, die PINK-PIXEL selbst zieht und die ich nicht glätte:** **kein GO, keine
+> Freigabe**, eine Maschine, ein Chromium, ein Backend, dSF 1 — **die Zahlen reisen zu keinem anderen
+> Renderer.** PG-20, dessen Prädikat sich als einzige substantielle Geometrieänderung bewegt hat, ist
+> **nicht gemessen.** **Und die Provenienz ist abhängig: von der Lane beauftragt, die geprüft wird.**
