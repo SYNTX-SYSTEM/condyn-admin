@@ -49,7 +49,28 @@ export const PHASE_F = resolve(RECORD_DIR, "PERSON_X_JOB_MAPPING_PHASE_F.md");
  * A-G494: *** A GUARD THAT ASKS "IS THIS A REPOSITORY?" INSTEAD OF "IS THIS *THE* REPOSITORY?" IS THE SAME
  * DEFECT AS A FIGURE WITHOUT ITS BUILD. *** Both name a kind where the record needed an identity.
  */
-const IDENTITY_COMMIT = "93c47e03bc01f06f34f7b9f9411ca9a1460b561d"; // origin/frontend/mapping-phase-f @ 93c47e03, PHASE_G's base
+/**
+ * F-R13 (2026-11-16) — MY OWN F-R9 REPAIR, CORRECTED. THE ORIGINAL ANCHOR IS KEPT, NOT DELETED:
+ *
+ *   [WITHDRAWN F-R13 2026-11-16] const IDENTITY_COMMIT = "93c47e03bc01f06f34f7b9f9411ca9a1460b561d";
+ *                                // origin/frontend/mapping-phase-f @ 93c47e03, PHASE_G's base
+ *
+ * *** THAT OBJECT IS CONTAINED IN 7 OF 124 REFS AND IS NOT AN ANCESTOR OF `main`. *** Proven with
+ * `git clone --no-local --single-branch --branch main`: the commit is ABSENT in the clone, so this module
+ * would have refused a legitimate checkout of this repository as foreign. (A first attempt with `--local`
+ * proved nothing — a local clone copies the whole object store, the commit travelled, and the test was the
+ * wrong instrument. Recorded because the wrong instrument nearly became the proof.)
+ *
+ * F-R9 FIXED A FALSE ACCEPTANCE AND INTRODUCED A FALSE REFUSAL — A-G494 with the polarity reversed, inside
+ * the repair for A-G494. An identity claim must name what every clone of the repository holds on every
+ * branch, and there is exactly one such object: the ROOT COMMIT, where the repository began. It cannot be
+ * forged by `git init` + `touch` either, so nothing of F-R9's strength is given up.
+ *
+ * test/integration-boundary/instrument-portability.test.ts now holds this as an invariant over every
+ * tracked instrument, deriving the root commit from the repository rather than hardcoding it — so the next
+ * instrument that anchors on a branch-local commit goes red instead of refusing a real checkout in silence.
+ */
+const IDENTITY_COMMIT = "29266f9c4958d75ac7261e3748e71df12d50b8e4"; // this repository's root commit, in all 124 refs
 if (!existsSync(resolve(REPO_ROOT, ".git")))
   throw new Error(`REFUSE gelb-paths: derived REPO_ROOT ${REPO_ROOT} holds no .git — refusing to read a tree ` +
     `that is not a checkout of this repository rather than reporting a measurement taken from one.`);
@@ -57,7 +78,9 @@ try {
   execFileSync("git", ["-C", REPO_ROOT, "cat-file", "-e", `${IDENTITY_COMMIT}^{commit}`], { stdio: "ignore" });
 } catch {
   throw new Error(`REFUSE gelb-paths: ${REPO_ROOT} is a git checkout but NOT of this repository — it does not hold ` +
-    `the identity commit ${IDENTITY_COMMIT.slice(0, 8)}. A .git alone proves only that something is version-controlled (F-R9).`);
+    `the root commit ${IDENTITY_COMMIT.slice(0, 8)}. A .git alone proves only that something is version-controlled ` +
+    `(F-R9). A SHALLOW CLONE lacks the root commit too: fetch the history (\`git fetch --unshallow\`) and run again — ` +
+    `the same refusal and the same remedy as ERR_PHASE_C_BASE_MISSING in test/career/mapping-field/phase-base.ts.`);
 }
 for (const [n, p] of [["PHASE_G", PHASE_G], ["PHASE_F", PHASE_F]]) {
   if (!existsSync(p)) throw new Error(`REFUSE gelb-paths: ${n} not at the derived ${p}`);
