@@ -1,0 +1,1447 @@
+{
+  "layer": "mapping-phase-pink-portable-v1",
+  "layerVersion": "v1",
+  "what": "A separately versioned, portable regeneration of the 83 PINK instruments sealed in mapping-phase-{e,f,g}-contract. The historical seal is unchanged; this layer is additive.",
+  "ownerDecision": "Integrate PINK's portability repair over a new, separately versioned evidence layer. Keep all 167 historical seal entries unchanged.",
+  "generatedAtUTC": "2026-11-16T12:22:16.405Z",
+  "generator": {
+    "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-layer-build.mjs",
+    "digest": "3adf929039dc16b973f60b509903a34060e514af8141da250bb171f8ee11f5df"
+  },
+  "resolver": {
+    "path": "docs/architecture/decision-fields/evidence/mapping-phase-pink-tools/pink-tools.mjs",
+    "digest": "b52f9878290fdbea53d3cbd1aba5c15dec10b3fe743b5b83d3a6338dcb5bd6dc",
+    "copiedIntoLayer": false,
+    "importedAs": "../../../mapping-phase-pink-tools/pink-tools.mjs",
+    "depthFromLayerScripts": 3,
+    "whyNotCopied": "pink-tools.mjs derives REPO_ROOT five levels up from its own directory. A copy at <layer>/mapping-phase-pink-tools/ is one level too deep, derives REPO_ROOT=<repo>/docs, finds no .git and THROWS AT IMPORT by its own guard. Measured, not reasoned. One canonical copy also cannot drift."
+  },
+  "sourceRef": {
+    "commit": "aafeae46c6e5bc676c423e9efc53790dee23ebe6",
+    "branch": "validation/hr-decision-loop-pink"
+  },
+  "historicalSeal": {
+    "totalEntries": 167,
+    "perPhase": {
+      "mapping-phase-e-contract": {
+        "entries": 33,
+        "manifestDigest": "3470054cd0efb41d938e62870d0332621eca769e787cf05ad38c6869c33518e5"
+      },
+      "mapping-phase-f-contract": {
+        "entries": 43,
+        "manifestDigest": "3fbbbfa5910b8bdca486be29004eeecd6a1c2333a000f266f435423bf2e7a20c"
+      },
+      "mapping-phase-g-contract": {
+        "entries": 91,
+        "manifestDigest": "00c12ebdcf15fdc79d1a09db2870d6c7f321e45c715b1e5eb887e6cb01d14553"
+      }
+    },
+    "unchangedByThisLayer": true,
+    "note": "These three manifests must be byte-identical before and after generation. Their digests are recorded here so a reader can detect a later change without consulting git."
+  },
+  "a_g499_clause": "A checksum answers 'is this venue internally consistent?' and never 'does it describe the build it claims to'. This layer's own manifest.sha256 is therefore NOT evidence of provenance — it would verify perfectly against any content generated at the same time. The per-instrument triple below is the provenance evidence: manifest digest, recomputed digest, output digest. Generation REFUSES if any recomputed source digest differs from its historical manifest line.",
+  "refusalRule": "If any of the 83 recomputed source digests differs from its manifest line, NO output file is written and the generator exits 4. Checked for all 83 before the first write.",
+  "population": {
+    "instruments": 83,
+    "sealedInstruments": 83,
+    "unsealed": [],
+    "rewritten": 80,
+    "unchanged": 3,
+    "changeSites": 222
+  },
+  "instruments": [
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-a8.mjs",
+      "sourceDigestFromManifest": "982b604888c4d07c08e166d75d8bddec2ce444131863caec88119b6460b0dcf3",
+      "sourceDigestRecomputed": "982b604888c4d07c08e166d75d8bddec2ce444131863caec88119b6460b0dcf3",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-a8.mjs",
+      "outputDigest": "84a34d71c5ea70f9918182521e97d4bcbaa5aba1f26b988b1b7f01ffc927b2d7"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-breath.mjs",
+      "sourceDigestFromManifest": "f9fa8d935e2cd18cffa660df1e92f84ffacaf892449f6f07864358465b7d5c08",
+      "sourceDigestRecomputed": "f9fa8d935e2cd18cffa660df1e92f84ffacaf892449f6f07864358465b7d5c08",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-breath.mjs",
+      "outputDigest": "622d72ce9d1478b933f2888e033b4c590677cc213f1ccd1fa964e97e76d297d2"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-e8b.mjs",
+      "sourceDigestFromManifest": "2876dc77224ae67fcee7462a21bc8c5374d323cb0557f9949e3d6c70db478a6b",
+      "sourceDigestRecomputed": "2876dc77224ae67fcee7462a21bc8c5374d323cb0557f9949e3d6c70db478a6b",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 716a1941)"
+      ],
+      "declaredCommits": [
+        "716a1941"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-e8b.mjs",
+      "outputDigest": "c930666934af7bde21a9361fb5d0735fe3519a060940b9bc639b77feaea4d6d2"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-facade-p13.mts",
+      "sourceDigestFromManifest": "04df789f786d1f421c4ee9eac897f6bb6727ddf5fbe64694ea8f18f159c3c38a",
+      "sourceDigestRecomputed": "04df789f786d1f421c4ee9eac897f6bb6727ddf5fbe64694ea8f18f159c3c38a",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "1 absolute worktree default(s) -> refusal"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-facade-p13.mts",
+      "outputDigest": "098cf8f65a350679fbe4de37d899b4c224e2356eb96f4152ed4e56af0c55f773"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-facade-p4.mts",
+      "sourceDigestFromManifest": "46eb20fc55e63c2ee5800b23159aa9c6345f90c18648314998b3569bc3b05567",
+      "sourceDigestRecomputed": "46eb20fc55e63c2ee5800b23159aa9c6345f90c18648314998b3569bc3b05567",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "1 absolute worktree default(s) -> refusal"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-facade-p4.mts",
+      "outputDigest": "0b61ba5bd196ba19056664440144b4b55eb4a3cbdb54b581b9fe139c0b7a5b84"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-facade.mts",
+      "sourceDigestFromManifest": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceDigestRecomputed": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "2 dead-session scratch path(s) -> OUT_DIR"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-facade.mts",
+      "outputDigest": "a1cc975c848b6e53af4e2ad8f0e3ba273edb5f48d64a7fb528b5244860cb2bc9"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p1235.mjs",
+      "sourceDigestFromManifest": "35c8e3a43ecd75d3feebf58cf2716ef2b9334f662ecddd4c5c84220bf0674727",
+      "sourceDigestRecomputed": "35c8e3a43ecd75d3feebf58cf2716ef2b9334f662ecddd4c5c84220bf0674727",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 716a1941)"
+      ],
+      "declaredCommits": [
+        "716a1941"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p1235.mjs",
+      "outputDigest": "f98ea06bb9f3b398d251f90fbb6df2fa217ca8692b35fde9011a5740fa1519af"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p13.mjs",
+      "sourceDigestFromManifest": "b54dde6ed628f27cf84efcc3b011ea38d438f6464defd2e4c100f95f28a26033",
+      "sourceDigestRecomputed": "b54dde6ed628f27cf84efcc3b011ea38d438f6464defd2e4c100f95f28a26033",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p13.mjs",
+      "outputDigest": "36cb5990b2e44958d5da945f4820bf67c08c8a7b5f82c6082dd880a95e3a722e"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p4-mutants.mjs",
+      "sourceDigestFromManifest": "3acda0484b933b6e32cf6c59aaee0d9a8eec9e5d96f86cec10fabb6de2e69313",
+      "sourceDigestRecomputed": "3acda0484b933b6e32cf6c59aaee0d9a8eec9e5d96f86cec10fabb6de2e69313",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p4-mutants.mjs",
+      "outputDigest": "58efc1ee73c45fce53b7246c4f3f8a1c0c06816e18114b28350803c3eb858365"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p4.mjs",
+      "sourceDigestFromManifest": "5895f9069dc40aec6aebe5ee9219361524209e5430c1e69396c1a5ac5179b82d",
+      "sourceDigestRecomputed": "5895f9069dc40aec6aebe5ee9219361524209e5430c1e69396c1a5ac5179b82d",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p4.mjs",
+      "outputDigest": "30807d28a1df5681e506361a865dba1d3c115d24d6f8ce4f4f877f551219d3fb"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p6-jsbranch.mjs",
+      "sourceDigestFromManifest": "2aa841a1ab946f074030ffa54a944858f938a2996c179f681d9dd653bb6cf268",
+      "sourceDigestRecomputed": "2aa841a1ab946f074030ffa54a944858f938a2996c179f681d9dd653bb6cf268",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p6-jsbranch.mjs",
+      "outputDigest": "af7929412ec4ab72e14210ec9106e8752580bc7035e13366b82208a50a453be2"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-p8-rendered.mjs",
+      "sourceDigestFromManifest": "bab66dc300f5f5aabced98103838a7522330571cbea28d3debd266cf62a6d71c",
+      "sourceDigestRecomputed": "bab66dc300f5f5aabced98103838a7522330571cbea28d3debd266cf62a6d71c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 716a1941)"
+      ],
+      "declaredCommits": [
+        "716a1941"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-p8-rendered.mjs",
+      "outputDigest": "78fd4499c8c76bbae5a69d3654f47b7a9f8e64a1671ddd3890b3121df7b5cd9a"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-pending-breath.mjs",
+      "sourceDigestFromManifest": "2717d7ebac74939ef34d03ef0f5f5328311129340b3d587c64e8885b03caf959",
+      "sourceDigestRecomputed": "2717d7ebac74939ef34d03ef0f5f5328311129340b3d587c64e8885b03caf959",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-pending-breath.mjs",
+      "outputDigest": "3345df123df66c0cf4ea6e924ef5bf3f8b8b66a90cc2e421aa518f27cf8e72ca"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-prep2.mjs",
+      "sourceDigestFromManifest": "26b387a31b01fbe4d0b916886decea00cd767e5c148f1f5107fa86fba3689f2a",
+      "sourceDigestRecomputed": "26b387a31b01fbe4d0b916886decea00cd767e5c148f1f5107fa86fba3689f2a",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 86e36924)"
+      ],
+      "declaredCommits": [
+        "86e36924"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-prep2.mjs",
+      "outputDigest": "6cb44f332b3b8d7122be5a92f0102241c40588d5d8264176ca3a4c48817966b9"
+    },
+    {
+      "source": "mapping-phase-e-contract/scripts/pink-static-mutants.mjs",
+      "sourceDigestFromManifest": "0d95052650af89dee8d5cf89b94d1d8b0d56bcc36b0e38aaa71274be466b0b0c",
+      "sourceDigestRecomputed": "0d95052650af89dee8d5cf89b94d1d8b0d56bcc36b0e38aaa71274be466b0b0c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-e-contract/scripts/pink-static-mutants.mjs",
+      "outputDigest": "a6e38c06ad4b1798c4d4cfc869df486afa17e97a0f2bf148232fd9861babc5a8"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-breath-vs-floor.mjs",
+      "sourceDigestFromManifest": "f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02",
+      "sourceDigestRecomputed": "f6ffc1c54b0be57a31f8395cc349894bdc7323dfef488cb5b414b88f69490b02",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-breath-vs-floor.mjs",
+      "outputDigest": "5f863f7a97340d8dee4cdfa03c450247051a4fd555293c695711d40b31fb918e"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-class-probe.mjs",
+      "sourceDigestFromManifest": "b134c7b559ab4168eb5b657474c9f282eebb5604dfba0248cb75030be37f1065",
+      "sourceDigestRecomputed": "b134c7b559ab4168eb5b657474c9f282eebb5604dfba0248cb75030be37f1065",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-class-probe.mjs",
+      "outputDigest": "e9f956eb831a22f7e4d29bd1df581f4f4b51de72fa7e4080b99d21aab94bd7ec"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-continuity.mjs",
+      "sourceDigestFromManifest": "d13dd5cd3132b58409f6978a54b386d3095c315172a55f6283abb354ae275454",
+      "sourceDigestRecomputed": "d13dd5cd3132b58409f6978a54b386d3095c315172a55f6283abb354ae275454",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-continuity.mjs",
+      "outputDigest": "5587842db9a33e3d123f644c028872452a6bc021a43a404d1528e23f79f52206"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-continuity2.mjs",
+      "sourceDigestFromManifest": "8c07e007f897d6d1796a715f08f2c6a1948a708ef164b9432db32f59f705e602",
+      "sourceDigestRecomputed": "8c07e007f897d6d1796a715f08f2c6a1948a708ef164b9432db32f59f705e602",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-continuity2.mjs",
+      "outputDigest": "e1d4b95af4a799304e89632cf5dfc17fc05e3d17594452f80b60ef83183a4bad"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-facade.mts",
+      "sourceDigestFromManifest": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceDigestRecomputed": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "2 dead-session scratch path(s) -> OUT_DIR"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-facade.mts",
+      "outputDigest": "a1cc975c848b6e53af4e2ad8f0e3ba273edb5f48d64a7fb528b5244860cb2bc9"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-floor-regions.mjs",
+      "sourceDigestFromManifest": "900b8510db22df867e9ae82a364b0a6fe27b00ef7ed385ab93c80656afe21dee",
+      "sourceDigestRecomputed": "900b8510db22df867e9ae82a364b0a6fe27b00ef7ed385ab93c80656afe21dee",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-floor-regions.mjs",
+      "outputDigest": "8c0c5904e996e84bdf65d7907a40f5843399330eebbbeaf5739e21840c8d8bb7"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs",
+      "sourceDigestFromManifest": "611af804462e99522230515fad87852197d5a505c3fce7519aa4c9d84f94390b",
+      "sourceDigestRecomputed": "611af804462e99522230515fad87852197d5a505c3fce7519aa4c9d84f94390b",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin.mjs",
+      "outputDigest": "4e826b2ec08d8db0c7beaf4a7fae7332702d0c6bf1c14042cfca4b5f1e012c0b"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs",
+      "sourceDigestFromManifest": "c77c70f02fc1244372a22b49d26994cf26b2f60ad6b412371e4db00f247ec556",
+      "sourceDigestRecomputed": "c77c70f02fc1244372a22b49d26994cf26b2f60ad6b412371e4db00f247ec556",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin2.mjs",
+      "outputDigest": "72538211ae56fc6526a99be6fedc3e9aad1d95a02cc705834dc48427bebfcef4"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs",
+      "sourceDigestFromManifest": "b55c1d2cc69c6833777879277b8f6d389cdf1e7b67cb2dd7d70359a83cc3acda",
+      "sourceDigestRecomputed": "b55c1d2cc69c6833777879277b8f6d389cdf1e7b67cb2dd7d70359a83cc3acda",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin3.mjs",
+      "outputDigest": "a4543fba823d61b4fb457ed77260ebb48aae2f77eb76467fdae8f89f8e6bf901"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs",
+      "sourceDigestFromManifest": "a708875a17e378b3724feb59038caba1e581bbbd1d60309e93492d9c3cc574a3",
+      "sourceDigestRecomputed": "a708875a17e378b3724feb59038caba1e581bbbd1d60309e93492d9c3cc574a3",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-lockin3b.mjs",
+      "outputDigest": "22c40a9e95d6cf926e4e8a887a6db25e12d098f72b26fe414c5d708bcf57d8f1"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs",
+      "sourceDigestFromManifest": "11d77e279f035f19067298519b69d00f55a556f15f5a1825faeaedb8532c0df3",
+      "sourceDigestRecomputed": "11d77e279f035f19067298519b69d00f55a556f15f5a1825faeaedb8532c0df3",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-perclass.mjs",
+      "outputDigest": "16b93519436cde2afd3930196618b7b727ef0e821dd70b58a5722acb38203e73"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs",
+      "sourceDigestFromManifest": "2f79541f31d1dccd370706a4ed724820bb2970fca773e11c134f8cb6ede3a365",
+      "sourceDigestRecomputed": "2f79541f31d1dccd370706a4ed724820bb2970fca773e11c134f8cb6ede3a365",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-perclass2.mjs",
+      "outputDigest": "241ceebcbe4376187e03eac83077ee02b7093115926d0d71f8219f4026c6d3be"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-tip.mjs",
+      "sourceDigestFromManifest": "507a0575e7e895d3abd1364a1adb81e70883eeea08f254f5bb2bc8dc7a200937",
+      "sourceDigestRecomputed": "507a0575e7e895d3abd1364a1adb81e70883eeea08f254f5bb2bc8dc7a200937",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "F 1 hardcoded commit label(s) -> observed (declared ef466ca8)"
+      ],
+      "declaredCommits": [
+        "ef466ca8"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-tip.mjs",
+      "outputDigest": "0ba2a2b546e99a898c1dcccd27238d3c96a85502b7f44a5f7914b8e7ccbeb3ca"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-under.mjs",
+      "sourceDigestFromManifest": "a4b7ffa3197c6b58c336ab77a2b9f01826e229c9adb25a7fff5a34966988480e",
+      "sourceDigestRecomputed": "a4b7ffa3197c6b58c336ab77a2b9f01826e229c9adb25a7fff5a34966988480e",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-under.mjs",
+      "outputDigest": "05aeb97682224f05af3f8eacc6a9654e316835b805a427a6c728e6a01aeb72b7"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pf8-window.mjs",
+      "sourceDigestFromManifest": "3c501fbf8dce51e92b1ef05df7fd95ffacdce774c878e29b819a9e86dbf158c9",
+      "sourceDigestRecomputed": "3c501fbf8dce51e92b1ef05df7fd95ffacdce774c878e29b819a9e86dbf158c9",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pf8-window.mjs",
+      "outputDigest": "855013a85e4a5767fd9c7bc10be37d636652431fe5ce484d62cc268f051a03aa"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pg1-attr.mjs",
+      "sourceDigestFromManifest": "4ea03b3d919845e687400e2e1bb74e20eed53a1d4e4b266e6c37176be8039eb0",
+      "sourceDigestRecomputed": "4ea03b3d919845e687400e2e1bb74e20eed53a1d4e4b266e6c37176be8039eb0",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pg1-attr.mjs",
+      "outputDigest": "3e81444afa5aed021db51d452ae0bfded3b108c045e9c45236a1b201720c633b"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pg1.mjs",
+      "sourceDigestFromManifest": "9b72681e85ccba6a685ed53656eabffc2398eba674c528760afeb3986d1d206c",
+      "sourceDigestRecomputed": "9b72681e85ccba6a685ed53656eabffc2398eba674c528760afeb3986d1d206c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 93c47e03)"
+      ],
+      "declaredCommits": [
+        "93c47e03"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pg1.mjs",
+      "outputDigest": "2bceb761e502898ce03ba1bfdd5e666e8536d15c4071cddfa3a3fb861a25dc25"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pixels-floor.mjs",
+      "sourceDigestFromManifest": "82a810cd6032c92e2b1da8a96e4a5b34e288d7e00946558c7bed8a1fe887c678",
+      "sourceDigestRecomputed": "82a810cd6032c92e2b1da8a96e4a5b34e288d7e00946558c7bed8a1fe887c678",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pixels-floor.mjs",
+      "outputDigest": "78ccbdb4b97d441597fe3584c66714f33987a16b428e46e977e5449cf411fbdb"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-pixels.mjs",
+      "sourceDigestFromManifest": "44caa40ea60fced636f16842b060611282626ad086109ca370179fda5139a26f",
+      "sourceDigestRecomputed": "44caa40ea60fced636f16842b060611282626ad086109ca370179fda5139a26f",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "1 dead-session scratch path(s) -> OUT_DIR",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-pixels.mjs",
+      "outputDigest": "2a2675293b3699316c8fc6760ebbfffefabe6cdd90224eb645939f2a4de124cc"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-probe-dom.mjs",
+      "sourceDigestFromManifest": "5e667c8d877feb7bdc05cd6a66ac6708ecda5b329f2e36d6d54cf6c1c8ddaa56",
+      "sourceDigestRecomputed": "5e667c8d877feb7bdc05cd6a66ac6708ecda5b329f2e36d6d54cf6c1c8ddaa56",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-probe-dom.mjs",
+      "outputDigest": "a509411bf4f53fac9fce423fc422a2264a6b63df62cbbb9b40bc365a4132b951"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-probe-rings.mjs",
+      "sourceDigestFromManifest": "cd00e8292ea5f03df05f886c5dbc721a24e41fc0fddd5339e822fa642a1912d0",
+      "sourceDigestRecomputed": "cd00e8292ea5f03df05f886c5dbc721a24e41fc0fddd5339e822fa642a1912d0",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-probe-rings.mjs",
+      "outputDigest": "1cf77c98ffd2c25a177f7b755f0c155f6e698d40f9d4d0820019b1a98dfc3877"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-rings-pixels.mjs",
+      "sourceDigestFromManifest": "246b935dc910e2626808f00498623c38a2119ce4bbd98bae2f4b084fd8c26b9b",
+      "sourceDigestRecomputed": "246b935dc910e2626808f00498623c38a2119ce4bbd98bae2f4b084fd8c26b9b",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 9cc06f84)"
+      ],
+      "declaredCommits": [
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-rings-pixels.mjs",
+      "outputDigest": "4b3648e2b161a4fc99620bfd3b9aa00246c4a1e5ccb01aa9c2e572dcf6d6cb8b"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-shot-timing.mjs",
+      "sourceDigestFromManifest": "576903e32419e629d4be8a455425ff437beebeff91845b7b506d6435707f777a",
+      "sourceDigestRecomputed": "576903e32419e629d4be8a455425ff437beebeff91845b7b506d6435707f777a",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-shot-timing.mjs",
+      "outputDigest": "b2763c17d9d90127090325a0ce39835da21e41b1cb6c8f0ba7deceb242fdadbb"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-tip-probe.mjs",
+      "sourceDigestFromManifest": "0d1be70dda9d76cd920a84bb9b717291e214f164add369c15947e68ecf65a068",
+      "sourceDigestRecomputed": "0d1be70dda9d76cd920a84bb9b717291e214f164add369c15947e68ecf65a068",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-tip-probe.mjs",
+      "outputDigest": "770dae8f355374e3266dff3c1a6fa5f6240499858dd29416f2410c7b87256f5f"
+    },
+    {
+      "source": "mapping-phase-f-contract/scripts/pink-tip-timing.mjs",
+      "sourceDigestFromManifest": "9a73d062c9c5f73f99a8089f8b32b3abace4dd344ba0a8e79095375c0a9faf09",
+      "sourceDigestRecomputed": "9a73d062c9c5f73f99a8089f8b32b3abace4dd344ba0a8e79095375c0a9faf09",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-f-contract/scripts/pink-tip-timing.mjs",
+      "outputDigest": "c9a8512fccce351c1eae9676659b62b8e998d60227fe31db25d0260dd7c2b2fc"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag16-criterion.py",
+      "sourceDigestFromManifest": "64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104",
+      "sourceDigestRecomputed": "64f1d4fdc4180e84d44da830beed6f23c4b3f2bd8e40efe26fb4bf10d5ce0104",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": null,
+      "outputDigest": null,
+      "reason": "no machine-absolute, dead-path or provenance site — nothing to repair"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag16-ledger.py",
+      "sourceDigestFromManifest": "db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4",
+      "sourceDigestRecomputed": "db2b1c292479dd6df2011bf56472189c11077cab8d75ae1cce7d2a88769ab3d4",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": null,
+      "outputDigest": null,
+      "reason": "no machine-absolute, dead-path or provenance site — nothing to repair"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag340-capability-g.mjs",
+      "sourceDigestFromManifest": "9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0",
+      "sourceDigestRecomputed": "9d76fd6f7a91425fec9a6535982371ff697983d808b3c259d4f24bd2c23f76f0",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-ag340-capability-g.mjs",
+      "outputDigest": "edb5ea0ceedae25a8bbed829d9b2d598c2c6076611dd248a2da2ce687248ba09"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag366-foreign-g.mjs",
+      "sourceDigestFromManifest": "63ff460f257770185a0ef21f2feb39d08437fdd77f9eb8d6dfeeb2f3ac18b4e1",
+      "sourceDigestRecomputed": "63ff460f257770185a0ef21f2feb39d08437fdd77f9eb8d6dfeeb2f3ac18b4e1",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-ag366-foreign-g.mjs",
+      "outputDigest": "4d54edfa9e0aa6fb0d49640455592c397a5f9278a52499b222247372c31d97bc"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag373-numerator-g.mjs",
+      "sourceDigestFromManifest": "0e2bf125b7c7b57fcf1a8eb2dc00073876e87f2dacdd57f6fd6f4e291402f923",
+      "sourceDigestRecomputed": "0e2bf125b7c7b57fcf1a8eb2dc00073876e87f2dacdd57f6fd6f4e291402f923",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-ag373-numerator-g.mjs",
+      "outputDigest": "2db1e3d12e8d5a96540a3dea2d507e4371b459f3eef5877e26758b178f77fded"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag406-seam-g.mjs",
+      "sourceDigestFromManifest": "14425cb4a68cdc5ea6faae34b07c99eb10ec74d6a1adde3a5ab620a09b496911",
+      "sourceDigestRecomputed": "14425cb4a68cdc5ea6faae34b07c99eb10ec74d6a1adde3a5ab620a09b496911",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag406-seam-g.mjs",
+      "outputDigest": "ee69345528c4336ecf19bb4aa35b95a627b0d298e30e25ac437ab4e4b1d1121b"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag412-carrier-g.mjs",
+      "sourceDigestFromManifest": "5b8897eb4ca8ec00a70353f0a50e61642196837baf5583e6478d92dacf7ae3f3",
+      "sourceDigestRecomputed": "5b8897eb4ca8ec00a70353f0a50e61642196837baf5583e6478d92dacf7ae3f3",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag412-carrier-g.mjs",
+      "outputDigest": "623c3c7b361bb2e0d90d246b15fbffa56afc549de6f5b9ef2edbf99c3f41e697"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag412-isolated-g.mjs",
+      "sourceDigestFromManifest": "f303d5399b1c104653ae5af268c558d23d23efaa5d825f8b927791cf4eb91b2b",
+      "sourceDigestRecomputed": "f303d5399b1c104653ae5af268c558d23d23efaa5d825f8b927791cf4eb91b2b",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag412-isolated-g.mjs",
+      "outputDigest": "229013bd9c34d492b904472e52e71a64d8f894d3aab740dbba716dffde5b6723"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag412-swingratio-g.mjs",
+      "sourceDigestFromManifest": "06a7873429b273081523a3fc5ae906f541e9357d98295df022a78d970c0027e8",
+      "sourceDigestRecomputed": "06a7873429b273081523a3fc5ae906f541e9357d98295df022a78d970c0027e8",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag412-swingratio-g.mjs",
+      "outputDigest": "affc021d12e40293a41f075af247c11f39e098ea65f29d67d4a57c7ded290808"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag425-alphasweep-g.mjs",
+      "sourceDigestFromManifest": "4c2ab1ff8b1714e6ccc45ae67ae1ae33e1947a6b480f43838db4de980c27614f",
+      "sourceDigestRecomputed": "4c2ab1ff8b1714e6ccc45ae67ae1ae33e1947a6b480f43838db4de980c27614f",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag425-alphasweep-g.mjs",
+      "outputDigest": "b9bf24e2b3b41ea3b1fd7f3f1942fcfa94c59f0702e18fa9f2659001463797d9"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag434-seamprofile-g.mjs",
+      "sourceDigestFromManifest": "0617ac01fa70f6a6d7c51cba30d142f41d57a571ca59bde4e99ae4f7840ecc4f",
+      "sourceDigestRecomputed": "0617ac01fa70f6a6d7c51cba30d142f41d57a571ca59bde4e99ae4f7840ecc4f",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag434-seamprofile-g.mjs",
+      "outputDigest": "208d8efd8b11f39fec8bcea4afd44dcc2668522dc2b44cd54a320695854561dc"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-ag442-rasterbackend-g.mjs",
+      "sourceDigestFromManifest": "d89587ef8032cade8c4603b2b349757bf20d1378bad590e6e3b3a52047545ff6",
+      "sourceDigestRecomputed": "d89587ef8032cade8c4603b2b349757bf20d1378bad590e6e3b3a52047545ff6",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-ag442-rasterbackend-g.mjs",
+      "outputDigest": "a4a40044e582ab863385a390dd4c8851de1584b000baee31142ca0813855078c"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-depthgain-normalisation-g.mjs",
+      "sourceDigestFromManifest": "253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb",
+      "sourceDigestRecomputed": "253515580af169777722c7e0acbfe4df9c01e9fed95b9efb46742cfc73e96bcb",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-depthgain-normalisation-g.mjs",
+      "outputDigest": "9cf932a83577757ebfc295ac92449428264cacbfa7f640ee13ca321fc048ab3f"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-facade.mts",
+      "sourceDigestFromManifest": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceDigestRecomputed": "15c0d0d669f3436ef1ab9c4bc5777030ca1da80d8b8cb0063245dc9052204b15",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "2 dead-session scratch path(s) -> OUT_DIR"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-facade.mts",
+      "outputDigest": "a1cc975c848b6e53af4e2ad8f0e3ba273edb5f48d64a7fb528b5244860cb2bc9"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-floor-g.mjs",
+      "sourceDigestFromManifest": "fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174",
+      "sourceDigestRecomputed": "fdef87ae808893dc2da6130f52facce8ee1cf702968d9bcd3790e859ca05e174",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 2 hardcoded commit label(s) -> observed (declared 3ec8457d, 9cc06f84)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d",
+        "9cc06f84"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-floor-g.mjs",
+      "outputDigest": "49f92f790c74a8308e620cfd20c9618ccebf2b32e072c2610953d02ca78fd048"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-glow-travel.mjs",
+      "sourceDigestFromManifest": "ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8",
+      "sourceDigestRecomputed": "ed3c20dd3961187efe76d6d29e83aec8754f372dd96ab1daa4659d8d797b0cc8",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-glow-travel.mjs",
+      "outputDigest": "f18a8d6ac380d241ea1aab35cc5d8e211ed8e1dc9251a26da2450a191eb5be10"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-halo-mask.mjs",
+      "sourceDigestFromManifest": "80b933bc1d410501a6694409f5315bb4f6b7cea7389eb5f77dfb9815cd7f1887",
+      "sourceDigestRecomputed": "80b933bc1d410501a6694409f5315bb4f6b7cea7389eb5f77dfb9815cd7f1887",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-halo-mask.mjs",
+      "outputDigest": "017666aa452c57e74c4bb1b6923efb29c44818150d609278991a700d0b8fc089"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf11-pf6-blurred-g.mjs",
+      "sourceDigestFromManifest": "9401e6c52ee97c975e4994b4db62a2be5d53f743931c74b854a364acba6cacab",
+      "sourceDigestRecomputed": "9401e6c52ee97c975e4994b4db62a2be5d53f743931c74b854a364acba6cacab",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf11-pf6-blurred-g.mjs",
+      "outputDigest": "9e69fbe67f36533ff10c7ce3fb6d4b0557dce651818c828f6357995dc66bcae7"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf15-g.mjs",
+      "sourceDigestFromManifest": "3005a474b0fa4bdba5fac7d982969c98d6407bf77a410d98793b7ae05308108c",
+      "sourceDigestRecomputed": "3005a474b0fa4bdba5fac7d982969c98d6407bf77a410d98793b7ae05308108c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf15-g.mjs",
+      "outputDigest": "dfeed1afc899237111c99a9c34023614a2496b35e456328b456ea3e89f36d8f1"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf15-shelf-alpha-sweep-g.mjs",
+      "sourceDigestFromManifest": "948b78f3c62671da41116b3000e52d77ab0e672f6525b8469e7321d74e87586d",
+      "sourceDigestRecomputed": "948b78f3c62671da41116b3000e52d77ab0e672f6525b8469e7321d74e87586d",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf15-shelf-alpha-sweep-g.mjs",
+      "outputDigest": "7ee21b496aeb384ac0d34a36193ea37e3c9ee0da788fe44fc8002f73cedaee57"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf2-dim-inversion-g.mjs",
+      "sourceDigestFromManifest": "9d425c3cc1aa989a9dfb342a297767d4caaf7325316a2c46f6b931edc7285332",
+      "sourceDigestRecomputed": "9d425c3cc1aa989a9dfb342a297767d4caaf7325316a2c46f6b931edc7285332",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf2-dim-inversion-g.mjs",
+      "outputDigest": "749cbe37c5b790c1b725f071ef351c5cd8e718aa8de38f80e57cd73363f5e134"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf3-halo-differential-g.mjs",
+      "sourceDigestFromManifest": "8d50352413fd981f03d4a2e9f9a0fe35a0a7e2c5d7ad050c1b5ff40f1b558823",
+      "sourceDigestRecomputed": "8d50352413fd981f03d4a2e9f9a0fe35a0a7e2c5d7ad050c1b5ff40f1b558823",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf3-halo-differential-g.mjs",
+      "outputDigest": "a813491163dccd2604e9b8a4dca5d471710acb642a9a55c6b96d6588e25859ea"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf4-limb3-focus-g.mjs",
+      "sourceDigestFromManifest": "64d85032aa127af0e59389b77782d18edd7017b1e16fd557893268577e0f290c",
+      "sourceDigestRecomputed": "64d85032aa127af0e59389b77782d18edd7017b1e16fd557893268577e0f290c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf4-limb3-focus-g.mjs",
+      "outputDigest": "37ea0c3ce21383e1c8a6eecfaefe744eeb68f75aa254aa9be8cac335f80c4d7e"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf5-pf7-mutants-g.mjs",
+      "sourceDigestFromManifest": "78f87a04becb6db9784f3f2bcad37a3a5de59b407e8fc67f8d00ab5315bbac24",
+      "sourceDigestRecomputed": "78f87a04becb6db9784f3f2bcad37a3a5de59b407e8fc67f8d00ab5315bbac24",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-pf5-pf7-mutants-g.mjs",
+      "outputDigest": "06c13ae914e676c7867914a118b03118966d6347bee96bc8f5a37a65d4d6b5dd"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf6-pf4-g.mjs",
+      "sourceDigestFromManifest": "6bc97ed47f5787803bb323f9426fdf69c3dcb4c1a112c459d9dbceefddf7e492",
+      "sourceDigestRecomputed": "6bc97ed47f5787803bb323f9426fdf69c3dcb4c1a112c459d9dbceefddf7e492",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pf6-pf4-g.mjs",
+      "outputDigest": "6fdae4f7c68192b036ade7d4ed6a486281b5d6cf5268affb6d5d800c9a64a353"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pf8-rings-retake-g.mjs",
+      "sourceDigestFromManifest": "bf034f6463216e5416a4b0e34cd99bc3a3e83a750c5dac3df53b2648ba5ad8c0",
+      "sourceDigestRecomputed": "bf034f6463216e5416a4b0e34cd99bc3a3e83a750c5dac3df53b2648ba5ad8c0",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "C sharp direct import -> resolver",
+        "E cwd-relative outputs/ write -> OUT_DIR",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-pf8-rings-retake-g.mjs",
+      "outputDigest": "e9de36803c239f46174e84cf078bc7df03fd858a53c39c5b9c88ea238e8d4b90"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg1-g.mjs",
+      "sourceDigestFromManifest": "cacff1121d9afb02e16a14b1d8433b3e637cf9c0ac2c0c3b6b8d4cc8f9b2dd82",
+      "sourceDigestRecomputed": "cacff1121d9afb02e16a14b1d8433b3e637cf9c0ac2c0c3b6b8d4cc8f9b2dd82",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg1-g.mjs",
+      "outputDigest": "341bdaf2ddc2357b441ae49ff1e63d81b42a075fa393dec54495cd38ee0974f1"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg10-g.mjs",
+      "sourceDigestFromManifest": "d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0",
+      "sourceDigestRecomputed": "d7c81a4b51a6e59da203e4b4c01e5934fd864de4090e7d003b308cd3aaa74ef0",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg10-g.mjs",
+      "outputDigest": "367cb63766887f259499b7ea8cd73efe36abba5cfd777f913c2cdf94872dfcf2"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg10-limb1-blur-g.mjs",
+      "sourceDigestFromManifest": "41670eb2077613fdaa315c86bf61fbbf8e5d60b72961ed1eb43432755f30d097",
+      "sourceDigestRecomputed": "41670eb2077613fdaa315c86bf61fbbf8e5d60b72961ed1eb43432755f30d097",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg10-limb1-blur-g.mjs",
+      "outputDigest": "dd6530ffa2fc9bb25386728457a91bd8620cb1f7fca7605cb2534e2520312036"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg10-limb1-maskfloor-g.mjs",
+      "sourceDigestFromManifest": "5582460d49fdb482893cc813b73afaec4e126d91ea0d818754207b71e6d8b2aa",
+      "sourceDigestRecomputed": "5582460d49fdb482893cc813b73afaec4e126d91ea0d818754207b71e6d8b2aa",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg10-limb1-maskfloor-g.mjs",
+      "outputDigest": "fb7b55b15e506d9e0fd83ee5d0709bdfe1d435d0795f82c53a91e92dbb01d611"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg10-limb3-g.mjs",
+      "sourceDigestFromManifest": "39325cbde6028d9dd3ea2a554ca244604d1dc57e1cfd8976b2c0d2d78f4c9a3c",
+      "sourceDigestRecomputed": "39325cbde6028d9dd3ea2a554ca244604d1dc57e1cfd8976b2c0d2d78f4c9a3c",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg10-limb3-g.mjs",
+      "outputDigest": "e5bee978dda22fbe6469cb0bbf6ae7bbf048564b0787d0070c22b413bbf859cc"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg10-radial-pg23-g.mjs",
+      "sourceDigestFromManifest": "d9ebd477bdd71500f4d652831f699a5c51418f9508e8372e2bec7b3caeac3059",
+      "sourceDigestRecomputed": "d9ebd477bdd71500f4d652831f699a5c51418f9508e8372e2bec7b3caeac3059",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg10-radial-pg23-g.mjs",
+      "outputDigest": "7ba14967fabfbda34bf36350d4ef1a0e8293d363ffb13cf363ba414148275186"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg14-label-containment-g.mjs",
+      "sourceDigestFromManifest": "9033168194c9ccbc976fedb04c06495bd3b1a4ef60fe682a1bab98915af44357",
+      "sourceDigestRecomputed": "9033168194c9ccbc976fedb04c06495bd3b1a4ef60fe682a1bab98915af44357",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg14-label-containment-g.mjs",
+      "outputDigest": "d4608024d15fac2a0228657ba8b266e1fbc8494fcd7effff2df85e80a056699d"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg17-extent-g.mjs",
+      "sourceDigestFromManifest": "f29a9a2f625818d0d68916064de3b397b9ab273439bc25d4268dce3d1d974376",
+      "sourceDigestRecomputed": "f29a9a2f625818d0d68916064de3b397b9ab273439bc25d4268dce3d1d974376",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg17-extent-g.mjs",
+      "outputDigest": "044872aadab481ac254c14cb89ce4fe5a7b8c8651e313bd47685bff5a2c2ef8b"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs",
+      "sourceDigestFromManifest": "cb2aee3d88b0a0b19b0e9d1d2020a41a0def86bda9d808c56b5f35e24d0f4ce5",
+      "sourceDigestRecomputed": "cb2aee3d88b0a0b19b0e9d1d2020a41a0def86bda9d808c56b5f35e24d0f4ce5",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg17-extent-sweep-g.mjs",
+      "outputDigest": "47fd7338b173fa0531133c6dd8ce3daac9ae2507e1f789c83ea8826a33cafe29"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg23-alpha-g.mjs",
+      "sourceDigestFromManifest": "de6b5c41102a16feb378cb33657fd13521eeea263bb0fe8f2f66b4d22eca86ea",
+      "sourceDigestRecomputed": "de6b5c41102a16feb378cb33657fd13521eeea263bb0fe8f2f66b4d22eca86ea",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg23-alpha-g.mjs",
+      "outputDigest": "174640c0bf87e0329c9102cfd61acd9cae04520181f62033dc74c3275c6c25b9"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg23-diag-g.mjs",
+      "sourceDigestFromManifest": "f0a673bedc592fe18c67d374faba4d1c578f4760d4815ac74a936e318b0fb489",
+      "sourceDigestRecomputed": "f0a673bedc592fe18c67d374faba4d1c578f4760d4815ac74a936e318b0fb489",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-pg23-diag-g.mjs",
+      "outputDigest": "128f0014ed2e181be489a8d46633d53b04fe5af1cd25d3a4af4f0879579127bc"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-pg3-sizefloor-g.mjs",
+      "sourceDigestFromManifest": "71966ec2b60275978be1dac19ac1a9ba3d4c7e76f50c7d0a96f398aa54bdbc46",
+      "sourceDigestRecomputed": "71966ec2b60275978be1dac19ac1a9ba3d4c7e76f50c7d0a96f398aa54bdbc46",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-pg3-sizefloor-g.mjs",
+      "outputDigest": "2bea7dce3bb52b62bb0a92e33cbcf399fcd2ea10e5c8f6f89b4586ede6e75979"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-seat-occluder-g.mjs",
+      "sourceDigestFromManifest": "2a8455133834b5fc0bc5c5177c3f52d566e24c1762bca14afdb2ae1e5719809a",
+      "sourceDigestRecomputed": "2a8455133834b5fc0bc5c5177c3f52d566e24c1762bca14afdb2ae1e5719809a",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver"
+      ],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": "mapping-phase-g-contract/scripts/pink-seat-occluder-g.mjs",
+      "outputDigest": "cadf7efc6e1748e0ce60dea0297522c2aebf26b95bc0f98db91a4790551ac7c8"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-shelf-g.mjs",
+      "sourceDigestFromManifest": "f10253648efc588ac0fecede3c311d5cb4df9ad914aba5d4450f9bb542232d4e",
+      "sourceDigestRecomputed": "f10253648efc588ac0fecede3c311d5cb4df9ad914aba5d4450f9bb542232d4e",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-shelf-g.mjs",
+      "outputDigest": "823dd65960e5c6875e052c0be6dc20c1f88f2bee27bc7ca8f82609ab5e02197d"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-taxonomy-g.mjs",
+      "sourceDigestFromManifest": "b74ef75e6ba48c44bd8673d9035af1a4c340a313e533737e3781e767e0e4a1b8",
+      "sourceDigestRecomputed": "b74ef75e6ba48c44bd8673d9035af1a4c340a313e533737e3781e767e0e4a1b8",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "A playwright direct import -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-taxonomy-g.mjs",
+      "outputDigest": "90a8c42a38016c4451b1bfe18c6f15526529816a7ace0acbf789a6a62ca9c0c6"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-tip-timing-g.mjs",
+      "sourceDigestFromManifest": "d90963f6d1a3da29e5a10b95159e6e77eb7ab32fed8d9609923b0a70c3713fac",
+      "sourceDigestRecomputed": "d90963f6d1a3da29e5a10b95159e6e77eb7ab32fed8d9609923b0a70c3713fac",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [
+        "B CONDYN_PLAYWRIGHT_MODULE decl (abs default) -> resolver",
+        "D CONDYN_SHARP_MODULE decl (abs default) -> resolver",
+        "F 1 hardcoded commit label(s) -> observed (declared 3ec8457d)",
+        "F 1 hardcoded buildId label(s) -> observed (declared xCD8LBxdjnP97-2Gjs5yr)"
+      ],
+      "declaredCommits": [
+        "3ec8457d"
+      ],
+      "declaredBuildIds": [
+        "xCD8LBxdjnP97-2Gjs5yr"
+      ],
+      "output": "mapping-phase-g-contract/scripts/pink-tip-timing-g.mjs",
+      "outputDigest": "d5c8f3f537d7f72bf85e85fd7a6c9df11ed6184317d3ddd2e155e1018e0c3da1"
+    },
+    {
+      "source": "mapping-phase-g-contract/scripts/pink-v11-reference.py",
+      "sourceDigestFromManifest": "e766ac834b3f48b1e321a662559d6181bb894e5decc8b5a08a151454a456aff9",
+      "sourceDigestRecomputed": "e766ac834b3f48b1e321a662559d6181bb894e5decc8b5a08a151454a456aff9",
+      "sourceIntegrity": "MATCHES SEAL",
+      "changeClasses": [],
+      "declaredCommits": [],
+      "declaredBuildIds": [],
+      "output": null,
+      "outputDigest": null,
+      "reason": "no machine-absolute, dead-path or provenance site — nothing to repair"
+    }
+  ]
+}

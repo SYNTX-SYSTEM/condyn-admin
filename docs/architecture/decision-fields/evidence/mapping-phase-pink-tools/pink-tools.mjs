@@ -174,6 +174,106 @@ export async function tools() {
   return { chromium: await playwright(), sharp: await sharpModule() };
 }
 
+/**
+ * ---------------------------------------------------------------------------------------------------
+ * PROVENANCE — THE SECOND HALF OF D-PP-3, AND WHY IT NEEDED A MECHANISM BUILT RATHER THAN COPIED
+ *
+ * *** THE PREMISE I WAS HANDED WAS FALSE, AND I MEASURED IT BEFORE BUILDING ON IT. *** The brief states
+ * that "60 of 80 instruments hardcode a commit literal" against "27 that read `buildId` from the running
+ * stand", and that those 27 "already demonstrate the shape". Measured over all 83 instruments here:
+ *
+ *   - 66 of 83 embed a hex literal that `git cat-file -t` resolves to a commit (10 distinct refs).
+ *     The quoted 60 is the count of files holding ANY 7-40 hex string literal, which also catches
+ *     `9e3779b9` (the golden-ratio hash constant), `00000000`, and fragments of the dead session UUID.
+ *   - 27 mention `buildId` — and ALL 27 of those ALSO embed a commit literal. The two sets are not
+ *     opposed; the smaller is a subset of the larger.
+ *   - *** ALL 27 HARDCODE buildId AS A STRING LITERAL — the same one, `"xCD8LBxdjnP97-2Gjs5yr"`. ***
+ *     NOT ONE instrument of the 83 reads a build identity from a running stand by any mechanism:
+ *     `__NEXT_DATA__` 0 files, `buildManifest` 0, `/_next/static` 0, `page.evaluate` of buildId 0.
+ *
+ * So there was no demonstrated shape in the tree to generalise. This module supplies one.
+ *
+ * WHAT THE DEFECT ACTUALLY IS. A hardcoded commit label is not wrong where it stands: `3ec8457d` IS the
+ * build the sealed figures were taken on, and deleting it would destroy the provenance of 66 instruments'
+ * results. The defect is that the label is EMITTED UNCONDITIONALLY. Re-run the instrument on any other
+ * build and it still writes `commit: "3ec8457d"` into its output — and, as the brief puts it correctly,
+ * a wrong path fails loudly elsewhere while a wrong commit label is filed as evidence.
+ *
+ * THEREFORE: declared and observed, both, with their agreement as a field. The declared literal is kept
+ * (it is the provenance of the original measurement); the observed identity is read at run time; and a
+ * disagreement is stated in the artefact and shouted on stderr. `PINK_PROVENANCE=strict` makes it fatal.
+ * This cannot be verified against the build the seal was taken on — that stand does not exist now — so
+ * what is proven here is the DETECTION, exercised in the only direction currently available: a run on a
+ * build that is NOT the declared one must report disagreement rather than re-emitting the label.
+ */
+import { execFileSync } from "node:child_process";
+import { readFileSync as _readFileSync } from "node:fs";
+
+/** The commit this checkout is actually on. null rather than a guess if git cannot answer. */
+export function observedCommit() {
+  try {
+    const full = execFileSync("git", ["-C", REPO_ROOT, "rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+    return /^[0-9a-f]{40}$/.test(full) ? { full, short: full.slice(0, 8) } : null;
+  } catch { return null; }
+}
+
+/**
+ * The build identity of the stand actually answering, in the order that makes it an OBSERVATION.
+ * PINK_BUILD_ID is an explicit declaration by whoever launched the run and is honoured first; after it,
+ * only things read off a live stand or a real build directory count. Never a default.
+ */
+export async function observedBuildId({ base = BASE, timeoutMs = 2500 } = {}) {
+  if (process.env.PINK_BUILD_ID) return { value: process.env.PINK_BUILD_ID, from: "PINK_BUILD_ID" };
+  try {
+    const ac = new AbortController();
+    const t = setTimeout(() => ac.abort(), timeoutMs);
+    const r = await fetch(base, { signal: ac.signal });
+    clearTimeout(t);
+    const html = await r.text();
+    const m = html.match(/\/_next\/static\/([A-Za-z0-9_-]{8,})\//);
+    if (m) return { value: m[1], from: `stand ${base} /_next/static/<id>/` };
+    const nd = html.match(/"buildId"\s*:\s*"([A-Za-z0-9_-]+)"/);
+    if (nd) return { value: nd[1], from: `stand ${base} __NEXT_DATA__.buildId` };
+    return { value: null, from: `stand ${base} answered but carried no build id` };
+  } catch (e) {
+    try {
+      return { value: _readFileSync(resolve(REPO_ROOT, ".next/BUILD_ID"), "utf8").trim(), from: "<repo>/.next/BUILD_ID" };
+    } catch {
+      return { value: null, from: `unobservable — stand ${base}: ${e?.code ?? e?.name ?? e}; no <repo>/.next/BUILD_ID` };
+    }
+  }
+}
+
+/**
+ * The provenance block an instrument should emit INSTEAD of a bare literal pair.
+ * Returns the declared values unchanged, the observed values beside them, and `agrees`.
+ */
+export async function provenance({ declaredCommit = null, declaredBuildId = null, base = BASE } = {}) {
+  const oc = observedCommit();
+  const ob = await observedBuildId({ base });
+  const commitAgrees = declaredCommit == null || oc == null ? null
+    : (oc.full.startsWith(declaredCommit) || declaredCommit.startsWith(oc.short));
+  const buildIdAgrees = declaredBuildId == null || ob.value == null ? null : ob.value === declaredBuildId;
+  const block = {
+    declaredCommit, observedCommit: oc ? oc.short : null, observedCommitFull: oc ? oc.full : null, commitAgrees,
+    declaredBuildId, observedBuildId: ob.value, observedBuildIdFrom: ob.from, buildIdAgrees,
+    agrees: commitAgrees === true && (buildIdAgrees === true || buildIdAgrees === null),
+    note: "declared = the label the sealed instrument was written with; observed = read at run time. " +
+          "A figure taken on a run where agrees !== true belongs to the OBSERVED build, not the declared one.",
+  };
+  const bad = commitAgrees === false || buildIdAgrees === false;
+  const unk = commitAgrees === null || buildIdAgrees === null;
+  if (bad || unk) {
+    console.error(`*** PINK PROVENANCE ${bad ? "MISMATCH" : "UNVERIFIED"} ***\n` +
+      `    commit   declared ${declaredCommit ?? "(none)"}  observed ${oc ? oc.short : "(unreadable)"}  agrees ${commitAgrees}\n` +
+      `    buildId  declared ${declaredBuildId ?? "(none)"}  observed ${ob.value ?? "(unobservable)"}  (${ob.from})  agrees ${buildIdAgrees}\n` +
+      `    Any figure from this run is a measurement of the OBSERVED build. Do not file it under the declared label.`);
+    if (bad && process.env.PINK_PROVENANCE === "strict")
+      throw new Error("REFUSE pink-tools: PINK_PROVENANCE=strict and the observed build is not the declared one.");
+  }
+  return block;
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
   console.log("PINK · pink-tools.mjs — resolved, not declared");
   console.log(`  REPO_ROOT    ${REPO_ROOT}`);
