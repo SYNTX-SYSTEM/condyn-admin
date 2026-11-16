@@ -1680,6 +1680,29 @@ frischen `origin`-Clone gemessen:
 | ***PINK*** | ***2 / 83*** → *siehe §14.1; die Wurzel ist beseitigt, die Neumessung ist PINKs* |
 | **gesamt** | ***77 / 164*** — ⚠ ***DIESE ZAHL IST SEIT 2026-11-16 ÜBERHOLT (§14.1): `playwright` und `sharp` sind jetzt deklariert, und GRÜN misst 4 von 53 → 0 von 53 absolute Pfade in Auflösungsposition*** |
 
+> ⚠ **KORREKTUR 2026-11-16, §15.3 — DIE NENNER SELBST SIND NACHGEMESSEN, UND ZWEI STIMMEN NICHT.** Population
+> ausdrücklich definiert, weil sie vorher nirgends stand: verfolgte `.mjs`/`.mts`/`.py`/`.js` der drei
+> Spurenverzeichnisse, je am Ref der Spur, Kriterium A = kein maschinenlokaler Pfad.
+>
+> | Spur | Ref | Population | Kriterium A |
+> |---|---|---|---|
+> | PINK | `d85df734` | **83** | **3 / 83** (die drei `.py`) |
+> | GRÜN | `7ad75af8` | ***52, nicht 53*** | **50 / 52** |
+> | GELB | `9cf29f09` | **28** | ***28 / 28*** |
+> | **gesamt** | | ***163, nicht 164*** | ***81 / 163*** |
+>
+> [WITHDRAWN A-G502 2026-11-16] "GRÜN 49 / 53" — *der Nenner ist 52 an GRÜNs eigenem Ref; die 53 ist nicht
+> reproduzierbar und wird nicht weitergetragen.* **Und PINKs 3/83 ist PINKs Zahl, von mir unabhängig
+> bestätigt — die „2 / 83" dieses Berichts ist zurückgezogen: PINK hat sie nie erzeugt und korrekt
+> abgelehnt, sie zu übernehmen.** *** DAMIT IST AUCH DIE ZAHL DES AUFTRAGS SELBST KORRIGIERT: ES SIND 163
+> PRÜFWERKZEUGE, NICHT 164, UND DAS IST DIE FÜNFTE WEITERGEGEBENE ZAHL DIESER RUNDE, DIE BEIM NACHMESSEN
+> NICHT HIELT. *** Die vier davor hat PINK an mir gefunden; diese habe ich selbst gefunden, was der erste
+> Fall dieser Art in diesem Bericht ist.
+>
+> **Kriterium A in der Integration statt am Spuren-Ref** — und der Unterschied ist die Naht (§15.5): GRÜN
+> misst dort **48 / 51**, weil `gruen-paths.mjs`, das Modul, das GRÜNs reparierte Instrumente importieren,
+> **im integrierten Stand überhaupt nicht liegt.**
+
 ***Der Grund, und ich habe ihn selbst nachgemessen: 75 der 83 PINK-Instrumente importieren Playwright aus
 `/home/codi/Entwicklung/nquiry/node_modules/` — und `nquiry` ist ein ANDERES REPOSITORY
 (`SYNTX-SYSTEM/NQUIRY.git`), das `origin` nicht enthält.*** **Und es ist nicht eine Spur:** **47 von GRÜNs
@@ -2166,3 +2189,155 @@ in `main`** (`e360caf9`, unverändert, und die Integration ist nachweislich kein
 Pixelschicht** (PF-2/PF-6/PF-11/PG-20 stehen offen mit ihren Grenzen), und **PINKs 83 Instrumente bleiben an
 einem gefrorenen Siegel gebunden** — die Reparatur liegt gebaut und bewiesen daneben, hinter einer
 Eigentümerentscheidung.
+
+---
+
+## §15 MANDAT „AUTONOMOUS COMPLETION" — DIE ZWEI FREIGEGEBENEN ENTSCHEIDUNGEN UND DER REST
+
+Der Owner hat die beiden Entscheidungen freigegeben, die §14.12 als eigentümerreserviert ausgewiesen hatte:
+PINKs Portabilitätsreparatur **über eine neue, separat versionierte Evidenzebene** zu integrieren, alle 167
+historischen Siegeleinträge unverändert; und PINKs drei Widerrufe durch **nachvollziehbare Vorwärtsverweise**
+mit ihren gültigen Errata zu verbinden, ohne historische Evidenz umzuschreiben. Danach: alle weiteren
+technisch lösbaren Defekte autonom bearbeiten.
+
+### §15.1 DIE KOSTENPRÜFUNG VOR DER ANWEISUNG — A-G496 EINGEHALTEN
+
+PINK hat mir in §14.8 nachgewiesen, dass ich eine Reparatur für eine **versiegelte** Spur verordnet hatte,
+deren Preis ich nie bezahlt habe, weil `mapping-phase-g-gelb/` kein Manifest hat. Diesmal zuerst gemessen,
+**vor** dem Schreiben des Auftrags: in einer Wegwerfkopie von `mapping-phase-e-contract` ist die Basis
+`33 OK`; nach `printf > ERRATA-FORWARD.md` weiterhin **`33 OK`, Exit 0**. `sha256sum -c` prüft die
+gelisteten Zeilen und schweigt über alles andere im Verzeichnis.
+
+*** DAMIT IST DIE ZWEITE ENTSCHEIDUNG ÜBERHAUPT ERST AUSFÜHRBAR: DER VORWÄRTSVERWEIS KANN NEBEN DEM
+VERSIEGELTEN REGISTER LIEGEN, OHNE DAS SIEGEL ZU BERÜHREN. *** Die Baseline der drei Manifeste, aus den
+Manifesten selbst gelesen und nicht übernommen: **33 + 43 + 91 = 167 Einträge, 167 OK, 0 FAILED.**
+
+### §15.2 F-R11 — ZWEI PRÜFDATEIEN BEHAUPTETEN, PLAYWRIGHT SEI KEINE ABHÄNGIGKEIT
+
+Beide Browser-Suiten trugen im Docstring: *„Playwright is not a dependency of this repository. Point
+CONDYN_PLAYWRIGHT_MODULE at a `playwright` package directory to run the browser section."* Der Satz war bei
+Niederschrift richtig. **Das Deklarieren von `playwright@1.63.0` — genau die Reparatur, mit der F-R8
+geschlossen wurde — hat ihn falsch gemacht.** Das Paket löst bar auf, die Variable ist nur noch ein
+Override.
+
+*** F-R8s EIGENE KLASSE, ANGEWANDT AUF DIE SPUR, DIE F-R8 GESCHLOSSEN HAT. *** F-R8 war „gemessen, dann
+veraltet"; hier veraltet eine **Behauptung über den Build**, in derselben Richtung, innerhalb der Reparatur,
+die die erste behoben hat. Ein Satz über den Build ist eine Messung, und eine Messung, die niemand neu
+liest, verrottet.
+
+Die Reparatur ist nicht die Prosakorrektur — die ist einen Commit von erneut veraltet entfernt. Strukturell:
+`dependency-claim-currency` prüft jede überprüfbare Abhängigkeitsbehauptung **in beiden Richtungen** gegen
+`package.json`, nach Behauptungsform statt nach Dateiliste, browserfrei, in Millisekunden. Deshalb wird es
+nach der Reparatur nicht vakuant: die Dateien behaupten jetzt das Positive, und **das Entfernen der
+Abhängigkeit färbt die Docstrings rot.** Mutanten: `playwright` entfernt → rot, beide Dateien namentlich;
+`1.62.0` statt `1.63.0` → rot mit beiden Versionen.
+
+**Und was der Wächter an sich selbst gefunden hat, im ersten Lauf:** die erste Fassung verlangte Backticks
+um den Paketnamen, fand **null** Behauptungen und meldete **zwei grüne Glieder über der leeren Menge** —
+die veraltete Prosa schreibt ein blankes, großgeschriebenes „Playwright". Das **Vakuitätsglied** hat es
+gefangen, gegen den eigenen Autor. Genau dafür ist es da.
+
+### §15.3 F-R12 — SIEBEN INSTRUMENTE LASEN AUS EINEM WORKTREE, DER NICHT MEHR EXISTIERT
+
+Population **vor** dem Zählen definiert: verfolgte `.mjs`/`.mts`/`.js`/`.py` unter `docs/`, ohne PINKs vier
+Contract-Verzeichnisse — **152 Instrumente, 21 mit maschinenlokalem Pfad, 0 davon versiegelt** (gegen alle
+**360** Siegeleinträge jedes verfolgten Manifests geprüft, nicht angenommen).
+
+| Klasse | Stellen | Gestalt |
+|---|---|---|
+| **T** Werkzeug | 13 + 3 | `playwright` aus `nquiry`, dem **nicht dokumentierten Schwesterrepository**; `sharp` aus einem anderen Worktree |
+| **I** Eingabe | **7** | Fixtures durch einen Worktree, ***der auf dieser Maschine nicht mehr existiert*** |
+| **S** Scratch | 7 | ein **totes** Session-Scratchpad, auf Platte geprüft: `GONE` |
+
+*** KLASSE I IST DIE SCHLIMMSTE, UND ZWAR WEIL DIE REPARATUR KEIN WORKAROUND IST: JEDE DIESER DATEIEN IST
+IN DIESEM REPOSITORY UNTER DEMSELBEN RELATIVEN PFAD VERFOLGT. *** Sie lösten **nirgends** auf — auch nicht
+hier — während die Bytes, die sie wollen, im Repository liegen, das das Instrument hält. PINK hat dieselbe
+Klasse unabhängig in seiner eigenen Population gefunden (12 tote Session-Pfade) und zuerst benannt: ein
+toter Pfad löst nirgends auf statt falsch.
+
+Repariert durch einen **wiederholbaren Mechanismus** statt 18 Handgriffe — PINKs Standard und der bessere —
+mit zwei Verifikationen nach dem Schreiben (kein absoluter Pfad überlebt; alles parst weiter) und
+nachgewiesen **idempotent**: ein zweiter `--apply` ändert **0 Dateien**. Der Resolver hat **bewusst keinen
+maschinenlokalen Fallback**: ein anderes Chromium oder eine andere `sharp`-ABI liefert weiter Zahlen, und
+die würden als Messungen **dieses** Builds abgelegt (A-G430). Alle vier Pfade belegt, inklusive Verweigerung
+mit vollständiger Kandidatenliste in einem Klon ohne `node_modules`.
+
+Der Wächter prüft **nach Form, nicht nach Dateiliste** — GRÜNs F-G5 gegen mich war genau der andere Fehler.
+Deklarierte Durchlässe werden **vollständig verbraucht**: eine Deklaration, deren Datei keinen solchen Pfad
+mehr nennt, wird **rot als veraltet**. GRÜNs drei Dateien sind als Übergabe deklariert und **räumen sich
+damit selbst auf**, sobald GRÜN sie repariert.
+
+### §15.4 F-R13 — ***MEIN F-R9-WÄCHTER WEIST EINEN ECHTEN CHECKOUT DIESES REPOSITORYS AB***
+
+F-R9 ließ `gelb-paths.mjs` ein **fremdes** Repository abweisen, indem es ein Identitäts-Commit verlangt;
+A-G494: ein Wächter, der fragt *„ist das ein Repository?"* statt *„ist das DAS Repository?"*, hat denselben
+Defekt wie eine Zahl ohne ihren Build. Gewählt wurde PHASE_Gs Basis-Commit.
+
+Gemessen: dieses Objekt liegt in **7 von 124 Refs** und ist **kein Vorfahre von `main`**. In einem
+`git clone --no-local --single-branch --branch main` ist es **ABWESEND**.
+
+*** F-R9 HAT EINE FALSCHE ANNAHME BEHOBEN UND EINE FALSCHE ABWEISUNG EINGEFÜHRT — A-G494 MIT UMGEKEHRTER
+POLARITÄT, IN DER REPARATUR FÜR A-G494. ***
+
+**Der erste Beweisversuch war das falsche Instrument.** Ein `--local`-Klon kopiert den ganzen
+Objektspeicher; das Commit reiste mit, und der Test bewies nichts. Notiert, weil das falsche Instrument
+beinahe der Beweis geworden wäre — dieselbe Klasse wie die vier weitergegebenen Zahlen, die PINK an mir
+gefunden hat, nur diesmal von mir selbst gefangen.
+
+Anker ist jetzt der **Wurzel-Commit `29266f9c`**: das eine Objekt, das jeder Klon auf jedem Branch hält, in
+allen 124 Refs, von `git init` + `touch` nicht fälschbar. Nachgewiesen: löst im echten Checkout auf, weist
+ein fremdes Repository **weiter mit Exit 1** ab. Ein flacher Klon wird mit dem Mittel benannt, das dieses
+Repository schon kennt (`git fetch --unshallow`, wie `ERR_PHASE_C_BASE_MISSING`). Als Invariante über **alle**
+Instrumente gewächtert, den Wurzel-Commit aus dem Repository abgeleitet statt hartkodiert.
+
+### §15.5 DIE INTEGRATIONSNAHT, ZUM ERSTEN MAL ALS MESSBARE TATSACHE
+
+§14.12 hat die Naht als Abwägung ausgewiesen, nicht als technische Frage. **Das war unvollständig.** Gemessen:
+
+- **15 Commits** auf `architecture/mapping-phase-f` fehlten in der Integration, darunter ***zwei
+  Instrumentenreparaturen, die das Register als erledigt führt — F-R9 in `gelb-paths.mjs` und F-R7 in
+  `gelb-pin-assertion-scan.mjs`.*** Der integrierte Stand trug weiter die unreparierte Fassung.
+- ***PINKs ganze Validierungsebene — 254 Dateien, vier Manifeste, die 167 gefrorenen Einträge — ist in der
+  Integration überhaupt nicht vorhanden.*** Der „integrierte Systemzustand" enthielt die Evidenz der
+  unabhängigen Spur nicht.
+
+Die erste Hälfte ist geschlossen: zwei Merges (`db2a9a38`, dann F-R13), kein Merge nach `main`. **Und der
+Merge hat sich selbst geprüft** — er brachte F-R9 herein, und das F-R13-Glied wurde an echter Historie
+sofort rot, bevor ich den Anker korrigierte. Eine Reparatur, die als angewendet verbucht ist, ist nicht
+angewendet, solange sie nicht in dem Zustand liegt, der ausgeführt wird.
+
+### §15.6 VIERMAL DASSELBE: ***EIN WÄCHTER, DER TEXT PRÜFT, LIEGT IN SEINER EIGENEN POPULATION***
+
+Diese Aufzeichnung korrigiert an Ort und Stelle und löscht den ursprünglichen Satz nie. Damit ist **das
+Zitat eines Defekts nicht vom Defekt zu unterscheiden**. Viermal in einer Sitzung:
+
+1. `dependency-claim-currency` rügte die beiden Docstrings, die ihren widerrufenen Satz korrekt zitieren;
+2. **und danach seinen eigenen Docstring**, weil er den Defekt zitiert, zu dessen Fang er geschrieben wurde;
+3. ein Python-Kommentar hielt einen toten Pfad **allein durch dessen Nennung** am Leben und machte die
+   reparierte Datei von einer unreparierten ununterscheidbar;
+4. das F-R13-Glied rügte `gelb-paths.mjs` für den widerrufenen Anker, zitiert in genau dem Kommentar, der
+   seine Korrektur festhält.
+
+`test/integration-boundary/withdrawn.ts` hält die Konvention jetzt **einmal**: Befund-ID und ISO-Datum auf
+der Zeile der Behauptung. ***Ein blosses `[WITHDRAWN]` schweigt nicht*** — es fällt auf „lebende
+Behauptung" zurück und stirbt am lebenden Glied. Als Mutant belegt, nach dem Refactoring erneut. Das ist
+die `AUTHORISED_CROSSINGS`-Gestalt auf Prosa angewandt: eine Ausnahme nennt, wer sie erteilt hat und wann,
+oder sie ist keine.
+
+**Und das ist dieselbe Frage, die PINKs Vorwärtsverweise lösen müssen** — ein widerrufener Satz muss lesbar
+bleiben, ohne als lebend gelesen zu werden. Die Antwort ist in beiden Fällen die gleiche.
+
+### §15.7 DREI NEUE NOVELLEN
+
+- **A-G500** — ***Ein Wächter, der Text prüft, liegt in seiner eigenen Population; das Zitat eines Defekts
+  ist vom Defekt nicht zu unterscheiden.*** Deshalb muss ein Widerruf attributierbar und datiert sein, und
+  eine blosse Marke darf nichts zum Schweigen bringen.
+- **A-G501** — ***Ein Identitätsanspruch muss benennen, was jeder Klon auf jedem Branch hält.*** Ein
+  Wächter, dessen Anker nur von manchen Refs erreichbar ist, weist berechtigte Checkouts ab. A-G494 fragte
+  nach dem *ob*; dies fragt, ob die Antwort überall verfügbar ist.
+- **A-G502** — ***Eine Reparatur, die als angewendet verbucht ist, ist nicht angewendet, solange sie nicht
+  in dem Zustand liegt, der ausgeführt wird.*** Register und Integration sind zwei Zustände, und nur einer
+  wird gemessen.
+
+**Stand nach diesem Abschnitt:** Integration `9cf29f09`, Register `7f10c45f`, `test/integration-boundary`
+**27/27**, fünf Mutanten getötet, jeder vom vorgesehenen Glied. `origin/main` unverändert.
