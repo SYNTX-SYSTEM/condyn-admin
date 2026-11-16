@@ -1,83 +1,93 @@
-# Three decisions waiting on the owner
+# What is open, and with whom — current as of 2026-11-16
 
-**Verdict: NONE** on all three. This lane takes no product decision (A-G36 point 2). Written per A-G248 so
-each can be read without a lane present. **They are independent** — any one can be answered alone, and
-answering none is itself a decision this file tries to make legible rather than to press.
+**Verdict: NONE.** This lane takes no product decision (A-G36 point 2). This file **supersedes** the version
+at `4b83414e` (2026-11-11), which had become partly stale: two of its three items were settled in practice
+and the file did not say so. That version is still readable at that commit.
 
-Nothing in the product has changed while they have been open: the delta from `3ec8457d` is **one**
-`RING_LUMINANCE.shelf` hunk (0.02 → 0.022, A-G62), decided by GELB. Everything else in 34 commits is
-instrument, evidence and comments.
-
----
-
-## 1 · `CROWDING`: stays at 0.3, or moves to 0.5?
-
-**What it is.** The record bounds PG-16 at **0.5** (A-G156); the build is `export const CROWDING = 0.3`.
-Both values have been live in different documents since §11, so **the record currently describes an artifact
-that does not exist.**
-
-**What moves if it goes to 0.5.** `CROWDING-0.3-TO-0.5-WHAT-MOVES.md` has the rows. In short: **it removes
-bodies from the field** on 9 of the 11 layouts that have roles, none gains, and the largest proportional loss
-is on the *smallest* layout — LV02 goes **6 → 3**, half its bodies, and never touches `BODY_BUDGET` at all.
-
-**Needs:** nothing. No credential, no server, no tooling. **A judgement.**
-
-**If unanswered:** the divergence stays, and every statement about either constant has to say which artifact
-it means. That is survivable — it is written into the registry entries — but it has already caused two
-withdrawn adjudications in other lanes.
+**State it is measured against:** `frontend/mapping-phase-g` @ `a0475f13`. That is also an ancestor of
+`origin/integration/pxj-complete-20261116` @ `4f4534c5`, and the component is byte-identical between
+`7b4d5852` and `4f4534c5` (sha256 `ef3ce06a27f9f8a1…`).
 
 ---
 
-## 2 · `TEST_DATABASE_ADMIN_URL`: supplied, or the seven items cancelled?
+## The three items of 2026-11-11, and where each stands
 
-**What it is.** `test/support/database-isolation/global-setup.ts` refuses every vitest run unless
-`DATABASE_URL` names a verified disposable test database; the sanctioned path, `npm run test:isolated`, needs
-`TEST_DATABASE_ADMIN_URL`, and this worktree has no `.env`. **The gate is fail-closed and is not a lane's to
-bypass** — five of the seven items held behind it open no database at all, and that does not matter.
+### 1 · `CROWDING` 0.3 or 0.5: moved to GELB for adjudication
 
-**What it unblocks, in this order:**
+GELB offered on 2026-11-16 to adjudicate this rather than route it to the owner. The build is
+`export const CROWDING = 0.3`. The record bounds PG-16 at 0.5 (A-G156), and GELB's §4 records that PG-5's
+budget was ruled from the 0.5 column.
 
-| | item | why it is gated |
+**What moves.** The figures are in `CROWDING-0.3-TO-0.5-WHAT-MOVES.md`, and they are **current**:
+`gruen-pg16-crowding.mjs` and `gruen-pg16-crowding-L1.mjs`, re-run at `a0475f13`, reproduce their committed
+outputs **byte for byte**. Their inputs are unchanged since those outputs were written (`96eb62f6`):
+- the V1.1 golden vectors: 0 commits;
+- `CROWDING`, `BODY_BUDGET` and `spaced()`'s clearance line: hash-identical.
+
+In short:
+- At 0.5, 9 of the 11 layouts with roles draw fewer bodies, and none draws more.
+- L0 drops from 6…7 to 4…7 (median 6). L1 drops from 6…12 to 4…7.
+- The largest proportional loss is on the smallest layout: LV02 goes 6 → 3. That loss comes from spacing,
+  not from the budget.
+
+**At both viewports, the same, and that is a property of the code, not a coincidence of two readings.**
+Bodies are selected by `spaced()` (`PersonJobMappingField.tsx:500`) in **field units**, before any pixel
+quantity exists. The 12 px size floor is applied **afterwards**, to the already-selected set (`:761`,
+`sizeFloor(b.drawnRadius, k)`). So `CROWDING` changes **which** bodies are drawn identically at 1920×1080 and
+1280×800. What differs by viewport is only the drawn size of the bodies that are selected, and `CROWDING`
+does not enter that.
+
+**Not measured:** rendered rim-to-rim gaps in pixels at either value. Where the floor inflates a small body,
+the gap as drawn can be smaller than `spaced()` guaranteed in field units. Measuring that needs a render at
+a declared build.
+
+### 2 · `TEST_DATABASE_ADMIN_URL`: SATISFIED since 2026-11-11
+
+`.env.local` in this worktree names the disposable test server on `127.0.0.1:5433` (file dated 2026-11-11
+20:20). `npm run test:isolated` creates, verifies and drops a database through B-ENTRY on every run. Every
+suite figure since then was taken this way.
+
+**`~/.config/condyn/test-db-role.env` is NOT the basis:** it names the shared server on `:5432`, and B-ENTRY
+refuses it (`ERR_TEST_DATABASE_ISOLATION_SHARED_SERVER`). GELB measured that refusal on 2026-11-16.
+
+**The seven items it was holding, worked down:**
+
+| | item | status | evidence |
+|---|---|---|---|
+| 1 | A-G43 · splay re-keying + mutant test | **DONE** | §104 `fd45f45f`: the splay reads `arc.state === "DIFFERENT"`; `field-g-mutant.test.tsx` binds |
+| 2 | A-G49 · `data-*` hooks | **DONE** | `28161e77` (§81), in the branch since then; the component carries `data-mapping-halo`, `data-mapping-seat`, `data-required-gaps` |
+| 3 | A-G48 · an L2 fixture with a field body | **OPEN, now blocked by a boundary, not a credential** | see below |
+| 4 | A-G51 · an L1 fixture that marks a body | **OPEN, same block** | see below |
+| 5 | the PG-20 mutant's execution | **DONE** | the same `field-g-mutant.test.tsx` as item 1, executed in every PHASE_DIRS run (198/198 at `980c77bf`) |
+| 6 | option (3), only if PINK's verdict calls for it | **DORMANT** | no PINK verdict has called for it; the costing exists (`option3-*.json`, `276ef95d`) |
+| 7 | A-G206's span declarations for items 3 and 4 | **OPEN, follows 3 and 4** | — |
+
+**Why 3, 4 and 7 are not simply "next".** A new fixture collides with MAP-G-ARCH's fixtures limb, *"existing
+fixtures only; no provider and no API in anything phase G added"*. That limb was deliberately left
+**open-ended** under A-G485, as an ongoing invariant (GELB accepted it on that ground on 2026-11-16). And any
+new fixture would now be committed **after** `PHASE_INT_BASE`, which is outside every phase range (A-G487:
+closing phase G ended its guard). So these three need **a ruling, not a credential**: whether they are still
+wanted after integration, and if so, under which boundary (a MAP-INT-ARCH or an explicit crossing). **GELB
+first; the owner if GELB routes it.**
+
+### 3 · a local build and server: PERMITTED IN PRACTICE since 2026-11-10
+
+- The preserved stand (`:3220` → `:3221`, BUILD_ID `HRYkeEpbpndI3UEE7ceeC`) and the hooked stand (`:3230` →
+  `:3231`, `utpaUMQpafZVzAeyYImhv`) have both been running since 2026-11-10/11, loopback-only.
+- PG-23's second limb, which was the reason this item existed, was delivered: `pg23-computed-*.json`.
+
+Nothing remains to decide here.
+
+---
+
+## What genuinely remains open, by owner
+
+| item | with | state |
 |---|---|---|
-| 1 | A-G43 · the splay re-keying + its mutant test | a product change needs its suite |
-| 2 | A-G49 · `data-*` hooks for the glows, the seven unaddressable seats, A-G199's shelf halo | changes rendered DOM |
-| 3 | A-G48 · an L2 fixture with a field body, so PG-10 has a breathing carrier | new fixture |
-| 4 | A-G51 · an L1 fixture that marks a body | new fixture |
-| 5 | the PG-20 mutant's execution | converts implemented-and-held into implemented-and-proven |
-| 6 | option (3), only if PINK's verdict calls for it | touches two test files |
-| 7 | A-G206's span declarations in front of items 3 and 4 | part of those fixtures |
-
-**Needs:** one connection string, e.g. in `.env.local` as
-`TEST_DATABASE_ADMIN_URL=postgresql://user:pass@localhost:5432/postgres`.
-
-**If unanswered:** these seven stay blocked indefinitely. **That is a legitimate outcome** — but it should be
-chosen rather than inherited, because the queue has been carried as "pending" for long enough that it reads
-as work in progress. **Cancelling it is a one-word answer and this lane will stop surfacing it.**
-
----
-
-## 3 · Starting a local build and server: permitted, or not?
-
-**What it is.** PG-23's second limb needs `getComputedStyle` on a rendered page across the breath cycle. That
-needs `npm run build`, `next start` on `127.0.0.1:3221`, and the fixture façade on `3220` — all loopback-only,
-no provider reachable, Gemini untouched. **This is the only item a different permission unblocks, and it is
-separable from the credential entirely.**
-
-**What is already done without it.** The pin's *source* limb is delivered and passing
-(`pg23-alpha-source.json`): no rule that animates opacity can reach a shelf halo, established from the
-component's own stylesheet with the rules found rather than listed. **That covers every state at once**; the
-remaining limb only confirms a browser agrees.
-
-**Needs:** one word on starting a build and a local server.
-
-**If unanswered:** PG-23 stands on one limb of two, which is a stated gap rather than a hole — and the
-instrument has no computed-style reader, so nothing else in the queue wants this permission.
-
----
-
-## What this file does not do
-
-It does not recommend a value for `CROWDING` — that is product taste and R23's own range is unrecorded in the
-document (the registry flags it on `PG-16.crowding`). It recommends nothing on items 2 and 3 beyond **giving
-an answer either way**, because an unanswered queue costs more than a cancelled one: a cancelled item stops
-being carried, and an unanswered item is re-surfaced in every report by every lane.
+| `CROWDING` 0.3 / 0.5 | **GELB** (offered adjudication) | figures current, above |
+| A-G48 / A-G51 / A-G206 fixtures | **GELB**, then owner | blocked by B-7 + A-G487, not by a credential |
+| A-G487 · MAP-INT-ARCH or not | **owner** | scope decision: needed only if work continues on the integration tip |
+| PF-13 closure | **owner** (ruled measure-only 2026-11-16) | measured at `980c77bf`: 16 files, 198/198, coverage matches both ways; verdict field NONE |
+| PG-14 | **PINK**, or the owner | RESTATED/UNVERIFIED; not this lane's |
+| the 8 seals' build referent | **this lane** | see README §96c |
+| PG-11's relation limb | **GELB's sentence**, this lane's readings | see README §96c, PG-11 paragraph |

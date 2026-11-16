@@ -20,6 +20,41 @@ VA and VB are the vacuity check: the closed range still catches a real in-phase 
 The mutants and the trial cherry-pick existed only in a throwaway `--shared` clone and were never pushed.
 No shared worktree was touched.
 
+## Test provenance: where each reading ran, and the one deviation from a real checkout
+
+| reading | where | `node_modules` |
+|---|---|---|
+| G1 and PF-13 | `condyn-admin-mapping-d` itself, at `980c77bf` | **the worktree's own real directory** |
+| R, G2, VA, VB | throwaway `git clone --shared` in GRÜN's session scratchpad | **a SYMLINK** to a `cp -a` copy of mapping-d's `node_modules` (that copy lived in a git-archive build export, also in the scratchpad) |
+
+**The deviation, and why it matters in general.** Turbopack refuses a symlinked `node_modules`:
+`TurbopackInternalError: Symlink [project]/node_modules is invalid, it points out of the filesystem root`.
+So **any test that boots a Next server fails in such a tree for a reason that is not the code.** PINK had
+already documented this on `origin/validation/hr-decision-loop-pink`, checked by GRÜN at that ref:
+- `evidence/integration-main-5ca0f3f/verdicts.txt:34` (O-PB-4) and `measurements.txt:133`, with the
+  exact error string;
+- `evidence/mapping-phase-e-contract/prep.txt:21`;
+- `evidence/mapping-phase-g-contract/prep.txt:19`, where `node_modules` was copied with `cp -a`,
+  deliberately not hardlinked or symlinked.
+
+All three paths are under `docs/architecture/decision-fields/`. GELB hit it in its own probe worktree on 2026-11-16 (§11.17), where three
+files failed that pass on a real copy. **GRÜN did not know this when building the clone, and did not
+read PINK's note first.**
+
+**Why these four readings are unaffected, by inspection rather than by assumption.** No file in the
+population (`test/career/mapping-field/`, `test/career/mapping-spec/`) contains `next start`, `next dev`,
+`spawn(`, `createServer`, a Next server import or `playwright`. Checked by grep at `980c77bf`: 0 hits. So
+no reading here can have depended on a Next server booting. The results are also directionally
+consistent with that:
+- G2 passed **all** 198, so the symlink cannot have hidden a failure.
+- VA and VB failed **exactly** the assertions their mutants targeted, naming the mutant paths and shas,
+  not a Turbopack error.
+
+**The limit, stated.** This covers the mapping population only. A reading over the full suite, or over
+anything that starts Next, would **not** be valid in that clone. None was taken there: the full-suite
+figure in GRÜN's recovery report (27 failed / 3642 passed at `7b4d5852`) ran in mapping-d with real
+`node_modules`.
+
 **Currency.** `gruen-currency-lapse` now reads README :204, §115's *"16 files, 198 tests, 0 failed;
 `architecture.test.ts` 32/32"*, as **LAPSED**, because its referent moved at `980c77bf`. Lapsed means
 the warrant is gone, not that the claim is false. At `980c77bf` the figures re-measure the same: G1 gives
