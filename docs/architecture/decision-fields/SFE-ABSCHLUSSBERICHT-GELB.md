@@ -865,3 +865,53 @@ diese Lane bereits behoben hat** (§2 DELTA: 9 Tabellen korrigiert, Drift = 0, T
 
 **Evidenz:** `evidence/integration-trial-20261116/` — `g1-gelb.out.txt`, `g1-origin-main.out.txt`,
 `g1-integration.out.txt`, `instruments-after-push.out.txt`.
+### §11.16 A-G485 GEPRÜFT UND ANGENOMMEN — ***DIE GRENZE ERLAUBT JETZT DEN MERGE, DEN SIE VERBOT***
+
+GRÜN hat A-G485 umgesetzt: `980c77bf` (Fix) und `a0475f13` (Messungen), **lokal, 2 vor `origin`, nicht
+gepusht.** GRÜN legt den Fix ausdrücklich **meiner Review** vor und nicht seinem eigenen Bereich — aus dem
+richtigen Grund: *ein Commit kann seine eigene Sha nicht nennen*, also liegt er **nach** der Basis, die er
+deklariert, und wird von ihr nicht gedeckt. **Das steht in der Docstring, gelesen statt entdeckt.**
+
+**MEINE REVIEW — vier Punkte geprüft, nicht übernommen:**
+
+| geprüft | Befund |
+|---|---|
+| Bereich **in Art** geschlossen, wo §8 (6) D/E/F schloss | **ja** — Change-Set + Merge-Klausel, „nothing else in lib moves“ samt MODEL-Diff, V1/Spec-Record, PF-14-Skriptbewegung: alle auf `PHASE_G_BASE..PHASE_INT_BASE` |
+| Vakuitätsschutz | **ja** — `assertRange(phaseGBase(), phaseIntBase()) > 0` neu, zusätzlich zum vorhandenen `sets.length > 0` |
+| toter Helfer entfernt | **ja** — `workingTreeSet` 0 Vorkommen; ein geschlossener Bereich hat keinen Arbeitsbaum |
+| Dateinamen-Whitelist | ***keine*** (A-G411 gewahrt) |
+
+**Und der Punkt, der mir am wichtigsten war:** `changedSinceG` / `addedSinceG` bleiben **offen bis `HEAD`** —
+an drei Stellen: B-F6s Host und die geschützten Pfade, die Fixtures, und der Gemini-Zeichenkettenschutz über
+dem Entry-Set. *** DAS IST RICHTIG UND NICHT EINE VERGESSENE STELLE: DAS SIND LAUFENDE INVARIANTEN, KEINE
+PHASENMESSUNGEN. *** Eine Invariante, die man am Phasenende schließt, hört auf zu schützen; eine Messung, die
+man offen lässt, mißt spätere Phasen mit. **GRÜN hat die beiden Arten getrennt, und das ist genau die
+Unterscheidung, an der §8 (6) hängt.**
+
+**UNABHÄNGIG NACHGEMESSEN, nicht auf Bericht hin** — eigener Worktree, Trial-Integration **plus** `980c77bf`
+per Cherry-pick (`de065a24`), Wegwerf-DB, echter Exit-Code:
+
+```
+test/career/mapping-field + test/career/mapping-spec
+  Test Files  16 passed (16)
+       Tests  198 passed (198)        exit 0
+  Merges im Bereich seit PHASE_G_BASE: 1
+```
+
+> *** 198 VON 198, AUF EINEM BAUM, DER DEN INTEGRATIONSMERGE ENTHÄLT. *** Vorher auf demselben Baum: 196/198,
+> beide Rot MAP-G-ARCH. **Die Grenze erlaubt jetzt den Merge, den sie verbot, und mißt Phase G weiterhin.**
+> Zusammen mit §11.15: *** DER MERGE TRÄGT 27 ROTE NACH GRÜN UND 2 WEITERE, UND LÄSST KEINES ZURÜCK. ***
+
+**PF-13s Bewegung ebenfalls nachgerechnet, weil ungeprüfte Zählungen heute zweimal mein Fehler waren:**
+`3231f52c` fügt in `architecture.test.ts` **genau eine** `it()`-Zeile hinzu und entfernt keine (die §115-A-G468-
+Prüfung); statisch über die 16 Populationsdateien **197 bei `bce62ea1` → 198 bei `980c77bf`**, Dateizahl
+**16 → 16**. **GRÜNs Bewegungsangabe stimmt, und die Population ist stabil.** Das Verdict-Feld bleibt
+`NONE` — **PF-13s Schließung ist ein Eigentümerpunkt, wie PG-14.**
+
+> **A-G487, und es ist die Folge, die A-G485 selbst erzeugt:** *** EINE PHASE ZU SCHLIESSEN BEENDET IHREN
+> WÄCHTER. *** `980c77bf` und `a0475f13` liegen nach `PHASE_INT_BASE` und werden daher **von keinem
+> Phasenbereich** mehr gemessen — bei diesen zwei Commits ersetzt meine Review das, und das ist vertretbar.
+> **Aber ab hier ist die Integrationsphase ungeschützt.** D/E/F hatten dasselbe und bekamen jeweils eine
+> Nachfolgephase mit eigener Grenze. **Wenn auf diesem Stand weitergearbeitet wird, braucht es ein
+> MAP-INT-ARCH; wird nur noch integriert und validiert, braucht es keines.** Benannt, nicht stillschweigend
+> offen gelassen — und es ist eine Entscheidung, keine Aufgabe.

@@ -1,0 +1,43 @@
+[test-db] admin role condyn_test_runner (least privilege)
+[test-db] created condyn_test_941f28bfb8a4bab1
+
+ RUN  v3.2.7 /home/codi/Entwicklung/condyn-admin-int3
+
+[database-isolation] verified disposable test database condyn_test_941f28bfb8a4bab1
+ ✓ test/career/mapping-field/architecture.test.ts (32 tests) 2119ms
+   ✓ MAP-G-ARCH · the layout bump is a bump, and nothing else in lib moves > existing fixtures only; no provider and no API in anything phase G added  322ms
+ ✓ test/career/mapping-spec/layout.test.ts (15 tests) 10337ms
+   ✓ LAYOUT · golden vectors > the committed vectors are exactly what the reference produces now (no drift between spec, oracle and file)  806ms
+   ✓ LAYOUT · golden vectors > DETERMINISM: the same input gives the same output, byte for byte, in any call order and with shuffled input lists  1823ms
+   ✓ LAYOUT · promises on every vector > NO OVERLAP: placed bodies keep their gap; bodies beyond capacity are counted, never drawn over others  4621ms
+   ✓ LAYOUT · promises on every vector > HORIZON: a checked role lies inside the horizon, a name-only role beyond it, none outside the field  571ms
+   ✓ LAYOUT · promises on every vector > SECTORS: each pool keeps to its own sector; sectors are ordered by pool name and never overlap; a pool without roles still has its sector  606ms
+   ✓ LAYOUT · promises on every vector > FIT IS DISTANCE: an undisplaced body sits exactly where its fit puts it; a better fit is never farther out in its tier  685ms
+   ✓ LAYOUT · promises on every vector > BAND EDGES ARE PINNED: pressed bodies reach the inclusive edges exactly (horizon - rho, field - rho) and never cross them or the inner edge  550ms
+   ✓ LAYOUT · promises on every vector > CAPACITY: the realistic shapes (73 real-shaped roles, 60 crowded) fit completely; only the stress vector overflows  589ms
+ ✓ test/career/mapping-field/field-e.test.tsx (22 tests) 2411ms
+   ✓ MAP-E-FIELD · P-10 / B-4 — model purity at the drawing > REPRODUCE: L0 → selection → L1 → mark → L2 → L3 → back: 0 fetches, 0 storage reads, 0 navigations  305ms
+ ✓ test/career/mapping-field/field-interaction.test.tsx (11 tests) 1870ms
+   ✓ MAP-C-FOCUS-UI · L0 ⇄ L1 > REPRODUCE: pool button → L1 (its view box, its title, an up button); up → L0; Escape → L0; nothing read, written or navigated  440ms
+   ✓ MAP-C-FOCUS-UI · L1 keeps its pool; its overflow and the legend (PINK §3.98 F-PC-T2) > the overflow count follows the level: on L0 all roles not drawn, on L1 only the open pool's — none for a pool that has room  331ms
+   ✓ MAP-C-FOCUS-UI · L1 keeps its pool; its overflow and the legend (PINK §3.98 F-PC-T2) > the overflow count on L1 is the open pool's own, also when both pools overflow  308ms
+ ✓ test/career/mapping-field/field-d.test.tsx (13 tests) 1503ms
+   ✓ MAP-D-FIELD · L0 → L3 by the field's own controls > REPRODUCE: pool → role (its full ring, the open role at the centre) → arc (its evidence, verbatim); ↑ and Escape go back level by level  475ms
+ ✓ test/career/mapping-field/field-g.test.tsx (10 tests) 938ms
+ ✓ test/career/mapping-field/field-render.test.tsx (10 tests) 876ms
+ ✓ test/career/mapping-field/field-f.test.tsx (9 tests) 639ms
+ ✓ test/career/mapping-field/field-wiring.test.tsx (4 tests) 623ms
+ ✓ test/career/mapping-field/model.test.ts (22 tests) 373ms
+ ✓ test/career/mapping-field/field-g-mutant.test.tsx (2 tests) 180ms
+ ✓ test/career/mapping-field/selector-d.test.tsx (7 tests) 61ms
+ ✓ test/career/mapping-field/selector-keys-d.test.tsx (2 tests) 76ms
+ ✓ test/career/mapping-field/signs-d.test.ts (15 tests) 53ms
+ ✓ test/career/mapping-field/neurovisual-e.test.ts (15 tests) 33ms
+ ✓ test/career/mapping-spec/sign-table.test.ts (9 tests) 20ms
+
+ Test Files  16 passed (16)
+      Tests  198 passed (198)
+   Start at  03:32:17
+   Duration  31.02s (transform 2.56s, setup 265ms, collect 3.82s, tests 22.11s, environment 5ms, prepare 1.63s)
+
+[test-db] dropped condyn_test_941f28bfb8a4bab1
