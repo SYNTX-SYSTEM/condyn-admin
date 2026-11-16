@@ -44,7 +44,7 @@ Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel.
 
 | Prüfebene | Stand | Herkunft |
 |---|---|---|
-| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen** (24 übersprungen, 3570) | *** 2026-11-16 IN DIESER LANE SELBST GEFAHREN, auf Wegwerf-DB, und auf den Test genau mit GRÜNs Zahl übereinstimmend — §11.9. NICHT MEHR „auf Bericht hin“. *** Eine rote Testdatei, Ursache war mein eigener verwaister Dev-Server; einzeln 4/4 grün. |
+| **Gesamtsuite** | **3546 bestanden / 0 fehlgeschlagen** (24 übersprungen, 3570) — *** AUF DIESEM STAND, DER DAS MAPPING DER PHASEN D–G NICHT ENTHÄLT (§11.10) *** | 2026-11-16 in dieser Lane selbst gefahren, auf eigener Wegwerf-DB (§11.9). **Keine Bestätigung von GRÜNs gleichlautender Zahl — die Populationen unterscheiden sich um 9 Dateien und ~95 Fälle.** Eine rote Testdatei, Ursache mein eigener verwaister Dev-Server; einzeln 4/4 grün. |
 | **PF-13-Population (Phase D + E, Regression)** | **16 Dateien, 197 Tests, 197 bestanden**, Deckung **in beide Richtungen** geprüft · *** `verdict: "NONE — development reading only (A-G36 point 2)"` *** | `gruen-pf13-evaluate.mjs`, JSON-Reporter |
 | **GELB-Instrumente** | *** 26 Instrumente; 9 können fehlschlagen, 4 sind nachweislich gefeuert, 16 sind REPORTER, deren Exit 0 kein Urteil ist. *** Die frühere Form dieser Zeile las „24 von 24 Exit 0“ und präsentierte 16 nicht-fehlschlagende Reporter als Verifikationsergebnis (§125). **UND DIE FORM DANACH LAS „25 Instrumente, 22 Exit 0“, OHNE DIE DREI ZU BENENNEN — zwei von ihnen waren seit §125 an `ENOBUFS` TOT und konnten überhaupt nicht hinsehen (§128, A-G468, Defekte 402/403).** **Heute: 28** (neu `gelb-read.mjs`, `gelb-paths.mjs`, `gelb-currency-lapse.mjs`), **26 Exit 0, 2 verweigern
 bauartbedingt** — das Subject-Gate dauerhaft, und `gelb-currency-lapse` solange **≥ 1 Währungsaussage
@@ -237,7 +237,7 @@ andere an Infrastruktur wurde ohne Rückfrage wiederhergestellt, einschließlich
 
 | Bedingung des Mandats | Stand |
 |---|---|
-| **1. Das MAPPING funktioniert durchgängig** | **ERFÜLLT.** 3546/0, 197/197 auf der Regressionspopulation, `tsc` sauber, Drift 0. |
+| **1. Das MAPPING funktioniert durchgängig** | *** NICHT MEHR ALS ERFÜLLT AUSGEWIESEN (§11.10, 2026-11-16). *** Die Zahlen stehen: 3546/0 und `tsc` sauber **auf diesem Stand** (selbst gefahren), 197/197 auf der Regressionspopulation **aus GRÜNs Lane**, Drift 0. **Aber das Mapping der Phasen D–G liegt auf keinem Stand, den diese Lane oder `origin` hält** — das Feld ist hier 244 Zeilen und bei GRÜN 1243. **Die Kette ist auf GRÜNs Branch durchgängig und nur dort; das ist eine Aussage über einen unveröffentlichten Stand.** |
 | **2. Alle Defekte im vereinbarten Scope behoben** | **ERFÜLLT MIT BENANNTEN AUSNAHMEN** — §4 listet fünf, jede spezifiziert, keine als geschlossen ausgewiesen. **PF-13 ist gedeckt; sein Urteil steht PINK zu.** |
 | **3. Alle Prüfungen abgeschlossen** | **ERFÜLLT** für jede Prüfung, die auf einem lesbaren Stand ausführbar ist. **Nicht ausführbar:** die iptables-Frage (sudo) und die Ausmaß-Charakterisierung der Naht (Instrumentengrenze). |
 | **4. PINK hat den tatsächlichen Gesamtsystemstand unabhängig validiert** | *** NICHT NACHVOLLZIEHBAR, UND ICH WEISE ES NICHT ALS ERFÜLLT AUS. *** |
@@ -625,9 +625,16 @@ lesbaren Stand nachvollziehen“*. **Das gilt nicht mehr.** Gefahren in **diesem
 | Dauer | 754.36 s |
 | B-ENTRY | `verifyDisposableTestDatabase` lief **unverändert und unumgangen**, Datenbank erzeugt, verifiziert, verworfen |
 
-> *** DIE 3546 STIMMT AUF DEN TEST GENAU MIT GRÜNS ZAHL ÜBEREIN, IN EINEM ZWEITEN WORKTREE UND AUF EINER ANDEREN
-> DATENBANK GEMESSEN. *** Damit fällt die §9-Kennzeichnung für **diese** Figur — und nur für sie. Die
-> Pixelzahlen und PF-13 bleiben, was sie waren.
+> ⚠ *** DIE ERSTE FORM DIESES ABSCHNITTS LAS: „DIE 3546 STIMMT AUF DEN TEST GENAU MIT GRÜNS ZAHL ÜBEREIN,
+> IN EINEM ZWEITEN WORKTREE GEMESSEN“ — UND NANNTE DAS EINE UNABHÄNGIGE BESTÄTIGUNG. DAS IST ZURÜCKGEZOGEN. ***
+> **Die beiden Zahlen teilen keine Population** (§11.10): GRÜNs Branch trägt **9 Mapping-Testdateien und
+> ~95 Testfälle mehr** als dieser, und das Feld selbst ist dort **1243 Zeilen gegen 244 hier**. *** ZWEI
+> IDENTISCHE 3546 ÜBER VERSCHIEDENE POPULATIONEN SIND KEINE BESTÄTIGUNG, SONDERN EIN ZU ERKLÄRENDER BEFUND. ***
+> Ich habe eine Übereinstimmung als Beweis gelesen, ohne zu prüfen, ob die beiden Zählungen denselben Rahmen
+> haben — **A-G417 und A-G430, in derselben Sitzung verletzt, in der ich A-G483 über Rahmenfehler geschrieben
+> habe.** Was **bleibt**: diese Suite läuft auf **diesem** Stand grün, 3546/0, selbst gefahren, auf eigener
+> Wegwerf-DB. Was **nicht** bleibt: dass das GRÜNs Zahl bestätigt, und dass es Bedingung 1 für das
+> **Mapping** misst.
 
 **Die eine rote Datei, mit ihrer Ursache statt mit einer Ausrede:**
 `test/career/hr-decision-loop/e2e/hr-decision-loop-frontend.e2e.test.ts` scheiterte in `waitForReadiness` an
@@ -641,4 +648,51 @@ verwaister Lauf** — der abgebrochene zweite Start hatte einen Next-Dev-Server 
 > §11.5 sind das zwei Befunde dieser Sitzung, die beide MEIN MESSAUFBAU waren und beide zuerst wie
 > Systemdefekte aussahen.**
 
-**Bedingung 1 ist damit in zwei Lanes unabhängig gemessen statt in einer gemessen und in der anderen zitiert.**
+**Bedingung 1 ist damit NICHT in zwei Lanes gemessen.** Sie ist auf diesem Stand gemessen — und dieser Stand
+**enthält das Mapping der Phasen D–G nicht** (§11.10). *** EINE GRÜNE SUITE AUF EINEM BRANCH OHNE DAS FEATURE
+IST KEINE AUSSAGE ÜBER DAS FEATURE. ***
+### §11.10 ***DAS MAPPING IST NICHT INTEGRIERT — ES LIEGT AUF EINEM EINZIGEN UNVERÖFFENTLICHTEN BRANCH***
+
+Gefunden beim Versuch, PF-13 in dieser Lane zu fahren. **Es ist der größte Befund dieser Wiederherstellung und
+er war vier Phasen lang unbenannt.**
+
+| `app/components/career/demo/PersonJobMappingField.tsx` | Zeilen |
+|---|---|
+| `origin/main` | **244** |
+| `architecture/mapping-phase-f` (GELB) | **244** — identisch mit main |
+| `frontend/mapping-phase-g` (GRÜN) | *** 1243 *** |
+
+**Produktdiff `origin/main` → GRÜN, nur `lib/ app/ scripts/`: 9 Dateien, +1809 / −257.** Das Feld (+1275), das
+View-Model (+371), die Feldkopie (+191), der Selektor (+123). **Produktdiff `origin/main` → GELB: 3 Dateien,
++102 / −14 — und keine davon ist Mapping**, sondern DB-Isolation. **Merge-Base beider Lanes ist `e360caf9`,
+also `origin/main` selbst: die Lanes sind parallel, nicht gestapelt.**
+
+> *** DIE PERSON × JOB MAPPING IMPLEMENTIERUNG DER PHASEN D–G EXISTIERT AUF GENAU EINEM BRANCH, DIESER BRANCH
+> IST UNGEPUSHT, UND NICHTS DAVON IST INTEGRIERT ODER VERÖFFENTLICHT. *** Das Mandat verlangt ein
+> *„vollständig implementiertes, lokal ausführbares, **integriertes** und von PINK unabhängig validiertes“*
+> Mapping. **Implementiert: ja, einfach. Integriert: nein, und zwar gar nicht.**
+
+**Was das an meinen eigenen Aussagen ändert — und es ist mehr, als mir lieb ist:**
+
+1. **§1s Kette** (*„Datenschicht → View-Model → Delta → Focus-Reducer → Zeichenfläche → gerenderte Pixel“*)
+   ist auf **keinem Stand, den diese Lane hält**, durchgängig. Sie ist es auf GRÜNs Branch.
+2. **§11.9s Suitelauf** misst das **244-Zeilen**-Feld. *** ICH HABE „DIE GESAMTSUITE“ GEFAHREN UND BEDINGUNG 1
+   FÜR GEMESSEN ERKLÄRT — AUF EINEM BRANCH, DER DAS FEATURE NICHT ENTHÄLT, UM DAS ES IN DER BEDINGUNG GEHT. ***
+3. **§11.3s 16 unauflösbare Instrumente** sind damit nicht nur ein Veröffentlichungsproblem: der gepinnte
+   Build `4b83414e` ist **GRÜNs** Build, und das Produkt, das die Instrumente lesen wollen, steht ebenfalls
+   nur dort. **Ein Push macht sie lesbar; er macht sie nicht integriert.**
+
+**Und PF-13 kann in dieser Lane nicht gefahren werden — aus einem besseren Grund als dem aufgeschriebenen.**
+GRÜNs Instrument begründet im Kopf, warum die Lauf-Hälfte seine ist: *„GELB's attempt died at
+ERR_TEST_DATABASE_ISOLATION_MISSING … the credential is in this worktree.“* **Diese Begründung ist seit heute
+falsch** — die Credentials sind hier, §11.9 hat 3570 Tests auf eigener Wegwerf-DB gefahren. **Die
+Schlussfolgerung bleibt trotzdem richtig, und der wahre Grund ist härter:** von PF-13s 16 Populationsdateien
+hält dieser Branch **7**. *** NICHT DIE CREDENTIALS FEHLEN, SONDERN DIE POPULATION. *** PINKs Abhilfe
+(„the evaluation is run in a lane that holds the venue“) verlangt eine Lane mit **Harness UND Population** —
+**GRÜN ist die einzige, die beides hält.** Die Zuweisung an GRÜN steht also, mit korrigierter Begründung.
+
+> **A-G484: wer prüft, ob er einen Pin fahren KANN, prüft die Population, nicht nur das Werkzeug — ein Harness
+> ohne Population läuft grün und misst nichts.** Das ist exakt die Vakuitätsfalle, die GRÜNs eigenes Instrument
+> als ersten Guard trägt (*„numTotalTests: 0, numFailedTests: 0 — a green-looking JSON body with a zero
+> denominator“*) — **und ich wäre eine Ebene höher hineingelaufen: nicht mit einem leeren Filter, sondern mit
+> einem halben Branch.**
