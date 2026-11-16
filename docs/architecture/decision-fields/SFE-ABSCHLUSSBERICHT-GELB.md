@@ -2011,3 +2011,120 @@ Commit-Literal**, eines berichtete `"commit": "9cc06f84"`, während es `3ec8457d
 E's und F's Glieder *nicht Phase Gs zu ändern* sind). **Die Naht** — eine Abwägung zwischen einer sichtbaren
 Kante und einer Leitersprosse, **keine technische Frage**. **`sudo iptables -S DOCKER | grep 5432`.** **Der
 Merge nach `main`.**
+
+### §14.13 ***F-R10 — ICH HABE ZWEI VERSIEGELTE EVIDENZORTE ÜBERSCHRIEBEN UND MITCOMMITTET***
+
+**Der schwerste eigene Fehler dieses Mandats, und er traf genau die Grenze, die das Mandat einfriert.** Die
+Deklaration von `playwright` hob fünf Browser-Suiten aus dem Skip (§14.4). **Zwei davon schreiben Screenshots,
+Reports und ein NEU ERZEUGTES `manifest.sha256` in ihr Evidenzverzeichnis.** Ich habe sie gefahren und mit
+`git add -A` committet: **67 Evidenzpfade und zwei versiegelte Manifeste** landeten in `e4d792ae`.
+
+**Zurückgenommen und geprüft:** `docs/` ist über HEAD **byteidentisch zu `7ffaeb40`** (0 abweichende Pfade),
+beide Manifeste byteidentisch zu ihren Originalen und verifizierend (**14/14** und **37/37**).
+
+> *** UND DAS SCHLIMMSTE DARAN IST NICHT, DASS EIN SIEGEL BRACH — SONDERN DASS KEINES BRACH. *** Die neu
+> erzeugten Manifeste **verifizierten ebenfalls**, gegen ihren eigenen neuen Inhalt. Ein Siegel, das sich
+> selbst neu schreibt, ist schlimmer als eines, das bricht: **das gebrochene meldet sich, das neu geschriebene
+> bestätigt sich.**
+
+**Die Ursache ist schärfer als der Unfall, und sie ist ein Entwurf, an den dieses Register ohnehin glaubt.**
+Beide Orte sind **nach dem Build benannt**, den sie beschreiben — `syntx-walk-${SYNTX_WALK_TIP}`,
+`job-scope-gate-${JOB_SCOPE_TIP}` — und der Kommentar sagt es wörtlich: *„the tip under test names the evidence
+directory."* Ohne gesetzte Variable fallen sie auf den **historischen** Tip zurück.
+
+> **A-G498:** ***EIN LAUF, DER SEINEN BUILD NICHT NENNT, ÜBERSCHREIBT DIE EVIDENZ EINES ANDEREN BUILDS MIT DEN
+> EIGENEN MESSUNGEN.*** A-G430s Regel war hier schon **in einem Verzeichnisnamen implementiert** — und ich habe
+> sie ausgehebelt, indem ich eine Variable nicht gesetzt habe. **Die Grenze war gebaut; was fehlte, war das
+> Runbook, das sie nennt.**
+
+**Gewächtert statt dokumentiert:** `test/integration-boundary/seal-integrity.test.ts` — kein verfolgtes File in
+einem versiegelten Verzeichnis darf im Arbeitsbaum verändert oder gelöscht sein, und **kein `manifest.sha256`
+darf neu geschrieben sein.** Browserfrei, git-Ebene, **3/3**; der Mutant (eine versiegelte Datei berührt) macht
+es rot **und nennt sie**. Es ist zugleich das Glied, das meinen eigenen Fehler gefunden hätte, bevor er in die
+Historie kam.
+
+**Und die Zuständigkeit, exakt:** *meine* Suite schreibt nach `docs/career_analysis/evidence/job-pool`, das
+**unversiegelt** ist. **Die Siegelverletzung kam ausschließlich aus PINKs zwei Suiten, die ich gefahren habe.**
+Der Befund ist PINKs Territorium, die Verletzung war meine Hand. **Der finale Volllauf setzt beide
+Tip-Variablen auf den Integrationsstand** — damit schreiben sie in nach ihrem Build benannte Orte, und kein
+Siegel wird berührt.
+
+### §14.14 EIN ACHTER HARNESS-FEHLER, UND ER IST EINE POINTE
+
+Mein Siegel-Zähler meldete **„15 FAILED"** gegen vorher 14. Nachgesehen statt gemeldet: das Manifest von
+`ux-presweep-421e382` enthält eine Datei, die wörtlich **`STANDIN-ST-FAILED-md-as-pdf-1920.jpg`** heißt. Mein
+`grep -c 'FAILED'` hat ihren **Namen** als **Urteil** gezählt.
+
+> *** EIN SIEGELPRÜFER, DEN EIN DATEINAME NAMENS „FAILED" TÄUSCHT. *** Dieselbe Klasse wie die ersten Fehler
+> dieser Arbeit: **ein Muster gezählt statt ein Ergebnis gelesen.** Richtig gezählt, gegen das Urteil am
+> Zeilenende: **69 Manifeste, 1308 Einträge OK, 14 echte Fehlschläge — alle in `lens-owner-bfe0d27`**,
+> vorbestehend, außerhalb des Mapping-Scopes, und unter diesem Mandat ausdrücklich nicht angetastet.
+
+### §14.15 BEREINIGT
+
+`condyn-admin-pink-struct` entfernt — leer laufend, sauber, HEAD `4f4534c5` von `origin` erreichbar, **1,5 G
+frei**, und wiederherstellbar mit einem Befehl. **16 Worktrees statt 17.** Alle acht Prüfstände antworten
+weiter (`:3122 :3123 :3220 :3221 :3230 :3231` HTTP 200, `:5432` und `:5433` lauschen), kein `.next` neu
+gebaut. Der lokale `main`-Ref nachgezogen, nachdem er GRÜN eine um 8 Commits falsche Zahl geliefert hatte.
+
+### §14.16 ***PINKS BEFUND ÜBER DAS INSTRUMENT, AUF DAS SICH DIESES GANZE MANDAT STÜTZT***
+
+PINK hat F-R10 unabhängig nachgeprüft — `git diff --name-only e7b60061 <ref>` über beide Orte, **0
+abweichende Pfade** an drei Refs — und daraus eine Folgerung gezogen, die größer ist als der Vorfall:
+
+> *** EIN NEU ERZEUGTES MANIFEST VERIFIZIERT TADELLOS GEGEN SEINEN EIGENEN NEUEN INHALT. ALSO BEWEIST
+> `sha256sum -c` INNERE KONSISTENZ, NICHT PROVENIENZ. *** Es kann einen Ort, der in einem Zug **neu gemessen
+> und neu versiegelt** wurde, prinzipiell nicht entdecken.
+
+**PINK hat das als Schranke über die eigenen Zahlen geschrieben** — über jedes „167/167 OK", das es gemeldet
+hat, dieses Mandat eingeschlossen. **Und es gilt genauso für jedes „1308 OK" in diesem Bericht.**
+
+> **A-G499:** ***EINE PRÜFSUMME BEANTWORTET „IST DIESER ORT IN SICH STIMMIG?" UND NIE „BESCHREIBT ER DEN BUILD,
+> DEN ER ZU BESCHREIBEN BEHAUPTET?". EIN SIEGEL IST EIN INTEGRITÄTSMASS UND KEIN PROVENIENZMASS.***
+>
+> Dieselbe Verwechslung wie A-G494 (*Art statt Identität*) und A-G495 (*irgendwo statt dort*), jetzt im
+> stärksten Werkzeug dieser Arbeit. **Was den Vorfall tatsächlich gefangen hat, war nicht das Siegel, sondern
+> die Build-Benennung des Verzeichnisses plus ein Blick auf 67 Evidenzpfade in einem `git add -A`.**
+
+### §14.17 DER DRITTE VERALTETE PUNKT — ***DER WALK BEHAUPTETE DIE ABWESENHEIT DES MAPPINGS***
+
+PINKs Q-12-Reparatur trug bis `:966`. Dort prüfte der Walk `field-focus-strip` auf **zwei** Knöpfe. Die
+Vertragszeile des Produkts selbst, `SyntxFieldSelector.tsx:16-18`:
+
+> *„`field-focus-strip` (`data-field-focus` ∈ CAPABILITY | MAPPING | FIELD) holding **exactly three buttons**,
+> `field-focus-capability-btn`, `field-focus-mapping-btn` and `job-pool-panel-toggle`"* — und sie zitiert
+> dafür **`PERSON_X_JOB_MAPPING_PHASE_D.md §5.1`**.
+
+Nennungen von `MAPPING` im Selektor, von beiden Spuren getrennt gezählt: **`origin/main` 0 · Integration 25**.
+
+> *** ALSO IST DER DRITTE KNOPF DAS PERSON × JOB MAPPING SELBST. DIE UNABHÄNGIGE PRÜFSPUR BEHAUPTETE IN IHREM
+> EIGENEN WALK DIE ABWESENHEIT DES ZENTRALEN NEUEN OBJEKTS, DAS SIE VALIDIERT *** — und `field-focus-mapping-btn`
+> kam in ihrer Datei **nirgends** vor. PINKs eigene Formulierung dazu: *„die Lane, deren Aufgabe es ist zu
+> finden, was das Produkt verloren hat, behauptete die Abwesenheit seines zentralen neuen Objekts — so lange,
+> wie niemand eine Umgebungsvariable exportierte."*
+
+**PINK hat es selbst repariert und dabei meine Vorlage übertroffen, mit einem Grund, den ich nicht hatte:**
+`job-scope-indicator` ist selbst ein `<button>`, den der Vertrag **bewusst außerhalb** des Strips hält — *eine
+Nachkommenzählung ist also genau das, was still driftet, wenn er je hineinwandert.* Gepinnt sind jetzt die drei
+Testids je einmal, die Gesamtzahl, **die DOM-Reihenfolge** und `data-field-focus-active` **und** `aria-pressed`
+an jedem. **Und PINK hat meine offene Frage beantwortet, statt sie zu übergehen:** `options` ist ein
+Literal-Array aus drei ohne Filter, `isGated` *deaktiviert* nur — **der Strip ist in jedem Fokus dieselben
+drei**, also war nichts zu verallgemeinern.
+
+### §14.18 DREI ERGEBNISSE, DIE NUR DIE DREI-SPUREN-ANORDNUNG ERREICHT HAT
+
+**Nicht die Defektzahl ist das Maß, sondern wer welchen Defekt gefunden hat:**
+
+1. ***GRÜN fand den Defekt in GELBS Pfadmodul*** — und verweigerte gleichzeitig eine Anweisung GELBS, die
+   falsch war. **Eine Lane, die gehorcht hätte, hätte einen Fehler eingebaut, den die Koordinationslane als
+   Korrektur ausgegeben hat.**
+2. ***PINK fand, dass GELBS Reparaturvorschrift an GELBS eigener Lane nichts kostet*** — weil GELBS Instrumente
+   unversiegelt sind — **und verweigerte sie an 167 Siegeleinträgen, mit demonstriertem statt behauptetem
+   Preis.**
+3. ***PINK fand die Grenze von `sha256sum -c` selbst*** (§14.16), nachdem GELB dieselbe Prüfung dreimal als
+   Beweis geführt hatte.
+
+> **Und der ehrliche Gegenstand dazu, der zur Aussage gehört:** *** ALLE DREI BEFUNDE TRATEN AUF, WÄHREND EINE
+> SPUR DIE REGEL EINER ANDEREN ANWANDTE — KEINER WURDE VON DER EIGENEN REGEL DER EIGENEN LANE GEFUNDEN. *** Das
+> ist dasselbe Methodenergebnis wie in §10, zum zweiten Mal, und es sagt weiterhin **nichts** über die Defekte,
+> auf die noch keine geborgte Regel gezeigt hat.
